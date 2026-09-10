@@ -39,7 +39,7 @@ export function ProgressDemo() {
             setSlider([val])
           }}
         >
-          <Slider.Track borderWidth={1} borderColor="color5">
+          <Slider.Track borderWidth={1} borderColor="color-5">
             <Slider.TrackActive />
           </Slider.Track>
           <Slider.Thumb theme="accent" circular index={0} />

@@ -22,7 +22,7 @@ export function AnimationsEnterDemo(props: any) {
         scale="1 enter:1.5"
         y="0 enter:-10px"
         transition="bouncy"
-        bg="color9"
+        bg="color-9"
         rounded="9"
         elevation="4"
         size={110}

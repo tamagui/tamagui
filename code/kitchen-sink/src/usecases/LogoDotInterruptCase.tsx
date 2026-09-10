@@ -31,7 +31,7 @@ export function LogoDotInterruptCase() {
         position="relative"
         width={(NUM - 1) * SECTION + 60}
         height={80}
-        backgroundColor="color3"
+        backgroundColor="color-3"
         onMouseMove={(e: ReactMouseEvent<HTMLDivElement>) => {
           const el = ref.current
           if (!el) return
@@ -49,7 +49,7 @@ export function LogoDotInterruptCase() {
           top={30}
           left={20}
           x={positions[index]}
-          backgroundColor="color11"
+          backgroundColor="color-11"
           size={16}
         />
         {positions.map((p, i) => (
@@ -60,7 +60,7 @@ export function LogoDotInterruptCase() {
             top={10}
             width={1}
             height={16}
-            backgroundColor="color8"
+            backgroundColor="color-8"
           />
         ))}
       </XStack>

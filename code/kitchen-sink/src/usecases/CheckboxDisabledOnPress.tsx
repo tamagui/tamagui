@@ -52,7 +52,7 @@ export function CheckboxDisabledOnPress() {
         Disabled press count: {disabledPressCount}
       </Paragraph>
 
-      <Paragraph color="color10" fontSize="2">
+      <Paragraph color="color-10" fontSize="2">
         Expected: Clicking disabled checkbox should NOT increment the count.
         {'\n'}
         Bug: On native, the count was incrementing even when disabled.

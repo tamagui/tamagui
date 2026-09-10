@@ -22,7 +22,7 @@ export function AnimationsDemo(props) {
         borderColor="border-color"
         borderWidth={1}
         rounded="9"
-        bg="color9"
+        bg="color-9"
         {...position}
         onPress={onPress}
         size={104}

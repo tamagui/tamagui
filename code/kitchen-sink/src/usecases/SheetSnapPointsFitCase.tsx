@@ -75,21 +75,21 @@ function Tall3pcDialogAdaptSheet() {
         >
           <Sheet.Overlay
             data-testid="repro-3pc-overlay"
-            bg="color5"
+            bg="color-5"
             opacity="0.5 enter:0 exit:0"
           />
           <Sheet.Container data-testid="repro-3pc-frame" overflow="hidden">
             <Sheet.Background
               borderBottomRightRadius={0}
               borderBottomLeftRadius={0}
-              bg="color2"
+              bg="color-2"
               borderRadius={32}
             />
             <YStack
               {...sheetTopRadius}
               position="absolute"
               inset={0}
-              bg="color11"
+              bg="color-11"
               opacity={0.15}
               borderWidth={2}
               borderBottomWidth={0}
@@ -99,7 +99,7 @@ function Tall3pcDialogAdaptSheet() {
               {...sheetTopRadius}
               position="absolute"
               inset={0}
-              bg="color2"
+              bg="color-2"
               opacity={0.5}
             />
             <YStack
@@ -109,7 +109,7 @@ function Tall3pcDialogAdaptSheet() {
               opacity={0.25}
               borderWidth={1}
               borderBottomWidth={0}
-              borderColor="color11"
+              borderColor="color-11"
             />
 
             <Sheet.ScrollView

@@ -48,7 +48,7 @@ export function PopoverHoverableScopedCase() {
 
   return (
     <YStack padding="4" gap="4">
-      <SizableText size="3" color="color9">
+      <SizableText size="3" color="color-9">
         Scoped hoverable popover - mirrors WebsiteHeader pattern
       </SizableText>
 
@@ -76,7 +76,7 @@ export function PopoverHoverableScopedCase() {
                 id={`nav-trigger-${id}`}
                 px="4"
                 py="2"
-                bg={`${open && displayId === id ? 'color4' : 'color3'} hover:color4`}
+                bg={`${open && displayId === id ? 'color-4' : 'color-3'} hover:color-4`}
                 rounded="4"
                 cursor="pointer"
               >
@@ -99,9 +99,9 @@ export function PopoverHoverableScopedCase() {
         >
           {/* bounding wrapper so position:absolute panels don't escape to the portal root */}
           <YStack
-            bg="color2"
+            bg="color-2"
             rounded="5"
-            outlineColor="color4"
+            outlineColor="color-4"
             outlineWidth={1}
             outlineStyle="solid"
             width={300}
@@ -115,7 +115,7 @@ export function PopoverHoverableScopedCase() {
                   <SizableText id={`nav-panel-${displayId}`} size="5" fontWeight="600">
                     {displayId.charAt(0).toUpperCase() + displayId.slice(1)} Panel
                   </SizableText>
-                  <SizableText size="3" color="color9">
+                  <SizableText size="3" color="color-9">
                     Content for {displayId}
                   </SizableText>
                 </PanelFrame>

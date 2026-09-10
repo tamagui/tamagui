@@ -5,23 +5,23 @@ export function ThemeBuilderDemo() {
   return (
     <YStack position="absolute" inset={0} overflow="hidden">
       <XStack maxH={200} y={-100} x={-50} rotate="-10deg">
-        <Col y={35} bg="color9" />
-        <Col size="8" y={30} bg="color7" />
-        <Col size="6" y={-50} bg="color5" />
-        <Col size="4" bg="color3" />
-        <Col size="2" bg="color1" />
-        <Col size="4" y={50} bg="color3" />
-        <Col size="6" y={80} bg="color5" />
-        <Col size="8" bg="color7" />
-        <Col bg="color9" />
-        <Col size="8" bg="color7" />
-        <Col size="6" y={80} bg="color5" />
-        <Col size="4" y={50} bg="color3" />
-        <Col size="2" bg="color1" />
-        <Col size="4" bg="color3" />
-        <Col size="6" y={-50} bg="color5" />
-        <Col size="8" y={30} bg="color7" />
-        <Col y={35} bg="color9" />
+        <Col y={35} bg="color-9" />
+        <Col size="8" y={30} bg="color-7" />
+        <Col size="6" y={-50} bg="color-5" />
+        <Col size="4" bg="color-3" />
+        <Col size="2" bg="color-1" />
+        <Col size="4" y={50} bg="color-3" />
+        <Col size="6" y={80} bg="color-5" />
+        <Col size="8" bg="color-7" />
+        <Col bg="color-9" />
+        <Col size="8" bg="color-7" />
+        <Col size="6" y={80} bg="color-5" />
+        <Col size="4" y={50} bg="color-3" />
+        <Col size="2" bg="color-1" />
+        <Col size="4" bg="color-3" />
+        <Col size="6" y={-50} bg="color-5" />
+        <Col size="8" y={30} bg="color-7" />
+        <Col y={35} bg="color-9" />
       </XStack>
     </YStack>
   )

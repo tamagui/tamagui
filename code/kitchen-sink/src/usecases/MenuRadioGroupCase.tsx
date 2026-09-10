@@ -27,10 +27,10 @@ export function MenuRadioGroupCase() {
           Verifies that Menu.RadioGroup/RadioItem enforces single-selection on both web
           and native (via the registered menu adapter's CheckboxItem mapping).
         </Paragraph>
-        <Text testID="menu-radio-selected-value" color="color10">
+        <Text testID="menu-radio-selected-value" color="color-10">
           Selected value: {color}
         </Text>
-        <Text testID="menu-radio-change-count" color="color10">
+        <Text testID="menu-radio-change-count" color="color-10">
           Change count: {changeCount}
         </Text>
       </YStack>

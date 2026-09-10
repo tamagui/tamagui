@@ -50,7 +50,7 @@ const LinkListItem = ({
   return (
     <ListItem
       {...linkProps}
-      backgroundColor="color1"
+      backgroundColor="color-1"
       {...props}
       onPress={(e) => {
         linkProps.onPress(e)

@@ -19,10 +19,10 @@ export function ContextMenuDemo() {
           rounded="4"
           borderWidth={1}
           borderStyle="dashed"
-          borderColor="color6"
+          borderColor="color-6"
           cursor="default"
         >
-          <Text text="center" select="none" color="color10">
+          <Text text="center" select="none" color="color-10">
             Right Click or Long Press
           </Text>
         </View>
@@ -104,7 +104,7 @@ export function ContextMenuDemo() {
               textValue="Actions"
             >
               <ContextMenu.ItemTitle>Actions</ContextMenu.ItemTitle>
-              <ChevronRight size={12} color="color10" />
+              <ChevronRight size={12} color="color-10" />
             </ContextMenu.SubTrigger>
             <ContextMenu.Portal zIndex={200}>
               <ContextMenu.SubContent
@@ -153,7 +153,7 @@ export function ContextMenuDemo() {
           >
             <ContextMenu.ItemTitle>Mark as read</ContextMenu.ItemTitle>
             <ContextMenu.ItemIndicator>
-              <Check size={12} color="color10" />
+              <Check size={12} color="color-10" />
             </ContextMenu.ItemIndicator>
           </ContextMenu.CheckboxItem>
           <ContextMenu.CheckboxItem
@@ -164,7 +164,7 @@ export function ContextMenuDemo() {
           >
             <ContextMenu.ItemTitle>Enable Native</ContextMenu.ItemTitle>
             <ContextMenu.ItemIndicator>
-              <Check size={12} color="color10" />
+              <Check size={12} color="color-10" />
             </ContextMenu.ItemIndicator>
           </ContextMenu.CheckboxItem>
         </ContextMenu.Content>

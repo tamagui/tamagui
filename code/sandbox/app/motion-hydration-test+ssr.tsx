@@ -24,9 +24,9 @@ export default function MotionHydrationTest() {
   // mimic HomeGlow structure with AnimatePresence
   const glows = useMemo(() => {
     return [
-      { id: 'glow-1', x: 400, y: 50, scale: 1.5, color: 'red10' },
-      { id: 'glow-2', x: -200, y: 150, scale: 2, color: 'blue10' },
-      { id: 'glow-3', x: 100, y: 100, scale: 3, color: 'green10' },
+      { id: 'glow-1', x: 400, y: 50, scale: 1.5, color: 'red-10' },
+      { id: 'glow-2', x: -200, y: 150, scale: 2, color: 'blue-10' },
+      { id: 'glow-3', x: 100, y: 100, scale: 3, color: 'green-10' },
     ].map((glow, i) => (
       <YStack
         // use stable key like HomeGlow does: key={`${i}${tint}${tintAlt}`}

@@ -119,7 +119,7 @@ export function SheetPressRegressionCase() {
                 borderWidth={1}
                 borderColor="border-color"
                 opacity="press:0.6"
-                backgroundColor="press:color5"
+                backgroundColor="press:color-5"
                 hitSlop={10}
                 onPress={() => setNestedViewCount((c) => c + 1)}
               >
@@ -136,7 +136,7 @@ export function SheetPressRegressionCase() {
                 borderWidth={2}
                 borderColor="border-color"
                 borderStyle="dashed"
-                backgroundColor="press:color5"
+                backgroundColor="press:color-5"
                 onPress={() => setMediaCardCount((c) => c + 1)}
               >
                 <Text>Add Image (count: {mediaCardCount})</Text>
@@ -156,7 +156,7 @@ export function SheetPressRegressionCase() {
           <YStack
             borderTopWidth={1}
             borderColor="border-color"
-            bg="color1"
+            bg="color-1"
             paddingTop="3"
             paddingRight="3"
             paddingLeft="3"
@@ -183,7 +183,7 @@ export function SheetPressRegressionCase() {
       </Sheet>
 
       {/* counters mirrored outside the sheet so they're readable after close */}
-      <YStack gap="1" padding="3" bg="color2" borderRadius="2">
+      <YStack gap="1" padding="3" bg="color-2" borderRadius="2">
         <Text testID="sheet-press-post-count">post: {postCount}</Text>
         <Text testID="sheet-press-cancel-count">cancel: {cancelCount}</Text>
         <Text testID="sheet-press-scroll-button-count">

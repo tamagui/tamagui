@@ -32,7 +32,7 @@ export default function HydrationCSSTest() {
           data-testid={`indicator-dot-${i}`}
           width={i === 1 ? 16 : 8}
           height={8}
-          bg={`${i === 1 ? 'color10' : 'color5'}`}
+          bg={`${i === 1 ? 'color-10' : 'color-5'}`}
           rounded={100}
           transition={{ preset: 'quick', properties: 'width, backgroundColor' }}
         />
@@ -46,7 +46,7 @@ export default function HydrationCSSTest() {
       data-testid="transform-box"
       width={100}
       height={100}
-      bg="blue10"
+      bg="blue-10"
       x={50}
       y={20}
       scale={1.1}
@@ -64,7 +64,7 @@ export default function HydrationCSSTest() {
           data-testid="presence-box"
           width={80}
           height={80}
-          bg="green10"
+          bg="green-10"
           opacity="1 enter:0 exit:0"
           scale="1 enter:0.8 exit:0.5"
           transition="bouncy"
@@ -80,11 +80,11 @@ export default function HydrationCSSTest() {
           Hydration Test: css driver
         </Text>
 
-        <Text fontSize="3" color="color11" data-testid={`hydrated-${didHydrate}`}>
+        <Text fontSize="3" color="color-11" data-testid={`hydrated-${didHydrate}`}>
           Hydrated: {String(didHydrate)}
         </Text>
 
-        <Text fontSize="3" color="color11">
+        <Text fontSize="3" color="color-11">
           inputStyle: {driver.inputStyle} | outputStyle: {driver.outputStyle}
         </Text>
 
@@ -104,7 +104,7 @@ export default function HydrationCSSTest() {
         <YStack gap="2">
           <Text fontSize="4">Test 3: AnimatePresence</Text>
           <XStack gap="2" cursor="pointer" onPress={() => setShowAnimated(!showAnimated)}>
-            <Text color="blue10">Toggle (click)</Text>
+            <Text color="blue-10">Toggle (click)</Text>
           </XStack>
           {presenceBox}
         </YStack>

@@ -12,7 +12,7 @@ import {
   style,
 } from 'tamagui'
 
-const activeTabStyle = style({ backgroundColor: 'color3' })
+const activeTabStyle = style({ backgroundColor: 'color-3' })
 
 const demos = ['horizontal', 'vertical'] as const
 const demosTitle: Record<(typeof demos)[number], string> = {

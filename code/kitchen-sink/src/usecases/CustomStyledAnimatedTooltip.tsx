@@ -24,7 +24,7 @@ export const Tooltip = withStaticProperties(StyledTooltip, {
     px: 8,
     zIndex: 1_000_000,
     rounded: 6,
-    bg: 'color1',
+    bg: 'color-1',
     scale: '1 enter:0.9 exit:0.9',
     x: '0 enter:0 exit:0',
     y: '0 enter:5px exit:5px',
@@ -38,9 +38,9 @@ export const Tooltip = withStaticProperties(StyledTooltip, {
 
 const TriggerText = styled(Text, {
   fontFamily: 'body',
-  bg: 'color3',
+  bg: 'color-3',
   p: '3',
-  color: 'color10',
+  color: 'color-10',
 })
 
 export function CustomStyledAnimatedTooltip() {
@@ -54,7 +54,7 @@ export function CustomStyledAnimatedTooltip() {
 
           <Theme name="accent">
             <Tooltip.Content>
-              <Text theme="red" color="color11">
+              <Text theme="red" color="color-11">
                 Hey there!
               </Text>
             </Tooltip.Content>

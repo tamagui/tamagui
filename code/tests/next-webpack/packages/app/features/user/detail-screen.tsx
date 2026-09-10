@@ -12,7 +12,7 @@ export function UserDetailScreen({ id }: { id: string }) {
       <Paragraph
         text="center"
         fontWeight="700"
-        color="blue10"
+        color="blue-10"
       >{`User ID: ${id}`}</Paragraph>
       <Button icon={ChevronLeft} onPress={() => router.back()}>
         Go Home

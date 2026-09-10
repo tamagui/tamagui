@@ -43,7 +43,7 @@ export function HeightMediaQueryOverrideCase() {
       <Text fontSize="5" fontWeight="bold">
         Height Media Query Override Test
       </Text>
-      <Text fontSize="2" color="color10">
+      <Text fontSize="2" color="color-10">
         Resize window height to test. At height-lg (height &gt;= 1280), scale should
         change.
       </Text>
@@ -52,7 +52,7 @@ export function HeightMediaQueryOverrideCase() {
       <YStack gap="2">
         <Text fontWeight="bold">Test 1: scale=1 with height-sm override</Text>
         <Text fontSize="2">Base: scale=1, height-sm: scale=2 (minHeight: 640)</Text>
-        <XStack height={200} bg="color3" alignItems="center" justifyContent="center">
+        <XStack height={200} bg="color-3" alignItems="center" justifyContent="center">
           <Square
             testID="test-height-scale"
             data-testid="test-height-scale"
@@ -68,7 +68,7 @@ export function HeightMediaQueryOverrideCase() {
       <YStack gap="2">
         <Text fontWeight="bold">Test 1b: NO base scale, only height-lg</Text>
         <Text fontSize="2">height-lg: scale=2</Text>
-        <XStack height={200} bg="color3" alignItems="center" justifyContent="center">
+        <XStack height={200} bg="color-3" alignItems="center" justifyContent="center">
           <Square
             testID="test-height-scale-no-base"
             data-testid="test-height-scale-no-base"
@@ -87,7 +87,7 @@ export function HeightMediaQueryOverrideCase() {
         <Text fontSize="2">
           Expected: When width &gt;= 640px, box should be 1.5x larger and orange
         </Text>
-        <XStack height={200} bg="color3" alignItems="center" justifyContent="center">
+        <XStack height={200} bg="color-3" alignItems="center" justifyContent="center">
           <Square
             testID="test-width-scale"
             data-testid="test-width-scale"
@@ -103,7 +103,7 @@ export function HeightMediaQueryOverrideCase() {
       <YStack gap="2">
         <Text fontWeight="bold">Test 3: Styled component with scale=1 in definition</Text>
         <Text fontSize="2">StyledBox has scale=1, runtime height-sm: scale=2</Text>
-        <XStack height={200} bg="color3" alignItems="center" justifyContent="center">
+        <XStack height={200} bg="color-3" alignItems="center" justifyContent="center">
           <StyledBox
             testID="test-styled-scale"
             data-testid="test-styled-scale"
@@ -119,7 +119,7 @@ export function HeightMediaQueryOverrideCase() {
           Test 4: Styled with scale in definition + runtime height-sm override
         </Text>
         <Text fontSize="2">Definition: scale=1. Runtime height-sm: scale=2</Text>
-        <XStack height={200} bg="color3" alignItems="center" justifyContent="center">
+        <XStack height={200} bg="color-3" alignItems="center" justifyContent="center">
           <StyledBoxWithMedia
             testID="test-styled-media-override"
             data-testid="test-styled-media-override"
@@ -137,7 +137,7 @@ export function HeightMediaQueryOverrideCase() {
         <Text fontSize="2">
           ContainerLarge has md/lg width queries. Runtime: scale=1, height-sm: scale=2
         </Text>
-        <XStack height={200} bg="color3" alignItems="center" justifyContent="center">
+        <XStack height={200} bg="color-3" alignItems="center" justifyContent="center">
           <ContainerLarge
             testID="test-container-large"
             data-testid="test-container-large"

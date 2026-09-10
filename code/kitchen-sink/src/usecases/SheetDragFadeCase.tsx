@@ -71,7 +71,7 @@ export function SheetDragFadeCase() {
         <Sheet.Overlay testID="drag-fade-overlay" backgroundColor="transparent">
           <DragLinkedBackdrop />
         </Sheet.Overlay>
-        <Sheet.Handle testID="drag-fade-handle" height={16} backgroundColor="color8" />
+        <Sheet.Handle testID="drag-fade-handle" height={16} backgroundColor="color-8" />
         <Sheet.Container testID="drag-fade-frame" padding="4" gap="4">
           <Sheet.Background backgroundColor="background" />
           <Paragraph>Drag the handle to fade the backdrop.</Paragraph>

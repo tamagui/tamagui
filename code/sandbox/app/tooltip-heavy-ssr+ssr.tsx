@@ -52,7 +52,7 @@ function HeavyAnimatedContent() {
           width={80}
           height={80}
           rounded="10"
-          bg="color5"
+          bg="color-5"
           opacity="0.3 enter:0 exit:0"
           x={item.x}
           y={item.y}

@@ -18,7 +18,7 @@ test(`sets text colors with variants + theme`, async ({ page }) => {
   const activeStyles = await getStyles(page.getByTestId('active').first())
   const activeStylesFlat = await getStyles(page.getByTestId('active-flat').first())
 
-  // the active variant's `color10` = v6 light_blue `color10` (#1c398e)
+  // the active variant's `color-10` = v6 light_blue `color-10` (#1c398e)
   expect(activeStyles.color).toBe('rgb(28, 57, 142)')
   expect(activeStylesFlat.color).toBe(activeStyles.color)
 })

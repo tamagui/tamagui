@@ -11,7 +11,7 @@ export default function RNStylePropsTest() {
         <Text fontSize="5" fontWeight="bold">
           boxShadow (string)
         </Text>
-        <Square size={100} bg="blue10" boxShadow="0px 4px 12px rgba(0,0,0,0.3)" />
+        <Square size={100} bg="blue-10" boxShadow="0px 4px 12px rgba(0,0,0,0.3)" />
       </YStack>
 
       <YStack gap="2">
@@ -20,7 +20,7 @@ export default function RNStylePropsTest() {
         </Text>
         <Square
           size={100}
-          bg="green10"
+          bg="green-10"
           boxShadow={{
             offsetX: 0,
             offsetY: 4,
@@ -35,7 +35,7 @@ export default function RNStylePropsTest() {
         <Text fontSize="5" fontWeight="bold">
           boxShadow with tokens
         </Text>
-        <Square size={100} bg="red10" boxShadow="2 4 8 shadow-color" />
+        <Square size={100} bg="red-10" boxShadow="2 4 8 shadow-color" />
       </YStack>
 
       <YStack gap="2">
@@ -44,7 +44,7 @@ export default function RNStylePropsTest() {
         </Text>
         <Square
           size={100}
-          bg="blue10"
+          bg="blue-10"
           boxShadow={{
             offsetX: '2',
             offsetY: '4',
@@ -60,7 +60,7 @@ export default function RNStylePropsTest() {
         </Text>
         <Square
           size={100}
-          bg="yellow10"
+          bg="yellow-10"
           boxShadow={{
             offsetX: 0,
             offsetY: 2,
@@ -75,7 +75,7 @@ export default function RNStylePropsTest() {
         <Text fontSize="5" fontWeight="bold">
           filter (brightness)
         </Text>
-        <Square size={100} bg="blue10" filter={{ brightness: 1.3 }} />
+        <Square size={100} bg="blue-10" filter={{ brightness: 1.3 }} />
       </YStack>
 
       <YStack gap="2">
@@ -84,7 +84,7 @@ export default function RNStylePropsTest() {
         </Text>
         <Square
           size={100}
-          bg="green10"
+          bg="green-10"
           filter={[{ brightness: 1.2 }, { contrast: 1.1 }]}
         />
       </YStack>
@@ -94,8 +94,8 @@ export default function RNStylePropsTest() {
           mixBlendMode
         </Text>
         <XStack>
-          <Square size={100} bg="red10" />
-          <Square size={100} bg="blue10" ml={-50} mixBlendMode="multiply" />
+          <Square size={100} bg="red-10" />
+          <Square size={100} bg="blue-10" ml={-50} mixBlendMode="multiply" />
         </XStack>
       </YStack>
 
@@ -104,8 +104,8 @@ export default function RNStylePropsTest() {
           isolation
         </Text>
         <XStack isolation="isolate">
-          <Square size={100} bg="red10" />
-          <Square size={100} bg="blue10" ml={-50} mixBlendMode="multiply" />
+          <Square size={100} bg="red-10" />
+          <Square size={100} bg="blue-10" ml={-50} mixBlendMode="multiply" />
         </XStack>
       </YStack>
 
@@ -117,10 +117,10 @@ export default function RNStylePropsTest() {
           <Square
             width={100}
             height={100}
-            bg="yellow10"
+            bg="yellow-10"
             p="2"
             borderWidth={10}
-            borderColor="gray10"
+            borderColor="gray-10"
             boxSizing="border-box"
           >
             <Text fontSize="1">border-box</Text>
@@ -128,10 +128,10 @@ export default function RNStylePropsTest() {
           <Square
             width={100}
             height={100}
-            bg="yellow10"
+            bg="yellow-10"
             p="2"
             borderWidth={10}
-            borderColor="gray10"
+            borderColor="gray-10"
             boxSizing="content-box"
           >
             <Text fontSize="1">content-box</Text>
@@ -145,10 +145,10 @@ export default function RNStylePropsTest() {
         </Text>
         <Square
           size={100}
-          bg="red10"
+          bg="red-10"
           outlineWidth={2}
           outlineStyle="solid"
-          outlineColor="blue10"
+          outlineColor="blue-10"
           outlineOffset={4}
         />
       </YStack>
@@ -157,13 +157,13 @@ export default function RNStylePropsTest() {
         <Text fontSize="5" fontWeight="bold">
           display: contents
         </Text>
-        <XStack gap="2" bg="gray5" p="2">
-          <Square size={50} bg="red10" />
+        <XStack gap="2" bg="gray-5" p="2">
+          <Square size={50} bg="red-10" />
           <YStack display="contents">
-            <Square size={50} bg="green10" />
-            <Square size={50} bg="blue10" />
+            <Square size={50} bg="green-10" />
+            <Square size={50} bg="blue-10" />
           </YStack>
-          <Square size={50} bg="blue10" />
+          <Square size={50} bg="blue-10" />
         </XStack>
       </YStack>
     </YStack>

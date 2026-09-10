@@ -35,7 +35,7 @@ export function TooltipMultiTriggerCase() {
 
   return (
     <YStack padding="4" gap="4">
-      <SizableText size="3" color="color9">
+      <SizableText size="3" color="color-9">
         Tooltip multi-trigger rapid hover test
       </SizableText>
 
@@ -55,7 +55,7 @@ export function TooltipMultiTriggerCase() {
                   id={`tip-trigger-${id}`}
                   px="6"
                   py="3"
-                  bg="color3 hover:color4"
+                  bg="color-3 hover:color-4"
                   rounded="4"
                   cursor="pointer"
                 >

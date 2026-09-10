@@ -53,7 +53,7 @@ export const ContentFrame = styled(TabsBehavior.Content, {
   p: '6',
   justify: 'center',
   items: 'center',
-  bg: 'color4',
+  bg: 'color-4',
   rounded: '4',
 })
 

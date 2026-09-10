@@ -105,7 +105,7 @@ function TakeoutStyleDialog({
               <Dialog.Title fontFamily="monospace" text="center" size="5">
                 Dialog with Sheet Adapt
               </Dialog.Title>
-              <Dialog.Description size="4" color="color10">
+              <Dialog.Description size="4" color="color-10">
                 On mobile/touch, this adapts to a Sheet with gesture handling.
               </Dialog.Description>
             </YStack>
@@ -145,7 +145,7 @@ const DialogContent = styled(Dialog.Content, {
   bg: 'transparent',
   borderWidth: 0.5,
   rounded: CONTENT_RADIUS,
-  borderColor: 'color3',
+  borderColor: 'color-3',
   position: 'relative',
   backdropFilter: 'blur(25px)',
   shadowColor: 'shadow-3',

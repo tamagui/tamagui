@@ -80,9 +80,9 @@ function SizeSection({ section }: { section: Section }) {
                 </YStack>
                 <Square
                   size={tokens[token]?.val as any}
-                  backgroundColor="color5"
+                  backgroundColor="color-5"
                   {...(section === 'spaceNegative' && {
-                    backgroundColor: 'red5',
+                    backgroundColor: 'red-5',
                     size:
                       -tokens[
                         spaceTokensNegative.find(

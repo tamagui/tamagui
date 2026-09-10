@@ -32,7 +32,7 @@ export function ToastNativeNotificationCase() {
         </Text>
 
         <YStack gap="2">
-          <Text fontSize="3" color="color11">
+          <Text fontSize="3" color="color-11">
             Permission: {permission}
           </Text>
 
@@ -86,7 +86,7 @@ export function ToastNativeNotificationCase() {
           </Button>
         </YStack>
 
-        <SizableText size="2" color="color9">
+        <SizableText size="2" color="color-9">
           When permission is granted, toasts go to the OS notification center. Otherwise
           they fall back to in-app toasts.
         </SizableText>
@@ -110,7 +110,7 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
           </Toast.Title>
         )}
         {description && (
-          <Toast.Description color="color9" size="2">
+          <Toast.Description color="color-9" size="2">
             {description}
           </Toast.Description>
         )}

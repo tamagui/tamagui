@@ -26,7 +26,7 @@ const toastIcons = {
   error: <CircleX size={18} color="red-600" />,
   warning: <AlertTriangle size={18} color="yellow-600" />,
   info: <Info size={18} color="blue-600" />,
-  loading: <LoaderCircle size={18} color="color11" />,
+  loading: <LoaderCircle size={18} color="color-11" />,
 }
 
 const positions: ToastPosition[] = [
@@ -76,7 +76,7 @@ export function ToastMultipleCase() {
               <Button
                 key={pos}
                 size="3"
-                backgroundColor={position === pos ? 'color8' : undefined}
+                backgroundColor={position === pos ? 'color-8' : undefined}
                 onPress={() => setPosition(pos)}
               >
                 {pos}
@@ -90,19 +90,19 @@ export function ToastMultipleCase() {
         {/* Options */}
         <XStack gap="4" flexWrap="wrap">
           <Button
-            backgroundColor={closeButton ? 'color8' : undefined}
+            backgroundColor={closeButton ? 'color-8' : undefined}
             onPress={() => setCloseButton(!closeButton)}
           >
             Close Button: {closeButton ? 'On' : 'Off'}
           </Button>
           <Button
-            backgroundColor={expand ? 'color8' : undefined}
+            backgroundColor={expand ? 'color-8' : undefined}
             onPress={() => setExpand(!expand)}
           >
             Always Expand: {expand ? 'On' : 'Off'}
           </Button>
           <Button
-            backgroundColor={useNative ? 'color8' : undefined}
+            backgroundColor={useNative ? 'color-8' : undefined}
             onPress={() => setUseNative(!useNative)}
           >
             Native Toast: {useNative ? 'On' : 'Off'}
@@ -337,7 +337,7 @@ function CustomToastContent({ toast: t }: { toast: ToastT }) {
           <XStack gap="2" marginTop="2">
             {t.action && (
               <Toast.Action
-                backgroundColor="color11 hover:color10 press:color9"
+                backgroundColor="color-11 hover:color-10 press:color-9"
                 onPress={(e: any) => {
                   t.action?.onClick?.(e)
                   if (!e.defaultPrevented) handleClose()
@@ -356,7 +356,7 @@ function CustomToastContent({ toast: t }: { toast: ToastT }) {
                   handleClose()
                 }}
               >
-                <SizableText size="1" color="color11">
+                <SizableText size="1" color="color-11">
                   {t.cancel.label}
                 </SizableText>
               </Toast.Action>

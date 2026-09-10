@@ -84,7 +84,7 @@ export function MenuAccessibilityCase() {
                 style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
               >
                 <Menu.ItemTitle>Actions</Menu.ItemTitle>
-                <ChevronRight size={12} color="color10" />
+                <ChevronRight size={12} color="color-10" />
               </Menu.SubTrigger>
 
               <Menu.Portal zIndex={200}>

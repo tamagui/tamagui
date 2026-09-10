@@ -15,17 +15,17 @@ const DemoField = styled(Field, {
 })
 
 const DemoLabel = styled(Field.Label, {
-  color: 'color11',
+  color: 'color-11',
   fontWeight: '500',
 })
 
 const DemoDescription = styled(Field.Description, {
-  color: 'color9',
+  color: 'color-9',
   fontSize: '2',
 })
 
 const DemoError = styled(Field.Error, {
-  color: 'red10',
+  color: 'red-10',
   fontSize: '2',
 })
 
@@ -38,7 +38,7 @@ const DemoInput = styled(Input, {
     },
     invalid: {
       true: {
-        borderColor: 'red9',
+        borderColor: 'red-9',
       },
     },
     touched: {
@@ -110,7 +110,7 @@ export function FieldDemo() {
       borderWidth={1}
       borderColor="border-color"
       rounded="7"
-      bg="color2"
+      bg="color-2"
       boxShadow="0 2px 3px rgba(0, 0, 0, 0.06), 0 14px 30px rgba(0, 0, 0, 0.10), 0 36px 72px rgba(0, 0, 0, 0.12)"
       onSubmit={(values) => {
         setStatus(`Welcome, ${String(values.name)}`)
@@ -141,8 +141,8 @@ export function FieldDemo() {
           height={40}
           px="5"
           rounded="5"
-          bg="color11 hover:color10"
-          color="color1"
+          bg="color-11 hover:color-10"
+          color="color-1"
           fontSize="2"
           fontWeight="500"
         >
@@ -150,7 +150,7 @@ export function FieldDemo() {
         </Button>
       </Form.Trigger>
 
-      <Paragraph color="color9" size="2">
+      <Paragraph color="color-9" size="2">
         {status}
       </Paragraph>
     </Form>

@@ -52,7 +52,7 @@ export function MenuSubNestedPositionCase() {
                   style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 4 }}
                 >
                   <Menu.ItemTitle>More</Menu.ItemTitle>
-                  <ChevronRight size={14} color="color10" />
+                  <ChevronRight size={14} color="color-10" />
                 </Menu.SubTrigger>
 
                 <Menu.Portal zIndex={200}>
@@ -92,7 +92,7 @@ export function MenuSubNestedPositionCase() {
                         }}
                       >
                         <Menu.ItemTitle>Even More</Menu.ItemTitle>
-                        <ChevronRight size={14} color="color10" />
+                        <ChevronRight size={14} color="color-10" />
                       </Menu.SubTrigger>
 
                       <Menu.Portal zIndex={300}>

@@ -17,7 +17,7 @@ export function AnimationsWithMediaQueriesCase() {
       <Text fontSize="5" fontWeight="bold">
         Animations With Media Queries Test
       </Text>
-      <Text fontSize="2" color="color10">
+      <Text fontSize="2" color="color-10">
         Resize window to test. At max-sm breakpoint (&lt;640px), styles should change.
       </Text>
 
@@ -25,7 +25,7 @@ export function AnimationsWithMediaQueriesCase() {
       <YStack gap="2">
         <Text fontWeight="bold">Test 1: Scale in media query</Text>
         <Text fontSize="2">Base: scale=1 (blue), max-sm: scale=0.75 (green)</Text>
-        <XStack height={150} bg="color3" alignItems="center" justifyContent="center">
+        <XStack height={150} bg="color-3" alignItems="center" justifyContent="center">
           <Square
             testID="test-scale"
             data-testid="test-scale"
@@ -43,7 +43,7 @@ export function AnimationsWithMediaQueriesCase() {
         <Text fontSize="2">Base: x=0 (purple), max-sm: x=50 (orange)</Text>
         <XStack
           height={150}
-          bg="color3"
+          bg="color-3"
           alignItems="center"
           justifyContent="center"
           position="relative"
@@ -71,7 +71,7 @@ export function AnimationsWithMediaQueriesCase() {
       <YStack gap="2">
         <Text fontWeight="bold">Test 3: Combined scale + translateX</Text>
         <Text fontSize="2">Base: scale=1, x=-50%, max-sm: scale=0.75, x=-90%</Text>
-        <XStack height={150} bg="color3" position="relative" overflow="hidden">
+        <XStack height={150} bg="color-3" position="relative" overflow="hidden">
           <XStack
             testID="test-combined"
             data-testid="test-combined"
@@ -85,7 +85,7 @@ export function AnimationsWithMediaQueriesCase() {
             items="center"
             justify="center"
             gap="2"
-            bg="color5"
+            bg="color-5"
             borderWidth={0.5}
             transition="quick"
             scale="1 max-sm:0.75"

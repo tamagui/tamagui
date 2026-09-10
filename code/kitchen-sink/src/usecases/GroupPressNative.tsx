@@ -10,8 +10,8 @@ import { Text, View, XStack, YStack, styled } from 'tamagui'
  * 4. Press and drag off behavior - should unpress correctly
  *
  * Colors:
- * - Default: blue (#0000ff via blue10)
- * - Pressed: red (#ff0000 via red10)
+ * - Default: blue (#0000ff via blue-10)
+ * - Pressed: red (#ff0000 via red-10)
  */
 
 // child that reacts to group press WITHOUT transition

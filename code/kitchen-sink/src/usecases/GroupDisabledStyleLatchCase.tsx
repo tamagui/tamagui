@@ -61,7 +61,7 @@ export function GroupDisabledStyleLatchCase() {
       <View
         testID="group-disabled-toggle"
         p="3"
-        bg="color5"
+        bg="color-5"
         onPress={() => setDisabled((d) => !d)}
       >
         <Text>Toggle disabled</Text>

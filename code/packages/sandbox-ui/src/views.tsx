@@ -9,12 +9,12 @@ export const Tag = styled(Text, {
   borderRadius: '2',
   cursor: 'pointer',
   color: 'color hover:color',
-  backgroundColor: 'color2 hover:color3',
+  backgroundColor: 'color-2 hover:color-3',
   variants: {
     active: {
       true: {
-        color: 'color10 hover:color12',
-        backgroundColor: 'color5 hover:color5',
+        color: 'color-10 hover:color-12',
+        backgroundColor: 'color-5 hover:color-5',
       },
     },
   },

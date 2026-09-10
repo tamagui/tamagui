@@ -13,7 +13,7 @@ function ActiveText({ isActive, label }: { isActive: boolean; label: string }) {
   return (
     <YStack
       testID="opt-color-box"
-      backgroundColor={`${isActive ? 'color11' : 'color10'}`}
+      backgroundColor={`${isActive ? 'color-11' : 'color-10'}`}
       height={60}
       justifyContent="center"
       alignItems="center"
@@ -22,7 +22,7 @@ function ActiveText({ isActive, label }: { isActive: boolean; label: string }) {
         testID="active-text"
         fontSize="3"
         fontWeight={isActive ? '700' : '400'}
-        color={`${isActive ? 'color11' : 'color10'}`}
+        color={`${isActive ? 'color-11' : 'color-10'}`}
       >
         {label}
       </Text>
@@ -35,7 +35,7 @@ function ActiveTextNoOpt({ isActive, label }: { isActive: boolean; label: string
     <YStack
       disableOptimization
       testID="noopt-color-box"
-      backgroundColor={`${isActive ? 'color11' : 'color10'}`}
+      backgroundColor={`${isActive ? 'color-11' : 'color-10'}`}
       height={60}
       justifyContent="center"
       alignItems="center"
@@ -45,7 +45,7 @@ function ActiveTextNoOpt({ isActive, label }: { isActive: boolean; label: string
         testID="active-text-noopt"
         fontSize="3"
         fontWeight={isActive ? '700' : '400'}
-        color={`${isActive ? 'color11' : 'color10'}`}
+        color={`${isActive ? 'color-11' : 'color-10'}`}
       >
         {label}
       </Text>

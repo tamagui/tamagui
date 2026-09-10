@@ -12,7 +12,7 @@ export function V3BetaReadyToTestCase() {
           <Text fontSize="8" fontWeight="700">
             Tamagui V3 beta
           </Text>
-          <Text color="color10">
+          <Text color="color-10">
             Runtime checks for flat values, Tailwind class strings, and transitions.
           </Text>
         </YStack>
@@ -59,7 +59,7 @@ export function V3BetaReadyToTestCase() {
             testID="v3-tailwind-value"
             className="w-[160px] md:w-[240px] h-[96px] p-4 rounded-[12px] bg-[red] hover:bg-[blue] opacity-50 hover:opacity-100"
           />
-          <Text color="color10">
+          <Text color="color-10">
             This webpack page proves Tamagui-owned candidates. Official Tailwind
             passthrough classes require a Vite consumer using @tamagui/tailwind/vite.
           </Text>

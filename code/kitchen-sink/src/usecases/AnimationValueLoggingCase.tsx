@@ -14,7 +14,7 @@ export function AnimationValueLoggingCase() {
   return (
     <YStack gap="4" padding="4" flex={1}>
       <Paragraph>Animation Value Logging Tests</Paragraph>
-      <Paragraph size="2" color="color10">
+      <Paragraph size="2" color="color-10">
         Open browser console to see [ANIM_LOG] entries
       </Paragraph>
 

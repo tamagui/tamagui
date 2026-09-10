@@ -99,7 +99,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - [x] icon: 16x16px, flex-shrink: 0
 - [x] content: flex column, gap 1
 - [x] title: fontWeight 600, color, size 4
-- [x] description: color11, size 2
+- [x] description: color-11, size 2
 - [x] gap: 3 between elements
 
 ### Close Button
@@ -107,9 +107,9 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - [x] positioned inline (user decided against absolute overlap)
 - [x] 20x20px circle
 - [x] borderRadius: 10 (circular)
-- [x] backgroundColor: color5
-- [x] hover clause: color6
-- [x] press clause: color7
+- [x] backgroundColor: color-5
+- [x] hover clause: color-6
+- [x] press clause: color-7
 
 ### Action Buttons ✅ FIXED
 
@@ -124,20 +124,20 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 
 ### Rich Colors (Type Variants)
 
-- [x] success: green2 background, green6 border
-- [x] error: red2 background, red6 border
-- [x] warning: yellow2 background, yellow6 border
-- [x] info: blue2 background, blue6 border
+- [x] success: green-2 background, green-6 border
+- [x] error: red-2 background, red-6 border
+- [x] warning: yellow-2 background, yellow-6 border
+- [x] info: blue-2 background, blue-6 border
 - [x] loading: default (neutral)
 
 ### Icons
 
-- [x] success: ✓ in green10
-- [x] error: ✕ in red10
-- [x] warning: ⚠ in yellow10
-- [x] info: ℹ in blue10
-- [x] loading: ⟳ in color11
-- [x] close: ✕ in color11
+- [x] success: ✓ in green-10
+- [x] error: ✕ in red-10
+- [x] warning: ⚠ in yellow-10
+- [x] info: ℹ in blue-10
+- [x] loading: ⟳ in color-11
+- [x] close: ✕ in color-11
 
 ---
 

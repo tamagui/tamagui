@@ -95,7 +95,7 @@ export function MenuDemo() {
                   textValue="Actions"
                 >
                   <Menu.ItemTitle>Actions</Menu.ItemTitle>
-                  <ChevronRight size={16} color="color10" />
+                  <ChevronRight size={16} color="color-10" />
                 </Menu.SubTrigger>
 
                 <Menu.Portal zIndex={200}>
@@ -108,7 +108,7 @@ export function MenuDemo() {
                     boxShadow="0 4px 5px shadow-color"
                     padding={5}
                   >
-                    <Menu.Label padding={5} color="color9" fontSize="3" select="none">
+                    <Menu.Label padding={5} color="color-9" fontSize="3" select="none">
                       Note settings
                     </Menu.Label>
                     <Menu.Item
@@ -119,7 +119,7 @@ export function MenuDemo() {
                     >
                       <Menu.ItemTitle>Create note</Menu.ItemTitle>
                       <Menu.ItemIcon>
-                        <FilePlus size={14} color="color10" />
+                        <FilePlus size={14} color="color-10" />
                       </Menu.ItemIcon>
                     </Menu.Item>
                     <Menu.Item
@@ -130,7 +130,7 @@ export function MenuDemo() {
                     >
                       <Menu.ItemTitle>Delete all notes</Menu.ItemTitle>
                       <Menu.ItemIcon>
-                        <Trash2 size={14} color="color10" />
+                        <Trash2 size={14} color="color-10" />
                       </Menu.ItemIcon>
                     </Menu.Item>
                     <Menu.Item
@@ -141,7 +141,7 @@ export function MenuDemo() {
                     >
                       <Menu.ItemTitle>Sync notes</Menu.ItemTitle>
                       <Menu.ItemIcon>
-                        <RefreshCw size={14} color="color10" />
+                        <RefreshCw size={14} color="color-10" />
                       </Menu.ItemIcon>
                     </Menu.Item>
                   </Menu.SubContent>
@@ -158,7 +158,7 @@ export function MenuDemo() {
               >
                 <Menu.ItemTitle>Mark as read</Menu.ItemTitle>
                 <Menu.ItemIndicator>
-                  <Check size={12} color="color10" />
+                  <Check size={12} color="color-10" />
                 </Menu.ItemIndicator>
               </Menu.CheckboxItem>
               <Menu.CheckboxItem
@@ -169,7 +169,7 @@ export function MenuDemo() {
               >
                 <Menu.ItemTitle>Enable Native</Menu.ItemTitle>
                 <Menu.ItemIndicator>
-                  <Check size={12} color="color10" />
+                  <Check size={12} color="color-10" />
                 </Menu.ItemIndicator>
               </Menu.CheckboxItem>
             </Menu.ScrollView>

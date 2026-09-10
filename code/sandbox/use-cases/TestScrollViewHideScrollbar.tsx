@@ -11,7 +11,7 @@ export function TestScrollViewHideScrollbar() {
       >
         <XStack gap="2">
           {Array.from({ length: 20 }).map((_, i) => (
-            <View key={i} width={80} height={40} bg="blue5">
+            <View key={i} width={80} height={40} bg="blue-5">
               <Text>{i}</Text>
             </View>
           ))}
@@ -26,7 +26,7 @@ export function TestScrollViewHideScrollbar() {
       >
         <XStack gap="2">
           {Array.from({ length: 20 }).map((_, i) => (
-            <View key={i} width={80} height={40} bg="green5">
+            <View key={i} width={80} height={40} bg="green-5">
               <Text>{i}</Text>
             </View>
           ))}
@@ -40,7 +40,7 @@ export function TestScrollViewHideScrollbar() {
         height={120}
       >
         {Array.from({ length: 20 }).map((_, i) => (
-          <View key={i} height={40} bg="purple5">
+          <View key={i} height={40} bg="purple-5">
             <Text>{i}</Text>
           </View>
         ))}

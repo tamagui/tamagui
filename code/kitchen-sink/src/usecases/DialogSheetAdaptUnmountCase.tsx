@@ -52,7 +52,7 @@ function ThreePunchDialog({
             opacity="enter:0 exit:0"
             onPress={() => onOpenChange?.(false)}
           />
-          <Sheet.Handle bg="color5" />
+          <Sheet.Handle bg="color-5" />
           <Sheet.Container testID="sheet-frame" padding="4" gap="4">
             <Sheet.Background
               borderBottomRightRadius={0}
@@ -105,7 +105,7 @@ const DialogContent = styled(TamaguiDialog.Content, {
   zIndex: 1_000_000,
   bg: 'background',
   borderWidth: 0.5,
-  borderColor: 'color5',
+  borderColor: 'color-5',
   position: 'relative',
   width: '90%',
   maxWidth: 550,

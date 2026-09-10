@@ -39,7 +39,7 @@ export function MenuSubStyledCase() {
           Tests that styled(Menu.SubContent, ...) works correctly with animation styles.
           The submenu should appear to the right of the trigger, not at top-left.
         </Paragraph>
-        <Text id="last-action" color="color10">
+        <Text id="last-action" color="color-10">
           Last action: {lastAction || 'None'}
         </Text>
         <Text id="submenu-state" color={`${subMenuOpen ? 'green-600' : 'red-600'}`}>
@@ -90,7 +90,7 @@ export function MenuSubStyledCase() {
                   style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 4 }}
                 >
                   <Menu.ItemTitle>Actions (styled submenu)</Menu.ItemTitle>
-                  <ChevronRight size={14} color="color10" />
+                  <ChevronRight size={14} color="color-10" />
                 </Menu.SubTrigger>
 
                 <Menu.Portal zIndex={200}>

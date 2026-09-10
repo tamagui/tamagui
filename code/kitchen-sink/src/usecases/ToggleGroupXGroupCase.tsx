@@ -25,7 +25,7 @@ export function ToggleGroupXGroupCase() {
       {/* Pattern A: XGroup.Item > ToggleGroup.Item */}
       <YStack gap="2">
         <Text>Pattern A: XGroup.Item wraps ToggleGroup.Item</Text>
-        <Text fontSize="2" color="color10">
+        <Text fontSize="2" color="color-10">
           value: {patternAValue || 'none'}
         </Text>
         <ToggleGroup
@@ -72,7 +72,7 @@ export function ToggleGroupXGroupCase() {
       {/* Pattern B: ToggleGroup.Item asChild > XGroup.Item > Button */}
       <YStack gap="2">
         <Text>Pattern B: ToggleGroup.Item asChild wraps XGroup.Item</Text>
-        <Text fontSize="2" color="color10">
+        <Text fontSize="2" color="color-10">
           value: {patternBValue || 'none'}
         </Text>
         <ToggleGroup

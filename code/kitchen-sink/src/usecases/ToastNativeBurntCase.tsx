@@ -67,7 +67,7 @@ export function ToastNativeBurntCase() {
           </Button>
         </YStack>
 
-        <Text color="color9" fontSize="2" textAlign="center">
+        <Text color="color-9" fontSize="2" textAlign="center">
           Uses Burnt for native OS toasts. Falls back to in-app if Burnt is unavailable.
         </Text>
       </YStack>
@@ -86,7 +86,7 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
       <YStack flex={1} gap={1}>
         {title && <Toast.Title fontWeight="600">{title}</Toast.Title>}
         {description && (
-          <Toast.Description color="color9" size="2">
+          <Toast.Description color="color-9" size="2">
             {description}
           </Toast.Description>
         )}

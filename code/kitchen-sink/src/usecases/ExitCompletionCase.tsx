@@ -72,7 +72,7 @@ export function ExitCompletionCase() {
       <Paragraph fontWeight="bold" fontSize="5">
         Exit Completion Test Suite
       </Paragraph>
-      <Paragraph size="2" color="color10">
+      <Paragraph size="2" color="color-10">
         Tests sendExitComplete invariants. Check console for [EXIT_COMPLETE] logs.
       </Paragraph>
 

@@ -110,7 +110,7 @@ export function TabHoverAnimationCase() {
             width={250}
             height={120}
             rounded="4"
-            bg="color3"
+            bg="color-3"
             overflow="hidden"
             elevation="4"
           >

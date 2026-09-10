@@ -57,7 +57,7 @@ export function SheetFit3pcNativeRepro() {
   }
 
   return (
-    <View flex={1} bg="color3">
+    <View flex={1} bg="color-3">
       {/* safe-area top marker: the sheet top must never rise above this line */}
       <View
         testID="repro-3pc-native-safearea-marker"
@@ -91,7 +91,7 @@ export function SheetFit3pcNativeRepro() {
       >
         <TamaguiSheet.Overlay
           testID="repro-3pc-native-overlay"
-          bg="color5"
+          bg="color-5"
           opacity="0.5 enter:0 exit:0"
         />
         <TamaguiSheet.Container testID="repro-3pc-native-frame" overflow="hidden">
@@ -106,13 +106,13 @@ export function SheetFit3pcNativeRepro() {
             {...sheetTopRadius}
             position="absolute"
             inset={0}
-            bg="color11"
+            bg="color-11"
             opacity={0.15}
             borderWidth={2}
             borderBottomWidth={0}
             borderColor="border-color"
           />
-          <View {...sheetTopRadius} position="absolute" inset={0} bg="color2" />
+          <View {...sheetTopRadius} position="absolute" inset={0} bg="color-2" />
           <YStack
             {...sheetTopRadius}
             position="absolute"
@@ -120,7 +120,7 @@ export function SheetFit3pcNativeRepro() {
             opacity={0.25}
             borderWidth={1}
             borderBottomWidth={0}
-            borderColor="color11"
+            borderColor="color-11"
           />
 
           <TamaguiSheet.ScrollView

@@ -66,7 +66,7 @@ export const HeroTypography = memo(() => {
                   index={0}
                   Component={H1}
                   family={family}
-                  color="red10"
+                  color="red-10"
                 >
                   Swappable
                 </AnimatedHeading>
@@ -75,7 +75,7 @@ export const HeroTypography = memo(() => {
                   index={1}
                   Component={H2}
                   family={family}
-                  color="blue10"
+                  color="blue-10"
                 >
                   typed, compiled
                 </AnimatedHeading>
@@ -84,7 +84,7 @@ export const HeroTypography = memo(() => {
                   index={2}
                   Component={H3}
                   family={family}
-                  color="blue10"
+                  color="blue-10"
                 >
                   custom per-size
                 </AnimatedHeading>
@@ -93,7 +93,7 @@ export const HeroTypography = memo(() => {
                   index={3}
                   Component={H4}
                   family={family}
-                  color="green10"
+                  color="green-10"
                 >
                   premade or custom
                 </AnimatedHeading>
@@ -102,7 +102,7 @@ export const HeroTypography = memo(() => {
                   index={4}
                   Component={H5}
                   family={family}
-                  color="yellow10"
+                  color="yellow-10"
                 >
                   easy to author
                 </AnimatedHeading>
@@ -111,7 +111,7 @@ export const HeroTypography = memo(() => {
                   index={5}
                   Component={H6}
                   family={family}
-                  color="red10"
+                  color="red-10"
                 >
                   font themes
                 </AnimatedHeading> */}
@@ -133,7 +133,7 @@ const OverlayCard = () => {
           Use, swap and share fonts with typed vertical rhythm.
         </Paragraph>
 
-        <Paragraph ta="left" size="6" color="color8" fow="400">
+        <Paragraph ta="left" size="6" color="color-8" fow="400">
           Typed, sizable fonts with control over every facet - weight, spacing,
           line-height, letter-spacing, color and more.
         </Paragraph>
@@ -171,7 +171,7 @@ const AnimatedHeading = memo(
           my="1"
           // @ts-ignore
           fontFamily={family}
-          textShadowColor="shadow2"
+          textShadowColor="shadow-2"
           textShadowRadius={3}
           textShadowOffset={{ width: 0, height: 3 }}
           ellipsis

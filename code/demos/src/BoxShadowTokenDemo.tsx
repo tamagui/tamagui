@@ -6,7 +6,7 @@ import { styled, View, Text, YStack } from 'tamagui'
 const StyledShadowBox = styled(View, {
   width: 100,
   height: 100,
-  backgroundColor: 'color5',
+  backgroundColor: 'color-5',
   borderRadius: '4',
   boxShadow: '0px 2px 8px shadow-color',
 })
@@ -23,7 +23,7 @@ export function BoxShadowTokenDemo() {
       <View
         width={100}
         height={100}
-        backgroundColor="color5"
+        backgroundColor="color-5"
         borderRadius="4"
         boxShadow="0px 2px 8px shadow-color"
         testID="box-shadow-prop"

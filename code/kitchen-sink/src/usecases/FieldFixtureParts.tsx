@@ -7,11 +7,11 @@ export const FixtureField = styled(Field, {
 
 export const FixtureFieldLabel = styled(Field.Label, {
   fontWeight: '600',
-  color: 'color11',
+  color: 'color-11',
 })
 
 export const FixtureFieldDescription = styled(Field.Description, {
-  color: 'color10',
+  color: 'color-10',
   fontSize: '2',
 })
 

@@ -47,7 +47,7 @@ export function MenuFocusLeaveCase() {
                 textValue="More Options"
               >
                 <Menu.ItemTitle>More Options (submenu 1)</Menu.ItemTitle>
-                <ChevronRight size={14} color="color10" />
+                <ChevronRight size={14} color="color-10" />
               </Menu.SubTrigger>
 
               <Menu.Portal zIndex={200}>
@@ -87,7 +87,7 @@ export function MenuFocusLeaveCase() {
                 textValue="Another Submenu"
               >
                 <Menu.ItemTitle>Another Submenu (submenu 2)</Menu.ItemTitle>
-                <ChevronRight size={14} color="color10" />
+                <ChevronRight size={14} color="color-10" />
               </Menu.SubTrigger>
 
               <Menu.Portal zIndex={200}>

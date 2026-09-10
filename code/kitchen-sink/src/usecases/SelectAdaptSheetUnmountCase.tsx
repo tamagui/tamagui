@@ -49,7 +49,7 @@ export function SelectAdaptSheetUnmountCase() {
               opacity="enter:0 exit:0"
               onPress={() => setOpen(false)}
             />
-            <Sheet.Handle bg="color5" />
+            <Sheet.Handle bg="color-5" />
             <Sheet.Container testID="sheet-frame" padding="4" gap="4">
               <Sheet.Background
                 borderBottomRightRadius={0}

@@ -16,7 +16,7 @@ body {
 }
 
 body {
-  background: var(--color2) !important;
+  background: var(--color-2) !important;
 }
 
 body {
@@ -61,7 +61,7 @@ a {
   text-decoration: underline;
   text-underline-offset: 4px;
   text-decoration-thickness: 2px;
-  text-decoration-color: var(--color6);
+  text-decoration-color: var(--color-6);
   transition: text-decoration-thickness ease-in-out 100ms;
 }
 
@@ -69,5 +69,5 @@ a {
   text-decoration: underline;
   cursor: pointer;
   text-decoration-thickness: 4px;
-  text-decoration-color: var(--color8);
+  text-decoration-color: var(--color-8);
 }

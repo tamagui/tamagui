@@ -1,7 +1,7 @@
 import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons-2'
 import { Label, ToggleGroup, XGroup, YGroup, XStack, YStack, style } from 'tamagui'
 
-const activeToggleStyle = style({ backgroundColor: 'color5' })
+const activeToggleStyle = style({ backgroundColor: 'color-5' })
 
 export function ToggleGroupDemo() {
   return (

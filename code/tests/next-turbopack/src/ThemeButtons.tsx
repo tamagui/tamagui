@@ -8,7 +8,7 @@ const XStack = styled(View, { flexDirection: 'row' })
 const Button = styled(View, {
   render: 'button',
   padding: '3',
-  backgroundColor: 'blue10',
+  backgroundColor: 'blue-10',
   borderRadius: '4',
   cursor: 'pointer',
   opacity: '1 press:0.8',
@@ -38,7 +38,7 @@ export function ThemeButtons() {
           <Text color="white">Toggle Theme</Text>
         </Button>
       </XStack>
-      <Text color="color10">Current theme: {mounted ? themeSetting.current : ''}</Text>
+      <Text color="color-10">Current theme: {mounted ? themeSetting.current : ''}</Text>
     </>
   )
 }

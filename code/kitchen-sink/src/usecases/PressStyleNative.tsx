@@ -56,7 +56,7 @@ export function PressStyleNative() {
       {/* test 1: press clause WITHOUT transition */}
       <YStack gap="2">
         <Text fontSize="3">1. No Transition</Text>
-        <Text fontSize="2" color="color10">
+        <Text fontSize="2" color="color-10">
           Blue → Red (no animation)
         </Text>
         <ColorTestPressable
@@ -94,7 +94,7 @@ export function PressStyleNative() {
       {/* test 2: press clause WITH transition */}
       <YStack gap="2">
         <Text fontSize="3">2. With Transition</Text>
-        <Text fontSize="2" color="color10">
+        <Text fontSize="2" color="color-10">
           Blue → Red (animated)
         </Text>
         <ColorTestPressableAnimated

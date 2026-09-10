@@ -124,7 +124,7 @@ function Header() {
       <H1 color="color" fontWeight="800">
         Dashboard
       </H1>
-      <Paragraph color="color8" size="4">
+      <Paragraph color="color-8" size="4">
         Overview of your application metrics and recent activity
       </Paragraph>
       <XStack gap="2" flexWrap="wrap">
@@ -143,7 +143,7 @@ function StatsRow() {
     <XStack gap="3" paddingHorizontal="4" flexWrap="wrap">
       {stats.map((s) => (
         <StatBox key={s.label}>
-          <SizableText size="2" color="color8">
+          <SizableText size="2" color="color-8">
             {s.label}
           </SizableText>
           <SizableText size="8" fontWeight="700" color="color">
@@ -170,7 +170,7 @@ function ItemRow({ item }: { item: (typeof items)[0] }) {
         <SizableText fontWeight="600" size="4">
           {item.title}
         </SizableText>
-        <SizableText size="2" color="color8" numberOfLines={1}>
+        <SizableText size="2" color="color-8" numberOfLines={1}>
           {item.desc}
         </SizableText>
       </YStack>
@@ -254,7 +254,7 @@ function Footer() {
       borderTopWidth={1}
     >
       {['About', 'Privacy', 'Terms', 'Contact', 'Help', 'Status'].map((link) => (
-        <SizableText key={link} size="2" color="color8" cursor="pointer">
+        <SizableText key={link} size="2" color="color-8" cursor="pointer">
           {link}
         </SizableText>
       ))}

@@ -27,7 +27,7 @@ export function TransformMediaQueryMerge() {
       <Text fontSize="5" fontWeight="bold">
         Transform Media Query Merge Test
       </Text>
-      <Text fontSize="2" color="color10">
+      <Text fontSize="2" color="color-10">
         Resize window to test. At max-sm, x should OVERWRITE not be cumulative.
       </Text>
 
@@ -40,7 +40,7 @@ export function TransformMediaQueryMerge() {
         </Text>
         <XStack
           height={150}
-          bg="color3"
+          bg="color-3"
           alignItems="center"
           justifyContent="center"
           position="relative"
@@ -69,7 +69,7 @@ export function TransformMediaQueryMerge() {
         </Text>
         <XStack
           height={150}
-          bg="color3"
+          bg="color-3"
           alignItems="center"
           justifyContent="center"
           position="relative"

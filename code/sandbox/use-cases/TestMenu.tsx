@@ -52,7 +52,7 @@ export function MenuDemo() {
             borderWidth={1}
             items="flex-start"
             borderColor="border-color"
-            backgroundColor="color1"
+            backgroundColor="color-1"
             scale="enter:0.4 exit:0.6"
             opacity="enter:0 exit:0"
             y="enter:-10px exit:-5px"
@@ -124,7 +124,7 @@ export function MenuDemo() {
                   y="enter:-5px exit:-3px"
                   scale="1.02 enter:0.5 exit:0.7"
                   transformOrigin="top left"
-                  backgroundColor="color1"
+                  backgroundColor="color-1"
                   animation="menu"
                   elevation="5"
                 >
@@ -135,7 +135,7 @@ export function MenuDemo() {
                   >
                     <Menu.ItemTitle>Create note</Menu.ItemTitle>
                     <Menu.ItemIcon>
-                      <FilePlus size={18} color="color10" />
+                      <FilePlus size={18} color="color-10" />
                     </Menu.ItemIcon>
                   </Menu.Item>
                   <Menu.Item
@@ -145,13 +145,13 @@ export function MenuDemo() {
                   >
                     <Menu.ItemTitle>Delete all notes</Menu.ItemTitle>
                     <Menu.ItemIcon>
-                      <Trash2 size={18} color="color10" />
+                      <Trash2 size={18} color="color-10" />
                     </Menu.ItemIcon>
                   </Menu.Item>
                   <Menu.Item onSelect={onSelect} key="sync-all" textValue="Sync notes">
                     <Menu.ItemTitle>Sync notes</Menu.ItemTitle>
                     <Menu.ItemIcon>
-                      <RefreshCw size={18} color="color10" />
+                      <RefreshCw size={18} color="color-10" />
                     </Menu.ItemIcon>
                   </Menu.Item>
                 </Menu.SubContent>
@@ -168,7 +168,7 @@ export function MenuDemo() {
             >
               <Menu.ItemTitle>Mark as read</Menu.ItemTitle>
               <Menu.ItemIndicator>
-                <Check size={16} color="color10" />
+                <Check size={16} color="color-10" />
               </Menu.ItemIndicator>
             </Menu.CheckboxItem>
             <Menu.CheckboxItem
@@ -179,7 +179,7 @@ export function MenuDemo() {
             >
               <Menu.ItemTitle>Enable Native</Menu.ItemTitle>
               <Menu.ItemIndicator>
-                <Check size={16} color="color10" />
+                <Check size={16} color="color-10" />
               </Menu.ItemIndicator>
             </Menu.CheckboxItem>
 

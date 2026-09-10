@@ -50,7 +50,7 @@ export function AdaptFirstCommitCase() {
         <Adapt when={true}>
           <Sheet transition="medium" zIndex={250_000} modal snapPointsMode="fit">
             <Sheet.Overlay bg="shadow-6" opacity="enter:0 exit:0" />
-            <Sheet.Handle bg="color5" />
+            <Sheet.Handle bg="color-5" />
             <Sheet.Container testID="sheet-frame" padding="4" gap="4">
               <Sheet.Background bg="background" borderRadius="6" />
               <Sheet.ScrollView>

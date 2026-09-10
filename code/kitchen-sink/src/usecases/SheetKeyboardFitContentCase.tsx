@@ -111,7 +111,7 @@ export function SheetKeyboardFitContentCase() {
         Sheet + Keyboard + Fit Content
       </Text>
 
-      <Text fontSize="3" color="color10">
+      <Text fontSize="3" color="color-10">
         Load a mock image URL to change content height while keyboard may be open.
       </Text>
 
@@ -184,7 +184,7 @@ export function SheetKeyboardFitContentCase() {
                   justifyContent="center"
                   bg="background-hover"
                 >
-                  <Text color="color10">No image loaded</Text>
+                  <Text color="color-10">No image loaded</Text>
                 </YStack>
               )}
 

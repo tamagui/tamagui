@@ -30,7 +30,7 @@ export default function Layout() {
 
         <SchemeProvider>
           <TamaguiRootProvider>
-            <YStack bg="color1" minH="100%" gap="4" flex={1}>
+            <YStack bg="color-1" minH="100%" gap="4" flex={1}>
               <SafeAreaView>
                 {/* <Toaster position="top-center" /> */}
 

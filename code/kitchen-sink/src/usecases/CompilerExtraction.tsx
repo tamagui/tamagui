@@ -52,11 +52,11 @@ function AdvancedBox() {
       height={44}
       padding="4"
       borderRadius={8}
-      backgroundColor="color4"
-      borderColor="color8"
+      backgroundColor="color-4"
+      borderColor="color-8"
       borderWidth={2}
     >
-      <Text testID="compiler-advanced-text" color="color11" fontSize="3">
+      <Text testID="compiler-advanced-text" color="color-11" fontSize="3">
         Token
       </Text>
     </YStack>
@@ -73,14 +73,14 @@ function AdvancedBoxNoOpt() {
       height={44}
       padding="4"
       borderRadius={8}
-      backgroundColor="color4"
-      borderColor="color8"
+      backgroundColor="color-4"
+      borderColor="color-8"
       borderWidth={2}
     >
       <Text
         disableOptimization
         testID="compiler-advanced-text-noopt"
-        color="color11"
+        color="color-11"
         fontSize="3"
       >
         Token
@@ -99,9 +99,9 @@ function SubThemedBox({ themeName }: { themeName: string }) {
         height={44}
         padding="4"
         borderRadius={8}
-        backgroundColor="color4"
+        backgroundColor="color-4"
       >
-        <Text testID="compiler-subtheme-text" color="color11" fontSize="2">
+        <Text testID="compiler-subtheme-text" color="color-11" fontSize="2">
           {themeName}
         </Text>
       </YStack>
@@ -120,12 +120,12 @@ function SubThemedBoxNoOpt({ themeName }: { themeName: string }) {
         height={44}
         padding="4"
         borderRadius={8}
-        backgroundColor="color4"
+        backgroundColor="color-4"
       >
         <Text
           disableOptimization
           testID="compiler-subtheme-text-noopt"
-          color="color11"
+          color="color-11"
           fontSize="2"
         >
           {themeName}
@@ -156,8 +156,8 @@ function OptimizedSimpleBenchItem() {
     <YStack
       width={16}
       height={16}
-      backgroundColor="color4"
-      borderColor="color8"
+      backgroundColor="color-4"
+      borderColor="color-8"
       borderWidth={1}
       borderRadius={2}
     />
@@ -170,8 +170,8 @@ function UnoptimizedSimpleBenchItem() {
       disableOptimization
       width={16}
       height={16}
-      backgroundColor="color4"
-      borderColor="color8"
+      backgroundColor="color-4"
+      borderColor="color-8"
       borderWidth={1}
       borderRadius={2}
     />
@@ -184,12 +184,12 @@ function OptimizedNestedBenchItem({ index }: { index: number }) {
       <YStack
         width={16}
         height={16}
-        backgroundColor="color4"
-        borderColor="color8"
+        backgroundColor="color-4"
+        borderColor="color-8"
         borderWidth={1}
         borderRadius={2}
       />
-      <Text color="color11" fontSize="2">
+      <Text color="color-11" fontSize="2">
         Row {index}
       </Text>
     </XStack>
@@ -203,12 +203,12 @@ function UnoptimizedNestedBenchItem({ index }: { index: number }) {
         disableOptimization
         width={16}
         height={16}
-        backgroundColor="color4"
-        borderColor="color8"
+        backgroundColor="color-4"
+        borderColor="color-8"
         borderWidth={1}
         borderRadius={2}
       />
-      <Text disableOptimization color="color11" fontSize="2">
+      <Text disableOptimization color="color-11" fontSize="2">
         Row {index}
       </Text>
     </XStack>

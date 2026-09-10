@@ -118,7 +118,7 @@ export function AnimationComprehensiveCase() {
       <Paragraph fontWeight="bold" fontSize="5">
         Comprehensive Animation Test Suite (30+ Scenarios)
       </Paragraph>
-      <Paragraph size="2" color="color10">
+      <Paragraph size="2" color="color-10">
         Open console to see [ANIM_FRAME] logs
       </Paragraph>
 
@@ -2236,7 +2236,7 @@ function Scenario47_TransitionEnterExitWithDelay() {
             key="enter-exit-delay-47"
             ref={ref as any}
             transition={{ enter: '300ms', exit: '100ms', delay: 200 }}
-            bg="color10"
+            bg="color-10"
             opacity="enter:0 exit:0"
             scale="enter:0.5 exit:0.5"
             size={40}

@@ -61,7 +61,7 @@ export function TooltipStaticClobberCase() {
                   height={30}
                   items="center"
                   justify="center"
-                  bg="color4"
+                  bg="color-4"
                   rounded="2"
                   onMouseEnter={() => setLabel(l)}
                   onMouseLeave={() => setLabel((prev) => (prev === l ? '' : prev))}

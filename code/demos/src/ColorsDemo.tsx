@@ -69,7 +69,7 @@ function ColorsRow({
                       height="4 sm:2 xs:1"
                       borderWidth={1}
                       bg={color as any}
-                      borderColor="color7"
+                      borderColor="color-7"
                     />
                   )
                 })}
@@ -84,7 +84,7 @@ function ColorsRow({
               .map((_, index) => {
                 return (
                   <Paragraph
-                    color="color10"
+                    color="color-10"
                     text="center"
                     width="4 sm:2 xs:1"
                     key={index}
@@ -100,7 +100,7 @@ function ColorsRow({
           {colorGroups.map((name) => (
             <Paragraph
               theme={name as any}
-              color="color10"
+              color="color-10"
               height="4 sm:2 xs:1"
               rotate="-10deg"
               key={name}

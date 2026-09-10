@@ -18,7 +18,7 @@ export function ThemeMediaAnimationCase() {
         testID="theme-media-animated"
         data-testid="theme-media-animated"
         size={100}
-        bg="color1 dark:color3"
+        bg="color-1 dark:color-3"
         transition="quick"
       />
 
@@ -26,7 +26,7 @@ export function ThemeMediaAnimationCase() {
         testID="theme-media-static"
         data-testid="theme-media-static"
         size={100}
-        bg="color1 dark:color3"
+        bg="color-1 dark:color-3"
       />
     </YStack>
   )

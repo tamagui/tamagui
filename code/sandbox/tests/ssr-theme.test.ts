@@ -41,7 +41,7 @@ test.describe('SSR Theme Styles', () => {
     )
 
     // the declaration must survive browser CSS parsing — an unresolved token
-    // like "color5" makes the browser drop it, leaving an empty rule
+    // like "color-5" makes the browser drop it, leaving an empty rule
     const ruleText = (await themeRule.jsonValue()) as string
     expect(ruleText).toContain('.t_light')
     expect(ruleText).toContain('box-shadow')

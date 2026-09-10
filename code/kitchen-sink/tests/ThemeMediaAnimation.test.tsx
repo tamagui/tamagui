@@ -24,7 +24,7 @@ test.describe('Theme Media + Animation', () => {
     })
 
     // both should have the same background color in dark mode
-    // (theme-dark overrides bg to color3)
+    // (theme-dark overrides bg to color-3)
     expect(animatedBg).toBeTruthy()
     expect(staticBg).toBeTruthy()
     expect(animatedBg).toBe(staticBg)
@@ -57,7 +57,7 @@ test.describe('Theme Media + Animation', () => {
       return el ? getComputedStyle(el).backgroundColor : null
     })
 
-    // theme-dark changes bg from color1 to color3, so they should differ
+    // theme-dark changes bg from color-1 to color-3, so they should differ
     expect(lightBg).toBeTruthy()
     expect(darkBg).toBeTruthy()
     expect(lightBg).not.toBe(darkBg)

@@ -11,7 +11,7 @@ import { TEST_IDS } from '../constants/test-ids'
  * 1. <Theme name="accent"> wrapping components (docs: theme-builder.mdx)
  * 2. <Button theme="accent"> component prop
  * 3. accent-background / accent-color tokens
- * 4. color1-color11 inside the accent theme
+ * 4. color-1-color-11 inside the accent theme
  *
  * Open in browser: http://localhost:9000/?test=AccentAndColorThemes
  */
@@ -20,7 +20,7 @@ export function AccentAndColorThemes() {
     <YStack gap="6" padding="6" backgroundColor="background">
       <YStack gap="2">
         <H2>Accent and Color Theme Tests</H2>
-        <Paragraph color="color11">
+        <Paragraph color="color-11">
           Tests documented accent usage patterns against the configured themes.
         </Paragraph>
       </YStack>
@@ -32,10 +32,10 @@ export function AccentAndColorThemes() {
         backgroundColor="background"
         borderRadius="4"
         borderWidth={2}
-        borderColor="color7"
+        borderColor="color-7"
       >
-        <H3 color="color11">{'<Theme name="accent">'}</H3>
-        <Paragraph size="2" color="color11">
+        <H3 color="color-11">{'<Theme name="accent">'}</H3>
+        <Paragraph size="2" color="color-11">
           Expected: first square is the base background. Second square is a soft brand
           tint. Text below it should stay readable against the accent background.
         </Paragraph>
@@ -50,7 +50,7 @@ export function AccentAndColorThemes() {
               backgroundColor="background"
               borderRadius="4"
             />
-            <Text color="color11">Base background</Text>
+            <Text color="color-11">Base background</Text>
           </YStack>
 
           {/* Accent theme: background should differ from base */}
@@ -63,7 +63,7 @@ export function AccentAndColorThemes() {
                 backgroundColor="background"
                 borderRadius="4"
               />
-              <Text color="color11">Accent background</Text>
+              <Text color="color-11">Accent background</Text>
               <Text testID={TEST_IDS.accentThemeColor} color="color" marginTop="2">
                 Accent color text
               </Text>
@@ -79,10 +79,10 @@ export function AccentAndColorThemes() {
         backgroundColor="background"
         borderRadius="4"
         borderWidth={2}
-        borderColor="color7"
+        borderColor="color-7"
       >
-        <H3 color="color11">{'<Button theme="accent">'}</H3>
-        <Paragraph size="2" color="color11">
+        <H3 color="color-11">{'<Button theme="accent">'}</H3>
+        <Paragraph size="2" color="color-11">
           Expected: first button is the default surface. Second button uses the brand tint
           and stays visually distinct from the base button.
         </Paragraph>
@@ -103,10 +103,10 @@ export function AccentAndColorThemes() {
         backgroundColor="background"
         borderRadius="4"
         borderWidth={2}
-        borderColor="color7"
+        borderColor="color-7"
       >
-        <H3 color="color11">accent-background / accent-color</H3>
-        <Paragraph size="2" color="color11">
+        <H3 color="color-11">accent-background / accent-color</H3>
+        <Paragraph size="2" color="color-11">
           Expected: square uses the fixed brand fill. This is a semantic theme token, not
           the adaptive accent surface above.
         </Paragraph>
@@ -129,8 +129,8 @@ export function AccentAndColorThemes() {
         borderWidth={1}
         borderColor="border-color"
       >
-        <H4>Adaptive Accent Ramp (color1-11)</H4>
-        <Paragraph size="2" color="color11">
+        <H4>Adaptive Accent Ramp (color-1-11)</H4>
+        <Paragraph size="2" color="color-11">
           Expected: a gradient of 11 swatches stepping through the accent palette. The
           direction adapts to the active color scheme.
         </Paragraph>
@@ -149,7 +149,7 @@ export function AccentAndColorThemes() {
                 alignItems="center"
                 justifyContent="center"
               >
-                <Text fontSize={10} color={i > 6 ? 'color1' : 'color11'}>
+                <Text fontSize={10} color={i > 6 ? 'color-1' : 'color-11'}>
                   {i}
                 </Text>
               </YStack>
@@ -168,7 +168,7 @@ export function AccentAndColorThemes() {
         borderColor="border-color"
       >
         <H4>Color Themes</H4>
-        <Paragraph size="2" color="color11">
+        <Paragraph size="2" color="color-11">
           Expected: each card and button should have a distinct tint matching its color
           name. Yellow should look warm, red should look red, etc.
         </Paragraph>

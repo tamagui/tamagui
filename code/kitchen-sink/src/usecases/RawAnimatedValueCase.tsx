@@ -120,7 +120,7 @@ export function RawAnimatedValueCase() {
   return (
     <YStack gap="4" padding="4" flex={1}>
       <Paragraph fontWeight="bold">Raw Animated.Value Test</Paragraph>
-      <Paragraph size="2" color="color10">
+      <Paragraph size="2" color="color-10">
         Tests Animated.createAnimatedComponent with AnimatedValue styles
       </Paragraph>
 

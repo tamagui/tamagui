@@ -22,7 +22,7 @@ export function PopoverHoverableDisableClickCase() {
 
   return (
     <YStack padding="10" alignItems="center" gap="4">
-      <SizableText size="3" color="color9">
+      <SizableText size="3" color="color-9">
         Hoverable popover with disablePressTrigger - clicking should dismiss via onPressIn
         only
       </SizableText>
@@ -51,7 +51,7 @@ export function PopoverHoverableDisableClickCase() {
             id="disableclick-trigger"
             px="4"
             py="2"
-            bg="color3"
+            bg="color-3"
             rounded="4"
             cursor="pointer"
           >
@@ -64,7 +64,7 @@ export function PopoverHoverableDisableClickCase() {
           transition={{ duration: '200ms', properties: 'opacity, transform' }}
           opacity="enter:0 exit:0"
           y="enter:-4px exit:-4px"
-          bg="color4"
+          bg="color-4"
           rounded="4"
           px="4"
           py="3"
@@ -80,7 +80,7 @@ export function PopoverHoverableDisableClickCase() {
             id="withclick-trigger"
             px="4"
             py="2"
-            bg="color3"
+            bg="color-3"
             rounded="4"
             cursor="pointer"
           >
@@ -93,7 +93,7 @@ export function PopoverHoverableDisableClickCase() {
           transition={{ duration: '200ms', properties: 'opacity, transform' }}
           opacity="enter:0 exit:0"
           y="enter:-4px exit:-4px"
-          bg="color4"
+          bg="color-4"
           rounded="4"
           px="4"
           py="3"
@@ -104,7 +104,7 @@ export function PopoverHoverableDisableClickCase() {
 
       <YStack id="open-state-log" gap="1" mt="4">
         {log.map((entry, i) => (
-          <SizableText key={i} size="2" color="color8" fontFamily="monospace">
+          <SizableText key={i} size="2" color="color-8" fontFamily="monospace">
             {entry}
           </SizableText>
         ))}

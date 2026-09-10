@@ -16,7 +16,7 @@ const YStack = styled(View, { flexDirection: 'column' })
 const Button = styled(View, {
   render: 'button',
   padding: '3',
-  backgroundColor: 'blue10',
+  backgroundColor: 'blue-10',
   borderRadius: '4',
   cursor: 'pointer',
   opacity: '1 press:0.8',
@@ -34,16 +34,16 @@ export function TestComponent() {
       padding="4"
       backgroundColor="background"
     >
-      <Text color="color11" fontSize="8" fontWeight="bold">
+      <Text color="color-11" fontSize="8" fontWeight="bold">
         Tamagui + Turbopack
       </Text>
-      <Text color="color10">Count: {count}</Text>
+      <Text color="color-10">Count: {count}</Text>
       <Button onPress={() => setCount((c) => c + 1)}>
         <Text color="white">Increment</Text>
       </Button>
       <YStack
         padding="4"
-        backgroundColor="blue5 max-sm:red5"
+        backgroundColor="blue-5 max-sm:red-5"
         borderRadius="4"
       >
         <Text>Media query test (blue above sm, red below sm)</Text>

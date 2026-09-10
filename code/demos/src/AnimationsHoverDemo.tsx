@@ -6,7 +6,7 @@ export function AnimationsHoverDemo() {
     <Square
       borderColor="border-color"
       transition="bouncy"
-      bg="color9"
+      bg="color-9"
       rounded="9"
       scale="hover:1.2 press:0.9"
       elevation="4"

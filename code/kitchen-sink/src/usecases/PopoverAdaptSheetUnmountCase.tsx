@@ -45,7 +45,7 @@ function AdaptedPopover({
             opacity="enter:0 exit:0"
             onPress={() => onOpenChange?.(false)}
           />
-          <Sheet.Handle bg="color5" />
+          <Sheet.Handle bg="color-5" />
           <Sheet.Container testID="sheet-frame" padding="4" gap="4">
             <Sheet.Background
               borderBottomRightRadius={0}
@@ -63,7 +63,7 @@ function AdaptedPopover({
       <Popover.Content
         key="content"
         borderWidth={0.5}
-        borderColor="color5"
+        borderColor="color-5"
         bg="background"
         padding="4"
         y="enter:-10px exit:-10px"

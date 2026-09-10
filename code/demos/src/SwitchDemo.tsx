@@ -41,7 +41,7 @@ export function SwitchWithLabel(props: {
         defaultChecked={props.defaultChecked}
         // use activeStyle to choose your checked-state color
         activeStyle={{
-          backgroundColor: 'color6',
+          backgroundColor: 'color-6',
         }}
       >
         <Switch.Thumb transition="quickest" />

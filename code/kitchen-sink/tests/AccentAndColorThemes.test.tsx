@@ -10,7 +10,7 @@ import { getStyles } from './utils'
  * 1. <Theme name="accent"> - theme-builder.mdx, how-to-upgrade.mdx
  * 2. <Button theme="accent"> - ButtonDemo.tsx
  * 3. accent-background / accent-color
- * 4. color1-color11 inside the accent theme
+ * 4. color-1-color-11 inside the accent theme
  */
 
 test.beforeEach(async ({ page }) => {
@@ -110,7 +110,7 @@ test('accent-background token resolves to the fixed brand surface', async ({ pag
 
 // --- adaptive accent ramp ---
 
-test('color1-11 render the accent gradient (not all identical)', async ({ page }) => {
+test('color-1-11 render the accent gradient (not all identical)', async ({ page }) => {
   const colors: string[] = []
 
   for (let i = 1; i <= 11; i++) {

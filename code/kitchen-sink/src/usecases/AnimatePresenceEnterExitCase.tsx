@@ -150,7 +150,7 @@ function Scenario03_InitialFalse() {
               key="count-badge-03"
               testID="enter-exit-03-target"
               transition="medium"
-              bg="color11"
+              bg="color-11"
               position="absolute"
               t={4}
               r={6}
@@ -160,7 +160,7 @@ function Scenario03_InitialFalse() {
               y="enter:-3px exit:-3px"
               size={16}
             >
-              <Text color="color1" fontFamily="monospace" fontSize={10} lineHeight={10}>
+              <Text color="color-1" fontFamily="monospace" fontSize={10} lineHeight={10}>
                 {countString}
               </Text>
             </Circle>
@@ -220,7 +220,7 @@ function Scenario02_CircleBadge() {
               key="count-badge"
               testID="enter-exit-02-target"
               transition="medium"
-              bg="color11"
+              bg="color-11"
               position="absolute"
               items="center"
               justify="center"
@@ -228,7 +228,7 @@ function Scenario02_CircleBadge() {
               y="enter:-3px exit:-3px"
               size={24}
             >
-              <Text color="color1" fontFamily="monospace" fontSize={12}>
+              <Text color="color-1" fontFamily="monospace" fontSize={12}>
                 {countString}
               </Text>
             </Circle>

@@ -114,7 +114,7 @@ export function GroupPressTransitionMatrix() {
         alignItems="center"
         justifyContent="center"
       >
-        <Text fontSize="1" color="color10">
+        <Text fontSize="1" color="color-10">
           release here
         </Text>
       </View>

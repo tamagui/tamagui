@@ -21,7 +21,7 @@ export function ReplaceThemeDemo() {
       insertCSS: true,
       theme: {
         color: 'red',
-        color2: 'green',
+        'color-2': 'green',
       },
     })
     setTheme('mytheme')

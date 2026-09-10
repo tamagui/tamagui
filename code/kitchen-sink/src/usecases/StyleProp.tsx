@@ -6,7 +6,7 @@ export function StyleProp(test) {
       <View
         testID="style-prop"
         style={{
-          background: 'radial-gradient(var(--color9), transparent 70%)',
+          background: 'radial-gradient(var(--color-9), transparent 70%)',
         }}
       />
       <View

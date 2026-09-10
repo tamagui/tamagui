@@ -25,7 +25,7 @@ export function MenuSubCase() {
           submenu trigger to submenu content. Move your mouse diagonally from the trigger
           to the submenu - it should not close.
         </Paragraph>
-        <Text id="last-action" color="color10">
+        <Text id="last-action" color="color-10">
           Last action: {lastAction || 'None'}
         </Text>
         <Text id="submenu-state" color={`${subMenuOpen ? 'green-600' : 'red-600'}`}>
@@ -86,7 +86,7 @@ export function MenuSubCase() {
                   style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 4 }}
                 >
                   <Menu.ItemTitle>Actions (submenu)</Menu.ItemTitle>
-                  <ChevronRight size={14} color="color10" />
+                  <ChevronRight size={14} color="color-10" />
                 </Menu.SubTrigger>
 
                 <Menu.Portal zIndex={200}>
@@ -148,7 +148,7 @@ export function MenuSubCase() {
                         }}
                       >
                         <Menu.ItemTitle>More (nested)</Menu.ItemTitle>
-                        <ChevronRight size={14} color="color10" />
+                        <ChevronRight size={14} color="color-10" />
                       </Menu.SubTrigger>
 
                       <Menu.Portal zIndex={300}>

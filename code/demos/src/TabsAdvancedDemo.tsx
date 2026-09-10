@@ -245,7 +245,7 @@ const TabsAdvancedUnderline = () => {
           borderBottomLeftRadius={0}
           borderBottomRightRadius={0}
           paddingBottom="1-5"
-          borderColor="color3"
+          borderColor="color-3"
           borderBottomWidth="0-5"
           backgroundColor="transparent"
         >
@@ -303,10 +303,10 @@ const TabsRovingIndicator = ({ active, ...props }: { active?: boolean } & ViewPr
   return (
     <YStack
       position="absolute"
-      backgroundColor="color5"
+      backgroundColor="color-5"
       opacity="0.7 enter:0 exit:0"
       transition="100ms"
-      {...(active && { backgroundColor: 'color5', opacity: 0.6 })}
+      {...(active && { backgroundColor: 'color-5', opacity: 0.6 })}
       {...props}
     />
   )

@@ -131,7 +131,7 @@ function SheetTest({ testId, transition, transitionConfig, label }: SheetTestPro
             <Paragraph testID={`${testId}-label`} data-testid={`${testId}-label`}>
               {label}
             </Paragraph>
-            <Paragraph size="2" color="color10">
+            <Paragraph size="2" color="color-10">
               Transition: {transition || 'none'}, Config:{' '}
               {transitionConfig ? JSON.stringify(transitionConfig) : 'none'}
             </Paragraph>

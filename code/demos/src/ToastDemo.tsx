@@ -142,7 +142,7 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
             </Toast.Title>
           )}
           {description && (
-            <Toast.Description color="color9" size="2">
+            <Toast.Description color="color-9" size="2">
               {description}
             </Toast.Description>
           )}

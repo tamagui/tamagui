@@ -38,7 +38,7 @@ export function PseudoTransitionCase() {
       {/* Scenario 1: hover clause transition */}
       <YStack gap="2">
         <Text>Scenario 1: hover - enter 200ms, exit 1000ms</Text>
-        <Text color="color10" fontSize="2">
+        <Text color="color-10" fontSize="2">
           Hover over the square. Enter should be fast, exit should be slow.
         </Text>
         <Square
@@ -53,7 +53,7 @@ export function PseudoTransitionCase() {
       {/* Scenario 2: press clause transition */}
       <YStack gap="2">
         <Text>Scenario 2: press - enter 200ms, exit 1000ms</Text>
-        <Text color="color10" fontSize="2">
+        <Text color="color-10" fontSize="2">
           Press and hold the square. Press should be fast, release should be slow.
         </Text>
         <Square
@@ -68,7 +68,7 @@ export function PseudoTransitionCase() {
       {/* Scenario 3: hover and press with different transitions */}
       <YStack gap="2">
         <Text>Scenario 3: hover 400ms, press 200ms (press takes priority)</Text>
-        <Text color="color10" fontSize="2">
+        <Text color="color-10" fontSize="2">
           Hover uses 400ms, press uses 200ms. When both active, press wins.
         </Text>
         <Square
@@ -83,7 +83,7 @@ export function PseudoTransitionCase() {
       {/* Scenario 4: group-hover with transition - uses opacity for simpler testing */}
       <YStack gap="2">
         <Text>Scenario 4: group hover - enter 200ms, exit 1000ms</Text>
-        <Text color="color10" fontSize="2">
+        <Text color="color-10" fontSize="2">
           Hover over the container. Child square opacity animates with group hover.
         </Text>
         <XStack
@@ -107,7 +107,7 @@ export function PseudoTransitionCase() {
       {/* Scenario 5: focus clause with transition */}
       <YStack gap="2">
         <Text>Scenario 5: focus - enter 200ms, exit 1000ms</Text>
-        <Text color="color10" fontSize="2">
+        <Text color="color-10" fontSize="2">
           Click to focus the square. Focus enter should be fast, blur should be slow.
         </Text>
         <View
@@ -126,7 +126,7 @@ export function PseudoTransitionCase() {
       {/* Scenario 6: opacity animation in hover clause */}
       <YStack gap="2">
         <Text>Scenario 6: opacity - hover enter 200ms, exit 1000ms</Text>
-        <Text color="color10" fontSize="2">
+        <Text color="color-10" fontSize="2">
           Opacity fades in fast (200ms) and fades out slow (1000ms).
         </Text>
         <Square

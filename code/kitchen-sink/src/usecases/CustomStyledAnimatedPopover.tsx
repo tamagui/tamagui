@@ -24,7 +24,7 @@ export function CustomStyledAnimatedPopover() {
 
           <Theme name="accent">
             <Content>
-              <Text theme="red" color="color11">
+              <Text theme="red" color="color-11">
                 Hey there!
               </Text>
             </Content>

@@ -14,7 +14,7 @@ export const Checkbox = withStaticProperties(
     Indicator() {
       return (
         <TamaguiCheckbox.Indicator>
-          <Check color="color11" />
+          <Check color="color-11" />
         </TamaguiCheckbox.Indicator>
       )
     },

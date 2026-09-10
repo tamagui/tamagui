@@ -141,7 +141,7 @@ const ThemeAccent = () => {
       {/* ================================ */}
       {/* Test 1: Base accent - should swap light to dark */}
       {/* ================================ */}
-      <YStack gap="2" bg="color3" p="4">
+      <YStack gap="2" bg="color-3" p="4">
         <Text fontWeight="bold" fontSize="6">
           Test 1: Base Accent
         </Text>
@@ -157,10 +157,10 @@ const ThemeAccent = () => {
         >
           <ThemeDebug />
           <Text fontWeight="bold">Normal (Light)</Text>
-          <Text fontSize="2" color="color10">
+          <Text fontSize="2" color="color-10">
             ✓ Expected: Light background
           </Text>
-          <Text fontSize="2" color="color10">
+          <Text fontSize="2" color="color-10">
             ✓ Expected: Dark text
           </Text>
           <Button>Light Button</Button>
@@ -177,16 +177,16 @@ const ThemeAccent = () => {
           >
             <ThemeDebug />
             <Text fontWeight="bold">Accent (Dark)</Text>
-            <Text fontSize="2" color="color10">
+            <Text fontSize="2" color="color-10">
               ✓ Expected: Dark background
             </Text>
-            <Text fontSize="2" color="color10">
+            <Text fontSize="2" color="color-10">
               ✓ Expected: Light text
             </Text>
             <Theme name="accent">
               <YStack gap="2">
                 <ThemeDebug />
-                <Button bg="background02">Light Button</Button>
+                <Button bg="background-02">Light Button</Button>
               </YStack>
             </Theme>
           </YStack>
@@ -196,7 +196,7 @@ const ThemeAccent = () => {
       {/* ================================ */}
       {/* Test 2: Explicit light + accent */}
       {/* ================================ */}
-      <YStack gap="2" bg="color3" p="4" mt="4">
+      <YStack gap="2" bg="color-3" p="4" mt="4">
         <Text fontWeight="bold" fontSize="6">
           Test 2: Light + Accent
         </Text>
@@ -205,7 +205,7 @@ const ThemeAccent = () => {
         <Theme name="light">
           <YStack
             gap="2"
-            bg="background02"
+            bg="background-02"
             p="4"
             borderWidth={2}
             borderColor="border-color"
@@ -213,7 +213,7 @@ const ThemeAccent = () => {
           >
             <ThemeDebug />
             <Text fontWeight="bold">Light Theme</Text>
-            <Text fontSize="2" color="color10">
+            <Text fontSize="2" color="color-10">
               ✓ Expected: Light gray background
             </Text>
             <Button>Light Button</Button>
@@ -231,10 +231,10 @@ const ThemeAccent = () => {
           >
             <ThemeDebug />
             <Text fontWeight="bold">Light + Accent</Text>
-            <Text fontSize="2" color="color10">
+            <Text fontSize="2" color="color-10">
               ✓ Expected: Dark gray background
             </Text>
-            <Text fontSize="2" color="color10">
+            <Text fontSize="2" color="color-10">
               ✓ Expected: Palette swapped to dark
             </Text>
             <Theme name="accent">
@@ -247,7 +247,7 @@ const ThemeAccent = () => {
       {/* ================================ */}
       {/* Test 3: Explicit dark + accent */}
       {/* ================================ */}
-      <YStack gap="2" bg="color3" p="4" mt="4">
+      <YStack gap="2" bg="color-3" p="4" mt="4">
         <Text fontWeight="bold" fontSize="6">
           Test 3: Dark + Accent
         </Text>
@@ -256,7 +256,7 @@ const ThemeAccent = () => {
         <Theme name="dark">
           <YStack
             gap="2"
-            bg="background02"
+            bg="background-02"
             p="4"
             borderWidth={2}
             borderColor="border-color"
@@ -264,7 +264,7 @@ const ThemeAccent = () => {
           >
             <ThemeDebug />
             <Text fontWeight="bold">Dark Theme</Text>
-            <Text fontSize="2" color="color10">
+            <Text fontSize="2" color="color-10">
               ✓ Expected: Dark gray background
             </Text>
             <Button>Dark Button</Button>
@@ -275,7 +275,7 @@ const ThemeAccent = () => {
           <Theme name="accent">
             <YStack
               gap="2"
-              bg="background02"
+              bg="background-02"
               p="4"
               borderWidth={2}
               borderColor="border-color"
@@ -283,10 +283,10 @@ const ThemeAccent = () => {
             >
               <ThemeDebug />
               <Text fontWeight="bold">Dark + Accent</Text>
-              <Text fontSize="2" color="color10">
+              <Text fontSize="2" color="color-10">
                 ✓ Expected: Light gray background
               </Text>
-              <Text fontSize="2" color="color10">
+              <Text fontSize="2" color="color-10">
                 ✓ Expected: Palette swapped to light
               </Text>
               <Button>Light Button</Button>
@@ -298,7 +298,7 @@ const ThemeAccent = () => {
       {/* ================================ */}
       {/* Test 4: RED color theme + accent */}
       {/* ================================ */}
-      <YStack gap="2" bg="color3" p="4" mt="4">
+      <YStack gap="2" bg="color-3" p="4" mt="4">
         <Text fontWeight="bold" fontSize="6">
           Test 4: Red + Accent (CRITICAL TEST)
         </Text>
@@ -307,7 +307,7 @@ const ThemeAccent = () => {
         <Theme name="red">
           <YStack
             gap="2"
-            bg="background02"
+            bg="background-02"
             p="4"
             borderWidth={2}
             borderColor="border-color"
@@ -315,10 +315,10 @@ const ThemeAccent = () => {
           >
             <ThemeDebug />
             <Text fontWeight="bold">Red Theme</Text>
-            <Text fontSize="2" color="color10">
+            <Text fontSize="2" color="color-10">
               ✓ Expected: Light red tones
             </Text>
-            <Text fontSize="2" color="color10">
+            <Text fontSize="2" color="color-10">
               ✓ Expected: Theme = light_red
             </Text>
             <Button>Red Button</Button>
@@ -330,7 +330,7 @@ const ThemeAccent = () => {
             <Theme name="accent">
               <YStack
                 gap="2"
-                bg="background02"
+                bg="background-02"
                 p="4"
                 borderWidth={2}
                 borderColor="border-color"
@@ -338,13 +338,13 @@ const ThemeAccent = () => {
               >
                 <ThemeDebug />
                 <Text fontWeight="bold">Red + Accent</Text>
-                <Text fontSize="2" color="color10">
+                <Text fontSize="2" color="color-10">
                   ✓ Expected: Dark RED tones
                 </Text>
-                <Text fontSize="2" color="color10">
+                <Text fontSize="2" color="color-10">
                   ✓ Expected: NOT black/gray!
                 </Text>
-                <Text fontSize="2" color="color10">
+                <Text fontSize="2" color="color-10">
                   ✓ Expected: Theme = light_red_accent
                 </Text>
                 <Button>Dark Red Button</Button>
@@ -357,7 +357,7 @@ const ThemeAccent = () => {
       {/* ================================ */}
       {/* Test 5: BLUE color theme + accent */}
       {/* ================================ */}
-      <YStack gap="2" bg="color3" p="4" mt="4">
+      <YStack gap="2" bg="color-3" p="4" mt="4">
         <Text fontWeight="bold" fontSize="6">
           Test 5: Blue + Accent
         </Text>
@@ -366,7 +366,7 @@ const ThemeAccent = () => {
         <Theme name="blue">
           <YStack
             gap="2"
-            bg="background02"
+            bg="background-02"
             p="4"
             borderWidth={2}
             borderColor="border-color"
@@ -374,10 +374,10 @@ const ThemeAccent = () => {
           >
             <ThemeDebug />
             <Text fontWeight="bold">Blue Theme</Text>
-            <Text fontSize="2" color="color10">
+            <Text fontSize="2" color="color-10">
               ✓ Expected: Light blue tones
             </Text>
-            <Text fontSize="2" color="color10">
+            <Text fontSize="2" color="color-10">
               ✓ Expected: Theme = light_blue
             </Text>
             <Button>Blue Button</Button>
@@ -388,7 +388,7 @@ const ThemeAccent = () => {
           <Theme name="accent">
             <YStack
               gap="2"
-              bg="background02"
+              bg="background-02"
               p="4"
               borderWidth={2}
               borderColor="border-color"
@@ -396,13 +396,13 @@ const ThemeAccent = () => {
             >
               <ThemeDebug />
               <Text fontWeight="bold">Blue + Accent</Text>
-              <Text fontSize="2" color="color10">
+              <Text fontSize="2" color="color-10">
                 ✓ Expected: Dark BLUE tones
               </Text>
-              <Text fontSize="2" color="color10">
+              <Text fontSize="2" color="color-10">
                 ✓ Expected: NOT black/gray!
               </Text>
-              <Text fontSize="2" color="color10">
+              <Text fontSize="2" color="color-10">
                 ✓ Expected: Theme = light_blue_accent
               </Text>
               <Button>Dark Blue Button</Button>
@@ -414,7 +414,7 @@ const ThemeAccent = () => {
       {/* ================================ */}
       {/* Test 6: GREEN color theme + accent */}
       {/* ================================ */}
-      <YStack gap="2" bg="color3" p="4" mt="4">
+      <YStack gap="2" bg="color-3" p="4" mt="4">
         <Text fontWeight="bold" fontSize="6">
           Test 6: Green + Accent
         </Text>
@@ -423,7 +423,7 @@ const ThemeAccent = () => {
         <Theme name="green">
           <YStack
             gap="2"
-            bg="background02"
+            bg="background-02"
             p="4"
             borderWidth={2}
             borderColor="border-color"
@@ -431,10 +431,10 @@ const ThemeAccent = () => {
           >
             <ThemeDebug />
             <Text fontWeight="bold">Green Theme</Text>
-            <Text fontSize="2" color="color10">
+            <Text fontSize="2" color="color-10">
               ✓ Expected: Light green tones
             </Text>
-            <Text fontSize="2" color="color10">
+            <Text fontSize="2" color="color-10">
               ✓ Expected: Theme = light_green
             </Text>
             <Button>Green Button</Button>
@@ -445,7 +445,7 @@ const ThemeAccent = () => {
           <Theme name="accent">
             <YStack
               gap="2"
-              bg="background02"
+              bg="background-02"
               p="4"
               borderWidth={2}
               borderColor="border-color"
@@ -453,13 +453,13 @@ const ThemeAccent = () => {
             >
               <ThemeDebug />
               <Text fontWeight="bold">Green + Accent</Text>
-              <Text fontSize="2" color="color10">
+              <Text fontSize="2" color="color-10">
                 ✓ Expected: Dark GREEN tones
               </Text>
-              <Text fontSize="2" color="color10">
+              <Text fontSize="2" color="color-10">
                 ✓ Expected: NOT black/gray!
               </Text>
-              <Text fontSize="2" color="color10">
+              <Text fontSize="2" color="color-10">
                 ✓ Expected: Theme = light_green_accent
               </Text>
               <Button>Dark Green Button</Button>
@@ -471,7 +471,7 @@ const ThemeAccent = () => {
       {/* ================================ */}
       {/* Test 7: YELLOW color theme + accent */}
       {/* ================================ */}
-      <YStack gap="2" bg="color3" p="4" mt="4">
+      <YStack gap="2" bg="color-3" p="4" mt="4">
         <Text fontWeight="bold" fontSize="6">
           Test 7: Yellow + Accent
         </Text>
@@ -480,7 +480,7 @@ const ThemeAccent = () => {
         <Theme name="yellow">
           <YStack
             gap="2"
-            bg="background02"
+            bg="background-02"
             p="4"
             borderWidth={2}
             borderColor="border-color"
@@ -488,10 +488,10 @@ const ThemeAccent = () => {
           >
             <ThemeDebug />
             <Text fontWeight="bold">Yellow Theme</Text>
-            <Text fontSize="2" color="color10">
+            <Text fontSize="2" color="color-10">
               ✓ Expected: Light yellow tones
             </Text>
-            <Text fontSize="2" color="color10">
+            <Text fontSize="2" color="color-10">
               ✓ Expected: Theme = light_yellow
             </Text>
             <Button>Yellow Button</Button>
@@ -502,7 +502,7 @@ const ThemeAccent = () => {
           <Theme name="accent">
             <YStack
               gap="2"
-              bg="background02"
+              bg="background-02"
               p="4"
               borderWidth={2}
               borderColor="border-color"
@@ -510,13 +510,13 @@ const ThemeAccent = () => {
             >
               <ThemeDebug />
               <Text fontWeight="bold">Yellow + Accent</Text>
-              <Text fontSize="2" color="color10">
+              <Text fontSize="2" color="color-10">
                 ✓ Expected: Dark YELLOW tones
               </Text>
-              <Text fontSize="2" color="color10">
+              <Text fontSize="2" color="color-10">
                 ✓ Expected: NOT black/gray!
               </Text>
-              <Text fontSize="2" color="color10">
+              <Text fontSize="2" color="color-10">
                 ✓ Expected: Theme = light_yellow_accent
               </Text>
               <Button>Dark Yellow Button</Button>
@@ -528,7 +528,7 @@ const ThemeAccent = () => {
       {/* ================================ */}
       {/* Test 8: NESTED accent - double accent brings back original */}
       {/* ================================ */}
-      <YStack gap="2" bg="color3" p="4" mt="4">
+      <YStack gap="2" bg="color-3" p="4" mt="4">
         <Text fontWeight="bold" fontSize="6">
           Test 8: Nested Accent (Double Accent)
         </Text>
@@ -537,7 +537,7 @@ const ThemeAccent = () => {
         <Theme name="light">
           <YStack
             gap="2"
-            bg="background02"
+            bg="background-02"
             p="4"
             borderWidth={2}
             borderColor="border-color"
@@ -545,7 +545,7 @@ const ThemeAccent = () => {
           >
             <ThemeDebug />
             <Text fontWeight="bold">Light</Text>
-            <Text fontSize="2" color="color10">
+            <Text fontSize="2" color="color-10">
               ✓ Expected: Light theme
             </Text>
             <Button>Light</Button>
@@ -556,7 +556,7 @@ const ThemeAccent = () => {
           <Theme name="accent">
             <YStack
               gap="2"
-              bg="background02"
+              bg="background-02"
               p="4"
               borderWidth={2}
               borderColor="border-color"
@@ -564,7 +564,7 @@ const ThemeAccent = () => {
             >
               <ThemeDebug />
               <Text fontWeight="bold">Light + Accent</Text>
-              <Text fontSize="2" color="color10">
+              <Text fontSize="2" color="color-10">
                 ✓ Expected: Dark theme
               </Text>
               <Button>Dark</Button>
@@ -577,7 +577,7 @@ const ThemeAccent = () => {
             <Theme name="accent">
               <YStack
                 gap="2"
-                bg="background02"
+                bg="background-02"
                 p="4"
                 borderWidth={2}
                 borderColor="border-color"
@@ -585,10 +585,10 @@ const ThemeAccent = () => {
               >
                 <ThemeDebug />
                 <Text fontWeight="bold">Light + Accent + Accent</Text>
-                <Text fontSize="2" color="color10">
+                <Text fontSize="2" color="color-10">
                   ✓ Expected: Light again!
                 </Text>
-                <Text fontSize="2" color="color10">
+                <Text fontSize="2" color="color-10">
                   ✓ Double negative = positive
                 </Text>
                 <Button>Doesn't work!</Button>
@@ -602,7 +602,7 @@ const ThemeAccent = () => {
         <Theme name="red">
           <YStack
             gap="2"
-            bg="background02"
+            bg="background-02"
             p="4"
             borderWidth={2}
             borderColor="border-color"
@@ -610,7 +610,7 @@ const ThemeAccent = () => {
           >
             <ThemeDebug />
             <Text fontWeight="bold">Red</Text>
-            <Text fontSize="2" color="color10">
+            <Text fontSize="2" color="color-10">
               ✓ Expected: Light red
             </Text>
             <Button>Light Red</Button>
@@ -620,7 +620,7 @@ const ThemeAccent = () => {
         <Theme name="red">
           <YStack
             gap="2"
-            bg="background02"
+            bg="background-02"
             p="4"
             borderWidth={2}
             borderColor="border-color"
@@ -628,7 +628,7 @@ const ThemeAccent = () => {
           >
             <ThemeDebug />
             <Text fontWeight="bold">Red + Accent</Text>
-            <Text fontSize="2" color="color10">
+            <Text fontSize="2" color="color-10">
               ✓ Expected: Dark red
             </Text>
             <Button theme="accent">Dark Red</Button>
@@ -640,7 +640,7 @@ const ThemeAccent = () => {
             <Theme name="accent">
               <YStack
                 gap="2"
-                bg="background02"
+                bg="background-02"
                 p="4"
                 borderWidth={2}
                 borderColor="border-color"
@@ -648,7 +648,7 @@ const ThemeAccent = () => {
               >
                 <ThemeDebug />
                 <Text fontWeight="bold">Red + Accent + Accent</Text>
-                <Text fontSize="2" color="color10">
+                <Text fontSize="2" color="color-10">
                   ✓ Expected: Light red again!
                 </Text>
                 <Button>Doesn't work!</Button>

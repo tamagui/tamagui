@@ -319,7 +319,7 @@ function PerformanceTest() {
   const [t, setT] = React.useState('pink' as any)
   return (
     <YStack theme={t}>
-      <Square onPress={() => setT('blue')} size={100} bg="color10" />
+      <Square onPress={() => setT('blue')} size={100} bg="color-10" />
     </YStack>
   )
 }

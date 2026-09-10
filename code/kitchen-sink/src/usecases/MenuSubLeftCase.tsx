@@ -28,7 +28,7 @@ export function MenuSubLeftCase() {
           the LEFT of the trigger. Move your mouse diagonally from the trigger to the
           submenu - it should not close.
         </Paragraph>
-        <Text id="last-action" color="color10">
+        <Text id="last-action" color="color-10">
           Last action: {lastAction || 'None'}
         </Text>
         <Text id="submenu-state" color={`${subMenuOpen ? 'green-600' : 'red-600'}`}>
@@ -90,7 +90,7 @@ export function MenuSubLeftCase() {
                   textValue="Actions"
                   style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 4 }}
                 >
-                  <ChevronLeft size={14} color="color10" />
+                  <ChevronLeft size={14} color="color-10" />
                   <Menu.ItemTitle>Actions (left submenu)</Menu.ItemTitle>
                 </Menu.SubTrigger>
 

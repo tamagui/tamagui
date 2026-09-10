@@ -394,7 +394,7 @@ export function StyleValidation() {
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <YStack gap={8}>
-      <Text fontSize={14} fontWeight="600" color="color8">
+      <Text fontSize={14} fontWeight="600" color="color-8">
         {label}
       </Text>
       <XStack gap={12} flexWrap="wrap" alignItems="flex-start">

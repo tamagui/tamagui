@@ -80,7 +80,15 @@ export function HomeScreen() {
 
   return (
     <ScrollView testID="home-scroll-view">
-      <YStack bg="color2" paddingRight="3" paddingLeft="3" pt="6" pb="8" flex={1} gap="4">
+      <YStack
+        bg="color-2"
+        paddingRight="3"
+        paddingLeft="3"
+        pt="6"
+        pb="8"
+        flex={1}
+        gap="4"
+      >
         <Paragraph testID="home-title" size="1">
           Kitchen Sink
         </Paragraph>
@@ -156,7 +164,7 @@ export function HomeScreen() {
                   return (
                     <YGroup.Item key={route}>
                       <LinkListItem
-                        bg="color1 press:color2"
+                        bg="color-1 press:color-2"
                         href={route}
                         testID={(page as any).testID}
                       >
@@ -199,7 +207,7 @@ const LinkListItem = ({
       {...linkProps}
       onPress={handlePress}
       {...props}
-      iconAfter={<ChevronRight color="color10" />}
+      iconAfter={<ChevronRight color="color-10" />}
     >
       {children}
     </ListItem>

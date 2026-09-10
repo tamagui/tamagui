@@ -293,7 +293,7 @@ function SheetTouchProofContent() {
       rounded="3"
       bg="background"
       borderWidth={1}
-      borderColor="color8"
+      borderColor="color-8"
       accessibilityLabel="No portal sheet live slot panel"
       accessibilityHint="Proof content rendered as plain Sheet.Container children"
     >
@@ -392,7 +392,7 @@ function SlotProofContent({ revision }: { revision: number }) {
         rounded="3"
         bg="background"
         borderWidth={1}
-        borderColor="color8"
+        borderColor="color-8"
         role={isWeb ? 'dialog' : undefined}
         aria-modal={isWeb ? true : undefined}
         aria-labelledby={isWeb ? titleId : undefined}

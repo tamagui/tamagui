@@ -19,7 +19,7 @@ export function SliderScrollOffsetCase() {
   return (
     <YStack padding="4" gap="4">
       {/* pushes the sliders below the fold so the drag happens while scrolled */}
-      <YStack height={1200} backgroundColor="color3" />
+      <YStack height={1200} backgroundColor="color-3" />
 
       <Text id={TEST_IDS.sliderScrollVerticalValue}>{vertical[0]}</Text>
       <Slider

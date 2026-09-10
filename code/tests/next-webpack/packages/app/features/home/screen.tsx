@@ -229,10 +229,10 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
         </Button>
       </XStack>
       <YStack gap="4">
-        <H1 text="center" color="color11">
+        <H1 text="center" color="color-11">
           Welcome to Tamagui.
         </H1>
-        <Paragraph color="color10" text="center">
+        <Paragraph color="color-10" text="center">
           Here's a basic starter to show navigating from one screen to another.
         </Paragraph>
         <Separator />
@@ -273,17 +273,21 @@ function SheetDemo() {
         onPositionChange={setPosition}
         dismissOnSnapToBottom
       >
-        <Sheet.Overlay bg="shadow4" transition="lazy" opacity="enter:0 exit:0" />
-        <Sheet.Handle bg="color8" />
+        <Sheet.Overlay bg="shadow-4" transition="lazy" opacity="enter:0 exit:0" />
+        <Sheet.Handle bg="color-8" />
         <Sheet.Container items="center" justify="center" gap="10">
-          <Sheet.Background bg="color2" />
+          <Sheet.Background bg="color-2" />
           <XStack gap="2">
             <Paragraph text="center">Made by</Paragraph>
-            <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
+            <Anchor
+              color="blue-10"
+              href="https://twitter.com/natebirdman"
+              target="_blank"
+            >
               @natebirdman,
             </Anchor>
             <Anchor
-              color="blue10"
+              color="blue-10"
               href="https://github.com/tamagui/tamagui"
               target="_blank"
               rel="noreferrer"

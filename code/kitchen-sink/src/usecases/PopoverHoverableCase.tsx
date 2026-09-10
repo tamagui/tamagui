@@ -5,7 +5,7 @@ import { Popover, YStack, SizableText, XStack } from 'tamagui'
 export function PopoverHoverableDelayCase() {
   return (
     <YStack padding="10" alignItems="center" gap="4">
-      <SizableText size="3" color="color9">
+      <SizableText size="3" color="color-9">
         Hover delay: open should delay 400ms, close should delay 400ms
       </SizableText>
       <Popover placement="bottom" hoverable={{ delay: 400 }} offset={8}>
@@ -14,7 +14,7 @@ export function PopoverHoverableDelayCase() {
             id="delay-trigger"
             px="4"
             py="2"
-            bg="color3"
+            bg="color-3"
             rounded="4"
             cursor="pointer"
           >
@@ -27,7 +27,7 @@ export function PopoverHoverableDelayCase() {
           transition={{ duration: '200ms', properties: 'opacity, transform' }}
           opacity="enter:0 exit:0"
           y="enter:-4px exit:-4px"
-          bg="color4"
+          bg="color-4"
           rounded="4"
           px="4"
           py="3"
@@ -42,7 +42,7 @@ export function PopoverHoverableDelayCase() {
 export function PopoverHoverableRestMsCase() {
   return (
     <YStack padding="10" alignItems="center" gap="4">
-      <SizableText size="3" color="color9">
+      <SizableText size="3" color="color-9">
         restMs: opens after 400ms rest, exit should NOT have extra delay
       </SizableText>
       <Popover placement="bottom" hoverable={{ restMs: 400 }} offset={8}>
@@ -51,7 +51,7 @@ export function PopoverHoverableRestMsCase() {
             id="restms-trigger"
             px="4"
             py="2"
-            bg="color3"
+            bg="color-3"
             rounded="4"
             cursor="pointer"
           >
@@ -64,7 +64,7 @@ export function PopoverHoverableRestMsCase() {
           transition={{ duration: '200ms', properties: 'opacity, transform' }}
           opacity="enter:0 exit:0"
           y="enter:-4px exit:-4px"
-          bg="color4"
+          bg="color-4"
           rounded="4"
           px="4"
           py="3"
@@ -80,7 +80,7 @@ export function PopoverHoverableRestMsCase() {
 export function PopoverHoverableSafePolygonCase() {
   return (
     <YStack padding="10" alignItems="center" gap="4">
-      <SizableText size="3" color="color9">
+      <SizableText size="3" color="color-9">
         restMs: 60, offset: 20 - should be able to hover content through gap
       </SizableText>
       <Popover placement="bottom" hoverable={{ restMs: 260, delay: 0 }} offset={80}>
@@ -89,7 +89,7 @@ export function PopoverHoverableSafePolygonCase() {
             id="safepoly-trigger"
             px="4"
             py="2"
-            bg="color3"
+            bg="color-3"
             rounded="4"
             cursor="pointer"
           >
@@ -102,7 +102,7 @@ export function PopoverHoverableSafePolygonCase() {
           transition={{ duration: '200ms', properties: 'opacity, transform' }}
           opacity="enter:0 exit:0"
           y="enter:-4px exit:-4px"
-          bg="color4"
+          bg="color-4"
           rounded="4"
           px="4"
           py="3"
@@ -117,7 +117,7 @@ export function PopoverHoverableSafePolygonCase() {
 export function PopoverHoverableExitAnimCase() {
   return (
     <YStack padding="10" alignItems="center" gap="4">
-      <SizableText size="3" color="color9">
+      <SizableText size="3" color="color-9">
         Exit animation: should animate out (not instant disappear)
       </SizableText>
 
@@ -132,7 +132,7 @@ export function PopoverHoverableExitAnimCase() {
             id="exitanim-trigger"
             px="4"
             py="2"
-            bg="color3"
+            bg="color-3"
             rounded="4"
             cursor="pointer"
           >
@@ -145,7 +145,7 @@ export function PopoverHoverableExitAnimCase() {
           transition={{ duration: '500ms', properties: 'opacity, transform' }}
           opacity="1 enter:0 exit:0"
           y="enter:-4px exit:-4px"
-          bg="color4"
+          bg="color-4"
           rounded="4"
           px="4"
           py="3"

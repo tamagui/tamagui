@@ -3,7 +3,7 @@ import { AnimatePresence, Button, Square, XStack, YStack, isWeb } from 'tamagui'
 
 import { useIsIntersecting } from './useOnIntersecting'
 
-const colors = ['color8', 'color9', 'color10', 'color11'] as const
+const colors = ['color-8', 'color-9', 'color-10', 'color-11'] as const
 
 export function AnimationsDelayDemo() {
   const ref = React.useRef<HTMLElement>(null)

@@ -48,7 +48,7 @@ export function TooltipToolbarRowCase() {
                 items="center"
                 justify="center"
                 rounded="2"
-                bg="color4 hover:color6"
+                bg="color-4 hover:color-6"
                 onMouseEnter={() => setActive(label)}
                 onMouseLeave={() => setActive((prev) => (prev === label ? null : prev))}
               >
@@ -75,10 +75,10 @@ export function TooltipToolbarRowCase() {
           py="1-5"
           px="2"
           rounded="2"
-          bg="color2"
+          bg="color-2"
           borderWidth={0}
         >
-          <Tooltip.Arrow size="3" bg="color2" />
+          <Tooltip.Arrow size="3" bg="color-2" />
           <Paragraph pointerEvents="none" fontWeight="600" size="2">
             {active}
           </Paragraph>

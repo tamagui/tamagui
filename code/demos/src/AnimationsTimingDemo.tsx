@@ -4,7 +4,7 @@ import { Square } from 'tamagui'
 export function AnimationsTimingDemo() {
   return (
     <Square
-      bg="color9"
+      bg="color-9"
       transition="100ms"
       rounded="9"
       scale="hover:1.2 press:0.9"

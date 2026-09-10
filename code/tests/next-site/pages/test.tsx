@@ -8,7 +8,7 @@ export default () => {
       {/* <Circle transition="medium" size={200} bg="red" opacity="enter:0" y="enter:-100px" /> */}
 
       <AnimatePresence mode="wait">
-        <AnimatedHeading family="mono" index={0} Component={H1} color="red10">
+        <AnimatedHeading family="mono" index={0} Component={H1} color="red-10">
           Swappable
         </AnimatedHeading>
       </AnimatePresence>
@@ -54,7 +54,7 @@ const AnimatedHeading = memo(
           my="1"
           // @ts-ignore
           fontFamily={family}
-          textShadowColor="shadow2"
+          textShadowColor="shadow-2"
           textShadowRadius={3}
           textShadowOffset={{ width: 0, height: 3 }}
           ellipsis
