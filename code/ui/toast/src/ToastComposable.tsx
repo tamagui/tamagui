@@ -201,9 +201,9 @@ export interface ToastRootProps {
    */
   expand?: boolean
   /**
-   * Theme for toasts
+   * Pin the toast viewport to a scheme. Unset, toasts inherit the surrounding theme.
    */
-  theme?: 'light' | 'dark' | 'system'
+  theme?: 'light' | 'dark'
   /**
    * Force reduced motion mode
    */
@@ -261,7 +261,7 @@ const ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(
       toastHeight = FIXED_TOAST_HEIGHT,
       closeButton = false,
       expand = false,
-      theme: themeProp,
+      theme,
       reducedMotion: reducedMotionProp,
       native = false,
       burntOptions,
@@ -410,13 +410,10 @@ const ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(
 
     const swipeDirection = resolveSwipeDirection(swipeDirectionProp, position)
 
-    // an explicit scheme applies to the viewport only. 'system' (the default)
-    // must not pin a scheme: the root theme name resolves to 'light' during
-    // ssr, and wrapping the app in <Theme name="light"> would emit a t_light
-    // class that overrides the document's prefers-color-scheme dark variables
-    // until javascript runs.
-    const theme = themeProp === 'system' ? undefined : themeProp
-
+    // an explicit scheme applies to the viewport only. unset must not pin one:
+    // the root theme name resolves to 'light' during ssr, and wrapping the
+    // app in <Theme name="light"> would emit a t_light class that overrides
+    // the document's prefers-color-scheme dark variables until javascript runs.
     const contextValue: ToastContextValue = {
       toasts,
       heights,
