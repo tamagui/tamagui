@@ -1179,7 +1179,7 @@ export const getSplitStyles: StyleSplitter = (
   const mediaState = styleProps.mediaState || globalMediaState
 
   let shouldDoClasses =
-    process.env.TAMAGUI_RUNTIME !== 'zero' &&
+    process.env.TAMAGUI_RUNTIME !== 'island' &&
     acceptsClassName &&
     process.env.TAMAGUI_TARGET === 'web' &&
     !styleProps.noClass

@@ -25,7 +25,7 @@ let sortedRules: string[] = []
 let sortedRulesStale = true
 
 export const getAllRules = () => {
-  if (process.env.TAMAGUI_RUNTIME !== 'zero') {
+  if (process.env.TAMAGUI_RUNTIME !== 'island') {
     if (sortedRulesStale) {
       // Sort by identifier to ensure deterministic CSS output order
       const sortedKeys = Object.keys(allRules).sort()
@@ -59,8 +59,8 @@ export function scanAllSheets(
   tokens?: TokensParsed
 ): DedupedThemes | undefined {
   // runtime components still emit styles alongside the config CSS artifact.
-  // zero builds only scan when rebuilding empty client themes from that artifact
-  if (process.env.TAMAGUI_RUNTIME !== 'zero' || collectThemes) {
+  // an island only scans when rebuilding empty client themes from that artifact
+  if (process.env.TAMAGUI_RUNTIME !== 'island' || collectThemes) {
     if (process.env.NODE_ENV === 'test') return
     if (process.env.TAMAGUI_TARGET !== 'web') return
     if (typeof document === 'undefined') return
@@ -340,7 +340,7 @@ export function stopAccumulatingRules() {
 }
 
 export function updateRules(identifier: string, rules: string[]) {
-  if (process.env.TAMAGUI_RUNTIME !== 'zero' && trackAllRules) {
+  if (process.env.TAMAGUI_RUNTIME !== 'island' && trackAllRules) {
     allRules[identifier] = rules.join(' ')
     allRuleSets[identifier] = rules
     sortedRulesStale = true
@@ -354,7 +354,7 @@ export function setNonce(_: string) {
 }
 
 export function insertStyleRules(rulesToInsert: RulesToInsert) {
-  if (process.env.TAMAGUI_RUNTIME === 'zero' || process.env.TAMAGUI_TARGET !== 'web') {
+  if (process.env.TAMAGUI_RUNTIME === 'island' || process.env.TAMAGUI_TARGET !== 'web') {
     return
   }
 

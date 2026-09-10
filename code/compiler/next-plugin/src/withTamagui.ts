@@ -91,7 +91,8 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
         const defines = {
           // An enforced zero entry gets 'zero' on both its client and its server
           // compilation, so SSR never imports a runtime hydration removed. Config
-          // evaluation, report builds, and island child builds keep 'full'.
+          // evaluation and report builds keep 'full'; buildWebpackIsland defines
+          // 'island' for its child compilation.
           'process.env.TAMAGUI_RUNTIME': JSON.stringify(
             zeroMode === 'enforce' ? 'zero' : 'full'
           ),

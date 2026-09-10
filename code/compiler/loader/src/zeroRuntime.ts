@@ -224,7 +224,7 @@ export function collectZeroBuildInfo(
 
 /**
  * Builds one island as a separate webpack compilation with
- * `TAMAGUI_RUNTIME='full'`. React is externalized to the handoff the generated
+ * `TAMAGUI_RUNTIME='island'`. React is externalized to the handoff the generated
  * loader publishes, so both graphs share one React instance.
  */
 export async function buildWebpackIsland(input: {
@@ -267,7 +267,7 @@ export async function buildWebpackIsland(input: {
               // the parent compilation's env surface first, so the island sees the
               // same `process.env` shape the zero entry was built against
               ...input.defines.define,
-              'process.env.TAMAGUI_RUNTIME': JSON.stringify('full'),
+              'process.env.TAMAGUI_RUNTIME': JSON.stringify('island'),
               'process.env.TAMAGUI_DID_OUTPUT_CSS': JSON.stringify('1'),
               'process.env.TAMAGUI_TARGET': JSON.stringify('web'),
               'process.env.TAMAGUI_IS_SERVER': JSON.stringify(''),

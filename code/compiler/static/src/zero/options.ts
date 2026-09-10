@@ -6,11 +6,16 @@ import path from 'node:path'
 import type { TamaguiOptions } from '../types'
 
 /**
- * `TAMAGUI_RUNTIME` has exactly two integration-owned literal values. The public
- * `experimental.zeroRuntime` option is the author input; this literal is
+ * `TAMAGUI_RUNTIME` has exactly three integration-owned literal values. The
+ * public `experimental.zeroRuntime` option is the author input; this literal is
  * generated output, so an ambient shell value never reaches a build.
+ *
+ * `'island'` is a full-runtime child build of an enforced zero app. It keeps the
+ * component runtime, but the one zero artifact already holds every rule the
+ * compiler could prove for it, so the runtime generates and inserts no CSS and
+ * renders unproven values inline.
  */
-export type TamaguiRuntimeLiteral = 'full' | 'zero'
+export type TamaguiRuntimeLiteral = 'full' | 'zero' | 'island'
 
 export type ZeroRuntimeMode = 'off' | 'report' | 'enforce'
 

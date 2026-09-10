@@ -1073,9 +1073,14 @@ export function createTamaguiPlugins({
         },
 
         define: {
-          // Config evaluation, report builds, native builds, and full-runtime
-          // island child builds all keep ordinary Tamagui runtime behavior.
-          'process.env.TAMAGUI_RUNTIME': JSON.stringify('full'),
+          // Config evaluation, report builds, and native builds keep ordinary
+          // Tamagui runtime behavior. An island child build keeps the component
+          // runtime but its rules live in the parent's artifact. Vite merges this
+          // hook's result over the child build's own config, so the literal is
+          // owned here.
+          'process.env.TAMAGUI_RUNTIME': JSON.stringify(
+            zeroIslandBuild ? 'island' : 'full'
+          ),
           // reanimated support
           _frameTimestamp: undefined,
           _WORKLET: false,

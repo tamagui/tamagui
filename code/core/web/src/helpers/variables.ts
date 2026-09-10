@@ -278,7 +278,7 @@ export function getVariablesCSSRules(
   props: InlineValues,
   conf: TamaguiInternalConfig
 ): VariablesCSS | null {
-  if (process.env.TAMAGUI_RUNTIME === 'zero') return null
+  if (process.env.TAMAGUI_RUNTIME === 'island') return null
   const cycleDropped = getCycleDroppedKeys(props)
   const themes = props.themes as
     | Record<string, InlineValues['values'] | undefined>
