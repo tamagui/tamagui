@@ -17,8 +17,8 @@ export type MetroTamaguiOptions = TamaguiOptions & {
   compilerCacheRoot?: string
   /**
    * Set by the zero-runtime island bundle request. An island is a second Metro
-   * bundle with `TAMAGUI_RUNTIME='full'` and its own entry, so this invocation
-   * keeps the full runtime and only contributes its CSS fragment.
+   * bundle with `TAMAGUI_RUNTIME='island'` and its own entry, so this invocation
+   * keeps the component runtime and only contributes its CSS fragment.
    */
   zeroIslandBuild?: string
   /**
@@ -171,7 +171,11 @@ export function withTamagui(
         originalBabelTransformerPath,
         projectRoot,
         // an integration-owned literal, never an ambient shell value
-        runtimeLiteral: zero?.isEnforcing && !zero.islandBuild ? 'zero' : 'full',
+        runtimeLiteral: !zero?.isEnforcing
+          ? 'full'
+          : zero.islandBuild
+            ? 'island'
+            : 'zero',
         didOutputCSSLiteral: zero?.isEnforcing ? '1' : undefined,
       }
     )

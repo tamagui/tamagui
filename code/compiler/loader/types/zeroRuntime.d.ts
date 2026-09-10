@@ -79,7 +79,7 @@ export declare function collectZeroBuildInfo(controller: WebpackZeroController, 
 };
 /**
  * Builds one island as a separate webpack compilation with
- * `TAMAGUI_RUNTIME='full'`. React is externalized to the handoff the generated
+ * `TAMAGUI_RUNTIME='island'`. React is externalized to the handoff the generated
  * loader publishes, so both graphs share one React instance.
  */
 export declare function buildWebpackIsland(input: {

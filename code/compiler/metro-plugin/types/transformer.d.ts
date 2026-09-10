@@ -10,7 +10,7 @@ export interface MetroCompilerTransformerOptions {
 	* Metro never reads an ambient value: the literal is decided by the build and
 	* inlined here so every guard is a constant.
 	*/
-	runtimeLiteral?: "full" | "zero";
+	runtimeLiteral?: "full" | "zero" | "island";
 	/** The integration-owned compiled CSS marker for this bundle request. */
 	didOutputCSSLiteral?: "1";
 }

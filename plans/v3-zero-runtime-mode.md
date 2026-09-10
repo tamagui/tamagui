@@ -28,7 +28,7 @@ webpack probe added during review; each source is named beside the figure.
    native with the regular runtime. Block 1 therefore remains the native
    behavior for `html.*`.
 2. The build option is experimental and the compile-time environment variable
-   is `TAMAGUI_RUNTIME`, with the literals `'full'` and `'zero'`.
+   is `TAMAGUI_RUNTIME`, with the literals `'full'`, `'zero'` and `'island'`.
 3. A successful zero-runtime web build always owns and loads one generated CSS
    artifact containing config CSS and compiler atomic CSS. The bundler derives
    `TAMAGUI_DID_OUTPUT_CSS='1'` only after that relationship has been
@@ -49,7 +49,10 @@ webpack probe added during review; each source is named beside the figure.
    in the zero graph. A package list is documentation, never a second source of
    truth.
 8. Islands are full-runtime entry graphs built in a separate bundler invocation
-   with `TAMAGUI_RUNTIME='full'`. A dynamic import produced inside the same
+   with `TAMAGUI_RUNTIME='island'`: the component runtime stays, but the one
+   zero artifact already holds every rule the compiler could prove for the
+   island, so the runtime generates and inserts no CSS and renders unproven
+   values inline. A dynamic import produced inside the same
    zero-runtime compilation is not an island in the first experimental release.
    Islands are client-only and receive a compiler-generated theme bridge.
 9. Static CSS transitions remain available without an animation runtime. The
@@ -142,16 +145,23 @@ build error because it would place the full runtime in the zero graph.
 
 ### The new environment variable
 
-`TAMAGUI_RUNTIME` has two integration-owned literal values:
+`TAMAGUI_RUNTIME` has three integration-owned literal values:
 
 | Literal | Meaning |
 | --- | --- |
 | `'full'` | Keep ordinary Tamagui runtime behavior. |
 | `'zero'` | The compiler and artifact gates have established an enforced zero-runtime web graph. |
+| `'island'` | A full-runtime child build of an enforced zero app. The component runtime stays; the zero artifact owns every provable rule, so no CSS is generated or inserted at runtime and unproven values render inline. |
 
 Outside an official integration, an absent variable behaves as full runtime.
 An absent variable cannot activate zero-runtime mode. Official integrations
-always inline one of the two literals, which makes every guard a constant.
+always inline one of the three literals, which makes every guard a constant.
+
+`TAMAGUI_DID_OUTPUT_CSS='1'` is claimed by the compiled-global-CSS tier and by
+zero builds alike, and it only says the config rules are in an artifact. An
+ordinary compiled build with `outputCSS` still renders uncompiled components
+through runtime CSS, because a server render cannot know the viewport that a
+responsive value depends on. `'island'` is what removes that runtime path.
 
 The public config is the author input. The environment variable is generated
 output. Reading an ambient shell value for `TAMAGUI_RUNTIME` is rejected because
@@ -197,8 +207,8 @@ same capability.
 An enforced zero-runtime web entry uses `'zero'` in production and development.
 Development runs the same complete lowering and reference erasure, while the
 integration serves the combined CSS artifact as an in-memory virtual module and
-hot-replaces it after config or source changes. Config evaluation and
-full-runtime island builds use `'full'`. A `'report'` build also uses `'full'`
+hot-replaces it after config or source changes. Config evaluation uses
+`'full'` and full-runtime island builds use `'island'`. A `'report'` build also uses `'full'`
 because it audits an ordinary provider-backed app without changing its runtime.
 This gives a provider-less zero app one dev path: it never calls `getConfig()`
 in the client, and config CSS comes from the integration-owned virtual module.
@@ -239,9 +249,10 @@ build hooks:
 
 6. Enforced zero development builds inline `'zero'` and register the virtual
    CSS artifact before deriving `TAMAGUI_DID_OUTPUT_CSS='1'`. Report, native,
-   config-evaluation, and full-runtime island builds inline `'full'`; they do
-   not claim `TAMAGUI_DID_OUTPUT_CSS` unless that individual build also passed
-   the compiled-global-CSS artifact gate.
+   and config-evaluation builds inline `'full'`; they do not claim
+   `TAMAGUI_DID_OUTPUT_CSS` unless that individual build also passed the
+   compiled-global-CSS artifact gate. Island child builds inline `'island'`
+   and `'1'`, because their rules are in the parent's artifact.
 7. In `generateBundle`, inspect Rollup chunk module ids and importer chains.
    Fail if a zero entry reaches a forbidden Tamagui module or if its generated
    CSS asset is absent.
@@ -263,8 +274,8 @@ child-island rules in one entry artifact.
    module's dependencies.
 2. `DefinePlugin` receives the direct literal definitions above. Production and
    development server/client compilations for an enforced zero entry use
-   `'zero'`, so SSR does not execute a runtime path the client removed. Report,
-   config evaluation, and island compilations use `'full'`.
+   `'zero'`, so SSR does not execute a runtime path the client removed. Report
+   and config evaluation use `'full'`; island compilations use `'island'`.
 3. Before sealing, the plugin emits the combined config-plus-atomic artifact.
    Full-runtime child compilations contribute their extracted atomic rules and
    bridge rules to that collector before sealing.
@@ -293,8 +304,8 @@ carry the target-aware literal:
 2. The transformer appends the zero transform to `args.plugins`. It replaces
    only the exact AST member expression `process.env.TAMAGUI_RUNTIME` with
    `'zero'` for an enforced `platform=web` zero entry in development or
-   production, and with `'full'` for native, report, config-evaluation, and
-   island entries. It also applies the compiler's reference erasure before
+   production, `'island'` for an island entry, and `'full'` for native,
+   report, and config-evaluation entries. It also applies the compiler's reference erasure before
    Metro extracts dependencies from transformed code. Minification and the
    serializer are too late to remove an import from Metro's graph.
 3. Metro web zero mode requires `outputCSS`. After planning the entry graph, the
@@ -309,7 +320,7 @@ carry the target-aware literal:
    not a feature-detection chain.
 5. Native Metro builds always inline `'full'`. Block 1's runtime DOM mapping and
    regular theme/media machinery remain available.
-6. An island is a second Metro bundle request with `'full'` and its own entry.
+6. An island is a second Metro bundle request with `'island'` and its own entry.
    It is not another module in the zero bundle graph.
 
 Reference removal happens early enough for Metro's graph construction, so

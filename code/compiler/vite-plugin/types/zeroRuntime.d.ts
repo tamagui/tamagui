@@ -37,7 +37,7 @@ export declare const zeroModuleKey: (value: string) => string;
 export declare function createZeroRuntimeController(options: TamaguiOptions, root: string, base: string): Promise<ZeroRuntimeController | null>;
 /**
  * Builds one island as a separate bundler invocation with
- * `TAMAGUI_RUNTIME='full'`. React is externalized to the handoff the generated
+ * `TAMAGUI_RUNTIME='island'`. React is externalized to the handoff the generated
  * loader publishes, so both graphs share one React instance.
  */
 export declare function buildIsland(input: {

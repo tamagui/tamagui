@@ -2116,7 +2116,7 @@ export function createComponent<
     // SSR style support - for non compiled styles we render them inline until client takes over
     // on client we then switch over to our global sheet insert, because rendering inline is expensive
     if (
-      process.env.TAMAGUI_RUNTIME !== 'zero' &&
+      process.env.TAMAGUI_RUNTIME !== 'island' &&
       process.env.TAMAGUI_TARGET === 'web' &&
       startedUnhydrated &&
       splitStyles

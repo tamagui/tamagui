@@ -104,7 +104,7 @@ export async function createZeroRuntimeController(
 
 /**
  * Builds one island as a separate bundler invocation with
- * `TAMAGUI_RUNTIME='full'`. React is externalized to the handoff the generated
+ * `TAMAGUI_RUNTIME='island'`. React is externalized to the handoff the generated
  * loader publishes, so both graphs share one React instance.
  */
 export async function buildIsland(input: {
@@ -124,7 +124,7 @@ export async function buildIsland(input: {
     mode: 'production',
     logLevel: 'warn',
     define: {
-      'process.env.TAMAGUI_RUNTIME': JSON.stringify('full'),
+      // TAMAGUI_RUNTIME='island' is defined by the plugin's own config hook
       'process.env.TAMAGUI_DID_OUTPUT_CSS': JSON.stringify('1'),
       // the island is a separately built artifact, never a dev asset, so it is
       // always a production build and always uses react/jsx-runtime
