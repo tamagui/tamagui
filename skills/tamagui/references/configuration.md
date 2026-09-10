@@ -100,7 +100,7 @@ and colors are the Tailwind palette (`gray-100` ... `blue-500` ... `red-950`).
 ## Themes
 
 Define color schemes with semantic names. The v6 generated themes expose
-`background`, `color`, the `color1`-`color11` ramp, and hyphenated state keys:
+`background`, `color`, the `color-1`-`color-11` ramp, and hyphenated state keys:
 
 ```tsx
 themes: {
@@ -109,9 +109,9 @@ themes: {
     'background-hover': '#f8f8f8',
     'background-press': '#f0f0f0',
     color: '#000',
-    color1: '#f8f8f8',
-    color2: '#f0f0f0',
-    // ... color3-11
+    'color-1': '#f8f8f8',
+    'color-2': '#f0f0f0',
+    // ... color-3 through color-11
     'border-color': '#e0e0e0',
     'shadow-color': 'rgba(0,0,0,0.12)',
     'accent-background': '#0066cc',
@@ -246,8 +246,8 @@ settings: {
   onlyAllowShorthands: false,  // allow both short and long names
   styleValueSyntax: 'string',  // omit to allow string and object forms
   selectionStyles: (theme) => ({
-    backgroundColor: theme.color5,
-    color: theme.color11,
+    backgroundColor: theme['color-5'],
+    color: theme['color-11'],
   }),
   mediaQueryDefaultActive: {
     // SSR: assume these queries are true initially (v6 sets this for you)

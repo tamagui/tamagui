@@ -290,7 +290,7 @@ import { H1, H2, H3, H4, H5, H6, Paragraph, Text } from 'tamagui'
 
 <H1>Heading 1</H1>
 <Paragraph>Body text paragraph</Paragraph>
-<Text fontSize="4" color="color11">Custom text</Text>
+<Text fontSize="4" color="color-11">Custom text</Text>
 ```
 
 ## Utilities

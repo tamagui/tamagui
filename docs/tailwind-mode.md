@@ -8,7 +8,7 @@ Use Tailwind-style className strings with Tamagui's design tokens and theming.
 import { View } from 'tamagui'
 
 // Tailwind-style className syntax
-<View className="bg-blue5 p-4 rounded-2 hover:bg-blue7 sm:p-6" />
+<View className="bg-blue-5 p-4 rounded-2 hover:bg-blue-7 sm:p-6" />
 ```
 
 ## Configuration
@@ -50,8 +50,8 @@ Values automatically resolve to tokens when they match a token name:
 
 ```tsx
 // These are equivalent:
-<View className="bg-blue5" />      // auto-resolves to $blue5 token
-<View className="bg-$blue5" />     // explicit token reference
+<View className="bg-blue-5" />      // auto-resolves to $blue-5 token
+<View className="bg-$blue-5" />     // explicit token reference
 
 // Raw CSS when no token matches:
 <View className="bg-purple" />     // uses "purple" as raw CSS value
@@ -86,7 +86,7 @@ For a vertical dimension at a container size, write the value
 #### Hover & Press States
 
 ```tsx
-<View className="bg-blue5 hover:bg-blue7 press:bg-blue8" />
+<View className="bg-blue-5 hover:bg-blue-7 press:bg-blue-8" />
 ```
 
 #### Media Queries
@@ -132,19 +132,19 @@ Your configured shorthands are also available.
 ### Interactive Button
 
 ```tsx
-<View className="bg-blue5 p-4 rounded-2 hover:bg-blue7 press:scale-98" />
+<View className="bg-blue-5 p-4 rounded-2 hover:bg-blue-7 press:scale-98" />
 ```
 
 ### Responsive Card
 
 ```tsx
-<View className="bg-background p-4 rounded-4 sm:p-6 md:p-8 dark:bg-gray1" />
+<View className="bg-background p-4 rounded-4 sm:p-6 md:p-8 dark:bg-gray-1" />
 ```
 
 ### Complex Component
 
 ```tsx
-<View className="w-full h-auto bg-white p-4 rounded-8 border-1 hover:bg-gray1 sm:p-6 dark:bg-black dark:border-gray8" />
+<View className="w-full h-auto bg-white p-4 rounded-8 border-1 hover:bg-gray-1 sm:p-6 dark:bg-black dark:border-gray-8" />
 ```
 
 ## Mixed with Regular Props
@@ -153,7 +153,7 @@ Tailwind classes work alongside regular Tamagui props:
 
 ```tsx
 <View
-  className="bg-blue5 hover:bg-blue7"
+  className="bg-blue-5 hover:bg-blue-7"
   animation="quick"
   onPress={handlePress}
 />
@@ -164,9 +164,9 @@ Tailwind classes work alongside regular Tamagui props:
 Only recognized Tailwind-style classes are processed. All other classes are preserved:
 
 ```tsx
-<View className="my-custom-class bg-blue5 another-class grid-cols-3" />
+<View className="my-custom-class bg-blue-5 another-class grid-cols-3" />
 // Result:
-// - bg-blue5 → converted to backgroundColor style
+// - bg-blue-5 → converted to backgroundColor style
 // - my-custom-class, another-class, grid-cols-3 → preserved in className (web)
 ```
 
@@ -177,7 +177,7 @@ A class is processed as Tailwind syntax when the shared grammar can prove it: a 
 - layout and spacing: `w-24`, `h-8`, `size-10`, `p-4`, `px-6`, `gap-2`
 - flex and alignment: `flex`, `flex-row`, `items-center`, `justify-between`
 - typography: `text-sm` (size), `text-white` (color), `text-center` (align), `text-[14px]`, `font-bold`, `font-sans`
-- color, radius, and borders: `bg-blue5`, `rounded-t-xl`, `rounded-tl-lg`, `border-t-4`, `border-x`
+- color, radius, and borders: `bg-blue-5`, `rounded-t-xl`, `rounded-tl-lg`, `border-t-4`, `border-x`
 - position: `inset-0`, `inset-x-0`, `inset-y-4`, `top-2`, `z-10`
 
 `text-*` is disambiguated the same way Tailwind does it: alignment keywords, then the type scale, then palette and theme colors.
