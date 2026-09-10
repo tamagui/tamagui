@@ -554,6 +554,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       bg="$background06"
       backdropFilter="blur(40px)"
       maxH="90vh"
+      minH={360}
       maxW={360}
       minW={360}
       elevation="$2"
