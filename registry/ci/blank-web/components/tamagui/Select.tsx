@@ -141,7 +141,7 @@ export const SelectGroup = styled(SelectBehavior.Group, {
 export const SelectLabel = styled(SelectBehavior.Label, {
   context: SizeContext,
   displayName: 'SelectLabel',
-  color: 'color10',
+  color: 'color-10',
   fontWeight: '600',
   paddingHorizontal: 10,
   paddingVertical: 6,

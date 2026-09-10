@@ -96,11 +96,11 @@ function siblingSkinBase(spec: string, skinBases: Set<string>): string | null {
 // reassembly; when absent no states are emitted (registry unchanged).
 // the generics-only rule (plans/surface-levels.md): a skin styles against theme
 // GENERICS (background, border-color, background-hover, …), never the color
-// SCALE (color1..color12) directly. that is what makes levels/facets compose —
+// SCALE (color-1..color-12) directly. that is what makes levels/facets compose —
 // anything that re-binds generics restyles every skin beneath it. enforced by
 // default; the grandfathered v2-compat skins that still reference palette steps
 // opt out with `genericsOnly: false` in their manifest.
-const SCALE_REF = /(?:^|[\s"'`])(color(?:1[0-2]|[1-9]))(?=$|[\s/"'`])/gm
+const SCALE_REF = /(?:^|[\s"'`])(color-(?:1[0-2]|[1-9]))(?=$|[\s/"'`])/gm
 
 export function assertGenericsOnly(skin: Skin): void {
   if (skin.manifest.genericsOnly === false) return

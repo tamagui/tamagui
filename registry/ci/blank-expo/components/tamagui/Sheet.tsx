@@ -14,7 +14,7 @@ const SheetHandleFrame = styled(SheetBehavior.Handle, {
   displayName: 'SheetHandle',
   height: 10,
   borderRadius: 1000,
-  backgroundColor: 'color5',
+  backgroundColor: 'color-5',
   zIndex: 10,
   marginHorizontal: '35%',
   marginBottom: '2',

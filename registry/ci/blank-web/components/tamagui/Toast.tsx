@@ -45,7 +45,7 @@ export const ToastItem = styled(ToastBehavior.Item, {
   shadowOffset: { width: 0, height: 4 },
   shadowRadius: 12,
   outlineWidth: 'focus-visible:2px',
-  outlineColor: 'focus-visible:color8',
+  outlineColor: 'focus-visible:color-8',
   outlineStyle: 'focus-visible:solid',
 })
 
@@ -58,14 +58,14 @@ export const ToastTitle = styled(ToastBehavior.Title, {
 
 export const ToastDescription = styled(ToastBehavior.Description, {
   displayName: 'ToastDescription',
-  color: 'color11',
+  color: 'color-11',
   size: '2',
 })
 
 export const ToastClose = styled(ToastBehavior.Close, {
   displayName: 'ToastClose',
   borderRadius: '10',
-  backgroundColor: 'background hover:color3 press:color4',
+  backgroundColor: 'background hover:color-3 press:color-4',
   borderWidth: 1,
   borderColor: 'border-color',
   shadowColor: 'rgba(0, 0, 0, 0.08)',
@@ -77,7 +77,7 @@ export const ToastAction = styled(ToastBehavior.Action, {
   displayName: 'ToastAction',
   borderRadius: '2',
   paddingHorizontal: '2',
-  backgroundColor: 'color5 hover:color6 press:color7',
+  backgroundColor: 'color-5 hover:color-6 press:color-7',
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -112,14 +112,14 @@ function ToastDefaultContent({ toast: t }: { toast: ToastT }) {
                   handleClose()
                 }}
               >
-                <SizableText size="2" color="color11">
+                <SizableText size="2" color="color-11">
                   {t.cancel.label}
                 </SizableText>
               </ToastAction>
             ) : null}
             {t.action ? (
               <ToastAction
-                backgroundColor="color11 hover:color10 press:color9"
+                backgroundColor="color-11 hover:color-10 press:color-9"
                 onPress={(e: any) => {
                   t.action?.onClick?.(e)
                   if (!(e as any).defaultPrevented) {
