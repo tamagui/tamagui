@@ -20,8 +20,9 @@ import { transformsToString } from './transformsToString'
 
 export { styleToCSS } from './styleToCSS'
 
+// outputCSS owns config rules; only zero mode proves all component styles compiled.
 export const canGenerateCSS =
-  process.env.TAMAGUI_TARGET === 'web' && !process.env.TAMAGUI_DID_OUTPUT_CSS
+  process.env.TAMAGUI_TARGET === 'web' && process.env.TAMAGUI_RUNTIME !== 'zero'
 
 type DirectAtomicState = GetStyleState & {
   flatAtomics?: Map<string, StyleObject>
@@ -149,7 +150,7 @@ export function addComposition(state: GetStyleState, property: 'translate' | 'sc
 }
 
 export function getCSSStylesAtomic(style: ViewStyleObject) {
-  if (process.env.TAMAGUI_DID_OUTPUT_CSS) return []
+  if (process.env.TAMAGUI_RUNTIME === 'zero') return []
   styleToCSS(style)
   const out: StyleObject[] = []
   for (const key in style) {
@@ -173,7 +174,7 @@ export function getCSSStyleAtomic(
   identityKey = key,
   classRepetitions = 1
 ): StyleObject | undefined {
-  if (process.env.TAMAGUI_DID_OUTPUT_CSS) return
+  if (process.env.TAMAGUI_RUNTIME === 'zero') return
   return getStyleObject(
     val,
     key,
@@ -248,7 +249,7 @@ export function buildAtomicSlotCSS(
   entries: readonly AtomicSlotEntry[],
   signature: string
 ): SlotIdentity | undefined {
-  if (process.env.TAMAGUI_DID_OUTPUT_CSS) return
+  if (process.env.TAMAGUI_RUNTIME === 'zero') return
   syncAtomicConfig()
   let bySignature = slotIdentities.get(atomicKey)
   if (!bySignature) slotIdentities.set(atomicKey, (bySignature = new Map()))

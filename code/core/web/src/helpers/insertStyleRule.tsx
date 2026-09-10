@@ -25,7 +25,7 @@ let sortedRules: string[] = []
 let sortedRulesStale = true
 
 export const getAllRules = () => {
-  if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
+  if (process.env.TAMAGUI_RUNTIME !== 'zero') {
     if (sortedRulesStale) {
       // Sort by identifier to ensure deterministic CSS output order
       const sortedKeys = Object.keys(allRules).sort()
@@ -58,10 +58,9 @@ export function scanAllSheets(
   collectThemes = false,
   tokens?: TokensParsed
 ): DedupedThemes | undefined {
-  // with a proven CSS artifact the style dedup scan is dead weight, but theme
-  // collection must still run: a client config passing empty themes hydrates
-  // its theme values from that same CSS artifact
-  if (!process.env.TAMAGUI_DID_OUTPUT_CSS || collectThemes) {
+  // runtime components still emit styles alongside the config CSS artifact.
+  // zero builds only scan when rebuilding empty client themes from that artifact
+  if (process.env.TAMAGUI_RUNTIME !== 'zero' || collectThemes) {
     if (process.env.NODE_ENV === 'test') return
     if (process.env.TAMAGUI_TARGET !== 'web') return
     if (typeof document === 'undefined') return
@@ -341,7 +340,7 @@ export function stopAccumulatingRules() {
 }
 
 export function updateRules(identifier: string, rules: string[]) {
-  if (!process.env.TAMAGUI_DID_OUTPUT_CSS && trackAllRules) {
+  if (process.env.TAMAGUI_RUNTIME !== 'zero' && trackAllRules) {
     allRules[identifier] = rules.join(' ')
     allRuleSets[identifier] = rules
     sortedRulesStale = true
@@ -355,7 +354,7 @@ export function setNonce(_: string) {
 }
 
 export function insertStyleRules(rulesToInsert: RulesToInsert) {
-  if (process.env.TAMAGUI_DID_OUTPUT_CSS || process.env.TAMAGUI_TARGET !== 'web') {
+  if (process.env.TAMAGUI_RUNTIME === 'zero' || process.env.TAMAGUI_TARGET !== 'web') {
     return
   }
 

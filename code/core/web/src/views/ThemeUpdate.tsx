@@ -62,7 +62,7 @@ export const ThemeUpdate: RefComponent<unknown, ThemeUpdateProps> = createRefCom
     const config = getConfig()
     const values = getInlineValuesFromProps(props, config)
     const css =
-      process.env.TAMAGUI_DID_OUTPUT_CSS ||
+      process.env.TAMAGUI_RUNTIME === 'zero' ||
       process.env.TAMAGUI_TARGET === 'native' ||
       !values
         ? null
