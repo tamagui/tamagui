@@ -356,7 +356,7 @@ interface TextStyle {
     fontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900' | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 'ultralight' | 'thin' | 'light' | 'medium' | 'regular' | 'semibold' | 'condensedBold' | 'condensed' | 'heavy' | 'black';
     includeFontPadding?: boolean;
     letterSpacing?: number;
-    lineHeight?: number;
+    lineHeight?: number | Px | `${number}`;
     numberOfLines?: number;
     textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify';
     textAlignVertical?: 'auto' | 'top' | 'bottom' | 'center';

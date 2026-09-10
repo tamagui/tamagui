@@ -11,8 +11,27 @@ Run it from the root of the project you are migrating. Paths, the report and the
 npx @tamagui/codemod-flat-values ./src                       # dry run
 npx @tamagui/codemod-flat-values --json report.json ./src    # machine readable
 npx @tamagui/codemod-flat-values --write ./src               # apply safe conversions
+npx @tamagui/codemod-flat-values --source-semantics v2-pixels --write ./src
+npx @tamagui/codemod-flat-values --source-semantics v2-pixels --line-height-only --write ./src
 npx @tamagui/codemod-flat-values --help
 ```
+
+The default `--source-semantics v3-ratios` describes current V3 source: numeric
+Tamagui `lineHeight` values are ratios. Select `v2-pixels` when migrating V2
+source. It changes every proven numeric Tamagui line height to an explicit px
+string, so `lineHeight={1.5}` becomes `lineHeight="1.5px"` and a rerun makes no
+further change. Numeric font configuration, raw React Native styles, and Restyle
+styles retain their existing pixel contract and are not rewritten. A local React
+wrapper that renders Tamagui JSX, including an imported local alias, is reported
+as `ambiguous-wrapper-line-height` and never rewritten: the wrapper may transform
+units. Already-migrated strings stay authored.
+
+The migration follows Tamagui import and factory provenance through JSX,
+`styled()` configs and variants, `styled.dynamic`, component `style()` and
+`resolve()` calls, inline style objects, and inline style arrays. It reports a
+shared style object rather than changing it when that object may also reach a raw
+native or Restyle host. Untyped dynamic values and extracted token `.val` values
+are also reported because their units cannot be recovered from the expression.
 
 Inside this repository the same two runs over the pinned corpus are
 `bun run dry-run` and `bun run write` from `code/core/codemod-flat-values`. That
@@ -214,6 +233,7 @@ A flag means a human decides. Every code the tool can emit:
 | `functional-variant-type-bodies` | different type-key bodies cannot be combined into safe `typeof` branches |
 | `functional-variant-unsupported`, `functional-variant-unsupported-extras`, `functional-variant-styled-import` | the callback, env access, or `styled` import does not have a provable automatic rewrite |
 | `emitted-program-mismatch`, `emitted-value-invalid` | the printer failed its own re-parse; this is a codemod bug |
+| `ambiguous-wrapper-line-height` | a local React wrapper renders Tamagui JSX, so numeric `lineHeight` / `lh` or an inline style may still be V2 pixels, but the wrapper may transform units |
 | plus any code from the shared converter | `unsupported-legacy-value`, `legacy-condition-object`, `ambiguous-legacy-group`, `legacy-composite-shorthand` |
 
 ## Configuration warning codes

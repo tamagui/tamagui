@@ -46,7 +46,7 @@ export const StudioThemeBuilderSettingsDropdown = () => {
       >
         <Popover.ScrollView>
           <YGroup self="center" width={320} size="4">
-            <H6 size="1" lineHeight={10} pt="3" pb="2" px="3">
+            <H6 size="1" lineHeight="10px" pt="3" pb="2" px="3">
               Quick Settings
             </H6>
 
@@ -54,7 +54,7 @@ export const StudioThemeBuilderSettingsDropdown = () => {
               return <MenuItem key={weakKey(item)} item={item} />
             })}
 
-            <H6 size="1" lineHeight={10} pt="3" pb="2" px="3">
+            <H6 size="1" lineHeight="10px" pt="3" pb="2" px="3">
               Menu
             </H6>
 

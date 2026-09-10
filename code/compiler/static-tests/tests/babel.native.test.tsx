@@ -147,6 +147,103 @@ test(`conditional font family lowers per-branch with per-family size resolution`
   expect(code).toMatchSnapshot()
 })
 
+test('default font lineHeight Variables lower as absolute native lengths', async () => {
+  const output = await extractForNative(`
+    import { Paragraph } from 'tamagui'
+    export const App = () => <Paragraph>leading</Paragraph>
+  `)
+
+  expect(output.diagnostics).toEqual([])
+  expect(output.code).toContain('"fontSize":14,"lineHeight":20')
+  expect(output.code).not.toContain('"lineHeight":280')
+})
+
+test('numeric text lineHeight lowers to a completed native host metric', async () => {
+  const output = await extractForNative(`
+    import { Text } from 'tamagui'
+    export const App = () => <Text fontSize={20} lineHeight={1.5}>leading</Text>
+  `)
+
+  expect(output.diagnostics).toEqual([])
+  expect(output.code).toContain('"fontSize":20')
+  expect(output.code).toContain('"lineHeight":30')
+  expect(output.code).not.toContain('"lineHeight":1.5')
+})
+
+test('native numeric-string lineHeight ratios stay distinct from px lengths', async () => {
+  const output = await extractForNative(`
+    import { Text } from 'tamagui'
+    export const App = () => <>
+      <Text fontSize={20} lineHeight="1.5">ratio</Text>
+      <Text fontSize={20} lineHeight="24px">length</Text>
+    </>
+  `)
+
+  expect(output.diagnostics).toEqual([])
+  expect(output.code).toContain('"fontSize":20,"lineHeight":30')
+  expect(output.code).toContain('"fontSize":20,"lineHeight":24')
+})
+
+test('native text lineHeight resolves against the final conditional fontSize', async () => {
+  const output = await extractForNative(`
+    import { Text } from 'tamagui'
+    export const App = ({ compact }) => (
+      <Text lineHeight={1.5} fontSize={compact ? 10 : 20}>leading</Text>
+    )
+  `)
+
+  expect(output.diagnostics).toEqual([])
+  expect(output.code).toContain('"lineHeight":15,"fontSize":10')
+  expect(output.code).toContain('"lineHeight":30,"fontSize":20')
+})
+
+test('native text with an unresolved ratio stays on the runtime path', async () => {
+  const output = await extractForNative(`
+    import { Text } from 'tamagui'
+    export const App = () => <Text lineHeight={1.5}>leading</Text>
+  `)
+
+  expect(output.stats.flattened).toBe(0)
+  expect(output.code).toContain('<Text lineHeight={1.5}>leading</Text>')
+  expect(output.diagnostics).toMatchObject([{ code: 'local/unsupported-target' }])
+})
+
+test('native Text metric parents with element children stay on the runtime path', async () => {
+  const output = await extractForNative(`
+    import { Text } from 'tamagui'
+    export const App = () => (
+      <Text fontSize={20} lineHeight={1.5}>
+        <Text fontSize={10}>child</Text>
+      </Text>
+    )
+  `)
+
+  expect(output.stats.flattened).toBe(0)
+  expect(output.code).toContain('<Text fontSize={20} lineHeight={1.5}>')
+  expect(output.code).toContain('<Text fontSize={10}>child</Text>')
+  expect(output.diagnostics).toHaveLength(2)
+  expect(
+    output.diagnostics.every(({ code }) => code === 'local/unsupported-target')
+  ).toBe(true)
+})
+
+test('native Text metric parents flatten only evaluator-proven scalar children', async () => {
+  const output = await extractForNative(`
+    import { Text } from 'tamagui'
+    export const App = ({ child, count, index }) => <>
+      <Text fontSize={20} lineHeight={1.5}>{\`count \${[1, 2][index % 2]}\`}</Text>
+      <Text fontSize={20} lineHeight={1.5}>{\`count \${count}\`}</Text>
+      <Text fontSize={20} lineHeight={1.5}>{count * 2}</Text>
+      <Text fontSize={20} lineHeight={1.5}>{index ? 'yes' : 0}</Text>
+      <Text fontSize={20} lineHeight={1.5}>{child}</Text>
+    </>
+  `)
+
+  expect(output.stats.flattened).toBe(4)
+  expect(output.diagnostics.map(({ code }) => code)).toEqual(['local/unsupported-target'])
+  expect(output.code).toContain('<Text fontSize={20} lineHeight={1.5}>{child}</Text>')
+})
+
 test(`normalize ternaries with the conditional dynamic values`, async () => {
   const inputCode = `
   import { View } from 'tamagui'

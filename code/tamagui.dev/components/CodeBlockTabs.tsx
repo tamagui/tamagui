@@ -14,6 +14,7 @@ export function CodeBlockTabs({
 }) {
   const { showTabs, transformedCommand, selectedPackageManager, setPackageManager } =
     command
+  const codeLineHeight: string = typeof size === 'number' ? `${size}px` : (size ?? '4')
 
   const codeContent = (
     <ScrollView
@@ -28,7 +29,7 @@ export function CodeBlockTabs({
         p="4"
         bg="transparent"
         flex={1}
-        lineHeight={size ?? '4'}
+        lineHeight={codeLineHeight}
         {...(showTabs && {
           whiteSpace: 'nowrap',
         })}

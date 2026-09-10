@@ -25,6 +25,11 @@ describe('tamagui migrate', () => {
     expect(result.stdout).toContain('`useProps`, `useStyle`, and `usePropsAndStyle`')
     expect(result.stdout).toContain('`getExpandedShorthand(key, props)`')
     expect(result.stdout).toContain('`splitStyleProps(props)`')
+    expect(result.stdout).toContain('--source-semantics v2-pixels')
+    expect(result.stdout).toContain('numeric Tamagui `lineHeight` props as ratios')
+    expect(result.stdout).toContain(
+      'Configured font `lineHeight` numbers remain absolute pixels'
+    )
     expect(result.stdout).toContain('### 15. Verification')
     const [required, optional] = result.stdout.split(
       '### Optional follow-up: Config v6, only when separately requested'

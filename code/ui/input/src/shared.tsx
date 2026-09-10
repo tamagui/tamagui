@@ -1,4 +1,10 @@
-import { getVariableValue, isWeb, resolveSize, styled } from '@tamagui/core'
+import {
+  getVariableValue,
+  isWeb,
+  resolveSize,
+  resolveTextMetrics,
+  styled,
+} from '@tamagui/core'
 import { getFontSized } from '@tamagui/get-font-sized'
 
 // Structural-only defaults for the unstyled Input behavior primitive.
@@ -45,9 +51,26 @@ export const resolveTextAreaSize = (
   const sized = textAreaSizeVariant(props.size ?? true, env)
   const fontStyle = getFontSized(props.size ?? true, env)
   const lines = props.rows ?? props.numberOfLines
+  const fontSize = props.fontSize ?? fontStyle?.fontSize
+  const lineHeight = props.lineHeight ?? fontStyle?.lineHeight
+  const font = props.fontFamily ? env.fonts[props.fontFamily] : env.font
+  const configuredSize = typeof fontSize === 'string' ? font?.size[fontSize] : undefined
+  const configuredLeading =
+    typeof lineHeight === 'string' ? font?.lineHeight?.[lineHeight] : undefined
+  const metrics: Record<string, unknown> = {
+    fontSize: Number.parseFloat(String(getVariableValue(configuredSize ?? fontSize))),
+  }
+  const leading = configuredLeading ?? lineHeight
+  resolveTextMetrics(
+    metrics,
+    (props.lineHeight == null || configuredLeading !== undefined) &&
+      typeof leading === 'number'
+      ? `${leading}px`
+      : leading
+  )
   const height =
-    typeof lines === 'number'
-      ? lines * getVariableValue(fontStyle?.lineHeight)
+    typeof lines === 'number' && typeof metrics.lineHeight === 'number'
+      ? lines * metrics.lineHeight
       : sized?.height
   return {
     borderRadius: sized?.borderRadius,

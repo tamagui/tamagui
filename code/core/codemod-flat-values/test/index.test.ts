@@ -63,7 +63,10 @@ interface Result {
   }
 }
 
-function runOn(inputs: readonly string[]): Result {
+function runOn(
+  inputs: readonly string[],
+  sourceSemantics?: 'v2-pixels' | 'v3-ratios'
+): Result {
   const directory = mkdtempSync(join(tmpdir(), 'flat-values-codemod-'))
   temporaryDirectories.push(directory)
   const jsonPath = join(directory, 'report.json')
@@ -76,6 +79,7 @@ function runOn(inputs: readonly string[]): Result {
       join(directory, 'report.md'),
       '--json',
       jsonPath,
+      ...(sourceSemantics ? ['--source-semantics', sourceSemantics] : []),
       ...inputs,
     ],
     cwd: repoRoot,
@@ -90,15 +94,46 @@ function run(source: string): Result {
   return runOn([fixture(source)])
 }
 
-function runWrite(source: string): string {
+function runWrite(
+  source: string,
+  sourceSemantics?: 'v2-pixels' | 'v3-ratios',
+  runs = 1
+): string {
   const sourcePath = fixture(source)
   const directory = mkdtempSync(join(tmpdir(), 'flat-values-write-'))
+  temporaryDirectories.push(directory)
+  for (let run = 0; run < runs; run++) {
+    const result = Bun.spawnSync({
+      cmd: [
+        process.execPath,
+        entry,
+        '--write',
+        '--report',
+        join(directory, 'report.md'),
+        ...(sourceSemantics ? ['--source-semantics', sourceSemantics] : []),
+        sourcePath,
+      ],
+      cwd: repoRoot,
+      stderr: 'pipe',
+      stdout: 'pipe',
+    })
+    expect(result.exitCode, result.stderr.toString()).toBe(0)
+  }
+  return readFileSync(sourcePath, 'utf8')
+}
+
+function runLineHeightWrite(source: string): string {
+  const sourcePath = fixture(source)
+  const directory = mkdtempSync(join(tmpdir(), 'line-height-write-'))
   temporaryDirectories.push(directory)
   const result = Bun.spawnSync({
     cmd: [
       process.execPath,
       entry,
       '--write',
+      '--source-semantics',
+      'v2-pixels',
+      '--line-height-only',
       '--report',
       join(directory, 'report.md'),
       sourcePath,
@@ -236,6 +271,232 @@ afterEach(() => {
 })
 
 describe('base values', () => {
+  test('migrated dynamic line heights have no manual flags on a second run', () => {
+    const written = runLineHeightWrite(`import { Text } from 'tamagui'
+export const Fixture = ({ size }: { size: number }) => <Text lineHeight={Math.round(size * 1.3)} />
+`)
+    const report = runOn([fixture(written)], 'v2-pixels')
+    expect(report.files.flatMap((file) => file.sites)).toEqual([])
+  })
+
+  test('V2 numeric Tamagui line heights become explicit px and remain idempotent', () => {
+    const source = `import { Text, createTamagui, styled } from 'tamagui'
+import { Text as NativeText, StyleSheet } from 'react-native'
+import { createRestyleComponent } from '@shopify/restyle'
+
+const oldHeight: number = 18
+const nativeStyles = StyleSheet.create({ label: { lineHeight: 12 } })
+const RestyleText = createRestyleComponent()
+createTamagui({ fonts: { body: { family: 'Inter', size: { body: 20 }, lineHeight: { body: 24 } } } } as any)
+Text.style({ lineHeight: 15 })
+Text.resolve(() => ({ lineHeight: oldHeight }))
+styled.dynamic(() => ({ lineHeight: 17 }))
+const Label = styled(Text, {
+  lineHeight: 1.5,
+  variants: {
+    size: {
+      compact: { lh: 14 },
+      tall: styled.dynamic(() => ({ lineHeight: oldHeight })),
+    },
+  },
+})
+
+export const Fixture = () => (
+  <>
+    <Label lineHeight={24} lh={oldHeight} style={[{ lineHeight: 16 }, false && { lh: 20 }]} />
+    <Label lineHeight={-2} />
+    <Label hoverStyle={{ lineHeight: 11 }} />
+    <Label lineHeight={{ default: 12, sm: 13 }} />
+    <NativeText style={{ lineHeight: 10 }} />
+    <NativeText style={nativeStyles.label} />
+    <RestyleText style={{ lineHeight: 9 }} />
+  </>
+)
+`
+    const written = runWrite(source, 'v2-pixels', 2)
+
+    expect(written).toContain('lineHeight: "1.5px"')
+    expect(written).toContain('lh: "14px"')
+    expect(written).toContain('lineHeight: `${oldHeight}px`')
+    expect(written).toContain('Text.style({ lineHeight: "15px" })')
+    expect(written).toContain('Text.resolve(() => ({ lineHeight: `${oldHeight}px` }))')
+    expect(written).toContain('styled.dynamic(() => ({ lineHeight: "17px" }))')
+    expect(written).toContain('lineHeight="24px"')
+    expect(written).toContain('lineHeight="-2px"')
+    expect(written).toContain('lh={`${oldHeight}px`}')
+    expect(written).toContain('{ lineHeight: "16px" }')
+    expect(written).toContain('{ lh: "20px" }')
+    expect(written).toContain('lineHeight="hover:11px"')
+    expect(written).toContain('lineHeight={{ default: "12px", sm: "13px" }}')
+    expect(written).toContain('label: { lineHeight: 12 }')
+    expect(written).toContain('lineHeight: { body: 24 }')
+    expect(written).toContain('<NativeText style={{ lineHeight: 10 }} />')
+    expect(written).toContain('<RestyleText style={{ lineHeight: 9 }} />')
+    expect(written.match(/px/g)?.length).toBe(14)
+  })
+
+  test('V3 source semantics keep authored ratios unitless and explicit px absolute', () => {
+    const source = `import { Text } from 'tamagui'
+export const Fixture = () => (
+  <>
+    <Text lineHeight={1.5} hoverStyle={{ lineHeight: 2 }} />
+    <Text lineHeight="24px" hoverStyle={{ lineHeight: '26px' }} />
+  </>
+)
+`
+    const written = runWrite(source, 'v3-ratios')
+
+    expect(written).toContain('lineHeight="1.5 hover:2"')
+    expect(written).toContain('lineHeight="24px hover:26px"')
+  })
+
+  test('line-height-only mode leaves unrelated V2 syntax untouched', () => {
+    const written = runLineHeightWrite(`import { Text } from 'tamagui'
+export const Fixture = () => (
+  <Text lineHeight={18} color="$red10" hoverStyle={{ lineHeight: 20, color: '$blue10' }} />
+)
+`)
+
+    expect(written).toContain('lineHeight="18px"')
+    expect(written).toContain('color="$red10"')
+    expect(written).toContain('hoverStyle={{ lineHeight: "20px", color: \'$blue10\' }}')
+  })
+
+  test('V2 migration reports shared styles, token values, and untyped dynamics', () => {
+    const result = runOn(
+      [
+        fixture(`import { Text } from 'tamagui'
+import { StyleSheet } from 'react-native'
+const shared = { lineHeight: 18 }
+const nativeStyles = StyleSheet.create({ label: { lineHeight: 19 } })
+declare const token: { val: number }
+declare const unknown: any
+export const Fixture = () => (
+  <>
+    <Text style={shared} />
+    <Text style={nativeStyles.label} />
+    <Text {...shared} />
+    <Text lineHeight={token.val} />
+    <Text lineHeight={unknown} />
+  </>
+)
+`),
+      ],
+      'v2-pixels'
+    )
+    const found = sites(result).flatMap((site) => codes(site))
+
+    expect(
+      found.filter((code) => code === 'ambiguous-shared-line-height-style')
+    ).toHaveLength(3)
+    expect(found).toContain('ambiguous-line-height-token-value')
+    expect(found).toContain('ambiguous-line-height-expression')
+  })
+
+  test('local Tamagui wrappers flag numeric lineHeight and are never rewritten', () => {
+    const directory = mkdtempSync(join(packageDir, 'test/.flat-values-fixture-'))
+    temporaryDirectories.push(directory)
+    writeFileSync(
+      join(directory, 'MonoText.tsx'),
+      `import { memo } from 'react'
+import { Text } from 'tamagui'
+export const MonoText = memo(function MonoText(props: any) {
+  return <Text {...props} />
+})
+`
+    )
+    writeFileSync(
+      join(directory, 'fixture.tsx'),
+      `import { memo as memoize, forwardRef, Component } from 'react'
+import { Text } from 'tamagui'
+import { Text as NativeText } from 'react-native'
+import { createRestyleComponent } from '@shopify/restyle'
+import { MonoText as CodeText } from './MonoText'
+
+const LocalText = memoize(function LocalText(props: any) {
+  return <Text {...props} />
+})
+const RefText = forwardRef((props: any, ref: any) => <Text ref={ref} {...props} />)
+class ClassText extends Component<any> {
+  render() { return <Text {...this.props} /> }
+}
+const RestyleText = createRestyleComponent()
+const NativeOnly = (props: any) => <NativeText style={{ lineHeight: props.lineHeight }} />
+const RestyleOnly = (props: any) => <RestyleText {...props} />
+
+export const Fixture = () => (
+  <>
+    <LocalText lineHeight={14} />
+    <LocalText lh={15} />
+    <LocalText style={{ lineHeight: 16 }} />
+    <LocalText lineHeight="17px" />
+    <CodeText lineHeight={18} />
+    <RefText lineHeight={20} />
+    <ClassText lineHeight={21} />
+    <Text lineHeight={19} />
+    <NativeText style={{ lineHeight: 10 }} />
+    <RestyleText style={{ lineHeight: 9 }} />
+    <NativeOnly lineHeight={10} />
+    <RestyleOnly lineHeight={9} />
+  </>
+)
+`
+    )
+
+    const report = runOn([directory], 'v2-pixels')
+    const found = sites(report)
+    const flagged = found.filter((site) =>
+      codes(site).includes('ambiguous-wrapper-line-height')
+    )
+    expect(flagged.map((site) => site.before).sort()).toEqual([
+      '<ClassText lineHeight={21} />',
+      '<CodeText lineHeight={18} />',
+      '<LocalText lh={15} />',
+      '<LocalText lineHeight={14} />',
+      '<LocalText style={{ lineHeight: 16 }} />',
+      '<RefText lineHeight={20} />',
+    ])
+    expect(found.some((site) => site.before.includes('lineHeight="17px"'))).toBe(false)
+    expect(
+      found.filter((site) =>
+        /NativeText|RestyleText|NativeOnly|RestyleOnly/.test(site.before)
+      )
+    ).toEqual([])
+
+    const writeDir = mkdtempSync(join(tmpdir(), 'line-height-write-'))
+    temporaryDirectories.push(writeDir)
+    const writeResult = Bun.spawnSync({
+      cmd: [
+        process.execPath,
+        entry,
+        '--write',
+        '--source-semantics',
+        'v2-pixels',
+        '--line-height-only',
+        '--report',
+        join(writeDir, 'report.md'),
+        directory,
+      ],
+      cwd: repoRoot,
+      stderr: 'pipe',
+      stdout: 'pipe',
+    })
+    expect(writeResult.exitCode, writeResult.stderr.toString()).toBe(0)
+    const written = readFileSync(join(directory, 'fixture.tsx'), 'utf8')
+    expect(written).toContain('<LocalText lineHeight={14} />')
+    expect(written).toContain('<LocalText lh={15} />')
+    expect(written).toContain('<LocalText style={{ lineHeight: 16 }} />')
+    expect(written).toContain('<LocalText lineHeight="17px" />')
+    expect(written).toContain('<CodeText lineHeight={18} />')
+    expect(written).toContain('<RefText lineHeight={20} />')
+    expect(written).toContain('<ClassText lineHeight={21} />')
+    expect(written).toContain('<Text lineHeight="19px" />')
+    expect(written).toContain('<NativeText style={{ lineHeight: 10 }} />')
+    expect(written).toContain('<RestyleText style={{ lineHeight: 9 }} />')
+    expect(written).toContain('<NativeOnly lineHeight={10} />')
+    expect(written).toContain('<RestyleOnly lineHeight={9} />')
+  })
+
   test('a numeric base a condition targets folds into the program', () => {
     const site = only(
       runOn([

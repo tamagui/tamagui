@@ -4,6 +4,8 @@ import type { Properties } from 'csstype';
 import type { CSSProperties, ComponentType, Context, Dispatch, FunctionComponent, HTMLAttributes, ProviderExoticComponent, Ref as ReactRef, ReactNode, RefObject, SetStateAction } from 'react';
 import type { FontVariant, PressableProps, Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from '@tamagui/react-native-types';
 import type { NativeStyleEngineLinkHandle } from './helpers/nativeStyleEngine';
+import type { AnimatedTextChannel, NativeTextContext, NativeTextMetrics } from './helpers/nativeTextMetrics';
+export type { AnimatedTextChannel, NativeTextMetrics } from './helpers/nativeTextMetrics';
 import type { StyleFrontend } from './helpers/styleFrontend';
 import type { CSSColorNames } from './interfaces/CSSColorNames';
 import type { RNOnlyProps } from './interfaces/RNExclusiveTypes';
@@ -299,7 +301,7 @@ export type ReactComponentWithRef<Props, Ref> = ComponentType<Props & {
 }>;
 export type ComponentSetStateShallow = React.Dispatch<React.SetStateAction<Partial<TamaguiComponentState>>>;
 export type ComponentSetState = Dispatch<SetStateAction<TamaguiComponentState>>;
-export type ComponentContextI = {
+export type ComponentContextI = NativeTextContext & {
     disableSSR?: boolean;
     inText: boolean;
     language: LanguageContextType | null;
@@ -659,8 +661,9 @@ export interface GenericTamaguiSettings {
      * controls style semantics where React Native/Yoga and CSS differ.
      *
      * - "legacy": preserves Tamagui v1 flex expansion.
-     * - "react-native": follows React Native/Yoga flex and raw numeric lineHeight semantics.
-     * - "web": follows CSS flex and unitless numeric lineHeight semantics.
+     * - "react-native": follows React Native/Yoga flex expansion.
+     * - "web": follows CSS flex expansion.
+     * numeric Tamagui lineHeight values are ratios in every mode.
      *
      * @default "web"
      */
@@ -935,7 +938,7 @@ export type GenericFont<Key extends GenericFontKey = GenericFontKey> = {
     };
     family?: string | Variable;
     lineHeight?: Partial<{
-        [key in Key]: number | Variable;
+        [key in Key]: number | Px | `${number}` | Variable;
     }> | undefined;
     letterSpacing?: Partial<{
         [key in Key]: number | Variable;
@@ -1160,7 +1163,7 @@ export type GenericFontFamily = 'serif' | 'sans-serif' | 'monospace' | 'cursive'
 export type FontFamilyTokens = FontTokens;
 export type FontSize = GetTokenString<GetTokenFontKeysFor<'size'>> | number | RemString | true;
 export type FontSizeTokens = FontSize;
-export type FontLineHeightTokens = GetTokenString<GetTokenFontKeysFor<'lineHeight'>> | number | RemString;
+export type FontLineHeightTokens = GetTokenString<GetTokenFontKeysFor<'lineHeight'>> | number | Px | `${number}` | RemString;
 export type FontWeightValues = `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00` | 'bold' | 'normal';
 export type FontWeightTokens = GetTokenString<GetTokenFontKeysFor<'weight'>> | FontWeightValues;
 type FontColorTokenBase = GetTokenString<GetTokenFontKeysFor<'color'>>;
@@ -1705,7 +1708,8 @@ interface ExtendedBaseProps extends TransformStyleProps, ExtendBaseTextProps, Ex
 }
 export interface StackStyleBase extends Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>, ExtendedBaseProps {
 }
-export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBaseProps | 'fontVariant'>, ExtendedBaseProps {
+export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBaseProps | 'fontVariant' | 'lineHeight'>, ExtendedBaseProps {
+    lineHeight?: number | Px | `${number}`;
     /**
      * react-native types this as a mutable `FontVariant[]`, which an `as const` variant
      * definition can't satisfy — and a variants object that misses its constraint is
@@ -1832,6 +1836,7 @@ export type GetStyleState = {
     conf: TamaguiInternalConfig;
     avoidMergeTransform?: boolean;
     fontFamily?: string;
+    nativeLineHeight?: unknown;
     debug?: DebugProp;
     transformAccumulator?: TransformAccumulator;
     flatRulesToInsert?: RulesToInsert;
@@ -1916,6 +1921,7 @@ export type StaticConfigPublic = {
     contextProps?: readonly string[];
 };
 type StaticConfigBase = StaticConfigPublic & {
+    isDOM?: boolean;
     Component?: FunctionComponent<any> & StaticComponentObject<any, any, any, any, any, any>;
     displayName?: string;
     baseStyle?: Record<string, any>;
@@ -2127,6 +2133,18 @@ type AnimationDriverBase<A extends AnimationConfig = AnimationConfig> = {
     animations: A;
     View?: any;
     Text?: any;
+    useTextMetrics?: (input: {
+        inheritedText?: AnimatedTextChannel | null;
+        lineHeight?: NativeTextMetrics['lineHeight'];
+    }) => {
+        textChannel: AnimatedTextChannel | null;
+    } & ({
+        style: null;
+    } | {
+        style: Record<string, unknown>;
+        Text: ComponentType<any>;
+        TextInput: ComponentType<any>;
+    });
 };
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = AnimationDriverBase<A> & {
     /** When true, this is a stub driver with no real animation support */
@@ -2149,9 +2167,10 @@ export type AnimationDriverStub<A extends AnimationConfig = AnimationConfig> = A
 };
 export type AnimationDriverLike<A extends AnimationConfig = AnimationConfig> = AnimationDriver<A> | AnimationDriverStub<A>;
 export type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>;
-type UseStyleListener = (nextStyle: Record<string, unknown>, effectiveTransition?: TransitionProp | null, pseudoActive?: boolean) => void;
+type UseStyleListener = (nextStyle: Record<string, unknown>, effectiveTransition?: TransitionProp | null, pseudoActive?: boolean, nativeTextMetrics?: NativeTextMetrics) => void;
 export type UseStyleEmitter = (cb: UseStyleListener) => void;
 export type UseAnimationHook = (props: {
+    inheritedText?: AnimatedTextChannel | null;
     style: Record<string, any>;
     props: Record<string, any>;
     styleState?: GetStyleResult | null;
@@ -2168,6 +2187,7 @@ export type UseAnimationHook = (props: {
     onTransition?: OnTransition;
     delay?: number;
 }) => null | {
+    textChannel?: AnimatedTextChannel | null;
     style?: unknown;
     className?: string;
     ref?: any;
@@ -2180,6 +2200,7 @@ export type GetStyleResult = {
     rulesToInsert: RulesToInsert;
     viewProps: (StackNonStyleProps & StackStyle) & Record<string, any>;
     fontFamily: string | undefined;
+    nativeTextMetrics?: NativeTextMetrics;
     space?: any;
     hasMedia: boolean | Set<string>;
     pseudoGroups?: Set<string>;

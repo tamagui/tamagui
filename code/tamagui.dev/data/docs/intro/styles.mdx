@@ -180,7 +180,7 @@ An object only counts as conditional when it has a `default` key or its first
 key is a valid modifier. A plain value object like
 `shadowOffset={{ width: 0, height: 2 }}` is left alone.
 
-## Font size values
+## Font size and line height values
 
 v3 distinguishes raw numeric font sizes from exact px strings:
 
@@ -189,13 +189,42 @@ v3 distinguishes raw numeric font sizes from exact px strings:
 - `fontSize="17px"` is an exact pixel value. Web passes it through as CSS;
   native parses it to a number.
 
-The v5 config font `size` and `lineHeight` scales are pinned to px strings in
-v3, preserving v2 visual output while making exact px intent explicit.
+Numeric `lineHeight` authored in Tamagui styles is a font-size ratio on web and
+native. A numeric string has the same ratio meaning when it is not a configured
+font-token name. An explicit px string stays absolute. Values are never inferred
+from magnitude, so `lineHeight={24}` means 24 times the effective font size and
+`lineHeight="24px"` means 24 pixels.
+
+Font configuration keeps a separate compatibility contract. Numeric
+`lineHeight` entries remain absolute pixels. Use a numeric string for a relative
+font token and a px string for an explicit absolute token:
 
 ```tsx
 <html.span fontSize={17}>Platform line height</html.span>
 <html.span fontSize="17px">Exact px size</html.span>
+<html.span fontSize={20} lineHeight={1.5}>30px line box</html.span>
+<html.span lineHeight="24px">24px line box</html.span>
+
+const bodyFont = createFont({
+  family: 'Inter',
+  size: { body: 20 },
+  lineHeight: {
+    legacy: 24, // absolute pixels
+    relative: '1.5', // ratio
+    explicit: '24px', // absolute pixels
+  },
+})
 ```
+
+On native, Tamagui can resolve a ratio from the effective font size inherited
+through Tamagui text. This inheritance continues through intervening Tamagui Views,
+as it does on web. When a Tamagui text boundary sits below a raw React Native
+or third-party text parent, pass the effective font size at that boundary because
+Tamagui cannot inspect typography held only by the native host tree.
+
+If a native ratio has no known font size, Tamagui explicitly sets `fontSize={14}`
+and calculates the line height from 14. This also applies below a raw native text
+parent, so pass its font size at the Tamagui boundary to preserve the glyph size.
 
 ## State modifiers
 

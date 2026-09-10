@@ -162,7 +162,7 @@ const systemFont = createFont({
     3: 15,
   },
   lineHeight: {
-    // 1 will be 22
+    // numeric config values are absolute pixels; 1 will be 22
     2: 22,
   },
   weight: {
@@ -456,6 +456,29 @@ const interFont = createFont({
   },
 })
 ```
+
+Font configuration and component styles intentionally treat numbers differently.
+A numeric font `lineHeight` remains an absolute pixel value for compatibility
+with existing configs. A numeric string is a ratio, while a px string is an
+explicit absolute length:
+
+```tsx
+const interFont = createFont({
+  family: 'Inter',
+  size: { body: 20 },
+  lineHeight: {
+    body: 24,
+    relaxed: '1.5',
+    fixed: '24px',
+  },
+})
+```
+
+Used as font tokens, `body` and `fixed` resolve to 24 pixels, while `relaxed`
+resolves to 1.5 times the effective font size. In Tamagui component styles,
+`lineHeight={1.5}` is also a ratio. Use `lineHeight="24px"` when the authored
+style itself needs an absolute value. Tamagui does not infer either meaning from
+the number's magnitude.
 
 <Notice theme="blue">
   We use numbered keys as an example, but you can use any strings you'd like. The optional

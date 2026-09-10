@@ -34,7 +34,7 @@ export type ResolvedSize = {
 	/** spread onto the text */
 	text: {
 		fontSize: number | Variable;
-		lineHeight?: number | Variable;
+		lineHeight?: NonNullable<GenericFont["lineHeight"]>[string];
 	};
 	/** px: the recipe's icon, or the font size rounded up to the 4px grid; a token key's font size as is */
 	icon: number;

@@ -41,7 +41,13 @@ no runtime compatibility path for sigil-prefixed values or condition objects.
 Run the codemod from your project root before the API-specific steps below:
 
 ```bash
+npx @tamagui/codemod-flat-values \
+  --source-semantics v2-pixels \
+  --report flat-values-report.md \
+  ./src
+
 npx @tamagui/codemod-flat-values --write \
+  --source-semantics v2-pixels \
   --report flat-values-report.md \
   --json flat-values-report.json \
   ./src
@@ -864,17 +870,41 @@ If you need to move from `5` to `4`, use explicit token keys or a helper that
 only handles numeric token names. Do not rebuild runtime scale sorting in app
 code.
 
-## 7. Audit exact font sizes
+## 7. Migrate line height and audit exact font sizes
 
-v3 distinguishes raw numbers from exact px strings:
+V3 changes numeric `lineHeight` authored on Tamagui components from an absolute
+value to a ratio on both web and native. The migration command above selects the
+old source semantics explicitly, so every proven V2 number becomes a px string.
+The value does not use a magnitude heuristic: V2 `lineHeight={1.5}` becomes
+`lineHeight="1.5px"`, while a new V3 ratio stays `lineHeight={1.5}`.
+
+The codemod follows Tamagui bindings through JSX, `styled()` styles and variants,
+resolvers, and inline style objects. It leaves raw React Native and Restyle styles
+alone. A shared style object, untyped dynamic expression, or extracted token
+`.val` is reported for a manual decision at the Tamagui boundary. Rerunning with
+`--source-semantics v2-pixels` is safe because explicit px output is idempotent.
+
+Review existing numeric strings separately. The codemod leaves strings unchanged;
+`lineHeight="24"` is a ratio unless `24` names a configured font token. Use
+`lineHeight="24px"` if that string previously represented a native pixel length.
+
+Font sizes keep their existing contract:
 
 - `fontSize={17}` is a numeric platform value and keeps the platform-default
   line-height path.
 - `fontSize="17px"` is an exact pixel value. Web passes it through as CSS;
   native parses it to a number.
 
-The v5 config font `size` and `lineHeight` scales are pinned to px strings in
-v3, so the default config keeps v2 computed output.
+Font configuration is a separate boundary. Numeric `lineHeight` entries remain
+absolute pixels, including the existing v5 and v6 scales. Use a numeric string
+such as `"1.5"` for a relative font token, or `"24px"` to make an absolute
+length explicit.
+
+On native, a text node with its own font size and no local line height keeps a
+runtime inheritance boundary, even when its children are literal text. An
+ancestor in another module can supply a ratio that must be recomputed at this
+node's font size. Token-sized Paragraph and SizableText with their own default
+line height can still be flattened by the compiler.
 
 ```tsx
 // platform-default line height behavior
@@ -882,10 +912,13 @@ v3, so the default config keeps v2 computed output.
 
 // exact px behavior
 <Paragraph fontSize="17px" />
-```
 
-If your config used numbers because you wanted exact web pixels, convert those
-font tokens to px strings.
+// V3 relative line height on both platforms
+<Paragraph fontSize={20} lineHeight={1.5} />
+
+// explicit absolute line height
+<Paragraph lineHeight="24px" />
+```
 
 ## 8. Update FocusScope usage
 

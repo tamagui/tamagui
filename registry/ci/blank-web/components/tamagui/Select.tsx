@@ -32,19 +32,19 @@ const IconGlyph = styled(SizableText, {
 })
 
 const ChevronDown = ({ size = 16 }: { size?: number }) => (
-  <IconGlyph fontSize={size} lineHeight={size}>
+  <IconGlyph fontSize={size} lineHeight={1}>
     ▾
   </IconGlyph>
 )
 
 const ChevronUp = ({ size = 16 }: { size?: number }) => (
-  <IconGlyph fontSize={size} lineHeight={size}>
+  <IconGlyph fontSize={size} lineHeight={1}>
     ▴
   </IconGlyph>
 )
 
 const Check = ({ size = 14 }: { size?: number }) => (
-  <IconGlyph fontSize={size} lineHeight={size}>
+  <IconGlyph fontSize={size} lineHeight={1}>
     ✓
   </IconGlyph>
 )

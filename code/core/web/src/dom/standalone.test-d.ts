@@ -22,6 +22,9 @@ const root = style({
   backgroundColor: 'surface hover:surface-hover',
 })
 const heading = style({ color: 'color', fontSize: 24 })
+style({ fontSize: 20, lineHeight: 1.5 })
+style({ lineHeight: '24px' })
+style({ lineHeight: '1.5' })
 
 // css property checking happens here, once, and not on every jsx tag
 // @ts-expect-error not a style property

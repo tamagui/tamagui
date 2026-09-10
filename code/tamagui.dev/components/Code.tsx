@@ -4,7 +4,7 @@ export const Code = styled(Paragraph, {
   displayName: 'Code',
   render: 'code',
   fontFamily: 'mono',
-  lineHeight: 18,
+  lineHeight: '18px',
   cursor: 'inherit',
   whiteSpace: 'pre',
   p: '1',

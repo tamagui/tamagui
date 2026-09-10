@@ -3,12 +3,15 @@ import './lib/nativeTarget'
 import { transform } from 'esbuild'
 import * as ReactModule from 'react'
 import * as JSXRuntime from 'react/jsx-runtime'
+import * as ReactNative from 'react-native'
 import { act, create, type ReactTestRenderer } from 'react-test-renderer'
 import { expect, test, vi } from 'vitest'
 
 import * as NativeDOM from '../../../core/web/src/dom/index.native'
 import configDefault from '../../../core/config-default'
-import { TamaguiProvider, createTamagui } from '../../../core/web/src'
+import * as TamaguiCore from '../../../core/web/src'
+import { TamaguiProvider, Text, createTamagui } from '../../../core/web/src'
+import { setupHooks } from '../../../core/web/src/setupHooks'
 // the module a native bundler picks for `html` from @tamagui/core, which is
 // what runs when the compiler did not: the vitest resolver does not do the
 // platform extension swap for this pair
@@ -43,6 +46,13 @@ vi.mock('@tamagui/constants', async (importOriginal) => ({
 }))
 
 const config = createTamagui(configDefault.getDefaultTamaguiConfig('native'))
+setupHooks({
+  getBaseViews: () => ({
+    Text: ReactNative.Text,
+    View: ReactNative.View,
+    TextAncestor: null,
+  }),
+})
 
 function styleValue(node: { props: { style?: unknown } }, key: string) {
   const styles = (Array.isArray(node.props.style) ? node.props.style : [node.props.style])
@@ -68,9 +78,9 @@ function findTestIDEvent(renderer: ReactTestRenderer, testID: string, event: str
   return matches.at(-1)!
 }
 
-async function executeCompiled(source: string) {
+async function executeCompiled(source: string, expectedDiagnostics: string[] = []) {
   const output = await extractForNative(source)
-  expect(output.diagnostics).toEqual([])
+  expect(output.diagnostics.map(({ code }) => code)).toEqual(expectedDiagnostics)
   const transformed = await transform(output.code, {
     format: 'cjs',
     jsx: 'automatic',
@@ -82,15 +92,11 @@ async function executeCompiled(source: string) {
   const localRequire = (specifier: string) => {
     if (specifier === 'react') return ReactModule
     if (specifier === 'react/jsx-runtime') return JSXRuntime
+    if (specifier === 'react-native') return ReactNative
     // the lowered file keeps its `html` import; every member of it throws, so a
     // tag the compiler failed to replace fails the test rather than rendering
-    if (
-      specifier === '@tamagui/core' ||
-      specifier === '@tamagui/core/dom' ||
-      specifier === 'tamagui/dom'
-    ) {
-      return NativeDOM
-    }
+    if (specifier === '@tamagui/core') return TamaguiCore
+    if (specifier === '@tamagui/core/dom' || specifier === 'tamagui/dom') return NativeDOM
     throw new Error(`Unexpected compiled dependency: ${specifier}`)
   }
   Function(
@@ -220,19 +226,24 @@ test('compiled JSX and createElement literals render with inherited text styles'
   const compiled = await executeCompiled(`
     import { createElement } from 'react'
     import { html, style } from '@tamagui/core/dom'
-    const parent = style({ color: 'red', fontSize: 16, lineHeight: 2 })
+    const parent = style({ color: 'red', fontSize: 20, lineHeight: 1.5 })
     export const TopLevel = <html.div style={parent}>top-level literal</html.div>
     export const JSXLiteral = () => <html.div style={parent}>jsx literal</html.div>
     export const CreateElementLiteral = () =>
       createElement(html.div, { style: parent }, 'createElement literal')
+    export const Nested = () => (
+      <html.div style={parent}>
+        <html.span data-testid="nested" fontSize={10}>nested literal</html.span>
+      </html.div>
+    )
   `)
 
   const topLevel = compiled.TopLevel as unknown as ReactModule.ReactElement<{
     style: unknown
   }>
   expect(styleValue(topLevel, 'color')).toBe('red')
-  expect(styleValue(topLevel, 'fontSize')).toBe(16)
-  expect(styleValue(topLevel, 'lineHeight')).toBe(2)
+  expect(styleValue(topLevel, 'fontSize')).toBe(20)
+  expect(styleValue(topLevel, 'lineHeight')).toBe(1.5)
 
   for (const name of ['JSXLiteral', 'CreateElementLiteral']) {
     let renderer: ReactTestRenderer
@@ -241,9 +252,40 @@ test('compiled JSX and createElement literals render with inherited text styles'
     })
     const text = renderer!.root.findByType('Text' as any)
     expect(styleValue(text, 'color'), name).toBe('red')
-    expect(styleValue(text, 'fontSize'), name).toBe(16)
-    expect(styleValue(text, 'lineHeight'), name).toBe(32)
+    expect(styleValue(text, 'fontSize'), name).toBe(20)
+    expect(styleValue(text, 'lineHeight'), name).toBe(30)
   }
+
+  let nestedRenderer: ReactTestRenderer
+  act(() => {
+    nestedRenderer = create(ReactModule.createElement(compiled.Nested!))
+  })
+  const nested = findPrimitive(nestedRenderer!, 'Text', 'nested')
+  expect(styleValue(nested, 'fontSize')).toBe(10)
+  expect(styleValue(nested, 'lineHeight')).toBe(15)
+})
+
+test('a separately compiled Text leaf retains inherited semantic lineHeight', async () => {
+  const compiled = await executeCompiled(
+    `
+      import { Text } from '@tamagui/core'
+      export const Leaf = () => <Text testID="leaf" fontSize={10}>leaf</Text>
+    `,
+    ['local/unsupported-target']
+  )
+
+  process.env.TAMAGUI_TARGET = 'native'
+  const standalone = render(ReactModule.createElement(compiled.Leaf!))
+  expect(
+    styleValue(findPrimitive(standalone, 'Text', 'leaf'), 'lineHeight')
+  ).toBeUndefined()
+
+  const nested = render(
+    <Text fontSize={20} lineHeight={1.5}>
+      <compiled.Leaf />
+    </Text>
+  )
+  expect(styleValue(findPrimitive(nested, 'Text', 'leaf'), 'lineHeight')).toBe(15)
 })
 
 test('the compiled native platform fixture renders hosts, styles and interaction', async () => {

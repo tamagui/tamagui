@@ -13,7 +13,7 @@ import { stylePropsAll, stylePropsUnitless } from '@tamagui/helpers'
 // every lookup on this hot path a slow one
 const unitfulProps = new Set(
   [...Object.keys(stylePropsAll), 'translateX', 'translateY'].filter(
-    (key) => !stylePropsUnitless[key]
+    (key) => key !== 'lineHeight' && !stylePropsUnitless[key]
   )
 )
 
@@ -23,6 +23,7 @@ const pxStringRe = /^-?\d*\.?\d+px$/
 
 export function normalizeValueWithProperty(value: any, property = ''): any {
   if (!isWeb) {
+    if (property === 'lineHeight') return value
     if (typeof value === 'string' && pxStringRe.test(value)) {
       return Number.parseFloat(value)
     }

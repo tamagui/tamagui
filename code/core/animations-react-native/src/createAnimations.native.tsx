@@ -12,6 +12,7 @@ import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import type {
   AnimatedNumberStrategy,
   AnimationDriverWithAnimatedNumbers,
+  NativeTextMetrics,
   TransitionProp,
   UniversalAnimatedNumber,
   UseAnimatedNumberReaction,
@@ -24,6 +25,7 @@ import {
   Animated,
   Easing,
   processColor,
+  TextInput,
   type ColorValue,
   type Text,
   type View,
@@ -71,8 +73,10 @@ const colorStyleKey = {
   borderBottomColor: true,
 }
 
-// layout dimension keys. these must run on the JS driver (useNativeDriver:false)
-// because the native animated module can't drive layout props.
+// layout dimensions. the native animated module has no whitelist entry for any
+// of them, so a node animating one runs its whole Animated graph on the JS
+// driver (useNativeDriver:false): Fabric cannot mix native- and JS-driven
+// values on one node.
 const layoutStyleKey = {
   height: true,
   width: true,
@@ -81,6 +85,18 @@ const layoutStyleKey = {
   minWidth: true,
   maxWidth: true,
 }
+
+// text metrics have no whitelist entry either, but unlike a height they sit on
+// nearly every Text, so being covered by a broad `transition="medium"` must not
+// be enough to take the node off the native driver: an opacity fade over text
+// whose size is not changing would then run in JS. they join the Animated graph
+// only while they are actually moving, and the node's driver follows them.
+const textMetricStyleKey = {
+  fontSize: true,
+  lineHeight: true,
+}
+
+const jsDriverStyleKey = { ...layoutStyleKey, ...textMetricStyleKey }
 
 function hasAnimatedLayoutKey(
   style: Record<string, any>,
@@ -93,6 +109,43 @@ function hasAnimatedLayoutKey(
   }
   return false
 }
+
+// A numeric authored lineHeight is a RATIO of the resolved font size, not a
+// length. Core finalizes the destination to fontSize * ratio and reports the
+// ratio back on `nativeTextMetrics`, so the painted leading has to be
+// fontSize * ratio on EVERY frame, not only at the destination. This driver
+// gets that exactly by never animating the leading itself: it animates the
+// font size and the ratio, and paints their product as one Animated node.
+// An absolute px leading, and any raw react-native style, keeps its own value
+// and animates as an ordinary numeric key.
+const getLeadingRatio = (metrics: { lineHeight?: unknown } | undefined | null) => {
+  const ratio = metrics?.lineHeight
+  return typeof ratio === 'number' && Number.isFinite(ratio) && ratio >= 0
+    ? ratio
+    : undefined
+}
+
+// the product needs both factors as numbers in the style it is painting into.
+const paintsLeadingProduct = (
+  style: Record<string, any>,
+  ratio: number | undefined
+): ratio is number =>
+  ratio !== undefined &&
+  typeof style.fontSize === 'number' &&
+  typeof style.lineHeight === 'number'
+
+// a leading multiplied off an ANCESTOR's live font size: this node has none of
+// its own, core reports the ratio, and react-native inherits the size itself.
+const inheritedFontSizeNode = (
+  style: Record<string, any>,
+  ratio: number | undefined,
+  inheritedText: { fontSize: unknown; driver: string } | null | undefined
+) =>
+  ratio !== undefined &&
+  typeof style.fontSize !== 'number' &&
+  inheritedText?.driver === 'react-native'
+    ? (inheritedText.fontSize as Animated.Value)
+    : undefined
 
 // Only colors accepted by RN's own parser can enter interpolation. CSS-wide
 // keywords, unresolved tokens, var()/calc(), and empty strings otherwise reach
@@ -119,6 +172,11 @@ const costlyToAnimateStyleKey = {
 
 export const AnimatedView: Animated.AnimatedComponent<typeof View> = Animated.View
 export const AnimatedText: Animated.AnimatedComponent<typeof Text> = Animated.Text
+// a TextInput never inherits font size from an ancestor Text on native, so the
+// binding hook has to hand it a host that accepts animated nodes of its own.
+// built on first use: the compiler evaluates tamagui.config.ts against a
+// react-native stub whose Animated cannot make one, and never binds any text.
+let animatedTextInput: Animated.AnimatedComponent<typeof TextInput> | undefined
 
 export function useAnimatedNumber(
   initial: number
@@ -264,6 +322,33 @@ export function createAnimations<A extends AnimationsConfig>(
     useAnimatedNumbersStyle,
     usePresence,
     ResetPresence,
+
+    // binds a descendant that has no font size of its own to the ancestor's
+    // animated one. no clock here: the font size node is the ancestor's, and a
+    // ratio leading is a multiplication of it, so both land on the same frame.
+    useTextMetrics: ({ inheritedText, lineHeight }) => {
+      const node =
+        inheritedText?.driver === 'react-native'
+          ? (inheritedText.fontSize as Animated.Value)
+          : null
+      // an absolute or `normal` leading still needs the font size bound, it
+      // just keeps the leading the caller already resolved.
+      const ratio = typeof lineHeight === 'number' ? lineHeight : null
+      const style = React.useMemo(
+        () =>
+          node
+            ? ratio === null
+              ? { fontSize: node }
+              : { fontSize: node, lineHeight: Animated.multiply(node, ratio) }
+            : null,
+        [node, ratio]
+      )
+      const textChannel = inheritedText ?? null
+      if (!style) return { style: null, textChannel }
+      animatedTextInput ||= Animated.createAnimatedComponent(TextInput)
+      return { style, textChannel, Text: AnimatedText, TextInput: animatedTextInput }
+    },
+
     useAnimations: ({
       props,
       onTransition,
@@ -273,6 +358,7 @@ export function createAnimations<A extends AnimationsConfig>(
       stateRef,
       styleState,
       useStyleEmitter,
+      inheritedText,
     }) => {
       const isDisabled = isWeb && componentState.unmounted === true
       const isExiting = presence?.[0] === false
@@ -302,6 +388,72 @@ export function createAnimations<A extends AnimationsConfig>(
 
       /** store Animated value of each key e.g: color: AnimatedValue */
       const animateStyles = React.useRef<Record<string, Animated.Value>>({})
+      // a ratio leading animates the RATIO, never the leading, and paints
+      // fontSize * ratio as one node. the ratio is not a style key, so it lives
+      // outside animateStyles (which the stale-key sweep and the emitter's
+      // structural-change check both treat as the rendered style's own keys).
+      const leadingRatioValue = React.useRef<Animated.Value | null>(null)
+      const leadingRatioRef = React.useRef<number | undefined>(undefined)
+      // whether the style React last committed paints the derived product. the
+      // emitter can only re-target existing Animated.Values, so a pass that
+      // disagrees with this has to force a commit to swap the node itself.
+      const paintsDerivedLeading = React.useRef(false)
+      // this subtree's live font size, published for descendants that inherit
+      // it. the channel's identity IS the node's, so a consumer that keeps the
+      // same channel keeps the same derived node.
+      const textChannelRef = React.useRef<{ fontSize: unknown; driver: string } | null>(
+        null
+      )
+      // core reports a numeric (ratio) leading on nativeTextMetrics; a px length
+      // and 'normal' are reported as themselves and stay independent keys.
+      leadingRatioRef.current = getLeadingRatio(styleState?.nativeTextMetrics)
+      // the text metrics the last pass painted, so the next one can tell a real
+      // change from a value that is simply present. a metric only joins the
+      // Animated graph while it is moving (see textMetricStyleKey), which is
+      // what keeps an ordinary opacity or transform animation over unchanged
+      // text on the native driver.
+      const paintedTextRef = React.useRef<{
+        fontSize?: unknown
+        lineHeight?: unknown
+        ratio?: number
+      }>({})
+      // a value already in the graph keeps moving until it arrives, so a
+      // re-render mid-flight never drops it back to a static style and snaps.
+      // the first pass has painted nothing yet, so nothing is moving there
+      // either: the metrics land as plain numbers and the node mounts on the
+      // native driver.
+      const movesTextValue = (key: 'fontSize' | 'lineHeight', target: unknown) => {
+        if (typeof target !== 'number') return false
+        const node = animateStyles.current[key]
+        const last = node ? (node['_value'] as unknown) : paintedTextRef.current[key]
+        return last !== undefined && last !== target
+      }
+      const movesLeadingRatio = (ratio: number | undefined) => {
+        if (ratio === undefined) return false
+        const node = leadingRatioValue.current
+        const last = node ? (node['_value'] as number) : paintedTextRef.current.ratio
+        return last !== undefined && last !== ratio
+      }
+      // the font size descendants read as this node's live size. it outlives
+      // any one animation: dropping it whenever the size came to rest would
+      // swap every descendant between Text and Animated.Text, remounting their
+      // subtrees, and a TextInput's focus and contents with them, every time an
+      // animation started or finished.
+      const fontSizeNode = React.useRef<Animated.Value | null>(null)
+      const animatedValueFor = (key: string) => {
+        const painted = animateStyles.current[key]
+        if (painted) return painted
+        if (key === 'fontSize' && fontSizeNode.current) return fontSizeNode.current
+        // a metric that was at rest is out of the graph, so the value it
+        // rejoins with has to start at what the last pass painted: a fresh
+        // Animated.Value starts AT its target, and would snap the metric.
+        if (textMetricStyleKey[key])
+          return new Animated.Value(paintedTextRef.current[key] as number)
+        return undefined
+      }
+      const leadingRatioValueFrom = () =>
+        leadingRatioValue.current ??
+        new Animated.Value(paintedTextRef.current.ratio as number)
       const animatedTranforms = React.useRef<{ [key: string]: Animated.Value }[]>([])
       const animationsState = React.useRef(
         new WeakMap<
@@ -359,6 +511,8 @@ export function createAnimations<A extends AnimationsConfig>(
         !!onTransition,
         isDark,
         justFinishedEntering,
+        leadingRatioRef.current,
+        inheritedText,
       ]
 
       const res = React.useMemo(() => {
@@ -381,11 +535,38 @@ export function createAnimations<A extends AnimationsConfig>(
         )
 
         const nonAnimatedStyle = {}
-        // animatedStyle owns every Animated.Value on the node. Fabric cannot mix
-        // native- and JS-driven values inside that shared graph, so one layout
-        // animation makes the whole node use the JS driver.
-        const useNativeDriverForNode =
-          nativeDriver && !hasAnimatedLayoutKey(style, isDark, resolved)
+        // the leading is derived only while something can actually move it.
+        // when neither key is covered by the transition both fall through to
+        // nonAnimatedStyle and land together in one commit, which is already
+        // coherent and keeps the node on the native driver.
+        const paintedRatio = leadingRatioRef.current
+        const paintsProduct = paintsLeadingProduct(style, paintedRatio)
+        const movesFontSize = movesTextValue('fontSize', style.fontSize)
+        const movesLeading = paintsProduct
+          ? movesLeadingRatio(paintedRatio)
+          : movesTextValue('lineHeight', style.lineHeight)
+        // a metric that has arrived leaves the graph here rather than in the
+        // sweep at the end of the pass, so the node goes back to the native
+        // driver in the same commit that stops moving it. the same three
+        // conditions as that sweep: an exit and a latched pseudo both still own
+        // the keys they are painting.
+        if (!isExiting && !isDisabled && !pseudoActiveRef.current) {
+          if (!movesFontSize) delete animateStyles.current.fontSize
+          if (!movesLeading) delete animateStyles.current.lineHeight
+        }
+
+        // a font size a transition can move is published to descendants whether
+        // or not it happens to be moving right now, so their host component
+        // does not change under them when it starts.
+        if (
+          isDisabled ||
+          typeof style.fontSize !== 'number' ||
+          !getTransitionForKey(resolved, 'fontSize')
+        ) {
+          fontSizeNode.current = null
+        } else if (!fontSizeNode.current) {
+          fontSizeNode.current = new Animated.Value(style.fontSize)
+        }
 
         // track which animated keys/transforms the incoming style actually
         // carries this pass, so entries that left the style can be dropped
@@ -394,6 +575,34 @@ export function createAnimations<A extends AnimationsConfig>(
         const seenAnimateKeys = new Set<string>()
         let sawTransform = false
         let transformCount = 0
+
+        const derivesLeading =
+          !isDisabled &&
+          paintsProduct &&
+          (movesFontSize || movesLeading) &&
+          (!!getTransitionForKey(resolved, 'fontSize') ||
+            !!getTransitionForKey(resolved, 'lineHeight'))
+        // an inherited font size: core leaves this node's own fontSize out of
+        // the style and reports the ratio, so the leading is the ANCESTOR's
+        // live font size times this node's ratio. react-native inherits the
+        // size itself, and a length leading is inherited as a length.
+        const inheritedFontSize = isDisabled
+          ? undefined
+          : inheritedFontSizeNode(style, paintedRatio, inheritedText)
+
+        // animatedStyle owns every Animated.Value on the node. Fabric cannot mix
+        // native- and JS-driven values inside that shared graph, so one layout
+        // animation, one text metric on the move, or a leading multiplied off an
+        // ancestor's font size, makes the whole node use the JS driver. a metric
+        // another pass left in the graph counts too, or its next animation would
+        // start on a driver the node no longer runs on.
+        const useNativeDriverForNode =
+          nativeDriver &&
+          !hasAnimatedLayoutKey(style, isDark, resolved) &&
+          !movesFontSize &&
+          !movesLeading &&
+          !inheritedFontSize &&
+          !Object.keys(animateStyles.current).some((key) => jsDriverStyleKey[key])
 
         for (const key in style) {
           const rawVal = style[key]
@@ -405,10 +614,33 @@ export function createAnimations<A extends AnimationsConfig>(
             continue
           }
 
+          // fontSize and lineHeight are owned by the derived-leading block below
+          if (
+            (derivesLeading || inheritedFontSize) &&
+            (key === 'fontSize' || key === 'lineHeight')
+          ) {
+            // unless the size is the factor at rest: the product multiplies the
+            // number it paints, and that number has to be painted
+            if (key === 'fontSize' && derivesLeading && !movesFontSize) {
+              nonAnimatedStyle[key] = val
+            }
+            continue
+          }
+
+          // a text metric at rest stays out of the Animated graph entirely: it
+          // paints as a plain style, and the node keeps the native driver
+          if (
+            textMetricStyleKey[key] &&
+            !(key === 'fontSize' ? movesFontSize : movesLeading)
+          ) {
+            nonAnimatedStyle[key] = val
+            continue
+          }
+
           if (
             animatedStyleKey[key] == null &&
             !costlyToAnimateStyleKey[key] &&
-            !layoutStyleKey[key]
+            !jsDriverStyleKey[key]
           ) {
             nonAnimatedStyle[key] = val
             continue
@@ -424,7 +656,7 @@ export function createAnimations<A extends AnimationsConfig>(
 
           // layout dimension keys only animate numbers — 'auto' (an open
           // accordion at rest) and percent strings apply as static styles
-          if (layoutStyleKey[key] && typeof val !== 'number') {
+          if (jsDriverStyleKey[key] && typeof val !== 'number') {
             nonAnimatedStyle[key] = val
             continue
           }
@@ -437,7 +669,7 @@ export function createAnimations<A extends AnimationsConfig>(
           }
 
           if (key !== 'transform') {
-            animateStyles.current[key] = update(key, animateStyles.current[key], val)
+            animateStyles.current[key] = update(key, animatedValueFor(key), val)
             seenAnimateKeys.add(key)
             continue
           }
@@ -462,6 +694,64 @@ export function createAnimations<A extends AnimationsConfig>(
             animatedTranforms.current = [...animatedTranforms.current]
           }
         }
+
+        // the derived leading: fontSize and the ratio each animate on their own
+        // resolved entry, and the painted leading is their product, so
+        // lineHeight is fontSize * ratio on every frame by construction rather
+        // than by two solvers happening to agree. a key the transition does not
+        // cover gets snapConfig here exactly as it would anywhere else, which
+        // makes `transition="fontSize 300ms"` move the leading with the size and
+        // `transition="lineHeight 300ms"` move the ratio over a size that has
+        // already arrived.
+        // the ratio is a factor exactly like the font size: a value of its own
+        // while it moves, the number it already paints while it does not
+        const ratioFactor = (): Animated.Value | number => {
+          if (!movesLeading) {
+            leadingRatioValue.current = null
+            return paintedRatio!
+          }
+          leadingRatioValue.current = update(
+            'lineHeight',
+            leadingRatioValueFrom(),
+            paintedRatio!
+          )
+          return leadingRatioValue.current
+        }
+        let derivedLeading: ReturnType<typeof Animated.multiply> | undefined
+        if (derivesLeading) {
+          // a factor at rest multiplies as the plain number it already paints,
+          // so the product does not carry a value nothing is moving
+          let fontSizeFactor: Animated.Value | number = style.fontSize
+          if (movesFontSize) {
+            fontSizeFactor = update(
+              'fontSize',
+              animatedValueFor('fontSize'),
+              style.fontSize
+            )
+            animateStyles.current.fontSize = fontSizeFactor
+            seenAnimateKeys.add('fontSize')
+          }
+          derivedLeading = Animated.multiply(fontSizeFactor, ratioFactor())
+        } else if (inheritedFontSize) {
+          derivedLeading = Animated.multiply(inheritedFontSize, ratioFactor())
+        } else if (!isDisabled) {
+          leadingRatioValue.current = null
+        }
+        paintsDerivedLeading.current = !!derivedLeading
+
+        // what descendants inherit from this node: its own animated font size
+        // when it has one, nothing when it has a font size of its own that is
+        // not animating (react-native inherits that statically), and otherwise
+        // whatever it inherited itself.
+        const ownFontSizeNode = fontSizeNode.current
+        const textChannel = ownFontSizeNode
+          ? textChannelRef.current?.fontSize === ownFontSizeNode
+            ? textChannelRef.current
+            : { fontSize: ownFontSizeNode, driver: 'react-native' }
+          : typeof style.fontSize === 'number'
+            ? null
+            : (inheritedText ?? null)
+        textChannelRef.current = textChannel
 
         // drop stale Animated.Values whose keys left the incoming style, so the
         // key genuinely leaves the rendered style object (a released height goes
@@ -499,12 +789,22 @@ export function createAnimations<A extends AnimationsConfig>(
               animationsState.current!.get(v)?.interpolation || v,
             ])
           ),
+          ...(derivedLeading ? { lineHeight: derivedLeading } : null),
           ...animatedTransformStyle,
+        }
+
+        if (!isDisabled) {
+          paintedTextRef.current = {
+            fontSize: style.fontSize,
+            lineHeight: style.lineHeight,
+            ratio: paintedRatio,
+          }
         }
 
         return {
           runners,
           completions,
+          textChannel,
           style: [nonAnimatedStyle, animatedStyle],
         }
 
@@ -719,7 +1019,16 @@ export function createAnimations<A extends AnimationsConfig>(
       // avoidReRenders: receive style changes imperatively from tamagui
       // and update Animated.Values directly without React re-renders
       // reuses the same update() + runner pattern as the useMemo path
-      useStyleEmitter?.((nextStyle, emittedTransition, pseudoActive) => {
+      // the fourth argument is the emitted style's own nativeTextMetrics: the
+      // emitter re-runs getSplitStyles outside render, so the ratio that
+      // describes the style it hands over is never the ratio the last render
+      // resolved (a pseudo can replace the leading with an absolute length).
+      const onEmittedStyle = (
+        nextStyle: Record<string, any>,
+        emittedTransition: TransitionProp | null | undefined,
+        pseudoActive?: boolean,
+        nextMetrics?: NativeTextMetrics
+      ) => {
         pseudoActiveRef.current = pseudoActive === true
         const runners: Function[] = []
         const seenAnimateKeys = new Set<string>()
@@ -731,6 +1040,15 @@ export function createAnimations<A extends AnimationsConfig>(
           resolveTransition(emittedTransition ?? effectiveTransition, { animations }),
           'default'
         )
+        const emittedRatio = getLeadingRatio(nextMetrics)
+        const emitterPaintsProduct = paintsLeadingProduct(nextStyle, emittedRatio)
+        // the same rule as the render path: a text metric joins the graph only
+        // while it is moving, so a pseudo that only changes an opacity leaves
+        // the node's font size out of it and keeps the native driver
+        const emitterMovesFontSize = movesTextValue('fontSize', nextStyle.fontSize)
+        const emitterMovesLeading = emitterPaintsProduct
+          ? movesLeadingRatio(emittedRatio)
+          : movesTextValue('lineHeight', nextStyle.lineHeight)
         // nextStyle is the complete style for this node, so the emitter makes
         // the same single driver decision as the render path. include the
         // currently rendered graph because its stale keys are not removed until
@@ -738,12 +1056,34 @@ export function createAnimations<A extends AnimationsConfig>(
         const useNativeDriverForNode =
           nativeDriver &&
           !hasAnimatedLayoutKey(nextStyle, isDark, emittedResolved) &&
-          !Object.keys(animateStyles.current).some((key) => layoutStyleKey[key])
+          !emitterMovesFontSize &&
+          !emitterMovesLeading &&
+          !inheritedFontSizeNode(nextStyle, emittedRatio, inheritedText) &&
+          !Object.keys(animateStyles.current).some((key) => jsDriverStyleKey[key])
+
+        const emitterDerivesLeading =
+          emitterPaintsProduct &&
+          (emitterMovesFontSize || emitterMovesLeading) &&
+          (!!getTransitionForKey(emittedResolved, 'fontSize') ||
+            !!getTransitionForKey(emittedResolved, 'lineHeight'))
 
         for (const key in nextStyle) {
           const rawVal = nextStyle[key]
           const val = resolveDynamicValue(rawVal, isDark)
           if (val === undefined) continue
+
+          if (emitterDerivesLeading && (key === 'fontSize' || key === 'lineHeight')) {
+            continue
+          }
+
+          // a metric at rest is not the emitter's to animate. it either already
+          // paints as a plain style or the commit below hands it to one.
+          if (
+            textMetricStyleKey[key] &&
+            !(key === 'fontSize' ? emitterMovesFontSize : emitterMovesLeading)
+          ) {
+            continue
+          }
 
           if (key === 'transform' && Array.isArray(val)) {
             for (const transform of val) {
@@ -759,17 +1099,50 @@ export function createAnimations<A extends AnimationsConfig>(
           } else if (
             animatedStyleKey[key] != null ||
             costlyToAnimateStyleKey[key] ||
-            layoutStyleKey[key]
+            jsDriverStyleKey[key]
           ) {
             // layout keys only animate numbers ('auto'/percents are static);
             // unparseable themed colors can't be interpolated — skip both and
             // let the next render apply them statically
-            if (layoutStyleKey[key] && typeof val !== 'number') continue
+            if (jsDriverStyleKey[key] && typeof val !== 'number') continue
             if (colorStyleKey[key] && !isAnimatableColor(val)) continue
             if (!animateStyles.current[key]) animatedShapeChanged = true
-            animateStyles.current[key] = update(key, animateStyles.current[key], val)
+            animateStyles.current[key] = update(key, animatedValueFor(key), val)
             seenAnimateKeys.add(key)
           }
+        }
+
+        // the emitter can only re-target Animated.Values the committed style
+        // already paints. re-targeting the font size and the ratio keeps the
+        // product moving without a commit; a pass that disagrees with the
+        // committed style about whether the leading IS a product (a pseudo that
+        // overrides it with an absolute length, or the first pseudo pass on a
+        // node whose render never derived) needs the node swapped, which only a
+        // commit can do.
+        if (emitterDerivesLeading) {
+          if (emitterMovesFontSize) {
+            if (!animateStyles.current.fontSize) animatedShapeChanged = true
+            animateStyles.current.fontSize = update(
+              'fontSize',
+              animatedValueFor('fontSize'),
+              nextStyle.fontSize as number
+            )
+            seenAnimateKeys.add('fontSize')
+          }
+          // a factor at rest is left out: it multiplies as the number the
+          // painted product already carries. giving one a value the committed
+          // style does not paint is the shape change that commits.
+          if (emitterMovesLeading) {
+            if (!leadingRatioValue.current) animatedShapeChanged = true
+            leadingRatioValue.current = update(
+              'lineHeight',
+              leadingRatioValueFrom(),
+              emittedRatio!
+            )
+          }
+        }
+        if (emitterDerivesLeading !== paintsDerivedLeading.current) {
+          animatedShapeChanged = true
         }
 
         // the emitter receives a complete style. keep the Animated style graph
@@ -784,6 +1157,12 @@ export function createAnimations<A extends AnimationsConfig>(
         if (animatedTranforms.current.length > transformCount) {
           animatedTranforms.current = animatedTranforms.current.slice(0, transformCount)
           animatedShapeChanged = true
+        }
+
+        paintedTextRef.current = {
+          fontSize: nextStyle.fontSize,
+          lineHeight: nextStyle.lineHeight,
+          ratio: emittedRatio,
         }
 
         // run the queued animations immediately
@@ -856,7 +1235,8 @@ export function createAnimations<A extends AnimationsConfig>(
 
           return value
         }
-      })
+      }
+      useStyleEmitter?.(onEmittedStyle)
 
       if (process.env.NODE_ENV === 'development') {
         if (props['debug'] === 'verbose') {

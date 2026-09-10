@@ -2,6 +2,7 @@ import {
   createStyledContext,
   getConfig,
   getVariableValue,
+  resolveTextMetrics,
   type FontSizeTokens,
   type GenericFont,
   type GenericSizes,
@@ -58,7 +59,7 @@ export type ResolvedSize = {
   /** spread onto the text */
   text: {
     fontSize: number | Variable
-    lineHeight?: number | Variable
+    lineHeight?: NonNullable<GenericFont['lineHeight']>[string]
   }
   /** px: the recipe's icon, or the font size rounded up to the 4px grid; a token key's font size as is */
   icon: number
@@ -160,6 +161,11 @@ export const resolveSize = (
     const lineHeight = font?.lineHeight?.[spec.fontSize]
     const paddingVertical = tokens.space[spec.paddingY]
     const fontPx = px(fontSize)
+    const metrics: Record<string, unknown> = { fontSize: fontPx }
+    resolveTextMetrics(
+      metrics,
+      typeof lineHeight === 'number' ? `${lineHeight}px` : lineHeight
+    )
     return {
       name: key,
       fontSizeKey: spec.fontSize,
@@ -172,7 +178,9 @@ export const resolveSize = (
       text: { fontSize, lineHeight },
       icon: spec.icon ?? Math.ceil(fontPx / 4) * 4,
       controlHeight:
-        (lineHeight ? px(lineHeight) : Math.round(fontPx * 1.5)) +
+        (typeof metrics.lineHeight === 'number'
+          ? metrics.lineHeight
+          : Math.round(fontPx * 1.5)) +
         px(paddingVertical) * 2,
     }
   }

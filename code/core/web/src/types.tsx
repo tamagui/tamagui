@@ -29,6 +29,12 @@ import type {
 } from '@tamagui/react-native-types'
 
 import type { NativeStyleEngineLinkHandle } from './helpers/nativeStyleEngine'
+import type {
+  AnimatedTextChannel,
+  NativeTextContext,
+  NativeTextMetrics,
+} from './helpers/nativeTextMetrics'
+export type { AnimatedTextChannel, NativeTextMetrics } from './helpers/nativeTextMetrics'
 import type { StyleFrontend } from './helpers/styleFrontend'
 import type { CSSColorNames } from './interfaces/CSSColorNames'
 import type { RNOnlyProps } from './interfaces/RNExclusiveTypes'
@@ -620,7 +626,7 @@ export type ComponentSetStateShallow = React.Dispatch<
 
 export type ComponentSetState = Dispatch<SetStateAction<TamaguiComponentState>>
 
-export type ComponentContextI = {
+export type ComponentContextI = NativeTextContext & {
   disableSSR?: boolean
   inText: boolean
   language: LanguageContextType | null
@@ -1225,8 +1231,9 @@ export interface GenericTamaguiSettings {
    * controls style semantics where React Native/Yoga and CSS differ.
    *
    * - "legacy": preserves Tamagui v1 flex expansion.
-   * - "react-native": follows React Native/Yoga flex and raw numeric lineHeight semantics.
-   * - "web": follows CSS flex and unitless numeric lineHeight semantics.
+   * - "react-native": follows React Native/Yoga flex expansion.
+   * - "web": follows CSS flex expansion.
+   * numeric Tamagui lineHeight values are ratios in every mode.
    *
    * @default "web"
    */
@@ -1549,7 +1556,7 @@ export type GenericSizes = {
 export type GenericFont<Key extends GenericFontKey = GenericFontKey> = {
   size: { [key in Key]: number | Variable }
   family?: string | Variable
-  lineHeight?: Partial<{ [key in Key]: number | Variable }> | undefined
+  lineHeight?: Partial<{ [key in Key]: number | Px | `${number}` | Variable }> | undefined
   letterSpacing?: Partial<{ [key in Key]: number | Variable }> | undefined
   weight?: Partial<{ [key in Key]: number | string | Variable }> | undefined
   style?: Partial<{ [key in Key]: RNTextStyle['fontStyle'] | Variable }> | undefined
@@ -1983,6 +1990,8 @@ export type FontSizeTokens = FontSize
 export type FontLineHeightTokens =
   | GetTokenString<GetTokenFontKeysFor<'lineHeight'>>
   | number
+  | Px
+  | `${number}`
   | RemString
 export type FontWeightValues =
   | `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`
@@ -2820,7 +2829,10 @@ export interface StackStyleBase
   extends Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>, ExtendedBaseProps {}
 
 export interface TextStylePropsBase
-  extends Omit<RNTextStyle, keyof ExtendedBaseProps | 'fontVariant'>, ExtendedBaseProps {
+  extends
+    Omit<RNTextStyle, keyof ExtendedBaseProps | 'fontVariant' | 'lineHeight'>,
+    ExtendedBaseProps {
+  lineHeight?: number | Px | `${number}`
   /**
    * react-native types this as a mutable `FontVariant[]`, which an `as const` variant
    * definition can't satisfy — and a variants object that misses its constraint is
@@ -3113,6 +3125,7 @@ export type GetStyleState = {
   conf: TamaguiInternalConfig
   avoidMergeTransform?: boolean
   fontFamily?: string
+  nativeLineHeight?: unknown
   debug?: DebugProp
   transformAccumulator?: TransformAccumulator
   // direct flat-value scan context and its subscription output
@@ -3237,6 +3250,8 @@ export type StaticConfigPublic = {
 }
 
 type StaticConfigBase = StaticConfigPublic & {
+  // native DOM primitives own text inheritance and receive semantic metrics separately.
+  isDOM?: boolean
   Component?: FunctionComponent<any> & StaticComponentObject<any, any, any, any, any, any>
 
   displayName?: string
@@ -3552,6 +3567,19 @@ type AnimationDriverBase<A extends AnimationConfig = AnimationConfig> = {
   animations: A
   View?: any
   Text?: any
+  useTextMetrics?: (input: {
+    inheritedText?: AnimatedTextChannel | null
+    lineHeight?: NativeTextMetrics['lineHeight']
+  }) => {
+    textChannel: AnimatedTextChannel | null
+  } & (
+    | { style: null }
+    | {
+        style: Record<string, unknown>
+        Text: ComponentType<any>
+        TextInput: ComponentType<any>
+      }
+  )
 }
 
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> =
@@ -3592,11 +3620,13 @@ type UseStyleListener = (
   // true while a self pseudo (hover/press/focus) is active. lets avoidReRenders drivers know
   // the emitted style is a transient pseudo override that a real re-render must not be allowed
   // to reconcile away, vs the no-pseudo base which renders own again.
-  pseudoActive?: boolean
+  pseudoActive?: boolean,
+  nativeTextMetrics?: NativeTextMetrics
 ) => void
 export type UseStyleEmitter = (cb: UseStyleListener) => void
 
 export type UseAnimationHook = (props: {
+  inheritedText?: AnimatedTextChannel | null
   style: Record<string, any>
   props: Record<string, any>
   styleState?: GetStyleResult | null
@@ -3611,6 +3641,7 @@ export type UseAnimationHook = (props: {
   onTransition?: OnTransition
   delay?: number
 }) => null | {
+  textChannel?: AnimatedTextChannel | null
   style?: unknown
   className?: string
   ref?: any
@@ -3629,6 +3660,7 @@ export type GetStyleResult = {
   rulesToInsert: RulesToInsert
   viewProps: (StackNonStyleProps & StackStyle) & Record<string, any>
   fontFamily: string | undefined
+  nativeTextMetrics?: NativeTextMetrics
   space?: any // SpaceTokens?
   hasMedia: boolean | Set<string>
   pseudoGroups?: Set<string>

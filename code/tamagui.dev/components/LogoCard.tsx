@@ -30,7 +30,7 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
                 <H5 size="6" color="color9">
                   {title}
                 </H5>
-                <Paragraph lineHeight={21} color="color8">
+                <Paragraph lineHeight="21px" color="color8">
                   {subtitle}
                 </Paragraph>
               </YStack>

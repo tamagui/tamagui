@@ -194,6 +194,7 @@ const a = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -215,6 +216,7 @@ const article = domTag(
   >({
     ...viewStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMView),
     defaultProps: {
@@ -243,6 +245,7 @@ const aside = domTag(
   >({
     ...viewStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMView),
     defaultProps: {
@@ -271,6 +274,7 @@ const b = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -293,6 +297,7 @@ const bdi = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -314,6 +319,7 @@ const bdo = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -335,6 +341,7 @@ const blockquote = domTag(
   >({
     ...viewStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMView),
     defaultProps: {
@@ -363,6 +370,7 @@ const br = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -384,6 +392,7 @@ const button = domTag(
   >({
     ...viewStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMView),
     defaultProps: {
@@ -406,6 +415,7 @@ const code = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -428,6 +438,7 @@ const del = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -450,6 +461,7 @@ const div = domTag(
   >({
     ...viewStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMView),
     defaultProps: {
@@ -478,6 +490,7 @@ const em = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -500,6 +513,7 @@ const fieldset = domTag(
   >({
     ...viewStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMView),
     defaultProps: {
@@ -528,6 +542,7 @@ const footer = domTag(
   >({
     ...viewStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMView),
     defaultProps: {
@@ -556,6 +571,7 @@ const form = domTag(
   >({
     ...viewStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMView),
     defaultProps: {
@@ -584,6 +600,7 @@ const h1 = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -614,6 +631,7 @@ const h2 = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -644,6 +662,7 @@ const h3 = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -674,6 +693,7 @@ const h4 = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -704,6 +724,7 @@ const h5 = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -734,6 +755,7 @@ const h6 = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -764,6 +786,7 @@ const header = domTag(
   >({
     ...viewStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMView),
     defaultProps: {
@@ -792,6 +815,7 @@ const hr = domTag(
   >({
     ...viewStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMView),
     defaultProps: {
@@ -822,6 +846,7 @@ const i = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -844,6 +869,7 @@ const img = domTag(
   >({
     ...viewStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMImage),
     defaultProps: {
@@ -865,6 +891,7 @@ const input = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMTextInput),
     isInput: true,
@@ -888,6 +915,7 @@ const ins = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -910,6 +938,7 @@ const kbd = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -932,6 +961,7 @@ const label = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -953,6 +983,7 @@ const li = domTag(
   >({
     ...viewStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMView),
     defaultProps: {
@@ -981,6 +1012,7 @@ const main = domTag(
   >({
     ...viewStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMView),
     defaultProps: {
@@ -1009,6 +1041,7 @@ const mark = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -1032,6 +1065,7 @@ const nav = domTag(
   >({
     ...viewStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMView),
     defaultProps: {
@@ -1060,6 +1094,7 @@ const ol = domTag(
   >({
     ...viewStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMView),
     defaultProps: {
@@ -1098,6 +1133,7 @@ const p = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -1126,6 +1162,7 @@ const pre = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -1155,6 +1192,7 @@ const s = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -1177,6 +1215,7 @@ const section = domTag(
   >({
     ...viewStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMView),
     defaultProps: {
@@ -1210,6 +1249,7 @@ const span = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -1231,6 +1271,7 @@ const strong = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -1253,6 +1294,7 @@ const sub = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -1274,6 +1316,7 @@ const sup = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -1295,6 +1338,7 @@ const textarea = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMTextInput),
     isInput: true,
@@ -1319,6 +1363,7 @@ const u = domTag(
   >({
     ...textStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMText),
     defaultProps: {
@@ -1341,6 +1386,7 @@ const ul = domTag(
   >({
     ...viewStaticConfig,
     validStyles: domValidStyles,
+    isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMView),
     defaultProps: {
