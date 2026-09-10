@@ -2289,11 +2289,11 @@ export interface TransformStyleProps {
   /**
    * Maps to translateX. A percent string is relative to the element's own width.
    */
-  x?: number | PercentString
+  x?: number | `${number}%`
   /**
    * Maps to translateY. A percent string is relative to the element's own height.
    */
-  y?: number | PercentString
+  y?: number | `${number}%`
   perspective?: number
   scale?: number
   scaleX?: number
