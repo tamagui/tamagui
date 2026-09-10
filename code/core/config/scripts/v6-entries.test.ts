@@ -25,10 +25,13 @@ describe('v6 config', () => {
   })
 
   test('uses eleven scheme-relative ramp values', () => {
-    expect(themes.light['color-1']).toBe(tokens.color['gray-50'])
-    expect(themes.light['color-11']).toBe(tokens.color['gray-950'])
-    expect(themes.dark['color-1']).toBe(tokens.color['gray-950'])
-    expect(themes.dark['color-11']).toBe(tokens.color['gray-50'])
+    // the default themes ground on mauve, not tailwind gray: gray crams four of
+    // its eleven steps against white and four against black, so the top of the
+    // ramp reads as one solid colour and a level cannot be seen at all
+    expect(themes.light['color-1']).toBe(tokens.color['mauve-50'])
+    expect(themes.light['color-11']).toBe(tokens.color['mauve-950'])
+    expect(themes.dark['color-1']).toBe(tokens.color['mauve-950'])
+    expect(themes.dark['color-11']).toBe(tokens.color['mauve-50'])
     expect(themes.light).not.toHaveProperty('color-12')
   })
 
@@ -36,9 +39,11 @@ describe('v6 config', () => {
     expect(themes.light_inverse).toBe(themes.dark)
     expect(themes.light_inverse_level2).toBe(themes.dark_level2)
     expect(themes.light_red_level2).not.toBe(themes.light_red)
-    expect(themes.light_red_level3).toBe(themes.light_red_level2)
-    expect(themes.light_red_level4).toBe(themes.light_red_level2)
-    expect(themes.light_red_level2.background).toBe(tokens.color['red-50'])
+    // a tint level walks its type shade along with the surface, so it gets
+    // three real steps before the type drops under 4.5:1 and it has to stop
+    expect(themes.light_red_level3).not.toBe(themes.light_red_level2)
+    expect(themes.light_red_level4).toBe(themes.light_red_level3)
+    expect(themes.light_red_level2.background).toBe(tokens.color['red-200'])
   })
 
   test('emits inverse aliases in their base theme declaration blocks', () => {

@@ -7,8 +7,8 @@ import { tokens } from '../src/tokens'
 describe('v6 themes', () => {
   test('the static output matches the authored tree', () => {
     expect(themes).toEqual(authoredThemes)
-    expect(Object.keys(themes)).toHaveLength(128)
-    expect(new Set(Object.values(themes)).size).toBe(36)
+    expect(Object.keys(themes)).toHaveLength(110)
+    expect(new Set(Object.values(themes)).size).toBe(34)
   })
 
   test('resolves relative levels and saturated aliases', () => {
@@ -16,8 +16,15 @@ describe('v6 themes', () => {
     expect(themes.light_level2_level2_level2).toBe(themes.light_level4)
     expect(themes.dark_level3_level2).toBe(themes.dark_level4)
     expect(themes.light_red_level2).not.toBe(themes.light_red)
-    expect(themes.light_red_level3).toBe(themes.light_red_level2)
-    expect(themes.light_red_level4).toBe(themes.light_red_level2)
+    expect(themes.light_red_level3).not.toBe(themes.light_red_level2)
+    // tint tops out at three: a fourth step drops the type under 4.5:1
+    expect(themes.light_red_level4).toBe(themes.light_red_level3)
+  })
+
+  test('brand does not nest', () => {
+    expect(themes.light_brand).toBeDefined()
+    expect('light_brand_level2' in themes).toBe(false)
+    expect('dark_brand_level2' in themes).toBe(false)
   })
 
   test('deduplicates inverse themes against the opposite recipe scheme', () => {
@@ -49,7 +56,7 @@ describe('v6 themes', () => {
     expect(themes.light_brand['color-1']).toBe(tokens.color['brand-950'])
     expect(themes.light_brand['color-11']).toBe(tokens.color['brand-50'])
     expect(fromShades('red', scales.tint.light[1]).background).toBe('red-100')
-    expect(themes.light_red_level2.background).toBe(tokens.color['red-50'])
+    expect(themes.light_red_level2.background).toBe(tokens.color['red-200'])
   })
 
   test('raises only background and border shade families and clamps endpoints', () => {
@@ -59,5 +66,31 @@ describe('v6 themes', () => {
     expect(raised.color).toBe(950)
     expect(raised['shadow-color']).toBe('shadow-3')
     expect(raised['accent-background']).toBe('brand-600')
+  })
+
+  // a hover is a lift and a press is a push, in both schemes. this held backwards
+  // for every light theme once, because the direction is authored on each base
+  // scale and `raise` carries whatever relationship that scale had into all of its
+  // levels, so one wrong base silently pointed 26 themes the wrong way.
+  test('hover always lifts and press always pushes, in every theme', () => {
+    const lightness = (hex: string) => {
+      const channels = [1, 3, 5]
+        .map((i) => Number.parseInt(hex.slice(i, i + 2), 16) / 255)
+        .map((v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4))
+      const y = 0.2126 * channels[0]! + 0.7152 * channels[1]! + 0.0722 * channels[2]!
+      return y <= 216 / 24389 ? (y * 24389) / 27 : Math.cbrt(y) * 116 - 16
+    }
+
+    const wrong: string[] = []
+    for (const [name, theme] of Object.entries(themes)) {
+      const base = lightness(theme.background)
+      if (lightness(theme['background-hover']) <= base) {
+        wrong.push(`${name} hover ${theme.background} -> ${theme['background-hover']}`)
+      }
+      if (lightness(theme['background-press']) >= base) {
+        wrong.push(`${name} press ${theme.background} -> ${theme['background-press']}`)
+      }
+    }
+    expect(wrong).toEqual([])
   })
 })

@@ -17,7 +17,9 @@ test('ListItem renders correctly with default theme', async ({ page }) => {
   await expect(subTitle).toBeVisible()
 
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(255, 255, 255)')
+  // the light ground is mauve-50, one rung off pure white, so a hover has
+  // somewhere paler to go
+  expect(styles.backgroundColor).toBe('rgb(250, 249, 251)')
 
   await expect(page.locator('#themed-list-item-default > svg')).toBeVisible()
 })
@@ -32,7 +34,9 @@ test('ListItem renders correctly with light theme', async ({ page }) => {
   await expect(subTitle).toBeVisible()
 
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(255, 255, 255)')
+  // the light ground is mauve-50, one rung off pure white, so a hover has
+  // somewhere paler to go
+  expect(styles.backgroundColor).toBe('rgb(250, 249, 251)')
 })
 
 test('ListItem renders correctly with dark theme', async ({ page }) => {
@@ -45,7 +49,8 @@ test('ListItem renders correctly with dark theme', async ({ page }) => {
   await expect(subTitle).toBeVisible()
 
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(3, 7, 18)')
+  // mauve-950: the default neutral is mauve now, not tailwind gray
+  expect(styles.backgroundColor).toBe('rgb(28, 27, 30)')
 })
 
 test('ListItem with accent theme renders correctly in light theme', async ({ page }) => {
