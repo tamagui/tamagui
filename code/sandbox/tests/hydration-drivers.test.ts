@@ -26,10 +26,7 @@ for (const driver of drivers) {
       expect(errors).toHaveLength(0)
     })
 
-    test('indicator dots keep their styles through hydration', async ({
-      page,
-    }, testInfo) => {
-      const compiledArtifact = testInfo.project.name === 'prod'
+    test('indicator dots keep their styles through hydration', async ({ page }) => {
       const response = await page.request.get(`/hydration-${driver}`)
       expect(response.ok()).toBe(true)
 
@@ -44,19 +41,6 @@ for (const driver of drivers) {
 
       const className = serverTag.match(/\bclass="([^"]*)"/)?.[1]
       expect(className).toBeTruthy()
-
-      // a transition keeps this candidate on the runtime path; in the compiled
-      // artifact its unproven values stay inline, and SSR must make the same
-      // decision as the first client render.
-      const serverStyle = serverTag.match(/\bstyle="([^"]*)"/)?.[1]
-      if (compiledArtifact) {
-        expect(serverStyle).toBeTruthy()
-      } else {
-        expect(serverStyle).toBeUndefined()
-        expect(
-          className!.split(/\s+/).some((name) => html.includes(`.${name}{width:16px`))
-        ).toBe(true)
-      }
 
       const errors: string[] = []
       page.on('console', (message) => {
@@ -80,7 +64,6 @@ for (const driver of drivers) {
           const style = getComputedStyle(element)
           return {
             className: element.getAttribute('class'),
-            inline: element.getAttribute('style'),
             computed: {
               flexDirection: style.flexDirection,
               width: style.width,
@@ -95,29 +78,27 @@ for (const driver of drivers) {
         })
       const beforeHydration = await readStyles()
       expect(beforeHydration.className).toBe(className)
-      if (compiledArtifact) expect(beforeHydration.inline).toBeTruthy()
-      else expect(beforeHydration.inline).toBeNull()
+      expect(beforeHydration.computed).toMatchObject({
+        flexDirection: 'row',
+        width: '16px',
+        height: '8px',
+        borderTopLeftRadius: '100px',
+        borderTopRightRadius: '100px',
+        borderBottomRightRadius: '100px',
+        borderBottomLeftRadius: '100px',
+      })
 
       releaseScripts!()
       await page.waitForSelector('[data-testid=hydrated-true]')
       const afterHydration = await readStyles()
-      if (compiledArtifact) {
-        expect(afterHydration.className).toBe(beforeHydration.className)
-        expect(afterHydration.inline).toBeTruthy()
-        expect(afterHydration.computed).toEqual(beforeHydration.computed)
-      } else if (driver === 'css') {
-        expect(afterHydration.className).toBe(beforeHydration.className)
-      } else {
-        expect(afterHydration.computed).toMatchObject({ width: '16px', height: '8px' })
-      }
+      expect(afterHydration.computed).toEqual(beforeHydration.computed)
       expect(errors).toEqual([])
       await expect(dot).toBeVisible({ timeout: 15000 })
     })
 
     test('transform styles render correctly before and after hydration', async ({
       page,
-    }, testInfo) => {
-      const compiledArtifact = testInfo.project.name === 'prod'
+    }) => {
       // Hold every script until the pre-hydration styles have been read. Without
       // this the assertion below is a race: in a production build hydration
       // finishes before the element is even reported attached, so the "before"
@@ -145,9 +126,7 @@ for (const driver of drivers) {
       // the point of the gate: nothing may have hydrated yet
       await expect(page.locator('[data-testid=hydrated-true]')).toHaveCount(0)
 
-      // the runtime Configuration driver is invisible to the compiler, so the
-      // compiled artifact keeps this transform inline for both pages; the dev
-      // server still generates CSS at runtime and emits transform longhands.
+      // both build modes must deliver the transform before the driver hydrates.
       const preStyles = await box.evaluate((el) => {
         const styles = getComputedStyle(el)
         return {
@@ -160,25 +139,13 @@ for (const driver of drivers) {
       const preInlineStyle = await box.getAttribute('style')
       const preBounds = await box.boundingBox()
 
-      if (compiledArtifact) {
-        expect(preInlineStyle).toContain(
-          'transform:translateX(50px) translateY(20px) scale(1.1) rotate(5deg)'
-        )
-        expect(preStyles.transform).not.toBe('none')
-        expect(preStyles).toMatchObject({
-          translate: 'none',
-          scale: 'none',
-          rotate: 'none',
-        })
-      } else {
-        expect(preInlineStyle).toBeNull()
-        expect(preStyles).toEqual({
-          transform: 'none',
-          translate: '50px 20px',
-          scale: '1.1',
-          rotate: '5deg',
-        })
-      }
+      expect(preInlineStyle).toBeNull()
+      expect(preStyles).toEqual({
+        transform: 'none',
+        translate: '50px 20px',
+        scale: '1.1',
+        rotate: '5deg',
+      })
 
       // let the app boot and hydrate
       releaseScripts!()
