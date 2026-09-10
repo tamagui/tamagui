@@ -276,7 +276,11 @@ export function prepareConfigRevision(
     },
     embeddedTokens: (raw, resolve) =>
       raw.replace(
-        /\/\*[\s\S]*?\*\/|(["'])(?:\\.|(?!\1)[^\\])*\1|[$A-Za-z_][\w.$-]*(?:\/\d+)?/g,
+        // the alpha suffix matches decimals too, so `$color/0.7` is handed to
+        // resolve() whole and rejected as one token. matching only `\d+` split it
+        // into `$color/0` plus a stray `.7`, which left the `.7` glued onto the
+        // resolved value.
+        /\/\*[\s\S]*?\*\/|(["'])(?:\\.|(?!\1)[^\\])*\1|[$A-Za-z_][\w.$-]*(?:\/\d*\.?\d+)?/g,
         (word, quote, offset) => {
           const before = raw.charCodeAt(offset - 1)
           return quote ||
