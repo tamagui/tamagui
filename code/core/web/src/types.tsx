@@ -1729,6 +1729,11 @@ export type SomewhatSpecificColorValue =
   | (`#${string}` & {})
 
 type WebOnlySizeValue =
+  | `${number}px`
+  | `${number}em`
+  | `${number}ch`
+  | `${number}vmin`
+  | `${number}vmax`
   | `${number}vw`
   | `${number}dvw`
   | `${number}lvw`
@@ -2282,13 +2287,13 @@ type TwoValueTransformOrigin = `${PxOrPct | 'left' | 'center' | 'right'} ${
 
 export interface TransformStyleProps {
   /**
-   * Maps to translateX
+   * Maps to translateX. A percent string is relative to the element's own width.
    */
-  x?: number
+  x?: number | PercentString
   /**
-   * Maps to translateY
+   * Maps to translateY. A percent string is relative to the element's own height.
    */
-  y?: number
+  y?: number | PercentString
   perspective?: number
   scale?: number
   scaleX?: number
@@ -2811,7 +2816,17 @@ interface ExtendedBaseProps
     ExtendBaseStackProps,
     ExtraStyleProps,
     ExtraBaseProps {
-  display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
+  display?:
+    | 'inherit'
+    | 'none'
+    | 'inline'
+    | 'block'
+    | 'inline-block'
+    | 'contents'
+    | 'flex'
+    | 'inline-flex'
+    | 'grid'
+    | 'inline-grid'
   // extends RN's position to include 'fixed' (converted to 'absolute' on native)
   position?: 'absolute' | 'relative' | 'fixed' | 'static' | 'sticky'
 }
