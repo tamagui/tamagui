@@ -2267,7 +2267,10 @@ function writeStyleRecord(
   const slots = (direct.flatSlots ||= new Map())
   const sourceLayer = direct.flatPass?.[passSourceLayer] || 0
   if (direct.flatInlineStyleProp) flags |= recordInline
-  const slot =
+  // css records share a slot per shorthand group so one class covers the
+  // group; an inline record keeps its own property slot because the emitter
+  // merges exactly one inline winner per slot
+  const cssSlot =
     process.env.TAMAGUI_TARGET === 'web' &&
     canGenerateCSS &&
     (state.flatShouldDoClasses || flags & recordCSS)
@@ -2275,8 +2278,30 @@ function writeStyleRecord(
       : property.startsWith('transition')
         ? 'transition'
         : property
+  const slot = flags & recordInline && cssSlot !== property ? property : cssSlot
   let list = slots.get(slot)
   if (!list) slots.set(slot, (list = []))
+  // a style array is last-wins per property even across a piece (a class) and
+  // a plain value (inline), which otherwise never meet
+  if (sourceLayer === sourceLayerStyle && !condition) {
+    const other =
+      slot === cssSlot ? list : slots.get(flags & recordInline ? cssSlot : property)
+    if (other) {
+      for (let index = 0; index < other.length; index++) {
+        const entry = other[index]
+        const entryFlags = entry[7]!
+        if (
+          entry[0] === property &&
+          !entry[2] &&
+          entryFlags >> 5 === sourceLayerStyle &&
+          (entryFlags & (recordInline | recordCSS)) !==
+            (flags & (recordInline | recordCSS))
+        ) {
+          other.splice(index--, 1)
+        }
+      }
+    }
+  }
   for (let index = 0; index < list.length; index++) {
     const entry = list[index]
     const entryFlags = entry[7]!
@@ -2284,17 +2309,6 @@ function writeStyleRecord(
       (entryFlags & (recordInline | recordCSS)) !==
       (flags & (recordInline | recordCSS))
     ) {
-      // a style array is last-wins per property even across a piece (a class)
-      // and a plain value (inline), which would otherwise never meet
-      if (
-        sourceLayer === sourceLayerStyle &&
-        entryFlags >> 5 === sourceLayerStyle &&
-        entry[0] === property &&
-        !condition &&
-        !entry[2]
-      ) {
-        list.splice(index--, 1)
-      }
       continue
     }
     if (entry[0] !== property) continue

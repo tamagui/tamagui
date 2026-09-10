@@ -27,31 +27,29 @@ async function compile(jsx: string) {
   }
 }
 
-// a style object whose members do not all evaluate lowers member by member:
-// the static ones stay on the style layer, and each dynamic one lowers like
-// the direct prop of its name
-test('a dynamic style member lowers inline beside the static members', async () => {
+// the style prop is the inline style attribute: its plain members stay inline
+// whether they evaluate or not, while direct props still lower to classes
+test('a dynamic style member stays inline beside the static members', async () => {
   const output = await compile(
     '<View style={{ width: w * 2, height: 10 }} padding={4} />'
   )
   expect(output.diagnostics).toEqual([])
   expect(output.line).toMatch(
-    /^<div className="is_View _p-\d+ _h-\d+" style=\{\{ "width": \(w \* 2\) \}\} {2}\/>$/
+    /^<div className="is_View _p-\d+" style=\{\{ "height": 10, "width": \(w \* 2\) \}\} {2}\/>$/
   )
   expect(output.css).toContain('padding:4px')
-  expect(output.css).toContain('height:10px')
+  expect(output.css).not.toContain('height:10px')
 })
 
-test('a conditional style member lowers per branch', async () => {
+test('a conditional style member stays inline', async () => {
   const output = await compile(
     "<View style={{ backgroundColor: seed % 2 ? 'red' : 'blue', height: 10 }} />"
   )
   expect(output.diagnostics).toEqual([])
   expect(output.line).toMatch(
-    /^<div className=\{\["is_View _h-\d+", \(seed % 2\) \? "_b-\d+" : "_b-\d+"\]\.filter\(Boolean\)\.join\(" "\)\} \/>$/
+    /^<div className="is_View" style=\{\{ "height": 10, "backgroundColor": \(\(seed % 2\) \? "red" : "blue"\) \}\} \/>$/
   )
-  expect(output.css).toContain('background-color:red')
-  expect(output.css).toContain('background-color:blue')
+  expect(output.css).not.toContain('background-color')
 })
 
 // an inline dynamic prop and a per-branch conditional share an element when

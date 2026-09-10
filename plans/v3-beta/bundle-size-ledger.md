@@ -432,3 +432,27 @@ Reanimated exit seed preserves the predecessor transform composition.
   three animation drivers with retries disabled. The Reanimated Dialog, pointer
   events, and Sheet set passed 21 active cases with one existing skip.
 - Baseline re-recorded at 29,342, ceiling 29,492.
+
+## Baseline update, 2026-09-09: inline style prop
+
+The `style` prop is the inline style attribute again, as in React and in v2: a
+plain value never becomes an atomic class, so `element.style` reads it back and
+a per-frame value inserts no rule. Values carrying conditions, `style()` pieces,
+and container keys still compile to CSS. Inline records keep their own property
+slot so two properties of one CSS shorthand group (`top` and `bottom`, `flexGrow`
+and `flexShrink`) both survive, and a style array stays last-wins per property
+across a piece and a plain value. Clearing `flex` no longer clears
+`flexDirection` or `flexWrap`.
+
+- **RAN** the pinned styled-view fixture after a complete workspace JS build:
+  29,342 -> 29,625 gzip-9 (+283, +0.96%), raw 78,095 -> 78,843.
+- **RAN** the zero-runtime island cost is +282 bytes in Vite, +282 in Next, and
+  +317 in Metro. Base JavaScript and all generated CSS are unchanged; the Next
+  base receipts keep their Linux values because macOS builds a smaller
+  framework chunk.
+- Accepted as the cost of classifying each style member (flat-value segments
+  and conditional objects) and of the per-property inline slot.
+- **TESTED** 637 core web unit tests, the 61 compiler lowering tests, and 102
+  kitchen-sink Toast and Sheet cases across the CSS, Reanimated, and Motion
+  drivers with retries disabled.
+- Baseline re-recorded at 29,625, ceiling 29,775.
