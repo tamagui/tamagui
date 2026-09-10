@@ -9,7 +9,6 @@ import {
   Theme,
   useConfiguration,
   useEvent,
-  useThemeName,
   View,
 } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
@@ -84,6 +83,7 @@ interface ToastContextValue {
   burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>
   notificationOptions?: NotificationOptions
   icons?: ToastIcons
+  theme?: 'light' | 'dark'
 }
 
 const ToastContext = createStyledContext<ToastContextValue>({}, 'Toast__')
@@ -410,13 +410,12 @@ const ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(
 
     const swipeDirection = resolveSwipeDirection(swipeDirectionProp, position)
 
-    const currentTheme = useThemeName()
-    const resolvedTheme =
-      themeProp === 'system' || !themeProp
-        ? currentTheme?.includes('dark')
-          ? 'dark'
-          : 'light'
-        : themeProp
+    // an explicit scheme applies to the viewport only. 'system' (the default)
+    // must not pin a scheme: the root theme name resolves to 'light' during
+    // ssr, and wrapping the app in <Theme name="light"> would emit a t_light
+    // class that overrides the document's prefers-color-scheme dark variables
+    // until javascript runs.
+    const theme = themeProp === 'system' ? undefined : themeProp
 
     const contextValue: ToastContextValue = {
       toasts,
@@ -443,13 +442,10 @@ const ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(
       burntOptions,
       notificationOptions,
       icons,
+      theme,
     }
 
-    return (
-      <ToastContext.Provider {...contextValue}>
-        <Theme name={resolvedTheme as any}>{children}</Theme>
-      </ToastContext.Provider>
-    )
+    return <ToastContext.Provider {...contextValue}>{children}</ToastContext.Provider>
   }
 )
 
@@ -588,7 +584,7 @@ const ToastViewport = createStyledHOC(
 
     const hotkeyLabel = hotkey.join('+').replace(/Key/g, '').replace(/Digit/g, '')
 
-    const content = (
+    const frame = (
       <ToastViewportFrame
         ref={listRef}
         aria-label={`${label} ${hotkeyLabel}`}
@@ -686,6 +682,8 @@ const ToastViewport = createStyledHOC(
         {children}
       </ToastViewportFrame>
     )
+
+    const content = ctx.theme ? <Theme name={ctx.theme}>{frame}</Theme> : frame
 
     if (portalToRoot) {
       return (
