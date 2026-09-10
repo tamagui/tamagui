@@ -6,7 +6,6 @@ import type { GetProps, TamaguiElement } from '@tamagui/core'
 import {
   createStyledContext,
   styled,
-  Theme,
   useConfiguration,
   useEvent,
   View,
@@ -83,7 +82,6 @@ interface ToastContextValue {
   burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>
   notificationOptions?: NotificationOptions
   icons?: ToastIcons
-  theme?: 'light' | 'dark'
 }
 
 const ToastContext = createStyledContext<ToastContextValue>({}, 'Toast__')
@@ -201,10 +199,6 @@ export interface ToastRootProps {
    */
   expand?: boolean
   /**
-   * Pin the toast viewport to a scheme. Unset, toasts inherit the surrounding theme.
-   */
-  theme?: 'light' | 'dark'
-  /**
    * Force reduced motion mode
    */
   reducedMotion?: boolean
@@ -261,7 +255,6 @@ const ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(
       toastHeight = FIXED_TOAST_HEIGHT,
       closeButton = false,
       expand = false,
-      theme,
       reducedMotion: reducedMotionProp,
       native = false,
       burntOptions,
@@ -410,10 +403,6 @@ const ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(
 
     const swipeDirection = resolveSwipeDirection(swipeDirectionProp, position)
 
-    // an explicit scheme applies to the viewport only. unset must not pin one:
-    // the root theme name resolves to 'light' during ssr, and wrapping the
-    // app in <Theme name="light"> would emit a t_light class that overrides
-    // the document's prefers-color-scheme dark variables until javascript runs.
     const contextValue: ToastContextValue = {
       toasts,
       heights,
@@ -439,7 +428,6 @@ const ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(
       burntOptions,
       notificationOptions,
       icons,
-      theme,
     }
 
     return <ToastContext.Provider {...contextValue}>{children}</ToastContext.Provider>
@@ -581,7 +569,9 @@ const ToastViewport = createStyledHOC(
 
     const hotkeyLabel = hotkey.join('+').replace(/Key/g, '').replace(/Digit/g, '')
 
-    const frame = (
+    // the toast has no theme of its own. the portal re-establishes the theme
+    // it was mounted in at the root, and that is the theme toasts render in.
+    const content = (
       <ToastViewportFrame
         ref={listRef}
         aria-label={`${label} ${hotkeyLabel}`}
@@ -679,8 +669,6 @@ const ToastViewport = createStyledHOC(
         {children}
       </ToastViewportFrame>
     )
-
-    const content = ctx.theme ? <Theme name={ctx.theme}>{frame}</Theme> : frame
 
     if (portalToRoot) {
       return (

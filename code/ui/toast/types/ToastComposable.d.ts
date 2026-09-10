@@ -71,10 +71,6 @@ export interface ToastRootProps {
      */
     expand?: boolean;
     /**
-     * Theme for toasts
-     */
-    theme?: 'light' | 'dark' | 'system';
-    /**
      * Force reduced motion mode
      */
     reducedMotion?: boolean;
