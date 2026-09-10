@@ -77,21 +77,27 @@ describe('shorthand variables - native', () => {
     ])
   })
 
-  test('embedded theme colors stay literal across native theme changes', () => {
-    for (const color of ['rgba(0,0,0,0.12)', 'rgba(255,255,255,0.2)']) {
+  test('embedded theme colors preserve dynamic pairs and explicit literal resolution', () => {
+    const dynamic = { light: 'rgba(0,0,0,0.12)', dark: 'rgba(255,255,255,0.2)' }
+    for (const color of Object.values(dynamic)) {
       const shade = Object.assign(
         createVariable({ key: 'shade', name: 'shade', val: color }),
-        {
-          get: () => ({ dynamic: { light: '#000', dark: '#fff' } }),
-        }
+        { get: () => ({ dynamic }) }
       )
-      const { style } = getSplitStylesFor({ boxShadow: '0 4px 12px shade' }, View, {
-        theme: { shade },
-        resolveValues: 'auto',
-      })
-      expect(style?.boxShadow).toEqual([
-        { offsetX: 0, offsetY: 4, blurRadius: 12, color },
-      ])
+      for (const resolveValues of ['auto', 'value'] as const) {
+        const { style } = getSplitStylesFor({ boxShadow: '0 4px 12px shade' }, View, {
+          theme: { shade },
+          resolveValues,
+        })
+        expect(style?.boxShadow).toEqual([
+          {
+            offsetX: 0,
+            offsetY: 4,
+            blurRadius: 12,
+            color: resolveValues === 'auto' ? { dynamic } : color,
+          },
+        ])
+      }
     }
   })
 

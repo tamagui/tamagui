@@ -1,4 +1,4 @@
-import { TamaguiProvider, Theme, View, createTamagui, styled } from '@tamagui/core'
+import { TamaguiProvider, Text, Theme, View, createTamagui, styled } from '@tamagui/core'
 import { render } from '@testing-library/react-native'
 import { createRequire } from 'node:module'
 import { describe, expect, test, vi } from 'vitest'
@@ -43,6 +43,53 @@ describe('useTheme', () => {
             testID: 'conditional-background',
             style: {
               backgroundColor: { dynamic: { light: '#ededed', dark: '#171717' } },
+            },
+          },
+        })
+      } finally {
+        tree.unmount()
+        appearance.mockRestore()
+      }
+    }
+  )
+
+  test.each(['light', 'dark'] as const)(
+    'compound styles preserve dynamic theme colors in %s appearance',
+    (scheme) => {
+      const appearance = vi.spyOn(Appearance, 'getColorScheme').mockReturnValue(scheme)
+      const tree = render(
+        <TamaguiProvider defaultTheme={scheme} config={config}>
+          <Text
+            backgroundImage="linear-gradient(to bottom, canvas, raised)"
+            boxShadow="0px 2px 4px canvas"
+            textShadow="0px 1px 2px raised"
+          />
+        </TamaguiProvider>
+      )
+
+      try {
+        expect(tree.toJSON()).toMatchObject({
+          props: {
+            style: {
+              experimental_backgroundImage: [
+                {
+                  type: 'linear-gradient',
+                  direction: 'to bottom',
+                  colorStops: [
+                    { color: { dynamic: { light: '#ededed', dark: '#111111' } } },
+                    { color: { dynamic: { light: '#e5e5e5', dark: '#171717' } } },
+                  ],
+                },
+              ],
+              boxShadow: [
+                {
+                  offsetX: 0,
+                  offsetY: 2,
+                  blurRadius: 4,
+                  color: { dynamic: { light: '#ededed', dark: '#111111' } },
+                },
+              ],
+              textShadowColor: { dynamic: { light: '#e5e5e5', dark: '#171717' } },
             },
           },
         })
