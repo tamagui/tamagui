@@ -263,12 +263,12 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
       className="is-sticky"
       display="none gtLg:flex"
       width="gtLg:200px"
-      z="gtLg:1px"
+      z="gtLg:1"
       position="gtLg:sticky"
       t="gtLg:20px"
       height="gtLg:calc(100vh - 20px)"
       alignSelf="gtLg:flex-start"
-      shrink="gtLg:0px"
+      shrink="gtLg:0"
     >
       <ScrollView showsVerticalScrollIndicator={false}>
         <YStack gap="5" pt={68} pb="10">
