@@ -12,6 +12,9 @@ const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const
 // the v6 recipe: text line-height + 2 * paddingY + 2px of border
 const EXPECTED_HEIGHT = { xs: 26, sm: 34, md: 38, lg: 42, xl: 50 } as const
 const EXPECTED_ICON = { xs: 12, sm: 16, md: 16, lg: 16, xl: 20 } as const
+// a checkbox/radio/switch box sits a step above the icon square (icon * 1.4) so
+// it reads as a control next to its label rather than as a glyph
+const EXPECTED_CONTROL = { xs: 17, sm: 22, md: 22, lg: 22, xl: 28 } as const
 
 test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'ControlSizesCase', type: 'useCase' })
@@ -85,17 +88,28 @@ test('the unsized default is md', async ({ page }) => {
   expect(def!.height).toBeCloseTo(md!.height, 0)
 })
 
-test('icons, checkboxes and radios are the size icon px', async ({ page }) => {
+test('icons are the size icon px', async ({ page }) => {
   for (const size of SIZES) {
     const icon = await page.evaluate((id) => {
       const svg = document.querySelector(`[data-testid="${id}"] svg`)
       return svg ? svg.getBoundingClientRect().width : null
     }, `sizes-button-${size}`)
     expect(icon, `button ${size} icon`).toBeCloseTo(EXPECTED_ICON[size], 0)
+  }
+})
+
+test('checkbox, radio and switch read as one control weight', async ({ page }) => {
+  for (const size of SIZES) {
+    const expected = EXPECTED_CONTROL[size]
     const checkbox = await box(page, `sizes-checkbox-${size}`)
-    expect(checkbox!.width, `checkbox ${size}`).toBeCloseTo(EXPECTED_ICON[size], 0)
+    expect(checkbox!.width, `checkbox ${size}`).toBeCloseTo(expected, 0)
+    expect(checkbox!.height, `checkbox ${size} is square`).toBeCloseTo(expected, 0)
     const radio = await box(page, `sizes-radio-${size}`)
-    expect(radio!.width, `radio ${size}`).toBeCloseTo(EXPECTED_ICON[size], 0)
+    expect(radio!.width, `radio ${size}`).toBeCloseTo(expected, 0)
+    // the switch track is the same square stretched into a pill, so the three
+    // sit at the same weight next to each other
+    const switchBox = await box(page, `sizes-switch-${size}`)
+    expect(switchBox!.height, `switch ${size} track height`).toBeCloseTo(expected, 0)
   }
 })
 

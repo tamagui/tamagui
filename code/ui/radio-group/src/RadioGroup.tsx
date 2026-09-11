@@ -1,4 +1,4 @@
-import type { GetProps } from '@tamagui/core'
+import type { GetProps, StylePiece } from '@tamagui/core'
 import { createStyledHOC, isWeb, styled, View, withStaticProperties } from '@tamagui/core'
 import type {
   RadioGroupContextValue,
@@ -70,6 +70,8 @@ export type RadioGroupItemProps = GetProps<typeof RadioGroupItemFrame> & {
   id?: string
   labelledBy?: string
   disabled?: boolean
+  activeStyle?: StylePiece
+  activeTheme?: string | null
 }
 
 export type RadioGroupProps = GetProps<typeof RadioGroupFrame> & {
@@ -126,10 +128,21 @@ const RadioGroupComponent = createStyledHOC(
 const RadioGroupItem = createStyledHOC(
   RadioGroupItemFrame,
   (props: RadioGroupItemProps, ref) => {
-    const { value, labelledBy, onPress, onKeyDown, disabled, id, ...rest } = props
+    const {
+      value,
+      labelledBy,
+      onPress,
+      onKeyDown,
+      disabled,
+      id,
+      activeStyle,
+      activeTheme,
+      ...rest
+    } = props
 
     const {
       providerValue,
+      checked,
       bubbleInput,
       rovingFocusGroupAttrs,
       frameAttrs,
@@ -152,7 +165,14 @@ const RadioGroupItem = createStyledHOC(
         ) : (
           <>
             <RovingFocusGroup.Item {...rovingFocusGroupAttrs}>
-              <RadioGroupItemFrame {...frameAttrs} ref={ref} {...rest} />
+              <RadioGroupItemFrame
+                theme={checked ? (activeTheme ?? null) : null}
+                {...frameAttrs}
+                ref={ref}
+                {...rest}
+                style={[rest.style, checked && activeStyle]}
+                active={checked}
+              />
             </RovingFocusGroup.Item>
             {isFormControl && bubbleInput}
           </>

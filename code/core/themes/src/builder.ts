@@ -403,9 +403,15 @@ export const tree = {
   children: {
     ...levels(),
     accent: { palette: 'brand', treatment: 'tint', children: levels(3) },
-    // brand does not nest: it is already the loudest surface, so a level under it
-    // has nowhere louder to go and only walks it back toward the page.
-    brand: { palette: 'brand', treatment: 'bold' },
+    // brand is the emphasis surface, and in v3 emphasis means the high contrast
+    // flip of whatever it sits on: a checked checkbox, an "on" toggle, a
+    // tooltip, a primary button. it resolves to the same theme as `inverse`,
+    // and the separate name is what a design system redefines when it wants its
+    // own emphasis look without touching what `inverse` means.
+    brand: ({ parent }: ThemeDefinitionContext) => ({
+      scheme: parent.scheme === 'light' ? 'dark' : 'light',
+      children: levels(),
+    }),
     inverse: ({ parent }: ThemeDefinitionContext) => ({
       scheme: parent.scheme === 'light' ? 'dark' : 'light',
       children: levels(),

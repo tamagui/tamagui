@@ -427,9 +427,13 @@ export declare const tree: {
                 level4: LevelDefinition<3>;
             };
         };
-        readonly brand: {
-            readonly palette: 'brand';
-            readonly treatment: 'bold';
+        readonly brand: ({ parent }: ThemeDefinitionContext) => {
+            scheme: string;
+            children: {
+                level2: LevelDefinition<3>;
+                level3: LevelDefinition<3>;
+                level4: LevelDefinition<3>;
+            };
         };
         readonly inverse: ({ parent }: ThemeDefinitionContext) => {
             scheme: string;
@@ -506,9 +510,13 @@ export declare const themes: import("@tamagui/create-theme").CreatedThemes<impor
                 level4: LevelDefinition<3>;
             };
         };
-        readonly brand: {
-            readonly palette: 'brand';
-            readonly treatment: 'bold';
+        readonly brand: ({ parent }: ThemeDefinitionContext) => {
+            scheme: string;
+            children: {
+                level2: LevelDefinition<3>;
+                level3: LevelDefinition<3>;
+                level4: LevelDefinition<3>;
+            };
         };
         readonly inverse: ({ parent }: ThemeDefinitionContext) => {
             scheme: string;

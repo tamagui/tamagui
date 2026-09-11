@@ -415,43 +415,6 @@ const n7 = t([
   [34, 20],
 ])
 const n8 = t([
-  [0, 29],
-  [1, 28],
-  [2, 27],
-  [3, 26],
-  [4, 13],
-  [5, 25],
-  [6, 24],
-  [7, 23],
-  [8, 22],
-  [9, 21],
-  [10, 14],
-  [11, 13],
-  [12, 25],
-  [13, 26],
-  [14, 25],
-  [15, 26],
-  [16, 13],
-  [17, 26],
-  [18, 13],
-  [19, 14],
-  [20, 14],
-  [21, 14],
-  [22, 14],
-  [23, 22],
-  [24, 24],
-  [25, 12],
-  [26, 14],
-  [27, 26],
-  [28, 15],
-  [29, 16],
-  [30, 12],
-  [31, 17],
-  [32, 18],
-  [33, 19],
-  [34, 20],
-])
-const n9 = t([
   [0, 10],
   [1, 9],
   [2, 8],
@@ -488,7 +451,7 @@ const n9 = t([
   [33, 35],
   [34, 36],
 ])
-const n10 = t([
+const n9 = t([
   [0, 10],
   [1, 9],
   [2, 8],
@@ -525,7 +488,7 @@ const n10 = t([
   [33, 35],
   [34, 36],
 ])
-const n11 = t([
+const n10 = t([
   [0, 10],
   [1, 9],
   [2, 8],
@@ -562,7 +525,7 @@ const n11 = t([
   [33, 35],
   [34, 36],
 ])
-const n12 = t([
+const n11 = t([
   [0, 10],
   [1, 9],
   [2, 8],
@@ -599,7 +562,7 @@ const n12 = t([
   [33, 35],
   [34, 36],
 ])
-const n13 = t([
+const n12 = t([
   [0, 37],
   [1, 38],
   [2, 39],
@@ -636,7 +599,7 @@ const n13 = t([
   [33, 19],
   [34, 20],
 ])
-const n14 = t([
+const n13 = t([
   [0, 37],
   [1, 38],
   [2, 39],
@@ -673,7 +636,7 @@ const n14 = t([
   [33, 19],
   [34, 20],
 ])
-const n15 = t([
+const n14 = t([
   [0, 37],
   [1, 38],
   [2, 39],
@@ -710,7 +673,7 @@ const n15 = t([
   [33, 19],
   [34, 20],
 ])
-const n16 = t([
+const n15 = t([
   [0, 48],
   [1, 49],
   [2, 50],
@@ -747,7 +710,7 @@ const n16 = t([
   [33, 19],
   [34, 20],
 ])
-const n17 = t([
+const n16 = t([
   [0, 48],
   [1, 49],
   [2, 50],
@@ -784,7 +747,7 @@ const n17 = t([
   [33, 19],
   [34, 20],
 ])
-const n18 = t([
+const n17 = t([
   [0, 48],
   [1, 49],
   [2, 50],
@@ -821,7 +784,7 @@ const n18 = t([
   [33, 19],
   [34, 20],
 ])
-const n19 = t([
+const n18 = t([
   [0, 59],
   [1, 60],
   [2, 61],
@@ -858,7 +821,7 @@ const n19 = t([
   [33, 19],
   [34, 20],
 ])
-const n20 = t([
+const n19 = t([
   [0, 59],
   [1, 60],
   [2, 61],
@@ -895,7 +858,7 @@ const n20 = t([
   [33, 19],
   [34, 20],
 ])
-const n21 = t([
+const n20 = t([
   [0, 59],
   [1, 60],
   [2, 61],
@@ -932,7 +895,7 @@ const n21 = t([
   [33, 19],
   [34, 20],
 ])
-const n22 = t([
+const n21 = t([
   [0, 29],
   [1, 28],
   [2, 27],
@@ -969,7 +932,7 @@ const n22 = t([
   [33, 35],
   [34, 36],
 ])
-const n23 = t([
+const n22 = t([
   [0, 29],
   [1, 28],
   [2, 27],
@@ -1006,7 +969,7 @@ const n23 = t([
   [33, 35],
   [34, 36],
 ])
-const n24 = t([
+const n23 = t([
   [0, 29],
   [1, 28],
   [2, 27],
@@ -1043,44 +1006,7 @@ const n24 = t([
   [33, 35],
   [34, 36],
 ])
-const n25 = t([
-  [0, 29],
-  [1, 28],
-  [2, 27],
-  [3, 26],
-  [4, 13],
-  [5, 25],
-  [6, 24],
-  [7, 23],
-  [8, 22],
-  [9, 21],
-  [10, 14],
-  [11, 25],
-  [12, 24],
-  [13, 13],
-  [14, 24],
-  [15, 13],
-  [16, 25],
-  [17, 13],
-  [18, 25],
-  [19, 14],
-  [20, 14],
-  [21, 14],
-  [22, 14],
-  [23, 22],
-  [24, 24],
-  [25, 18],
-  [26, 14],
-  [27, 26],
-  [28, 31],
-  [29, 32],
-  [30, 18],
-  [31, 33],
-  [32, 34],
-  [33, 35],
-  [34, 36],
-])
-const n26 = t([
+const n24 = t([
   [0, 47],
   [1, 46],
   [2, 45],
@@ -1117,7 +1043,7 @@ const n26 = t([
   [33, 35],
   [34, 36],
 ])
-const n27 = t([
+const n25 = t([
   [0, 47],
   [1, 46],
   [2, 45],
@@ -1154,7 +1080,7 @@ const n27 = t([
   [33, 35],
   [34, 36],
 ])
-const n28 = t([
+const n26 = t([
   [0, 47],
   [1, 46],
   [2, 45],
@@ -1191,7 +1117,7 @@ const n28 = t([
   [33, 35],
   [34, 36],
 ])
-const n29 = t([
+const n27 = t([
   [0, 58],
   [1, 57],
   [2, 56],
@@ -1228,7 +1154,7 @@ const n29 = t([
   [33, 35],
   [34, 36],
 ])
-const n30 = t([
+const n28 = t([
   [0, 58],
   [1, 57],
   [2, 56],
@@ -1265,7 +1191,7 @@ const n30 = t([
   [33, 35],
   [34, 36],
 ])
-const n31 = t([
+const n29 = t([
   [0, 58],
   [1, 57],
   [2, 56],
@@ -1302,7 +1228,7 @@ const n31 = t([
   [33, 35],
   [34, 36],
 ])
-const n32 = t([
+const n30 = t([
   [0, 69],
   [1, 68],
   [2, 67],
@@ -1339,7 +1265,7 @@ const n32 = t([
   [33, 35],
   [34, 36],
 ])
-const n33 = t([
+const n31 = t([
   [0, 69],
   [1, 68],
   [2, 67],
@@ -1376,7 +1302,7 @@ const n33 = t([
   [33, 35],
   [34, 36],
 ])
-const n34 = t([
+const n32 = t([
   [0, 69],
   [1, 68],
   [2, 67],
@@ -1417,16 +1343,20 @@ const n34 = t([
 export type ThemeNames =
   | 'light'
   | 'light_white'
+  | 'dark_brand'
   | 'dark_inverse'
   | 'dark_white'
   | 'light_level2'
   | 'light_white_level2'
+  | 'dark_brand_level2'
   | 'dark_inverse_level2'
   | 'dark_white_level2'
   | 'light_level2_level2'
   | 'light_level3'
   | 'light_white_level2_level2'
   | 'light_white_level3'
+  | 'dark_brand_level2_level2'
+  | 'dark_brand_level3'
   | 'dark_inverse_level2_level2'
   | 'dark_inverse_level3'
   | 'dark_white_level2_level2'
@@ -1449,6 +1379,15 @@ export type ThemeNames =
   | 'light_white_level3_level3'
   | 'light_white_level3_level4'
   | 'light_white_level4'
+  | 'dark_brand_level2_level2_level2'
+  | 'dark_brand_level2_level2_level3'
+  | 'dark_brand_level2_level2_level4'
+  | 'dark_brand_level2_level3'
+  | 'dark_brand_level2_level4'
+  | 'dark_brand_level3_level2'
+  | 'dark_brand_level3_level3'
+  | 'dark_brand_level3_level4'
+  | 'dark_brand_level4'
   | 'dark_inverse_level2_level2_level2'
   | 'dark_inverse_level2_level2_level3'
   | 'dark_inverse_level2_level2_level4'
@@ -1479,10 +1418,13 @@ export type ThemeNames =
   | 'light_black'
   | 'dark'
   | 'dark_black'
+  | 'light_brand_level2'
   | 'light_inverse_level2'
   | 'light_black_level2'
   | 'dark_level2'
   | 'dark_black_level2'
+  | 'light_brand_level2_level2'
+  | 'light_brand_level3'
   | 'light_inverse_level2_level2'
   | 'light_inverse_level3'
   | 'light_black_level2_level2'
@@ -1491,6 +1433,15 @@ export type ThemeNames =
   | 'dark_level3'
   | 'dark_black_level2_level2'
   | 'dark_black_level3'
+  | 'light_brand_level2_level2_level2'
+  | 'light_brand_level2_level2_level3'
+  | 'light_brand_level2_level2_level4'
+  | 'light_brand_level2_level3'
+  | 'light_brand_level2_level4'
+  | 'light_brand_level3_level2'
+  | 'light_brand_level3_level3'
+  | 'light_brand_level3_level4'
+  | 'light_brand_level4'
   | 'light_inverse_level2_level2_level2'
   | 'light_inverse_level2_level2_level3'
   | 'light_inverse_level2_level2_level4'
@@ -1555,7 +1506,6 @@ export type ThemeNames =
   | 'dark_accent_level2_level4'
   | 'dark_accent_level3'
   | 'dark_accent_level4'
-  | 'dark_brand'
   | 'dark_red'
   | 'dark_red_level2'
   | 'dark_red_level2_level2'
@@ -1583,16 +1533,20 @@ export type Themes = Record<ThemeNames, Theme>
 export const themes: Themes = {
   light: n1,
   light_white: n1,
+  dark_brand: n1,
   dark_inverse: n1,
   dark_white: n1,
   light_level2: n2,
   light_white_level2: n2,
+  dark_brand_level2: n2,
   dark_inverse_level2: n2,
   dark_white_level2: n2,
   light_level2_level2: n3,
   light_level3: n3,
   light_white_level2_level2: n3,
   light_white_level3: n3,
+  dark_brand_level2_level2: n3,
+  dark_brand_level3: n3,
   dark_inverse_level2_level2: n3,
   dark_inverse_level3: n3,
   dark_white_level2_level2: n3,
@@ -1615,6 +1569,15 @@ export const themes: Themes = {
   light_white_level3_level3: n4,
   light_white_level3_level4: n4,
   light_white_level4: n4,
+  dark_brand_level2_level2_level2: n4,
+  dark_brand_level2_level2_level3: n4,
+  dark_brand_level2_level2_level4: n4,
+  dark_brand_level2_level3: n4,
+  dark_brand_level2_level4: n4,
+  dark_brand_level3_level2: n4,
+  dark_brand_level3_level3: n4,
+  dark_brand_level3_level4: n4,
+  dark_brand_level4: n4,
   dark_inverse_level2_level2_level2: n4,
   dark_inverse_level2_level2_level3: n4,
   dark_inverse_level2_level2_level4: n4,
@@ -1641,106 +1604,117 @@ export const themes: Themes = {
   light_accent_level3: n7,
   light_accent_level4: n7,
   light_brand: n8,
-  light_inverse: n9,
-  light_black: n9,
-  dark: n9,
-  dark_black: n9,
-  light_inverse_level2: n10,
-  light_black_level2: n10,
-  dark_level2: n10,
-  dark_black_level2: n10,
-  light_inverse_level2_level2: n11,
-  light_inverse_level3: n11,
-  light_black_level2_level2: n11,
-  light_black_level3: n11,
-  dark_level2_level2: n11,
-  dark_level3: n11,
-  dark_black_level2_level2: n11,
-  dark_black_level3: n11,
-  light_inverse_level2_level2_level2: n12,
-  light_inverse_level2_level2_level3: n12,
-  light_inverse_level2_level2_level4: n12,
-  light_inverse_level2_level3: n12,
-  light_inverse_level2_level4: n12,
-  light_inverse_level3_level2: n12,
-  light_inverse_level3_level3: n12,
-  light_inverse_level3_level4: n12,
-  light_inverse_level4: n12,
-  light_black_level2_level2_level2: n12,
-  light_black_level2_level2_level3: n12,
-  light_black_level2_level2_level4: n12,
-  light_black_level2_level3: n12,
-  light_black_level2_level4: n12,
-  light_black_level3_level2: n12,
-  light_black_level3_level3: n12,
-  light_black_level3_level4: n12,
-  light_black_level4: n12,
-  dark_level2_level2_level2: n12,
-  dark_level2_level2_level3: n12,
-  dark_level2_level2_level4: n12,
-  dark_level2_level3: n12,
-  dark_level2_level4: n12,
-  dark_level3_level2: n12,
-  dark_level3_level3: n12,
-  dark_level3_level4: n12,
-  dark_level4: n12,
-  dark_black_level2_level2_level2: n12,
-  dark_black_level2_level2_level3: n12,
-  dark_black_level2_level2_level4: n12,
-  dark_black_level2_level3: n12,
-  dark_black_level2_level4: n12,
-  dark_black_level3_level2: n12,
-  dark_black_level3_level3: n12,
-  dark_black_level3_level4: n12,
-  dark_black_level4: n12,
-  light_red: n13,
-  light_red_level2: n14,
-  light_red_level2_level2: n15,
-  light_red_level2_level3: n15,
-  light_red_level2_level4: n15,
-  light_red_level3: n15,
-  light_red_level4: n15,
-  light_yellow: n16,
-  light_yellow_level2: n17,
-  light_yellow_level2_level2: n18,
-  light_yellow_level2_level3: n18,
-  light_yellow_level2_level4: n18,
-  light_yellow_level3: n18,
-  light_yellow_level4: n18,
-  light_green: n19,
-  light_green_level2: n20,
-  light_green_level2_level2: n21,
-  light_green_level2_level3: n21,
-  light_green_level2_level4: n21,
-  light_green_level3: n21,
-  light_green_level4: n21,
-  dark_accent: n22,
-  dark_accent_level2: n23,
-  dark_accent_level2_level2: n24,
-  dark_accent_level2_level3: n24,
-  dark_accent_level2_level4: n24,
-  dark_accent_level3: n24,
-  dark_accent_level4: n24,
-  dark_brand: n25,
-  dark_red: n26,
-  dark_red_level2: n27,
-  dark_red_level2_level2: n28,
-  dark_red_level2_level3: n28,
-  dark_red_level2_level4: n28,
-  dark_red_level3: n28,
-  dark_red_level4: n28,
-  dark_yellow: n29,
-  dark_yellow_level2: n30,
-  dark_yellow_level2_level2: n31,
-  dark_yellow_level2_level3: n31,
-  dark_yellow_level2_level4: n31,
-  dark_yellow_level3: n31,
-  dark_yellow_level4: n31,
-  dark_green: n32,
-  dark_green_level2: n33,
-  dark_green_level2_level2: n34,
-  dark_green_level2_level3: n34,
-  dark_green_level2_level4: n34,
-  dark_green_level3: n34,
-  dark_green_level4: n34,
+  light_inverse: n8,
+  light_black: n8,
+  dark: n8,
+  dark_black: n8,
+  light_brand_level2: n9,
+  light_inverse_level2: n9,
+  light_black_level2: n9,
+  dark_level2: n9,
+  dark_black_level2: n9,
+  light_brand_level2_level2: n10,
+  light_brand_level3: n10,
+  light_inverse_level2_level2: n10,
+  light_inverse_level3: n10,
+  light_black_level2_level2: n10,
+  light_black_level3: n10,
+  dark_level2_level2: n10,
+  dark_level3: n10,
+  dark_black_level2_level2: n10,
+  dark_black_level3: n10,
+  light_brand_level2_level2_level2: n11,
+  light_brand_level2_level2_level3: n11,
+  light_brand_level2_level2_level4: n11,
+  light_brand_level2_level3: n11,
+  light_brand_level2_level4: n11,
+  light_brand_level3_level2: n11,
+  light_brand_level3_level3: n11,
+  light_brand_level3_level4: n11,
+  light_brand_level4: n11,
+  light_inverse_level2_level2_level2: n11,
+  light_inverse_level2_level2_level3: n11,
+  light_inverse_level2_level2_level4: n11,
+  light_inverse_level2_level3: n11,
+  light_inverse_level2_level4: n11,
+  light_inverse_level3_level2: n11,
+  light_inverse_level3_level3: n11,
+  light_inverse_level3_level4: n11,
+  light_inverse_level4: n11,
+  light_black_level2_level2_level2: n11,
+  light_black_level2_level2_level3: n11,
+  light_black_level2_level2_level4: n11,
+  light_black_level2_level3: n11,
+  light_black_level2_level4: n11,
+  light_black_level3_level2: n11,
+  light_black_level3_level3: n11,
+  light_black_level3_level4: n11,
+  light_black_level4: n11,
+  dark_level2_level2_level2: n11,
+  dark_level2_level2_level3: n11,
+  dark_level2_level2_level4: n11,
+  dark_level2_level3: n11,
+  dark_level2_level4: n11,
+  dark_level3_level2: n11,
+  dark_level3_level3: n11,
+  dark_level3_level4: n11,
+  dark_level4: n11,
+  dark_black_level2_level2_level2: n11,
+  dark_black_level2_level2_level3: n11,
+  dark_black_level2_level2_level4: n11,
+  dark_black_level2_level3: n11,
+  dark_black_level2_level4: n11,
+  dark_black_level3_level2: n11,
+  dark_black_level3_level3: n11,
+  dark_black_level3_level4: n11,
+  dark_black_level4: n11,
+  light_red: n12,
+  light_red_level2: n13,
+  light_red_level2_level2: n14,
+  light_red_level2_level3: n14,
+  light_red_level2_level4: n14,
+  light_red_level3: n14,
+  light_red_level4: n14,
+  light_yellow: n15,
+  light_yellow_level2: n16,
+  light_yellow_level2_level2: n17,
+  light_yellow_level2_level3: n17,
+  light_yellow_level2_level4: n17,
+  light_yellow_level3: n17,
+  light_yellow_level4: n17,
+  light_green: n18,
+  light_green_level2: n19,
+  light_green_level2_level2: n20,
+  light_green_level2_level3: n20,
+  light_green_level2_level4: n20,
+  light_green_level3: n20,
+  light_green_level4: n20,
+  dark_accent: n21,
+  dark_accent_level2: n22,
+  dark_accent_level2_level2: n23,
+  dark_accent_level2_level3: n23,
+  dark_accent_level2_level4: n23,
+  dark_accent_level3: n23,
+  dark_accent_level4: n23,
+  dark_red: n24,
+  dark_red_level2: n25,
+  dark_red_level2_level2: n26,
+  dark_red_level2_level3: n26,
+  dark_red_level2_level4: n26,
+  dark_red_level3: n26,
+  dark_red_level4: n26,
+  dark_yellow: n27,
+  dark_yellow_level2: n28,
+  dark_yellow_level2_level2: n29,
+  dark_yellow_level2_level3: n29,
+  dark_yellow_level2_level4: n29,
+  dark_yellow_level3: n29,
+  dark_yellow_level4: n29,
+  dark_green: n30,
+  dark_green_level2: n31,
+  dark_green_level2_level2: n32,
+  dark_green_level2_level3: n32,
+  dark_green_level2_level4: n32,
+  dark_green_level3: n32,
+  dark_green_level4: n32,
 }
