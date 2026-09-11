@@ -19,30 +19,34 @@ declare const AlertDialogPortal: React.FC<AlertDialogPortalProps>;
 type AlertDialogOverlayExtraProps = ScopedProps<{}> & DialogOverlayExtraProps;
 type AlertDialogOverlayProps = AlertDialogOverlayExtraProps & DialogOverlayProps;
 declare const AlertDialogOverlay: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | false | import("@tamagui/core").Size | undefined;
     open?: boolean | undefined;
-}>, "elevation" | "forceMount" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<{}, "scope"> & {
+}>, "forceMount" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<{}, "scope"> & {
     scope?: AlertDialogScopes;
 } & {
     forceMount?: boolean;
 } & {
     scope?: import("@tamagui/dialog").DialogScopes;
-} & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | false | import("@tamagui/core").Size | undefined;
-}>, "elevation"> & import("@tamagui/stacks").StackVariants, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
+} & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
     scope?: AlertDialogScopes;
 } & {
     forceMount?: boolean;
 } & {
     scope?: import("@tamagui/dialog").DialogScopes;
-} & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | false | import("@tamagui/core").Size | undefined;
-}>, "elevation"> & import("@tamagui/stacks").StackVariants, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | false | import("@tamagui/core").Size | undefined;
+} & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, import("@tamagui/core").StackStyleBase, {
     open?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 type AlertDialogContentProps = ScopedProps<Omit<DialogContentProps, 'onPointerDownOutside' | 'onInteractOutside'>>;
-declare const AlertDialogContent: import("@tamagui/compose-refs").RefComponent<TamaguiElement, AlertDialogContentProps>;
+declare const AlertDialogContent: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    bordered?: boolean | undefined;
+    elevate?: boolean | undefined;
+}>, "bordered" | "branches" | "disableOutsidePointerEvents" | "elevate" | "forceUnmount" | "onBlurCapture" | "onCloseAutoFocus" | "onEscapeKeyDown" | "onFocusCapture" | "onFocusOutside" | "onOpenAutoFocus" | "scope" | "trapFocus" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<Omit<DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
+    scope?: AlertDialogScopes;
+}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<Omit<DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
+    scope?: AlertDialogScopes;
+}, import("@tamagui/core").StackStyleBase, {
+    bordered?: boolean | undefined;
+    elevate?: boolean | undefined;
+}, import("@tamagui/core").StaticConfigPublic>;
 type AlertDialogTitleProps = ScopedProps<DialogTitleProps>;
 declare const AlertDialogTitle: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "scope" | "size" | "unstyled" | keyof import("@tamagui/core").TextNonStyleProps | keyof import("@tamagui/core").TextStylePropsBase> & Omit<DialogTitleProps, "scope"> & {
     scope?: AlertDialogScopes;
@@ -81,29 +85,33 @@ declare const AlertDialog: React.FC<AlertDialogProps> & {
     }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
     Portal: React.FC<AlertDialogPortalProps>;
     Overlay: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/core").Size | undefined;
         open?: boolean | undefined;
-    }>, "elevation" | "forceMount" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<{}, "scope"> & {
+    }>, "forceMount" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<{}, "scope"> & {
         scope?: AlertDialogScopes;
     } & {
         forceMount?: boolean;
     } & {
         scope?: import("@tamagui/dialog").DialogScopes;
-    } & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/core").Size | undefined;
-    }>, "elevation"> & import("@tamagui/stacks").StackVariants, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
+    } & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
         scope?: AlertDialogScopes;
     } & {
         forceMount?: boolean;
     } & {
         scope?: import("@tamagui/dialog").DialogScopes;
-    } & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/core").Size | undefined;
-    }>, "elevation"> & import("@tamagui/stacks").StackVariants, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/core").Size | undefined;
+    } & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, import("@tamagui/core").StackStyleBase, {
         open?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Content: import("@tamagui/compose-refs").RefComponent<TamaguiElement, AlertDialogContentProps>;
+    Content: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+    }>, "bordered" | "branches" | "disableOutsidePointerEvents" | "elevate" | "forceUnmount" | "onBlurCapture" | "onCloseAutoFocus" | "onEscapeKeyDown" | "onFocusCapture" | "onFocusOutside" | "onOpenAutoFocus" | "scope" | "trapFocus" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<Omit<DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
+        scope?: AlertDialogScopes;
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<Omit<DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
+        scope?: AlertDialogScopes;
+    }, import("@tamagui/core").StackStyleBase, {
+        bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
     Action: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "displayWhenAdapted" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<DialogCloseProps, "scope"> & {
         scope?: AlertDialogScopes;
     }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<DialogCloseProps, "scope"> & {

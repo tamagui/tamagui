@@ -687,8 +687,15 @@ function contributeProp(
       // frame's flexDirection
       if (hocSlots) {
         const slots = (direct.flatSlots ||= new Map())
+        const markerLayer = pass[passSourceLayer]
         for (const [slot, entries] of hocSlots) {
           for (const entry of entries) {
+            // the outer component already resolved its own tiers, so its styled
+            // definition (base/variant/resolver) arrives here as one tier above
+            // this frame's own definition but below the props this frame passes
+            // itself. otherwise a skin's size resolver outranks the corner
+            // zeroing a Group injects as props (Tabs inside a Group)
+            pass[passSourceLayer] = Math.max(entry[7]! >> 5, sourceLayerResolver)
             if (!ownsSourceLayer(styleState, entry[0], !!entry[2])) continue
             if (
               !isHOC &&
@@ -717,6 +724,7 @@ function contributeProp(
             }
           }
         }
+        pass[passSourceLayer] = markerLayer
       }
     }
     return
