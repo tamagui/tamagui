@@ -11,37 +11,37 @@
     "vite": {
       "base": {
         "jsGzip": 59835,
-        "cssGzip": 4076,
+        "cssGzip": 4099,
         "islandJsGzip": null
       },
       "islands": {
         "jsGzip": 60776,
-        "cssGzip": 4081,
+        "cssGzip": 4104,
         "islandJsGzip": 72802
       }
     },
     "next-webpack": {
       "base": {
         "jsGzip": 141308,
-        "cssGzip": 4095,
+        "cssGzip": 4118,
         "islandJsGzip": null
       },
       "islands": {
         "jsGzip": 142327,
-        "cssGzip": 4099,
+        "cssGzip": 4122,
         "islandJsGzip": 72714
       }
     },
     "metro-web": {
       "base": {
         "jsGzip": 61844,
-        "cssGzip": 4095,
+        "cssGzip": 4118,
         "islandJsGzip": null
       },
       "islands": {
         "jsGzip": 62614,
-        "cssGzip": 4781,
-        "islandJsGzip": 121889
+        "cssGzip": 4807,
+        "islandJsGzip": 122103
       }
     }
   }
