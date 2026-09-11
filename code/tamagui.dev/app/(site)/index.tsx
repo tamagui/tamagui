@@ -51,7 +51,7 @@ export default function TamaguiHomePage() {
               The style engine that feels great on native and web.
             </H1>
 
-            <YStack gap="4">
+            <YStack gap="4" mt="-2">
               <Paragraph size="5" color="color-11">
                 Tamagui is the only style library that gets you platform-native feel while
                 going cross platform, now with Tailwind mode.
@@ -72,10 +72,30 @@ export default function TamaguiHomePage() {
                   rounded={10}
                   bg="color"
                   color="background"
-                  aria-label="Get started (docs)"
+                  borderWidth={0}
+                  borderStyle="none"
+                  borderColor="transparent hover:transparent"
+                  aria-label="Style docs"
                 >
                   <Button.Text color="background" fontWeight="600">
-                    Get started ↗
+                    Style ↗
+                  </Button.Text>
+                </Button>
+              </Link>
+              <Link asChild href="/ui/intro">
+                <Button
+                  render="a"
+                  size="lg"
+                  rounded={10}
+                  bg="color"
+                  color="background"
+                  borderWidth={0}
+                  borderStyle="none"
+                  borderColor="transparent hover:transparent"
+                  aria-label="Components docs"
+                >
+                  <Button.Text color="background" fontWeight="600">
+                    Components ↗
                   </Button.Text>
                 </Button>
               </Link>
@@ -84,7 +104,9 @@ export default function TamaguiHomePage() {
                   render="a"
                   size="lg"
                   rounded={10}
-                  variant="outlined"
+                  borderWidth={0}
+                  borderStyle="none"
+                  borderColor="transparent hover:transparent"
                   aria-label="GitHub"
                 >
                   <GithubIcon width={18} />

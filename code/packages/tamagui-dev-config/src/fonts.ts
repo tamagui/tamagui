@@ -4,11 +4,9 @@ import { createGenericFont } from './createGenericFont'
 
 const isWeb = process.env.TAMAGUI_TARGET === 'web'
 
-// Inter 4.1, subset to latin + latin-1 + punctuation as a variable font (~54kb),
-// covering weights 200-900 from one file. it's font-display: swap behind the OS
-// UI face, so first paint never waits on it.
-const interFamily = isWeb
-  ? '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+// Contrast variable font (100-900) for UI and text, paired with Inter italic
+const contrastFamily = isWeb
+  ? '"Contrast", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
   : 'System'
 
 // JetBrains Mono, subset to latin + punctuation as a variable font (~19kb), is
@@ -35,7 +33,7 @@ export const cherryBombFont = createCherryBombFont({
 
 export const headingFont = createInterFont(
   {
-    family: interFamily,
+    family: contrastFamily,
     size: {
       true: 14,
       5: 13,
@@ -73,7 +71,7 @@ export const headingFont = createInterFont(
 
 export const bodyFont = createInterFont(
   {
-    family: interFamily,
+    family: contrastFamily,
     size: {
       true: 14,
     },

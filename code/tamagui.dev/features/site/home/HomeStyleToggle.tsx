@@ -16,7 +16,30 @@ export function HomeStyleToggle() {
     >
       <YStack gap="3">
         <YStack self="flex-start">
-          <Tabs.List loop={false} aria-label="style syntax" gap="1">
+          <Tabs.List
+            loop={false}
+            aria-label="style syntax"
+            position="relative"
+            gap={0}
+            rounded="4"
+          >
+            <div
+              id="indicator"
+              className="indicator"
+              style={{
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                left: 0,
+                width: '50%',
+                backgroundColor: 'var(--color-12)',
+                borderRadius: 4,
+                transform: mode === 'tamagui' ? 'translateX(0%)' : 'translateX(100%)',
+                transition: 'transform 200ms cubic-bezier(0.16, 1, 0.3, 1)',
+                pointerEvents: 'none',
+                zIndex: 0,
+              }}
+            />
             {modes.map((value) => {
               const active = mode === value
               return (
@@ -25,19 +48,19 @@ export function HomeStyleToggle() {
                   value={value}
                   px="2-5"
                   py="1"
+                  width={72}
+                  items="center"
+                  justify="center"
                   rounded="4"
                   cursor="pointer"
-                  transition="quickest"
-                  // the selected tab inverts: a solid color-12 capsule with the
-                  // label flipped onto it. it is the tab's own style rather than
-                  // a measured overlay, so it is right in the server render and
-                  // cannot go stale when the row reflows.
-                  bg={active ? 'color-12' : 'transparent hover:color-4'}
+                  bg="transparent"
+                  zIndex={1}
                 >
                   <SizableText
                     size="2"
                     color={active ? 'color-1' : 'color-10'}
                     textTransform="capitalize"
+                    transition="quickest"
                   >
                     {value}
                   </SizableText>

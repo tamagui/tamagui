@@ -18,7 +18,7 @@ export const ThemeToggle = memo((props: ButtonProps) => {
       }
     >
       <Button
-        size="3"
+        size="4"
         onPress={onPress}
         {...props}
         aria-label="Toggle light/dark color scheme"

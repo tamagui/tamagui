@@ -18,7 +18,9 @@ setupPopper({
 // inlined here rather than linked so they cost no extra round-trip before first
 // paint, and swapped so text renders in the OS UI face until they land.
 const fontFaceCss = `
-@font-face{font-family:'Inter';src:url('/fonts/inter.woff2') format('woff2-variations');font-weight:200 900;font-style:normal;font-display:swap}
+@font-face{font-family:'Contrast';src:url('/fonts/contrast-wght-normal.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:'Contrast';src:url('/fonts/inter-latin-ext-wght-italic.woff2') format('woff2');font-weight:100 900;font-style:italic;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Contrast';src:url('/fonts/inter-latin-wght-italic.woff2') format('woff2');font-weight:100 900;font-style:italic;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 @font-face{font-family:'JetBrains Mono';src:url('/fonts/jetbrains-mono.woff2') format('woff2-variations');font-weight:100 800;font-style:normal;font-display:swap}`
 
 export default function Layout() {
@@ -46,10 +48,12 @@ export default function Layout() {
 
         <link
           rel="preload"
-          href="/fonts/inter.woff2"
           as="font"
-          crossOrigin="anonymous"
           type="font/woff2"
+          href="/fonts/contrast-wght-normal.woff2"
+          crossOrigin="anonymous"
+          // @ts-ignore
+          fetchPriority="high"
         />
         <link
           rel="preload"

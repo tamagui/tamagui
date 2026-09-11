@@ -78,7 +78,9 @@ export const InstallInput = memo(() => {
         <Button
           size="lg"
           rounded={10}
-          variant="outlined"
+          borderWidth={0}
+          borderStyle="none"
+          borderColor="transparent hover:transparent"
           icon={prompt.hasCopied ? Check : Bot}
           onPress={prompt.onCopy}
           aria-label="Copy a setup prompt for your coding agent"

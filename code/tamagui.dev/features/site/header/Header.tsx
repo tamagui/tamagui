@@ -155,14 +155,19 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
     >
       <XStack items="center" gap="4">
         <TooltipGroup delay={tooltipDelay}>
-          <XGroup maxH={32} bg="transparent" items="center" size="4">
+          <XGroup bg="transparent" items="center" size="4">
             <XGroup.Item>
               <ThemeToggle borderWidth={0} variant="quiet" />
             </XGroup.Item>
           </XGroup>
         </TooltipGroup>
 
-        <SearchButton size="2" rounded="10" boxShadow="0 2px 5px rgba(0, 0, 0, 0.14)" />
+        <SearchButton
+          size="2"
+          theme="accent"
+          rounded="10"
+          boxShadow="0 2px 5px rgba(0, 0, 0, 0.14)"
+        />
 
         <Link target="_blank" href="https://github.com/tamagui/tamagui">
           <XStack group containerType="normal">
@@ -227,11 +232,11 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         <XStack items="center" gap="2">
           <HeaderLinksPopover>
             <HeaderLink id="core" href="/docs/intro/introduction">
-              Core
+              Style
             </HeaderLink>
 
             <HeaderLink id="ui" href="/ui/intro">
-              UI
+              Components
             </HeaderLink>
 
             <HeaderLink id="theme" href="/theme">
@@ -385,7 +390,7 @@ export const HeaderLink = (props: { id: ID; children: string; href: string }) =>
       <Link asChild href={props.href as any}>
         <HeadAnchor
           fontFamily="mono"
-          fontSize={13}
+          fontSize={14}
           color="color-9 hover:color-12"
           {...(isActive && { active: true })}
           display="xs:none"
@@ -758,7 +763,7 @@ const HeaderMenuMoreContents = () => {
       <XStack flex={1} flexBasis="auto" flexWrap="wrap" gap="2" width="100%">
         <Link asChild href="/docs/intro/introduction">
           <HeadAnchor grid half>
-            Core
+            Style
           </HeadAnchor>
         </Link>
 
@@ -770,7 +775,7 @@ const HeaderMenuMoreContents = () => {
 
         <Link asChild href="/ui/intro" onPress={handlePress}>
           <HeadAnchor grid half>
-            UI
+            Components
           </HeadAnchor>
         </Link>
 
