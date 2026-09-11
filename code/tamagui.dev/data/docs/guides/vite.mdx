@@ -64,6 +64,15 @@ export default {
 }
 ```
 
+During development, the plugin evaluates your configuration through Vite's module
+runner and watches its imported dependencies. Saving a token or theme updates
+`outputCSS`, `.tamagui/tamagui.config.json`, and `.tamagui/prompt.md` before the
+browser reloads. Unchanged artifacts are not rewritten. You do not need to run
+`tamagui generate` after each edit.
+
+Use `disableExtraction: true` to keep runtime styling while retaining configuration
+generation. `disable: true` disables configuration loading as well.
+
 Or use a minimal manual setup for Vite that just adds compatibility for react-native-web and React Native extensions:
 
 ```tsx showMore

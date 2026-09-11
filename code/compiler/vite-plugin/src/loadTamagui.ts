@@ -66,6 +66,7 @@ export function createViteTamaguiLoader(
   const normalizeDependency = (id: string) => id.split('?')[0]
 
   const captureEvaluationDependencies = (modules: ResolvedEvaluationModule[]) => {
+    evaluationDependencies.clear()
     stampSources.clear()
     for (const { id } of modules) {
       const dependency = normalizeDependency(id)
@@ -213,7 +214,13 @@ export function createViteTamaguiLoader(
       })
     })()
 
-    return projectPromise
+    const pending = projectPromise
+    try {
+      return await pending
+    } catch (error) {
+      if (projectPromise === pending) projectPromise = null
+      throw error
+    }
   }
 
   return {
@@ -257,7 +264,16 @@ export function createViteTamaguiLoader(
 
     invalidate(file?: string) {
       if (file && environment) {
-        environment.runner.clearCache()
+        const evaluated = environment.runner.evaluatedModules
+        const affected = new Set(evaluated.getModulesByFile(normalizeDependency(file)))
+        // invalidate importers, retaining unrelated modules and their singletons.
+        for (const module of affected) {
+          for (const importer of module.importers) {
+            const parent = evaluated.getModuleById(importer)
+            if (parent) affected.add(parent)
+          }
+          evaluated.invalidateModule(module)
+        }
       }
       generation++
       projectPromise = null

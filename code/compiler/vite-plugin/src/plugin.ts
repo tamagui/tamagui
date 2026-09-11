@@ -1243,7 +1243,13 @@ export function createTamaguiPlugins({
 
     async buildStart() {
       const buildConfig = this.environment.getTopLevelConfig()
-      if (buildConfig.command !== 'build') return
+      if (buildConfig.command !== 'build') {
+        if (this.environment.name === 'client') {
+          const dependencies = await tamaguiLoader.ensureFullConfigLoaded()
+          for (const dependency of dependencies) this.addWatchFile(dependency)
+        }
+        return
+      }
 
       const pendingCleanup = buildCleanupPromise
       if (pendingCleanup) {
@@ -1370,6 +1376,8 @@ export function createTamaguiPlugins({
           compilerHotUpdateSignatures.set(options.file, signature)
           tamaguiLoader.invalidate(options.file)
           invalidateCompilerModules()
+          const dependencies = await tamaguiLoader.ensureFullConfigLoaded()
+          server.watcher.add(dependencies)
         }
         if (
           this.environment.name === 'client' &&

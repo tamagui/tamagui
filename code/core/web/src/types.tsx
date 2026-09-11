@@ -1745,6 +1745,7 @@ type WebOnlySizeValue =
   | `calc(${string})`
   | `min(${string})`
   | `max(${string})`
+  | `clamp(${string})`
   | 'max-content'
   | 'min-content'
 

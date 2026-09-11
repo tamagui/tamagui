@@ -13,4 +13,5 @@ export { detectModuleFormat, clearFormatCache } from './extractor/detectModuleFo
 export { esbundleTamaguiConfig } from './extractor/bundle';
 export * from './getPragmaOptions';
 export * from './zero';
+export { generateConfigMarkdown } from './extractor/generateConfigMarkdown';
 //# sourceMappingURL=exports.d.ts.map

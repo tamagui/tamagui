@@ -63,4 +63,8 @@ describe('flat value types', () => {
   test('font family tokens use their unprefixed v3 names', () => {
     expectTypeOf<'mono'>().toMatchTypeOf<FontFamilyTokens>()
   })
+
+  test('web size values accept clamp expressions', () => {
+    expectTypeOf<'clamp(16px,2vw,32px)'>().toMatchTypeOf<StackStyle['width']>()
+  })
 })

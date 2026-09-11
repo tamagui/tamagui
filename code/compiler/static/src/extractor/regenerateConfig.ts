@@ -7,6 +7,7 @@ import { grammarEntries } from '@tamagui/style-grammar/tooling'
 import type { TamaguiOptions } from '@tamagui/types'
 import FS from 'fs-extra'
 
+import { generateConfigMarkdown } from './generateConfigMarkdown'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import type { TamaguiPlatform } from '../types'
 import type { BundledConfig } from './bundleConfig'
@@ -21,24 +22,23 @@ export async function regenerateConfig(
   configIn?: BundledConfig | null,
   rebuild = false
 ) {
-  try {
-    // this has a side effect of rebuilding config and css!
-    // need to improve code here:
-    const config = configIn ?? (await getBundledConfig(tamaguiOptions, rebuild))
-    if (!config) return
-    const out = transformConfig(config, tamaguiOptions.platform || 'web')
-    const confFile = getConfigFile(tamaguiOptions)
-
-    await FS.ensureDir(dirname(confFile))
-    await FS.writeJSON(confFile, out, {
-      spaces: 2,
+  const config = configIn ?? (await getBundledConfig(tamaguiOptions, rebuild))
+  if (!config) return
+  const out = transformConfig(config, tamaguiOptions.platform || 'web')
+  const confFile = getConfigFile(tamaguiOptions)
+  await FS.ensureDir(dirname(confFile))
+  const outputs = [
+    [confFile, `${JSON.stringify(out, null, 2)}\n`],
+    [join(dirname(confFile), 'prompt.md'), generateConfigMarkdown(out)],
+  ]
+  await Promise.all(
+    outputs.map(async ([file, content]) => {
+      if (await FS.pathExists(file)) {
+        if ((await FS.readFile(file, 'utf8')) === content) return
+      }
+      await FS.writeFile(file, content)
     })
-  } catch (err) {
-    if (process.env.DEBUG?.includes('tamagui') || process.env.IS_TAMAGUI_DEV) {
-      console.warn('regenerateConfig error', err)
-    }
-    // ignore for now
-  }
+  )
 }
 
 export function regenerateConfigSync(

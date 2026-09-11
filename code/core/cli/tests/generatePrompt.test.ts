@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { generateMarkdown } from '../src/generate-prompt'
+import { generateConfigMarkdown as generateMarkdown } from '@tamagui/static'
 import { getSetupPrompt, resolveStyleValueSyntax } from '../src/setup-prompt'
 
 const mockConfig = {

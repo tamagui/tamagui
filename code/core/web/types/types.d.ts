@@ -1090,7 +1090,7 @@ type SomewhatSpecificSizeValue = 'auto' | PercentString | RemString | UnionableN
 type SomewhatSpecificSpaceValue = 'auto' | PercentString | RemString | UnionableNumber;
 type VariableString = `var(${string})`;
 export type SomewhatSpecificColorValue = CSSColorNames | 'transparent' | (`rgba(${string})` & {}) | (`rgb(${string})` & {}) | (`hsl(${string})` & {}) | (`hsla(${string})` & {}) | (`#${string}` & {});
-type WebOnlySizeValue = `${number}px` | `${number}em` | `${number}ch` | `${number}vmin` | `${number}vmax` | `${number}vw` | `${number}dvw` | `${number}lvw` | `${number}svw` | `${number}vh` | `${number}dvh` | `${number}lvh` | `${number}svh` | `calc(${string})` | `min(${string})` | `max(${string})` | 'max-content' | 'min-content';
+type WebOnlySizeValue = `${number}px` | `${number}em` | `${number}ch` | `${number}vmin` | `${number}vmax` | `${number}vw` | `${number}dvw` | `${number}lvw` | `${number}svw` | `${number}vh` | `${number}dvh` | `${number}lvh` | `${number}svh` | `calc(${string})` | `min(${string})` | `max(${string})` | `clamp(${string})` | 'max-content' | 'min-content';
 type UserAllowedStyleValuesSetting = Exclude<TamaguiSettings['allowedStyleValues'], undefined>;
 /**
  * A flat value string that carries a clause (`red hover:blue`, `dark:red`)

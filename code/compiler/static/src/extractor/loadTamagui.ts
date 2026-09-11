@@ -158,6 +158,8 @@ export async function loadTamaguiFromModules(
     await writeTamaguiCSS(props.outputCSS, projectInfo.tamaguiConfig)
   }
 
+  await regenerateConfig(props, projectInfo)
+
   return projectInfo
 }
 

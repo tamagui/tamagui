@@ -8,6 +8,7 @@ import {
   rename,
   rm,
   symlink,
+  stat,
   writeFile,
 } from 'node:fs/promises'
 import path from 'node:path'
@@ -452,6 +453,7 @@ afterEach(async () => {
     await rm(path.join(fixtureRoot, 'node_modules'), { force: true, recursive: true })
     await rm(evaluationFixtureRuntimeBasePath, { force: true, recursive: true })
     await rm(watchOutputRoot, { force: true, recursive: true })
+    await rm(path.join(fixtureRoot, '.tamagui'), { force: true, recursive: true })
     if (previousDisableSliderInterval === undefined) {
       delete process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL
     } else {
@@ -610,6 +612,83 @@ export const App = () => <View padding="fixtureNative" />
   expect(await readFile(outputCSS, 'utf8')).toBe('keep-web-css')
 }, 20_000)
 
+test('regenerates config artifacts on imported token edits with extraction disabled', async () => {
+  const outputCSS = path.join(watchOutputRoot, 'config.css')
+  const configJSON = path.join(fixtureRoot, '.tamagui/tamagui.config.json')
+  const original = await readFile(configSpacePath, 'utf8')
+  const server = await createServer({
+    configFile: false,
+    root: fixtureRoot,
+    logLevel: 'silent',
+    server: { middlewareMode: true },
+    resolve: { alias: fixtureAliases },
+    plugins: [
+      ...fixturePlugins(),
+      tamaguiPlugin({
+        root: fixtureRoot,
+        config: 'tamagui.config.ts',
+        components: fixtureComponents,
+        disableExtraction: true,
+        outputCSS,
+      }),
+    ],
+  })
+  servers.push(server)
+  try {
+    const initialCSS = await readFile(outputCSS, 'utf8')
+    const initialConfig = await readFile(configJSON, 'utf8')
+    expect(initialCSS).toContain('--c-space-fixture:16px')
+    expect(JSON.parse(initialConfig).tamaguiConfig.media.sm.minWidth).toBe(16)
+    await writeFile(configSpacePath, original.replace('1', '4'))
+    await vi.waitFor(async () => {
+      expect(await readFile(outputCSS, 'utf8')).toContain('--c-space-fixture:19px')
+      expect(
+        JSON.parse(await readFile(configJSON, 'utf8')).tamaguiConfig.media.sm.minWidth
+      ).toBe(19)
+    })
+    const promptPath = path.join(fixtureRoot, '.tamagui/prompt.md')
+    expect(await readFile(promptPath, 'utf8')).toContain('19')
+    const paths = [outputCSS, configJSON, promptPath]
+    const before = await Promise.all(
+      paths.map(async (file) => (await stat(file)).mtimeMs)
+    )
+    const send = vi.spyOn(server.environments.client.hot, 'send')
+    await writeFile(
+      configSpacePath,
+      `${original.replace('1', '4')}\n// unchanged values\n`
+    )
+    await vi.waitFor(() =>
+      expect(send).toHaveBeenCalledWith(
+        expect.objectContaining({ type: 'full-reload', triggeredBy: configSpacePath })
+      )
+    )
+    expect(
+      await Promise.all(paths.map(async (file) => (await stat(file)).mtimeMs))
+    ).toEqual(before)
+
+    send.mockClear()
+    await writeFile(configSpacePath, 'export const space = ;')
+    await vi.waitFor(() =>
+      expect(send).toHaveBeenCalledWith(expect.objectContaining({ type: 'error' }))
+    )
+    expect(
+      await Promise.all(paths.map(async (file) => (await stat(file)).mtimeMs))
+    ).toEqual(before)
+    await writeFile(configSpacePath, original.replace('1', '5'))
+    await vi.waitFor(async () => {
+      expect(await readFile(outputCSS, 'utf8')).toContain('--c-space-fixture:20px')
+      expect(
+        JSON.parse(await readFile(configJSON, 'utf8')).tamaguiConfig.media.sm.minWidth
+      ).toBe(20)
+    })
+  } finally {
+    await server.close()
+    servers.splice(servers.indexOf(server), 1)
+    await writeFile(configSpacePath, original)
+    await rm(path.join(fixtureRoot, '.tamagui'), { recursive: true, force: true })
+  }
+}, 10_000)
+
 test('optimizes the core singleton with context-bearing Tamagui packages', async () => {
   const server = await createServer({
     configFile: false,
@@ -664,6 +743,7 @@ test('optimizes the core singleton with context-bearing Tamagui packages', async
 
 test('evaluates config and components through the app resolver and invalidates HMR', async () => {
   ;(globalThis as any).__tamaguiFixtureOwnedEvaluation = []
+  ;(globalThis as any).__tamaguiFixtureEvaluationOrder = []
   const server = await createServer({
     configFile: false,
     root: fixtureRoot,
@@ -732,7 +812,6 @@ test('evaluates config and components through the app resolver and invalidates H
   expect(componentResolution?.id).toBe(componentEntryPath)
   expect(clientResolution?.id).toBe(compilerResolution?.id)
   expect(clientResolution?.id).toMatch(/browser\.ts$/)
-  ;(globalThis as any).__tamaguiFixtureEvaluationOrder = []
   const directConfigResolution = await evaluationEnvironment.pluginContainer.resolveId(
     path.join(fixtureRoot, 'tamagui.config.ts')
   )
@@ -1092,7 +1171,10 @@ test('evaluates config and components through the app resolver and invalidates H
     await restoreConfigFinished
   }
 
-  await expect(access(path.join(fixtureRoot, '.tamagui'))).rejects.toThrow()
+  expect(await readdir(path.join(fixtureRoot, '.tamagui'))).toEqual([
+    'prompt.md',
+    'tamagui.config.json',
+  ])
 }, 30_000)
 
 test('evaluates the same fixture during a production build without legacy bundles', async () => {
@@ -1195,7 +1277,10 @@ test('evaluates the same fixture during a production build without legacy bundle
     buildEnd: 1,
     closeBundle: 1,
   })
-  await expect(access(path.join(fixtureRoot, '.tamagui'))).rejects.toThrow()
+  expect(await readdir(path.join(fixtureRoot, '.tamagui'))).toEqual([
+    'prompt.md',
+    'tamagui.config.json',
+  ])
 })
 
 test('keeps the owned runner alive across concurrent builds sharing one plugin', async () => {

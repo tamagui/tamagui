@@ -78,18 +78,7 @@ const COMMAND_MAP = {
       })
       const { loadTamagui } = require('@tamagui/static/loadTamagui')
       process.env.TAMAGUI_KEEP_THEMES = '1'
-      await loadTamagui({
-        ...options.tamaguiOptions,
-        platform: 'web',
-      })
-
-      // also generate prompt to .tamagui/prompt.md
-      const { generatePrompt } = require('./generate-prompt')
-      const { join } = require('node:path')
-      await generatePrompt({
-        ...options,
-        output: join(options.paths.dotDir, 'prompt.md'),
-      })
+      await loadTamagui({ ...options.tamaguiOptions, platform: 'web' }, true)
     },
   },
 
