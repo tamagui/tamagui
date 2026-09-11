@@ -78,8 +78,10 @@ export function getThemeCSSRules(props: {
       const maxDepth = 2
 
       for (const subName of names) {
-        const isDark = isDarkBase || subName.startsWith('dark_')
-        const isLight = !isDark && (isLightBase || subName.startsWith('light_'))
+        const hasDarkPrefix = subName === 'dark' || subName.startsWith('dark_')
+        const hasLightPrefix = subName === 'light' || subName.startsWith('light_')
+        const isDark = hasDarkPrefix || (!hasLightPrefix && isDarkBase)
+        const isLight = hasLightPrefix || (!hasDarkPrefix && isLightBase)
 
         if (!(isDark || isLight)) {
           // neither light nor dark subtheme, just generate one selector with :root:root which

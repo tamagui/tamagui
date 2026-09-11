@@ -61,4 +61,27 @@ describe('default theme order', () => {
 
     expect(seen).toBe('dark')
   })
+
+  test('deduped inverse themes keep the scheme of each alias', () => {
+    const conf = createTamagui({
+      ...getDefaultTamaguiConfig(),
+      themes: {
+        light: { background: '#fff', color: '#000' },
+        dark: { background: '#000', color: '#fff' },
+        light_inverse: { background: '#000', color: '#fff' },
+        dark_inverse: { background: '#fff', color: '#000' },
+      },
+    })
+    const css = conf.getCSS()
+    const rules = css.split('\n')
+    const lightInverseRule = rules.find((rule) =>
+      /:root(?:\.t_light| \.t_light) \.t_inverse(?:,| \{)/.test(rule)
+    )
+    const darkInverseRule = rules.find((rule) =>
+      /:root(?:\.t_dark| \.t_dark) \.t_inverse(?:,| \{)/.test(rule)
+    )
+
+    expect(lightInverseRule).toContain('--background:var(--c-black)')
+    expect(darkInverseRule).toContain('--background:var(--c-white)')
+  })
 })
