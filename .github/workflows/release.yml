@@ -45,6 +45,12 @@ concurrency:
 jobs:
   beta:
     name: Publish v3 beta
+    # the language server lane below needs both of these: whether this run is the
+    # one that publishes, and the exact version it cut
+    outputs:
+      release: ${{ steps.candidate.outputs.release }}
+      version: ${{ steps.candidate.outputs.version }}
+      sha: ${{ github.event.workflow_run.head_sha }}
     if: >-
       github.event_name == 'workflow_run' &&
       github.event.workflow_run.conclusion == 'success' &&
@@ -87,6 +93,10 @@ jobs:
           else
             echo "release=true" >> "$GITHUB_OUTPUT"
           fi
+          # one owner for the version: the publish step below and the language
+          # server lane both read it, and a second copy of this expression is
+          # exactly how the two would drift apart
+          echo "version=3.0.0-beta.${GITHUB_RUN_NUMBER}.${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_OUTPUT"
 
       # deliberately no registry-url. it makes setup-node write an .npmrc holding
       # //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN} and export
@@ -156,7 +166,7 @@ jobs:
       - name: Publish tested source to the beta channel
         if: steps.candidate.outputs.release == 'true'
         env:
-          BETA_VERSION: 3.0.0-beta.${{ github.run_number }}.${{ github.run_attempt }}
+          BETA_VERSION: ${{ steps.candidate.outputs.version }}
         run: >-
           bun scripts/release.ts
           --beta
@@ -167,6 +177,51 @@ jobs:
           --skip-tests
           --skip-native-tests
           --skip-checks
+
+  # the nine language server packages, at the same version as the other 169.
+  # they cannot ride the main lane: it has no rust toolchains and cannot
+  # cross-compile eight targets, and `skipPublish` keeps the umbrella out of its
+  # version pass entirely. so the build matrix stays where it is and the release
+  # calls it with the version it just cut.
+  #
+  # this lane is independent of the 169: nothing published depends on
+  # `@tamagui/lsp` (its only consumer, tamagui-language-service, is private), so
+  # there is no ordering constraint between them and a failure here cannot
+  # strand a package in the main fan-out.
+  #
+  # it DISPATCHES lsp-build.yml rather than calling it with `uses:`. npm's
+  # trusted publishing reads the OIDC `workflow_ref` claim, which names the
+  # workflow that started the run; under `workflow_call` that is this file, and
+  # all nine packages pin lsp-build.yml on npmjs.com, so every publish would
+  # 403. npm documents the limitation. a dispatch leaves lsp-build.yml as the
+  # entry workflow, which is what those nine configs already say.
+  #
+  # the dispatch is against the branch, because the actions API takes a branch
+  # or tag, never a sha; the released commit rides along as the `ref` input and
+  # lsp-build.yml checks that out.
+  beta_lsp:
+    name: Dispatch the language server beta
+    needs: beta
+    if: needs.beta.outputs.release == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - name: Dispatch LSP Binaries at the version this run cut
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          BETA_VERSION: ${{ needs.beta.outputs.version }}
+          BETA_SHA: ${{ needs.beta.outputs.sha }}
+          BETA_BRANCH: ${{ github.event.workflow_run.head_branch }}
+        run: >-
+          gh workflow run lsp-build.yml
+          --ref "$BETA_BRANCH"
+          -f publish=yes
+          -f version="$BETA_VERSION"
+          -f tag=beta
+          -f ref="$BETA_SHA"
 
   prepare_stable:
     name: Merge stable version commit
