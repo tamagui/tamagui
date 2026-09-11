@@ -507,42 +507,9 @@ export async function addRenewalSubscription(
     renewalPriceIds.push(renewalPriceId)
   }
 
-  if (renewalPriceIds.length > 0) {
-    const toltReferral = options?.toltReferral ?? null
-
-    const cardPaymentMethods = await stripe.paymentMethods.list({
-      customer: customerId,
-      type: 'card',
-    })
-    const paymentMethod = cardPaymentMethods.data[0]
-    const collectionMethod = paymentMethod ? 'charge_automatically' : 'send_invoice'
-    const renewalSub = await stripe.subscriptions.create({
-      ...(toltReferral && {
-        metadata: {
-          tolt_referral: toltReferral,
-        },
-      }),
-      customer: customerId,
-      collection_method: collectionMethod,
-      ...(collectionMethod === 'charge_automatically'
-        ? {
-            default_payment_method: paymentMethod.id,
-          }
-        : {
-            days_until_due: 5,
-          }),
-      trial_period_days: 365,
-      // billing_cycle_anchor: (function () {
-      //   const date = new Date()
-      //   date.setFullYear(date.getFullYear() + 1)
-      //   return Math.floor(Number(date) / 1000)
-      // })(),
-      items: renewalPriceIds.map((id) => ({
-        price: id,
-      })),
-    })
-    console.info(renewalSub)
-  }
+  // Auto-renewing subscriptions are disabled altogether.
+  // Do not create recurring renewal subscriptions.
+  return
 }
 
 export async function getOrCreateRenewalPriceId(price: Stripe.Price) {

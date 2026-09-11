@@ -223,35 +223,8 @@ export default apiRoute(async (req) => {
       )
     }
 
-    // Create the upgrade subscription (starts in 1 year, $100/year)
-    // This is auto-subscribed as per requirements
-    try {
-      upgradeSubscription = await stripe.subscriptions.create(
-        {
-          customer: stripeCustomerId,
-          items: [{ price: PRO_V2_UPGRADE_PRICE_ID }],
-          billing_cycle_anchor: Math.floor(upgradeStartDate.getTime() / 1000),
-          proration_behavior: 'none',
-          payment_settings: { save_default_payment_method: 'on_subscription' },
-          default_payment_method: paymentMethodId,
-          metadata: {
-            version: 'v2',
-            type: 'pro_v2_upgrade',
-          },
-        },
-        {
-          idempotencyKey: generateIdempotencyKey(user.id, 'upgrade_sub', idempotencyBase),
-        }
-      )
-    } catch (subError) {
-      // Rollback: refund the invoice if subscription creation fails
-      console.error(
-        'Upgrade subscription creation failed, initiating rollback:',
-        subError
-      )
-      await rollbackPayment(paidInvoice)
-      throw subError
-    }
+    // Note: Auto-renewing upgrade subscriptions are disabled altogether.
+    // Pro V2 licenses are one-time per project without recurring upgrade subscriptions.
 
     // If a paid support tier is selected, create the support subscription
     const supportPriceId = supportTier ? getSupportTierPriceId(supportTier) : null
@@ -299,7 +272,7 @@ export default apiRoute(async (req) => {
       success: true,
       invoiceId: invoice.id,
       invoiceStatus: paidInvoice.status,
-      upgradeSubscriptionId: upgradeSubscription.id,
+      upgradeSubscriptionId: upgradeSubscription?.id || null,
       upgradeStartDate: upgradeStartDate.toISOString(),
       supportSubscriptionId: supportSubscription?.id || null,
       supportTier: supportTier || 'chat',

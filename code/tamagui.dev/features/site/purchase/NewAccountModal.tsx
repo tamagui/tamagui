@@ -1765,6 +1765,7 @@ const ManageTab = ({
             // one-time purchases have invoice IDs (in_...) not subscription IDs (sub_...)
             // they don't renew, so V2 renewal doesn't apply
             if (!sub.id.startsWith('sub_')) return false
+            if (sub.cancel_at_period_end) return false
             return sub.subscription_items?.some((item) => {
               const productId = item.price?.product?.id
               return productId && V1_PRODUCTS.includes(productId as any)
