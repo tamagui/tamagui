@@ -187,6 +187,7 @@ const SAMPLE: Record<string, { comp: any; attr: string } | null> = {
   textOverflow: null, // standalone, web-only
   userSelect: null, // standalone
   visibility: null, // standalone
+  mixBlendMode: null, // standalone, web-only
   gridTemplateColumns: { comp: View, attr: 'gridTemplateColumns="none"' },
   gridColumn: { comp: View, attr: 'gridColumn="span 2 / span 2"' },
   gridColumnStart: { comp: View, attr: 'gridColumnStart={2}' },

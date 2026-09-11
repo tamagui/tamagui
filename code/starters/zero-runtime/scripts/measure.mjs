@@ -284,12 +284,24 @@ if (unqualified.length) {
 
 const sizeMetrics = ['jsGzip', 'cssGzip', 'islandJsGzip']
 
+const hostPlatform = `${process.platform}-${process.arch}`
+
 if (updateBaseline) {
   const previous = existsSync(baselinePath)
     ? JSON.parse(readFileSync(baselinePath, 'utf8'))
     : {
         thresholds: { jsGzip: 0, cssGzip: 0, islandJsGzip: 0 },
       }
+  // Next minifies with SWC, whose binary is per-platform, so the next-webpack
+  // figures differ between a mac and CI's linux runner at the same commit and
+  // the same pinned Next. Regenerating here would overwrite CI's numbers with
+  // this machine's and turn the gate red on the next push, which is exactly how
+  // the next-webpack baseline went 448 bytes low once already.
+  if (previous.measuredOn && previous.measuredOn !== hostPlatform) {
+    throw new Error(
+      `size-baseline.json was measured on ${previous.measuredOn} and this is ${hostPlatform}. Do not regenerate it here: take the actual byte counts from the failing CI run, which prints every one of them, and edit the file.`
+    )
+  }
   const baseline = {}
   for (const [name, tiers] of Object.entries(receipts)) {
     baseline[name] = {}
@@ -308,6 +320,7 @@ if (updateBaseline) {
           encoding: 'utf8',
         }).trim(),
         nodeVersion: requiredNodeVersion,
+        measuredOn: hostPlatform,
         compression: "Node gzipSync level 9; output depends on Node's bundled zlib",
         thresholds: previous.thresholds,
         baseline,
@@ -357,7 +370,7 @@ if (updateBaseline) {
   }
   if (failures.length) {
     throw new Error(
-      `Size baseline exceeded:\n${failures.map((failure) => `- ${failure}`).join('\n')}\nIf the growth is intentional, run \`node scripts/measure.mjs --update-baseline\` and commit size-baseline.json.`
+      `Size baseline exceeded:\n${failures.map((failure) => `- ${failure}`).join('\n')}\nIf the growth is intentional, run \`node scripts/measure.mjs --update-baseline\` on ${expected.measuredOn ?? hostPlatform} and commit size-baseline.json. From any other platform, copy the actual counts above into the file by hand.`
     )
   }
   console.info(
