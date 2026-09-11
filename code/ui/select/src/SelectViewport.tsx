@@ -5,7 +5,6 @@ import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { createStyledHOC, styled, View } from '@tamagui/core'
 import { needsPortalRepropagation } from '@tamagui/portal'
 import { YStack } from '@tamagui/stacks'
-import { startTransition } from '@tamagui/start-transition'
 import * as React from 'react'
 import { VIEWPORT_NAME } from './constants'
 import {
@@ -37,17 +36,13 @@ export const SelectViewport = createStyledHOC(
     const viewportRef = React.useRef<any>(null)
     const registeredItemCount = itemContext.registry.getItems().length
 
-    // lazy mount: defer mounting children until first open using startTransition
-    const [lazyMounted, setLazyMounted] = React.useState(context.lazyMount ? false : true)
-
-    React.useEffect(() => {
-      if (!context.lazyMount) return
-      if (!context.open) return
-      if (lazyMounted) return
-      startTransition(() => {
-        setLazyMounted(true)
-      })
-    }, [context.lazyMount, context.open, lazyMounted])
+    // lazy mount keeps the items out of the tree until the first open, but it
+    // has to happen in the render that opens, not in an effect after it: mounting
+    // a frame later paints an empty popover, then floating-ui positions that empty
+    // box and has to jump once the real height arrives. once mounted it stays.
+    const hasOpenedRef = React.useRef(!context.lazyMount)
+    if (context.open) hasOpenedRef.current = true
+    const lazyMounted = hasOpenedRef.current
 
     React.useEffect(() => {
       if (!isWeb || !isAdapted || !context.open) return
@@ -77,14 +72,14 @@ export const SelectViewport = createStyledHOC(
       }
     }, [isAdapted])
 
-    // after lazy children mount, force floating-ui to recompute so inner middleware
-    // can position using the now-present list items
+    // items register in layout effects, so the inner middleware can only position
+    // against the selected one once the registry has settled
     React.useEffect(() => {
-      if (context.lazyMount && lazyMounted && context.open && context.update) {
+      if (context.lazyMount && context.open && context.update) {
         const frame = requestAnimationFrame(context.update)
         return () => cancelAnimationFrame(frame)
       }
-    }, [lazyMounted, registeredItemCount])
+    }, [context.open, registeredItemCount])
 
     if (itemContext.shouldRenderWebNative) {
       return <YStack position="relative">{children}</YStack>
