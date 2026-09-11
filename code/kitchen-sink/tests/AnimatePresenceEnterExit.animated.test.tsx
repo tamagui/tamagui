@@ -199,15 +199,7 @@ test('scenario 04: exit animates scale and translate, not only opacity', async (
   expect(await waitForRemoval(page, 'enter-exit-04-target')).toBe(true)
 })
 
-test('scenario 05: a positioned popover animates its exit scale', async ({
-  page,
-}, testInfo) => {
-  // known defect: the reanimated web driver starts a positioned popover's exit
-  // scale at its target instead of the painted 1, so it snaps
-  test.fail(
-    testInfo.project.metadata.animationDriver === 'reanimated',
-    'reanimated web driver snaps a positioned popover exit scale'
-  )
+test('scenario 05: a positioned popover animates its exit scale', async ({ page }) => {
   await page.getByTestId('enter-exit-05-trigger').click()
   await expect(page.getByTestId('enter-exit-05-target')).toBeVisible()
   await page.waitForTimeout(600)

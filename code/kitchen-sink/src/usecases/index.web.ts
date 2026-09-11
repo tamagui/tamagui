@@ -27,6 +27,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./GroupNestedNotifyLoopCase').GroupNestedNotifyLoopCase,
   ReanimatedStuckHoverCase: () =>
     require('./ReanimatedStuckHoverCase').ReanimatedStuckHoverCase,
+  AvoidRerendersHoverCase: () =>
+    require('./AvoidRerendersHoverCase').AvoidRerendersHoverCase,
   ReanimatedPlatformDriverHoverCase: () =>
     require('./ReanimatedPlatformDriverHoverCase').ReanimatedPlatformDriverHoverCase,
   AnimatePresenceEnterExitCase: () =>
