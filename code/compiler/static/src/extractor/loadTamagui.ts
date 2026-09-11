@@ -208,11 +208,59 @@ export function getTamaguiBuildConfigDependencies(
   return buildConfigDependencies.get(options) ?? []
 }
 
+export type EvaluatedBuildConfigModule = {
+  /** the module's exports, default included */
+  exports: Record<string, unknown>
+  /** every file the evaluation read, absolute or relative to the project root */
+  dependencies: string[]
+}
+
+/**
+ * Evaluate tamagui.build.ts. A host with its own module runner passes one of
+ * these instead, so the build file goes through the same resolution as the rest
+ * of the app and no second toolchain has to be running.
+ */
+export type BuildConfigLoader = (
+  absolutePath: string,
+  root: string
+) => Promise<EvaluatedBuildConfigModule>
+
+// the fallback for hosts with no module runner of their own: bundle the build
+// file and its relative imports into one CJS module and run it. packages stay
+// external so they resolve through node exactly as they would at require time.
+const esbuildBuildConfigLoader: BuildConfigLoader = async (absolutePath, root) => {
+  const result = await esbuild.build({
+    entryPoints: [absolutePath],
+    absWorkingDir: root,
+    bundle: true,
+    packages: 'external',
+    platform: 'node',
+    format: 'cjs',
+    target: 'node18',
+    write: false,
+    metafile: true,
+  })
+
+  const code = result.outputFiles[0]?.text
+  if (!code) throw new Error(`No output generated for ${absolutePath}`)
+
+  const module = { exports: {} as Record<string, unknown> }
+  const projectRequire = createRequire(absolutePath)
+  const fn = new Function('module', 'exports', 'require', 'process', code)
+  fn(module, module.exports, projectRequire, process)
+
+  return {
+    exports: module.exports,
+    dependencies: Object.keys(result.metafile.inputs),
+  }
+}
+
 /**
  * Load tamagui.build.ts and its relative imports as one Node module.
  */
 export async function loadTamaguiBuildConfigAsync(
-  tamaguiOptions: Partial<TamaguiOptions> | undefined
+  tamaguiOptions: Partial<TamaguiOptions> | undefined,
+  loadBuildConfigModule: BuildConfigLoader = esbuildBuildConfigLoader
 ): Promise<TamaguiOptions> {
   const buildFilePath = tamaguiOptions?.buildFile ?? './tamagui.build.ts'
   const root = tamaguiOptions?.root || process.cwd()
@@ -220,26 +268,9 @@ export async function loadTamaguiBuildConfigAsync(
 
   if (fsExtra.existsSync(absolutePath)) {
     try {
-      const result = await esbuild.build({
-        entryPoints: [absolutePath],
-        absWorkingDir: root,
-        bundle: true,
-        packages: 'external',
-        platform: 'node',
-        format: 'cjs',
-        target: 'node18',
-        write: false,
-        metafile: true,
-      })
+      const evaluated = await loadBuildConfigModule(absolutePath, root)
 
-      const module = { exports: {} as any }
-      const projectRequire = createRequire(absolutePath)
-      const code = result.outputFiles[0]?.text
-      if (!code) throw new Error(`No output generated for ${buildFilePath}`)
-      const fn = new Function('module', 'exports', 'require', 'process', code)
-      fn(module, module.exports, projectRequire, process)
-
-      const out = module.exports.default || module.exports
+      const out = evaluated.exports.default || evaluated.exports
       if (!out || typeof out !== 'object') {
         throw new Error(`No default export found in ${buildFilePath}: ${out}`)
       }
@@ -248,9 +279,7 @@ export async function loadTamaguiBuildConfigAsync(
         ...tamaguiOptions,
         ...out,
       } as TamaguiOptions
-      const dependencies = Object.keys(result.metafile.inputs).map((input) =>
-        resolve(root, input)
-      )
+      const dependencies = evaluated.dependencies.map((file) => resolve(root, file))
       buildConfigDependencies.set(loadedOptions, dependencies)
       tamaguiOptions = loadedOptions
     } catch (err) {

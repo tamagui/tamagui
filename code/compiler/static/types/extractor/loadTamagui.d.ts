@@ -26,10 +26,22 @@ export type EvaluatedTamaguiProject = {
 export declare function loadTamaguiFromModules(propsIn: Partial<TamaguiOptions>, evaluated: EvaluatedTamaguiProject): Promise<TamaguiProjectInfo>;
 export declare const generateThemesAndLog: (options: TamaguiOptions, force?: boolean) => Promise<void>;
 export declare function getTamaguiBuildConfigDependencies(options: TamaguiOptions): readonly string[];
+export type EvaluatedBuildConfigModule = {
+    /** the module's exports, default included */
+    exports: Record<string, unknown>;
+    /** every file the evaluation read, absolute or relative to the project root */
+    dependencies: string[];
+};
+/**
+ * Evaluate tamagui.build.ts. A host with its own module runner passes one of
+ * these instead, so the build file goes through the same resolution as the rest
+ * of the app and no second toolchain has to be running.
+ */
+export type BuildConfigLoader = (absolutePath: string, root: string) => Promise<EvaluatedBuildConfigModule>;
 /**
  * Load tamagui.build.ts and its relative imports as one Node module.
  */
-export declare function loadTamaguiBuildConfigAsync(tamaguiOptions: Partial<TamaguiOptions> | undefined): Promise<TamaguiOptions>;
+export declare function loadTamaguiBuildConfigAsync(tamaguiOptions: Partial<TamaguiOptions> | undefined, loadBuildConfigModule?: BuildConfigLoader): Promise<TamaguiOptions>;
 /**
  * @deprecated Use loadTamaguiBuildConfigAsync instead to avoid EPIPE errors
  */

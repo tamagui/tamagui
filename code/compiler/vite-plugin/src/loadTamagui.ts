@@ -3,9 +3,38 @@ import type { TamaguiProjectInfo } from '@tamagui/static'
 import type { TamaguiOptions } from '@tamagui/types'
 import { createRequire } from 'node:module'
 import path from 'node:path'
-import type { RunnableDevEnvironment } from 'vite'
+import { runnerImport, type RunnableDevEnvironment } from 'vite'
 
 export const TAMAGUI_EVALUATION_ENVIRONMENT = 'tamagui'
+
+/**
+ * Evaluate tamagui.build.ts through Vite instead of esbuild.
+ *
+ * The esbuild path spawns a long-lived service process, and that process does
+ * not survive a Vite dev server restart: the next `tamaguiPlugin()` call, which
+ * happens while Vite is rebuilding its config, hits `write EPIPE` and takes the
+ * restart down with it. Vite is already running here and already evaluates
+ * tamagui.config.ts and every component package through its own module runner,
+ * so the build file has no reason to need a second toolchain.
+ *
+ * `runnerImport` forces `configFile: false`, so loading the build file from
+ * inside a plugin that the config file itself creates cannot recurse. Bare
+ * imports stay external, matching esbuild's `packages: 'external'`, and the
+ * returned dependency list replaces the metafile's inputs for watching.
+ */
+export const viteBuildConfigLoader: Static.BuildConfigLoader = async (
+  absolutePath,
+  root
+) => {
+  const { module, dependencies } = await runnerImport<Record<string, unknown>>(
+    absolutePath,
+    { root }
+  )
+  // runnerImport reports what the entry pulled in but not the entry itself,
+  // where esbuild's metafile listed it. the build file is the one thing that
+  // must invalidate the config, so put it back.
+  return { exports: module, dependencies: [absolutePath, ...dependencies] }
+}
 
 const requireFromLoader = createRequire(
   typeof __filename === 'string' ? __filename : import.meta.url
@@ -96,15 +125,25 @@ export function createViteTamaguiLoader(
     if (loadedOptions) return loadedOptions
     if (loadPromise) return loadPromise
 
-    loadPromise = Static.loadTamaguiBuildConfigAsync({
-      ...optionsIn,
-      platform: 'web',
-    }).then((options) => {
-      loadedOptions = options
-      return options
-    })
+    const pending = Static.loadTamaguiBuildConfigAsync(
+      { ...optionsIn, platform: 'web' },
+      viteBuildConfigLoader
+    ).then(
+      (options) => {
+        loadedOptions = options
+        return options
+      },
+      (error) => {
+        // a build file that failed to evaluate is usually mid-edit. dropping the
+        // promise lets the next caller try again instead of every later load in
+        // this process replaying the first failure.
+        if (loadPromise === pending) loadPromise = null
+        throw error
+      }
+    )
+    loadPromise = pending
 
-    return loadPromise
+    return pending
   }
 
   const resolveAndImport = async (

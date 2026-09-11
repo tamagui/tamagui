@@ -1,8 +1,24 @@
 import Static from '@tamagui/static';
 import type { TamaguiProjectInfo } from '@tamagui/static';
 import type { TamaguiOptions } from '@tamagui/types';
-import type { RunnableDevEnvironment } from 'vite';
+import { type RunnableDevEnvironment } from 'vite';
 export declare const TAMAGUI_EVALUATION_ENVIRONMENT = "tamagui";
+/**
+ * Evaluate tamagui.build.ts through Vite instead of esbuild.
+ *
+ * The esbuild path spawns a long-lived service process, and that process does
+ * not survive a Vite dev server restart: the next `tamaguiPlugin()` call, which
+ * happens while Vite is rebuilding its config, hits `write EPIPE` and takes the
+ * restart down with it. Vite is already running here and already evaluates
+ * tamagui.config.ts and every component package through its own module runner,
+ * so the build file has no reason to need a second toolchain.
+ *
+ * `runnerImport` forces `configFile: false`, so loading the build file from
+ * inside a plugin that the config file itself creates cannot recurse. Bare
+ * imports stay external, matching esbuild's `packages: 'external'`, and the
+ * returned dependency list replaces the metafile's inputs for watching.
+ */
+export declare const viteBuildConfigLoader: Static.BuildConfigLoader;
 type ResolvedEvaluationModule = {
     moduleName: string;
     id: string;
