@@ -7,7 +7,6 @@ export interface RNExtraProps {
     onSelectionChangeShouldSetResponder?: unknown;
     onSelectionChangeShouldSetResponderCapture?: unknown;
     onLayout?: OnLayout;
-    elevationAndroid?: number | string;
 }
 export interface RNViewProps extends GestureResponderHandlers, RNExtraProps {
     rel?: any;
@@ -17,6 +16,6 @@ export interface RNTextProps extends RNExtraProps {
     dir?: 'ltr' | 'rtl' | 'auto';
     onTextLayout?: OnTextLayout;
 }
-export type RNOnlyProps = 'onStartShouldSetResponder' | 'onScrollShouldSetResponder' | 'onScrollShouldSetResponderCapture' | 'onSelectionChangeShouldSetResponder' | 'onSelectionChangeShouldSetResponderCapture' | 'onLayout' | 'onTextLayout' | 'href' | 'hrefAttrs' | 'elevationAndroid' | 'rel' | 'download' | 'dir' | 'focusable' | 'onStartShouldSetResponder' | 'onMoveShouldSetResponder' | 'onResponderEnd' | 'onResponderGrant' | 'onResponderReject' | 'onResponderMove' | 'onResponderRelease' | 'onResponderStart' | 'onResponderTerminationRequest' | 'onResponderTerminate' | 'onStartShouldSetResponderCapture' | 'onMoveShouldSetResponderCapture';
+export type RNOnlyProps = 'onStartShouldSetResponder' | 'onScrollShouldSetResponder' | 'onScrollShouldSetResponderCapture' | 'onSelectionChangeShouldSetResponder' | 'onSelectionChangeShouldSetResponderCapture' | 'onLayout' | 'onTextLayout' | 'href' | 'hrefAttrs' | 'rel' | 'download' | 'dir' | 'focusable' | 'onStartShouldSetResponder' | 'onMoveShouldSetResponder' | 'onResponderEnd' | 'onResponderGrant' | 'onResponderReject' | 'onResponderMove' | 'onResponderRelease' | 'onResponderStart' | 'onResponderTerminationRequest' | 'onResponderTerminate' | 'onStartShouldSetResponderCapture' | 'onMoveShouldSetResponderCapture';
 export {};
 //# sourceMappingURL=RNExclusiveTypes.d.ts.map

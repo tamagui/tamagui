@@ -84,7 +84,7 @@ export const SidePaneHost = memo(() => {
           x: 1,
           pointerEvents: 'auto',
         })}
-        elevation="8"
+        boxShadow="0 8px 24px shadow-color"
       >
         <Button
           l="-4"

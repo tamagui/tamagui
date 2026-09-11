@@ -6,7 +6,7 @@ export const optionValues = {
   borderWidth: [0 as const, 0.5 as const, 1 as const],
   headingFontFamily: ['heading', 'mono'] as TextProps['fontFamily'][],
   fillStyle: ['filled' as const, 'outlined' as const],
-  elevation: [0, '1', '2'] as YStackProps['elevation'][],
+  elevation: [0, '1', '2'] as (number | string)[],
   spacing: ['sm' as const, 'md' as const, 'lg' as const],
   textAccent: ['low' as const, 'high' as const],
   backgroundAccent: ['low' as const, 'high' as const],

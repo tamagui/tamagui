@@ -24,7 +24,7 @@ export function AnimationsEnterDemo(props: any) {
         transition="bouncy"
         bg="color-9"
         rounded="9"
-        elevation="4"
+        boxShadow="0 4px 12px shadow-color"
         size={110}
       >
         {props.children ?? <LogoIcon downscale={0.75} />}

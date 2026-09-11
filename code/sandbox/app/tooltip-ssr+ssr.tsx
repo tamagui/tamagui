@@ -70,7 +70,7 @@ export default function TooltipSSRTest() {
             py="1"
             y="enter:-4px exit:-4px"
             opacity="enter:0 exit:0"
-            elevation="2"
+            boxShadow="0 2px 4px shadow-color"
           >
             <Tooltip.Arrow scope="promo-tooltip" id="tip-arrow" />
             <Paragraph id="tip-label" size="3">

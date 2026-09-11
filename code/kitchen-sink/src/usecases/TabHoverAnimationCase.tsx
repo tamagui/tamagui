@@ -112,7 +112,7 @@ export function TabHoverAnimationCase() {
             rounded="4"
             bg="color-3"
             overflow="hidden"
-            elevation="4"
+            boxShadow="0 4px 12px shadow-color"
           >
             <AnimatePresence initial={false} custom={{ going }}>
               {open && !!displayTab && (

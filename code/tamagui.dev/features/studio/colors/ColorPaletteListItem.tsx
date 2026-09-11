@@ -76,7 +76,7 @@ export const ColorPaletteListItem = ({
                     {...(indicateActive === index && {
                       scale: 1.2,
                       z: 100,
-                      elevation: '2',
+                      boxShadow: '0 2px 4px shadow-color',
                       borderColor: 'color',
                     })}
                     {...(index === 0 && {

@@ -101,10 +101,6 @@ export function expandStyle(
   }
 
   if (process.env.TAMAGUI_TARGET === 'native') {
-    if (isAndroid && key === 'elevationAndroid') {
-      return [['elevation', value]]
-    }
-
     // native-only value transforms
     switch (key) {
       case 'objectFit': {

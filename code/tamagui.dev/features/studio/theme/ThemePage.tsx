@@ -161,7 +161,7 @@ const ThemeBuilderModal = memo(() => {
           bg: 'color-3',
         })}
         ref={ref}
-        elevation="5"
+        boxShadow="0 4px 16px shadow-color"
       >
         <XStack position="absolute" z={999} t="2" l="2" display="gtLg:none">
           <Button

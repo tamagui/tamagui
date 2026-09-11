@@ -2752,6 +2752,7 @@ interface ExtraStyleProps {
   borderInlineWidth?: SpaceTokens | number
   borderInlineStartWidth?: SpaceTokens | number
   borderInlineEndWidth?: SpaceTokens | number
+  borderStyle?: ViewStyle['borderStyle'] | 'none' | 'hidden'
   borderBlockStyle?: ViewStyle['borderStyle']
   borderBlockStartStyle?: ViewStyle['borderStyle']
   borderBlockEndStyle?: ViewStyle['borderStyle']

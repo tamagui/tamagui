@@ -10,7 +10,6 @@ export declare const nativeOnlyProps: {
     android_hyphenationFrequency: number;
     dataDetectorType: number;
     dynamicTypeRamp: number;
-    elevationAndroid: number;
     ellipsizeMode: number;
     hapticFeedback: number;
     hapticStyle: number;

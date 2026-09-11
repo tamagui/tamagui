@@ -25,7 +25,7 @@ export const SidebarRight = memo(function SidebarRight(props: {
       b={0}
       width={sidebarWidth}
       z={100}
-      elevation="1"
+      boxShadow="0 1px 2px shadow-color"
     >
       <ScrollView>{props.children}</ScrollView>
     </YStack>
@@ -46,7 +46,7 @@ export const SidebarLeft = memo(function SidebarLeft(props: {
       b={0}
       width={sidebarWidth}
       z={1000}
-      elevation="1"
+      boxShadow="0 1px 2px shadow-color"
       data-tauri-drag-region
     >
       <ScrollView data-tauri-drag-region>

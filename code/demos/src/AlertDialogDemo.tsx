@@ -15,7 +15,7 @@ export function AlertDialogDemo() {
           backgroundColor="background"
         />
         <AlertDialog.Content
-          elevation="4"
+          boxShadow="0 4px 12px shadow-color"
           key="content"
           transition={{
             preset: 'quick',

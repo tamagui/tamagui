@@ -122,7 +122,7 @@ export const HomeExamples = memo(
               z={1000}
               pointerEvents="none"
             >
-              <IconStack items="center" p="2-5" mb={0} elevation="2">
+              <IconStack items="center" p="2-5" mb={0} boxShadow="0 2px 4px shadow-color">
                 <FastForward color="var(--color-hover)" size={20} />
               </IconStack>
             </YStack>
@@ -173,7 +173,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
                 px="4"
                 rounded="4"
                 size="5"
-                elevation={3}
+                boxShadow="0 4px 8px shadow-color"
               >
                 {title}
               </Heading>

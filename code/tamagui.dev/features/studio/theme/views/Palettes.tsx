@@ -21,7 +21,7 @@ export function Palettes({
       overflow="hidden"
       borderColor="color-8"
       borderWidth={0.5}
-      elevation="1"
+      boxShadow="0 1px 2px shadow-color"
     >
       {schemes.light && (
         <StudioPaletteBar showLabelIndices={!condensed} colors={palettes.light} />

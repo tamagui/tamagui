@@ -46,7 +46,7 @@ export const StudioBar = memo(function Header() {
           })}
       maxW={192}
       data-tauri-drag-region
-      elevation="2"
+      boxShadow="0 2px 4px shadow-color"
       className="all ease-in-out ms300"
     >
       <YStack rounded="10" position="absolute" inset={0} className="blur-medium" />

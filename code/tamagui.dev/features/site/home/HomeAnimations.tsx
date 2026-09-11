@@ -103,7 +103,7 @@ export const ExampleAnimations = memo(() => {
       self="center"
       x={0}
       flexDirection="row-reverse"
-      elevation="1"
+      boxShadow="0 1px 2px shadow-color"
     >
       <YStack
         ref={container}

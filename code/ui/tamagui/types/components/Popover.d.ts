@@ -26,7 +26,7 @@ export declare const Popover: ((props: Omit<import("@tamagui/popper").PopperProp
     displayName?: string;
     propTypes?: any;
 } & {
-    Anchor: React.NamedExoticComponent<Omit<import("@tamagui/stacks").YStackProps, "scope"> & {
+    Anchor: React.NamedExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "scope"> & {
         scope?: import("@tamagui/popover").PopoverScopes;
     } & import("@tamagui/core").RefProp<import("@tamagui/core").TamaguiElement>>;
     Arrow: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/popper").PopperArrowExtraProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {

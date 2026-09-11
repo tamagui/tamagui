@@ -136,7 +136,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
                 borderBottomRightRadius={i === scale.colors.length - 1 ? '4' : 0}
                 {...(isActive && {
                   borderRadius: '4',
-                  elevation: '4',
+                  boxShadow: '0 4px 12px shadow-color',
                 })}
                 position="relative"
                 p="2"

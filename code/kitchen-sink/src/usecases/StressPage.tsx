@@ -54,7 +54,7 @@ const StyledCard = styled(Card, {
   backgroundColor: 'background',
   borderWidth: 1,
   borderColor: 'border-color',
-  elevation: '2',
+  boxShadow: '0 2px 4px shadow-color',
   variants: {
     highlighted: {
       true: {

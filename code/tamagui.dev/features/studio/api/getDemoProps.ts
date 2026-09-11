@@ -98,7 +98,9 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     } as const,
 
     elevationProps: {
-      elevation: demosOptions.elevation,
+      boxShadow: demosOptions.elevation
+        ? ('0 4px 12px shadow-color' as const)
+        : undefined,
     } as const,
 
     panelPaddingProps: {

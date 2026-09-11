@@ -103,7 +103,7 @@ const QueueCardFrame = ({
       height={280}
       self="center"
       overflow="hidden"
-      elevation="4"
+      boxShadow="0 4px 12px shadow-color"
     >
       <YStack
         position="absolute"

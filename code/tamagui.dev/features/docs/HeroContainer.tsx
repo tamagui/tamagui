@@ -113,7 +113,7 @@ const Card = styled(YStack, {
   bg: 'background',
   minH: 220,
   rounded: '4',
-  elevation: '1',
+  boxShadow: '0 2px 8px shadow-color',
 })
 
 const niceNames = {

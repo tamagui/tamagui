@@ -126,7 +126,7 @@ export function MenuDemo() {
                   transformOrigin="top left"
                   backgroundColor="color-1"
                   animation="menu"
-                  elevation="5"
+                  boxShadow="0 4px 12px shadow-color"
                 >
                   <Menu.Item
                     onSelect={onSelect}

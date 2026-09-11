@@ -884,11 +884,6 @@ function contributeProp(
 
   if (process.env.TAMAGUI_TARGET === 'native') {
     if (!isValidStyleKeyInit) {
-      if (!isAndroid) {
-        // only works in android
-        if (keyInit === 'elevationAndroid') return
-      }
-
       // map userSelect to native prop
       if (keyInit === 'userSelect') {
         keyInit = 'selectable'
@@ -3730,15 +3725,13 @@ export function walkConditionalValue(
       `${property}="${value}" has multiple values after its first conditional. Write the base value before the first conditional.`
     )
   }
-  if (
-    warnMode === 1 &&
-    (!canGenerateCSS || !state.flatShouldDoClasses) &&
-    conditions & 12 &&
-    !hasBase
-  ) {
-    // inline lifecycle styles need a natural resting value when no base was
-    // authored anywhere: a lower tier that owns the property (a styled default)
-    // is the resting value already, so don't stamp over it
+  if (warnMode === 1 && conditions & 12 && !hasBase) {
+    // a property whose only values are lifecycle clauses has no resting value,
+    // so synthesize the CSS initial as its base. the styled HOC is usually the
+    // only pass that ever walks the authored value (the leaf receives captured
+    // slots), so this cannot be left to whichever pass renders inline. a lower
+    // tier that owns the property (a styled default) is the resting value
+    // already, so don't stamp over it
     const resting =
       property === 'opacity' || property.startsWith('scale')
         ? 1

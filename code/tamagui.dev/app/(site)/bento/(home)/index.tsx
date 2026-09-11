@@ -96,7 +96,7 @@ const IntermediateCard = ({
         outlineStyle="solid"
         backdropFilter="blur(5px)"
         size="5"
-        elevation="0-5"
+        boxShadow="0 1px 2px shadow-color"
       >
         <Icon color="color-11" o={0.85} />
       </Circle>

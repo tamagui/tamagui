@@ -23,7 +23,6 @@ import {
 } from '@tamagui/popover'
 import type { PopperArrowProps, PopperProps } from '@tamagui/popper'
 import { Popper, PopperContentFrame } from '@tamagui/popper'
-import { getElevation } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 
@@ -35,11 +34,7 @@ type ScopedProps<P> = Omit<P, 'scope'> & { scope?: TooltipScopes }
 
 export type TooltipContentProps = ScopedProps<PopoverContentProps>
 
-const TooltipContentFrame = styled(PopperContentFrame, {
-  variants: {
-    elevation: getElevation,
-  } as const,
-})
+const TooltipContentFrame = styled(PopperContentFrame, {})
 
 // warning: setting to createStyledHOC causes issues with themes across portal roots
 
