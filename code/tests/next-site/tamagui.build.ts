@@ -1,4 +1,4 @@
-import type { TamaguiBuildOptions } from '@tamagui/core'
+import type { TamaguiBuildOptions } from '@tamagui/style'
 
 const disableExtraction =
   process.env.NODE_ENV === 'development' &&

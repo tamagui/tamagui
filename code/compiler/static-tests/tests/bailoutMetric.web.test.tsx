@@ -107,7 +107,7 @@ test.skipIf(!process.env.BAILOUT_METRIC)(
         const source = readFileSync(path, 'utf8')
         const output = await extractForWeb(source, {
           sourcePath: path,
-          options: { platform: 'web', components: ['tamagui', '@tamagui/core'] },
+          options: { platform: 'web', components: ['tamagui', '@tamagui/style'] },
         })
         const stats = output.stats
         if (!stats) continue

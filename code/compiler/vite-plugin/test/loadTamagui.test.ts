@@ -487,7 +487,7 @@ test('native provider lowers source in One Rolldown for iOS and Android', async 
   const writeNativeConfig = (space: number) =>
     writeFile(
       rootConfigPath,
-      `const { createTamagui } = require('@tamagui/core')
+      `const { createTamagui } = require('@tamagui/style')
 const { defaultConfig } = require('@tamagui/config/v6')
 module.exports = createTamagui({
   ...defaultConfig,
@@ -532,7 +532,12 @@ export default compilerOptions
       watched.add(id)
     },
     async resolve(specifier: string) {
-      if (specifier === '@tamagui/core' || specifier === 'tamagui') {
+      if (
+        specifier === '@tamagui/style' ||
+        // the alias for @tamagui/style, always scanned alongside it
+        specifier === '@tamagui/core' ||
+        specifier === 'tamagui'
+      ) {
         return { id: fixtureRequire.resolve(specifier) }
       }
       return null
@@ -867,8 +872,8 @@ test('optimizes the core singleton with context-bearing Tamagui packages', async
 
   expect(server.config.optimizeDeps.include).toEqual(
     expect.arrayContaining([
-      '@tamagui/core',
-      '@tamagui/core/theme-update',
+      '@tamagui/style',
+      '@tamagui/style/theme-update',
       '@tamagui/web',
       '@tamagui/web/theme-update',
       '@tamagui/animations-css',
@@ -881,8 +886,8 @@ test('optimizes the core singleton with context-bearing Tamagui packages', async
   expect(server.config.resolve.dedupe).toEqual(
     expect.arrayContaining([
       'tamagui',
-      '@tamagui/core',
-      '@tamagui/core/theme-update',
+      '@tamagui/style',
+      '@tamagui/style/theme-update',
       '@tamagui/web',
       '@tamagui/web/theme-update',
       '@tamagui/animations-css',
@@ -1028,7 +1033,7 @@ test('evaluates config and components through the app resolver and invalidates H
   expect(externalPackages).not.toContain('tamagui')
   expect(externalPackages).not.toContain('@tamagui/config')
   expect(externalPackages).not.toContain('@tamagui/button')
-  expect(externalPackages).not.toContain('@tamagui/core')
+  expect(externalPackages).not.toContain('@tamagui/style')
   expect(externalPackages).not.toContain('@tamagui/slider')
   expect(externalPackages).not.toContain('@tamagui/web')
   expect(externalPackages).not.toContain('@fixture/conditional')

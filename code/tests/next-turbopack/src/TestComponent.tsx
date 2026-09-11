@@ -1,4 +1,4 @@
-import { View, Text, styled } from '@tamagui/core'
+import { View, Text, styled } from '@tamagui/style'
 import { useState } from 'react'
 
 const YStack = styled(View, { flexDirection: 'column' })

@@ -27,7 +27,7 @@ import {
   setNativeStyleEngineFlushListener,
   type NativeStyleEngine,
   type NativeViewStateUpdate,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import * as registry from '@tamagui/native-registry'
 import { getStats, getViewState, isAvailable } from '@tamagui/native-registry'
 

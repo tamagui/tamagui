@@ -10,7 +10,7 @@ import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { defaultConfig } from '@tamagui/config/v6'
-import { createTamagui, mediaQueryConfig } from '@tamagui/core'
+import { createTamagui, mediaQueryConfig } from '@tamagui/style'
 import {
   esbundleTamaguiConfig,
   loadCompilerProject,
@@ -173,8 +173,8 @@ describe('esbundleTamaguiConfig platform defines', () => {
 describe('loadTamaguiFromModules', () => {
   test('parses an unparsed config without browser CSS discovery', async () => {
     const hostCore = createRequire(import.meta.url)(
-      '@tamagui/core'
-    ) as typeof import('@tamagui/core')
+      '@tamagui/style'
+    ) as typeof import('@tamagui/style')
     const previousHostConfig = hostCore.createTamagui(defaultConfig)
     const rawConfig = {
       ...defaultConfig,
@@ -203,8 +203,8 @@ describe('loadTamaguiFromModules', () => {
 
   test('installs an already-parsed evaluated config without browser CSS discovery', async () => {
     const hostCore = createRequire(import.meta.url)(
-      '@tamagui/core'
-    ) as typeof import('@tamagui/core')
+      '@tamagui/style'
+    ) as typeof import('@tamagui/style')
     const hostMediaQueryConfig = hostCore.mediaQueryConfig
     const previousHostConfig = hostCore.createTamagui(defaultConfig)
     const evaluatedConfig = createTamagui(defaultConfig)
@@ -290,15 +290,18 @@ describe('loadCompilerProject', () => {
       expect(loadedOptions).toMatchObject({
         root: tempDir,
         platform: 'web',
-        components: ['@tamagui/core', 'design-system'],
+        // the style runtime is always scanned, under both of its specifiers:
+        // @tamagui/core is an alias for @tamagui/style and an app may import either
+        components: ['@tamagui/style', '@tamagui/core', 'design-system'],
         outputCSS: expectedOutputCSS,
       })
-      expect(resolvedNames).toEqual(['@tamagui/core', 'design-system'])
+      expect(resolvedNames).toEqual(['@tamagui/style', '@tamagui/core', 'design-system'])
       expect(project).toMatchObject({
         projectInfo,
         generation: 'test-generation',
         zeroRuntime: zeroRuntime !== undefined,
         componentModules: [
+          { moduleName: '@tamagui/style' },
           { moduleName: '@tamagui/core' },
           { moduleName: 'design-system' },
         ],

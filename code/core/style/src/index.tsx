@@ -60,7 +60,7 @@ type RNTamaguiText = TamaguiComponent<
 // see https://discord.com/channels/909986013848412191/1146150253490348112/1146150253490348112
 export * from './reactNativeTypes'
 
-// the one platform setup path, shared with `@tamagui/core/internal-runtime`
+// the one platform setup path, shared with `@tamagui/style/internal-runtime`
 export { createTamagui, TamaguiProvider } from './runtime'
 
 // overwrite web versions:

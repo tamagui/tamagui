@@ -1,5 +1,5 @@
 import React, { useId, useRef } from 'react'
-import { useEvent } from '@tamagui/core'
+import { useEvent } from '@tamagui/style'
 import type { ReactNode } from 'react'
 
 import type { SheetControllerContextValue } from './useSheetController'

@@ -1,7 +1,7 @@
 process.env.TAMAGUI_TARGET = 'web'
 
 import { render } from '@testing-library/react'
-import { TamaguiProvider, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, createTamagui } from '@tamagui/style'
 import { View as TailwindView } from '@tamagui/tailwind'
 import { describe, expect, test } from 'vitest'
 import config from '../config-default'

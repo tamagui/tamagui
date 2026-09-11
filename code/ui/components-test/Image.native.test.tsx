@@ -1,6 +1,6 @@
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { createImage } from '@tamagui/image'
-import { TamaguiProvider, createTamagui, setMediaState } from '@tamagui/core'
+import { TamaguiProvider, createTamagui, setMediaState } from '@tamagui/style'
 import React from 'react'
 import TestRenderer, { act } from 'react-test-renderer'
 import { afterEach, expect, test, vi } from 'vitest'

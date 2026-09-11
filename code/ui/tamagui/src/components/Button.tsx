@@ -23,7 +23,7 @@ import {
   type ThemeProps,
   type TokenSize,
   withStaticProperties,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { getThemedIconSize } from '@tamagui/helpers-tamagui'
 
 // SizeTokens includes `true`, which resolves through @tamagui/size's opt-in policy.

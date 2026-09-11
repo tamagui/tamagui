@@ -19,15 +19,15 @@ just your app. That way you can later direct the compiler to look for that
 package.
 
 Design systems can extend from each other. In fact, `tamagui` extends
-`@tamagui/core`, which contains simple base-level components.
+`@tamagui/style`, which contains simple base-level components.
 
 So, for example, if you'd like to use the Tamagui `XStack`, `YStack`, `Button`
 and `Paragraph` in your design system, you would add `tamagui` to your design
 system's package.json.
 
-If you want to build more from scratch, then use `@tamagui/core` and only import
+If you want to build more from scratch, then use `@tamagui/style` and only import
 either the `View` or `Text` components. For the purpose of this guide, we'll use
-`@tamagui/core`.
+`@tamagui/style`.
 
 Add package.json:
 
@@ -41,7 +41,7 @@ Add package.json:
   "files": ["types", "src", "dist"],
   "sideEffects": ["*.css"],
   "dependencies": {
-    "@tamagui/core": "*"
+    "@tamagui/style": "*"
   },
   "scripts": {
     "build": "tamagui-build",
@@ -91,12 +91,12 @@ contain a full suite of tokens, themes, and fonts exported onto a single named
 ## Step 3: Define and export components
 
 Now, create and export your components. You can re-export components from
-`tamagui` or `@tamagui/core` as well. Let's create a Circle component:
+`tamagui` or `@tamagui/style` as well. Let's create a Circle component:
 
 `Circle.tsx`:
 
 ```tsx
-import { GetProps, type SizeTokens, YStack, styled } from 'tamagui' // or '@tamagui/core' if extending just that
+import { GetProps, type SizeTokens, YStack, styled } from 'tamagui' // or '@tamagui/style' if extending just that
 
 // one function drives both the numeric and the size-token cases
 const getCircleSize = styled.dynamic<SizeTokens | number>((size, { tokens }) => {

@@ -1,7 +1,7 @@
 import { createAnimations } from '@tamagui/animations-reanimated'
 import { Button } from 'tamagui'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, createTamagui } from '@tamagui/style'
 import { Input } from '@tamagui/input'
 import { PortalProvider } from '@tamagui/portal'
 import { Sheet } from '@tamagui/sheet'

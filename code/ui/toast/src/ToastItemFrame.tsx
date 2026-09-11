@@ -9,7 +9,7 @@
  * also the shadcn registry source.
  */
 
-import { styled } from '@tamagui/core'
+import { styled } from '@tamagui/style'
 import { XStack, YStack } from '@tamagui/stacks'
 import { SizableText } from '@tamagui/text'
 

@@ -17,7 +17,7 @@
 process.env.TAMAGUI_TARGET = 'native'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, View, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, View, createTamagui } from '@tamagui/style'
 import { act, render } from '@testing-library/react-native'
 import { Profiler, useState } from 'react'
 import { afterEach, describe, expect, test, vi } from 'vitest'

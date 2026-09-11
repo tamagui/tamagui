@@ -66,7 +66,7 @@ export const _withNativeStyle = (
 
     if (process.env.NODE_ENV === 'development' && (!stateName || !theme)) {
       throw new Error(
-        `[@tamagui/core] native fast path cannot resolve theme ${JSON.stringify(stateName)}`
+        `[@tamagui/style] native fast path cannot resolve theme ${JSON.stringify(stateName)}`
       )
     }
 

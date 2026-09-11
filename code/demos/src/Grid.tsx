@@ -1,4 +1,4 @@
-import { isWeb } from '@tamagui/core'
+import { isWeb } from '@tamagui/style'
 import { XStack } from '@tamagui/stacks'
 import React from 'react'
 

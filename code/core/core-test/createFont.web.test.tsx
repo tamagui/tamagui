@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 
-import { createFont } from '../core/src'
-import type { GenericFont } from '../core/src'
+import { createFont } from '../style/src'
+import type { GenericFont } from '../style/src'
 import { getFontSized } from '../get-font-sized/src'
 
 const font: GenericFont = {

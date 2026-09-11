@@ -6,7 +6,7 @@ import {
   getThemeProviderChainSizes,
   TamaguiProvider,
   Theme,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { ThemeUpdate } from '@tamagui/web/theme-update'
 import { render } from '@testing-library/react'
 import { StrictMode } from 'react'

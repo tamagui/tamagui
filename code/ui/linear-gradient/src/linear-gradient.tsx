@@ -6,7 +6,7 @@
  * Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)
  */
 
-import { View, normalizeColor } from '@tamagui/core'
+import { View, normalizeColor } from '@tamagui/style'
 import type {
   LinearGradientPoint,
   LinearGradientProps,

@@ -10,7 +10,7 @@
  * androidtv, and web do not.
  */
 
-import { View, createTamagui } from '@tamagui/core'
+import { View, createTamagui } from '@tamagui/style'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 // Set TAMAGUI_TARGET before importing getSplitStyles

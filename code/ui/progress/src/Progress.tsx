@@ -1,8 +1,8 @@
 // forked from Radix UI
 // https://github.com/radix-ui/primitives/blob/main/packages/react/progress/src/Progress.tsx
 
-import type { GetProps } from '@tamagui/core'
-import { createStyledHOC, getVariableValue, isWeb, styled } from '@tamagui/core'
+import type { GetProps } from '@tamagui/style'
+import { createStyledHOC, getVariableValue, isWeb, styled } from '@tamagui/style'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { getSize } from '@tamagui/get-token'

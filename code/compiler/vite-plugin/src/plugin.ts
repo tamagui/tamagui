@@ -55,7 +55,8 @@ const environmentSpecificTransformPluginNames = new Set([
 
 const oneTsconfigPathsPluginName = 'one:tsconfig-paths'
 const bareTamaguiPackage = /^@tamagui\/[^/?#]+(?:[/?#]|$)/
-const inlineEvaluationTamaguiPackage = /^@tamagui\/(?:config|core|slider|web)(?:[/?#]|$)/
+const inlineEvaluationTamaguiPackage =
+  /^@tamagui\/(?:config|core|slider|style|web)(?:[/?#]|$)/
 const externalizablePackageExtensions = new Set(['', '.js', '.mjs', '.cjs'])
 
 // Export condition the compiler's evaluation environment resolves with. A
@@ -212,7 +213,7 @@ function scanInstalledTamaguiPackages(
   const externalizable = new Set<string>()
   const compilerCondition = new Set<string>()
 
-  for (const modulePath of packageRequire.resolve.paths('@tamagui/core') || []) {
+  for (const modulePath of packageRequire.resolve.paths('@tamagui/style') || []) {
     const scopePath = path.join(modulePath, '@tamagui')
     if (!existsSync(scopePath)) continue
     for (const entry of readdirSync(scopePath, { withFileTypes: true })) {
@@ -1209,6 +1210,8 @@ export function createTamaguiPlugins({
       // patch the Theme context provided by the root package instead of
       // creating a second copy.
       addIfInstalled(userConf, userConf.root, [
+        '@tamagui/style',
+        '@tamagui/style/theme-update',
         '@tamagui/core',
         '@tamagui/core/theme-update',
         '@tamagui/web',
@@ -1229,6 +1232,8 @@ export function createTamaguiPlugins({
       userConf.resolve.dedupe ||= []
       for (const id of [
         'tamagui',
+        '@tamagui/style',
+        '@tamagui/style/theme-update',
         '@tamagui/core',
         '@tamagui/core/theme-update',
         '@tamagui/web',
@@ -1247,7 +1252,7 @@ export function createTamaguiPlugins({
 
       if (!shouldExtract) return
 
-      userConf.optimizeDeps.include.push('@tamagui/core/inject-styles')
+      userConf.optimizeDeps.include.push('@tamagui/style/inject-styles')
     },
 
     async configResolved(resolvedConfig) {
@@ -1314,7 +1319,9 @@ export function createTamaguiPlugins({
             try {
               source = await options.read()
             } catch (error) {
-              if (!(error instanceof Error && 'code' in error && error.code === 'ENOENT')) {
+              if (
+                !(error instanceof Error && 'code' in error && error.code === 'ENOENT')
+              ) {
                 throw error
               }
             }

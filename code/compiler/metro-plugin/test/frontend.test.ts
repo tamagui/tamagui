@@ -96,7 +96,7 @@ function executeNativeOutput(code: string): unknown {
     }
     if (specifier === '~tokens') return { spacing: 12 }
     if (specifier === 'react/jsx-runtime') return { Fragment, jsx, jsxs: jsx }
-    if (specifier === '@tamagui/core') {
+    if (specifier === '@tamagui/style') {
       return {
         _withStableStyle:
           (
@@ -149,10 +149,10 @@ export const App = ({ dynamic }) => (
     const loadedProject = loadTamaguiSync({
       platform: 'native',
       config: tamaguiConfigPath,
-      components: ['@tamagui/core'],
+      components: ['@tamagui/style'],
     })
     const viewInfo = loadedProject.components?.find(
-      ({ moduleName }) => moduleName === '@tamagui/core'
+      ({ moduleName }) => moduleName === '@tamagui/style'
     )?.nameToInfo.View
     expect(viewInfo).toBeTruthy()
     const frontend = new MetroCompilerFrontend({
@@ -230,7 +230,7 @@ export const App = ({ dynamic }) => (
         },
       })
       const code = outputCode(transformed)
-      expect(code).toContain("require('@tamagui/core')._withStableStyle")
+      expect(code).toContain("require('@tamagui/style')._withStableStyle")
       expect(code).toContain('_expressions: [dynamic]')
       expect(code).toContain('"width": 20')
       expect(code).toContain('"height": 10')
@@ -282,10 +282,10 @@ export const buildEnvironment = {
     const loadedProject = loadTamaguiSync({
       platform: 'native',
       config: tamaguiConfigPath,
-      components: ['@tamagui/core'],
+      components: ['@tamagui/style'],
     })
     const viewInfo = loadedProject.components?.find(
-      ({ moduleName }) => moduleName === '@tamagui/core'
+      ({ moduleName }) => moduleName === '@tamagui/style'
     )?.nameToInfo.View
     expect(viewInfo).toBeTruthy()
     const compilerProject = {
@@ -694,10 +694,10 @@ export const buildEnvironment = {
     const loadedProject = loadTamaguiSync({
       platform: 'native',
       config: tamaguiConfigPath,
-      components: ['@tamagui/core'],
+      components: ['@tamagui/style'],
     })
     const viewInfo = loadedProject.components?.find(
-      ({ moduleName }) => moduleName === '@tamagui/core'
+      ({ moduleName }) => moduleName === '@tamagui/style'
     )?.nameToInfo.View
     expect(viewInfo).toBeTruthy()
     const compilerProject = (cacheStamp: string | null) => ({
@@ -855,10 +855,10 @@ exports.App = function App() {
     const loadedProject = loadTamaguiSync({
       platform: 'native',
       config: tamaguiConfigPath,
-      components: ['@tamagui/core'],
+      components: ['@tamagui/style'],
     })
     const viewInfo = loadedProject.components?.find(
-      ({ moduleName }) => moduleName === '@tamagui/core'
+      ({ moduleName }) => moduleName === '@tamagui/style'
     )?.nameToInfo.View
     expect(viewInfo).toBeTruthy()
     const reported: string[] = []
@@ -969,10 +969,10 @@ export const App = () => <View width={20} height={10} />
     const loadedProject = loadTamaguiSync({
       platform: 'native',
       config: tamaguiConfigPath,
-      components: ['@tamagui/core'],
+      components: ['@tamagui/style'],
     })
     const viewInfo = loadedProject.components?.find(
-      ({ moduleName }) => moduleName === '@tamagui/core'
+      ({ moduleName }) => moduleName === '@tamagui/style'
     )?.nameToInfo.View
     expect(viewInfo).toBeTruthy()
     const reported: string[] = []
@@ -1057,10 +1057,10 @@ export const App = () => <View width={20} height={10} />
     const loadedProject = loadTamaguiSync({
       platform: 'native',
       config: tamaguiConfigPath,
-      components: ['@tamagui/core'],
+      components: ['@tamagui/style'],
     })
     const viewInfo = loadedProject.components?.find(
-      ({ moduleName }) => moduleName === '@tamagui/core'
+      ({ moduleName }) => moduleName === '@tamagui/style'
     )?.nameToInfo.View
     expect(viewInfo).toBeTruthy()
 

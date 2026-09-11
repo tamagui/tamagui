@@ -20,7 +20,7 @@ import {
   type AnimationDriverWithAnimatedNumbers,
   type UniversalAnimatedNumber,
   createRefComponent,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { useThemeWithState } from '@tamagui/web/internal-runtime'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import normalizeColor from '@react-native/normalize-colors'

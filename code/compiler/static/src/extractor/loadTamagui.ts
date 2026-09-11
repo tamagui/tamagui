@@ -296,7 +296,7 @@ export async function loadTamaguiBuildConfigAsync(
 
   const options = {
     config: 'tamagui.config.ts',
-    components: ['tamagui', '@tamagui/core'],
+    components: ['tamagui', '@tamagui/style', '@tamagui/core'],
     ...tamaguiOptions,
   } as TamaguiOptions
   const dependencies = buildConfigDependencies.get(tamaguiOptions)
@@ -338,7 +338,7 @@ export function loadTamaguiBuildConfigSync(
   }
   return {
     config: 'tamagui.config.ts',
-    components: ['tamagui', '@tamagui/core'],
+    components: ['tamagui', '@tamagui/style', '@tamagui/core'],
     ...tamaguiOptions,
   } as TamaguiOptions
 }

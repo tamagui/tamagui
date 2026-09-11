@@ -759,7 +759,7 @@ const componentsIn = {
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/docs/core/configuration">
                   <CodeInline>
-                    <span style={{ color: 'var(--color-12)' }}>@tamagui/core</span>
+                    <span style={{ color: 'var(--color-12)' }}>@tamagui/style</span>
                   </CodeInline>
                 </Link>
                 &nbsp; is the base style library, it expands on the React Native style API

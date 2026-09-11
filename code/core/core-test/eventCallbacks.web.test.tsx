@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react'
-import { createChangeEventDetails, type TamaguiChangeEventDetails } from '@tamagui/core'
+import { createChangeEventDetails, type TamaguiChangeEventDetails } from '@tamagui/style'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { describe, expect, test, vi } from 'vitest'
 

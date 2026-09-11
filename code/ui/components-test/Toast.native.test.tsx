@@ -1,5 +1,5 @@
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, createTamagui } from '@tamagui/style'
 import { getPortal } from '@tamagui/native'
 import { PortalProvider } from '@tamagui/portal'
 import { Toast, toast, useToasts } from '@tamagui/toast'

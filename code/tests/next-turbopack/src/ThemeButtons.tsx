@@ -1,6 +1,6 @@
 'use client'
 
-import { View, Text, styled } from '@tamagui/core'
+import { View, Text, styled } from '@tamagui/style'
 import { useThemeSetting } from '@tamagui/next-theme'
 import { useEffect, useState } from 'react'
 

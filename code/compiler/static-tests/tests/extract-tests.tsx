@@ -5,7 +5,7 @@ import {
   StyleObjectRules,
   StyleObjectProperty,
   StyleObjectValue,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../../../core/config-default'

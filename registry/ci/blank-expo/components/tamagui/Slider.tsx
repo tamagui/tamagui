@@ -8,7 +8,7 @@ import {
   styled,
   type TamaguiElement,
   withStaticProperties,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { Slider as UiSlider } from '@tamagui/slider'
 import type * as React from 'react'
 

@@ -1,6 +1,6 @@
 'use client'
 
-import '@tamagui/core/reset.css'
+import '@tamagui/style/reset.css'
 import '@tamagui/font-inter/css/400.css'
 import '@tamagui/font-inter/css/700.css'
 import '@tamagui/polyfill-dev'

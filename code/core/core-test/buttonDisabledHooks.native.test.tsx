@@ -2,7 +2,12 @@ process.env.TAMAGUI_TARGET = 'native'
 
 import { ButtonFrame, ButtonText } from '@tamagui/button'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, createRefComponent, createTamagui, styled } from '@tamagui/core'
+import {
+  TamaguiProvider,
+  createRefComponent,
+  createTamagui,
+  styled,
+} from '@tamagui/style'
 import { render } from '@testing-library/react-native'
 import { afterEach, beforeEach, describe, expect, test } from 'vitest'
 import { getGestureHandler } from '../native/src/gestureState'

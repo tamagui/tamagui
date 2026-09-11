@@ -34,9 +34,9 @@ describe('components accept and reject the right props', () => {
   })
 
   test('tamagui style props are rejected', () => {
-    // @ts-expect-error padding belongs to @tamagui/core authoring
+    // @ts-expect-error padding belongs to @tamagui/style authoring
     View({ padding: 4 })
-    // @ts-expect-error bg belongs to @tamagui/core authoring
+    // @ts-expect-error bg belongs to @tamagui/style authoring
     View({ bg: 'red' })
   })
 })
@@ -71,7 +71,7 @@ describe('class-first styled()', () => {
   test('variant values must be class strings', () => {
     styled(View, 'p-4', {
       variants: {
-        // @ts-expect-error object styles are the @tamagui/core authoring syntax
+        // @ts-expect-error object styles are the @tamagui/style authoring syntax
         tone: { warn: { backgroundColor: 'red' } },
       },
     })

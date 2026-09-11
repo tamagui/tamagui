@@ -4,7 +4,7 @@ import type {
   SizeTokens,
   StackStyleBase,
   ThemeTokens,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import type { SvgProps } from 'react-native-svg'
 
 export interface IconStyleProps extends StackStyleBase {

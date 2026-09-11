@@ -9,7 +9,7 @@ import {
   styled,
   type TamaguiElement,
   withStaticProperties,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { ToggleGroup as UiToggleGroup } from '@tamagui/toggle-group'
 import type * as React from 'react'
 

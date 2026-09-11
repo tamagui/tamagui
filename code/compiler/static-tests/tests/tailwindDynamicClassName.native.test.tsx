@@ -16,7 +16,7 @@ test('a conditional className lowers to a per-branch native style program', asyn
       '}',
       '',
     ].join('\n'),
-    { options: { components: ['@tamagui/core', '@tamagui/tailwind'] } }
+    { options: { components: ['@tamagui/style', '@tamagui/tailwind'] } }
   )
   expect(output.diagnostics).toEqual([])
   expect(output.code).toContain('_expressions={[seed % 2]}')

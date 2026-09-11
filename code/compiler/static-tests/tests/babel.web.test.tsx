@@ -8,7 +8,7 @@ window['React'] = React
 test('theme props with a dynamic sibling bail out transactionally', async () => {
   const output = await extractForWeb(
     `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
     export function Test(props) {
       return (
         <View theme="green" width={10} bg={props.green ? 'red' : 'blue'} />
@@ -18,7 +18,7 @@ import { View } from '@tamagui/core'
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -31,7 +31,7 @@ import { View } from '@tamagui/core'
 test('theme + media queries + conditionals extract', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test(props) {
       return (
         <View
@@ -47,7 +47,7 @@ test('theme + media queries + conditionals extract', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -64,7 +64,7 @@ test('theme + media queries + conditionals extract', async () => {
 test('conditional specific after generic style overrides', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test(props) {
       return (
         <View
@@ -83,7 +83,7 @@ test('conditional specific after generic style overrides', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -95,7 +95,7 @@ test('conditional specific after generic style overrides', async () => {
 test('conditional styles extract disjoint static siblings', async () => {
   const output = await extractForWeb(
     `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
     export function Test(props) {
       return (
         <View width={10} bg={props.green ? 'red' : 'blue'} />
@@ -105,7 +105,7 @@ import { View } from '@tamagui/core'
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -123,7 +123,7 @@ import { View } from '@tamagui/core'
 test('className + conditional styles get full base styles merged onto + shorthand', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test(props) {
       return (
         <View width={10} bg={props.green ? 'red' : 'blue'} className={props.className} />
@@ -133,7 +133,7 @@ test('className + conditional styles get full base styles merged onto + shorthan
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -145,7 +145,7 @@ test('font classNames are extracted properly', async () => {
   // one sanity check debug output test
   const output = await extractForWeb(
     `
-    import { Text } from '@tamagui/core'
+    import { Text } from '@tamagui/style'
     export function Test(props) {
       return (
         <Text fontFamily="body" />
@@ -155,7 +155,7 @@ test('font classNames are extracted properly', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -171,7 +171,7 @@ test('ternaries + font families works', async () => {
   // one sanity check debug output test
   const output = await extractForWeb(
     `
-    import { Text } from '@tamagui/core'
+    import { Text } from '@tamagui/style'
     export function Test(props) {
       return (
         <Text fontFamily={window ? "body" : "heading"} />
@@ -181,7 +181,7 @@ test('ternaries + font families works', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -194,7 +194,7 @@ test('bails from non-deterministic values', async () => {
   // one sanity check debug output test
   const output = await extractForWeb(
     `
-    import { Text } from '@tamagui/core'
+    import { Text } from '@tamagui/style'
     export function Test(props) {
       return (
         <Text
@@ -206,7 +206,7 @@ test('bails from non-deterministic values', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -217,7 +217,7 @@ test('bails from non-deterministic values', async () => {
 test('non-flattened works', async () => {
   const output = await extractForWeb(
     `
-    import { Text } from '@tamagui/core'
+    import { Text } from '@tamagui/style'
     export function Test(props) {
       return (
         <Text
@@ -235,7 +235,7 @@ test('non-flattened works', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -300,7 +300,7 @@ test('specific className + ternary', async () => {
 test('spread + className', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test(props) {
       return (
@@ -327,7 +327,7 @@ test('spread + className', async () => {
 test('double ternary + spread', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test({ isSettings, isVertical, children }) {
       return (
@@ -352,7 +352,7 @@ test('double ternary + spread', async () => {
 test(`conditional classname keeps base and concats properly`, async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test(props) {
       return (
@@ -374,7 +374,7 @@ test(`conditional classname keeps base and concats properly`, async () => {
 test('flexBasis: 0 with responsive style extracts correctly', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test() {
       return (
@@ -400,7 +400,7 @@ test('flexBasis: 0 with responsive style extracts correctly', async () => {
 test('group clauses extract to parent-hover selectors', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test() {
       return (
@@ -427,7 +427,7 @@ test('group clauses extract to parent-hover selectors', async () => {
 test('group clauses on a CSS-animated element extract with its transition', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test() {
       return (
@@ -456,7 +456,7 @@ test('group clauses on an element with an enter clause stay on the runtime path'
   // static @container CSS.
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test() {
       return (
@@ -477,7 +477,7 @@ test('group clauses on an element with an enter clause stay on the runtime path'
 test('theme clauses extract to atomic CSS', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test() {
       return (
@@ -501,7 +501,7 @@ test('theme clauses extract to atomic CSS', async () => {
 test('web styles are flattened on web', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test() {
       return (
@@ -524,7 +524,7 @@ test('web styles are flattened on web', async () => {
 test('web transition property is preserved', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test() {
       return (
@@ -547,7 +547,7 @@ test('web transition property is preserved', async () => {
 test('conditional spread with runtime variable preserves ternary', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     function usePathname() {
       return '/blog'
@@ -578,7 +578,7 @@ test('conditional spread with runtime variable preserves ternary', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -596,7 +596,7 @@ test('conditional spread with runtime variable preserves ternary', async () => {
 test('conditional spread with local variable preserves ternary', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test({ isActive }) {
       return (
@@ -612,7 +612,7 @@ test('conditional spread with local variable preserves ternary', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -626,7 +626,7 @@ test('conditional spread with local variable preserves ternary', async () => {
 test('conditional spread with a hover clause preserves ternary', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test({ isActive }) {
       return (
@@ -643,7 +643,7 @@ test('conditional spread with a hover clause preserves ternary', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -657,7 +657,7 @@ test('conditional spread with a hover clause preserves ternary', async () => {
 test('Text with a hover clause and conditional spread preserves ternary', async () => {
   const output = await extractForWeb(
     `// debug
-    import { Text } from '@tamagui/core'
+    import { Text } from '@tamagui/style'
 
     export function Test({ isActive }) {
       return (
@@ -677,7 +677,7 @@ test('Text with a hover clause and conditional spread preserves ternary', async 
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -690,7 +690,7 @@ test('Text with a hover clause and conditional spread preserves ternary', async 
 test('a conditional theme-token color lowers to conditional var classes', async () => {
   const output = await extractForWeb(
     `
-    import { Text } from '@tamagui/core'
+    import { Text } from '@tamagui/style'
 
     export function Test({ isActive, label }) {
       return (
@@ -705,7 +705,7 @@ test('a conditional theme-token color lowers to conditional var classes', async 
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -721,7 +721,7 @@ test('a conditional theme-token color lowers to conditional var classes', async 
 test('role attribute is preserved during extraction', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test() {
       return <View role="button" />
@@ -730,7 +730,7 @@ test('role attribute is preserved during extraction', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -744,7 +744,7 @@ test('role attribute is preserved during extraction', async () => {
 test('ternary with mixed theme-token and non-token values lowers conditional classes', async () => {
   const output = await extractForWeb(
     `
-    import { Text } from '@tamagui/core'
+    import { Text } from '@tamagui/style'
     export function Test({ isActive, label }) {
       return (
         <Text
@@ -760,7 +760,7 @@ test('ternary with mixed theme-token and non-token values lowers conditional cla
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -783,7 +783,7 @@ test('ternary with mixed theme-token and non-token values lowers conditional cla
 test('boxShadow with a token extracts correctly', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test() {
       return <View boxShadow="0 0 10px background" />
@@ -792,7 +792,7 @@ test('boxShadow with a token extracts correctly', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -806,7 +806,7 @@ test('boxShadow with a token extracts correctly', async () => {
 test.skip('border with a token extracts correctly', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test() {
       return <View border="1px solid background" />
@@ -815,7 +815,7 @@ test.skip('border with a token extracts correctly', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -828,7 +828,7 @@ test.skip('border with a token extracts correctly', async () => {
 test('boxShadow with multiple tokens extracts correctly', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test() {
       return <View boxShadow="0 0 10px background, 0 0 20px color" />
@@ -837,7 +837,7 @@ test('boxShadow with multiple tokens extracts correctly', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -858,7 +858,7 @@ test('boxShadow with multiple tokens extracts correctly', async () => {
 test('non-static testID with template literal is rewritten to data-testid', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test({ x }: { x: string }) {
       return <View testID={\`a-\${x}\`} />
@@ -867,7 +867,7 @@ test('non-static testID with template literal is rewritten to data-testid', asyn
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )

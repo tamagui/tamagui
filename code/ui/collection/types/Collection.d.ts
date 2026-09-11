@@ -1,5 +1,5 @@
-import type { TamaguiElement } from '@tamagui/core';
-import { Slot } from '@tamagui/core';
+import type { TamaguiElement } from '@tamagui/style';
+import { Slot } from '@tamagui/style';
 import React from 'react';
 type SlotProps = React.ComponentPropsWithoutRef<typeof Slot>;
 interface CollectionProps extends SlotProps {

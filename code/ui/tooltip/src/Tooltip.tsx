@@ -1,10 +1,10 @@
 import type { OpenChangeReason } from '@tamagui/floating'
-import { createStyledHOC, createRefComponent, getConfig, styled } from '@tamagui/core'
+import { createStyledHOC, createRefComponent, getConfig, styled } from '@tamagui/style'
 import '@tamagui/polyfill-dev'
 
 import { FloatingDelayGroup, useDelayGroupContext, type Delay } from '@tamagui/floating'
-import type { SizeTokens, TamaguiElement } from '@tamagui/core'
-import { useEvent } from '@tamagui/core'
+import type { SizeTokens, TamaguiElement } from '@tamagui/style'
+import { useEvent } from '@tamagui/style'
 import { FloatingOverrideContext } from '@tamagui/floating'
 import { oneSizeSmaller } from '@tamagui/size'
 import { withStaticProperties } from '@tamagui/helpers'

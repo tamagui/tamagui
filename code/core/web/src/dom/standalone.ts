@@ -2,7 +2,7 @@ import type { TamaguiStyleProps } from './styleTypes'
 
 /**
  * Standalone Tamagui DOM: the surface behind `tamagui/dom` and
- * `@tamagui/core/dom`.
+ * `@tamagui/style/dom`.
  *
  * This entry is compile-only on **both** platforms, which is the difference
  * between it and the regular-Tamagui `html`. There, a tag is an ordinary
@@ -27,7 +27,7 @@ declare const handle: unique symbol
  *
  * @deprecated The standalone Tamagui DOM entries are demoted implementation
  * plumbing in V3. They keep working unchanged; new code should import `html`
- * from `tamagui` or `@tamagui/core`, where a tag is an ordinary Tamagui
+ * from `tamagui` or `@tamagui/style`, where a tag is an ordinary Tamagui
  * component the compiler optimizes.
  */
 export type CompiledStyle = { readonly [handle]: 'compiled-style' }
@@ -37,7 +37,7 @@ export type CompiledStyle = { readonly [handle]: 'compiled-style' }
  *
  * @deprecated The standalone Tamagui DOM entries are demoted implementation
  * plumbing in V3. They keep working unchanged; new code should import `html`
- * from `tamagui` or `@tamagui/core`, where a tag is an ordinary Tamagui
+ * from `tamagui` or `@tamagui/style`, where a tag is an ordinary Tamagui
  * component the compiler optimizes.
  */
 export type ConditionalCompiledStyle = CompiledStyle | false | null | undefined
@@ -47,7 +47,7 @@ export type ConditionalCompiledStyle = CompiledStyle | false | null | undefined
  *
  * @deprecated The standalone Tamagui DOM entries are demoted implementation
  * plumbing in V3. They keep working unchanged; new code should import `html`
- * from `tamagui` or `@tamagui/core`, where a tag is an ordinary Tamagui
+ * from `tamagui` or `@tamagui/style`, where a tag is an ordinary Tamagui
  * component the compiler optimizes.
  */
 export type DOMStyleProps = {
@@ -65,7 +65,7 @@ export type DOMStyleProps = {
  *
  * @deprecated The standalone Tamagui DOM entries are demoted implementation
  * plumbing in V3. They keep working unchanged; new code should import `html`
- * from `tamagui` or `@tamagui/core`, where a tag is an ordinary Tamagui
+ * from `tamagui` or `@tamagui/style`, where a tag is an ordinary Tamagui
  * component the compiler optimizes.
  */
 export type StyleDefinition = TamaguiStyleProps
@@ -73,10 +73,10 @@ export type StyleDefinition = TamaguiStyleProps
 const compileOnly = (what: string) =>
   new Error(
     `${what} reached the runtime, which means the Tamagui compiler did not run. ` +
-      `tamagui/dom and @tamagui/core/dom are compile-only on both web and native: ` +
+      `tamagui/dom and @tamagui/style/dom are compile-only on both web and native: ` +
       `a style() handle is an opaque compiled value with no runtime form, and the ` +
       `tags carry no style props to resolve. Add the Tamagui compiler to the build, ` +
-      `or import from tamagui or @tamagui/core instead, where html.* is an ordinary ` +
+      `or import from tamagui or @tamagui/style instead, where html.* is an ordinary ` +
       `Tamagui component.`
   )
 
@@ -94,7 +94,7 @@ const compileOnly = (what: string) =>
  *
  * @deprecated The standalone Tamagui DOM entries are demoted implementation
  * plumbing in V3. They keep working unchanged; new code should import `html`
- * from `tamagui` or `@tamagui/core`, where a tag is an ordinary Tamagui
+ * from `tamagui` or `@tamagui/style`, where a tag is an ordinary Tamagui
  * component the compiler optimizes.
  */
 export function style(_definition: StyleDefinition): CompiledStyle {

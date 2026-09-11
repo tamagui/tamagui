@@ -1,5 +1,5 @@
 import type React from 'react';
-import { type StyledContext } from '@tamagui/core';
+import { type StyledContext } from '@tamagui/style';
 import type { SheetTransitionEvent } from './types';
 export declare const useSheetController: (scope?: string) => {
     controller: SheetControllerContextValue | null;

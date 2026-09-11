@@ -1,5 +1,5 @@
 import type React from 'react'
-import { createStyledContext, type StyledContext } from '@tamagui/core'
+import { createStyledContext, type StyledContext } from '@tamagui/style'
 
 import type { SheetTransitionEvent } from './types'
 

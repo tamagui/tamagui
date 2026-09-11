@@ -118,7 +118,7 @@ async function executeCompiled(
     if (specifier === 'react') return ReactModule
     if (specifier === 'react/jsx-runtime') return JSXRuntime
     if (specifier === 'react-native') return ReactNative
-    if (specifier === '@tamagui/core') return Core
+    if (specifier === '@tamagui/style') return Core
     // flattened output leaves the original component imports behind unused
     if (specifier === 'tamagui') {
       return new Proxy({}, { get: () => () => null })

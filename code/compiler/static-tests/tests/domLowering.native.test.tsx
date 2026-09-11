@@ -8,7 +8,7 @@ window['React'] = React
 test('native DOM elements lower to backing primitives and wrap literal text', async () => {
   const output = await extractForNative(`
     import { jsx, jsxs } from 'react/jsx-runtime'
-    import { html as h } from '@tamagui/core'
+    import { html as h } from '@tamagui/style'
 
     export const JSXElement = (
       <h.main id="main">
@@ -26,7 +26,7 @@ test('native DOM elements lower to backing primitives and wrap literal text', as
 
 test('native diagnostics reject unsupported table semantics without inventing output', async () => {
   const output = await extractForNative(`
-    import { html } from '@tamagui/core'
+    import { html } from '@tamagui/style'
     const dynamicText = 'dynamic'
     export const Invalid = () => (
       <>

@@ -1,4 +1,4 @@
-import { createStyledHOC, createRefComponent } from '@tamagui/core'
+import { createStyledHOC, createRefComponent } from '@tamagui/style'
 import type * as BaseMenuTypes from '@tamagui/create-menu'
 import {
   type MenuArrowProps as BaseMenuArrowProps,

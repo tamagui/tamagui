@@ -74,13 +74,13 @@ describe('strict project checking', () => {
       )
       await writeFile(
         join(root, 'tamagui.config.ts'),
-        `import { createTamagui } from '@tamagui/core'
+        `import { createTamagui } from '@tamagui/style'
 import { defaultConfig } from '@tamagui/config/v6'
 export default createTamagui(defaultConfig)`
       )
       await writeFile(
         join(root, 'tamagui.build.ts'),
-        `export default { config: './tamagui.config.ts', components: ['@tamagui/core'] }`
+        `export default { config: './tamagui.config.ts', components: ['@tamagui/style'] }`
       )
       for (const [value, status] of [
         ['backgroun', 1],
@@ -88,7 +88,7 @@ export default createTamagui(defaultConfig)`
       ] as const) {
         await writeFile(
           join(root, 'App.tsx'),
-          `import { View } from '@tamagui/core'; export const App = () => <View bg="${value}" />`
+          `import { View } from '@tamagui/style'; export const App = () => <View bg="${value}" />`
         )
         const result = spawnSync(
           process.execPath,

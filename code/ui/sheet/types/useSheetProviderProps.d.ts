@@ -1,5 +1,5 @@
 import React from 'react';
-import type { TamaguiElement } from '@tamagui/core';
+import type { TamaguiElement } from '@tamagui/style';
 import type { ScrollBridge, SheetProps } from './types';
 import type { SheetOpenState } from './useSheetOpenState';
 export type SheetContextValue = ReturnType<typeof useSheetProviderProps> & {
@@ -15,7 +15,7 @@ export declare function useSheetProviderProps(props: SheetProps, state: SheetOpe
     scrollBridge: ScrollBridge;
     modal: boolean;
     open: boolean;
-    setOpen: import("@tamagui/use-controllable-state").ControllableStateSetter<boolean, import("@tamagui/core").TamaguiChangeEventDetails>;
+    setOpen: import("@tamagui/use-controllable-state").ControllableStateSetter<boolean, import("@tamagui/style").TamaguiChangeEventDetails>;
     hidden: boolean;
     contentRef: React.RefObject<TamaguiElement | null>;
     handleRef: React.RefObject<TamaguiElement | null>;
@@ -30,7 +30,7 @@ export declare function useSheetProviderProps(props: SheetProps, state: SheetOpe
     snapPointsMode: import("./types").SnapPointsMode;
     setMaxContentSize: React.Dispatch<React.SetStateAction<number>>;
     setPosition: (next: number) => void;
-    setPositionImmediate: import("@tamagui/use-controllable-state").ControllableStateSetter<number, import("@tamagui/core").TamaguiChangeEventDetails>;
+    setPositionImmediate: import("@tamagui/use-controllable-state").ControllableStateSetter<number, import("@tamagui/style").TamaguiChangeEventDetails>;
     onlyShowContainer: boolean;
 };
 //# sourceMappingURL=useSheetProviderProps.d.ts.map

@@ -15,7 +15,7 @@ window['React'] = React
 test('aria-label is preserved in extracted output', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View aria-label="Test label" />
     }
@@ -23,7 +23,7 @@ test('aria-label is preserved in extracted output', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -35,7 +35,7 @@ test('aria-label is preserved in extracted output', async () => {
 test('role is preserved in extracted output', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View role="button" />
     }
@@ -43,7 +43,7 @@ test('role is preserved in extracted output', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -55,7 +55,7 @@ test('role is preserved in extracted output', async () => {
 test('aria-hidden is preserved in extracted output', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View aria-hidden={true} />
     }
@@ -63,7 +63,7 @@ test('aria-hidden is preserved in extracted output', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -74,7 +74,7 @@ test('aria-hidden is preserved in extracted output', async () => {
 test('id is preserved in extracted output', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View id="my-element" width={100} />
     }
@@ -82,7 +82,7 @@ test('id is preserved in extracted output', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -95,7 +95,7 @@ test('id is preserved in extracted output', async () => {
 test('tabIndex is preserved in extracted output', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View tabIndex={0} />
     }
@@ -103,7 +103,7 @@ test('tabIndex is preserved in extracted output', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -114,7 +114,7 @@ test('tabIndex is preserved in extracted output', async () => {
 test('onClick is preserved in extracted output', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test(props) {
       return <View onClick={props.handler} width={100} />
     }
@@ -122,7 +122,7 @@ test('onClick is preserved in extracted output', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -135,7 +135,7 @@ test('onClick is preserved in extracted output', async () => {
 test('onPointerDown is preserved in extracted output', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test(props) {
       return <View onPointerDown={props.handler} width={100} />
     }
@@ -143,7 +143,7 @@ test('onPointerDown is preserved in extracted output', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -155,7 +155,7 @@ test('onPointerDown is preserved in extracted output', async () => {
 test('boxShadow is extracted to CSS correctly', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View boxShadow="0 2px 10px rgba(0,0,0,0.5)" />
     }
@@ -163,7 +163,7 @@ test('boxShadow is extracted to CSS correctly', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -176,7 +176,7 @@ test('boxShadow is extracted to CSS correctly', async () => {
 test('accessibilityLabel is NOT converted to aria-label', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View accessibilityLabel="Test label" />
     }
@@ -184,7 +184,7 @@ test('accessibilityLabel is NOT converted to aria-label', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -196,7 +196,7 @@ test('accessibilityLabel is NOT converted to aria-label', async () => {
 test('accessibilityRole is NOT converted to role', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View accessibilityRole="button" />
     }
@@ -204,7 +204,7 @@ test('accessibilityRole is NOT converted to role', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -216,7 +216,7 @@ test('accessibilityRole is NOT converted to role', async () => {
 test('focusable is NOT converted to tabIndex', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View focusable={true} />
     }
@@ -224,7 +224,7 @@ test('focusable is NOT converted to tabIndex', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -236,7 +236,7 @@ test('focusable is NOT converted to tabIndex', async () => {
 test('onPress keeps the component on the runtime event path', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test(props) {
       return <View onPress={props.handler} />
     }
@@ -244,7 +244,7 @@ test('onPress keeps the component on the runtime event path', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )

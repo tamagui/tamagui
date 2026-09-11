@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@tamagui/constants": "workspace:*",
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/native": "workspace:*",
     "@tamagui/polyfill-dev": "workspace:*",
     "@tamagui/start-transition": "workspace:*",

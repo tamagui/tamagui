@@ -28,7 +28,7 @@
 <br />
 <br />
 
-- `@tamagui/core` - Universal style library for React.
+- `@tamagui/style` - Universal style library for React. Published as `@tamagui/core` before v3, which still works as an alias.
 - `@tamagui/static` - Optimizing compiler that works with `core` and `tamagui`.
 - `tamagui` - UI kit that adapts to every platform.
 

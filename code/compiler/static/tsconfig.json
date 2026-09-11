@@ -11,7 +11,7 @@
       "path": "../../core/config-default"
     },
     {
-      "path": "../../core/core"
+      "path": "../../core/style"
     },
     {
       "path": "../../core/generate-themes"

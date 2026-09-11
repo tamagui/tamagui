@@ -4,7 +4,7 @@ import {
   useAdaptContext,
   useAdaptIsActive,
 } from '@tamagui/adapt'
-import { createStyledHOC, styled, Theme, useThemeName, View } from '@tamagui/core'
+import { createStyledHOC, styled, Theme, useThemeName, View } from '@tamagui/style'
 
 import { VIEWPORT_NAME } from './constants'
 import {

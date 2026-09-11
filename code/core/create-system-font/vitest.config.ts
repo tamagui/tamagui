@@ -5,7 +5,7 @@ import { defineConfig } from 'vitest/config'
 const config: ViteUserConfigExport = defineConfig({
   resolve: {
     alias: {
-      '@tamagui/core': resolve(__dirname, './tests/coreMock.ts'),
+      '@tamagui/style': resolve(__dirname, './tests/coreMock.ts'),
     },
   },
 })

@@ -1,4 +1,4 @@
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 import { Heading } from '@tamagui/sandbox-ui'
 
 // for copy/paste easily to site examples

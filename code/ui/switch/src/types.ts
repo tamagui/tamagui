@@ -1,4 +1,4 @@
-import type { GetProps, NativeValue, SizeTokens, ViewProps } from '@tamagui/core'
+import type { GetProps, NativeValue, SizeTokens, ViewProps } from '@tamagui/style'
 import type { SwitchExtraProps as HeadlessSwitchExtraProps } from '@tamagui/switch-headless'
 import type {
   SwitchProps as NativeSwitchProps,

@@ -4,7 +4,7 @@ import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { render, waitFor } from '@testing-library/react'
 import { describe, expect, test, vi } from 'vitest'
 
-import { createTamagui, TamaguiProvider, Theme, useTheme, View } from '@tamagui/core'
+import { createTamagui, TamaguiProvider, Theme, useTheme, View } from '@tamagui/style'
 import { getConfig, updateConfig } from '../web/src'
 import {
   getConfigRevisionState,

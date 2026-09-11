@@ -2,7 +2,7 @@
 import { flushSync } from 'react-dom'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core'
+import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/style'
 import {
   createStyledHOC,
   LayoutMeasurementController,
@@ -12,7 +12,7 @@ import {
   getVariableValue,
   registerLayoutNode,
   styled,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import type { PopupTriggerMap } from '@tamagui/floating'
 import { FloatingOverrideContext } from '@tamagui/floating'
 import type {

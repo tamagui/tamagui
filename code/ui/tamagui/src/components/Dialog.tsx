@@ -13,7 +13,7 @@ import {
   styled,
   type TamaguiElement,
   withStaticProperties,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { Dialog as UiDialog } from '@tamagui/dialog'
 import type * as React from 'react'
 

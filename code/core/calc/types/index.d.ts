@@ -1,4 +1,4 @@
-import type { FontLineHeightTokens, FontSizeTokens, SizeTokens, SpaceTokens } from "@tamagui/core";
+import type { FontLineHeightTokens, FontSizeTokens, SizeTokens, SpaceTokens } from "@tamagui/style";
 /**
 * Simple calc() that handles native + web
 *   on web: outputs a calc() string

@@ -1274,7 +1274,7 @@ const Frame = styled(View, {
 
 describe('functional variants', () => {
   test('spread keys become typed dynamics and add their type to the styled import', () => {
-    const output = runWrite(`import { View, styled } from '@tamagui/core'
+    const output = runWrite(`import { View, styled } from '@tamagui/style'
 const Frame = styled(View, {
   variants: {
     size: {
@@ -1288,7 +1288,7 @@ const Frame = styled(View, {
 `)
 
     expect(output).toContain('type SizeTokens')
-    expect(output).toContain("from '@tamagui/core'")
+    expect(output).toContain("from '@tamagui/style'")
     expect(output).toContain('size: styled.dynamic<SizeTokens>((val, env) => ({')
     expect(output).toContain('width: env.tokens.size[val]')
     expect(output).toContain('color: env.theme.color')

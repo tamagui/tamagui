@@ -1,141 +1,141 @@
-import { type TamaguiElement } from '@tamagui/core';
+import { type TamaguiElement } from '@tamagui/style';
 import type * as React from 'react';
-export declare const AlertDialogOverlay: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
+export declare const AlertDialogOverlay: React.FunctionComponent<Omit<import("@tamagui/style").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
     scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
 } & {
     forceMount?: boolean;
 } & {
     scope?: import("@tamagui/dialog").DialogScopes;
-} & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | false | import("@tamagui/core").Size | undefined;
-}>, "elevation"> & import("@tamagui/stacks").StackVariants, "elevation" | "open" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
-    elevation?: number | false | import("@tamagui/core").Size | undefined;
+} & Omit<import("@tamagui/style").RNTamaguiViewNonStyleProps, keyof import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithFlatVariantValues<{}> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase>>, "open" | keyof import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithFlatVariantValues<{
     open?: boolean | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+}> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase>> & {
     ref?: React.Ref<TamaguiElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
+}> & import("@tamagui/style").StaticComponentObject<import("@tamagui/style").TamaDefer, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
     scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
 } & {
     forceMount?: boolean;
 } & {
     scope?: import("@tamagui/dialog").DialogScopes;
-} & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | false | import("@tamagui/core").Size | undefined;
-}>, "elevation"> & import("@tamagui/stacks").StackVariants, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | false | import("@tamagui/core").Size | undefined;
+} & Omit<import("@tamagui/style").RNTamaguiViewNonStyleProps, keyof import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithFlatVariantValues<{}> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase>>, import("@tamagui/style").StackStyleBase, {
     open?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
+}, import("@tamagui/style").StaticConfigPublic> & Omit<import("@tamagui/style").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/style").TamaDefer, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
         scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
     } & {
         forceMount?: boolean;
     } & {
         scope?: import("@tamagui/dialog").DialogScopes;
-    } & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/core").Size | undefined;
-    }>, "elevation"> & import("@tamagui/stacks").StackVariants, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/core").Size | undefined;
+    } & Omit<import("@tamagui/style").RNTamaguiViewNonStyleProps, keyof import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithFlatVariantValues<{}> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase>>, import("@tamagui/style").StackStyleBase, {
         open?: boolean | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
+    }, import("@tamagui/style").StaticConfigPublic];
 };
-export declare const AlertDialogContent: React.FunctionComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<Omit<import("@tamagui/dialog").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
+export declare const AlertDialogContent: React.FunctionComponent<Omit<import("@tamagui/style").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/dialog").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
     scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
-} & import("@tamagui/core").RefProp<TamaguiElement>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
-    ref?: React.Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<Omit<import("@tamagui/dialog").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
+}, "bordered" | "elevate" | keyof import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithFlatVariantValues<{
+    bordered?: boolean | undefined;
+    elevate?: boolean | undefined;
+}> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase>> & {
+    ref?: React.Ref<TamaguiElement> | undefined;
+}> & import("@tamagui/style").StaticComponentObject<import("@tamagui/style").TamaDefer, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/dialog").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
     scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
-} & import("@tamagui/core").RefProp<TamaguiElement>, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<Omit<import("@tamagui/dialog").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
+}, import("@tamagui/style").StackStyleBase, {
+    bordered?: boolean | undefined;
+    elevate?: boolean | undefined;
+}, import("@tamagui/style").StaticConfigPublic> & Omit<import("@tamagui/style").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/style").TamaDefer, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/dialog").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
         scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
-    } & import("@tamagui/core").RefProp<TamaguiElement>, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
+    }, import("@tamagui/style").StackStyleBase, {
+        bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+    }, import("@tamagui/style").StaticConfigPublic];
 };
 export declare const AlertDialog: ((props: Omit<import("@tamagui/dialog").DialogProps, "scope"> & {
     scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
 } & {
     native?: boolean;
-} & import("@tamagui/core").RefProp<TamaguiElement>) => React.ReactNode) & {
+} & import("@tamagui/style").RefProp<TamaguiElement>) => React.ReactNode) & {
     displayName?: string;
     propTypes?: any;
 } & {
-    Trigger: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "scope" | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/dialog").DialogTriggerProps, "scope"> & {
+    Trigger: import("@tamagui/style").TamaguiComponent<Omit<import("@tamagui/style").GetFinalProps<import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {}>, "scope" | keyof import("@tamagui/style").StackNonStyleProps | keyof import("@tamagui/style").StackStyleBase> & Omit<import("@tamagui/dialog").DialogTriggerProps, "scope"> & {
         scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
-    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/dialog").DialogTriggerProps, "scope"> & {
+    }, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/dialog").DialogTriggerProps, "scope"> & {
         scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
-    }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
+    }, import("@tamagui/style").StackStyleBase, {}, import("@tamagui/style").StaticConfigPublic>;
     Portal: React.FC<import("@tamagui/alert-dialog").AlertDialogPortalProps>;
-    Title: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "scope" | "size" | "unstyled" | keyof import("@tamagui/core").TextNonStyleProps | keyof import("@tamagui/core").TextStylePropsBase> & Omit<import("@tamagui/dialog").DialogTitleProps, "scope"> & {
+    Title: import("@tamagui/style").TamaguiComponent<Omit<import("@tamagui/style").GetFinalProps<import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {}>, "scope" | "size" | "unstyled" | keyof import("@tamagui/style").TextNonStyleProps | keyof import("@tamagui/style").TextStylePropsBase> & Omit<import("@tamagui/dialog").DialogTitleProps, "scope"> & {
         scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
-    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/dialog").DialogTitleProps, "scope"> & {
+    }, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/dialog").DialogTitleProps, "scope"> & {
         scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
-    }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
-    Description: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "scope" | "size" | keyof import("@tamagui/core").TextNonStyleProps | keyof import("@tamagui/core").TextStylePropsBase> & Omit<import("@tamagui/dialog").DialogDescriptionProps, "scope"> & {
+    }, import("@tamagui/style").StackStyleBase, {}, import("@tamagui/style").StaticConfigPublic>;
+    Description: import("@tamagui/style").TamaguiComponent<Omit<import("@tamagui/style").GetFinalProps<import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {}>, "scope" | "size" | keyof import("@tamagui/style").TextNonStyleProps | keyof import("@tamagui/style").TextStylePropsBase> & Omit<import("@tamagui/dialog").DialogDescriptionProps, "scope"> & {
         scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
-    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/dialog").DialogDescriptionProps, "scope"> & {
+    }, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/dialog").DialogDescriptionProps, "scope"> & {
         scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
-    }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
-    Action: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "displayWhenAdapted" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/dialog").DialogCloseProps, "scope"> & {
+    }, import("@tamagui/style").StackStyleBase, {}, import("@tamagui/style").StaticConfigPublic>;
+    Action: import("@tamagui/style").TamaguiComponent<Omit<import("@tamagui/style").GetFinalProps<import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {}>, "displayWhenAdapted" | "scope" | keyof import("@tamagui/style").RNTamaguiViewNonStyleProps | keyof import("@tamagui/style").StackStyleBase> & Omit<import("@tamagui/dialog").DialogCloseProps, "scope"> & {
         scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
-    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/dialog").DialogCloseProps, "scope"> & {
+    }, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/dialog").DialogCloseProps, "scope"> & {
         scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
-    }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
-    Cancel: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "displayWhenAdapted" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/dialog").DialogCloseProps, "scope"> & {
+    }, import("@tamagui/style").StackStyleBase, {}, import("@tamagui/style").StaticConfigPublic>;
+    Cancel: import("@tamagui/style").TamaguiComponent<Omit<import("@tamagui/style").GetFinalProps<import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {}>, "displayWhenAdapted" | "scope" | keyof import("@tamagui/style").RNTamaguiViewNonStyleProps | keyof import("@tamagui/style").StackStyleBase> & Omit<import("@tamagui/dialog").DialogCloseProps, "scope"> & {
         scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
-    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/dialog").DialogCloseProps, "scope"> & {
+    }, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/dialog").DialogCloseProps, "scope"> & {
         scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
-    }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
-    Destructive: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "displayWhenAdapted" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/dialog").DialogCloseProps, "scope"> & {
+    }, import("@tamagui/style").StackStyleBase, {}, import("@tamagui/style").StaticConfigPublic>;
+    Destructive: import("@tamagui/style").TamaguiComponent<Omit<import("@tamagui/style").GetFinalProps<import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {}>, "displayWhenAdapted" | "scope" | keyof import("@tamagui/style").RNTamaguiViewNonStyleProps | keyof import("@tamagui/style").StackStyleBase> & Omit<import("@tamagui/dialog").DialogCloseProps, "scope"> & {
         scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
-    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/dialog").DialogCloseProps, "scope"> & {
+    }, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/dialog").DialogCloseProps, "scope"> & {
         scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
-    }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
-    Overlay: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
+    }, import("@tamagui/style").StackStyleBase, {}, import("@tamagui/style").StaticConfigPublic>;
+    Overlay: React.FunctionComponent<Omit<import("@tamagui/style").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
         scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
     } & {
         forceMount?: boolean;
     } & {
         scope?: import("@tamagui/dialog").DialogScopes;
-    } & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/core").Size | undefined;
-    }>, "elevation"> & import("@tamagui/stacks").StackVariants, "elevation" | "open" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
-        elevation?: number | false | import("@tamagui/core").Size | undefined;
+    } & Omit<import("@tamagui/style").RNTamaguiViewNonStyleProps, keyof import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithFlatVariantValues<{}> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase>>, "open" | keyof import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithFlatVariantValues<{
         open?: boolean | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+    }> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase>> & {
         ref?: React.Ref<TamaguiElement> | undefined;
-    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
+    }> & import("@tamagui/style").StaticComponentObject<import("@tamagui/style").TamaDefer, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
         scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
     } & {
         forceMount?: boolean;
     } & {
         scope?: import("@tamagui/dialog").DialogScopes;
-    } & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/core").Size | undefined;
-    }>, "elevation"> & import("@tamagui/stacks").StackVariants, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | false | import("@tamagui/core").Size | undefined;
+    } & Omit<import("@tamagui/style").RNTamaguiViewNonStyleProps, keyof import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithFlatVariantValues<{}> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase>>, import("@tamagui/style").StackStyleBase, {
         open?: boolean | undefined;
-    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
+    }, import("@tamagui/style").StaticConfigPublic> & Omit<import("@tamagui/style").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/style").TamaDefer, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
             scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
         } & {
             forceMount?: boolean;
         } & {
             scope?: import("@tamagui/dialog").DialogScopes;
-        } & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-            elevation?: number | false | import("@tamagui/core").Size | undefined;
-        }>, "elevation"> & import("@tamagui/stacks").StackVariants, import("@tamagui/core").StackStyleBase, {
-            elevation?: number | false | import("@tamagui/core").Size | undefined;
+        } & Omit<import("@tamagui/style").RNTamaguiViewNonStyleProps, keyof import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithFlatVariantValues<{}> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase>>, import("@tamagui/style").StackStyleBase, {
             open?: boolean | undefined;
-        }, import("@tamagui/core").StaticConfigPublic];
+        }, import("@tamagui/style").StaticConfigPublic];
     };
-    Content: React.FunctionComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<Omit<import("@tamagui/dialog").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
+    Content: React.FunctionComponent<Omit<import("@tamagui/style").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/dialog").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
         scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
-    } & import("@tamagui/core").RefProp<TamaguiElement>, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
-        ref?: React.Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
-    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<Omit<import("@tamagui/dialog").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
+    }, "bordered" | "elevate" | keyof import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithFlatVariantValues<{
+        bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+    }> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase>> & {
+        ref?: React.Ref<TamaguiElement> | undefined;
+    }> & import("@tamagui/style").StaticComponentObject<import("@tamagui/style").TamaDefer, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/dialog").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
         scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
-    } & import("@tamagui/core").RefProp<TamaguiElement>, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<Omit<import("@tamagui/dialog").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
+    }, import("@tamagui/style").StackStyleBase, {
+        bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+    }, import("@tamagui/style").StaticConfigPublic> & Omit<import("@tamagui/style").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/style").TamaDefer, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/dialog").DialogContentProps, "onInteractOutside" | "onPointerDownOutside">, "scope"> & {
             scope?: import("@tamagui/alert-dialog").AlertDialogScopes;
-        } & import("@tamagui/core").RefProp<TamaguiElement>, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
+        }, import("@tamagui/style").StackStyleBase, {
+            bordered?: boolean | undefined;
+            elevate?: boolean | undefined;
+        }, import("@tamagui/style").StaticConfigPublic];
     };
 };
 //# sourceMappingURL=AlertDialog.d.ts.map

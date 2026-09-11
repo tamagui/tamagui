@@ -5,7 +5,7 @@ import {
   SizeContext as CoreSizeContext,
   TamaguiProvider,
   createTamagui,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { themed } from '@tamagui/helpers-icon'
 import { SizeContext } from '@tamagui/size'
 import { Tabs } from '@tamagui/tabs'

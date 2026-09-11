@@ -21,6 +21,7 @@
 // spread across the dependency graph so a partial publish cannot look complete.
 const PROBE = [
   'tamagui',
+  '@tamagui/style',
   '@tamagui/core',
   '@tamagui/web',
   '@tamagui/config',

@@ -95,7 +95,7 @@ describe('React Strict DOM parity matrix', () => {
   test('resolves every native DOM alias to native runtime and declarations', () => {
     for (const [manifest, expectedTypes] of [
       ['code/core/web/package.json', './types/dom/index.native.d.ts'],
-      ['code/core/core/package.json', './types/dom.native.d.ts'],
+      ['code/core/style/package.json', './types/dom.native.d.ts'],
       ['code/ui/tamagui/package.json', './types/dom.native.d.ts'],
     ] as const) {
       const packageJSON = JSON.parse(readFileSync(resolve(root, manifest), 'utf8'))

@@ -71,7 +71,7 @@ the V3 API work is finished.
 ### 1. Update dependencies
 
 - Bump every \`tamagui\` and \`@tamagui/*\` package together to v3.
-- Keep \`@tamagui/core\`, \`@tamagui/web\`, and \`tamagui\` deduped in the lockfile.
+- Keep \`@tamagui/style\`, \`@tamagui/web\`, and \`tamagui\` deduped in the lockfile.
 - Run:
 
 \`\`\`bash
@@ -305,7 +305,7 @@ import { View, Text, styled } from '@tamagui/tailwind'
 \`\`\`
 
 Keep importing regular Tamagui components from \`tamagui\` or
-\`@tamagui/core\`. Do not mix utility classes and Tamagui style props on the
+\`@tamagui/style\`. Do not mix utility classes and Tamagui style props on the
 same component; choose the import whose styling language that component uses.
 
 ### Required API follow-ups

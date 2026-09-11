@@ -1,26 +1,26 @@
-import { type GetProps } from '@tamagui/core';
-export declare const SurfaceFrame: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevated" | "filled" | "interactive" | "outlined" | "roundedFacet" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+import { type GetProps } from '@tamagui/style';
+export declare const SurfaceFrame: import("react").FunctionComponent<Omit<import("@tamagui/style").RNTamaguiViewNonStyleProps, "elevated" | "filled" | "interactive" | "outlined" | "roundedFacet" | keyof import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithFlatVariantValues<{
     elevated?: boolean | undefined;
     filled?: boolean | undefined;
     interactive?: boolean | undefined;
     outlined?: boolean | undefined;
     roundedFacet?: boolean | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
-    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+}> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase>> & {
+    ref?: import("react").Ref<import("@tamagui/style").TamaguiElement> | undefined;
+}> & import("@tamagui/style").StaticComponentObject<import("@tamagui/style").TamaDefer, import("@tamagui/style").TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {
     elevated?: boolean | undefined;
     filled?: boolean | undefined;
     interactive?: boolean | undefined;
     outlined?: boolean | undefined;
     roundedFacet?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+}, import("@tamagui/style").StaticConfigPublic> & Omit<import("@tamagui/style").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/style").TamaDefer, import("@tamagui/style").TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {
         elevated?: boolean | undefined;
         filled?: boolean | undefined;
         interactive?: boolean | undefined;
         outlined?: boolean | undefined;
         roundedFacet?: boolean | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
+    }, import("@tamagui/style").StaticConfigPublic];
 };
 export type SurfaceProps = Omit<GetProps<typeof SurfaceFrame>, 'roundedFacet' | 'rounded'> & {
     /** shift the subtree to a relative theme level. */
@@ -28,7 +28,7 @@ export type SurfaceProps = Omit<GetProps<typeof SurfaceFrame>, 'roundedFacet' | 
     /** add the default component radius without depending on config shorthands. */
     rounded?: boolean;
 };
-export declare const Surface: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+export declare const Surface: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/style").GetFinalProps<import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {
     elevated?: boolean | undefined;
     filled?: boolean | undefined;
     interactive?: boolean | undefined;

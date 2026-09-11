@@ -25,7 +25,7 @@ import {
   styled,
   type TamaguiElement,
   withStaticProperties,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { SizableText } from '@tamagui/text'
 import { XStack, YStack } from '@tamagui/stacks'
 

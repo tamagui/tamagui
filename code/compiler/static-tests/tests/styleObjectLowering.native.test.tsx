@@ -9,13 +9,13 @@ process.env.TAMAGUI_TARGET = 'native'
 test('a conditional style member lowers to a per-branch native style program', async () => {
   const output = await extractForNative(
     [
-      "import { View } from '@tamagui/core'",
+      "import { View } from '@tamagui/style'",
       'export function Test({ seed }: { seed: number }) {',
       "  return <View style={{ backgroundColor: seed % 2 ? 'red' : 'blue', height: 10 }} />",
       '}',
       '',
     ].join('\n'),
-    { options: { components: ['@tamagui/core'] } }
+    { options: { components: ['@tamagui/style'] } }
   )
   expect(output.diagnostics).toEqual([])
   expect(output.code).toContain('_expressions={[seed % 2]}')

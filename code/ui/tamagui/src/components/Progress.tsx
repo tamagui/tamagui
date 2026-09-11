@@ -3,7 +3,7 @@
 // + the default v2-look skin (theme background on the track and indicator, pill
 // radius on the track). Single skin definition; the shadcn registry item is
 // generated from this file.
-import { type GetProps, styled, withStaticProperties } from '@tamagui/core'
+import { type GetProps, styled, withStaticProperties } from '@tamagui/style'
 import {
   Progress as UiProgress,
   ProgressIndicator as UiProgressIndicator,

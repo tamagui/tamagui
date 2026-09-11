@@ -8,11 +8,11 @@
  */
 
 import * as React from 'react'
-import { View, createTamagui, getSplitStyles } from '@tamagui/core'
+import { View, createTamagui, getSplitStyles } from '@tamagui/style'
 import { render } from '@testing-library/react-native'
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import { createOptimizedView } from '../core/src/createOptimizedView.native'
+import { createOptimizedView } from '../style/src/createOptimizedView.native'
 import config from '../config-default'
 
 beforeAll(() => {

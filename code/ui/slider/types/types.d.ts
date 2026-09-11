@@ -1,4 +1,4 @@
-import type { GestureReponderEvent, SizeTokens, TamaguiElement } from '@tamagui/core';
+import type { GestureReponderEvent, SizeTokens, TamaguiElement } from '@tamagui/style';
 import type { YStackProps } from '@tamagui/stacks';
 export type ScopedProps<P> = P & {
     __scopeSlider?: string;

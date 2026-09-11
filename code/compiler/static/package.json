@@ -49,7 +49,7 @@
     "@tamagui/cli-color": "workspace:*",
     "@tamagui/compiler-core": "workspace:*",
     "@tamagui/config-default": "workspace:*",
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/dom": "workspace:*",
     "@tamagui/fake-react-native": "workspace:*",
     "@tamagui/generate-themes": "workspace:*",

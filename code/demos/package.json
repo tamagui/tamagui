@@ -54,7 +54,7 @@
     "@tamagui/checkbox-headless": "workspace:*",
     "@tamagui/colors": "workspace:*",
     "@tamagui/context-menu": "workspace:*",
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/image": "workspace:*",
     "@tamagui/input": "workspace:*",
     "@tamagui/linear-gradient": "workspace:*",

@@ -152,7 +152,7 @@ describe('resolveRem.native bugfixes', () => {
 
 describe('getSplitStyles integration on native', () => {
   test('resolves rem, vw, and container clamp styles', async () => {
-    const { Text, createTamagui, getSplitStyles } = await import('@tamagui/core')
+    const { Text, createTamagui, getSplitStyles } = await import('@tamagui/style')
     const configDefault = (await import('../config-default')).default
     const config = createTamagui(configDefault.getDefaultTamaguiConfig('native'))
 
@@ -194,7 +194,7 @@ describe('getSplitStyles integration on native', () => {
   })
 
   test('resolves em against fontSize on the same component', async () => {
-    const { Text, createTamagui, getSplitStyles } = await import('@tamagui/core')
+    const { Text, createTamagui, getSplitStyles } = await import('@tamagui/style')
     const configDefault = (await import('../config-default')).default
     const config = createTamagui(configDefault.getDefaultTamaguiConfig('native'))
 
@@ -215,7 +215,7 @@ describe('getSplitStyles integration on native', () => {
   })
 
   test('mounted tree integration: container layout event updates child fluid fontSize', async () => {
-    const { Text, View, createTamagui, TamaguiProvider } = await import('@tamagui/core')
+    const { Text, View, createTamagui, TamaguiProvider } = await import('@tamagui/style')
     const { render, fireEvent, waitFor } = await import('@testing-library/react-native')
     const configDefault = (await import('../config-default')).default
     const config = createTamagui(configDefault.getDefaultTamaguiConfig('native'))

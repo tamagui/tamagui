@@ -1,5 +1,5 @@
 import { Checkbox as CheckboxBehavior } from '@tamagui/checkbox'
-import { type GetProps, resolveSize, styled, withStaticProperties } from '@tamagui/core'
+import { type GetProps, resolveSize, styled, withStaticProperties } from '@tamagui/style'
 
 export const CheckboxFrame = styled(CheckboxBehavior, {
   displayName: 'Checkbox',

@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@tamagui/config": "workspace:*",
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/dom": "workspace:*",
     "@tamagui/sheet": "workspace:*",
     "@tamagui/tailwind": "workspace:*",

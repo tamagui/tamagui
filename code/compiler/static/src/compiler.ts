@@ -92,7 +92,11 @@ export async function loadCompilerProject({
   resolveComponents,
 }: LoadCompilerProjectInput): Promise<CompilerProject> {
   const components = [
-    ...new Set(['@tamagui/core', ...(optionsIn.components || ['tamagui'])]),
+    ...new Set([
+      '@tamagui/style',
+      '@tamagui/core',
+      ...(optionsIn.components || ['tamagui']),
+    ]),
   ]
   const options = {
     ...optionsIn,

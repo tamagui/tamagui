@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { TamaguiProvider, Text, View } from '@tamagui/core'
+import { TamaguiProvider, Text, View } from '@tamagui/style'
 
 import config from './tamagui.config'
 

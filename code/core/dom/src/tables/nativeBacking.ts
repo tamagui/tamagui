@@ -18,7 +18,7 @@ import type { DefaultStyle, NativeBacking, NativeBackingRow, TagName } from './t
  */
 
 /** the module the compiler injects primitive imports from */
-export const NATIVE_PRIMITIVE_MODULE = '@tamagui/core/dom'
+export const NATIVE_PRIMITIVE_MODULE = '@tamagui/style/dom'
 
 const VIEW_TAGS: readonly TagName[] = [
   'article',

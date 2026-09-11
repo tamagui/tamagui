@@ -49,7 +49,7 @@
       "path": "../../core/animations-css"
     },
     {
-      "path": "../../core/core"
+      "path": "../../core/style"
     },
     {
       "path": "../../core/create-theme"

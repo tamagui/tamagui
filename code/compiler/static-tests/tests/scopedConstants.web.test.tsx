@@ -2,7 +2,7 @@ import { expect, test } from 'vitest'
 
 import { extractForWeb } from './lib/extract'
 
-const options = { options: { components: ['@tamagui/core'] } }
+const options = { options: { components: ['@tamagui/style'] } }
 
 // identifiers resolve by position: a constant declared inside the component
 // folds, and a parameter that shadows a module constant is not read as the
@@ -10,7 +10,7 @@ const options = { options: { components: ['@tamagui/core'] } }
 test('function-scope constants fold and shadowing parameters do not', async () => {
   const output = await extractForWeb(
     [
-      "import { View } from '@tamagui/core'",
+      "import { View } from '@tamagui/style'",
       'const w = 10',
       'export function Test({ seed, w: shadow }: { seed: number; w: number }) {',
       '  const h = 20',

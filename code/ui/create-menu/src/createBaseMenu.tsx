@@ -1,4 +1,4 @@
-import { createStyledHOC, createRefComponent } from '@tamagui/core'
+import { createStyledHOC, createRefComponent } from '@tamagui/style'
 import { Animate } from '@tamagui/animate'
 import { AnimatePresence as Presence } from '@tamagui/animate-presence'
 import { createCollection } from '@tamagui/collection'

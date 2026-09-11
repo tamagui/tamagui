@@ -1,7 +1,7 @@
 process.env.TAMAGUI_TARGET = 'web'
 
 import { describe, expect, test } from 'vitest'
-import { Text, createTamagui, fluid, getSplitStyles } from '@tamagui/core'
+import { Text, createTamagui, fluid, getSplitStyles } from '@tamagui/style'
 import configDefault from '../config-default'
 
 describe('fluid() and dynamic units on web', () => {

@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@tamagui/cli-color": "workspace:*",
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/static": "workspace:*",
     "@tamagui/types": "workspace:*",
     "@tamagui/web": "workspace:*",

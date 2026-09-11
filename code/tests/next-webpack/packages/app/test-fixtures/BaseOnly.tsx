@@ -1,4 +1,4 @@
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 
 export function BaseOnly() {
   return (

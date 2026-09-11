@@ -1,7 +1,7 @@
-import type { TamaguiBuildOptions } from '@tamagui/core'
+import type { TamaguiBuildOptions } from '@tamagui/style'
 
 export default {
-  components: ['@tamagui/core'],
+  components: ['@tamagui/style'],
   config: './tamagui.config.ts',
   outputCSS: './public/tamagui.generated.css',
 } satisfies TamaguiBuildOptions

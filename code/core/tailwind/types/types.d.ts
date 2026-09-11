@@ -1,4 +1,4 @@
-import type { FrontendHTMLTag, FrontendStaticConfig } from '@tamagui/core/internal-runtime';
+import type { FrontendHTMLTag, FrontendStaticConfig } from '@tamagui/style/internal-runtime';
 import type { AriaAttributes, ComponentPropsWithoutRef, CSSProperties, FunctionComponent, HTMLAttributes, ReactElement, ReactNode, Ref as ReactRef } from 'react';
 import type { PressableProps, StyleProp, Text as ReactNativeText, TextProps as ReactNativeTextProps, TextStyle, View as ReactNativeView, ViewProps as ReactNativeViewProps, ViewStyle } from '@tamagui/react-native-types';
 type WebEventProps = {
@@ -107,7 +107,7 @@ export type TailwindTextElement = (HTMLElement & TailwindElementMethods) | React
  * accessibility, events, ids, and the raw platform `style` escape hatch, all
  * inherited from the shared non-style prop types. Tamagui inline style props
  * (`padding`, `bg`, shorthands, state/media clauses, theme style props) are
- * deliberately absent — that authoring syntax belongs to `@tamagui/core`.
+ * deliberately absent — that authoring syntax belongs to `@tamagui/style`.
  */
 export type TailwindStyleProps = {
     className?: string;

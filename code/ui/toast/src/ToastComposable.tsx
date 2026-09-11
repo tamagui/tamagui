@@ -1,15 +1,15 @@
-import { createStyledHOC, createRefComponent } from '@tamagui/core'
+import { createStyledHOC, createRefComponent } from '@tamagui/style'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { isWeb } from '@tamagui/constants'
 import { getGestureHandler } from '@tamagui/native'
-import type { GetProps, TamaguiElement } from '@tamagui/core'
+import type { GetProps, TamaguiElement } from '@tamagui/style'
 import {
   createStyledContext,
   styled,
   useConfiguration,
   useEvent,
   View,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { withStaticProperties } from '@tamagui/helpers'
 import { Portal } from '@tamagui/portal'
 import { XStack, YStack } from '@tamagui/stacks'

@@ -1,4 +1,4 @@
-import type { AnimatedNumberStrategy, TransitionProp } from '@tamagui/core'
+import type { AnimatedNumberStrategy, TransitionProp } from '@tamagui/style'
 import type { PortalProps } from '@tamagui/portal'
 import type { PanResponderConfig } from '@tamagui/react-native-pan-responder'
 import type { RemoveScroll } from '@tamagui/remove-scroll'

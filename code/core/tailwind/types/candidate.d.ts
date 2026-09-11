@@ -1,4 +1,4 @@
-import { type FrontendClassPlan, type FrontendClassSink, type StyleFrontendConfig } from '@tamagui/core/internal-runtime';
+import { type FrontendClassPlan, type FrontendClassSink, type StyleFrontendConfig } from '@tamagui/style/internal-runtime';
 import { type GrammarConfigView } from '@tamagui/style-grammar/tooling/candidate';
 export declare function getStyleGrammarConfig(config: StyleFrontendConfig): GrammarConfigView;
 export declare function isTokenValueProp(prop: string): boolean;

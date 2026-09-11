@@ -1,5 +1,5 @@
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, createTamagui } from '@tamagui/style'
 import { YStack } from '@tamagui/stacks'
 import TestRenderer, { act } from 'react-test-renderer'
 import { afterEach, expect, test, vi } from 'vitest'

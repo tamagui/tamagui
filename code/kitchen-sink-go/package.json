@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@tamagui/config": "workspace:*",
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/demos": "workspace:*",
     "@tamagui/kitchen-sink-shared": "workspace:*",
     "@tamagui/lucide-icons-2": "workspace:*",

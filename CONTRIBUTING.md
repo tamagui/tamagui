@@ -62,8 +62,8 @@ You can run `bun run sandbox` or `bun run dev` (the tamagui website).
 #### Rebuild before package tests
 
 Test files often run from source while their workspace dependencies resolve
-through built package exports. Native core tests also alias `@tamagui/core` to
-the built `@tamagui/core/native-test` entry. After changing a package, run
+through built package exports. Native core tests also alias `@tamagui/style` to
+the built `@tamagui/style/native-test` entry. After changing a package, run
 `bun run build` in that package before trusting a dependent suite, or keep
 `bun run watch` running at the repository root while you work. Otherwise the
 test can exercise stale `dist` output instead of the source you just changed.

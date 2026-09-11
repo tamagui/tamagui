@@ -1,6 +1,6 @@
 import { Sheet } from '@tamagui/sheet'
 import { useState } from 'react'
-import { styled, Text, View } from '@tamagui/core'
+import { styled, Text, View } from '@tamagui/style'
 import { Button } from 'tamagui/button'
 
 const RuntimeFrame = styled(View, {})

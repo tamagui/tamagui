@@ -39,7 +39,7 @@ describe('component discovery', () => {
   test('without a host evaluator the elements stay on the runtime path', async () => {
     const output = await extractForWeb(source, {
       evaluate: false,
-      options: { components: ['@tamagui/core'] },
+      options: { components: ['@tamagui/style'] },
     })
     expect(output.styles ?? '').not.toContain('background-color:red')
     expect(output.js).toContain('<ExternalCard')
@@ -51,7 +51,7 @@ describe('component discovery', () => {
       seen.push(id)
       return (await import(id)) as Record<string, unknown>
     }
-    const options = { components: ['@tamagui/core', 'tamagui'] }
+    const options = { components: ['@tamagui/style', 'tamagui'] }
     const first = await extractForWeb(source, {
       evaluate,
       options,
@@ -71,7 +71,7 @@ describe('component discovery', () => {
 
   test('a module with no components is remembered and does not retain siblings', async () => {
     const output = await extractForWeb(dedent`
-      import { View } from '@tamagui/core'
+      import { View } from '@tamagui/style'
       import { helper } from '@fixture/plain'
 
       export function Test() {

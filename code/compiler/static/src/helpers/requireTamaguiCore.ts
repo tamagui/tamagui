@@ -10,7 +10,7 @@ const nodeRequire = createRequire(
 export function requireTamaguiCore(
   platform: TamaguiPlatform,
   ogRequire: Function = nodeRequire
-): typeof import('@tamagui/core') {
+): typeof import('@tamagui/style') {
   if (!platform) {
     throw new Error(`No platform given to requireTamaguiCore`)
   }
@@ -22,7 +22,7 @@ export function requireTamaguiCore(
   process.env.TAMAGUI_KEEP_THEMES ||= '1'
 
   const exported = ogRequire(
-    platform === 'native' ? '@tamagui/core/native' : '@tamagui/core'
+    platform === 'native' ? '@tamagui/style/native' : '@tamagui/style'
   )
 
   // restore back

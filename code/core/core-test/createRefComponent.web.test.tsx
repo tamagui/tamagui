@@ -1,7 +1,7 @@
 process.env.TAMAGUI_TARGET = 'web'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, createRefComponent, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, createRefComponent, createTamagui } from '@tamagui/style'
 import { Dialog } from '@tamagui/dialog'
 import { cleanup, render, waitFor } from '@testing-library/react'
 import React from 'react'

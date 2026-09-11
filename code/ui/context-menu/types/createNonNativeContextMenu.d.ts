@@ -60,11 +60,11 @@ export declare function createNonNativeContextMenu(): {
         (props: ScopedProps<ContextMenuPortalProps>): React.JSX.Element;
         displayName: string;
     };
-    Content: import("@tamagui/web").TamaguiComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof BaseMenuTypes.MenuContentProps> & BaseMenuTypes.MenuContentProps & {
+    Content: import("@tamagui/web").TamaguiComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof BaseMenuTypes.MenuContentProps> & BaseMenuTypes.MenuContentProps & {
         scope?: string;
     }, keyof ContextMenuContentProps> & ContextMenuContentProps & {
         scope?: string;
-    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & BaseMenuTypes.MenuContentProps & {
+    }, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & BaseMenuTypes.MenuContentProps & {
         scope?: string;
     } & ContextMenuContentProps & {
         scope?: string;
@@ -123,17 +123,17 @@ export declare function createNonNativeContextMenu(): {
     } & import("@tamagui/compose-refs").RefProp<TamaguiElement>, "ref"> & {
         scope?: string;
     }, import("@tamagui/web").StackStyleBase, {}, {}>;
-    SubContent: import("@tamagui/web").TamaguiComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof BaseMenuTypes.MenuSubContentProps> & BaseMenuTypes.MenuSubContentProps & {
+    SubContent: import("@tamagui/web").TamaguiComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof BaseMenuTypes.MenuSubContentProps> & BaseMenuTypes.MenuSubContentProps & {
         scope?: string;
-    }, "download" | "elevationAndroid" | "onLayout" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "rel" | keyof BaseMenuTypes.MenuSubContentProps> & Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof BaseMenuTypes.MenuSubContentProps> & BaseMenuTypes.MenuSubContentProps & {
+    }, "download" | "onLayout" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "rel" | keyof BaseMenuTypes.MenuSubContentProps> & Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof BaseMenuTypes.MenuSubContentProps> & BaseMenuTypes.MenuSubContentProps & {
         scope?: string;
     } & {
         ref?: React.Ref<TamaguiElement> | undefined;
     }, "ref"> & {
         scope?: string;
-    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & BaseMenuTypes.MenuSubContentProps & {
+    }, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & BaseMenuTypes.MenuSubContentProps & {
         scope?: string;
-    } & Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof BaseMenuTypes.MenuSubContentProps> & BaseMenuTypes.MenuSubContentProps & {
+    } & Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof BaseMenuTypes.MenuSubContentProps> & BaseMenuTypes.MenuSubContentProps & {
         scope?: string;
     } & {
         ref?: React.Ref<TamaguiElement> | undefined;

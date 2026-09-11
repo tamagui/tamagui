@@ -94,7 +94,7 @@ const include = [
   '@vxrn/mdx-rust/client',
   // core tamagui packages must be pre-bundled together to avoid duplicate instances
   'tamagui',
-  '@tamagui/core',
+  '@tamagui/style',
   '@tamagui/web',
   // existing
   'secure-json-parse',

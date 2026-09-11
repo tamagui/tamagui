@@ -8,7 +8,7 @@ import {
   useAdaptedCapabilities,
 } from '@tamagui/adapt'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { createTamagui } from '@tamagui/core'
+import { createTamagui } from '@tamagui/style'
 import { getPortal } from '@tamagui/native'
 import React from 'react'
 import TestRenderer, { act } from 'react-test-renderer'

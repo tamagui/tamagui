@@ -8,7 +8,7 @@ import {
   View,
   type TamaguiElement,
   type ViewProps,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { resolveViewZIndex } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'

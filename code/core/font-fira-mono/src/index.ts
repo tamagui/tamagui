@@ -1,5 +1,5 @@
-import type { GenericFont } from '@tamagui/core'
-import { createFont, isWeb } from '@tamagui/core'
+import type { GenericFont } from '@tamagui/style'
+import { createFont, isWeb } from '@tamagui/style'
 
 export const createFiraMonoFont = <A extends GenericFont<keyof typeof size>>(
   font: Partial<A> = {}

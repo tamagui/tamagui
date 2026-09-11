@@ -1,7 +1,7 @@
 import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'
 import { startTransition } from '@tamagui/start-transition'
-import type { TamaguiChangeEventDetails } from '@tamagui/core'
+import type { TamaguiChangeEventDetails } from '@tamagui/style'
 
 // can configure to allow most-recent-wins or prop-wins
 // defaults to prop-wins

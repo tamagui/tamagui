@@ -15,7 +15,7 @@ const defaultConfigPath = '.tamagui/tamagui.config.json'
 const flatStyledModules: ReadonlySet<string> = new Set([
   'tamagui',
   'tamagui/unstyled',
-  '@tamagui/core',
+  '@tamagui/style',
   '@tamagui/ui',
   '@tamagui/web',
 ])

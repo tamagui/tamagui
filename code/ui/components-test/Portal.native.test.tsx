@@ -1,5 +1,5 @@
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, View, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, View, createTamagui } from '@tamagui/style'
 import { getPortal } from '@tamagui/native'
 import { Portal, PortalProvider } from '@tamagui/portal'
 import * as React from 'react'

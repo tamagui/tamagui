@@ -37,7 +37,7 @@
     "test:web": "vitest --typecheck --run"
   },
   "dependencies": {
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/element": "workspace:*",
     "@tamagui/focusable": "workspace:*",
     "@tamagui/font-size": "workspace:*",

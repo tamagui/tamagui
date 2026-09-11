@@ -1,11 +1,11 @@
-import { useAnimatedNumberReaction, useAnimatedNumbersStyle } from '@tamagui/core'
+import { useAnimatedNumberReaction, useAnimatedNumbersStyle } from '@tamagui/style'
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { useAnimatedNumber, useAnimatedNumberStyle, View } from 'tamagui'
 
 /**
  * The one opt-in runtime a zero graph may keep, exercising all four public
- * hooks. They are imported from the public `tamagui` and `@tamagui/core`
+ * hooks. They are imported from the public `tamagui` and `@tamagui/style`
  * barrels, since both are rewritten to the animated-number leaf and neither
  * barrel may enter the client graph.
  *

@@ -1,4 +1,4 @@
-import { shouldRenderNativePlatform } from '@tamagui/core'
+import { shouldRenderNativePlatform } from '@tamagui/style'
 import { registerFocusable } from '@tamagui/focusable'
 import * as React from 'react'
 import { Switch as NativeSwitch } from 'react-native'

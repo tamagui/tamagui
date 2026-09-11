@@ -2,7 +2,7 @@ import '@testing-library/jest-dom'
 
 import { Avatar } from '@tamagui/avatar'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, createTamagui } from '@tamagui/style'
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 

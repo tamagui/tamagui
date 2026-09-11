@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import { Text, View, html, styled, TamaguiComponentState } from '@tamagui/core'
+import { Text, View, html, styled, TamaguiComponentState } from '@tamagui/style'
 import { forwardRef } from 'react'
 
 // Test: render prop with string in styled()

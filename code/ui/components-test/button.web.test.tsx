@@ -3,7 +3,7 @@ import 'vitest-axe/extend-expect'
 
 import { Button } from 'tamagui'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { SizeContext, View, TamaguiProvider, createTamagui, styled } from '@tamagui/core'
+import { SizeContext, View, TamaguiProvider, createTamagui, styled } from '@tamagui/style'
 import type { RenderResult } from '@testing-library/react'
 import { render } from '@testing-library/react'
 import { beforeEach, describe, expect, it } from 'vitest'

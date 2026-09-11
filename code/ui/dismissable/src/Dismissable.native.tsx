@@ -1,4 +1,4 @@
-import { createRefComponent } from '@tamagui/core'
+import { createRefComponent } from '@tamagui/style'
 import React from 'react'
 
 import type { DismissableBranchProps, DismissableProps } from './DismissableProps'

@@ -16,13 +16,13 @@ import { extractForWeb } from './lib/extract'
 
 window['React'] = React
 const hostCore = createRequire(import.meta.url)(
-  '@tamagui/core'
-) as typeof import('@tamagui/core')
+  '@tamagui/style'
+) as typeof import('@tamagui/style')
 
 const extract = (jsx: string) =>
   extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return (
         ${jsx}
@@ -32,7 +32,7 @@ const extract = (jsx: string) =>
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -105,7 +105,7 @@ function fixtureSource(fixture: FlatValuePrecedenceFixture, reversed: boolean) {
     }
   }
   return `
-    import { View, styled } from '@tamagui/core'
+    import { View, styled } from '@tamagui/style'
     ${declarations.join('\n')}
     export function Test() {
       return <${componentName} ${props.join(' ')} />
@@ -117,7 +117,7 @@ const extractFixture = (fixture: FlatValuePrecedenceFixture, reversed: boolean) 
   extractForWeb(fixtureSource(fixture, reversed), {
     options: {
       platform: 'web',
-      components: ['@tamagui/core'],
+      components: ['@tamagui/style'],
     },
   })
 
@@ -255,7 +255,7 @@ test('strict hashes preserve both sides of an abbreviated property collision', a
 test('same-property overrides resolve before generated identifiers are concatenated', async () => {
   const output = await extractForWeb(
     `
-    import { View, styled } from '@tamagui/core'
+    import { View, styled } from '@tamagui/style'
     const Sized = styled(View, { width: '100px' })
     export function Test() {
       return <Sized width="200px" />
@@ -264,7 +264,7 @@ test('same-property overrides resolve before generated identifiers are concatena
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -277,7 +277,7 @@ test('same-property overrides resolve before generated identifiers are concatena
 test('a dynamic clause string bails to the runtime component', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test(props) {
       return (
         <View backgroundColor={props.value} />
@@ -287,7 +287,7 @@ test('a dynamic clause string bails to the runtime component', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )

@@ -14,10 +14,10 @@ describe('remix starter', () => {
     expect(pkg.devDependencies['@tamagui/vite-plugin']).toBe('workspace:*')
   })
 
-  it('does not depend on @tamagui/cli or @tamagui/core directly', () => {
+  it('does not depend on @tamagui/cli or @tamagui/style directly', () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf-8'))
     expect(pkg.dependencies?.['@tamagui/cli']).toBeUndefined()
-    expect(pkg.dependencies?.['@tamagui/core']).toBeUndefined()
+    expect(pkg.dependencies?.['@tamagui/style']).toBeUndefined()
   })
 
   it('uses v6 tamagui config', () => {

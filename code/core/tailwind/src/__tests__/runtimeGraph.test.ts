@@ -71,8 +71,8 @@ describe('the shipped frontend runtime graphs', () => {
         files.some((file) =>
           file.endsWith(
             native
-              ? '/core/core/dist/esm/theme-update.native.js'
-              : '/core/core/dist/esm/theme-update.mjs'
+              ? '/core/style/dist/esm/theme-update.native.js'
+              : '/core/style/dist/esm/theme-update.mjs'
           )
         )
       ).toBe(true)
@@ -112,7 +112,7 @@ describe('the shipped frontend runtime graphs', () => {
       true
     )
     expect(
-      files.some((file) => file.endsWith('/core/core/dist/esm/internal-runtime.mjs'))
+      files.some((file) => file.endsWith('/core/style/dist/esm/internal-runtime.mjs'))
     ).toBe(true)
     expect(
       files.some((file) => file.endsWith('/core/web/dist/esm/internal-runtime.mjs'))
@@ -120,7 +120,7 @@ describe('the shipped frontend runtime graphs', () => {
     expect(
       files.filter(
         (file) =>
-          file.endsWith('/core/core/dist/esm/index.mjs') ||
+          file.endsWith('/core/style/dist/esm/index.mjs') ||
           file.endsWith('/core/web/dist/esm/index.js') ||
           file.includes('/core/config/') ||
           file.includes('/core/react-native-media-driver/') ||
@@ -133,9 +133,9 @@ describe('the shipped frontend runtime graphs', () => {
   })
 
   test('the regular core root cannot reach the tailwind frontend', async () => {
-    const files = await bundledInputs('code/core/core/dist/esm/index.mjs')
+    const files = await bundledInputs('code/core/style/dist/esm/index.mjs')
 
-    expect(files.some((file) => file.endsWith('/core/core/dist/esm/index.mjs'))).toBe(
+    expect(files.some((file) => file.endsWith('/core/style/dist/esm/index.mjs'))).toBe(
       true
     )
     expect(

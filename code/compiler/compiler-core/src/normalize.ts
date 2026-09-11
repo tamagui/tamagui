@@ -614,6 +614,8 @@ function styledDefinitions(
 
 const DOM_STYLE_FRONTENDS = new Set([
   'tamagui/dom',
+  '@tamagui/style/dom',
+  // @tamagui/core is an alias for @tamagui/style, so user code may name either
   '@tamagui/core/dom',
   '@tamagui/tailwind',
 ])
@@ -621,6 +623,7 @@ const DOM_STYLE_FRONTENDS = new Set([
 const STYLE_FRONTENDS = new Set([
   ...DOM_STYLE_FRONTENDS,
   'tamagui',
+  '@tamagui/style',
   '@tamagui/core',
   '@tamagui/web',
 ])

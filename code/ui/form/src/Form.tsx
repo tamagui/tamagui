@@ -1,5 +1,5 @@
-import type { TamaguiEventDetails, ViewProps } from '@tamagui/core'
-import { createStyledContext, createStyledHOC, isWeb, styled, View } from '@tamagui/core'
+import type { TamaguiEventDetails, ViewProps } from '@tamagui/style'
+import { createStyledContext, createStyledHOC, isWeb, styled, View } from '@tamagui/style'
 import { focusFocusable } from '@tamagui/focusable'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import * as React from 'react'

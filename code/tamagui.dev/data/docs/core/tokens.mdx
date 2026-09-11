@@ -20,7 +20,7 @@ const tokens = createTokens({
 After you pass that into `createTamagui`, you can access your tokens from anywhere using `getTokens`:
 
 ```tsx
-import { getTokens } from '@tamagui/core'
+import { getTokens } from '@tamagui/style'
 
 getTokens().size.small
 ```
@@ -149,7 +149,7 @@ export default () => (
 This, like all token values, works the same with `styled`:
 
 ```tsx
-import { styled, View } from '@tamagui/core'
+import { styled, View } from '@tamagui/style'
 
 export const MyView = styled(View, {
   width: 'icon.small',
@@ -159,7 +159,7 @@ export const MyView = styled(View, {
 When creating custom tokens, you can use the `px` helper to ensure values get proper pixel units on web while remaining as raw numbers on native:
 
 ```tsx
-import { createTokens, px } from '@tamagui/core'
+import { createTokens, px } from '@tamagui/style'
 
 const tokens = createTokens({
   customSize: {

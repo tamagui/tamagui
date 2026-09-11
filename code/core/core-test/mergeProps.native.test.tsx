@@ -1,4 +1,4 @@
-import { createTamagui, mergeProps } from '@tamagui/core'
+import { createTamagui, mergeProps } from '@tamagui/style'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'

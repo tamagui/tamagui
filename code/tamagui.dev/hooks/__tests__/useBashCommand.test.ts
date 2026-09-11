@@ -35,7 +35,7 @@ describe('useBashCommand', () => {
 
     const { result } = renderHook(() =>
       useBashCommand(
-        'npm install @tamagui/core @tamagui/animations-react-native',
+        'npm install @tamagui/style @tamagui/animations-react-native',
         'language-bash'
       )
     )
@@ -43,7 +43,7 @@ describe('useBashCommand', () => {
     await waitFor(() => {
       expect(result.current.isInstallCommand).toBe(true)
       expect(result.current.transformedCommand).toBe(
-        'yarn add @tamagui/core @tamagui/animations-react-native'
+        'yarn add @tamagui/style @tamagui/animations-react-native'
       )
     })
   })

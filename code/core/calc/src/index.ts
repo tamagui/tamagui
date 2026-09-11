@@ -1,10 +1,10 @@
-import { isVariable, isWeb } from '@tamagui/core'
+import { isVariable, isWeb } from '@tamagui/style'
 import type {
   FontLineHeightTokens,
   FontSizeTokens,
   SizeTokens,
   SpaceTokens,
-} from '@tamagui/core'
+} from '@tamagui/style'
 
 // unused code - not exported could be used for cross compat calc() functions
 

@@ -39,7 +39,7 @@
     "@tamagui/collection": "workspace:*",
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/create-context": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",

@@ -1,4 +1,4 @@
-import { createRefComponent, styled, withStaticProperties } from '@tamagui/core'
+import { createRefComponent, styled, withStaticProperties } from '@tamagui/style'
 import { Popover as UiPopover } from '@tamagui/popover'
 import * as React from 'react'
 

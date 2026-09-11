@@ -1,4 +1,4 @@
-const { createTamagui } = require('@tamagui/core')
+const { createTamagui } = require('@tamagui/style')
 const { defaultConfig } = require('@tamagui/config/v6')
 
 module.exports = createTamagui({

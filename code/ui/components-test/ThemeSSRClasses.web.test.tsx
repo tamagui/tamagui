@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, Theme, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, Theme, createTamagui } from '@tamagui/style'
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 

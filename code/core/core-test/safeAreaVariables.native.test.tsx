@@ -12,12 +12,12 @@ import { afterEach, expect, test, vi } from 'vitest'
 
 // keep the built runtime import before setup: the resolver and tracker must observe
 // setup performed after their modules were first evaluated.
-import * as NativeCore from '../core/dist/test.native.cjs'
+import * as NativeCore from '../style/dist/test.native.cjs'
 import { getSafeArea } from '../native/src/safeAreaState'
 import '../native/src/setup-safe-area.ts'
 
 const { TamaguiProvider, View, createTamagui } =
-  NativeCore as typeof import('@tamagui/core')
+  NativeCore as typeof import('@tamagui/style')
 const config = createTamagui(getDefaultTamaguiConfig('native'))
 const safeArea = getSafeArea()
 const initialInsets = { top: 12, right: 13, bottom: 14, left: 15 }

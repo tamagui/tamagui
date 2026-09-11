@@ -1,11 +1,11 @@
-import { createRefComponent } from '@tamagui/core'
+import { createRefComponent } from '@tamagui/style'
 /* -------------------------------------------------------------------------------------------------
  * SliderImpl
  * -----------------------------------------------------------------------------------------------*/
 
 import { isWeb } from '@tamagui/constants'
-import type { TamaguiElement } from '@tamagui/core'
-import { getVariableValue, styled } from '@tamagui/core'
+import type { TamaguiElement } from '@tamagui/style'
+import { getVariableValue, styled } from '@tamagui/style'
 import { getSize } from '@tamagui/get-token'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'

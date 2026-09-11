@@ -38,7 +38,7 @@ describe('the shipped tailwind declaration graph', () => {
     const files = listDeclarationFiles('types/index.d.ts')
 
     expect(
-      files.some((file) => file.endsWith('/core/core/types/internal-runtime.d.ts'))
+      files.some((file) => file.endsWith('/core/style/types/internal-runtime.d.ts'))
     ).toBe(true)
     expect(
       files.some((file) => file.endsWith('/core/web/types/internal-runtime.d.ts'))
@@ -57,9 +57,9 @@ describe('the shipped tailwind declaration graph', () => {
   })
 
   test('is unreachable from the regular core type entry', () => {
-    const files = listDeclarationFiles('../core/types/index.d.ts')
+    const files = listDeclarationFiles('../style/types/index.d.ts')
 
-    expect(files.some((file) => file.endsWith('/core/core/types/runtime.d.ts'))).toBe(
+    expect(files.some((file) => file.endsWith('/core/style/types/runtime.d.ts'))).toBe(
       true
     )
     expect(files.filter((file) => file.includes('/core/tailwind/'))).toEqual([])

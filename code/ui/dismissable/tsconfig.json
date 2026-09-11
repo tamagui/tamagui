@@ -8,7 +8,7 @@
       "path": "../../core/compose-refs"
     },
     {
-      "path": "../../core/core"
+      "path": "../../core/style"
     },
     {
       "path": "../../core/helpers"

@@ -1,4 +1,4 @@
-import { getTokens } from '@tamagui/core'
+import { getTokens } from '@tamagui/style'
 import { createRoot } from 'react-dom/client'
 import { Text, View } from 'tamagui'
 

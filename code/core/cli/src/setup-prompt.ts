@@ -91,7 +91,7 @@ V=$(npm view tamagui@beta version)
 npm i tamagui@$V @tamagui/config@$V
 \`\`\`
 
-\`tamagui\` is a superset of \`@tamagui/core\`. Install \`@tamagui/core\` alone
+\`tamagui\` is a superset of \`@tamagui/style\`. Install \`@tamagui/style\` alone
 only for a styling-only install with no UI kit.
 
 ## 3. Create the config

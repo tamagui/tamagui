@@ -1,4 +1,4 @@
-import type { FillInFont, GenericFont } from "@tamagui/core";
+import type { FillInFont, GenericFont } from "@tamagui/style";
 type SystemFontSizes = Record<string | number, number>;
 type SystemFontKeys<Sizes extends SystemFontSizes> = keyof Sizes & (string | number);
 type CreateSystemFontOptions<

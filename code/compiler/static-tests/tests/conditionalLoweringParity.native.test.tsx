@@ -7,7 +7,7 @@ window['React'] = React
 
 test('lowers logical AND expression on native', async () => {
   const output = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test({ active }) {
       return <View backgroundColor={active && 'red'} />
     }
@@ -20,7 +20,7 @@ test('lowers logical AND expression on native', async () => {
 
 test('lowers nested ternaries to nested conditional expressions on native', async () => {
   const output = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test({ status }) {
       return <View backgroundColor={status === 'err' ? 'red' : status === 'warn' ? 'yellow' : 'green'} />
     }
@@ -35,7 +35,7 @@ test('lowers nested ternaries to nested conditional expressions on native', asyn
 
 test('lowers multiple disjoint conditionals on native', async () => {
   const output = await extractForNative(`
-    import { Text } from '@tamagui/core'
+    import { Text } from '@tamagui/style'
     export function Test({ active, bold }) {
       return (
         <Text
@@ -56,7 +56,7 @@ test('lowers multiple disjoint conditionals on native', async () => {
 
 test('lowers evaluable static spread with mixed style and non-style props on native', async () => {
   const output = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View {...{ backgroundColor: 'red', testID: 'my-view' }} />
     }
@@ -70,7 +70,7 @@ test('lowers evaluable static spread with mixed style and non-style props on nat
 
 test('preserves static spread precedence over an earlier conditional on native', async () => {
   const output = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test({ active }) {
       return (
         <View
@@ -91,7 +91,7 @@ test('preserves static spread precedence over an earlier conditional on native',
 
 test('lowers an imported evaluable spread on native', async () => {
   const output = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     import { importedSpread } from './fixtures/conditional-lowering-import'
     export function Test() {
       return <View {...importedSpread} />
@@ -106,7 +106,7 @@ test('lowers an imported evaluable spread on native', async () => {
 test('lowers mixed spreads in compiled prop objects on native', async () => {
   const output = await extractForNative(`
     import React from 'react'
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return React.createElement(View, { ...{ backgroundColor: 'red', testID: 'compiled' } })
     }
@@ -119,7 +119,7 @@ test('lowers mixed spreads in compiled prop objects on native', async () => {
 
 test('bails when multiple native conditionals resolve the same style key', async () => {
   const output = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test({ inset, edge }) {
       return <View padding={inset ? 10 : 20} paddingLeft={edge ? 1 : 2} />
     }
@@ -133,7 +133,7 @@ test('bails when multiple native conditionals resolve the same style key', async
 
 test('keeps native DOM mixed spreads on the runtime mapping path', async () => {
   const output = await extractForNative(`
-    import { html } from '@tamagui/core'
+    import { html } from '@tamagui/style'
     export function Test() {
       return <html.div {...{ backgroundColor: 'red', id: 'mapped-id' }} />
     }
@@ -147,13 +147,13 @@ test('keeps native DOM mixed spreads on the runtime mapping path', async () => {
 
 test('lowers a template-wrapped ternary the same way as the ternary it wraps', async () => {
   const wrapped = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test({ active }) {
       return <View backgroundColor={\`\${active ? 'red' : 'blue'}\`} />
     }
   `)
   const bare = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test({ active }) {
       return <View backgroundColor={active ? 'red' : 'blue'} />
     }

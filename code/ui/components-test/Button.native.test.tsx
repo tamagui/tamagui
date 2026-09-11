@@ -1,6 +1,6 @@
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { Button } from 'tamagui'
-import { TamaguiProvider, View, createTamagui, styled } from '@tamagui/core'
+import { TamaguiProvider, View, createTamagui, styled } from '@tamagui/style'
 import {
   getGestureHandler,
   unstable_claimExternalPressOwnership,

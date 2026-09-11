@@ -1,4 +1,4 @@
-import { TamaguiProvider, Theme, View, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, Theme, View, createTamagui } from '@tamagui/style'
 import { render } from '@testing-library/react-native'
 import { createRequire } from 'node:module'
 import { describe, expect, test, vi } from 'vitest'

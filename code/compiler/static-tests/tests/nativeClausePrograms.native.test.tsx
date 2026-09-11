@@ -18,13 +18,13 @@ function nativeStyle(code: string): string {
 
 test('folds a web clause away and a native clause in', async () => {
   const dead = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View backgroundColor="red web:blue" padding={12} />
     }
   `)
   const base = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View backgroundColor="red" padding={12} />
     }
@@ -34,13 +34,13 @@ test('folds a web clause away and a native clause in', async () => {
   expect(nativeStyle(dead.code)).toBe(nativeStyle(base.code))
 
   const applied = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View backgroundColor="red native:blue" padding={12} />
     }
   `)
   const overridden = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View backgroundColor="blue" padding={12} />
     }
@@ -52,13 +52,13 @@ test('folds a web clause away and a native clause in', async () => {
 
 test('the last matching native clause wins', async () => {
   const repeated = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View backgroundColor="red native:blue native:green" />
     }
   `)
   const last = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View backgroundColor="green" />
     }
@@ -69,13 +69,13 @@ test('the last matching native clause wins', async () => {
 
 test('a chain that names web is dead whatever else it names', async () => {
   const chained = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View backgroundColor="red web:hover:blue" padding={12} />
     }
   `)
   const base = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View backgroundColor="red" padding={12} />
     }
@@ -86,13 +86,13 @@ test('a chain that names web is dead whatever else it names', async () => {
 
 test('a value with only a dead clause contributes no style at all', async () => {
   const only = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View backgroundColor="web:blue" padding={12} />
     }
   `)
   const without = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View padding={12} />
     }
@@ -117,7 +117,7 @@ test('every live clause kind keeps the element on the runtime path', async () =>
     'red native:hover:blue', // a live modifier chained onto a static one
   ]) {
     const source = `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View backgroundColor="${value}" padding={12} />
     }
@@ -134,13 +134,13 @@ test('every live clause kind keeps the element on the runtime path', async () =>
 
 test('reduces the static clause in every branch of a conditional element', async () => {
   const folded = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test({ wide }) {
       return <View backgroundColor="red web:blue" width={wide ? 10 : 20} />
     }
   `)
   const plain = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test({ wide }) {
       return <View backgroundColor="red" width={wide ? 10 : 20} />
     }
@@ -153,7 +153,7 @@ test('reduces the static clause in every branch of a conditional element', async
 
 test('a clause inside the styled definition still retains', async () => {
   const source = `
-    import { View, styled } from '@tamagui/core'
+    import { View, styled } from '@tamagui/style'
     const Card = styled(View, { backgroundColor: 'red web:blue' })
     export function Test() {
       return <Card padding={12} />
@@ -169,7 +169,7 @@ test('a clause inside the styled definition still retains', async () => {
 
 test('a conditional branch carrying a live clause retains, a static one folds', async () => {
   const live = `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test({ active }) {
       return <View backgroundColor={\`\${active ? 'red' : 'blue'} hover:green\`} padding={12} />
     }
@@ -181,13 +181,13 @@ test('a conditional branch carrying a live clause retains, a static one folds', 
   expect(liveOutput.code).toBe(live.replace(/[ \t]+$/gm, ''))
 
   const dead = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test({ active }) {
       return <View backgroundColor={\`\${active ? 'red' : 'blue'} web:green\`} padding={12} />
     }
   `)
   const plain = await extractForNative(`
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test({ active }) {
       return <View backgroundColor={active ? 'red' : 'blue'} padding={12} />
     }

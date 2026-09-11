@@ -5,7 +5,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 import { afterEach, describe, expect, test, vi } from 'vitest'
 
-import { GroupContext, TamaguiProvider, Text, View, createTamagui } from '@tamagui/core'
+import { GroupContext, TamaguiProvider, Text, View, createTamagui } from '@tamagui/style'
 
 const config = createTamagui(getDefaultTamaguiConfig())
 const DEPTH = 64

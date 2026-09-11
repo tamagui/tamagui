@@ -1,5 +1,11 @@
-import type { GetProps, StylePiece } from '@tamagui/core'
-import { createStyledHOC, isWeb, styled, View, withStaticProperties } from '@tamagui/core'
+import type { GetProps, StylePiece } from '@tamagui/style'
+import {
+  createStyledHOC,
+  isWeb,
+  styled,
+  View,
+  withStaticProperties,
+} from '@tamagui/style'
 import type {
   RadioGroupContextValue,
   RadioGroupItemContextValue,

@@ -5,7 +5,7 @@ import {
   Text,
   styled,
   withStaticProperties,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { wrapChildrenInText } from '@tamagui/text'
 import { Tabs as TabsBehavior } from '@tamagui/tabs'
 

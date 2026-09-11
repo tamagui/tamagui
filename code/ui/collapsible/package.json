@@ -38,7 +38,7 @@
   "dependencies": {
     "@tamagui/animate-presence": "workspace:*",
     "@tamagui/compose-refs": "workspace:*",
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/create-context": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/polyfill-dev": "workspace:*",

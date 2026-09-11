@@ -1,5 +1,5 @@
-import type { FillInFont, GenericFont } from '@tamagui/core'
-import { createFont, getVariableValue, isWeb } from '@tamagui/core'
+import type { FillInFont, GenericFont } from '@tamagui/style'
+import { createFont, getVariableValue, isWeb } from '@tamagui/style'
 
 const LINE_HEIGHT = 1.35
 

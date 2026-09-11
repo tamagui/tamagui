@@ -1,6 +1,6 @@
 /**
  * Private implementation boundary shared by Tamagui workspace packages. Not public
- * API: never reexport it from `@tamagui/web`, `@tamagui/core`, `tamagui`, or
+ * API: never reexport it from `@tamagui/web`, `@tamagui/style`, `tamagui`, or
  * `@tamagui/tailwind` roots. Doing so would expose implementation details again.
  *
  * It deliberately exposes purpose-built, explicitly typed wrappers rather than raw

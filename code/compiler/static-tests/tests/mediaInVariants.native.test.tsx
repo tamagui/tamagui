@@ -69,7 +69,7 @@ test('branded dynamics and resolver chains flatten with static props', async () 
 
 test('core style pieces retain a runtime fallback on native', async () => {
   const output = await extractForNative(`
-    import { style, View } from '@tamagui/core'
+    import { style, View } from '@tamagui/style'
 
     const card = style({ backgroundColor: 'red', padding: 8 })
 

@@ -16,7 +16,7 @@ import {
   type SizeTokens,
   styled,
   withStaticProperties,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import {
   Select as SelectBehavior,
   SelectNativeComponentContext,

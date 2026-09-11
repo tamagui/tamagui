@@ -66,7 +66,7 @@
     "@tailwindcss/node": "4.3.0",
     "@tailwindcss/oxide": "4.3.0",
     "@tamagui/constants": "workspace:*",
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/react-native-types": "workspace:*",
     "@tamagui/style-grammar": "workspace:*",

@@ -19,12 +19,20 @@ import { createHash } from 'node:crypto'
 const DOM_FRONTENDS = new Set([
   'tamagui',
   'tamagui/dom',
+  '@tamagui/style',
+  '@tamagui/style/dom',
+  // @tamagui/core is an alias for @tamagui/style, so user code may name either
   '@tamagui/core',
   '@tamagui/core/dom',
   '@tamagui/tailwind',
 ])
 
-const RUNTIME_STYLE_FRONTENDS = new Set(['tamagui', '@tamagui/core', '@tamagui/web'])
+const RUNTIME_STYLE_FRONTENDS = new Set([
+  'tamagui',
+  '@tamagui/style',
+  '@tamagui/core',
+  '@tamagui/web',
+])
 
 const acceptsTag = (accepted: PropTags, tag: TagName) =>
   accepted === '*' || accepted.includes(tag)

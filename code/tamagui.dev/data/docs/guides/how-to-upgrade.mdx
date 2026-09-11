@@ -115,7 +115,25 @@ npx tamagui check
 ```
 
 Then install the v3 versions with your package manager and make sure your lockfile
-does not contain duplicate `@tamagui/core`, `@tamagui/web`, or `tamagui` copies.
+does not contain duplicate `@tamagui/style`, `@tamagui/core`, `@tamagui/web`, or
+`tamagui` copies.
+
+### `@tamagui/core` is now `@tamagui/style`
+
+The package formerly published as `@tamagui/core` is named `@tamagui/style` in v3.
+Nothing about it changed apart from the name.
+
+You do not have to rename anything to upgrade. `@tamagui/core` still publishes, as
+an alias that re-exports `@tamagui/style` for every entry it had before, including
+`@tamagui/core/reset.css` and `@tamagui/core/native`. Both specifiers resolve to one
+module instance, so mixing them in one app does not give you two copies of the
+runtime, and the compiler optimizes either one.
+
+New code should import `@tamagui/style`:
+
+```tsx
+import { styled, View } from '@tamagui/style'
+```
 
 ### Choose the component surface
 
@@ -470,7 +488,7 @@ In monorepos, keep resolutions/overrides aligned:
 ```json
 {
   "resolutions": {
-    "@tamagui/core": "^3.0.0",
+    "@tamagui/style": "^3.0.0",
     "@tamagui/web": "^3.0.0",
     "tamagui": "^3.0.0"
   }
@@ -584,7 +602,7 @@ of flattening the component's styles in JavaScript. If a wrapper must separate
 style props from regular props, use `splitStyleProps`:
 
 ```tsx
-import { splitStyleProps } from '@tamagui/core'
+import { splitStyleProps } from '@tamagui/style'
 
 const [styleProps, regularProps] = splitStyleProps(props, {
   expandShorthands: true,
@@ -600,7 +618,7 @@ If behavior code needs one authored property and supports a configured
 shorthand, read it with the singular helper:
 
 ```tsx
-import { getExpandedShorthand } from '@tamagui/core'
+import { getExpandedShorthand } from '@tamagui/style'
 
 const zIndex = getExpandedShorthand('zIndex', props)
 ```
@@ -1259,7 +1277,7 @@ import { Text, View, styled } from '@tamagui/tailwind'
 
 Regular Tamagui components and Tailwind components can share a tree. Each
 component has one styling language: Tailwind components accept `className`,
-while components imported from `tamagui` or `@tamagui/core` accept Tamagui
+while components imported from `tamagui` or `@tamagui/style` accept Tamagui
 style props.
 
 ```tsx

@@ -10,7 +10,7 @@
       "path": "../core/config"
     },
     {
-      "path": "../core/core"
+      "path": "../core/style"
     },
     {
       "path": "../packages/logo"

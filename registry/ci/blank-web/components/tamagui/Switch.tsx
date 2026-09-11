@@ -4,7 +4,7 @@ import {
   SwitchFrame as SwitchBehaviorFrame,
   SwitchThumbFrame as SwitchBehaviorThumbFrame,
 } from '@tamagui/switch'
-import { getVariableValue, type GetProps, type SizeTokens, styled } from '@tamagui/core'
+import { getVariableValue, type GetProps, type SizeTokens, styled } from '@tamagui/style'
 
 const getSwitchHeight = (size: SizeTokens) =>
   Math.round(getVariableValue(getSize(size)) * 0.65)

@@ -8,7 +8,7 @@ import type {
   SizeResolverEnv,
   SizeTokens,
   TamaguiElement,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import {
   createStyledHOC,
   createRefComponent,
@@ -17,7 +17,7 @@ import {
   styled,
   useConfiguration,
   useCreateShallowSetState,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { clamp, composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'

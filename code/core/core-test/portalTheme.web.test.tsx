@@ -7,7 +7,7 @@ import {
   createTamagui,
   useTheme,
   useThemeName,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { act, render } from '@testing-library/react'
 import { memo, useState } from 'react'
 import { describe, expect, test } from 'vitest'

@@ -1,4 +1,4 @@
-import { useAnimatedNumberReaction, useAnimatedNumbersStyle } from '@tamagui/core'
+import { useAnimatedNumberReaction, useAnimatedNumbersStyle } from '@tamagui/style'
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { useAnimatedNumber, useAnimatedNumberStyle, View } from 'tamagui'

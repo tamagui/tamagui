@@ -33,7 +33,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/font-size": "workspace:*",
     "@tamagui/size": "workspace:*"
   },

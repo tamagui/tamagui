@@ -3,7 +3,7 @@ import {
   type FrontendStaticConfigNormalization,
   type StyleFrontend,
   type StyleFrontendConfig,
-} from '@tamagui/core/internal-runtime'
+} from '@tamagui/style/internal-runtime'
 import { resolveTailwindCandidate, resolveTailwindClassName } from './candidate'
 import { composedResolver } from './composedResolver'
 

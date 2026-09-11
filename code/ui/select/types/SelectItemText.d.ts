@@ -1,18 +1,18 @@
-import type { GetProps, TamaguiTextElement } from '@tamagui/core';
+import type { GetProps, TamaguiTextElement } from '@tamagui/style';
 import * as React from 'react';
 import type { SelectScopedProps } from './types';
 export declare const ITEM_TEXT_NAME = "SelectItemText";
-export declare const SelectItemTextFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiTextNonStyleProps, keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
+export declare const SelectItemTextFrame: React.FunctionComponent<Omit<import("@tamagui/style").RNTamaguiTextNonStyleProps, keyof import("@tamagui/style").TextStylePropsBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").TextStylePropsBase> & import("@tamagui/style").WithFlatVariantValues<{}> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").TextStylePropsBase>> & {
     ref?: React.Ref<TamaguiTextElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {}, import("@tamagui/core").StaticConfigPublic];
+}> & import("@tamagui/style").StaticComponentObject<import("@tamagui/style").TamaDefer, TamaguiTextElement, import("@tamagui/style").RNTamaguiTextNonStyleProps, import("@tamagui/style").TextStylePropsBase, {}, import("@tamagui/style").StaticConfigPublic> & Omit<import("@tamagui/style").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/style").TamaDefer, TamaguiTextElement, import("@tamagui/style").RNTamaguiTextNonStyleProps, import("@tamagui/style").TextStylePropsBase, {}, import("@tamagui/style").StaticConfigPublic];
 };
 type SelectItemTextExtraProps = SelectScopedProps<{}>;
 export type SelectItemTextProps = GetProps<typeof SelectItemTextFrame> & SelectItemTextExtraProps;
-export declare const SelectItemText: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {}>, "scope" | keyof import("@tamagui/core").RNTamaguiTextNonStyleProps | keyof import("@tamagui/core").TextStylePropsBase> & Omit<import("@tamagui/core").RNTamaguiTextNonStyleProps, keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
+export declare const SelectItemText: import("@tamagui/style").TamaguiComponent<Omit<import("@tamagui/style").GetFinalProps<import("@tamagui/style").RNTamaguiTextNonStyleProps, import("@tamagui/style").TextStylePropsBase, {}>, "scope" | keyof import("@tamagui/style").RNTamaguiTextNonStyleProps | keyof import("@tamagui/style").TextStylePropsBase> & Omit<import("@tamagui/style").RNTamaguiTextNonStyleProps, keyof import("@tamagui/style").TextStylePropsBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").TextStylePropsBase> & import("@tamagui/style").WithFlatVariantValues<{}> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").TextStylePropsBase>> & {
     scope?: import("./types").SelectScopes;
-}, TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps & Omit<import("@tamagui/core").RNTamaguiTextNonStyleProps, keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
+}, TamaguiTextElement, import("@tamagui/style").RNTamaguiTextNonStyleProps & Omit<import("@tamagui/style").RNTamaguiTextNonStyleProps, keyof import("@tamagui/style").TextStylePropsBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").TextStylePropsBase> & import("@tamagui/style").WithFlatVariantValues<{}> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").TextStylePropsBase>> & {
     scope?: import("./types").SelectScopes;
-}, import("@tamagui/core").TextStylePropsBase, {}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/style").TextStylePropsBase, {}, import("@tamagui/style").StaticConfigPublic>;
 export {};
 //# sourceMappingURL=SelectItemText.d.ts.map

@@ -25,7 +25,7 @@ describe('tailwind components in JSX', () => {
   test('tamagui inline style props are rejected in JSX', () => {
     return (
       <View
-        // @ts-expect-error padding belongs to @tamagui/core authoring
+        // @ts-expect-error padding belongs to @tamagui/style authoring
         padding={4}
       />
     )
@@ -35,11 +35,11 @@ describe('tailwind components in JSX', () => {
     return (
       <>
         <View
-          // @ts-expect-error state clauses belong to @tamagui/core authoring
+          // @ts-expect-error state clauses belong to @tamagui/style authoring
           backgroundColor="hover:red"
         />
         <View
-          // @ts-expect-error media clauses belong to @tamagui/core authoring
+          // @ts-expect-error media clauses belong to @tamagui/style authoring
           padding="sm:4px"
         />
       </>

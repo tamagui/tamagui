@@ -7,7 +7,7 @@ const ROOT = join(__dirname, '..')
 const SRC = join(ROOT, 'src/TestComponent.tsx')
 const CSS = join(ROOT, 'src/_TestComponent.css')
 
-const ORIGINAL_CONTENT = `import { View, Text, styled } from '@tamagui/core'
+const ORIGINAL_CONTENT = `import { View, Text, styled } from '@tamagui/style'
 import { useState } from 'react'
 
 const YStack = styled(View, { flexDirection: 'column' })

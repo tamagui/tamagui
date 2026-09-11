@@ -1,4 +1,4 @@
-import type { GetFinalProps, SizeTokens, StackStyleBase } from '@tamagui/core';
+import type { GetFinalProps, SizeTokens, StackStyleBase } from '@tamagui/style';
 import type { SvgProps } from 'react-native-svg';
 export interface IconStyleProps extends StackStyleBase {
     size?: number | SizeTokens;

@@ -1,6 +1,6 @@
 import { Adapt } from '@tamagui/adapt'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, createTamagui } from '@tamagui/style'
 import { PortalProvider } from '@tamagui/portal'
 import { Select } from '@tamagui/select'
 import { Sheet } from '@tamagui/sheet'

@@ -1,4 +1,4 @@
-import { getVariableValue, isWeb, resolveSize, styled } from '@tamagui/core'
+import { getVariableValue, isWeb, resolveSize, styled } from '@tamagui/style'
 import { getFontSized } from '@tamagui/get-font-sized'
 
 // Structural-only defaults for the unstyled Input behavior primitive.

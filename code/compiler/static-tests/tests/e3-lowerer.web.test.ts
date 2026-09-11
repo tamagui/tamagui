@@ -25,7 +25,7 @@ import {
 import { beforeAll, describe, expect, test } from 'vitest'
 
 const configPath = resolve(import.meta.dirname, 'lib/tamagui.config.cjs')
-const coreId = resolvedModuleId('/virtual/@tamagui/core.mjs')
+const coreId = resolvedModuleId('/virtual/@tamagui/style.mjs')
 let projectInfo: TamaguiProjectInfo
 
 type AnimationDriverShape = {
@@ -38,7 +38,7 @@ beforeAll(() => {
   projectInfo = loadTamaguiSync({
     platform: 'web',
     config: configPath,
-    components: ['@tamagui/core'],
+    components: ['@tamagui/style'],
   })
 })
 
@@ -60,7 +60,7 @@ function compile(
         id,
         source,
         imports: [
-          { specifier: '@tamagui/core', resolvedId: coreId, external: true },
+          { specifier: '@tamagui/style', resolvedId: coreId, external: true },
           {
             specifier: 'react/jsx-runtime',
             resolvedId: resolvedModuleId('/virtual/react-jsx-runtime.mjs'),
@@ -84,7 +84,7 @@ function compile(
           }
         : projectInfo.tamaguiConfig!,
     components: projectInfo.components!,
-    componentModules: [{ moduleName: '@tamagui/core', resolvedId: coreId }],
+    componentModules: [{ moduleName: '@tamagui/style', resolvedId: coreId }],
     disablePartialExtraction: hostOptions?.disablePartialExtraction,
   })
   const plan = lowerModule({
@@ -112,7 +112,7 @@ function compactCss(css: string): string {
 describe('E3 shared Tamagui lowerer', () => {
   test('keeps disableOptimization candidates on the runtime path', () => {
     const source = `
-import { Text } from '@tamagui/core'
+import { Text } from '@tamagui/style'
 export const App = () => <Text color="red" disableOptimization>runtime</Text>
 `
     for (const target of ['web', 'native'] as const) {
@@ -134,7 +134,7 @@ export const App = () => <Text color="red" disableOptimization>runtime</Text>
   test('preserves ordered className overrides and emits pseudo/media/theme/group/font CSS', () => {
     const source = `
 // π🙂 UTF-16 parity sentinel
-import { Text, View } from '@tamagui/core'
+import { Text, View } from '@tamagui/style'
 const override = { padding: 14 }
 export const App = () => (
   <View
@@ -180,7 +180,7 @@ export const App = () => (
 
   test('keeps a transition byte-identical for animatedBy css with a single non-CSS driver', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = () => (
   <View
     animatedBy="css"
@@ -211,7 +211,7 @@ export const App = () => (
 
   test('lowers animatedBy css through a multi-driver CSS entry', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = () => (
   <View
     animatedBy="css"
@@ -256,7 +256,7 @@ export const App = () => (
 
   test('extracts static styles while retaining a dynamic style prop on the Tamagui component', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = ({ width }) => (
   <View width={width} padding={12} data-partial="dynamic" />
 )
@@ -281,7 +281,7 @@ export const Card = ({ width }) => (
 
   test('flattens proven numeric expressions and finite literal lookups to host styles', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 const COLORS = ['rgb(147,197,253)', 'rgb(134,239,172)']
 export const Cards = ({ seed }) => {
   const color = COLORS[seed % COLORS.length]
@@ -332,7 +332,7 @@ export const Cards = ({ seed }) => {
     expect(plan.css).not.toContain('background-color:')
 
     const tokenSource = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 const COLORS = ['$invalid-identifier']
 export const Card = ({ seed }) => (
   <View backgroundColor={COLORS[seed % COLORS.length]} padding={12} />
@@ -345,7 +345,7 @@ export const Card = ({ seed }) => (
 
   test('keeps current transition candidates byte-identical for every animation driver', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = () => (
   <View
     animatedBy="css"
@@ -366,7 +366,7 @@ export const Card = () => (
 
   test('flattens an inert animatedBy selector with its static group styles', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = () => (
   <View group="card" animatedBy="css" data-group="parent">
     <View
@@ -400,7 +400,7 @@ export const Card = () => (
 
   test('keeps a dynamic transition candidate byte-identical', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = ({ transition, width }) => (
   <View transition={transition} width={width} padding={12} />
 )
@@ -415,7 +415,7 @@ export const Card = ({ transition, width }) => (
 
   test('retains compiled-jsx runtime props while extracting static siblings', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 import { jsx } from 'react/jsx-runtime'
 export const Card = ({ width }) => jsx(View, {
   width,
@@ -434,7 +434,7 @@ export const Card = ({ width }) => jsx(View, {
 
   test('leaves native dynamic candidates byte-identical', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = ({ width }) => (
   <View width={width} padding={12} data-runtime="native" />
 )
@@ -450,7 +450,7 @@ export const Card = ({ width }) => (
 
   test('keeps the complete runtime candidate when a dynamic style can overlap extraction', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = ({ paddingLeft }) => (
   <View padding={12} paddingLeft={paddingLeft} data-runtime="precedence" />
 )
@@ -472,7 +472,7 @@ export const Card = ({ paddingLeft }) => (
 
   test('extracts a static transform beside a dynamic transform-family prop', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = ({ x }) => (
   <View x={x} transform={[{ scale: 2 }]} padding={12} />
 )
@@ -489,7 +489,7 @@ export const Card = ({ x }) => (
 
   test('compares logical and physical property ownership before partial extraction', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = ({ width }) => (
   <View width={width} inlineSize={120} opacity={0.5} />
 )
@@ -506,7 +506,7 @@ export const Card = ({ width }) => (
 
   test('compares value-dependent flex and normalized shadow ownership', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = ({ flex, shadowColor }) => (
   <View
     flex={flex}
@@ -532,7 +532,7 @@ export const Card = ({ flex, shadowColor }) => (
 
   test('extracts a static transform beside a compiled dynamic transform-family prop', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 import { jsx } from 'react/jsx-runtime'
 export const Card = ({ x }) => jsx(View, {
   x,
@@ -552,7 +552,7 @@ export const Card = ({ x }) => jsx(View, {
 
   test('keeps CSS shorthand and longhand collisions on the runtime path', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = ({ border, background, outline, gap }) => (
   <View
     border={border}
@@ -588,7 +588,7 @@ export const Card = ({ border, background, outline, gap }) => (
 
   test('keeps compiled-jsx shorthand and longhand collisions on the runtime path', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 import { jsx } from 'react/jsx-runtime'
 export const Card = ({ border }) => jsx(View, {
   border,
@@ -608,7 +608,7 @@ export const Card = ({ border }) => jsx(View, {
 
   test('keeps shorthand aliases and logical properties with physical collisions', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = ({ maxWidth, marginLeft }) => (
   <View
     maxW={maxWidth}
@@ -634,7 +634,7 @@ export const Card = ({ maxWidth, marginLeft }) => (
 
   test('flattens CSS transitions from static spreads', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 const animated = { transition: 'opacity 150ms ease-out', padding: 12 }
 export const Card = () => <View {...animated} />
 `
@@ -650,7 +650,7 @@ export const Card = () => <View {...animated} />
 
   test('keeps styled defaults and runtime overrides on one runtime path', () => {
     const source = `
-import { View, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/style'
 const Card = styled(View, { padding: 8 })
 export const App = ({ width }) => (
   <Card width={width} padding={12} />
@@ -667,7 +667,7 @@ export const App = ({ width }) => (
   test('keeps partial extraction source maps tied to the original module', () => {
     const source = `
 // 🙂 utf-16 sentinel
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = ({ width }) => <View width={width} padding={12} />
 `
     const { output } = compile(source)
@@ -678,7 +678,7 @@ export const Card = ({ width }) => <View width={width} padding={12} />
 
   test('keeps a text-only style prop on the runtime path', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = () => (
   <View backgroundColor="white" color="blue" data-invalid-host-style="yes" />
 )
@@ -708,7 +708,7 @@ export const Card = () => (
 
   test('keeps a text-only style prop in a static spread on the runtime path', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = () => (
   <View {...{ backgroundColor: 'white', color: 'blue' }} data-invalid-host-style="spread" />
 )
@@ -730,7 +730,7 @@ export const Card = () => (
 
   test('keeps an opaque dynamic style object byte-identical', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = ({ style }) => (
   <View padding={12} style={style} data-runtime="opaque-style" />
 )
@@ -746,7 +746,7 @@ export const Card = ({ style }) => (
 
   test('lowers a CSS transition and state styles together', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = () => (
   <View
     transition="opacity 150ms ease-out"
@@ -770,7 +770,7 @@ export const Card = () => (
 
   test('lowers a configured CSS transition preset on a dynamic animated component', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = ({ seed }) => (
   <View
     transition="bouncy"
@@ -800,7 +800,7 @@ export const Card = ({ seed }) => (
 
   test('keeps a configured transition class beside a conditional host style', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = ({ wide }) => (
   <View
     transition="medium"
@@ -820,7 +820,7 @@ export const Card = ({ wide }) => (
 
   test('statically configured CSS animation lowers transform longhands to classes', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = () => (
   <View transition="medium" x={50} y={20} scale={1.1} rotate="5deg" />
 )
@@ -846,7 +846,7 @@ export const Card = () => (
 
   test('keeps a non-CSS driver transition byte-identical', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = ({ opacity }) => (
   <View
     transition="spring"
@@ -876,7 +876,7 @@ export const Card = ({ opacity }) => (
 
   test('lowers a physics-written spring preset on the CSS driver', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Card = ({ opacity }) => (
   <View
     transition="spring"
@@ -915,7 +915,7 @@ export const Card = ({ opacity }) => (
 
   test('materializes local styled definitions before lowering variants and compounds', () => {
     const source = `
-import { View, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/style'
 const Card = styled(View, {
   padding: 8,
   variants: {
@@ -946,7 +946,7 @@ export const App = () => <Card padding={12} data-styled="yes" />
 
   test('keeps the style prop above variants regardless of authored order', () => {
     const source = (props: string) => `
-import { View, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/style'
 const Frame = styled(View, {
   variants: { tone: { active: { opacity: 0.5 } } },
 })
@@ -966,7 +966,7 @@ export const App = () => <Frame ${props} />
 
   test('lowers compiled jsx/jsxs and createElement calls through the same plan', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 import { jsx } from 'react/jsx-runtime'
 import { createElement } from 'react'
 export const JsxApp = () => jsx(View, { padding: 12, 'data-form': 'jsx' })
@@ -1000,7 +1000,7 @@ export const CreateElementApp = () => createElement(
     // mirrors the partial-extraction shapes seen in the tamagui.dev build:
     // bare components mixing one dynamic direct style prop with static ones
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 import { jsx } from 'react/jsx-runtime'
 export const Cards = ({ width, height, flex, x, opacity }) => (
   <>
@@ -1048,7 +1048,7 @@ export const Compiled = ({ width }) => jsx(View, {
 
   test('lowers nested compiled candidates independently', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 import { jsx } from 'react/jsx-runtime'
 export const Card = () => jsx(View, {
   padding: 12,
@@ -1078,7 +1078,7 @@ export const Card = () => jsx(View, {
 
   test('registry identity is canonical resolved id plus export name', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = () => <View padding={12} />
 `
     const id = resolvedModuleId(resolve(import.meta.dirname, 'fixtures/e3-registry.tsx'))
@@ -1089,7 +1089,7 @@ export const App = () => <View padding={12} />
           id,
           source,
           imports: [
-            { specifier: '@tamagui/core', resolvedId: wrongCoreId, external: true },
+            { specifier: '@tamagui/style', resolvedId: wrongCoreId, external: true },
           ],
         },
       ],
@@ -1098,7 +1098,7 @@ export const App = () => <View padding={12} />
       target: 'web',
       tamaguiConfig: projectInfo.tamaguiConfig!,
       components: projectInfo.components!,
-      componentModules: [{ moduleName: '@tamagui/core', resolvedId: coreId }],
+      componentModules: [{ moduleName: '@tamagui/style', resolvedId: coreId }],
     })
     const plan = lowerModule({
       module: materializeModule(graph, id),
@@ -1136,7 +1136,7 @@ export const App = () => <Restricted padding={12} data-runtime="yes" />
       ],
     })
     const viewStaticConfig = projectInfo.components?.find(
-      ({ moduleName }) => moduleName === '@tamagui/core'
+      ({ moduleName }) => moduleName === '@tamagui/style'
     )?.nameToInfo.View?.staticConfig
     expect(viewStaticConfig).toBeTruthy()
     const host = createTamaguiCompilerHost({
@@ -1154,7 +1154,7 @@ export const App = () => <Restricted padding={12} data-runtime="yes" />
         },
       ],
       componentModules: [
-        { moduleName: '@tamagui/core', resolvedId: coreId },
+        { moduleName: '@tamagui/style', resolvedId: coreId },
         { moduleName: '@fixture/restricted', resolvedId: restrictedId },
       ],
     })
@@ -1183,7 +1183,7 @@ export const App = () => <Restricted padding={12} data-runtime="yes" />
 describe('atomic rule emission', () => {
   test('emits one rule per identifier however many elements use it', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = () => (
   <>
     <View transition="medium" height={20} />
@@ -1214,7 +1214,7 @@ describe('animation props written in a styled() definition', () => {
   // if it ever stops emitting, the fixture is broken rather than passing.
   test('lowers a configured preset from all three places it can be written', () => {
     const source = `
-import { View, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/style'
 const DefinitionCard = styled(View, { transition: 'medium', height: 20 })
 const PlainCard = styled(View, { height: 20 })
 export const App = () => (
@@ -1241,7 +1241,7 @@ export const App = () => (
   test('reports an animation that needs a runtime instead of dropping it', () => {
     for (const definition of [`animation: 'medium'`, `animatePresence: true`]) {
       const source = `
-import { View, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/style'
 const Card = styled(View, { ${definition}, height: 20 })
 export const App = () => <Card data-box="definition" />
 `
@@ -1264,7 +1264,7 @@ describe('component-only props read their value, not their presence', () => {
   ] as const) {
     test(`${inert} flattens while ${active} retains`, () => {
       const inertSource = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = () => <View ${inert} padding={12} data-box="inert" />
 `
       const inertResult = compile(inertSource)
@@ -1275,7 +1275,7 @@ export const App = () => <View ${inert} padding={12} data-box="inert" />
       expect(inertResult.plan.css).toContain('padding:12px')
 
       const activeSource = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = () => <View ${active} padding={12} data-box="active" />
 `
       const activeResult = compile(activeSource)
@@ -1287,7 +1287,7 @@ export const App = () => <View ${active} padding={12} data-box="active" />
 
   test('reads the same keys out of a statically materialized spread', () => {
     const inert = compile(`
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 const settings = { asChild: false, disableOptimization: false, themeInverse: false, id: 'card' }
 export const App = () => <View {...settings} padding={12} />
 `)
@@ -1305,7 +1305,7 @@ export const App = () => <View {...settings} padding={12} />
       `{ themeInverse: true, id: 'card' }`,
     ]) {
       const result = compile(`
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 const settings = ${active}
 export const App = () => <View {...settings} padding={12} />
 `)
@@ -1316,14 +1316,14 @@ export const App = () => <View {...settings} padding={12} />
 
   test('a duplicate makes the last value decide', () => {
     const inertLast = compile(`
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = () => <View asChild {...{ asChild: false }} padding={12} />
 `)
     expect(codes(inertLast.plan)).toEqual([])
     expect(inertLast.plan.stats).toMatchObject({ flattened: 1, bailed: 0 })
 
     const activeLast = compile(`
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = () => <View asChild={false} {...{ asChild: true }} padding={12} />
 `)
     expect(codes(activeLast.plan)).toEqual(['local/unsupported-target'])
@@ -1333,7 +1333,7 @@ export const App = () => <View asChild={false} {...{ asChild: true }} padding={1
   test('a value the compiler cannot evaluate keeps every one of them on the runtime path', () => {
     for (const prop of ['asChild', 'disableOptimization', 'theme', 'themeInverse']) {
       const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = ({ flag }) => <View ${prop}={flag} padding={12} />
 `
       const { plan, output } = compile(source)
@@ -1347,7 +1347,7 @@ export const App = ({ flag }) => <View ${prop}={flag} padding={12} />
 describe('template literals carrying a static branch program', () => {
   test('lowers a template-wrapped ternary to per-branch classes', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = ({ active }) => (
   <View backgroundColor={\`\${active ? 'red' : 'blue'}\`} padding={12} />
 )
@@ -1365,11 +1365,11 @@ export const App = ({ active }) => (
 
   test('matches the bare ternary it wraps, including quasis around the hole', () => {
     const bare = compile(`
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = ({ active }) => <View backgroundColor={active ? 'red' : 'blue'} />
 `)
     const wrapped = compile(`
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = ({ active }) => <View backgroundColor={\`\${active ? 'red' : 'blue'}\`} />
 `)
     expect(loweredClassNames(bare.output.code)).toEqual(
@@ -1378,13 +1378,13 @@ export const App = ({ active }) => <View backgroundColor={\`\${active ? 'red' : 
     expect(compactCss(bare.plan.css)).toBe(compactCss(wrapped.plan.css))
 
     const composed = compile(`
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = ({ open }) => (
   <View backgroundColor={\`\${open ? 'red' : 'blue'} hover:green\`} />
 )
 `)
     const expanded = compile(`
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = ({ open }) => (
   <View backgroundColor={open ? 'red hover:green' : 'blue hover:green'} />
 )
@@ -1398,7 +1398,7 @@ export const App = ({ open }) => (
 
   test('multiplies two holes in one value into a decision tree', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = ({ warm, bright }) => (
   <View backgroundColor={\`rgb(\${warm ? 200 : 10}, 0, \${bright ? 250 : 40})\`} />
 )
@@ -1421,7 +1421,7 @@ export const App = ({ warm, bright }) => (
 
   test('refuses a hole whose falsy side is the operand itself', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = ({ tone }) => <View backgroundColor={\`\${tone && 'red'}\`} padding={12} />
 `
     const { plan, output } = compile(source)
@@ -1435,7 +1435,7 @@ export const App = ({ tone }) => <View backgroundColor={\`\${tone && 'red'}\`} p
 
   test('a later duplicate still wins over the branch program', () => {
     const branchLast = compile(`
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = ({ active }) => (
   <View {...{ backgroundColor: 'green' }} backgroundColor={\`\${active ? 'red' : 'blue'}\`} />
 )
@@ -1449,7 +1449,7 @@ export const App = ({ active }) => (
     expect(branchLast.output.code).not.toContain('_b-1653391844')
 
     const spreadLast = compile(`
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = ({ active }) => (
   <View backgroundColor={\`\${active ? 'red' : 'blue'}\`} {...{ backgroundColor: 'green' }} />
 )
@@ -1467,11 +1467,11 @@ describe('opaque dynamic style values', () => {
     // control: the same authored string resolves to two different style values,
     // so no single inline-style emission of the raw expression can be right
     const token = compile(`
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = () => <View backgroundColor="$color" />
 `)
     const literal = compile(`
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = () => <View backgroundColor="rgb(1,2,3)" />
 `)
     expect(compactCss(literal.plan.css)).toContain('background-color:rgb(1,2,3)')
@@ -1479,7 +1479,7 @@ export const App = () => <View backgroundColor="rgb(1,2,3)" />
     expect(compactCss(token.plan.css)).not.toContain('background-color:$color')
 
     const opaque = compile(`
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = ({ color }) => <View backgroundColor={color} padding={12} />
 `)
     expect(codes(opaque.plan)).toEqual([])
@@ -1491,7 +1491,7 @@ export const App = ({ color }) => <View backgroundColor={color} padding={12} />
 
   test('a proven numeric domain still flattens beside it', () => {
     const source = `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const App = ({ seed }) => <View width={seed * 2} padding={12} />
 `
     const { plan, output } = compile(source)

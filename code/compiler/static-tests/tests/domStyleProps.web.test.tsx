@@ -10,7 +10,7 @@ window['React'] = React
 
 test('an html element carrying a style prop lowers to CSS on its semantic tag', async () => {
   const output = await extractForWeb(`
-    import { html } from '@tamagui/core'
+    import { html } from '@tamagui/style'
     export function Test() {
       return <html.a color="red" id="x">hi</html.a>
     }
@@ -24,7 +24,7 @@ test('an html element carrying a style prop lowers to CSS on its semantic tag', 
 
 test('an html element with a spread is not rewritten either', async () => {
   const output = await extractForWeb(`
-    import { html } from '@tamagui/core'
+    import { html } from '@tamagui/style'
     export function Test(props: any) {
       return <html.section {...props} id="s" />
     }
@@ -35,7 +35,7 @@ test('an html element with a spread is not rewritten either', async () => {
 
 test('an html element with only strict DOM props still rewrites', async () => {
   const output = await extractForWeb(`
-    import { html } from '@tamagui/core'
+    import { html } from '@tamagui/style'
     export function Test() {
       return <html.main id="m" className="x">hi</html.main>
     }

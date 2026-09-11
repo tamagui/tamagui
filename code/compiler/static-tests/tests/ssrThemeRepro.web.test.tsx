@@ -12,7 +12,7 @@ window['React'] = React
 test('tokens inside theme clauses resolve to CSS variables', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return (
         <View
@@ -26,7 +26,7 @@ test('tokens inside theme clauses resolve to CSS variables', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -42,7 +42,7 @@ test('tokens inside theme clauses resolve to CSS variables', async () => {
 test('chained theme and media clauses extract in one pass', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return (
         <View
@@ -55,7 +55,7 @@ test('chained theme and media clauses extract in one pass', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )

@@ -9,7 +9,7 @@ import { defineConfig } from 'vite'
 // never matches tamagui's DOM (safe to load globally).
 export default defineConfig({
   optimizeDeps: {
-    include: ['@tamagui/tailwind', '@tamagui/core/internal-runtime'],
+    include: ['@tamagui/tailwind', '@tamagui/style/internal-runtime'],
   },
   plugins: [
     tailwindcss(),

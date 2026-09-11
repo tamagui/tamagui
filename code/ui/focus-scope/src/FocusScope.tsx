@@ -1,6 +1,6 @@
 import { createRefComponent, useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { createChangeEventDetails } from '@tamagui/core'
+import { createChangeEventDetails } from '@tamagui/style'
 import { idle, useAsyncEffect } from '@tamagui/use-async'
 import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'

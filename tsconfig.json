@@ -116,7 +116,7 @@
       "path": "code/core/constants"
     },
     {
-      "path": "code/core/core"
+      "path": "code/core/style"
     },
     {
       "path": "code/core/create-context"

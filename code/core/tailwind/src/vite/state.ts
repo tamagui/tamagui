@@ -19,8 +19,12 @@ export function wrapWithTamaguiLayer(css: string): string {
 
 export function isTamaguiCoreResetCSS(id: string): boolean {
   const normalizedId = id.split('?', 1)[0].replace(/\\/g, '/')
+  // @tamagui/core is an alias for @tamagui/style and ships a copy of the same
+  // stylesheet, so either specifier can be what an app actually imported.
   return (
+    normalizedId.endsWith('/@tamagui/style/reset.css') ||
     normalizedId.endsWith('/@tamagui/core/reset.css') ||
+    normalizedId.endsWith('/code/core/style/reset.css') ||
     normalizedId.endsWith('/code/core/core/reset.css')
   )
 }

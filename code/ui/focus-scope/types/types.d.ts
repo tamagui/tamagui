@@ -1,5 +1,5 @@
 import type { Scope } from '@tamagui/create-context';
-import type { TamaguiChangeEventDetails } from '@tamagui/core';
+import type { TamaguiChangeEventDetails } from '@tamagui/style';
 import type React from 'react';
 export type ScopedProps<P> = P & {
     __scopeFocusScope?: Scope;

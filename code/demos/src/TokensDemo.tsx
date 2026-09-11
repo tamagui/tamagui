@@ -1,5 +1,5 @@
-import type { Tokens } from '@tamagui/core'
-import { getConfig } from '@tamagui/core'
+import type { Tokens } from '@tamagui/style'
+import { getConfig } from '@tamagui/style'
 import React from 'react'
 import { Button, H2, H3, H4, Square, XGroup, XStack, YStack } from 'tamagui'
 

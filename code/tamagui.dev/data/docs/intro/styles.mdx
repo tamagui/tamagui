@@ -11,7 +11,7 @@ base [View and Text components](/docs/core/view-and-text), or through the
 Here's how that looks in practice:
 
 ```tsx
-import { View, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/style'
 
 const StyledView = styled(View, {
   padding: 10,
@@ -530,7 +530,7 @@ is really important for two reasons:
 Let's see how it lets us control overriding styles:
 
 ```tsx
-import { View, ViewProps } from '@tamagui/core'
+import { View, ViewProps } from '@tamagui/style'
 
 export default (props: ViewProps) => <View background="red" {...props} width={200} />
 ```

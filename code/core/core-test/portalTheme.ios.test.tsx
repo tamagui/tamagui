@@ -1,4 +1,4 @@
-import { TamaguiProvider, Theme, View, createTamagui, useThemeName } from '@tamagui/core'
+import { TamaguiProvider, Theme, View, createTamagui, useThemeName } from '@tamagui/style'
 import { act, render } from '@testing-library/react-native'
 import { useState } from 'react'
 import { describe, expect, test } from 'vitest'

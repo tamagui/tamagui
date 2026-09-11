@@ -1,9 +1,8 @@
-import type { TamaguiElement } from '@tamagui/core';
+import type { TamaguiElement } from '@tamagui/style';
 import type { SliderImplProps } from './types';
-export declare const SliderFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | false | import("@tamagui/core").Size | undefined;
+export declare const SliderFrame: import("@tamagui/style").TamaguiComponent<import("@tamagui/style").TamaDefer, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {
     orientation?: "horizontal" | "vertical" | undefined;
-    size?: import("@tamagui/core").Size | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
-export declare const SliderImpl: import("@tamagui/core").RefComponent<TamaguiElement, SliderImplProps>;
+    size?: import("@tamagui/style").Size | undefined;
+}, import("@tamagui/style").StaticConfigPublic>;
+export declare const SliderImpl: import("@tamagui/style").RefComponent<TamaguiElement, SliderImplProps>;
 //# sourceMappingURL=SliderImpl.d.ts.map

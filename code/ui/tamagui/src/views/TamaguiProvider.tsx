@@ -1,5 +1,5 @@
-import type { TamaguiProviderProps } from '@tamagui/core'
-import { TamaguiProvider as OGProvider } from '@tamagui/core'
+import type { TamaguiProviderProps } from '@tamagui/style'
+import { TamaguiProvider as OGProvider } from '@tamagui/style'
 import { PortalProvider } from '@tamagui/portal'
 import { ZIndexStackContext } from '@tamagui/z-index-stack'
 

@@ -22,7 +22,7 @@ export type Options = {
 }
 
 // critical packages that must not be duplicated at runtime
-const CRITICAL_PACKAGES = ['@tamagui/web', '@tamagui/core', 'tamagui']
+const CRITICAL_PACKAGES = ['@tamagui/web', '@tamagui/style', '@tamagui/core', 'tamagui']
 
 /**
  * Walks node_modules to find duplicate physical copies of critical tamagui packages.

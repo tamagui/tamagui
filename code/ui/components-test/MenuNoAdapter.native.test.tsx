@@ -1,5 +1,5 @@
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, View, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, View, createTamagui } from '@tamagui/style'
 import { Menu } from '@tamagui/menu'
 import React from 'react'
 import TestRenderer, { act } from 'react-test-renderer'

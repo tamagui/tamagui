@@ -4,7 +4,7 @@
 process.env.TAMAGUI_TARGET = 'web'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, Theme, View, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, Theme, View, createTamagui } from '@tamagui/style'
 import { render } from '@testing-library/react'
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 

@@ -1,4 +1,4 @@
-import type { FillInFont, GenericFont } from "@tamagui/core";
+import type { FillInFont, GenericFont } from "@tamagui/style";
 export declare const createDmSansFont: <A extends GenericFont>(font?: Partial<A>, { sizeLineHeight, sizeSize }?: {
 	sizeLineHeight?: (fontSize: number) => number;
 	sizeSize?: (size: number) => number;

@@ -8,7 +8,7 @@ import {
   configureMedia as configureCoreMedia,
   createTamagui as createCoreTamagui,
   setupMatchMedia as setupCoreMatchMedia,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { TamaguiProvider, createTamagui } from '@tamagui/web/internal-runtime'
 import { fireEvent, render, waitFor } from '@testing-library/react-native'
 import { Dimensions } from 'react-native'

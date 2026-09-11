@@ -7,7 +7,7 @@ import {
   type GetRef,
   styled,
   withStaticProperties,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { Sheet as SheetBehavior, type SheetProps, useSheetContext } from '@tamagui/sheet'
 
 const SheetHandleFrame = styled(SheetBehavior.Handle, {

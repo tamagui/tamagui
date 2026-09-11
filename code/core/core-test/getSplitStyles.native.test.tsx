@@ -1,4 +1,4 @@
-import { View, Text, createTamagui, getSplitStyles, styled } from '@tamagui/core'
+import { View, Text, createTamagui, getSplitStyles, styled } from '@tamagui/style'
 import { DialogPortalFrame } from '@tamagui/dialog'
 import { beforeAll, describe, expect, test, vi } from 'vitest'
 

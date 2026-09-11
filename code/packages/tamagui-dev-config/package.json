@@ -39,7 +39,7 @@
     "@tamagui/animations-reanimated": "workspace:*",
     "@tamagui/colors": "workspace:*",
     "@tamagui/config": "workspace:*",
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/font-cherry-bomb": "workspace:*",
     "@tamagui/font-inter": "workspace:*",
     "@tamagui/shorthands": "workspace:*",

@@ -1,6 +1,6 @@
 import { defaultConfig } from '@tamagui/config/v6'
 import { animations } from '@tamagui/config/animations-css'
-import { html } from '@tamagui/core'
+import { html } from '@tamagui/style'
 import {
   Spacer,
   TamaguiProvider,

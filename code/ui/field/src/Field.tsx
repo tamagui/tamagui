@@ -1,4 +1,4 @@
-import type { GetProps } from '@tamagui/core'
+import type { GetProps } from '@tamagui/style'
 import {
   createStyledHOC,
   isWeb,
@@ -7,7 +7,7 @@ import {
   useIsomorphicLayoutEffect,
   View,
   withStaticProperties,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import type { FormFieldRegistration } from '@tamagui/form'
 import { useFormRegistryContext } from '@tamagui/form'
 import { focusFocusable } from '@tamagui/focusable'

@@ -66,7 +66,7 @@ export declare function mergeFrontendCondition(previous: unknown, value: unknown
  * imported from and frozen onto its static config when the component is created:
  * there is no global setting, no registry, and no runtime lookup.
  *
- * Regular `@tamagui/core` components carry no descriptor and use
+ * Regular `@tamagui/style` components carry no descriptor and use
  * `regularStyleFrontend`. `@tamagui/tailwind` builds its components with its own
  * descriptor, which owns class-string tokenization and candidate adaptation.
  *

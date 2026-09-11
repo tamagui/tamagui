@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, test } from 'vitest'
 
 import { defaultConfig } from '@tamagui/config/v6'
 import { createTamagui } from '@tamagui/web'
-import { html as regularHtml } from '@tamagui/core'
+import { html as regularHtml } from '@tamagui/style'
 import { View, html } from '../index'
 import { resolvedStyle, splitTailwindStyles } from './utils'
 

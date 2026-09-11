@@ -7,7 +7,7 @@ import {
   type FrontendClassPlanEntry,
   type FrontendClassSink,
   type StyleFrontendConfig,
-} from '@tamagui/core/internal-runtime'
+} from '@tamagui/style/internal-runtime'
 import { noteBoxShadow, noteTailwindTransform, tryCompose } from './compose'
 import { composedResolver } from './composedResolver'
 import {

@@ -1,7 +1,7 @@
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { expect, test } from 'vitest'
 
-import { createTokens } from '../core/src'
+import { createTokens } from '../style/src'
 
 test('snapshot', () => {
   expect(createTokens(getDefaultTamaguiConfig().tokens)).toMatchSnapshot()

@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { TamaguiChangeEventDetails } from "@tamagui/core";
+import type { TamaguiChangeEventDetails } from "@tamagui/style";
 type ChangeCb<
 	T,
 	Details extends TamaguiChangeEventDetails

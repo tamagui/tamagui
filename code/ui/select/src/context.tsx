@@ -1,4 +1,4 @@
-import { createStyledContext } from '@tamagui/core'
+import { createStyledContext } from '@tamagui/style'
 import { getPortal } from '@tamagui/native'
 import { createContext, type ComponentType } from 'react'
 import type { SelectContextValue, SelectItemParentContextValue } from './types'

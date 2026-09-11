@@ -2,7 +2,7 @@
 
 exports[`Text with a hover clause and conditional spread preserves ternary 1`] = `
 "// debug
-    import { Text } from '@tamagui/core'
+    import { Text } from '@tamagui/style'
 
     export function Test({ isActive }) {
       return (
@@ -23,7 +23,7 @@ exports[`Text with a hover clause and conditional spread preserves ternary 1`] =
 
 exports[`bails from non-deterministic values 1`] = `
 "
-    import { Text } from '@tamagui/core'
+    import { Text } from '@tamagui/style'
     export function Test(props) {
       return (
         <Text
@@ -36,7 +36,7 @@ exports[`bails from non-deterministic values 1`] = `
 
 exports[`className + conditional styles get full base styles merged onto + shorthand 1`] = `
 "
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test(props) {
       return (
         <View width={10} bg={props.green ? 'red' : 'blue'} className={props.className} />
@@ -49,7 +49,7 @@ exports[`className + conditional styles get full base styles merged onto + short
 
 exports[`conditional classname keeps base and concats properly 1`] = `
 "
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test(props) {
       return (
@@ -66,7 +66,7 @@ exports[`conditional classname keeps base and concats properly 1`] = `
 
 exports[`conditional specific after generic style overrides 1`] = `
 "
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test(props) {
       return (
         <View
@@ -88,7 +88,7 @@ exports[`conditional specific after generic style overrides 2`] = `""`;
 
 exports[`conditional spread with a hover clause preserves ternary 1`] = `
 "
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test({ isActive }) {
       return (
@@ -106,7 +106,7 @@ exports[`conditional spread with a hover clause preserves ternary 1`] = `
 
 exports[`conditional spread with local variable preserves ternary 1`] = `
 "
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test({ isActive }) {
       return (
@@ -123,7 +123,7 @@ exports[`conditional spread with local variable preserves ternary 1`] = `
 
 exports[`conditional spread with runtime variable preserves ternary 1`] = `
 "
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     function usePathname() {
       return '/blog'
@@ -155,7 +155,7 @@ exports[`conditional spread with runtime variable preserves ternary 1`] = `
 
 exports[`conditional styles extract disjoint static siblings 1`] = `
 "
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
     export function Test(props) {
       return (
         <div className={["is_View _w-1646823575", (props.green) ? "_b-1356927054" : "_b-884464985"].filter(Boolean).join(" ")}  />
@@ -168,7 +168,7 @@ exports[`conditional styles extract disjoint static siblings 2`] = `"._w-1646823
 
 exports[`double ternary + spread 1`] = `
 "
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test({ isSettings, isVertical, children }) {
       return (
@@ -189,7 +189,7 @@ exports[`double ternary + spread 1`] = `
 
 exports[`flexBasis: 0 with responsive style extracts correctly 1`] = `
 "
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test() {
       return (
@@ -206,7 +206,7 @@ exports[`flexBasis: 0 with responsive style extracts correctly 2`] = `"._f-20867
 exports[`font_body class is present in BOTH ternary branches 1`] = `
 "const _cn2 = "is_Text font_body _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
 const _cn = "is_Text font_body _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family _fow-800 ";
-import { Text } from '@tamagui/core';
+import { Text } from '@tamagui/style';
 export function Test({
   isActive
 }) {
@@ -245,7 +245,7 @@ exports[`fontFamily shorthand + styled + flatten works 1`] = `
 
 exports[`non-flattened works 1`] = `
 "
-    import { Text } from '@tamagui/core'
+    import { Text } from '@tamagui/style'
     export function Test(props) {
       return (
         <Text
@@ -279,7 +279,7 @@ exports[`specific className + ternary 1`] = `
 
 exports[`spread + className 1`] = `
 "
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
 
     export function Test(props) {
       return (
@@ -302,7 +302,7 @@ exports[`spread + className 1`] = `
 
 exports[`ternaries + font families works 1`] = `
 "
-    import { Text } from '@tamagui/core'
+    import { Text } from '@tamagui/style'
     export function Test(props) {
       return (
         <span className={["is_Text _ff-398455870", (window) ? "font_body" : "font_heading"].filter(Boolean).join(" ")} />
@@ -315,7 +315,7 @@ exports[`ternaries + font families works 2`] = `"._ff-398455870{font-family:var(
 
 exports[`ternary with mixed theme-token and non-token values lowers conditional classes 1`] = `
 "
-    import { Text } from '@tamagui/core'
+    import { Text } from '@tamagui/style'
     export function Test({ isActive, label }) {
       return (
         <span
@@ -334,7 +334,7 @@ exports[`ternary with mixed theme-token and non-token values lowers conditional 
 
 exports[`theme + media queries + conditionals extract 1`] = `
 "
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test(props) {
       return (
         <View

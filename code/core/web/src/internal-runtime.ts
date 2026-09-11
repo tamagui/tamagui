@@ -1,6 +1,6 @@
 /**
  * Private implementation boundary shared by Tamagui workspace packages. Not public
- * API: never reexport it from `@tamagui/web`, `@tamagui/core`, `tamagui`, or
+ * API: never reexport it from `@tamagui/web`, `@tamagui/style`, `tamagui`, or
  * `@tamagui/tailwind` roots. Doing so would expose implementation details again.
  *
  * It deliberately exposes purpose-built, explicitly typed wrappers rather than raw
@@ -93,7 +93,7 @@ export const plainValueToPayload = (value: unknown, property: string): string | 
   return stylePropsUnitless[property] ? String(value) : `${value}px`
 }
 
-// shared-runtime pieces the platform setup module in `@tamagui/core` needs. They are
+// shared-runtime pieces the platform setup module in `@tamagui/style` needs. They are
 // explicitly typed here rather than reexported from their source modules, so the
 // private declaration entry does not reconnect those modules' public type graph.
 export const createTamagui: (config: any) => any = createTamaguiImpl

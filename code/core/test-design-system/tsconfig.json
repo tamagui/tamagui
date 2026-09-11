@@ -5,7 +5,7 @@
   },
   "references": [
     {
-      "path": "../core"
+      "path": "../style"
     }
   ],
   "exclude": [

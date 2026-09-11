@@ -1,4 +1,4 @@
-import { createStyledHOC, createRefComponent } from '@tamagui/core'
+import { createStyledHOC, createRefComponent } from '@tamagui/style'
 import type { AnimatePresenceProps } from '@tamagui/animate-presence'
 import { AnimatePresence, ResetPresence } from '@tamagui/animate-presence'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'

@@ -1,5 +1,5 @@
-import type { GetProps } from '@tamagui/core'
-import { View, styled } from '@tamagui/core'
+import type { GetProps } from '@tamagui/style'
+import { View, styled } from '@tamagui/style'
 
 export interface StackVariants {}
 

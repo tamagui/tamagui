@@ -9,7 +9,7 @@ import {
   composeEventHandlers,
   createChangeEventDetails,
   createRefComponent,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { useEscapeKeydown } from '@tamagui/use-escape-keydown'
 import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'

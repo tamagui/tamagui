@@ -1,4 +1,4 @@
-import { styled, withStaticProperties } from '@tamagui/core'
+import { styled, withStaticProperties } from '@tamagui/style'
 import { Switch } from '../src'
 
 const SwitchSkinFrame = styled(Switch, {

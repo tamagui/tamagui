@@ -6,8 +6,8 @@ import { selectionStyles } from '@tamagui/config/v6-base'
 // `defaultConfig` holds another, so touching either ships ~250kb of theme values
 // to the browser that the `themes:` line below then replaces.
 import { settings as defaultSettings, sizes } from '@tamagui/config/settings'
-import type { CreateTamaguiProps } from '@tamagui/core'
-import { setupDev } from '@tamagui/core'
+import type { CreateTamaguiProps } from '@tamagui/style'
+import { setupDev } from '@tamagui/style'
 import { shorthands } from '@tamagui/shorthands/v4'
 import { tokens } from '@tamagui/themes/v5'
 import { bodyFont, cherryBombFont, headingFont, monoFont } from './fonts'

@@ -1,4 +1,4 @@
-import { style, styled, withStaticProperties } from '@tamagui/core'
+import { style, styled, withStaticProperties } from '@tamagui/style'
 import { Tabs } from '../src'
 
 const TabsSkinFrame = styled(Tabs, {

@@ -1,5 +1,5 @@
 import { type AnimationsConfig } from "@tamagui/animation-helpers";
-import { type AnimationDriverWithAnimatedNumbers } from "@tamagui/core";
+import { type AnimationDriverWithAnimatedNumbers } from "@tamagui/style";
 import { type WithSpringConfig, type WithTimingConfig } from "react-native-reanimated";
 /** Spring animation configuration */
 type SpringConfig = {

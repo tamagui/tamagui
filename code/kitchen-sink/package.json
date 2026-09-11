@@ -52,7 +52,7 @@
     "@tamagui/colors": "workspace:*",
     "@tamagui/config": "workspace:*",
     "@tamagui/constants": "workspace:*",
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/demos": "workspace:*",
     "@tamagui/font-inter": "workspace:*",
     "@tamagui/get-token": "workspace:*",

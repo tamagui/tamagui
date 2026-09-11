@@ -42,7 +42,7 @@ interface ParityCase {
 }
 
 const fixtureDirectory = resolve(import.meta.dirname, 'fixtures')
-const coreId = resolvedModuleId('/node_modules/@tamagui/core/index.ts')
+const coreId = resolvedModuleId('/node_modules/@tamagui/style/index.ts')
 const jsxRuntimeId = resolvedModuleId('/node_modules/react/jsx-runtime.js')
 const reactId = resolvedModuleId('/node_modules/react/index.js')
 
@@ -94,7 +94,7 @@ function newObservation(graph: ProjectGraph, element: ElementIR): ObservableElem
   completeElement(element)
   const definition = element.component.definition
   return {
-    component: definition ? `@tamagui/core#${definition.name}` : element.component.name,
+    component: definition ? `@tamagui/style#${definition.name}` : element.component.name,
     entries: element.entries.map((entry) => newEntry(graph, entry)),
   }
 }
@@ -114,7 +114,7 @@ function hostProject(testCase: ParityCase): {
           id: sourceId,
           source: testCase.source,
           imports: [
-            { specifier: '@tamagui/core', resolvedId: coreId },
+            { specifier: '@tamagui/style', resolvedId: coreId },
             ...(testCase.imports ?? []),
           ],
         },
@@ -136,7 +136,7 @@ function observeNew(testCase: ParityCase): ObservableElement[] {
 const frozenLegacy = {
   literalOrderAndUnicode: [
     {
-      component: '@tamagui/core#View',
+      component: '@tamagui/style#View',
       entries: [
         { kind: 'prop', name: 'padding', value: 1 },
         { kind: 'prop', name: 'margin', value: 3 },
@@ -147,7 +147,7 @@ const frozenLegacy = {
   ],
   staticConditional: [
     {
-      component: '@tamagui/core#View',
+      component: '@tamagui/style#View',
       entries: [
         { kind: 'prop', name: 'padding', value: 4 },
         { kind: 'prop', name: 'opacity', value: 0.5 },
@@ -161,7 +161,7 @@ describe('E2 shared IR parity with frozen legacy observations', () => {
     const observations = observeNew({
       name: 'literal-order-and-unicode',
       source: `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Example = <View padding={1} margin={3}>π🙂{7}</View>
 `,
     })
@@ -172,7 +172,7 @@ export const Example = <View padding={1} margin={3}>π🙂{7}</View>
     const observations = observeNew({
       name: 'static-conditional',
       source: `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export const Example = <View padding={true ? 4 : 8} opacity={!true ? 1 : 0.5} />
 `,
     })
@@ -183,7 +183,7 @@ export const Example = <View padding={true ? 4 : 8} opacity={!true ? 1 : 0.5} />
     const observations = observeNew({
       name: 'ordered-spread-deopt',
       source: `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 const local = 7
 const spread = { margin: 3 }
 export const Example = <View padding={1} {...spread} padding={local}>π🙂{local}</View>
@@ -191,7 +191,7 @@ export const Example = <View padding={1} {...spread} padding={local}>π🙂{loca
     })
     expect(observations).toEqual([
       {
-        component: '@tamagui/core#View',
+        component: '@tamagui/style#View',
         entries: [
           { kind: 'prop', name: 'padding', value: 1 },
           { kind: 'spread', value: { margin: 3 } },
@@ -207,7 +207,7 @@ export const Example = <View padding={1} {...spread} padding={local}>π🙂{loca
     const observations = observeNew({
       name: 'dynamic-bailout',
       source: `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 export function Example(props: { value: string }) {
   return <View padding={props.value} />
 }
@@ -215,7 +215,7 @@ export function Example(props: { value: string }) {
     })
     expect(observations).toEqual([
       {
-        component: '@tamagui/core#View',
+        component: '@tamagui/style#View',
         entries: [{ kind: 'prop', name: 'padding', value: 'dynamic' }],
       },
     ])
@@ -228,7 +228,7 @@ export function Example(props: { value: string }) {
       name: 'cross-file',
       sourcePath: resolve(fixtureDirectory, 'e2-parity-cross-file.tsx'),
       source: `
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 import { importedValue } from './e2-parity-constants.js'
 export const Example = <View padding={importedValue}>{importedValue}</View>
 `,
@@ -252,7 +252,7 @@ export const Example = <View padding={importedValue}>{importedValue}</View>
       name: 'jsx runtime',
       source: `
 import { jsx } from 'react/jsx-runtime'
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 const value = 9
 export const Example = jsx(View, { padding: value, children: 'compiled' })
 `,
@@ -262,7 +262,7 @@ export const Example = jsx(View, { padding: value, children: 'compiled' })
       name: 'createElement',
       source: `
 import { createElement } from 'react'
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 const value = 9
 export const Example = createElement(View, { padding: value }, 'compiled')
 `,
@@ -276,7 +276,7 @@ export const Example = createElement(View, { padding: value }, 'compiled')
     })
     expect(observations).toEqual([
       {
-        component: '@tamagui/core#View',
+        component: '@tamagui/style#View',
         entries: [
           { kind: 'prop', name: 'padding', value: 9 },
           { kind: 'child', value: 'compiled' },

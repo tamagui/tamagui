@@ -1,6 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import type { GetProps, TamaguiTextElement } from '@tamagui/core'
-import { createStyledHOC, styled, Text, useIsomorphicLayoutEffect } from '@tamagui/core'
+import type { GetProps, TamaguiTextElement } from '@tamagui/style'
+import { createStyledHOC, styled, Text, useIsomorphicLayoutEffect } from '@tamagui/style'
 import * as React from 'react'
 
 import { useSelectItemParentContext } from './context'

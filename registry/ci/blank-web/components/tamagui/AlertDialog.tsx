@@ -4,7 +4,7 @@ import {
   styled,
   type TamaguiElement,
   withStaticProperties,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import type * as React from 'react'
 import { dialogContentStyles, dialogOverlayStyles } from './Dialog'
 

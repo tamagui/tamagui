@@ -52,7 +52,7 @@ export class TamaguiPlugin {
   constructor(
     public options: PluginOptions = {
       platform: 'web',
-      components: ['@tamagui/core'],
+      components: ['@tamagui/style', '@tamagui/core'],
     }
   ) {}
 
@@ -368,7 +368,7 @@ export class TamaguiPlugin {
     return Object.fromEntries(
       this.resolveModules(
         [
-          ['@tamagui/core/reset.css', '@tamagui/core/reset.css'],
+          ['@tamagui/style/reset.css', '@tamagui/style/reset.css'],
 
           // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
           // `react/jsx-runtime` and `react/jsx-dev-runtime` will break the build in nextjs 15 + app router

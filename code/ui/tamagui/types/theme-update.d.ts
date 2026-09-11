@@ -1,5 +1,5 @@
 import type { RefComponent } from '@tamagui/compose-refs';
-import type { ReservedThemePropName, VariableValIn } from '@tamagui/core';
+import type { ReservedThemePropName, VariableValIn } from '@tamagui/style';
 import type { ReactNode } from 'react';
 import type { ThemeKeys } from '.';
 type ThemeUpdateValues = string extends ThemeKeys ? {} : {

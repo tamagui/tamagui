@@ -2,7 +2,7 @@
 // MIT License Copyright (c) 2020 Mo Gorhom
 
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useEvent } from '@tamagui/core'
+import { useEvent } from '@tamagui/style'
 import { getPortal, NativePortal } from '@tamagui/native'
 import { Theme, useThemeName } from '@tamagui/web'
 import { useEffect, useId } from 'react'

@@ -6,7 +6,7 @@ import {
   styled,
   View,
   type GetProps,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { composeEventHandlers } from '@tamagui/helpers'
 import * as React from 'react'
 

@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest'
 
 import { extractForWeb } from './lib/extract'
 
-const options = { options: { components: ['@tamagui/core', '@tamagui/tailwind'] } }
+const options = { options: { components: ['@tamagui/style', '@tamagui/tailwind'] } }
 
 async function compile(jsx: string, body = '') {
   const source = [

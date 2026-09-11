@@ -1,5 +1,5 @@
-import type { ColorTokens, ThemeTokens } from '@tamagui/core'
-import { createStyledHOC, useTheme, variableToString } from '@tamagui/core'
+import type { ColorTokens, ThemeTokens } from '@tamagui/style'
+import { createStyledHOC, useTheme, variableToString } from '@tamagui/style'
 import type { YStackProps } from '@tamagui/stacks'
 import { YStack } from '@tamagui/stacks'
 import { ActivityIndicator } from 'react-native'

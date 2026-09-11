@@ -1,4 +1,4 @@
-import type { FillInFont, GenericFont } from "@tamagui/core";
+import type { FillInFont, GenericFont } from "@tamagui/style";
 export declare const createSilkscreenFont: <A extends GenericFont>(font?: Partial<A>) => FillInFont<A, keyof typeof size>;
 declare const size: {
 	readonly 1: 11;

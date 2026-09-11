@@ -1,5 +1,5 @@
 /**
- * `@tamagui/core/dom` and `tamagui/dom` on native.
+ * `@tamagui/style/dom` and `tamagui/dom` on native.
  *
  * Same compile-only surface as web, plus the DOM primitives. Those are not for
  * user code: the compiler injects imports of them when it lowers a tag, which

@@ -9,7 +9,7 @@ const CSS = join(ROOT, 'src/_TestComponent.css')
 const OUTPUT_CSS = join(ROOT, 'public/tamagui.generated.css')
 const TAMAGUI = 'node ../../core/cli/dist/index.cjs'
 
-const ORIGINAL_CONTENT = `import { View, Text, styled } from '@tamagui/core'
+const ORIGINAL_CONTENT = `import { View, Text, styled } from '@tamagui/style'
 import { useState } from 'react'
 
 const YStack = styled(View, { flexDirection: 'column' })

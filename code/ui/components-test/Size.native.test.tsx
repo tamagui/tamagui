@@ -1,5 +1,5 @@
 import { defaultConfig } from '@tamagui/config/v6'
-import { TamaguiProvider, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, createTamagui } from '@tamagui/style'
 import { themed } from '@tamagui/helpers-icon'
 import { Tabs } from '@tamagui/tabs'
 import { createRequire } from 'node:module'
@@ -94,7 +94,7 @@ describe('named control sizes on native', () => {
 
   test('shares the size singleton through the externalized native CJS graph', () => {
     const direct = require('@tamagui/size').SizeContext
-    const throughCore = require('@tamagui/core/native-test').SizeContext
+    const throughCore = require('@tamagui/style/native-test').SizeContext
 
     expect(throughCore).toBe(direct)
   })

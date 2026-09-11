@@ -5,7 +5,7 @@ import {
   DOMView,
   DOMViewportProvider,
   createDOMRefCallback,
-  // the @tamagui/core alias in the native test config rewrites deep imports,
+  // the @tamagui/style alias in the native test config rewrites deep imports,
   // so this reaches the source directly
 } from '../web/src/dom/primitives.native'
 import * as React from 'react'

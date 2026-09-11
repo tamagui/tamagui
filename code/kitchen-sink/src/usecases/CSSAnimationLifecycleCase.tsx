@@ -1,5 +1,5 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
-import { useConfiguration, type AnimationDriverWithAnimatedNumbers } from '@tamagui/core'
+import { useConfiguration, type AnimationDriverWithAnimatedNumbers } from '@tamagui/style'
 import { useRef, useState } from 'react'
 import { Button, Paragraph, Square, YStack } from 'tamagui'
 

@@ -4,7 +4,7 @@ import type {
   TamaguiChangeEventDetails,
   TamaguiEventDetails,
   ViewProps,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import type { DismissableProps } from '@tamagui/dismissable'
 import type { HTMLProps, MutableRefObject, ReactNode, RefObject } from 'react'
 import type {

@@ -1,7 +1,7 @@
 process.env.TAMAGUI_TARGET = 'web'
 
 import { describe, expect, test } from 'vitest'
-import { createTamagui } from '../core/src'
+import { createTamagui } from '../style/src'
 
 const baseConfig = (fontSize: any, fontLineHeight: any, sizeTokens: any) => ({
   tokens: {

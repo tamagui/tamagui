@@ -1,5 +1,5 @@
 import React from 'react'
-import { View as TamaguiView, Theme } from '@tamagui/core'
+import { View as TamaguiView, Theme } from '@tamagui/style'
 
 import { Button, View as RNView } from 'react-native'
 

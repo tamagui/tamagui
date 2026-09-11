@@ -129,6 +129,7 @@ export type TamaguiProjectInfo = {
 }
 
 const external = [
+  '@tamagui/style',
   '@tamagui/core',
   '@tamagui/web',
   'react',
@@ -361,7 +362,7 @@ function owningPackageName(file: string): string | null {
  * Every Tamagui-owned file this process actually loaded, read off the one CJS
  * module cache the compiler host requires through. Derived rather than listed:
  * a hardcoded package list silently misses whatever the engine grows next, and
- * this already covers 20+ packages the compiler reads through @tamagui/core.
+ * this already covers 20+ packages the compiler reads through @tamagui/style.
  */
 function requiredTamaguiPackageFiles(): string[] {
   const found: string[] = []
@@ -379,7 +380,9 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
   const configEntry = props.config
     ? getTamaguiConfigPathFromOptionsConfig(props.config, root)
     : ''
-  const baseComponents = (props.components || []).filter((x) => x !== '@tamagui/core')
+  const baseComponents = (props.components || []).filter(
+    (x) => x !== '@tamagui/style' && x !== '@tamagui/core'
+  )
   let componentOutPaths: string[] = []
   let componentImports: string[][] = []
   // webpack is calling this a ton for no reason
@@ -674,7 +677,7 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
         ...(configEntry ? [configOutPath] : []),
         ...componentOutPaths,
         // The generated bundles inline the user's config and components, but
-        // `external` keeps @tamagui/core and @tamagui/web out of them, and
+        // `external` keeps @tamagui/style and @tamagui/web out of them, and
         // everything reached only through those two is left out with them.
         // Those packages hold the staticConfig and style engine every lowering
         // is computed against, so without their bytes an in-place engine edit at
@@ -791,15 +794,21 @@ export function loadComponentsSync(props: TamaguiOptions, forceExports = false) 
 function getCoreComponentsSync(props: TamaguiOptions) {
   const loaded = loadComponentsInnerSync({
     ...props,
-    components: ['@tamagui/core'],
+    components: ['@tamagui/style'],
   })
 
   if (!loaded[0]) {
     throw new Error(`Core should always load`)
   }
 
-  // always load core so we can optimize if directly importing
+  // always load the style runtime so we can optimize if directly importing. it is
+  // registered under both specifiers because @tamagui/core is an alias for
+  // @tamagui/style, and user code may import from either one.
   return [
+    {
+      ...loaded[0],
+      moduleName: '@tamagui/style',
+    },
     {
       ...loaded[0],
       moduleName: '@tamagui/core',

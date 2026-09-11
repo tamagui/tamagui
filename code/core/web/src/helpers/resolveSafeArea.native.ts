@@ -5,7 +5,7 @@
 // globalThis.__tamagui_safe_area__).
 //
 // access is via the global rather than a direct import to avoid a circular
-// dependency between @tamagui/core and @tamagui/native.
+// dependency between @tamagui/style and @tamagui/native.
 
 type Edge = 'top' | 'bottom' | 'left' | 'right'
 

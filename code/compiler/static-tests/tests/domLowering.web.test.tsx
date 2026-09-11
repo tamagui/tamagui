@@ -31,9 +31,9 @@ async function bundledInputs(source: string, target: 'web' | 'native') {
     alias:
       target === 'native'
         ? {
-            '@tamagui/core/dom': resolve(
+            '@tamagui/style/dom': resolve(
               repositoryRoot,
-              'code/core/core/dist/esm/dom.native.js'
+              'code/core/style/dist/esm/dom.native.js'
             ),
           }
         : undefined,
@@ -50,7 +50,7 @@ test('DOM elements lower to literal tags through every normalized element form',
     `
     import React, { createElement } from 'react'
     import { jsx, jsxs } from 'react/jsx-runtime'
-    import { html as h } from '@tamagui/core'
+    import { html as h } from '@tamagui/style'
 
     export const JSXElement = <h.main id="main"><h.h1>Title</h.h1></h.main>
     export const JSXCall = jsx(h.section, { children: 'jsx' })
@@ -61,7 +61,7 @@ test('DOM elements lower to literal tags through every normalized element form',
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -73,7 +73,7 @@ test('DOM elements lower to literal tags through every normalized element form',
 test('DOM table diagnostics cover unsupported props, tags and nesting', async () => {
   const output = await extractForWeb(
     `
-    import { html } from '@tamagui/core'
+    import { html } from '@tamagui/style'
     export const Invalid = () => (
       <>
         <html.div href="/wrong" />
@@ -85,7 +85,7 @@ test('DOM table diagnostics cover unsupported props, tags and nesting', async ()
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -108,14 +108,14 @@ test('DOM table diagnostics cover unsupported props, tags and nesting', async ()
 
 test('web and native DOM fixture bundles contain no semantic-reference runtime', async () => {
   const source = `
-    import { html } from '@tamagui/core'
+    import { html } from '@tamagui/style'
     export const Fixture = <html.main><html.span>content</html.span></html.main>
   `
   const [web, native] = await Promise.all([
     extractForWeb(source, {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }),
     extractForNative(source),
@@ -129,7 +129,7 @@ test('web and native DOM fixture bundles contain no semantic-reference runtime',
     bundledInputs(native.code, 'native'),
   ])
   expect(
-    nativeInputs.some((file) => file.endsWith('/core/core/dist/esm/dom.native.js'))
+    nativeInputs.some((file) => file.endsWith('/core/style/dist/esm/dom.native.js'))
   ).toBe(true)
   for (const inputs of [webInputs, nativeInputs]) {
     expect(

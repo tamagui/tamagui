@@ -1,4 +1,4 @@
-import { createStyledContext } from '@tamagui/core'
+import { createStyledContext } from '@tamagui/style'
 import * as React from 'react'
 import type { FieldControlContextValue, FieldState, FieldStyleState } from './types'
 import { createDefaultValidityState } from './validation'

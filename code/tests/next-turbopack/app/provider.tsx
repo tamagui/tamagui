@@ -1,6 +1,6 @@
 'use client'
 
-import { TamaguiProvider as Provider } from '@tamagui/core'
+import { TamaguiProvider as Provider } from '@tamagui/style'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { useServerInsertedHTML } from 'next/navigation'
 import { StyleSheet } from 'react-native'

@@ -2,7 +2,7 @@ import { execFileSync } from 'node:child_process'
 import { describe, expect, test } from 'vitest'
 
 /**
- * `@tamagui/tailwind` builds its components on `@tamagui/core/internal-runtime`, which
+ * `@tamagui/tailwind` builds its components on `@tamagui/style/internal-runtime`, which
  * has to have run the platform setup (`setupHooks`) by the time it hands back a
  * frontend View: without it there are no base views, no measure installation, and no
  * props transform on native.
@@ -21,15 +21,15 @@ const probe = (kind: 'module' | 'commonjs', source: string) =>
   }).trim()
 
 const expectedHooks = ['getBaseViews', 'setElementProps', 'usePropsTransform']
-const fallbackESM = new URL('../../../core/internal-runtime/index.js', import.meta.url)
-const fallbackCJS = new URL('../../../core/internal-runtime/index.cjs', import.meta.url)
+const fallbackESM = new URL('../../../style/internal-runtime/index.js', import.meta.url)
+const fallbackCJS = new URL('../../../style/internal-runtime/index.cjs', import.meta.url)
 const webFallbackESM = new URL('../../../web/internal-runtime/index.js', import.meta.url)
 const publishedCoreESM = new URL(
-  '../../../core/dist/esm/internal-runtime.mjs',
+  '../../../style/dist/esm/internal-runtime.mjs',
   import.meta.url
 )
 const publishedCoreCJS = new URL(
-  '../../../core/dist/cjs/internal-runtime.cjs',
+  '../../../style/dist/cjs/internal-runtime.cjs',
   import.meta.url
 )
 const publishedWebESM = new URL(
@@ -41,7 +41,7 @@ const publishedWebCJS = new URL(
   import.meta.url
 )
 
-describe('the built @tamagui/core/internal-runtime entry applies platform setup', () => {
+describe('the built @tamagui/style/internal-runtime entry applies platform setup', () => {
   test('Bun resolves private specifiers through the monorepo shims', () => {
     const installed = execFileSync(
       'bun',
@@ -49,10 +49,10 @@ describe('the built @tamagui/core/internal-runtime entry applies platform setup'
         '-e',
         `const importedWebRuntime = await import('@tamagui/web/internal-runtime')
          const webRuntime = require('@tamagui/web/internal-runtime')
-         require('@tamagui/core/internal-runtime')
+         require('@tamagui/style/internal-runtime')
          const { hooks } = require('@tamagui/web')
          console.log(JSON.stringify({
-           resolvedCore: Bun.resolveSync('@tamagui/core/internal-runtime', process.cwd()),
+           resolvedCore: Bun.resolveSync('@tamagui/style/internal-runtime', process.cwd()),
            resolvedWeb: Bun.resolveSync('@tamagui/web/internal-runtime', process.cwd()),
            hasImportedFrontendFactory:
              typeof importedWebRuntime.createFrontendViews === 'function',
@@ -78,10 +78,10 @@ describe('the built @tamagui/core/internal-runtime entry applies platform setup'
   test('the ESM artifact a bundler resolves', () => {
     const installed = probe(
       'module',
-      `await import('@tamagui/core/internal-runtime')
+      `await import('@tamagui/style/internal-runtime')
        const { hooks } = await import('@tamagui/web')
        console.log(JSON.stringify({
-         resolvedCore: import.meta.resolve('@tamagui/core/internal-runtime'),
+         resolvedCore: import.meta.resolve('@tamagui/style/internal-runtime'),
          resolvedWeb: import.meta.resolve('@tamagui/web/internal-runtime'),
          hooks: Object.keys(hooks).sort(),
        }))`
@@ -97,10 +97,10 @@ describe('the built @tamagui/core/internal-runtime entry applies platform setup'
   test('the CJS artifact a require resolves', () => {
     const installed = probe(
       'commonjs',
-      `require('@tamagui/core/internal-runtime')
+      `require('@tamagui/style/internal-runtime')
        const { hooks } = require('@tamagui/web')
        console.log(JSON.stringify({
-         resolvedCore: require.resolve('@tamagui/core/internal-runtime'),
+         resolvedCore: require.resolve('@tamagui/style/internal-runtime'),
          resolvedWeb: require.resolve('@tamagui/web/internal-runtime'),
          hooks: Object.keys(hooks).sort(),
        }))`

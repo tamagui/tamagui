@@ -82,11 +82,11 @@ function createTailwindPlugin(loader: ViteTamaguiLoader): Plugin {
       return {
         optimizeDeps: {
           // Tailwind components reach the shared renderer through
-          // `@tamagui/core/internal-runtime`, while regular components reach it through
-          // `@tamagui/core`. Optimizing both entries together puts them in one chunk
+          // `@tamagui/style/internal-runtime`, while regular components reach it through
+          // `@tamagui/style`. Optimizing both entries together puts them in one chunk
           // graph, so there is a single `@tamagui/web` instance and both frontends see
           // the same config singleton and contexts.
-          include: ['@tamagui/tailwind', '@tamagui/core/internal-runtime'],
+          include: ['@tamagui/tailwind', '@tamagui/style/internal-runtime'],
         },
         resolve: {
           dedupe: ['@tamagui/tailwind'],

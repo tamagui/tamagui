@@ -14,7 +14,7 @@ import {
   styled,
   type NativeStyleEngine,
   type NativeViewStateUpdate,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { act, render } from '@testing-library/react-native'
 import React, { useMemo, useState } from 'react'
 import { afterEach, beforeEach, expect, test } from 'vitest'

@@ -37,7 +37,7 @@
     "test": "vitest --run"
   },
   "dependencies": {
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/focusable": "workspace:*",
     "@tamagui/form": "workspace:*"
   },

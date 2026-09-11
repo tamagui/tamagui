@@ -1,4 +1,4 @@
-import { type FrontendClassPlanEntry, type FrontendClassSink } from '@tamagui/core/internal-runtime';
+import { type FrontendClassPlanEntry, type FrontendClassSink } from '@tamagui/style/internal-runtime';
 import { type GrammarConfigView } from '@tamagui/style-grammar/tooling/candidate';
 /**
  * Claim a from/via/to, bg-linear-to-*, filter, ring, inset, or drop-shadow candidate.

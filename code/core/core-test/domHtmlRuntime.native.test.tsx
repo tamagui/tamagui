@@ -5,7 +5,7 @@ import { describe, expect, test, vi } from 'vitest'
 
 import configDefault from '../config-default'
 import { TamaguiProvider, createTamagui } from '../web/src'
-// the same module a native bundler picks for `html` from @tamagui/core; the
+// the same module a native bundler picks for `html` from @tamagui/style; the
 // vitest resolver does not do the platform extension swap for this pair
 import { html } from '../web/src/dom/html.native'
 

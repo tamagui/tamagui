@@ -1,5 +1,5 @@
-import type { FillInFont, GenericFont } from '@tamagui/core'
-import { createFont, getVariableValue } from '@tamagui/core'
+import type { FillInFont, GenericFont } from '@tamagui/style'
+import { createFont, getVariableValue } from '@tamagui/style'
 
 type SystemFontSizes = Record<string | number, number>
 type SystemFontKeys<Sizes extends SystemFontSizes> = keyof Sizes & (string | number)

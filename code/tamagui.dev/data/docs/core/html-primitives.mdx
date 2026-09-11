@@ -26,7 +26,7 @@ export function Article() {
 }
 ```
 
-You can also import `html` from `@tamagui/core`.
+You can also import `html` from `@tamagui/style`.
 
 `html.*` is the recommended default for new code. [`View` and `Text`](/docs/core/view-and-text) remain fully supported, and
 every `html.*` member is built on one of them, so they take the same style
@@ -107,6 +107,6 @@ primitive and mapped props. If the compiler cannot lower an ordinary use, the
 root export still has a runtime implementation on both platforms.
 
 For new code, use the root `html` export shown here. The standalone
-`tamagui/dom` and `@tamagui/core/dom` entries are deprecated implementation
+`tamagui/dom` and `@tamagui/style/dom` entries are deprecated implementation
 surfaces. Their `style()` handles are compile-only and throw if they reach the
 runtime.

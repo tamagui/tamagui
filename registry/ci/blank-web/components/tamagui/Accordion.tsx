@@ -9,7 +9,7 @@ import {
   styled,
   type TamaguiElement,
   withStaticProperties,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import type * as React from 'react'
 
 export const AccordionTrigger = styled(UiAccordion.Trigger, {

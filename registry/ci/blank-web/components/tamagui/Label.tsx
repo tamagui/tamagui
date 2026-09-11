@@ -3,7 +3,7 @@
 // htmlFor/aria wiring) + the default v2-look skin (theme text color + the press
 // color feedback). Single skin definition; the shadcn registry item is generated
 // from this file.
-import { type GetProps, styled } from '@tamagui/core'
+import { type GetProps, styled } from '@tamagui/style'
 import { Label as UiLabel } from '@tamagui/label'
 
 export const Label = styled(UiLabel, {

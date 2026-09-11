@@ -1,4 +1,4 @@
-import { createFont } from '@tamagui/core'
+import { createFont } from '@tamagui/style'
 
 export const fonts = {
   body: createFont({

@@ -13,7 +13,7 @@ import { Animate } from '@tamagui/animate'
 import { ResetPresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { SizeTokens, GetRef, TamaguiElement, ViewProps } from '@tamagui/core'
+import type { SizeTokens, GetRef, TamaguiElement, ViewProps } from '@tamagui/style'
 import {
   createStyledHOC,
   createRefComponent,
@@ -21,7 +21,7 @@ import {
   useCreateShallowSetState,
   useEvent,
   View,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import {
   Dismissable,
   DismissableBranch,

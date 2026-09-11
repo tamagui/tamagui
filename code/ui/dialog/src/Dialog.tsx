@@ -9,7 +9,7 @@ import {
 import { Animate } from '@tamagui/animate'
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { GetProps, OnTransition, TamaguiElement, ViewProps } from '@tamagui/core'
+import type { GetProps, OnTransition, TamaguiElement, ViewProps } from '@tamagui/style'
 import {
   createStyledHOC,
   createStyledContext,
@@ -20,7 +20,7 @@ import {
   Theme,
   useThemeName,
   View,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { createContext } from '@tamagui/create-context'
 import type { DismissableProps } from '@tamagui/dismissable'
 import { Dismissable } from '@tamagui/dismissable'

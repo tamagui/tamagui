@@ -20,7 +20,7 @@ import {
   useAnimationDriver,
   useEvent,
   View as TamaguiView,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import * as React from 'react'
 
 export interface UseToastAnimationsOptions {

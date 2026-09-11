@@ -99,7 +99,7 @@ function __TamaguiNativeStyle1532() {
 }
 __TamaguiNativeStyle1532()
 const __TamaguiNativeView = require('react-native').View
-const __TamaguiStableView1532 = require('@tamagui/core')._withStableStyle(
+const __TamaguiStableView1532 = require('@tamagui/style')._withStableStyle(
   __TamaguiNativeView,
   (_theme, expressions) => [
     __TamaguiNativeStyle1532._ ?? __TamaguiNativeStyle1532(),
@@ -113,7 +113,7 @@ function __TamaguiNativeStyle1678() {
 }
 __TamaguiNativeStyle1678()
 const __TamaguiNativeText = require('react-native').Text
-const __TamaguiStableText1678 = require('@tamagui/core')._withStableStyle(
+const __TamaguiStableText1678 = require('@tamagui/style')._withStableStyle(
   __TamaguiNativeText,
   (_theme, expressions) => [
     __TamaguiNativeStyle1678._ ?? __TamaguiNativeStyle1678(),
@@ -133,7 +133,7 @@ function __TamaguiNativeStyle1939() {
   return __TamaguiNativeStyle1939._ ?? (__TamaguiNativeStyle1939._ = { fontSize: 13 })
 }
 __TamaguiNativeStyle1939()
-const __TamaguiStableText1939 = require('@tamagui/core')._withStableStyle(
+const __TamaguiStableText1939 = require('@tamagui/style')._withStableStyle(
   __TamaguiNativeText,
   (_theme, expressions) => [
     __TamaguiNativeStyle1939._ ?? __TamaguiNativeStyle1939(),
@@ -153,7 +153,7 @@ function __TamaguiNativeStyle2091() {
   return __TamaguiNativeStyle2091._ ?? (__TamaguiNativeStyle2091._ = { fontSize: 13 })
 }
 __TamaguiNativeStyle2091()
-const __TamaguiStableText2091 = require('@tamagui/core')._withStableStyle(
+const __TamaguiStableText2091 = require('@tamagui/style')._withStableStyle(
   __TamaguiNativeText,
   (_theme, expressions) => [
     __TamaguiNativeStyle2091._ ?? __TamaguiNativeStyle2091(),

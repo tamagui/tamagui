@@ -1,4 +1,4 @@
-import { createStyledContext, type UniversalAnimatedNumber } from '@tamagui/core'
+import { createStyledContext, type UniversalAnimatedNumber } from '@tamagui/style'
 import React from 'react'
 
 import type { SheetContextValue } from './useSheetProviderProps'

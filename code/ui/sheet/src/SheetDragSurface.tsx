@@ -1,5 +1,5 @@
-import type { TamaguiElement } from '@tamagui/core'
-import { View } from '@tamagui/core'
+import type { TamaguiElement } from '@tamagui/style'
+import { View } from '@tamagui/style'
 import { PanResponder } from '@tamagui/react-native-pan-responder'
 import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
 import * as React from 'react'

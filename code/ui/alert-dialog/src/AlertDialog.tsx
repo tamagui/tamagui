@@ -1,11 +1,11 @@
-import { createStyledHOC } from '@tamagui/core'
+import { createStyledHOC } from '@tamagui/style'
 // forked from radix-ui
 // https://github.com/radix-ui/primitives/blob/main/packages/react/alert-dialog/src/AlertDialog.tsx
 
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { TamaguiElement } from '@tamagui/core'
-import { Slottable, View, createStyledContext, styled } from '@tamagui/core'
+import type { TamaguiElement } from '@tamagui/style'
+import { Slottable, View, createStyledContext, styled } from '@tamagui/style'
 import type {
   DialogCloseProps,
   DialogContentProps,

@@ -31,7 +31,7 @@
 import React, { Profiler, createElement, useMemo, useRef, useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { Theme, View as TamaguiView, styled, useTheme } from 'tamagui'
-import { setNativeStyleEngine, type NativeStyleEngine } from '@tamagui/core'
+import { setNativeStyleEngine, type NativeStyleEngine } from '@tamagui/style'
 import * as registry from '@tamagui/native-registry'
 import { getStats, isAvailable, link, type ViewSlots } from '@tamagui/native-registry'
 

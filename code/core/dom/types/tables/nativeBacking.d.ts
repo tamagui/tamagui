@@ -16,7 +16,7 @@ import type { DefaultStyle, NativeBacking, NativeBackingRow } from "./types";
 * `contract.ts` and plans/v3-dom-native-lowering-design.md.
 */
 /** the module the compiler injects primitive imports from */
-export declare const NATIVE_PRIMITIVE_MODULE = "@tamagui/core/dom";
+export declare const NATIVE_PRIMITIVE_MODULE = "@tamagui/style/dom";
 export declare const NATIVE_BACKING: Readonly<Record<NativeBacking, NativeBackingRow>>;
 /** browser defaults every element has and react native does not */
 export declare const NATIVE_ELEMENT_DEFAULTS: DefaultStyle;

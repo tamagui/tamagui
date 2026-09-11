@@ -1,4 +1,4 @@
-import { createFrontendStyled } from '@tamagui/core/internal-runtime'
+import { createFrontendStyled } from '@tamagui/style/internal-runtime'
 import { tailwindStyleFrontend } from './frontend'
 import type {
   GetTailwindNonStyleProps,

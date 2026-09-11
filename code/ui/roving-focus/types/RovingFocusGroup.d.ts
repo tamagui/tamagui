@@ -1,4 +1,4 @@
-import { View, type TamaguiChangeEventDetails } from '@tamagui/core';
+import { View, type TamaguiChangeEventDetails } from '@tamagui/style';
 import * as React from 'react';
 type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof View>;
 export type RovingFocusChangeDetails = TamaguiChangeEventDetails<'keyboard' | 'trigger-focus' | 'focus-out', React.KeyboardEvent | React.MouseEvent | React.FocusEvent>;
@@ -14,7 +14,7 @@ interface RovingFocusItemProps extends PrimitiveSpanProps {
     tabStopId?: string;
     active?: boolean;
 }
-declare const RovingFocusGroupItem: import("@tamagui/compose-refs").RefComponent<import("@tamagui/core").TamaguiElement, ScopedProps<RovingFocusItemProps>>;
+declare const RovingFocusGroupItem: import("@tamagui/compose-refs").RefComponent<import("@tamagui/style").TamaguiElement, ScopedProps<RovingFocusItemProps>>;
 type ScopedProps<P> = P & {
     __scopeRovingFocusGroup?: string;
 };
@@ -40,11 +40,11 @@ interface RovingFocusGroupProps extends RovingFocusGroupImplProps {
 }
 declare const RovingFocusGroup: ((props: RovingFocusGroupProps & {
     __scopeRovingFocusGroup?: string;
-} & import("@tamagui/compose-refs").RefProp<import("@tamagui/core").TamaguiElement>) => React.ReactNode) & {
+} & import("@tamagui/compose-refs").RefProp<import("@tamagui/style").TamaguiElement>) => React.ReactNode) & {
     displayName?: string;
     propTypes?: any;
 } & {
-    Item: import("@tamagui/compose-refs").RefComponent<import("@tamagui/core").TamaguiElement, ScopedProps<RovingFocusItemProps>>;
+    Item: import("@tamagui/compose-refs").RefComponent<import("@tamagui/style").TamaguiElement, ScopedProps<RovingFocusItemProps>>;
 };
 export { RovingFocusGroup, RovingFocusGroupItem };
 export type { RovingFocusGroupProps, RovingFocusItemProps };

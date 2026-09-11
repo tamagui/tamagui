@@ -185,7 +185,7 @@ We start with the assumption that we have a design system set up with tokens
 that use keys `sm`, `md`, and `lg` and a few themes:
 
 ```tsx
-import { createTamagui, createTokens } from '@tamagui/core'
+import { createTamagui, createTokens } from '@tamagui/style'
 
 export default createTamagui({
   tokens: createTokens({
@@ -228,7 +228,7 @@ With that in mind, we can create the outer frame of the button fairly simply,
 like so:
 
 ```tsx
-import { View, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/style'
 
 const ButtonFrame = styled(View, {
   // displayName sets the React debugging identity
@@ -268,7 +268,7 @@ Finally, the `hover:` and `press:` clauses make the frame respond to interaction
 Next we'll want a Text component to go inside:
 
 ```tsx
-import { Text, styled } from '@tamagui/core'
+import { Text, styled } from '@tamagui/style'
 
 export const ButtonText = styled(Text, {
   displayName: 'ButtonText',
@@ -333,7 +333,7 @@ also working if we add new sizes later, use a branded
 [`styled.dynamic`](/docs/core/variants#dynamic-variants):
 
 ```tsx
-import { View, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/style'
 
 const ButtonFrame = styled(View, {
   displayName: 'Button',
@@ -392,7 +392,7 @@ awkward. Since Tamagui uses this pattern internally for many components, we've
 made a small helper:
 
 ```tsx
-import { withStaticProperties } from '@tamagui/core'
+import { withStaticProperties } from '@tamagui/style'
 
 export const Button = withStaticProperties(ButtonFrame, {
   Text: ButtonText,
@@ -453,7 +453,7 @@ the existing `styled` function to re-style each piece, before re-exporting it
 again:
 
 ```tsx
-import { withStaticProperties } from '@tamagui/core'
+import { withStaticProperties } from '@tamagui/style'
 
 import { Button } from './OurButton'
 
@@ -496,7 +496,7 @@ keeping the compound API:
 
 ```tsx
 import { createContext } from 'react'
-import { SizeTokens, GetProps, createStyledHOC, withStaticProperties } from '@tamagui/core'
+import { SizeTokens, GetProps, createStyledHOC, withStaticProperties } from '@tamagui/style'
 import { Button } from './OurButton'
 
 const SizeContext = createContext<SizeTokens>('md')
@@ -545,7 +545,7 @@ Finally we get to use `createStyledContext`. We just change from `createContext`
 to:
 
 ```tsx
-import { createStyledContext } from '@tamagui/core'
+import { createStyledContext } from '@tamagui/style'
 
 export const ButtonContext = createStyledContext({
   size: 'md' as SizeTokens,
@@ -561,7 +561,7 @@ And now, bringing back the full example, we add an extra property to each
 `styled` component, `context`:
 
 ```tsx
-import { View, styled, createStyledContext } from '@tamagui/core'
+import { View, styled, createStyledContext } from '@tamagui/style'
 
 export const ButtonContext = createStyledContext({
   size: 'md' as SizeTokens,
@@ -658,7 +658,7 @@ functional component. It will still work nicely with the Tamagui themes and
 sizes, showing how you can use them together with external React components.
 
 ```tsx
-import { getTokens, useTheme } from '@tamagui/core'
+import { getTokens, useTheme } from '@tamagui/style'
 import * as React from 'react'
 
 const ButtonIcon = (props: { children: React.ReactNode }) => {

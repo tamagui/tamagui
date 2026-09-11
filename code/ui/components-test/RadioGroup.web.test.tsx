@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, createTamagui } from '@tamagui/style'
 import { RadioGroup } from '@tamagui/radio-group'
 import { render } from '@testing-library/react'
 import { afterEach, describe, expect, test, vi } from 'vitest'

@@ -82,7 +82,7 @@ function projectFor(target: 'web' | 'native', opts: ExtractOptions): CompilerPro
   const options = opts.options ?? {}
   const components = options.components ?? [
     'tamagui',
-    '@tamagui/core',
+    '@tamagui/style',
     '@tamagui/test-design-system',
   ]
   const config = options.config ?? './tests/lib/tamagui.config.cjs'
@@ -102,7 +102,7 @@ function projectFor(target: 'web' | 'native', opts: ExtractOptions): CompilerPro
     config,
     components,
   })
-  const componentModules = [...new Set(['@tamagui/core', ...components])].map(
+  const componentModules = [...new Set(['@tamagui/style', ...components])].map(
     (moduleName) => {
       const id = resolveFile(moduleName, resolve(root, '__compiler-entry__.tsx'))
       if (!id) throw new Error(`Unable to resolve compiler component ${moduleName}`)

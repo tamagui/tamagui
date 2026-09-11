@@ -11,7 +11,7 @@ description: Extend and build custom and optimizable components
 Create a new component by extending an existing one:
 
 ```tsx
-import { GetProps, View, styled } from '@tamagui/core'
+import { GetProps, View, styled } from '@tamagui/style'
 
 export const RoundedSquare = styled(View, {
   borderRadius: 20,
@@ -36,7 +36,7 @@ One really important and useful thing to note about Tamagui style properties: th
 Let's add some variants:
 
 ```tsx
-import { type SizeTokens, View, styled } from '@tamagui/core'
+import { type SizeTokens, View, styled } from '@tamagui/style'
 
 export const RoundedSquare = styled(View, {
   borderRadius: 20,
@@ -89,7 +89,7 @@ If it does accept `className`, you can opt-in to className, CSS media queries, a
 
 ```tsx
 import { SomeCustomComponent } from 'some-library'
-import { styled } from 'tamagui' // or '@tamagui/core'
+import { styled } from 'tamagui' // or '@tamagui/style'
 
 export const TamaguiCustomComponent = styled(SomeCustomComponent, {
   acceptsClassName: true,
@@ -148,7 +148,7 @@ The JSX element's props are merged with Tamagui's computed styles, classNames, a
 For full control, pass a render function that receives props and component state:
 
 ```tsx
-import { TamaguiComponentState } from '@tamagui/core'
+import { TamaguiComponentState } from '@tamagui/style'
 ;<View
   render={(props, state: TamaguiComponentState) => (
     <CustomButton {...props} isHovered={state.hover} isPressed={state.press} />
@@ -233,7 +233,7 @@ A final note: you must pass all Tamagui style props given to `HigherOrderStyledT
 And if you'd like to add new props on top of the existing props, annotate the render function's props parameter. The annotated props merge over the wrapped component's props:
 
 ```tsx
-import { createStyledHOC, View, ViewProps } from '@tamagui/core'
+import { createStyledHOC, View, ViewProps } from '@tamagui/style'
 
 type ExtraProps = {
   someCustomProp: boolean
@@ -254,7 +254,7 @@ const Custom = createStyledHOC(View, (props: ExtraProps) => {
 The `.resolve` method attaches a dynamic style resolver to a styled component. It receives the component's complete resolved props and the style environment:
 
 ```tsx
-import { View, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from 'tamagui' // or '@tamagui/style'
 
 export const AlertBox = styled(View, {
   backgroundColor: 'background',

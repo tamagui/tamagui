@@ -20,14 +20,14 @@ other nice things:
 
 ```tsx fileName="tamagui.config.ts"
 import { defaultConfig } from '@tamagui/config/v6'
-import { createTamagui } from 'tamagui' // or '@tamagui/core'
+import { createTamagui } from 'tamagui' // or '@tamagui/style'
 
 const appConfig = createTamagui(defaultConfig)
 
 export type AppConfig = typeof appConfig
 
 declare module 'tamagui' {
-  // or '@tamagui/core'
+  // or '@tamagui/style'
   // overrides TamaguiCustomConfig so your custom types
   // work everywhere you import `tamagui`
   interface TamaguiCustomConfig extends AppConfig {}
@@ -50,10 +50,10 @@ yarn add -D @tamagui/cli
 Create `tamagui.build.ts`:
 
 ```ts fileName="tamagui.build.ts"
-import type { TamaguiBuildOptions } from '@tamagui/core'
+import type { TamaguiBuildOptions } from '@tamagui/style'
 
 export default {
-  components: ['@tamagui/core'], // or ['tamagui']
+  components: ['@tamagui/style'], // or ['tamagui']
   config: './tamagui.config.ts',
   outputCSS: './public/tamagui.generated.css',
 } satisfies TamaguiBuildOptions
@@ -121,7 +121,7 @@ it in your layout:
 
 ```tsx fileName="app/layout.tsx"
 import '../public/tamagui.generated.css'
-import { TamaguiProvider } from '@tamagui/core'
+import { TamaguiProvider } from '@tamagui/style'
 import config from '../tamagui.config'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -492,7 +492,7 @@ const tamaguiConfig = createTamagui(defaultConfig)
 
 // make TypeScript type everything based on your config
 type Conf = typeof tamaguiConfig
-declare module '@tamagui/core' {
+declare module '@tamagui/style' {
   interface TamaguiCustomConfig extends Conf {}
 }
 
@@ -546,7 +546,7 @@ This outputs CSS to `.tamagui/tamagui.generated.css`. Copy it to your public fol
 configure `outputCSS` in your `tamagui.build.ts`:
 
 ```ts fileName="tamagui.build.ts"
-import type { TamaguiBuildOptions } from '@tamagui/core'
+import type { TamaguiBuildOptions } from '@tamagui/style'
 
 export default {
   components: ['tamagui'],

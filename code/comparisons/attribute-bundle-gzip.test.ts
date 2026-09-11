@@ -196,7 +196,7 @@ afterEach(() => {
 test('--core deletes qualifying spans as one union and preserves marginal attribution', () => {
   const spans = [
     {
-      source: '/repo/node_modules/@tamagui/core/dist/esm/createComponent.mjs',
+      source: '/repo/node_modules/@tamagui/style/dist/esm/createComponent.mjs',
       code: 'const repeatedCoreValue="shared-shared-shared-alpha";',
     },
     {
@@ -227,7 +227,7 @@ test('--core deletes qualifying spans as one union and preserves marginal attrib
   const retainedCode = spans
     .filter(
       (span) =>
-        !span.source.includes('/@tamagui/core/') &&
+        !span.source.includes('/@tamagui/style/') &&
         !span.source.includes('/@tamagui/web/')
     )
     .map((span) => span.code)
@@ -249,7 +249,7 @@ test('--core deletes qualifying spans as one union and preserves marginal attrib
   const marginalOutput = new TextDecoder().decode(marginalResult.stdout)
   let qualifyingMarginalSum = 0
   for (const [sourceIndex, packageName] of [
-    [0, '@tamagui/core'],
+    [0, '@tamagui/style'],
     [1, '@tamagui/animations-css'],
     [2, '@tamagui/web'],
     [3, '@tamagui/animation-helpers'],
@@ -261,7 +261,7 @@ test('--core deletes qualifying spans as one union and preserves marginal attrib
       .join('')
     const expectedMarginal =
       baseGzip - gzipSync(Buffer.from(withoutSpan), { level: 9 }).byteLength
-    if (packageName === '@tamagui/core' || packageName === '@tamagui/web') {
+    if (packageName === '@tamagui/style' || packageName === '@tamagui/web') {
       qualifyingMarginalSum += expectedMarginal
     }
     expect(marginalOutput).toContain(

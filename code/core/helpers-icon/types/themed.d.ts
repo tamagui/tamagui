@@ -1,4 +1,4 @@
-import { type ResolveVariableAs } from '@tamagui/core';
+import { type ResolveVariableAs } from '@tamagui/style';
 import type { FC } from 'react';
 import type { IconProps } from './IconProps';
 type Options = {

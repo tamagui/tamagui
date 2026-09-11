@@ -96,7 +96,7 @@ Install the engine before your themed application tree mounts:
 
 ```ts
 import * as nativeRegistry from '@tamagui/native-registry'
-import { setNativeStyleEngine } from '@tamagui/core'
+import { setNativeStyleEngine } from '@tamagui/style'
 
 if (nativeRegistry.isAvailable()) {
   setNativeStyleEngine(nativeRegistry)
@@ -659,7 +659,7 @@ You can disable the compiler optimization for a single component with the
 boolean property `disableOptimization`:
 
 ```tsx
-import { html } from '@tamagui/core'
+import { html } from '@tamagui/style'
 
 export default () => <html.div disableOptimization />
 ```

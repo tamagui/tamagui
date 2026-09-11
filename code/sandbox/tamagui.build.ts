@@ -1,4 +1,4 @@
-import type { TamaguiBuildOptions } from '@tamagui/core'
+import type { TamaguiBuildOptions } from '@tamagui/style'
 
 export default {
   components: ['tamagui'],

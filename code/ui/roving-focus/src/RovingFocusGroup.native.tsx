@@ -1,4 +1,4 @@
-import { styled, View } from '@tamagui/core'
+import { styled, View } from '@tamagui/style'
 import { withStaticProperties } from '@tamagui/helpers'
 
 import type { RovingFocusGroupProps, RovingFocusItemProps } from './RovingFocusGroup'

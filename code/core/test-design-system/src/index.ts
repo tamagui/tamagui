@@ -1,4 +1,4 @@
-import { View, styled, Text } from '@tamagui/core'
+import { View, styled, Text } from '@tamagui/style'
 
 export const MyStack = styled(View, {
   backgroundColor: 'green',

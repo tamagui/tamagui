@@ -1,4 +1,4 @@
-import { createStyledHOC, type GetProps, View, styled } from '@tamagui/core'
+import { createStyledHOC, type GetProps, View, styled } from '@tamagui/style'
 import { registerFocusable } from '@tamagui/focusable'
 import { useWebRef } from '@tamagui/element'
 import React from 'react'

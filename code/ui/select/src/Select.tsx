@@ -1,7 +1,7 @@
 import { Adapt, AdaptParent, useAdaptIsActive } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { GetProps } from '@tamagui/core'
+import type { GetProps } from '@tamagui/style'
 import {
   createChangeEventDetails,
   createStyledHOC,
@@ -9,7 +9,7 @@ import {
   styled,
   Text,
   View,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { FocusScopeController } from '@tamagui/focus-scope'
 import { registerFocusable } from '@tamagui/focusable'
 import { withStaticProperties } from '@tamagui/helpers'

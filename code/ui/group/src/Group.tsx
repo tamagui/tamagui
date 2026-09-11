@@ -1,5 +1,5 @@
-import type { GetProps } from '@tamagui/core'
-import { createStyledHOC, mergeSlotStyleProps, resolveSize, styled } from '@tamagui/core'
+import type { GetProps } from '@tamagui/style'
+import { createStyledHOC, mergeSlotStyleProps, resolveSize, styled } from '@tamagui/style'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'

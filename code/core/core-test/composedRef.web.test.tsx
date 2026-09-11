@@ -5,7 +5,7 @@ import { act, render } from '@testing-library/react'
 import { StrictMode, useState } from 'react'
 import { describe, expect, test } from 'vitest'
 
-import { TamaguiProvider, View, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, View, createTamagui } from '@tamagui/style'
 
 const conf = createTamagui(getDefaultTamaguiConfig())
 

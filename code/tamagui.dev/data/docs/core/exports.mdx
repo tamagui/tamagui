@@ -4,7 +4,7 @@ description: Helpful functions and constants
 ---
 
 Let's take a quick look through some of the useful other exports in
-`@tamagui/core`.
+`@tamagui/style`.
 
 ## Constants
 
@@ -121,7 +121,7 @@ Calling `getVariable(useTheme().color)` returns `var(--color)` on the web, and
 `splitStyleProps` partitions an object in one pass and returns
 `[selectedProps, remainingProps]`. With no options, the first object contains
 style props and the second contains everything else. Props keep their authored
-keys by default. It is exported from `@tamagui/core`, `@tamagui/ui`, and
+keys by default. It is exported from `@tamagui/style`, `@tamagui/ui`, and
 `tamagui`:
 
 ```tsx
@@ -144,7 +144,7 @@ remain in the second object. This also lets a component intentionally select
 non-style behavior props:
 
 ```tsx
-import { splitStyleProps, stylePropsTextOnly } from '@tamagui/core'
+import { splitStyleProps, stylePropsTextOnly } from '@tamagui/style'
 
 const [textProps, frameProps] = splitStyleProps(props, {
   expandShorthands: true,
@@ -266,7 +266,7 @@ Tamagui avoids double-renders in various places which results in faster
 client-side rendering.
 
 ```tsx
-import { ClientOnly } from 'tamagui' // or '@tamagui/core'
+import { ClientOnly } from 'tamagui' // or '@tamagui/style'
 
 // Children will render only on the client, skipping SSR entirely
 <ClientOnly>
@@ -288,7 +288,7 @@ import { ClientOnly } from 'tamagui' // or '@tamagui/core'
 Fetches the type of props for a Tamagui component:
 
 ```tsx
-import { View, GetProps, styled } from '@tamagui/core'
+import { View, GetProps, styled } from '@tamagui/style'
 
 const X = styled(View, {})
 
@@ -300,7 +300,7 @@ type XProps = GetProps<typeof X>
 Fetches the type of a ref for a Tamagui component, or any React component:
 
 ```tsx
-import { View, GetRef, styled } from '@tamagui/core'
+import { View, GetRef, styled } from '@tamagui/style'
 
 const X = styled(View, {})
 

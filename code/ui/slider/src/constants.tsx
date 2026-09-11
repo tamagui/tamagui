@@ -1,4 +1,4 @@
-import { createStyledContext, type SizeTokens } from '@tamagui/core'
+import { createStyledContext, type SizeTokens } from '@tamagui/style'
 
 import type { Direction, SliderContextValue } from './types'
 

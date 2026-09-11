@@ -22,7 +22,7 @@ interface Replacement {
 }
 
 export interface RequiredTypeImport {
-  module: 'tamagui' | '@tamagui/core'
+  module: 'tamagui' | '@tamagui/style'
   name: string
   localName: string
 }
@@ -330,7 +330,7 @@ function callbackAnalysis(callback: FunctionalCallback): CallbackAnalysis {
 function styledImport(sourceFile: SourceFile): ImportDeclaration | null {
   for (const declaration of sourceFile.getImportDeclarations()) {
     const module = declaration.getModuleSpecifierValue()
-    if (module !== 'tamagui' && module !== '@tamagui/core') continue
+    if (module !== 'tamagui' && module !== '@tamagui/style') continue
     if (
       declaration.getNamedImports().some((specifier) => {
         const localName = specifier.getAliasNode()?.getText() ?? specifier.getName()
@@ -537,7 +537,7 @@ export function convertFunctionalVariants(
       if (!importDeclaration) {
         flags.push({
           code: 'functional-variant-styled-import',
-          detail: `the file does not import styled directly from "tamagui" or "@tamagui/core", so the token type source is not provable`,
+          detail: `the file does not import styled directly from "tamagui" or "@tamagui/style", so the token type source is not provable`,
         })
       } else {
         const typeName = spreadTypes.get(functional[0].name)!

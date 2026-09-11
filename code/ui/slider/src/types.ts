@@ -1,4 +1,4 @@
-import type { GestureReponderEvent, SizeTokens, TamaguiElement } from '@tamagui/core'
+import type { GestureReponderEvent, SizeTokens, TamaguiElement } from '@tamagui/style'
 import type { Scope } from '@tamagui/create-context'
 import type { YStackProps } from '@tamagui/stacks'
 

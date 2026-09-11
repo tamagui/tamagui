@@ -11,7 +11,7 @@ that expand into groups of styles. Variants do just that. Before explaining more
 on why and how they work, an example:
 
 ```tsx
-import { type SizeTokens, View, styled } from 'tamagui' // or '@tamagui/core'
+import { type SizeTokens, View, styled } from 'tamagui' // or '@tamagui/style'
 
 export const Circle = styled(View, {
   borderRadius: 100_000_000,
@@ -98,7 +98,7 @@ prop will be typed to accept true or false, and when true it will apply its
 styles.
 
 ```tsx
-import { View, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from 'tamagui' // or '@tamagui/style'
 
 export const MyView = styled(View, {
   variants: {
@@ -120,7 +120,7 @@ For an open-ended value domain, declare the prop type on `styled.dynamic`.
 There is no runtime type-key lookup:
 
 ```tsx
-import { View, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from 'tamagui' // or '@tamagui/style'
 
 export const ColorfulView = styled(View, {
   variants: {
@@ -298,7 +298,7 @@ the property (`"lg"`), and the second is an object with
 When variant styles depend on sibling props, declare the prop type with bare `styled.dynamic<T>()` and apply the styles in a component `.resolve` callback:
 
 ```tsx
-import { View, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from 'tamagui' // or '@tamagui/style'
 
 export const AlertBox = styled(View, {
   variants: {
@@ -318,7 +318,7 @@ Use the dynamic's generic parameter to declare the whole accepted domain, then
 branch on the value inside the callback when needed:
 
 ```tsx
-import { View, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from 'tamagui' // or '@tamagui/style'
 
 export const ColorfulView = styled(View, {
   variants: {
@@ -335,7 +335,7 @@ If you need more complex types, use `styled.dynamic` to brand the value-to-style
 function and declare the prop type:
 
 ```tsx
-import { View, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from 'tamagui' // or '@tamagui/style'
 
 export const MyView = styled(View, {
   variants: {

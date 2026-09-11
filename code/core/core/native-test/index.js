@@ -1,2 +1,2 @@
-// compat with metro without package exports
-Object.assign(module.exports, require('../dist/test.native.cjs'))
+// compat with bundlers that resolve this directory instead of the package exports map
+module.exports = require('@tamagui/style/native-test')

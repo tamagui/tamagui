@@ -211,15 +211,15 @@ function getESBuildConfig(
       {
         name: 'external',
         setup(build) {
-          // only externalize @tamagui/core and @tamagui/web - these are provided at runtime
+          // only externalize @tamagui/style and @tamagui/web - these are provided at runtime
           // other @tamagui/* packages (like @tamagui/config/v6) must be bundled in to avoid
           // ESM race conditions when multiple threads require() them concurrently
-          build.onResolve({ filter: /^@tamagui\/(core|web)$/ }, (args) => {
+          build.onResolve({ filter: /^@tamagui\/(core|style|web)$/ }, (args) => {
             if (args.kind === 'entry-point') {
               return null
             }
             return {
-              path: platform === 'native' ? '@tamagui/core/native' : args.path,
+              path: platform === 'native' ? '@tamagui/style/native' : args.path,
               external: true,
             }
           })

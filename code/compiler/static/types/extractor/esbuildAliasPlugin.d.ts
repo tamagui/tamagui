@@ -7,7 +7,7 @@
  *   '@lib': '/some/absolute/path'
  * }
  * ```
- * then `import { something } from '@tamagui/core'` will be transformed to
+ * then `import { something } from '@tamagui/style'` will be transformed to
  * `import { something } from '/some/absolute/path/xxx'`
  * @param {object} config
  */

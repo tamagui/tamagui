@@ -1,4 +1,4 @@
-// import { useTheme } from '@tamagui/core'
+// import { useTheme } from '@tamagui/style'
 // import { SafeAreaView, ScrollView } from 'react-native'
 
 // import Box from './components/Box'

@@ -1,4 +1,4 @@
-import { TamaguiElement } from '@tamagui/core';
+import { TamaguiElement } from '@tamagui/style';
 import * as React from 'react';
 import type { DismissableBranchProps, DismissableProps } from './DismissableProps';
 export declare function dispatchDiscreteCustomEvent<E extends CustomEvent>(target: E['target'], event: E): void;

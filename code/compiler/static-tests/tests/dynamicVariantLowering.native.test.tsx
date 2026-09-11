@@ -26,7 +26,7 @@ describe('styled definitions visible in the graph', () => {
 
   test('the object form keeps its options when a static config follows', async () => {
     const output = await extractForNative(dedent`
-      import { View, styled } from '@tamagui/core'
+      import { View, styled } from '@tamagui/style'
 
       const Box = styled(View, { padding: 10 }, { memo: true })
 

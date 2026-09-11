@@ -28,18 +28,18 @@ Tamagui takes advantage of new style features in React Native 0.81+ including
 To install from scratch:
 
 ```bash
-yarn add @tamagui/core
+yarn add @tamagui/style
 ```
 
 Core is just the style library. If you plan to use our full UI kit, you can
-avoid installing `@tamagui/core` and instead:
+avoid installing `@tamagui/style` and instead:
 
 ```bash
 yarn add tamagui
 ```
 
 The `tamagui` package is a superset of core, so anywhere the docs reference
-`@tamagui/core`, you can replace it with `tamagui`.
+`@tamagui/style`, you can replace it with `tamagui`.
 
 <Notice>
 
@@ -60,7 +60,7 @@ Next, you'll want to set up your [configuration](/docs/core/configuration) and
 provide it with `TamaguiProvider`:
 
 ```tsx fileName="App.tsx"
-import { TamaguiProvider, html } from '@tamagui/core'
+import { TamaguiProvider, html } from '@tamagui/style'
 import config from './tamagui.config' // your configuration
 
 export default function App() {
@@ -81,7 +81,7 @@ yarn add @tamagui/config
 You can use it like so:
 
 ```tsx fileName="App.tsx"
-import { TamaguiProvider, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, createTamagui } from '@tamagui/style'
 import { defaultConfig } from '@tamagui/config/v6'
 
 // you usually export this from a tamagui.config.ts file
@@ -90,7 +90,7 @@ const config = createTamagui(defaultConfig)
 type Conf = typeof config
 
 // make imports typed
-declare module '@tamagui/core' {
+declare module '@tamagui/style' {
   interface TamaguiCustomConfig extends Conf {}
 }
 

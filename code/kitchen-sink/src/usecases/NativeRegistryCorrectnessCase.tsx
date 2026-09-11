@@ -1,4 +1,4 @@
-import { setNativeStyleEngine, type NativeStyleEngine } from '@tamagui/core'
+import { setNativeStyleEngine, type NativeStyleEngine } from '@tamagui/style'
 import * as registry from '@tamagui/native-registry'
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {

@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client'
 // a bare side-effect Tamagui import: its effects are unknown, so erasure refuses
 // to remove it rather than guessing
-import '@tamagui/core'
+import '@tamagui/style'
 import { View } from 'tamagui'
 
 function SideEffect() {

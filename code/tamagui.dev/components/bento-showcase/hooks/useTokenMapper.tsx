@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 
-import type { Tokens } from '@tamagui/core'
-import { getTokens } from '@tamagui/core'
+import type { Tokens } from '@tamagui/style'
+import { getTokens } from '@tamagui/style'
 import { useUserTamaguiConfig } from './useUserTamaguiConfig'
 
 type MergedToken = Tokens & { userMatch: Tokens }

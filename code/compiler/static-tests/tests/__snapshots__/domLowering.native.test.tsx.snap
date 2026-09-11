@@ -3,26 +3,26 @@
 exports[`native DOM elements lower to backing primitives and wrap literal text 1`] = `
 "
     import { jsx, jsxs } from 'react/jsx-runtime'
-    import { html as h } from '@tamagui/core'
+    import { html as h } from '@tamagui/style'
 
     export const JSXElement = (
-      <__TamaguiDOMView style={__TamaguiNativeStyle136._ ?? __TamaguiNativeStyle136()} id="main"><__TamaguiDOMText __inherit>
+      <__TamaguiDOMView style={__TamaguiNativeStyle137._ ?? __TamaguiNativeStyle137()} id="main"><__TamaguiDOMText __inherit>
         Hello </__TamaguiDOMText><__TamaguiDOMText __inherit>{7}</__TamaguiDOMText>
-        <__TamaguiDOMText style={__TamaguiNativeStyle181._ ?? __TamaguiNativeStyle181()} __inherit={true}>world</__TamaguiDOMText>
+        <__TamaguiDOMText style={__TamaguiNativeStyle182._ ?? __TamaguiNativeStyle182()} __inherit={true}>world</__TamaguiDOMText>
       </__TamaguiDOMView>
     )
-    export const JSXCall = jsx(__TamaguiDOMView, { children: __TamaguiCreateElement(__TamaguiDOMText, { __inherit: true }, 'jsx') , style: __TamaguiNativeStyle253._ ?? __TamaguiNativeStyle253() })
-    export const JSXSCall = jsxs(__TamaguiDOMView, { children: [__TamaguiCreateElement(__TamaguiDOMText, { __inherit: true }, 'one'), jsx(__TamaguiDOMText, { children: 'two' , style: __TamaguiNativeStyle349._ ?? __TamaguiNativeStyle349(), "__inherit": true })] , style: __TamaguiNativeStyle317._ ?? __TamaguiNativeStyle317() })
+    export const JSXCall = jsx(__TamaguiDOMView, { children: __TamaguiCreateElement(__TamaguiDOMText, { __inherit: true }, 'jsx') , style: __TamaguiNativeStyle254._ ?? __TamaguiNativeStyle254() })
+    export const JSXSCall = jsxs(__TamaguiDOMView, { children: [__TamaguiCreateElement(__TamaguiDOMText, { __inherit: true }, 'one'), jsx(__TamaguiDOMText, { children: 'two' , style: __TamaguiNativeStyle350._ ?? __TamaguiNativeStyle350(), "__inherit": true })] , style: __TamaguiNativeStyle318._ ?? __TamaguiNativeStyle318() })
 
-function __TamaguiNativeStyle136() { return __TamaguiNativeStyle136._ ?? (__TamaguiNativeStyle136._ = {"boxSizing":"content-box","position":"static","alignItems":"stretch","display":"flex","flexBasis":"auto","flexDirection":"column","flexShrink":0,"flexWrap":"nowrap","justifyContent":"flex-start"}); } __TamaguiNativeStyle136();
-import { DOMView as __TamaguiDOMView } from "@tamagui/core/dom"
+function __TamaguiNativeStyle137() { return __TamaguiNativeStyle137._ ?? (__TamaguiNativeStyle137._ = {"boxSizing":"content-box","position":"static","alignItems":"stretch","display":"flex","flexBasis":"auto","flexDirection":"column","flexShrink":0,"flexWrap":"nowrap","justifyContent":"flex-start"}); } __TamaguiNativeStyle137();
+import { DOMView as __TamaguiDOMView } from "@tamagui/style/dom"
 
-import { DOMText as __TamaguiDOMText } from "@tamagui/core/dom"
+import { DOMText as __TamaguiDOMText } from "@tamagui/style/dom"
 
-function __TamaguiNativeStyle181() { return __TamaguiNativeStyle181._ ?? (__TamaguiNativeStyle181._ = {"boxSizing":"content-box","position":"static"}); } __TamaguiNativeStyle181();
-function __TamaguiNativeStyle253() { return __TamaguiNativeStyle253._ ?? (__TamaguiNativeStyle253._ = {"boxSizing":"content-box","position":"static","alignItems":"stretch","display":"flex","flexBasis":"auto","flexDirection":"column","flexShrink":0,"flexWrap":"nowrap","justifyContent":"flex-start"}); } __TamaguiNativeStyle253();
+function __TamaguiNativeStyle182() { return __TamaguiNativeStyle182._ ?? (__TamaguiNativeStyle182._ = {"boxSizing":"content-box","position":"static"}); } __TamaguiNativeStyle182();
+function __TamaguiNativeStyle254() { return __TamaguiNativeStyle254._ ?? (__TamaguiNativeStyle254._ = {"boxSizing":"content-box","position":"static","alignItems":"stretch","display":"flex","flexBasis":"auto","flexDirection":"column","flexShrink":0,"flexWrap":"nowrap","justifyContent":"flex-start"}); } __TamaguiNativeStyle254();
 import { createElement as __TamaguiCreateElement } from "react"
 
-function __TamaguiNativeStyle317() { return __TamaguiNativeStyle317._ ?? (__TamaguiNativeStyle317._ = {"boxSizing":"content-box","position":"static","alignItems":"stretch","display":"flex","flexBasis":"auto","flexDirection":"column","flexShrink":0,"flexWrap":"nowrap","justifyContent":"flex-start"}); } __TamaguiNativeStyle317();
-function __TamaguiNativeStyle349() { return __TamaguiNativeStyle349._ ?? (__TamaguiNativeStyle349._ = {"boxSizing":"content-box","position":"static","fontWeight":"bold"}); } __TamaguiNativeStyle349();"
+function __TamaguiNativeStyle318() { return __TamaguiNativeStyle318._ ?? (__TamaguiNativeStyle318._ = {"boxSizing":"content-box","position":"static","alignItems":"stretch","display":"flex","flexBasis":"auto","flexDirection":"column","flexShrink":0,"flexWrap":"nowrap","justifyContent":"flex-start"}); } __TamaguiNativeStyle318();
+function __TamaguiNativeStyle350() { return __TamaguiNativeStyle350._ ?? (__TamaguiNativeStyle350._ = {"boxSizing":"content-box","position":"static","fontWeight":"bold"}); } __TamaguiNativeStyle350();"
 `;

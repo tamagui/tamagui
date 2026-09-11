@@ -1,4 +1,4 @@
-import '@tamagui/core/reset.css'
+import '@tamagui/style/reset.css'
 import './tamagui.config'
 
 import * as Demos from '@tamagui/demos'

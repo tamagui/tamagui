@@ -2,7 +2,7 @@
 // specifier discovery evaluates, while this source stays in the graph the way
 // a workspace dist file does. The dynamic variant and the object form's third
 // argument are what a static reading of the literal cannot reproduce
-import { View, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/style'
 
 const getSize = styled.dynamic<number>((value) => ({ width: value, height: value }))
 

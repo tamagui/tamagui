@@ -1,4 +1,4 @@
-import { createTamagui as createTamaguiCore } from '@tamagui/core';
+import { createTamagui as createTamaguiCore } from '@tamagui/style';
 /**
  * Adds some helpful validation at dev time only for `tamagui` specifically
  **/

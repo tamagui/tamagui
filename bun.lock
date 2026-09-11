@@ -71,8 +71,8 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/cli-color": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/static": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/types": "workspace:*",
         "@tamagui/web": "workspace:*",
         "esbuild-loader": "^4.2.2",
@@ -139,7 +139,6 @@
         "@tamagui/cli-color": "workspace:*",
         "@tamagui/compiler-core": "workspace:*",
         "@tamagui/config-default": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/dom": "workspace:*",
         "@tamagui/fake-react-native": "workspace:*",
         "@tamagui/generate-themes": "workspace:*",
@@ -148,6 +147,7 @@
         "@tamagui/react-native-web-internals": "workspace:*",
         "@tamagui/react-native-web-lite": "workspace:*",
         "@tamagui/shorthands": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/style-grammar": "workspace:*",
         "@tamagui/types": "workspace:*",
         "@tamagui/web": "workspace:*",
@@ -337,7 +337,7 @@
       "dependencies": {
         "@react-native/normalize-colors": "0.86.2",
         "@tamagui/animation-helpers": "workspace:*",
-        "@tamagui/core": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/use-presence": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
@@ -363,7 +363,7 @@
       "name": "@tamagui/calc",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -482,8 +482,8 @@
         "@tamagui/animation-helpers": "workspace:*",
         "@tamagui/animations-css": "workspace:*",
         "@tamagui/animations-react-native": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/shorthands": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
       "devDependencies": {
@@ -518,29 +518,7 @@
       "name": "@tamagui/core",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/compose-refs": "workspace:*",
-        "@tamagui/constants": "workspace:*",
-        "@tamagui/helpers": "workspace:*",
-        "@tamagui/react-native-media-driver": "workspace:*",
-        "@tamagui/react-native-use-pressable": "workspace:*",
-        "@tamagui/size": "workspace:*",
-        "@tamagui/use-element-layout": "workspace:*",
-        "@tamagui/use-event": "workspace:*",
-        "@tamagui/web": "workspace:*",
-      },
-      "devDependencies": {
-        "@tamagui/build": "workspace:*",
-        "@tamagui/native-bundle": "workspace:*",
-        "@tamagui/react-native-web-lite": "workspace:*",
-        "@testing-library/react": "^16.1.0",
-        "csstype": "^3.0.10",
-        "react": "19.2.3",
-        "react-native": "0.86.2",
-        "typescript": "~6.0.3",
-        "vitest": "4.1.0",
-      },
-      "peerDependencies": {
-        "react": ">=19",
+        "@tamagui/style": "workspace:*",
       },
     },
     "code/core/core-test": {
@@ -549,6 +527,7 @@
       "devDependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/dialog": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
         "@testing-library/react": "^16.1.0",
         "@testing-library/react-native": "^12.9.0",
@@ -576,7 +555,7 @@
       "name": "@tamagui/create-system-font",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -699,7 +678,7 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -710,7 +689,7 @@
       "name": "@tamagui/font-dm-sans",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -721,7 +700,7 @@
       "name": "@tamagui/font-dm-serif-display",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -732,7 +711,7 @@
       "name": "@tamagui/font-fira-mono",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -752,7 +731,7 @@
       "name": "@tamagui/font-inter",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -763,7 +742,7 @@
       "name": "@tamagui/font-munro",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -773,7 +752,7 @@
       "name": "@tamagui/font-nohemi",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -784,7 +763,7 @@
       "name": "@tamagui/font-silkscreen",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -794,7 +773,7 @@
       "name": "@tamagui/font-size",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -866,9 +845,9 @@
       "name": "@tamagui/helpers-icon",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
         "@tamagui/font-size": "workspace:*",
         "@tamagui/size": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -1165,6 +1144,35 @@
         "react": ">=19",
       },
     },
+    "code/core/style": {
+      "name": "@tamagui/style",
+      "version": "2.7.7",
+      "dependencies": {
+        "@tamagui/compose-refs": "workspace:*",
+        "@tamagui/constants": "workspace:*",
+        "@tamagui/helpers": "workspace:*",
+        "@tamagui/react-native-media-driver": "workspace:*",
+        "@tamagui/react-native-use-pressable": "workspace:*",
+        "@tamagui/size": "workspace:*",
+        "@tamagui/use-element-layout": "workspace:*",
+        "@tamagui/use-event": "workspace:*",
+        "@tamagui/web": "workspace:*",
+      },
+      "devDependencies": {
+        "@tamagui/build": "workspace:*",
+        "@tamagui/native-bundle": "workspace:*",
+        "@tamagui/react-native-web-lite": "workspace:*",
+        "@testing-library/react": "^16.1.0",
+        "csstype": "^3.0.10",
+        "react": "19.2.3",
+        "react-native": "0.86.2",
+        "typescript": "~6.0.3",
+        "vitest": "4.1.0",
+      },
+      "peerDependencies": {
+        "react": ">=19",
+      },
+    },
     "code/core/style-grammar": {
       "name": "@tamagui/style-grammar",
       "version": "2.7.7",
@@ -1180,9 +1188,9 @@
         "@tailwindcss/node": "4.3.0",
         "@tailwindcss/oxide": "4.3.0",
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/react-native-types": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/style-grammar": "workspace:*",
         "@tamagui/vite-plugin": "workspace:*",
       },
@@ -1213,7 +1221,7 @@
       "name": "@tamagui/test-design-system",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -1299,8 +1307,8 @@
       "name": "@tamagui/use-controllable-state",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
         "@tamagui/start-transition": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/use-event": "workspace:*",
       },
       "devDependencies": {
@@ -1495,7 +1503,6 @@
         "@tamagui/checkbox-headless": "workspace:*",
         "@tamagui/colors": "workspace:*",
         "@tamagui/context-menu": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/image": "workspace:*",
         "@tamagui/input": "workspace:*",
         "@tamagui/linear-gradient": "workspace:*",
@@ -1512,6 +1519,7 @@
         "@tamagui/sheet": "workspace:*",
         "@tamagui/slider": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/switch": "workspace:*",
         "@tamagui/switch-headless": "workspace:*",
         "@tamagui/tabs": "workspace:*",
@@ -1547,7 +1555,6 @@
         "@tamagui/colors": "workspace:*",
         "@tamagui/config": "workspace:*",
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/demos": "workspace:*",
         "@tamagui/font-inter": "workspace:*",
         "@tamagui/get-token": "workspace:*",
@@ -1561,6 +1568,7 @@
         "@tamagui/scroll-view": "workspace:*",
         "@tamagui/sheet": "workspace:*",
         "@tamagui/shorthands": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/tailwind": "workspace:*",
         "@tamagui/theme": "workspace:*",
         "@tamagui/themes": "workspace:*",
@@ -1624,11 +1632,11 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/config": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/demos": "workspace:*",
         "@tamagui/kitchen-sink-shared": "workspace:*",
         "@tamagui/lucide-icons-2": "workspace:*",
         "@tamagui/metro-plugin": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/toast": "workspace:*",
         "@tamagui/web": "workspace:*",
         "expo": "~57.0.15",
@@ -1876,8 +1884,8 @@
       "name": "@tamagui/lucide-icons-2",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
         "@tamagui/helpers-icon": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -1974,8 +1982,8 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/animations-react-native": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/lucide-icons-2": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/toast": "workspace:*",
         "expo-constants": "~57.0.9",
         "expo-image": "~57.0.2",
@@ -1999,10 +2007,10 @@
         "@tamagui/animations-reanimated": "workspace:*",
         "@tamagui/colors": "workspace:*",
         "@tamagui/config": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/font-cherry-bomb": "workspace:*",
         "@tamagui/font-inter": "workspace:*",
         "@tamagui/shorthands": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/themes": "workspace:*",
       },
       "devDependencies": {
@@ -2133,8 +2141,8 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/config": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/sheet": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "tamagui": "workspace:*",
       },
       "devDependencies": {
@@ -2259,11 +2267,11 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/animations-css": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/linear-gradient": "workspace:*",
         "@tamagui/react-native-svg": "workspace:*",
         "@tamagui/react-native-web-lite": "workspace:*",
         "@tamagui/shorthands": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/tailwind": "workspace:*",
         "@tamagui/themes": "workspace:*",
         "tamagui": "workspace:*",
@@ -2305,8 +2313,8 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/config": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/next-theme": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "next": "16.2.11",
         "react": "19.2.3",
         "react-dom": "19.2.3",
@@ -2424,9 +2432,9 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/config": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/dom": "workspace:*",
         "@tamagui/sheet": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/tailwind": "workspace:*",
         "@tamagui/web": "workspace:*",
         "tamagui": "workspace:*",
@@ -2456,11 +2464,11 @@
         "@tamagui/collection": "workspace:*",
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/polyfill-dev": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/text": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/use-direction": "workspace:*",
@@ -2478,9 +2486,9 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/portal": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/z-index-stack": "workspace:*",
       },
       "devDependencies": {
@@ -2498,7 +2506,6 @@
         "@tamagui/animate-presence": "workspace:*",
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/dialog": "workspace:*",
         "@tamagui/dismissable": "workspace:*",
@@ -2508,6 +2515,7 @@
         "@tamagui/portal": "workspace:*",
         "@tamagui/remove-scroll": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/text": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
       },
@@ -2558,12 +2566,12 @@
       "name": "@tamagui/avatar",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/image": "workspace:*",
         "@tamagui/shapes": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/text": "workspace:*",
       },
       "devDependencies": {
@@ -2580,12 +2588,12 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/config-default": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/font-size": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/helpers-tamagui": "workspace:*",
         "@tamagui/spacer": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/text": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
@@ -2622,8 +2630,8 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/checkbox-headless": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/focusable": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
       },
       "devDependencies": {
@@ -2664,11 +2672,11 @@
       "dependencies": {
         "@tamagui/animate-presence": "workspace:*",
         "@tamagui/compose-refs": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/polyfill-dev": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
@@ -2686,10 +2694,10 @@
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/polyfill-dev": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
       },
       "devDependencies": {
@@ -2744,7 +2752,6 @@
         "@tamagui/animate": "workspace:*",
         "@tamagui/animate-presence": "workspace:*",
         "@tamagui/collection": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/dismissable": "workspace:*",
         "@tamagui/focus-guard": "workspace:*",
         "@tamagui/focus-scope": "workspace:*",
@@ -2757,6 +2764,7 @@
         "@tamagui/react-native-types": "workspace:*",
         "@tamagui/remove-scroll": "workspace:*",
         "@tamagui/roving-focus": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/text": "workspace:*",
         "@tamagui/use-callback-ref": "workspace:*",
         "@tamagui/use-direction": "workspace:*",
@@ -2781,7 +2789,6 @@
         "@tamagui/animate-presence": "workspace:*",
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/dismissable": "workspace:*",
         "@tamagui/focus-scope": "workspace:*",
@@ -2791,6 +2798,7 @@
         "@tamagui/remove-scroll": "workspace:*",
         "@tamagui/sheet": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/text": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/z-index-stack": "workspace:*",
@@ -2809,8 +2817,8 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/helpers": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/use-escape-keydown": "workspace:*",
         "@tamagui/use-event": "workspace:*",
       },
@@ -2828,9 +2836,9 @@
       "name": "@tamagui/field",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
         "@tamagui/focusable": "workspace:*",
         "@tamagui/form": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -2864,9 +2872,9 @@
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/start-transition": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/use-async": "workspace:*",
         "@tamagui/use-event": "workspace:*",
       },
@@ -2897,9 +2905,9 @@
       "name": "@tamagui/form",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
         "@tamagui/focusable": "workspace:*",
         "@tamagui/helpers": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -2913,11 +2921,11 @@
       "name": "@tamagui/group",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/spacer": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
       },
       "devDependencies": {
@@ -2934,8 +2942,8 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/react-native-types": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
       "devDependencies": {
@@ -2952,7 +2960,6 @@
       "name": "@tamagui/input",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
         "@tamagui/element": "workspace:*",
         "@tamagui/focusable": "workspace:*",
         "@tamagui/font-size": "workspace:*",
@@ -2961,6 +2968,7 @@
         "@tamagui/helpers-tamagui": "workspace:*",
         "@tamagui/react-native-types": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/text": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
@@ -3000,10 +3008,10 @@
       "name": "@tamagui/linear-gradient",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
         "@tamagui/native": "workspace:*",
         "@tamagui/react-native-types": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -3042,13 +3050,13 @@
       "name": "@tamagui/menu",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-menu": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/polyfill-dev": "workspace:*",
         "@tamagui/popover": "workspace:*",
         "@tamagui/popper": "workspace:*",
         "@tamagui/scroll-view": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
@@ -3069,7 +3077,6 @@
         "@tamagui/animate-presence": "workspace:*",
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/dismissable": "workspace:*",
         "@tamagui/floating": "workspace:*",
         "@tamagui/focus-scope": "workspace:*",
@@ -3081,6 +3088,7 @@
         "@tamagui/scroll-view": "workspace:*",
         "@tamagui/sheet": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/z-index-stack": "workspace:*",
         "react-freeze": "^1.0.3",
@@ -3100,10 +3108,10 @@
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/floating": "workspace:*",
         "@tamagui/get-token": "workspace:*",
         "@tamagui/start-transition": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
       },
       "devDependencies": {
@@ -3122,10 +3130,10 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/native": "workspace:*",
         "@tamagui/polyfill-dev": "workspace:*",
         "@tamagui/start-transition": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/use-event": "workspace:*",
         "@tamagui/web": "workspace:*",
         "@tamagui/z-index-stack": "workspace:*",
@@ -3146,11 +3154,11 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/get-token": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -3165,9 +3173,9 @@
       "name": "@tamagui/radio-group",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
         "@tamagui/radio-headless": "workspace:*",
         "@tamagui/roving-focus": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -3235,9 +3243,9 @@
         "@tamagui/collection": "workspace:*",
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/helpers": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/use-direction": "workspace:*",
         "@tamagui/use-event": "workspace:*",
@@ -3273,7 +3281,6 @@
         "@tamagui/animate-presence": "workspace:*",
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/dismissable": "workspace:*",
         "@tamagui/floating": "workspace:*",
@@ -3288,7 +3295,7 @@
         "@tamagui/separator": "workspace:*",
         "@tamagui/sheet": "workspace:*",
         "@tamagui/stacks": "workspace:*",
-        "@tamagui/start-transition": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/text": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/use-debounce": "workspace:*",
@@ -3311,7 +3318,7 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -3347,7 +3354,6 @@
         "@tamagui/animations-react-native": "workspace:*",
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/native": "workspace:*",
         "@tamagui/portal": "workspace:*",
@@ -3357,6 +3363,7 @@
         "@tamagui/remove-scroll": "workspace:*",
         "@tamagui/scroll-view": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/use-constant": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/use-did-finish-ssr": "workspace:*",
@@ -3384,13 +3391,13 @@
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/get-token": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/react-native-types": "workspace:*",
         "@tamagui/react-native-use-responder-events": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/use-debounce": "workspace:*",
         "@tamagui/use-direction": "workspace:*",
@@ -3425,8 +3432,8 @@
       "name": "@tamagui/spinner",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -3442,7 +3449,7 @@
       "name": "@tamagui/stacks",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
       "devDependencies": {
@@ -3457,9 +3464,9 @@
       "name": "@tamagui/switch",
       "version": "2.7.7",
       "dependencies": {
-        "@tamagui/core": "workspace:*",
         "@tamagui/focusable": "workspace:*",
         "@tamagui/react-native-types": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/switch-headless": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
       },
@@ -3498,11 +3505,12 @@
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
+        "@tamagui/group": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/react-native-types": "workspace:*",
         "@tamagui/roving-focus": "workspace:*",
         "@tamagui/size": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/tabs-headless": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
@@ -3548,7 +3556,6 @@
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
         "@tamagui/context-menu": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/create-menu": "workspace:*",
         "@tamagui/dialog": "workspace:*",
@@ -3585,6 +3592,7 @@
         "@tamagui/spacer": "workspace:*",
         "@tamagui/spinner": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/switch": "workspace:*",
         "@tamagui/tabs": "workspace:*",
         "@tamagui/text": "workspace:*",
@@ -3646,7 +3654,6 @@
         "@tamagui/collection": "workspace:*",
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/dismissable": "workspace:*",
         "@tamagui/helpers": "workspace:*",
@@ -3655,6 +3662,7 @@
         "@tamagui/portal": "workspace:*",
         "@tamagui/stacks": "workspace:*",
         "@tamagui/start-transition": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/text": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/visually-hidden": "workspace:*",
@@ -3700,16 +3708,15 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/floating": "workspace:*",
-        "@tamagui/get-token": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/polyfill-dev": "workspace:*",
         "@tamagui/popover": "workspace:*",
         "@tamagui/popper": "workspace:*",
         "@tamagui/size": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/text": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
       },
@@ -3739,7 +3746,6 @@
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
         "@tamagui/context-menu": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/create-menu": "workspace:*",
         "@tamagui/dialog": "workspace:*",
@@ -3772,6 +3778,7 @@
         "@tamagui/spacer": "workspace:*",
         "@tamagui/spinner": "workspace:*",
         "@tamagui/stacks": "workspace:*",
+        "@tamagui/style": "workspace:*",
         "@tamagui/switch": "workspace:*",
         "@tamagui/tabs": "workspace:*",
         "@tamagui/text": "workspace:*",
@@ -5793,6 +5800,8 @@
     "@tamagui/static": ["@tamagui/static@workspace:code/compiler/static"],
 
     "@tamagui/static-tests": ["@tamagui/static-tests@workspace:code/compiler/static-tests"],
+
+    "@tamagui/style": ["@tamagui/style@workspace:code/core/style"],
 
     "@tamagui/style-grammar": ["@tamagui/style-grammar@workspace:code/core/style-grammar"],
 

@@ -1,6 +1,6 @@
 import type React from 'react'
 
-import type { TamaguiChangeEventDetails, TamaguiEventDetails } from '@tamagui/core'
+import type { TamaguiChangeEventDetails, TamaguiEventDetails } from '@tamagui/style'
 
 export type PointerDownOutsideDetails = TamaguiChangeEventDetails<
   'outside-press',

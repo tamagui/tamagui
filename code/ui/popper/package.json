@@ -37,7 +37,7 @@
   "dependencies": {
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/floating": "workspace:*",
     "@tamagui/get-token": "workspace:*",
     "@tamagui/start-transition": "workspace:*",

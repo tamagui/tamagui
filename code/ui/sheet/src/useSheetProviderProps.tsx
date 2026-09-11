@@ -1,6 +1,6 @@
 import React from 'react'
-import type { TamaguiElement } from '@tamagui/core'
-import { useConfiguration } from '@tamagui/core'
+import type { TamaguiElement } from '@tamagui/style'
+import { useConfiguration } from '@tamagui/style'
 import { useConstant } from '@tamagui/use-constant'
 import { useControllableState } from '@tamagui/use-controllable-state'
 

@@ -22,7 +22,7 @@ if (bundle) {
   const { ProjectGraph, resolvedModuleId, yukuFactory } = await import(
     pathToFileURL(bundle).href
   )
-  const core = resolvedModuleId('/node_modules/@tamagui/core/index.ts')
+  const core = resolvedModuleId('/node_modules/@tamagui/style/index.ts')
   const tokens = resolvedModuleId('/bench/tokens.ts')
   const id = resolvedModuleId('/bench/App.tsx')
   const elements = 100
@@ -31,7 +31,7 @@ if (bundle) {
     .map((i) => `export const size${i} = ${(i % 8) + 1};`)
     .join('\n')
   const source =
-    `import {View} from '@tamagui/core';\nimport {${indices.map((i) => `size${i}`).join(',')}} from './tokens';\n` +
+    `import {View} from '@tamagui/style';\nimport {${indices.map((i) => `size${i}`).join(',')}} from './tokens';\n` +
     indices
       .map(
         (i) =>
@@ -45,7 +45,7 @@ if (bundle) {
       id,
       source,
       imports: [
-        { specifier: '@tamagui/core', resolvedId: core },
+        { specifier: '@tamagui/style', resolvedId: core },
         { specifier: './tokens', resolvedId: tokens },
       ],
     },

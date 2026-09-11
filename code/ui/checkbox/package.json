@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@tamagui/checkbox-headless": "workspace:*",
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/focusable": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*"
   },

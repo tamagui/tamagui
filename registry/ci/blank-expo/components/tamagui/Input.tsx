@@ -9,7 +9,7 @@ import {
   styled,
   Theme,
   type ThemeProps,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { Input as UiInput, TextArea as UiTextArea } from '@tamagui/input'
 
 const inputSkin = {

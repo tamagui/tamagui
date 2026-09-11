@@ -11,7 +11,7 @@
       "description": "v2-look Accordion: theme background, padding, cursor, and hover/focus/press color styling on the unstyled @tamagui/ui Accordion Trigger and Content. The behavior keeps only the Collapsible trigger/content behavior.",
       "dependencies": [
         "@tamagui/accordion",
-        "@tamagui/core"
+        "@tamagui/style"
       ],
       "categories": [
         "disclosure"
@@ -36,7 +36,7 @@
       "description": "v2-look AlertDialog: scrim background on the Overlay and background/border/padding/radius/elevation on the Content, over the unstyled @tamagui/ui AlertDialog behavior.",
       "dependencies": [
         "@tamagui/alert-dialog",
-        "@tamagui/core"
+        "@tamagui/style"
       ],
       "registryDependencies": [
         "dialog"
@@ -62,7 +62,7 @@
       "description": "v2-look Button: token-based sizing through the opt-in @tamagui/size policy, circular and variant (outlined/quiet) skins, icon + text composition on the unstyled @tamagui/ui Button behavior.",
       "dependencies": [
         "@tamagui/button",
-        "@tamagui/core",
+        "@tamagui/style",
         "@tamagui/helpers-tamagui"
       ],
       "categories": [
@@ -93,7 +93,7 @@
       "description": "v2-look Card: theme background over the unstyled @tamagui/ui Card behavior (structural layout + the size mechanism for size-derived radius and Header/Footer padding). Statics: Card.Header, Card.Footer, Card.Background.",
       "dependencies": [
         "@tamagui/card",
-        "@tamagui/core"
+        "@tamagui/style"
       ],
       "categories": [
         "layout"
@@ -112,7 +112,7 @@
       "description": "v2-look Checkbox: token-based sizing, theme background/border/focus styling, disabled dimming, and a centered indicator over the unstyled @tamagui/ui Checkbox behavior.",
       "dependencies": [
         "@tamagui/checkbox",
-        "@tamagui/core"
+        "@tamagui/style"
       ],
       "categories": [
         "form"
@@ -139,7 +139,7 @@
       "title": "Dialog",
       "description": "v2-look Dialog: scrim background on the Overlay and background/border/padding/radius/elevation on the Content, over the unstyled @tamagui/ui Dialog behavior (which keeps only positioning + pointer-event bookkeeping).",
       "dependencies": [
-        "@tamagui/core",
+        "@tamagui/style",
         "@tamagui/dialog"
       ],
       "categories": [
@@ -162,7 +162,7 @@
       "title": "Input",
       "description": "v2-look Input and TextArea: theme palette, border, background, body font, and hover/focus color styling on the unstyled @tamagui/ui Input/TextArea behavior (which keeps only structural sizing + the native outline reset).",
       "dependencies": [
-        "@tamagui/core",
+        "@tamagui/style",
         "@tamagui/input"
       ],
       "categories": [
@@ -186,7 +186,7 @@
       "title": "Label",
       "description": "v2-look Label: theme text color + press color feedback, over the unstyled @tamagui/ui Label behavior (label element, flex alignment, selection/cursor resets, the size-derived font mechanism, and the htmlFor/aria wiring).",
       "dependencies": [
-        "@tamagui/core",
+        "@tamagui/style",
         "@tamagui/label"
       ],
       "categories": [
@@ -209,7 +209,7 @@
       "title": "ListItem",
       "description": "v2-look ListItem: theme palette, border, cursor, hover/press color styling, text color, the outlined/active appearance, and disabled dimming, over the unstyled @tamagui/ui ListItem behavior (which keeps structural layout + the size mechanism + the disabled pointer-event block).",
       "dependencies": [
-        "@tamagui/core",
+        "@tamagui/style",
         "@tamagui/list-item"
       ],
       "categories": [
@@ -239,7 +239,7 @@
       "title": "Popover",
       "description": "v2-look Popover: token-based padding and radius with theme background and arrow border styling, over the unstyled @tamagui/ui Popover behavior.",
       "dependencies": [
-        "@tamagui/core",
+        "@tamagui/style",
         "@tamagui/popover"
       ],
       "categories": [
@@ -262,7 +262,7 @@
       "title": "Progress",
       "description": "v2-look Progress: theme background on the track and indicator + pill radius on the track, over the unstyled @tamagui/ui Progress behavior (clip, size-derived track height, and the indeterminate/complete/loading state machine). Static: Progress.Indicator.",
       "dependencies": [
-        "@tamagui/core",
+        "@tamagui/style",
         "@tamagui/progress"
       ],
       "categories": [
@@ -281,7 +281,7 @@
       "title": "RadioGroup",
       "description": "v2-look RadioGroup: token-based item sizing, theme background/border/focus styling, disabled dimming, and a centered color indicator over the unstyled @tamagui/ui RadioGroup behavior.",
       "dependencies": [
-        "@tamagui/core",
+        "@tamagui/style",
         "@tamagui/radio-group"
       ],
       "categories": [
@@ -311,7 +311,7 @@
       "title": "Select",
       "description": "v2-look Select: styled trigger/value/icon, viewport with elevation, items with highlight + check indicator, scroll buttons and separators, over the unstyled @tamagui/ui Select behavior. Adapts to a Sheet on native.",
       "dependencies": [
-        "@tamagui/core",
+        "@tamagui/style",
         "@tamagui/select",
         "@tamagui/text"
       ],
@@ -346,7 +346,7 @@
       "title": "Separator",
       "description": "v2-look Separator: theme line color over the unstyled @tamagui/ui Separator behavior (orientation + layout + the collapsed 1px rule, transparent by default). Supports the vertical variant.",
       "dependencies": [
-        "@tamagui/core",
+        "@tamagui/style",
         "@tamagui/separator"
       ],
       "categories": [
@@ -365,7 +365,7 @@
       "title": "Sheet",
       "description": "v2-look Sheet: styled handle (open/closed opacity), dimmed overlay, rounded background, padded container and scroll view, plus the controlled composition, over the unstyled @tamagui/ui Sheet behavior.",
       "dependencies": [
-        "@tamagui/core",
+        "@tamagui/style",
         "@tamagui/sheet"
       ],
       "categories": [
@@ -396,7 +396,7 @@
       "title": "Slider",
       "description": "v2-look Slider: track color + radius, active-range fill color + radius, and thumb border/background/hover/press/focus color styling, over the unstyled @tamagui/ui Slider behavior (which keeps fill/clip/positioning + the thumb size mechanism).",
       "dependencies": [
-        "@tamagui/core",
+        "@tamagui/style",
         "@tamagui/slider"
       ],
       "categories": [
@@ -425,7 +425,7 @@
       "title": "Surface",
       "description": "Surface: a copied panel/well/toolbar fixture with composable chrome and interaction facets plus a relative `level` theme boundary. Nothing is on by default; every facet is opt-in.",
       "dependencies": [
-        "@tamagui/core",
+        "@tamagui/style",
         "@tamagui/stacks"
       ],
       "registryDependencies": [
@@ -459,7 +459,7 @@
       "title": "Switch",
       "description": "v2-look Switch: token-based frame and thumb sizing with theme background and focus styling, over the unstyled @tamagui/ui Switch behavior.",
       "dependencies": [
-        "@tamagui/core",
+        "@tamagui/style",
         "@tamagui/get-token",
         "@tamagui/switch"
       ],
@@ -484,7 +484,7 @@
       "title": "Tabs",
       "description": "v2-look Tabs: token-based trigger sizing with theme background, hover/press/focus styling, and disabled dimming over the unstyled @tamagui/ui Tabs behavior.",
       "dependencies": [
-        "@tamagui/core",
+        "@tamagui/style",
         "@tamagui/tabs",
         "@tamagui/text"
       ],
@@ -511,7 +511,7 @@
       "title": "Toast",
       "description": "v2-look Toast (v2 composable API): card background/border/radius/padding/shadow/focus outline, styled title/description text, rounded close button, action/cancel buttons, and the styled default toast content wired through Toast.List renderItem, over the unstyled @tamagui/toast behavior (state engine, stacking, drag-to-dismiss, timers).",
       "dependencies": [
-        "@tamagui/core",
+        "@tamagui/style",
         "@tamagui/stacks",
         "@tamagui/text",
         "@tamagui/toast"
@@ -549,7 +549,7 @@
       "title": "ToggleGroup",
       "description": "v2-look ToggleGroup: theme palette, border, hover/press/focus color styling, and the default active (pressed-on) appearance on the unstyled @tamagui/ui ToggleGroup Item. The behavior keeps only structural layout + the size mechanism and emits aria-pressed/data-state.",
       "dependencies": [
-        "@tamagui/core",
+        "@tamagui/style",
         "@tamagui/toggle-group"
       ],
       "categories": [

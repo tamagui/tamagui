@@ -1,5 +1,5 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { isTamaguiElement } from '@tamagui/core'
+import { isTamaguiElement } from '@tamagui/style'
 import type { DialogProps } from '@tamagui/dialog'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'

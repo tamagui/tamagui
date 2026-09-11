@@ -1,6 +1,6 @@
-import '@tamagui/core/reset.css'
+import '@tamagui/style/reset.css'
 
-import { Text, TamaguiProvider, Theme, View } from '@tamagui/core'
+import { Text, TamaguiProvider, Theme, View } from '@tamagui/style'
 import { styled, View as TailwindView } from '@tamagui/tailwind'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { ThemeUpdate } from 'tamagui'

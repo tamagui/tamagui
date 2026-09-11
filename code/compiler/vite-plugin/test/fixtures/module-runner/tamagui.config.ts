@@ -1,5 +1,5 @@
 import { defaultConfig } from '@tamagui/config/v6'
-import { createTamagui } from '@tamagui/core'
+import { createTamagui } from '@tamagui/style'
 import {
   modulePath as packageExportPath,
   resolution as packageExportResolution,

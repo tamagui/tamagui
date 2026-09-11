@@ -1,1 +1,1 @@
-Object.assign(module.exports, require('./dist/test.native.cjs'))
+module.exports = require('@tamagui/style/native-test')

@@ -10,7 +10,7 @@ import {
   style,
   styled,
   withStaticProperties,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import type { RenderResult } from '@testing-library/react'
 import { fireEvent, render } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vitest } from 'vitest'

@@ -1,4 +1,4 @@
-import { style, styled } from '@tamagui/core'
+import { style, styled } from '@tamagui/style'
 
 import { Checkbox } from '../src'
 

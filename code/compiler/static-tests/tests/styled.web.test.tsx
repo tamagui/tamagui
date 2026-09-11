@@ -17,7 +17,7 @@ describe('styled() tests', () => {
     const output = await extractForWeb(
       dedent`
       import { MyStack } from '@tamagui/test-design-system'
-      import { styled } from '@tamagui/core'
+      import { styled } from '@tamagui/style'
 
       // not exported
       const InlineStyled = styled(MyStack, {
@@ -62,7 +62,7 @@ describe('styled() tests', () => {
     `,
       {
         options: {
-          components: ['@tamagui/core', '@tamagui/tailwind'],
+          components: ['@tamagui/style', '@tamagui/tailwind'],
         },
       }
     )
@@ -98,7 +98,7 @@ describe('styled() tests', () => {
       {
         options: {
           enableDynamicEvaluation: true,
-          components: ['@tamagui/core', '@tamagui/tailwind'],
+          components: ['@tamagui/style', '@tamagui/tailwind'],
         },
       }
     )
@@ -159,7 +159,7 @@ describe('styled() tests', () => {
 
   test('extracts core style pieces and replaces their definition calls', async () => {
     const output = await extractForWeb(`
-      import { style, View } from '@tamagui/core'
+      import { style, View } from '@tamagui/style'
 
       const card = style({ backgroundColor: 'red', padding: 8 })
 
@@ -270,7 +270,7 @@ describe('styled() tests', () => {
       writeFileSync(
         componentFile,
         dedent`
-          import { styled, View } from '@tamagui/core'
+          import { styled, View } from '@tamagui/style'
 
           export const MyBox = styled(View, {
             backgroundColor: 'red',
@@ -288,7 +288,7 @@ describe('styled() tests', () => {
 
     test('extracts CSS for styled component imported from another file', async () => {
       const componentSource = dedent`
-        import { styled, View } from '@tamagui/core'
+        import { styled, View } from '@tamagui/style'
 
         export const MyBox = styled(View, {
           backgroundColor: 'red',

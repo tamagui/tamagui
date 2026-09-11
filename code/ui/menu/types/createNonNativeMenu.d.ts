@@ -57,11 +57,11 @@ export declare function createNonNativeMenu(): {
         (props: ScopedProps<MenuPortalProps>): React.JSX.Element;
         displayName: string;
     };
-    Content: import("@tamagui/web").TamaguiComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof BaseMenuContentProps> & BaseMenuContentProps & {
+    Content: import("@tamagui/web").TamaguiComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof BaseMenuContentProps> & BaseMenuContentProps & {
         scope?: string;
     }, keyof MenuContentProps> & MenuContentProps & {
         scope?: string;
-    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & BaseMenuContentProps & {
+    }, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & BaseMenuContentProps & {
         scope?: string;
     } & MenuContentProps & {
         scope?: string;
@@ -102,11 +102,11 @@ export declare function createNonNativeMenu(): {
     SubTrigger: import("@tamagui/web").RefComponent<TamaguiElement, BaseMenuSubTriggerProps & {
         scope?: string;
     }>;
-    SubContent: import("@tamagui/web").TamaguiComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof BaseMenuSubContentProps> & BaseMenuSubContentProps & {
+    SubContent: import("@tamagui/web").TamaguiComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof BaseMenuSubContentProps> & BaseMenuSubContentProps & {
         scope?: string;
     }, keyof BaseMenuSubContentProps> & BaseMenuSubContentProps & {
         scope?: string;
-    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & BaseMenuSubContentProps & {
+    }, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & BaseMenuSubContentProps & {
         scope?: string;
     } & {
         scope?: string;

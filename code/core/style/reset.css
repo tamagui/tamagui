@@ -1,0 +1,62 @@
+/* mimic the native viewport full width/height + flex */
+body,
+#root,
+#__next {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: calc(100vw - (100vw - 100%)); /* reserve space for scrollbar */
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+}
+
+li,
+select,
+input,
+button,
+[role='slider'],
+[role='listbox'] {
+  outline: none;
+}
+
+.tm-fieldset {
+  all: unset;
+}
+
+:where(p, input, textarea, button, ul, ol, li, pre, dialog) {
+  all: unset;
+  box-sizing: border-box;
+}
+
+/* `all: unset` above also unsets display, and this rule and the design
+   system's `:where(.is_View)` base are both zero specificity, so whichever
+   sheet loads last wins. Restate the base display so a tamagui-rendered
+   <button> or <p> keeps its layout however the sheets are ordered. */
+:where(.is_View) {
+  display: flex;
+}
+:where(.is_Text) {
+  display: inline;
+}
+
+a.tm-button,
+.tm-anchor:has(.tm-button) {
+  text-decoration: none;
+}

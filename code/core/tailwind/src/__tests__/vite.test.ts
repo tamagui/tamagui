@@ -165,7 +165,7 @@ describe('the Tailwind Vite plugin', () => {
   })
 
   test('layers the Tamagui core reset so Tailwind theme and utilities order after it', async () => {
-    const resetPath = require.resolve('@tamagui/core/reset.css')
+    const resetPath = require.resolve('@tamagui/style/reset.css')
     const reset = await readFile(resetPath, 'utf8')
 
     expect(isTamaguiCoreResetCSS(resetPath)).toBe(true)

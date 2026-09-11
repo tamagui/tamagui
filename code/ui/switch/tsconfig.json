@@ -5,7 +5,7 @@
   },
   "references": [
     {
-      "path": "../../core/core"
+      "path": "../../core/style"
     },
     {
       "path": "../../core/react-native-types"

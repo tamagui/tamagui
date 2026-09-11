@@ -1,4 +1,4 @@
-import type { GetProps } from '@tamagui/core'
+import type { GetProps } from '@tamagui/style'
 import {
   composeEventHandlers,
   createStyledHOC,
@@ -8,7 +8,7 @@ import {
   type ThemeProps,
   View,
   withStaticProperties,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { useSwitch } from '@tamagui/switch-headless'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'

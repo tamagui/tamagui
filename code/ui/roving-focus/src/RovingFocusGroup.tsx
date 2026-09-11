@@ -10,7 +10,7 @@ import {
   createRefComponent,
   type GetRef,
   type TamaguiChangeEventDetails,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'

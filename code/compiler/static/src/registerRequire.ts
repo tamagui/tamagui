@@ -167,7 +167,7 @@ export function registerRequire(
       return og.apply(this, ['tamagui/native'])
     }
 
-    if (path === '@tamagui/core') {
+    if (path === '@tamagui/style' || path === '@tamagui/core') {
       return requireTamaguiCore(platform, (path) => {
         return og.apply(this, [path])
       })

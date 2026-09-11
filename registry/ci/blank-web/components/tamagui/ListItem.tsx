@@ -9,7 +9,7 @@ import {
   type GetProps,
   styled,
   withStaticProperties,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import {
   type ListItemBehaviorProps,
   ListItemContext,

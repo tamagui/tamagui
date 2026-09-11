@@ -1,5 +1,5 @@
-import { TamaguiProvider } from '@tamagui/core'
-import { ThemeUpdate } from '@tamagui/core/theme-update'
+import { TamaguiProvider } from '@tamagui/style'
+import { ThemeUpdate } from '@tamagui/style/theme-update'
 import { View } from '@tamagui/tailwind'
 import { createElement, type ComponentProps } from 'react'
 

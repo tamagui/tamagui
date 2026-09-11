@@ -207,7 +207,7 @@ describe('compiler project stamp', () => {
   })
 
   test('the stamp reads engine package bytes, not just their version', async () => {
-    // @tamagui/core and @tamagui/web are esbuild-external, so the generated
+    // @tamagui/style and @tamagui/web are esbuild-external, so the generated
     // bundles carry none of their bytes. Editing the engine in place at the same
     // version is what `bun run watch` and `bun release --into` do all day, and
     // it has to move the stamp or every plan built by the previous engine is
@@ -215,7 +215,7 @@ describe('compiler project stamp', () => {
     const project = await loadTamagui({
       platform: 'web',
       config: resolve(import.meta.dirname, 'lib/tamagui.config.cjs'),
-      components: ['@tamagui/core'],
+      components: ['@tamagui/style'],
     })
     const stampSources = project?.stampSources ?? []
     const engineRoot = dirname(

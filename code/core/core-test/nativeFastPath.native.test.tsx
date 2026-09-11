@@ -24,7 +24,7 @@ import {
   type NativeStyleEngineSlots,
   type NativeViewStateTableUpdate,
   type NativeViewStateUpdate,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { act, render } from '@testing-library/react-native'
 import React, { forwardRef, useMemo, useState } from 'react'
 import { View as NativeView } from 'react-native'

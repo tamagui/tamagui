@@ -6,7 +6,7 @@ import { extractForNative, extractForWeb } from './lib/extract'
 window['React'] = React
 
 const fixture = `
-  import { html, style } from '@tamagui/core/dom'
+  import { html, style } from '@tamagui/style/dom'
   const root = style({ backgroundColor: 'white', padding: 8 })
   const emphasized = style({ color: 'red', fontWeight: 'bold' })
   declare const active: boolean

@@ -13,7 +13,7 @@
 // name-resolution divergences pass for the wrong reason.
 
 import { defaultConfig as v6 } from '@tamagui/config/v6'
-import { TamaguiProvider, createTamagui, getSplitStyles } from '@tamagui/core'
+import { TamaguiProvider, createTamagui, getSplitStyles } from '@tamagui/style'
 import { renderToString } from 'react-dom/server'
 import { beforeAll, expect, test } from 'vitest'
 import { getTailwindClassPlan } from '../tailwind/src/candidate'

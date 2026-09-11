@@ -1,6 +1,6 @@
 import type { RefComponent } from '@tamagui/compose-refs'
-import type { ReservedThemePropName, VariableValIn } from '@tamagui/core'
-import { ThemeUpdate as ThemeUpdateImplementation } from '@tamagui/core/theme-update'
+import type { ReservedThemePropName, VariableValIn } from '@tamagui/style'
+import { ThemeUpdate as ThemeUpdateImplementation } from '@tamagui/style/theme-update'
 import type { ReactNode } from 'react'
 import type { ThemeKeys } from '.'
 

@@ -10,7 +10,7 @@ import {
   plainValueToPayload,
   type FrontendClassPlanEntry,
   type FrontendClassSink,
-} from '@tamagui/core/internal-runtime'
+} from '@tamagui/style/internal-runtime'
 import {
   canonicalClauseModifier,
   splitColorOpacitySuffix,

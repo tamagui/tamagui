@@ -16,7 +16,7 @@
       "path": "../constants"
     },
     {
-      "path": "../core"
+      "path": "../style"
     },
     {
       "path": "../helpers"

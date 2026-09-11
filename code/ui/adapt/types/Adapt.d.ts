@@ -1,4 +1,4 @@
-import type { AllPlatforms, MediaQueryKey } from '@tamagui/core';
+import type { AllPlatforms, MediaQueryKey } from '@tamagui/style';
 import React from 'react';
 type AdaptSlotStore = {
     element: React.ReactNode;
@@ -71,7 +71,7 @@ export type AdaptProps = {
     children: React.JSX.Element | ((contents: React.ReactNode, adapt: AdaptRenderState) => React.ReactNode);
 };
 type Component = (props: any) => any;
-export declare const AdaptContext: import("@tamagui/core").StyledContext<AdaptParentContextI, "Contents" | "active" | "handoff" | "portalName" | "registerContents" | "registerRenderCallback" | "registerTarget" | "scopeName" | "setAdaptConfig" | "slot" | "targetFullyHidden" | "unregisterContents" | "unregisterRenderCallback" | "unregisterTarget">;
+export declare const AdaptContext: import("@tamagui/style").StyledContext<AdaptParentContextI, "Contents" | "active" | "handoff" | "portalName" | "registerContents" | "registerRenderCallback" | "registerTarget" | "scopeName" | "setAdaptConfig" | "slot" | "targetFullyHidden" | "unregisterContents" | "unregisterRenderCallback" | "unregisterTarget">;
 export declare const ProvideAdaptContext: ({ children, ...context }: AdaptParentContextI & {
     children: any;
 }) => React.JSX.Element;

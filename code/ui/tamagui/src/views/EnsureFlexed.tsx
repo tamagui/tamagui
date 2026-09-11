@@ -1,4 +1,4 @@
-import { Text, styled } from '@tamagui/core'
+import { Text, styled } from '@tamagui/style'
 
 // expands flex elements when they should push a far as they "want" naturally
 

@@ -7,7 +7,7 @@ window['React'] = React
 
 test('standalone style handles lower without a runtime style call', async () => {
   const output = await extractForWeb(`
-    import { html, style } from '@tamagui/core/dom'
+    import { html, style } from '@tamagui/style/dom'
     const root = style({ color: 'red', padding: 4 })
     export const App = () => <html.main style={root}>hello</html.main>
   `)
@@ -44,7 +44,7 @@ test('standalone inline, array and conditional handles compose in compiled calls
 
 test('standalone handles share Tamagui pseudo, media and theme lowering', async () => {
   const output = await extractForWeb(`
-    import { html, style } from '@tamagui/core/dom'
+    import { html, style } from '@tamagui/style/dom'
     const responsive = style({
       opacity: '1 hover:0.5',
       padding: '4 sm:6',
@@ -62,7 +62,7 @@ test('standalone handles share Tamagui pseudo, media and theme lowering', async 
 
 test('web lowering preserves strict host behavior defaults and aliases', async () => {
   const output = await extractForWeb(`
-    import { html } from '@tamagui/core'
+    import { html } from '@tamagui/style'
     export const App = () => (
       <>
         <html.button role="none">save</html.button>

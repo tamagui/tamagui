@@ -1,4 +1,4 @@
-import type { NativeValue, SizeTokens, TamaguiChangeEventDetails, TamaguiEventDetails, ViewProps } from '@tamagui/core';
+import type { NativeValue, SizeTokens, TamaguiChangeEventDetails, TamaguiEventDetails, ViewProps } from '@tamagui/style';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { HTMLProps, MutableRefObject, ReactNode, RefObject } from 'react';
 import type { SelectItemRegistry, SelectMode, SelectSelection } from './selectionController';

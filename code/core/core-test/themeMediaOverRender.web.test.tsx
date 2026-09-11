@@ -23,7 +23,7 @@ import {
   updateMediaListeners,
   useMedia,
   useTheme,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { act, render } from '@testing-library/react'
 import { memo, useState } from 'react'
 import { afterAll, beforeAll, describe, expect, test } from 'vitest'

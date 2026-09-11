@@ -1,4 +1,4 @@
-import { Text as CoreText } from '@tamagui/core'
+import { Text as CoreText } from '@tamagui/style'
 import { H1, Text, styled } from 'tamagui'
 
 // Test case for GitHub issue #3789: Nested Text breaks inheritance of some styles/props

@@ -3,7 +3,7 @@ process.env.TAMAGUI_TARGET = 'web'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { describe, expect, test } from 'vitest'
 
-import { View, createStyledContext, createTamagui, styled } from '../core/src'
+import { View, createStyledContext, createTamagui, styled } from '../style/src'
 import { simplifiedGetSplitStyles } from './utils'
 
 createTamagui(getDefaultTamaguiConfig('web'))

@@ -1,4 +1,4 @@
-import { TamaguiProvider, createTamagui, html } from '@tamagui/core'
+import { TamaguiProvider, createTamagui, html } from '@tamagui/style'
 import { fireEvent, render } from '@testing-library/react'
 import { createRef } from 'react'
 import { expect, test, vi } from 'vitest'

@@ -1,5 +1,5 @@
 import { defaultConfig } from '@tamagui/config/v6'
-import { createTamagui } from '@tamagui/core'
+import { createTamagui } from '@tamagui/style'
 import { hydrateRoot } from 'react-dom/client'
 import { renderToString } from 'react-dom/server.browser'
 import { TamaguiProvider, useTheme } from 'tamagui'

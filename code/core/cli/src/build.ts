@@ -195,7 +195,7 @@ export const build = async (
       const projectInfo = await loadTamagui(targetOptions)
       if (!projectInfo) throw new Error(`Unable to load Tamagui for the ${target} build`)
       const componentModules = [
-        ...new Set(['@tamagui/core', ...(targetOptions.components ?? [])]),
+        ...new Set(['@tamagui/style', ...(targetOptions.components ?? [])]),
       ].map((moduleName) => {
         const id = resolveCompilerId(moduleName, join(root, '__tamagui_cli__.tsx'))
         if (!id) throw new Error(`Unable to resolve compiler component ${moduleName}`)

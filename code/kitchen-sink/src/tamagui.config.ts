@@ -3,7 +3,7 @@ import { createAnimations as createAnimationsMotion } from '@tamagui/animations-
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { createAnimations as createAnimationsReanimated } from '@tamagui/animations-reanimated'
 import { defaultConfig } from '@tamagui/config/v6'
-import { createTamagui, isWeb } from '@tamagui/core'
+import { createTamagui, isWeb } from '@tamagui/style'
 import type { InferTamaguiConfig } from '@tamagui/web'
 import { themeDev, type TamaguiThemes } from './themes/theme.dev'
 

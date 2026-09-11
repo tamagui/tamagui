@@ -4,7 +4,7 @@ import {
   SwitchThumbFrame as SwitchBehaviorThumbFrame,
 } from '@tamagui/switch'
 import { resolveSize } from '@tamagui/size'
-import { type GetProps, styled } from '@tamagui/core'
+import { type GetProps, styled } from '@tamagui/style'
 
 // the track is the checkbox square stretched into a pill, so a switch and a
 // checkbox at the same size read as the same weight (Checkbox.tsx uses the same

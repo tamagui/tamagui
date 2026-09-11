@@ -1,4 +1,4 @@
-import { createStyledContext } from '@tamagui/core'
+import { createStyledContext } from '@tamagui/style'
 import type { TokenSize } from '@tamagui/size'
 import type { TabsProps } from './Tabs'
 

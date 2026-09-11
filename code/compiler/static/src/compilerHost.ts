@@ -111,6 +111,9 @@ interface TamaguiLoweringComponent extends LoweringComponent {
 const DOM_FRONTENDS = new Set([
   'tamagui',
   'tamagui/dom',
+  '@tamagui/style',
+  '@tamagui/style/dom',
+  // @tamagui/core is an alias for @tamagui/style, so user code may name either
   '@tamagui/core',
   '@tamagui/core/dom',
   '@tamagui/tailwind',
@@ -2995,7 +2998,7 @@ export function createTamaguiCompilerHost(
                   origin: input.element.component.span,
                 },
                 {
-                  content: `\nconst ${fastLocal} = require('@tamagui/core')._withNativeStyle(${nativeLocal}, ${nativeStyleSource}, ${nativeFastPath.mappingLocal});`,
+                  content: `\nconst ${fastLocal} = require('@tamagui/style')._withNativeStyle(${nativeLocal}, ${nativeStyleSource}, ${nativeFastPath.mappingLocal});`,
                   origin: input.element.component.span,
                 },
               ],
@@ -3209,7 +3212,7 @@ export function createTamaguiCompilerHost(
                 origin: input.element.component.span,
               },
               {
-                content: `\nconst ${stableLocal} = require('@tamagui/core')._withStableStyle(${nativeLocal}, (_theme, expressions) => [${styleParts.join(', ')}], ${themedStyleKeys ? 'true' : 'false'}, false);`,
+                content: `\nconst ${stableLocal} = require('@tamagui/style')._withStableStyle(${nativeLocal}, (_theme, expressions) => [${styleParts.join(', ')}], ${themedStyleKeys ? 'true' : 'false'}, false);`,
                 origin: input.element.component.span,
               },
             ],

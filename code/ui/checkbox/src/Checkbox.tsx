@@ -6,7 +6,7 @@ import type {
   CheckboxExtraProps as HeadlessCheckboxExtraProps,
 } from '@tamagui/checkbox-headless'
 import { isIndeterminate, useCheckbox } from '@tamagui/checkbox-headless'
-import type { GetProps, NativeValue, SizeTokens, StylePiece } from '@tamagui/core'
+import type { GetProps, NativeValue, SizeTokens, StylePiece } from '@tamagui/style'
 import {
   createStyledHOC,
   isWeb,
@@ -14,7 +14,7 @@ import {
   styled,
   View,
   withStaticProperties,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { registerFocusable } from '@tamagui/focusable'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React, { useMemo } from 'react'

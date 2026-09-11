@@ -1,4 +1,4 @@
-import { styled } from '@tamagui/core'
+import { styled } from '@tamagui/style'
 import { describe, expect, test } from 'vitest'
 import { Sheet } from '../src/Sheet'
 import { isSheetOverlayComponent } from '../src/SheetImplementationCustom'

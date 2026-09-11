@@ -15,7 +15,7 @@ import {
   useThemeName,
   createRefComponent,
   formatDiagnostic,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { needsPortalRepropagation, Portal } from '@tamagui/portal'
 import React, { useState } from 'react'
 import type { PanResponderConfig } from '@tamagui/react-native-pan-responder'

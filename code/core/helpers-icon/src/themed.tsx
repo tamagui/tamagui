@@ -5,7 +5,7 @@ import {
   useTheme,
   type FontSizeTokens,
   type ResolveVariableAs,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { getFontSize } from '@tamagui/font-size'
 import { resolveSize, SizeContext } from '@tamagui/size'
 

@@ -13,7 +13,7 @@ import {
   setNativeStyleEngine,
   setNativeStyleEngineFlushListener,
   type NativeStyleEngine,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import * as registry from '@tamagui/native-registry'
 
 const COUNT = 400

@@ -1,0 +1,164 @@
+{
+  "name": "@tamagui/style",
+  "version": "2.7.7",
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
+  "license": "MIT",
+  "author": {
+    "name": "Nate Wienert"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tamagui/tamagui.git",
+    "directory": "code/core/style"
+  },
+  "source": "src/index.tsx",
+  "type": "module",
+  "sideEffects": [
+    "*.css",
+    "**/runtime.*"
+  ],
+  "files": [
+    "src",
+    "types",
+    "dist",
+    "inject-styles",
+    "inject-styles.cjs",
+    "internal-runtime",
+    "static-resolve",
+    "native",
+    "native.cjs",
+    "native.d.ts",
+    "native-test",
+    "native-test.cjs",
+    "native-test.d.ts",
+    "reactNativeTypes",
+    "reactNativeTypes.cjs",
+    "reset.css"
+  ],
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    "./reset.css": "./reset.css",
+    ".": {
+      "types": "./types/index.d.ts",
+      "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.mjs"
+    },
+    "./theme-update": {
+      "types": "./types/theme-update.d.ts",
+      "react-native": "./dist/esm/theme-update.native.js",
+      "browser": "./dist/esm/theme-update.mjs",
+      "module": "./dist/esm/theme-update.mjs",
+      "import": "./dist/esm/theme-update.mjs",
+      "require": "./dist/cjs/theme-update.cjs",
+      "default": "./dist/esm/theme-update.mjs"
+    },
+    "./native": {
+      "types": "./types/index.d.ts",
+      "react-native": "./dist/native.cjs",
+      "browser": "./dist/native.cjs",
+      "module": "./dist/native.cjs",
+      "import": "./dist/native.cjs",
+      "require": "./dist/native.cjs",
+      "default": "./dist/native.cjs"
+    },
+    "./native-test": {
+      "types": "./types/index.d.ts",
+      "react-native": "./dist/test.native.cjs",
+      "browser": "./dist/test.native.cjs",
+      "module": "./dist/test.native.cjs",
+      "import": "./dist/test.native.cjs",
+      "require": "./dist/test.native.cjs",
+      "default": "./dist/test.native.cjs"
+    },
+    "./dom": {
+      "react-native": {
+        "types": "./types/dom.native.d.ts",
+        "default": "./dist/esm/dom.native.js"
+      },
+      "types": "./types/dom.d.ts",
+      "browser": "./dist/esm/dom.mjs",
+      "module": "./dist/esm/dom.mjs",
+      "import": "./dist/esm/dom.mjs",
+      "require": "./dist/cjs/dom.cjs",
+      "default": "./dist/esm/dom.mjs"
+    },
+    "./internal-runtime": {
+      "types": "./types/internal-runtime.d.ts",
+      "react-native": "./dist/esm/internal-runtime.native.js",
+      "browser": "./dist/esm/internal-runtime.mjs",
+      "module": "./dist/esm/internal-runtime.mjs",
+      "import": "./dist/esm/internal-runtime.mjs",
+      "require": "./dist/cjs/internal-runtime.cjs",
+      "default": "./dist/esm/internal-runtime.mjs"
+    },
+    "./static-resolve": {
+      "types": "./types/static-resolve.d.ts",
+      "react-native": "./dist/esm/static-resolve.native.js",
+      "browser": "./dist/esm/static-resolve.mjs",
+      "module": "./dist/esm/static-resolve.mjs",
+      "import": "./dist/esm/static-resolve.mjs",
+      "require": "./dist/cjs/static-resolve.cjs",
+      "default": "./dist/esm/static-resolve.mjs"
+    },
+    "./inject-styles": {
+      "types": "./types/inject-styles.d.ts",
+      "react-native": "./dist/esm/inject-styles.mjs",
+      "browser": "./dist/esm/inject-styles.mjs",
+      "module": "./dist/esm/inject-styles.mjs",
+      "import": "./dist/esm/inject-styles.mjs",
+      "require": "./dist/cjs/inject-styles.cjs",
+      "default": "./dist/cjs/inject-styles.cjs"
+    },
+    "./reactNativeTypes": {
+      "types": "./types/reactNativeTypes.d.ts",
+      "react-native": "./dist/esm/reactNativeTypes.native.js",
+      "browser": "./dist/esm/reactNativeTypes.mjs",
+      "module": "./dist/esm/reactNativeTypes.mjs",
+      "import": "./dist/esm/reactNativeTypes.mjs",
+      "require": "./dist/cjs/reactNativeTypes.cjs",
+      "default": "./dist/esm/reactNativeTypes.mjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "afterBuild": "node bundle-native.mjs",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/react-native-media-driver": "workspace:*",
+    "@tamagui/react-native-use-pressable": "workspace:*",
+    "@tamagui/size": "workspace:*",
+    "@tamagui/use-element-layout": "workspace:*",
+    "@tamagui/use-event": "workspace:*",
+    "@tamagui/web": "workspace:*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "@tamagui/native-bundle": "workspace:*",
+    "@tamagui/react-native-web-lite": "workspace:*",
+    "@testing-library/react": "^16.1.0",
+    "csstype": "^3.0.10",
+    "react": "19.2.3",
+    "react-native": "0.86.2",
+    "typescript": "~6.0.3",
+    "vitest": "4.1.0"
+  },
+  "peerDependencies": {
+    "react": ">=19"
+  }
+}

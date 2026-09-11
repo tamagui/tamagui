@@ -1,7 +1,7 @@
 process.env.TAMAGUI_TARGET = 'native'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, View, createTamagui, styled } from '@tamagui/core'
+import { TamaguiProvider, View, createTamagui, styled } from '@tamagui/style'
 import { render } from '@testing-library/react-native'
 import { expect, test } from 'vitest'
 

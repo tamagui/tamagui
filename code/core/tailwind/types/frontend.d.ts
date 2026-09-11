@@ -1,4 +1,4 @@
-import { type StyleFrontend, type StyleFrontendConfig } from '@tamagui/core/internal-runtime';
+import { type StyleFrontend, type StyleFrontendConfig } from '@tamagui/style/internal-runtime';
 /**
  * The Tailwind frontend descriptor.
  *

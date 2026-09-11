@@ -11,7 +11,7 @@
       "path": "../../core/constants"
     },
     {
-      "path": "../../core/core"
+      "path": "../../core/style"
     },
     {
       "path": "../../core/create-context"

@@ -14,7 +14,7 @@ import {
   type SideObject,
 } from '@tamagui/floating'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { createChangeEventDetails, useEvent, useIsTouchDevice } from '@tamagui/core'
+import { createChangeEventDetails, useEvent, useIsTouchDevice } from '@tamagui/style'
 import { composeEventHandlers } from '@tamagui/helpers'
 import * as React from 'react'
 import { SCROLL_ARROW_THRESHOLD } from './constants'

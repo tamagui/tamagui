@@ -1,10 +1,10 @@
 /**
- * The one platform setup path for `@tamagui/core`: native base views, the element
+ * The one platform setup path for `@tamagui/style`: native base views, the element
  * layout/measure hooks, the react-native media driver, and the provider wrapper
  * that enables layout measurement.
  *
  * Importing this module runs `setupHooks` as a side effect. Both the regular root
- * (`@tamagui/core`) and the private `@tamagui/core/internal-runtime` entry import
+ * (`@tamagui/style`) and the private `@tamagui/style/internal-runtime` entry import
  * it, so setup happens exactly once and import order never selects behavior.
  *
  * It reaches the shared runtime through `@tamagui/web/internal-runtime` rather than

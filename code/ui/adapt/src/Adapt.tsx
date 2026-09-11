@@ -5,8 +5,8 @@ import {
   isWeb,
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
-import type { AllPlatforms, MediaQueryKey } from '@tamagui/core'
-import { createStyledContext, useMedia } from '@tamagui/core'
+import type { AllPlatforms, MediaQueryKey } from '@tamagui/style'
+import { createStyledContext, useMedia } from '@tamagui/style'
 import { withStaticProperties } from '@tamagui/helpers'
 import { StackZIndexContext } from '@tamagui/z-index-stack'
 import React, { createContext, useContext, useId } from 'react'

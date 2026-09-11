@@ -15,7 +15,7 @@ for (const syntax of ['tailwind', 'unstyled']) {
     await page.evaluate(() => {
       ;(window as any).__docsNavigationMarker = true
     })
-    const next = page.getByRole('link', { name: '@tamagui/core', exact: true })
+    const next = page.getByRole('link', { name: '@tamagui/style', exact: true })
     await expect(next).toHaveAttribute('href', `/${syntax}/core/configuration`)
     await next.click()
     await expect(page).toHaveURL(new RegExp(`/${syntax}/core/configuration$`))

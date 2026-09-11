@@ -1,9 +1,9 @@
-import * as core from '@tamagui/core'
-import * as dom from '@tamagui/core/dom'
+import * as core from '@tamagui/style'
+import * as dom from '@tamagui/style/dom'
 import { describe, expect, test } from 'vitest'
 
 /**
- * The standalone DOM entry, `@tamagui/core/dom` (and its `tamagui/dom` alias).
+ * The standalone DOM entry, `@tamagui/style/dom` (and its `tamagui/dom` alias).
  *
  * Two things matter here and they pull in opposite directions. The entry has to
  * exist and be importable, because import provenance is how the compiler tells
@@ -44,13 +44,13 @@ describe('being compile-only', () => {
   })
 
   test('says which entry to use instead', () => {
-    expect(() => dom.style({})).toThrow(/@tamagui\/core/)
+    expect(() => dom.style({})).toThrow(/@tamagui\/style/)
   })
 })
 
 describe('the regular namespace, by contrast', () => {
   test('is a real component and does not throw', () => {
-    // the same tag name from `@tamagui/core` renders on web; only the
+    // the same tag name from `@tamagui/style` renders on web; only the
     // standalone entry is compile-only there
     expect(typeof core.html.div).toBe('object')
     expect(core.html.div).not.toBe(dom.html.div)

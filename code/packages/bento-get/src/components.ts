@@ -970,7 +970,7 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'SwitchCustomIcons',
     category: 'forms',
     categorySection: 'switches',
-    dependencies: ['@tamagui/lucide-icons-2', '@tamagui/core'],
+    dependencies: ['@tamagui/lucide-icons-2', '@tamagui/style'],
     moveFilesToFolder: [
       { file: 'SwitchCustomIcons', to: '' },
       { file: 'switchParts', to: 'common' },

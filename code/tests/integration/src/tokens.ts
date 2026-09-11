@@ -1,4 +1,4 @@
-import { createTokens } from '@tamagui/core'
+import { createTokens } from '@tamagui/style'
 
 const size = {
   0: 0,

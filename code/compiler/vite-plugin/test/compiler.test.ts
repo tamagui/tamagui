@@ -17,7 +17,7 @@ import { afterAll, beforeAll, expect, test } from 'vitest'
 const root = resolve(import.meta.dirname, 'fixtures/compiler')
 const appId = resolve(root, 'App.compiled.jsx')
 const tokensId = resolve(root, 'tokens.ts')
-const coreId = resolve(root, 'node_modules/@tamagui/core/index.mjs')
+const coreId = resolve(root, 'node_modules/@tamagui/style/index.mjs')
 const runtimeId = resolve(root, 'node_modules/react/jsx-runtime.js')
 const configPath = resolve(
   import.meta.dirname,
@@ -37,7 +37,7 @@ beforeAll(() => {
   projectInfo = loadTamaguiSync({
     platform: 'web',
     config: configPath,
-    components: ['@tamagui/core'],
+    components: ['@tamagui/style'],
   })
 })
 
@@ -46,7 +46,7 @@ test('Vite-owned resolver graph lowers compiled JSX and invalidates linked alias
   const source = `
 // π🙂 Vite compiled source-map sentinel
 import { jsx } from 'react/jsx-runtime'
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 import { space } from '~/tokens'
 export const App = () => jsx(View, { padding: space, 'data-compiled': 'yes' })
 `
@@ -61,12 +61,12 @@ export const App = () => jsx(View, { padding: space, 'data-compiled': 'yes' })
       target: 'web',
       project: {
         projectInfo,
-        componentModules: [{ moduleName: '@tamagui/core', id: coreId }],
+        componentModules: [{ moduleName: '@tamagui/style', id: coreId }],
         generation,
       },
       async resolve(specifier) {
         resolveCalls++
-        if (specifier === '@tamagui/core') return { id: coreId }
+        if (specifier === '@tamagui/style') return { id: coreId }
         if (specifier === 'react/jsx-runtime') return { id: runtimeId, external: true }
         if (specifier === '~/tokens') return { id: tokensId }
         return null
@@ -104,7 +104,7 @@ export const App = () => jsx(View, { padding: space, 'data-compiled': 'yes' })
     target: 'web',
     project: {
       projectInfo,
-      componentModules: [{ moduleName: '@tamagui/core', id: coreId }],
+      componentModules: [{ moduleName: '@tamagui/style', id: coreId }],
       generation: 'vite-e3-fixture-v1',
     },
     async resolve() {
@@ -156,7 +156,7 @@ test.each([
     const appId = join(root, 'environment-app.tsx')
     const source = `
 import { jsx } from 'react/jsx-runtime'
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 import { space } from '~/tokens'
 export const App = () => jsx(View, { padding: space })
 `
@@ -174,12 +174,12 @@ export const App = () => jsx(View, { padding: space })
         environment,
         project: {
           projectInfo,
-          componentModules: [{ moduleName: '@tamagui/core', id: coreId }],
+          componentModules: [{ moduleName: '@tamagui/style', id: coreId }],
           generation: 'shared-generation',
           cacheStamp: null,
         },
         async resolve(specifier) {
-          if (specifier === '@tamagui/core') return { id: coreId }
+          if (specifier === '@tamagui/style') return { id: coreId }
           if (specifier === 'react/jsx-runtime') return { id: runtimeId, external: true }
           if (specifier === '~/tokens') return { id: tokenIds[environment] }
           return null
@@ -205,7 +205,7 @@ test('generic compiler session consumes only canonical host-resolved modules', a
     id: resolvedModuleId(appId),
     source: `
 import { jsx } from 'react/jsx-runtime'
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 import { space } from '~/tokens'
 export const App = () => jsx(View, { padding: space })
 `,
@@ -216,7 +216,7 @@ export const App = () => jsx(View, { padding: space })
         external: true,
       },
       {
-        specifier: '@tamagui/core',
+        specifier: '@tamagui/style',
         resolvedId: resolvedModuleId(coreId),
         external: true,
       },
@@ -235,7 +235,7 @@ export const App = () => jsx(View, { padding: space })
     target: 'web',
     tamaguiConfig: projectInfo.tamaguiConfig!,
     components: projectInfo.components!,
-    componentModules: [{ moduleName: '@tamagui/core', resolvedId: coreId }],
+    componentModules: [{ moduleName: '@tamagui/style', resolvedId: coreId }],
   })
   const adapter = {
     target: 'web' as const,
@@ -322,7 +322,7 @@ test('a fresh frontend reuses plans off disk and recompiles what a dependency ed
   const cachedTokensId = join(cacheRoot, 'tokens.ts')
   const source = `
 import { jsx } from 'react/jsx-runtime'
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 import { space } from '~/tokens'
 export const App = () => jsx(View, { padding: space })
 `
@@ -335,12 +335,12 @@ export const App = () => jsx(View, { padding: space })
       target: 'web',
       project: {
         projectInfo,
-        componentModules: [{ moduleName: '@tamagui/core', id: coreId }],
+        componentModules: [{ moduleName: '@tamagui/style', id: coreId }],
         generation: 'vite-plan-cache-v1',
         cacheStamp,
       },
       async resolve(specifier) {
-        if (specifier === '@tamagui/core') return { id: coreId }
+        if (specifier === '@tamagui/style') return { id: coreId }
         if (specifier === 'react/jsx-runtime') return { id: runtimeId, external: true }
         if (specifier === '~/tokens') return { id: cachedTokensId }
         return null

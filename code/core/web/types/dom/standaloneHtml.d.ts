@@ -10,7 +10,7 @@ import type { DOMStyleProps } from './standalone';
  *
  * @deprecated The standalone Tamagui DOM entries are demoted implementation
  * plumbing in V3. They keep working unchanged; new code should import `html`
- * from `tamagui` or `@tamagui/core`, where a tag is an ordinary Tamagui
+ * from `tamagui` or `@tamagui/style`, where a tag is an ordinary Tamagui
  * component the compiler optimizes.
  */
 export declare const html: {

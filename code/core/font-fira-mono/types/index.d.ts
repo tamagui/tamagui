@@ -1,4 +1,4 @@
-import type { GenericFont } from "@tamagui/core";
+import type { GenericFont } from "@tamagui/style";
 export declare const createFiraMonoFont: <A extends GenericFont<keyof typeof size>>(font?: Partial<A>) => A;
 declare const size: {
 	readonly 1: 10;

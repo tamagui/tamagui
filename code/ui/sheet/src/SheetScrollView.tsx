@@ -1,5 +1,5 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { createStyledHOC, isWeb, style, View, type GetProps } from '@tamagui/core'
+import { createStyledHOC, isWeb, style, View, type GetProps } from '@tamagui/style'
 import type { ScrollViewRef } from '@tamagui/scroll-view'
 import { ScrollView } from '@tamagui/scroll-view'
 import { useControllableState } from '@tamagui/use-controllable-state'

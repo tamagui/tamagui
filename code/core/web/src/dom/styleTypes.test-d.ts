@@ -6,7 +6,7 @@ import type { TamaguiStyleProps } from './styleTypes'
 /**
  * The drift alarm for `styleTypes.ts`.
  *
- * `@tamagui/core/dom` has to typecheck in a project with no react-native
+ * `@tamagui/style/dom` has to typecheck in a project with no react-native
  * installed, so the style grammar behind `style()` is defined from scratch
  * there. This file keeps that definition honest: it runs here, where
  * react-native *is* available, and checks the owned property set against both

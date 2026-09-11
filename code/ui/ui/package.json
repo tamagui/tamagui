@@ -55,7 +55,7 @@
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
     "@tamagui/context-menu": "workspace:*",
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/create-context": "workspace:*",
     "@tamagui/create-menu": "workspace:*",
     "@tamagui/dialog": "workspace:*",

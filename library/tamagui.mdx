@@ -1,9 +1,9 @@
-Tamagui is a style library `@tamagui/core`, and a separate UI kit `tamagui`. It
+Tamagui is a style library `@tamagui/style`, and a separate UI kit `tamagui`. It
 also has an optional optimizing compiler `@tamagui/static` that generally you
 only use through it's bundler plugins like `@tamagui/vite-plugin` or
 `@tamagui/metro-plugin` for Metro.
 
-Note `tamagui` is a superset of `@tamagui/core`, so you can use that in general
+Note `tamagui` is a superset of `@tamagui/style`, so you can use that in general
 for code generation.
 
 For the core style library you can do inline styles:
@@ -41,7 +41,7 @@ For more on styled, there's a doc `styled.mdx` you can look up. Variants
 generally can do a lot:
 
 ```tsx
-import { View, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/style'
 
 export const RoundedSquare = styled(View, {
   borderRadius: 20,
@@ -84,7 +84,7 @@ you define things, there's a readme in the docs called `configuration.mdx` you
 can look up for more on this:
 
 ```tsx
-import { createTamagui, getConfig } from '@tamagui/core'
+import { createTamagui, getConfig } from '@tamagui/style'
 
 export const config = createTamagui({
   // act like CSS variables at your root
@@ -133,9 +133,9 @@ export const config = createTamagui({
 // in other files use this:
 console.log(`config is`, getConfig())
 
-// get typescript types on @tamagui/core imports:
+// get typescript types on @tamagui/style imports:
 type AppConfig = typeof config
-declare module '@tamagui/core' {
+declare module '@tamagui/style' {
   interface TamaguiCustomConfig extends AppConfig {}
 }
 ```

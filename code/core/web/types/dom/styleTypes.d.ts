@@ -3,7 +3,7 @@ import type { Properties } from 'csstype';
  * The style grammar `style()` accepts, owned by Tamagui rather than borrowed
  * from react-native.
  *
- * `@tamagui/core/dom` is the one entry that must typecheck in a project with no
+ * `@tamagui/style/dom` is the one entry that must typecheck in a project with no
  * react-native installed, so nothing here may reference it. The regular
  * `View`/`Text` props still come from react-native's `ViewStyle`/`TextStyle`;
  * this is a parallel definition of the same property set, not a replacement for

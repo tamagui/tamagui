@@ -9,7 +9,7 @@ import {
 import { expect, test } from 'vitest'
 
 const sourceId = resolvedModuleId('/virtual/dom-normalization.tsx')
-const coreId = resolvedModuleId('/virtual/@tamagui/core.mjs')
+const coreId = resolvedModuleId('/virtual/@tamagui/style.mjs')
 const reactId = resolvedModuleId('/virtual/react.mjs')
 const jsxRuntimeId = resolvedModuleId('/virtual/react-jsx-runtime.mjs')
 
@@ -22,7 +22,7 @@ function normalize(source: string, imports: HostModuleInput['imports']) {
 
 test('imported html members normalize through JSX and runtime element forms', () => {
   const source = `
-import { html as h } from '@tamagui/core'
+import { html as h } from '@tamagui/style'
 import React, { createElement } from 'react'
 import { jsx, jsxs } from 'react/jsx-runtime'
 
@@ -33,7 +33,7 @@ export const createElementCall = createElement(h.article, null, 'named')
 export const memberCreateElementCall = React.createElement(h.footer, null, 'member')
 `
   const result = normalize(source, [
-    { specifier: '@tamagui/core', resolvedId: coreId, external: true },
+    { specifier: '@tamagui/style', resolvedId: coreId, external: true },
     { specifier: 'react', resolvedId: reactId, external: true },
     {
       specifier: 'react/jsx-runtime',
@@ -56,7 +56,7 @@ export const memberCreateElementCall = React.createElement(h.footer, null, 'memb
       tag: 'main',
       target: 'h.main',
       provenance: {
-        specifier: '@tamagui/core',
+        specifier: '@tamagui/style',
         importedName: 'html',
         resolvedId: coreId,
         external: true,
@@ -67,7 +67,7 @@ export const memberCreateElementCall = React.createElement(h.footer, null, 'memb
       tag: 'span',
       target: 'h.span',
       provenance: {
-        specifier: '@tamagui/core',
+        specifier: '@tamagui/style',
         importedName: 'html',
         resolvedId: coreId,
         external: true,
@@ -78,7 +78,7 @@ export const memberCreateElementCall = React.createElement(h.footer, null, 'memb
       tag: 'div',
       target: 'h.div',
       provenance: {
-        specifier: '@tamagui/core',
+        specifier: '@tamagui/style',
         importedName: 'html',
         resolvedId: coreId,
         external: true,
@@ -89,7 +89,7 @@ export const memberCreateElementCall = React.createElement(h.footer, null, 'memb
       tag: 'section',
       target: 'h.section',
       provenance: {
-        specifier: '@tamagui/core',
+        specifier: '@tamagui/style',
         importedName: 'html',
         resolvedId: coreId,
         external: true,
@@ -100,7 +100,7 @@ export const memberCreateElementCall = React.createElement(h.footer, null, 'memb
       tag: 'strong',
       target: 'h.strong',
       provenance: {
-        specifier: '@tamagui/core',
+        specifier: '@tamagui/style',
         importedName: 'html',
         resolvedId: coreId,
         external: true,
@@ -111,7 +111,7 @@ export const memberCreateElementCall = React.createElement(h.footer, null, 'memb
       tag: 'article',
       target: 'h.article',
       provenance: {
-        specifier: '@tamagui/core',
+        specifier: '@tamagui/style',
         importedName: 'html',
         resolvedId: coreId,
         external: true,
@@ -122,7 +122,7 @@ export const memberCreateElementCall = React.createElement(h.footer, null, 'memb
       tag: 'footer',
       target: 'h.footer',
       provenance: {
-        specifier: '@tamagui/core',
+        specifier: '@tamagui/style',
         importedName: 'html',
         resolvedId: coreId,
         external: true,
@@ -133,13 +133,13 @@ export const memberCreateElementCall = React.createElement(h.footer, null, 'memb
 
 test('non-html and unimported member targets keep the existing rejection', () => {
   const source = `
-import { Card } from '@tamagui/core'
+import { Card } from '@tamagui/style'
 const html = { div: Card }
 export const namespaced = <Card.Header />
 export const unrelated = <html.div />
 `
   const result = normalize(source, [
-    { specifier: '@tamagui/core', resolvedId: coreId, external: true },
+    { specifier: '@tamagui/style', resolvedId: coreId, external: true },
   ])
 
   expect(result.elements).toEqual([])
@@ -159,7 +159,7 @@ export const unrelated = <html.div />
 
 test('materialization preserves syntax-level literal origin', () => {
   const source = `
-import { html } from '@tamagui/core'
+import { html } from '@tamagui/style'
 const bound = 'bound'
 export const fixture = (
   <html.div>
@@ -176,7 +176,7 @@ export const fixture = (
       {
         id: sourceId,
         source,
-        imports: [{ specifier: '@tamagui/core', resolvedId: coreId, external: true }],
+        imports: [{ specifier: '@tamagui/style', resolvedId: coreId, external: true }],
       },
     ],
   })

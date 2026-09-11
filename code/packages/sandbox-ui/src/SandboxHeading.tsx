@@ -1,4 +1,4 @@
-import { Text, styled } from '@tamagui/core'
+import { Text, styled } from '@tamagui/style'
 
 export const SandboxHeading = styled(Text, {
   render: 'h1',

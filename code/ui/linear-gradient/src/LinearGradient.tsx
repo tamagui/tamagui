@@ -1,4 +1,4 @@
-import type { ColorTokens, GetProps, ThemeTokens } from '@tamagui/core'
+import type { ColorTokens, GetProps, ThemeTokens } from '@tamagui/style'
 import {
   createStyledHOC,
   getTokens,
@@ -6,7 +6,7 @@ import {
   normalizeColor,
   styled,
   useTheme,
-} from '@tamagui/core'
+} from '@tamagui/style'
 import { YStack } from '@tamagui/stacks'
 import type { ViewStyle } from '@tamagui/react-native-types'
 

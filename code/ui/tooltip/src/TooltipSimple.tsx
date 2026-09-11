@@ -1,4 +1,4 @@
-import { createRefComponent } from '@tamagui/core'
+import { createRefComponent } from '@tamagui/style'
 import { resolveSize } from '@tamagui/size'
 import type { YStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'

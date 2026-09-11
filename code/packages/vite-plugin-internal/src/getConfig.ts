@@ -91,19 +91,25 @@ export function getConfig(tamaguiPlugin: any) {
                 conditions: ['react-native', 'require', 'default'],
                 alias: [
                   {
+                    find: /^@tamagui\/style$/,
+                    replacement: '@tamagui/style/native-test',
+                  },
+                  {
+                    // @tamagui/core is an alias package for @tamagui/style; point it
+                    // at the same native-test artifact so both stay one instance
                     find: /^@tamagui\/core$/,
-                    replacement: '@tamagui/core/native-test',
+                    replacement: '@tamagui/style/native-test',
                   },
                   {
                     find: /^@tamagui\/web$/,
-                    replacement: '@tamagui/core/native-test',
+                    replacement: '@tamagui/style/native-test',
                   },
                 ],
                 extensions: nativeExtensions,
               },
 
               optimizeDeps: {
-                include: ['@tamagui/constants', '@tamagui/web', '@tamagui/core'],
+                include: ['@tamagui/constants', '@tamagui/web', '@tamagui/style'],
                 extensions: nativeExtensions,
                 jsx: 'automatic',
               },

@@ -16,7 +16,7 @@ import {
 
 import config from '../tamagui.config'
 
-// import '@tamagui/core/reset.css'
+// import '@tamagui/style/reset.css'
 
 // webpack fix..
 if (typeof require !== 'undefined') {

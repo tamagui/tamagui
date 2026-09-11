@@ -1,4 +1,4 @@
-import { Text, View, createTamagui } from '@tamagui/core'
+import { Text, View, createTamagui } from '@tamagui/style'
 import { beforeAll, describe, expect, test, vi } from 'vitest'
 import { isColorStyleKey } from '../web/src/helpers/getDynamicVal'
 

@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@tamagui/config": "workspace:*",
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/next-theme": "workspace:*",
     "next": "16.2.11",
     "react": "19.2.3",

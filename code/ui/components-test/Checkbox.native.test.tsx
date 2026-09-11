@@ -1,6 +1,6 @@
 import { Checkbox } from '@tamagui/checkbox'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, createTamagui, styled } from '@tamagui/core'
+import { TamaguiProvider, createTamagui, styled } from '@tamagui/style'
 import TestRenderer, { act } from 'react-test-renderer'
 import type { ReactTestRendererJSON } from 'react-test-renderer'
 import { expect, test, vi } from 'vitest'

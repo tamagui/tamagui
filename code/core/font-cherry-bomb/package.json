@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@tamagui/constants": "workspace:*",
-    "@tamagui/core": "workspace:*"
+    "@tamagui/style": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

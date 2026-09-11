@@ -1,6 +1,6 @@
 import React from 'react'
 import { TextInput, type TextInputProps as RNTextInputProps } from 'react-native'
-import { createStyledHOC, type GetProps, styled } from '@tamagui/core'
+import { createStyledHOC, type GetProps, styled } from '@tamagui/style'
 import { registerFocusable } from '@tamagui/focusable'
 import { useNativeInputRef } from '@tamagui/element'
 import { resolveMultilineInputSize, styledBody } from './shared'

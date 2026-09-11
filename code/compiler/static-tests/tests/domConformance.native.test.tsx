@@ -9,7 +9,7 @@ window['React'] = React
 test('every supported semantic tag lowers to its declared primitive', async () => {
   const supported = TAG_NAMES.filter((tag) => TAGS[tag].native !== 'none')
   const output = await extractForNative(`
-    import { html } from '@tamagui/core'
+    import { html } from '@tamagui/style'
     export const App = () => <>${supported.map((tag) => `<html.${tag} />`).join('')}</>
   `)
 
@@ -24,7 +24,7 @@ test('every supported semantic tag lowers to its declared primitive', async () =
 
 test('native lowering applies defaults, authored styles, roles and prop mappings', async () => {
   const output = await extractForNative(`
-    import { html } from '@tamagui/core'
+    import { html } from '@tamagui/style'
     export const App = () => (
       <html.ol
         aria-busy
@@ -85,7 +85,7 @@ test('native text controls lower input semantics and standalone style handles', 
 test('native inline, array and conditional handles become a React Native style array', async () => {
   const output = await extractForNative(`
     import { jsx } from 'react/jsx-runtime'
-    import { html, style } from '@tamagui/core/dom'
+    import { html, style } from '@tamagui/style/dom'
     const base = style({ color: 'red' })
     declare const active: boolean
     export const App = jsx(html.span, {
@@ -105,7 +105,7 @@ test('native inline, array and conditional handles become a React Native style a
 
 test('native lowering rejects input types without a text-entry equivalent', async () => {
   const output = await extractForNative(`
-    import { html } from '@tamagui/core'
+    import { html } from '@tamagui/style'
     export const App = () => <html.input type="checkbox" />
   `)
 
@@ -119,7 +119,7 @@ test('native lowering rejects input types without a text-entry equivalent', asyn
 
 test('native lowering rejects a dynamic input type instead of silently dropping it', async () => {
   const output = await extractForNative(`
-    import { html } from '@tamagui/core'
+    import { html } from '@tamagui/style'
     declare const type: 'text' | 'password'
     export const App = () => <html.input type={type} />
   `)
@@ -172,7 +172,7 @@ test('native initial remains an explicit pinned-upstream limitation', async () =
 test('literal text wrappers consume inherited styles in JSX and createElement', async () => {
   const output = await extractForNative(`
     import { createElement } from 'react'
-    import { html } from '@tamagui/core'
+    import { html } from '@tamagui/style'
     export const JSX = () => <html.div color="red">literal</html.div>
     export const Runtime = () => createElement(html.div, { color: 'red' }, 'literal')
   `)
@@ -190,7 +190,7 @@ test('every declared event either lowers or produces its documented native diagn
     return { name, row, tag }
   })
   const output = await extractForNative(`
-    import { html } from '@tamagui/core'
+    import { html } from '@tamagui/style'
     export const App = () => <>
       ${entries.map(({ name, tag }) => `<html.${tag} ${name}={() => {}} />`).join('\n')}
     </>
@@ -217,7 +217,7 @@ test('every declared event either lowers or produces its documented native diagn
 
 test('dynamic hidden stays on the native runtime path', async () => {
   const output = await extractForNative(`
-    import { html } from '@tamagui/core'
+    import { html } from '@tamagui/style'
     declare const hidden: true | 'hidden' | 'until-found'
     export const App = () => <html.div hidden={hidden} />
   `)

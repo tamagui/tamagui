@@ -6,7 +6,7 @@
   "include": [
     "*.ts",
     "*.tsx",
-    "../core/src/**/*"
+    "../style/src/**/*"
   ],
   "exclude": [
     "types",
@@ -15,7 +15,7 @@
   ],
   "references": [
     {
-      "path": "../core"
+      "path": "../style"
     }
   ]
 }

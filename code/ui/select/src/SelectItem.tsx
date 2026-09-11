@@ -7,8 +7,8 @@ import {
   createStyledContext,
   styled,
   View,
-} from '@tamagui/core'
-import type { GetProps } from '@tamagui/core'
+} from '@tamagui/style'
+import type { GetProps } from '@tamagui/style'
 import { composeEventHandlers } from '@tamagui/helpers'
 import * as React from 'react'
 import { useSelectItemParentContext } from './context'

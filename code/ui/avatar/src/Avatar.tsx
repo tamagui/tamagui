@@ -1,7 +1,7 @@
 // forked from radix https://github.com/radix-ui/primitives/blob/main/packages/react/avatar/src/Avatar.tsx
 
-import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core'
-import { createStyledHOC, styled, createRefComponent } from '@tamagui/core'
+import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/style'
+import { createStyledHOC, styled, createRefComponent } from '@tamagui/style'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'

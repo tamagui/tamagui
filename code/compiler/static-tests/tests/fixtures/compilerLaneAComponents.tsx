@@ -1,4 +1,4 @@
-import { View, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/style'
 
 const DynamicResolverStackBase = styled(View, {
   variants: {

@@ -1,4 +1,4 @@
-import { useConfiguration, type AnimationDriverWithAnimatedNumbers } from '@tamagui/core'
+import { useConfiguration, type AnimationDriverWithAnimatedNumbers } from '@tamagui/style'
 import { useRef } from 'react'
 import { Button, Paragraph, View, YStack } from 'tamagui'
 

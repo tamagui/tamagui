@@ -1,4 +1,4 @@
-import { createStyledHOC, styled } from '@tamagui/core'
+import { createStyledHOC, styled } from '@tamagui/style'
 import type { SizableTextProps } from '@tamagui/text'
 import { SizableText } from '@tamagui/text'
 import { Linking } from 'react-native'

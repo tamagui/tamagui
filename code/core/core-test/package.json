@@ -20,6 +20,7 @@
     "test:update": "bun run test:native --update && bun run test:web --update"
   },
   "devDependencies": {
+    "@tamagui/style": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/dialog": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",

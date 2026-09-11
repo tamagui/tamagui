@@ -1,4 +1,4 @@
-import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core';
+import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/style';
 import type { PopupTriggerMap } from '@tamagui/floating';
 import type { Coords, OffsetOptions, Placement, SizeOptions, Strategy, UseFloatingReturn } from '@tamagui/floating';
 import { flip, shift } from '@tamagui/floating';
@@ -21,11 +21,11 @@ export type PopperContextShared = {
     };
 };
 export type PopperContextValue = UseFloatingReturn & PopperContextShared;
-export declare const PopperContextFast: import("@tamagui/core").StyledContext<PopperContextValue, never>;
+export declare const PopperContextFast: import("@tamagui/style").StyledContext<PopperContextValue, never>;
 export declare const PopperPositionContext: {
-    <VariantProps extends Record<string, any>, ConsumedKeys extends Extract<keyof VariantProps, string>>(defaultValues: VariantProps, namespaceOrOptions: import("@tamagui/core").StyledContextOptions<VariantProps, ConsumedKeys> & {
+    <VariantProps extends Record<string, any>, ConsumedKeys extends Extract<keyof VariantProps, string>>(defaultValues: VariantProps, namespaceOrOptions: import("@tamagui/style").StyledContextOptions<VariantProps, ConsumedKeys> & {
         keys: readonly ConsumedKeys[];
-    }): import("@tamagui/core").StyledContext<VariantProps, ConsumedKeys>;
+    }): import("@tamagui/style").StyledContext<VariantProps, ConsumedKeys>;
     <VariantProps extends Record<string, any>>(defaultValues: {
         [x: string]: never;
         [x: number]: never;
@@ -33,15 +33,15 @@ export declare const PopperPositionContext: {
     }, namespaceOrOptions?: string | {
         namespace?: string;
         keys?: never;
-    }): import("@tamagui/core").StyledContext<VariantProps, never>;
+    }): import("@tamagui/style").StyledContext<VariantProps, never>;
     <VariantProps extends Record<string, any>>(defaultValues: VariantProps & ({ [Key in Exclude<keyof VariantProps, { [Key in keyof VariantProps]-?: {} extends Pick<VariantProps, Key> ? Key : never; }[keyof VariantProps]>]: VariantProps[Key]; } & { [Key in { [Key in keyof VariantProps]-?: {} extends Pick<VariantProps, Key> ? Key : never; }[keyof VariantProps]]: VariantProps[Key] | undefined; }), namespaceOrOptions?: string | {
         namespace?: string;
         keys?: never;
-    }): import("@tamagui/core").StyledContext<VariantProps, Extract<keyof VariantProps, string>>;
-    <VariantProps extends Record<string, any>, ConsumedKeys extends Extract<keyof VariantProps, string>>(defaultValues: undefined, namespaceOrOptions: import("@tamagui/core").StyledContextOptions<VariantProps, ConsumedKeys> & {
+    }): import("@tamagui/style").StyledContext<VariantProps, Extract<keyof VariantProps, string>>;
+    <VariantProps extends Record<string, any>, ConsumedKeys extends Extract<keyof VariantProps, string>>(defaultValues: undefined, namespaceOrOptions: import("@tamagui/style").StyledContextOptions<VariantProps, ConsumedKeys> & {
         keys: readonly ConsumedKeys[];
-    }): import("@tamagui/core").StyledContext<VariantProps, ConsumedKeys>;
-    <VariantProps extends Record<string, any> = Record<string, any>>(defaultValues?: undefined, namespaceOrOptions?: string): import("@tamagui/core").StyledContext<VariantProps, never>;
+    }): import("@tamagui/style").StyledContext<VariantProps, ConsumedKeys>;
+    <VariantProps extends Record<string, any> = Record<string, any>>(defaultValues?: undefined, namespaceOrOptions?: string): import("@tamagui/style").StyledContext<VariantProps, never>;
 };
 export declare const usePopperContext: (scope?: string) => PopperContextValue, PopperProviderFast: React.Provider<PopperContextValue> & React.ProviderExoticComponent<Partial<PopperContextValue> & {
     children?: React.ReactNode;
@@ -52,7 +52,7 @@ export type PopperContextSlowValue = Pick<UseFloatingReturn, 'getReferenceProps'
     onLeaveReference?: () => void;
     triggerElements?: PopupTriggerMap;
 };
-export declare const PopperContextSlow: import("@tamagui/core").StyledContext<PopperContextSlowValue, never>;
+export declare const PopperContextSlow: import("@tamagui/style").StyledContext<PopperContextSlowValue, never>;
 export declare const usePopperContextSlow: (scope?: string) => PopperContextSlowValue, PopperProviderSlow: React.Provider<PopperContextSlowValue> & React.ProviderExoticComponent<Partial<PopperContextSlowValue> & {
     children?: React.ReactNode;
     scope?: string;
@@ -116,7 +116,7 @@ export type PopperAnchorExtraProps = {
     scope?: string;
 };
 export type PopperAnchorProps = ViewProps;
-export declare const PopperAnchor: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, keyof PopperAnchorExtraProps> & PopperAnchorExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperAnchorExtraProps, import("@tamagui/core").StackStyleBase, {}, {}>;
+export declare const PopperAnchor: import("@tamagui/style").TamaguiComponent<Omit<import("@tamagui/style").GetFinalProps<import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {}>, keyof PopperAnchorExtraProps> & PopperAnchorExtraProps, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & PopperAnchorExtraProps, import("@tamagui/style").StackStyleBase, {}, {}>;
 export type PopperContentProps = ViewProps & {
     scope?: string;
     /**
@@ -125,10 +125,10 @@ export type PopperContentProps = ViewProps & {
     animatePosition?: boolean | 'even-when-repositioning';
     passThrough?: boolean;
 };
-export declare const PopperContentFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+export declare const PopperContentFrame: React.FunctionComponent<Omit<import("@tamagui/style").RNTamaguiViewNonStyleProps, keyof import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithFlatVariantValues<{}> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase>> & {
     ref?: React.Ref<TamaguiElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
+}> & import("@tamagui/style").StaticComponentObject<import("@tamagui/style").TamaDefer, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {}, import("@tamagui/style").StaticConfigPublic> & Omit<import("@tamagui/style").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/style").TamaDefer, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {}, import("@tamagui/style").StaticConfigPublic];
 };
 export declare const PopperContent: import("@tamagui/compose-refs").RefComponent<TamaguiElement, PopperContentProps>;
 export type PopperArrowExtraProps = {
@@ -141,10 +141,10 @@ export type PopperArrowExtraProps = {
     animatePosition?: boolean;
 };
 export type PopperArrowProps = ViewProps & PopperArrowExtraProps;
-export declare const PopperArrowFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
+export declare const PopperArrowFrame: React.FunctionComponent<Omit<import("@tamagui/style").RNTamaguiViewNonStyleProps, keyof import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithFlatVariantValues<{}> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase>> & {
     ref?: React.Ref<TamaguiElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
+}> & import("@tamagui/style").StaticComponentObject<import("@tamagui/style").TamaDefer, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {}, import("@tamagui/style").StaticConfigPublic> & Omit<import("@tamagui/style").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/style").TamaDefer, TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {}, import("@tamagui/style").StaticConfigPublic];
 };
 export declare const PopperArrow: import("@tamagui/compose-refs").RefComponent<TamaguiElement, PopperArrowProps>;
 export {};

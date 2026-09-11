@@ -1,4 +1,4 @@
-import { Text, useTheme } from '@tamagui/core'
+import { Text, useTheme } from '@tamagui/style'
 import { YStack } from 'tamagui'
 
 export function UseTheme() {

@@ -8,7 +8,7 @@ window['React'] = React
 test('lowers logical AND expression on web', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test({ active }) {
       return <View backgroundColor={active && 'red'} />
     }
@@ -16,7 +16,7 @@ test('lowers logical AND expression on web', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -29,7 +29,7 @@ test('lowers logical AND expression on web', async () => {
 test('does not retain a default class removed by a logical AND branch on web', async () => {
   const output = await extractForWeb(
     `
-    import { styled, View } from '@tamagui/core'
+    import { styled, View } from '@tamagui/style'
     const Box = styled(View, { backgroundColor: 'green' })
     export function Test({ active }) {
       return <Box backgroundColor={active && 'red'} />
@@ -38,7 +38,7 @@ test('does not retain a default class removed by a logical AND branch on web', a
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -52,7 +52,7 @@ test('does not retain a default class removed by a logical AND branch on web', a
 test('lowers nested ternaries to nested ternary class expressions on web', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test({ status }) {
       return <View backgroundColor={status === 'err' ? 'red' : status === 'warn' ? 'yellow' : 'green'} />
     }
@@ -60,7 +60,7 @@ test('lowers nested ternaries to nested ternary class expressions on web', async
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -77,7 +77,7 @@ test('lowers nested ternaries to nested ternary class expressions on web', async
 test('lowers multiple disjoint conditionals on web', async () => {
   const output = await extractForWeb(
     `
-    import { Text } from '@tamagui/core'
+    import { Text } from '@tamagui/style'
     export function Test({ active, bold, size }) {
       return (
         <Text
@@ -91,7 +91,7 @@ test('lowers multiple disjoint conditionals on web', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -105,7 +105,7 @@ test('lowers multiple disjoint conditionals on web', async () => {
 test('lowers evaluable static spread with mixed style and non-style props on web', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View {...{ backgroundColor: 'red', id: 'my-view', testID: 'spread-test', 'data-test': 'ok' }} />
     }
@@ -113,7 +113,7 @@ test('lowers evaluable static spread with mixed style and non-style props on web
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -129,7 +129,7 @@ test('lowers evaluable static spread with mixed style and non-style props on web
 test('preserves static spread precedence over an earlier conditional on web', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test({ active }) {
       return (
         <View
@@ -142,7 +142,7 @@ test('preserves static spread precedence over an earlier conditional on web', as
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -158,7 +158,7 @@ test('preserves static spread precedence over an earlier conditional on web', as
 test('keeps imported branch tests on the runtime component', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     import { importedColor } from './fixtures/conditional-lowering-import'
     export function Test() {
       return <View backgroundColor={importedColor} />
@@ -167,7 +167,7 @@ test('keeps imported branch tests on the runtime component', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -181,7 +181,7 @@ test('keeps imported branch tests on the runtime component', async () => {
 test('keeps arbitrary non-style spread keys valid JSX', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return <View {...{ backgroundColor: 'red', 'data.owner': 'compiler' }} />
     }
@@ -189,7 +189,7 @@ test('keeps arbitrary non-style spread keys valid JSX', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -201,7 +201,7 @@ test('keeps arbitrary non-style spread keys valid JSX', async () => {
 test('lowers an imported evaluable spread on web', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     import { importedSpread } from './fixtures/conditional-lowering-import'
     export function Test() {
       return <View {...importedSpread} />
@@ -210,7 +210,7 @@ test('lowers an imported evaluable spread on web', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -224,7 +224,7 @@ test('lowers mixed spreads in compiled prop objects on web', async () => {
   const output = await extractForWeb(
     `
     import React from 'react'
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test() {
       return React.createElement(View, { ...{ backgroundColor: 'red', id: 'compiled' } })
     }
@@ -232,7 +232,7 @@ test('lowers mixed spreads in compiled prop objects on web', async () => {
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -245,7 +245,7 @@ test('lowers mixed spreads in compiled prop objects on web', async () => {
 test('bails when multiple web conditionals resolve the same style key', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test({ inset, edge }) {
       return <View padding={inset ? 10 : 20} paddingLeft={edge ? 1 : 2} />
     }
@@ -253,7 +253,7 @@ test('bails when multiple web conditionals resolve the same style key', async ()
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )
@@ -267,7 +267,7 @@ test('bails when multiple web conditionals resolve the same style key', async ()
 test('keeps decision trees deeper than three branches on the runtime component', async () => {
   const output = await extractForWeb(
     `
-    import { View } from '@tamagui/core'
+    import { View } from '@tamagui/style'
     export function Test({ a, b, c, d }) {
       return <View backgroundColor={a ? 'red' : b ? 'blue' : c ? 'green' : d ? 'yellow' : 'pink'} />
     }
@@ -275,7 +275,7 @@ test('keeps decision trees deeper than three branches on the runtime component',
     {
       options: {
         platform: 'web',
-        components: ['@tamagui/core'],
+        components: ['@tamagui/style'],
       },
     }
   )

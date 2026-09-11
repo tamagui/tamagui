@@ -24,7 +24,7 @@ demoName: Text
 />
 
 <Notice theme="green">
-  The base `Text` component is already included in `@tamagui/core` (and `tamagui`). This
+  The base `Text` component is already included in `@tamagui/style` (and `tamagui`). This
   package is optional and adds `SizableText` and `Paragraph`, which extend `Text` with the
   `size` prop and theme-aware defaults.
 </Notice>
@@ -179,7 +179,7 @@ export default () => (
 On web, multi-line clamping uses `-webkit-line-clamp` with `-webkit-box` display. On native, it passes `numberOfLines` directly to the React Native Text component.
 
 <Notice>
-  The `numberOfLines` prop is supported on the base `Text` component from `@tamagui/core`
+  The `numberOfLines` prop is supported on the base `Text` component from `@tamagui/style`
   as well as `SizableText` and `Paragraph`. The `ellipsis` prop is a shorthand for
   `numberOfLines={1}`.
 </Notice>
@@ -188,7 +188,7 @@ On web, multi-line clamping uses `-webkit-line-clamp` with `-webkit-box` display
 
 ### Text
 
-The base text component from `@tamagui/core`. Accepts all [Tamagui style props](/docs/intro/props) for text elements.
+The base text component from `@tamagui/style`. Accepts all [Tamagui style props](/docs/intro/props) for text elements.
 
 <PropsTable
   data={[

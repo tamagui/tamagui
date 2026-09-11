@@ -9,7 +9,7 @@ import { expect, test, vi } from 'vitest'
 import * as NativeDOM from '../../../core/web/src/dom/index.native'
 import configDefault from '../../../core/config-default'
 import { TamaguiProvider, createTamagui } from '../../../core/web/src'
-// the module a native bundler picks for `html` from @tamagui/core, which is
+// the module a native bundler picks for `html` from @tamagui/style, which is
 // what runs when the compiler did not: the vitest resolver does not do the
 // platform extension swap for this pair
 import { html } from '../../../core/web/src/dom/html.native'
@@ -85,8 +85,8 @@ async function executeCompiled(source: string) {
     // the lowered file keeps its `html` import; every member of it throws, so a
     // tag the compiler failed to replace fails the test rather than rendering
     if (
-      specifier === '@tamagui/core' ||
-      specifier === '@tamagui/core/dom' ||
+      specifier === '@tamagui/style' ||
+      specifier === '@tamagui/style/dom' ||
       specifier === 'tamagui/dom'
     ) {
       return NativeDOM
@@ -156,7 +156,7 @@ function render(ui: ReactModule.ReactNode) {
 // tracked in plans/v3-handoff-log.md:1823.
 test.fails('native runtime tag matches compiled output', async () => {
   const compiled = await executeCompiled(`
-    import { html } from '@tamagui/core'
+    import { html } from '@tamagui/style'
     export const Fixture = ({ onClick }) => (
       <html.main aria-label="fixture" data-testid="main" dir="rtl" padding={8}>
         <html.h1 color="red" data-testid="heading">Heading</html.h1>
@@ -219,7 +219,7 @@ test.fails('native runtime tag matches compiled output', async () => {
 test('compiled JSX and createElement literals render with inherited text styles', async () => {
   const compiled = await executeCompiled(`
     import { createElement } from 'react'
-    import { html, style } from '@tamagui/core/dom'
+    import { html, style } from '@tamagui/style/dom'
     const parent = style({ color: 'red', fontSize: 16, lineHeight: 2 })
     export const TopLevel = <html.div style={parent}>top-level literal</html.div>
     export const JSXLiteral = () => <html.div style={parent}>jsx literal</html.div>
@@ -248,7 +248,7 @@ test('compiled JSX and createElement literals render with inherited text styles'
 
 test('the compiled native platform fixture renders hosts, styles and interaction', async () => {
   const compiled = await executeCompiled(`
-    import { html, style } from '@tamagui/core/dom'
+    import { html, style } from '@tamagui/style/dom'
     const root = style({ backgroundColor: 'white', padding: 8 })
     const emphasized = style({ color: 'red', fontWeight: 'bold' })
     const activeStyle = style({ opacity: 0.5 })
@@ -308,7 +308,7 @@ test('the compiled native platform fixture renders hosts, styles and interaction
 
 test('compiled native mouse and scroll handlers coexist with runtime hover state', async () => {
   const compiled = await executeCompiled(`
-    import { html, style } from '@tamagui/core/dom'
+    import { html, style } from '@tamagui/style/dom'
     const interactive = style({ opacity: '1 hover:0.5' })
     export const NativeEvents = (props) => (
       <html.div

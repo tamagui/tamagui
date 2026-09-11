@@ -1,4 +1,4 @@
-import type { TamaguiEventDetails, ViewProps } from '@tamagui/core';
+import type { TamaguiEventDetails, ViewProps } from '@tamagui/style';
 import * as React from 'react';
 export type FormValidationMode = 'onSubmit' | 'onBlur' | 'onChange';
 export type FormErrors = Record<string, string | string[]>;
@@ -29,20 +29,20 @@ export declare const useFormRegistryContext: () => FormRegistryContextValue;
 type FormTriggerContextValue = {
     onSubmit?: (event?: unknown) => unknown;
 };
-export declare const FormContext: import("@tamagui/core").StyledContext<FormTriggerContextValue, "onSubmit">;
+export declare const FormContext: import("@tamagui/style").StyledContext<FormTriggerContextValue, "onSubmit">;
 export declare const useFormContext: (scope?: string) => FormTriggerContextValue, FormProvider: React.Provider<FormTriggerContextValue> & React.ProviderExoticComponent<Partial<FormTriggerContextValue> & {
     children?: React.ReactNode;
     scope?: string;
 }>;
-export declare const FormFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
-    ref?: React.Ref<import("@tamagui/core").TamaguiElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
+export declare const FormFrame: React.FunctionComponent<Omit<import("@tamagui/style").RNTamaguiViewNonStyleProps, keyof import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase> & import("@tamagui/style").WithFlatVariantValues<{}> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").StackStyleBase>> & {
+    ref?: React.Ref<import("@tamagui/style").TamaguiElement> | undefined;
+}> & import("@tamagui/style").StaticComponentObject<import("@tamagui/style").TamaDefer, import("@tamagui/style").TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {}, import("@tamagui/style").StaticConfigPublic> & Omit<import("@tamagui/style").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/style").TamaDefer, import("@tamagui/style").TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {}, import("@tamagui/style").StaticConfigPublic];
 };
 export interface FormTriggerProps extends ViewProps {
     scope?: string;
 }
-export declare const FormTrigger: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, keyof FormTriggerProps> & FormTriggerProps, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & FormTriggerProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
+export declare const FormTrigger: import("@tamagui/style").TamaguiComponent<Omit<import("@tamagui/style").GetFinalProps<import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {}>, keyof FormTriggerProps> & FormTriggerProps, import("@tamagui/style").TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & FormTriggerProps, import("@tamagui/style").StackStyleBase, {}, import("@tamagui/style").StaticConfigPublic>;
 export type FormSubmitEventDetails = TamaguiEventDetails<'submit' | 'trigger-press', unknown>;
 export interface FormActions {
     validate: (fieldName?: string) => void;
@@ -59,7 +59,7 @@ type FormComponentType = <FormValue extends FormValues = FormValues>(props: Form
     ref?: React.Ref<any>;
 }) => React.ReactElement;
 export declare const Form: FormComponentType & {
-    Trigger: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, keyof FormTriggerProps> & FormTriggerProps, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & FormTriggerProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
+    Trigger: import("@tamagui/style").TamaguiComponent<Omit<import("@tamagui/style").GetFinalProps<import("@tamagui/style").RNTamaguiViewNonStyleProps, import("@tamagui/style").StackStyleBase, {}>, keyof FormTriggerProps> & FormTriggerProps, import("@tamagui/style").TamaguiElement, import("@tamagui/style").RNTamaguiViewNonStyleProps & FormTriggerProps, import("@tamagui/style").StackStyleBase, {}, import("@tamagui/style").StaticConfigPublic>;
 };
 export declare namespace Form {
     type Actions = FormActions;

@@ -1,5 +1,5 @@
 // @ts-nocheck -- generated compiler fixture
-import { setNativeStyleEngine, type NativeStyleEngine } from '@tamagui/core'
+import { setNativeStyleEngine, type NativeStyleEngine } from '@tamagui/style'
 import * as registry from '@tamagui/native-registry'
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
@@ -340,7 +340,7 @@ const __TamaguiNativeMapping764 = {
   borderLeftColor: 'color',
 }
 const __TamaguiNativeHostView = require('react-native').unstable_NativeView
-const __TamaguiNativeFastView764 = require('@tamagui/core')._withNativeStyle(
+const __TamaguiNativeFastView764 = require('@tamagui/style')._withNativeStyle(
   __TamaguiNativeHostView,
   __TamaguiNativeStyle764._ ?? __TamaguiNativeStyle764(),
   __TamaguiNativeMapping764

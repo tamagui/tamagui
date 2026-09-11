@@ -242,7 +242,7 @@ export type {
   ZIndexTokens,
   ViewStyle,
   TextStyle,
-} from '@tamagui/core'
+} from '@tamagui/style'
 
 export {
   ClientOnly,
@@ -318,4 +318,4 @@ export {
   useThemeName,
   variableToString,
   withStaticProperties,
-} from '@tamagui/core'
+} from '@tamagui/style'

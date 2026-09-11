@@ -2,12 +2,12 @@ import { expect, test } from 'vitest'
 
 import { extractForWeb } from './lib/extract'
 
-const options = { options: { components: ['@tamagui/core'] } }
+const options = { options: { components: ['@tamagui/style'] } }
 
 async function compile(jsx: string) {
   const output = await extractForWeb(
     [
-      "import { View } from '@tamagui/core'",
+      "import { View } from '@tamagui/style'",
       'export function Test({ seed, w, extra }: { seed: number; w: number; extra: any }) {',
       `  return ${jsx}`,
       '}',

@@ -40,7 +40,7 @@
     "@tamagui/animate-presence": "workspace:*",
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
-    "@tamagui/core": "workspace:*",
+    "@tamagui/style": "workspace:*",
     "@tamagui/dismissable": "workspace:*",
     "@tamagui/floating": "workspace:*",
     "@tamagui/focus-scope": "workspace:*",

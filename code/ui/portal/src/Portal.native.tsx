@@ -1,4 +1,4 @@
-import { View } from '@tamagui/core'
+import { View } from '@tamagui/style'
 import { getPortal, NativePortal } from '@tamagui/native'
 import { useStackedZIndex } from '@tamagui/z-index-stack'
 import { GorhomPortalItem } from './GorhomPortalItem'

@@ -1,4 +1,4 @@
-import { TamaguiProvider, View, createTamagui, styled } from '@tamagui/core'
+import { TamaguiProvider, View, createTamagui, styled } from '@tamagui/style'
 import { DialogPortalFrame } from '@tamagui/dialog'
 import { render } from '@testing-library/react'
 import { describe, expect, test } from 'vitest'

@@ -1,6 +1,6 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import { createStyledHOC, styled, View } from '@tamagui/core'
+import { createStyledHOC, styled, View } from '@tamagui/style'
 import { Group, useGroupItem } from '@tamagui/group'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { RovingFocusGroup, type RovingFocusGroupProps } from '@tamagui/roving-focus'

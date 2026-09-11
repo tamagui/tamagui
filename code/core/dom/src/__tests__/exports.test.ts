@@ -1,6 +1,6 @@
 // The published boundary of the demoted DOM surfaces.
 //
-// V3 stops naming `@tamagui/dom`, `tamagui/dom` and `@tamagui/core/dom` as
+// V3 stops naming `@tamagui/dom`, `tamagui/dom` and `@tamagui/style/dom` as
 // products, but every one of them stays published and compatible: the same
 // specifiers resolve under the same conditions, the entries behave exactly as
 // they did, and the only thing that changed is a TypeScript deprecation hint
@@ -33,7 +33,7 @@ afterEach(async () => {
 const domSpecifiers = [
   '@tamagui/dom',
   '@tamagui/web/dom',
-  '@tamagui/core/dom',
+  '@tamagui/style/dom',
   'tamagui/dom',
 ] as const
 
@@ -120,7 +120,7 @@ describe('the deprecation is a hint, not an error', () => {
       fixture,
       `
 import { html as regularHtml } from 'tamagui'
-import { html as coreDomHtml, style as coreDomStyle } from '@tamagui/core/dom'
+import { html as coreDomHtml, style as coreDomStyle } from '@tamagui/style/dom'
 import { html as domHtml, style as domStyle } from 'tamagui/dom'
 import type { CompiledStyle } from 'tamagui/dom'
 

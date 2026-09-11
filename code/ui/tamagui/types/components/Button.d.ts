@@ -1,33 +1,33 @@
 import { type ButtonIconProps as ButtonBehaviorIconProps } from '@tamagui/button';
-import { type GetProps, type SizeTokens, type ThemeProps } from '@tamagui/core';
+import { type GetProps, type SizeTokens, type ThemeProps } from '@tamagui/style';
 export type ButtonSize = SizeTokens;
-export declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
+export declare const ButtonFrame: import("@tamagui/style").TamaguiComponent<import("@tamagui/style").TamaDefer, import("@tamagui/style").TamaguiElement, import("@tamagui/style").StackNonStyleProps, import("@tamagui/style").StackStyleBase, {
     circular?: boolean | undefined;
     disabled?: boolean | undefined;
-    size?: string | number | true | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString | undefined;
+    size?: string | number | true | import("@tamagui/style").UnionableNumber | import("@tamagui/style").UnionableString | undefined;
     variant?: "outlined" | "quiet" | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
-export declare const ButtonText: import("react").FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
-    size?: string | number | true | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
-    ref?: import("react").Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-    size?: string | number | true | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: string | number | true | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
+}, import("@tamagui/style").StaticConfigPublic>;
+export declare const ButtonText: import("react").FunctionComponent<Omit<import("@tamagui/style").TextNonStyleProps, "size" | keyof import("@tamagui/style").TextStylePropsBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").TextStylePropsBase> & import("@tamagui/style").WithFlatVariantValues<{
+    size?: string | number | true | import("@tamagui/style").UnionableNumber | import("@tamagui/style").UnionableString | undefined;
+}> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").TextStylePropsBase>> & {
+    ref?: import("react").Ref<import("@tamagui/style").TamaguiTextElement> | undefined;
+}> & import("@tamagui/style").StaticComponentObject<import("@tamagui/style").TamaDefer, import("@tamagui/style").TamaguiTextElement, import("@tamagui/style").TextNonStyleProps, import("@tamagui/style").TextStylePropsBase, {
+    size?: string | number | true | import("@tamagui/style").UnionableNumber | import("@tamagui/style").UnionableString | undefined;
+}, import("@tamagui/style").StaticConfigPublic> & Omit<import("@tamagui/style").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/style").TamaDefer, import("@tamagui/style").TamaguiTextElement, import("@tamagui/style").TextNonStyleProps, import("@tamagui/style").TextStylePropsBase, {
+        size?: string | number | true | import("@tamagui/style").UnionableNumber | import("@tamagui/style").UnionableString | undefined;
+    }, import("@tamagui/style").StaticConfigPublic];
 };
 export declare const ButtonIcon: ({ size, ...props }: ButtonBehaviorIconProps) => import("react").JSX.Element;
-declare const ButtonComponent: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
+declare const ButtonComponent: import("@tamagui/style").TamaguiComponent<Omit<import("@tamagui/style").GetFinalProps<import("@tamagui/style").StackNonStyleProps, import("@tamagui/style").StackStyleBase, {
     circular?: boolean | undefined;
     disabled?: boolean | undefined;
-    size?: string | number | true | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString | undefined;
+    size?: string | number | true | import("@tamagui/style").UnionableNumber | import("@tamagui/style").UnionableString | undefined;
     variant?: "outlined" | "quiet" | undefined;
 }>, "maxFontSizeMultiplier" | "noTextWrap" | "size" | "textProps" | "theme" | ("color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection") | keyof {
     children?: import("react").ReactNode;
     disabled?: boolean;
-    render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
+    render?: import("@tamagui/style").TamaguiComponentPropsBaseBase['render'];
     icon?: import("react").JSX.Element | import("react").FunctionComponent<{
         color?: any;
         size?: any;
@@ -54,14 +54,14 @@ declare const ButtonComponent: import("@tamagui/core").TamaguiComponent<Omit<imp
     formTarget?: string;
     name?: string;
     value?: string | readonly string[] | number;
-}> & Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/core").WithShorthands<Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
+}> & Partial<Pick<import("@tamagui/style").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/style").WithShorthands<Partial<Pick<import("@tamagui/style").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
     maxFontSizeMultiplier?: number;
     textProps?: Partial<import("@tamagui/text").SizableTextProps>;
     noTextWrap?: boolean;
 } & {
     children?: import("react").ReactNode;
     disabled?: boolean;
-    render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
+    render?: import("@tamagui/style").TamaguiComponentPropsBaseBase['render'];
     icon?: import("react").JSX.Element | import("react").FunctionComponent<{
         color?: any;
         size?: any;
@@ -91,14 +91,14 @@ declare const ButtonComponent: import("@tamagui/core").TamaguiComponent<Omit<imp
 } & {
     size?: ButtonSize;
     theme?: ThemeProps['name'];
-}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackNonStyleProps & Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/core").WithShorthands<Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
+}, import("@tamagui/style").TamaguiElement, import("@tamagui/style").StackNonStyleProps & Partial<Pick<import("@tamagui/style").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/style").WithShorthands<Partial<Pick<import("@tamagui/style").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
     maxFontSizeMultiplier?: number;
     textProps?: Partial<import("@tamagui/text").SizableTextProps>;
     noTextWrap?: boolean;
 } & {
     children?: import("react").ReactNode;
     disabled?: boolean;
-    render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
+    render?: import("@tamagui/style").TamaguiComponentPropsBaseBase['render'];
     icon?: import("react").JSX.Element | import("react").FunctionComponent<{
         color?: any;
         size?: any;
@@ -128,21 +128,21 @@ declare const ButtonComponent: import("@tamagui/core").TamaguiComponent<Omit<imp
 } & {
     size?: ButtonSize;
     theme?: ThemeProps['name'];
-}, import("@tamagui/core").StackStyleBase, {
+}, import("@tamagui/style").StackStyleBase, {
     circular?: boolean | undefined;
     disabled?: boolean | undefined;
-    size?: string | number | true | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString | undefined;
+    size?: string | number | true | import("@tamagui/style").UnionableNumber | import("@tamagui/style").UnionableString | undefined;
     variant?: "outlined" | "quiet" | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
-export declare const Button: import("react").FunctionComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
+}, import("@tamagui/style").StaticConfigPublic>;
+export declare const Button: import("react").FunctionComponent<Omit<import("@tamagui/style").GetFinalProps<import("@tamagui/style").StackNonStyleProps, import("@tamagui/style").StackStyleBase, {
     circular?: boolean | undefined;
     disabled?: boolean | undefined;
-    size?: string | number | true | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString | undefined;
+    size?: string | number | true | import("@tamagui/style").UnionableNumber | import("@tamagui/style").UnionableString | undefined;
     variant?: "outlined" | "quiet" | undefined;
 }>, "maxFontSizeMultiplier" | "noTextWrap" | "size" | "textProps" | "theme" | ("color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection") | keyof {
     children?: import("react").ReactNode;
     disabled?: boolean;
-    render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
+    render?: import("@tamagui/style").TamaguiComponentPropsBaseBase['render'];
     icon?: import("react").JSX.Element | import("react").FunctionComponent<{
         color?: any;
         size?: any;
@@ -169,14 +169,14 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     formTarget?: string;
     name?: string;
     value?: string | readonly string[] | number;
-}> & Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/core").WithShorthands<Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
+}> & Partial<Pick<import("@tamagui/style").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/style").WithShorthands<Partial<Pick<import("@tamagui/style").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
     maxFontSizeMultiplier?: number;
     textProps?: Partial<import("@tamagui/text").SizableTextProps>;
     noTextWrap?: boolean;
 } & {
     children?: import("react").ReactNode;
     disabled?: boolean;
-    render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
+    render?: import("@tamagui/style").TamaguiComponentPropsBaseBase['render'];
     icon?: import("react").JSX.Element | import("react").FunctionComponent<{
         color?: any;
         size?: any;
@@ -207,16 +207,16 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     size?: ButtonSize;
     theme?: ThemeProps['name'];
 } & {
-    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    ref?: import("react").Ref<import("@tamagui/style").TamaguiElement> | undefined;
+}> & import("@tamagui/style").StaticComponentObject<Omit<import("@tamagui/style").GetFinalProps<import("@tamagui/style").StackNonStyleProps, import("@tamagui/style").StackStyleBase, {
     circular?: boolean | undefined;
     disabled?: boolean | undefined;
-    size?: string | number | true | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString | undefined;
+    size?: string | number | true | import("@tamagui/style").UnionableNumber | import("@tamagui/style").UnionableString | undefined;
     variant?: "outlined" | "quiet" | undefined;
 }>, "maxFontSizeMultiplier" | "noTextWrap" | "size" | "textProps" | "theme" | ("color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection") | keyof {
     children?: import("react").ReactNode;
     disabled?: boolean;
-    render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
+    render?: import("@tamagui/style").TamaguiComponentPropsBaseBase['render'];
     icon?: import("react").JSX.Element | import("react").FunctionComponent<{
         color?: any;
         size?: any;
@@ -243,14 +243,14 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     formTarget?: string;
     name?: string;
     value?: string | readonly string[] | number;
-}> & Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/core").WithShorthands<Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
+}> & Partial<Pick<import("@tamagui/style").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/style").WithShorthands<Partial<Pick<import("@tamagui/style").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
     maxFontSizeMultiplier?: number;
     textProps?: Partial<import("@tamagui/text").SizableTextProps>;
     noTextWrap?: boolean;
 } & {
     children?: import("react").ReactNode;
     disabled?: boolean;
-    render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
+    render?: import("@tamagui/style").TamaguiComponentPropsBaseBase['render'];
     icon?: import("react").JSX.Element | import("react").FunctionComponent<{
         color?: any;
         size?: any;
@@ -280,14 +280,14 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
 } & {
     size?: ButtonSize;
     theme?: ThemeProps['name'];
-}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackNonStyleProps & Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/core").WithShorthands<Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
+}, import("@tamagui/style").TamaguiElement, import("@tamagui/style").StackNonStyleProps & Partial<Pick<import("@tamagui/style").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/style").WithShorthands<Partial<Pick<import("@tamagui/style").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
     maxFontSizeMultiplier?: number;
     textProps?: Partial<import("@tamagui/text").SizableTextProps>;
     noTextWrap?: boolean;
 } & {
     children?: import("react").ReactNode;
     disabled?: boolean;
-    render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
+    render?: import("@tamagui/style").TamaguiComponentPropsBaseBase['render'];
     icon?: import("react").JSX.Element | import("react").FunctionComponent<{
         color?: any;
         size?: any;
@@ -317,21 +317,21 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
 } & {
     size?: ButtonSize;
     theme?: ThemeProps['name'];
-}, import("@tamagui/core").StackStyleBase, {
+}, import("@tamagui/style").StackStyleBase, {
     circular?: boolean | undefined;
     disabled?: boolean | undefined;
-    size?: string | number | true | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString | undefined;
+    size?: string | number | true | import("@tamagui/style").UnionableNumber | import("@tamagui/style").UnionableString | undefined;
     variant?: "outlined" | "quiet" | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
+}, import("@tamagui/style").StaticConfigPublic> & Omit<import("@tamagui/style").StaticConfigPublic, "staticConfig"> & {
+    __tama: [Omit<import("@tamagui/style").GetFinalProps<import("@tamagui/style").StackNonStyleProps, import("@tamagui/style").StackStyleBase, {
         circular?: boolean | undefined;
         disabled?: boolean | undefined;
-        size?: string | number | true | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString | undefined;
+        size?: string | number | true | import("@tamagui/style").UnionableNumber | import("@tamagui/style").UnionableString | undefined;
         variant?: "outlined" | "quiet" | undefined;
     }>, "maxFontSizeMultiplier" | "noTextWrap" | "size" | "textProps" | "theme" | ("color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection") | keyof {
         children?: import("react").ReactNode;
         disabled?: boolean;
-        render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
+        render?: import("@tamagui/style").TamaguiComponentPropsBaseBase['render'];
         icon?: import("react").JSX.Element | import("react").FunctionComponent<{
             color?: any;
             size?: any;
@@ -358,14 +358,14 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
         formTarget?: string;
         name?: string;
         value?: string | readonly string[] | number;
-    }> & Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/core").WithShorthands<Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
+    }> & Partial<Pick<import("@tamagui/style").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/style").WithShorthands<Partial<Pick<import("@tamagui/style").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
         maxFontSizeMultiplier?: number;
         textProps?: Partial<import("@tamagui/text").SizableTextProps>;
         noTextWrap?: boolean;
     } & {
         children?: import("react").ReactNode;
         disabled?: boolean;
-        render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
+        render?: import("@tamagui/style").TamaguiComponentPropsBaseBase['render'];
         icon?: import("react").JSX.Element | import("react").FunctionComponent<{
             color?: any;
             size?: any;
@@ -395,14 +395,14 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     } & {
         size?: ButtonSize;
         theme?: ThemeProps['name'];
-    }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackNonStyleProps & Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/core").WithShorthands<Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
+    }, import("@tamagui/style").TamaguiElement, import("@tamagui/style").StackNonStyleProps & Partial<Pick<import("@tamagui/style").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/style").WithShorthands<Partial<Pick<import("@tamagui/style").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
         maxFontSizeMultiplier?: number;
         textProps?: Partial<import("@tamagui/text").SizableTextProps>;
         noTextWrap?: boolean;
     } & {
         children?: import("react").ReactNode;
         disabled?: boolean;
-        render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
+        render?: import("@tamagui/style").TamaguiComponentPropsBaseBase['render'];
         icon?: import("react").JSX.Element | import("react").FunctionComponent<{
             color?: any;
             size?: any;
@@ -432,30 +432,30 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     } & {
         size?: ButtonSize;
         theme?: ThemeProps['name'];
-    }, import("@tamagui/core").StackStyleBase, {
+    }, import("@tamagui/style").StackStyleBase, {
         circular?: boolean | undefined;
         disabled?: boolean | undefined;
-        size?: string | number | true | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString | undefined;
+        size?: string | number | true | import("@tamagui/style").UnionableNumber | import("@tamagui/style").UnionableString | undefined;
         variant?: "outlined" | "quiet" | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
+    }, import("@tamagui/style").StaticConfigPublic];
 } & {
-    Frame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    Frame: import("@tamagui/style").TamaguiComponent<import("@tamagui/style").TamaDefer, import("@tamagui/style").TamaguiElement, import("@tamagui/style").StackNonStyleProps, import("@tamagui/style").StackStyleBase, {
         circular?: boolean | undefined;
         disabled?: boolean | undefined;
-        size?: string | number | true | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString | undefined;
+        size?: string | number | true | import("@tamagui/style").UnionableNumber | import("@tamagui/style").UnionableString | undefined;
         variant?: "outlined" | "quiet" | undefined;
-    }, import("@tamagui/core").StaticConfigPublic>;
+    }, import("@tamagui/style").StaticConfigPublic>;
     Icon: typeof ButtonIcon;
-    Text: import("react").FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
-        size?: string | number | true | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
-        ref?: import("react").Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
-    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: string | number | true | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString | undefined;
-    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-            size?: string | number | true | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString | undefined;
-        }, import("@tamagui/core").StaticConfigPublic];
+    Text: import("react").FunctionComponent<Omit<import("@tamagui/style").TextNonStyleProps, "size" | keyof import("@tamagui/style").TextStylePropsBase> & import("@tamagui/style").WithThemeValues<import("@tamagui/style").TextStylePropsBase> & import("@tamagui/style").WithFlatVariantValues<{
+        size?: string | number | true | import("@tamagui/style").UnionableNumber | import("@tamagui/style").UnionableString | undefined;
+    }> & import("@tamagui/style").WithShorthands<import("@tamagui/style").WithThemeValues<import("@tamagui/style").TextStylePropsBase>> & {
+        ref?: import("react").Ref<import("@tamagui/style").TamaguiTextElement> | undefined;
+    }> & import("@tamagui/style").StaticComponentObject<import("@tamagui/style").TamaDefer, import("@tamagui/style").TamaguiTextElement, import("@tamagui/style").TextNonStyleProps, import("@tamagui/style").TextStylePropsBase, {
+        size?: string | number | true | import("@tamagui/style").UnionableNumber | import("@tamagui/style").UnionableString | undefined;
+    }, import("@tamagui/style").StaticConfigPublic> & Omit<import("@tamagui/style").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/style").TamaDefer, import("@tamagui/style").TamaguiTextElement, import("@tamagui/style").TextNonStyleProps, import("@tamagui/style").TextStylePropsBase, {
+            size?: string | number | true | import("@tamagui/style").UnionableNumber | import("@tamagui/style").UnionableString | undefined;
+        }, import("@tamagui/style").StaticConfigPublic];
     };
 };
 export type ButtonProps = GetProps<typeof ButtonComponent>;
