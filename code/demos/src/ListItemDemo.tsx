@@ -18,6 +18,7 @@ function ListItemDemo1() {
   return (
     <YGroup
       self="center"
+      bg="color-1"
       borderWidth={1}
       borderColor="border-color"
       rounded="4"
@@ -58,6 +59,7 @@ function ListItemDemo2() {
   return (
     <YGroup
       self="center"
+      bg="color-1"
       borderWidth={1}
       borderColor="border-color"
       rounded="4"

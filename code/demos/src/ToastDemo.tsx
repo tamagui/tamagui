@@ -6,6 +6,7 @@ import {
   ArrowUp,
   ArrowUpLeft,
   ArrowUpRight,
+  X,
 } from '@tamagui/lucide-icons-2'
 import { useRef, useState } from 'react'
 import { Button, isWeb, Label, SizableText, Slider, Toast, XStack, YStack } from 'tamagui'
@@ -152,11 +153,19 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
       {isWeb && (
         <Toast.Close
           testID="toast-close-button"
+          unstyled
           position="absolute"
-          top={4}
-          right={4}
+          top={8}
+          right={8}
           zIndex={1}
-        />
+          p={0}
+          bg="transparent"
+          borderWidth={0}
+          width="auto"
+          height="auto"
+        >
+          <X size={22} />
+        </Toast.Close>
       )}
     </>
   )

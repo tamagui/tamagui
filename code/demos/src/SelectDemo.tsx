@@ -8,7 +8,7 @@ import { Adapt, Label, Select, Sheet, Theme, XStack, YStack, getFontSize } from 
 export function SelectDemo() {
   return (
     <Theme name="level2">
-      <YStack gap="4">
+      <YStack gap="4" width={320}>
         <XStack width="100%" items="center" gap="4">
           <Label htmlFor="select-demo-1" flex={1} minW={80}>
             Custom
