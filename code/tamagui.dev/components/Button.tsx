@@ -51,6 +51,18 @@ const ButtonFrameBase = styled(ButtonBehaviorFrame, {
       },
     },
 
+    borderless: {
+      true: {
+        borderWidth: 0,
+        borderStyle: 'none',
+        borderColor: 'transparent hover:transparent focus:transparent press:transparent',
+        outlineWidth: '0 focus-visible:0',
+        outlineColor: 'transparent',
+        outlineStyle: 'none',
+        boxShadow: 'none',
+      },
+    },
+
     variant: {
       outlined: {
         backgroundColor: 'transparent',
@@ -59,6 +71,15 @@ const ButtonFrameBase = styled(ButtonBehaviorFrame, {
       quiet: {
         backgroundColor: 'transparent',
         borderColor: 'transparent',
+      },
+      borderless: {
+        borderWidth: 0,
+        borderStyle: 'none',
+        borderColor: 'transparent hover:transparent focus:transparent press:transparent',
+        outlineWidth: '0 focus-visible:0',
+        outlineColor: 'transparent',
+        outlineStyle: 'none',
+        boxShadow: 'none',
       },
     },
   } as const,

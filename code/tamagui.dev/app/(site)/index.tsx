@@ -51,7 +51,7 @@ export default function TamaguiHomePage() {
               The style engine that feels great on native and web.
             </H1>
 
-            <YStack gap="4" mt="-2">
+            <YStack gap="4" mt="-4">
               <Paragraph size="5" color="color-11">
                 Tamagui is the only style library that gets you platform-native feel while
                 going cross platform, now with Tailwind mode.
@@ -72,9 +72,7 @@ export default function TamaguiHomePage() {
                   rounded={10}
                   bg="color"
                   color="background"
-                  borderWidth={0}
-                  borderStyle="none"
-                  borderColor="transparent hover:transparent"
+                  borderless
                   aria-label="Style docs"
                 >
                   <Button.Text color="background" fontWeight="600">
@@ -89,9 +87,7 @@ export default function TamaguiHomePage() {
                   rounded={10}
                   bg="color"
                   color="background"
-                  borderWidth={0}
-                  borderStyle="none"
-                  borderColor="transparent hover:transparent"
+                  borderless
                   aria-label="Components docs"
                 >
                   <Button.Text color="background" fontWeight="600">
@@ -100,15 +96,7 @@ export default function TamaguiHomePage() {
                 </Button>
               </Link>
               <Link asChild target="_blank" href="https://github.com/tamagui/tamagui">
-                <Button
-                  render="a"
-                  size="lg"
-                  rounded={10}
-                  borderWidth={0}
-                  borderStyle="none"
-                  borderColor="transparent hover:transparent"
-                  aria-label="GitHub"
-                >
+                <Button render="a" size="lg" rounded={10} borderless aria-label="GitHub">
                   <GithubIcon width={18} />
                   <Button.Text>GitHub</Button.Text>
                 </Button>
