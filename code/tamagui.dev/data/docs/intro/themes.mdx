@@ -99,6 +99,34 @@ client-only light/dark inversion. See the
 [theme creation guide](/docs/guides/theme-builder#function-children) for custom
 theme generation details.
 
+### Forcing a scheme with black and white
+
+`inverse` is relative: it flips whichever scheme its parent happened to be. When
+you need a specific scheme instead, use `black` or `white`. They resolve to the
+dark and light themes from any parent, including from inside a palette
+sub-theme:
+
+```tsx
+// dark, wherever this is mounted
+<Theme name="black">
+  <Card />
+</Theme>
+
+// still dark, even though the parent is light and red
+<Theme name="light">
+  <Theme name="red">
+    <Theme name="black">
+      <Card />
+    </Theme>
+  </Theme>
+</Theme>
+```
+
+Reach for them when a subtree cannot know which scheme it is mounted under, such
+as a menu that always reads as dark over a light page. Levels nest inside them
+as usual, so `<Theme name="black"><Theme name="level2">` steps within the dark
+scheme rather than falling back to the parent's.
+
 In general you want your themes to all be the same shape - the same named keys
 and typed values - but sub-themes can be sub-sets of parent themes. The
 `useTheme` hook and style system will resolve missing keys upwards to parent

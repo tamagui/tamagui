@@ -1416,13 +1416,21 @@ const n34 = t([
 
 export type ThemeNames =
   | 'light'
+  | 'light_white'
   | 'dark_inverse'
+  | 'dark_white'
   | 'light_level2'
+  | 'light_white_level2'
   | 'dark_inverse_level2'
+  | 'dark_white_level2'
   | 'light_level2_level2'
   | 'light_level3'
+  | 'light_white_level2_level2'
+  | 'light_white_level3'
   | 'dark_inverse_level2_level2'
   | 'dark_inverse_level3'
+  | 'dark_white_level2_level2'
+  | 'dark_white_level3'
   | 'light_level2_level2_level2'
   | 'light_level2_level2_level3'
   | 'light_level2_level2_level4'
@@ -1432,6 +1440,15 @@ export type ThemeNames =
   | 'light_level3_level3'
   | 'light_level3_level4'
   | 'light_level4'
+  | 'light_white_level2_level2_level2'
+  | 'light_white_level2_level2_level3'
+  | 'light_white_level2_level2_level4'
+  | 'light_white_level2_level3'
+  | 'light_white_level2_level4'
+  | 'light_white_level3_level2'
+  | 'light_white_level3_level3'
+  | 'light_white_level3_level4'
+  | 'light_white_level4'
   | 'dark_inverse_level2_level2_level2'
   | 'dark_inverse_level2_level2_level3'
   | 'dark_inverse_level2_level2_level4'
@@ -1441,6 +1458,15 @@ export type ThemeNames =
   | 'dark_inverse_level3_level3'
   | 'dark_inverse_level3_level4'
   | 'dark_inverse_level4'
+  | 'dark_white_level2_level2_level2'
+  | 'dark_white_level2_level2_level3'
+  | 'dark_white_level2_level2_level4'
+  | 'dark_white_level2_level3'
+  | 'dark_white_level2_level4'
+  | 'dark_white_level3_level2'
+  | 'dark_white_level3_level3'
+  | 'dark_white_level3_level4'
+  | 'dark_white_level4'
   | 'light_accent'
   | 'light_accent_level2'
   | 'light_accent_level2_level2'
@@ -1450,13 +1476,21 @@ export type ThemeNames =
   | 'light_accent_level4'
   | 'light_brand'
   | 'light_inverse'
+  | 'light_black'
   | 'dark'
+  | 'dark_black'
   | 'light_inverse_level2'
+  | 'light_black_level2'
   | 'dark_level2'
+  | 'dark_black_level2'
   | 'light_inverse_level2_level2'
   | 'light_inverse_level3'
+  | 'light_black_level2_level2'
+  | 'light_black_level3'
   | 'dark_level2_level2'
   | 'dark_level3'
+  | 'dark_black_level2_level2'
+  | 'dark_black_level3'
   | 'light_inverse_level2_level2_level2'
   | 'light_inverse_level2_level2_level3'
   | 'light_inverse_level2_level2_level4'
@@ -1466,6 +1500,15 @@ export type ThemeNames =
   | 'light_inverse_level3_level3'
   | 'light_inverse_level3_level4'
   | 'light_inverse_level4'
+  | 'light_black_level2_level2_level2'
+  | 'light_black_level2_level2_level3'
+  | 'light_black_level2_level2_level4'
+  | 'light_black_level2_level3'
+  | 'light_black_level2_level4'
+  | 'light_black_level3_level2'
+  | 'light_black_level3_level3'
+  | 'light_black_level3_level4'
+  | 'light_black_level4'
   | 'dark_level2_level2_level2'
   | 'dark_level2_level2_level3'
   | 'dark_level2_level2_level4'
@@ -1475,6 +1518,15 @@ export type ThemeNames =
   | 'dark_level3_level3'
   | 'dark_level3_level4'
   | 'dark_level4'
+  | 'dark_black_level2_level2_level2'
+  | 'dark_black_level2_level2_level3'
+  | 'dark_black_level2_level2_level4'
+  | 'dark_black_level2_level3'
+  | 'dark_black_level2_level4'
+  | 'dark_black_level3_level2'
+  | 'dark_black_level3_level3'
+  | 'dark_black_level3_level4'
+  | 'dark_black_level4'
   | 'light_red'
   | 'light_red_level2'
   | 'light_red_level2_level2'
@@ -1530,13 +1582,21 @@ export type Themes = Record<ThemeNames, Theme>
 
 export const themes: Themes = {
   light: n1,
+  light_white: n1,
   dark_inverse: n1,
+  dark_white: n1,
   light_level2: n2,
+  light_white_level2: n2,
   dark_inverse_level2: n2,
+  dark_white_level2: n2,
   light_level2_level2: n3,
   light_level3: n3,
+  light_white_level2_level2: n3,
+  light_white_level3: n3,
   dark_inverse_level2_level2: n3,
   dark_inverse_level3: n3,
+  dark_white_level2_level2: n3,
+  dark_white_level3: n3,
   light_level2_level2_level2: n4,
   light_level2_level2_level3: n4,
   light_level2_level2_level4: n4,
@@ -1546,6 +1606,15 @@ export const themes: Themes = {
   light_level3_level3: n4,
   light_level3_level4: n4,
   light_level4: n4,
+  light_white_level2_level2_level2: n4,
+  light_white_level2_level2_level3: n4,
+  light_white_level2_level2_level4: n4,
+  light_white_level2_level3: n4,
+  light_white_level2_level4: n4,
+  light_white_level3_level2: n4,
+  light_white_level3_level3: n4,
+  light_white_level3_level4: n4,
+  light_white_level4: n4,
   dark_inverse_level2_level2_level2: n4,
   dark_inverse_level2_level2_level3: n4,
   dark_inverse_level2_level2_level4: n4,
@@ -1555,6 +1624,15 @@ export const themes: Themes = {
   dark_inverse_level3_level3: n4,
   dark_inverse_level3_level4: n4,
   dark_inverse_level4: n4,
+  dark_white_level2_level2_level2: n4,
+  dark_white_level2_level2_level3: n4,
+  dark_white_level2_level2_level4: n4,
+  dark_white_level2_level3: n4,
+  dark_white_level2_level4: n4,
+  dark_white_level3_level2: n4,
+  dark_white_level3_level3: n4,
+  dark_white_level3_level4: n4,
+  dark_white_level4: n4,
   light_accent: n5,
   light_accent_level2: n6,
   light_accent_level2_level2: n7,
@@ -1564,13 +1642,21 @@ export const themes: Themes = {
   light_accent_level4: n7,
   light_brand: n8,
   light_inverse: n9,
+  light_black: n9,
   dark: n9,
+  dark_black: n9,
   light_inverse_level2: n10,
+  light_black_level2: n10,
   dark_level2: n10,
+  dark_black_level2: n10,
   light_inverse_level2_level2: n11,
   light_inverse_level3: n11,
+  light_black_level2_level2: n11,
+  light_black_level3: n11,
   dark_level2_level2: n11,
   dark_level3: n11,
+  dark_black_level2_level2: n11,
+  dark_black_level3: n11,
   light_inverse_level2_level2_level2: n12,
   light_inverse_level2_level2_level3: n12,
   light_inverse_level2_level2_level4: n12,
@@ -1580,6 +1666,15 @@ export const themes: Themes = {
   light_inverse_level3_level3: n12,
   light_inverse_level3_level4: n12,
   light_inverse_level4: n12,
+  light_black_level2_level2_level2: n12,
+  light_black_level2_level2_level3: n12,
+  light_black_level2_level2_level4: n12,
+  light_black_level2_level3: n12,
+  light_black_level2_level4: n12,
+  light_black_level3_level2: n12,
+  light_black_level3_level3: n12,
+  light_black_level3_level4: n12,
+  light_black_level4: n12,
   dark_level2_level2_level2: n12,
   dark_level2_level2_level3: n12,
   dark_level2_level2_level4: n12,
@@ -1589,6 +1684,15 @@ export const themes: Themes = {
   dark_level3_level3: n12,
   dark_level3_level4: n12,
   dark_level4: n12,
+  dark_black_level2_level2_level2: n12,
+  dark_black_level2_level2_level3: n12,
+  dark_black_level2_level2_level4: n12,
+  dark_black_level2_level3: n12,
+  dark_black_level2_level4: n12,
+  dark_black_level3_level2: n12,
+  dark_black_level3_level3: n12,
+  dark_black_level3_level4: n12,
+  dark_black_level4: n12,
   light_red: n13,
   light_red_level2: n14,
   light_red_level2_level2: n15,

@@ -50,4 +50,68 @@ for (const scheme of ['light', 'dark'] as const) {
     expect(level.backgroundColor).toBe(reference.backgroundColor)
     expect(level.backgroundColor).not.toBe(inverse.backgroundColor)
   })
+
+  // v6 authored its recipe tree from scratch and never carried black/white over,
+  // so <Theme name="black"> resolved to nothing and silently rendered in the
+  // parent theme. it is the only way to pin a scheme from a subtree that does not
+  // know which scheme it is mounted under, which is exactly when it is reached
+  // for, so falling through to the parent is the one failure it must not have.
+  test(`black under ${scheme} paints dark and white paints light`, async ({ page }) => {
+    await expect(page.locator(`#${scheme}-black-name`)).toHaveText(`${scheme}_black`)
+
+    const black = await getStyles(page.locator(`#${scheme}-black`))
+    const white = await getStyles(page.locator(`#${scheme}-white`))
+    const dark = await getStyles(page.locator(`#dark-reference`))
+    const light = await getStyles(page.locator(`#light-reference`))
+
+    expect(black.backgroundColor).toBe(dark.backgroundColor)
+    expect(white.backgroundColor).toBe(light.backgroundColor)
+    expect(black.backgroundColor).not.toBe(white.backgroundColor)
+  })
+
+  // the property that separates black from inverse: it does not consult the
+  // parent, so it must survive a parent that is neither bare light nor bare dark.
+  test(`black resolves under a palette sub-theme in ${scheme}`, async ({ page }) => {
+    const nested = await getStyles(page.locator(`#${scheme}-red-black`))
+    const dark = await getStyles(page.locator(`#dark-reference`))
+
+    expect(nested.backgroundColor).toBe(dark.backgroundColor)
+  })
+
+  test(`a level under black steps within the dark scheme in ${scheme}`, async ({
+    page,
+  }) => {
+    const level = await getStyles(page.locator(`#${scheme}-black-level2`))
+    const reference = await getStyles(page.locator(`#dark-reference-level2`))
+    const black = await getStyles(page.locator(`#${scheme}-black`))
+
+    expect(level.backgroundColor).toBe(reference.backgroundColor)
+    expect(level.backgroundColor).not.toBe(black.backgroundColor)
+  })
+
+  // as with inverse, short-class markup has no full-name selector to fall back
+  // on, so it is the only place a misrouted relative selector shows up.
+  test(`the short black/white classes under ${scheme} pin their scheme`, async ({
+    page,
+  }) => {
+    const black = await getStyles(page.locator(`#short-${scheme}-black`))
+    const white = await getStyles(page.locator(`#short-${scheme}-white`))
+    const dark = await getStyles(page.locator(`#short-dark`))
+    const light = await getStyles(page.locator(`#short-light`))
+
+    expect(black.backgroundColor).toBe(dark.backgroundColor)
+    expect(white.backgroundColor).toBe(light.backgroundColor)
+  })
 }
+
+// the absolute-versus-relative distinction, asserted directly: inverse gives a
+// different answer per parent, black gives the same one.
+test(`black is parent-independent where inverse is not`, async ({ page }) => {
+  const fromLight = await getStyles(page.locator('#light-black'))
+  const fromDark = await getStyles(page.locator('#dark-black'))
+  const inverseFromLight = await getStyles(page.locator('#light-inverse'))
+  const inverseFromDark = await getStyles(page.locator('#dark-inverse'))
+
+  expect(fromLight.backgroundColor).toBe(fromDark.backgroundColor)
+  expect(inverseFromLight.backgroundColor).not.toBe(inverseFromDark.backgroundColor)
+})

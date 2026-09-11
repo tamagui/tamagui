@@ -410,6 +410,13 @@ export const tree = {
       scheme: parent.scheme === 'light' ? 'dark' : 'light',
       children: levels(),
     }),
+    // black and white name a scheme outright, where `inverse` only flips
+    // whichever one the parent happened to be. a menu that has to read as dark
+    // over a light page asks for `black` and gets it wherever it is mounted.
+    // both resolve from any parent, so `light_black` and `dark_black` are the
+    // same theme as `dark`, and deduplicate onto it.
+    black: { scheme: 'dark', children: levels() },
+    white: { scheme: 'light', children: levels() },
     red: { palette: 'red', treatment: 'tint', children: levels(3) },
     yellow: { palette: 'yellow', treatment: 'tint', children: levels(3) },
     green: { palette: 'green', treatment: 'tint', children: levels(3) },

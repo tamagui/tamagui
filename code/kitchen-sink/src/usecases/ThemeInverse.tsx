@@ -35,6 +35,34 @@ function SchemeInverse({ scheme }: { scheme: 'light' | 'dark' }) {
   )
 }
 
+// black and white name a scheme outright rather than flipping whatever the
+// parent was, so unlike `inverse` they have to land on the same theme from
+// either parent. that independence is the whole difference between the two.
+function SchemePin({ scheme }: { scheme: 'light' | 'dark' }) {
+  return (
+    <Theme name={scheme}>
+      <Theme name="black">
+        <ThemeName testID={`${scheme}-black-name`} />
+        <Surface testID={`${scheme}-black`} />
+        <Theme name="level2">
+          <Surface testID={`${scheme}-black-level2`} />
+        </Theme>
+      </Theme>
+      <Theme name="white">
+        <Surface testID={`${scheme}-white`} />
+      </Theme>
+      {/* black is only generated under the bare schemes, so reaching it from
+          inside a palette sub-theme depends on name resolution walking up past
+          `red` to `light_black`. that walk is the part worth pinning down. */}
+      <Theme name="red">
+        <Theme name="black">
+          <Surface testID={`${scheme}-red-black`} />
+        </Theme>
+      </Theme>
+    </Theme>
+  )
+}
+
 function Reference({ scheme }: { scheme: 'light' | 'dark' }) {
   return (
     <Theme name={scheme}>
@@ -62,6 +90,14 @@ function ShortClasses() {
       <div className="t_dark">
         <div id="short-dark-inverse" className="t_inverse" style={surface} />
       </div>
+      <div className="t_light">
+        <div id="short-light-black" className="t_black" style={surface} />
+        <div id="short-light-white" className="t_white" style={surface} />
+      </div>
+      <div className="t_dark">
+        <div id="short-dark-black" className="t_black" style={surface} />
+        <div id="short-dark-white" className="t_white" style={surface} />
+      </div>
       <div id="short-light" className="t_light" style={surface} />
       <div id="short-dark" className="t_dark" style={surface} />
     </div>
@@ -73,6 +109,8 @@ export function ThemeInverse() {
     <YStack gap="4" padding="4" testID="theme-inverse-root">
       <SchemeInverse scheme="light" />
       <SchemeInverse scheme="dark" />
+      <SchemePin scheme="light" />
+      <SchemePin scheme="dark" />
       <Reference scheme="light" />
       <Reference scheme="dark" />
       <ShortClasses />

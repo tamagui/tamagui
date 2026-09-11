@@ -7,8 +7,23 @@ import { tokens } from '../src/tokens'
 describe('v6 themes', () => {
   test('the static output matches the authored tree', () => {
     expect(themes).toEqual(authoredThemes)
-    expect(Object.keys(themes)).toHaveLength(110)
+    expect(Object.keys(themes)).toHaveLength(162)
     expect(new Set(Object.values(themes)).size).toBe(34)
+  })
+
+  // black and white pin a scheme outright where `inverse` only flips whatever
+  // the parent was, so a subtree that cannot know which scheme it is mounted
+  // under can still ask for one. v6 authored its recipe tree from scratch and
+  // dropped both, which left <Theme name="black"> resolving to nothing and
+  // silently rendering in the parent theme. every name they add deduplicates
+  // onto a theme that already existed, so they cost selectors and no values.
+  test('black and white name a scheme outright, from either parent', () => {
+    expect(themes.light_black).toBe(themes.dark)
+    expect(themes.dark_black).toBe(themes.dark)
+    expect(themes.light_white).toBe(themes.light)
+    expect(themes.dark_white).toBe(themes.light)
+    expect(themes.light_black_level2).toBe(themes.dark_level2)
+    expect(themes.dark_white_level3).toBe(themes.light_level3)
   })
 
   test('resolves relative levels and saturated aliases', () => {
