@@ -41,14 +41,14 @@ function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
         <Button icon={Icon} circular />
       </Tooltip.Trigger>
       <Tooltip.Content
-        theme="Tooltip"
+        theme="brand"
         scale="1 enter:0.9 exit:0.9"
         x="0 enter:0 exit:0"
         y="0 enter:-5px exit:-5px"
         opacity="1 enter:0 exit:0"
-        py="2"
-        px="3"
-        rounded
+        py="3"
+        px="4"
+        rounded="4"
         boxShadow="0 2px 4px shadow-color"
         transition={{
           preset: 'quick',

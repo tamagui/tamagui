@@ -90,6 +90,7 @@ export function Demo({
         borderColor="border-color"
         width={300}
         height={200}
+        px="5"
         y="enter:-10px exit:-10px"
         opacity="enter:0 exit:0"
         boxShadow="0px 4px 8px rgba(0,0,0,0.1), 0px 12px 32px rgba(0,0,0,0.08)"
@@ -113,6 +114,7 @@ export function Demo({
 
         <Popover.Close asChild>
           <Button
+            theme="brand"
             size="3"
             onPress={() => {
               /* Custom code goes here, does not interfere with popover closure */

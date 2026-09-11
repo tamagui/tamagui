@@ -153,8 +153,8 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
         <Toast.Close
           testID="toast-close-button"
           position="absolute"
-          top={-6}
-          left={-6}
+          top={4}
+          right={4}
           zIndex={1}
         />
       )}

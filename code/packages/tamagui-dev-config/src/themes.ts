@@ -25,6 +25,19 @@ for (const [themeName, theme] of Object.entries(selectedThemes)) {
   }
 }
 
+// `brand` is the loudest surface in the v3 grammar, and the convention is that
+// it inverses: a brand button, checked switch or tooltip on a light page is
+// near-black with light text, the same trade shadcn makes for its primary. it
+// stays neutral under a tinted parent, so the two scheme roots are enough. the
+// bold scale does not nest, so its levels alias it rather than walking back
+// toward the page.
+for (const scheme of ['light', 'dark']) {
+  const inverse = selectedThemes[scheme === 'light' ? 'dark' : 'light']
+  selectedThemes[`${scheme}_brand`] = inverse
+  selectedThemes[`${scheme}_brand_level2`] = inverse
+  selectedThemes[`${scheme}_brand_level3`] = inverse
+}
+
 // V5's component-theme lookup stays on the active parent theme when a more
 // specific component subtheme does not exist. Materialize those fallback
 // names so a V3 nested Theme resolves identically instead of jumping back to

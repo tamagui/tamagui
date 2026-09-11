@@ -34,6 +34,9 @@ const numbered = (prefix: string, count: number) =>
 const baseThemeNames = schemes.flatMap((scheme) => [
   scheme,
   `${scheme}_accent`,
+  // brand is neutral, so one per scheme covers every tint: theme resolution
+  // walks the parent name down, and `light_blue_brand` lands on `light_brand`
+  `${scheme}_brand`,
   `${scheme}_surface1`,
   `${scheme}_surface2`,
   ...colors.flatMap((color) => [
@@ -49,7 +52,7 @@ const levelThemeNames = baseThemeNames.flatMap((themeName) =>
     ? [themeName.replace(/_surface1$/, '_level2')]
     : themeName.endsWith('_surface2')
       ? [themeName.replace(/_surface2$/, '_level3')]
-      : themeName.endsWith('_accent')
+      : themeName.endsWith('_accent') || themeName.endsWith('_brand')
         ? [`${themeName}_level2`, `${themeName}_level3`]
         : []
 )

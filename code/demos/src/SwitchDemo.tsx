@@ -3,30 +3,24 @@ import { Label, Separator, Switch, XStack, YStack } from 'tamagui'
 
 export function SwitchDemo() {
   return (
-    <>
-      <YStack width={200} items="center" gap="3">
-        <XStack gap="3" flexDirection="xs:column">
-          <SwitchWithLabel size="2" />
-          <SwitchWithLabel size="2" defaultChecked />
-        </XStack>
-        <XStack gap="3" flexDirection="xs:column">
-          <SwitchWithLabel size="3" />
-          <SwitchWithLabel size="3" defaultChecked />
-        </XStack>
-        <XStack gap="3" flexDirection="xs:column">
-          <SwitchWithLabel size="4" />
-          <SwitchWithLabel size="4" defaultChecked />
-        </XStack>
-      </YStack>
-    </>
+    <YStack width={200} items="center" gap="3">
+      <XStack gap="3" flexDirection="xs:column">
+        <SwitchWithLabel size="3" />
+        <SwitchWithLabel size="3" defaultChecked />
+      </XStack>
+      <XStack gap="3" flexDirection="xs:column">
+        <SwitchWithLabel size="4" />
+        <SwitchWithLabel size="4" defaultChecked />
+      </XStack>
+      <XStack gap="3" flexDirection="xs:column">
+        <SwitchWithLabel size="5" />
+        <SwitchWithLabel size="5" defaultChecked />
+      </XStack>
+    </YStack>
   )
 }
 
-export function SwitchWithLabel(props: {
-  size: SizeTokens
-  defaultChecked?: boolean
-  activeStyle?: boolean
-}) {
+export function SwitchWithLabel(props: { size: SizeTokens; defaultChecked?: boolean }) {
   const id = `switch-${props.size}-${props.defaultChecked ?? ''}}`
   return (
     <XStack width={200} items="center" gap="4">
@@ -36,13 +30,9 @@ export function SwitchWithLabel(props: {
       <Separator minH={20} vertical />
       <Switch
         id={id}
-        transition="300ms"
+        transition="quick"
         size={props.size}
         defaultChecked={props.defaultChecked}
-        // use activeStyle to choose your checked-state color
-        activeStyle={{
-          backgroundColor: 'color-6',
-        }}
       >
         <Switch.Thumb transition="quickest" />
       </Switch>

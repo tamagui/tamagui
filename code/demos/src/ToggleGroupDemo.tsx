@@ -1,7 +1,5 @@
 import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons-2'
-import { Label, ToggleGroup, XGroup, YGroup, XStack, YStack, style } from 'tamagui'
-
-const activeToggleStyle = style({ backgroundColor: 'color-5' })
+import { Label, ToggleGroup, XGroup, YGroup, XStack, YStack } from 'tamagui'
 
 export function ToggleGroupDemo() {
   return (
@@ -27,6 +25,28 @@ function ToggleGroupComponent(props: {
   const id = `switch-${props.type}`
   const Group = props.orientation === 'horizontal' ? XGroup : YGroup
 
+  const items = (
+    <Group>
+      <Group.Item>
+        <ToggleGroup.Item value="left" aria-label="Left aligned" borderRadius="4">
+          <AlignLeft size={16} />
+        </ToggleGroup.Item>
+      </Group.Item>
+
+      <Group.Item>
+        <ToggleGroup.Item value="center" aria-label="Center aligned" borderRadius="4">
+          <AlignCenter size={16} />
+        </ToggleGroup.Item>
+      </Group.Item>
+
+      <Group.Item>
+        <ToggleGroup.Item value="right" aria-label="Right aligned" borderRadius="4">
+          <AlignRight size={16} />
+        </ToggleGroup.Item>
+      </Group.Item>
+    </Group>
+  )
+
   return (
     <XStack
       flexDirection={props.orientation === 'horizontal' ? 'row' : 'column'}
@@ -38,47 +58,21 @@ function ToggleGroupComponent(props: {
         {props.type === 'single' ? 'Single' : 'Multiple'}
       </Label>
 
-      <ToggleGroup
-        orientation={props.orientation}
-        id={id}
-        type={props.type as any}
-        disableDeactivation={props.type === 'single' ? true : undefined}
-      >
-        <Group>
-          <Group.Item>
-            <ToggleGroup.Item
-              value="left"
-              aria-label="Left aligned"
-              borderRadius="4"
-              activeStyle={activeToggleStyle}
-            >
-              <AlignLeft size={16} />
-            </ToggleGroup.Item>
-          </Group.Item>
-
-          <Group.Item>
-            <ToggleGroup.Item
-              value="center"
-              aria-label="Center aligned"
-              borderRadius="4"
-              activeStyle={activeToggleStyle}
-            >
-              <AlignCenter size={16} />
-            </ToggleGroup.Item>
-          </Group.Item>
-
-          <Group.Item>
-            <ToggleGroup.Item
-              value="right"
-              aria-label="Right aligned"
-              borderRadius="4"
-              activeStyle={activeToggleStyle}
-            >
-              <AlignRight size={16} />
-            </ToggleGroup.Item>
-          </Group.Item>
-        </Group>
-      </ToggleGroup>
+      {/* `type` discriminates the props union, so each variant is written out */}
+      {props.type === 'single' ? (
+        <ToggleGroup
+          type="single"
+          orientation={props.orientation}
+          id={id}
+          disableDeactivation
+        >
+          {items}
+        </ToggleGroup>
+      ) : (
+        <ToggleGroup type="multiple" orientation={props.orientation} id={id}>
+          {items}
+        </ToggleGroup>
+      )}
     </XStack>
   )
 }

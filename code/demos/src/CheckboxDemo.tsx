@@ -1,18 +1,14 @@
 import { Check as CheckIcon } from '@tamagui/lucide-icons-2'
 import type { CheckboxProps } from 'tamagui'
-import { Checkbox, Label, Theme, XStack, YStack, style } from 'tamagui'
-
-const checkedStyle = style({ backgroundColor: 'accent-background' })
+import { Checkbox, Label, Theme, XStack, YStack } from 'tamagui'
 
 export function CheckboxDemo() {
   return (
-    <Theme name="level3">
-      <YStack width={300} items="center" gap="2">
-        <CheckboxWithLabel size="3" />
-        <CheckboxWithLabel size="4" defaultChecked />
-        <CheckboxWithLabel size="5" disabled label="Accept terms (disabled)" />
-      </YStack>
-    </Theme>
+    <YStack width={300} items="center" gap="2">
+      <CheckboxWithLabel size="3" />
+      <CheckboxWithLabel size="4" defaultChecked />
+      <CheckboxWithLabel size="5" disabled label="Accept terms (disabled)" />
+    </YStack>
   )
 }
 
@@ -26,13 +22,7 @@ export function CheckboxWithLabel({
   return (
     <Theme name={disabled ? 'gray' : null}>
       <XStack width={300} items="center" gap="4">
-        <Checkbox
-          id={id}
-          size={size}
-          disabled={disabled}
-          activeStyle={checkedStyle}
-          {...checkboxProps}
-        >
+        <Checkbox id={id} size={size} disabled={disabled} {...checkboxProps}>
           <Checkbox.Indicator>
             <CheckIcon />
           </Checkbox.Indicator>

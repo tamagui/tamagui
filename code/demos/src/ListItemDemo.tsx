@@ -1,14 +1,16 @@
 import { ChevronRight, Cloud, Moon, Star, Sun } from '@tamagui/lucide-icons-2'
-import { ListItem, Separator, Theme, XStack, YGroup } from 'tamagui'
+import { ListItem, Separator, XStack, YGroup } from 'tamagui'
+
+// the rows sit on color-1, the step just off the page background, so the list
+// reads as a surface without needing a theme change
+const surface = { bg: 'color-1 hover:color-2 press:color-3' } as const
 
 export function ListItemDemo() {
   return (
-    <Theme name="level2">
-      <XStack flexDirection="max-md:column" px="4" gap="4">
-        <ListItemDemo1 />
-        <ListItemDemo2 />
-      </XStack>
-    </Theme>
+    <XStack flexDirection="max-md:column" px="4" gap="4">
+      <ListItemDemo1 />
+      <ListItemDemo2 />
+    </XStack>
   )
 }
 
@@ -25,6 +27,7 @@ function ListItemDemo1() {
     >
       <YGroup.Item>
         <ListItem
+          {...surface}
           gap="3"
           icon={Star}
           title="Star"
@@ -33,17 +36,17 @@ function ListItemDemo1() {
         />
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem gap="3" icon={Moon}>
+        <ListItem {...surface} gap="3" icon={Moon}>
           Moon
         </ListItem>
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem gap="3" icon={Sun}>
+        <ListItem {...surface} gap="3" icon={Sun}>
           Sun
         </ListItem>
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem gap="3" icon={Cloud}>
+        <ListItem {...surface} gap="3" icon={Cloud}>
           Cloud
         </ListItem>
       </YGroup.Item>
@@ -64,6 +67,7 @@ function ListItemDemo2() {
     >
       <YGroup.Item>
         <ListItem
+          {...surface}
           gap="3"
           title="Star"
           subTitle="Subtitle"
@@ -74,6 +78,7 @@ function ListItemDemo2() {
       <Separator />
       <YGroup.Item>
         <ListItem
+          {...surface}
           gap="3"
           title="Moon"
           subTitle="Subtitle"

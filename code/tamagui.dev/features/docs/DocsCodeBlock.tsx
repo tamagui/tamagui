@@ -116,6 +116,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           >
             <Button
               aria-label="Show or hide code"
+              theme="brand"
               icon={Code2}
               size="3"
               fontWeight="400"
@@ -125,7 +126,13 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               {isCollapsed ? 'Show code' : 'Hide code'}
             </Button>
             <TooltipSimple label="Toggle tint on/off">
-              <Button size="3" onPress={toggleDocsTinted} z={10} icon={Paintbrush} />
+              <Button
+                theme="brand"
+                size="3"
+                onPress={toggleDocsTinted}
+                z={10}
+                icon={Paintbrush}
+              />
             </TooltipSimple>
           </XStack>
         )}
