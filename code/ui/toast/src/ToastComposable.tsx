@@ -369,7 +369,9 @@ const ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(
           if (idx !== -1) {
             return [
               ...toasts.slice(0, idx),
-              { ...toasts[idx], ...toast },
+              // a re-created toast is shown again: drop the delete flag a
+              // previous dismiss left on it, or it would never render again.
+              { ...toasts[idx], ...toast, delete: false },
               ...toasts.slice(idx + 1),
             ]
           }
@@ -960,15 +962,20 @@ const ToastItemInner = createStyledHOC(
       setMounted(true)
     }, [])
 
-    // handle deletion — only zero height when expanded (Sonner rebalance)
+    // handle deletion — only zero height when expanded (Sonner rebalance).
+    // a toast re-created with the same id while it is exiting comes back with
+    // delete cleared: cancel the pending unmount and show it again.
     React.useEffect(() => {
-      if (toast.delete) {
-        setRemoved(true)
-        if (isExpandedRef.current) {
-          setOffsetBeforeRemove(expandedOffsetRef.current)
-        }
-        setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
+      if (!toast.delete) {
+        setRemoved(false)
+        return
       }
+      setRemoved(true)
+      if (isExpandedRef.current) {
+        setOffsetBeforeRemove(expandedOffsetRef.current)
+      }
+      const timer = setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
+      return () => clearTimeout(timer)
     }, [toast.delete, toast, ctx.removeToast])
 
     React.useEffect(() => {
