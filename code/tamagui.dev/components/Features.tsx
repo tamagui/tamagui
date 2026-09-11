@@ -5,9 +5,9 @@ import { CheckCircle } from './CheckCircle'
 
 export const Features = ({ items, size, large, soon, ...props }: any) => {
   return (
-    <YStack mt="1" mb="2" {...props} gap="1">
+    <YStack mt={0} mb="2" {...props} gap="0.5">
       {items.map((feature, i) => (
-        <XStack render="li" key={i}>
+        <XStack key={i}>
           <YStack y={1} mt={large ? 1 : -2}>
             {soon ? (
               <YStack
@@ -26,7 +26,7 @@ export const Features = ({ items, size, large, soon, ...props }: any) => {
             )}
           </YStack>
           <YStack flex={1}>
-            <Paragraph size={size ?? (large ? '5' : '4')} color="gray-11">
+            <Paragraph size={size ?? (large ? '5' : '4')} color="gray-11" m={0}>
               {feature}
             </Paragraph>
             {soon && (

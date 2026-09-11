@@ -54,10 +54,11 @@ export function SourceVersionSwitcher({
         borderWidth={1}
         borderColor="border-color"
         borderRadius={8}
+        overflow="visible"
       >
         <Select.Value placeholder={versions[0]} />
-        <Select.Icon marginLeft="auto">
-          <ChevronDown size={12} color="color-9" />
+        <Select.Icon marginLeft="auto" flexShrink={0}>
+          <ChevronDown size={16} color="color-10" />
         </Select.Icon>
       </Select.Trigger>
 

@@ -32,19 +32,14 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
           </H2>
         )}
 
-        <YStack
-          render="ul"
-          p={0}
-          m={0}
-          style={{ paddingLeft: 0, margin: 0, listStyle: 'none' }}
-        >
+        <YStack p={0} m={0}>
           <Features large={large} items={features} />
         </YStack>
       </YStack>
 
       {!disableLinks && (
         <YStack
-          gap="1"
+          gap={0}
           minW={140}
           render="nav"
           aria-labelledby="site-component-info-header"
