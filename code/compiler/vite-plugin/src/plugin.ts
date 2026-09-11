@@ -26,7 +26,11 @@ import type {
 } from 'vite'
 import type { Environment } from 'vite'
 import type { ViteTamaguiLoader } from './loadTamagui'
-import { createViteTamaguiLoader, TAMAGUI_EVALUATION_ENVIRONMENT } from './loadTamagui'
+import {
+  createViteTamaguiLoader,
+  TAMAGUI_EVALUATION_ENVIRONMENT,
+  viteBuildConfigLoader,
+} from './loadTamagui'
 import {
   createCompilerStatsReport,
   formatCompilerStatsReport,
@@ -568,12 +572,10 @@ function createTamaguiNativePlugin(
     rebuildProject = false
     const pending = (async () => {
       projectDependencies.clear()
-      const loadedOptions = await Static.loadTamaguiBuildConfigAsync({
-        ...tamaguiOptionsIn,
-        root,
-        platform: 'native',
-        outputCSS: undefined,
-      })
+      const loadedOptions = await Static.loadTamaguiBuildConfigAsync(
+        { ...tamaguiOptionsIn, root, platform: 'native', outputCSS: undefined },
+        viteBuildConfigLoader
+      )
       const options = { ...loadedOptions, root, outputCSS: undefined }
       nativeOptions = options
       for (const dependency of Static.getTamaguiBuildConfigDependencies(loadedOptions)) {
@@ -900,8 +902,10 @@ export function createTamaguiPlugins({
     },
   })
 
-  // start loading immediately but don't block
-  tamaguiLoader.loadTamaguiBuildConfig()
+  // start loading immediately but don't block. the rejection is swallowed here
+  // only so node does not call it unhandled: the loader drops a failed promise,
+  // so the first real caller re-runs the load and reports the error itself.
+  void tamaguiLoader.loadTamaguiBuildConfig().catch(() => {})
 
   // helper to await load when needed
   const ensureLoaded = async () => {
@@ -922,6 +926,15 @@ export function createTamaguiPlugins({
   const transformedModuleIds = new Set<string>()
   const compilerHotUpdateSignatures = new Map<string, string>()
   const compilerHotReloadSignatures = new Map<string, string>()
+  // what has already been handed to `server.watcher.add`. chokidar's fsevents
+  // backend has no dedupe: every add() of a path builds a fresh listener
+  // closure and drops it in one Set per watch root, and nothing ever removes
+  // it. re-adding the config's dependencies on each hot update therefore grows
+  // that Set forever, and since the root consolidates to the whole project,
+  // every filesystem event under it runs the entire Set. measured on a real app
+  // after three hours: ~300 dependency files had become 45,228 listeners, each
+  // doing a string concat and an indexOf per event, which pinned one core.
+  let watchedDependencies = new Set<string>()
   let config: ResolvedConfig
   let server: ViteDevServer
   let zero: ZeroRuntimeController | null = null
@@ -996,6 +1009,8 @@ export function createTamaguiPlugins({
 
     configureServer(_server) {
       server = _server
+      // a new server owns a new watcher, so what the last one knew about is gone
+      watchedDependencies = new Set()
     },
 
     async buildEnd() {
@@ -1376,7 +1391,11 @@ export function createTamaguiPlugins({
           invalidateCompilerModules()
         }
         const dependencies = await tamaguiLoader.ensureFullConfigLoaded()
-        server.watcher.add(dependencies)
+        const unwatched = dependencies.filter((file) => !watchedDependencies.has(file))
+        if (unwatched.length) {
+          for (const file of unwatched) watchedDependencies.add(file)
+          server.watcher.add(unwatched)
+        }
         if (
           this.environment.name === 'client' &&
           compilerHotReloadSignatures.get(options.file) !== signature

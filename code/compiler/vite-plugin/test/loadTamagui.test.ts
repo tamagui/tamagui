@@ -691,6 +691,70 @@ test('regenerates config artifacts on imported token edits with extraction disab
   }
 }, 10_000)
 
+test('adds each config dependency to the watcher once, however many edits land', async () => {
+  // chokidar's fsevents backend builds a fresh listener closure per add() and
+  // never dedupes or removes one, and it consolidates the whole project onto a
+  // single watch root. re-adding the config's dependencies on every hot update
+  // therefore grows one Set without bound, and every filesystem event under the
+  // project then runs all of it. a real app reached 45,228 listeners for ~300
+  // files in three hours, which held a core at 100%.
+  const outputCSS = path.join(watchOutputRoot, 'watch-add.css')
+  const configJSON = path.join(fixtureRoot, '.tamagui/tamagui.config.json')
+  const original = await readFile(configSpacePath, 'utf8')
+  const server = await createServer({
+    configFile: false,
+    root: fixtureRoot,
+    logLevel: 'silent',
+    server: { middlewareMode: true },
+    resolve: { alias: fixtureAliases },
+    plugins: [
+      ...fixturePlugins(),
+      tamaguiPlugin({
+        root: fixtureRoot,
+        config: 'tamagui.config.ts',
+        components: fixtureComponents,
+        disableExtraction: true,
+        outputCSS,
+      }),
+    ],
+  })
+  servers.push(server)
+  const add = vi.spyOn(server.watcher, 'add')
+  // every artifact of one generation, so the next edit lands after the previous
+  // reload finished rather than as soon as the css happened to be flushed
+  const settledAt = async (space: string) => {
+    expect(await readFile(outputCSS, 'utf8')).toContain(
+      `--c-space-fixture:${15 + Number(space)}px`
+    )
+    expect(
+      JSON.parse(await readFile(configJSON, 'utf8')).tamaguiConfig.media.sm.minWidth
+    ).toBe(15 + Number(space))
+  }
+  try {
+    // the first load has to finish before the first edit, or the edit races it
+    // and its hot update is overwritten by the load that was already in flight
+    await vi.waitFor(() => settledAt('1'))
+    // values no other test in this file writes: the compiler's plan cache lives
+    // for the whole process, so a space another test already compiled here would
+    // hit that cache and never rewrite this test's css
+    for (const space of ['6', '7', '8']) {
+      await writeFile(configSpacePath, original.replace('1', space))
+      await vi.waitFor(() => settledAt(space))
+    }
+    const added = add.mock.calls.flatMap(([paths]) =>
+      typeof paths === 'string' ? [paths] : [...paths]
+    )
+    expect(added.length).toBeGreaterThan(0)
+    expect(added).toEqual([...new Set(added)])
+  } finally {
+    add.mockRestore()
+    await server.close()
+    servers.splice(servers.indexOf(server), 1)
+    await writeFile(configSpacePath, original)
+    await rm(path.join(fixtureRoot, '.tamagui'), { recursive: true, force: true })
+  }
+}, 20_000)
+
 test('serializes compiler and config loads while retaining unrelated modules', async () => {
   const outputCSS = path.join(watchOutputRoot, 'config.css')
   const configJSON = path.join(fixtureRoot, '.tamagui/tamagui.config.json')
