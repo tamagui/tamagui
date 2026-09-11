@@ -634,9 +634,18 @@ export function createComponent<
       elementType = animationDriver[isText ? 'Text' : 'View'] || elementType
     }
 
-    // internal use only
+    // internal use only. it says "a theme is already mounted above you, don't
+    // read one again", which a styled HOC sets on everything its render
+    // forwards props to. a `theme` key still wins: the HOC strips the caller's
+    // theme before rendering, so one arriving here was set by the component
+    // itself (Checkbox's activeTheme, Tabs' selected tab) and is the whole
+    // reason that element exists. it is the presence of the key, never its
+    // value, because the disabled path skips hooks and a component that swaps
+    // `theme` between null and a name across renders must not change hook order
     const disableThemeProp =
-      process.env.TAMAGUI_TARGET === 'native' ? false : props['data-disable-theme']
+      process.env.TAMAGUI_TARGET === 'native'
+        ? false
+        : props['data-disable-theme'] && !('theme' in props)
 
     const disableTheme = disableThemeProp || isHOC
 
