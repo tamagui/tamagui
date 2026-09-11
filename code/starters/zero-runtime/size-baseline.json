@@ -18,7 +18,7 @@
       "islands": {
         "jsGzip": 60776,
         "cssGzip": 4104,
-        "islandJsGzip": 72802
+        "islandJsGzip": 72843
       }
     },
     "next-webpack": {
@@ -30,7 +30,7 @@
       "islands": {
         "jsGzip": 142327,
         "cssGzip": 4122,
-        "islandJsGzip": 72714
+        "islandJsGzip": 72751
       }
     },
     "metro-web": {
@@ -42,7 +42,7 @@
       "islands": {
         "jsGzip": 62614,
         "cssGzip": 4807,
-        "islandJsGzip": 122499
+        "islandJsGzip": 122546
       }
     }
   }
