@@ -171,7 +171,6 @@ const RadioGroupItem = createStyledHOC(
                 ref={ref}
                 {...rest}
                 style={[rest.style, checked && activeStyle]}
-                active={checked}
               />
             </RovingFocusGroup.Item>
             {isFormControl && bubbleInput}

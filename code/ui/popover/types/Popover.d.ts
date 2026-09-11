@@ -128,7 +128,7 @@ export type PopoverContextProviderProps = {
  */
 export declare const PopoverContextProvider: React.MemoExoticComponent<({ scope, children, open, onOpenChange, onOpenToggle, triggerRef, id, contentId, hasCustomAnchor, onCustomAnchorAdd, onCustomAnchorRemove, anchorTo, adaptScope, breakpointActive, keepChildrenMounted, disableDismissable, hoverable, closeReasonRef, }: PopoverContextProviderProps) => React.JSX.Element>;
 export type PopoverAnchorProps = ScopedPopoverProps<YStackProps>;
-export declare const PopoverAnchor: React.NamedExoticComponent<Omit<YStackProps, "scope"> & {
+export declare const PopoverAnchor: React.NamedExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "scope"> & {
     scope?: PopoverScopes;
 } & import("@tamagui/compose-refs").RefProp<TamaguiElement>>;
 export type PopoverTriggerProps = ScopedPopoverProps<ViewProps & {
@@ -260,7 +260,7 @@ export declare const Popover: ((props: Omit<PopperProps, "scope"> & {
     displayName?: string;
     propTypes?: any;
 } & {
-    Anchor: React.NamedExoticComponent<Omit<YStackProps, "scope"> & {
+    Anchor: React.NamedExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "scope"> & {
         scope?: PopoverScopes;
     } & import("@tamagui/compose-refs").RefProp<TamaguiElement>>;
     Arrow: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, keyof PopperArrowExtraProps> & PopperArrowExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperArrowExtraProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
