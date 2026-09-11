@@ -733,7 +733,9 @@ async function run() {
 
       const isPublished = async ({ name }: { name: string }) => {
         try {
-          const { stdout } = await exec(`npm view ${name}@${version} version --json`)
+          const { stdout } = await exec(
+            `npm view ${name}@${version} version --json --prefer-online`
+          )
           const found = JSON.parse(stdout.trim())
           return found === version || (Array.isArray(found) && found.includes(version))
         } catch (error) {
@@ -743,6 +745,15 @@ async function run() {
           }
           throw new Error(`Could not verify ${name}@${version} on npm:\n${message}`)
         }
+      }
+
+      const confirmPublished = async (packages: { name: string }[]) => {
+        const checks = await pMap(
+          packages,
+          async (pkg) => ({ pkg, published: await isPublished(pkg) }),
+          { concurrency: 8 }
+        )
+        return checks.filter(({ published }) => !published).map(({ pkg }) => pkg)
       }
 
       console.info(`Checking ${packagesToPublish.length} package versions on npm...`)
@@ -822,6 +833,46 @@ async function run() {
           throw new Error(
             `Publish stopped after ${completed.length} packages. Still missing:\n${missing.map(({ pkg }) => pkg.name).join('\n')}\n\nRe-run with --republish to retry only these packages.`,
             { cause: error }
+          )
+        }
+
+        // npm answers roughly half of these publishes with `PUT 202 Accepted`
+        // instead of 200, and its cli prints `+ name@version` and exits 0 for
+        // both. a 202 usually commits a moment later, but not always: on
+        // 3.0.0-beta.1173.1 one package of 169, @tamagui/use-escape-keydown,
+        // got a 202 the registry never committed. the run went green, the beta
+        // looked cut, and every consumer that bumped its pins hit
+        // `No version matching "3.0.0-beta.1173.1" found`. the catch block
+        // above only runs when npm itself fails, so nothing caught it.
+        //
+        // so confirm each version actually resolves, give the registry a window
+        // to commit the outstanding 202s, then republish whatever it dropped.
+        let unconfirmed = await confirmPublished(pendingPackages)
+        for (let attempt = 0; attempt < 6 && unconfirmed.length > 0; attempt++) {
+          console.info(
+            `Waiting on ${unconfirmed.length} package(s) the registry accepted but has not committed`
+          )
+          await sleep(10_000)
+          unconfirmed = await confirmPublished(unconfirmed)
+        }
+        if (unconfirmed.length > 0) {
+          console.info(
+            `Republishing ${unconfirmed.length} dropped package(s):\n${unconfirmed.map((pkg) => pkg.name).join('\n')}`
+          )
+          for (const pkg of unconfirmed) {
+            // a 202 that commits between the check above and this retry answers
+            // with EPUBLISHCONFLICT. the confirmation below decides, not this
+            // call, so a conflict here means the version arrived after all.
+            await publishOne(pkg).catch((error) =>
+              console.info(`Republish of ${pkg.name} did not succeed: ${error}`)
+            )
+          }
+          await sleep(10_000)
+          unconfirmed = await confirmPublished(unconfirmed)
+        }
+        if (unconfirmed.length > 0) {
+          throw new Error(
+            `The registry accepted these publishes but never committed them:\n${unconfirmed.map((pkg) => pkg.name).join('\n')}\n\nRe-run with --republish to retry only these packages.`
           )
         }
       }
