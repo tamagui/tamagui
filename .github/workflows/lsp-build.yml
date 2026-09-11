@@ -239,18 +239,23 @@ jobs:
       # npm 11.5.1+ is required for trusted publishing
       - run: npm install -g npm@latest
 
+      # the pin check is a bun script, and this job runs on a bare node runner
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: 'package.json'
+
       - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
         with:
           path: code/lsp/npm
 
+      # no `|| <inline fallback>` here. this job had one, and it hid that bun was
+      # never installed: the primary command died with "bun: command not found"
+      # and the fallback was a folded yaml scalar, so its newlines became spaces
+      # and node parsed one line of run-together `const`s. a gate that always
+      # fails is as broken as one that always passes, and a second copy of the
+      # rule is how the two drift apart. this runs the one checked-in check.
       - name: Check the pins match before anything is published
-        run: bun ./scripts/check-lsp-version-pins.ts || node -e "
-          const { readFileSync } = require('node:fs')
-          const u = JSON.parse(readFileSync('code/lsp/npm/tamagui-lsp/package.json', 'utf8'))
-          const bad = Object.entries(u.optionalDependencies).filter(([, r]) => r !== u.version)
-          if (bad.length) { console.error('stale pins:', bad); process.exit(1) }
-          console.log('pins ok at', u.version)
-          "
+        run: bun ./scripts/check-lsp-version-pins.ts
 
       - name: Publish the eight leaves first
         run: |
