@@ -46,8 +46,8 @@ function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
         x="0 enter:0 exit:0"
         y="0 enter:-5px exit:-5px"
         opacity="1 enter:0 exit:0"
-        py="3"
-        px="4"
+        py="4"
+        px="5"
         rounded="4"
         boxShadow="0 2px 4px shadow-color"
         transition={{

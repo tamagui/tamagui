@@ -923,6 +923,16 @@ export const PopperArrow = createRefComponent<TamaguiElement, PopperArrowProps>(
         arrowStyle[oppSide] = -size
         innerArrowStyle[oppSide] = size / 2
       }
+      // extend the clip into the content by the border width so the arrow fill
+      // covers the content border and does not leave a line across the base
+      const overlap = typeof borderWidth === 'number' ? borderWidth : 0
+      if (overlap) {
+        if (isVertical) {
+          arrowStyle.height = size + overlap
+        } else {
+          arrowStyle.width = size + overlap
+        }
+      }
       if (oppSide === 'top' || oppSide === 'bottom') {
         arrowStyle.left = 0
       }

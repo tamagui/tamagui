@@ -24,8 +24,6 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
       return children
     }
 
-    // v2 derived the padding from the size token's pixel height, which under
-    // v6's spacing-shaped scale worked out to zero vertical padding
     const { frame } = resolveSize(tooltipProps.size ?? true)
 
     return (
@@ -56,8 +54,8 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
           scale="1 enter:0.96 exit:0.96"
           opacity="1 enter:0 exit:0"
           pointerEvents="none"
-          paddingHorizontal={frame.paddingHorizontal}
-          paddingVertical={frame.paddingVertical}
+          px="5"
+          py="4"
           borderRadius={frame.borderRadius}
           boxShadow="0 2px 4px shadow-color"
           transition={{
