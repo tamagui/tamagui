@@ -1314,7 +1314,9 @@ export function createTamaguiPlugins({
             try {
               source = await options.read()
             } catch (error) {
-              if (!(error instanceof Error && 'code' in error && error.code === 'ENOENT')) {
+              if (
+                !(error instanceof Error && 'code' in error && error.code === 'ENOENT')
+              ) {
                 throw error
               }
             }
