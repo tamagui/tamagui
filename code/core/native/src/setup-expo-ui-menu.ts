@@ -8,14 +8,18 @@
 import { createExpoUIMenuAdapter } from './expoUIMenuAdapter'
 import { createExpoUIMenuView } from './expoUIMenuView'
 import { registerNativeMenuAdapter } from './nativeMenuState'
+import { Platform } from 'react-native'
 
 function setup(): void {
   let MenuView
   try {
-    MenuView = createExpoUIMenuView({
-      swiftUI: require('@expo/ui/swift-ui'),
-      modifiers: require('@expo/ui/swift-ui/modifiers'),
-    })
+    MenuView =
+      Platform.OS === 'ios'
+        ? createExpoUIMenuView({
+            swiftUI: require('@expo/ui/swift-ui'),
+            modifiers: require('@expo/ui/swift-ui/modifiers'),
+          })
+        : require('@expo/ui/community/menu').MenuView
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
       console.warn('Error setting up Expo UI native menus', error)
