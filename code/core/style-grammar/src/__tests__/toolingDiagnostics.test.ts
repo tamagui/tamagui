@@ -81,6 +81,30 @@ describe('tooling diagnostics', () => {
     ])
   })
 
+  test('property keywords take precedence over unrelated token names', () => {
+    const collisions: GrammarConfigView = {
+      ...config,
+      tokenNames: {
+        ...config.tokenNames,
+        color: ['thin', 'normal', 'bold'],
+        radius: ['overlay', 'initial', 'not-a-mode'],
+      },
+    }
+    const options = {
+      config: collisions,
+      registry: createModifierRegistry(collisions).registry,
+      strictPayloads: true,
+    }
+    expect(diagnoseStyleValue('mixBlendMode', 'overlay hover:initial', options)).toEqual(
+      []
+    )
+    expect(diagnoseStyleValue('borderWidth', 'thin', options)).toEqual([])
+    expect(diagnoseStyleValue('fontWeight', 'normal hover:bold', options)).toEqual([])
+    expect(diagnoseStyleValue('mixBlendMode', 'not-a-mode', options)).toMatchObject([
+      { code: 'candidate-property-mismatch', candidate: 'not-a-mode' },
+    ])
+  })
+
   test('uses the shared target validator for a configured family mismatch', () => {
     expect(diagnose('fontSize', 'red-500')).toMatchObject([
       {

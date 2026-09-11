@@ -611,6 +611,12 @@ export function diagnoseStyleValue(
 
   const targetProperty = options.config.shorthands?.[property] || property
   const targetIsKnown = grammarProperties.has(targetProperty)
+  const targetCategory =
+    (targetProperty === 'background'
+      ? 'color'
+      : propToGrammarEntry[targetProperty]?.tokenCategory) ||
+    (getTokenCategoryName(propToTokenCategoryCode[targetProperty]) as TokenCategory) ||
+    undefined
   const candidates =
     options.candidates || createCandidatePropertyVocabulary(options.config)
   const diagnostics: StyleValueDiagnostic[] = []
@@ -691,7 +697,19 @@ export function diagnoseStyleValue(
     if (!contributions) return sightings
 
     const target = resolveCandidateTarget(targetProperty, candidate, contributions)
-    if (target.ok) return sightings
+    // the property's own values stay valid when another category has a token
+    // with the same spelling. payload errors above still apply.
+    if (
+      target.ok ||
+      isKnownPropertyValue(
+        candidate,
+        targetProperty,
+        targetCategory,
+        options.config,
+        candidates
+      )
+    )
+      return sightings
     const sighting = sightings.find((entry) => entry.name === candidate && entry.resolved)
     push(`${target.diagnostic.code}:${candidate}:${targetProperty}`, {
       ...target.diagnostic,
@@ -746,15 +764,7 @@ export function diagnoseStyleValue(
           ]
         : sightings
       const validationProperty = compoundColor ? 'color' : targetProperty
-      const category = compoundColor
-        ? 'color'
-        : (targetProperty === 'background'
-            ? 'color'
-            : propToGrammarEntry[targetProperty]?.tokenCategory) ||
-          (getTokenCategoryName(
-            propToTokenCategoryCode[targetProperty]
-          ) as TokenCategory) ||
-          undefined
+      const category = compoundColor ? 'color' : targetCategory
       if (!hasTokenVocabulary(options.config, category, validationProperty, candidates))
         continue
 
