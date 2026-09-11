@@ -122,6 +122,28 @@ a {
   margin-bottom: 0;
 }
 
+article ul,
+article ol {
+  padding-inline-start: 24px;
+}
+
+article li {
+  padding-inline-start: 4px;
+}
+
+article li::marker {
+  color: var(--color-10);
+}
+
+article ul ul,
+article ul ol,
+article ol ul,
+article ol ol {
+  padding-inline-start: 20px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
 article li strong {
   opacity: 1;
 }

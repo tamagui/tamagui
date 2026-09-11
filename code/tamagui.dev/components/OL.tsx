@@ -1,11 +1,11 @@
 import { YStack, styled } from 'tamagui'
 
-export const UL = styled(YStack, {
-  render: 'ul',
+export const OL = styled(YStack, {
+  render: 'ol',
   my: '2',
   pl: '6',
   style: {
-    listStyleType: 'disc',
+    listStyleType: 'decimal',
     listStylePosition: 'outside',
   },
 })

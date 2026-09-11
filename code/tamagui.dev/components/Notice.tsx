@@ -71,6 +71,7 @@ export const NoticeFrame = styled(YStack, {
   bg: 'color-2',
   rounded: '4',
   gap: '3',
-  my: '4',
+  mt: '3',
+  mb: '2',
   position: 'relative',
 })

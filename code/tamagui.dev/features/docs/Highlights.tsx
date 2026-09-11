@@ -32,14 +32,14 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
           </H2>
         )}
 
-        <YStack render="ul" p={0} m={0} gap="4">
+        <YStack render="ul" p={0} m={0}>
           <Features large={large} items={features} />
         </YStack>
       </YStack>
 
       {!disableLinks && (
         <YStack
-          gap="3"
+          gap="2"
           minW={140}
           render="nav"
           aria-labelledby="site-component-info-header"
@@ -47,7 +47,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
           <VisuallyHidden>
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>
-          <YStack marginTop="3" marginBottom="3" gap="3">
+          <YStack marginTop="1" marginBottom="1" gap="1">
             {frontmatter.versions && frontmatter.versions.length > 1 && (
               <SourceVersionSwitcher
                 versions={frontmatter.versions}

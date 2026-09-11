@@ -53,6 +53,7 @@ import { SubTitle } from '~/components/SubTitle'
 import { TamaguiCard } from '~/components/TamaguiCard'
 import { TamaguiExamplesCode } from '~/components/TamaguiExamples'
 import { UL } from '~/components/UL'
+import { OL } from '~/components/OL'
 import { SponsorButton } from '~/features/docs/SponsorButton'
 import { ExternalIcon } from '~/features/icons/ExternalIcon'
 import { BenchmarkChart } from '~/features/site/benchmarks/BenchmarkChart'
@@ -248,6 +249,7 @@ const componentsIn = {
   DataTable,
   Description: SubTitle,
   UL,
+  OL,
   LI,
   Link,
   Strong: (props) => (
@@ -536,7 +538,13 @@ const componentsIn = {
     )
   },
 
-  ol: (props) => <YStack {...props} mb="3" render="ol" />,
+  ol: ({ children }) => {
+    return (
+      <OL render="ol" mt={0} mb={16}>
+        {React.Children.toArray(children).map((x) => (typeof x === 'string' ? null : x))}
+      </OL>
+    )
+  },
 
   li: (props) => {
     return (
@@ -547,9 +555,6 @@ const componentsIn = {
         pb={0}
         mb={4}
         className="docs-paragraph"
-        style={{
-          listStyleType: 'disc',
-        }}
       >
         {props.children}
       </LI>

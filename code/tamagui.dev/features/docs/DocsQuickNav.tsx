@@ -122,8 +122,8 @@ const NavLineIndicator = ({
         pointerEvents: 'none',
       }}
     >
-      {/* Background path (gray) */}
-      <path d={path} fill="none" stroke="var(--color-4)" strokeWidth="1" />
+      {/* Background path (subtle gray) */}
+      <path d={path} fill="none" stroke="var(--color-3)" strokeWidth="1" />
 
       {/* Active indicator (animated along path) */}
       <path
@@ -287,7 +287,7 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
             display={headings.length === 0 ? 'none' : 'flex'}
             gap="2"
           >
-            <H4 mb="2" color="color-10" size="5" id="site-quick-nav-heading">
+            <H4 mb="2" color="color-7" size="5" id="site-quick-nav-heading">
               Contents
             </H4>
 
