@@ -1,3 +1,5 @@
+import Static from '@tamagui/static'
+import { regenerateConfigSync } from '../../static/src/extractor/regenerateConfig'
 import { execFile } from 'node:child_process'
 import {
   access,
@@ -686,6 +688,97 @@ test('regenerates config artifacts on imported token edits with extraction disab
     servers.splice(servers.indexOf(server), 1)
     await writeFile(configSpacePath, original)
     await rm(path.join(fixtureRoot, '.tamagui'), { recursive: true, force: true })
+  }
+}, 10_000)
+
+test('serializes compiler and config loads while retaining unrelated modules', async () => {
+  const outputCSS = path.join(watchOutputRoot, 'config.css')
+  const configJSON = path.join(fixtureRoot, '.tamagui/tamagui.config.json')
+  const promptPath = path.join(fixtureRoot, '.tamagui/prompt.md')
+  const original = await readFile(configSpacePath, 'utf8')
+  const server = await createServer({
+    configFile: false,
+    root: fixtureRoot,
+    logLevel: 'silent',
+    server: { middlewareMode: true, watch: null },
+    resolve: { alias: fixtureAliases },
+    plugins: [...fixturePlugins(), tamaguiPlugin({ disable: true })],
+  })
+  servers.push(server)
+  const environment = server.environments[TAMAGUI_EVALUATION_ENVIRONMENT]
+  if (!isRunnableDevEnvironment(environment)) throw new Error('Expected module runner')
+  const options = {
+    root: fixtureRoot,
+    config: 'tamagui.config.ts',
+    components: fixtureComponents,
+    outputCSS,
+  }
+  const loader = createViteTamaguiLoader(options)
+  loader.setEnvironment(environment)
+  await loader.ensureFullConfigLoaded()
+  const singleton = await environment.runner.import(resolutionPath)
+  const projectLoad = vi.spyOn(Static, 'loadCompilerProject')
+  const load = Static.loadTamaguiFromModules
+  const entered = Promise.withResolvers<void>()
+  const release = Promise.withResolvers<void>()
+  const writer = vi
+    .spyOn(Static, 'loadTamaguiFromModules')
+    .mockImplementationOnce(async (...args) => {
+      entered.resolve()
+      await release.promise
+      return load(...args)
+    })
+  try {
+    await writeFile(configSpacePath, original.replace('1', '4'))
+    for (const module of environment.moduleGraph.getModulesByFile(configSpacePath) ??
+      []) {
+      environment.moduleGraph.invalidateModule(module)
+    }
+    loader.invalidate(configSpacePath)
+    const compilerLoad = loader.getCompilerProject()
+    await entered.promise
+    await writeFile(configSpacePath, original.replace('1', '5'))
+    for (const module of environment.moduleGraph.getModulesByFile(configSpacePath) ??
+      []) {
+      environment.moduleGraph.invalidateModule(module)
+    }
+    loader.invalidate(configSpacePath)
+    const configLoad = loader.ensureFullConfigLoaded()
+    await loader.loadTamaguiBuildConfig()
+    const loadsBeforeRelease = projectLoad.mock.calls.length
+    release.resolve()
+    await Promise.all([compilerLoad, configLoad])
+    expect(loadsBeforeRelease).toBe(1)
+    expect(writer).toHaveBeenCalledTimes(2)
+    expect(await readFile(outputCSS, 'utf8')).toContain('--c-space-fixture:20px')
+    expect(
+      JSON.parse(await readFile(configJSON, 'utf8')).tamaguiConfig.media.sm.minWidth
+    ).toBe(20)
+    expect(await environment.runner.import(resolutionPath)).toBe(singleton)
+
+    const paths = [configJSON, promptPath]
+    const contents = await Promise.all(paths.map((file) => readFile(file, 'utf8')))
+    const mtimes = await Promise.all(
+      paths.map(async (file) => (await stat(file)).mtimeMs)
+    )
+    const project = await loader.getCompilerProject()
+    regenerateConfigSync(options, project.projectInfo)
+    expect(
+      await Promise.all(paths.map(async (file) => (await stat(file)).mtimeMs))
+    ).toEqual(mtimes)
+    await rm(promptPath)
+    regenerateConfigSync(options, project.projectInfo)
+    expect(await Promise.all(paths.map((file) => readFile(file, 'utf8')))).toEqual(
+      contents
+    )
+  } finally {
+    release.resolve()
+    writer.mockRestore()
+    projectLoad.mockRestore()
+    await loader.cleanup()
+    await server.close()
+    servers.splice(servers.indexOf(server), 1)
+    await writeFile(configSpacePath, original)
   }
 }, 10_000)
 

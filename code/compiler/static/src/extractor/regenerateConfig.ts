@@ -24,13 +24,8 @@ export async function regenerateConfig(
 ) {
   const config = configIn ?? (await getBundledConfig(tamaguiOptions, rebuild))
   if (!config) return
-  const out = transformConfig(config, tamaguiOptions.platform || 'web')
-  const confFile = getConfigFile(tamaguiOptions)
-  await FS.ensureDir(dirname(confFile))
-  const outputs = [
-    [confFile, `${JSON.stringify(out, null, 2)}\n`],
-    [join(dirname(confFile), 'prompt.md'), generateConfigMarkdown(out)],
-  ]
+  const outputs = getConfigOutputs(tamaguiOptions, config)
+  await FS.ensureDir(dirname(outputs[0][0]))
   await Promise.all(
     outputs.map(async ([file, content]) => {
       if (await FS.pathExists(file)) {
@@ -45,22 +40,21 @@ export function regenerateConfigSync(
   tamaguiOptions: TamaguiOptions,
   config: BundledConfig
 ) {
-  try {
-    const confFile = getConfigFile(tamaguiOptions)
-    FS.ensureDirSync(dirname(confFile))
-    FS.writeJSONSync(
-      confFile,
-      transformConfig(config, tamaguiOptions.platform || 'web'),
-      {
-        spaces: 2,
-      }
-    )
-  } catch (err) {
-    if (process.env.DEBUG?.includes('tamagui') || process.env.IS_TAMAGUI_DEV) {
-      console.warn('regenerateConfig error', err)
-    }
-    // ignore for now
+  const outputs = getConfigOutputs(tamaguiOptions, config)
+  FS.ensureDirSync(dirname(outputs[0][0]))
+  for (const [file, content] of outputs) {
+    if (FS.existsSync(file) && FS.readFileSync(file, 'utf8') === content) continue
+    FS.writeFileSync(file, content)
   }
+}
+
+function getConfigOutputs(options: TamaguiOptions, config: BundledConfig) {
+  const out = transformConfig(config, options.platform || 'web')
+  const confFile = getConfigFile(options)
+  return [
+    [confFile, `${JSON.stringify(out, null, 2)}\n`],
+    [join(dirname(confFile), 'prompt.md'), generateConfigMarkdown(out)],
+  ]
 }
 
 export async function generateTamaguiThemes(

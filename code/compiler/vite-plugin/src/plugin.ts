@@ -889,7 +889,9 @@ export function createTamaguiPlugins({
           resolved,
           configuredEvaluationPackages
         )
-        return createRunnableDevEnvironment(name, evaluationConfig)
+        // configuration updates are serialized by the shared loader. the runner
+        // must not also re-import its entries on Vite's full-reload event.
+        return createRunnableDevEnvironment(name, evaluationConfig, { hot: false })
       },
       moduleRunnerTransform: true,
     },
@@ -1376,9 +1378,9 @@ export function createTamaguiPlugins({
           compilerHotUpdateSignatures.set(options.file, signature)
           tamaguiLoader.invalidate(options.file)
           invalidateCompilerModules()
-          const dependencies = await tamaguiLoader.ensureFullConfigLoaded()
-          server.watcher.add(dependencies)
         }
+        const dependencies = await tamaguiLoader.ensureFullConfigLoaded()
+        server.watcher.add(dependencies)
         if (
           this.environment.name === 'client' &&
           compilerHotReloadSignatures.get(options.file) !== signature

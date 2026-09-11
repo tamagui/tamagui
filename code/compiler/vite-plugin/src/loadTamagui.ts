@@ -59,6 +59,8 @@ export function createViteTamaguiLoader(
   let loadPromise: Promise<TamaguiOptions> | null = null
   let loadedOptions: TamaguiOptions | null = null
   let projectPromise: Promise<Static.CompilerProject> | null = null
+  let loadingProject: Promise<Static.CompilerProject> | null = null
+  const invalidatedFiles = new Set<string>()
   const evaluationDependencies = new Set<string>()
   const stampSources = new Set<string>()
   let generation = 0
@@ -173,11 +175,33 @@ export function createViteTamaguiLoader(
   ): Promise<Static.CompilerProject> => {
     if (projectPromise) return projectPromise
 
+    const previous = loadingProject
+    const projectGeneration = generation
+    const changedFiles = [...invalidatedFiles]
+    invalidatedFiles.clear()
     projectPromise = (async () => {
+      // evaluations and their artifact writes have one owner across generations.
+      // a repaired edit runs after the failed generation has finished reporting.
+      try {
+        await previous
+      } catch {}
       if (!environment) {
         throw new Error(
           `Cannot load Tamagui without the ${TAMAGUI_EVALUATION_ENVIRONMENT} Vite environment`
         )
+      }
+
+      for (const file of changedFiles) {
+        const evaluated = environment.runner.evaluatedModules
+        const affected = new Set(evaluated.getModulesByFile(file))
+        // invalidate importers, retaining unrelated modules and their singletons.
+        for (const module of affected) {
+          for (const importer of module.importers) {
+            const parent = evaluated.getModuleById(importer)
+            if (parent) affected.add(parent)
+          }
+          evaluated.invalidateModule(module)
+        }
       }
 
       let evaluated: EvaluatedProjectModules | null = null
@@ -185,7 +209,7 @@ export function createViteTamaguiLoader(
         root: environment.config.root,
         target: 'web',
         options,
-        generation: `vite:${generation}`,
+        generation: `vite:${projectGeneration}`,
         hostVersions: vitePluginVersions,
         async load(normalizedOptions) {
           evaluated = await evaluateProjectModules(normalizedOptions)
@@ -214,12 +238,15 @@ export function createViteTamaguiLoader(
       })
     })()
 
+    loadingProject = projectPromise
     const pending = projectPromise
     try {
       return await pending
     } catch (error) {
       if (projectPromise === pending) projectPromise = null
       throw error
+    } finally {
+      if (loadingProject === pending) loadingProject = null
     }
   }
 
@@ -263,18 +290,7 @@ export function createViteTamaguiLoader(
     },
 
     invalidate(file?: string) {
-      if (file && environment) {
-        const evaluated = environment.runner.evaluatedModules
-        const affected = new Set(evaluated.getModulesByFile(normalizeDependency(file)))
-        // invalidate importers, retaining unrelated modules and their singletons.
-        for (const module of affected) {
-          for (const importer of module.importers) {
-            const parent = evaluated.getModuleById(importer)
-            if (parent) affected.add(parent)
-          }
-          evaluated.invalidateModule(module)
-        }
-      }
+      if (file) invalidatedFiles.add(normalizeDependency(file))
       generation++
       projectPromise = null
     },
@@ -289,6 +305,7 @@ export function createViteTamaguiLoader(
 
     async cleanup() {
       try {
+        await loadingProject?.catch(() => {})
         if (ownsEnvironment && environment) {
           await environment.close()
         }
@@ -298,6 +315,10 @@ export function createViteTamaguiLoader(
         loadPromise = null
         loadedOptions = null
         projectPromise = null
+        loadingProject = null
+        invalidatedFiles.clear()
+        evaluationDependencies.clear()
+        stampSources.clear()
       }
     },
   }
