@@ -210,7 +210,6 @@ export const docsRoutes = [
     pages: [
       { title: 'Anchor', route: '/ui/anchor' },
       { title: 'Portal', route: '/ui/portal' },
-      { title: 'RovingFocusGroup', route: '/ui/roving-focus' },
       { title: 'Unspaced', route: '/ui/unspaced' },
       { title: 'VisuallyHidden', route: '/ui/visually-hidden' },
     ],

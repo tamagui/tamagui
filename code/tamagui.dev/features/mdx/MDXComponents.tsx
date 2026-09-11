@@ -796,7 +796,7 @@ const componentsIn = {
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/ui/intro">
                   <CodeInline>
-                    <span style={{ color: 'var(--color-12)' }}>tamagui UI</span>
+                    <span style={{ color: 'var(--color-12)' }}>Tamagui Components</span>
                   </CodeInline>
                 </Link>{' '}
                 provides composable components for building common UI elements. It's
@@ -879,6 +879,11 @@ const componentsIn = {
             <Link asChild href="/docs/intro/agents">
               <Text render="a" fontSize={14} color="color-11 hover:color-12">
                 Setting up with a coding agent ↗
+              </Text>
+            </Link>
+            <Link asChild href="/ui/native">
+              <Text render="a" fontSize={14} color="color-11 hover:color-12">
+                Native integrations & runtime ↗
               </Text>
             </Link>
           </XStack>

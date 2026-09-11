@@ -82,6 +82,15 @@ initializeVersionCache()
 export default createMiddleware(async ({ request, next }) => {
   const url = new URL(request.url)
 
+  if (
+    url.pathname === '/ui/roving-focus' ||
+    url.pathname.startsWith('/ui/roving-focus/') ||
+    url.pathname === '/docs/components/roving-focus' ||
+    url.pathname.startsWith('/docs/components/roving-focus/')
+  ) {
+    return Response.redirect(new URL('/ui/focus-scope', url.origin), 301)
+  }
+
   if (url.searchParams.has('syntax')) {
     const href = `${url.pathname}${url.search}`
     const canonicalHref = getDocsLinkHref(href, 'styled')
