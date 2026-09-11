@@ -272,6 +272,14 @@ jobs:
               echo "$pkg is $LEAF_VERSION but the umbrella is $UMBRELLA_VERSION"
               exit 1
             fi
+            # already there means a previous run of this publish got this far.
+            # npm refuses to republish a version, so without this the whole job
+            # is single-shot: any failure after the first leaf leaves a state no
+            # re-run can get past, and the umbrella can never ship.
+            if npm view "@tamagui/$pkg@$LEAF_VERSION" version > /dev/null 2>&1; then
+              echo "@tamagui/$pkg@$LEAF_VERSION is already published, skipping"
+              continue
+            fi
             echo "publishing @tamagui/$pkg@$LEAF_VERSION"
             npm publish "$DIR" --access public --provenance
           done
@@ -283,7 +291,22 @@ jobs:
           for pkg in lsp-darwin-arm64 lsp-darwin-x64 lsp-linux-x64-gnu lsp-linux-arm64-gnu \
                      lsp-linux-x64-musl lsp-linux-arm64-musl lsp-win32-x64 lsp-win32-arm64; do
             # npm treats a missing optional dep as success at install time, so
-            # the only place this can be caught is here, before the umbrella ships
-            npm view "@tamagui/$pkg@$VERSION" version > /dev/null
+            # the only place this can be caught is here, before the umbrella ships.
+            #
+            # publishing is not the same as being readable: npm answers the PUT
+            # with `+ pkg@version` and the packument catches up afterwards, so a
+            # single read here fails on a leaf that published seconds ago. that
+            # is what stopped run 34562157824 with all eight already live. poll
+            # instead, and only call it missing after the registry has had time.
+            for attempt in $(seq 1 30); do
+              if npm view "@tamagui/$pkg@$VERSION" version > /dev/null 2>&1; then
+                break
+              fi
+              if [ "$attempt" = "30" ]; then
+                echo "@tamagui/$pkg@$VERSION never became readable"
+                exit 1
+              fi
+              sleep 10
+            done
           done
           npm publish code/lsp/npm/tamagui-lsp --access public --provenance
