@@ -18,12 +18,41 @@ name: LSP Binaries
 # silently reports no server.
 
 on:
+  # release.yml DISPATCHES this for every beta so the language server ships at
+  # the same version as the other 169 packages. `skipPublish` keeps the umbrella
+  # out of the main lane's version pass, so without this it stayed on whatever
+  # was committed while everything else moved, which is how it ended up
+  # publishing 2.7.7 against a workspace on 3.0.0-beta.
+  #
+  # it is a dispatch and NOT `uses: ./.github/workflows/lsp-build.yml`, which is
+  # the obvious way to write it. npm's trusted publishing validates the OIDC
+  # `workflow_ref` claim, which names the workflow that STARTED the run, not the
+  # one holding the publish step. called from release.yml the claim would read
+  # release.yml, and all nine packages pin lsp-build.yml on npmjs.com, so every
+  # publish would 403. npm documents this exact limitation for workflow_call.
+  # dispatching keeps this file the entry workflow and the nine npm configs as
+  # they are.
   workflow_dispatch:
     inputs:
       publish:
         description: 'Publish the 8 leaves then the umbrella to npm. Type yes to confirm.'
         required: false
         default: 'no'
+        type: string
+      version:
+        description: 'Version to publish all nine packages at. Set by release.yml; leave empty to publish whatever is committed.'
+        required: false
+        default: ''
+        type: string
+      tag:
+        description: 'npm dist-tag to publish under.'
+        required: false
+        default: 'latest'
+        type: string
+      ref:
+        description: 'Commit to build. release.yml dispatches against a branch but passes the exact released sha here.'
+        required: false
+        default: ''
         type: string
   pull_request:
     paths:
@@ -42,8 +71,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: lsp-build-${{ github.ref }}
-  cancel-in-progress: true
+  # a publishing run gets a group of its own and is never cancelled. it used to
+  # share `lsp-build-refs/heads/main` with ordinary pushes, so a push landing
+  # while a release was partway through the eight leaves would cancel it, and
+  # npm refuses to republish a version, so that version could never ship.
+  group: ${{ inputs.publish == 'yes' && format('lsp-publish-{0}', github.run_id) || format('lsp-build-{0}', github.ref) }}
+  cancel-in-progress: ${{ inputs.publish != 'yes' }}
 
 jobs:
   build:
@@ -75,6 +108,7 @@ jobs:
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
+          ref: ${{ inputs.ref || github.sha }}
           persist-credentials: false
 
       - name: Install Rust with the ${{ matrix.target }} target
@@ -170,6 +204,13 @@ jobs:
           setTimeout(() => { console.error('timed out waiting for initialize'); process.exit(1) }, 20000)
           NODE
 
+      # the leaves are generated from the umbrella, so the umbrella has to carry
+      # the release's version before they are staged
+      - name: Set the release version
+        if: inputs.version != ''
+        working-directory: code/lsp
+        run: node npm/set-version.mjs "${{ inputs.version }}"
+
       - name: Stage the npm package
         working-directory: code/lsp
         shell: bash
@@ -212,8 +253,10 @@ jobs:
 
   publish:
     name: publish to npm
-    # opt-in only: a push can never reach this, and a dispatch must say `yes`
-    if: github.event_name == 'workflow_dispatch' && inputs.publish == 'yes'
+    # opt-in only: a push or a pull request can never reach this, because
+    # `inputs` is empty for both. every publish, by hand or from release.yml,
+    # arrives as a dispatch saying `yes`.
+    if: inputs.publish == 'yes'
     needs: build
     runs-on: ubuntu-latest
     # no environment: it adds an `environment` claim to the OIDC token that the
@@ -227,6 +270,7 @@ jobs:
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
+          ref: ${{ inputs.ref || github.sha }}
           persist-credentials: false
 
       # no registry-url: it writes an .npmrc holding a placeholder NODE_AUTH_TOKEN
@@ -248,6 +292,14 @@ jobs:
         with:
           path: code/lsp/npm
 
+      # the publish job checks out fresh, so its umbrella is still the committed
+      # version while the downloaded leaves carry the release's. the leaf-vs-
+      # umbrella guard below would reject that, correctly, so set it here too.
+      - name: Set the release version
+        if: inputs.version != ''
+        working-directory: code/lsp
+        run: node npm/set-version.mjs "${{ inputs.version }}"
+
       # no `|| <inline fallback>` here. this job had one, and it hid that bun was
       # never installed: the primary command died with "bun: command not found"
       # and the fallback was a folded yaml scalar, so its newlines became spaces
@@ -260,6 +312,7 @@ jobs:
       - name: Publish the eight leaves first
         run: |
           set -euo pipefail
+          TAG="${{ inputs.tag || 'latest' }}"
           UMBRELLA_VERSION=$(node -p "require('./code/lsp/npm/tamagui-lsp/package.json').version")
           for pkg in lsp-darwin-arm64 lsp-darwin-x64 lsp-linux-x64-gnu lsp-linux-arm64-gnu \
                      lsp-linux-x64-musl lsp-linux-arm64-musl lsp-win32-x64 lsp-win32-arm64; do
@@ -281,12 +334,13 @@ jobs:
               continue
             fi
             echo "publishing @tamagui/$pkg@$LEAF_VERSION"
-            npm publish "$DIR" --access public --provenance
+            npm publish "$DIR" --access public --provenance --tag "$TAG"
           done
 
       - name: Publish the umbrella only after every leaf resolved
         run: |
           set -euo pipefail
+          TAG="${{ inputs.tag || 'latest' }}"
           VERSION=$(node -p "require('./code/lsp/npm/tamagui-lsp/package.json').version")
           for pkg in lsp-darwin-arm64 lsp-darwin-x64 lsp-linux-x64-gnu lsp-linux-arm64-gnu \
                      lsp-linux-x64-musl lsp-linux-arm64-musl lsp-win32-x64 lsp-win32-arm64; do
@@ -309,4 +363,4 @@ jobs:
               sleep 10
             done
           done
-          npm publish code/lsp/npm/tamagui-lsp --access public --provenance
+          npm publish code/lsp/npm/tamagui-lsp --access public --provenance --tag "$TAG"
