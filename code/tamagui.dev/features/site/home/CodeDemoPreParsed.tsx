@@ -16,15 +16,15 @@ export function CodeDemoPreParsed({
 }) {
   return (
     <YStack
-      rounded="$4"
-      className={`language-${language}`}
-      bg="$backgroundHover"
-      borderColor="$borderColor"
+      rounded="4"
+      bg="background-hover"
+      borderColor="border-color"
       overflow="hidden"
       borderWidth={1}
       flex={1}
       flexBasis="auto"
       {...props}
+      className={`language-${language}`}
     >
       <ScrollView
         contentContainerStyle={{

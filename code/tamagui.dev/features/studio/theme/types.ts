@@ -1,5 +1,3 @@
-import type { ThemeSuiteItem } from '@tamagui/theme-builder'
-
 type Component = (props?: any) => any
 
 export type SectionStep = {
@@ -45,6 +43,15 @@ export type ThemeBuilderState = {
   }
 }
 
+export type ThemeSuiteItem = {
+  id: string
+  name: string
+  createdAt: number
+  updatedAt: number
+  schemes: { light: boolean; dark: boolean }
+  palettes: Record<string, BuildPalette>
+}
+
 export type ThemeSuiteItemData = Omit<ThemeSuiteItem, 'id' | 'createdAt' | 'updatedAt'>
 
 export type ScaleTypeName =
@@ -65,6 +72,38 @@ export type BuildThemeBase = {
   name: string
   errors?: string[]
 }
+
+export type BuildThemeAnchor = {
+  index: number
+  hue: {
+    light: number
+    dark: number
+    sync?: boolean
+    syncLeft?: boolean
+  }
+  sat: {
+    light: number
+    dark: number
+    sync?: boolean
+    syncLeft?: boolean
+  }
+  lum: {
+    light: number
+    dark: number
+  }
+  alpha?: {
+    light: number
+    dark: number
+  }
+}
+
+export type BuildPalette = {
+  name: string
+  scale?: ScaleTypeName
+  anchors: BuildThemeAnchor[]
+}
+
+export type BuildThemeSuiteProps = Omit<ThemeSuiteItemData, 'name'>
 
 export type BuildTheme = BuildThemeBase & {
   type: 'theme'

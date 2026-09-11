@@ -2,41 +2,37 @@ import { YStack } from 'tamagui'
 
 import { Showcase } from '~/components/bento-showcase/_Showcase'
 import * as TabBars from '@tamagui/bento/component/shells/tabbars'
-import {
-  type BentoShowcaseContext,
-  BentoShowcaseProvider,
-} from '~/components/bento-showcase/BentoProvider'
 
-type Props = ReturnType<typeof tabbarsGetComponentCodes> & BentoShowcaseContext
+type Props = ReturnType<typeof tabbarsGetComponentCodes>
 
-export function tabbars({ isProUser, showAppropriateModal }: Props) {
+export function tabbars() {
   return (
-    <BentoShowcaseProvider
-      isProUser={isProUser}
-      showAppropriateModal={showAppropriateModal}
+    <YStack
+      paddingBottom="2 gtLg:0"
+      gap="12"
+      paddingTop="2 gtLg:0"
+      paddingRight="2 gtLg:0"
+      paddingLeft="2 gtLg:0"
     >
-      <YStack pb="$10" gap="$12" p="$2" $gtLg={{ p: '$0' }}>
-        <Showcase
-          unlock
-          fileName={TabBars.Tabbar.fileName}
-          title="React Navigation compatible Tabbar with Underline"
-        >
-          <TabBars.Tabbar />
-        </Showcase>
-        <Showcase
-          fileName={TabBars.TabBarSecondExample.fileName}
-          title="Progressive Tabbar with Underline Indicator"
-        >
-          <TabBars.TabBarSecondExample />
-        </Showcase>
-        <Showcase
-          fileName={TabBars.TabbarSwippable.fileName}
-          title="Swippable Tabbar Support Gesture Drag"
-        >
-          <TabBars.TabbarSwippable />
-        </Showcase>
-      </YStack>
-    </BentoShowcaseProvider>
+      <Showcase
+        fileName={TabBars.Tabbar.fileName}
+        title="React Navigation compatible Tabbar with Underline"
+      >
+        <TabBars.Tabbar />
+      </Showcase>
+      <Showcase
+        fileName={TabBars.TabBarSecondExample.fileName}
+        title="Progressive Tabbar with Underline Indicator"
+      >
+        <TabBars.TabBarSecondExample />
+      </Showcase>
+      <Showcase
+        fileName={TabBars.TabbarSwippable.fileName}
+        title="Swippable Tabbar Support Gesture Drag"
+      >
+        <TabBars.TabbarSwippable />
+      </Showcase>
+    </YStack>
   )
 }
 

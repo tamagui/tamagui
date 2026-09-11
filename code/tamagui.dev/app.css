@@ -2,18 +2,25 @@ html,
 body {
   max-width: 100vw;
   font-family:
-    Inter,
+    'Inter',
     -apple-system,
     BlinkMacSystemFont,
     'Segoe UI',
     Roboto,
-    Helvetica,
+    'Helvetica Neue',
     Arial,
     sans-serif,
     'Apple Color Emoji',
     'Segoe UI Emoji',
     'Segoe UI Symbol';
   scrollbar-color: #b1b1b1 transparent;
+}
+
+/* Preserve the v5 site's explicit default font metrics on the v3 runtime. */
+:where(.font_body, .font_cherryBomb, .font_heading, .font_mono, .is_View) {
+  letter-spacing: var(--f-letterSpacing-true, var(--f-letterSpacing-4));
+  line-height: var(--f-lineHeight-true, var(--f-lineHeight-4));
+  font-weight: var(--f-weight-true, var(--f-weight-4));
 }
 
 /* font flickering all the time on media query changes */
@@ -23,7 +30,7 @@ body {
 
 body {
   /* fallback to ThemeNameEffect */
-  background: var(--color1);
+  background: var(--color-1);
 }
 
 body.transition {
@@ -71,14 +78,24 @@ p a,
   text-decoration: underline;
 }
 
-:root:root .is_Paragraph a {
-  text-decoration: underline;
-  text-decoration-color: var(--color02);
+.show-sm-inline {
+  display: none;
 }
 
-:root:root .is_Paragraph a:hover {
+@media (max-width: 800px) {
+  .show-sm-inline {
+    display: inline;
+  }
+}
+
+:root:root .tm-paragraph a {
+  text-decoration: underline;
+  text-decoration-color: var(--color-02);
+}
+
+:root:root .tm-paragraph a:hover {
   text-decoration-thickness: 2px;
-  text-decoration-color: var(--color04);
+  text-decoration-color: var(--color-04);
 }
 
 a {
@@ -86,22 +103,22 @@ a {
   font-weight: 300;
 }
 
-:is(.is_Paragraph a, .link a, article p a, footer a) {
+:is(.tm-paragraph a, .link a, article p a, footer a) {
   text-decoration: underline;
   text-underline-offset: 4px;
   text-decoration-thickness: 2px;
-  text-decoration-color: var(--color6);
+  text-decoration-color: var(--color-6);
   transition: text-decoration-thickness ease-in-out 100ms;
 }
 
-:is(.is_Paragraph a, .link a, article p a, footer a):hover {
+:is(.tm-paragraph a, .link a, article p a, footer a):hover {
   text-decoration: underline;
   cursor: pointer;
   text-decoration-thickness: 4px;
-  text-decoration-color: var(--color8);
+  text-decoration-color: var(--color-8);
 }
 
-.is_Paragraph:has(> ul) {
+:where(.tm-paragraph:has(> ul)) {
   margin-bottom: 0;
 }
 
@@ -119,8 +136,16 @@ span._display-1adg3ll > span._display-xoduu5 {
   display: inline;
 }
 
-.paragraph-parent .paragraph {
+/* a notice body is one Paragraph div holding whatever mdx put inside it, so
+   paragraphs nested in one take the notice's type instead of docs body type */
+.paragraph-parent .docs-paragraph {
   margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.paragraph-parent .docs-paragraph + .docs-paragraph {
+  margin-top: 10px;
 }
 
 /*  */
@@ -231,9 +256,9 @@ pre {
 .rainbow {
   background-image: -webkit-linear-gradient(
     0deg,
-    var(--red10),
-    var(--green10),
-    var(--blue10)
+    var(--red-10),
+    var(--green-10),
+    var(--blue-10)
   );
 }
 
@@ -276,9 +301,9 @@ pre {
 .easter-season .rainbow {
   background-image: -webkit-linear-gradient(
     -220deg,
-    var(--pink10),
-    var(--yellow10),
-    var(--pink10)
+    var(--pink-10),
+    var(--yellow-10),
+    var(--pink-10)
   );
 }
 
@@ -385,31 +410,31 @@ iframe {
 /* code highlighting */
 
 .token.parameter {
-  color: var(--pink9);
+  color: var(--pink-9);
 }
 
 .token.class-name {
-  color: var(--green9);
+  color: var(--green-9);
 }
 
 .token.tag,
 .token.selector,
 .token.selector .class,
 .token.function {
-  color: var(--green9);
+  color: var(--green-9);
 }
 
 .highlight-line:hover {
-  background-color: var(--backgroundHover);
+  background-color: var(--background-hover);
 }
 
 .highlight-line {
-  color: var(--colorPress);
+  color: var(--color-press);
 }
 
 .token.attr-value,
 .token.script {
-  color: var(--red9);
+  color: var(--red-9);
 }
 
 .token.class,
@@ -417,7 +442,7 @@ iframe {
 .token.number,
 .token.unit,
 .token.color {
-  color: var(--purple9);
+  color: var(--purple-9);
 }
 
 .token.operator {
@@ -429,16 +454,16 @@ iframe {
 .token.rule,
 .token.pseudo-class,
 .token.important {
-  color: var(--pink9);
+  color: var(--pink-9);
 }
 
 .token.punctuation {
-  color: var(--green9);
+  color: var(--green-9);
 }
 
 .token.module,
 .token.property {
-  color: var(--blue10);
+  color: var(--blue-10);
 }
 
 .token.comment {
@@ -468,11 +493,11 @@ iframe {
 }
 
 .token.deleted:not(.prefix) {
-  color: var(--red9);
+  color: var(--red-9);
 }
 
 .token.inserted:not(.prefix) {
-  color: var(--green9);
+  color: var(--green-9);
 }
 
 .token.deleted.prefix,
@@ -482,9 +507,9 @@ iframe {
 }
 
 .highlight-word {
-  --word-bg: var(--purple9);
-  color: var(--purple9);
-  background-color: var(--purple4);
+  --word-bg: var(--purple-9);
+  color: var(--purple-9);
+  background-color: var(--purple-4);
   display: inline-block;
   box-shadow:
     var(--xOffset) 0 0 0 var(--word-bg),
@@ -496,7 +521,7 @@ iframe {
 }
 
 .highlight-word.on {
-  --word-bg: var(--purple7);
+  --word-bg: var(--purple-7);
   transition: all 100ms ease;
   cursor: pointer;
 }
@@ -517,19 +542,19 @@ iframe {
 }
 
 .token.deleted .highlight-word {
-  color: var(--red9);
+  color: var(--red-9);
 }
 
 .token.deleted .highlight-word.on {
-  color: var(--red10);
+  color: var(--red-10);
 }
 
 .token.inserted .highlight-word {
-  color: var(--yellow9);
+  color: var(--yellow-9);
 }
 
 .token.inserted .highlight-word.on {
-  color: var(--yellow10);
+  color: var(--yellow-10);
 }
 
 *[data-line-numbers='true'].highlight-line {
@@ -569,19 +594,19 @@ textarea {
   opacity: 0.88;
 }
 
-/* collapse margins between consecutive headings */
-[data-heading] + [data-heading] {
+/* Low-specificity content defaults: explicit Tamagui props still win. */
+:where([data-heading] + [data-heading]) {
   margin-top: 0;
   padding-top: var(--t-space-2);
 }
 
 /* collapse margins: notice followed by headings */
-.no-opacity-fade + [data-heading] {
+:where(.no-opacity-fade + [data-heading]) {
   margin-top: var(--t-space-4);
 }
 
 /* collapse margins: code blocks followed by headings */
-.DocCodeBlock + [data-heading] {
+:where(.DocCodeBlock + [data-heading]) {
   margin-top: var(--t-space-4);
 }
 
@@ -618,14 +643,8 @@ textarea {
   -webkit-font-smoothing: antialiased !important;
 }
 
-.font-smooth-none,
-.font_silkscreen {
+.font-smooth-none {
   -webkit-font-smoothing: none !important;
-}
-
-.hero-tag:hover,
-.hero-tag.active {
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
 .word-break-keep-all {
@@ -646,17 +665,17 @@ textarea {
 
 .text-3d {
   text-shadow:
-    1px 1px 1px var(--color10),
-    1px 2px 1px var(--color10),
-    1px 3px 1px var(--color10),
-    1px 4px 1px var(--color10),
-    1px 5px 1px var(--color10),
-    1px 6px 1px var(--color10),
-    1px 7px 1px var(--color10),
-    1px 8px 1px var(--color10),
-    1px 9px 1px var(--color10),
-    1px 10px 1px var(--color10),
-    1px 28px 30px var(--background025);
+    1px 1px 1px var(--color-10),
+    1px 2px 1px var(--color-10),
+    1px 3px 1px var(--color-10),
+    1px 4px 1px var(--color-10),
+    1px 5px 1px var(--color-10),
+    1px 6px 1px var(--color-10),
+    1px 7px 1px var(--color-10),
+    1px 8px 1px var(--color-10),
+    1px 9px 1px var(--color-10),
+    1px 10px 1px var(--color-10),
+    1px 28px 30px var(--background-025);
 }
 
 /* studio */
@@ -687,7 +706,7 @@ textarea {
 }
 
 .text-glow {
-  text-shadow: 2px 2px 0 var(--background025);
+  text-shadow: 2px 2px 0 var(--background-025);
 }
 
 .fade-image-in {
@@ -708,7 +727,7 @@ textarea {
 
 .font-outlined {
   -webkit-text-stroke-width: 2px;
-  -webkit-text-stroke-color: var(--color12);
+  -webkit-text-stroke-color: var(--color-12);
 }
 
 .font-outlined-sm {
@@ -780,7 +799,7 @@ textarea {
 }
 
 .theme-shadow {
-  -webkit-text-stroke: 2px var(--color10);
+  -webkit-text-stroke: 2px var(--color-10);
 }
 
 .text-wrap-balance {
@@ -800,42 +819,42 @@ p {
 
 .bento-shadow {
   text-shadow:
-    1px 1px var(--color1),
-    1px 2px 1px var(--color3),
-    1px 3px 1px var(--color4),
-    1px 4px 1px var(--color4),
-    1px 5px 1px var(--color5),
-    1px 6px 1px var(--color6),
-    1px 7px 1px var(--color6),
-    1px 8px 1px var(--color7),
-    1px 9px 0px var(--color7),
-    1px 12px 0px var(--color7);
+    1px 1px var(--color-1),
+    1px 2px 1px var(--color-3),
+    1px 3px 1px var(--color-4),
+    1px 4px 1px var(--color-4),
+    1px 5px 1px var(--color-5),
+    1px 6px 1px var(--color-6),
+    1px 7px 1px var(--color-6),
+    1px 8px 1px var(--color-7),
+    1px 9px 0px var(--color-7),
+    1px 12px 0px var(--color-7);
 }
 
 .t_dark .bento-shadow {
   text-shadow:
-    2px 2px 1px var(--color9),
-    1px 2px 1px var(--color9),
-    1px 3px 1px var(--color9),
-    1px 4px 1px var(--color8),
-    1px 5px 1px var(--color8),
-    1px 6px 1px var(--color8),
-    1px 7px 1px var(--color8),
-    1px 8px 1px var(--color8),
-    1px 9px 1px var(--color8),
-    1px 11px 1px var(--color7);
+    2px 2px 1px var(--color-9),
+    1px 2px 1px var(--color-9),
+    1px 3px 1px var(--color-9),
+    1px 4px 1px var(--color-8),
+    1px 5px 1px var(--color-8),
+    1px 6px 1px var(--color-8),
+    1px 7px 1px var(--color-8),
+    1px 8px 1px var(--color-8),
+    1px 9px 1px var(--color-8),
+    1px 11px 1px var(--color-7);
 }
 
 .bento-up-text {
   /* mix-blend-mode: luminosity; */
   mask-image: linear-gradient(rgba(0, 0, 0, 1), transparent, rgba(0, 0, 0, 1));
-  background-image: linear-gradient(var(--color0), var(--color7));
+  background-image: linear-gradient(var(--color-0), var(--color-7));
   /* filter: blur(10px); */
 }
 
 .t_dark .bento-up-text {
   mix-blend-mode: color-dodge;
-  background-image: linear-gradient(var(--background025), var(--color8));
+  background-image: linear-gradient(var(--background-025), var(--color-8));
 }
 
 .dark-shadow {
@@ -844,24 +863,24 @@ p {
 
 .glow-shadow {
   text-shadow:
-    0 10px 10px var(--background075),
-    0 30px 30px var(--background025);
+    0 10px 10px var(--background-075),
+    0 30px 30px var(--background-025);
   mix-blend-mode: color-burn;
 }
 
 .t_dark .glow-shadow {
   text-shadow:
-    0 10px 10px var(--color075),
-    0 30px 30px var(--color025);
+    0 10px 10px var(--color-075),
+    0 30px 30px var(--color-025);
   mix-blend-mode: color-dodge;
 }
 
 .bento-text-3 {
-  background-image: linear-gradient(var(--color7), var(--color9));
+  background-image: linear-gradient(var(--color-7), var(--color-9));
   mix-blend-mode: hard-light;
   text-shadow:
-    0 10px 20px var(--color05),
-    0 30px 30px var(--color025);
+    0 10px 20px var(--color-05),
+    0 30px 30px var(--color-025);
 }
 
 .t_dark .bento-text-3 {

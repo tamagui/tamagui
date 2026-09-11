@@ -1,6 +1,6 @@
 /**
  * Test case: Tabs onInteraction fires with layout on native
- * Verifies that createTabs TabsTrigger reports layout measurements
+ * Verifies that the public Tabs trigger reports layout measurements
  * via onInteraction when a tab is selected.
  */
 
@@ -13,9 +13,17 @@ export function TabsOnInteraction() {
   const [layout, setLayout] = React.useState<TabLayout | null>(null)
 
   return (
-    <YStack padding="$4" gap="$4" flex={1}>
+    <YStack
+      paddingRight="4"
+      paddingBottom="4"
+      paddingLeft="4"
+      paddingTop="8"
+      gap="4"
+      flex={1}
+    >
       <Tabs
         defaultValue="tab1"
+        size="4"
         orientation="horizontal"
         flexDirection="column"
         width={350}
@@ -31,7 +39,8 @@ export function TabsOnInteraction() {
               setLayout(tabLayout)
             }}
           >
-            <SizableText>Tab 1</SizableText>
+            {'Tab '}
+            {1}
           </Tabs.Tab>
           <Tabs.Tab
             flex={1}
@@ -46,15 +55,15 @@ export function TabsOnInteraction() {
           </Tabs.Tab>
         </Tabs.List>
 
-        <Tabs.Content value="tab1" padding="$4">
+        <Tabs.Content value="tab1" padding="4">
           <Text testID="tabs-content-tab1">Content 1</Text>
         </Tabs.Content>
-        <Tabs.Content value="tab2" padding="$4">
+        <Tabs.Content value="tab2" padding="4">
           <Text testID="tabs-content-tab2">Content 2</Text>
         </Tabs.Content>
       </Tabs>
 
-      <YStack gap="$2" testID="tabs-layout-info">
+      <YStack gap="2" testID="tabs-layout-info">
         <Text testID="tabs-interaction-type">
           interaction: {interactionType ?? 'none'}
         </Text>

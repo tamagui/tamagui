@@ -13,5 +13,5 @@ export function resolveRem(value: string): string {
  * Checks if a value is a rem string
  */
 export function isRemValue(value: unknown): value is string {
-  return typeof value === 'string' && value.includes('rem')
+  return typeof value === 'string' && value.endsWith('rem')
 }

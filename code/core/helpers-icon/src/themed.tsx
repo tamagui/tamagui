@@ -1,16 +1,16 @@
 import {
   getTokenValue,
   getVariable,
-  Text,
-  usePropsAndStyle,
+  isWeb,
+  useTheme,
+  type FontSizeTokens,
   type ResolveVariableAs,
 } from '@tamagui/core'
-import { SizableContext } from '@tamagui/sizable-context'
+import { getFontSize } from '@tamagui/font-size'
+import { resolveSize, SizeContext } from '@tamagui/size'
 
 import type { FC } from 'react'
 import type { IconProps } from './IconProps'
-
-export { SizableContext }
 
 type Options = {
   noClass?: boolean
@@ -20,17 +20,9 @@ type Options = {
   resolveValues?: ResolveVariableAs
 }
 
-// check if props contain media queries ($sm, $md, etc) or other complex tamagui features
-function needsFullStyleResolution(props: IconProps): boolean {
-  for (const key in props) {
-    if (key[0] === '$') return true
-  }
-  return false
-}
-
 export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
   const opts: Options = {
-    defaultThemeColor: process.env.DEFAULT_ICON_THEME_COLOR || '$color',
+    defaultThemeColor: process.env.DEFAULT_ICON_THEME_COLOR || 'color',
     defaultStrokeWidth: 2,
     fallbackColor: '#000',
     resolveValues: (process.env.TAMAGUI_ICON_COLOR_RESOLVE as any) || 'auto',
@@ -38,42 +30,69 @@ export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
   }
 
   const IconWrapper = (propsIn: IconProps) => {
-    const styledContext = SizableContext.useStyledContext()
-    const needsMedia = needsFullStyleResolution(propsIn)
+    const styledContext = SizeContext.useStyledContext()
+    const theme = useTheme()
 
-    const [props, style, theme] = usePropsAndStyle(propsIn, {
-      ...opts,
-      forComponent: Text,
-      resolveValues: opts.resolveValues,
-      noMedia: !needsMedia,
-    })
+    const {
+      size: sizeProp,
+      strokeWidth: strokeWidthProp,
+      color: colorProp,
+      fill: fillProp,
+      stroke: strokeProp,
+      disableTheme,
+      style,
+      testID,
+      ...rest
+    } = propsIn as any
 
-    const defaultColor = opts.defaultThemeColor
+    // Resolve theme and color tokens config-first; literal colors pass through.
+    const resolveSvgColor = (val: unknown) => {
+      if (typeof val !== 'string') return val
+      const themed = (theme as any)?.[val]
+      if (themed != null) return getVariable(themed)
+      return getVariable(val, 'color' as any)
+    }
+
+    const fillResolved = resolveSvgColor(fillProp)
+    const strokeResolved = resolveSvgColor(strokeProp)
+    const colorResolved = resolveSvgColor(colorProp)
 
     const colorIn =
-      style.color ||
-      (defaultColor ? theme[defaultColor as string] : undefined) ||
-      (!props.disableTheme ? theme.color : null) ||
+      strokeResolved ||
+      colorResolved ||
+      (opts.defaultThemeColor ? (theme as any)[opts.defaultThemeColor] : undefined) ||
+      (!disableTheme ? theme.color : null) ||
       opts.fallbackColor
 
     const color = getVariable(colorIn)
 
+    // an explicit string size is a font size key, so the icon matches text at
+    // that size. a context size (from Button, ListItem) is a control size and
+    // uses the recipe's icon px. raw numbers stay literal.
     const size =
-      typeof props.size === 'string'
-        ? getTokenValue(props.size as any, 'size')
-        : props.size || (styledContext.size === '$true' ? undefined : styledContext.size)
+      typeof sizeProp === 'number'
+        ? sizeProp
+        : typeof sizeProp === 'string'
+          ? getFontSize(sizeProp as FontSizeTokens)
+          : styledContext.size != null
+            ? resolveSize(styledContext.size as any).icon
+            : undefined
 
     const strokeWidth =
-      typeof props.strokeWidth === 'string'
-        ? getTokenValue(props.strokeWidth as any, 'size')
-        : (props.strokeWidth ?? `${opts.defaultStrokeWidth}`)
+      typeof strokeWidthProp === 'string'
+        ? getTokenValue(strokeWidthProp as any, 'size')
+        : (strokeWidthProp ?? `${opts.defaultStrokeWidth}`)
 
     const finalProps = {
-      ...props,
+      ...rest,
       color,
       size,
       strokeWidth,
-      style: style as any,
+      ...(fillResolved !== undefined ? { fill: fillResolved } : null),
+      ...(strokeResolved !== undefined ? { stroke: strokeResolved } : null),
+      ...(style ? { style } : null),
+      // tamagui web maps testID -> data-testid; native keeps testID for react-native-svg
+      ...(testID != null ? (isWeb ? { 'data-testid': testID } : { testID }) : null),
     }
 
     return <Component {...finalProps} />

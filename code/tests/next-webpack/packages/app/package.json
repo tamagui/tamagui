@@ -15,9 +15,9 @@
     "@tamagui/lucide-icons-2": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/themes": "workspace:*",
-    "burnt": "^0.12.2",
+    "burnt": "^0.13.0",
     "expo-constants": "~57.0.9",
-    "expo-linking": "~57.0.5",
+    "expo-linking": "~57.0.7",
     "react-native-safe-area-context": "~5.7.0",
     "solito": "^4.3.0"
   },

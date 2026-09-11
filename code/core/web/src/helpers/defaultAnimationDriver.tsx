@@ -7,7 +7,6 @@ const noAnimationDriver = (method: string): any => {
 }
 
 const createEmptyAnimationDriver = (): AnimationDriver => ({
-  isReactNative: false,
   inputStyle: 'css',
   outputStyle: 'css',
   isStub: true,
@@ -15,10 +14,6 @@ const createEmptyAnimationDriver = (): AnimationDriver => ({
   useAnimations: () => noAnimationDriver('animations'),
   usePresence: () => noAnimationDriver('usePresence'),
   ResetPresence: () => noAnimationDriver('ResetPresence'),
-  useAnimatedNumber: () => noAnimationDriver('useAnimatedNumber'),
-  useAnimatedNumberStyle: () => noAnimationDriver('useAnimatedNumberStyle'),
-  useAnimatedNumbersStyle: () => noAnimationDriver('useAnimatedNumbersStyle'),
-  useAnimatedNumberReaction: () => noAnimationDriver('useAnimatedNumberReaction'),
 })
 
 export const defaultAnimationDriver = createEmptyAnimationDriver()

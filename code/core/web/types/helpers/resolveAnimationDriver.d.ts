@@ -1,7 +1,7 @@
-import type { AnimationDriver } from '../types';
+import type { AnimationDriverLike } from '../types';
 /**
- * Resolves a value that might be an AnimationDriver or a multi-driver config object
- * like { default: motionDriver, css: cssDriver } into an actual AnimationDriver.
+ * Resolves a value that might be an animation driver or a multi-driver config
+ * object like { default: motionDriver, css: cssDriver } into a driver.
  */
-export declare function resolveAnimationDriver(driver: AnimationDriver | Record<string, AnimationDriver> | null | undefined): AnimationDriver | null;
+export declare function resolveAnimationDriver(driver: AnimationDriverLike | Record<string, AnimationDriverLike> | null | undefined): AnimationDriverLike | null;
 //# sourceMappingURL=resolveAnimationDriver.d.ts.map

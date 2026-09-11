@@ -66,7 +66,7 @@ Label supports all standard ARIA attributes for form accessibility. These work o
   Email
 </Label>
 <Input id="email" aria-invalid={hasError} aria-errormessage="email-error" />
-{hasError && <Text id="email-error">Please enter a valid email</Text>}
+{hasError && <html.span id="email-error">Please enter a valid email</html.span>}
 ```
 
 ### With Description
@@ -76,7 +76,7 @@ Label supports all standard ARIA attributes for form accessibility. These work o
   Password
 </Label>
 <Input id="password" aria-describedby="password-hint" />
-<Text id="password-hint">Must be at least 8 characters</Text>
+<html.span id="password-hint">Must be at least 8 characters</html.span>
 ```
 
 ## API Reference

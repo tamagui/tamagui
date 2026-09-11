@@ -1,6 +1,25 @@
 import type React from 'react'
 
-import type { FocusOutsideEvent, PointerDownOutsideEvent } from './Dismissable'
+import type { TamaguiChangeEventDetails, TamaguiEventDetails } from '@tamagui/core'
+
+export type PointerDownOutsideDetails = TamaguiChangeEventDetails<
+  'outside-press',
+  PointerEvent,
+  { interaction: 'pointer' }
+>
+
+export type FocusOutsideDetails = TamaguiChangeEventDetails<
+  'focus-out',
+  FocusEvent,
+  { interaction: 'focus' }
+>
+
+export type InteractOutsideDetails = PointerDownOutsideDetails | FocusOutsideDetails
+
+export type DismissableDismissDetails =
+  | TamaguiEventDetails<'escape-key', React.KeyboardEvent>
+  | TamaguiEventDetails<'outside-press', PointerEvent, { interaction: 'pointer' }>
+  | TamaguiEventDetails<'focus-out', FocusEvent, { interaction: 'focus' }>
 
 export interface DismissableProps {
   /**
@@ -16,30 +35,32 @@ export interface DismissableProps {
   branches?: Set<HTMLElement>
   /**
    * Event handler called when the escape key is down.
-   * Can be prevented.
+   * Can be canceled.
    */
-  onEscapeKeyDown?: React.KeyboardEventHandler
+  onEscapeKeyDown?: (
+    details: TamaguiChangeEventDetails<'escape-key', React.KeyboardEvent>
+  ) => void
   /**
    * Event handler called when the a `pointerdown` event happens outside of the `Dismissable`.
-   * Can be prevented.
+   * Can be canceled.
    */
-  onPointerDownOutside?: (event: PointerDownOutsideEvent) => void
+  onPointerDownOutside?: (details: PointerDownOutsideDetails) => void
   /**
    * Event handler called when the focus moves outside of the `Dismissable`.
-   * Can be prevented.
+   * Can be canceled.
    */
-  onFocusOutside?: (event: FocusOutsideEvent) => void
+  onFocusOutside?: (details: FocusOutsideDetails) => void
   /**
    * Event handler called when an interaction happens outside the `Dismissable`.
    * Specifically, when a `pointerdown` event happens outside or focus moves outside of it.
-   * Can be prevented.
+   * Can be canceled.
    */
-  onInteractOutside?: (event: PointerDownOutsideEvent | FocusOutsideEvent) => void
+  onInteractOutside?: (details: InteractOutsideDetails) => void
 
   /**
    * Handler called when the `Dismissable` should be dismissed
    */
-  onDismiss?: () => void
+  onDismiss?: (details: DismissableDismissDetails) => void
 
   /**
    * When using animations on exit, may want to simualte force unmount early

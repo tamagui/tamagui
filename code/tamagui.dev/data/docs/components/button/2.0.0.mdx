@@ -50,7 +50,7 @@ radius, font size and icons sizes all in one with the `size` prop.
 ```tsx
 import { Button } from 'tamagui'
 
-export default () => <Button size="$6">Lorem ipsum</Button>
+export default () => <Button size="6">Lorem ipsum</Button>
 ```
 
 Given your theme defines a size `6`, the button will adjust all of the
@@ -66,7 +66,7 @@ prop. Currently, the primary available variant is `"outlined"`.
 import { Button, XStack } from 'tamagui'
 
 export default () => (
-  <XStack gap="$2">
+  <XStack gap="2">
     <Button>Default</Button>
     <Button variant="outlined">Outlined</Button>
   </XStack>
@@ -85,7 +85,7 @@ Tamagui will automatically theme them (passing `size`). The icon size is
 determined by the Button's `size` prop by default.
 
 You can also explicitly set the icon size using the `iconSize` prop, which
-accepts a `SizeTokens` value (e.g., `"$2"`). The `scaleIcon` prop can be used to
+accepts a `SizeTokens` value (e.g., `"2"`). The `scaleIcon` prop can be used to
 further adjust the size relative to the determined or explicitly set icon size.
 
 When an icon is present, Tamagui automatically adds spacing between the icon and
@@ -98,10 +98,10 @@ import { Button, Star } from 'tamagui'
 
 export default () => (
   <>
-    <Button icon={Star} size="$5">
+    <Button icon={Star} size="5">
       Icon sized by Button
     </Button>
-    <Button icon={Star} iconSize="$2" size="$5">
+    <Button icon={Star} iconSize="2" size="5">
       Icon sized explicitly
     </Button>
   </>
@@ -123,14 +123,14 @@ without passing props to each one individually.
 import { Button, ButtonDemo, YStack } from 'tamagui'
 
 export default () => (
-  <YStack gap="$4">
-    <Button.Apply size="$2" variant="outlined">
+  <YStack gap="4">
+    <Button.Apply size="2" variant="outlined">
       <Button>Small Outlined 1</Button>
       <Button>Small Outlined 2</Button>
       <Button icon={Star}>With Icon</Button>
     </Button.Apply>
 
-    <Button.Apply size="$5">
+    <Button.Apply size="5">
       <Button>Large 1</Button>
       <Button theme="blue">Large Themed</Button>
     </Button.Apply>
@@ -180,7 +180,7 @@ import { Button } from 'tamagui'
 
 export default () => (
   <Button>
-    <Button.Text color="blue" fontSize="$5" fontWeight="bold">
+    <Button.Text color="blue" fontSize="5" fontWeight="bold">
       Styled text
     </Button.Text>
   </Button>
@@ -197,15 +197,15 @@ import { Button } from 'tamagui'
 
 export default () => (
   <Button group="btn" bg="pink">
-    <Button.Text color="blue" $group-btn-hover={{ color: 'red' }}>
+    <Button.Text color="blue group-hover/btn:red">
       Hello world
     </Button.Text>
   </Button>
 )
 ```
 
-The `group` prop lets any child reference interactive states like
-`$group-btn-hover`, `$group-btn-press`, and `$group-btn-focus` for
+The `group` prop lets any child reference <span className="show-sm-inline">all of Tamagui's </span>interactive states like
+`group-btn-hover`, `group-btn-press`, and `group-btn-focus` for
 precise styling per interaction state.
 
 ## Creating Your Own Button
@@ -216,7 +216,7 @@ dedicated guide, [How to Build a Button](/docs/guides/how-to-build-a-button).
 
 ## API Reference
 
-Buttons extend Stack views inheriting all the
+Buttons extend View inheriting all the
 [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
@@ -225,7 +225,7 @@ Buttons extend Stack views inheriting all the
       name: 'size',
       required: false,
       type: 'SizeTokens | number',
-      description: `Set a size from your theme's size tokens (e.g., "$4") or a specific number. Adjusts padding, font size, and icon sizes.`,
+      description: `Set a size from your theme's size tokens (e.g., "4") or a specific number. Adjusts padding, font size, and icon sizes.`,
     },
     {
       name: 'variant',
@@ -268,7 +268,7 @@ Buttons extend Stack views inheriting all the
       name: 'iconSize',
       required: false,
       type: 'SizeTokens',
-      description: `Explicitly set the size of the icon, overriding the default size derived from the Button's 'size' prop. Uses theme size tokens (e.g., "$2").`,
+      description: `Explicitly set the size of the icon, overriding the default size derived from the Button's 'size' prop. Uses theme size tokens (e.g., "2").`,
     },
     {
       name: 'scaleIcon',

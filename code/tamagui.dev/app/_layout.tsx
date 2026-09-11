@@ -12,13 +12,14 @@ setupPopper({
   disableRTL: true,
 })
 
-// inlined @font-face (was 4 render-blocking /fonts/*.css links). font-display:swap
-// (was block) so text paints with a fallback immediately instead of FOIT.
+// two webfonts, both subset variable files that cover every weight the site
+// asks for from a single request: Inter 4.1 for text (~54kb, latin + latin-1 +
+// punctuation, optical size pinned to 14) and JetBrains Mono for code (~19kb).
+// inlined here rather than linked so they cost no extra round-trip before first
+// paint, and swapped so text renders in the OS UI face until they land.
 const fontFaceCss = `
-@font-face{font-family:'Inter';src:url('/fonts/Inter-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Inter';src:url('/fonts/Inter-ExtraBold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
-@font-face{font-family:'Berkeley Mono';src:url('/fonts/berkeley.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Silkscreen';src:url('/fonts/slkscr.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}`
+@font-face{font-family:'Inter';src:url('/fonts/inter.woff2') format('woff2-variations');font-weight:200 900;font-style:normal;font-display:swap}
+@font-face{font-family:'JetBrains Mono';src:url('/fonts/jetbrains-mono.woff2') format('woff2-variations');font-weight:100 800;font-style:normal;font-display:swap}`
 
 export default function Layout() {
   return (
@@ -45,38 +46,18 @@ export default function Layout() {
 
         <link
           rel="preload"
-          href="/fonts/berkeley.woff2"
+          href="/fonts/inter.woff2"
           as="font"
           crossOrigin="anonymous"
           type="font/woff2"
         />
         <link
           rel="preload"
-          href="/fonts/Inter-Regular.woff2"
+          href="/fonts/jetbrains-mono.woff2"
           as="font"
           crossOrigin="anonymous"
           type="font/woff2"
         />
-        <link
-          rel="preload"
-          href="/fonts/Inter-ExtraBold.woff2"
-          as="font"
-          crossOrigin="anonymous"
-          type="font/woff2"
-        />
-        <link
-          rel="preload"
-          href="/fonts/slkscr.woff2"
-          as="font"
-          crossOrigin="anonymous"
-          type="font/woff2"
-        />
-        {/* inline @font-face instead of 4 render-blocking <link> stylesheets (each
-            cost a round-trip ~500ms on slow connections and blocked first paint).
-            font-display: swap (was block) lets text paint immediately with a
-            fallback instead of staying invisible until the font loads (FOIT) —
-            this was the LCP bottleneck (3.1s element render delay). fonts are
-            preloaded above so the swap window is short. */}
         <style>{fontFaceCss}</style>
       </head>
 

@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { execSync } from 'node:child_process'
 import { createRequire } from 'node:module'
 import { resolve as pathResolve } from 'node:path'
@@ -20,7 +20,10 @@ const vitePluginDist = pathResolve(
   import.meta.dirname,
   '../compiler/vite-plugin/dist/esm/index.mjs'
 )
-const staticDist = pathResolve(import.meta.dirname, '../compiler/static/dist/index.cjs')
+const staticDist = pathResolve(
+  import.meta.dirname,
+  '../compiler/static/dist/cjs/index.cjs'
+)
 
 if (!existsSync(vitePluginDist) || !existsSync(staticDist)) {
   console.info('')
@@ -47,6 +50,31 @@ if (hasBento) {
   console.info(`Using bento at ${bentoPath}`)
 }
 
+// bento is a sibling checkout with its own node_modules holding a full set of
+// published @tamagui packages. anything resolved from inside it finds those
+// first, so a v2 copy of a package can shadow the workspace one and get bundled
+// into the same chunk: v2 `helpers-icon` calling the removed `usePropsAndStyle`
+// took down every page that rendered an icon. name every workspace package so
+// resolution always lands on this checkout, whoever imported it.
+const tamaguiPackagesDir = pathResolve(import.meta.dirname, '../../node_modules/@tamagui')
+const workspaceTamaguiPackages = readdirSync(tamaguiPackagesDir, {
+  withFileTypes: true,
+})
+  .filter((entry) => entry.isSymbolicLink() || entry.isDirectory())
+  .map((entry) => entry.name)
+  // vite feeds every deduped id through the dep optimizer, which resolves the
+  // root entry, so a package with no runtime one fails the whole dev server on
+  // startup: @tamagui/config publishes subpaths only, and the two type packages
+  // export a `.` that carries nothing but `types`.
+  .filter((name) => {
+    const manifest = pathResolve(tamaguiPackagesDir, name, 'package.json')
+    if (!existsSync(manifest)) return false
+    const root = JSON.parse(readFileSync(manifest, 'utf8')).exports?.['.']
+    if (!root) return false
+    return typeof root === 'string' || Boolean(root.import || root.default)
+  })
+  .map((name) => `@tamagui/${name}`)
+
 // use createRequire instead of import.meta.resolve for bun compatibility in vite config
 const require = createRequire(import.meta.url)
 const resolve = (path: string) => {
@@ -57,6 +85,8 @@ const include = [
   // pre-bundle common web deps to avoid mid-navigation optimization in dev mode
   'react-native',
   'react-dom',
+  'react/jsx-runtime',
+  'react/jsx-dev-runtime',
   'zod',
   '@stripe/react-stripe-js',
   '@stripe/stripe-js',
@@ -96,7 +126,6 @@ const include = [
   'react-native-safe-area-context',
   '@hookform/resolvers/zod',
   'react-native-reanimated',
-  '@tamagui/react-native-svg',
   'react-native-gesture-handler',
   '@tanstack/react-table',
   '@tamagui/focus-scope',
@@ -127,14 +156,27 @@ export default {
     preserveSymlinks: false,
 
     alias: [
+      // One's SSR navigation fork imports these internal contexts directly.
+      // Resolve them to files so Vite does not reject the package's public-only exports map.
+      {
+        find: /^@react-navigation\/core\/lib\/module\/(.+)$/,
+        replacement: `${pathResolve(
+          resolve('@react-navigation/core/package.json'),
+          '../lib/module'
+        )}/$1.js`,
+      },
       // when bento is unavailable, @tamagui/bento/component/* is stubbed by the
       // `stub-bento-components` plugin below (virtual module), not an alias
 
       // Standard string-based aliases
       {
-        find: 'react-native-svg',
-        replacement: '@tamagui/react-native-svg',
+        find: /^~\//,
+        replacement: `${import.meta.dirname}/`,
       },
+      // resolves to @tamagui/react-native-svg's esm entry. aliasing to the bare
+      // package name instead leaves the cjs entry reachable, and vite serves
+      // that file to the browser as-is, where its named exports do not exist.
+      ...tamaguiAliases({ svg: true }),
 
       {
         find: 'react-native/Libraries/Core/ReactNativeVersion',
@@ -166,14 +208,13 @@ export default {
         replacement: pathResolve(import.meta.dirname, './helpers/dist/bento-proxy-data'),
       },
       {
-        find: '@tamagui/bento',
+        find: /^@tamagui\/bento$/,
         replacement: pathResolve(import.meta.dirname, './helpers/dist/bento-proxy'),
       },
 
       ...(process.env.RNW_LITE
         ? tamaguiAliases({
             rnwLite: true,
-            svg: true,
           })
         : []),
     ],
@@ -184,7 +225,11 @@ export default {
       'react-hook-form',
       'react-native',
       'react-native-web',
-      'react-native-svg',
+      // sibling bento imports must use the app's installed dependency versions.
+      '@vxrn/color-scheme',
+      '@ngneat/falso',
+      '@hookform/resolvers',
+      ...workspaceTamaguiPackages,
       ...include,
     ],
   },
@@ -208,6 +253,21 @@ export default {
   },
 
   plugins: [
+    // vxrn aliases `react-native` to require.resolve('react-native-web'), which is
+    // the package `main`: a CJS bundle nothing can tree-shake. one
+    // `useWindowDimensions` import then pulls all 274kb of react-native-web into
+    // every page. vite's alias plugin runs ahead of every user plugin, so catch
+    // the already-resolved cjs entry and send it to the esm build instead.
+    {
+      name: 'react-native-web-esm',
+      enforce: 'pre',
+      resolveId(id: string) {
+        if (id.endsWith('/react-native-web/dist/cjs/index.js')) {
+          return resolve('react-native-web/dist/index.js')
+        }
+      },
+    },
+
     // Plugin to stub bento component imports when bento repo is not available
     !hasBento && {
       name: 'stub-bento-components',
@@ -224,23 +284,32 @@ export default {
         if (id.startsWith('\0bento-component-stub:')) {
           // Return stub component code
           return `
+import { createElement } from 'react'
 import { YStack, Paragraph } from 'tamagui'
 
 export default function BentoComponentStub() {
   if (process.env.NODE_ENV === 'production') {
     return null
   }
-  return (
-    <YStack p="$4" bc="$borderColor" br="$4">
-      <Paragraph size="$2" color="$color10">
-        Bento component not available
-      </Paragraph>
-    </YStack>
+  return createElement(
+    YStack,
+    { p: '4', bc: 'border-color', br: '4' },
+    createElement(
+      Paragraph,
+      { size: '2', color: 'color-10' },
+      'Bento component not available'
+    )
   )
 }
 
-// Export as default and named for compatibility
+BentoComponentStub.fileName = ''
+
 export const LocationNotification = BentoComponentStub
+export const Calendar = BentoComponentStub
+
+export function useGroupMedia() {
+  return { sm: false }
+}
 `
         }
       },
@@ -252,6 +321,12 @@ export const LocationNotification = BentoComponentStub
 
     one({
       native: false,
+
+      config: {
+        // The repo tsconfig contains declaration-only package mappings that
+        // must not override runtime package exports.
+        tsConfigPaths: false,
+      },
 
       setupFile: {
         server: './setup.server.ts',
@@ -333,8 +408,20 @@ export const LocationNotification = BentoComponentStub
             permanent: true,
           },
           {
+            source: '/docs/core/variables',
+            destination: '/docs/core/theme#inline-values',
+            permanent: true,
+          },
+          {
             source: '/vite',
             destination: 'https://vxrn.dev',
+            permanent: true,
+          },
+          // the v3 composable toast replaced the old imperative one, so the
+          // temporary "toast-2" page folded back into /ui/toast
+          {
+            source: '/ui/toast-2',
+            destination: '/ui/toast',
             permanent: true,
           },
           {

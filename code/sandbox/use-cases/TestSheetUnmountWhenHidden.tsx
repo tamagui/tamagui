@@ -25,12 +25,13 @@ export function TestSheetUnmountWhenHidden() {
         zIndex={100_000}
       >
         <Sheet.Overlay opacity={0.5} />
-        <Sheet.Frame testID="sheet-frame" p="$4" gap="$4">
+        <Sheet.Container testID="sheet-frame" p="4" gap="4">
+          <Sheet.Background />
           <SizableText size="$6">Sheet contents</SizableText>
           <Button testID="close-sheet" onPress={() => setOpen(false)}>
             Close
           </Button>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </YStack>
   )

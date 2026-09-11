@@ -1,18 +1,14 @@
 import type { PropMappedValue } from '../types'
+import { classifyBorderComponents } from './borderComponents'
 
-// border style keywords
-const borderStyles = new Set([
-  'solid',
-  'dashed',
-  'dotted',
-  'double',
-  'groove',
-  'ridge',
-  'inset',
-  'outset',
-  'none',
-  'hidden',
-])
+// native width props want numbers: px and unitless become numbers, the CSS
+// width keywords map to their user-agent px values, anything else passes as-is
+export function toNativeBorderWidth(width: string): string | number {
+  if (width === 'thin') return 1
+  if (width === 'medium') return 3
+  if (width === 'thick') return 5
+  return width.endsWith('px') || !/[a-z%]/i.test(width) ? Number.parseFloat(width) : width
+}
 
 // parses CSS border shorthand: "<width> <style> <color>"
 // components can appear in any order, all are optional
@@ -28,46 +24,28 @@ export function parseBorderShorthand(value: string): PropMappedValue | undefined
     ]
   }
 
-  const parts = value.trim().split(/\s+/)
-  let borderWidth: string | number | undefined
-  let borderStyle: string | undefined
-  let borderColor: string | undefined
-
-  for (const part of parts) {
-    // check if it's a border style keyword
-    if (borderStyles.has(part)) {
-      borderStyle = part
-    }
-    // check if it's a length (number or ends with px/em/rem/etc)
-    else if (/^[\d.]+(?:px|em|rem|%|pt|vw|vh)?$/.test(part)) {
-      const num = parseFloat(part)
-      borderWidth = part.endsWith('px') || !part.match(/[a-z%]/i) ? num : part
-    }
-    // otherwise assume it's a color
-    else {
-      borderColor = part
-    }
-  }
+  const { width, style, color } = classifyBorderComponents(value)
 
   const result: PropMappedValue = []
 
   // expand to individual width props (RN doesn't support borderWidth shorthand)
-  if (borderWidth !== undefined) {
-    result.push(['borderTopWidth', borderWidth])
-    result.push(['borderRightWidth', borderWidth])
-    result.push(['borderBottomWidth', borderWidth])
-    result.push(['borderLeftWidth', borderWidth])
+  if (width !== undefined) {
+    const nativeWidth = toNativeBorderWidth(width)
+    result.push(['borderTopWidth', nativeWidth])
+    result.push(['borderRightWidth', nativeWidth])
+    result.push(['borderBottomWidth', nativeWidth])
+    result.push(['borderLeftWidth', nativeWidth])
   }
   // borderStyle is supported as-is on native
-  if (borderStyle !== undefined) {
-    result.push(['borderStyle', borderStyle])
+  if (style !== undefined) {
+    result.push(['borderStyle', style])
   }
   // expand to individual color props (RN doesn't support borderColor shorthand)
-  if (borderColor !== undefined) {
-    result.push(['borderTopColor', borderColor])
-    result.push(['borderRightColor', borderColor])
-    result.push(['borderBottomColor', borderColor])
-    result.push(['borderLeftColor', borderColor])
+  if (color !== undefined) {
+    result.push(['borderTopColor', color])
+    result.push(['borderRightColor', color])
+    result.push(['borderBottomColor', color])
+    result.push(['borderLeftColor', color])
   }
 
   return result.length > 0 ? result : undefined

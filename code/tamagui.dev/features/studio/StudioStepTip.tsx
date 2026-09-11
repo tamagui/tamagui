@@ -1,6 +1,7 @@
 import { Lightbulb, X } from '@tamagui/lucide-icons-2'
 import { useEffect, useState } from 'react'
-import { Button, Popover, Theme } from 'tamagui'
+import { Popover, Theme } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 
@@ -31,13 +32,13 @@ export function StudioStepTip() {
   const button = (
     <Button
       cursor="default"
-      size="$2"
-      chromeless
+      size="2"
+      variant="quiet"
       scaleIcon={1.2}
       circular
       icon={Lightbulb}
-      my="$-1"
-      ml="$2"
+      my="-1"
+      ml="2"
       onPress={() => {
         setShow(!show)
       }}
@@ -49,37 +50,38 @@ export function StudioStepTip() {
   }
 
   return (
-    <Popover open={show} size="$5" allowFlip placement="bottom">
+    <Popover open={show} size="5" allowFlip placement="bottom">
       <Popover.Trigger asChild>{button}</Popover.Trigger>
 
       <Theme name="yellow">
         <Popover.Content
           trapFocus={false}
           borderWidth={2}
-          borderColor="$borderColor"
-          enterStyle={{ y: -10, opacity: 0 }}
-          exitStyle={{ y: -10, opacity: 0 }}
-          elevate
+          borderColor="border-color"
+          y="enter:-10px exit:-10px"
+          opacity="enter:0 exit:0"
+          backgroundColor="background"
+          boxShadow="0 4px 12px shadow-color"
           maxW={500}
-          transition={[
-            'quickest',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
+          transition={{
+            preset: 'quickest',
+            opacity: { preset: 'quickest', spring: { overshootClamping: true } },
+          }}
         >
-          <Popover.Arrow borderWidth={2} borderColor="$borderColor" />
+          <Popover.Arrow
+            backgroundColor="background"
+            borderWidth={2}
+            borderColor="border-color"
+          />
 
           <Tip />
 
           <Button
-            size="$2"
+            size="2"
             circular
             position="absolute"
-            t="$-3"
-            r="$-3"
+            t="-3"
+            r="-3"
             icon={X}
             onPress={() => {
               setShow(false)

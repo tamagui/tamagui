@@ -6,11 +6,13 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'StyledCheckboxTheme', type: 'useCase' })
 })
 
-test(`theme passes through .styleable HOC`, async ({ page }) => {
+test(`theme passes through createStyledHOC`, async ({ page }) => {
   const styles = await page.locator('button[role=checkbox]').evaluate((el) => {
     return window.getComputedStyle(el)
   })
 
-  // Green theme background from themeDev
-  expect(styles.backgroundColor).toBe(`rgb(232, 242, 235)`)
+  // green theme base background: in v3 the checked-state look is skin-owned via
+  // activeStyle, and this case passes none, so the frame keeps the theme
+  // background — v6 light_green `background` = #dcfce7
+  expect(styles.backgroundColor).toBe(`rgb(220, 252, 231)`)
 })

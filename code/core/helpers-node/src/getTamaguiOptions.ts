@@ -4,6 +4,6 @@ export async function getTamaguiOptions({
   cwd = '.',
 }: {
   cwd?: string
-}): Promise<import('@tamagui/types/types').TamaguiOptions> {
+}): Promise<import('@tamagui/types').TamaguiOptions> {
   return (await readTamaguiOptions({ cwd })).options
 }

@@ -41,7 +41,7 @@ import { Button, RovingFocusGroup, XStack } from 'tamagui'
 
 export default () => (
   <RovingFocusGroup orientation="horizontal" loop>
-    <XStack gap="$2">
+    <XStack gap="2">
       <RovingFocusGroup.Item asChild>
         <Button>First</Button>
       </RovingFocusGroup.Item>
@@ -76,7 +76,7 @@ import { Button, RovingFocusGroup, YStack } from 'tamagui'
 export default () => (
   // Up/Down arrows navigate, Left/Right are ignored
   <RovingFocusGroup orientation="vertical">
-    <YStack gap="$2">
+    <YStack gap="2">
       <RovingFocusGroup.Item asChild>
         <Button>Option 1</Button>
       </RovingFocusGroup.Item>
@@ -100,7 +100,7 @@ import { Button, RovingFocusGroup, XStack } from 'tamagui'
 
 export default () => (
   <RovingFocusGroup loop>
-    <XStack gap="$2">
+    <XStack gap="2">
       <RovingFocusGroup.Item asChild>
         <Button>First</Button>
       </RovingFocusGroup.Item>
@@ -132,7 +132,7 @@ export default () => {
       currentTabStopId={currentId}
       onCurrentTabStopIdChange={setCurrentId}
     >
-      <XStack gap="$2">
+      <XStack gap="2">
         <RovingFocusGroup.Item tabStopId="item-1" asChild>
           <Button>First</Button>
         </RovingFocusGroup.Item>
@@ -157,7 +157,7 @@ import { Button, RovingFocusGroup, XStack } from 'tamagui'
 
 export default () => (
   <RovingFocusGroup>
-    <XStack gap="$2">
+    <XStack gap="2">
       <RovingFocusGroup.Item asChild>
         <Button>Enabled</Button>
       </RovingFocusGroup.Item>
@@ -187,7 +187,7 @@ export default () => (
       console.log('Group received focus')
     }}
   >
-    <XStack gap="$2">
+    <XStack gap="2">
       <RovingFocusGroup.Item asChild>
         <Button>First</Button>
       </RovingFocusGroup.Item>

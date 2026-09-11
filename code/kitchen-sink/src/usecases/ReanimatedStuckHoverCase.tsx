@@ -21,13 +21,12 @@ export function ReanimatedStuckHoverCase() {
   const [tick, setTick] = useState(0)
 
   return (
-    <YStack gap="$4" padding="$4">
+    <YStack gap="4" padding="4">
       {/* instant (0ms) — matches platform-driver default + sidebar row */}
       <Square
         testID="stuck-instant"
         size={120}
-        backgroundColor="rgb(255, 0, 0)"
-        hoverStyle={{ backgroundColor: 'rgb(0, 255, 0)' }}
+        backgroundColor="rgb(255, 0, 0) hover:rgb(0, 255, 0)"
         transition="0ms"
       />
 
@@ -35,8 +34,7 @@ export function ReanimatedStuckHoverCase() {
       <Square
         testID="stuck-spring"
         size={120}
-        backgroundColor="rgb(255, 0, 0)"
-        hoverStyle={{ backgroundColor: 'rgb(0, 255, 0)' }}
+        backgroundColor="rgb(255, 0, 0) hover:rgb(0, 255, 0)"
         transition="quick"
       />
 
@@ -45,12 +43,11 @@ export function ReanimatedStuckHoverCase() {
       <Square
         testID="stuck-rerender"
         size={tick % 2 === 0 ? 120 : 121}
-        backgroundColor="rgb(255, 0, 0)"
-        hoverStyle={{ backgroundColor: 'rgb(0, 255, 0)' }}
+        backgroundColor="rgb(255, 0, 0) hover:rgb(0, 255, 0)"
         transition="0ms"
       />
 
-      <XStack gap="$4">
+      <XStack gap="4">
         <Button testID="bump-tick" onPress={() => setTick((v) => v + 1)}>
           Bump
         </Button>

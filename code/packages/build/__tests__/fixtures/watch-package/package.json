@@ -1,5 +1,6 @@
 {
   "name": "tamagui-build-test-watch-package",
+  "private": true,
   "version": "2.0.0-rc.0-1769885482630",
   "license": "MIT",
   "main": "dist/cjs",
@@ -18,6 +19,6 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "typescript": "~5.9.2"
+    "typescript": "~6.0.3"
   }
 }

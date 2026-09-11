@@ -4,8 +4,7 @@ import type { StaticConfig } from '../types'
 import { isTamaguiComponent } from './isTamaguiComponent'
 
 export const isTamaguiElement = (
-  child: any,
-  name?: string
+  child: any
 ): child is React.ReactElement<any> & { type: { staticConfig: StaticConfig } } => {
-  return React.isValidElement(child) && isTamaguiComponent(child.type, name)
+  return React.isValidElement(child) && isTamaguiComponent(child.type)
 }

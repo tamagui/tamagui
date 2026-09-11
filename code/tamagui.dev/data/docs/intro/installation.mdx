@@ -10,13 +10,17 @@ description: Get Tamagui set up, step by step
 
 Use `npm create tamagui@latest` to pick one of our starter templates.
 
+If you are installing through a coding agent, hand it the brief instead of doing
+this by hand: [Set up with an agent](/docs/intro/agents) has a copy-paste prompt
+for a new project and another for upgrading an existing one.
+
 ## Requirements
 
 - **React Native 0.81+** with New Architecture enabled (for native apps)
 - **React 19+**
 - **TypeScript 5+** (required)
 
-Tamagui 2 takes advantage of new style features in React Native 0.81+ including
+Tamagui takes advantage of new style features in React Native 0.81+ including
 `boxShadow`, `filter`, and more. On web, there are no version restrictions.
 
 ## Installation
@@ -38,36 +42,31 @@ The `tamagui` package is a superset of core, so anywhere the docs reference
 `@tamagui/core`, you can replace it with `tamagui`.
 
 <Notice>
-  This applies to web-only apps. If you're building a native or universal app,
-  you already have `react-native` installed. For web-only apps, you still need
-  `react-native` types in the parent project for proper prop typing and
-  autocomplete. You can either install `react-native` directly:
 
-  ```bash
-  yarn add react-native
-  ```
+Web-only apps need `react-native` as a dev dependency. Native and universal apps
+already have it. Nothing imports it at runtime on web, but Tamagui's prop types
+reference React Native's, so without it you lose typing and autocomplete:
 
-  Or, if you only want the types:
+```bash
+yarn add -D react-native
+```
 
-  ```bash
-  yarn add react-native@0.0.0 @types/react-native
-  ```
+React Native ships its own types, so there's no separate `@types` package. In a
+monorepo, put it in the app or the workspace root rather than a leaf package.
 
-  Tamagui's web runtime is self-contained. In a monorepo, install either option
-  in the parent app or workspace root rather than a leaf package.
 </Notice>
 
 Next, you'll want to set up your [configuration](/docs/core/configuration) and
 provide it with `TamaguiProvider`:
 
 ```tsx fileName="App.tsx"
-import { TamaguiProvider, View } from '@tamagui/core'
+import { TamaguiProvider, html } from '@tamagui/core'
 import config from './tamagui.config' // your configuration
 
 export default function App() {
   return (
     <TamaguiProvider config={config} defaultTheme="light">
-      <View width={200} height={200} backgroundColor="$background" />
+      <html.div width={200} height={200} backgroundColor="background" />
     </TamaguiProvider>
   )
 }
@@ -83,7 +82,7 @@ You can use it like so:
 
 ```tsx fileName="App.tsx"
 import { TamaguiProvider, createTamagui } from '@tamagui/core'
-import { defaultConfig } from '@tamagui/config/v5'
+import { defaultConfig } from '@tamagui/config/v6'
 
 // you usually export this from a tamagui.config.ts file
 const config = createTamagui(defaultConfig)
@@ -156,7 +155,7 @@ plugins that help with that:
 
 <Spacer />
 
-<Grid gap="$4">
+<Grid gap="4">
   <LogoCard
     title="Next.js"
     img="/logos/next-js.svg"

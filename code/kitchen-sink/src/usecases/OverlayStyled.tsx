@@ -4,15 +4,14 @@ import { AlertDialog, styled } from 'tamagui'
 export const MyOverlay = styled(AlertDialog.Overlay, {
   transition: 'quick',
   backgroundColor: 'gray',
-  opacity: 0.7,
-  enterStyle: { opacity: 0 },
+  opacity: '0.7 enter:0',
 })
 
 export const MyAlert = AlertDialog
 
 export function OverlayStyled() {
   return (
-    <XStack p="$10" gap="$4">
+    <XStack p="10" gap="4">
       <WorkingExample />
       <NotWorkingExample />
     </XStack>
@@ -30,8 +29,7 @@ const WorkingExample = () => {
           key="overlay"
           transition="quick"
           backgroundColor="gray"
-          opacity={0.7}
-          enterStyle={{ opacity: 0 }}
+          opacity="0.7 enter:0"
         />
         <MyAlert.Content>
           <MyAlert.Title>Test</MyAlert.Title>

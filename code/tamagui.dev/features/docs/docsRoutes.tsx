@@ -5,6 +5,7 @@ export const docsRoutes = [
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
+      { title: 'Set up with an agent', route: '/docs/intro/agents' },
       { title: 'CLI', route: '/docs/guides/cli' },
       {
         title: 'Releases',
@@ -19,7 +20,8 @@ export const docsRoutes = [
     title: 'Configuration',
     pages: [
       { title: 'Configuration', route: '/docs/core/configuration' },
-      { title: 'Config v5', route: '/docs/core/config-v5' },
+      { title: 'Config v6', route: '/docs/core/config-v6' },
+      { title: 'v6 Colors', route: '/docs/core/config-v6-colors' },
       { title: 'Tokens', route: '/docs/core/tokens' },
       { title: 'Themes', route: '/docs/intro/themes' },
     ],
@@ -33,6 +35,7 @@ export const docsRoutes = [
       { title: 'Styling', route: '/docs/intro/styles' },
       { title: 'styled()', route: '/docs/core/styled' },
       { title: 'Variants', route: '/docs/core/variants' },
+      { title: 'Style Pieces', route: '/docs/core/style-pieces' },
       { title: 'createStyledContext', route: '/docs/core/create-styled-context' },
     ],
   },
@@ -44,7 +47,10 @@ export const docsRoutes = [
     pages: [
       { title: 'Props', route: '/docs/intro/props' },
       { title: 'View & Text', route: '/docs/core/view-and-text' },
+      { title: 'HTML primitives', route: '/docs/core/html-primitives' },
+      { title: 'Tamagui Tailwind', route: '/docs/core/tailwind' },
       { title: 'Theme', route: '/docs/core/theme' },
+      { title: 'Surfaces & levels', route: '/docs/core/surfaces' },
       { title: 'FontLanguage', route: '/docs/core/font-language' },
     ],
   },
@@ -76,6 +82,8 @@ export const docsRoutes = [
     title: 'Compiler',
     pages: [
       { title: 'Installation', route: '/docs/intro/compiler-install' },
+      { title: 'Compiler tiers', route: '/docs/core/compiler-tiers' },
+      { title: 'Zero-runtime mode', route: '/docs/guides/zero-runtime' },
       { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
       { title: 'Background', route: '/docs/intro/why-a-compiler' },
     ],
@@ -100,7 +108,8 @@ export const docsRoutes = [
     title: 'Guides',
     section: 'core',
     pages: [
-      { title: 'Upgrading from v1 to v2', route: '/docs/guides/how-to-upgrade' },
+      { title: 'Upgrading to v3', route: '/docs/guides/how-to-upgrade' },
+      { title: 'Flat Conditional Values', route: '/docs/guides/flat-values' },
       { title: 'Custom UI Package', route: '/docs/guides/design-systems' },
       { title: 'Creating Custom Themes', route: '/docs/guides/theme-builder' },
       {
@@ -122,6 +131,7 @@ export const docsRoutes = [
     pages: [
       { title: 'Install', route: '/ui/intro' },
       { title: 'Stacks', route: '/ui/stacks' },
+      { title: 'Surface', route: '/ui/surface' },
       { title: 'Headings', route: '/ui/headings' },
       { title: 'Text', route: '/ui/text' },
       { title: 'Native', route: '/ui/native' },
@@ -135,6 +145,7 @@ export const docsRoutes = [
     pages: [
       { title: 'Button', route: '/ui/button' },
       { title: 'Checkbox', route: '/ui/checkbox' },
+      { title: 'Field', route: '/ui/field' },
       { title: 'Form', route: '/ui/form' },
       { title: 'Input & TextArea', route: '/ui/inputs' },
       { title: 'Label', route: '/ui/label' },
@@ -168,7 +179,6 @@ export const docsRoutes = [
       { title: 'Tabs', route: '/ui/tabs' },
       { title: 'Tooltip', route: '/ui/tooltip' },
       { title: 'Toast', route: '/ui/toast' },
-      { title: 'Toast v2', route: '/ui/toast-2' },
     ],
   },
 

@@ -9,7 +9,7 @@ export const BentoPageFrame = ({
 }) => {
   return (
     <>
-      <YStack maxWidth="100%" paddingTop={simpler ? 0 : '$2'}>
+      <YStack maxWidth="100%" paddingTop={simpler ? 0 : '2'}>
         {children}
       </YStack>
     </>

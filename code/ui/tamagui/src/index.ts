@@ -15,6 +15,7 @@ export * from '@tamagui/compose-refs'
 export * from '@tamagui/create-context'
 export * from '@tamagui/dialog'
 export * from '@tamagui/font-size'
+export * from '@tamagui/field'
 export * from '@tamagui/form'
 export * from '@tamagui/group'
 export * from '@tamagui/react-native-media-driver'
@@ -52,7 +53,100 @@ export * from '@tamagui/element'
 export * from '@tamagui/use-window-dimensions'
 export * from '@tamagui/visually-hidden'
 
+// styled default components — the unstyled @tamagui/ui primitives + the default
+// v2-look skins (see ./components). These explicitly shadow the unstyled
+// Button/Select/Sheet re-exported above from @tamagui/{button,select,sheet}, so
+// `import { Button } from 'tamagui'` is styled (v2-compatible). The unstyled
+// primitives remain available via `tamagui/unstyled` (= @tamagui/ui). Each skin
+// file is the single definition the shadcn registry item is generated from.
+export {
+  Button,
+  ButtonFrame,
+  ButtonIcon,
+  ButtonText,
+  type ButtonProps,
+  type ButtonSize,
+} from './components/Button'
+export {
+  Select,
+  SelectGroup,
+  SelectIcon,
+  SelectIndicator,
+  SelectItem,
+  SelectItemIndicator,
+  SelectItemText,
+  SelectLabel,
+  SelectRoot,
+  type SelectRootProps,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+  SelectViewport,
+  selectParts,
+  type SelectSize,
+} from './components/Select'
+export {
+  Sheet,
+  SheetBackground,
+  SheetContainer,
+  SheetControlled,
+  SheetHandle,
+  SheetOverlay,
+  SheetRoot,
+  SheetScrollView,
+} from './components/Sheet'
+export { Input, type InputProps, TextArea, type TextAreaProps } from './components/Input'
+export { ToggleGroup, type ToggleGroupItemProps } from './components/ToggleGroup'
+export { Accordion } from './components/Accordion'
+export {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogOverlay,
+} from './components/AlertDialog'
+export { Dialog, DialogContent, DialogOverlay } from './components/Dialog'
+export { Popover, PopoverArrow, PopoverContent } from './components/Popover'
+export { Slider, SliderActive, SliderThumb, SliderTrack } from './components/Slider'
+export { Switch, SwitchFrame, SwitchThumb, SwitchThumbFrame } from './components/Switch'
+export { Checkbox, CheckboxFrame, CheckboxIndicator } from './components/Checkbox'
+export {
+  RadioGroup,
+  RadioGroupFrame,
+  RadioGroupIndicator,
+  RadioGroupItem,
+} from './components/RadioGroup'
+export { Tabs, TabsContent, TabsFrame, TabsList, TabsTab } from './components/Tabs'
+export { ListItem, type ListItemProps } from './components/ListItem'
+export { Card, CardFrame, type CardProps } from './components/Card'
+export { Progress, ProgressIndicator, type ProgressProps } from './components/Progress'
+export { Label, type LabelProps } from './components/Label'
+export { Separator, type SeparatorProps } from './components/Separator'
+// styled Toast skin — shadows the unstyled @tamagui/toast composable Toast /
+// toast re-exported above, so `import { Toast, toast } from 'tamagui'` is the
+// styled toast. Also surfaced at the tamagui/toast subpath.
+export {
+  Toast,
+  ToastItem,
+  ToastTitle,
+  ToastDescription,
+  ToastClose,
+  ToastAction,
+  toast,
+  useToastItem,
+  useToasts,
+  type ExternalToast,
+  type ToastPosition,
+  type ToastT,
+} from './components/Toast'
+// Surface — the copied panel/well/toolbar fixture (YStack + level variant +
+// facets), plus the raw facet set for skins/user code that want to compose the
+// same chrome. See ./components/Surface + ./components/facets.
+export { Surface, type SurfaceProps } from './components/Surface'
+export { facets } from './components/facets'
+
 export * from './createTamagui'
+export { ThemeUpdate, type ThemeUpdateProps } from './theme-update'
 
 export * from './viewTypes'
 export * from './views/TamaguiProvider'
@@ -69,9 +163,16 @@ export * from './views/Text'
 export type {
   TransitionKeys,
   TransitionProp,
+  AnimatedNumberStrategy,
+  UniversalAnimatedNumber,
+  UseAnimatedNumber,
+  UseAnimatedNumberReaction,
+  UseAnimatedNumberStyle,
+  UseAnimatedNumbersStyle,
   ColorTokens,
   CreateTamaguiConfig,
   CreateTamaguiProps,
+  CreatedSizeContext,
   FontColorTokens,
   FontLanguages,
   FontLetterSpacingTokens,
@@ -93,18 +194,28 @@ export type {
   GroupNames,
   Longhands,
   Media,
-  MediaPropKeys,
   MediaQueries,
   MediaQueryState,
+  NativeStyleEngine,
+  GenericVariables,
   RadiusTokens,
   Shorthands,
+  SizeContextValue,
+  SizeResolverEnv,
+  ResolvedSize,
+  SizeSpec,
+  GenericSizes,
+  SizeName,
   SizeTokens,
   SpaceTokens,
-  SpecificTokens,
+  SplitStylePropsFilter,
+  SplitStylePropsFilterCallback,
+  SplitStylePropsOptions,
+  SplitStylePropsResult,
   StackNonStyleProps,
+  StylePiece,
   ViewProps,
   StaticConfig,
-  Styleable,
   TamaguiBaseTheme,
   TamaguiBuildOptions,
   TamaguiComponent,
@@ -125,11 +236,10 @@ export type {
   ThemeTokens,
   ThemeValueFallback,
   Token,
+  TokenSize,
   Tokens,
   TypeOverride,
   Variable,
-  VariantSpreadExtras,
-  VariantSpreadFunction,
   ZIndexTokens,
   ViewStyle,
   TextStyle,
@@ -144,10 +254,13 @@ export {
   // components
   Theme,
   View,
+  SizeContext,
   createComponent,
   createFont,
   createShorthands,
+  createSizeContext,
   createStyledContext,
+  createStyledHOC,
   createTokens,
   createVariable,
   getConfig,
@@ -158,8 +271,10 @@ export {
   getTokenValue,
   getTokens,
   getVariable,
-  getVariableName,
   getVariableValue,
+  // the recommended DOM frontend: `html.*` is an ordinary Tamagui component
+  // here, unlike the demoted standalone `tamagui/dom` entry
+  html,
   insertFont,
   setConfig,
   setupDev,
@@ -179,10 +294,18 @@ export {
   mediaObjectToString,
   mediaQueryConfig,
   mediaState,
-  setOnLayoutStrategy,
+  oneSizeSmaller,
+  resolveSize,
+  setNativeStyleEngine,
+  splitStyleProps,
+  style,
   styled,
-  themeable,
   // hooks
+  useAnimatedNumber,
+  useAnimatedNumberReaction,
+  useAnimatedNumberStyle,
+  useAnimatedNumbersStyle,
+  useAnimationDriver,
   useClientValue,
   useDidFinishSSR,
   useEvent,
@@ -190,8 +313,6 @@ export {
   useIsTouchDevice,
   useIsomorphicLayoutEffect,
   useMedia,
-  useProps,
-  usePropsAndStyle,
   useStyle,
   useConfiguration,
   useTheme,

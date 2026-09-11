@@ -1,0 +1,28 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`native DOM elements lower to backing primitives and wrap literal text 1`] = `
+"
+    import { jsx, jsxs } from 'react/jsx-runtime'
+    import { html as h } from '@tamagui/core'
+
+    export const JSXElement = (
+      <__TamaguiDOMView style={__TamaguiNativeStyle136._ ?? __TamaguiNativeStyle136()} id="main"><__TamaguiDOMText __inherit>
+        Hello </__TamaguiDOMText><__TamaguiDOMText __inherit>{7}</__TamaguiDOMText>
+        <__TamaguiDOMText style={__TamaguiNativeStyle181._ ?? __TamaguiNativeStyle181()} __inherit={true}>world</__TamaguiDOMText>
+      </__TamaguiDOMView>
+    )
+    export const JSXCall = jsx(__TamaguiDOMView, { children: __TamaguiCreateElement(__TamaguiDOMText, { __inherit: true }, 'jsx') , style: __TamaguiNativeStyle253._ ?? __TamaguiNativeStyle253() })
+    export const JSXSCall = jsxs(__TamaguiDOMView, { children: [__TamaguiCreateElement(__TamaguiDOMText, { __inherit: true }, 'one'), jsx(__TamaguiDOMText, { children: 'two' , style: __TamaguiNativeStyle349._ ?? __TamaguiNativeStyle349(), "__inherit": true })] , style: __TamaguiNativeStyle317._ ?? __TamaguiNativeStyle317() })
+
+function __TamaguiNativeStyle136() { return __TamaguiNativeStyle136._ ?? (__TamaguiNativeStyle136._ = {"boxSizing":"content-box","position":"static","alignItems":"stretch","display":"flex","flexBasis":"auto","flexDirection":"column","flexShrink":0,"flexWrap":"nowrap","justifyContent":"flex-start"}); } __TamaguiNativeStyle136();
+import { DOMView as __TamaguiDOMView } from "@tamagui/core/dom"
+
+import { DOMText as __TamaguiDOMText } from "@tamagui/core/dom"
+
+function __TamaguiNativeStyle181() { return __TamaguiNativeStyle181._ ?? (__TamaguiNativeStyle181._ = {"boxSizing":"content-box","position":"static"}); } __TamaguiNativeStyle181();
+function __TamaguiNativeStyle253() { return __TamaguiNativeStyle253._ ?? (__TamaguiNativeStyle253._ = {"boxSizing":"content-box","position":"static","alignItems":"stretch","display":"flex","flexBasis":"auto","flexDirection":"column","flexShrink":0,"flexWrap":"nowrap","justifyContent":"flex-start"}); } __TamaguiNativeStyle253();
+import { createElement as __TamaguiCreateElement } from "react"
+
+function __TamaguiNativeStyle317() { return __TamaguiNativeStyle317._ ?? (__TamaguiNativeStyle317._ = {"boxSizing":"content-box","position":"static","alignItems":"stretch","display":"flex","flexBasis":"auto","flexDirection":"column","flexShrink":0,"flexWrap":"nowrap","justifyContent":"flex-start"}); } __TamaguiNativeStyle317();
+function __TamaguiNativeStyle349() { return __TamaguiNativeStyle349._ ?? (__TamaguiNativeStyle349._ = {"boxSizing":"content-box","position":"static","fontWeight":"bold"}); } __TamaguiNativeStyle349();"
+`;

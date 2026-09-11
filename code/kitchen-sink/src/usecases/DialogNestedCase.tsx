@@ -1,18 +1,10 @@
 import { X } from '@tamagui/lucide-icons-2'
-import {
-  Adapt,
-  Button,
-  Dialog,
-  Paragraph,
-  Sheet,
-  Unspaced,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button } from '../components/Button'
+import { Adapt, Dialog, Paragraph, Sheet, Unspaced, XStack, YStack } from 'tamagui'
 
 export function DialogNestedCase() {
   return (
-    <YStack gap="$4" justifyContent="center" alignItems="center" padding="$4">
+    <YStack gap="4" justifyContent="center" alignItems="center" padding="4">
       <DialogInstance />
     </YStack>
   )
@@ -29,7 +21,7 @@ function DialogInstance({ level = 1 }: { level?: number }) {
         </Button>
       </Dialog.Trigger>
 
-      <Adapt when="maxMd" platform="touch">
+      <Adapt when="max-md" platform="touch">
         <Sheet
           transition="medium"
           zIndex={200000}
@@ -37,45 +29,34 @@ function DialogInstance({ level = 1 }: { level?: number }) {
           dismissOnSnapToBottom
           unmountChildrenWhenHidden
         >
-          <Sheet.Frame padding="$4" gap="$4">
+          <Sheet.Container padding="4" gap="4">
+            <Sheet.Background />
             <Adapt.Contents />
-          </Sheet.Frame>
-          <Sheet.Overlay
-            transition="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+          </Sheet.Container>
+          <Sheet.Overlay transition="lazy" opacity="enter:0 exit:0" />
         </Sheet>
       </Adapt>
 
       <Dialog.Portal>
-        <Dialog.Overlay
-          key="overlay"
-          transition="quick"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
+        <Dialog.Overlay key="overlay" transition="quick" opacity="0.5 enter:0 exit:0" />
 
         <Dialog.Content
           bordered
           elevate
           key="content"
-          transition={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-          enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
-          exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
+          transition={{
+            preset: 'quick',
+            opacity: { preset: 'quick', spring: { overshootClamping: true } },
+          }}
+          x="enter:0 exit:0"
+          y="enter:-20px exit:10px"
+          opacity="enter:0 exit:0"
+          scale="enter:0.9 exit:0.95"
           width={450}
-          padding="$6"
-          gap="$4"
+          padding="6"
+          gap="4"
         >
-          <YStack data-testid={`${testId}-dialog-content`} gap="$4">
+          <YStack data-testid={`${testId}-dialog-content`} gap="4">
             <Dialog.Title>Dialog Level {level}</Dialog.Title>
             <Dialog.Description>
               This is dialog level {level}.{' '}
@@ -86,7 +67,7 @@ function DialogInstance({ level = 1 }: { level?: number }) {
               Content for level {level}
             </Paragraph>
 
-            <XStack alignSelf="flex-end" gap="$4">
+            <XStack alignSelf="flex-end" gap="4">
               {/* Nested dialog - only show if level is less than 3 */}
               {level < 3 && <DialogInstance level={level + 1} />}
 
@@ -105,9 +86,9 @@ function DialogInstance({ level = 1 }: { level?: number }) {
               <Dialog.Close asChild>
                 <Button
                   position="absolute"
-                  right="$3"
-                  top="$3"
-                  size="$2"
+                  right="3"
+                  top="3"
+                  size="3"
                   circular
                   icon={X}
                 />

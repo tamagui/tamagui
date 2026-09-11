@@ -1,16 +1,17 @@
 import { dirname, join } from 'node:path'
+import { createRequire } from 'node:module'
 
 import { generateThemes, writeGeneratedThemes } from '@tamagui/generate-themes'
+import { stylePropsAll } from '@tamagui/helpers'
+import { grammarEntries } from '@tamagui/style-grammar/tooling'
 import type { TamaguiOptions } from '@tamagui/types'
-import * as FS from 'fs-extra'
+import FS from 'fs-extra'
 
+import { generateConfigMarkdown } from './generateConfigMarkdown'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import type { TamaguiPlatform } from '../types'
 import type { BundledConfig } from './bundleConfig'
 import { getBundledConfig } from './bundleConfig'
-
-const tamaguiDir = join(process.cwd(), '.tamagui')
-const confFile = join(tamaguiDir, 'tamagui.config.json')
 
 /**
  * Sort of a super-set of bundleConfig(), this code needs some refactoring ideally
@@ -21,44 +22,39 @@ export async function regenerateConfig(
   configIn?: BundledConfig | null,
   rebuild = false
 ) {
-  try {
-    // this has a side effect of rebuilding config and css!
-    // need to improve code here:
-    const config = configIn ?? (await getBundledConfig(tamaguiOptions, rebuild))
-    if (!config) return
-    const out = transformConfig(config, tamaguiOptions.platform || 'web')
-
-    await FS.ensureDir(dirname(confFile))
-    await FS.writeJSON(confFile, out, {
-      spaces: 2,
+  const config = configIn ?? (await getBundledConfig(tamaguiOptions, rebuild))
+  if (!config) return
+  const outputs = getConfigOutputs(tamaguiOptions, config)
+  await FS.ensureDir(dirname(outputs[0][0]))
+  await Promise.all(
+    outputs.map(async ([file, content]) => {
+      if (await FS.pathExists(file)) {
+        if ((await FS.readFile(file, 'utf8')) === content) return
+      }
+      await FS.writeFile(file, content)
     })
-  } catch (err) {
-    if (process.env.DEBUG?.includes('tamagui') || process.env.IS_TAMAGUI_DEV) {
-      console.warn('regenerateConfig error', err)
-    }
-    // ignore for now
-  }
+  )
 }
 
 export function regenerateConfigSync(
-  _tamaguiOptions: TamaguiOptions,
+  tamaguiOptions: TamaguiOptions,
   config: BundledConfig
 ) {
-  try {
-    FS.ensureDirSync(dirname(confFile))
-    FS.writeJSONSync(
-      confFile,
-      transformConfig(config, _tamaguiOptions.platform || 'web'),
-      {
-        spaces: 2,
-      }
-    )
-  } catch (err) {
-    if (process.env.DEBUG?.includes('tamagui') || process.env.IS_TAMAGUI_DEV) {
-      console.warn('regenerateConfig error', err)
-    }
-    // ignore for now
+  const outputs = getConfigOutputs(tamaguiOptions, config)
+  FS.ensureDirSync(dirname(outputs[0][0]))
+  for (const [file, content] of outputs) {
+    if (FS.existsSync(file) && FS.readFileSync(file, 'utf8') === content) continue
+    FS.writeFileSync(file, content)
   }
+}
+
+function getConfigOutputs(options: TamaguiOptions, config: BundledConfig) {
+  const out = transformConfig(config, options.platform || 'web')
+  const confFile = getConfigFile(options)
+  return [
+    [confFile, `${JSON.stringify(out, null, 2)}\n`],
+    [join(dirname(confFile), 'prompt.md'), generateConfigMarkdown(out)],
+  ]
 }
 
 export async function generateTamaguiThemes(
@@ -70,8 +66,11 @@ export async function generateTamaguiThemes(
   }
 
   const { input, output } = tamaguiOptions.themeBuilder
-  const inPath = resolveRelativePath(input)
-  const outPath = resolveRelativePath(output)
+  const root = tamaguiOptions.root || process.cwd()
+  const tamaguiDir = join(root, '.tamagui')
+  const projectRequire = createRequire(join(root, 'package.json'))
+  const inPath = resolveRelativePath(input, root, projectRequire)
+  const outPath = resolveRelativePath(output, root, projectRequire)
   const generatedOutput = await generateThemes(inPath)
 
   // because this runs in parallel (its cheap) lets avoid logging a bunch, so check to see if changed:
@@ -96,8 +95,15 @@ export async function generateTamaguiThemes(
   return hasChanged
 }
 
-const resolveRelativePath = (inputPath: string) =>
-  inputPath.startsWith('.') ? join(process.cwd(), inputPath) : require.resolve(inputPath)
+const getConfigFile = (options: TamaguiOptions) =>
+  join(options.root || process.cwd(), '.tamagui', 'tamagui.config.json')
+
+const resolveRelativePath = (
+  inputPath: string,
+  root: string,
+  projectRequire: NodeRequire
+) =>
+  inputPath.startsWith('.') ? join(root, inputPath) : projectRequire.resolve(inputPath)
 
 function cloneDeepSafe(x: any, excludeKeys = {}) {
   if (!x) return x
@@ -108,6 +114,40 @@ function cloneDeepSafe(x: any, excludeKeys = {}) {
   return Object.fromEntries(
     Object.entries(x).flatMap(([k, v]) => (excludeKeys[k] ? [] : [[k, cloneDeepSafe(v)]]))
   )
+}
+
+/**
+ * Which token category each style prop draws its values from, emitted so the
+ * language server can offer `bg=""` colors and `p=""` spaces instead of every
+ * token in the config.
+ *
+ * Derived from the style-grammar registry rather than restated here: that
+ * registry is already the contract the runtime resolver is pinned to
+ * (see core-test/tokenCategoryParity.web.test.tsx), so a second table would be
+ * a second thing to keep true.
+ *
+ * A prefix shared by props of different categories (`border` is both
+ * borderWidth/space and borderColor/color) is left out rather than guessed at;
+ * an unmapped prop offers the whole vocabulary, which is the honest answer.
+ */
+function buildPropCategories(): Record<string, string> {
+  const out: Record<string, string> = {}
+  const byPrefix: Record<string, Set<string | undefined>> = {}
+
+  for (const entry of grammarEntries) {
+    if (entry.tokenCategory) out[entry.prop] = entry.tokenCategory
+    if (entry.prefix) (byPrefix[entry.prefix] ||= new Set()).add(entry.tokenCategory)
+  }
+
+  for (const [prefix, categories] of Object.entries(byPrefix)) {
+    // `out[prefix]` may already be set when a prop is its own prefix (`gap`,
+    // `color`); the registry agrees with itself there, so this is a no-op
+    if (categories.size !== 1) continue
+    const [only] = categories
+    if (only) out[prefix] = only
+  }
+
+  return out
 }
 
 function transformConfig(config: BundledConfig, platform: TamaguiPlatform) {
@@ -127,11 +167,9 @@ function transformConfig(config: BundledConfig, platform: TamaguiPlatform) {
 
   // reduce down to usable, smaller json
 
-  // slim themes, add name
+  // slim themes
   for (const key in themes) {
     const theme = themes[key]
-    // @ts-ignore
-    theme.id = key
     for (const tkey in theme) {
       theme[tkey] = getVariableValue(theme[tkey])
     }
@@ -177,10 +215,18 @@ function transformConfig(config: BundledConfig, platform: TamaguiPlatform) {
   return {
     components,
     nameToPaths,
+    tamaguiConfigMetadata: {
+      themeFields: 'values-only',
+    },
     tamaguiConfig: {
       ...cleanedConfig,
       // Output userShorthands as shorthands (excludes built-ins)
       shorthands: userShorthands,
+      propCategories: buildPropCategories(),
+      // every prop that can carry a style value. the shorthand tables alone
+      // miss any long-form prop with no shorthand (`gap`, `backgroundColor`),
+      // and the language server was silent inside exactly those.
+      styleProps: Object.keys(stylePropsAll),
     },
   }
 }

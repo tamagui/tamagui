@@ -1,0 +1,67 @@
+{
+  "typography": {
+    "samples": [
+      34.32554200000004,
+      34.914292000000046,
+      34.70925,
+      35.04437500000006,
+      35.19891700000005,
+      36.58024999999998,
+      36.37433299999998
+    ],
+    "medianMs": 35.04437500000006,
+    "checksum": "{\"hasMedia\":false,\"fontFamily\":\"body\",\"viewProps\":{\"className\":\"is_Text font_body _ff-398455870 _fs-1892529921 _lh-95508644 _fw-2094995091 _ls-981199540\"},\"style\":null,\"classNames\":{\"fontFamily\":\"_ff-398455870\",\"fontSize\":\"_fs-1892529921\",\"lineHeight\":\"_lh-95508644\",\"fontWeight\":\"_fw-2094995091\",\"letterSpacing\":\"_ls-981199540\"},\"rulesToInsert\":{\"_ff-398455870\":[\"fontFamily\",\"var(--f-family)\",\"_ff-398455870\",null,[\"._ff-398455870{font-family:var(--f-family)}\"]],\"_fs-1892529921\":[\"fontSize\",\"var(--f-size-4)\",\"_fs-1892529921\",null,[\"._fs-1892529921{font-size:var(--f-size-4)}\"]],\"_lh-95508644\":[\"lineHeight\",\"var(--f-lineHeight-4)\",\"_lh-95508644\",null,[\"._lh-95508644{line-height:var(--f-lineHeight-4)}\"]],\"_fw-2094995091\":[\"fontWeight\",\"var(--f-weight-4)\",\"_fw-2094995091\",null,[\"._fw-2094995091{font-weight:var(--f-weight-4)}\"]],\"_ls-981199540\":[\"letterSpacing\",\"var(--f-letterSpacing-4)\",\"_ls-981199540\",null,[\"._ls-981199540{letter-spacing:var(--f-letterSpacing-4)}\"]]}}"
+  },
+  "regular": {
+    "samples": [
+      19.566291999999976,
+      20.468541999999957,
+      18.96570799999995,
+      22.607582999999977,
+      19.09299999999996,
+      18.772707999999966,
+      18.292542000000026
+    ],
+    "medianMs": 19.09299999999996,
+    "checksum": "{\"hasMedia\":false,\"viewProps\":{\"className\":\"is_View _p-416156015 _b-533410013 card selected user\"},\"style\":null,\"classNames\":{\"padding\":\"_p-416156015\",\"background\":\"_b-533410013\"},\"rulesToInsert\":{\"_p-416156015\":[\"padding\",\"var(--t-space-4)\",\"_p-416156015\",null,[\"._p-416156015{padding:var(--t-space-4)}\"]],\"_b-533410013\":[\"backgroundColor\",\"blue\",\"_b-533410013\",null,[\"._b-533410013{background-color:red}\",\"@media (hover: hover) {._b-533410013:where(:hover){background-color:blue}}\"]]},\"programStates\":{},\"platformPseudo\":true}"
+  },
+  "owned": {
+    "samples": [
+      32.0474999999999,
+      32.12533399999984,
+      31.84658300000001,
+      31.384832999999844,
+      32.06620799999996,
+      31.44070799999986,
+      30.199792000000116
+    ],
+    "medianMs": 31.84658300000001,
+    "checksum": "{\"hasMedia\":false,\"viewProps\":{\"className\":\"is_View _d-255188251 _p-416156015 _g-1878760728 _b-533410013 rounded-lg\"},\"style\":null,\"classNames\":{\"display\":\"_d-255188251\",\"padding\":\"_p-416156015\",\"gap\":\"_g-1878760728\",\"background\":\"_b-533410013\"},\"rulesToInsert\":{\"_d-255188251\":[\"display\",\"flex\",\"_d-255188251\",null,[\"._d-255188251{display:flex}\"]],\"_p-416156015\":[\"padding\",\"var(--t-space-4)\",\"_p-416156015\",null,[\"._p-416156015{padding:var(--t-space-4)}\"]],\"_g-1878760728\":[\"gap\",\"var(--t-space-2)\",\"_g-1878760728\",null,[\"._g-1878760728{gap:var(--t-space-2)}\"]],\"_b-533410013\":[\"backgroundColor\",\"blue\",\"_b-533410013\",null,[\"._b-533410013{background-color:red}\",\"@media (hover: hover) {._b-533410013:where(:hover){background-color:blue}}\"]]},\"programStates\":{},\"platformPseudo\":true}"
+  },
+  "composed": {
+    "samples": [
+      28.179791999999907,
+      27.54099999999994,
+      27.481667000000016,
+      27.575792000000092,
+      28.092415999999957,
+      26.790209000000004,
+      26.542457999999897
+    ],
+    "medianMs": 27.54099999999994,
+    "checksum": "{\"hasMedia\":false,\"viewProps\":{\"className\":\"is_View _p-416156015 _b-679090140 _bs-968027644\"},\"style\":null,\"classNames\":{\"padding\":\"_p-416156015\",\"background\":\"_b-679090140\",\"boxShadow\":\"_bs-968027644\"},\"rulesToInsert\":{\"_p-416156015\":[\"padding\",\"var(--t-space-4)\",\"_p-416156015\",null,[\"._p-416156015{padding:var(--t-space-4)}\"]],\"_b-679090140\":[\"backgroundImage\",\"linear-gradient(to right, red, blue)\",\"_b-679090140\",null,[\"._b-679090140{background-image:linear-gradient(to right, red, blue)}\"]],\"_bs-968027644\":[\"boxShadow\",\"0 0 0 4px red\",\"_bs-968027644\",null,[\"._bs-968027644{box-shadow:0 0 0 2px red}\",\"@media (hover: hover) {._bs-968027644:where(:hover){box-shadow:0 0 0 4px red}}\"]]},\"programStates\":{},\"platformPseudo\":true}"
+  },
+  "mixed": {
+    "samples": [
+      20.900208999999904,
+      20.693708000000015,
+      20.981834000000163,
+      20.516875000000027,
+      20.85070900000005,
+      20.80166599999984,
+      20.223124999999982
+    ],
+    "medianMs": 20.80166599999984,
+    "checksum": "{\"hasMedia\":false,\"viewProps\":{\"className\":\"is_View _p-416156015 user-class other-class\",\"style\":{\"backgroundColor\":\"red\",\"boxShadow\":\"0 0 0 2px currentColor\"}},\"style\":{\"backgroundColor\":\"red\",\"boxShadow\":\"0 0 0 2px currentColor\"},\"classNames\":{\"padding\":\"_p-416156015\"},\"rulesToInsert\":{\"_p-416156015\":[\"padding\",\"var(--t-space-4)\",\"_p-416156015\",null,[\"._p-416156015{padding:var(--t-space-4)}\"]]},\"programStates\":{},\"platformPseudo\":true}"
+  }
+}

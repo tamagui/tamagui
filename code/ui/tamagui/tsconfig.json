@@ -30,9 +30,6 @@
       "path": "../../core/font-size"
     },
     {
-      "path": "../../core/get-button-sized"
-    },
-    {
       "path": "../../core/get-font-sized"
     },
     {
@@ -43,6 +40,9 @@
     },
     {
       "path": "../../core/react-native-media-driver"
+    },
+    {
+      "path": "../../core/react-native-types"
     },
     {
       "path": "../../core/theme"

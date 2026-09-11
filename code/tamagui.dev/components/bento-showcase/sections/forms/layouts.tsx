@@ -6,76 +6,65 @@ import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,
 } from '~/components/bento-showcase/_Showcase'
-import {
-  type BentoShowcaseContext,
-  BentoShowcaseProvider,
-} from '~/components/bento-showcase/BentoProvider'
 
-type Props = ReturnType<typeof layoutsGetComponentCodes> & BentoShowcaseContext
+type Props = ReturnType<typeof layoutsGetComponentCodes>
 
-export function layouts({ isProUser, showAppropriateModal }: Props) {
+export function layouts() {
   return (
-    <BentoShowcaseProvider
-      isProUser={isProUser}
-      showAppropriateModal={showAppropriateModal}
+    <YStack
+      paddingBottom="2 gtLg:0"
+      gap="12"
+      paddingTop="2 gtLg:0"
+      paddingRight="2 gtLg:0"
+      paddingLeft="2 gtLg:0"
+      marginHorizontal="@sm/window:2"
     >
-      <YStack
-        pb="$10"
-        gap="$12"
-        p="$2"
-        $gtLg={{ p: '$0' }}
-        $group-window-sm={{ marginHorizontal: '$2' }}
+      <Showcase fileName={Layouts.SignInScreen.fileName} title="Sign-in Form">
+        <Wrapper>
+          <Layouts.SignInScreen />
+        </Wrapper>
+      </Showcase>
+      <Showcase fileName={Layouts.SignInRightImage.fileName} title="Sign-in Right Image">
+        <Wrapper my={-24} p={0}>
+          <Layouts.SignInRightImage />
+        </Wrapper>
+      </Showcase>
+      <Showcase fileName={Layouts.SignUpScreen.fileName} title="Sign-up Form">
+        <Wrapper>
+          <Layouts.SignUpScreen />
+        </Wrapper>
+      </Showcase>
+      <Showcase
+        fileName={Layouts.SignUpTwoSideScreen.fileName}
+        title="Sign-up Form - Two Column"
       >
-        <Showcase unlock fileName={Layouts.SignInScreen.fileName} title="Sign-in Form">
-          <Wrapper>
-            <Layouts.SignInScreen />
-          </Wrapper>
-        </Showcase>
-        <Showcase
-          fileName={Layouts.SignInRightImage.fileName}
-          title="Sign-in Right Image"
-        >
-          <Wrapper my={-24} p={0}>
-            <Layouts.SignInRightImage />
-          </Wrapper>
-        </Showcase>
-        <Showcase fileName={Layouts.SignUpScreen.fileName} title="Sign-up Form">
-          <Wrapper>
-            <Layouts.SignUpScreen />
-          </Wrapper>
-        </Showcase>
-        <Showcase
-          fileName={Layouts.SignUpTwoSideScreen.fileName}
-          title="Sign-up Form - Two Column"
-        >
-          <Wrapper p={0}>
-            <Layouts.SignUpTwoSideScreen />
-          </Wrapper>
-        </Showcase>
-        <Showcase
-          fileName={Layouts.ShortEmailPassword.fileName}
-          title="Short Email Password Layout"
-        >
-          <Layouts.ShortEmailPassword />
-        </Showcase>
-        <Showcase
-          fileName={Layouts.SignupValidatedHookForm.fileName}
-          title="Integrated with react-hook-form and Zod"
-        >
-          <Wrapper>
-            <Layouts.SignupValidatedHookForm />
-          </Wrapper>
-        </Showcase>
-        <Showcase
-          fileName={Layouts.SignupValidatedTsForm.fileName}
-          title="Integrated with react-ts-form and Zod"
-        >
-          <Wrapper>
-            <Layouts.SignupValidatedTsForm />
-          </Wrapper>
-        </Showcase>
-      </YStack>
-    </BentoShowcaseProvider>
+        <Wrapper p={0}>
+          <Layouts.SignUpTwoSideScreen />
+        </Wrapper>
+      </Showcase>
+      <Showcase
+        fileName={Layouts.ShortEmailPassword.fileName}
+        title="Short Email Password Layout"
+      >
+        <Layouts.ShortEmailPassword />
+      </Showcase>
+      <Showcase
+        fileName={Layouts.SignupValidatedHookForm.fileName}
+        title="Integrated with react-hook-form and Zod"
+      >
+        <Wrapper>
+          <Layouts.SignupValidatedHookForm />
+        </Wrapper>
+      </Showcase>
+      <Showcase
+        fileName={Layouts.SignupValidatedTsForm.fileName}
+        title="Integrated with react-ts-form and Zod"
+      >
+        <Wrapper>
+          <Layouts.SignupValidatedTsForm />
+        </Wrapper>
+      </Showcase>
+    </YStack>
   )
 }
 

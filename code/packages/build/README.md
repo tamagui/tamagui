@@ -61,6 +61,25 @@ It assumes your package.json looks something like this:
 }
 ```
 
+Packages that intentionally expose only subpaths can omit `main`, `module`, and
+`types` so those fields do not advertise a root entry. Declare the build outputs
+directly instead:
+
+```json
+{
+  "exports": {
+    "./feature": {
+      "types": "./types/feature.d.ts",
+      "import": "./dist/esm/feature.mjs",
+      "require": "./dist/cjs/feature.cjs"
+    }
+  },
+  "tamagui-build": {
+    "outputs": ["cjs", "esm", "types"]
+  }
+}
+```
+
 ### Install
 
 `npx @tamagui/build` or install and use the CLI:

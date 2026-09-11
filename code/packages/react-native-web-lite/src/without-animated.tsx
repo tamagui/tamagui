@@ -31,6 +31,7 @@ export { NativeModules } from './NativeModules/index'
 
 // react-native
 export { default as NativeEventEmitter } from './vendor/react-native/EventEmitter/NativeEventEmitter'
+export * as TurboModuleRegistry from './vendor/react-native/TurboModule/TurboModuleRegistry'
 
 // APIs
 export { AccessibilityInfo } from './AccessibilityInfo/index'

@@ -1,4 +1,5 @@
-import { Button, Paragraph, Tooltip, TooltipGroup, YStack, XStack } from 'tamagui'
+import { Paragraph, Tooltip, TooltipGroup, YStack, XStack } from 'tamagui'
+import { Button } from '../components/Button'
 import { useState } from 'react'
 
 /**
@@ -12,7 +13,7 @@ export function TooltipGlobalPatternCase() {
   const [label, setLabel] = useState('')
 
   return (
-    <YStack flex={1} bg="$background" p="$4" minHeight={600} minWidth={800}>
+    <YStack flex={1} bg="background" p="4" minHeight={600} minWidth={800}>
       <TooltipGroup delay={{ open: 0, close: 150 }}>
         <Tooltip scope="global-tip" offset={12} placement="bottom">
           <YStack flex={1} justifyContent="space-between">
@@ -22,9 +23,7 @@ export function TooltipGlobalPatternCase() {
                 asChild
                 onMouseEnter={() => setLabel('Top Left')}
               >
-                <Button data-testid="trigger-tl" size="$4">
-                  Top Left
-                </Button>
+                <Button data-testid="trigger-tl">Top Left</Button>
               </Tooltip.Trigger>
 
               <Tooltip.Trigger
@@ -32,9 +31,7 @@ export function TooltipGlobalPatternCase() {
                 asChild
                 onMouseEnter={() => setLabel('Top Right')}
               >
-                <Button data-testid="trigger-tr" size="$4">
-                  Top Right
-                </Button>
+                <Button data-testid="trigger-tr">Top Right</Button>
               </Tooltip.Trigger>
             </XStack>
 
@@ -44,9 +41,7 @@ export function TooltipGlobalPatternCase() {
                 asChild
                 onMouseEnter={() => setLabel('Bottom Left')}
               >
-                <Button data-testid="trigger-bl" size="$4">
-                  Bottom Left
-                </Button>
+                <Button data-testid="trigger-bl">Bottom Left</Button>
               </Tooltip.Trigger>
 
               <Tooltip.Trigger
@@ -54,9 +49,7 @@ export function TooltipGlobalPatternCase() {
                 asChild
                 onMouseEnter={() => setLabel('Bottom Right')}
               >
-                <Button data-testid="trigger-br" size="$4">
-                  Bottom Right
-                </Button>
+                <Button data-testid="trigger-br">Bottom Right</Button>
               </Tooltip.Trigger>
             </XStack>
           </YStack>
@@ -65,16 +58,16 @@ export function TooltipGlobalPatternCase() {
             data-testid="global-tip-content"
             animatePosition
             transition="200ms"
-            bg="$background"
-            elevation="$2"
-            rounded="$4"
-            px="$2.5"
-            py="$1"
-            enterStyle={{ y: -4, opacity: 0 }}
-            exitStyle={{ y: -4, opacity: 0 }}
+            bg="background"
+            boxShadow="0 4px 12px shadow-color"
+            rounded="4"
+            px={10}
+            py="1"
+            y="enter:-4px exit:-4px"
+            opacity="enter:0 exit:0"
           >
             <Tooltip.Arrow />
-            <Paragraph size="$3">{label}</Paragraph>
+            <Paragraph size="3">{label}</Paragraph>
           </Tooltip.Content>
         </Tooltip>
       </TooltipGroup>

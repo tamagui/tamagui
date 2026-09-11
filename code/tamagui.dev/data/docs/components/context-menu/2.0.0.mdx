@@ -38,17 +38,23 @@ ContextMenu is already installed in `tamagui`, or you can install it independent
 yarn add @tamagui/context-menu
 ```
 
-If you want to use native menus, add these dependencies:
+For Expo 57 and React Native 0.86, use the Expo UI adapter:
 
 ```sh
-yarn add @react-native-menu/menu
-yarn add react-native-ios-context-menu
-yarn add react-native-ios-utilities
-yarn add zeego
-yarn add sf-symbols-typescript
+yarn add @expo/ui
 ```
 
 Then add the setup import at your app entry point:
+
+```tsx
+import '@tamagui/native/setup-expo-ui-menu'
+```
+
+The Zeego adapter remains available for apps on compatible React Native versions:
+
+```sh
+yarn add @react-native-menu/menu react-native-ios-context-menu react-native-ios-utilities zeego sf-symbols-typescript
+```
 
 ```tsx
 import '@tamagui/native/setup-zeego'
@@ -57,7 +63,7 @@ import '@tamagui/native/setup-zeego'
 <Notice theme="blue">
   On native, `ContextMenu.Trigger` coordinates with parent Tamagui pressables
   automatically. You should not need extra wrapper views or empty `onPress`
-  handlers just to prevent a parent `pressStyle` from activating.
+  handlers just to prevent a parent `press:` clause from activating.
 </Notice>
 
 <Notice theme="yellow">
@@ -93,7 +99,7 @@ export default () => (
             <Text>Calendar</Text>
           </ContextMenu.ItemTitle>
           <ContextMenu.ItemIcon>
-            <Calendar color="gray" size="$1" />
+            <Calendar color="gray" size="1" />
           </ContextMenu.ItemIcon>
         </ContextMenu.Item>
         <ContextMenu.Separator />
@@ -103,7 +109,7 @@ export default () => (
           </ContextMenu.SubTrigger>
           <ContextMenu.Portal zIndex={200}>
             <ContextMenu.SubContent>
-              <ContextMenu.Label fontSize={'$1'}>Note settings</ContextMenu.Label>
+              <ContextMenu.Label fontSize={'1'}>Note settings</ContextMenu.Label>
               <ContextMenu.Item onSelect={onSelect} key="create-note">
                 <ContextMenu.ItemTitle>Create note</ContextMenu.ItemTitle>
               </ContextMenu.Item>

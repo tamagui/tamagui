@@ -3,7 +3,7 @@ import { Button, YStack } from 'tamagui'
 
 export function MenuAsChildPositionCase() {
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       <Menu placement="bottom-start">
         <Menu.Trigger asChild>
           <Button data-testid="menu-trigger-button">Open Menu</Button>

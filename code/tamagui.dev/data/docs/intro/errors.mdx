@@ -22,29 +22,97 @@ Using global config fallback. This may indicate duplicate tamagui instances
 (e.g., from Vite SSR bundling). This is handled automatically, but may cause
 issues due to duplicate tamagui modules if ignored.
 
-### Warning 001
+### Error 003
 
-#### Ignorable modules
+#### Static evaluation failed
 
-This error means the compiler can't bundle some dependencies into what it reads
-at compile-time in order to optimize. It's not necessarily an error and usually
-won't de-opt.
+The compiler evaluates your Tamagui config and configured component modules in
+Node during the build. The error names the module that could not be evaluated,
+the importing file, and the original failure. Fix that failure so the compiler
+can read the same config and component metadata as the application.
 
-To see a full stack trace set:
+If the module is only used at runtime and none of its exports create your
+Tamagui config or components, ignore that module explicitly in
+`tamagui.build.ts`:
 
-```bash
-DEBUG=tamagui
+```ts
+export default {
+  components: ['tamagui'],
+  dangerouslyIgnoreStaticEvaluationModules: ['runtime-only-package'],
+}
 ```
 
-To disable the warning you can set:
+Ignored modules receive an empty object during static evaluation. Do not ignore
+a module whose exports contribute to `createTamagui()` or a configured component.
 
-```bash
-TAMAGUI_IGNORE_BUNDLE_ERRORS=some_module_name,some_other_module_name
-# Or to disable them all (not recommended):
-TAMAGUI_IGNORE_BUNDLE_ERRORS=true
-```
+### Error 004
+
+#### Flat value clause condition depth exceeded
+
+A flat value clause supports at most 5 non-platform conditions (e.g. `hover:sm:focus:dark:`). Reduce the number of chained modifiers on a single clause.
+
+### Error 005
+
+#### Invalid variable name
+
+`createCSSVariable` expected a string variable name.
+
+### Error 006
+
+#### Missing component in styled()
+
+`styled()` was called without a target component. Pass a valid React component or host element tag.
+
+### Error 007
+
+#### createTamagui in zero-runtime graph
+
+`createTamagui` was invoked in a zero-runtime graph. In zero-runtime mode, config parsing and CSS generation happen at build time. Remove client config references or mark the module as full-runtime.
+
+### Error 008
+
+#### Reserved token name collision
+
+A token name collides with a reserved CSS-wide keyword (`initial`, `inherit`, `unset`, etc.). Rename the token to avoid collision with standard CSS identifiers.
+
+### Error 009
+
+#### Missing default font
+
+`settings.defaultFont` points to a font family that was not defined in the `fonts` configuration.
+
+### Error 010
+
+#### createComponent in zero-runtime graph
+
+A Tamagui component renderer survived compilation in a zero-runtime bundle. Move the component to a declared full-runtime island or ensure static compilation extracts it.
+
+### Error 011
+
+#### Missing animation driver
+
+No animation driver was configured. Pass an `animations` driver to `createTamagui()`.
+
+### Error 012
+
+#### Missing animated-number hooks in driver
+
+The configured animation driver does not support animated numbers. For CSS animations, use `@tamagui/animations-css/extras`.
+
+### Error 013
+
+#### Invalid matchMedia implementation
+
+`matchMedia` did not return a valid `MediaQueryList` object. Supply a compatible `matchMedia` polyfill on native platforms.
+
+### Error 014
+
+#### Missing parent theme for shallow render
+
+`<Theme shallow>` requires a mounted parent `<Theme>` component to derive its scoped theme hierarchy.
 
 ### Warning 002
 
 You're rendering a Tamagui <Adapt /> component without nesting it inside a
 parent that is able to adapt.
+

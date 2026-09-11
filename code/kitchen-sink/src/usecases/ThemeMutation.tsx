@@ -68,10 +68,10 @@ export function ThemeMutation() {
       <YStack
         flex={1}
         width="100%"
-        padding="$4"
+        padding="4"
         alignItems="center"
         justifyContent="center"
-        gap="$4"
+        gap="4"
       >
         <Text>Loading theme...</Text>
       </YStack>
@@ -82,10 +82,10 @@ export function ThemeMutation() {
     <YStack
       flex={1}
       width="100%"
-      padding="$4"
+      padding="4"
       alignItems="center"
       justifyContent="center"
-      gap="$4"
+      gap="4"
     >
       <Text testID={TEST_IDS.themeMutationColorText}>Expected color: {currentColor}</Text>
 
@@ -93,8 +93,8 @@ export function ThemeMutation() {
         <Square
           testID={TEST_IDS.themeMutationSquare}
           size={100}
-          backgroundColor="$background"
-          borderRadius="$4"
+          backgroundColor="background"
+          borderRadius="4"
         />
       </Theme>
 

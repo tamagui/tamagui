@@ -61,7 +61,7 @@ export { getWorklets } from './workletsState'
 export type { WorkletsAccessor } from './workletsState'
 
 // safe area
-export { getSafeArea } from './safeAreaState'
+export { getSafeArea, hasSafeAreaSetup } from './safeAreaState'
 export type { SafeAreaAccessor } from './safeAreaState'
 
 // linear gradient

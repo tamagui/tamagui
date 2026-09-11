@@ -8,7 +8,7 @@ import { setupPage } from './test-utils'
  * 1. Enter/exit timing not respected - enter: '50ms' should actually be 50ms
  * 2. Duration normalization - duration: 1 should be 1ms, not 1 second
  *
- * These tests run across all animation drivers (css, native, reanimated, motion).
+ * These tests run across all web animation drivers (css, reanimated, motion).
  */
 
 async function getOpacity(page: Page, testId: string): Promise<number> {
@@ -28,9 +28,6 @@ test.describe('Animation Timing Bug Fixes', () => {
   test.describe.configure({ retries: 3 })
 
   test.beforeEach(async ({ page }) => {
-    const driver = (test.info().project?.metadata as any)?.animationDriver
-    test.skip(driver === 'native', 'native driver has element detection issues on web')
-
     await setupPage(page, {
       name: 'AnimationComprehensiveCase',
       type: 'useCase',

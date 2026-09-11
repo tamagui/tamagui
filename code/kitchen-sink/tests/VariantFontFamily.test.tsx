@@ -7,5 +7,5 @@ test.beforeEach(async ({ page }) => {
 })
 
 test(`testing things...`, async ({ page }) => {
-  await expect(page.getByTestId('heading').first()).toHaveCSS('font-size', '11px')
+  await expect(page.getByTestId('heading').first()).toHaveCSS('font-size', '12px')
 })

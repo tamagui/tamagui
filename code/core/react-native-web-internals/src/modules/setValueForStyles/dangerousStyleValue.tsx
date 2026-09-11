@@ -65,7 +65,7 @@ export function dangerousStyleValue(name, value, isCustomProperty) {
     !isCustomProperty &&
     typeof value === 'number' &&
     value !== 0 &&
-    !(isUnitlessNumber.hasOwnProperty(name) && isUnitlessNumber[name])
+    !isUnitlessNumber[name]
   ) {
     return value + 'px' // Presumes implicit 'px' suffix for unitless numbers
   }

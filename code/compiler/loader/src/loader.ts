@@ -1,13 +1,22 @@
-import * as StaticWorker from '@tamagui/static-worker'
+import Static from '@tamagui/static'
 import type { TamaguiOptions } from '@tamagui/types'
+import { createHash } from 'node:crypto'
+import { readFile } from 'node:fs/promises'
+import path from 'node:path'
 import type { LoaderContext } from 'webpack'
 import { cssLoaderPath } from './css'
+import {
+  getWebpackZeroController,
+  publishZeroBuildInfo,
+  zeroModuleKey,
+} from './zeroRuntime'
 
-const { getPragmaOptions } = StaticWorker
+const { getPragmaOptions, isTamaguiSpecifier } = Static
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
 let index = 0
+const compilerFrontends = new Map<string, InstanceType<typeof Static.CompilerFrontend>>()
 
 process.env.TAMAGUI_TARGET = 'web'
 
@@ -42,44 +51,152 @@ export const loader = async function loader(
       console.warn(source)
     }
 
-    if (shouldDisable) {
+    if (options.disableExtraction || shouldDisable) {
       if (shouldPrintDebug) {
-        console.info('Disabling on file via pragma')
+        console.info(
+          options.disableExtraction
+            ? 'Disabling extraction via loader options'
+            : 'Disabling on file via pragma'
+        )
       }
       return callback(null, source)
     }
 
     const cssPath = `${sourcePath}.${index++}.tamagui.css`
 
-    // Filter out non-serializable properties before passing to worker
-    const serializableOptions = { ...options }
-    for (const key in serializableOptions) {
-      const value = serializableOptions[key as keyof typeof serializableOptions]
-      if (typeof value === 'function') {
-        delete serializableOptions[key as keyof typeof serializableOptions]
+    const root = this.rootContext || process.cwd()
+    const key = createHash('sha256')
+      .update(root)
+      .update('\0')
+      .update(options.config || 'tamagui.config.ts')
+      .update('\0')
+      .update(JSON.stringify(options.components || []))
+      .digest('hex')
+    let compiler = compilerFrontends.get(key)
+    if (!compiler) {
+      compiler = new Static.CompilerFrontend()
+      compilerFrontends.set(key, compiler)
+    }
+    const zero = getWebpackZeroController(options, root)
+    const webpackResolve = this.getResolve({})
+    const project = await Static.loadCompilerProject({
+      root,
+      target: 'web',
+      options,
+      generation: key,
+      missingProjectMessage: 'Unable to load the Tamagui project for webpack compilation',
+      async resolveComponents(moduleNames) {
+        return Promise.all(
+          moduleNames.map(async (moduleName) => ({
+            moduleName,
+            id: await webpackResolve(path.dirname(sourcePath), moduleName),
+          }))
+        )
+      },
+    })
+    const { projectInfo } = project
+    const extracted = await compiler.compile({
+      id: sourcePath,
+      source,
+      root,
+      target: 'web',
+      project,
+      resolve: async (specifier, importer) => {
+        try {
+          return { id: await webpackResolve(path.dirname(importer), specifier) }
+        } catch {
+          return null
+        }
+      },
+      load: async (id) => {
+        try {
+          return await readFile(id.split(/[?#]/, 1)[0], 'utf8')
+        } catch {
+          return null
+        }
+      },
+    })
+
+    // island child compilation: the parent owns the one CSS artifact, so route
+    // this module's atomic rules there and inject nothing
+    if (zero?.islandBuild) {
+      publishZeroBuildInfo(zero, this, {
+        island: zero.islandBuild,
+        css: extracted.plan.css,
+        bridgeCSS: [],
+        bridges: [],
+        violations: [],
+        erasedExports: [],
+      })
+      return callback(null, extracted.output.code, extracted.output.map as any)
+    }
+
+    if (zero) {
+      // Only app-authored modules are zero-transformed. A workspace dependency
+      // resolves outside node_modules in this monorepo, and erasing Tamagui's own
+      // re-exports inside its dist would break the package itself.
+      const relative = path.relative(root, sourcePath)
+      const isAppSource =
+        relative !== '' &&
+        !relative.startsWith(`..${path.sep}`) &&
+        !relative.split(path.sep).includes('node_modules')
+      if (!isAppSource) {
+        return callback(null, extracted.output.code, extracted.output.map as any)
+      }
+
+      const zeroResult = Static.transformZeroModule({
+        mode: zero.isEnforcing ? 'enforce' : 'report',
+        id: sourcePath,
+        root,
+        source,
+        plan: extracted.plan,
+        config: projectInfo.tamaguiConfig!,
+        isTamaguiSpecifier,
+        resolveIslandLoader: (specifier) => {
+          const islandId = zero.loaderIds.get(
+            zeroModuleKey(path.resolve(path.dirname(sourcePath), specifier))
+          )
+          return islandId ? { islandId } : null
+        },
+        resolveIslandModule: (specifier) =>
+          zero.islandModuleIds.get(
+            zeroModuleKey(path.resolve(path.dirname(sourcePath), specifier))
+          ) ?? null,
+      })
+      publishZeroBuildInfo(zero, this, {
+        island: null,
+        css: extracted.plan.css,
+        bridgeCSS: [...zeroResult.bridgeCSS],
+        bridges: [...zeroResult.bridges],
+        violations: zeroResult.violations.map((violation) => {
+          const { line, column } = Static.offsetToLineColumn(source, violation.span.start)
+          return {
+            file: path.relative(root, sourcePath),
+            line,
+            column,
+            rule: violation.rule,
+            code: violation.code,
+            component: violation.component,
+            message: violation.message,
+          }
+        }),
+        erasedExports: zeroResult.erased.exports,
+      })
+      if (zero.isEnforcing) {
+        return callback(null, zeroResult.output.code, zeroResult.output.map as any)
       }
     }
 
-    const extracted = await StaticWorker.extractToClassNames({
-      source,
-      sourcePath,
-      options: serializableOptions,
-      shouldPrintDebug,
-    })
-
-    if (!extracted) {
-      return callback(null, source)
-    }
-
     // add import to css
-    if (extracted.styles) {
-      const cssQuery = `cssData=${Buffer.from(extracted.styles).toString('base64')}`
+    let code = extracted.output.code
+    if (extracted.plan.css) {
+      const cssQuery = `cssData=${Buffer.from(extracted.plan.css).toString('base64url')}`
       const remReq = this.remainingRequest
       const importPath = `${cssPath}!=!${cssLoaderPath}?${cssQuery}!${remReq}`
-      extracted.js = `${extracted.js}\n\nrequire(${JSON.stringify(importPath)})`
+      code = `${code}\n\nrequire(${JSON.stringify(importPath)})`
     }
 
-    callback(null, extracted.js, extracted.map)
+    callback(null, code, extracted.output.map as any)
   } catch (err) {
     const message = err instanceof Error ? `${err.message}\n${err.stack}` : String(err)
 
@@ -91,6 +208,6 @@ export const loader = async function loader(
       )
     }
 
-    callback(null, source)
+    callback(err instanceof Error ? err : new Error(message))
   }
 }

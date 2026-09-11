@@ -1,5 +1,5 @@
 import type { GetProps } from '@tamagui/core'
-import { mergeSlotStyleProps, styled } from '@tamagui/core'
+import { createStyledHOC, mergeSlotStyleProps, resolveSize, styled } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'
@@ -18,27 +18,19 @@ type ScopedProps<P> = P & { __scopeGroup?: Scope }
 const [createGroupContext, createGroupScope] = createContextScope(GROUP_NAME)
 const [GroupProvider, useGroupContext] = createGroupContext<GroupContextValue>(GROUP_NAME)
 
+const groupSizeVariant = styled.dynamic<any>((val, env) => {
+  return {
+    borderRadius: resolveSize(val, env).frame.borderRadius,
+  }
+})
+
 export const GroupFrame = styled(YStack, {
-  name: 'GroupFrame',
+  displayName: 'GroupFrame',
+  size: true,
 
   variants: {
-    unstyled: {
-      false: {
-        size: '$true',
-      },
-    },
-
-    size: (val, { tokens }) => {
-      const borderRadius = tokens.radius[val] ?? val ?? tokens.radius['$true']
-      return {
-        borderRadius,
-      }
-    },
+    size: groupSizeVariant,
   } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 export type GroupExtraProps = {
@@ -50,7 +42,7 @@ export type GroupProps = GetProps<typeof GroupFrame> & GroupExtraProps
 
 function createGroup(verticalDefault: boolean) {
   return withStaticProperties(
-    GroupFrame.styleable<ScopedProps<GroupExtraProps>>((props, ref) => {
+    createStyledHOC(GroupFrame, (props: ScopedProps<GroupProps>, ref) => {
       const {
         __scopeGroup,
         children: childrenProp,

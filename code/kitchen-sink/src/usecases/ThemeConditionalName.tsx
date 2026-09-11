@@ -13,7 +13,7 @@ export function ThemeConditionalName() {
   const [active, setActive] = useState(false)
 
   return (
-    <YStack padding="$4" gap="$4" alignItems="center">
+    <YStack padding="4" gap="4" alignItems="center">
       <Text id="theme-conditional-label">active: {String(active)}</Text>
 
       <Button id="theme-conditional-toggle" onPress={() => setActive((a) => !a)}>
@@ -21,10 +21,10 @@ export function ThemeConditionalName() {
       </Button>
 
       {/* parent theme square for color comparison */}
-      <Square id="theme-conditional-parent" size={60} backgroundColor="$background" />
+      <Square id="theme-conditional-parent" size={60} backgroundColor="background" />
 
       <Theme name={active ? 'accent' : undefined}>
-        <Square id="theme-conditional-child" size={60} backgroundColor="$background" />
+        <Square id="theme-conditional-child" size={60} backgroundColor="background" />
       </Theme>
     </YStack>
   )

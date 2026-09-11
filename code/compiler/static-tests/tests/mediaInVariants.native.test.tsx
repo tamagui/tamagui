@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { resolve } from 'node:path'
 import { expect, test } from 'vitest'
 
 import { extractForNative } from './lib/extract'
@@ -8,8 +9,10 @@ process.env.TAMAGUI_TARGET = 'native'
 
 window['React'] = React
 
+const compilerLaneAComponents = resolve(__dirname, 'fixtures/compilerLaneAComponents.tsx')
+
 // native matches media at render time, so there is no build-time answer for a
-// media block a variant brought with it. the element has to stay on the runtime
+// media clause a variant brought with it. the element has to stay on the runtime
 // path rather than flatten to a StyleSheet holding whichever breakpoint node
 // happened to consider active.
 test('a variant carrying a media block stays on the runtime path', async () => {
@@ -27,7 +30,7 @@ test('a variant carrying a media block stays on the runtime path', async () => {
   expect(code).not.toContain('StyleSheet.create')
 })
 
-// while a variant with no media in it still flattens
+// while a variant with no media in it still flattens to a raw native element
 test('a variant without media still flattens', async () => {
   const output = await extractForNative(`
     import { MySizableText } from '@tamagui/test-design-system'
@@ -37,5 +40,74 @@ test('a variant without media still flattens', async () => {
     }
   `)
 
-  expect(output?.code ?? '').toContain('StyleSheet.create')
+  expect(output?.code ?? '').toContain('<__TamaguiNativeText')
+})
+
+test('branded dynamics and resolver chains flatten with static props', async () => {
+  const output = await extractForNative(
+    `
+    import { DynamicResolverStack } from './fixtures/compilerLaneAComponents'
+
+    export function Test() {
+      return <DynamicResolverStack scale={20} tone="critical" id="dim" />
+    }
+  `,
+    { options: { components: [compilerLaneAComponents] } }
+  )
+  const code = output?.code ?? ''
+
+  expect(output?.stats.lowered).toBe(1)
+  expect(output?.stats.bailed).toBe(0)
+  expect(code).toContain('<__TamaguiNativeView')
+  expect(code).toContain('"width":20')
+  expect(code).toContain('"height":20')
+  expect(code).toContain('"backgroundColor":"red"')
+  expect(code).toContain('"opacity":0.5')
+  expect(code).toContain('"paddingTop":12')
+  expect(code).not.toContain('"paddingTop":8')
+})
+
+test('core style pieces retain a runtime fallback on native', async () => {
+  const output = await extractForNative(`
+    import { style, View } from '@tamagui/core'
+
+    const card = style({ backgroundColor: 'red', padding: 8 })
+
+    export function Test() {
+      return <View style={card} />
+    }
+  `)
+  const code = output?.code ?? ''
+
+  expect(output?.stats.lowered).toBe(0)
+  expect(output?.stats.bailed).toBe(1)
+  expect(code).not.toContain('style({')
+  expect(code).toContain('Symbol.for("tamagui.stylePiece")')
+  expect(code).toContain('<View style={card} />')
+})
+
+test('resolver chains deopt when an ordinary readable prop is unknown', async () => {
+  const output = await extractForNative(
+    `
+    import { DynamicResolverStack } from './fixtures/compilerLaneAComponents'
+
+    export function Test(props) {
+      return <DynamicResolverStack scale={20} tone="critical" id={props.id} />
+    }
+  `,
+    { options: { components: [compilerLaneAComponents] } }
+  )
+
+  expect(output?.stats.lowered).toBe(0)
+  expect(output?.stats.bailed).toBe(1)
+  expect(output?.code ?? '').toContain('id={props.id}')
+  expect(output?.diagnostics).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({
+        code: 'local/dynamic-style-value',
+        blocking: true,
+        prop: 'id',
+      }),
+    ])
+  )
 })

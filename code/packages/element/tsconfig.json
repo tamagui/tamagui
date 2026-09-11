@@ -6,6 +6,9 @@
   "references": [
     {
       "path": "../../core/compose-refs"
+    },
+    {
+      "path": "../../core/react-native-types"
     }
   ],
   "exclude": [

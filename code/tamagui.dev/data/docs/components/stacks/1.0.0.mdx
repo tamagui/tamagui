@@ -25,7 +25,7 @@ demoName: Stacks
 
 Tamagui UI includes optional stack views - XStack, YStack and ZStack. They extend directly off the [View](/docs/core/view-and-text) from `@tamagui/core`.
 
-Stack props accept [every prop from react-native-web](https://necolas.github.io/react-native-web/docs/view/) View, as well as all [the style properties Tamagui supports](/docs/intro/props).
+They accept [every prop from react-native-web's View](https://necolas.github.io/react-native-web/docs/view/), as well as all [the style properties Tamagui supports](/docs/intro/props).
 
 In this example you'd show three `YStack` elements spaced out.
 
@@ -41,7 +41,7 @@ npm install @tamagui/stacks
 import { XStack, YStack } from 'tamagui'
 
 export default () => (
-  <XStack gap="$2">
+  <XStack gap="2">
     <YStack />
     <YStack />
     <YStack />
@@ -62,17 +62,11 @@ export default () => (
   <XStack
     flex={1}
     flexWrap="wrap"
-    backgroundColor="#fff"
-    hoverStyle={{
-      backgroundColor: 'red',
-    }}
-    // media query
-    $gtSm={{
-      flexDirection: 'column',
-      flexWrap: 'nowrap',
-    }}
+    backgroundColor="#fff hover:red"
+    flexDirection="gtSm:column"
+    flexWrap="wrap gtSm:nowrap"
   >
-    <YStack gap="$3">
+    <YStack gap="3">
       <Text>Hello</Text>
       <Text>World</Text>
     </YStack>
@@ -84,18 +78,10 @@ export default () => (
 
 ### XStack, YStack, ZStack
 
-Beyond the [Tamagui Props](/docs/intro/props), the stacks add just two variants:
+Beyond the [Tamagui Props](/docs/intro/props), the stacks add one variant:
 
 <PropsTable
   data={[
-    {
-      name: 'fullscreen',
-      required: false,
-      type: 'boolean',
-      description: (
-        <span>Sets position: absolute, top: 0, left: 0, right: 0, bottom: 0.</span>
-      ),
-    },
     {
       name: 'elevation',
       required: false,

@@ -3,7 +3,7 @@ import { Button, Group, ListItem, Separator, XGroup, YGroup, YStack } from 'tama
 
 export function GroupDemo() {
   return (
-    <YStack p="$3" gap="$2" items="center">
+    <YStack p="3" gap="2" items="center">
       <Group orientation="horizontal">
         <Group.Item>
           <Button>First</Button>
@@ -16,15 +16,15 @@ export function GroupDemo() {
         </Group.Item>
       </Group>
 
-      {/* responsive size - children control their own size/radius */}
+      {/* children control their own size and radius */}
       <XGroup>
         <XGroup.Item>
-          <Button size="$3" $gtSm={{ size: '$5' }} icon={Activity}>
+          <Button size="3" icon={Activity}>
             First
           </Button>
         </XGroup.Item>
         <XGroup.Item>
-          <Button size="$3" $gtSm={{ size: '$5' }} icon={Airplay}>
+          <Button size="3" icon={Airplay}>
             Second
           </Button>
         </XGroup.Item>
@@ -33,20 +33,20 @@ export function GroupDemo() {
       {/* with separators - add them between items */}
       <YGroup>
         <YGroup.Item>
-          <ListItem borderRadius="$6" theme="surface1" title="First" />
+          <ListItem borderRadius="6" theme="level2" title="First" />
         </YGroup.Item>
         <Separator />
         <YGroup.Item>
           <ListItem
-            borderRadius="$6"
-            theme="surface1"
+            borderRadius="6"
+            theme="level2"
             title="Second"
             subTitle="Second subtitle"
           />
         </YGroup.Item>
         <Separator />
         <YGroup.Item>
-          <ListItem borderRadius="$6" theme="surface1">
+          <ListItem borderRadius="6" theme="level2">
             Third
           </ListItem>
         </YGroup.Item>

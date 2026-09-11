@@ -11,13 +11,13 @@ import type { StaticConfig, TamaguiComponentStateRef } from './types'
 
 const isFabric = !!(globalThis as any).nativeFabricUIManager
 
-// Android (new arch + RNGH 2.30) freezes the JS thread when many pressStyle
+// Android (new arch + RNGH 2.30) freezes the JS thread when many press clauses
 // components each attach a Gesture.Manual()...onTouchesDown observer (e.g. a
 // sheet with several buttons / inputs). Each handler opts into RNGH's
 // pointer-data pipeline (needsPointerData), and the combined coordination
 // cost recreates the same setJSResponder freeze c345b5fc28 was supposed to
 // have killed. iOS Fabric absorbs the cost; Android Fabric doesn't.
-// Skip the observer + wrap on Android — pressStyle visuals fall through to
+// Skip the observer + wrap on Android — press-clause visuals fall through to
 // the standard responder path via the synthesized event handlers.
 // computed lazily: the native core bundle is also loaded by the compiler for
 // static extraction, where Platform's init runs after this module's. A
@@ -75,9 +75,9 @@ export function useEvents(
     }
   }
 
-  // hasPressEvents includes events.onPress synthesized just for pressStyle
+  // hasPressEvents includes events.onPress synthesized just for press clauses
   // visuals; hasRealPressEvents is true only when the caller passed a real
-  // handler. the distinction matters for arbitration: pressStyle-only gestures
+  // handler. the distinction matters for arbitration: press-clause-only gestures
   // must not steal ownership from a real-handler ancestor (e.g. Link asChild's
   // navigate handler merged onto a child View by Slot).
   const hasPressEvents = events?.onPress
@@ -124,9 +124,9 @@ export function useEvents(
   // component handles gesture detection at its own level.
   //
   // Composite component special case - when styled() wraps a non-Tamagui component
-  // (e.g. React.forwardRef), the elementType becomes that composite component.
+  // (e.g. component wrappers), the elementType becomes that composite component.
   // GestureDetector/responder wrapping around a composite component breaks during
-  // re-renders triggered by pressStyle state changes (the gesture/responder loses
+  // re-renders triggered by press-clause state changes (the gesture/responder loses
   // attachment to the native view through the composite layers). Pass events as props
   // so they flow through to the inner native View.
   const isCompositeComponent =
@@ -159,7 +159,7 @@ export function useEvents(
     // claims responder but never finalizes. The responder path is the source of
     // truth RN already uses for innermost press ownership.
     //
-    // Android pressStyle-only fallback: wire synthesized press handlers to the
+    // Android press-clause-only fallback: wire synthesized press handlers to the
     // responder system on viewProps instead of an RNGH Manual observer (which
     // freezes Android — see top-of-file isAndroid comment). Hook is called
     // unconditionally here for stable hooks order; useMainThreadPressEvents
@@ -182,7 +182,7 @@ export function useEvents(
 
       if (hasRealPressEvents && !isInsideNativeMenu) {
         // Real handlers are delivered by useMainThreadPressEvents above. Clear
-        // any cached pressStyle observer from an earlier render so it cannot
+        // any cached press-clause observer from an earlier render so it cannot
         // double-fire after onPress appears dynamically.
         gestureRef.current = null
         return null
@@ -211,17 +211,17 @@ export function useEvents(
             })
           gestureRef.current = manual
         } else if (!getIsAndroid()) {
-          // pressStyle-only (events.onPress was synthesized to drive pressStyle
+          // press-clause-only (events.onPress was synthesized to drive press state
           // visuals, no user handler): use Manual + manualActivation. Touch
-          // observation runs on the UI thread for fast pressStyle feedback,
+          // observation runs on the UI thread for fast press-clause feedback,
           // but the gesture never activates → never claims responder/ownership,
           // so a real-handler ancestor still wins arbitration. This is the fix
           // for nested press scenarios like <Link asChild><View><Button/></View></Link>
           // where the View carries the merged navigate onPress and the inner
-          // pressStyled Button must not steal the press.
+          // press-styled Button must not steal the press.
           //
           // Android: skipped — see isAndroid comment at top. Synthesized
-          // pressStyle handlers fall through to viewProps responder events.
+          // press-clause handlers fall through to viewProps responder events.
           gestureRef.current = Gesture.Manual()
             .runOnJS(true)
             .manualActivation(true)
@@ -270,12 +270,12 @@ export function wrapWithGestureDetector(
     return content
   }
 
-  // pressStyle-only observers (Manual + manualActivation gesture) must never
-  // claim the responder — otherwise a nested pressStyle Tamagui child would
+  // press-clause-only observers (Manual + manualActivation gesture) must never
+  // claim the responder — otherwise a nested press-styled Tamagui child would
   // preempt a real-handler ancestor (e.g. <Link asChild><View><Button/></View></Link>
   // where the View carries the merged navigate handler and the inner Button
-  // has only pressStyle). The Manual gesture observes touches on the UI thread
-  // for fast pressStyle visuals without participating in arbitration.
+  // has only press clauses). The Manual gesture observes touches on the UI thread
+  // for fast press-clause visuals without participating in arbitration.
   if (!hasRealPressEvents) {
     return React.createElement(GestureDetector, { gesture }, content)
   }

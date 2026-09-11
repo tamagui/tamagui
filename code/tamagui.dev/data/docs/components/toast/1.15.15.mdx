@@ -119,7 +119,7 @@ Your toasts should be wrapped within a `ToastProvider`. This is usually done at 
 
 ### ToastViewport
 
-The portal for toasts to be directed to. Should be used inside [ToastProvider](#toastprovider). Beyond [Stack Props](/docs/components/stacks/1.0.0), adds:
+The portal for toasts to be directed to. Should be used inside [ToastProvider](#toastprovider). Beyond `View` props, adds:
 
 <PropsTable
   data={[
@@ -160,7 +160,7 @@ The portal for toasts to be directed to. Should be used inside [ToastProvider](#
 
 ### Toast
 
-Contains the Title, Description, Action and Close component. Should be used inside [ToastProvider](#toastprovider). Extends [Stack](/docs/components/stack#api) and adds:
+Contains the Title, Description, Action and Close component. Should be used inside [ToastProvider](#toastprovider). Extends `View` and adds:
 
 <PropsTable
   data={[
@@ -290,11 +290,11 @@ Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/te
 
 ### Toast.Close
 
-Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.
+Should be used inside [Toast](#toast). Extends `View`. You can pass `asChild` to this component and use a custom `<Button>` inside.
 
 ### Toast.Action
 
-Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.
+Should be used inside [Toast](#toast). Extends `View`. You can pass `asChild` to this component and use a custom `<Button>` inside.
 
 ### useToastController
 
@@ -480,8 +480,8 @@ export default () => {
         onOpenChange={setOpen}
         open={open}
         animation="100ms"
-        enterStyle={{ x: -20, opacity: 0 }}
-        exitStyle={{ x: -20, opacity: 0 }}
+        x="enter:-20px exit:-20px"
+        opacity="enter:0 exit:0"
         opacity={1}
         x={0}
       >
@@ -517,8 +517,8 @@ export default () => {
         <Toast
           key={index}
           animation="100ms"
-          enterStyle={{ x: -20, opacity: 0 }}
-          exitStyle={{ x: -20, opacity: 0 }}
+          x="enter:-20px exit:-20px"
+          opacity="enter:0 exit:0"
           opacity={1}
           x={0}
         >

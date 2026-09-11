@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "plugins": [{ "name": "@tamagui/language-service" }],
     "rootDir": ".",
     "paths": {
       "~/*": ["./*"]
@@ -11,7 +11,6 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
-    "downlevelIteration": true,
     "strict": true,
     "esModuleInterop": true,
     "inlineSourceMap": true,
@@ -47,7 +46,7 @@
       "path": "../core/cli"
     },
     {
-      "path": "../core/theme-builder"
+      "path": "../core/themes"
     },
     {
       "path": "../core/get-token"

@@ -46,7 +46,7 @@ Sizing listItems provides a unique challenge especially for a compiler, because 
 ```tsx
 import { ListItem } from 'tamagui'
 
-export default () => <ListItem size="$6">Lorem ipsum</ListItem>
+export default () => <ListItem size="6">Lorem ipsum</ListItem>
 ```
 
 Given your theme defines a size `6`, the listItem will adjust all of the properties appropriately. You can also pass a plain number to get an arbitrary size.
@@ -57,7 +57,7 @@ You can pass icons as either elements or components. If passing components, Tama
 
 ## Customization
 
-ListItem only supports a limited subset of text props directly, and doesn't accept `hoverStyle` text props. If you need more control, you can do a simple customization:
+ListItem only supports a limited subset of text props directly. If you need more control over state-specific text values, customize its text component with flat clauses:
 
 ```tsx
 import { forwardRef } from 'react'
@@ -72,7 +72,7 @@ import {
 } from 'tamagui'
 
 const CustomListItemFrame = styled(ListItemFrame, {
-  backgroundColor: 'orange', // or "$color", etc.
+  backgroundColor: 'orange', // or "color", etc.
 })
 
 const CustomListItemTitle = styled(ListItemTitle, {
@@ -123,7 +123,7 @@ export const ListItem = themeable(
 
 ### ListItem
 
-ListItems extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+ListItems extend View inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[

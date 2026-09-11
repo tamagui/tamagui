@@ -1,0 +1,5 @@
+report/
+report-native/
+.native-shot.png
+native/tsconfig.json
+native/.expo/

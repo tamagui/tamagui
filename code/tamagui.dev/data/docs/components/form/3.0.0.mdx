@@ -1,0 +1,212 @@
+---
+title: Form
+description: Collect and validate fields on native and web
+name: form
+component: Form
+package: form
+demoName: Form
+---
+
+<HeroContainer>
+  <FormsDemo />
+</HeroContainer>
+
+```tsx hero template=Forms
+
+```
+
+<Highlights
+  features={[
+    `Collects values from Field on native and web.`,
+    `Focuses the first invalid control automatically.`,
+    `Accepts server and form-library errors through one bridge.`,
+    `Keeps Form.Trigger as the cross-platform submit action.`,
+  ]}
+/>
+
+Form coordinates registered [Fields](/ui/field). It validates synchronously,
+projects their values by name, focuses the first invalid control, and then calls
+`onSubmit(values, details)`.
+
+## Installation
+
+Form is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/form
+```
+
+## Usage
+
+```tsx
+import { Button, Field, Form } from 'tamagui'
+
+export function AccountForm() {
+  return (
+    <Form
+      validationMode="onSubmit"
+      onSubmit={(values, details) => {
+        console.log(values.email, details.reason)
+      }}
+    >
+      <Field name="email">
+        <Field.Label>Email</Field.Label>
+        <EmailInput required />
+        <Field.Error />
+      </Field>
+
+      <Form.Trigger asChild>
+        <Button>Create account</Button>
+      </Form.Trigger>
+    </Form>
+  )
+}
+```
+
+The callback receives values from every registered Field with a `name`:
+
+```ts
+{
+  email: 'ada@example.com',
+  displayName: 'Ada'
+}
+```
+
+The second argument is a `TamaguiEventDetails` with reason `submit` for a
+native form submission or `trigger-press` for Form.Trigger.
+
+## Validation and focus
+
+Form validates every registered field before calling `onSubmit`. Async
+validators are started but never delay the submit attempt. Synchronous
+validation and previously committed errors can stop submission.
+
+When a field is invalid, Form focuses the first registered control. Text inputs
+are also selected on web. Native focus uses the `@tamagui/focusable` registry.
+
+Set the default validation boundary on Form:
+
+```tsx
+<Form validationMode="onBlur">{/* fields */}</Form>
+```
+
+An individual Field can override it.
+
+## Server errors
+
+Pass an error record keyed by Field name:
+
+```tsx
+const [errors, setErrors] = useState({})
+
+<Form
+  errors={errors}
+  onSubmit={async (values) => {
+    const result = await createAccount(values)
+    setErrors(result.errors)
+  }}
+>
+  {/* fields */}
+</Form>
+```
+
+Server errors participate in invalid styling, accessible error messages, and
+first-invalid focus. An error clears when that field is edited. If errors arrive
+after a submit, Form focuses the first matching field again.
+
+The same prop is the bridge for React Hook Form or TanStack Form:
+
+```tsx
+const {
+  formState: { errors },
+} = useForm()
+
+const fieldErrors = Object.fromEntries(
+  Object.entries(errors).map(([name, error]) => [name, error?.message])
+)
+
+<Form errors={fieldErrors}>{/* Field presentation around library controls */}</Form>
+```
+
+## Imperative validation
+
+Use `actionsRef` to validate every field or one field by name:
+
+```tsx
+const actionsRef = useRef<Form.Actions>(null)
+
+<Form actionsRef={actionsRef}>{/* ... */}</Form>
+
+actionsRef.current?.validate()
+actionsRef.current?.validate('email')
+```
+
+## Anatomy
+
+```tsx
+<Form>
+  {/* Fields and other content */}
+  <Form.Trigger />
+</Form>
+```
+
+## Migrating from Form 2
+
+Form 3 changes `onSubmit` from a zero-argument callback to:
+
+```ts
+onSubmit(values, details)
+```
+
+Callbacks that ignore their arguments continue to work. Code that previously
+read values through a second form system can usually read them from `values`
+instead.
+
+## API Reference
+
+### Form
+
+Accepts [Tamagui Props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'onSubmit',
+      type: '(values, details) => void | Promise<void>',
+      description: `Called after synchronous validation passes with projected Field values and submit details.`,
+    },
+    {
+      name: 'validationMode',
+      type: `'onSubmit' | 'onBlur' | 'onChange'`,
+      default: `'onSubmit'`,
+      description: `Sets the default validation mode for registered Fields.`,
+    },
+    {
+      name: 'errors',
+      type: 'Record<string, string | string[]>',
+      description: `External server or form-library errors keyed by Field name.`,
+    },
+    {
+      name: 'actionsRef',
+      type: 'React.RefObject<Form.Actions | null>',
+      description: `Provides validate(fieldName?) for imperative validation.`,
+    },
+  ]}
+/>
+
+### Form.Trigger
+
+Submits the nearest scoped Form on web and native. We recommend `asChild` when
+you want to use a Button or another pressable component.
+
+Accepts [Tamagui Props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'scope',
+      type: 'string',
+      description: `Targets a Form with the same scope when the trigger is composed separately.`,
+    },
+  ]}
+/>

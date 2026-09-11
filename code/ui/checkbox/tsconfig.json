@@ -5,51 +5,22 @@
   },
   "references": [
     {
-      "path": "../../core/compose-refs"
-    },
-    {
-      "path": "../../core/constants"
-    },
-    {
       "path": "../../core/core"
     },
     {
-      "path": "../../core/create-context"
-    },
-    {
-      "path": "../../core/font-size"
-    },
-    {
-      "path": "../../core/get-token"
-    },
-    {
-      "path": "../../core/helpers"
-    },
-    {
-      "path": "../../core/helpers-tamagui"
-    },
-    {
       "path": "../../core/use-controllable-state"
-    },
-    {
-      "path": "../../core/use-previous"
     },
     {
       "path": "../checkbox-headless"
     },
     {
       "path": "../focusable"
-    },
-    {
-      "path": "../label"
-    },
-    {
-      "path": "../stacks"
     }
   ],
   "exclude": [
     "types",
     "dist",
+    "test",
     "**/__tests__"
   ]
 }

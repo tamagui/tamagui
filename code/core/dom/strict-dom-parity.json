@@ -1,0 +1,797 @@
+{
+  "schemaVersion": 1,
+  "reference": {
+    "repository": "https://github.com/react/react-strict-dom",
+    "legacyRepository": "https://github.com/facebook/react-strict-dom",
+    "repositoryNote": "The legacy facebook URL redirects to the canonical react organization repository.",
+    "version": "0.0.55",
+    "commit": "c877f5c19b141e25c089d993b4cc584e669b6e39",
+    "date": "2026-06-23",
+    "auditedTestFiles": 19,
+    "auditedTestDeclarations": 304,
+    "activeTestDeclarations": 302,
+    "skippedTestDeclarations": 2,
+    "typeTestFiles": 3,
+    "manualPlatformFixtures": 1,
+    "inventoryCommand": "rg -n '^\\s*(test|it)(\\.skip|\\.each)?\\(' packages/react-strict-dom packages/postcss-react-strict-dom --glob '*.js' --glob '!**/__snapshots__/**' --glob '!**/__fixtures__/**' --glob '!**/__mocks__/**'",
+    "countingRule": "Under packages/react-strict-dom and packages/postcss-react-strict-dom, count executable files containing line-leading test()/it(), including test.each and test.skip. Exclude describe blocks, snapshots, mocks and fixtures. Counts are 302 active plus 2 skipped declarations. Flow type tests and the manual platform app are inventoried separately."
+  },
+  "execution": {
+    "inventoryIsMappingNotExecution": true,
+    "upstreamCheckout": "/tmp/react-strict-dom-audit.9GV0nI",
+    "installCommand": "npm ci --ignore-scripts",
+    "upstream": [
+      {
+        "command": "npm run jest --workspace react-strict-dom -- --runInBand",
+        "status": "passed",
+        "suitesPassed": 19,
+        "testsPassed": 896,
+        "testsSkipped": 2,
+        "snapshotsPassed": 711
+      },
+      {
+        "prerequisiteCommand": "npm run build --workspace react-strict-dom",
+        "command": "npm run jest --workspace postcss-react-strict-dom -- --runInBand",
+        "status": "passed",
+        "suitesPassed": 1,
+        "testsPassed": 4,
+        "testsSkipped": 0,
+        "snapshotsPassed": 4,
+        "initialAttempt": "Failed because npm ci --ignore-scripts intentionally skipped the react-strict-dom build, so require.resolve('react-strict-dom') had no dist entry. The documented package build supplied dist and the unchanged suite then passed."
+      }
+    ],
+    "realizedUpstreamCases": {
+      "passed": 900,
+      "skipped": 2,
+      "total": 902,
+      "snapshotsPassed": 715,
+      "note": "Realized Jest cases are reported separately from the 304 explicit source declarations because projects and generated/test.each cases expand declarations."
+    },
+    "local": [
+      {
+        "command": "bun run test:web",
+        "cwd": "code/core/dom",
+        "status": "passed",
+        "testsPassed": 32,
+        "typecheck": "passed"
+      },
+      {
+        "command": "INCLUDE_CSS_COLOR_NAMES=1 bunx vitest --retry=0 --config ../../packages/vite-plugin-internal/src/vite.config.cjs.ts --run --dangerouslyIgnoreUnhandledErrors tests/domNormalization.web.test.tsx tests/domLowering.web.test.tsx tests/domLowering.native.test.tsx tests/domStyleProps.web.test.tsx tests/domConformance.web.test.tsx tests/domConformance.native.test.tsx tests/domPlatformFixture.test.tsx tests/domCompiledRuntime.native.test.tsx",
+        "cwd": "code/compiler/static-tests",
+        "status": "passed",
+        "testsPassed": 29
+      },
+      {
+        "command": "TAMAGUI_TARGET=native bunx vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts domRuntimeContext.native.test.tsx domPrimitives.native.test.tsx",
+        "cwd": "code/core/core-test",
+        "status": "passed",
+        "testsPassed": 25
+      },
+      {
+        "command": "TAMAGUI_TARGET=web bunx vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts domHtml.web.test.tsx domPlatformRuntime.web.test.tsx",
+        "cwd": "code/core/core-test",
+        "status": "passed",
+        "testsPassed": 10
+      },
+      {
+        "command": "bun run test:webpack",
+        "cwd": "code/compiler/static-tests",
+        "status": "passed",
+        "testsPassed": 20,
+        "warning": "Webpack emitted its pre-existing DefinePlugin NODE_ENV conflict warning; Vitest emitted the existing non-boolean conditional attribute warning."
+      },
+      {
+        "command": "bunx vitest --run src/__tests__/evaluateProgram.test.ts src/__tests__/programs.test.ts src/__tests__/transformFamily.test.ts src/__tests__/transition.test.ts src/__tests__/valueParser.test.ts",
+        "cwd": "code/core/style-grammar",
+        "status": "passed",
+        "testsPassed": 122
+      },
+      {
+        "command": "TAMAGUI_TARGET=native bunx vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts componentProps.native.test.tsx getSplitStyles.nestedMedia.native.test.tsx rnStyleAlignment.native.test.tsx transformFamily.native.test.tsx transitionAlignment.native.test.tsx variables.native.test.tsx",
+        "cwd": "code/core/core-test",
+        "status": "passed",
+        "testsPassed": 89,
+        "testsSkipped": 2,
+        "note": "Vitest's filename filters also selected safeAreaVariables.native.test.tsx and shorthandVariables.native.test.tsx through the variables.native.test.tsx suffix, so the realized execution was eight files rather than six."
+      },
+      {
+        "command": "TAMAGUI_TARGET=web bunx vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts createRefComponent.web.test.tsx domEntries.web.test.tsx flatValueProgramsSSR.web.test.tsx",
+        "cwd": "code/core/core-test",
+        "status": "passed",
+        "testsPassed": 12
+      },
+      {
+        "prerequisiteCommand": "bun run pretest",
+        "command": "INCLUDE_CSS_COLOR_NAMES=1 bunx vitest --retry=0 --config ../../packages/vite-plugin-internal/src/vite.config.cjs.ts --run --dangerouslyIgnoreUnhandledErrors tests/flatValues.web.test.tsx tests/flatten.native.test.tsx",
+        "cwd": "code/compiler/static-tests",
+        "status": "passed",
+        "testsPassed": 13,
+        "note": "The fresh integration worktree first required the workspace packages referenced by the shared compiler config and static-test fixture to be built; after that documented setup, the unchanged test command passed."
+      },
+      {
+        "command": "NODE_ENV=test npx playwright test tests/MenuAsChildPosition.test.tsx",
+        "cwd": "code/kitchen-sink",
+        "status": "passed",
+        "testsPassed": 1
+      }
+    ],
+    "builds": [
+      { "cwd": "code/compiler/compiler-core", "command": "bun run build", "status": "passed" },
+      { "cwd": "code/core/core", "command": "bun run build", "status": "passed" },
+      { "cwd": "code/core/dom", "command": "bun run build", "status": "passed" },
+      { "cwd": "code/core/web", "command": "bun run build", "status": "passed" },
+      { "cwd": "code/compiler/static", "command": "bun run build", "status": "passed" },
+      { "cwd": "code/ui/tamagui", "command": "bun run build", "status": "passed" }
+    ]
+  },
+  "upstreamTestInventory": [
+    {
+      "path": "packages/postcss-react-strict-dom/__tests__/index-test.js",
+      "lines": "1-179",
+      "active": 4,
+      "skipped": 0,
+      "status": "intentional-difference",
+      "severity": "none",
+      "localEvidence": ["code/compiler/static-tests/tests/webpack.test.tsx"],
+      "note": "Tamagui returns ordered CSS with its JS transform instead of scanning RSD artifacts in a second PostCSS pass."
+    },
+    {
+      "path": "packages/react-strict-dom/src/native/css/__tests__/CSSUnparsedValue-test.js",
+      "lines": "1-74",
+      "active": 2,
+      "skipped": 0,
+      "status": "intentional-difference",
+      "severity": "none",
+      "localEvidence": ["code/core/style-grammar/src/__tests__/valueParser.test.ts", "code/core/core-test/flatValueProgramsSSR.web.test.tsx"],
+      "note": "Tamagui uses serializable value programs rather than CSS Typed OM objects."
+    },
+    {
+      "path": "packages/react-strict-dom/src/native/css/__tests__/parseTimeValue-test.js",
+      "lines": "1-72",
+      "active": 1,
+      "skipped": 0,
+      "status": "equivalent",
+      "severity": "none",
+      "localEvidence": ["code/core/style-grammar/src/__tests__/transition.test.ts", "code/core/core-test/transitionAlignment.native.test.tsx"],
+      "note": "Time normalization is covered through Tamagui transition grammar and native alignment outcomes."
+    },
+    {
+      "path": "packages/react-strict-dom/src/native/css/__tests__/parseTransform-test.js",
+      "lines": "1-102",
+      "active": 17,
+      "skipped": 0,
+      "status": "equivalent",
+      "severity": "none",
+      "localEvidence": ["code/core/style-grammar/src/__tests__/transformFamily.test.ts", "code/core/core-test/transformFamily.native.test.tsx"],
+      "note": "Transform parsing and native output have direct grammar and runtime outcome tests."
+    },
+    {
+      "path": "packages/react-strict-dom/src/native/modules/__tests__/mediaQuery-test.js",
+      "lines": "1-459",
+      "active": 51,
+      "skipped": 0,
+      "status": "equivalent",
+      "severity": "none",
+      "localEvidence": ["code/core/core-test/getSplitStyles.nestedMedia.native.test.tsx", "code/core/core-test/domRuntimeContext.native.test.tsx", "code/compiler/static-tests/tests/domConformance.native.test.tsx"],
+      "note": "Standalone DOM style() media clauses lower to compiler-selected runtime primitives and recompute through Tamagui's media subscription; focused native renderer tests toggle the media state and assert the new value."
+    },
+    {
+      "path": "packages/react-strict-dom/src/native/modules/__tests__/shallowEqual-test.js",
+      "lines": "1-60",
+      "active": 10,
+      "skipped": 0,
+      "status": "intentional-difference",
+      "severity": "none",
+      "localEvidence": [],
+      "note": "This is an RSD internal memoization helper. Tamagui's direct style emission has no equivalent program cache, so the helper is intentionally not duplicated."
+    },
+    {
+      "path": "packages/react-strict-dom/src/shared/__tests__/mergeRefs-test.js",
+      "lines": "1-69",
+      "active": 3,
+      "skipped": 0,
+      "status": "equivalent",
+      "severity": "none",
+      "localEvidence": ["code/core/core-test/createRefComponent.web.test.tsx", "code/core/core-test/domPrimitives.native.test.tsx"],
+      "note": "Object and callback refs, cleanup, stable identity and host method delegation are executable."
+    },
+    {
+      "path": "packages/react-strict-dom/src/shared/__tests__/useElementCallback-test.js",
+      "lines": "1-126",
+      "active": 4,
+      "skipped": 0,
+      "status": "equivalent",
+      "severity": "none",
+      "localEvidence": ["code/core/core-test/domPrimitives.native.test.tsx"],
+      "note": "The native facade test covers callback cleanup, null cleanup and stable object-ref mount/update/unmount behavior."
+    },
+    {
+      "path": "packages/react-strict-dom/src/web/css/__tests__/merge-test.js",
+      "lines": "1-240",
+      "active": 11,
+      "skipped": 0,
+      "status": "equivalent",
+      "severity": "none",
+      "localEvidence": ["code/compiler/static-tests/tests/domConformance.web.test.tsx", "code/core/style-grammar/src/__tests__/evaluateProgram.test.ts"],
+      "note": "Ordered named, inline, array and conditional composition is asserted in transformed output and CSS."
+    },
+    {
+      "path": "packages/react-strict-dom/tests/babel-test.node.js",
+      "lines": "1-158",
+      "active": 9,
+      "skipped": 0,
+      "status": "equivalent",
+      "severity": "none",
+      "localEvidence": ["code/compiler/static-tests/tests/domNormalization.web.test.tsx", "code/compiler/static-tests/tests/domLowering.web.test.tsx", "code/compiler/static-tests/tests/domLowering.native.test.tsx"],
+      "note": "JSX, jsx/jsxs and createElement are covered through Tamagui's parser-independent compiler frontend."
+    },
+    {
+      "path": "packages/react-strict-dom/tests/compat/compat-test.native.js",
+      "lines": "1-206",
+      "active": 9,
+      "skipped": 0,
+      "status": "intentional-difference",
+      "severity": "none",
+      "localEvidence": ["code/core/core-test/domPrimitives.native.test.tsx", "code/kitchen-sink/tests/MenuAsChildPosition.test.tsx"],
+      "note": "Owned html.* lowers directly; arbitrary-host delegation uses Tamagui Slot/asChild instead of RSD's render-function compat API."
+    },
+    {
+      "path": "packages/react-strict-dom/tests/contexts/contexts-ThemeProvider-test.native.js",
+      "lines": "1-401",
+      "active": 16,
+      "skipped": 0,
+      "status": "equivalent",
+      "severity": "none",
+      "localEvidence": ["code/core/core-test/variables.native.test.tsx", "code/core/core-test/domRuntimeContext.native.test.tsx", "code/compiler/static-tests/tests/domConformance.native.test.tsx"],
+      "note": "TamaguiProvider/Theme is the outcome-equivalent provider; standalone DOM theme clauses lower to runtime primitives and a renderer test switches light to dark and asserts recomputation."
+    },
+    {
+      "path": "packages/react-strict-dom/tests/contexts/contexts-ViewportProvider-test.native.js",
+      "lines": "1-115",
+      "active": 2,
+      "skipped": 0,
+      "status": "equivalent",
+      "severity": "none",
+      "localEvidence": ["code/core/core-test/domPrimitives.native.test.tsx"],
+      "note": "A ref-only viewport context scales length properties and getBoundingClientRect without adding hooks to the common path."
+    },
+    {
+      "path": "packages/react-strict-dom/tests/css/css-create-queries-test.native.js",
+      "lines": "1-200",
+      "active": 12,
+      "skipped": 0,
+      "status": "equivalent",
+      "severity": "none",
+      "localEvidence": ["code/core/core-test/getSplitStyles.nestedMedia.native.test.tsx", "code/core/core-test/domRuntimeContext.native.test.tsx", "code/compiler/static-tests/tests/domConformance.web.test.tsx", "code/compiler/static-tests/tests/domConformance.native.test.tsx"],
+      "note": "Queries share Tamagui's flat value program on web and native; standalone native DOM output selects the runtime bridge and executable media-state changes recompute the result."
+    },
+    {
+      "path": "packages/react-strict-dom/tests/css/css-create-test.native.js",
+      "lines": "1-2400",
+      "active": 86,
+      "skipped": 1,
+      "status": "intentional-difference",
+      "severity": "none",
+      "localEvidence": ["code/core/core-test/rnStyleAlignment.native.test.tsx", "code/core/style-grammar/src/__tests__/programs.test.ts", "code/core/core-test/domRuntimeContext.native.test.tsx", "code/compiler/static-tests/tests/domConformance.native.test.tsx", "code/compiler/static-tests/tests/domCompiledRuntime.native.test.tsx"],
+      "note": "The StyleX compiled-object protocol is out of scope; Tamagui style grammar, RN alignment and standalone outcomes cover the supported authored contract, including actual mouse/pointer hover, focus and active transitions plus author-handler coexistence."
+    },
+    {
+      "path": "packages/react-strict-dom/tests/css/css-themes-test.native.js",
+      "lines": "1-213",
+      "active": 6,
+      "skipped": 0,
+      "status": "equivalent",
+      "severity": "none",
+      "localEvidence": ["code/core/core-test/variables.native.test.tsx", "code/core/core-test/domRuntimeContext.native.test.tsx", "code/compiler/static-tests/tests/domConformance.native.test.tsx"],
+      "note": "Standalone native DOM theme clauses use Tamagui's runtime theme subscription; the focused renderer switches provider themes and asserts the authored dark value."
+    },
+    {
+      "path": "packages/react-strict-dom/tests/html/html-refs-test.native.js",
+      "lines": "1-274",
+      "active": 10,
+      "skipped": 0,
+      "status": "equivalent",
+      "severity": "none",
+      "localEvidence": ["code/core/core-test/domPrimitives.native.test.tsx"],
+      "note": "Stable facade identity, tag names, bound host methods, selection, image completeness, pass-through shape and viewport-scaled geometry are covered."
+    },
+    {
+      "path": "packages/react-strict-dom/tests/html/html-test.js",
+      "lines": "1-432",
+      "active": 18,
+      "skipped": 0,
+      "status": "equivalent",
+      "severity": "none",
+      "localEvidence": ["code/core/core-test/domHtml.web.test.tsx", "code/compiler/static-tests/tests/domConformance.web.test.tsx", "code/compiler/static-tests/tests/domPlatformFixture.test.tsx"],
+      "note": "Semantic tags, strict props, events, refs and web defaults have runtime or transformed-output evidence."
+    },
+    {
+      "path": "packages/react-strict-dom/tests/html/html-test.native.js",
+      "lines": "1-855",
+      "active": 31,
+      "skipped": 1,
+      "status": "equivalent",
+      "severity": "none",
+      "localEvidence": ["code/compiler/static-tests/tests/domConformance.native.test.tsx", "code/compiler/static-tests/tests/domCompiledRuntime.native.test.tsx", "code/core/core-test/domPrimitives.native.test.tsx", "code/core/core-test/domRuntimeContext.native.test.tsx"],
+      "note": "All tag backings/defaults, prop aliases, value transforms, events and refs are covered; compile-then-render tests prove literal text inheritance in JSX/createElement and runtime tests prove inherited theme/media/hover recomputation."
+    }
+  ],
+  "upstreamTypeTestInventory": [
+    {
+      "path": "packages/react-strict-dom/src/types/flowtests/expected-errors.js.flow:1-49",
+      "localEvidence": ["code/core/dom/src/__tests__/props.test-d.ts"],
+      "status": "equivalent"
+    },
+    {
+      "path": "packages/react-strict-dom/src/types/flowtests/html-types-match.js.flow:1-263",
+      "localEvidence": ["code/core/dom/src/__tests__/generated.test.ts", "code/core/dom/src/__tests__/props.test-d.ts"],
+      "status": "stronger"
+    },
+    {
+      "path": "packages/react-strict-dom/src/types/flowtests/refs-and-props.js.flow:1-63",
+      "localEvidence": ["code/core/dom/src/__tests__/props.test-d.ts"],
+      "status": "equivalent"
+    }
+  ],
+  "upstreamManualInventory": [
+    {
+      "path": "apps/platform-tests/src/components/App.js:1-922",
+      "status": "intentional-difference",
+      "localEvidence": ["code/compiler/static-tests/tests/domPlatformFixture.test.tsx", "code/compiler/static-tests/tests/domCompiledRuntime.native.test.tsx", "code/core/core-test/domPlatformRuntime.web.test.tsx"],
+      "note": "Tamagui automates a representative five-tag semantic fixture across compiler, web DOM, and native renderer layers. The pinned upstream manual app exercises a much broader screen and 37 distinct semantic tags, so this is not equivalent app-level or visual coverage."
+    }
+  ],
+  "scope": {
+    "included": [
+      "strict semantic html surface",
+      "strict props, events, accessibility and refs",
+      "web and native lowering",
+      "standalone style() compilation",
+      "Tamagui style grammar, themes and media equivalents",
+      "types and unsupported-feature diagnostics"
+    ],
+    "excludedByDesign": [
+      "StyleX object protocol and third-party StyleX package compatibility",
+      "React Strict DOM runtime dependency",
+      "React Strict DOM compat.native render-function API",
+      "React Strict DOM PostCSS artifact format"
+    ],
+    "statusValues": [
+      "equivalent",
+      "stronger",
+      "intentional-difference",
+      "partial"
+    ]
+  },
+  "features": [
+    {
+      "id": "public-api-web",
+      "capability": "Web package exports html and a styling API",
+      "status": "intentional-difference",
+      "upstreamSources": [
+        "packages/react-strict-dom/src/web/index.js:18-37"
+      ],
+      "upstreamTests": [
+        "packages/react-strict-dom/tests/html/html-test.js:1-432",
+        "packages/react-strict-dom/tests/css/css-create-test.native.js:1-2400"
+      ],
+      "tamaguiSources": [
+        "code/core/web/src/dom/index.ts:1-16",
+        "code/core/web/src/dom/standalone.ts:1-73"
+      ],
+      "tamaguiTests": [
+        "code/core/core-test/domEntries.web.test.tsx",
+        "code/compiler/static-tests/tests/domConformance.web.test.tsx"
+      ],
+      "rationale": "The standalone entry exports html plus one-handle style(); regular Tamagui exports html plus Tamagui style props. It deliberately does not expose StyleX css.create/props/keyframes because the declared scope forbids the StyleX object protocol and runtime."
+    },
+    {
+      "id": "public-api-native",
+      "capability": "Native package exports html, css, compat, contexts and viewport scale",
+      "status": "intentional-difference",
+      "upstreamSources": [
+        "packages/react-strict-dom/src/native/index.js:20-76"
+      ],
+      "upstreamTests": [
+        "packages/react-strict-dom/tests/compat/compat-test.native.js:1-206",
+        "packages/react-strict-dom/tests/contexts/contexts-ThemeProvider-test.native.js:1-401",
+        "packages/react-strict-dom/tests/contexts/contexts-ViewportProvider-test.native.js:1-115"
+      ],
+      "tamaguiSources": [
+        "code/core/web/src/dom/index.native.ts:1-28",
+        "code/core/web/src/dom/primitives.native.tsx:98-115",
+        "code/core/web/package.json:33-44",
+        "code/core/core/package.json:53-64",
+        "code/ui/tamagui/package.json:30-41",
+        "code/core/web/src/index.ts:76-114"
+      ],
+      "tamaguiTests": [
+        "code/core/core-test/domEntries.web.test.tsx",
+        "code/core/core-test/componentProps.native.test.tsx"
+      ],
+      "rationale": "TamaguiProvider, Theme, Variables and useMedia are the platform-wide theme equivalents. Native DOM additionally exports a viewport provider and viewport-scale hook, with native runtime and declaration conditions through all three package aliases; only the RSD-shaped ThemeProvider and compat render-function protocol are intentionally not duplicated."
+    },
+    {
+      "id": "html-surface-and-types",
+      "capability": "49 semantic tags, per-tag props, content models and ref types",
+      "status": "stronger",
+      "upstreamSources": [
+        "packages/react-strict-dom/src/web/html.js:1-476",
+        "packages/react-strict-dom/src/native/html.js:1-539",
+        "packages/react-strict-dom/src/types/StrictReactDOMProps.js:1-308"
+      ],
+      "upstreamTests": [
+        "packages/react-strict-dom/tests/html/html-test.js:1-432",
+        "packages/react-strict-dom/src/types/flowtests/html-types-match.js.flow"
+      ],
+      "tamaguiSources": [
+        "code/core/dom/src/tables/tags.ts:1-557",
+        "code/core/dom/src/props.ts:1-699",
+        "code/core/web/src/dom/html.tsx:830-880"
+      ],
+      "tamaguiTests": [
+        "code/core/dom/src/__tests__/conformance.test.ts",
+        "code/core/dom/src/__tests__/generated.test.ts",
+        "code/core/dom/src/__tests__/props.test-d.ts",
+        "code/core/core-test/domHtml.web.test.tsx"
+      ],
+      "rationale": "The tag set and reference interface mapping are pinned exactly; Tamagui additionally rejects children on void tags and narrows text-only content in TypeScript."
+    },
+    {
+      "id": "web-host-semantics",
+      "capability": "Semantic host tags, strict prop forwarding, aliases and element defaults",
+      "status": "equivalent",
+      "upstreamSources": [
+        "packages/react-strict-dom/src/web/modules/createStrictDOMComponent.js:21-80",
+        "packages/react-strict-dom/src/shared/isPropAllowed.js:10-160"
+      ],
+      "upstreamTests": [
+        "packages/react-strict-dom/tests/html/html-test.js:36-432"
+      ],
+      "tamaguiSources": [
+        "code/compiler/static/src/compilerHost.ts:762-827",
+        "code/core/web/src/dom/html.tsx:830-880"
+      ],
+      "tamaguiTests": [
+        "code/compiler/static-tests/tests/domConformance.web.test.tsx",
+        "code/compiler/static-tests/tests/domLowering.web.test.tsx",
+        "code/core/core-test/domHtml.web.test.tsx"
+      ],
+      "rationale": "Lowering preserves the semantic tag, maps for to htmlFor and role none to presentation, and supplies button/input/textarea defaults while extracting resets and author styles."
+    },
+    {
+      "id": "native-backing-and-layout",
+      "capability": "Native host selection, element defaults, block/flex defaults and literal text wrapping",
+      "status": "equivalent",
+      "upstreamSources": [
+        "packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js:37-127",
+        "packages/react-strict-dom/src/native/modules/createStrictDOMTextComponent.js:35-167"
+      ],
+      "upstreamTests": [
+        "packages/react-strict-dom/tests/html/html-test.native.js:54-855"
+      ],
+      "tamaguiSources": [
+        "code/core/dom/src/tables/nativeBacking.ts:1-132",
+        "code/compiler/static/src/compilerHost.ts:1537-1774",
+        "code/core/web/src/dom/primitives.native.tsx:421-516"
+      ],
+      "tamaguiTests": [
+        "code/compiler/static-tests/tests/domConformance.native.test.tsx",
+        "code/compiler/static-tests/tests/domLowering.native.test.tsx"
+      ],
+      "rationale": "Every supported tag is executable against its declared primitive; emitted style objects include element and block/flex defaults, and View-backed literal text is wrapped transactionally."
+    },
+    {
+      "id": "native-accessibility-and-props",
+      "capability": "ARIA/global/native prop aliases, nested state/value objects and value transforms",
+      "status": "equivalent",
+      "upstreamSources": [
+        "packages/react-strict-dom/src/native/modules/useNativeProps.js:72-205"
+      ],
+      "upstreamTests": [
+        "packages/react-strict-dom/tests/html/html-test.native.js:168-610"
+      ],
+      "tamaguiSources": [
+        "code/core/dom/src/tables/attributes.ts:254-860",
+        "code/compiler/static/src/compilerHost.ts:624-760"
+      ],
+      "tamaguiTests": [
+        "code/compiler/static-tests/tests/domConformance.native.test.tsx",
+        "code/core/dom/src/__tests__/conformance.test.ts"
+      ],
+      "rationale": "Compiler output proves nested accessibilityState/accessibilityValue, aria-hidden fan-out, aria-live, focusable, hidden display, data-testid and implicit role mappings. Unsupported mappings are build diagnostics."
+    },
+    {
+      "id": "native-input-image",
+      "capability": "Text input, textarea and image semantic adaptation",
+      "status": "equivalent",
+      "upstreamSources": [
+        "packages/react-strict-dom/src/native/modules/createStrictDOMTextInputComponent.js:55-277",
+        "packages/react-strict-dom/src/native/modules/createStrictDOMImageComponent.js:34-155"
+      ],
+      "upstreamTests": [
+        "packages/react-strict-dom/tests/html/html-test.native.js:612-855"
+      ],
+      "tamaguiSources": [
+        "code/compiler/static/src/compilerHost.ts:624-760",
+        "code/core/web/src/dom/primitives.native.tsx:475-516"
+      ],
+      "tamaguiTests": [
+        "code/compiler/static-tests/tests/domConformance.native.test.tsx",
+        "code/core/core-test/domPrimitives.native.test.tsx"
+      ],
+      "rationale": "Password/inputMode, disabled/readOnly editable inversion, textarea multiline/rows and image/input payload adaptation are executable; unsupported non-text input types fail the native build."
+    },
+    {
+      "id": "events",
+      "capability": "Click, pointer, focus, keyboard, change/input and image events",
+      "status": "equivalent",
+      "upstreamSources": [
+        "packages/react-strict-dom/src/native/modules/useNativeProps.js:208-408"
+      ],
+      "upstreamTests": [
+        "packages/react-strict-dom/tests/html/html-test.js:286-432",
+        "packages/react-strict-dom/tests/html/html-test.native.js:500-855"
+      ],
+      "tamaguiSources": [
+        "code/core/dom/src/tables/events.ts:1-176",
+        "code/core/web/src/dom/adapters.ts:1-99",
+        "code/core/web/src/dom/primitives.native.tsx:436-516"
+      ],
+      "tamaguiTests": [
+        "code/core/core-test/domPrimitives.native.test.tsx",
+        "code/core/core-test/domHtml.web.test.tsx",
+        "code/compiler/static-tests/tests/domCompiledRuntime.native.test.tsx",
+        "code/compiler/static-tests/tests/domConformance.native.test.tsx"
+      ],
+      "rationale": "Host-compatible events pass through and payload-dependent events are adapted. Native matches upstream for onMouseDown/Enter/Leave/Out/Over/Up and onScroll; compile-then-render evidence proves author handlers coexist with internal hover state. Truly unsupported mouseMove, auxiliary, context, focus-in/out, key-up and clipboard events remain source-local diagnostics."
+    },
+    {
+      "id": "native-refs",
+      "capability": "Stable DOM-shaped native refs and tag-specific polyfills",
+      "status": "equivalent",
+      "upstreamSources": [
+        "packages/react-strict-dom/src/native/modules/useStrictDOMElement.js:1-199"
+      ],
+      "upstreamTests": [
+        "packages/react-strict-dom/tests/html/html-refs-test.native.js:1-274"
+      ],
+      "tamaguiSources": [
+        "code/core/web/src/dom/primitives.native.tsx:98-260"
+      ],
+      "tamaguiTests": [
+        "code/core/core-test/domPrimitives.native.test.tsx"
+      ],
+      "rationale": "Only ref-ed hosts enter the context path and receive a stable Object.create facade with bound host methods, nodeName/tagName, image complete, text selection, pass-through node shape and viewport-scaled synchronous geometry. Callback cleanup and object-ref lifecycle are executable."
+    },
+    {
+      "id": "standalone-style-create",
+      "capability": "Compile-only style definitions and zero-runtime output",
+      "status": "equivalent",
+      "upstreamSources": [
+        "packages/react-strict-dom/src/web/runtime.js:21-182",
+        "packages/react-strict-dom/src/native/css/index.js:1-533"
+      ],
+      "upstreamTests": [
+        "packages/react-strict-dom/tests/css/css-create-test.native.js:1-2400"
+      ],
+      "tamaguiSources": [
+        "code/core/web/src/dom/standalone.ts:1-73",
+        "code/compiler/compiler-core/src/normalize.ts:628-689",
+        "code/compiler/static/src/domStructuralPass.ts:143-160",
+        "code/compiler/static/src/compilerHost.ts:1564-1640"
+      ],
+      "tamaguiTests": [
+        "code/compiler/static-tests/tests/domConformance.web.test.tsx",
+        "code/compiler/static-tests/tests/domConformance.native.test.tsx"
+      ],
+      "rationale": "Named and inline style() definitions lower through the styled() grammar; calls are removed and no RSD/StyleX runtime is introduced."
+    },
+    {
+      "id": "style-composition",
+      "capability": "Inline, array and condition && style-handle composition",
+      "status": "equivalent",
+      "upstreamSources": [
+        "packages/react-strict-dom/src/native/css/flattenStyleXStyles.js:1-34",
+        "packages/react-strict-dom/src/web/css/merge.js:1-77"
+      ],
+      "upstreamTests": [
+        "packages/react-strict-dom/src/web/css/__tests__/merge-test.js:1-240",
+        "packages/react-strict-dom/tests/css/css-create-test.native.js:1880-2085"
+      ],
+      "tamaguiSources": [
+        "code/compiler/compiler-core/src/ir.ts:17-31",
+        "code/compiler/compiler-core/src/normalize.ts:691-728",
+        "code/compiler/static/src/compilerHost.ts:1564-1640"
+      ],
+      "tamaguiTests": [
+        "code/compiler/static-tests/tests/domConformance.web.test.tsx",
+        "code/compiler/static-tests/tests/domConformance.native.test.tsx"
+      ],
+      "rationale": "Web emits ordered class composition plus branch CSS; native emits an ordered style array. Tests cover named handles, inline calls and dynamic conditions in JSX-runtime form."
+    },
+    {
+      "id": "web-pseudo-media-theme",
+      "capability": "Pseudo states, viewport media and named-theme style clauses",
+      "status": "equivalent",
+      "upstreamSources": [
+        "packages/react-strict-dom/src/native/modules/mediaQuery.js:1-258",
+        "packages/react-strict-dom/src/native/modules/extractStyleThemes.js:1-46"
+      ],
+      "upstreamTests": [
+        "packages/react-strict-dom/tests/css/css-create-queries-test.native.js:1-200",
+        "packages/react-strict-dom/tests/css/css-themes-test.native.js:1-213"
+      ],
+      "tamaguiSources": [
+        "code/core/style-grammar/src/programs/lowerProgram.ts:48-315",
+        "code/compiler/static/src/compilerHost.ts:1895-1950"
+      ],
+      "tamaguiTests": [
+        "code/compiler/static-tests/tests/domConformance.web.test.tsx",
+        "code/compiler/static-tests/tests/flatValues.web.test.tsx"
+      ],
+      "rationale": "Standalone style() uses the same pseudo/media/theme clause grammar as styled(); emitted CSS assertions cover :hover, @media and named-theme selectors."
+    },
+    {
+      "id": "native-dynamic-style-context",
+      "capability": "Runtime native theme, viewport-query and inherited-text recomputation",
+      "status": "equivalent",
+      "upstreamSources": [
+        "packages/react-strict-dom/src/native/modules/useStyleProps.js:1-255",
+        "packages/react-strict-dom/src/native/modules/ContextInheritedStyles.js:1-70",
+        "packages/react-strict-dom/src/native/modules/ContextViewportScale.js:1-52"
+      ],
+      "upstreamTests": [
+        "packages/react-strict-dom/tests/contexts/contexts-ThemeProvider-test.native.js:1-401",
+        "packages/react-strict-dom/tests/contexts/contexts-ViewportProvider-test.native.js:1-115"
+      ],
+      "tamaguiSources": [
+        "code/compiler/static/src/compilerHost.ts:1564-1640",
+        "code/core/web/src/dom/primitives.native.tsx:281-616"
+      ],
+      "tamaguiTests": [
+        "code/compiler/static-tests/tests/domConformance.native.test.tsx",
+        "code/compiler/static-tests/tests/domCompiledRuntime.native.test.tsx",
+        "code/core/core-test/domRuntimeContext.native.test.tsx"
+      ],
+      "rationale": "The compiler selects narrow runtime primitives only for contextual programs. Renderer tests prove live theme/media changes, mouse and pointer hover, focus, active priority, inherited hover recomputation, cursor/textIndent/whiteSpace inheritance, inherit/unset and unitless lineHeight with inherited font size. The pinned upstream initial keyword is likewise an explicit skipped limitation."
+    },
+    {
+      "id": "css-values-transforms-time",
+      "capability": "CSS values, variables, transforms, shadows and time values",
+      "status": "intentional-difference",
+      "upstreamSources": [
+        "packages/react-strict-dom/src/native/css/processStyle.js:1-261",
+        "packages/react-strict-dom/src/native/css/parseTransform.js:1-120",
+        "packages/react-strict-dom/src/native/css/parseTimeValue.js:1-33"
+      ],
+      "upstreamTests": [
+        "packages/react-strict-dom/src/native/css/__tests__/CSSUnparsedValue-test.js",
+        "packages/react-strict-dom/src/native/css/__tests__/parseTransform-test.js",
+        "packages/react-strict-dom/src/native/css/__tests__/parseTimeValue-test.js"
+      ],
+      "tamaguiSources": [
+        "code/core/style-grammar/src/runtime/scanFlatValue.ts:1-191",
+        "code/core/style-grammar/src/ast/valueParser.ts:1-169",
+        "code/core/style-grammar/src/shorthands/transformFamily.ts:1-579",
+        "code/core/style-grammar/src/shorthands/transition.ts:1-553",
+        "code/core/web/src/helpers/getSplitStyles.tsx:2425-2576",
+        "code/core/web/src/helpers/getSplitStyles.tsx:2710-2721",
+        "code/core/web/src/helpers/getSplitStyles.tsx:2818-2828"
+      ],
+      "tamaguiTests": [
+        "code/compiler/static-tests/tests/flatValues.web.test.tsx",
+        "code/compiler/static-tests/tests/flatten.native.test.tsx",
+        "code/core/core-test/flatValueProgramsSSR.web.test.tsx"
+      ],
+      "rationale": "Tamagui uses its token/value-program grammar rather than the CSS Typed OM and StyleX compiled-object representation; supported authored outcomes share the same compiler path as style()."
+    },
+    {
+      "id": "babel-lowering",
+      "capability": "JSX, jsx/jsxs and createElement lowering with stable output",
+      "status": "equivalent",
+      "upstreamSources": [
+        "packages/react-strict-dom/babel/plugin.js:1-213",
+        "packages/react-strict-dom/babel/preset.js:1-51"
+      ],
+      "upstreamTests": [
+        "packages/react-strict-dom/tests/babel-test.node.js:1-158"
+      ],
+      "tamaguiSources": [
+        "code/compiler/compiler-core/src/normalize.ts:449-533",
+        "code/compiler/compiler-core/src/normalize.ts:730-822",
+        "code/compiler/static/src/compiler.ts:1-216"
+      ],
+      "tamaguiTests": [
+        "code/compiler/static-tests/tests/domNormalization.web.test.tsx",
+        "code/compiler/static-tests/tests/domLowering.web.test.tsx",
+        "code/compiler/static-tests/tests/domLowering.native.test.tsx"
+      ],
+      "rationale": "Tamagui performs the work in its parser-independent compiler frontend rather than an RSD Babel preset; all React authoring forms are executable."
+    },
+    {
+      "id": "postcss",
+      "capability": "Extracted CSS aggregation and dependency ordering",
+      "status": "intentional-difference",
+      "upstreamSources": [
+        "packages/postcss-react-strict-dom/src/plugin.js:1-107",
+        "packages/postcss-react-strict-dom/src/bundler.js:1-74"
+      ],
+      "upstreamTests": [
+        "packages/postcss-react-strict-dom/__tests__/index-test.js:1-179"
+      ],
+      "tamaguiSources": [
+        "code/compiler/compiler-core/src/lower.ts:1-367",
+        "code/compiler/static/src/compilerHost.ts:1895-1950"
+      ],
+      "tamaguiTests": [
+        "code/compiler/static-tests/tests/domConformance.web.test.tsx",
+        "code/compiler/static-tests/tests/webpack.test.tsx"
+      ],
+      "rationale": "The Tamagui compiler returns ordered CSS with the JavaScript transform, so no second PostCSS scan or RSD artifact manifest is required."
+    },
+    {
+      "id": "compat-native",
+      "capability": "Adapting strict props when delegating to arbitrary React Native hosts",
+      "status": "intentional-difference",
+      "upstreamSources": [
+        "packages/react-strict-dom/src/native/compat.js:1-110"
+      ],
+      "upstreamTests": [
+        "packages/react-strict-dom/tests/compat/compat-test.native.js:1-206"
+      ],
+      "tamaguiSources": [
+        "code/core/web/src/dom/primitives.native.tsx:421-616",
+        "code/core/web/src/views/Slot.tsx:1-87"
+      ],
+      "tamaguiTests": [
+        "code/core/core-test/domPrimitives.native.test.tsx",
+        "code/kitchen-sink/tests/MenuAsChildPosition.test.tsx"
+      ],
+      "rationale": "Tamagui lowers owned html.* directly and uses its established Slot/asChild composition for host delegation; it does not expose RSD's native-props render-function API."
+    },
+    {
+      "id": "platform-app",
+      "capability": "Integrated cross-platform visual/interaction fixture",
+      "status": "intentional-difference",
+      "upstreamSources": [
+        "apps/platform-tests/src/components/App.js:1-922",
+        "apps/platform-tests/src/app/strict.css:1-13"
+      ],
+      "upstreamTests": [
+        "apps/platform-tests/README.md:1-3"
+      ],
+      "tamaguiSources": [
+        "code/core/web/src/dom/html.tsx:830-880",
+        "code/core/web/src/dom/primitives.native.tsx:421-616"
+      ],
+      "tamaguiTests": [
+        "code/core/core-test/domPlatformRuntime.web.test.tsx",
+        "code/compiler/static-tests/tests/domCompiledRuntime.native.test.tsx",
+        "code/compiler/static-tests/tests/domPlatformFixture.test.tsx"
+      ],
+      "rationale": "The shared five-tag fixture is asserted at compiler output on both targets, rendered and interacted with in a real web DOM, and compiled then rendered through native host primitives with role, accessibility, style, conditional composition and press assertions. It is representative automation, not coverage equivalent to the upstream 922-line manual platform screen or device-specific visual fidelity."
+    },
+    {
+      "id": "diagnostics-and-compatibility-ledger",
+      "capability": "Unsupported semantics and intentional differences stay explicit",
+      "status": "stronger",
+      "upstreamSources": [
+        "packages/react-strict-dom/COMPATIBILITY.md:1-3"
+      ],
+      "upstreamTests": [
+        "packages/react-strict-dom/tests/html/html-test.native.js:1-855"
+      ],
+      "tamaguiSources": [
+        "code/core/dom/src/tables/compatibility.ts:1-360",
+        "code/compiler/static/src/domStructuralPass.ts:49-160"
+      ],
+      "tamaguiTests": [
+        "code/core/dom/src/__tests__/conformance.test.ts",
+        "code/compiler/static-tests/tests/domLowering.native.test.tsx",
+        "code/compiler/static-tests/tests/domConformance.native.test.tsx"
+      ],
+      "rationale": "Snapshot differences require a ledger row, and unsupported tags, props, nesting and input values produce source-local compiler diagnostics rather than warnings or inert output."
+    }
+  ]
+}

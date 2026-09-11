@@ -2,7 +2,7 @@ import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { TamaguiProvider, createTamagui } from '@tamagui/core'
 import { getPortal } from '@tamagui/native'
 import { PortalProvider } from '@tamagui/portal'
-import { toast, Toaster, useToasts } from '@tamagui/toast/v2'
+import { Toast, toast, useToasts } from '@tamagui/toast'
 import * as React from 'react'
 import type { ReactNode } from 'react'
 import TestRenderer, { act } from 'react-test-renderer'
@@ -61,9 +61,15 @@ class ErrorBoundary extends React.Component<
   }
 }
 
-describe('Toast v2 native context', () => {
-  test('keeps Toaster context through the native portal fallback', async () => {
-    const tree = await renderNative(<Toaster duration={Number.POSITIVE_INFINITY} />)
+describe('Toast native context', () => {
+  test('keeps toast context through the native portal fallback', async () => {
+    const tree = await renderNative(
+      <Toast duration={Number.POSITIVE_INFINITY}>
+        <Toast.Viewport>
+          <Toast.List />
+        </Toast.Viewport>
+      </Toast>
+    )
 
     await act(async () => {
       toast('Native portal toast')

@@ -6,7 +6,7 @@ import type { AnchorProps } from 'tamagui'
 import { Anchor, styled } from 'tamagui'
 
 const StyledTextLink = styled(Anchor, {
-  name: 'TextLink',
+  displayName: 'TextLink',
 })
 
 export type TextLinkProps = Pick<LinkProps, 'href' | 'target'> & AnchorProps

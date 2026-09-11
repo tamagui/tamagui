@@ -11,11 +11,7 @@ vi.mock('react-native-reanimated', async (importOriginal) => {
     ...reanimated,
     useSharedValue(initialValue: unknown) {
       const sharedValue = reanimated.useSharedValue(initialValue)
-      if (
-        initialValue &&
-        typeof initialValue === 'object' &&
-        Object.hasOwn(initialValue, 'emitted')
-      ) {
+      if (initialValue && typeof initialValue === 'object' && 'emitted' in initialValue) {
         // mirrors Worklets' serializable-object write guard during the JS initial run
         Object.freeze(sharedValue.value)
       }

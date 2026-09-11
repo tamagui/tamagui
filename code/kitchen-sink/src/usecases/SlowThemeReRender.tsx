@@ -32,7 +32,7 @@ export function SlowThemeReRender() {
       >
         {type === 'Tamagui'
           ? newArray.map((item) => (
-              <TamaguiView key={item} backgroundColor="$color" height={50} width={50} />
+              <TamaguiView key={item} backgroundColor="color" height={50} width={50} />
             ))
           : newArray.map((item) => (
               <RNView

@@ -55,10 +55,8 @@ export type TamaguiComponentPropsBaseBase = {
      * See: https://tamagui.dev/docs/intro/props
      */
     untilMeasured?: 'hide' | 'show';
-    /**
-     * Equivalent to "name" property on styled() for automatically applying a theme
-     */
-    componentName?: string;
+    /** web: forwards to the HTML name attribute. */
+    name?: string;
     /**
      * Used for controlling the order of focus with keyboard or assistive device enavigation
      * See https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex

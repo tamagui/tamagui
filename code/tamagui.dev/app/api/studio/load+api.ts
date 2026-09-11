@@ -1,15 +1,11 @@
 import { apiRoute } from '~/features/api/apiRoute'
-import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
+import { getUserTeams } from '~/features/user/helpers'
 
 const handler = apiRoute(async (req) => {
   const { user } = await ensureAuth({ req })
-  const { hasPro, teamId } = await ensureAccess({ user })
-
-  if (!hasPro) {
-    throw Response.json({ error: 'Must have Pro account' }, { status: 403 })
-  }
+  const teamId = (await getUserTeams(user.id))[0]?.id
 
   if (!teamId) {
     throw new Error(`No teamId found`)

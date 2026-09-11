@@ -5,8 +5,9 @@ import { getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { stopAccumulatingRules } from '../helpers/insertStyleRule'
 import { updateMediaListeners } from '../hooks/useMedia'
-import { resolveAnimationDriver } from '../helpers/resolveAnimationDriver'
 import type { AnimationDriver, TamaguiProviderProps } from '../types'
+import { ConfigRevisionCheck } from './ConfigRevisionCheck'
+import { hasSafeAreaTracker, SafeAreaTracker } from './SafeAreaTracker'
 import { TamaguiRoot } from './TamaguiRoot'
 import { ThemeProvider } from './ThemeProvider'
 
@@ -28,15 +29,17 @@ export function TamaguiProvider({
   config,
   className,
   defaultTheme: defaultThemeProp,
-  reset,
   insets,
+  isSubtreeRoot,
 }: TamaguiProviderProps) {
   // fall back to first theme when defaultTheme is null/undefined
   // (e.g. useColorScheme() returns null on first render in RN 0.83+)
   const defaultTheme = defaultThemeProp || firstThemeKey(config) || 'light'
   useIsomorphicLayoutEffect(() => {
-    stopAccumulatingRules()
     updateMediaListeners()
+    if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
+      return stopAccumulatingRules()
+    }
   }, [])
 
   const memoizedInsets = React.useMemo(
@@ -44,13 +47,11 @@ export function TamaguiProvider({
     [insets?.top, insets?.right, insets?.bottom, insets?.left]
   )
 
-  // Get the default animation driver from config
-  // config.animations is already normalized to the default driver in createTamagui
-  // resolveAnimationDriver handles edge cases where raw multi-driver object leaks through
-  const defaultAnimationDriver: AnimationDriver | null = React.useMemo(
-    () => resolveAnimationDriver(config?.animations),
-    [config?.animations]
-  )
+  const configuredAnimationDriver = config?.animations as AnimationDriver | undefined
+  const defaultAnimationDriver =
+    !configuredAnimationDriver || configuredAnimationDriver.isStub
+      ? null
+      : configuredAnimationDriver
 
   useEffect(() => {
     defaultAnimationDriver?.onMount?.()
@@ -61,7 +62,11 @@ export function TamaguiProvider({
       animationDriver={defaultAnimationDriver}
       insets={memoizedInsets}
     >
-      <ThemeProvider defaultTheme={defaultTheme} reset={reset} className={className}>
+      <ThemeProvider
+        defaultTheme={defaultTheme}
+        className={className}
+        isSubtreeRoot={isSubtreeRoot}
+      >
         <TamaguiRoot theme={defaultTheme} isRootRoot>
           {children}
         </TamaguiRoot>
@@ -76,20 +81,27 @@ export function TamaguiProvider({
 
   return (
     <>
-      {contents}
+      {!process.env.TAMAGUI_DID_OUTPUT_CSS &&
+        process.env.TAMAGUI_TARGET !== 'native' &&
+        config &&
+        !disableInjectCSS && (
+          <style
+            // react 19 feature to hoist style tags to header:
+            // https://react.dev/reference/react-dom/components/style
+            // @ts-ignore
+            precedence="default"
+            href="tamagui-css"
+            key="tamagui-css"
+          >
+            {config.getCSS()}
+          </style>
+        )}
 
-      {process.env.TAMAGUI_TARGET !== 'native' && config && !disableInjectCSS && (
-        <style
-          // react 19 feature to hoist style tags to header:
-          // https://react.dev/reference/react-dom/components/style
-          // @ts-ignore
-          precedence="default"
-          href="tamagui-css"
-          key="tamagui-css"
-        >
-          {config.getCSS()}
-        </style>
-      )}
+      {process.env.NODE_ENV !== 'production' &&
+        process.env.TAMAGUI_TARGET !== 'native' &&
+        config && <ConfigRevisionCheck config={config} />}
+      {hasSafeAreaTracker() && <SafeAreaTracker />}
+      {contents}
     </>
   )
 }

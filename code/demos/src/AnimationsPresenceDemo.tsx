@@ -5,11 +5,11 @@ import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons-2'
 import { Button, Image, XStack, YStack, styled } from 'tamagui'
 
 // @ts-ignore
-import photo1 from '../../public/photo1.jpg'
+import photo1 from '@tamagui/demos/photo/photo1'
 // @ts-ignore
-import photo2 from '../../public/photo2.jpg'
+import photo2 from '@tamagui/demos/photo/photo2'
 // @ts-ignore
-import photo3 from '../../public/photo3.jpg'
+import photo3 from '@tamagui/demos/photo/photo3'
 
 export const images = [photo1, photo2, photo3].map((x) => (x as any).src || x)
 
@@ -17,23 +17,16 @@ const GalleryItem = styled(YStack, {
   z: 1,
   x: 0,
   opacity: 1,
-  fullscreen: true,
+  position: 'absolute',
+  inset: 0,
 
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
-    going: {
-      ':number': (going) => ({
-        enterStyle: {
-          x: going > 0 ? 1000 : -1000,
-          opacity: 0,
-        },
-        exitStyle: {
-          zIndex: 0,
-          x: going < 0 ? 1000 : -1000,
-          opacity: 0,
-        },
-      }),
-    },
+    going: styled.dynamic<number>((going) => ({
+      x: `enter:${going > 0 ? 1000 : -1000}px exit:${going < 0 ? 1000 : -1000}px`,
+      opacity: 'enter:0 exit:0',
+      zIndex: 'exit:0',
+    })),
   } as const,
 })
 
@@ -68,25 +61,25 @@ export function AnimationsPresenceDemo() {
       <Button
         aria-label="Carousel left"
         icon={ArrowLeft}
-        size="$5"
+        size="5"
         position="absolute"
-        l="$4"
-        circular
-        onPress={() => paginate(-1)}
+        l="4"
         boxShadow="0 0 10px rgba(0,0,0,0.5)"
         z={100}
+        circular
+        onPress={() => paginate(-1)}
       />
 
       <Button
         aria-label="Carousel right"
         icon={ArrowRight}
-        size="$5"
+        size="5"
         position="absolute"
-        r="$4"
-        circular
-        onPress={() => paginate(1)}
+        r="4"
         boxShadow="0 0 10px rgba(0,0,0,0.5)"
         z={100}
+        circular
+        onPress={() => paginate(1)}
       />
     </XStack>
   )

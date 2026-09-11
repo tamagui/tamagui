@@ -1,35 +1,48 @@
-import { Code, Eye, Info, Link, Lock, Minus, Plus } from '@tamagui/lucide-icons-2'
-import { useToastController } from '@tamagui/toast'
+import { Code, Eye, Info, Link, Minus, Plus } from '@tamagui/lucide-icons-2'
 import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import type { SizeTokens, ThemeName } from 'tamagui'
 
 import useSWR from 'swr'
 import {
-  Button,
   H2,
-  Image,
   ScrollView,
   SizableText,
   Spinner,
   Text,
-  ThemeableStack,
+  toast,
   ToggleGroup,
   View,
   XGroup,
   XStack,
   YStack,
   createStyledContext,
+  createStyledHOC,
+  style,
   useEvent,
   useIsomorphicLayoutEffect,
 } from 'tamagui'
+import { Button } from '~/components/Button'
+
+const showcaseContentStyle = style({
+  py: 24,
+  justify: 'center',
+  items: 'center',
+  width: '100%',
+  height: '100%',
+})
+const showcaseCompactContentStyle = style({
+  py: 0,
+  justify: 'center',
+  items: 'center',
+  width: '100%',
+  height: '100%',
+})
 // @ts-ignore - bento component wildcard import
 import { useCurrentRouteParams } from '@tamagui/bento'
 // @ts-ignore - bento component wildcard import
 import { useGroupMedia } from '@tamagui/bento/component/hooks/useGroupMedia'
 import { CodeWindow } from './CodeWindow'
 // import { ThemeButton } from './ThemeButton'
-import { authFetch } from '~/features/api/authFetch'
-import { useBentoShowcase } from './BentoProvider'
 import { type ShowcaseTheme, ShowcaseProvider } from './ShowcaseProvider'
 
 type Props = {
@@ -38,7 +51,6 @@ type Props = {
   fileName: string
   short?: boolean
   isInput?: boolean
-  unlock?: boolean
   theme?: ShowcaseTheme
   defaultSize?: SizeTokens
 }
@@ -55,25 +67,12 @@ export const Showcase = (props: Props) => {
 
 const ShowcaseView = forwardRef<any, Props>(
   (
-    {
-      children,
-      title,
-      short,
-      isInput,
-      fileName,
-      theme,
-      defaultSize = '$3',
-      unlock = false,
-      ...rest
-    },
+    { children, title, short, isInput, fileName, theme, defaultSize = '3', ...rest },
     ref
   ) => {
     const [view, setView] = useState<'code' | 'preview'>('preview')
-    const toast = useToastController()
 
     const { section, part } = useCurrentRouteParams()
-
-    const { showAppropriateModal, isProUser } = useBentoShowcase('BentoShowcase')
 
     // @ts-expect-error - URLSearchParams type mismatch with object
     const codePath = `/api/bento/code?${new URLSearchParams({
@@ -82,15 +81,10 @@ const ShowcaseView = forwardRef<any, Props>(
       fileName,
     })}`
 
-    const approved = unlock || isProUser
-
     const fetcher = async (url: string) => {
-      const res = await authFetch(url)
+      const res = await fetch(url)
       if (!res.ok) {
-        const error = new Error('An error occurred while fetching the data.') as any
-        error.info = await res.json()
-        error.status = res.status
-        throw error
+        throw new Error(`Couldn't load source (${res.status})`)
       }
       return res.text()
     }
@@ -101,9 +95,6 @@ const ShowcaseView = forwardRef<any, Props>(
       { shouldRetryOnError: false, revalidateOnFocus: false }
     )
 
-    const iDontHaveAccess = error?.status === 403 || error?.status === 401
-    const hasUnexpectedError = error && !iDontHaveAccess
-
     const minHeight = short ? 300 : 510
 
     return (
@@ -112,38 +103,30 @@ const ShowcaseView = forwardRef<any, Props>(
           {...(theme !== 'default' && {
             theme: theme as ThemeName,
           })}
-          gap="$3"
-          ref={ref}
+          gap="3"
           {...rest}
+          ref={ref}
         >
           <XStack items="center" justify="space-between">
-            <XStack items="center" flex={1} gap="$3">
-              {!approved && <Lock size={16} opacity={0.3} />}
-              <H2
-                size="$7"
-                fontWeight="600"
-                bg="$background"
-                fontFamily="$mono"
-                t="$0"
-                l="$2"
-              >
+            <XStack items="center" flex={1} gap="3">
+              <H2 size="7" fontWeight="600" bg="background" t="0" l="2">
                 {title}
               </H2>
             </XStack>
 
-            <XStack self="flex-end" justify="space-between" gap="$3">
+            <XStack self="flex-end" justify="space-between" gap="3">
               <Button
                 //@ts-ignore
                 title="copy link"
                 id={fileName}
                 circular
-                chromeless
-                size="$3"
+                variant="quiet"
+                size="3"
                 onPress={() => {
                   navigator?.clipboard?.writeText?.(
                     window.location.href.split('#')[0] + `#${fileName}`
                   )
-                  toast.show('Link copied to clipboard')
+                  toast('Link copied to clipboard')
                 }}
               >
                 <Button.Icon>
@@ -156,12 +139,12 @@ const ShowcaseView = forwardRef<any, Props>(
                 onValueChange={(val) => val && setView(val as 'preview' | 'code')}
                 disableDeactivation
               >
-                <XGroup rounded="$10" position="relative" overflow="visible">
+                <XGroup rounded="10" position="relative" overflow="visible">
                   <ToggleGroup.Item value="preview" aria-label="Preview" asChild>
                     <XGroup.Item>
                       <Button
                         theme={view === 'preview' ? 'accent' : null}
-                        size="$3"
+                        size="3"
                         icon={Eye}
                       />
                     </XGroup.Item>
@@ -169,8 +152,8 @@ const ShowcaseView = forwardRef<any, Props>(
                   <ToggleGroup.Item value="code" aria-label="Code" asChild>
                     <XGroup.Item>
                       <Button
-                        size="$3"
-                        icon={approved ? <Code size={16} /> : <Lock size={16} />}
+                        size="3"
+                        icon={<Code size={16} />}
                         theme={view === 'code' ? 'accent' : null}
                       >
                         Code
@@ -187,9 +170,9 @@ const ShowcaseView = forwardRef<any, Props>(
               <>
                 <View
                   width="100%"
-                  bg="$background"
+                  bg="background"
                   borderWidth={0.5}
-                  borderColor="$color3"
+                  borderColor="color-3"
                   justify="center"
                   items="center"
                   minH={minHeight}
@@ -204,37 +187,16 @@ const ShowcaseView = forwardRef<any, Props>(
                     {children}
                   </YStack>
                 </View>
-                <XStack gap="$2" position="absolute" m="$4" b={0} r={0} items="flex-end">
+                <XStack gap="2" position="absolute" m="4" b={0} r={0} items="flex-end">
                   <SizeController />
                 </XStack>
               </>
             ) : isLoading ? (
               <View width="100%" justify="center" items="center">
-                <Spinner color="$color" size="large" />
+                <Spinner color="color" size="large" />
               </View>
-            ) : iDontHaveAccess ? (
-              <YStack gap="$4" items="center">
-                <Image src="/avatar_pro.png" width={56} height={56} />
-
-                <Text fontSize="$6" fontFamily="$mono" fontWeight="bold">
-                  Tamagui Pro
-                </Text>
-
-                <Text
-                  text="center"
-                  color="$green10"
-                  $group-window-sm={{ fontSize: '$2' }}
-                  gap="$4"
-                  fontFamily="$mono"
-                >
-                  Purchase the Bento package to access the code.
-                </Text>
-                <Button onPress={showAppropriateModal}>
-                  <Button.Text>Upgrade to Pro</Button.Text>
-                </Button>
-              </YStack>
-            ) : hasUnexpectedError ? (
-              <Text text="center" color="$red10" $group-window-sm={{ fontSize: '$2' }}>
+            ) : error ? (
+              <Text text="center" color="red-10" fontSize="@sm/window:2">
                 Source unavailable. Please try again later.
               </Text>
             ) : data ? (
@@ -259,23 +221,20 @@ const MessagesFrame = (props: {
       width="100%"
       position="relative"
       minH={minHeight}
-      bg="$color1"
-      rounded="$4"
+      bg="color-1"
+      rounded="4"
       overflow="hidden"
       borderWidth={1}
-      borderColor={'$borderColor'}
+      borderColor="border-color"
     >
       <XStack
-        bg="$color1"
+        bg="color-1"
         borderBottomWidth={1}
-        borderColor="$borderColor"
-        $theme-light={{
-          borderColor: '$gray6',
-        }}
-        p="$2"
-        gap="$2"
+        borderColor="border-color light:gray-6"
+        p="2"
+        gap="2"
       >
-        {['$red10', '$yellow10', '$green10'].map((color, index) => (
+        {['red-10', 'yellow-10', 'green-10'].map((color, index) => (
           <View
             bg={color as any}
             height={10}
@@ -288,8 +247,8 @@ const MessagesFrame = (props: {
 
       <ResizableBox hideDragHandle={props.hideDragHandle}>
         <YStack
-          bg="$color1"
-          borderColor="$borderColor"
+          bg="color-1"
+          borderColor="border-color"
           width="100%"
           height="100%"
           overflow="hidden"
@@ -308,28 +267,23 @@ const PHONE_SCALE = 0.75
 const PhoneFrame = (props: any) => {
   return (
     <YStack
-      // @ts-expect-error - window group name
       group="window"
-      focusable
-      className="ms300 all ease-out"
+      container
+      containerName="window"
       borderRadius={43}
       height={600}
       width={292}
-      backgroundColor="$color1"
+      backgroundColor="color-1"
       overflow="hidden"
       position="absolute"
       right={100}
-      scale={0.8}
+      scale="0.8 hover:0.83 focus:0.85"
+      boxShadow="hover:0 12px 28px shadow-color"
       top={0}
       zIndex={0}
-      pe="auto"
-      hoverStyle={{
-        scale: 0.83,
-        elevation: '$7',
-      }}
-      focusStyle={{
-        scale: 0.85,
-      }}
+      tabIndex={0}
+      className="ms300 all ease-out"
+      pointerEvents="auto"
       onPress={() => {
         if (!props.phoneFocused) {
           props.setPhoneFocused(true)
@@ -339,13 +293,13 @@ const PhoneFrame = (props: any) => {
         props.setPhoneFocused(false)
       }}
     >
-      <YStack fullscreen>
+      <YStack position="absolute" inset={0}>
         <PhoneSVG />
       </YStack>
       <YStack
         pb={20}
         pt={50}
-        px="$6"
+        px="6"
         overflow="hidden"
         width="133.3335%"
         height={800}
@@ -353,7 +307,7 @@ const PhoneFrame = (props: any) => {
         transformOrigin="left top"
       >
         <PhoneScaleProvider scale={0.53}>
-          <YStack width="100%" height="100%" rounded="$8" overflow="hidden">
+          <YStack width="100%" height="100%" rounded="8" overflow="hidden">
             {props.children}
           </YStack>
         </PhoneScaleProvider>
@@ -368,19 +322,15 @@ export const { Provider: PhoneScaleProvider, useStyledContext: usePhoneScale } =
     invertScale: 1.464,
   })
 
-export const ShowcaseChildWrapper = ScrollView.styleable((props, ref) => {
+export const ShowcaseChildWrapper: React.ComponentType<
+  React.ComponentProps<typeof ScrollView>
+> = createStyledHOC(ScrollView, (props, ref) => {
   const { sm } = useGroupMedia('window')
 
   return (
     <ScrollView
       ref={ref}
-      contentContainerStyle={{
-        py: sm ? 0 : 24,
-        justify: 'center',
-        items: 'center',
-        width: '100%',
-        height: '100%',
-      }}
+      contentContainerStyle={sm ? showcaseCompactContentStyle : showcaseContentStyle}
       px={sm ? 5 : 24}
       width="100%"
       {...props}
@@ -391,8 +341,18 @@ export const ShowcaseChildWrapper = ScrollView.styleable((props, ref) => {
 type ResizableBoxExtraProps = {
   hideDragHandle?: boolean
 }
-const ResizableBox = XStack.styleable<ResizableBoxExtraProps>(
-  ({ children, hideDragHandle, ...rest }, ref) => {
+const ResizableBox = createStyledHOC(
+  XStack,
+  (
+    {
+      children,
+      hideDragHandle,
+      ...rest
+    }: ResizableBoxExtraProps & {
+      children?: React.ReactNode
+    },
+    ref
+  ) => {
     const [width, setWidth] = useState<number | string>('100%')
     const startX = useRef(null)
     const initialWidth = useRef<number>(null)
@@ -437,16 +397,17 @@ const ResizableBox = XStack.styleable<ResizableBoxExtraProps>(
       <XStack
         flex={1}
         flexBasis="auto"
-        ref={ref}
         items="stretch"
         select="none"
-        gap="$2"
+        gap="2"
         {...rest}
+        ref={ref}
       >
         <XStack
           items="center"
-          // @ts-expect-error - window group name
           group="window"
+          container
+          containerName="window"
           ref={containerRef as any}
           width={width as any}
         >
@@ -465,23 +426,16 @@ const ResizableBox = XStack.styleable<ResizableBoxExtraProps>(
             <View
               maxH="50%"
               width={8}
-              bg="$background04"
-              hoverStyle={{
-                bg: '$background06',
-              }}
-              pressStyle={{
-                bg: '$background06',
-              }}
+              bg="background-04 hover:background-06 press:background-06"
               self="center"
               rounded={1000_000}
             />
             <View
-              $group-hover={{ height: '$4' }}
+              height="3 group-hover:4"
               width={8}
               l={-2}
-              height="$3"
-              bg="$background04"
-              rounded="$5"
+              bg="background-04"
+              rounded="5"
             />
           </YStack>
         </XStack>
@@ -492,25 +446,27 @@ const ResizableBox = XStack.styleable<ResizableBoxExtraProps>(
 
 export function Hint({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeableStack
+    <View
       position="absolute"
       b={12}
       l={12}
-      bordered
-      bg="$color1"
-      theme="green"
-      p="$2"
-      px="$3"
-      gap="$3"
+      borderWidth={1}
+      borderColor="border-color"
+      bg="color-1"
+      paddingTop="2"
+      paddingBottom="2"
+      px="3"
+      gap="3"
       z={100000}
-      rounded="$4"
+      rounded="4"
       flexDirection="row"
       justify="center"
       items="center"
+      theme="green"
     >
-      <Info color="$color" size={18} />
-      <SizableText size="$4">{children}</SizableText>
-    </ThemeableStack>
+      <Info color="color" size={18} />
+      <SizableText size="4">{children}</SizableText>
+    </View>
   )
 }
 
@@ -522,20 +478,20 @@ export const { Provider: RawSizeProvider, useStyledContext: useSize } =
   createStyledContext({
     sizes: [] as SizeTokens[],
     setSizes: (sizes: SizeTokens[]) => {},
-    size: '$true' as SizeTokens,
-    setSize: (size: SizeTokens) => {},
+    size: true as SizeTokens | true,
+    setSize: (size: SizeTokens | true) => {},
     showController: false,
     setShowController: (val: boolean) => {},
   })
 
 const SizeProvider = ({
   children,
-  defaultSize = '$3',
+  defaultSize = '3',
 }: {
   children: any
   defaultSize?: SizeTokens
 }) => {
-  const [sizes, setSizes] = useState<SizeTokens[]>(['$3', '$4', '$5', '$6', '$7'])
+  const [sizes, setSizes] = useState<SizeTokens[]>(['3', '4', '5', '6', '7'])
   const [size, setSize] = useState<SizeTokens>(defaultSize)
   const [showController, setShowController] = useState(false)
 
@@ -565,7 +521,7 @@ export const WithSize = ({ children }: { children: any }) => {
   return React.cloneElement(children, { size })
 }
 
-export const SizeController = XGroup.styleable((props, ref) => {
+export const SizeController = createStyledHOC(XGroup, (props, ref) => {
   const { size, sizes, setSize, showController } = useSize()
 
   if (!showController) return null
@@ -575,19 +531,19 @@ export const SizeController = XGroup.styleable((props, ref) => {
       ref={ref}
       justify="center"
       items="center"
-      bg="$backgroundPress"
+      bg="background-press"
       r={0}
       b={0}
-      gap="$1"
+      gap="1"
       overflow="hidden"
       rounded={1_000_000_000}
       {...props}
     >
       <XGroup.Item>
         <Button
-          size="$3"
-          chromeless
-          py="$2"
+          size="3"
+          variant="quiet"
+          py="2"
           onPress={() => {
             const index = sizes.indexOf(size)
             setSize(sizes[index - 1 < 0 ? 0 : index - 1])
@@ -601,9 +557,9 @@ export const SizeController = XGroup.styleable((props, ref) => {
 
       <XGroup.Item>
         <Button
-          size="$3"
-          chromeless
-          py="$2"
+          size="3"
+          variant="quiet"
+          py="2"
           onPress={() => {
             const index = sizes.indexOf(size)
             setSize(sizes[index + 1 >= sizes.length ? 4 : index + 1])
@@ -622,7 +578,7 @@ const PhoneSVG = () => (
   <svg width="100%" height="100%" viewBox="0 0 715 1467">
     <path
       d="M0 166.4C0 108.155 0 79.0318 11.3353 56.785C21.3062 37.2161 37.2161 21.3062 56.785 11.3353C79.0318 0 108.155 0 166.4 0H548.6C606.845 0 635.968 0 658.215 11.3353C677.784 21.3062 693.694 37.2161 703.665 56.785C715 79.0318 715 108.155 715 166.4V1300.6C715 1358.85 715 1387.97 703.665 1410.21C693.694 1429.78 677.784 1445.69 658.215 1455.66C635.968 1467 606.845 1467 548.6 1467H166.4C108.155 1467 79.0318 1467 56.785 1455.66C37.2161 1445.69 21.3062 1429.78 11.3353 1410.21C0 1387.97 0 1358.85 0 1300.6V166.4Z"
-      fill="var(--color2)"
+      fill="var(--color-2)"
       style={{
         outline: `0 0 10px #000`,
       }}
@@ -646,11 +602,11 @@ const PhoneSVG = () => (
     </g>
     <path
       d="M319 55C319 51.134 322.134 48 326 48H390C393.866 48 397 51.134 397 55C397 58.866 393.866 62 390 62H326C322.134 62 319 58.866 319 55Z"
-      fill="var(--color6)"
+      fill="var(--color-6)"
     />
     <path
       d="M413 55C413 47.268 419.268 41 427 41C434.732 41 441 47.268 441 55C441 62.732 434.732 69 427 69C419.268 69 413 62.732 413 55Z"
-      fill="var(--color6)"
+      fill="var(--color-6)"
     />
     <defs>
       <clipPath id="clip0_2_131">

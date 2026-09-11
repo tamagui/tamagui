@@ -49,7 +49,7 @@ export function flattenChildrenKeyless(children: ReactNode): ReactChildArray {
 
 export function flattenChildren(
   children: ReactNode,
-  componentNamesToIgnore?: string[],
+  displayNamesToIgnore?: string[],
   depth = 0,
   keys: (string | number)[] = []
 ): ReactNode[] {
@@ -58,8 +58,8 @@ export function flattenChildren(
       if (isValidElement(elem)) {
         if (
           typeof (elem as any)?.type == 'function' &&
-          componentNamesToIgnore?.some((skipComponentName) =>
-            (elem.type as any).displayName.includes(skipComponentName)
+          displayNamesToIgnore?.some((skipDisplayName) =>
+            (elem.type as any).displayName.includes(skipDisplayName)
           )
         ) {
           return (elem as any).props.children
@@ -73,7 +73,7 @@ export function flattenChildren(
           acc,
           flattenChildren(
             node.props.children,
-            componentNamesToIgnore,
+            displayNamesToIgnore,
             depth + 1,
             keys.concat(node.key || nodeIndex)
           )
@@ -96,9 +96,9 @@ export function flattenChildren(
 export const pickChildren = <Props = any>(
   _children: ReactNode | undefined,
   targetChild: React.ElementType,
-  componentNamesToIgnore?: string[]
+  displayNamesToIgnore?: string[]
 ) => {
-  const children = flattenChildren(_children, componentNamesToIgnore)
+  const children = flattenChildren(_children, displayNamesToIgnore)
   const target: ReactElement<Props>[] = []
   const withoutTargetChildren = React.Children.map(children, (item) => {
     if (!isValidElement(item)) return item

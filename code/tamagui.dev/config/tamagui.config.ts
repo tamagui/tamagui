@@ -1,7 +1,10 @@
+import type { InferTamaguiConfig } from '@tamagui/web'
 import { createTamagui } from 'tamagui'
 import { config } from '@tamagui/tamagui-dev-config'
 
-const tamaConf = createTamagui(config)
+// annotated so the inferred type stays nameable from this file: without it tsc
+// reaches for tamagui-dev-config's internal v6Themes path and calls it unportable
+const tamaConf: InferTamaguiConfig<typeof config> = createTamagui(config)
 
 export type Conf = typeof tamaConf
 

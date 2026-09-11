@@ -40,7 +40,7 @@ Sizing buttons provides a unique challenge especially for a compiler, because yo
 ```tsx
 import { Button } from 'tamagui'
 
-export default () => <Button size="$6">Lorem ipsum</Button>
+export default () => <Button size="6">Lorem ipsum</Button>
 ```
 
 Given your theme defines a size `6`, the button will adjust all of the properties appropriately. You can also pass a plain number to get an arbitrary size.
@@ -65,7 +65,7 @@ Tamagui now has all the features necessary to make creating a custom Button easy
 
 ### Button
 
-Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+Buttons extend View inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[

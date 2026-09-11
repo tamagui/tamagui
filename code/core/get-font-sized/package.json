@@ -34,7 +34,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/constants": "workspace:*",
+    "@tamagui/size": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {

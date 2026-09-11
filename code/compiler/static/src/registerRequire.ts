@@ -1,21 +1,43 @@
+import { dirname } from 'node:path'
+import { buildSync } from 'esbuild'
 import { register } from 'esbuild-register/dist/node'
+import { createRequire } from 'node:module'
 
 import { esbuildIgnoreFilesRegex } from './extractor/bundle'
 import { requireTamaguiCore } from './helpers/requireTamaguiCore'
+import {
+  getStaticEvaluationModuleReplacement,
+  isIgnoredStaticEvaluationModule,
+} from './staticEvaluationIgnoredModules'
 import type { TamaguiPlatform } from './types'
 
 const nameToPaths = {}
+const nodeRequire = createRequire(
+  typeof __filename === 'string' ? __filename : import.meta.url
+)
 
 export const getNameToPaths = () => nameToPaths
 
-const Module = require('node:module')
-const proxyWorm = require('@tamagui/proxy-worm')
+const Module = nodeRequire('node:module')
 
 let isRegistered = false
 let og: any
 
-const whitelisted = {
-  react: true,
+class StaticEvaluationError extends Error {
+  code = 'TAMAGUI_STATIC_EVALUATION_ERROR' as const
+
+  constructor(
+    readonly moduleName: string,
+    readonly importer: string,
+    readonly failedModule: string,
+    readonly reason: string,
+    options: ErrorOptions
+  ) {
+    super(
+      `[tamagui] Failed to evaluate module "${failedModule}" imported from "${importer}" while loading the Tamagui config and configured components.\nReason: ${reason}\nFix the module so it can run in Node during the build. If it is runtime-only and none of its exports create your Tamagui config or components, add "${moduleName}" to dangerouslyIgnoreStaticEvaluationModules in tamagui.build.ts.`,
+      options
+    )
+  }
 }
 
 const compiled = {}
@@ -48,6 +70,35 @@ function getStaticExtractionStub(path: string) {
         fetchUpdateAsync: async () => ({ isNew: false }),
         reloadAsync: async () => {},
       }
+    case 'react-native-reanimated': {
+      const identity = <T>(value: T) => value
+      const sharedValue = <T>(value: T) => ({
+        value,
+        get: () => value,
+        set: (next: T | ((current: T) => T)) => {
+          value = typeof next === 'function' ? (next as (current: T) => T)(value) : next
+        },
+      })
+      const Animated = {
+        createAnimatedComponent: identity,
+        View: () => null,
+        Text: () => null,
+      }
+      return {
+        __esModule: true,
+        default: Animated,
+        cancelAnimation: () => {},
+        runOnJS: identity,
+        runOnUI: identity,
+        useAnimatedReaction: () => {},
+        useAnimatedStyle: (callback: () => unknown) => callback(),
+        useDerivedValue: (callback: () => unknown) => sharedValue(callback()),
+        useSharedValue: sharedValue,
+        withDelay: (_delay: number, animation: unknown) => animation,
+        withSpring: identity,
+        withTiming: identity,
+      }
+    }
     default:
       return null
   }
@@ -55,14 +106,14 @@ function getStaticExtractionStub(path: string) {
 
 export function registerRequire(
   platform: TamaguiPlatform,
-  { proxyWormImports } = {
-    proxyWormImports: false,
+  { ignoredModules = [] }: { ignoredModules?: string[] } = {
+    ignoredModules: [],
   }
 ) {
   // already registered
   if (isRegistered) {
     return {
-      tamaguiRequire: require,
+      tamaguiRequire: nodeRequire,
       unregister: () => {},
     }
   }
@@ -122,12 +173,35 @@ export function registerRequire(
       })
     }
 
+    const staticEvaluationReplacement = getStaticEvaluationModuleReplacement(path)
+    if (staticEvaluationReplacement) {
+      if (!(path in compiled)) {
+        const replacementPath = nodeRequire.resolve(staticEvaluationReplacement)
+        const output = buildSync({
+          entryPoints: [replacementPath],
+          bundle: true,
+          format: 'cjs',
+          platform: 'node',
+          write: false,
+        }).outputFiles[0].text
+        const replacementModule = new Module(replacementPath, this)
+        replacementModule.filename = replacementPath
+        replacementModule.paths = Module._nodeModulePaths(dirname(replacementPath))
+        replacementModule._compile(output, replacementPath)
+        compiled[path] = replacementModule.exports
+      }
+      return compiled[path]
+    }
+
     if (
-      path in knownIgnorableModules ||
-      path.startsWith('react-native-reanimated') ||
-      esbuildIgnoreFilesRegex.test(path)
+      staticEvaluationReplacement === null ||
+      isIgnoredStaticEvaluationModule(path, ignoredModules)
     ) {
-      return proxyWorm
+      return {}
+    }
+
+    if (esbuildIgnoreFilesRegex.test(path)) {
+      return {}
     }
 
     if (path in compiled) {
@@ -156,141 +230,29 @@ export function registerRequire(
       }
     }
 
-    if (!whitelisted[path]) {
-      if (proxyWormImports && !path.includes('.tamagui-dynamic-eval')) {
-        // allow tamagui and its sub-packages through - they re-export components
-        // with staticConfig needed for dynamic eval optimization.
-        // also allow requires FROM within tamagui packages (relative imports like ./Separator.cjs)
-        const callerFile = this?.filename || this?.id || ''
-        const isFromTamaguiPkg =
-          callerFile.includes('@tamagui') ||
-          callerFile.includes('node_modules/tamagui/') ||
-          /\/tamagui\/code\/(core|ui|packages)\//.test(callerFile)
-        const isFromStaticLoader =
-          !callerFile ||
-          callerFile === '.' ||
-          callerFile === '[eval]' ||
-          callerFile.endsWith('/[eval]') ||
-          callerFile.includes('/code/compiler/static/') ||
-          callerFile.includes('/.tamagui/')
-        // relative requires from within a whitelisted package's own files
-        // (e.g. react/index.js does require('./cjs/react.development.js')).
-        // proxy-worming these breaks the package's own internals.
-        const isRelativeFromWhitelisted =
-          path.startsWith('.') &&
-          Object.keys(whitelisted).some((pkg) =>
-            callerFile.includes(`/node_modules/${pkg}/`)
-          )
-
-        if (
-          path === 'tamagui' ||
-          path.startsWith('@tamagui/') ||
-          isRelativeFromWhitelisted ||
-          isFromTamaguiPkg ||
-          isFromStaticLoader
-        ) {
-          return og.apply(this, [path])
-        }
-        return proxyWorm
-      }
-    }
-
     try {
       const out = og.apply(this, arguments)
-      // only for studio disable for now
-      // if (!nameToPaths[path]) {
-      //   if (out && typeof out === 'object') {
-      //     for (const key in out) {
-      //       try {
-      //         const conf = out[key]?.staticConfig as StaticConfig
-      //         if (conf) {
-      //           if (conf.componentName) {
-      //             nameToPaths[conf.componentName] ??= new Set()
-      //             const fullName = path.startsWith('.')
-      //               ? join(`${this.path.replace(/dist(\/cjs)?/, 'src')}`, path)
-      //               : path
-      //             nameToPaths[conf.componentName].add(fullName)
-      //           } else {
-      //             // console.log('no name component', path)
-      //           }
-      //         }
-      //       } catch {
-      //         // ok
-      //       }
-      //     }
-      //   }
-      // }
       return out
     } catch (err: any) {
-      if (
-        !process.env.TAMAGUI_ENABLE_WARN_DYNAMIC_LOAD &&
-        path.includes('tamagui-dynamic-eval')
-      ) {
-        // ok, dynamic eval fails
-        return
+      if (err?.code === 'TAMAGUI_STATIC_EVALUATION_ERROR') {
+        throw err
       }
-      if (allowedIgnores[path] || IGNORES === 'true') {
-        // ignore
-      } else if (!process.env.TAMAGUI_SHOW_FULL_BUNDLE_ERRORS && !process.env.DEBUG) {
-        if (hasWarnedForModules.has(path)) {
-          // ignore
-        } else {
-          hasWarnedForModules.add(path)
-        }
-      } else {
-        /**
-         * Allow errors to happen, we're just reading config and components but sometimes external modules cause problems
-         * We can't fix every problem, so just swap them out with proxyWorm which is a sort of generic object that can be read.
-         */
-
-        console.warn(
-          `  [tamagui] skipped "${path}" (set TAMAGUI_IGNORE_BUNDLE_ERRORS="${path}" to silence)`
-        )
-      }
-
-      return proxyWorm
+      const importer = this?.filename || this?.id || '<unknown module>'
+      const reason = err instanceof Error ? err.message : String(err)
+      const failedModule =
+        reason.match(/Cannot find native module ['"]([^'"]+)['"]/)?.[1] || path
+      throw new StaticEvaluationError(path, importer, failedModule, reason, {
+        cause: err,
+      })
     }
   }
 
   return {
     tamaguiRequire,
     unregister: () => {
-      if (hasWarnedForModules.size) {
-        console.info(
-          `  [tamagui] skipped loading ${hasWarnedForModules.size} module, see: https://tamagui.dev/docs/intro/errors#warning-001`
-        )
-        hasWarnedForModules.clear()
-      }
-
       unregister()
       isRegistered = false
       Module.prototype.require = og
     },
   }
-}
-
-const IGNORES = process.env.TAMAGUI_IGNORE_BUNDLE_ERRORS
-const extraIgnores =
-  IGNORES === 'true' ? [] : process.env.TAMAGUI_IGNORE_BUNDLE_ERRORS?.split(',')
-
-const knownIgnorableModules = {
-  '@gorhom/bottom-sheet': true,
-  'expo-modules': true,
-  solito: true,
-  'expo-linear-gradient': true,
-  '@expo/vector-icons': true,
-  'tamagui/linear-gradient': true,
-  // animation libraries not needed for static extraction
-  '@emotion/is-prop-valid': true,
-  'framer-motion': true,
-  motion: true,
-  ...Object.fromEntries(extraIgnores?.map((k) => [k, true]) || []),
-}
-
-const hasWarnedForModules = new Set<string>()
-
-const allowedIgnores = {
-  'expo-constants': true,
-  './ExpoHaptics': true,
-  './js/MaskedView': true,
 }

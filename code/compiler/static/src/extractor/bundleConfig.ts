@@ -1,24 +1,36 @@
-import generate from '@babel/generator'
-import traverse from '@babel/traverse'
-import * as t from '@babel/types'
 import { createHash } from 'node:crypto'
+import { createRequire } from 'node:module'
 import { existsSync, readFileSync, unlinkSync } from 'node:fs'
-import { basename, dirname, extname, join, relative, sep } from 'node:path'
+import {
+  basename,
+  dirname,
+  extname,
+  isAbsolute,
+  join,
+  relative,
+  resolve,
+  sep,
+} from 'node:path'
 import { pathToFileURL } from 'node:url'
 // @ts-ignore why
 import { Color, colorLog } from '@tamagui/cli-color'
 import { type StaticConfig, type TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
-import * as FS from 'fs-extra'
+import FS from 'fs-extra'
 import { readFile } from 'node:fs/promises'
 import { registerRequire, setRequireResult } from '../registerRequire'
 import type { TamaguiOptions } from '../types'
-import { babelParse } from './babelParse'
+import { addLocalExports } from './addLocalExports'
 import { esbuildLoaderConfig, esbundleTamaguiConfig } from './bundle'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
-import { hasTopLevelAwait } from './hasTopLevelAwait'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import { detectModuleFormat } from './detectModuleFormat'
+import { staticEvaluationIgnorePlugin } from '../staticEvaluationIgnoredModules'
+
+const nodeRequire = createRequire(
+  typeof __filename === 'string' ? __filename : import.meta.url
+)
+const componentDisplayName = /* @__PURE__ */ Symbol.for('tamagui.componentDisplayName')
 
 // track temp files for cleanup on exit
 const activeTempFiles = new Set<string>()
@@ -45,10 +57,10 @@ function getEsbuildStdinLoader(filePath: string): esbuild.Loader {
 
 function resolvePackageEntry(packageName: string, format: 'esm' | 'cjs') {
   if (format === 'cjs') {
-    return require.resolve(packageName)
+    return nodeRequire.resolve(packageName)
   }
 
-  const packageJsonPath = require.resolve(`${packageName}/package.json`)
+  const packageJsonPath = nodeRequire.resolve(`${packageName}/package.json`)
   const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'))
   const packageRoot = dirname(packageJsonPath)
   const exportEntry = packageJson.exports?.['.']
@@ -63,7 +75,7 @@ function resolvePackageEntry(packageName: string, format: 'esm' | 'cjs') {
     return join(packageRoot, esmEntry)
   }
 
-  return require.resolve(packageName)
+  return nodeRequire.resolve(packageName)
 }
 
 function cleanupTempFiles() {
@@ -95,6 +107,7 @@ export type LoadedComponents = {
     string,
     {
       staticConfig: StaticConfig
+      displayName?: string
     }
   >
 }
@@ -104,6 +117,15 @@ export type TamaguiProjectInfo = {
   tamaguiConfig?: TamaguiInternalConfig | null
   nameToPaths?: NameToPaths
   cached?: boolean
+  dependencies?: string[]
+  /**
+   * The files whose bytes determine every compiler input this project produced:
+   * the evaluated config and each component's static config. The compile cache
+   * stamp is hashed from them, so they must be complete - a project that cannot
+   * name them gets no stamp and no cache rather than a stamp that misses a
+   * config change.
+   */
+  stampSources?: string[]
 }
 
 const external = [
@@ -157,19 +179,6 @@ const handleEsmFeaturesPlugin: esbuild.Plugin = {
       if (contents.includes('import.meta.main')) {
         contents = contents.replace(/import\.meta\.main/g, 'false')
         modified = true
-      }
-
-      // stub files with top-level await - they're typically runtime-only
-      if (hasTopLevelAwait(contents, args.path)) {
-        if (process.env.DEBUG?.startsWith('tamagui')) {
-          console.info(`[tamagui] stubbing file with top-level await: ${args.path}`)
-        }
-        return {
-          // Keep this as an ESM-shaped stub so esbuild doesn't inline a top-level
-          // `module.exports = {}` into the parent bundle and wipe its exports.
-          contents: `// stubbed - contains top-level await\nexport default {}`,
-          loader: 'js',
-        }
       }
 
       if (modified) {
@@ -230,13 +239,59 @@ export function hasBundledConfigChanged() {
 let loadedConfig: TamaguiInternalConfig | null = null
 
 export const getLoadedConfig = () => loadedConfig
+export const setLoadedConfig = (config: TamaguiInternalConfig) => {
+  loadedConfig = config
+}
 
 function getBundleKey(props: TamaguiOptions) {
   return JSON.stringify({
+    root: props.root,
     components: props.components,
     config: props.config,
     platform: props.platform,
+    dangerouslyIgnoreStaticEvaluationModules:
+      props.dangerouslyIgnoreStaticEvaluationModules,
   })
+}
+
+function getPackageNameFromPath(modulePath: string) {
+  const normalized = modulePath.split(sep).join('/')
+  const nodeModulesIndex = normalized.lastIndexOf('/node_modules/')
+  if (nodeModulesIndex === -1) {
+    return normalized.startsWith('.') || isAbsolute(normalized) ? undefined : normalized
+  }
+  const packagePath = normalized.slice(nodeModulesIndex + '/node_modules/'.length)
+  const parts = packagePath.split('/')
+  return parts[0]?.startsWith('@') ? parts.slice(0, 2).join('/') : parts[0]
+}
+
+function findStaticEvaluationError(error: unknown):
+  | {
+      moduleName: string
+      importer: string
+      failedModule: string
+      reason: string
+    }
+  | undefined {
+  let current = error
+  while (current instanceof Error) {
+    if (
+      'code' in current &&
+      current.code === 'TAMAGUI_STATIC_EVALUATION_ERROR' &&
+      'moduleName' in current &&
+      'importer' in current &&
+      'failedModule' in current &&
+      'reason' in current
+    ) {
+      return current as Error & {
+        moduleName: string
+        importer: string
+        failedModule: string
+        reason: string
+      }
+    }
+    current = current.cause
+  }
 }
 
 export async function getBundledConfig(props: TamaguiOptions, rebuild = false) {
@@ -248,7 +303,7 @@ export async function getBundledConfig(props: TamaguiOptions, rebuild = false) {
   }
 
   if (!currentBundle || currentBundleKey !== bundleKey || rebuild) {
-    return await bundleConfig(props)
+    return await bundleConfig(props, rebuild)
   }
 
   return currentBundle
@@ -269,10 +324,67 @@ let hasBundledOnce = false
 // that's acceptable - better than nothing
 let hasLoggedBuild = false
 
-export async function bundleConfig(props: TamaguiOptions) {
+const packageNameByDirectory = new Map<string, string | null>()
+
+/** The name of the package a file belongs to, by nearest package.json. */
+function owningPackageName(file: string): string | null {
+  let directory = dirname(file)
+  const walked: string[] = []
+  while (true) {
+    const known = packageNameByDirectory.get(directory)
+    if (known !== undefined) {
+      for (const step of walked) packageNameByDirectory.set(step, known)
+      return known
+    }
+    walked.push(directory)
+    const manifest = join(directory, 'package.json')
+    if (existsSync(manifest)) {
+      let name: string | null = null
+      try {
+        name = JSON.parse(readFileSync(manifest, 'utf-8')).name ?? null
+      } catch {
+        name = null
+      }
+      for (const step of walked) packageNameByDirectory.set(step, name)
+      return name
+    }
+    const parent = dirname(directory)
+    if (parent === directory) {
+      for (const step of walked) packageNameByDirectory.set(step, null)
+      return null
+    }
+    directory = parent
+  }
+}
+
+/**
+ * Every Tamagui-owned file this process actually loaded, read off the one CJS
+ * module cache the compiler host requires through. Derived rather than listed:
+ * a hardcoded package list silently misses whatever the engine grows next, and
+ * this already covers 20+ packages the compiler reads through @tamagui/core.
+ */
+function requiredTamaguiPackageFiles(): string[] {
+  const found: string[] = []
+  for (const file of Object.keys(nodeRequire.cache)) {
+    if (!file.includes('.')) continue
+    const name = owningPackageName(file)
+    if (name === 'tamagui' || name?.startsWith('@tamagui/')) found.push(file)
+  }
+  return found
+}
+
+export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
   const bundleKey = getBundleKey(props)
+  const root = props.root || process.cwd()
+  const configEntry = props.config
+    ? getTamaguiConfigPathFromOptionsConfig(props.config, root)
+    : ''
+  const baseComponents = (props.components || []).filter((x) => x !== '@tamagui/core')
+  let componentOutPaths: string[] = []
+  let componentImports: string[][] = []
   // webpack is calling this a ton for no reason
   if (
+    !rebuild &&
     global.tamaguiLastBundledConfig &&
     global.tamaguiLastBundledConfigKey === bundleKey &&
     Date.now() - global.tamaguiLastLoaded < 3000
@@ -284,35 +396,46 @@ export async function bundleConfig(props: TamaguiOptions) {
   try {
     isBundling = true
 
-    const configEntry = props.config
-      ? getTamaguiConfigPathFromOptionsConfig(props.config)
-      : ''
-    const tmpDir = join(process.cwd(), '.tamagui')
+    const rootRequire = createRequire(join(root, 'package.json'))
+    const tmpDir = join(root, '.tamagui')
+    // esbuild inlines process.env.TAMAGUI_TARGET into these bundles (see bundle.ts),
+    // so their contents are platform-specific. keep web and native on separate paths:
+    // sharing one path let a native bundle be picked up as the web config (and vice
+    // versa) by the mtime reuse check below, emitting web classes with no CSS variables.
+    const platformSuffix = (props.platform || 'web') === 'native' ? '.native' : '.web'
     // detect module format from config entry point
     const configFormat = configEntry ? detectModuleFormat(configEntry) : 'cjs'
     const configExt = configFormat === 'esm' ? '.mjs' : '.cjs'
-    const configOutPath = join(tmpDir, `tamagui.config${configExt}`)
-    const baseComponents = (props.components || []).filter((x) => x !== '@tamagui/core')
-    // detect format per component module
+    const configOutPath = join(tmpDir, `tamagui.config${platformSuffix}${configExt}`)
+    // resolve from the consumer root, then walk from the exported subpath because
+    // packages are not required to export their package.json
     const componentFormats: Array<'esm' | 'cjs'> = baseComponents.map((mod) => {
       try {
-        const pkgJson = require.resolve(mod + '/package.json')
-        const pkg = JSON.parse(readFileSync(pkgJson, 'utf-8'))
+        let packageRoot = dirname(rootRequire.resolve(mod))
+        while (!existsSync(join(packageRoot, 'package.json'))) {
+          const parent = dirname(packageRoot)
+          if (parent === packageRoot) {
+            return 'cjs'
+          }
+          packageRoot = parent
+        }
+        const pkg = JSON.parse(readFileSync(join(packageRoot, 'package.json'), 'utf-8'))
         return pkg.type === 'module' ? 'esm' : 'cjs'
       } catch {
         return 'cjs'
       }
     })
-    const componentOutPaths = baseComponents.map((componentModule, i) => {
+    componentOutPaths = baseComponents.map((componentModule, i) => {
       const ext = componentFormats[i] === 'esm' ? '.mjs' : '.cjs'
       return join(
         tmpDir,
         `${componentModule
           .split(sep)
           .join('-')
-          .replace(/[^a-z0-9]+/gi, '')}-components.config${ext}`
+          .replace(/[^a-z0-9]+/gi, '')}-components.config${platformSuffix}${ext}`
       )
     })
+    let compilerDependencies: string[] = currentBundle?.dependencies ?? []
 
     if (
       process.env.NODE_ENV === 'development' &&
@@ -325,8 +448,8 @@ export async function bundleConfig(props: TamaguiOptions) {
     // (built by another worker) - this prevents duplicate builds across worker threads
     // we must check ALL files, not just the config, to avoid a race where another
     // worker has written the config but not yet finished writing component files
-    let shouldBuild = !props.disableInitialBuild
-    if (shouldBuild && props.config) {
+    let shouldBuild = rebuild || !props.disableInitialBuild
+    if (shouldBuild && props.config && !rebuild) {
       const allOutFiles = [configOutPath, ...componentOutPaths]
       try {
         const stats = await Promise.all(
@@ -353,7 +476,7 @@ export async function bundleConfig(props: TamaguiOptions) {
 
       const start = Date.now()
 
-      await Promise.all([
+      const buildResults = await Promise.all([
         props.config
           ? esbundleTamaguiConfig(
               {
@@ -362,6 +485,10 @@ export async function bundleConfig(props: TamaguiOptions) {
                 outfile: configOutPath,
                 target: 'node24',
                 format: configFormat,
+                absWorkingDir: root,
+                metafile: true,
+                dangerouslyIgnoreStaticEvaluationModules:
+                  props.dangerouslyIgnoreStaticEvaluationModules,
                 ...esbuildExtraOptions,
               },
               props.platform || 'web'
@@ -371,17 +498,52 @@ export async function bundleConfig(props: TamaguiOptions) {
           return esbundleTamaguiConfig(
             {
               entryPoints: [componentModule],
-              resolvePlatformSpecificEntries: true,
+              // bare packages must stay bare so esbuild can select their
+              // react-native conditional export; local files still use siblings
+              resolvePlatformSpecificEntries:
+                props.platform !== 'native' ||
+                componentModule.startsWith('.') ||
+                isAbsolute(componentModule),
+              conditions: props.platform === 'native' ? ['react-native'] : undefined,
               external,
               outfile: componentOutPaths[i],
               target: 'node24',
               format: componentFormats[i],
+              absWorkingDir: root,
+              metafile: true,
+              dangerouslyIgnoreStaticEvaluationModules:
+                props.dangerouslyIgnoreStaticEvaluationModules,
               ...esbuildExtraOptions,
             },
             props.platform || 'web'
           )
         }),
       ])
+
+      compilerDependencies = buildResults.flatMap((result) =>
+        result?.metafile
+          ? Object.keys(result.metafile.inputs).map((input) => resolve(root, input))
+          : []
+      )
+
+      componentImports = buildResults.slice(1).map((result) => {
+        if (!result?.metafile) {
+          return []
+        }
+        const entryPoint = Object.values(result.metafile.outputs).find(
+          (output) => output.entryPoint
+        )?.entryPoint
+        if (!entryPoint) {
+          return []
+        }
+        return [
+          ...new Set(
+            result.metafile.inputs[entryPoint]?.imports
+              .map((item) => getPackageNameFromPath(item.path))
+              .filter((moduleName): moduleName is string => Boolean(moduleName)) || []
+          ),
+        ]
+      })
 
       // only log once per process to avoid duplicate messages
       // also skip if _skipBuildLog is set (used during worker recycle warmup)
@@ -397,8 +559,8 @@ export async function bundleConfig(props: TamaguiOptions) {
           colorLog(
             Color.Dim,
             `
-          Config     .${sep}${relative(process.cwd(), configOutPath)}
-          Components ${componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`).join('\n             ')}
+          Config     .${sep}${relative(root, configOutPath)}
+          Components ${componentOutPaths.map((p) => `.${sep}${relative(root, p)}`).join('\n             ')}
           `
           )
         }
@@ -407,16 +569,16 @@ export async function bundleConfig(props: TamaguiOptions) {
 
     // clear specific output file caches so we pick up the fresh (or newly discovered) build
     // only clear the built output files - not all require.cache entries, since that breaks
-    // external requires like @tamagui/config/v3 that are externalized in the bundled CJS
+    // external requires like @tamagui/config/v6 that are externalized in the bundled CJS
     if (hasBundledOnce) {
       try {
-        delete require.cache[require.resolve(configOutPath)]
+        delete nodeRequire.cache[nodeRequire.resolve(configOutPath)]
       } catch {
         // file may not exist yet
       }
       for (const p of componentOutPaths) {
         try {
-          delete require.cache[require.resolve(p)]
+          delete nodeRequire.cache[nodeRequire.resolve(p)]
         } catch {
           // file may not exist yet
         }
@@ -428,9 +590,11 @@ export async function bundleConfig(props: TamaguiOptions) {
     let out: any
     if (configFormat === 'esm') {
       // use file:// URL for proper ESM resolution
-      out = await import(pathToFileURL(configOutPath).href)
+      out = await import(
+        `${pathToFileURL(configOutPath).href}?v=${FS.statSync(configOutPath).mtimeMs}`
+      )
     } else {
-      out = require(configOutPath)
+      out = nodeRequire(configOutPath)
     }
 
     // try and find .config, even if on .default
@@ -443,25 +607,28 @@ export async function bundleConfig(props: TamaguiOptions) {
       throw new Error(`No config: ${config}`)
     }
 
-    // check for ProxyWorm - indicates a module loading error
-    if (config._isProxyWorm) {
-      throw new Error(
-        `Got a proxied config - likely a module loading error. Set DEBUG=tamagui for details.`
-      )
-    }
-
     loadedConfig = config
 
     if (!config.parsed) {
       const { createTamagui } = requireTamaguiCore(props.platform || 'web')
       // need to create it
       config = createTamagui(config)
+    } else {
+      // an esm-evaluated config parses inside its own core module instance,
+      // leaving this host copy with empty token and media state. install the
+      // already-parsed config so host module-local state matches, same as
+      // loadTamaguiFromModules, without re-parsing or browser css discovery.
+      const { installTamaguiConfig } = requireTamaguiCore(props.platform || 'web')
+      installTamaguiConfig(config)
     }
 
     if (props.outputCSS) {
       await writeTamaguiCSS(props.outputCSS, config)
     }
 
+    if (rebuild) {
+      delete cacheComponents[componentOutPaths.join('\0')]
+    }
     let components = await loadComponents({
       ...props,
       components: componentOutPaths,
@@ -499,6 +666,23 @@ export async function bundleConfig(props: TamaguiOptions) {
       components,
       nameToPaths: {},
       tamaguiConfig: config,
+      dependencies: compilerDependencies,
+      // the generated bundles inline every source they were built from,
+      // including the component packages resolved out of node_modules, so their
+      // bytes are a complete description of what the compiler host will read
+      stampSources: [
+        ...(configEntry ? [configOutPath] : []),
+        ...componentOutPaths,
+        // The generated bundles inline the user's config and components, but
+        // `external` keeps @tamagui/core and @tamagui/web out of them, and
+        // everything reached only through those two is left out with them.
+        // Those packages hold the staticConfig and style engine every lowering
+        // is computed against, so without their bytes an in-place engine edit at
+        // the same version - exactly what `bun run watch` and
+        // `bun release --into` produce - would serve plans built by the
+        // previous engine.
+        ...requiredTamaguiPackageFiles(),
+      ],
     }
 
     currentBundle = res
@@ -507,12 +691,28 @@ export async function bundleConfig(props: TamaguiOptions) {
 
     return res
   } catch (err: any) {
-    console.error(
-      `Error bundling tamagui config: ${err?.message} (run with DEBUG=tamagui to see stack)`
-    )
-    if (process.env.DEBUG?.includes('tamagui')) {
-      console.error(err.stack)
+    const failure = findStaticEvaluationError(err)
+    const componentIndex = failure
+      ? componentOutPaths.findIndex(
+          (outputPath) =>
+            outputPath === failure.moduleName || outputPath === failure.importer
+        )
+      : -1
+    const configuredComponent = baseComponents[componentIndex]
+    if (failure && configuredComponent) {
+      const configuredImport =
+        configuredComponent.startsWith('.') || isAbsolute(configuredComponent)
+          ? componentImports[componentIndex]?.[0] || configuredComponent
+          : configuredComponent
+      throw new Error(
+        `[tamagui] Static evaluation could not proceed for configured component "${configuredComponent}".\nThe import "${configuredImport}" reached module "${failure.failedModule}", which failed during Node evaluation.\nReason: ${failure.reason}\nFix the failing module so it can run in Node during the build. If "${configuredImport}" is runtime-only and none of its exports create your Tamagui config or components, add "${configuredImport}" to dangerouslyIgnoreStaticEvaluationModules in tamagui.build.ts.`,
+        { cause: err }
+      )
     }
+    throw new Error(
+      `[tamagui] Static evaluation could not proceed for configured Tamagui config "${configEntry || '<default config>'}".\nReason: ${err instanceof Error ? err.message : String(err)}\nFix the failing import so it can run in Node during the build. If it is runtime-only and none of its exports create your Tamagui config or components, add its exact module name to dangerouslyIgnoreStaticEvaluationModules in tamagui.build.ts.`,
+      { cause: err }
+    )
   } finally {
     isBundling = false
     waitForBundle.forEach((cb) => cb())
@@ -523,6 +723,7 @@ export async function bundleConfig(props: TamaguiOptions) {
 export async function writeTamaguiCSS(outputCSS: string, config: TamaguiInternalConfig) {
   const flush = async () => {
     colorLog(Color.FgYellow, `  ➡ [tamagui] output css: ${outputCSS}`)
+    await FS.mkdirp(dirname(outputCSS))
     await FS.writeFile(outputCSS, css)
   }
 
@@ -544,13 +745,47 @@ export async function writeTamaguiCSS(outputCSS: string, config: TamaguiInternal
 export async function loadComponents(props: TamaguiOptions, forceExports = false) {
   const coreComponents = getCoreComponentsSync(props)
   const otherComponents = await loadComponentsInner(props, forceExports)
-  return [...coreComponents, ...(otherComponents || [])]
+  return [...coreComponents, ...otherComponents]
+}
+
+/**
+ * Evaluate one host-resolved module under the platform's static-evaluation
+ * hooks, the way configured `components` load, and return its exports. The
+ * compiler frontend uses this for component discovery when no module runner is
+ * available (the Vite native environment plans for Metro).
+ */
+export async function evaluateComponentModule(
+  props: TamaguiOptions,
+  id: string
+): Promise<Record<string, unknown>> {
+  const previousIsStatic = process.env.IS_STATIC
+  const previousIsServer = process.env.TAMAGUI_IS_SERVER
+  process.env.IS_STATIC = 'is_static'
+  process.env.TAMAGUI_IS_SERVER = 'true'
+  const { unregister } = registerRequire(props.platform || 'web', {
+    ignoredModules: props.dangerouslyIgnoreStaticEvaluationModules,
+  })
+  try {
+    try {
+      return nodeRequire(id)
+    } catch (error) {
+      const code = (error as { code?: string })?.code
+      if (code !== 'ERR_REQUIRE_ESM' && code !== 'ERR_REQUIRE_ASYNC_MODULE') throw error
+    }
+  } finally {
+    unregister()
+    if (previousIsStatic === undefined) delete process.env.IS_STATIC
+    else process.env.IS_STATIC = previousIsStatic
+    if (previousIsServer === undefined) delete process.env.TAMAGUI_IS_SERVER
+    else process.env.TAMAGUI_IS_SERVER = previousIsServer
+  }
+  return import(`${pathToFileURL(id).href}?v=${FS.statSync(id).mtimeMs}`)
 }
 
 export function loadComponentsSync(props: TamaguiOptions, forceExports = false) {
   const coreComponents = getCoreComponentsSync(props)
   const otherComponents = loadComponentsInnerSync(props, forceExports)
-  return [...coreComponents, ...(otherComponents || [])]
+  return [...coreComponents, ...otherComponents]
 }
 
 function getCoreComponentsSync(props: TamaguiOptions) {
@@ -559,7 +794,7 @@ function getCoreComponentsSync(props: TamaguiOptions) {
     components: ['@tamagui/core'],
   })
 
-  if (!loaded) {
+  if (!loaded[0]) {
     throw new Error(`Core should always load`)
   }
 
@@ -575,17 +810,21 @@ function getCoreComponentsSync(props: TamaguiOptions) {
 export async function loadComponentsInner(
   props: TamaguiOptions,
   forceExports = false
-): Promise<null | LoadedComponents[]> {
+): Promise<LoadedComponents[]> {
   const componentsModules = props.components || []
 
-  const key = componentsModules.join('\0')
+  const key = JSON.stringify([
+    props.platform,
+    componentsModules,
+    props.dangerouslyIgnoreStaticEvaluationModules,
+  ])
 
   if (!forceExports && cacheComponents[key]) {
     return cacheComponents[key]
   }
 
   const { unregister } = registerRequire(props.platform || 'web', {
-    proxyWormImports: forceExports,
+    ignoredModules: props.dangerouslyIgnoreStaticEvaluationModules,
   })
 
   try {
@@ -600,12 +839,11 @@ export async function loadComponentsInner(
       const fileContents = isDynamic ? readFileSync(name, 'utf-8') : ''
       let loadModule = name
       let writtenContents = fileContents
-      let didBabel = false
 
       const attemptLoad = async ({ forceExports = false } = {}) => {
         if (isDynamic) {
           writtenContents = forceExports
-            ? transformAddExports(babelParse(esbuildit(fileContents, 'modern'), name))
+            ? addLocalExports(esbuildit(fileContents, 'modern'), name)
             : fileContents
           loadModule = getDynamicEvalOutfile(name, format, writtenContents)
 
@@ -614,6 +852,12 @@ export async function loadComponentsInner(
 
           await esbuild.build({
             ...esbuildOptionsWithPlugins,
+            plugins: [
+              ...(esbuildOptionsWithPlugins.plugins || []),
+              staticEvaluationIgnorePlugin(
+                props.dangerouslyIgnoreStaticEvaluationModules
+              ),
+            ],
             format,
             outfile: loadModule,
             stdin: {
@@ -651,9 +895,11 @@ export async function loadComponentsInner(
         let moduleResult: any
         if (format === 'esm') {
           // use file:// URL for proper ESM resolution
-          moduleResult = await import(pathToFileURL(loadModule).href)
+          moduleResult = await import(
+            `${pathToFileURL(loadModule).href}?v=${FS.statSync(loadModule).mtimeMs}`
+          )
         } else {
-          moduleResult = require(loadModule)
+          moduleResult = nodeRequire(loadModule)
         }
 
         if (!forceExports) {
@@ -681,33 +927,26 @@ export async function loadComponentsInner(
       let loaded: LoadedComponents | LoadedComponents[] | undefined
 
       try {
-        loaded = await attemptLoad({ forceExports: true })
-        didBabel = true
+        loaded = await attemptLoad({ forceExports: isDynamic })
       } catch (err) {
-        console.info('babel err', err, writtenContents)
+        if (!isDynamic) {
+          throw new Error(
+            `[tamagui] Failed to statically evaluate configured component module "${name}". ${err instanceof Error ? err.message : String(err)}`,
+            { cause: err }
+          )
+        }
         writtenContents = fileContents
         if (process.env.DEBUG?.startsWith('tamagui')) {
-          console.info(`Error parsing babel likely`, err)
+          console.info(`Error adding local component exports`, err)
         }
 
         try {
           loaded = await attemptLoad({ forceExports: false })
         } catch (err2) {
-          if (process.env.TAMAGUI_ENABLE_WARN_DYNAMIC_LOAD) {
-            console.info(
-              `\nTamagui attempted but failed to dynamically optimize components in:\n  ${name}\n`
-            )
-            console.info(err2)
-            console.info(
-              `At: ${loadModule}`,
-              `\ndidBabel: ${didBabel}`,
-              `\nIn:`,
-              writtenContents,
-              `\nisDynamic: `,
-              isDynamic
-            )
-          }
-          loaded = []
+          throw new Error(
+            `[tamagui] Failed to statically evaluate configured component module "${name}" at "${loadModule}". ${err2 instanceof Error ? err2.message : String(err2)}`,
+            { cause: err2 }
+          )
         }
       } finally {
         dispose()
@@ -722,9 +961,6 @@ export async function loadComponentsInner(
 
     cacheComponents[key] = results
     return results
-  } catch (err: any) {
-    console.info(`Tamagui error bundling components`, err.message, err.stack)
-    return null
   } finally {
     unregister()
   }
@@ -734,17 +970,21 @@ export async function loadComponentsInner(
 export function loadComponentsInnerSync(
   props: TamaguiOptions,
   forceExports = false
-): null | LoadedComponents[] {
+): LoadedComponents[] {
   const componentsModules = props.components || []
 
-  const key = componentsModules.join('\0')
+  const key = JSON.stringify([
+    props.platform,
+    componentsModules,
+    props.dangerouslyIgnoreStaticEvaluationModules,
+  ])
 
   if (!forceExports && cacheComponents[key]) {
     return cacheComponents[key]
   }
 
   const { unregister } = registerRequire(props.platform || 'web', {
-    proxyWormImports: forceExports,
+    ignoredModules: props.dangerouslyIgnoreStaticEvaluationModules,
   })
 
   try {
@@ -756,12 +996,11 @@ export function loadComponentsInnerSync(
       const fileContents = isDynamic ? readFileSync(name, 'utf-8') : ''
       let loadModule = name
       let writtenContents = fileContents
-      let didBabel = false
 
       function attemptLoad({ forceExports = false } = {}) {
         if (isDynamic) {
           writtenContents = forceExports
-            ? transformAddExports(babelParse(esbuildit(fileContents, 'modern'), name))
+            ? addLocalExports(esbuildit(fileContents, 'modern'), name)
             : fileContents
           loadModule = getDynamicEvalOutfile(name, 'cjs', writtenContents)
 
@@ -800,10 +1039,10 @@ export function loadComponentsInnerSync(
         }
 
         if (process.env.DEBUG === 'tamagui') {
-          console.info(`loadModule`, loadModule, require.resolve(loadModule))
+          console.info(`loadModule`, loadModule, nodeRequire.resolve(loadModule))
         }
 
-        const moduleResult = require(loadModule)
+        const moduleResult = nodeRequire(loadModule)
 
         if (!forceExports) {
           setRequireResult(name, moduleResult)
@@ -828,14 +1067,18 @@ export function loadComponentsInnerSync(
       }
 
       try {
-        const res = attemptLoad({ forceExports: true })
-        didBabel = true
+        const res = attemptLoad({ forceExports: isDynamic })
         return res
       } catch (err) {
-        console.info('babel err', err, writtenContents)
+        if (!isDynamic) {
+          throw new Error(
+            `[tamagui] Failed to statically evaluate configured component module "${name}". ${err instanceof Error ? err.message : String(err)}`,
+            { cause: err }
+          )
+        }
         writtenContents = fileContents
         if (process.env.DEBUG?.startsWith('tamagui')) {
-          console.info(`Error parsing babel likely`, err)
+          console.info(`Error adding local component exports`, err)
         }
       } finally {
         dispose()
@@ -844,30 +1087,16 @@ export function loadComponentsInnerSync(
       try {
         return attemptLoad({ forceExports: false })
       } catch (err) {
-        if (process.env.TAMAGUI_ENABLE_WARN_DYNAMIC_LOAD) {
-          console.info(
-            `\nTamagui attempted but failed to dynamically optimize components in:\n  ${name}\n`
-          )
-          console.info(err)
-          console.info(
-            `At: ${loadModule}`,
-            `\ndidBabel: ${didBabel}`,
-            `\nIn:`,
-            writtenContents,
-            `\nisDynamic: `,
-            isDynamic
-          )
-        }
-        return []
+        throw new Error(
+          `[tamagui] Failed to statically evaluate configured component module "${name}" at "${loadModule}". ${err instanceof Error ? err.message : String(err)}`,
+          { cause: err }
+        )
       } finally {
         dispose()
       }
     })
     cacheComponents[key] = info
     return info
-  } catch (err: any) {
-    console.info(`Tamagui error bundling components`, err.message, err.stack)
-    return null
   } finally {
     unregister()
   }
@@ -886,27 +1115,22 @@ const esbuildit = (src: string, target?: 'modern') => {
   }).code
 }
 
-function getComponentStaticConfigByName(name: string, exported: any) {
-  const components: Record<string, { staticConfig: StaticConfig }> = {}
-  try {
-    if (!exported || typeof exported !== 'object' || Array.isArray(exported)) {
-      throw new Error(`Invalid export from package ${name}: ${typeof exported}`)
-    }
+export function getComponentStaticConfigByName(name: string, exported: any) {
+  const components: Record<string, { staticConfig: StaticConfig; displayName?: string }> =
+    {}
+  if (!exported || typeof exported !== 'object' || Array.isArray(exported)) {
+    throw new Error(`Invalid export from package ${name}: ${typeof exported}`)
+  }
 
-    for (const key in exported) {
-      const found = getTamaguiComponent(key, exported[key])
-      if (found) {
-        // remove non-stringifyable
-        const { Component, ...sc } = found.staticConfig
-        components[key] = { staticConfig: sc }
+  for (const key in exported) {
+    const found = getTamaguiComponent(key, exported[key])
+    if (found) {
+      // remove non-stringifyable
+      const { Component, ...sc } = found.staticConfig
+      components[key] = {
+        staticConfig: sc,
+        ...(found.displayName && { displayName: found.displayName }),
       }
-    }
-  } catch (err) {
-    if (process.env.TAMAGUI_ENABLE_WARN_DYNAMIC_LOAD) {
-      console.error(
-        `Tamagui failed getting components from ${name} (Disable error by setting environment variable TAMAGUI_ENABLE_WARN_DYNAMIC_LOAD=1)`
-      )
-      console.error(err)
     }
   }
   return components
@@ -915,13 +1139,16 @@ function getComponentStaticConfigByName(name: string, exported: any) {
 function getTamaguiComponent(
   name: string,
   Component: any
-): undefined | { staticConfig: StaticConfig } {
+): undefined | { staticConfig: StaticConfig; displayName?: string } {
   if (name[0].toUpperCase() !== name[0]) {
     return
   }
   const staticConfig = Component?.staticConfig as StaticConfig | undefined
   if (staticConfig) {
-    return Component
+    return {
+      staticConfig,
+      displayName: Component[componentDisplayName] as string | undefined,
+    }
   }
 }
 
@@ -930,49 +1157,3 @@ function interopDefaultExport(mod: any) {
 }
 
 const cacheComponents: Record<string, LoadedComponents[]> = {}
-
-function transformAddExports(ast: t.File) {
-  const usedNames = new Set<string>()
-
-  // avoid clobbering
-  // @ts-ignore
-  traverse(ast, {
-    ExportNamedDeclaration(nodePath) {
-      if (nodePath.node.specifiers) {
-        for (const spec of nodePath.node.specifiers) {
-          usedNames.add(
-            t.isIdentifier(spec.exported) ? spec.exported.name : spec.exported.value
-          )
-        }
-      }
-    },
-  })
-
-  // @ts-ignore
-  traverse(ast, {
-    VariableDeclaration(nodePath) {
-      // top level only
-      if (!t.isProgram(nodePath.parent)) return
-      const decs = nodePath.node.declarations
-      if (decs.length > 1) return
-      const [dec] = decs
-      if (!t.isIdentifier(dec.id)) return
-      if (!dec.init) return
-      if (usedNames.has(dec.id.name)) return
-      usedNames.add(dec.id.name)
-      nodePath.replaceWith(
-        t.exportNamedDeclaration(t.variableDeclaration('let', [dec]), [
-          t.exportSpecifier(t.identifier(dec.id.name), t.identifier(dec.id.name)),
-        ])
-      )
-    },
-  })
-
-  // @ts-ignore
-  return generate(ast as any, {
-    concise: false,
-    filename: 'test.tsx',
-    retainLines: false,
-    sourceMaps: false,
-  }).code
-}

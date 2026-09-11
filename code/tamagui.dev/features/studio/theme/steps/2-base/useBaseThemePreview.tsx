@@ -1,8 +1,8 @@
-import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { useBentoStore } from '~/features/bento/BentoStore'
 import { getStudioInternalThemeName } from '../../updatePreviewTheme'
 
 export const useBaseThemePreview = () => {
-  const store = useThemeBuilderStore()
+  const store = useBentoStore()
   const name = getStudioInternalThemeName(store.themeSuiteUID)
   const version = store.themeSuiteVersion
   return {

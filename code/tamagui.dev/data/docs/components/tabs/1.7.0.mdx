@@ -33,7 +33,7 @@ import { SizableText, Tabs } from 'tamagui'
 
 export default () => (
   <Tabs defaultValue="tab1" width={400}>
-    <Tabs.List gap="$4">
+    <Tabs.List gap="4">
       <Tabs.Tab value="tab1">
         <SizableText>Tab 1</SizableText>
       </Tabs.Tab>
@@ -56,7 +56,7 @@ export default () => (
 
 ### Tabs
 
-Root tabs component. Extends [Stack](/docs/components/stack). Passing the `size` prop to this component will have effect on the descendants.
+Root tabs component. Extends `View`. Passing the `size` prop to this component will have effect on the descendants.
 
 <PropsTable
   data={[

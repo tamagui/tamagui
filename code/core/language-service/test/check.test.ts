@@ -1,0 +1,70 @@
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { rmSync, writeFileSync } from 'node:fs'
+
+import { describe, expect, test } from 'vitest'
+
+import {
+  checkStyleFiles,
+  formatCheckResults,
+  MissingConfigArtifactError,
+} from '@tamagui/language-service/check'
+
+const fixtureDirectory = join(dirname(fileURLToPath(import.meta.url)), 'fixtures')
+const projectRoot = join(fixtureDirectory, 'check-project')
+const configPath = join(fixtureDirectory, 'tamagui.config.json')
+
+describe('checkStyleFiles', () => {
+  test('reports every diagnostic in a project with positions', () => {
+    const result = checkStyleFiles({ root: projectRoot, configPath })
+    expect(result.checkedFileCount).toBe(1)
+    expect(result.skippedProjects).toEqual(['nested'])
+    expect(result.diagnosticCount).toBe(3)
+
+    const [file] = result.files
+    expect(file.file).toBe('screen.tsx')
+    expect(
+      file.diagnostics.map((diagnostic) => ({
+        code: diagnostic.code,
+        text: file.source.slice(diagnostic.start, diagnostic.end),
+      }))
+    ).toEqual([
+      { code: 'unregistered-modifier', text: 'hver' },
+      { code: 'opacity-out-of-range', text: 'blue/150' },
+      { code: 'candidate-property-mismatch', text: 'blue' },
+    ])
+  })
+
+  test('formats readable code frames', () => {
+    const result = checkStyleFiles({ root: projectRoot, configPath })
+    const report = formatCheckResults(result, { color: false })
+    expect(report).toContain('screen.tsx:4:8 error "hver" is not a registered modifier')
+    expect(report).toContain("4 │   bg: 'hver:blue',")
+    expect(report).toContain('^^^^')
+    expect(report).toContain('✗ 3 problems in 1 file (1 checked)')
+  })
+
+  test('throws a helpful error without the config artifact', () => {
+    expect(() => checkStyleFiles({ root: projectRoot })).toThrow(
+      MissingConfigArtifactError
+    )
+  })
+
+  test('strict mode passes through to diagnostics', () => {
+    const nonStrict = checkStyleFiles({ root: projectRoot, configPath })
+    const strict = checkStyleFiles({ root: projectRoot, configPath, strict: true })
+    expect(strict.diagnosticCount).toBe(nonStrict.diagnosticCount)
+  })
+
+  test('honors gitignore while walking a repository', () => {
+    const ignored = join(projectRoot, 'ignored.tsx')
+    writeFileSync(ignored, `export const ignored = { bg: 'hver:red' }\n`)
+    try {
+      const result = checkStyleFiles({ root: projectRoot, configPath })
+      expect(result.checkedFileCount).toBe(1)
+      expect(result.files.map((file) => file.file)).not.toContain('ignored.tsx')
+    } finally {
+      rmSync(ignored)
+    }
+  })
+})

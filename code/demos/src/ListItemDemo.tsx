@@ -3,8 +3,8 @@ import { ListItem, Separator, Theme, XStack, YGroup } from 'tamagui'
 
 export function ListItemDemo() {
   return (
-    <Theme name="surface1">
-      <XStack $maxMd={{ flexDirection: 'column' }} px="$4" gap="$4">
+    <Theme name="level2">
+      <XStack flexDirection="max-md:column" px="4" gap="4">
         <ListItemDemo1 />
         <ListItemDemo2 />
       </XStack>
@@ -17,15 +17,15 @@ function ListItemDemo1() {
     <YGroup
       self="center"
       borderWidth={1}
-      borderColor="$borderColor"
-      rounded="$4"
+      borderColor="border-color"
+      rounded="4"
       overflow="hidden"
       width={240}
-      size="$4"
+      size="4"
     >
       <YGroup.Item>
         <ListItem
-          gap="$3"
+          gap="3"
           icon={Star}
           title="Star"
           subTitle={<ListItem.Subtitle>Twinkles</ListItem.Subtitle>}
@@ -33,17 +33,17 @@ function ListItemDemo1() {
         />
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem gap="$3" icon={Moon}>
+        <ListItem gap="3" icon={Moon}>
           Moon
         </ListItem>
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem gap="$3" icon={Sun}>
+        <ListItem gap="3" icon={Sun}>
           Sun
         </ListItem>
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem gap="$3" icon={Cloud}>
+        <ListItem gap="3" icon={Cloud}>
           Cloud
         </ListItem>
       </YGroup.Item>
@@ -56,15 +56,15 @@ function ListItemDemo2() {
     <YGroup
       self="center"
       borderWidth={1}
-      borderColor="$borderColor"
-      rounded="$4"
+      borderColor="border-color"
+      rounded="4"
       overflow="hidden"
       width={240}
-      size="$5"
+      size="5"
     >
       <YGroup.Item>
         <ListItem
-          gap="$3"
+          gap="3"
           title="Star"
           subTitle="Subtitle"
           icon={Star}
@@ -74,7 +74,7 @@ function ListItemDemo2() {
       <Separator />
       <YGroup.Item>
         <ListItem
-          gap="$3"
+          gap="3"
           title="Moon"
           subTitle="Subtitle"
           icon={Moon}

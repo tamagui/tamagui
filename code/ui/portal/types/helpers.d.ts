@@ -4,5 +4,5 @@ export declare const getStackedZIndexProps: (propsIn: PortalProps) => {
     stackZIndex: import("@tamagui/z-index-stack").StackZIndexProp | undefined;
     zIndex: any;
 };
-export declare const resolveViewZIndex: (zIndex: ViewProps["zIndex"]) => any;
+export declare const resolveViewZIndex: (zIndex: ViewProps['zIndex']) => any;
 //# sourceMappingURL=helpers.d.ts.map

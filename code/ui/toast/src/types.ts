@@ -1,3 +1,14 @@
+// swipe-to-dismiss direction for the composable toast viewport (relocated here
+// from the removed v1 ToastProvider so the v2 drag-gesture code can share it).
+export type SwipeDirection =
+  | 'vertical'
+  | 'up'
+  | 'down'
+  | 'horizontal'
+  | 'left'
+  | 'right'
+  | 'auto'
+
 // from `burnt`
 type BurntLayout = {
   iconSize?: {

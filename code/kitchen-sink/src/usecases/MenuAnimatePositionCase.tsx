@@ -3,11 +3,11 @@ import { Button, Text, XStack, YStack } from 'tamagui'
 
 export function MenuAnimatePositionCase() {
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       <Text>Test: animatePosition — content should animate between triggers</Text>
 
       <Menu placement="bottom-start">
-        <XStack gap="$8">
+        <XStack gap="8">
           <Menu.Trigger asChild>
             <Button data-testid="trigger-left">Left Trigger</Button>
           </Menu.Trigger>
@@ -21,11 +21,11 @@ export function MenuAnimatePositionCase() {
           <Menu.Content
             data-testid="menu-content"
             animatePosition
-            p="$2"
+            p="2"
             minWidth={180}
             borderWidth={1}
-            borderColor="$borderColor"
-            elevation="$3"
+            borderColor="border-color"
+            boxShadow="0 4px 12px shadow-color"
           >
             <Menu.Item data-testid="menu-item-1" key="i1" textValue="Alpha">
               <Menu.ItemTitle>Alpha</Menu.ItemTitle>

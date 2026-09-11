@@ -14,7 +14,7 @@ compile-time.
 
 You can set up a simple visualizer that shows a heads-up display when you
 hold "Option" (or any key you define) after a short delay, revealing
-the styled component names and even the file numbers and components they are in
+the styled component display names and even the file numbers and components they are in
 (if you have the compiler plugin installed) as an overlay over your app in
 development mode.
 
@@ -89,32 +89,34 @@ const Circle = styled(View, {
 console.log(Circle.staticConfig) // lots of helpful information
 ```
 
-- `componentName` is taken from the `name` key
 - `variants` contains the merged variants including parents.
 - `defaultProps` is the extracted props left to use as defaults on the
   component.
 
+The React `displayName` is available on the component itself, rather than in
+`staticConfig`.
+
 ### Classes generated
 
 Tamagui generates helpful CSS classes. For components created with `styled()`
-where a `name` is set like this:
+where a `displayName` is set like this:
 
 ```tsx
 const MyButton = styled(View, {
-  name: 'MyButton',
+  displayName: 'MyButton',
   backgroundColor: 'red',
 })
 ```
 
 Tamagui adds the classname `is_MyButton`. This is a useful escape hatch for
 attaching CSS to any extra component. All the default Tamagui components have
-their name set.
+their display name set.
 
 For components that extend a Text-based component, a further classname is set of
 the format `font_[fontFamily]`. So if you do:
 
 ```tsx
-<Paragraph fontFamily="$body" />
+<Paragraph fontFamily="body" />
 ```
 
-The classnames `is_Paragraph` and `font_body` will be output to DOM.
+The classnames `tm-paragraph` and `font_body` will be output to DOM.

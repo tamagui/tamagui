@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'ShorthandVariables', type: 'useCase' })
 })
 
-test(`boxShadow with $variable resolves correctly`, async ({ page }) => {
+test(`boxShadow with variable resolves correctly`, async ({ page }) => {
   const element = page.locator('#boxshadow-var')
   const styles = await getStyles(element)
 
@@ -17,7 +17,7 @@ test(`boxShadow with $variable resolves correctly`, async ({ page }) => {
   expect(styles.boxShadow).toContain('0px 0px 10px')
 })
 
-test(`boxShadow with multiple $variables resolves correctly`, async ({ page }) => {
+test(`boxShadow with multiple variables resolves correctly`, async ({ page }) => {
   const element = page.locator('#boxshadow-multi')
   const styles = await getStyles(element)
 
@@ -27,7 +27,7 @@ test(`boxShadow with multiple $variables resolves correctly`, async ({ page }) =
   expect(styles.boxShadow).toContain(',') // Multiple shadows separated by comma
 })
 
-test(`border with $variable resolves correctly`, async ({ page }) => {
+test(`border with variable resolves correctly`, async ({ page }) => {
   const element = page.locator('#border-var')
   const styles = await getStyles(element)
 

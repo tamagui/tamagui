@@ -10,7 +10,7 @@ import {
   styled,
   getConfig,
 } from '../web/src'
-import { simplifiedGetSplitStyles } from './utils'
+import { getStyleValue, simplifiedGetSplitStyles } from './utils'
 
 function findRuleValue(rulesToInsert: Record<string, any>, property: string): any {
   for (const rule of Object.values(rulesToInsert)) {
@@ -29,277 +29,165 @@ beforeAll(() => {
   lightTheme = getConfig().themes.light
 })
 
-describe('spread variant: ...color (#3892)', () => {
-  const StyledSvg = styled(
-    View,
-    {
-      name: 'ColorSpread',
-      variants: {
-        color: {
-          '...color': (val) => ({ stroke: val }),
-        },
-      } as const,
-    },
-    { accept: { stroke: 'color' } }
-  )
-
-  test('resolves color token ($white) to stroke', () => {
-    const { viewProps } = simplifiedGetSplitStyles(StyledSvg, { color: '$white' })
-    expect(viewProps.stroke).toBeDefined()
-  })
-
-  test('resolves theme value ($color) to stroke', () => {
-    const { viewProps } = simplifiedGetSplitStyles(
-      StyledSvg,
-      { color: '$color' },
-      { theme: lightTheme, themeName: 'light' }
-    )
-    expect(viewProps.stroke).toBeDefined()
-  })
-
-  test('does NOT produce CSS color property', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(StyledSvg, { color: '$white' })
-    const rules = Object.values(rulesToInsert)
-    expect(rules.find((r) => r[StyleObjectProperty] === 'color')).toBeUndefined()
-  })
-
-  test('exact variant value works alongside spread', () => {
-    const Comp = styled(
-      View,
-      {
-        name: 'ColorExact',
-        variants: {
-          color: {
-            red: { stroke: 'red' },
-            '...color': (val) => ({ stroke: val }),
-          },
-        } as const,
-      },
-      { accept: { stroke: 'color' } }
-    )
-    const { viewProps } = simplifiedGetSplitStyles(Comp, { color: 'red' })
-    expect(viewProps.stroke).toBe('red')
-  })
-})
-
-describe('spread variant: ...fontSize', () => {
+describe('FontSize variant resolver', () => {
   const Comp = styled(Text, {
-    name: 'FontSizeSpread',
+    displayName: 'FontSizeSpread',
     variants: {
-      textSize: {
-        '...fontSize': (val, { font }) => ({
-          fontSize: font?.size[val] || val,
-        }),
-      },
+      textSize: styled.dynamic<any>((val, { font }) => ({
+        fontSize: font?.size[val] || val,
+      })),
     } as const,
   })
 
   test('resolves fontSize token', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { textSize: '$1' })
+    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { textSize: '1' })
     expect(findRuleValue(rulesToInsert, 'fontSize')).toBe('var(--f-size-1)')
   })
 })
 
-describe('spread variant: ...fontStyle', () => {
+describe('FontStyle variant resolver', () => {
   const Comp = styled(Text, {
-    name: 'FontStyleSpread',
+    displayName: 'FontStyleSpread',
     variants: {
-      emphasis: {
-        '...fontStyle': (val) => ({
-          fontStyle: val,
-        }),
-      },
+      emphasis: styled.dynamic<any>((val) => ({
+        fontStyle: val,
+      })),
     } as const,
   })
 
-  test('does not resolve plain values (not in getVariantDefinition tokenCats)', () => {
-    const result = simplifiedGetSplitStyles(Comp, { emphasis: 'italic' })
-    expect(result.style).toBeNull()
+  test('resolves plain font style values', () => {
+    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { emphasis: 'italic' })
+    expect(findRuleValue(rulesToInsert, 'fontStyle')).toBe('italic')
   })
 })
 
-describe('spread variant: ...fontTransform', () => {
+describe('FontTransform variant resolver', () => {
   const Comp = styled(Text, {
-    name: 'FontTransformSpread',
+    displayName: 'FontTransformSpread',
     variants: {
-      casing: {
-        '...fontTransform': (val) => ({
-          textTransform: val,
-        }),
-      },
+      casing: styled.dynamic<any>((val) => ({
+        textTransform: val,
+      })),
     } as const,
   })
 
-  test('does not resolve plain values (not in getVariantDefinition tokenCats)', () => {
-    const result = simplifiedGetSplitStyles(Comp, { casing: 'uppercase' })
-    expect(result.style).toBeNull()
+  test('resolves plain text transform values', () => {
+    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { casing: 'uppercase' })
+    expect(findRuleValue(rulesToInsert, 'textTransform')).toBe('uppercase')
   })
 })
 
-describe('spread variant: ...letterSpacing', () => {
+describe('FontLetterSpacing variant resolver', () => {
   const Comp = styled(Text, {
-    name: 'LetterSpacingSpread',
+    displayName: 'LetterSpacingSpread',
     variants: {
-      tracking: {
-        '...letterSpacing': (val, { font }) => ({
-          letterSpacing: font?.letterSpacing[val] || val,
-        }),
-      },
+      tracking: styled.dynamic<any>((val, { font }) => ({
+        letterSpacing: font?.letterSpacing[val] || val,
+      })),
     } as const,
   })
 
-  test('does not resolve font-level tokens (not in getVariantDefinition tokenCats)', () => {
-    const result = simplifiedGetSplitStyles(Comp, { tracking: '$1' })
-    expect(result.style).toBeNull()
+  test('resolves font letter-spacing tokens', () => {
+    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { tracking: '1' })
+    expect(findRuleValue(rulesToInsert, 'letterSpacing')).toBe('var(--f-letterSpacing-1)')
   })
 })
 
-describe('spread variant: ...lineHeight', () => {
+describe('FontLineHeight variant resolver', () => {
   const Comp = styled(Text, {
-    name: 'LineHeightSpread',
+    displayName: 'LineHeightSpread',
     variants: {
-      leading: {
-        '...lineHeight': (val, { font }) => ({
-          lineHeight: font?.lineHeight[val] || val,
-        }),
-      },
+      leading: styled.dynamic<any>((val, { font }) => ({
+        lineHeight: font?.lineHeight[val] || val,
+      })),
     } as const,
   })
 
-  test('does not resolve font-level tokens (not in getVariantDefinition tokenCats)', () => {
-    const result = simplifiedGetSplitStyles(Comp, { leading: '$1' })
-    expect(result.style).toBeNull()
+  test('resolves font line-height tokens', () => {
+    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { leading: '1' })
+    expect(findRuleValue(rulesToInsert, 'lineHeight')).toBe('var(--f-lineHeight-1)')
   })
 })
 
-describe('spread variant: ...radius', () => {
+describe('Radius variant resolver', () => {
   const Comp = styled(View, {
-    name: 'RadiusSpread',
+    displayName: 'RadiusSpread',
     variants: {
-      rounding: {
-        '...radius': (val) => ({ borderRadius: val }),
-      },
+      rounding: styled.dynamic<any>((val) => ({ borderRadius: val })),
     } as const,
   })
 
   test('resolves radius token to borderRadius', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { rounding: '$4' })
-    expect(findRuleValue(rulesToInsert, 'borderTopLeftRadius')).toBe('var(--t-radius-4)')
+    const result = simplifiedGetSplitStyles(Comp, { rounding: '4' })
+    expect(getStyleValue(result, 'borderRadius')).toBe('var(--t-radius-4)')
   })
 })
 
-describe('spread variant: ...size', () => {
+describe('Size variant resolver', () => {
   const Comp = styled(View, {
-    name: 'SizeSpread',
+    displayName: 'SizeSpread',
     variants: {
-      size: {
-        '...size': (val) => ({ height: val, width: val }),
-      },
+      size: styled.dynamic<any>((val) => ({ height: val, width: val })),
     } as const,
   })
 
   test('resolves size token to height and width', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { size: '$4' })
+    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { size: '4' })
     expect(findRuleValue(rulesToInsert, 'height')).toBeDefined()
     expect(findRuleValue(rulesToInsert, 'width')).toBeDefined()
   })
 
   test('resolves to CSS variables on web', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { size: '$4' })
+    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { size: '4' })
     expect(findRuleValue(rulesToInsert, 'height')).toBe('var(--t-size-4)')
     expect(findRuleValue(rulesToInsert, 'width')).toBe('var(--t-size-4)')
   })
 })
 
-describe('spread variant: ...space', () => {
+describe('Space variant resolver', () => {
   const Comp = styled(View, {
-    name: 'SpaceSpread',
+    displayName: 'SpaceSpread',
     variants: {
-      spacing: {
-        '...space': (val) => ({ padding: val }),
-      },
+      spacing: styled.dynamic<any>((val) => ({ padding: val })),
     } as const,
   })
 
   test('resolves space token to padding', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { spacing: '$4' })
-    expect(findRuleValue(rulesToInsert, 'paddingTop')).toBe('var(--t-space-4)')
+    const result = simplifiedGetSplitStyles(Comp, { spacing: '4' })
+    expect(getStyleValue(result, 'padding')).toBe('var(--t-space-4)')
   })
 })
 
-describe('spread variant: ...theme', () => {
+describe('Theme variant resolver', () => {
   const Comp = styled(View, {
-    name: 'ThemeSpread',
+    displayName: 'ThemeSpread',
     variants: {
-      look: {
-        '...theme': (val) => ({
-          backgroundColor: val,
-        }),
-      },
+      look: styled.dynamic<any>((val) => ({
+        backgroundColor: val,
+      })),
     } as const,
   })
 
-  test('does not resolve theme values (not in getVariantDefinition tokenCats)', () => {
+  test('resolves theme values', () => {
     const result = simplifiedGetSplitStyles(
       Comp,
-      { look: '$background' },
+      { look: 'background' },
       { theme: lightTheme, themeName: 'light' }
     )
-    expect(result.style).toBeNull()
+    expect(getStyleValue(result, 'backgroundColor')).toBe('var(--background)')
   })
 })
 
-describe('spread variant: ...zIndex', () => {
+describe('ZIndex variant resolver', () => {
   const Comp = styled(View, {
-    name: 'ZIndexSpread',
+    displayName: 'ZIndexSpread',
     variants: {
-      layer: {
-        '...zIndex': (val) => ({ zIndex: val }),
-      },
+      layer: styled.dynamic<any>((val) => ({ zIndex: val })),
     } as const,
   })
 
-  test('resolves zIndex token', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { layer: '$1' })
+  test('resolves overlapping zIndex token names', () => {
+    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { layer: '1' })
     expect(findRuleValue(rulesToInsert, 'zIndex')).toBe('var(--t-zIndex-1)')
-  })
-})
-
-describe('spread variants combined', () => {
-  const StyledSvg = styled(
-    View,
-    {
-      name: 'CombinedSpread',
-      variants: {
-        color: {
-          '...color': (val) => ({ stroke: val }),
-        },
-        size: {
-          '...size': (val) => ({ height: val, width: val }),
-        },
-      } as const,
-    },
-    { accept: { stroke: 'color', height: 'size', width: 'size' } }
-  )
-
-  test('works together with theme values', () => {
-    const { viewProps } = simplifiedGetSplitStyles(
-      StyledSvg,
-      { color: '$color', size: '$4' },
-      { theme: lightTheme, themeName: 'light' }
-    )
-    expect(viewProps.stroke).toBeDefined()
-    expect(viewProps.height).toBeDefined()
-    expect(viewProps.width).toBeDefined()
-  })
-
-  test('works together with token values', () => {
-    const { viewProps } = simplifiedGetSplitStyles(StyledSvg, {
-      color: '$white',
-      size: '$4',
-    })
-    expect(viewProps.stroke).toBeDefined()
-    expect(viewProps.height).toBeDefined()
-    expect(viewProps.width).toBeDefined()
   })
 })

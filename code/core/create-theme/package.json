@@ -5,8 +5,7 @@
   "files": [
     "src",
     "types",
-    "dist",
-    "theme-builder"
+    "dist"
   ],
   "type": "module",
   "sideEffects": false,
@@ -30,14 +29,14 @@
   },
   "scripts": {
     "build": "tamagui-build",
+    "test": "bun test tests/createThemes.test.ts",
+    "test:types": "vitest --typecheck --run tests/createThemes.test-d.ts",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "dependencies": {
-    "@tamagui/web": "workspace:*"
-  },
   "devDependencies": {
-    "@tamagui/build": "workspace:*"
+    "@tamagui/build": "workspace:*",
+    "vitest": "4.1.0"
   }
 }

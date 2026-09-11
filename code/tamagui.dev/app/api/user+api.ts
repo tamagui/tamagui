@@ -7,7 +7,6 @@ import {
   getOrgTeams,
   getPersonalTeam,
   getSubscriptions,
-  getUserAccessInfo,
   getUserDetails,
   getUserPrivateInfo,
   getUserTeams,
@@ -26,12 +25,11 @@ export default apiRoute(async (req) => {
     return Response.json(null)
   }
 
-  const [userTeams, userDetails, subscriptions, accessInfo, themeHistories, userPrivate] =
+  const [userTeams, userDetails, subscriptions, themeHistories, userPrivate] =
     await Promise.all([
       getUserTeams(user.id),
       getUserDetails(user.id),
       getSubscriptions(user?.id),
-      getUserAccessInfo(user),
       getUserThemeHistories(user),
       getUserPrivateInfo(user.id),
     ])
@@ -46,7 +44,6 @@ export default apiRoute(async (req) => {
       orgs: getOrgTeams(userTeams),
       main: getMainTeam(userTeams),
     },
-    accessInfo,
     themeHistories,
     githubUsername: userPrivate?.github_user_name ?? null,
   } satisfies UserContextType)

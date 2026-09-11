@@ -1,0 +1,205 @@
+import {
+  scanFlatValue,
+  type FlatScanErrorCode,
+  type FlatValueHandler,
+} from './scanFlatValue'
+import {
+  canonicalClauseModifier,
+  coreStateModifierNames,
+  isModifierName,
+  modifierAliases,
+} from './stateModifiers'
+
+export { canonicalClauseModifier, isModifierName } from './stateModifiers'
+
+export type ClauseIdentityErrorCode =
+  | FlatScanErrorCode
+  | 'empty-modifier'
+  | 'empty-payload'
+
+export interface ClauseIdentityHandler<Context> {
+  segment(ctx: Context, start: number, end: number, isBase: boolean, valid: boolean): void
+  chain?(ctx: Context, start: number, end: number): void
+  modifier?(ctx: Context, start: number, end: number, canonical: string): void
+  clause?(
+    ctx: Context,
+    start: number,
+    chainEnd: number,
+    payloadStart: number,
+    end: number,
+    slot: string
+  ): void
+  error?(ctx: Context, code: ClauseIdentityErrorCode, index: number): void
+  word?(ctx: Context, start: number, end: number, isChain: boolean): void
+}
+
+export interface GroupModifier {
+  state: string
+  group: string | null
+}
+
+export const stateModifierNames: readonly string[] = Object.freeze([
+  ...coreStateModifierNames,
+  ...Object.keys(modifierAliases),
+])
+
+const stateModifierSet: ReadonlySet<string> = new Set(stateModifierNames)
+
+/** returns the end offset of a valid container size, or -1 for another spelling */
+export function containerModifierSizeEnd(name: string): number {
+  if (name.charCodeAt(0) !== 64 /* @ */) return -1
+  const slash = name.indexOf('/')
+  const sizeEnd = slash === -1 ? name.length : slash
+  if (!isModifierName(name, 1, sizeEnd)) return -1
+  if (slash !== -1 && !isModifierName(name, slash + 1, name.length)) return -1
+  return sizeEnd
+}
+
+/** parses the config-independent spelling of a named or unnamed group modifier */
+export function parseGroupModifier(name: string): GroupModifier | null {
+  if (!name.startsWith('group-')) return null
+  const slash = name.indexOf('/')
+  if (slash !== -1 && !isModifierName(name, slash + 1, name.length)) return null
+  const state = name.slice(6, slash === -1 ? name.length : slash)
+  if (!stateModifierSet.has(state)) return null
+  const canonicalState = modifierAliases[state] || state
+  if (canonicalState === 'enter' || canonicalState === 'exit') return null
+  return { state, group: slash === -1 ? null : name.slice(slash + 1) }
+}
+
+function canonicalConditionSetKey(modifiers: string[]): string {
+  if (modifiers.length === 0) return ''
+  if (modifiers.length === 1) return modifiers[0]
+  modifiers.sort()
+  let length = 1
+  for (let index = 1; index < modifiers.length; index++) {
+    if (modifiers[index] !== modifiers[length - 1]) {
+      modifiers[length++] = modifiers[index]
+    }
+  }
+  modifiers.length = length
+  return modifiers.join(':')
+}
+
+/** order-insensitive identity for the distinct canonical modifiers in a clause */
+export function clauseConditionSetKey(modifiers: readonly string[]): string {
+  if (modifiers.length === 0) return ''
+  if (modifiers.length === 1) return canonicalClauseModifier(modifiers[0])
+  const canonical: string[] = []
+  for (const modifier of modifiers) canonical.push(canonicalClauseModifier(modifier))
+  return canonicalConditionSetKey(canonical)
+}
+
+type ClauseIdentityContext<Context> = {
+  source: string
+  handler: ClauseIdentityHandler<Context>
+  consumer: Context
+  chainStart: number
+  pendingChainStart: number
+  chainEnd: number
+  pendingChainEnd: number
+  payloadStart: number
+  canonical: string[]
+  pendingCanonical: string[]
+  modifierStarts: number[]
+  modifierEnds: number[]
+  clauseValid: boolean
+  pendingClauseValid: boolean
+}
+
+const clauseIdentityScanner: FlatValueHandler<ClauseIdentityContext<unknown>> = {
+  segment(ctx, start, end, isBase, valid) {
+    ctx.handler.segment(ctx.consumer, start, end, isBase, valid && ctx.clauseValid)
+    if (isBase) return
+    if (start === end) {
+      ctx.handler.error?.(ctx.consumer, 'empty-payload', ctx.payloadStart)
+      return
+    }
+    if (!valid || !ctx.clauseValid) return
+    ctx.handler.clause?.(
+      ctx.consumer,
+      ctx.chainStart,
+      ctx.chainEnd,
+      start,
+      end,
+      canonicalConditionSetKey(ctx.canonical)
+    )
+  },
+
+  modifier(ctx, start, end, valid, first) {
+    if (first) {
+      ctx.pendingChainStart = start
+      ctx.pendingCanonical.length = 0
+      ctx.modifierStarts.length = 0
+      ctx.modifierEnds.length = 0
+      ctx.pendingClauseValid = true
+    }
+    ctx.pendingChainEnd = end
+    ctx.pendingClauseValid &&= valid
+    if (start === end) {
+      ctx.pendingClauseValid = false
+      ctx.handler.error?.(ctx.consumer, 'empty-modifier', start)
+    } else {
+      const canonical = canonicalClauseModifier(ctx.source.slice(start, end))
+      ctx.pendingCanonical.push(canonical)
+      ctx.modifierStarts.push(start)
+      ctx.modifierEnds.push(end)
+    }
+  },
+
+  chain(ctx, start, end, valid) {
+    ctx.chainStart = ctx.pendingChainStart
+    ctx.chainEnd = ctx.pendingChainEnd
+    ctx.payloadStart = end + 1
+    ctx.clauseValid = ctx.pendingClauseValid && valid
+    ctx.canonical.length = 0
+    ctx.handler.chain?.(ctx.consumer, start, end)
+    for (let index = 0; index < ctx.pendingCanonical.length; index++) {
+      const canonical = ctx.pendingCanonical[index]
+      ctx.canonical.push(canonical)
+      ctx.handler.modifier?.(
+        ctx.consumer,
+        ctx.modifierStarts[index],
+        ctx.modifierEnds[index],
+        canonical
+      )
+    }
+    return true
+  },
+
+  error(ctx, code, index) {
+    ctx.handler.error?.(ctx.consumer, code, index)
+  },
+
+  word(ctx, start, end, isChain) {
+    ctx.handler.word?.(ctx.consumer, start, end, isChain)
+  },
+}
+
+/**
+ * Reduces one flat value to config-independent clause identity in the lexer's
+ * single pass. Consumers receive source spans, canonical alias spellings, and
+ * the unordered clause slot without re-scanning or classifying modifiers.
+ */
+export function reduceFlatValueIdentity<Context>(
+  source: string,
+  handler: ClauseIdentityHandler<Context>,
+  consumer: Context
+): void {
+  scanFlatValue(source, clauseIdentityScanner, {
+    source,
+    handler,
+    consumer,
+    chainStart: 0,
+    pendingChainStart: 0,
+    chainEnd: 0,
+    pendingChainEnd: 0,
+    payloadStart: 0,
+    canonical: [],
+    pendingCanonical: [],
+    modifierStarts: [],
+    modifierEnds: [],
+    clauseValid: true,
+    pendingClauseValid: true,
+  } as ClauseIdentityContext<unknown>)
+}

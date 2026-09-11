@@ -4,7 +4,7 @@ import { View, styled } from '@tamagui/web'
 const AnimatedBox = styled(View, {
   width: 100,
   height: 100,
-  backgroundColor: '$background',
+  backgroundColor: 'background',
   // non-animatable props that should stay as className
   display: 'flex',
   alignItems: 'center',
@@ -15,12 +15,11 @@ const AnimatedBox = styled(View, {
   // animatable props
   opacity: 1,
   transition: 'quick',
-
   variants: {
     active: {
       true: {
         opacity: 0.5,
-        backgroundColor: '$color',
+        backgroundColor: 'color',
       },
     },
   } as const,

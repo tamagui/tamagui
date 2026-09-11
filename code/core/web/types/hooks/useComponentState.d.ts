@@ -1,6 +1,7 @@
 import type { ComponentContextI, StaticConfig, TamaguiComponentState, TamaguiComponentStateRef, TamaguiInternalConfig, TextProps } from '../types';
 import type { ViewProps } from '../views/View';
-export declare const useComponentState: (props: ViewProps | TextProps | Record<string, any>, animationDriver: ComponentContextI["animationDriver"], staticConfig: StaticConfig, config: TamaguiInternalConfig) => {
+export declare const useComponentState: (props: ViewProps | TextProps | Record<string, any>, animationDriver: ComponentContextI['animationDriver'], staticConfig: StaticConfig, config: TamaguiInternalConfig) => {
+    props: Record<string, any> | TextProps | ViewProps;
     startedUnhydrated: boolean;
     curStateRef: TamaguiComponentStateRef;
     disabled: any;
@@ -10,9 +11,9 @@ export declare const useComponentState: (props: ViewProps | TextProps | Record<s
     isAnimated: boolean;
     isExiting: boolean;
     isHydrated: boolean;
-    presence: import("../types").UsePresenceResult | null;
-    presenceState: import("../types").PresenceContextProps | null | undefined;
-    setState: import("react").Dispatch<import("react").SetStateAction<TamaguiComponentState>>;
+    presence: import("..").UsePresenceResult | null;
+    presenceState: import("..").PresenceContextProps | null | undefined;
+    setState: import("../types").ComponentSetState;
     setStateShallow: import("../types").ComponentSetStateShallow;
     noClass: boolean;
     state: TamaguiComponentState;
@@ -22,5 +23,6 @@ export declare const useComponentState: (props: ViewProps | TextProps | Record<s
     willBeAnimated: boolean;
     willBeAnimatedClient: boolean;
     platformPseudo: boolean;
+    finalizeStyleFlags(hasEnterStyle: boolean, hasPlatformPseudo: boolean): /*elided*/ any;
 };
 //# sourceMappingURL=useComponentState.d.ts.map

@@ -4,35 +4,22 @@ import { createContext, useContext, useId, type ReactNode, type RefObject } from
 const LayoutHandlers = new WeakMap<HTMLElement, Function>()
 const LayoutDisableKey = new WeakMap<HTMLElement, string>()
 const Nodes = new Set<HTMLElement>()
+const NodeRectCache = new WeakMap<HTMLElement, DOMRectReadOnly>()
+const PrevHostNode = new WeakMap<object, HTMLElement | undefined>()
 
-// feature flag to enable pre-transform dimension reporting (matches RN behavior)
-// can be set via env var at build time or runtime global for testing
-// see: https://github.com/tamagui/tamagui/pull/2329
 const usePretransformDimensions = () =>
   (globalThis as any).__TAMAGUI_ONLAYOUT_PRETRANSFORM === true ||
   process.env.TAMAGUI_ONLAYOUT_PRETRANSFORM === '1'
 
-let _debugLayout: boolean | undefined
+const isDebugLayout = () =>
+  typeof window !== 'undefined' && window.location?.search?.includes('__tamaDebugLayout')
 
-function isDebugLayout() {
-  if (_debugLayout === undefined) {
-    _debugLayout =
-      typeof window !== 'undefined' &&
-      new URLSearchParams(window.location.search).has('__tamaDebugLayout')
-  }
-  return _debugLayout
-}
-
-// separating to avoid all re-rendering
 const DisableLayoutContextValues: Record<string, boolean> = {}
 const DisableLayoutContextKey = createContext<string>('')
 
 const ENABLE =
   process.env.TAMAGUI_TARGET === 'web' && typeof IntersectionObserver !== 'undefined'
 
-// internal testing - advanced helper to turn off layout measurement for extra performance
-// TODO document!
-// TODO could add frame skip control here
 export const LayoutMeasurementController = ({
   disable,
   children,
@@ -41,16 +28,10 @@ export const LayoutMeasurementController = ({
   children: ReactNode
 }): ReactNode => {
   const id = useId()
-
   useIsomorphicLayoutEffect(() => {
     const wasDisabled = DisableLayoutContextValues[id] === true
     DisableLayoutContextValues[id] = disable
-    // a controller flipping to enabled (a sheet or popper opening) is often
-    // waiting on a measurement to position itself, so don't make it sit out
-    // the frame-skip window
-    if (wasDisabled && !disable) {
-      measureOnNextFrame?.()
-    }
+    if (wasDisabled && !disable) measureOnNextFrame?.()
   }, [disable, id])
 
   return (
@@ -60,28 +41,12 @@ export const LayoutMeasurementController = ({
   )
 }
 
-type TamaguiComponentStatePartial = {
-  host?: any
-}
-
+type TamaguiComponentStatePartial = { host?: any }
 type LayoutMeasurementStrategy = 'off' | 'sync' | 'async'
 
 let strategy: LayoutMeasurementStrategy = 'async'
-
-// the measurement loop parks itself whenever it provably has nothing to do: no
-// registered nodes, a hidden document, or measurement turned off. these are the
-// only three ways work can reappear, so each one restarts it.
 let resumeLayoutLoop: (() => void) | undefined
-
-// restarts the loop AND makes its next frame a measuring frame, skipping the
-// frame-skip backoff once. for consumers whose position depends on a pending
-// measurement (an opening sheet parked off-screen).
 let measureOnNextFrame: (() => void) | undefined
-
-export function setOnLayoutStrategy(state: LayoutMeasurementStrategy): void {
-  strategy = state
-  resumeLayoutLoop?.()
-}
 
 export type LayoutValue = {
   x: number
@@ -93,16 +58,10 @@ export type LayoutValue = {
 }
 
 export type LayoutEvent = {
-  nativeEvent: {
-    layout: LayoutValue
-    target: any
-  }
+  nativeEvent: { layout: LayoutValue; target: any }
   timeStamp: number
 }
 
-const NodeRectCache = new WeakMap<HTMLElement, DOMRectReadOnly>()
-
-// prevent thrashing during first hydration (somewhat, streaming gets trickier)
 let avoidUpdates = true
 const queuedUpdates = new Map<HTMLElement, Function>()
 
@@ -116,15 +75,12 @@ export function enable(): void {
   }
 }
 
-// optimization: inline rect comparison to avoid function call overhead on hot path
 function rectsEqual(a: DOMRectReadOnly, b: DOMRectReadOnly): boolean {
   return a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height
 }
 
 if (ENABLE) {
   const BoundingRects = new WeakMap<Element, DOMRectReadOnly>()
-
-  // optimization: persistent IO for rect fetching, reused across cycles
   let rectFetchObserver: IntersectionObserver | null = null
   let rectFetchResolve: ((value: boolean) => void) | null = null
   let rectFetchStartTime = 0
@@ -132,16 +88,12 @@ if (ENABLE) {
 
   function ensureRectFetchObserver() {
     if (rectFetchObserver) return rectFetchObserver
-
     rectFetchObserver = new IntersectionObserver(
       (entries) => {
         lastCallbackDelay = Math.round(performance.now() - rectFetchStartTime)
-
-        // store all rects
         for (let i = 0; i < entries.length; i++) {
           BoundingRects.set(entries[i].target, entries[i].boundingClientRect)
         }
-
         if (
           process.env.NODE_ENV === 'development' &&
           isDebugLayout() &&
@@ -154,90 +106,64 @@ if (ENABLE) {
             'entries'
           )
         }
-
         if (rectFetchResolve) {
           rectFetchResolve(true)
           rectFetchResolve = null
         }
       },
-      {
-        threshold: 0,
-      }
+      { threshold: 0 }
     )
-
     return rectFetchObserver
   }
 
-  async function updateLayoutIfChanged(node: HTMLElement) {
+  function updateLayoutIfChanged(node: HTMLElement) {
     const onLayout = LayoutHandlers.get(node)
     if (typeof onLayout !== 'function') return
-
     const parentNode = node.parentElement
     if (!parentNode) return
 
     let nodeRect: DOMRectReadOnly | undefined
     let parentRect: DOMRectReadOnly | undefined
 
-    // respect the strategy contract
     if (strategy === 'async') {
       nodeRect = BoundingRects.get(node)
       parentRect = BoundingRects.get(parentNode)
-
-      if (!nodeRect || !parentRect) {
-        return
-      }
+      if (!nodeRect || !parentRect) return
     } else {
       nodeRect = node.getBoundingClientRect()
       parentRect = parentNode.getBoundingClientRect()
     }
-
     emitLayoutIfChanged(node, parentNode, nodeRect, parentRect)
   }
 
   const rAF =
     typeof requestAnimationFrame !== 'undefined' ? requestAnimationFrame : undefined
-
-  // adaptive frame skipping with backoff
   const userSkipVal = process.env.TAMAGUI_LAYOUT_FRAME_SKIP
   const BASE_SKIP_FRAMES = userSkipVal ? +userSkipVal : 10
   const MAX_SKIP_FRAMES = 20
   let skipFrames = BASE_SKIP_FRAMES
   let frameCount = 0
-
-  // stays true across the await below so a node registering mid-cycle cannot
-  // start a second concurrent loop
   let frameScheduled = false
 
   function scheduleLayoutFrame() {
-    if (frameScheduled || strategy === 'off' || Nodes.size === 0 || document.hidden) {
+    if (frameScheduled || strategy === 'off' || Nodes.size === 0 || document.hidden)
       return
-    }
     frameScheduled = true
     rAF ? rAF(layoutOnAnimationFrame) : setTimeout(layoutOnAnimationFrame, 16)
   }
 
   async function layoutOnAnimationFrame() {
-    // skip frames based on adaptive rate
     if (frameCount++ % skipFrames !== 0) {
       frameScheduled = false
       scheduleLayoutFrame()
       return
     }
-
-    // reset frame count to avoid overflow
-    if (frameCount >= Number.MAX_SAFE_INTEGER) {
-      frameCount = 0
-    }
+    if (frameCount >= Number.MAX_SAFE_INTEGER) frameCount = 0
 
     if (strategy !== 'off') {
       const activeNodes: HTMLElement[] = []
-      // optimization: deduplicate parent observations
       const parentsToObserve = new Set<HTMLElement>()
 
-      // collect non-disabled nodes and their unique parents. off-viewport
-      // nodes stay in: a sheet or popper parks off-screen until its own
-      // measurement arrives, so gating measurement on visibility deadlocks it
-      // there, and RN fires onLayout for off-screen views anyway
       for (const node of Nodes) {
         const parentElement = node.parentElement
         if (!(parentElement instanceof HTMLElement)) {
@@ -253,45 +179,26 @@ if (ENABLE) {
       if (activeNodes.length > 0) {
         const io = ensureRectFetchObserver()
         rectFetchStartTime = performance.now()
+        for (let i = 0; i < activeNodes.length; i++) io.observe(activeNodes[i])
+        for (const parent of parentsToObserve) io.observe(parent)
 
-        // observe all nodes
-        for (let i = 0; i < activeNodes.length; i++) {
-          io.observe(activeNodes[i])
-        }
-        // optimization: observe unique parents only (not N times for N children)
-        for (const parent of parentsToObserve) {
-          io.observe(parent)
-        }
-
-        // wait for callback
         await new Promise<boolean>((res) => {
           rectFetchResolve = res
         })
 
-        // unobserve all to reset for next cycle
-        for (let i = 0; i < activeNodes.length; i++) {
-          io.unobserve(activeNodes[i])
-        }
-        for (const parent of parentsToObserve) {
-          io.unobserve(parent)
-        }
+        for (let i = 0; i < activeNodes.length; i++) io.unobserve(activeNodes[i])
+        for (const parent of parentsToObserve) io.unobserve(parent)
 
-        // adaptive backoff: if IO was slow, skip more frames next cycle
         if (lastCallbackDelay > 50) {
           skipFrames = Math.min(skipFrames + 2, MAX_SKIP_FRAMES)
         } else if (lastCallbackDelay < 20) {
-          // recover back to base rate when things are fast
           skipFrames = Math.max(skipFrames - 1, BASE_SKIP_FRAMES)
         }
 
-        // process updates
-        for (let i = 0; i < activeNodes.length; i++) {
-          updateLayoutIfChanged(activeNodes[i])
-        }
+        for (let i = 0; i < activeNodes.length; i++) updateLayoutIfChanged(activeNodes[i])
       }
     }
 
-    // schedule next frame
     frameScheduled = false
     scheduleLayoutFrame()
   }
@@ -309,48 +216,33 @@ export const getElementLayoutEvent = (
   nodeRect: DOMRectReadOnly,
   parentRect: DOMRectReadOnly,
   node?: HTMLElement
-): LayoutEvent => {
-  return {
-    nativeEvent: {
-      layout: getRelativeDimensions(nodeRect, parentRect, node),
-      target: nodeRect,
-    },
-    timeStamp: Date.now(),
-  }
-}
+): LayoutEvent => ({
+  nativeEvent: {
+    layout: getRelativeDimensions(nodeRect, parentRect, node),
+    target: nodeRect,
+  },
+  timeStamp: Date.now(),
+})
 
-/**
- * get pre-transform dimensions for a node.
- * uses offsetWidth/offsetHeight which report CSS layout dimensions
- * unaffected by transforms - this matches React Native's onLayout behavior.
- *
- * see: https://github.com/tamagui/tamagui/pull/2329
- */
 const getPreTransformDimensions = (
   node: HTMLElement
-): { width: number; height: number } => {
-  return {
-    width: node.offsetWidth,
-    height: node.offsetHeight,
-  }
-}
+): { width: number; height: number } => ({
+  width: node.offsetWidth,
+  height: node.offsetHeight,
+})
 
 const getRelativeDimensions = (
   a: DOMRectReadOnly,
   b: DOMRectReadOnly,
   aNode?: HTMLElement
 ) => {
-  const { left, top } = a
-  const x = left - b.left
-  const y = top - b.top
-
-  // get pre-transform dimensions when flag is enabled and node is available
+  const left = a.left - b.left
+  const top = a.top - b.top
   const { width, height } =
     usePretransformDimensions() && aNode
       ? getPreTransformDimensions(aNode)
       : { width: a.width, height: a.height }
-
-  return { x, y, width, height, pageX: a.left, pageY: a.top }
+  return { x: left, y: top, width, height, pageX: a.left, pageY: a.top }
 }
 
 function emitLayoutIfChanged(
@@ -364,7 +256,6 @@ function emitLayoutIfChanged(
 
   const cachedRect = NodeRectCache.get(node)
   const cachedParentRect = NodeRectCache.get(parentNode)
-
   const nodeChanged = !cachedRect || !rectsEqual(cachedRect, nodeRect)
   const parentChanged = !cachedParentRect || !rectsEqual(cachedParentRect, parentRect)
 
@@ -374,17 +265,6 @@ function emitLayoutIfChanged(
   NodeRectCache.set(parentNode, parentRect)
 
   const event = getElementLayoutEvent(nodeRect, parentRect, node)
-
-  if (process.env.NODE_ENV === 'development' && isDebugLayout()) {
-    console.log('[useElementLayout] change', {
-      tag: node.tagName,
-      id: node.id || undefined,
-      className: (node.className || '').slice(0, 60) || undefined,
-      layout: event.nativeEvent.layout,
-      first: !cachedRect,
-    })
-  }
-
   if (avoidUpdates) {
     queuedUpdates.set(node, () => onLayout(event))
   } else {
@@ -394,15 +274,11 @@ function emitLayoutIfChanged(
 
 function observeLayoutNode(node: HTMLElement, disableKey?: string) {
   Nodes.add(node)
-  if (disableKey) {
-    LayoutDisableKey.set(node, disableKey)
-  } else {
-    LayoutDisableKey.delete(node)
-  }
+  if (disableKey) LayoutDisableKey.set(node, disableKey)
+  else LayoutDisableKey.delete(node)
   resumeLayoutLoop?.()
 }
 
-// register an arbitrary DOM element into the measurement loop without React lifecycle
 export function registerLayoutNode(
   node: HTMLElement,
   onChange: () => void,
@@ -420,12 +296,6 @@ function cleanupNode(node: HTMLElement) {
   NodeRectCache.delete(node)
 }
 
-const PrevHostNode = new WeakMap<object, HTMLElement | undefined>()
-
-// spec: onLayout fires one synchronous initial event on mount and on host swap
-// (RN parity, and before-paint so consumers can position without flicker).
-// bypasses the avoidUpdates queue on purpose; seeds the rect cache so the
-// measurement loop doesn't re-emit an identical event a frame later.
 function emitLayoutSync(node: HTMLElement) {
   const onLayout = LayoutHandlers.get(node)
   if (typeof onLayout !== 'function') return
@@ -444,85 +314,51 @@ export function useElementLayout(
   onLayout?: ((e: LayoutEvent) => void) | null
 ): void {
   const disableKey = useContext(DisableLayoutContextKey)
-
-  // keep handlers up to date so polling always calls the latest callback
   const node = ensureWebElement(ref.current?.host)
   if (node && onLayout) {
     LayoutHandlers.set(node, onLayout)
     LayoutDisableKey.set(node, disableKey)
   }
 
-  // detect mounts + host swaps after commit and fire the immediate sync layout event
   useIsomorphicLayoutEffect(() => {
     if (!onLayout) return
     const nextNode = ensureWebElement(ref.current?.host)
     const prevNode = PrevHostNode.get(ref)
-    if (nextNode === prevNode) return
-
-    if (prevNode) cleanupNode(prevNode)
-    PrevHostNode.set(ref, nextNode)
-    if (!nextNode) return
-
-    LayoutHandlers.set(nextNode, onLayout)
-    observeLayoutNode(nextNode, disableKey)
-    emitLayoutSync(nextNode)
-  })
-
-  useIsomorphicLayoutEffect(() => {
-    if (!onLayout) return
-    const node = ref.current?.host
-    if (!node) return
-
-    LayoutHandlers.set(node, onLayout)
-    observeLayoutNode(node, disableKey)
-
-    if (process.env.NODE_ENV === 'development' && isDebugLayout()) {
-      console.log('[useElementLayout] register', {
-        tag: node.tagName,
-        id: node.id || undefined,
-        className: (node.className || '').slice(0, 60) || undefined,
-        totalNodes: Nodes.size,
-      })
-    }
-
-    return () => {
-      cleanupNode(node)
-
-      // also clean up any node from a mid-lifecycle host swap
-      const swappedNode = PrevHostNode.get(ref)
-      if (swappedNode && swappedNode !== node) {
-        cleanupNode(swappedNode)
+    if (nextNode !== prevNode) {
+      if (prevNode) cleanupNode(prevNode)
+      PrevHostNode.set(ref, nextNode)
+      if (nextNode) {
+        LayoutHandlers.set(nextNode, onLayout)
+        observeLayoutNode(nextNode, disableKey)
+        emitLayoutSync(nextNode)
       }
+    }
+    return () => {
+      const activeNode = ensureWebElement(ref.current?.host)
+      if (activeNode) cleanupNode(activeNode)
+      const swapped = PrevHostNode.get(ref)
+      if (swapped && swapped !== activeNode) cleanupNode(swapped)
       PrevHostNode.delete(ref)
     }
   }, [ref, !!onLayout])
 }
 
 function ensureWebElement<X>(x: X): HTMLElement | undefined {
-  if (typeof HTMLElement === 'undefined') {
-    return undefined
-  }
+  if (typeof HTMLElement === 'undefined') return undefined
   return x instanceof HTMLElement ? x : undefined
 }
 
 export const getBoundingClientRectAsync = (
   node: HTMLElement | null
-): Promise<DOMRectReadOnly | false> => {
-  return new Promise<DOMRectReadOnly | false>((res) => {
+): Promise<DOMRectReadOnly | false> =>
+  new Promise((res) => {
     if (!node || node.nodeType !== 1) return res(false)
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        io.disconnect()
-        return res(entries[0].boundingClientRect)
-      },
-      {
-        threshold: 0,
-      }
-    )
+    const io = new IntersectionObserver((entries) => {
+      io.disconnect()
+      res(entries[0].boundingClientRect)
+    })
     io.observe(node)
   })
-}
 
 export const measureNode = async (
   node: HTMLElement,
@@ -541,9 +377,13 @@ export const measureNode = async (
   return null
 }
 
-type MeasureInWindowCb = (x: number, y: number, width: number, height: number) => void
-
-type MeasureCb = (
+export type MeasureInWindowCb = (
+  x: number,
+  y: number,
+  width: number,
+  height: number
+) => void
+export type MeasureCb = (
   x: number,
   y: number,
   width: number,
@@ -551,45 +391,35 @@ type MeasureCb = (
   pageX: number,
   pageY: number
 ) => void
+export type WindowLayout = { pageX: number; pageY: number; width: number; height: number }
 
 export const measure = async (
   node: HTMLElement,
   callback: MeasureCb
 ): Promise<LayoutValue | null> => {
-  const out = await measureNode(
-    node,
-    node.parentNode instanceof HTMLElement ? node.parentNode : null
-  )
-  if (out) {
-    callback?.(out.x, out.y, out.width, out.height, out.pageX, out.pageY)
-  }
+  const out = await measureNode(node, node.parentElement)
+  if (out) callback?.(out.x, out.y, out.width, out.height, out.pageX, out.pageY)
   return out
 }
 
-export function createMeasure(
-  node: HTMLElement
-): (callback: MeasureCb) => Promise<LayoutValue | null> {
-  return (callback) => measure(node, callback)
-}
-
-type WindowLayout = { pageX: number; pageY: number; width: number; height: number }
+export const createMeasure =
+  (node: HTMLElement): ((callback: MeasureCb) => Promise<LayoutValue | null>) =>
+  (callback: MeasureCb) =>
+    measure(node, callback)
 
 export const measureInWindow = async (
   node: HTMLElement,
   callback: MeasureInWindowCb
 ): Promise<WindowLayout | null> => {
   const out = await measureNode(node, null)
-  if (out) {
-    callback?.(out.pageX, out.pageY, out.width, out.height)
-  }
+  if (out) callback?.(out.pageX, out.pageY, out.width, out.height)
   return out
 }
 
-export const createMeasureInWindow = (
-  node: HTMLElement
-): ((callback: MeasureInWindowCb) => Promise<WindowLayout | null>) => {
-  return (callback) => measureInWindow(node, callback)
-}
+export const createMeasureInWindow =
+  (node: HTMLElement): ((callback: MeasureInWindowCb) => Promise<WindowLayout | null>) =>
+  (callback: MeasureInWindowCb) =>
+    measureInWindow(node, callback)
 
 export const measureLayout = async (
   node: HTMLElement,
@@ -597,14 +427,13 @@ export const measureLayout = async (
   callback: MeasureCb
 ): Promise<LayoutValue | null> => {
   const out = await measureNode(node, relativeNode)
-  if (out) {
-    callback?.(out.x, out.y, out.width, out.height, out.pageX, out.pageY)
-  }
+  if (out) callback?.(out.x, out.y, out.width, out.height, out.pageX, out.pageY)
   return out
 }
 
-export function createMeasureLayout(
-  node: HTMLElement
-): (relativeTo: HTMLElement, callback: MeasureCb) => Promise<LayoutValue | null> {
-  return (relativeTo, callback) => measureLayout(node, relativeTo, callback)
-}
+export const createMeasureLayout =
+  (
+    node: HTMLElement
+  ): ((relativeTo: HTMLElement, callback: MeasureCb) => Promise<LayoutValue | null>) =>
+  (relativeTo: HTMLElement, callback: MeasureCb) =>
+    measureLayout(node, relativeTo, callback)

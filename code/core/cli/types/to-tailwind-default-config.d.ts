@@ -1,0 +1,53 @@
+export declare const bundledDefaultGrammarConfig: {
+    shorthands: {
+        text: string;
+        b: string;
+        bg: string;
+        content: string;
+        grow: string;
+        h: string;
+        items: string;
+        justify: string;
+        l: string;
+        m: string;
+        maxH: string;
+        maxW: string;
+        mb: string;
+        minH: string;
+        minW: string;
+        ml: string;
+        mr: string;
+        mt: string;
+        mx: string;
+        my: string;
+        p: string;
+        pb: string;
+        pl: string;
+        pr: string;
+        pt: string;
+        px: string;
+        py: string;
+        r: string;
+        rounded: string;
+        select: string;
+        self: string;
+        shrink: string;
+        t: string;
+        w: string;
+        z: string;
+    };
+    mediaNames: string[];
+    themeNames: string[];
+    tokenNames: {
+        space: string[];
+        size: string[];
+        radius: string[];
+        zIndex: never[];
+        color: string[];
+        fontFamily: string[];
+        fontSize: string[];
+        lineHeight: string[];
+        letterSpacing: string[];
+    };
+};
+//# sourceMappingURL=to-tailwind-default-config.d.ts.map

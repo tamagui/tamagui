@@ -35,7 +35,7 @@ Behind the scenes, we convert this object syntax into media query syntax with a 
 
 ### Usage
 
-Now in any component you may import and use `useMedia` or `$` prefixed media prop styles.
+Now in any component you may import `useMedia` or add media clauses to style values.
 
 ### Inline props
 
@@ -46,13 +46,7 @@ export default () => {
   const [x, setX] = useState(0)
   return (
     <XStack
-      backgroundColor="red"
-      $gtSm={{
-        backgroundColor: 'blue',
-      }}
-      $gtMd={{
-        backgroundColor: x > 0.5 ? 'green' : 'yellow',
-      }}
+      backgroundColor={`red gtSm:blue gtMd:${x > 0.5 ? 'green' : 'yellow'}`}
     >
       <Button onPress={() => setX(Math.random())}>Hello</Button>
     </XStack>
@@ -60,7 +54,7 @@ export default () => {
 }
 ```
 
-In this example we are doing mobile-first design, where the base props will be overridden as the viewport gets wider. Notice the ternary logic in `$gtMd`: this is extractable with Tamagui, and will still output simple CSS with no leftover style props in your component's render function.
+In this example we are doing mobile-first design, where clauses override the base as the viewport gets wider. The ternary payload in `gtMd:` is extractable with Tamagui and still outputs simple CSS.
 
 ### Hooks
 

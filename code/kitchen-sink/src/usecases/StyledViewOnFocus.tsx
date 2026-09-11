@@ -8,10 +8,8 @@ const StyledView = styled(View, {
   variants: {
     testVariant: {
       true: {
-        focusStyle: {
-          borderWidth: 10,
-          borderColor: 'blue',
-        },
+        borderWidth: 'focus:10px',
+        borderColor: 'focus:blue',
       },
     },
   } as const,
@@ -21,7 +19,6 @@ export function StyledViewOnFocus() {
   const [onFocus, setOnFocus] = React.useState(false)
   return (
     <StyledView
-      focusable
       testVariant
       data-onfocus={onFocus}
       id="onFocus"

@@ -26,7 +26,7 @@ export const TamaguiLogo = ({
       ref={ref}
       alignItems="center"
       justifyContent="center"
-      gap="$5"
+      gap="5"
       {...props}
     >
       <LogoIcon downscale={(downscale ?? 1) * (showWords ? 2 : 1.5)} color={color} />

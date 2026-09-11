@@ -46,6 +46,40 @@ async function dragSheet(
   await page.mouse.up()
 }
 
+/**
+ * wait for the sheet frame to be fully settled (no transform movement) before
+ * interacting with content inside it.
+ *
+ * clicking an element inside the sheet while the frame is still animating in -
+ * or has only just stopped - makes chromium (mobile emulation) scroll the
+ * tapped element to the top of the enclosing ScrollView. this is browser
+ * behavior around taps on recently-transformed content, not sheet code: it
+ * reproduces with zero drags, on a non-focusable paragraph click, with the
+ * sheet's scroll lock never engaging, and tracks the enter animation rather
+ * than any app state. a fixed post-open timeout leaves the click racing the
+ * enter spring on slow machines, so wait for real box stability instead.
+ */
+async function waitForSheetSettled(page: Page, frameTestId: string) {
+  await expect
+    .poll(
+      async () => {
+        const read = () =>
+          page.evaluate(
+            (testId) =>
+              document.querySelector(`[data-testid="${testId}"]`)?.getBoundingClientRect()
+                .top ?? Number.NaN,
+            frameTestId
+          )
+        const before = await read()
+        await page.waitForTimeout(300)
+        const after = await read()
+        return Math.abs(after - before)
+      },
+      { timeout: 15_000 }
+    )
+    .toBeLessThan(0.5)
+}
+
 test.describe('Bug #3: Sheet without ScrollView - drag up resistance', () => {
   /**
    * When at top snap point, dragging up should apply resistance
@@ -100,7 +134,9 @@ test.describe('Bug #3: Sheet without ScrollView - drag up resistance', () => {
       'Current snap point: 0'
     )
 
-    // reset tracking
+    // reset tracking (settle first: clicking into a still-animating sheet
+    // triggers a spurious chromium tap-scroll, see waitForSheetSettled)
+    await waitForSheetSettled(page, 'no-scroll-frame')
     await page.getByTestId('no-scroll-reset').click()
 
     // get frame position for dragging on content
@@ -172,7 +208,8 @@ test.describe('Bug #1: Sheet with non-scrollable ScrollView', () => {
     const frame = page.getByTestId('non-scrollable-frame')
     await expect(frame).toBeVisible({ timeout: 5000 })
 
-    // reset counters
+    // reset counters (settle first, see waitForSheetSettled)
+    await waitForSheetSettled(page, 'non-scrollable-frame')
     await page.getByTestId('non-scrollable-reset').click()
 
     // verify we start at position 0
@@ -260,7 +297,8 @@ test.describe('Bug #2: Sheet with scrollable ScrollView - drag up resistance', (
     const frame = page.getByTestId('scrollable-frame')
     await expect(frame).toBeVisible({ timeout: 5000 })
 
-    // reset tracking
+    // reset tracking (settle first, see waitForSheetSettled)
+    await waitForSheetSettled(page, 'scrollable-frame')
     await page.getByTestId('scrollable-reset').click()
 
     // ensure we're at scroll top and position 0

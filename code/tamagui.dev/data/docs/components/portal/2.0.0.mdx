@@ -48,10 +48,11 @@ function App() {
   return (
     <MyContext.Provider value="from-provider">
       <Sheet modal open>
-        <Sheet.Frame>
+        <Sheet.Container>
+          <Sheet.Background />
           {/* Without native portal: you'd not have context here on native */}
           <MyConsumer />
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </MyContext.Provider>
   )
@@ -100,13 +101,14 @@ const theme = useTheme()
 const myValue = useContext(MyContext)
 
 <Sheet>
-  <Sheet.Frame>
+  <Sheet.Container>
+    <Sheet.Background />
     <ThemeProvider theme={theme}>
       <MyContext.Provider value={myValue}>
         {/* content that needs context */}
       </MyContext.Provider>
     </ThemeProvider>
-  </Sheet.Frame>
+  </Sheet.Container>
 </Sheet>
 ```
 

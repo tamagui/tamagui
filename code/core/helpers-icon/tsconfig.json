@@ -7,6 +7,12 @@
   "references": [
     {
       "path": "../core"
+    },
+    {
+      "path": "../size"
+    },
+    {
+      "path": "../style-grammar"
     }
   ],
   "exclude": [

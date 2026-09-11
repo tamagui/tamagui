@@ -1,6 +1,6 @@
 import type { ColorTokens, UnionableString, Variable } from '@tamagui/web'
 import { getVariable, useTheme } from '@tamagui/web'
-import type { TextStyle } from 'react-native'
+import type { TextStyle } from '@tamagui/react-native-types'
 
 export const useCurrentColor = (colorProp: ColorProp) => {
   const theme = useTheme()

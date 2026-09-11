@@ -7,9 +7,12 @@
  * The key insight: Users write web props, native runtime maps them to RN props.
  */
 
+import * as React from 'react'
 import { View, createTamagui, getSplitStyles } from '@tamagui/core'
+import { render } from '@testing-library/react-native'
 import { beforeAll, describe, expect, test } from 'vitest'
 
+import { createOptimizedView } from '../core/src/createOptimizedView.native'
 import config from '../config-default'
 
 beforeAll(() => {
@@ -39,6 +42,20 @@ function getSplitStylesFor(props: Record<string, any>, Component = View) {
     undefined,
     undefined
   )!
+}
+
+const TextAncestor = React.createContext(false)
+
+function OptimizedViewProbe({ viewProps }: { viewProps: Record<string, any> }) {
+  return createOptimizedView(null, viewProps, {
+    TextAncestor,
+  }) as React.ReactElement<any>
+}
+
+function getOptimizedViewProps(viewProps: Record<string, any>) {
+  const { UNSAFE_getByType } = render(<OptimizedViewProbe viewProps={viewProps} />)
+
+  return UNSAFE_getByType('RCTView').props
 }
 
 describe('Web Alignment - Native Accessibility Mapping', () => {
@@ -183,9 +200,17 @@ describe('Web Alignment - Native Focus Mapping', () => {
 
       expect(result.viewProps.tabIndex).toBe(-1)
     })
+
+    test('tabIndex={0} maps to focusable={true} in optimized native views', () => {
+      expect(getOptimizedViewProps({ tabIndex: 0 }).focusable).toBe(true)
+    })
+
+    test('tabIndex={-1} maps to focusable={false} in optimized native views', () => {
+      expect(getOptimizedViewProps({ tabIndex: -1 }).focusable).toBe(false)
+    })
   })
 
-  describe('RN focusable prop is NOT converted (v2)', () => {
+  describe('RN focusable prop is NOT converted', () => {
     test('focusable is NOT converted (use tabIndex)', () => {
       const result = getSplitStylesFor({
         focusable: true,
@@ -193,6 +218,10 @@ describe('Web Alignment - Native Focus Mapping', () => {
 
       // focusable is no longer converted - use tabIndex instead
       expect(result.viewProps.tabIndex).toBeUndefined()
+    })
+
+    test('focusable is removed from optimized native views', () => {
+      expect(getOptimizedViewProps({ focusable: true }).focusable).toBeUndefined()
     })
   })
 })

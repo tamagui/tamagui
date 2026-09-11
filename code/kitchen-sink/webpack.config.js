@@ -67,9 +67,15 @@ module.exports = {
       logging: 'error',
     },
     hot: true,
-    static: {
-      directory: path.join(__dirname, 'public'),
-    },
+    static: [
+      {
+        directory: path.join(__dirname, 'public'),
+      },
+      {
+        directory: path.join(__dirname, '../core/font-inter/woff2'),
+        publicPath: '/fonts',
+      },
+    ],
     compress: true,
     port: process.env.PORT || 7979,
   },

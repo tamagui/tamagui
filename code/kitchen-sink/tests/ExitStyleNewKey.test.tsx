@@ -2,11 +2,11 @@ import { expect, test } from '@playwright/test'
 
 import { setupPage } from './test-utils'
 
-// a style key first introduced by exitStyle (borderWidth / y here, no base
+// a style key first introduced by exit clause (borderWidth / y here, no base
 // value) must animate over the exit duration and gate exit completion. the
 // regression unmounted the element in the same cycle because such keys were
 // emitted as plain values and excluded from the pending exit key set.
-test('exitStyle-introduced keys animate and hold unmount for the exit duration', async ({
+test('exit clause-introduced keys animate and hold unmount for the exit duration', async ({
   page,
 }) => {
   await setupPage(page, {
@@ -48,7 +48,7 @@ test('exitStyle-introduced keys animate and hold unmount for the exit duration',
   expect(result.mountedAt150).toBe(true)
   expect(result.mountedAtEnd).toBe(false)
 
-  // the exitStyle-introduced keys must actually animate: intermediate values
+  // the exit clause-introduced keys must actually animate: intermediate values
   // strictly between the implicit start (0) and the exit target
   expect(
     result.samples.some(({ borderWidth }) => borderWidth > 0.5 && borderWidth < 9.5),

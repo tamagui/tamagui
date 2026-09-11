@@ -6,16 +6,12 @@
  * are merging defaultProps, givenProps, but we started using it elsewhere and now its a bit confusing
  * Should look into refactoring this to match common usage
  *
- * Merges sub-objects if they start are pseudo-keys or media-key-like (start with "$")
- *
  *    Given:
  *      mergeProps({ a: 1, b: 2 }, { b: 1, a: 2 })
  *    The final key order will be:
  *      b, a
  *
  */
-
-import { pseudoDescriptors } from './pseudoDescriptors'
 
 export type GenericProps = Record<string, any>
 
@@ -36,7 +32,7 @@ export const mergeProps = (defaultProps: object, props: object) => {
   }
 
   for (const key in props) {
-    mergeProp(out, defaultProps, props, key)
+    out[key] = props[key]
   }
 
   return out
@@ -84,7 +80,7 @@ export const mergeComponentProps = (
   }
 
   for (const key in props) {
-    mergeProp(out, defaultProps, props, key)
+    out[key] = props[key]
     if (contextProps && key in contextProps) {
       overriddenContext ||= {}
       overriddenContext[key] = props[key]
@@ -92,30 +88,4 @@ export const mergeComponentProps = (
   }
 
   return [out, overriddenContext] as const
-}
-
-function mergeProp(
-  out: object,
-  defaultProps: object | undefined | null,
-  props: object,
-  key: string
-) {
-  let val = props[key]
-
-  // one special case - we merge tamagui style sub-objects
-  if (
-    defaultProps &&
-    key in defaultProps &&
-    (key in pseudoDescriptors || key[0] === '$') &&
-    val &&
-    typeof val === 'object'
-  ) {
-    const defaultVal = defaultProps[key]
-    if (defaultVal && typeof defaultVal === 'object') {
-      // use merge props so we prefer the key ordering the the last merged
-      val = mergeProps(defaultVal, val)
-    }
-  }
-
-  out[key] = val
 }

@@ -1,25 +1,18 @@
 import { Button, Theme, YStack, styled } from 'tamagui'
 
 const StyledButton = styled(Button, {
-  pressStyle: {
-    scale: 0.5,
-  },
-
+  scale: 'press:0.5',
   variants: {
     reddish: {
       true: {
-        pressStyle: {
-          backgroundColor: 'red',
-        },
+        backgroundColor: 'press:red',
       },
     },
 
     bigGreen: {
       true: {
-        pressStyle: {
-          backgroundColor: 'green',
-          scale: 1.2,
-        },
+        backgroundColor: 'press:green',
+        scale: 'press:1.2',
       },
     },
   } as const,
@@ -28,14 +21,11 @@ const StyledButton = styled(Button, {
 const DoubleStyledButtonNoVariants = styled(StyledButton, {})
 
 const StyledButtonVariantTheme = styled(Button, {
-  pressStyle: {
-    scale: 0.5,
-  },
-
+  scale: 'press:0.5',
   variants: {
     testVariant: {
       true: {
-        backgroundColor: '$background',
+        backgroundColor: 'background',
       },
     },
   } as const,

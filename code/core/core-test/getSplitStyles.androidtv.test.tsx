@@ -1,19 +1,13 @@
 /**
  * Android TV Platform Style Tests
  *
- * Verifies that $platform-* props work correctly on Android TV.
+ * Verifies that platform props work correctly on Android TV.
  *
  * react-native-tvos behavior (verified):
  *   - Android TV: Platform.OS === 'android', Platform.isTV === true
  *
- * So on Android TV:
- *   - $platform-android should apply (Platform.OS === 'android')
- *   - $platform-native should apply (non-web platform)
- *   - $platform-tv should apply (Platform.isTV === true)
- *   - $platform-androidtv should apply (Platform.OS === 'android' && Platform.isTV === true)
- *   - $platform-ios should NOT apply
- *   - $platform-tvos should NOT apply
- *   - $platform-web should NOT apply
+ * So on Android TV the android, native, tv, and androidtv modifiers apply;
+ * ios, tvos, and web do not.
  */
 
 import { View, createTamagui } from '@tamagui/core'
@@ -73,78 +67,62 @@ function getSplitStylesFor(props: Record<string, any>, Component = View) {
   )!
 }
 
-describe('Android TV - $platform-* style props', () => {
-  test('$platform-android applies on Android TV (Platform.OS === "android")', () => {
-    const result = getSplitStylesFor({
-      '$platform-android': { backgroundColor: 'red' },
-    })
+describe('Android TV - platform style props', () => {
+  test('android applies on Android TV (Platform.OS === "android")', () => {
+    const result = getSplitStylesFor({ backgroundColor: 'android:red' })
     expect(result.style?.backgroundColor).toBe('red')
   })
 
-  test('$platform-native applies on Android TV (non-web platform)', () => {
-    const result = getSplitStylesFor({
-      '$platform-native': { backgroundColor: 'green' },
-    })
+  test('native applies on Android TV (non-web platform)', () => {
+    const result = getSplitStylesFor({ backgroundColor: 'native:green' })
     expect(result.style?.backgroundColor).toBe('green')
   })
 
-  test('$platform-tv applies on Android TV (Platform.isTV === true)', () => {
-    const result = getSplitStylesFor({
-      '$platform-tv': { backgroundColor: 'blue' },
-    })
+  test('tv applies on Android TV (Platform.isTV === true)', () => {
+    const result = getSplitStylesFor({ backgroundColor: 'tv:blue' })
     expect(result.style?.backgroundColor).toBe('blue')
   })
 
-  test('$platform-androidtv applies on Android TV (Platform.OS === "android" && Platform.isTV === true)', () => {
-    const result = getSplitStylesFor({
-      '$platform-androidtv': { backgroundColor: 'purple' },
-    })
+  test('androidtv applies on Android TV (Platform.OS === "android" && Platform.isTV === true)', () => {
+    const result = getSplitStylesFor({ backgroundColor: 'androidtv:purple' })
     expect(result.style?.backgroundColor).toBe('purple')
   })
 
-  test('$platform-ios does NOT apply on Android TV', () => {
-    const result = getSplitStylesFor({
-      '$platform-ios': { backgroundColor: 'orange' },
-    })
+  test('ios does NOT apply on Android TV', () => {
+    const result = getSplitStylesFor({ backgroundColor: 'ios:orange' })
     expect(result.style?.backgroundColor).toBeUndefined()
   })
 
-  test('$platform-tvos does NOT apply on Android TV', () => {
-    const result = getSplitStylesFor({
-      '$platform-tvos': { backgroundColor: 'pink' },
-    })
+  test('tvos does NOT apply on Android TV', () => {
+    const result = getSplitStylesFor({ backgroundColor: 'tvos:pink' })
     expect(result.style?.backgroundColor).toBeUndefined()
   })
 
-  test('$platform-web does NOT apply on Android TV', () => {
-    const result = getSplitStylesFor({
-      '$platform-web': { backgroundColor: 'yellow' },
-    })
+  test('web does NOT apply on Android TV', () => {
+    const result = getSplitStylesFor({ backgroundColor: 'web:yellow' })
     expect(result.style?.backgroundColor).toBeUndefined()
   })
 
-  test('$platform-androidtv overrides $platform-android on Android TV (androidtv declared after)', () => {
+  test('androidtv overrides android on Android TV (androidtv authored after)', () => {
     const result = getSplitStylesFor({
-      '$platform-android': { backgroundColor: 'red' },
-      '$platform-androidtv': { backgroundColor: 'purple' },
+      backgroundColor: 'android:red androidtv:purple',
     })
     // androidtv is more specific → always wins regardless of declaration order
     expect(result.style?.backgroundColor).toBe('purple')
   })
 
-  test('$platform-androidtv overrides $platform-android on Android TV (androidtv declared first)', () => {
+  test('androidtv overrides android on Android TV (androidtv authored first)', () => {
     const result = getSplitStylesFor({
-      '$platform-androidtv': { backgroundColor: 'purple' },
-      '$platform-android': { backgroundColor: 'red' },
+      backgroundColor: 'androidtv:purple android:red',
     })
     // androidtv is more specific → wins even when declared first
     expect(result.style?.backgroundColor).toBe('purple')
   })
 
-  test('$platform-tv and $platform-androidtv both apply on Android TV', () => {
+  test('tv and androidtv both apply on Android TV', () => {
     const result = getSplitStylesFor({
-      '$platform-tv': { marginTop: 10 },
-      '$platform-androidtv': { marginBottom: 20 },
+      marginTop: 'tv:10px',
+      marginBottom: 'androidtv:20px',
     })
     expect(result.style?.marginTop).toBe(10)
     expect(result.style?.marginBottom).toBe(20)
@@ -152,9 +130,12 @@ describe('Android TV - $platform-* style props', () => {
 
   test('platform specificity cascade: native → tv → androidtv (each overrides previous for same key, retains others)', () => {
     const result = getSplitStylesFor({
-      '$platform-native': { backgroundColor: 'green', opacity: 1, zIndex: 2 },
-      '$platform-tv': { backgroundColor: 'blue', marginTop: 8 },
-      '$platform-androidtv': { backgroundColor: 'purple' },
+      backgroundColor: 'native:green tv:blue androidtv:purple',
+      opacity: 'native:1',
+      // 1337 is not a zIndex token key: bare token-scale numbers like 2
+      // resolve config-first to the token value (owner-decided contract)
+      zIndex: 'native:1337',
+      marginTop: 'tv:8px',
     })
     // androidtv wins for backgroundColor (most specific)
     expect(result.style?.backgroundColor).toBe('purple')
@@ -162,14 +143,15 @@ describe('Android TV - $platform-* style props', () => {
     expect(result.style?.marginTop).toBe(8)
     // native-only props are retained (not overridden by tv or androidtv)
     expect(result.style?.opacity).toBe(1)
-    expect(result.style?.zIndex).toBe(2)
+    expect(result.style?.zIndex).toBe(1337)
   })
 
   test('platform specificity cascade is order-independent (most specific declared first, retains other props)', () => {
     const result = getSplitStylesFor({
-      '$platform-androidtv': { backgroundColor: 'purple' },
-      '$platform-tv': { backgroundColor: 'blue', marginTop: 8 },
-      '$platform-native': { backgroundColor: 'green', opacity: 1, zIndex: 2 },
+      backgroundColor: 'androidtv:purple tv:blue native:green',
+      marginTop: 'tv:8px',
+      opacity: 'native:1',
+      zIndex: 'native:1337',
     })
     // androidtv wins for backgroundColor even though it was declared first
     expect(result.style?.backgroundColor).toBe('purple')
@@ -177,6 +159,6 @@ describe('Android TV - $platform-* style props', () => {
     expect(result.style?.marginTop).toBe(8)
     // native-only props are retained even though native was not the winner for backgroundColor
     expect(result.style?.opacity).toBe(1)
-    expect(result.style?.zIndex).toBe(2)
+    expect(result.style?.zIndex).toBe(1337)
   })
 })

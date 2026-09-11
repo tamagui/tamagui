@@ -1,7 +1,7 @@
 Tamagui is a style library `@tamagui/core`, and a separate UI kit `tamagui`. It
 also has an optional optimizing compiler `@tamagui/static` that generally you
 only use through it's bundler plugins like `@tamagui/vite-plugin` or
-`@tamagui/babel-plugin` for Metro.
+`@tamagui/metro-plugin` for Metro.
 
 Note `tamagui` is a superset of `@tamagui/core`, so you can use that in general
 for code generation.
@@ -14,7 +14,7 @@ import { View, Text } from 'tamagui'
 export default () => (
   <>
     <View backgroundColor="red" />
-    <Text fontSize={16} color="$colorToken" />
+    <Text fontSize={16} color="colorToken" />
   </>
 )
 ```
@@ -67,7 +67,7 @@ export const RoundedSquare = styled(View, {
     },
 
     size: {
-      // functional that take all "size" tokens, so <View size="$sm" /> passes into here
+      // functional that take all "size" tokens, so <View size="sm" /> passes into here
       '...size': (size, { tokens }) => {
         return {
           width: tokens.size[size] ?? size,
@@ -89,11 +89,11 @@ import { createTamagui, getConfig } from '@tamagui/core'
 export const config = createTamagui({
   // act like CSS variables at your root
   tokens: {
-    // width="$sm"
+    // width="sm"
     size: { sm: 8, md: 12, lg: 20 },
-    // margin="$-sm"
+    // margin="-sm"
     space: { '-sm': 8 },
-    // radius="$none"
+    // radius="none"
     radius: { none: 0, sm: 3 },
     color: { white: '#fff', black: '#000' },
   },
@@ -141,7 +141,7 @@ declare module '@tamagui/core' {
 ```
 
 Note that Tamagui maps tokens to style props using some logic, so if you use
-`<View margin="$sm />` it looks for
+`<View margin="sm" />` it looks for
 `createTamagui({ tokens: { space: { sm: 10 } } })`:
 
 ```ts
@@ -368,4 +368,4 @@ export const themes: TamaguiThemes =
     : (generatedThemes as any)
 ```
 
-And it generates a whole bunch of themes for you that are very nice like `light`, `light_accent`, `light_accent_Button`, etc. For more, see the `config-v4.mdx` file in search.
+And it generates a whole bunch of themes for you that are very nice like `light`, `light_accent`, `light_accent_Button`, etc. For more, see the Config v5 docs at /docs/core/config-v5.

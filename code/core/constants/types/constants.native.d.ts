@@ -3,8 +3,6 @@ export declare const isWeb: boolean;
 export declare const isBrowser: boolean;
 export declare const isServer: boolean;
 export declare const isClient: boolean;
-/** @deprecated use isBrowser instead */
-export declare const isWindowDefined: boolean;
 export declare const useIsomorphicLayoutEffect: typeof useEffect;
 export declare const isChrome: boolean;
 export declare const isWebTouchable: boolean;
@@ -14,6 +12,7 @@ export declare const isAndroid: boolean;
 export declare const isIos: boolean;
 export declare const supportsDynamicColorIOS: boolean;
 export declare const isTV: boolean;
+export declare function platformMatches(name: string): boolean;
 /**
 * Reflects Platform.OS. TV platforms are intentionally NOT separate values:
 * - Android TV has Platform.OS === 'android' (react-native-tvos behavior)

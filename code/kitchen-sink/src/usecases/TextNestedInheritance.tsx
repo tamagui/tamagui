@@ -22,7 +22,7 @@ export function TextNestedInheritance() {
         should also be truncated
       </Text>
 
-      {/* Test 2: tamagui Text sets color: '$color', so nested Text should NOT inherit */}
+      {/* Test 2: tamagui Text sets color: 'color', so nested Text should NOT inherit */}
       <Text testID="parent-color" color="blue">
         Parent blue text with
         <Text testID="nested-color" fontWeight="bold">

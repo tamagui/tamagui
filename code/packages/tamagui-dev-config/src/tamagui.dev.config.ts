@@ -1,26 +1,19 @@
-import { animationsCSS } from '@tamagui/config/v5-css'
-import { animationsMotion } from '@tamagui/config/v5-motion'
-import {
-  createV5Theme,
-  defaultConfig,
-  subtleChildrenThemes,
-} from '@tamagui/config/v5-subtle'
-
-// only generate the accent themes the site actually uses: red/green/blue/gray/yellow
-// (the @tamagui/logo tint family). dropping orange/pink/purple/teal/neutral roughly
-// halves the render-blocking theme css. note: dropping an accent also removes its
-// color tokens (--pink10 etc.), so all $pink/$purple/$orange/$teal/$neutral usages are
-// collapsed to kept colors across the site. component themes are kept (they dedupe to
-// surfaces in css and the site shows them off). themes-as-js is still stripped to {}
-// on the client below and hydrated from css.
-const { gray, blue, red, yellow, green } = subtleChildrenThemes
-const themes = createV5Theme({
-  childrenThemes: { gray, blue, red, yellow, green },
-})
+import { animationsCSS } from '@tamagui/config/animations-css'
+import { animationsMotion } from '@tamagui/config/animations-motion'
+import { selectionStyles } from '@tamagui/config/v6-base'
+// the pieces of the v5 default config the site keeps, each from its narrowest
+// entry point. `@tamagui/config/v5-subtle` re-exports a whole theme pack, and
+// `defaultConfig` holds another, so touching either ships ~250kb of theme values
+// to the browser that the `themes:` line below then replaces.
+import { settings as defaultSettings, sizes } from '@tamagui/config/settings'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
-import { bodyFont, cherryBombFont, headingFont, monoFont, silkscreenFont } from './fonts'
+import { shorthands } from '@tamagui/shorthands/v4'
+import { tokens } from '@tamagui/themes/v5'
+import { bodyFont, cherryBombFont, headingFont, monoFont } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
+import { clientThemes } from './themeMetadata'
+import { themes } from './themes'
 
 setupDev({
   visualizer: true,
@@ -30,7 +23,6 @@ const fonts = {
   heading: headingFont,
   body: bodyFont,
   mono: monoFont,
-  silkscreen: silkscreenFont,
   cherryBomb: cherryBombFont,
 }
 
@@ -39,19 +31,25 @@ export const animations = {
   css: animationsCSS,
 }
 
-// Use v5 config as base, but with tamagui.dev custom themes
+const configuredThemes =
+  process.env.VITE_ENVIRONMENT === 'client'
+    ? (clientThemes as unknown as typeof themes)
+    : themes
+
 export const config = {
-  ...defaultConfig,
-  themes: process.env.VITE_ENVIRONMENT === 'client' ? ({} as typeof themes) : themes,
+  shorthands,
+  tokens,
+  sizes,
+  themes: configuredThemes,
   fonts,
   animations,
   media,
   settings: {
-    ...defaultConfig.settings,
+    ...defaultSettings,
+    selectionStyles,
     mediaQueryDefaultActive,
     allowedStyleValues: 'somewhat-strict-web',
-    autocompleteSpecificTokens: 'except-special',
-    // Allow both shorthands and longhand names for flexibility
+    // allow both shorthands and longhand names for flexibility
     onlyAllowShorthands: false,
   },
 } satisfies CreateTamaguiProps

@@ -1,3 +1,4 @@
+import { createStyledHOC, createRefComponent } from '@tamagui/core'
 import { Animate } from '@tamagui/animate'
 import { AnimatePresence as Presence } from '@tamagui/animate-presence'
 import { createCollection } from '@tamagui/collection'
@@ -7,6 +8,7 @@ import {
 } from '@tamagui/dismissable'
 import { useFocusGuards } from '@tamagui/focus-guard'
 import { FocusScope } from '@tamagui/focus-scope'
+import { Image as TamaguiImage, type ImageProps } from '@tamagui/image'
 import type { PopperContentProps } from '@tamagui/popper'
 import * as PopperPrimitive from '@tamagui/popper'
 import { needsPortalRepropagation, Portal as PortalPrimitive } from '@tamagui/portal'
@@ -17,6 +19,7 @@ import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
 import type { TextProps } from '@tamagui/web'
 import {
+  type GetRef,
   type ViewProps,
   composeEventHandlers,
   composeRefs,
@@ -34,9 +37,6 @@ import {
 import type { TamaguiElement } from '@tamagui/web/types'
 import * as React from 'react'
 import { useId } from 'react'
-import type { Image, ImageProps } from 'react-native'
-
-import { MenuPredefined } from './MenuPredefined'
 
 type Direction = 'ltr' | 'rtl'
 
@@ -156,7 +156,7 @@ interface MenuRootContentTypeProps extends Omit<
 
 /* ---------------------------------------------------------------------------------------------- */
 
-type MenuContentImplElement = React.ElementRef<typeof PopperPrimitive.PopperContent>
+type MenuContentImplElement = GetRef<typeof PopperPrimitive.PopperContent>
 type FocusScopeProps = React.ComponentPropsWithoutRef<typeof FocusScope>
 type DismissableLayerProps = React.ComponentPropsWithoutRef<typeof DismissableLayer>
 type MenuContentImplPrivateProps = {
@@ -175,18 +175,18 @@ type MenuContentImplPrivateProps = {
    * (default: false)
    */
   trapFocus?: FocusScopeProps['trapped']
-
+}
+interface MenuContentImplProps
+  extends MenuContentImplPrivateProps, Omit<PopperContentProps, 'dir' | 'onPlaced'> {
   /**
    * Whether to disable dismissing the menu when the user scrolls outside of it
    * (default: false, meaning scroll will dismiss on web)
    */
   disableDismissOnScroll?: boolean
-}
-interface MenuContentImplProps
-  extends MenuContentImplPrivateProps, Omit<PopperContentProps, 'dir' | 'onPlaced'> {
+
   /**
    * Event handler called when auto-focusing on close.
-   * Can be prevented.
+   * Can be canceled.
    */
   onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus']
 
@@ -203,7 +203,7 @@ interface MenuContentImplProps
   onInteractOutside?: DismissableLayerProps['onInteractOutside']
 }
 
-type StyleableMenuContentProps = MenuContentImplProps & ViewProps
+type StyledHOCMenuContentProps = MenuContentImplProps & ViewProps
 
 interface MenuGroupProps extends ViewProps {}
 
@@ -211,12 +211,11 @@ interface MenuGroupProps extends ViewProps {}
  * MenuLabel
  * -----------------------------------------------------------------------------------------------*/
 
-interface MenuLabelProps extends ViewProps {}
+interface MenuLabelProps extends TextProps {}
 
 type MenuItemElement = MenuItemImplElement
 interface MenuItemProps extends Omit<MenuItemImplProps, 'onSelect'> {
   onSelect?: (event: Event) => void
-  unstyled?: boolean
   /**
    * Prevents the menu from closing when this item is selected.
    * Useful for toggle items or multi-select scenarios.
@@ -229,7 +228,6 @@ type MenuItemImplElement = TamaguiElement
 interface MenuItemImplProps extends ViewProps {
   disabled?: boolean
   textValue?: string
-  unstyled?: boolean
 }
 
 /* -------------------------------------------------------------------------------------------------
@@ -299,7 +297,6 @@ interface MenuItemIndicatorProps extends PrimitiveSpanProps {
  * MenuSeparator
  * -----------------------------------------------------------------------------------------------*/
 
-// type MenuSeparatorElement = React.ElementRef<typeof Stack>
 interface MenuSeparatorProps extends ViewProps {}
 
 /* -------------------------------------------------------------------------------------------------
@@ -308,9 +305,7 @@ interface MenuSeparatorProps extends ViewProps {}
 
 // type MenuArrowElement = React.ElementRef<typeof PopperPrimitive.PopperArrow>
 type PopperArrowProps = React.ComponentPropsWithoutRef<typeof PopperPrimitive.PopperArrow>
-interface MenuArrowProps extends PopperArrowProps {
-  unstyled?: boolean
-}
+type MenuArrowProps = PopperArrowProps
 
 /* -------------------------------------------------------------------------------------------------
  * MenuSub
@@ -375,29 +370,11 @@ const { Provider: MenuRootProvider, useStyledContext: useMenuRootContext } =
 
 const MENU_CONTEXT = 'MenuContext'
 
-export type CreateBaseMenuProps = {
-  Item?: typeof MenuPredefined.MenuItem
-  MenuGroup?: typeof MenuPredefined.MenuGroup
-  Title?: typeof MenuPredefined.Title
-  SubTitle?: typeof MenuPredefined.SubTitle
-  Image?: React.ElementType
-  Icon?: typeof MenuPredefined.MenuIcon
-  Indicator?: typeof MenuPredefined.MenuIndicator
-  Separator?: typeof MenuPredefined.MenuSeparator
-  Label?: typeof MenuPredefined.MenuLabel
-}
+const MenuImageFrame = styled(TamaguiImage, {
+  displayName: 'MenuItemImage',
+})
 
-export function createBaseMenu({
-  Item: _Item = MenuPredefined.MenuItem,
-  Title: _Title = MenuPredefined.Title,
-  SubTitle: _SubTitle = MenuPredefined.SubTitle,
-  Image: _Image = MenuPredefined.MenuImage,
-  Icon: _Icon = MenuPredefined.MenuIcon,
-  Indicator: _Indicator = MenuPredefined.MenuIndicator,
-  Separator: _Separator = MenuPredefined.MenuSeparator,
-  MenuGroup: _MenuGroup = MenuPredefined.MenuGroup,
-  Label: _Label = MenuPredefined.MenuLabel,
-}: CreateBaseMenuProps) {
+export function createBaseMenu() {
   const MenuComp = (props: ScopedProps<MenuBaseProps>) => {
     const direction = useDirection(props.dir)
     // default placement: bottom-start for LTR, bottom-end for RTL
@@ -535,8 +512,10 @@ export function createBaseMenu({
 
   const PORTAL_NAME = 'MenuPortal'
 
+  // Menu.Portal is optional, so Content and SubContent read this context with no
+  // provider above them: an undefined default makes that a crash
   const { Provider: PortalProvider, useStyledContext: usePortalContext } =
-    createStyledContext<PortalContextValue>(undefined, 'Portal')
+    createStyledContext<PortalContextValue>({}, 'Portal')
 
   const MenuPortal = (props: ScopedProps<MenuPortalProps>) => {
     const { scope = MENU_CONTEXT, forceMount, zIndex, children } = props
@@ -604,11 +583,12 @@ export function createBaseMenu({
     createStyledContext<MenuContentContextValue>()
 
   const MenuContentFrame = styled(PopperPrimitive.PopperContentFrame, {
-    name: CONTENT_NAME,
+    displayName: CONTENT_NAME,
   })
 
-  const MenuContent = MenuContentFrame.styleable<ScopedProps<MenuContentProps>>(
-    (props, forwardedRef) => {
+  const MenuContent = createStyledHOC(
+    MenuContentFrame,
+    (props: ScopedProps<MenuContentProps>, forwardedRef) => {
       const scope = props.scope || MENU_CONTEXT
       const portalContext = usePortalContext(scope)
       const { forceMount = portalContext.forceMount, ...contentProps } = props
@@ -630,7 +610,7 @@ export function createBaseMenu({
 
   /* ---------------------------------------------------------------------------------------------- */
 
-  const MenuRootContentModal = React.forwardRef<
+  const MenuRootContentModal = createRefComponent<
     MenuRootContentTypeElement,
     ScopedProps<MenuRootContentTypeProps>
   >((props, forwardedRef) => {
@@ -662,7 +642,7 @@ export function createBaseMenu({
         // We make sure we don't trigger our `onDismiss` in such case.
         onFocusOutside={composeEventHandlers(
           props.onFocusOutside,
-          (event: Event) => event.preventDefault(),
+          (event) => event.cancel(),
           { checkDefaultPrevented: false }
         )}
         onDismiss={() => context.onOpenChange(false)}
@@ -670,7 +650,7 @@ export function createBaseMenu({
     )
   })
 
-  const MenuRootContentNonModal = React.forwardRef<
+  const MenuRootContentNonModal = createRefComponent<
     MenuRootContentTypeElement,
     ScopedProps<MenuRootContentTypeProps>
   >((props, forwardedRef) => {
@@ -689,9 +669,9 @@ export function createBaseMenu({
     )
   })
 
-  const MenuContentImpl = React.forwardRef<
+  const MenuContentImpl = createRefComponent<
     MenuContentImplElement,
-    ScopedProps<StyleableMenuContentProps>
+    ScopedProps<StyledHOCMenuContentProps>
   >((props, forwardedRef) => {
     const {
       scope = MENU_CONTEXT,
@@ -708,7 +688,6 @@ export function createBaseMenu({
       onDismiss,
       disableOutsideScroll,
       disableDismissOnScroll = false,
-      unstyled = process.env.TAMAGUI_HEADLESS === '1',
       ...contentProps
     } = props
 
@@ -805,13 +784,13 @@ export function createBaseMenu({
         // relative to the viewport. window/document scrolls have `document`
         // as the target, which contains the anchor, so those still dismiss.
         if (anchor && !scrolled.contains(anchor)) return
-        onDismiss?.()
+        context.onOpenChange(false)
       }
       window.addEventListener('scroll', handleScroll, { capture: true, passive: true })
       return () => {
         window.removeEventListener('scroll', handleScroll, { capture: true })
       }
-    }, [disableDismissOnScroll, context.open, onDismiss, popperContext.refs])
+    }, [disableDismissOnScroll, context.open, context.onOpenChange, popperContext.refs])
 
     // Make sure the whole tree has focus guards as our `MenuContent` may be
     // the last element in the DOM (beacuse of the `Portal`)
@@ -832,14 +811,6 @@ export function createBaseMenu({
         // tabIndex allows the content to be focusable so that onItemLeave can
         // focus the content frame and properly blur the previously focused item
         tabIndex={-1}
-        unstyled={unstyled}
-        {...(!unstyled && {
-          backgroundColor: '$background',
-          borderWidth: 1,
-          borderColor: '$borderColor',
-          outlineWidth: 0,
-          minWidth: 180,
-        })}
         aria-orientation="vertical"
         data-state={getOpenState(context.open)}
         data-tamagui-menu-content=""
@@ -945,7 +916,7 @@ export function createBaseMenu({
             onMountAutoFocus={composeEventHandlers(onOpenAutoFocus, (event) => {
               // when opening, explicitly focus the content area only and leave
               // `onEntryFocus` in control of focusing first item
-              event.preventDefault()
+              event.cancel()
               // contentRef.current doesn't reliably point to the focusable DOM element
               // due to how refs propagate through Tamagui's styled component chain,
               // so we query for the element directly using the data attribute
@@ -977,7 +948,7 @@ export function createBaseMenu({
                   // for keyboard users, focus first item for immediate navigation
                   // for mouse users, prevent auto-focus to avoid showing focus style
                   if (!rootContext.isUsingKeyboardRef.current) {
-                    event.preventDefault()
+                    event.cancel()
                   }
                 })}
               >
@@ -999,119 +970,118 @@ export function createBaseMenu({
   const ITEM_NAME = 'MenuItem'
   const ITEM_SELECT = 'menu.itemSelect'
 
-  // use styleable so styled(Menu.Item, { focusStyle }) passes pseudo styles through correctly
-  const MenuItem = _Item.styleable<ScopedProps<MenuItemProps>>((props, forwardedRef) => {
-    const {
-      disabled = false,
-      onSelect,
-      preventCloseOnSelect,
-      children,
-      scope = MENU_CONTEXT,
-      // filter out native-only props that shouldn't reach the DOM
-      // @ts-ignore
-      destructive,
-      // @ts-ignore
-      hidden,
-      // @ts-ignore
-      androidIconName,
-      // @ts-ignore
-      iosIconName,
-      ...itemProps
-    } = props
-    const ref = React.useRef<TamaguiElement>(null)
-    const rootContext = useMenuRootContext(scope)
-    const contentContext = useMenuContentContext(scope)
-    const composedRefs = useComposedRefs(forwardedRef, ref)
-    const isPointerDownRef = React.useRef(false)
+  const MenuItem = createStyledHOC(
+    View,
+    (props: ScopedProps<MenuItemProps>, forwardedRef) => {
+      const {
+        disabled = false,
+        onSelect,
+        preventCloseOnSelect,
+        children,
+        scope = MENU_CONTEXT,
+        // filter out native-only props that shouldn't reach the DOM
+        // @ts-ignore
+        destructive,
+        // @ts-ignore
+        hidden,
+        // @ts-ignore
+        androidIconName,
+        ...itemProps
+      } = props
+      const ref = React.useRef<TamaguiElement>(null)
+      const rootContext = useMenuRootContext(scope)
+      const contentContext = useMenuContentContext(scope)
+      const composedRefs = useComposedRefs(forwardedRef, ref)
+      const isPointerDownRef = React.useRef(false)
 
-    const handleSelect = () => {
-      const menuItem = ref.current
-      if (!disabled && menuItem) {
-        if (isWeb) {
-          const menuItemEl = menuItem as HTMLElement
-          const itemSelectEvent = new CustomEvent(ITEM_SELECT, {
-            bubbles: true,
-            cancelable: true,
-          })
-          menuItemEl.addEventListener(ITEM_SELECT, (event) => onSelect?.(event), {
-            once: true,
-          })
-          dispatchDiscreteCustomEvent(menuItemEl, itemSelectEvent)
-          // close the menu unless preventCloseOnSelect is set or event.preventDefault() was called
-          if (itemSelectEvent.defaultPrevented || preventCloseOnSelect) {
-            isPointerDownRef.current = false
+      const handleSelect = () => {
+        const menuItem = ref.current
+        if (!disabled && menuItem) {
+          if (isWeb) {
+            const menuItemEl = menuItem as HTMLElement
+            const itemSelectEvent = new CustomEvent(ITEM_SELECT, {
+              bubbles: true,
+              cancelable: true,
+            })
+            menuItemEl.addEventListener(ITEM_SELECT, (event) => onSelect?.(event), {
+              once: true,
+            })
+            dispatchDiscreteCustomEvent(menuItemEl, itemSelectEvent)
+            // close the menu unless preventCloseOnSelect is set or event.preventDefault() was called
+            if (itemSelectEvent.defaultPrevented || preventCloseOnSelect) {
+              isPointerDownRef.current = false
+            } else {
+              rootContext.onClose()
+            }
           } else {
-            rootContext.onClose()
-          }
-        } else {
-          // TODO: find a better way to handle this on native
-          onSelect?.({ target: menuItem } as unknown as Event)
-          isPointerDownRef.current = false
-          if (!preventCloseOnSelect) {
-            rootContext.onClose()
+            // TODO: find a better way to handle this on native
+            onSelect?.({ target: menuItem } as unknown as Event)
+            isPointerDownRef.current = false
+            if (!preventCloseOnSelect) {
+              rootContext.onClose()
+            }
           }
         }
       }
-    }
 
-    const content = typeof children === 'string' ? <Text>{children}</Text> : children
+      const content = typeof children === 'string' ? <Text>{children}</Text> : children
 
-    return (
-      <MenuItemImpl
-        outlineStyle="none"
-        {...itemProps}
-        scope={scope}
-        // @ts-ignore
-        ref={composedRefs}
-        disabled={disabled}
-        onPress={composeEventHandlers(props.onPress, handleSelect)}
-        onPointerDown={(event) => {
-          props.onPointerDown?.(event)
-          isPointerDownRef.current = true
-        }}
-        onPointerUp={composeEventHandlers(props.onPointerUp, (event) => {
-          // Pointer down can move to a different menu item which should activate it on pointer up.
-          // We dispatch a click for selection to allow composition with click based triggers and to
-          // prevent Firefox from getting stuck in text selection mode when the menu closes.
-          if (isWeb) {
-            // @ts-ignore
-            if (!isPointerDownRef.current) event.currentTarget?.click()
-          }
-        })}
-        {...(isWeb
-          ? {
-              onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
-                const isTypingAhead = contentContext.searchRef.current !== ''
-                if (disabled || (isTypingAhead && event.key === ' ')) return
-                if (SELECTION_KEYS.includes(event.key)) {
-                  // @ts-ignore
-                  event.currentTarget?.click()
-                  /**
-                   * We prevent default browser behaviour for selection keys as they should trigger
-                   * a selection only:
-                   * - prevents space from scrolling the page.
-                   * - if keydown causes focus to move, prevents keydown from firing on the new target.
-                   */
-                  event.preventDefault()
-                }
-              }),
+      return (
+        <MenuItemImpl
+          {...itemProps}
+          scope={scope}
+          // @ts-ignore
+          ref={composedRefs}
+          disabled={disabled}
+          onPress={composeEventHandlers(props.onPress, handleSelect)}
+          onPointerDown={(event) => {
+            props.onPointerDown?.(event)
+            isPointerDownRef.current = true
+          }}
+          onPointerUp={composeEventHandlers(props.onPointerUp, (event) => {
+            // Pointer down can move to a different menu item which should activate it on pointer up.
+            // We dispatch a click for selection to allow composition with click based triggers and to
+            // prevent Firefox from getting stuck in text selection mode when the menu closes.
+            if (isWeb) {
+              // @ts-ignore
+              if (!isPointerDownRef.current) event.currentTarget?.click()
             }
-          : {})}
-      >
-        {content}
-      </MenuItemImpl>
-    )
-  })
+          })}
+          {...(isWeb
+            ? {
+                onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+                  const isTypingAhead = contentContext.searchRef.current !== ''
+                  if (disabled || (isTypingAhead && event.key === ' ')) return
+                  if (SELECTION_KEYS.includes(event.key)) {
+                    // @ts-ignore
+                    event.currentTarget?.click()
+                    /**
+                     * We prevent default browser behaviour for selection keys as they should trigger
+                     * a selection only:
+                     * - prevents space from scrolling the page.
+                     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+                     */
+                    event.preventDefault()
+                  }
+                }),
+              }
+            : {})}
+        >
+          {content}
+        </MenuItemImpl>
+      )
+    }
+  )
 
-  const MenuItemImpl = React.forwardRef<
+  const MenuItemImpl = createRefComponent<
     MenuItemImplElement,
     ScopedProps<MenuItemImplProps>
   >((props, forwardedRef) => {
     const {
       scope = MENU_CONTEXT,
+      className,
       disabled = false,
       textValue,
-      unstyled = process.env.TAMAGUI_HEADLESS === '1',
       ...itemProps
     } = props
     const contentContext = useMenuContentContext(scope)
@@ -1140,11 +1110,10 @@ export function createBaseMenu({
         <RovingFocusGroup.Item
           asChild
           __scopeRovingFocusGroup={scope}
-          focusable={!disabled}
+          tabIndex={disabled ? -1 : 0}
         >
-          <_Item
-            unstyled={unstyled}
-            componentName={ITEM_NAME}
+          <View
+            className={`is_${ITEM_NAME} ${className || ''}`.trim()}
             role="menuitem"
             data-highlighted={isFocused ? '' : undefined}
             aria-disabled={disabled || undefined}
@@ -1195,9 +1164,12 @@ export function createBaseMenu({
    * MenuItemTitle
    * -----------------------------------------------------------------------------------------------*/
   const ITEM_TITLE_NAME = 'MenuItemTitle'
-  const MenuItemTitle = _Title.styleable<MenuItemTitleProps>((props, forwardedRef) => {
-    return <_Title {...props} ref={forwardedRef} />
-  })
+  const MenuItemTitle = createStyledHOC(
+    Text,
+    (props: MenuItemTitleProps, forwardedRef) => {
+      return <Text {...props} ref={forwardedRef} />
+    }
+  )
 
   MenuItemTitle.displayName = ITEM_TITLE_NAME
   /* ---------------------------------------------------------------------------------------------- */
@@ -1206,9 +1178,10 @@ export function createBaseMenu({
    * MenuItemSubTitle
    * -----------------------------------------------------------------------------------------------*/
   const ITEM_SUB_TITLE_NAME = 'MenuItemSubTitle'
-  const MenuItemSubTitle = _SubTitle.styleable<MenuItemSubTitleProps>(
-    (props, forwardedRef) => {
-      return <_SubTitle {...props} ref={forwardedRef} />
+  const MenuItemSubTitle = createStyledHOC(
+    Text,
+    (props: MenuItemSubTitleProps, forwardedRef) => {
+      return <Text {...props} ref={forwardedRef} />
     }
   )
 
@@ -1220,19 +1193,19 @@ export function createBaseMenu({
    * MenuItemImage
    * -----------------------------------------------------------------------------------------------*/
   const ITEM_IMAGE = 'MenuItemImage'
-  const MenuItemImage = React.forwardRef<Image, ImageProps>((props, forwardedRef) => {
-    // filter out native-only props that shouldn't reach the DOM
-    const {
-      // @ts-ignore - native menu ios config
-      ios,
-      // @ts-ignore
-      androidIconName,
-      // @ts-ignore
-      iosIconName,
-      ...rest
-    } = props
-    return <_Image {...rest} ref={forwardedRef} />
-  })
+  const MenuItemImage = createRefComponent<TamaguiElement, ImageProps>(
+    (props, forwardedRef) => {
+      // filter out native-only props that shouldn't reach the DOM
+      const {
+        // @ts-ignore - native menu ios config
+        ios,
+        // @ts-ignore
+        androidIconName,
+        ...rest
+      } = props
+      return <MenuImageFrame {...rest} ref={forwardedRef} />
+    }
+  )
 
   MenuItemImage.displayName = ITEM_IMAGE
 
@@ -1243,7 +1216,7 @@ export function createBaseMenu({
    * -----------------------------------------------------------------------------------------------*/
 
   const ITEM_ICON = 'MenuItemIcon'
-  const MenuItemIcon = _Icon.styleable<MenuItemIconProps>((props, forwardedRef) => {
+  const MenuItemIcon = createStyledHOC(View, (props: MenuItemIconProps, forwardedRef) => {
     // filter out native-only props that shouldn't reach the DOM
     const {
       // @ts-ignore
@@ -1252,11 +1225,9 @@ export function createBaseMenu({
       android,
       // @ts-ignore
       androidIconName,
-      // @ts-ignore
-      iosIconName,
       ...rest
     } = props
-    return <_Icon {...rest} ref={forwardedRef} />
+    return <View {...rest} ref={forwardedRef} />
   })
 
   MenuItemIcon.displayName = ITEM_ICON
@@ -1269,8 +1240,9 @@ export function createBaseMenu({
 
   const CHECKBOX_ITEM_NAME = 'MenuCheckboxItem'
 
-  const MenuCheckboxItem = _Item.styleable<ScopedProps<MenuCheckboxItemProps>>(
-    (props, forwardedRef) => {
+  const MenuCheckboxItem = createStyledHOC(
+    View,
+    (props: ScopedProps<MenuCheckboxItemProps>, forwardedRef) => {
       const {
         checked = false,
         onCheckedChange,
@@ -1280,12 +1252,13 @@ export function createBaseMenu({
         value,
         // @ts-ignore - native menu value change handler
         onValueChange,
+        className,
         ...checkboxItemProps
       } = props
       return (
         <ItemIndicatorProvider scope={scope} checked={checked}>
           <MenuItem
-            componentName={CHECKBOX_ITEM_NAME}
+            className={`is_${CHECKBOX_ITEM_NAME} ${className || ''}`.trim()}
             role={(isWeb ? 'menuitemcheckbox' : 'menuitem') as 'menuitem'}
             aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
             {...checkboxItemProps}
@@ -1313,14 +1286,21 @@ export function createBaseMenu({
   const { Provider: RadioGroupProvider, useStyledContext: useRadioGroupContext } =
     createStyledContext<MenuRadioGroupProps>()
 
-  const MenuRadioGroup = _MenuGroup.styleable<ScopedProps<MenuRadioGroupProps>>(
-    (props, forwardedRef) => {
-      const { value, onValueChange, scope = MENU_CONTEXT, ...groupProps } = props
+  const MenuRadioGroup = createStyledHOC(
+    View,
+    (props: ScopedProps<MenuRadioGroupProps>, forwardedRef) => {
+      const {
+        value,
+        onValueChange,
+        scope = MENU_CONTEXT,
+        className,
+        ...groupProps
+      } = props
       const handleValueChange = useCallbackRef(onValueChange)
       return (
         <RadioGroupProvider scope={scope} value={value} onValueChange={handleValueChange}>
-          <_MenuGroup
-            componentName={RADIO_GROUP_NAME}
+          <View
+            className={`is_${RADIO_GROUP_NAME} ${className || ''}`.trim()}
             {...groupProps}
             ref={forwardedRef}
           />
@@ -1336,15 +1316,16 @@ export function createBaseMenu({
 
   const RADIO_ITEM_NAME = 'MenuRadioItem'
 
-  const MenuRadioItem = _Item.styleable<ScopedProps<MenuRadioItemProps>>(
-    (props, forwardedRef) => {
-      const { value, scope = MENU_CONTEXT, ...radioItemProps } = props
+  const MenuRadioItem = createStyledHOC(
+    View,
+    (props: ScopedProps<MenuRadioItemProps>, forwardedRef) => {
+      const { value, scope = MENU_CONTEXT, className, ...radioItemProps } = props
       const context = useRadioGroupContext(scope)
       const checked = value === context.value
       return (
         <ItemIndicatorProvider scope={scope} checked={checked}>
           <MenuItem
-            componentName={RADIO_ITEM_NAME}
+            className={`is_${RADIO_ITEM_NAME} ${className || ''}`.trim()}
             {...radioItemProps}
             scope={scope}
             aria-checked={checked}
@@ -1373,17 +1354,18 @@ export function createBaseMenu({
   const { Provider: ItemIndicatorProvider, useStyledContext: useItemIndicatorContext } =
     createStyledContext<CheckboxContextValue>()
 
-  const MenuItemIndicator = _Indicator.styleable<ScopedProps<MenuItemIndicatorProps>>(
-    (props, forwardedRef) => {
-      const { scope = MENU_CONTEXT, forceMount, ...itemIndicatorProps } = props
+  const MenuItemIndicator = createStyledHOC(
+    View,
+    (props: ScopedProps<MenuItemIndicatorProps>, forwardedRef) => {
+      const { scope = MENU_CONTEXT, className, forceMount, ...itemIndicatorProps } = props
       const indicatorContext = useItemIndicatorContext(scope)
       return (
         <Presence>
           {forceMount ||
           isIndeterminate(indicatorContext.checked) ||
           indicatorContext.checked === true ? (
-            <_Indicator
-              componentName={ITEM_INDICATOR_NAME}
+            <View
+              className={`is_${ITEM_INDICATOR_NAME} ${className || ''}`.trim()}
               render="span"
               {...itemIndicatorProps}
               ref={forwardedRef}
@@ -1401,22 +1383,14 @@ export function createBaseMenu({
    * MenuArrow
    * -----------------------------------------------------------------------------------------------*/
 
-  // TODO this was styleable but it cant flatten anyways so likely fine just need to check
-  const MenuArrow = React.forwardRef<TamaguiElement, MenuArrowProps>(
+  // TODO this wrapped a styled component but it cant flatten anyways so likely fine just need to check
+  const MenuArrow = createRefComponent<TamaguiElement, MenuArrowProps>(
     function MenuArrow(props, forwardedRef) {
-      const {
-        scope = MENU_CONTEXT,
-        unstyled = process.env.TAMAGUI_HEADLESS === '1',
-        ...rest
-      } = props
+      const { scope = MENU_CONTEXT, className, ...rest } = props
       return (
         <PopperPrimitive.PopperArrow
           scope={scope}
-          componentName="PopperArrow"
-          unstyled={unstyled}
-          {...(!unstyled && {
-            backgroundColor: '$background',
-          })}
+          className={`is_PopperArrow ${className || ''}`.trim()}
           {...rest}
           ref={forwardedRef}
         />
@@ -1534,7 +1508,7 @@ export function createBaseMenu({
 
   const SUB_TRIGGER_NAME = 'MenuSubTrigger'
 
-  const MenuSubTrigger = React.forwardRef<
+  const MenuSubTrigger = createRefComponent<
     TamaguiElement,
     ScopedProps<MenuSubTriggerProps>
   >((props, forwardedRef) => {
@@ -1567,14 +1541,17 @@ export function createBaseMenu({
     }, [pointerGraceTimerRef, onPointerGraceIntentChange])
 
     return (
-      <MenuAnchor componentName={SUB_TRIGGER_NAME} asChild="except-style" scope={scope}>
+      <MenuAnchor
+        className={`is_${SUB_TRIGGER_NAME}`}
+        asChild="except-style"
+        scope={scope}
+      >
         <MenuItemImpl
           id={subContext.triggerId}
           aria-haspopup="menu"
           aria-expanded={context.open}
           aria-controls={subContext.contentId}
           data-state={getOpenState(context.open)}
-          outlineStyle="none"
           {...props}
           ref={composeRefs(forwardedRef, subContext.onTriggerChange)}
           // This is redundant for mouse users but we cannot determine pointer type from
@@ -1776,11 +1753,12 @@ export function createBaseMenu({
   const SUB_CONTENT_NAME = 'MenuSubContent'
 
   const MenuSubContentFrame = styled(PopperPrimitive.PopperContentFrame, {
-    name: SUB_CONTENT_NAME,
+    displayName: SUB_CONTENT_NAME,
   })
 
-  const MenuSubContent = MenuSubContentFrame.styleable<ScopedProps<MenuSubContentProps>>(
-    (props, forwardedRef) => {
+  const MenuSubContent = createStyledHOC(
+    MenuSubContentFrame,
+    (props: ScopedProps<MenuSubContentProps>, forwardedRef) => {
       const scope = props.scope || MENU_CONTEXT
       const portalContext = usePortalContext(scope)
       const { forceMount = portalContext.forceMount, ...subContentProps } = props
@@ -1834,15 +1812,16 @@ export function createBaseMenu({
                   ) as HTMLElement | null
                   ;(content || root)?.focus({ preventScroll: true })
                 }
-                event.preventDefault()
+                event.cancel()
               }}
               // The menu might close because of focusing another menu item in the parent menu. We
               // don't want it to refocus the trigger in that case so we handle trigger focus ourselves.
-              onCloseAutoFocus={(event) => event.preventDefault()}
+              onCloseAutoFocus={(event) => event.cancel()}
               onFocusOutside={composeEventHandlers(props.onFocusOutside, (event) => {
                 // We prevent closing when the trigger is focused to avoid triggering a re-open animation
                 // on pointer interaction.
-                if (event.target !== subContext.trigger) context.onOpenChange(false)
+                if (event.event?.target !== subContext.trigger)
+                  context.onOpenChange(false)
               })}
               onEscapeKeyDown={composeEventHandlers(props.onEscapeKeyDown, (event) => {
                 // close only this submenu, not the root menu
@@ -1850,8 +1829,11 @@ export function createBaseMenu({
                 // return focus to the submenu trigger with focusVisible since this is keyboard navigation
                 // @ts-ignore focusVisible is a newer API
                 subContext.trigger?.focus({ focusVisible: true })
-                // ensure pressing escape in submenu doesn't escape full screen mode
-                event.preventDefault()
+                // we close the submenu ourselves, so veto the layer's dismiss
+                event.cancel()
+                // and still ensure escape doesn't exit fullscreen (cancel no
+                // longer touches the native event)
+                event.event?.preventDefault?.()
               })}
               {...(isWeb
                 ? {
@@ -1888,12 +1870,12 @@ export function createBaseMenu({
   const Anchor = MenuAnchor
   const Portal = MenuPortal
   const Content = MenuContent
-  const Group = _MenuGroup.styleable<MenuGroupProps>((props, ref) => {
-    return <_MenuGroup {...props} ref={ref} />
+  const Group = createStyledHOC(View, (props: MenuGroupProps, ref) => {
+    return <View role="group" {...props} ref={ref} />
   })
   Group.displayName = 'MenuGroup'
-  const Label = _Label.styleable<MenuLabelProps>((props, ref) => {
-    return <_Label {...props} ref={ref} />
+  const Label = createStyledHOC(Text, (props: MenuLabelProps, ref) => {
+    return <Text {...props} ref={ref} />
   })
   Label.displayName = 'MenuLabel'
   const Item = MenuItem
@@ -1901,8 +1883,8 @@ export function createBaseMenu({
   const RadioGroup = MenuRadioGroup
   const RadioItem = MenuRadioItem
   const ItemIndicator = MenuItemIndicator
-  const Separator = _Separator.styleable<MenuSeparatorProps>((props, ref) => {
-    return <_Separator {...props} ref={ref} />
+  const Separator = createStyledHOC(View, (props: MenuSeparatorProps, ref) => {
+    return <View role="separator" aria-orientation="horizontal" {...props} ref={ref} />
   })
   Separator.displayName = 'MenuSeparator'
   const Arrow = MenuArrow

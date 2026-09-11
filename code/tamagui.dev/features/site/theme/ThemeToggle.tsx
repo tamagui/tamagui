@@ -2,8 +2,8 @@ import { Moon, Sun, SunMoon } from '@tamagui/lucide-icons-2'
 import { useSystemScheme, useUserScheme } from '@vxrn/color-scheme'
 import { memo, useEffect, useState } from 'react'
 import { Appearance } from 'react-native'
-import type { ButtonProps } from 'tamagui'
-import { Button, isWeb, TooltipSimple } from 'tamagui'
+import { isWeb, TooltipSimple } from 'tamagui'
+import { Button, type ButtonProps } from '~/components/Button'
 
 export const ThemeToggle = memo((props: ButtonProps) => {
   const { onPress, Icon, setting } = useToggleTheme()
@@ -18,14 +18,12 @@ export const ThemeToggle = memo((props: ButtonProps) => {
       }
     >
       <Button
-        size="$3"
+        size="3"
         onPress={onPress}
         {...props}
         aria-label="Toggle light/dark color scheme"
         icon={Icon}
-        hoverStyle={{
-          bg: 'rgba(0,0,0,0.15)',
-        }}
+        bg="hover:rgba(0,0,0,0.15)"
       />
     </TooltipSimple>
   )

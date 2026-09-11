@@ -103,8 +103,13 @@ describe('PointerEvents', () => {
   })
 
   // skipping this test because the capture-target (second 200px square) is often
-  // partially off-screen and longPressAndDrag requires 100% visibility
-  // the core pointer capture functionality is tested in web tests
+  // partially off-screen and longPressAndDrag requires 100% visibility.
+  //
+  // NOTE: setPointerCapture has NO other coverage — not in tests/PointerEvents.test.tsx
+  // (web) nor anywhere else. This skip is a real gap, not a duplicate.
+  // Likely fix: drop longPressAndDrag's cross-element drop target and use swipe()
+  // on the source element, which only needs the source hittable at its start point
+  // (see GroupPressTransitionMatrix.test.ts for that pattern working).
   it.skip('should receive moves outside bounds when pointer is captured', async () => {
     // drag from capture target to outside (root area)
     // with setPointerCapture, moves should still fire even outside bounds

@@ -1,5 +1,4 @@
 import React from 'react'
-import { config } from '@tamagui/config/v3'
 import { addTheme, updateTheme } from '@tamagui/theme'
 
 import {
@@ -8,12 +7,10 @@ import {
   Theme,
   XStack,
   YStack,
+  getTokens,
   getVariableValue,
   useIsomorphicLayoutEffect,
 } from 'tamagui'
-
-const colors = config.tokens.color
-const colorKeys = Object.keys(colors)
 
 export function UpdateThemeDemo() {
   const [theme, setTheme] = React.useState<any>()
@@ -30,15 +27,20 @@ export function UpdateThemeDemo() {
   }, [])
 
   return (
-    <YStack items="center" gap="$4">
-      <XStack gap={'$5'}>
+    <YStack items="center" gap="4">
+      <XStack gap="5">
         <Theme name={theme ?? null}>
-          <Square rounded="$8" size={100} bg="$color" />
+          <Square rounded="8" bg="color" size={100} />
         </Theme>
       </XStack>
 
       <Button
         onPress={() => {
+          // read the app's own palette rather than importing a config: pulling a
+          // config entry in here dragged its whole color graph into every
+          // consumer of this demo
+          const colors = getTokens().color
+          const colorKeys = Object.keys(colors)
           const randomColor = getVariableValue(
             colors[colorKeys[Math.floor(Math.random() * colorKeys.length)]]
           )

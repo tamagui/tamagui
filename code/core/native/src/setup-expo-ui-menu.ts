@@ -6,12 +6,16 @@
  */
 
 import { createExpoUIMenuAdapter } from './expoUIMenuAdapter'
+import { createExpoUIMenuView } from './expoUIMenuView'
 import { registerNativeMenuAdapter } from './nativeMenuState'
 
 function setup(): void {
   let MenuView
   try {
-    MenuView = require('@expo/ui/community/menu').MenuView
+    MenuView = createExpoUIMenuView({
+      swiftUI: require('@expo/ui/swift-ui'),
+      modifiers: require('@expo/ui/swift-ui/modifiers'),
+    })
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
       console.warn('Error setting up Expo UI native menus', error)

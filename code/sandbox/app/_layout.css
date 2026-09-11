@@ -12,13 +12,13 @@ body {
   position: relative;
   max-width: 100vw;
   height: 100vh;
-  background-color: var(--color1);
+  background-color: var(--color-1);
 }
 
 a {
   text-decoration: underline;
   text-decoration-thickness: 2px;
-  text-decoration-color: var(--color02);
+  text-decoration-color: var(--color-02);
   text-underline-offset: 3px;
   transition: all ease-in 100ms;
 }

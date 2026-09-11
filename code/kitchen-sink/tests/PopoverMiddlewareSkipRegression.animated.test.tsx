@@ -135,7 +135,7 @@ test.describe('Popover middleware skip regression', () => {
       (firstFrame.x - settledPos.x) ** 2 + (firstFrame.y - settledPos.y) ** 2
     )
 
-    // allow up to 50px for enter animation movement (enterStyle y: -6)
+    // allow up to 50px for enter animation movement (enter clause y: -6)
     // but reject positions that are hundreds of pixels away (middleware bug)
     expect(
       distFromSettled,

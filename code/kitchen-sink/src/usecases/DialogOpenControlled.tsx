@@ -8,30 +8,26 @@ import { Button, Dialog, View, YStack } from 'tamagui'
  */
 export function DialogOpenControlled() {
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       {/* Dialog that starts open - this is the problematic case in JSDOM */}
       <Dialog open={true} modal>
         <Dialog.Trigger asChild>
           <Button data-testid="dialog-trigger">Show Dialog</Button>
         </Dialog.Trigger>
         <Dialog.Portal>
-          <Dialog.Overlay
-            key="overlay"
-            transition="quick"
-            opacity={0.5}
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+          <Dialog.Overlay key="overlay" transition="quick" opacity="0.5 enter:0 exit:0" />
           <Dialog.Content
             key="content"
             bordered
             elevate
             transition="quick"
-            enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
-            exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
+            x="enter:0 exit:0"
+            y="enter:-20px exit:10px"
+            opacity="enter:0 exit:0"
+            scale="enter:0.9 exit:0.95"
             width={400}
-            padding="$6"
-            gap="$4"
+            padding="6"
+            gap="4"
           >
             <Dialog.Title>Dialog Test</Dialog.Title>
             <Dialog.Description>

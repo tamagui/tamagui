@@ -10,9 +10,7 @@ export const BentoFrond = () => (
     scale={2.2}
     y={-440}
     x={250}
-    $theme-light={{
-      opacity: 0.8,
-    }}
+    opacity="light:0.8"
   >
     <YStack
       className="frond"

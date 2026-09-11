@@ -1,0 +1,197 @@
+{
+  "sourceCommit": "41b148e941c214b0d5b2ff25bad5f8bb11ae4b7e",
+  "workflowRun": 33954078031,
+  "job": 101274183818,
+  "node": "24.16.0",
+  "browserTestsPassed": 12,
+  "baselineOrToleranceChanges": false,
+  "receipts": {
+    "vite": {
+      "base": {
+        "built": true,
+        "compilerViolations": 0,
+        "forbiddenModules": 0,
+        "forbidden": [],
+        "tamaguiModules": [],
+        "moduleCount": 16,
+        "jsGzip": 59835,
+        "jsFiles": [
+          "dist-vite-base/assets/index.base-lkUYAPNN.js"
+        ],
+        "cssGzip": 4078,
+        "islandJsGzip": null,
+        "artifactFamilies": {
+          "page": {
+            "atomicCSSGeneration": false,
+            "cssInsertion": false,
+            "runtimeThemeCSS": false,
+            "parseValue": false
+          },
+          "island": null
+        },
+        "identity": "a682da17664aaafc3f28bea0",
+        "bridges": []
+      },
+      "islands": {
+        "built": true,
+        "compilerViolations": 0,
+        "forbiddenModules": 0,
+        "forbidden": [],
+        "tamaguiModules": [],
+        "moduleCount": 17,
+        "jsGzip": 60776,
+        "jsFiles": [
+          "dist-vite/assets/index-CZoC1mSc.js"
+        ],
+        "cssGzip": 4082,
+        "islandJsGzip": 92470,
+        "artifactFamilies": {
+          "page": {
+            "atomicCSSGeneration": false,
+            "cssInsertion": false,
+            "runtimeThemeCSS": false,
+            "parseValue": false
+          },
+          "island": {
+            "atomicCSSGeneration": false,
+            "cssInsertion": false,
+            "runtimeThemeCSS": false,
+            "parseValue": false
+          }
+        },
+        "identity": "fba5ab9c7fa390437c630db9",
+        "bridges": [
+          "DetailsIsland"
+        ]
+      }
+    },
+    "next-webpack": {
+      "base": {
+        "built": true,
+        "compilerViolations": 0,
+        "forbiddenModules": 0,
+        "forbidden": [],
+        "tamaguiModules": [],
+        "moduleCount": 132,
+        "jsGzip": 140860,
+        "jsFiles": [
+          ".next-base/static/chunks/framework-457d7049766b2846.js",
+          ".next-base/static/chunks/main-3b12ab410d9ab2c2.js",
+          ".next-base/static/chunks/pages/_app-01b30bd088e542b1.js",
+          ".next-base/static/chunks/pages/index-3560016e4a12f741.js",
+          ".next-base/static/chunks/polyfills-42372ed130431b0a.js",
+          ".next-base/static/chunks/webpack-c12e85baffdd5204.js"
+        ],
+        "cssGzip": 4096,
+        "islandJsGzip": null,
+        "artifactFamilies": {
+          "page": {
+            "atomicCSSGeneration": false,
+            "cssInsertion": false,
+            "runtimeThemeCSS": false,
+            "parseValue": false
+          },
+          "island": null
+        },
+        "identity": "0892f7d3a9fa51cc019b36db",
+        "bridges": []
+      },
+      "islands": {
+        "built": true,
+        "compilerViolations": 0,
+        "forbiddenModules": 0,
+        "forbidden": [],
+        "tamaguiModules": [],
+        "moduleCount": 135,
+        "jsGzip": 141879,
+        "jsFiles": [
+          ".next/static/chunks/framework-457d7049766b2846.js",
+          ".next/static/chunks/main-3b12ab410d9ab2c2.js",
+          ".next/static/chunks/pages/_app-01b30bd088e542b1.js",
+          ".next/static/chunks/pages/index-d3c767ae84ba80d9.js",
+          ".next/static/chunks/polyfills-42372ed130431b0a.js",
+          ".next/static/chunks/webpack-38017ff64087860c.js"
+        ],
+        "cssGzip": 4100,
+        "islandJsGzip": 92439,
+        "artifactFamilies": {
+          "page": {
+            "atomicCSSGeneration": false,
+            "cssInsertion": false,
+            "runtimeThemeCSS": false,
+            "parseValue": false
+          },
+          "island": {
+            "atomicCSSGeneration": false,
+            "cssInsertion": false,
+            "runtimeThemeCSS": false,
+            "parseValue": false
+          }
+        },
+        "identity": "500df04e22596e658b4e2379",
+        "bridges": [
+          "DetailsIsland"
+        ]
+      }
+    },
+    "metro-web": {
+      "base": {
+        "built": true,
+        "compilerViolations": 0,
+        "forbiddenModules": 0,
+        "forbidden": [],
+        "tamaguiModules": [],
+        "moduleCount": 13,
+        "jsGzip": 61844,
+        "jsFiles": [
+          "dist-metro-base/main.js"
+        ],
+        "cssGzip": 4096,
+        "islandJsGzip": null,
+        "artifactFamilies": {
+          "page": {
+            "atomicCSSGeneration": false,
+            "cssInsertion": false,
+            "runtimeThemeCSS": false,
+            "parseValue": false
+          },
+          "island": null
+        },
+        "identity": "49d4b4dd00fd3d489c4071a0",
+        "bridges": []
+      },
+      "islands": {
+        "built": true,
+        "compilerViolations": 0,
+        "forbiddenModules": 0,
+        "forbidden": [],
+        "tamaguiModules": [],
+        "moduleCount": 14,
+        "jsGzip": 62614,
+        "jsFiles": [
+          "dist-metro/main.js"
+        ],
+        "cssGzip": 4796,
+        "islandJsGzip": 367018,
+        "artifactFamilies": {
+          "page": {
+            "atomicCSSGeneration": false,
+            "cssInsertion": false,
+            "runtimeThemeCSS": false,
+            "parseValue": false
+          },
+          "island": {
+            "atomicCSSGeneration": false,
+            "cssInsertion": false,
+            "runtimeThemeCSS": false,
+            "parseValue": false
+          }
+        },
+        "identity": "6102405f237f1ee133b74f0b",
+        "bridges": [
+          "DetailsIsland"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "cxxNamespace": ["tamagui", "registry"],
+  "ios": {
+    "iosModuleName": "TamaguiRegistry"
+  },
+  "android": {
+    "androidNamespace": ["tamagui", "registry"],
+    "androidCxxLibName": "tamaguiregistry"
+  },
+  "autolinking": {
+    "TamaguiRegistry": {
+      "all": {
+        "language": "c++",
+        "implementationClassName": "HybridTamaguiRegistry"
+      }
+    }
+  }
+}

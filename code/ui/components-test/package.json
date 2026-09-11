@@ -17,8 +17,8 @@
     "csstype": "^3.0.10",
     "jsdom": "^28.1.0",
     "react": "19.2.3",
-    "typescript": "~5.9.2",
-    "vitest": "4.0.4",
+    "typescript": "~6.0.3",
+    "vitest": "4.1.0",
     "vitest-axe": "^0.1.0"
   },
   "peerDependencies": {

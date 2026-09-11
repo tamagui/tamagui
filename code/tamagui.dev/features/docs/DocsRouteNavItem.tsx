@@ -1,9 +1,16 @@
 import type { Href } from 'one'
-import { createElement, useRef } from 'react'
+import { createElement, type ReactNode, useRef } from 'react'
 import { SizableText, Spacer, XStack, YStack } from 'tamagui'
 import { Link } from '~/components/Link'
 import { ExternalIcon } from '~/features/icons/ExternalIcon'
-import type { NavItemProps } from './DocsPage'
+
+type NavItemProps = {
+  children: ReactNode
+  active?: boolean
+  href: string
+  pending?: boolean
+  external?: boolean
+}
 
 export const DocsRouteNavItem = function DocsRouteNavItem({
   children,
@@ -24,32 +31,22 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
     <Link
       {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       href={href as Href}
-      focusVisibleStyle={{
-        outlineColor: '$outlineColor',
-        outlineWidth: 2,
-        outlineStyle: 'solid',
-        outlineOffset: -2,
-      }}
+      outlineColor="focus-visible:outline-color"
+      outlineWidth="focus-visible:2px"
+      outlineStyle="focus-visible:solid"
+      outlineOffset="focus-visible:-2px"
     >
       <XStack
         ref={ref}
         className="docs-nav-item"
         items="center"
         justify="flex-start"
-        px="$4"
-        py="$2"
+        px="4"
+        py="1-5"
         opacity={pending ? 0.25 : 1}
-        pressStyle={{
-          bg: '$background04',
-        }}
+        bg="hover:background-06 press:background-04"
         pointerEvents={pending ? 'none' : ('inherit' as any)}
         position="relative"
-        $sm={{
-          py: '$2',
-        }}
-        hoverStyle={{
-          bg: '$background06',
-        }}
       >
         {!inMenu && (
           <YStack
@@ -59,28 +56,23 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
             t={0}
             b={0}
             l={0}
-            rounded="$2"
+            rounded="2"
             width={3}
-            bg={active ? '$color' : '$backgroundHover'}
+            bg={`${active ? 'color' : 'background-hover'}`}
           />
         )}
         <SizableText
-          fontFamily="$mono"
-          size="$5"
-          letterSpacing={-0.5}
-          lineHeight="$4"
+          lineHeight={22}
           cursor="pointer"
           select="none"
-          opacity={active ? 1 : 0.65}
-          style={{ textAlign: 'left' }}
+          opacity={`${active ? 1 : 0.65} hover:0.85`}
           width="100%"
-          hoverStyle={{
-            opacity: 0.85,
-          }}
           {...(active && {
             fontWeight: '700',
             opacity: 1,
           })}
+          size="3"
+          style={{ textAlign: 'left' }}
         >
           {children}
           {!!icon && (
@@ -94,7 +86,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
         </SizableText>
         {isExternal && (
           <XStack opacity={0.5}>
-            <Spacer size="$2" />
+            <Spacer size="2" />
             <ExternalIcon />
           </XStack>
         )}
@@ -102,12 +94,12 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           <>
             <XStack flex={1} />
             <SizableText
-              color="$color9"
-              size="$1"
-              px="$2"
-              py="$1"
-              bg="$background"
-              rounded="$3"
+              color="color-9"
+              px="2"
+              py="1"
+              bg="background"
+              rounded="3"
+              size="1"
             >
               WIP
             </SizableText>

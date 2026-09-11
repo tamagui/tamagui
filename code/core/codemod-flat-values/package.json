@@ -1,0 +1,39 @@
+{
+  "name": "@tamagui/codemod-flat-values",
+  "version": "2.7.7",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "tamagui-codemod-flat-values": "dist/index.mjs"
+  },
+  "source": "src/index.ts",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tamagui-build --skip-native --skip-types",
+    "watch": "bun run build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build",
+    "dry-run": "cd ../../.. && bun code/core/codemod-flat-values/src/index.ts --report code/core/codemod-flat-values/dry-run-report.md code/kitchen-sink/src/usecases code/ui/tamagui/src/components/Button.tsx",
+    "write": "cd ../../.. && bun code/core/codemod-flat-values/src/index.ts --write --report code/core/codemod-flat-values/dry-run-report.md code/kitchen-sink/src/usecases code/ui/tamagui/src/components/Button.tsx",
+    "test": "bun test --timeout 20000 test",
+    "test:web": "bun test --timeout 20000 test",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/language-service": "workspace:*",
+    "@tamagui/shorthands": "workspace:*",
+    "@tamagui/style-grammar": "workspace:*",
+    "ts-morph": "^28.0.0"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "typescript": "~6.0.3"
+  }
+}

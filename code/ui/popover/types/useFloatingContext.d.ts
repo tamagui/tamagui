@@ -1,4 +1,4 @@
-import type { Delay, UseFloatingOptions } from '@tamagui/floating';
+import type { Delay, OpenChangeReason, UseFloatingOptions } from '@tamagui/floating';
 export type UseFloatingContextOptions = {
     open: boolean;
     setOpen: (val: boolean, type?: string) => void;
@@ -10,6 +10,9 @@ export type UseFloatingContextOptions = {
     groupId?: string;
     delay?: Delay;
     restMs?: number;
+    closeReasonRef?: {
+        current?: OpenChangeReason;
+    };
 };
-export declare const useFloatingContext: ({ open, setOpen, disable, disableFocus, hoverable, role: roleProp, focus: focusProp, groupId, delay: delayProp, restMs: restMsProp, }: UseFloatingContextOptions) => (props?: UseFloatingOptions) => any;
+export declare const useFloatingContext: ({ open, setOpen, disable, disableFocus, hoverable, role: roleProp, focus: focusProp, groupId, delay: delayProp, restMs: restMsProp, closeReasonRef, }: UseFloatingContextOptions) => (props?: UseFloatingOptions) => any;
 //# sourceMappingURL=useFloatingContext.d.ts.map

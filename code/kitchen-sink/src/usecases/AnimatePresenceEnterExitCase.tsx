@@ -1,9 +1,9 @@
 import { useState, useRef, useCallback } from 'react'
 import { AnimatePresence } from '@tamagui/animate-presence'
-import { Button, Circle, Paragraph, Square, Text, XStack, YStack } from 'tamagui'
+import { Button, Circle, Paragraph, Popover, Square, Text, XStack, YStack } from 'tamagui'
 
 /**
- * Tests that enterStyle/exitStyle actually animate (opacity changes)
+ * Tests that enter clause/exit clause actually animate (opacity changes)
  * when using AnimatePresence with conditional rendering.
  *
  * Bug: motion driver doesn't animate enter/exit styles at all,
@@ -49,20 +49,22 @@ function useOpacityTracker(id: string, testId: string) {
 
 export function AnimatePresenceEnterExitCase() {
   return (
-    <YStack gap="$4" padding="$4">
-      <Paragraph fontWeight="bold" fontSize="$5">
+    <YStack gap="4" padding="4">
+      <Paragraph fontWeight="bold" fontSize="5">
         AnimatePresence Enter/Exit Animation Test
       </Paragraph>
 
       <Scenario01_BasicEnterExit />
       <Scenario02_CircleBadge />
       <Scenario03_InitialFalse />
+      <Scenario04_ExitScale />
+      <Scenario05_PopoverExitScale />
     </YStack>
   )
 }
 
 /**
- * Scenario 01: basic square with enterStyle/exitStyle opacity
+ * Scenario 01: basic square with enter clause/exit clause opacity
  */
 function Scenario01_BasicEnterExit() {
   const [show, setShow] = useState(false)
@@ -81,8 +83,8 @@ function Scenario01_BasicEnterExit() {
   }
 
   return (
-    <YStack gap="$2">
-      <Paragraph size="$2">Scenario 01: Basic enter/exit opacity</Paragraph>
+    <YStack gap="2">
+      <Paragraph size="2">Scenario 01: Basic enter/exit opacity</Paragraph>
       <Button testID="enter-exit-01-trigger" onPress={handleToggle}>
         Toggle
       </Button>
@@ -93,14 +95,9 @@ function Scenario01_BasicEnterExit() {
               key="test-square"
               testID="enter-exit-01-target"
               transition="medium"
+              bg="blue-600"
+              opacity="enter:0 exit:0"
               size={60}
-              bg="$blue10"
-              enterStyle={{
-                opacity: 0,
-              }}
-              exitStyle={{
-                opacity: 0,
-              }}
             />
           ) : null}
         </AnimatePresence>
@@ -136,9 +133,9 @@ function Scenario03_InitialFalse() {
   }
 
   return (
-    <YStack gap="$2">
-      <Paragraph size="$2">Scenario 03: initial=false (exact real-world case)</Paragraph>
-      <XStack gap="$2">
+    <YStack gap="2">
+      <Paragraph size="2">Scenario 03: initial=false (exact real-world case)</Paragraph>
+      <XStack gap="2">
         <Button testID="enter-exit-03-increment" onPress={handleIncrement}>
           Add
         </Button>
@@ -153,23 +150,17 @@ function Scenario03_InitialFalse() {
               key="count-badge-03"
               testID="enter-exit-03-target"
               transition="medium"
-              bg="$color12"
-              size={16}
+              bg="color-11"
               position="absolute"
               t={4}
               r={6}
               items="center"
               justify="center"
-              enterStyle={{
-                opacity: 0,
-                y: -3,
-              }}
-              exitStyle={{
-                opacity: 0,
-                y: -3,
-              }}
+              opacity="enter:0 exit:0"
+              y="enter:-3px exit:-3px"
+              size={16}
             >
-              <Text color="$color1" fontFamily="$mono" fontSize={10} lineHeight={10}>
+              <Text color="color-1" fontFamily="monospace" fontSize={10} lineHeight={10}>
                 {countString}
               </Text>
             </Circle>
@@ -212,9 +203,9 @@ function Scenario02_CircleBadge() {
   }
 
   return (
-    <YStack gap="$2">
-      <Paragraph size="$2">Scenario 02: Circle badge (real-world case)</Paragraph>
-      <XStack gap="$2">
+    <YStack gap="2">
+      <Paragraph size="2">Scenario 02: Circle badge (real-world case)</Paragraph>
+      <XStack gap="2">
         <Button testID="enter-exit-02-increment" onPress={handleIncrement}>
           Add
         </Button>
@@ -229,27 +220,150 @@ function Scenario02_CircleBadge() {
               key="count-badge"
               testID="enter-exit-02-target"
               transition="medium"
-              bg="$color12"
-              size={24}
+              bg="color-11"
               position="absolute"
               items="center"
               justify="center"
-              enterStyle={{
-                opacity: 0,
-                y: -3,
-              }}
-              exitStyle={{
-                opacity: 0,
-                y: -3,
-              }}
+              opacity="enter:0 exit:0"
+              y="enter:-3px exit:-3px"
+              size={24}
             >
-              <Text color="$color1" fontFamily="$mono" fontSize={12}>
+              <Text color="color-1" fontFamily="monospace" fontSize={12}>
                 {countString}
               </Text>
             </Circle>
           ) : null}
         </AnimatePresence>
       </XStack>
+    </YStack>
+  )
+}
+
+/**
+ * Scenario 04: exit clauses on transform props. `scale` and `y` are emitted
+ * as the individual css `scale` and `translate` properties, so an exit has
+ * to animate those, not only opacity and `transform`.
+ */
+function Scenario04_ExitScale() {
+  const [show, setShow] = useState(true)
+  const rafRef = useRef<number>(0)
+
+  const handleToggle = () => {
+    if (typeof window !== 'undefined') {
+      window.__enterExitFrames['04-scale'] = []
+      window.__enterExitFrames['04-translate'] = []
+      const track = () => {
+        const el = document.querySelector('[data-testid="enter-exit-04-target"]')
+        if (el) {
+          // effective values: the individual `scale` / `translate` properties
+          // composed with whatever the `transform` matrix carries
+          const computed = getComputedStyle(el)
+          const matrix = computed.transform.match(/matrix\(([^)]+)\)/)
+          const m = matrix ? matrix[1].split(',').map(Number) : [1, 0, 0, 1, 0, 0]
+          const scale = (parseFloat(computed.scale) || 1) * m[0]
+          const translate = computed.translate.split(' ')[1] ?? computed.translate
+          window.__enterExitFrames['04-scale'].push(scale)
+          window.__enterExitFrames['04-translate'].push(
+            (parseFloat(translate) || 0) + m[5]
+          )
+        }
+        rafRef.current = requestAnimationFrame(track)
+      }
+      rafRef.current = requestAnimationFrame(track)
+    }
+    setShow((v) => !v)
+    setTimeout(() => {
+      cancelAnimationFrame(rafRef.current)
+      if (typeof window !== 'undefined') {
+        window.__enterExitReady['04'] = true
+      }
+    }, 1000)
+  }
+
+  return (
+    <YStack gap="2">
+      <Paragraph size="2">Scenario 04: exit scale and translate</Paragraph>
+      <Button testID="enter-exit-04-trigger" onPress={handleToggle}>
+        Toggle
+      </Button>
+      <XStack height={80} items="center">
+        <AnimatePresence>
+          {show ? (
+            <Square
+              key="test-square"
+              testID="enter-exit-04-target"
+              transition={{ preset: 'medium', properties: 'transform, opacity' }}
+              bg="blue-600"
+              opacity="1 exit:0"
+              y="enter:-8px exit:4px"
+              scale="enter:0.95 exit:0.95"
+              size={60}
+            />
+          ) : null}
+        </AnimatePresence>
+      </XStack>
+    </YStack>
+  )
+}
+
+/**
+ * Scenario 05: the same exit clauses on a positioned Popover.Content, whose
+ * popper drives translate itself
+ */
+function Scenario05_PopoverExitScale() {
+  const [open, setOpen] = useState(false)
+  const rafRef = useRef<number>(0)
+
+  const track = () => {
+    if (typeof window === 'undefined') return
+    window.__enterExitFrames['05-scale'] = []
+    const step = () => {
+      const el = document.querySelector('[data-testid="enter-exit-05-target"]')
+      if (el) {
+        const computed = getComputedStyle(el)
+        const matrix = computed.transform.match(/matrix\(([^)]+)\)/)
+        const m = matrix ? matrix[1].split(',').map(Number) : [1, 0, 0, 1, 0, 0]
+        window.__enterExitFrames['05-scale'].push(
+          (parseFloat(computed.scale) || 1) * m[0]
+        )
+      }
+      rafRef.current = requestAnimationFrame(step)
+    }
+    rafRef.current = requestAnimationFrame(step)
+    setTimeout(() => {
+      cancelAnimationFrame(rafRef.current)
+      window.__enterExitReady['05'] = true
+    }, 1000)
+  }
+
+  return (
+    <YStack gap="2">
+      <Paragraph size="2">Scenario 05: popover exit scale</Paragraph>
+      <Popover open={open} onOpenChange={setOpen}>
+        <Popover.Trigger asChild>
+          <Button
+            testID="enter-exit-05-trigger"
+            onPress={() => {
+              if (open) track()
+              setOpen(!open)
+            }}
+          >
+            Toggle popover
+          </Button>
+        </Popover.Trigger>
+        <Popover.Content
+          testID="enter-exit-05-target"
+          animatePosition
+          transition={{ preset: 'medium', properties: 'transform, opacity' }}
+          opacity="1 exit:0"
+          y="enter:-8px exit:4px"
+          scale="enter:0.95 exit:0.95"
+          bg="blue-600"
+          p="4"
+        >
+          <Text>content</Text>
+        </Popover.Content>
+      </Popover>
     </YStack>
   )
 }

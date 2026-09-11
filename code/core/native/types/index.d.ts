@@ -28,7 +28,7 @@ export type { ExternalPressOwnershipToken, GestureHandlerAccessor, PressGestureC
 export type { GestureHandlerConfig } from "./setup-gesture-handler";
 export { getWorklets } from "./workletsState";
 export type { WorkletsAccessor } from "./workletsState";
-export { getSafeArea } from "./safeAreaState";
+export { getSafeArea, hasSafeAreaSetup } from "./safeAreaState";
 export type { SafeAreaAccessor } from "./safeAreaState";
 export { getLinearGradient } from "./linearGradientState";
 export type { LinearGradientAccessor } from "./linearGradientState";

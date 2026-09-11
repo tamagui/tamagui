@@ -6,6 +6,19 @@
   "source": "src/index.ts",
   "type": "module",
   "sideEffects": false,
+  "files": [
+    "src",
+    "types",
+    "dist",
+    "v4",
+    "v4.cjs",
+    "v4.d.ts",
+    "v5",
+    "v5.cjs",
+    "v5.d.ts",
+    "v6.cjs",
+    "v6.d.ts"
+  ],
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
@@ -37,6 +50,15 @@
       "import": "./dist/esm/v5.mjs",
       "require": "./dist/cjs/v5.cjs",
       "default": "./dist/esm/v5.mjs"
+    },
+    "./v6": {
+      "types": "./types/v6.d.ts",
+      "react-native": "./dist/esm/v6.native.js",
+      "browser": "./dist/esm/v6.mjs",
+      "module": "./dist/esm/v6.mjs",
+      "import": "./dist/esm/v6.mjs",
+      "require": "./dist/cjs/v6.cjs",
+      "default": "./dist/esm/v6.mjs"
     }
   },
   "publishConfig": {

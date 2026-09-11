@@ -8,7 +8,9 @@ import { Theme } from './Theme'
 export const ThemeProvider = (props: ThemeProviderProps) => {
   'use no memo'
 
-  const addThemeClassName = getSetting('addThemeClassName')
+  // a subtree root shares its document with a page that has its own theme, so
+  // the document-level class is not its to write
+  const addThemeClassName = props.isSubtreeRoot ? false : getSetting('addThemeClassName')
 
   // ensure theme is attached to root body node as well to work with modals by default
   if (process.env.TAMAGUI_TARGET === 'web') {
@@ -16,9 +18,7 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
       if (addThemeClassName === false) return
       const cn = `${THEME_CLASSNAME_PREFIX}${props.defaultTheme}`
       const target =
-        getSetting('addThemeClassName') === 'html'
-          ? document.documentElement
-          : document.body
+        addThemeClassName === 'html' ? document.documentElement : document.body
       target.classList.add(cn)
       return () => {
         target.classList.remove(cn)
@@ -29,7 +29,8 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
   // we completely disable the className here if its set to any value, 'root', 'body', or false
   // because in all cases we are putting the classname elsewhere
   // if its undefined, then the default behavior applies and we use the className here
-  const forceClassName = addThemeClassName === undefined
+  // a subtree root always carries it, because nothing above it will
+  const forceClassName = props.isSubtreeRoot || addThemeClassName === undefined
 
   return (
     <Theme

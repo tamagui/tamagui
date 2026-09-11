@@ -1,4 +1,4 @@
-import type { View } from 'react-native'
+import type { View } from '@tamagui/react-native-types'
 
 type MeasureOnSuccessCallback = (
   x: number,

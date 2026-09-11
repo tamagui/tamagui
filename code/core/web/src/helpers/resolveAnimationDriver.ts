@@ -1,23 +1,26 @@
-import type { AnimationDriver } from '../types'
+import type { AnimationDriverLike } from '../types'
+
+function isAnimationDriver(value: unknown): value is AnimationDriverLike {
+  if (typeof value !== 'object' || value === null) return false
+  if ('isStub' in value && value.isStub === true) return true
+  return 'useAnimations' in value && typeof value.useAnimations === 'function'
+}
 
 /**
- * Resolves a value that might be an AnimationDriver or a multi-driver config object
- * like { default: motionDriver, css: cssDriver } into an actual AnimationDriver.
+ * Resolves a value that might be an animation driver or a multi-driver config
+ * object like { default: motionDriver, css: cssDriver } into a driver.
  */
 export function resolveAnimationDriver(
-  driver: AnimationDriver | Record<string, AnimationDriver> | null | undefined
-): AnimationDriver | null {
+  driver: AnimationDriverLike | Record<string, AnimationDriverLike> | null | undefined
+): AnimationDriverLike | null {
   if (!driver) return null
-  // valid driver
-  if (typeof (driver as any).useAnimations === 'function') {
-    return driver as AnimationDriver
+  // valid driver, including an explicit unsupported stub
+  if (isAnimationDriver(driver)) {
+    return driver
   }
   // multi-driver object - extract default
-  if (
-    'default' in driver &&
-    typeof (driver as any).default?.useAnimations === 'function'
-  ) {
-    return (driver as any).default
+  if ('default' in driver && isAnimationDriver(driver.default)) {
+    return driver.default
   }
   return null
 }

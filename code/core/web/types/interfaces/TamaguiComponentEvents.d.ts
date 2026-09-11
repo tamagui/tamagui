@@ -5,7 +5,6 @@ export type TamaguiComponentEvents = {
     delayLongPress?: any;
     delayPressIn?: any;
     delayPressOut?: any;
-    focusable?: any;
     minPressDuration?: number | undefined;
     onPressIn: ((e: any) => void) | undefined;
     onPress: ((e: any) => void) | undefined;

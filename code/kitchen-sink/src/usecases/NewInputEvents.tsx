@@ -8,7 +8,7 @@ export function NewInputEvents() {
   const [submitCount, setSubmitCount] = useState(0)
 
   return (
-    <YStack gap="$4" p="$4">
+    <YStack gap="4" p="4">
       <Input
         data-testid="event-input"
         placeholder="Type here..."

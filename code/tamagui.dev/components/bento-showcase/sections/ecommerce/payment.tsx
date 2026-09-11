@@ -2,29 +2,32 @@ import { YStack } from 'tamagui'
 
 import * as Payment from '@tamagui/bento/component/ecommerce/payment'
 import { Showcase } from '~/components/bento-showcase/_Showcase'
-import {
-  type BentoShowcaseContext,
-  BentoShowcaseProvider,
-} from '~/components/bento-showcase/BentoProvider'
 
-export function payment({ isProUser, showAppropriateModal }: BentoShowcaseContext) {
+export function payment() {
   return (
-    <BentoShowcaseProvider
-      isProUser={isProUser}
-      showAppropriateModal={showAppropriateModal}
+    <YStack
+      paddingBottom="2 gtLg:0"
+      gap="12"
+      paddingTop="2 gtLg:0"
+      paddingRight="2 gtLg:0"
+      paddingLeft="2 gtLg:0"
     >
-      <YStack pb="$10" gap="$12" padding="$2" $gtLg={{ padding: '$0' }}>
-        <Showcase fileName={Payment.Fullpage.fileName} title="Shopping Cart">
-          <Payment.Fullpage />
-        </Showcase>
+      <Showcase fileName={Payment.Fullpage.fileName} title="Shopping Cart">
+        <Payment.Fullpage />
+      </Showcase>
 
-        <YStack pb="$10" gap="$12" padding="$2" $gtLg={{ padding: '$0' }}>
-          <Showcase fileName={Payment.Paywall.fileName} title={Payment.Paywall.title}>
-            <Payment.Paywall />
-          </Showcase>
-        </YStack>
+      <YStack
+        paddingBottom="2 gtLg:0"
+        gap="12"
+        paddingTop="2 gtLg:0"
+        paddingRight="2 gtLg:0"
+        paddingLeft="2 gtLg:0"
+      >
+        <Showcase fileName={Payment.Paywall.fileName} title={Payment.Paywall.title}>
+          <Payment.Paywall />
+        </Showcase>
       </YStack>
-    </BentoShowcaseProvider>
+    </YStack>
   )
 }
 

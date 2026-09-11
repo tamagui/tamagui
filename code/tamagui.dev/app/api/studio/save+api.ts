@@ -1,17 +1,17 @@
 import { apiRoute } from '~/features/api/apiRoute'
-import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
+import { getUserTeams } from '~/features/user/helpers'
 
 export type StoreData = { themeSuites: Record<string, any> }
 
 export default apiRoute(async (req) => {
   const { user } = await ensureAuth({ req })
-  const { hasPro, teamId } = await ensureAccess({ user })
+  const teamId = (await getUserTeams(user.id))[0]?.id
 
-  if (!hasPro || !teamId) {
-    throw Response.json({ error: 'Must have Pro account' }, { status: 403 })
+  if (!teamId) {
+    throw new Error(`No teamId found`)
   }
 
   const body: StoreData = await readBodyJSON(req)

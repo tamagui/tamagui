@@ -1,0 +1,18 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "isolatedDeclarations": true
+  },
+  "references": [
+    {
+      "path": "../web"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "tests",
+    "**/__tests__"
+  ]
+}

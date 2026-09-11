@@ -22,19 +22,19 @@ export default function TooltipSSRTest() {
   }, [])
 
   return (
-    <YStack ref={rootRef} p="$4" gap="$4" id="tooltip-ssr-root">
+    <YStack ref={rootRef} p="4" gap="4" id="tooltip-ssr-root">
       <YStack height={120} />
 
       <TooltipGroup delay={tooltipDelay}>
         <Tooltip scope="promo-tooltip" offset={20} placement="bottom">
-          <XStack gap="$2" id="tip-triggers" justifyContent="center">
+          <XStack gap="2" justifyContent="center" id="tip-triggers">
             <Tooltip.Trigger
               scope="promo-tooltip"
               asChild
               onMouseEnter={() => setLabel(LABELS.a)}
             >
               <XStack id="tip-trigger-a">
-                <Button size="$3">Starter Kit</Button>
+                <Button size="small">Starter Kit</Button>
               </XStack>
             </Tooltip.Trigger>
 
@@ -44,7 +44,7 @@ export default function TooltipSSRTest() {
               onMouseEnter={() => setLabel(LABELS.b)}
             >
               <XStack id="tip-trigger-b">
-                <Button size="$3">Copy-Paste UI</Button>
+                <Button size="small">Copy-Paste UI</Button>
               </XStack>
             </Tooltip.Trigger>
 
@@ -54,7 +54,7 @@ export default function TooltipSSRTest() {
               onMouseEnter={() => setLabel(LABELS.c)}
             >
               <XStack id="tip-trigger-c">
-                <Button size="$3">Hire Us</Button>
+                <Button size="small">Hire Us</Button>
               </XStack>
             </Tooltip.Trigger>
           </XStack>
@@ -64,16 +64,16 @@ export default function TooltipSSRTest() {
             scope="promo-tooltip"
             animatePosition
             transition="medium"
-            bg="$background"
-            elevation="$2"
-            rounded="$4"
-            px="$2.5"
-            py="$1"
-            enterStyle={{ y: -4, opacity: 0 }}
-            exitStyle={{ y: -4, opacity: 0 }}
+            bg="background"
+            rounded="4"
+            px="2.5"
+            py="1"
+            y="enter:-4px exit:-4px"
+            opacity="enter:0 exit:0"
+            elevation="2"
           >
             <Tooltip.Arrow scope="promo-tooltip" id="tip-arrow" />
-            <Paragraph id="tip-label" size="$3">
+            <Paragraph id="tip-label" size="3">
               {label}
             </Paragraph>
           </Tooltip.Content>

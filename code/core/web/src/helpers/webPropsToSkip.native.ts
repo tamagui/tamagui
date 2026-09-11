@@ -1,18 +1,17 @@
 import { webOnlyStylePropsText, webOnlyStylePropsView } from '@tamagui/helpers'
 
-// pointerEvents is in webOnlyStylePropsView for web CSS, but it's a valid
-// React Native View prop, so we exclude it from the skip list on native.
-// It's handled specially in getSplitStyles.tsx
-const { pointerEvents: _, ...webOnlyStylePropsViewWithoutPointerEvents } =
-  webOnlyStylePropsView
+// textOverflow is in webOnlyStylePropsText for web CSS, but on native we map
+// textOverflow="ellipsis" to numberOfLines={1} + ellipsizeMode="tail" on Text.
+// Handled specially in getSplitStyles.tsx so we exclude it from the skip list.
+const { textOverflow: __, ...webOnlyStylePropsTextWithoutTextOverflow } =
+  webOnlyStylePropsText
 
 /**
  * Web-only props and event handlers that should be skipped on native
  */
 export const webPropsToSkip = {
-  // Reuse web-only style props from webOnlyStyleProps (excluding pointerEvents)
-  ...webOnlyStylePropsViewWithoutPointerEvents,
-  ...webOnlyStylePropsText,
+  ...webOnlyStylePropsView,
+  ...webOnlyStylePropsTextWithoutTextOverflow,
 
   // Web-only event handlers
   onClick: 1,
