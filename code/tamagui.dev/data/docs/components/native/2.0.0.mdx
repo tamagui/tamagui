@@ -4,14 +4,12 @@ description: Optional native integrations for better performance and UX
 name: native
 ---
 
-# Native Integrations
-
 Tamagui components work great out of the box, but several offer optional native
 integrations for improved performance and platform-native UX. All native
 integrations are opt-in - components work without them, just with slightly
 different behavior.
 
-## @tamagui/native Package
+## Setup
 
 The `@tamagui/native` package provides setup utilities for native integrations.
 Import the setup modules at your app's entry point, before any Tamagui imports.
@@ -212,3 +210,51 @@ import '@tamagui/native/setup-expo-linear-gradient'
 ```
 
 See [LinearGradient docs](/docs/components/linear-gradient) for full details.
+
+## Fast-Path Style Engine (Experimental)
+
+<Notice theme="yellow">
+  `@tamagui/native-registry` is experimental. It is designed for React Native 0.82+ applications using the New Architecture (Fabric).
+</Notice>
+
+`@tamagui/native-registry` provides zero-re-render style updates via Fabric ShadowTree commits. It links eligible Fabric native views directly to a lightweight C++ registry, applying theme changes and style updates directly in the native layer without triggering React component re-renders.
+
+### Setup
+
+Install the native module:
+
+```bash
+bun add @tamagui/native-registry react-native-nitro-modules
+```
+
+Because this relies on `react-native-nitro-modules`, adding it requires rebuilding your iOS and Android app binaries.
+
+### Enable the Fast Path
+
+Enable compiler output in `tamagui.build.ts`:
+
+```ts
+import type { TamaguiBuildOptions } from 'tamagui'
+
+export default {
+  config: './tamagui.config.ts',
+  components: ['tamagui'],
+  experimental: {
+    nativeFastPath: true,
+  },
+} satisfies TamaguiBuildOptions
+```
+
+Register the native style engine at app bootstrap before your themed application tree mounts:
+
+```ts
+import * as nativeRegistry from '@tamagui/native-registry'
+import { setNativeStyleEngine } from 'tamagui'
+
+if (nativeRegistry.isAvailable()) {
+  setNativeStyleEngine(nativeRegistry)
+}
+```
+
+When disabled or if the native module is unavailable on the current platform, components automatically fall back to standard React renders.
+

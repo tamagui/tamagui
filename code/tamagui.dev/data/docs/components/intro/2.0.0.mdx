@@ -14,6 +14,20 @@ You can install each component separately, or all of them at once with:
 yarn add tamagui
 ```
 
+## React Strict DOM for React Native
+
+Tamagui's UI components follow the React Strict DOM model: DOM-shaped elements and props that render to real native views on native.
+
+The root `html.*` export allows a single component tree to use semantic DOM elements on web and the corresponding React Native primitives on native:
+
+- **Layout elements** (`html.div`, `html.article`, `html.main`, `html.section`, `html.ul`) render to `View` on native and literal semantic tags on web.
+- **Text elements** (`html.p`, `html.span`, `html.strong`, `html.h1`–`html.h6`) render to `Text` on native and matching headings/paragraphs on web.
+- **Media & inputs** (`html.img` maps to `Image`, `html.input` / `html.textarea` map to `TextInput`).
+
+On native, DOM props are mapped to their React Native equivalents (such as `href` on `html.a` and `src` on `html.img`), and raw strings inside layout elements are automatically wrapped. Because each member is a standard Tamagui component, style props accept tokens, themes, shorthands, and flat conditional values with compiler lowering.
+
+For more details, see the [HTML primitives documentation](/docs/core/html-primitives).
+
 ## Setup
 
 The package `tamagui` is a superset of `@tamagui/core`, so if you've already installed core you can change all the references to `tamagui`.

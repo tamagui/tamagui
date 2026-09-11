@@ -6,6 +6,7 @@ export const docsRoutes = [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
       { title: 'Set up with an agent', route: '/docs/intro/agents' },
+      { title: 'Native', route: '/ui/native' },
       { title: 'CLI', route: '/docs/guides/cli' },
       {
         title: 'Releases',
@@ -130,12 +131,22 @@ export const docsRoutes = [
     // title: 'tamagui',
     pages: [
       { title: 'Install', route: '/ui/intro' },
+      { title: 'Native', route: '/ui/native' },
+      { title: 'Stacking (zIndex)', route: '/ui/z-index' },
+    ],
+  },
+
+  {
+    section: 'ui',
+    label: 'Base',
+    pages: [
       { title: 'Stacks', route: '/ui/stacks' },
       { title: 'Surface', route: '/ui/surface' },
       { title: 'Headings', route: '/ui/headings' },
       { title: 'Text', route: '/ui/text' },
-      { title: 'Native', route: '/ui/native' },
-      { title: 'Z-Index', route: '/ui/z-index' },
+      { title: 'ScrollView', route: '/ui/scroll-view' },
+      { title: 'Group', route: '/ui/group' },
+      { title: 'FocusScope', route: '/ui/focus-scope' },
     ],
   },
 
@@ -198,12 +209,8 @@ export const docsRoutes = [
     label: 'Functional',
     pages: [
       { title: 'Anchor', route: '/ui/anchor' },
-      { title: 'FocusScope', route: '/ui/focus-scope' },
-      { title: 'Group', route: '/ui/group' },
-      { title: 'HTML Elements', route: '/ui/html-elements' },
       { title: 'Portal', route: '/ui/portal' },
       { title: 'RovingFocusGroup', route: '/ui/roving-focus' },
-      { title: 'ScrollView', route: '/ui/scroll-view' },
       { title: 'Unspaced', route: '/ui/unspaced' },
       { title: 'VisuallyHidden', route: '/ui/visually-hidden' },
     ],
