@@ -56,14 +56,18 @@ describe('resolveSize', () => {
 
   test('a missing or invalid default falls back to token 4 without recursion', () => {
     const withoutSizes = { ...env, sizes: undefined }
-    expect(resolveSize('missing' as any, withoutSizes)).toEqual(resolveSize('4', env))
+    expect(resolveSize('missing' as any, withoutSizes)).toEqual(
+      resolveSize('4', withoutSizes)
+    )
     const invalid = { ...env, sizes: { ...env.sizes!, default: 'missing' } }
-    expect(resolveSize(undefined, invalid)).toEqual(resolveSize('4', env))
+    expect(resolveSize(undefined, invalid)).toEqual(resolveSize('4', withoutSizes))
     const nullRecipe = {
       ...env,
       sizes: { ...env.sizes!, md: null },
     } as unknown as SizeResolverEnv
-    expect(resolveSize('missing' as any, nullRecipe)).toEqual(resolveSize('4', env))
+    expect(resolveSize('missing' as any, nullRecipe)).toEqual(
+      resolveSize('4', withoutSizes)
+    )
   })
 
   test('icons round the font size up to the 4px grid unless the recipe sets one', () => {
@@ -71,12 +75,42 @@ describe('resolveSize', () => {
     expect(resolveSize('lg', env).icon).toBe(24)
   })
 
-  test('a token key indexes every scale, with v2 minHeight semantics', () => {
-    // the icon is the font size as is: v2 sized icons to the font, not a grid
-    expect(resolveSize('$4', env)).toEqual({
+  test('a token key steps onto the named ramp, anchored at the default', () => {
+    // v2's `$4` was the default control size, so it lands on the default name
+    expect(resolveSize('$4', env)).toEqual(resolveSize('md', env))
+    expect(resolveSize('4', env)).toEqual(resolveSize('md', env))
+    expect(resolveSize('3', env)).toEqual(resolveSize('sm', env))
+    expect(resolveSize('5', env)).toEqual(resolveSize('lg', env))
+    // out past either end clamps rather than falling off the ramp
+    expect(resolveSize('1', env)).toEqual(resolveSize('sm', env))
+    expect(resolveSize('9', env)).toEqual(resolveSize('lg', env))
+    // fractional keys, in both spellings, round to a step
+    expect(resolveSize('4.5', env)).toEqual(resolveSize('lg', env))
+    expect(resolveSize('2-5', env)).toEqual(resolveSize('sm', env))
+  })
+
+  test('a token-keyed control is never shorter than the text inside it', () => {
+    // the regression this exists for: v6's size scale is tailwind spacing, so
+    // reading a frame height off it gave `size="5"` a 20px-tall button holding
+    // 23px of text with no padding above or below. every key on the scale, not
+    // just the ones an app happens to pass today.
+    for (const key of ['1', '2', '3', '4', '5', '6', '1.5', '0-5']) {
+      const resolved = resolveSize(key, env)
+      const lineHeight = resolved.text.lineHeight as number
+      expect(resolved.frame.paddingVertical).toBeGreaterThan(0)
+      expect(resolved.controlHeight).toBeGreaterThan(lineHeight)
+    }
+  })
+
+  test('a config naming no sizes still indexes the scales directly', () => {
+    // nothing better is available: with no named ramp there is no step to land
+    // on, so v2's reading of the size scale is all that is left
+    const withoutSizes = { ...env, sizes: undefined }
+    expect(resolveSize('$4', withoutSizes)).toEqual({
       name: '4',
       fontSizeKey: '4',
       frame: { paddingHorizontal: 16, gap: 3, borderRadius: 9, minHeight: 16 },
+      // the icon is the font size as is: v2 sized icons to the font, not a grid
       text: { fontSize: 15, lineHeight: 23 },
       icon: 15,
       controlHeight: 16,
