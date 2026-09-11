@@ -838,21 +838,26 @@ async function run() {
 
         // npm answers roughly half of these publishes with `PUT 202 Accepted`
         // instead of 200, and its cli prints `+ name@version` and exits 0 for
-        // both. a 202 usually commits a moment later, but not always: on
+        // both. a 202 usually commits within a few minutes, but not always: on
         // 3.0.0-beta.1173.1 one package of 169, @tamagui/use-escape-keydown,
         // got a 202 the registry never committed. the run went green, the beta
         // looked cut, and every consumer that bumped its pins hit
         // `No version matching "3.0.0-beta.1173.1" found`. the catch block
         // above only runs when npm itself fails, so nothing caught it.
         //
-        // so confirm each version actually resolves, give the registry a window
-        // to commit the outstanding 202s, then republish whatever it dropped.
+        // the window has to be generous, because the read path lags the write
+        // path by minutes under a 169-package fan-out: on 3.0.0-beta.1177.1 a
+        // 60-second window still had 8 packages outstanding that were all
+        // present shortly after, so a short window turns a complete beta red
+        // and fires pointless republishes. ten minutes separates that lag from
+        // a real drop, which never resolves at all.
+        const settleDeadline = Date.now() + 10 * 60_000
         let unconfirmed = await confirmPublished(pendingPackages)
-        for (let attempt = 0; attempt < 6 && unconfirmed.length > 0; attempt++) {
+        while (unconfirmed.length > 0 && Date.now() < settleDeadline) {
           console.info(
             `Waiting on ${unconfirmed.length} package(s) the registry accepted but has not committed`
           )
-          await sleep(10_000)
+          await sleep(15_000)
           unconfirmed = await confirmPublished(unconfirmed)
         }
         if (unconfirmed.length > 0) {
@@ -867,8 +872,12 @@ async function run() {
               console.info(`Republish of ${pkg.name} did not succeed: ${error}`)
             )
           }
-          await sleep(10_000)
+          const retryDeadline = Date.now() + 5 * 60_000
           unconfirmed = await confirmPublished(unconfirmed)
+          while (unconfirmed.length > 0 && Date.now() < retryDeadline) {
+            await sleep(15_000)
+            unconfirmed = await confirmPublished(unconfirmed)
+          }
         }
         if (unconfirmed.length > 0) {
           throw new Error(
