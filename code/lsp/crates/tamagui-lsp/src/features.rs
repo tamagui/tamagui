@@ -76,7 +76,9 @@ impl State {
         let vocabulary = self.vocabularies.get(&root)?;
         let cursor = offset - site.value_start;
         let category = config.prop_category(&site.prop);
-        let completions = tamagui_grammar::complete(vocabulary, &site.value, cursor, category);
+        let prop = config.expand_shorthand(&site.prop);
+        let completions =
+            tamagui_grammar::complete(vocabulary, &site.value, cursor, category, Some(prop));
 
         let document = self.workspace.get(&uri)?;
         let replace = lsp_range(
@@ -92,6 +94,7 @@ impl State {
                 let kind = match entry.kind {
                     EntryKind::ThemeKey => CompletionItemKind::COLOR,
                     EntryKind::Token => CompletionItemKind::VALUE,
+                    EntryKind::Keyword => CompletionItemKind::ENUM_MEMBER,
                     EntryKind::Modifier(_) => CompletionItemKind::KEYWORD,
                 };
                 CompletionItem {
@@ -219,7 +222,9 @@ impl State {
                     entry.detail
                 ));
             }
-            EntryKind::Modifier(_) => return None,
+            // neither lives in `values`: modifiers have their own index and a
+            // keyword belongs to one prop, so this lookup cannot reach them
+            EntryKind::Keyword | EntryKind::Modifier(_) => return None,
         }
 
         let document = self.workspace.get(&uri)?;

@@ -25,6 +25,8 @@ pub enum EntryKind {
     ThemeKey,
     /// a token in a category, e.g. `space.4`
     Token,
+    /// one of a prop's own fixed values, e.g. `multiply` on `mixBlendMode`
+    Keyword,
     /// a modifier usable as a `name:` prefix
     Modifier(ModifierKind),
 }
@@ -136,6 +138,9 @@ pub struct Vocabulary {
     /// vocabulary while `rounded=""` offered only the handful of radius names
     /// no other scale had claimed.
     by_category: FxHashMap<Box<str>, Index>,
+    /// one index per prop that owns a fixed keyword set. These come from the
+    /// grammar rather than the config, so they are the same for every project.
+    by_prop: FxHashMap<Box<str>, Index>,
     /// the config revision this was built from, so a stale vocabulary is
     /// detectable rather than silently served
     pub revision: u64,
@@ -149,6 +154,12 @@ impl Vocabulary {
     /// the config declares no such category.
     pub fn category(&self, category: &str) -> Option<&Index> {
         self.by_category.get(category)
+    }
+
+    /// The keyword set this prop completes from, for props whose values are
+    /// fixed by the grammar rather than drawn from the config's tokens.
+    pub fn standalone(&self, prop: &str) -> Option<&Index> {
+        self.by_prop.get(prop)
     }
 
     pub fn from_config(config: &ConfigSnapshot) -> Self {
@@ -218,10 +229,31 @@ impl Vocabulary {
             .map(|(category, entries)| (category, Index::build(entries)))
             .collect();
 
+        // authored order is the useful order here (`normal` before `multiply`,
+        // never `all-scroll` first), so `order` follows the grammar's listing
+        let by_prop = crate::generated::STANDALONE_VALUE_PROPS
+            .iter()
+            .map(|(prop, keywords)| {
+                let entries = keywords
+                    .iter()
+                    .enumerate()
+                    .map(|(order, keyword)| Entry {
+                        name: (*keyword).into(),
+                        kind: EntryKind::Keyword,
+                        detail: (*prop).into(),
+                        category: None,
+                        order: order as u32,
+                    })
+                    .collect();
+                ((*prop).into(), Index::build(entries))
+            })
+            .collect();
+
         Self {
             values: Index::build(values),
             modifiers: Index::build(modifiers),
             by_category,
+            by_prop,
             revision: config.revision,
             registry,
         }

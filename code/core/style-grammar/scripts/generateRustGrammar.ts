@@ -27,6 +27,7 @@ import {
   parseContainerModifier,
 } from '../src/programs/modifierRegistry'
 import { coreStateModifierNames, modifierAliases } from '../src/runtime/stateModifiers'
+import { standaloneValueProps } from '../src/tooling/registry'
 import { parseValue } from '../src/ast/valueParser'
 import { grammarMaxNonPlatformDepth } from '../src/ast/valueTypes'
 import {
@@ -73,6 +74,12 @@ function generatedRust(): string {
       ([alias, canonical]) => `(${JSON.stringify(alias)}, ${JSON.stringify(canonical)})`
     )
     .join(', ')
+  const standalonePairs = Object.entries(standaloneValueProps)
+    .map(
+      ([prop, values]) =>
+        `\n    (${JSON.stringify(prop)}, &[${rustStrings(Object.keys(values))}]),`
+    )
+    .join('')
   return `${banner}
 /// the core interaction and lifecycle modifiers, in grammar order
 pub const CORE_STATE_MODIFIERS: &[&str] = &[${rustStrings(coreStateModifierNames)}];
@@ -94,6 +101,12 @@ pub const CONTAINER_PREFIX: char = '@';
 
 /// how many distinct non-platform conditions one clause may encode
 pub const MAX_NON_PLATFORM_DEPTH: usize = ${grammarMaxNonPlatformDepth};
+
+/// props whose values are a fixed keyword set rather than tokens, and the
+/// keywords each one takes. A prop listed here draws from its own list only:
+/// without it the editor has no vocabulary for the prop and falls back to every
+/// token in the config, which is how \`mixBlendMode=""\` came to suggest colours.
+pub const STANDALONE_VALUE_PROPS: &[(&str, &[&str])] = &[${standalonePairs}];
 `
 }
 

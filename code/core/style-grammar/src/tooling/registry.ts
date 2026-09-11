@@ -260,6 +260,7 @@ const grammarEntrySpecs = [
   // misc layout
   { prop: 'backfaceVisibility', prefix: '' },
   { prop: 'isolation', prefix: '' },
+  { prop: 'mixBlendMode', prefix: 'mix-blend' },
 ] as const
 
 export const grammarEntries: readonly GrammarEntry[] = grammarEntrySpecs.map((entry) => {
@@ -484,6 +485,29 @@ export const standaloneValueProps: Readonly<
   isolation: {
     isolate: 'isolate',
     auto: 'isolation-auto',
+  },
+  // `color` and `luminosity` are blend modes here, not token names. listing them
+  // is also what stops the editor offering the colour scale for this prop: a
+  // prop with no vocabulary of its own falls back to the whole token set.
+  mixBlendMode: {
+    normal: 'mix-blend-normal',
+    multiply: 'mix-blend-multiply',
+    screen: 'mix-blend-screen',
+    overlay: 'mix-blend-overlay',
+    darken: 'mix-blend-darken',
+    lighten: 'mix-blend-lighten',
+    'color-dodge': 'mix-blend-color-dodge',
+    'color-burn': 'mix-blend-color-burn',
+    'hard-light': 'mix-blend-hard-light',
+    'soft-light': 'mix-blend-soft-light',
+    difference: 'mix-blend-difference',
+    exclusion: 'mix-blend-exclusion',
+    hue: 'mix-blend-hue',
+    saturation: 'mix-blend-saturation',
+    color: 'mix-blend-color',
+    luminosity: 'mix-blend-luminosity',
+    'plus-darker': 'mix-blend-plus-darker',
+    'plus-lighter': 'mix-blend-plus-lighter',
   },
   transformOrigin: {
     '50% 50%': 'origin-center',

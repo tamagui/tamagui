@@ -47,20 +47,29 @@ pub struct Completions<'a> {
 /// colors and `p` offers spaces. `None` offers everything, which is the right
 /// answer for a prop with no single category (`border` takes both a width and a
 /// color) and for an artifact written before the compiler emitted the map.
+///
+/// `prop` is the expanded prop name, checked first: a prop whose values are a
+/// fixed keyword set takes none of the config's tokens at all. Without it those
+/// props fell through to the `None` case above and offered the entire token
+/// vocabulary, so `mixBlendMode=""` suggested every color in the theme.
 pub fn complete<'a>(
     vocabulary: &'a Vocabulary,
     value: &str,
     offset: usize,
     category: Option<&str>,
+    prop: Option<&str>,
 ) -> Completions<'a> {
     let parsed = value::parse(value);
     let offset = offset.min(value.len());
 
     // a category the config declares no tokens for cannot narrow anything, so
     // the whole vocabulary is the answer rather than an empty list
-    let values = category
-        .and_then(|c| vocabulary.category(c))
-        .unwrap_or(&vocabulary.values);
+    let values = match prop.and_then(|p| vocabulary.standalone(p)) {
+        Some(keywords) => keywords,
+        None => category
+            .and_then(|c| vocabulary.category(c))
+            .unwrap_or(&vocabulary.values),
+    };
 
     // a cursor inside one of the `modifier:` prefixes completes a modifier
     if let Some(modifier) = parsed.modifier_at(offset) {
@@ -262,7 +271,7 @@ mod tests {
     fn completes_a_value_from_its_typed_prefix() {
         let (_, v) = setup();
         let value = "background-h";
-        let c = complete(&v, value, value.len(), None);
+        let c = complete(&v, value, value.len(), None, None);
         assert_eq!(c.context, CursorContext::Value);
         assert_eq!(names(&c), vec!["background-hover"]);
     }
@@ -272,7 +281,7 @@ mod tests {
         let (_, v) = setup();
         let value = "background hov:x";
         // cursor right after `hov`
-        let c = complete(&v, value, 14, None);
+        let c = complete(&v, value, 14, None, None);
         assert_eq!(c.context, CursorContext::Modifier);
         assert_eq!(names(&c), vec!["hover"]);
     }
@@ -283,7 +292,7 @@ mod tests {
         // not: accepting an entry must preserve the other clauses
         let (_, v) = setup();
         let value = "background hover:background-h";
-        let c = complete(&v, value, value.len(), None);
+        let c = complete(&v, value, value.len(), None, None);
         assert_eq!(c.replace, Span::new(17, 29));
         assert_eq!(c.replace.of(value), "background-h");
 
@@ -299,7 +308,7 @@ mod tests {
     fn completes_after_a_trailing_colon() {
         let (_, v) = setup();
         let value = "4 sm:";
-        let c = complete(&v, value, value.len(), None);
+        let c = complete(&v, value, value.len(), None, None);
         assert_eq!(c.context, CursorContext::Value);
         // the payload is empty, so everything is on offer, inserted after the colon
         assert_eq!(c.replace, Span::new(5, 5));
@@ -309,14 +318,14 @@ mod tests {
     #[test]
     fn an_empty_value_offers_the_whole_vocabulary() {
         let (_, v) = setup();
-        let c = complete(&v, "", 0, None);
+        let c = complete(&v, "", 0, None, None);
         assert_eq!(c.entries.len(), v.values.len());
     }
 
     #[test]
     fn a_colour_prop_offers_theme_keys_and_not_the_space_scale() {
         let (_, v) = setup();
-        let c = complete(&v, "", 0, Some("color"));
+        let c = complete(&v, "", 0, Some("color"), None);
         let offered = names(&c);
         assert!(offered.contains(&"background"), "expected theme keys in {offered:?}");
         // `4` is the space token; under a background prop it is noise
@@ -326,7 +335,7 @@ mod tests {
     #[test]
     fn a_space_prop_offers_the_space_scale_and_not_theme_keys() {
         let (_, v) = setup();
-        let c = complete(&v, "", 0, Some("space"));
+        let c = complete(&v, "", 0, Some("space"), None);
         assert_eq!(names(&c), vec!["4"]);
     }
 
@@ -334,7 +343,7 @@ mod tests {
     fn filtering_still_narrows_by_the_typed_prefix() {
         let (_, v) = setup();
         let value = "background-h";
-        let c = complete(&v, value, value.len(), Some("color"));
+        let c = complete(&v, value, value.len(), Some("color"), None);
         assert_eq!(names(&c), vec!["background-hover"]);
     }
 
@@ -360,7 +369,7 @@ mod tests {
         for (category, expected) in
             [("space", vec!["4", "true"]), ("size", vec!["4"]), ("radius", vec!["4"])]
         {
-            let c = complete(&v, "", 0, Some(category));
+            let c = complete(&v, "", 0, Some(category), None);
             assert_eq!(names(&c), expected, "category {category}");
         }
 
@@ -371,11 +380,47 @@ mod tests {
     }
 
     #[test]
+    fn a_keyword_only_prop_offers_its_own_values_and_no_tokens() {
+        // `mixBlendMode` draws from no token category, so before it had a
+        // vocabulary of its own it fell through to "offer everything" and the
+        // editor listed every colour in the theme as a blend mode.
+        let (_, v) = setup();
+        let c = complete(&v, "", 0, None, Some("mixBlendMode"));
+        assert!(names(&c).contains(&"multiply"), "got {:?}", names(&c));
+        assert!(names(&c).contains(&"luminosity"), "got {:?}", names(&c));
+        // the theme keys and tokens the untyped fallback would have offered
+        for offered in names(&c) {
+            assert!(
+                !v.values.contains(offered) || STANDALONE_BLEND_OVERLAP.contains(&offered),
+                "`{offered}` is a config value, not a blend mode"
+            );
+        }
+
+        // and the typed prefix still narrows within the prop's own list
+        let typed = "mult";
+        let c = complete(&v, typed, typed.len(), None, Some("mixBlendMode"));
+        assert_eq!(names(&c), vec!["multiply"]);
+    }
+
+    /// `color` is both a theme key and a real blend mode, so it is the one name
+    /// allowed to appear in both sets.
+    const STANDALONE_BLEND_OVERLAP: &[&str] = &["color"];
+
+    #[test]
+    fn an_unknown_prop_still_offers_the_whole_vocabulary() {
+        // the fallback has to survive: `border` takes a width AND a colour, and
+        // an artifact written before the prop map existed names no category
+        let (_, v) = setup();
+        let c = complete(&v, "", 0, None, Some("border"));
+        assert_eq!(c.entries.len(), v.values.len());
+    }
+
+    #[test]
     fn a_category_the_config_has_no_tokens_for_offers_everything() {
         // `fontSize` is a real category in the registry, but a config that
         // declares no fontSize tokens must not answer with an empty list
         let (_, v) = setup();
-        let c = complete(&v, "", 0, Some("fontSize"));
+        let c = complete(&v, "", 0, Some("fontSize"), None);
         assert_eq!(c.entries.len(), v.values.len());
     }
 
@@ -385,13 +430,13 @@ mod tests {
         // colour prop but `hover:` is still legal in it
         let (_, v) = setup();
         let value = "hov";
-        let c = complete(&v, value, value.len(), Some("color"));
+        let c = complete(&v, value, value.len(), Some("color"), None);
         // `hov` is a value prefix here (no colon yet), so nothing matches; the
         // point is that filtering does not crash or swallow the modifier path
         assert_eq!(c.context, CursorContext::Value);
 
         let with_colon = "hov:";
-        let c = complete(&v, with_colon, 3, Some("color"));
+        let c = complete(&v, with_colon, 3, Some("color"), None);
         assert_eq!(c.context, CursorContext::Modifier);
         assert_eq!(names(&c), vec!["hover"]);
     }
@@ -444,7 +489,7 @@ mod tests {
         // components, and only the one under the cursor may be replaced
         let (_, v) = setup();
         let value = "hover:1px solid background-h";
-        let c = complete(&v, value, value.len(), None);
+        let c = complete(&v, value, value.len(), None, None);
         assert_eq!(c.context, CursorContext::Value);
         assert_eq!(c.replace.of(value), "background-h");
         assert_eq!(names(&c), vec!["background-hover"]);

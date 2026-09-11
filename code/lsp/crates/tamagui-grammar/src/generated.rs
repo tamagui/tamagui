@@ -25,3 +25,38 @@ pub const CONTAINER_PREFIX: char = '@';
 
 /// how many distinct non-platform conditions one clause may encode
 pub const MAX_NON_PLATFORM_DEPTH: usize = 5;
+
+/// props whose values are a fixed keyword set rather than tokens, and the
+/// keywords each one takes. A prop listed here draws from its own list only:
+/// without it the editor has no vocabulary for the prop and falls back to every
+/// token in the config, which is how `mixBlendMode=""` came to suggest colours.
+pub const STANDALONE_VALUE_PROPS: &[(&str, &[&str])] = &[
+    ("display", &["flex", "none", "block", "inline", "grid", "inline-flex"]),
+    ("position", &["relative", "absolute", "fixed", "sticky", "static"]),
+    ("flexDirection", &["row", "column", "row-reverse", "column-reverse"]),
+    ("flexWrap", &["wrap", "nowrap", "wrap-reverse"]),
+    ("textTransform", &["uppercase", "lowercase", "capitalize", "none"]),
+    ("textDecorationLine", &["underline", "line-through", "none"]),
+    ("textDecorationStyle", &["solid", "double", "dotted", "dashed"]),
+    ("boxSizing", &["border-box", "content-box"]),
+    ("fontStyle", &["italic", "normal"]),
+    ("borderStyle", &["solid", "dashed", "dotted", "none"]),
+    ("outlineStyle", &["solid", "dashed", "dotted", "none"]),
+    ("alignItems", &["center", "flex-start", "flex-end", "baseline", "stretch"]),
+    ("alignContent", &["center", "flex-start", "flex-end", "space-between", "space-around", "space-evenly", "stretch"]),
+    ("alignSelf", &["auto", "center", "flex-start", "flex-end", "baseline", "stretch"]),
+    ("justifyContent", &["center", "flex-start", "flex-end", "space-between", "space-around", "space-evenly"]),
+    ("overflow", &["hidden", "scroll", "auto", "visible"]),
+    ("pointerEvents", &["none", "auto", "box-none", "box-only"]),
+    ("textAlign", &["left", "center", "right", "justify", "start", "end"]),
+    ("objectFit", &["contain", "cover", "fill", "none", "scale-down"]),
+    ("cursor", &["auto", "default", "pointer", "wait", "text", "move", "help", "not-allowed", "none", "context-menu", "progress", "cell", "crosshair", "vertical-text", "alias", "copy", "no-drop", "grab", "grabbing", "all-scroll", "col-resize", "row-resize", "n-resize", "e-resize", "s-resize", "w-resize", "ne-resize", "nw-resize", "se-resize", "sw-resize", "ew-resize", "ns-resize", "nesw-resize", "nwse-resize", "zoom-in", "zoom-out"]),
+    ("overflowX", &["hidden", "scroll", "auto", "visible", "clip"]),
+    ("overflowY", &["hidden", "scroll", "auto", "visible", "clip"]),
+    ("textOverflow", &["clip"]),
+    ("userSelect", &["none", "text", "all", "auto"]),
+    ("visibility", &["visible", "hidden", "collapse"]),
+    ("backfaceVisibility", &["visible", "hidden"]),
+    ("isolation", &["isolate", "auto"]),
+    ("mixBlendMode", &["normal", "multiply", "screen", "overlay", "darken", "lighten", "color-dodge", "color-burn", "hard-light", "soft-light", "difference", "exclusion", "hue", "saturation", "color", "luminosity", "plus-darker", "plus-lighter"]),
+    ("transformOrigin", &["50% 50%", "50% 0", "100% 0", "100% 50%", "100% 100%", "50% 100%", "0 100%", "0 50%", "0 0"]),];
