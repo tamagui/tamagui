@@ -13,8 +13,7 @@ setupPopper({
 })
 
 // two webfonts, both subset variable files that cover every weight the site
-// asks for from a single request: Inter 4.1 for text (~54kb, latin + latin-1 +
-// punctuation, optical size pinned to 14) and JetBrains Mono for code (~19kb).
+// asks for from a single request: Contrast for text and JetBrains Mono for code.
 // inlined here rather than linked so they cost no extra round-trip before first
 // paint, and swapped so text renders in the OS UI face until they land.
 const fontFaceCss = `

@@ -92,7 +92,7 @@ export function DocsVersionPickerPortal(
   return target ? createPortal(<DocsVersionPicker {...props} />, target) : null
 }
 
-function PickerSelect({
+export function PickerSelect({
   label,
   value,
   items,
@@ -118,7 +118,7 @@ function PickerSelect({
         height={28}
         paddingHorizontal="2"
         gap="1"
-        backgroundColor="color-2"
+        backgroundColor="color-1"
         borderWidth={1}
         borderColor="border-color"
         borderRadius="4"

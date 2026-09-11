@@ -15,6 +15,7 @@ import { Link } from '~/components/Link'
 import { BentoButton } from '../site/BentoButton'
 import { ConsultingButton } from '../site/ConsultingButton'
 import { TakeoutButton } from '../site/TakeoutButton'
+import { DocsThemePicker } from './DocsThemePicker'
 
 export type Heading = {
   id: string
@@ -276,6 +277,10 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
               <SizableText size="3">llms.txt</SizableText>
             </Link>
           </XStack>
+
+          <Separator opacity={0.5} mr="6" />
+
+          <DocsThemePicker />
 
           <Separator opacity={0.5} mr="6" />
 

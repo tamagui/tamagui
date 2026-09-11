@@ -5,6 +5,7 @@ import {
   ramp,
   raise,
   shades,
+  shadows,
   type Level,
   type Scheme,
   type ThemeScale,
@@ -198,9 +199,12 @@ export function createStudioThemes({ palettes }: BuildThemeSuiteProps) {
   const themes = createThemes(tokens, tree, {
     getTheme: ({ recipe }: { recipe: StudioRecipe }) => {
       const scale = studioScales[recipe.scheme][recipe.level ?? 1]
+      const schemeShadows = shadows[recipe.scheme]
       return {
         ...ramp(recipe.palette, recipe.scheme, scale),
         ...fromShades(recipe.palette, scale),
+        ...schemeShadows,
+        'shadow-color': schemeShadows[scale['shadow-color']],
       }
     },
   })
