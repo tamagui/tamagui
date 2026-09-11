@@ -8,7 +8,7 @@ export function AccordionDemo() {
         <Accordion.Trigger
           flexDirection="row"
           justify="space-between"
-          py="1"
+          paddingVertical={6}
           borderWidth={1}
           borderColor="border-color"
         >
@@ -41,7 +41,7 @@ export function AccordionDemo() {
         <Accordion.Trigger
           flexDirection="row"
           justify="space-between"
-          py="1"
+          paddingVertical={6}
           borderWidth={1}
           borderTopWidth={0}
           borderColor="border-color"

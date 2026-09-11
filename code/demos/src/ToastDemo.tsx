@@ -159,24 +159,14 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
       {isWeb && (
         <Toast.Close
           testID="toast-close-button"
-          unstyled
           position="absolute"
           top={4}
           right={4}
           zIndex={1}
-          p={0}
-          m={0}
-          bg="transparent"
-          borderWidth={0}
-          borderColor="transparent"
           width="auto"
           height="auto"
-          minW={0}
-          minH={0}
-          shadowColor="transparent"
-          cursor="pointer"
         >
-          <X size={28} color="color-10" />
+          <X size={28} />
         </Toast.Close>
       )}
     </>

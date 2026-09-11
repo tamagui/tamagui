@@ -32,9 +32,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
           </H2>
         )}
 
-        <YStack p={0} m={0}>
-          <Features large={large} items={features} />
-        </YStack>
+        <Features large={large} items={features} />
       </YStack>
 
       {!disableLinks && (

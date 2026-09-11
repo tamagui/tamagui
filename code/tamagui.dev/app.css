@@ -146,6 +146,18 @@ article ol ol {
   margin-bottom: 4px;
 }
 
+/* component-rendered lists (Features) are not prose, so opt them out of the
+   prose list indent above rather than dropping their ul/li semantics */
+article ul.tm-list-plain {
+  margin-inline-start: 0 !important;
+  padding-inline-start: 0 !important;
+  list-style: none;
+}
+
+article ul.tm-list-plain > li {
+  padding-inline-start: 0;
+}
+
 article li strong {
   opacity: 1;
 }
