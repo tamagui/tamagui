@@ -140,8 +140,7 @@ export function getThemedChildren(
     // on the first themed render though: escalating later is the re-parent we are
     // trying to avoid, and it unmounts the entire subtree (see Switch, which swaps
     // between an active theme and none)
-    (isFirstThemedRender &&
-      (themeState.name === 'dark' || themeState.name === 'light'))
+    (isFirstThemedRender && (themeState.name === 'dark' || themeState.name === 'light'))
   ) {
     state.hasEverThemed = 'wrapped'
   }
