@@ -85,7 +85,7 @@
     "access": "public"
   },
   "scripts": {
-    "generate": "tamagui generate-themes ./src/themes.generate.ts ./src/generated.ts",
+    "generate": "tamagui generate-themes ./src/themes.generate.ts ./src/generated.ts && oxfmt ./src/generated.ts",
     "check:v5-color-scales": "bun ./scripts/generate-v5-color-scales.ts --check",
     "test": "bun test tests/themes.test.ts",
     "test:types": "vitest --typecheck --run tests/themes.test-d.ts",
