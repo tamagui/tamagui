@@ -114,6 +114,28 @@ describe('resolveSize', () => {
     }
   })
 
+  test('naming a numeric key in sizes overrides what the token branch would synthesize', () => {
+    // the escape hatch: the synthesized padding is only what a key you have NOT
+    // named falls back to. name `4` and your recipe wins, exactly like `md`.
+    const owned = {
+      ...env,
+      sizes: {
+        ...env.sizes!,
+        4: { fontSize: 'base', paddingX: '2', paddingY: '3', radius: 'sm' },
+      },
+    } as unknown as SizeResolverEnv
+    expect(resolveSize('$4', owned)).toEqual({
+      name: '4',
+      fontSizeKey: 'base',
+      frame: { paddingHorizontal: 8, paddingVertical: 12, gap: 12, borderRadius: 4 },
+      text: { fontSize: 16, lineHeight: 24 },
+      icon: 16,
+      controlHeight: 48,
+    })
+    // and nothing is left over from the token branch
+    expect(resolveSize('$4', owned).frame).not.toHaveProperty('minHeight')
+  })
+
   test('a v2-shaped size scale still sets the control height it always did', () => {
     // where `tokens.size` IS a control ramp the floor is the taller of the two,
     // so `size="$4"` is the 44px button v2 shipped, padding and all

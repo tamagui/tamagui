@@ -56,6 +56,10 @@ export type ResolvedSize = {
 * font 11 together. It takes `tokens.size[key]` as a minimum height rather than
 * the height, because that only describes a control under a v2-shaped size
 * scale; see the token branch.
+*
+* Names are checked before token keys, so naming a numeric key in `sizes` is
+* the override: `sizes: { 4: { fontSize, paddingX, paddingY, radius } }` makes
+* `size="$4"` a recipe you own, and nothing below is synthesized for it.
 */
 export declare const resolveSize: (value: TokenSize | null | undefined, env?: SizeResolverEnv) => ResolvedSize;
 /**

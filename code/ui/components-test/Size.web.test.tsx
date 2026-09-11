@@ -98,10 +98,19 @@ describe('named control sizes on web', () => {
 
   test('a token key honestly indexes the config scales', () => {
     expect(renderButton('$4')).toMatchObject({
+      // a floor under v6's spacing-shaped size scale, not the height
       minHeight: 16,
       paddingHorizontal: config.tokensParsed.space['4'].val,
       fontSize: config.fontsParsed.body.size['4'].val,
     })
+  })
+
+  test('a token-keyed button reaches the DOM with room around its label', () => {
+    // the collapsed Button: 16px of frame around 23px of text. the padding has
+    // to survive the style pass, not just come out of resolveSize
+    const rendered = renderButton('$4')
+    expect(rendered.paddingVertical).toBe(8)
+    expect(rendered.lineHeight).toBe(23)
   })
 
   test('shares one singleton through size, core, and tamagui exports', () => {
