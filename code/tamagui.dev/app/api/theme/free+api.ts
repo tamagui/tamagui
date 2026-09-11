@@ -31,7 +31,7 @@ export default apiRoute(async () => {
           {
             ...theme,
             searchQuery: storedTheme.search_query,
-            themeData: storedTheme.theme_data,
+            themeData: storedTheme.theme_data as unknown as FreeTheme['themeData'],
           },
         ]
       : []

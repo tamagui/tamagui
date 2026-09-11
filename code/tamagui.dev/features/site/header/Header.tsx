@@ -155,7 +155,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
     >
       <XStack items="center" gap="4">
         <TooltipGroup delay={tooltipDelay}>
-          <XGroup bg="transparent" items="center" size="4">
+          <XGroup bg="transparent" items="center" size="5">
             <XGroup.Item>
               <ThemeToggle borderWidth={0} variant="quiet" />
             </XGroup.Item>
@@ -390,7 +390,7 @@ export const HeaderLink = (props: { id: ID; children: string; href: string }) =>
       <Link asChild href={props.href as any}>
         <HeadAnchor
           fontFamily="mono"
-          fontSize={14}
+          fontSize={15}
           color="color-9 hover:color-12"
           {...(isActive && { active: true })}
           display="xs:none"

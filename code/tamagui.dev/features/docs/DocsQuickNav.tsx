@@ -124,14 +124,14 @@ const NavLineIndicator = ({
       }}
     >
       {/* Background path (subtle gray) */}
-      <path d={path} fill="none" stroke="var(--color-3)" strokeWidth="1" />
+      <path d={path} fill="none" stroke="var(--color-3)" strokeWidth="1" opacity={0.4} />
 
       {/* Active indicator (animated along path) */}
       <path
         d={path}
         fill="none"
-        stroke="var(--color-9)"
-        strokeWidth="2"
+        stroke="var(--color-8)"
+        strokeWidth="1.5"
         strokeLinecap="round"
         strokeDasharray={`${segmentHalf * 2} ${totalLength}`}
         strokeDashoffset={-(activeDistance - segmentHalf)}
@@ -213,13 +213,22 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
 
   // Measure container and item positions with levels
   useEffect(() => {
-    if (!containerRef.current || headings.length === 0) return
+    if (headings.length === 0) return
 
+    let rafId: number
     const measurePositions = () => {
       const container = containerRef.current
-      if (!container) return
+      if (!container) {
+        rafId = requestAnimationFrame(measurePositions)
+        return
+      }
 
       const items = container.querySelectorAll('[data-nav-item]')
+      if (items.length === 0) {
+        rafId = requestAnimationFrame(measurePositions)
+        return
+      }
+
       const data: Array<{ top: number; height: number; level: number }> = []
 
       items.forEach((item, index) => {
@@ -238,11 +247,14 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
     }
 
     // Measure after render
-    requestAnimationFrame(measurePositions)
+    rafId = requestAnimationFrame(measurePositions)
 
     // Re-measure on resize
     window.addEventListener('resize', measurePositions)
-    return () => window.removeEventListener('resize', measurePositions)
+    return () => {
+      cancelAnimationFrame(rafId)
+      window.removeEventListener('resize', measurePositions)
+    }
   }, [headings])
 
   return (
@@ -292,7 +304,7 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
             display={headings.length === 0 ? 'none' : 'flex'}
             gap="2"
           >
-            <H4 mb="2" color="color-7" size="5" id="site-quick-nav-heading">
+            <H4 mb="2" color="color-5" size="5" id="site-quick-nav-heading">
               Contents
             </H4>
 

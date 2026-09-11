@@ -46,6 +46,7 @@ export function HomeStyleToggle() {
                 <Tabs.Tab
                   key={value}
                   value={value}
+                  onPress={() => setMode(value)}
                   px="2-5"
                   py="1"
                   width={72}

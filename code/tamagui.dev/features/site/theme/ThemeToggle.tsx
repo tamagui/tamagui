@@ -18,11 +18,11 @@ export const ThemeToggle = memo((props: ButtonProps) => {
       }
     >
       <Button
-        size="4"
+        size="5"
         onPress={onPress}
         {...props}
         aria-label="Toggle light/dark color scheme"
-        icon={Icon}
+        icon={<Icon size={18} />}
         bg="hover:rgba(0,0,0,0.15)"
       />
     </TooltipSimple>

@@ -27,19 +27,24 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
         mr="gtSm:5"
       >
         {!disableTitle && (
-          <H2 fontFamily="body" mb="1" fontWeight="800" size="6">
+          <H2 fontFamily="body" mb={0} fontWeight="800" size="6">
             Features
           </H2>
         )}
 
-        <YStack render="ul" p={0} m={0}>
+        <YStack
+          render="ul"
+          p={0}
+          m={0}
+          style={{ paddingLeft: 0, margin: 0, listStyle: 'none' }}
+        >
           <Features large={large} items={features} />
         </YStack>
       </YStack>
 
       {!disableLinks && (
         <YStack
-          gap="2"
+          gap="1"
           minW={140}
           render="nav"
           aria-labelledby="site-component-info-header"
@@ -47,7 +52,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
           <VisuallyHidden>
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>
-          <YStack marginTop="1" marginBottom="1" gap="1">
+          <YStack marginTop={0} marginBottom={0} gap="0-5">
             {frontmatter.versions && frontmatter.versions.length > 1 && (
               <SourceVersionSwitcher
                 versions={frontmatter.versions}
