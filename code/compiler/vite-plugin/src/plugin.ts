@@ -1306,7 +1306,19 @@ export function createTamaguiPlugins({
         if (!tamaguiLoader.isEvaluationDependency(options.file)) {
           if (this.environment.name !== 'client') return
           const compilerFrontend = getCompilerFrontend(this.environment)
-          const source = options.type === 'delete' ? null : await options.read()
+          // the file can vanish between the watcher event and this read (a temp
+          // directory a test wrote and removed): that is the delete it looks
+          // like, not a failure worth vite's error overlay in every open tab
+          let source: string | null = null
+          if (options.type !== 'delete') {
+            try {
+              source = await options.read()
+            } catch (error) {
+              if (!(error instanceof Error && 'code' in error && error.code === 'ENOENT')) {
+                throw error
+              }
+            }
+          }
           const affectedModules = new Set<EnvironmentModuleNode>()
           const compilerHmrRoots = new Set<string>(
             compilerFrontend.dependentsOf(options.file)
@@ -1318,11 +1330,11 @@ export function createTamaguiPlugins({
             const loadedOptions = await ensureLoaded()
             if (!loadedOptions?.disable) {
               const invalidatedIds =
-                options.type === 'delete'
+                source === null
                   ? (await compilerFrontend.remove(options.file)).invalidatedIds
                   : await compilerFrontend.update({
                       id: options.file,
-                      source: source!,
+                      source,
                       root: config.root,
                       target: 'web',
                       environment: this.environment.name,
