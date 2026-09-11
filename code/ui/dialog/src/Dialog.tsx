@@ -467,7 +467,7 @@ const CONTENT_NAME = 'DialogContent'
 // this frame (not a skin wrapper) because the frame is the animated node — a
 // variant block on a wrapper around it breaks the native animation driver's
 // interpolation.
-const DialogContentFrame = styled(YStack, {
+export const DialogContentFrame = styled(YStack, {
   displayName: CONTENT_NAME,
   zIndex: 2,
   position: 'relative',

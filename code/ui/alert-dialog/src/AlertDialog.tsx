@@ -1,4 +1,4 @@
-import { createStyledHOC, createRefComponent } from '@tamagui/core'
+import { createStyledHOC } from '@tamagui/core'
 // forked from radix-ui
 // https://github.com/radix-ui/primitives/blob/main/packages/react/alert-dialog/src/AlertDialog.tsx
 
@@ -21,6 +21,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogContentFrame,
   DialogDescription,
   DialogOverlay,
   DialogOverlayFrame,
@@ -149,8 +150,17 @@ type AlertDialogContentProps = ScopedProps<
   Omit<DialogContentProps, 'onPointerDownOutside' | 'onInteractOutside'>
 >
 
-const AlertDialogContent = createRefComponent<TamaguiElement, AlertDialogContentProps>(
-  function AlertDialogContent(props, forwardedRef) {
+// a styled HOC, not a plain component wrapping DialogContent: `styled()` on a
+// plain component would land the animation props on this outer frame, which
+// renders above the presence boundary DialogContent creates, and an exiting
+// frame that never joins presence finishes its exit instantly
+const AlertDialogContentFrame = styled(DialogContentFrame, {
+  displayName: CONTENT_NAME,
+})
+
+const AlertDialogContent = createStyledHOC(
+  AlertDialogContentFrame,
+  function AlertDialogContent(props: AlertDialogContentProps, forwardedRef) {
     const { scope, children, ...contentProps } = props
     const dialogScope = getAlertDialogScope(scope)
     const contentRef = React.useRef<TamaguiElement>(null)
