@@ -124,7 +124,8 @@ a {
 
 article ul,
 article ol {
-  padding-inline-start: 24px;
+  margin-inline-start: 24px !important;
+  padding-inline-start: 16px !important;
 }
 
 article li {
@@ -139,7 +140,8 @@ article ul ul,
 article ul ol,
 article ol ul,
 article ol ol {
-  padding-inline-start: 20px;
+  margin-inline-start: 20px !important;
+  padding-inline-start: 16px !important;
   margin-top: 4px;
   margin-bottom: 4px;
 }
@@ -623,7 +625,9 @@ textarea {
 }
 
 /* collapse margins: notice followed by headings */
-:where(.no-opacity-fade + [data-heading]) {
+:where(.no-opacity-fade + [data-heading]),
+:where(:has(> .no-opacity-fade) + [data-heading]),
+:where(.t_sub_theme:has(.no-opacity-fade) + [data-heading]) {
   margin-top: var(--t-space-4);
 }
 

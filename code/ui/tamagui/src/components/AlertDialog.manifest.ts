@@ -2,7 +2,7 @@ import type { SkinManifest } from './registry-manifest'
 
 export const manifest = {
   description:
-    'v2-look AlertDialog: scrim background on the Overlay and background/border/padding/radius/elevation on the Content, over the unstyled @tamagui/ui AlertDialog behavior.',
+    'v2-look AlertDialog: scrim background on the Overlay and background/border/padding/radius/shadow on the Content, over the unstyled @tamagui/ui AlertDialog behavior.',
   categories: ['overlay'],
   tokens: ['background', 'border-color'],
   native: [

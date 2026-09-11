@@ -19,7 +19,14 @@ interface ToggleGroupSingleProps extends ToggleGroupImplSingleProps {
 interface ToggleGroupMultipleProps extends ToggleGroupImplMultipleProps {
     type: 'multiple';
 }
-type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps;
+interface ToggleGroupGeneralProps extends ToggleGroupImplProps {
+    type: 'single' | 'multiple';
+    value?: string | string[];
+    defaultValue?: string | string[];
+    onValueChange?(value: any): void;
+    disableDeactivation?: boolean;
+}
+type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps | ToggleGroupGeneralProps;
 declare const ToggleGroup: ((props: ScopedProps<ToggleGroupProps> & import("@tamagui/compose-refs").RefProp<TamaguiElement>) => React.ReactNode) & {
     displayName?: string;
     propTypes?: any;
@@ -75,7 +82,7 @@ interface ToggleGroupImplMultipleProps extends ToggleGroupImplProps {
     defaultValue?: string[];
     /** The callback that fires when the state of the toggle group changes. */
     onValueChange?(value: string[]): void;
-    disableDeactivation?: never;
+    disableDeactivation?: boolean;
 }
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>;
 declare const ToggleGroupFrame: React.FunctionComponent<Omit<import("@tamagui/web").StackNonStyleProps, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {

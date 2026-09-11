@@ -453,7 +453,7 @@ Remove the v2 builder exports and options `defaultComponentThemes`,
 `grandChildrenThemes`. Put hierarchy directly in the tree, semantic shade
 choices in scale objects, and exact one-theme overrides in `values`. Components
 no longer resolve uppercase name segments such as
-`light_Button` automatically. A component that needs elevation should create a
+`light_Button` automatically. A component that needs a raised surface should create a
 normal `level2` boundary in its own skin.
 
 Search configuration and application code together:
@@ -482,7 +482,7 @@ In monorepos, keep resolutions/overrides aligned:
 `Sheet.Frame` has been replaced by `Sheet.Container` and `Sheet.Background`.
 The flat-values codemod above rewrites every `Sheet.Frame` it can prove is
 Tamagui's: the element becomes `Sheet.Container`, and a `Sheet.Background`
-carrying the surface props (`bg`, `border*`, `shadow*`, `elevation`,
+carrying the surface props (`bg`, `border*`, `shadow*`,
 `disableHideBottomOverflow`) is inserted as its first child. A spread on the
 Frame and a `styled(Sheet.Frame, …)` target are rewritten too but reported
 for review, because the codemod cannot see which of those props are surface
@@ -515,7 +515,7 @@ Rules to verify:
 - `Sheet.Container` owns layout props like `padding`, `gap`, `height`,
   `maxHeight`, and flex props.
 - `Sheet.Background` owns visual surface props like `bg`, `borderRadius`,
-  `elevation`, `shadow*`, and decorative absolute layers.
+  `shadow*`, and decorative absolute layers.
 - `Sheet.Container` no longer clips with `overflow="hidden"`. Add clipping
   explicitly if your content relied on the old frame clipping.
 - `Sheet.Background` owns `disableHideBottomOverflow`.
@@ -738,7 +738,7 @@ The default v3 configs no longer export the legacy `$true` token key. The
 flat-values codemod writes `$true` on a style prop as `4`, the bare key the
 default config aliased it to, and reports the site with a `legacy-true-token`
 warning so you can confirm your config agrees. On the size-typed variant props
-`size`, `elevation`, and `iconSize` it writes the boolean instead, which
+`size` and `iconSize` it writes the boolean instead, which
 resolves to the component's default size.
 
 ```tsx
@@ -1363,8 +1363,7 @@ function Save() {
 `ThemeableStack` and `SizableStack` (and their `themeableVariants` /
 `themeableVariantStyles`) are removed from `@tamagui/stacks`. Their one good idea —
 composable chrome variants — moves into the copied layer as the `Surface` fixture
-and its `facets`. The base `YStack`/`XStack` `elevation` prop and `getElevation`
-are unchanged.
+and its `facets`.
 
 - Extending `ThemeableStack`: use `styled(YStack, { … })` and add the styles you
   actually used inline. The removed variants map to plain styles:
@@ -1376,7 +1375,7 @@ are unchanged.
   const Panel = styled(YStack, { borderWidth: 1, borderColor: 'border-color' })
   ```
 
-- `elevate` → the base `elevation` prop, or a shadow read from generics.
+- `elevate` → a shadow read from generics.
 - `bordered` → `borderWidth` + `borderColor: 'border-color'`.
 - `circular` → `borderRadius: 100_000` (+ equal width/height for a circle).
 
@@ -1478,7 +1477,7 @@ space free. `rgba(0,0,0,0.5)` is fine and `rgba(0, 0, 0, 0.5)` splits into
 garbage clauses.
 
 **Variants that look like style props.** The codemod converts style props and
-the size-typed variant props `size`, `elevation`, and `iconSize`, since v3 reads
+the size-typed variant props `size` and `iconSize`, since v3 reads
 those values as size-scale keys. On one element it rewrites `color="$color12"`
 to `color="color12"` and `size="$2"` to `size="2"`. It drops the sigil without
 renaming the ramp, so apply the hyphen table above afterwards. A custom variant

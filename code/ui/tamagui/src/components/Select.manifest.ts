@@ -2,7 +2,7 @@ import type { SkinManifest } from './registry-manifest'
 
 export const manifest = {
   description:
-    'v2-look Select: styled trigger/value/icon, viewport with elevation, items with highlight + check indicator, scroll buttons and separators, over the unstyled @tamagui/ui Select behavior. Adapts to a Sheet on native.',
+    'v2-look Select: styled trigger/value/icon, viewport with shadow, items with highlight + check indicator, scroll buttons and separators, over the unstyled @tamagui/ui Select behavior. Adapts to a Sheet on native.',
   categories: ['form', 'overlay'],
   tokens: [
     'background',

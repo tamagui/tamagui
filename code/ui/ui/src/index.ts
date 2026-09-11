@@ -2,7 +2,7 @@
 //
 // This package is the home for "everything unstyled": the same component set
 // `tamagui` exposes, but strictly behavior + structural styles (no theme colors,
-// typography, padding scales, radii, borders, or elevation). `tamagui` layers
+// typography, padding scales, radii, borders, or shadows). `tamagui` layers
 // the default v2-look skins on these primitives (styled default), and
 // `tamagui/unstyled` re-exports this package.
 //

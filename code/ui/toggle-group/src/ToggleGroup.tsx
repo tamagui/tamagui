@@ -128,7 +128,18 @@ interface ToggleGroupMultipleProps extends ToggleGroupImplMultipleProps {
   type: 'multiple'
 }
 
-type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps
+interface ToggleGroupGeneralProps extends ToggleGroupImplProps {
+  type: 'single' | 'multiple'
+  value?: string | string[]
+  defaultValue?: string | string[]
+  onValueChange?(value: any): void
+  disableDeactivation?: boolean
+}
+
+type ToggleGroupProps =
+  | ToggleGroupSingleProps
+  | ToggleGroupMultipleProps
+  | ToggleGroupGeneralProps
 
 const ToggleGroup = withStaticProperties(
   createRefComponent<TamaguiElement, ScopedProps<ToggleGroupProps>>(
@@ -235,7 +246,7 @@ interface ToggleGroupImplMultipleProps extends ToggleGroupImplProps {
   defaultValue?: string[]
   /** The callback that fires when the state of the toggle group changes. */
   onValueChange?(value: string[]): void
-  disableDeactivation?: never
+  disableDeactivation?: boolean
 }
 
 const ToggleGroupImplMultiple = createRefComponent<

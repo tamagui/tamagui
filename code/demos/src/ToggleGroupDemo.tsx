@@ -58,21 +58,14 @@ function ToggleGroupComponent(props: {
         {props.type === 'single' ? 'Single' : 'Multiple'}
       </Label>
 
-      {/* `type` discriminates the props union, so each variant is written out */}
-      {props.type === 'single' ? (
-        <ToggleGroup
-          type="single"
-          orientation={props.orientation}
-          id={id}
-          disableDeactivation
-        >
-          {items}
-        </ToggleGroup>
-      ) : (
-        <ToggleGroup type="multiple" orientation={props.orientation} id={id}>
-          {items}
-        </ToggleGroup>
-      )}
+      <ToggleGroup
+        orientation={props.orientation}
+        id={id}
+        type={props.type}
+        disableDeactivation={props.type === 'single'}
+      >
+        {items}
+      </ToggleGroup>
     </XStack>
   )
 }

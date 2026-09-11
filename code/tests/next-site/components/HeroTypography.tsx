@@ -125,9 +125,8 @@ export const HeroTypography = memo(() => {
 })
 
 const OverlayCard = () => {
-  // {/* TODO elevation not overriding? */}
   return (
-    <Card bw={1} bc="border-color" br="6" elevation="6" shadowRadius={60}>
+    <Card bw={1} bc="border-color" br="6" shadowColor="shadow-color" shadowRadius={60}>
       <YStack jc="center" p="6 sm:5" gap="5" maw="calc(min(90vw, 400px))">
         <Paragraph ta="left" size="8" fow="400" ls={-1}>
           Use, swap and share fonts with typed vertical rhythm.

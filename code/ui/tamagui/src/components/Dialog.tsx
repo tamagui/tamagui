@@ -1,6 +1,6 @@
 // styled Dialog = the unstyled @tamagui/ui Dialog behavior + the default v2-look
 // skin on its Overlay (scrim background) and Content (background, border,
-// padding, radius, elevation). The behavior frames keep only positioning +
+// padding, radius, shadow). The behavior frames keep only positioning +
 // pointer-event bookkeeping. Single skin definition; the shadcn registry item is
 // generated from this file.
 //

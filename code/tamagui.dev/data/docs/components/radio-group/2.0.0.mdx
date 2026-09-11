@@ -7,49 +7,13 @@ package: radio-group
 demoName: RadioGroup
 ---
 
-<YStack className="is-sticky" />
-
-<Tabs id="type" defaultValue="styled">
-<Tabs.List>
-  <TooltipSimple label="With Tamagui's default styles">
-    <Tabs.Tab value="styled">Styled</Tabs.Tab>
-  </TooltipSimple>
-  <TooltipSimple label="No default styles, easy to customize">
-    <Tabs.Tab value="unstyled">Unstyled</Tabs.Tab>
-  </TooltipSimple>
-  <TooltipSimple label="No dependency on Tamagui's core">
-    <Tabs.Tab value="headless" label="No styles and no dependency on Tamagui's styling">Headless</Tabs.Tab>
-  </TooltipSimple>
-</Tabs.List>
-
 <HeroContainer>
-  <Tabs.Content value="styled" justifyContent="center" alignItems="center" width="100%">
-    <RadioGroupDemo />
-  </Tabs.Content>
-  <Tabs.Content value="unstyled" justifyContent="center" alignItems="center" width="100%">
-    <RadioGroupDemo />
-  </Tabs.Content>
-  <Tabs.Content value="headless" justifyContent="center" alignItems="center" width="100%">
-    <RadioGroupHeadlessDemo />
-  </Tabs.Content>
+  <RadioGroupDemo />
 </HeroContainer>
 
-<Tabs.Content value="styled">
 ```tsx hero template=RadioGroup
 
 ```
-</Tabs.Content>
-<Tabs.Content value="unstyled">
-```tsx hero template=RadioGroup
-
-```
-
-</Tabs.Content>
-<Tabs.Content value="headless">
-```tsx hero template=RadioGroupHeadless
-
-```
-</Tabs.Content>
 
 <Highlights
   features={[
@@ -61,37 +25,13 @@ demoName: RadioGroup
 
 ## Installation
 
-<Tabs.Content value="styled">
 RadioGroup is already installed in `tamagui`, or you can install it independently:
 
 ```bash
 npm install @tamagui/radio-group
 ```
-
-</Tabs.Content>
-
-<Tabs.Content value="unstyled">
-RadioGroup is already installed in `tamagui`, or you can install it independently:
-
-```bash
-npm install @tamagui/radio-group
-```
-
-</Tabs.Content>
-
-<Tabs.Content value="headless">
-
-To use the headless radio group, import from the `@tamagui/radio-headless` package. This package has no dependency on `@tamagui/core` and provides hooks for building custom radio groups with any styling solution.
-
-```bash
-npm install @tamagui/radio-headless
-```
-
-</Tabs.Content>
 
 ## Usage
-
-<Tabs.Content value="styled">
 
 ```tsx
 import { RadioGroup } from 'tamagui'
@@ -108,48 +48,19 @@ export default () => (
 )
 ```
 
-</Tabs.Content>
+### Headless Usage
 
-<Tabs.Content value="unstyled">
+To use headless without `@tamagui/core`, install `@tamagui/radio-headless`:
 
-Use the `createRadioGroup` export to create a fully custom radio group that still uses the Tamagui styling system. You provide your own styled components and get back a fully functional radio group component.
-
-```tsx
-import { createRadioGroup, RadioGroupContext } from '@tamagui/radio-group'
-import { styled, View } from 'tamagui'
-
-const CustomFrame = styled(View, {
-  // your styles
-})
-
-const CustomItem = styled(View, {
-  context: RadioGroupContext,
-  // your styles
-})
-
-const CustomIndicator = styled(View, {
-  context: RadioGroupContext,
-  // your styles
-})
-
-export const CustomRadioGroup = createRadioGroup({
-  Frame: CustomFrame,
-  Item: CustomItem,
-  Indicator: CustomIndicator,
-})
+```bash
+npm install @tamagui/radio-headless
 ```
-
-</Tabs.Content>
-
-<Tabs.Content value="headless">
 
 The `@tamagui/radio-headless` package provides three hooks for building custom radio groups:
 
 - `useRadioGroup` - for the container/group
 - `useRadioGroupItem` - for individual radio items
 - `useRadioGroupItemIndicator` - for the indicator (checked state visual)
-
-### Basic Usage
 
 ```tsx
 import {
@@ -249,31 +160,11 @@ function App() {
 }
 ```
 
-</Tabs.Content>
-
 ## API Reference
 
 ### RadioGroup
 
-<Tabs.Content value="styled">
-
-RadioGroup extends View inheriting all the [Tamagui standard props](/docs/intro/props), plus:
-
-</Tabs.Content>
-<Tabs.Content value="unstyled">
-
-When using `createRadioGroup`, you provide styled components:
-
-- `Frame`: The root container component
-- `Item`: The radio item component
-- `Indicator`: The indicator component
-
-</Tabs.Content>
-<Tabs.Content value="headless">
-
-The `useRadioGroup` hook accepts these options:
-
-</Tabs.Content>
+RadioGroup extends View, inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[
@@ -326,8 +217,6 @@ The `useRadioGroup` hook accepts these options:
   ]}
 />
 
-<Tabs.Content value="styled">
-
 ### RadioGroup.Item
 
 <PropsTable
@@ -353,12 +242,6 @@ The `useRadioGroup` hook accepts these options:
       description: `ID used on the web.`,
     },
     {
-      name: 'scaleSize',
-      type: 'number',
-      default: '0.5',
-      description: `Scale factor for the radio item size. Tamagui size tokens map to button heights, so you typically want smaller radio buttons.`,
-    },
-    {
       name: 'unstyled',
       type: 'boolean',
       default: 'false',
@@ -369,7 +252,7 @@ The `useRadioGroup` hook accepts these options:
 
 ### RadioGroup.Indicator
 
-RadioGroup.Indicator appears only when the parent Item is checked. It extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props) adding:
+RadioGroup.Indicator appears only when the parent Item is checked. It extends [YStack](/ui/stacks), getting [Tamagui standard props](/docs/intro/props) adding:
 
 <PropsTable
   data={[
@@ -382,9 +265,7 @@ RadioGroup.Indicator appears only when the parent Item is checked. It extends [T
   ]}
 />
 
-</Tabs.Content>
-
-<Tabs.Content value="headless">
+## Headless Props
 
 ### useRadioGroup Return Value
 
@@ -444,7 +325,3 @@ const { checked, ...dataAttrs } = useRadioGroupItemIndicator({
 | `checked`       | `boolean`             | Whether the parent item is checked |
 | `data-state`    | `string`              | 'checked' or 'unchecked'           |
 | `data-disabled` | `string \| undefined` | Present when disabled              |
-
-</Tabs.Content>
-
-</Tabs>
