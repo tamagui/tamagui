@@ -38,7 +38,13 @@ export const ToastDemo = () => {
       <Toast.Viewport offset={16}>
         <Toast.List
           renderItem={({ toast: t, index }) => (
-            <Toast.Item key={t.id} toast={t} index={index} testID="toast-item">
+            <Toast.Item
+              key={t.id}
+              toast={t}
+              index={index}
+              testID="toast-item"
+              position="relative"
+            >
               <ToastContent toast={t} />
             </Toast.Item>
           )}
@@ -155,16 +161,22 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
           testID="toast-close-button"
           unstyled
           position="absolute"
-          top={8}
-          right={8}
+          top={4}
+          right={4}
           zIndex={1}
           p={0}
+          m={0}
           bg="transparent"
           borderWidth={0}
+          borderColor="transparent"
           width="auto"
           height="auto"
+          minW={0}
+          minH={0}
+          shadowColor="transparent"
+          cursor="pointer"
         >
-          <X size={22} />
+          <X size={28} color="color-10" />
         </Toast.Close>
       )}
     </>

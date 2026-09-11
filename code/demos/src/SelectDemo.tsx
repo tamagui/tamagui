@@ -49,7 +49,14 @@ export function SelectDemoContents(
       renderValue={getItemLabel}
     >
       {props?.trigger || (
-        <Select.Trigger width={220} borderRadius="4" backgroundColor="background">
+        <Select.Trigger
+          width={220}
+          minWidth={220}
+          maxWidth={220}
+          flexShrink={0}
+          borderRadius="4"
+          backgroundColor="background"
+        >
           <Select.Value placeholder="Something" />
           <Select.Icon>
             <ChevronDown />
@@ -96,7 +103,7 @@ export function SelectDemoContents(
           borderWidth={1}
           borderColor="border-color"
         >
-          <Select.Group>
+          <Select.Group width={220}>
             <Select.Label fontWeight="700">Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}
             {React.useMemo(

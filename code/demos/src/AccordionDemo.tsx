@@ -8,7 +8,7 @@ export function AccordionDemo() {
         <Accordion.Trigger
           flexDirection="row"
           justify="space-between"
-          py="2"
+          py="1"
           borderWidth={1}
           borderColor="border-color"
         >
@@ -16,7 +16,7 @@ export function AccordionDemo() {
             <>
               <Paragraph>1. Take a cold shower</Paragraph>
               <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>
-                <ChevronDown size="7" color="color" />
+                <ChevronDown size={28} color="color" />
               </Square>
             </>
           )}
@@ -41,7 +41,7 @@ export function AccordionDemo() {
         <Accordion.Trigger
           flexDirection="row"
           justify="space-between"
-          py="2"
+          py="1"
           borderWidth={1}
           borderTopWidth={0}
           borderColor="border-color"
@@ -50,7 +50,7 @@ export function AccordionDemo() {
             <>
               <Paragraph>2. Eat 4 eggs</Paragraph>
               <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>
-                <ChevronDown size="7" color="color" />
+                <ChevronDown size={28} color="color" />
               </Square>
             </>
           )}
