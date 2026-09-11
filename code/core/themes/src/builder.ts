@@ -73,15 +73,11 @@ export type ThemeScale<TokenName extends string = ColorTokenName> = Record<
   Shade | TokenName
 > & { 'shadow-color': ShadowName }
 
-// hover always steps paler and press always steps deeper, in both schemes: that is
-// what a lift and a push read as, regardless of scheme. the light ground therefore
-// sits one rung off pure white, because a ground pinned to white leaves hover
-// nowhere to go and forces it to darken, which reads as the surface receding.
 const light = {
-  background: 50,
-  'background-hover': 'white',
-  'background-press': 100,
-  'background-focus': 'white',
+  background: 'white',
+  'background-hover': 50,
+  'background-press': 'white',
+  'background-focus': 50,
   'border-color': 200,
   'border-color-hover': 300,
   'border-color-press': 200,
@@ -101,7 +97,7 @@ const dark = {
   ...light,
   background: 950,
   'background-hover': 900,
-  'background-press': 'black',
+  'background-press': 950,
   'background-focus': 900,
   'border-color': 800,
   'border-color-hover': 700,
@@ -117,7 +113,7 @@ const dark = {
 const boldLight = {
   background: 600,
   'background-hover': 500,
-  'background-press': 700,
+  'background-press': 600,
   'background-focus': 500,
   'border-color': 700,
   'border-color-hover': 600,
@@ -138,7 +134,7 @@ const boldDark = {
   ...boldLight,
   background: 500,
   'background-hover': 400,
-  'background-press': 600,
+  'background-press': 500,
   'background-focus': 400,
   'border-color': 600,
   'border-color-hover': 500,
@@ -150,7 +146,7 @@ const boldDark = {
 const tintLight = {
   background: 100,
   'background-hover': 50,
-  'background-press': 200,
+  'background-press': 100,
   'background-focus': 50,
   'border-color': 300,
   'border-color-hover': 400,
@@ -171,7 +167,7 @@ const tintDark = {
   ...tintLight,
   background: 900,
   'background-hover': 800,
-  'background-press': 950,
+  'background-press': 900,
   'background-focus': 800,
   'border-color': 700,
   'border-color-hover': 600,
@@ -204,73 +200,47 @@ export function raise<TokenName extends string>(
   ) as ThemeScale<TokenName>
 }
 
-// a level steps the surface AWAY from the page ground, so it stands out more:
-// deeper in light, paler in dark. one rung per level, because the neutral ramp is
-// monotonic now: a rung is worth about 5 points of perceptual lightness at the pale
-// end and 10-15 at the dark end, which reads in both. this deliberately does NOT
-// accelerate. it used to, purely to escape tailwind gray's squashed pale end, and
-// against a monotonic ramp that acceleration overshoots instead, jumping the first
-// dark level 25 points into mid-grey.
-const levelSteps = [0, 1, 2, 3] as const
-
-// tint grounds mid-ramp with its type only a few rungs away, so walking just the
-// background closes the contrast gap: light tint is already at 4.5:1 on its ground
-// and fails at every step past it. its levels walk the type along with the surface
-// and step one rung at a time, which caps tint at three real levels: a fourth lands
-// on 400, which drops under 4.5:1 against every type shade the ramp still has.
-const tintSteps = [0, 1, 2, 2] as const
-const tintType = { light: [700, 800, 900, 900], dark: [200, 100, 50, 50] } as const
-
-function tintLevel<TokenName extends string>(
-  scale: ThemeScale<TokenName>,
-  scheme: Scheme,
-  level: Level
-): ThemeScale<TokenName> {
-  const steps = scheme === 'light' ? tintSteps[level - 1] : -tintSteps[level - 1]
-  const color = tintType[scheme][level - 1]
-  return {
-    ...raise(scale, steps),
-    color,
-    'color-hover': color,
-    'color-press': color,
-    'color-focus': color,
-  }
-}
-
 export const scales = {
   normal: {
     light: {
       1: light,
-      2: raise(light, levelSteps[1]),
-      3: raise(light, levelSteps[2]),
-      4: raise(light, levelSteps[3]),
+      2: raise(light, 1),
+      3: raise(light, 2),
+      4: raise(light, 3),
     },
     dark: {
       1: dark,
-      2: raise(dark, -levelSteps[1]),
-      3: raise(dark, -levelSteps[2]),
-      4: raise(dark, -levelSteps[3]),
+      2: raise(dark, -1),
+      3: raise(dark, -2),
+      4: raise(dark, -3),
     },
   },
-  // brand is already the loudest surface in the system, so it does not nest: a
-  // level under it has nowhere louder to go. these stay flat so a stray nesting
-  // is a no-op rather than a wrong-direction shift.
   bold: {
-    light: { 1: boldLight, 2: boldLight, 3: boldLight, 4: boldLight },
-    dark: { 1: boldDark, 2: boldDark, 3: boldDark, 4: boldDark },
+    light: {
+      1: boldLight,
+      2: raise(boldLight, -1),
+      3: raise(boldLight, -2),
+      4: raise(boldLight, -3),
+    },
+    dark: {
+      1: boldDark,
+      2: raise(boldDark, 1),
+      3: raise(boldDark, 2),
+      4: raise(boldDark, 3),
+    },
   },
   tint: {
     light: {
       1: tintLight,
-      2: tintLevel(tintLight, 'light', 2),
-      3: tintLevel(tintLight, 'light', 3),
-      4: tintLevel(tintLight, 'light', 4),
+      2: raise(tintLight, -1),
+      3: raise(tintLight, 1),
+      4: raise(tintLight, 2),
     },
     dark: {
       1: tintDark,
-      2: tintLevel(tintDark, 'dark', 2),
-      3: tintLevel(tintDark, 'dark', 3),
-      4: tintLevel(tintDark, 'dark', 4),
+      2: raise(tintDark, 1),
+      3: raise(tintDark, -1),
+      4: raise(tintDark, -2),
     },
   },
 } as const
@@ -398,21 +368,19 @@ export function levels(max: Level = 4): LevelChildren {
 }
 
 export const tree = {
-  light: { scheme: 'light', palette: 'mauve' },
-  dark: { scheme: 'dark', palette: 'mauve' },
+  light: { scheme: 'light', palette: 'gray' },
+  dark: { scheme: 'dark', palette: 'gray' },
   children: {
     ...levels(),
-    accent: { palette: 'brand', treatment: 'tint', children: levels(3) },
-    // brand does not nest: it is already the loudest surface, so a level under it
-    // has nowhere louder to go and only walks it back toward the page.
-    brand: { palette: 'brand', treatment: 'bold' },
+    accent: { palette: 'brand', treatment: 'tint', children: levels() },
+    brand: { palette: 'brand', treatment: 'bold', children: levels() },
     inverse: ({ parent }: ThemeDefinitionContext) => ({
       scheme: parent.scheme === 'light' ? 'dark' : 'light',
       children: levels(),
     }),
-    red: { palette: 'red', treatment: 'tint', children: levels(3) },
-    yellow: { palette: 'yellow', treatment: 'tint', children: levels(3) },
-    green: { palette: 'green', treatment: 'tint', children: levels(3) },
+    red: { palette: 'red', treatment: 'tint', children: levels(2) },
+    yellow: { palette: 'yellow', treatment: 'tint', children: levels(2) },
+    green: { palette: 'green', treatment: 'tint', children: levels(2) },
   },
 } as const
 
