@@ -46,11 +46,16 @@ export type ResolvedSize = {
 *
 * - `true` (or nothing): the config's default named size
 * - a name in `config.sizes`: a recipe of token keys, never a height
-* - a token key like `4` or `$4`: v2's index into every scale at once
+* - a token key like `4` or `$4`: v2's spelling, indexing every scale at key 4
 *
 * A named size never sets a height. The control ends up line-height plus
 * padding tall, so the frame, its text and its icon agree by construction.
 * Icons default to the font size rounded up to the 4px grid (12, 16, 16, 20).
+*
+* A token key keeps v2's coupling, so `size="$11"` is space 11, radius 11 and
+* font 11 together. It takes `tokens.size[key]` as a minimum height rather than
+* the height, because that only describes a control under a v2-shaped size
+* scale; see the token branch.
 */
 export declare const resolveSize: (value: TokenSize | null | undefined, env?: SizeResolverEnv) => ResolvedSize;
 /**

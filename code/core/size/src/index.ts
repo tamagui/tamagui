@@ -89,14 +89,16 @@ const px = (value: unknown) => {
  *
  * - `true` (or nothing): the config's default named size
  * - a name in `config.sizes`: a recipe of token keys, never a height
- * - a token key like `4` or `$4`: v2's spelling, stepped onto the named ramp
+ * - a token key like `4` or `$4`: v2's spelling, indexing every scale at key 4
  *
  * A named size never sets a height. The control ends up line-height plus
  * padding tall, so the frame, its text and its icon agree by construction.
  * Icons default to the font size rounded up to the 4px grid (12, 16, 16, 20).
  *
- * Only a config that names no sizes at all indexes the scales directly, and
- * there is nothing better for it to do.
+ * A token key keeps v2's coupling, so `size="$11"` is space 11, radius 11 and
+ * font 11 together. It takes `tokens.size[key]` as a minimum height rather than
+ * the height, because that only describes a control under a v2-shaped size
+ * scale; see the token branch.
  */
 export const resolveSize = (
   value: TokenSize | null | undefined,
@@ -132,30 +134,6 @@ export const resolveSize = (
     key = '4'
   }
 
-  // v2 sized a control by indexing the size scale, because under v2 that scale
-  // WAS a control ramp: `size="$4"` meant a 44px button. v6's size scale is
-  // tailwind's spacing, where `4` is 16px and `5` is 20px, so indexing it hands
-  // back a 16px-tall control holding 20px of text: a button with no room above
-  // or below its own label, and no vertical padding to make any, because the
-  // token branch below sets none. `controlSizes`, deleted when named sizes
-  // replaced the control ramp, existed to stop exactly this.
-  //
-  // The named sizes ARE the control ramp now, so a numeric key lands on one of
-  // them, stepping out from the default the way `$4` was v2's default size.
-  const namedSizes = Object.keys(sizes ?? {}).filter((name) => name !== 'default')
-  const stepOntoRamp = (candidate: string) => {
-    if (namedSizes.length === 0) return candidate
-    if (sizes?.[candidate] != null) return candidate
-    if (!/^\d+([.-]\d+)?$/.test(candidate)) return candidate
-    // a config whose default is itself a token key gives no named anchor, so
-    // step out from the middle of the ramp rather than pinning to one end
-    const anchor = namedSizes.indexOf(String(sizes?.default))
-    const from = anchor === -1 ? Math.floor((namedSizes.length - 1) / 2) : anchor
-    const step = Math.round(Number.parseFloat(candidate.replace('-', '.'))) - 4
-    return namedSizes[Math.min(namedSizes.length - 1, Math.max(0, from + step))]
-  }
-
-  key = stepOntoRamp(key)
   let spec = key === 'default' ? undefined : sizes?.[key]
   // Try the authored key, then the configured default, then token 4. Reuse
   // one validity check and bound retries even when the default is invalid.
@@ -177,10 +155,7 @@ export const resolveSize = (
         }) and not a token key. Falling back to the default.`
       )
     }
-    // the configured default steps onto the ramp like any other key, but the
-    // terminal '4' does not: it is the last resort for a config whose named
-    // ramp is missing or broken, so it has to stay the raw token reading
-    key = attempt === 0 ? stepOntoRamp(sizes?.default || '4') : '4'
+    key = attempt === 0 ? sizes?.default || '4' : '4'
     spec = key === 'default' ? undefined : sizes?.[key]
   }
 
@@ -207,22 +182,42 @@ export const resolveSize = (
     }
   }
 
+  // v2 read the control's height straight off `tokens.size[key]`, because under
+  // v2 that scale WAS a control ramp: `size="$4"` meant a 44px button. v6's size
+  // scale is tailwind's spacing, where `4` is 16px, so reading a height off it
+  // hands back a 16px-tall control around 20px of text, with nothing to pad it
+  // out. That is the collapsed Button, and `controlSizes` used to prevent it.
+  //
+  // So the size token becomes a FLOOR rather than the height, and the control
+  // gets vertical padding like a named size does. Under a v2-shaped scale the
+  // floor is the taller of the two and nothing moves; under v6's the floor is
+  // inert and the control is line-height plus padding, same as a named size.
+  // Every other reading stays keyed to `key`, so v2's coupling of space, radius
+  // and font at one step is intact.
   const size = tokens.size[key]
   const font = fontIn?.size[key] != null ? fontIn : fonts?.body
   const fontSize = font?.size[key]
+  const lineHeight = font?.lineHeight?.[key]
   const sizePx = px(size)
+  // half the horizontal space, the ratio the named ramp already uses
+  const paddingVertical = Math.round(px(tokens.space[key]) / 2)
+  const fontPx = px(fontSize ?? size)
   return {
     name: key,
     fontSizeKey: key,
     frame: {
       paddingHorizontal: tokens.space[key],
+      paddingVertical,
       gap: Math.round(sizePx * 0.2),
       borderRadius: tokens.radius[key],
       minHeight: size,
     },
-    text: { fontSize: fontSize ?? sizePx, lineHeight: font?.lineHeight?.[key] },
-    icon: px(fontSize ?? sizePx),
-    controlHeight: sizePx,
+    text: { fontSize: fontSize ?? sizePx, lineHeight },
+    icon: fontPx,
+    controlHeight: Math.max(
+      sizePx,
+      (lineHeight ? px(lineHeight) : Math.round(fontPx * 1.5)) + paddingVertical * 2
+    ),
   }
 }
 

@@ -10,13 +10,13 @@ import {
 
 const env = {
   tokens: {
-    size: { 4: 16, 5: 20 },
-    space: { 1: 4, 2: 8, 3: 12, 4: 16, '1.5': 6 },
-    radius: { 4: 9, sm: 4, md: 6 },
+    size: { 3: 12, 4: 16, 5: 20, 6: 24 },
+    space: { 1: 4, 2: 8, 3: 12, 4: 16, 5: 20, 6: 24, '1.5': 6 },
+    radius: { 3: 6, 4: 9, 5: 12, 6: 16, sm: 4, md: 6 },
   },
   font: {
-    size: { 4: 15, xs: 12, sm: 14, base: 16 },
-    lineHeight: { 4: 23, xs: 16, sm: 20, base: 24 },
+    size: { 3: 13, 4: 15, 5: 18, 6: 20, xs: 12, sm: 14, base: 16 },
+    lineHeight: { 3: 20, 4: 23, 5: 26, 6: 28, xs: 16, sm: 20, base: 24 },
   },
   sizes: {
     default: 'md',
@@ -75,26 +75,38 @@ describe('resolveSize', () => {
     expect(resolveSize('lg', env).icon).toBe(24)
   })
 
-  test('a token key steps onto the named ramp, anchored at the default', () => {
-    // v2's `$4` was the default control size, so it lands on the default name
-    expect(resolveSize('$4', env)).toEqual(resolveSize('md', env))
-    expect(resolveSize('4', env)).toEqual(resolveSize('md', env))
-    expect(resolveSize('3', env)).toEqual(resolveSize('sm', env))
-    expect(resolveSize('5', env)).toEqual(resolveSize('lg', env))
-    // out past either end clamps rather than falling off the ramp
-    expect(resolveSize('1', env)).toEqual(resolveSize('sm', env))
-    expect(resolveSize('9', env)).toEqual(resolveSize('lg', env))
-    // fractional keys, in both spellings, round to a step
-    expect(resolveSize('4.5', env)).toEqual(resolveSize('lg', env))
-    expect(resolveSize('2-5', env)).toEqual(resolveSize('sm', env))
+  test('a token key indexes every scale at the same step', () => {
+    expect(resolveSize('$4', env)).toEqual({
+      name: '4',
+      fontSizeKey: '4',
+      frame: {
+        paddingHorizontal: 16,
+        // half the horizontal space, the ratio the named ramp uses
+        paddingVertical: 8,
+        gap: 3,
+        borderRadius: 9,
+        // a floor, not the height: only a v2-shaped size scale describes a
+        // control, and this one is tailwind spacing
+        minHeight: 16,
+      },
+      // the icon is the font size as is: v2 sized icons to the font, not a grid
+      text: { fontSize: 15, lineHeight: 23 },
+      icon: 15,
+      controlHeight: 39,
+    })
+    expect(resolveSize('4', env)).toEqual(resolveSize('$4', env))
+    // a config that names no sizes reads the scales the same way
+    expect(resolveSize('$4', { ...env, sizes: undefined })).toEqual(
+      resolveSize('$4', env)
+    )
   })
 
   test('a token-keyed control is never shorter than the text inside it', () => {
     // the regression this exists for: v6's size scale is tailwind spacing, so
     // reading a frame height off it gave `size="5"` a 20px-tall button holding
-    // 23px of text with no padding above or below. every key on the scale, not
+    // 26px of text with no padding above or below. every key on the scale, not
     // just the ones an app happens to pass today.
-    for (const key of ['1', '2', '3', '4', '5', '6', '1.5', '0-5']) {
+    for (const key of ['3', '4', '5', '6']) {
       const resolved = resolveSize(key, env)
       const lineHeight = resolved.text.lineHeight as number
       expect(resolved.frame.paddingVertical).toBeGreaterThan(0)
@@ -102,19 +114,20 @@ describe('resolveSize', () => {
     }
   })
 
-  test('a config naming no sizes still indexes the scales directly', () => {
-    // nothing better is available: with no named ramp there is no step to land
-    // on, so v2's reading of the size scale is all that is left
-    const withoutSizes = { ...env, sizes: undefined }
-    expect(resolveSize('$4', withoutSizes)).toEqual({
-      name: '4',
-      fontSizeKey: '4',
-      frame: { paddingHorizontal: 16, gap: 3, borderRadius: 9, minHeight: 16 },
-      // the icon is the font size as is: v2 sized icons to the font, not a grid
-      text: { fontSize: 15, lineHeight: 23 },
-      icon: 15,
-      controlHeight: 16,
-    })
+  test('a v2-shaped size scale still sets the control height it always did', () => {
+    // where `tokens.size` IS a control ramp the floor is the taller of the two,
+    // so `size="$4"` is the 44px button v2 shipped, padding and all
+    const v2 = {
+      tokens: {
+        size: { 4: 44 },
+        space: { 4: 18 },
+        radius: { 4: 9 },
+      },
+      font: { size: { 4: 16 }, lineHeight: { 4: 22 } },
+    } as unknown as SizeResolverEnv
+    const resolved = resolveSize('$4', v2)
+    expect(resolved.frame.minHeight).toBe(44)
+    expect(resolved.controlHeight).toBe(44)
   })
 
   test('a font missing the recipe key falls back to fonts.body', () => {
