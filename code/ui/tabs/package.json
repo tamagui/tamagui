@@ -39,6 +39,7 @@
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
     "@tamagui/core": "workspace:*",
+    "@tamagui/group": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/react-native-types": "workspace:*",
     "@tamagui/roving-focus": "workspace:*",

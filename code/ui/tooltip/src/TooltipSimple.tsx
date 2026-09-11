@@ -1,5 +1,5 @@
-import { createRefComponent, getVariableValue } from '@tamagui/core'
-import { getRadius, getSize, getSpace } from '@tamagui/get-token'
+import { createRefComponent } from '@tamagui/core'
+import { resolveSize } from '@tamagui/size'
 import type { YStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
 import * as React from 'react'
@@ -24,6 +24,10 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
       return children
     }
 
+    // v2 derived the padding from the size token's pixel height, which under
+    // v6's spacing-shaped scale worked out to zero vertical padding
+    const { frame } = resolveSize(tooltipProps.size ?? true)
+
     return (
       <Tooltip
         disableRTL
@@ -47,19 +51,14 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
         </Tooltip.Trigger>
 
         <Tooltip.Content
-          theme="Tooltip"
+          theme="brand"
           y="enter:-4px exit:-4px"
           scale="1 enter:0.96 exit:0.96"
           opacity="1 enter:0 exit:0"
           pointerEvents="none"
-          paddingHorizontal={getVariableValue(getSpace(tooltipProps.size ?? true))}
-          paddingVertical={Math.max(
-            0,
-            Math.round(
-              (getVariableValue(getSize(tooltipProps.size ?? true)) as number) * 0.36 - 9
-            )
-          )}
-          borderRadius={getVariableValue(getRadius(tooltipProps.size ?? true))}
+          paddingHorizontal={frame.paddingHorizontal}
+          paddingVertical={frame.paddingVertical}
+          borderRadius={frame.borderRadius}
           boxShadow="0 2px 4px shadow-color"
           transition={{
             preset: 'quicker',

@@ -153,18 +153,25 @@ export const XGroup = createGroup(false)
 /**
  * returns styles that zero out border radius on the connecting/interior sides
  * children keep their own border radius on the exterior sides
+ *
+ * the connecting border is dropped on every item but the first, so two bordered
+ * children sharing an edge draw one line between them instead of two
  */
 function getZeroedRadius(isFirst: boolean, isLast: boolean, vertical: boolean) {
   if (vertical) {
     // vertical: zero bottom radius of non-last items, zero top radius of non-first items
     return {
-      ...(isFirst ? null : { borderTopLeftRadius: 0, borderTopRightRadius: 0 }),
+      ...(isFirst
+        ? null
+        : { borderTopLeftRadius: 0, borderTopRightRadius: 0, borderTopWidth: 0 }),
       ...(isLast ? null : { borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }),
     }
   }
   // horizontal: zero right radius of non-last items, zero left radius of non-first items
   return {
-    ...(isFirst ? null : { borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }),
+    ...(isFirst
+      ? null
+      : { borderTopLeftRadius: 0, borderBottomLeftRadius: 0, borderLeftWidth: 0 }),
     ...(isLast ? null : { borderTopRightRadius: 0, borderBottomRightRadius: 0 }),
   }
 }

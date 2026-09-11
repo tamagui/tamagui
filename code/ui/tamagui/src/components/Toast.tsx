@@ -62,15 +62,12 @@ export const ToastDescription = styled(ToastBehavior.Description, {
   size: '2',
 })
 
+// flat on purpose: the glyph is the whole affordance, so it only brightens on
+// hover instead of carrying a chip of its own
 export const ToastClose = styled(ToastBehavior.Close, {
   displayName: 'ToastClose',
-  borderRadius: '10',
-  backgroundColor: 'background hover:color-3 press:color-4',
-  borderWidth: 1,
-  borderColor: 'border-color',
-  shadowColor: 'rgba(0, 0, 0, 0.08)',
-  shadowOffset: { width: 0, height: 1 },
-  shadowRadius: 3,
+  backgroundColor: 'transparent',
+  color: 'color-9 hover:color press:color',
 })
 
 export const ToastAction = styled(ToastBehavior.Action, {

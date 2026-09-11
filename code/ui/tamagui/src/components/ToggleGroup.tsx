@@ -13,25 +13,19 @@ import {
 import { ToggleGroup as UiToggleGroup } from '@tamagui/toggle-group'
 import type * as React from 'react'
 
-const activeAppearance = {
-  backgroundColor: 'background-press hover:background-press focus:background-press',
-} as const
-
 export const ToggleGroupItem = styled(UiToggleGroup.Item, {
   displayName: 'ToggleGroupItem',
+  // "on" swaps the item onto the brand theme rather than recoloring its
+  // background, so the fill, the border and the icon (icons read theme.color,
+  // they do not inherit CSS color) move together. Checkbox and Switch do the same.
+  activeTheme: 'brand',
   backgroundColor: 'background hover:background-hover press:background-press',
   borderColor: 'border-color hover:border-color-hover press:border-color-press',
   borderWidth: 1,
-  margin: -1,
   outlineColor: 'focus-visible:outline-color',
   outlineWidth: 'focus-visible:2px',
   outlineStyle: 'focus-visible:solid',
   zIndex: 'focus-visible:10',
-  variants: {
-    defaultActiveStyle: {
-      true: activeAppearance,
-    },
-  } as const,
 })
 
 // see Dialog.tsx: withStaticProperties assigns in place, so composing onto

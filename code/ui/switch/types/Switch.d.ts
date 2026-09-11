@@ -38,6 +38,11 @@ export declare const SwitchFrame: React.FunctionComponent<Omit<import("@tamagui/
 export declare function createSwitch(createProps: {
     Frame?: SwitchFrameComponent;
     Thumb?: SwitchThumbFrameComponent;
+    /**
+     * theme the whole control swaps onto while checked, so the track fill and the
+     * thumb move together. the `activeTheme` prop overrides it per instance.
+     */
+    activeTheme?: ThemeProps['name'];
     componentThemes?: {
         frame?: ThemeProps['name'];
         thumb?: ThemeProps['name'];
@@ -103,7 +108,7 @@ export declare function createSwitch(createProps: {
         active?: boolean | undefined;
         frameWidth?: number | undefined;
         size?: number | import("@tamagui/core").Size | undefined;
-    }>, "active" | "activeStyle" | "download" | "elevationAndroid" | "frameWidth" | "onLayout" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "rel" | "size" | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    }>, "active" | "activeStyle" | "download" | "frameWidth" | "onLayout" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "rel" | "size" | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         active?: boolean | undefined;
         frameWidth?: number | undefined;
         size?: number | import("@tamagui/core").Size | undefined;
@@ -178,7 +183,7 @@ export declare const Switch: React.FunctionComponent<Omit<import("@tamagui/core"
         active?: boolean | undefined;
         frameWidth?: number | undefined;
         size?: number | import("@tamagui/core").Size | undefined;
-    }>, "active" | "activeStyle" | "download" | "elevationAndroid" | "frameWidth" | "onLayout" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "rel" | "size" | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    }>, "active" | "activeStyle" | "download" | "frameWidth" | "onLayout" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "rel" | "size" | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         active?: boolean | undefined;
         frameWidth?: number | undefined;
         size?: number | import("@tamagui/core").Size | undefined;
@@ -196,7 +201,7 @@ export declare const SwitchThumb: import("@tamagui/core").TamaguiComponent<Omit<
     active?: boolean | undefined;
     frameWidth?: number | undefined;
     size?: number | import("@tamagui/core").Size | undefined;
-}>, "active" | "activeStyle" | "download" | "elevationAndroid" | "frameWidth" | "onLayout" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "rel" | "size" | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+}>, "active" | "activeStyle" | "download" | "frameWidth" | "onLayout" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "rel" | "size" | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     active?: boolean | undefined;
     frameWidth?: number | undefined;
     size?: number | import("@tamagui/core").Size | undefined;

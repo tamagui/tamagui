@@ -53,8 +53,8 @@ export const ToastCloseFrame = styled(XStack, {
   alignItems: 'center',
   justifyContent: 'center',
   cursor: 'pointer',
-  width: 18,
-  height: 18,
+  width: 24,
+  height: 24,
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -74,4 +74,8 @@ export const ToastActionFrame = styled(XStack, {
  * DefaultCloseIcon - dependency-free glyph (inherits color; the skin sets it).
  * -----------------------------------------------------------------------------------------------*/
 
-export const DefaultCloseIcon = () => <SizableText size="1">✕</SizableText>
+export const DefaultCloseIcon = () => (
+  <SizableText size="5" lineHeight="1">
+    ✕
+  </SizableText>
+)

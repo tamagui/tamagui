@@ -38,6 +38,11 @@ export const SwitchFrame = styled(View, {
 export function createSwitch(createProps: {
   Frame?: SwitchFrameComponent
   Thumb?: SwitchThumbFrameComponent
+  /**
+   * theme the whole control swaps onto while checked, so the track fill and the
+   * thumb move together. the `activeTheme` prop overrides it per instance.
+   */
+  activeTheme?: ThemeProps['name']
   componentThemes?: {
     frame?: ThemeProps['name']
     thumb?: ThemeProps['name']
@@ -156,7 +161,9 @@ export function createSwitch(createProps: {
       )
 
       const frameTheme =
-        (checked ? activeTheme : undefined) ?? theme ?? createProps.componentThemes?.frame
+        (checked ? (activeTheme ?? createProps.activeTheme) : undefined) ??
+        theme ??
+        createProps.componentThemes?.frame
 
       return (
         <>

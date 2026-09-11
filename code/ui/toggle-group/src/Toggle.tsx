@@ -81,7 +81,7 @@ export const Toggle = createRefComponent<TamaguiElement, ToggleProps>(
 
     return (
       <ToggleFrame
-        theme={activeTheme ?? null}
+        theme={active ? (activeTheme ?? null) : null}
         aria-pressed={active}
         data-state={active ? 'on' : 'off'}
         data-disabled={props.disabled ? '' : undefined}

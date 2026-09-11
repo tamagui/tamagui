@@ -1,6 +1,7 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { createStyledHOC, styled, View } from '@tamagui/core'
+import { Group, useGroupItem } from '@tamagui/group'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { RovingFocusGroup, type RovingFocusGroupProps } from '@tamagui/roving-focus'
 import { SizeContext, type TokenSize } from '@tamagui/size'
@@ -18,7 +19,10 @@ export const TabsFrame = styled(View, {
   context: SizeContext,
 })
 
-export const TabsListFrame = styled(View, {
+// the list is a Group so the tabs read as one connected control: every tab but
+// the first drops its connecting border and its interior corners, leaving the
+// row rounded only on the outside
+export const TabsListFrame = styled(Group, {
   displayName: 'TabsList',
   context: SizeContext,
   role: 'tablist',
@@ -134,7 +138,7 @@ export const TabsList = createStyledHOC(
         >
           <TabsListFrame
             {...headlessListProps}
-            flexDirection={context.orientation === 'vertical' ? 'column' : 'row'}
+            orientation={context.orientation}
             ref={forwardedRef}
             {...listProps}
           >
@@ -170,6 +174,9 @@ export const TabsTab = createStyledHOC(
     // interaction logic needs one boolean; a conditional flat value (clause
     // string or object) can't drive focus/activation, so only literal true counts
     const disabled = (disabledProp ?? listDisabled) === true
+    // the list is a Group, so this drops the connecting border and the interior
+    // corners on every tab but the first
+    const groupItemProps = useGroupItem({ disabled })
     const { isSelected, tabProps } = useTab({
       baseId: context.baseId,
       value,
@@ -268,6 +275,7 @@ export const TabsTab = createStyledHOC(
           {...tabA11yProps}
           theme={isSelected ? (activeTheme ?? null) : null}
           size={context.size}
+          {...groupItemProps}
           {...triggerProps}
           // after triggerProps so active styles beat base styles from styled() skins
           style={[triggerProps.style, isSelected && activeStyle]}

@@ -159,7 +159,7 @@ const CheckboxComponent = createStyledHOC(
         <CheckboxFrame
           render="button"
           ref={checkboxRef}
-          theme={activeTheme ?? null}
+          theme={isActive ? (activeTheme ?? null) : null}
           {...(isWeb && { type: 'button' })}
           checked={checked}
           {...(checkboxProps as CheckboxProps)}
