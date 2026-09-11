@@ -13,7 +13,6 @@ import {
   createRunnableDevEnvironment,
   defaultClientConditions,
   defaultClientMainFields,
-  isRunnableDevEnvironment,
   resolveConfig,
 } from 'vite'
 import type {
@@ -891,7 +890,11 @@ export function createTamaguiPlugins({
         )
         // configuration updates are serialized by the shared loader. the runner
         // must not also re-import its entries on Vite's full-reload event.
-        return createRunnableDevEnvironment(name, evaluationConfig, { hot: false })
+        const environment = createRunnableDevEnvironment(name, evaluationConfig, {
+          hot: false,
+        })
+        tamaguiLoader.setEnvironment(environment)
+        return environment
       },
       moduleRunnerTransform: true,
     },
@@ -993,13 +996,6 @@ export function createTamaguiPlugins({
 
     configureServer(_server) {
       server = _server
-      const evaluationEnvironment = server.environments[TAMAGUI_EVALUATION_ENVIRONMENT]
-      if (!isRunnableDevEnvironment(evaluationEnvironment)) {
-        throw new Error(
-          `The ${TAMAGUI_EVALUATION_ENVIRONMENT} Vite environment must support ModuleRunner evaluation`
-        )
-      }
-      tamaguiLoader.setEnvironment(evaluationEnvironment)
     },
 
     async buildEnd() {

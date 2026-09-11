@@ -35,7 +35,7 @@ describe('remix starter', () => {
   })
 
   it('builds for web', () => {
-    execSync('bun run build:web', { cwd: dir, stdio: 'ignore' })
+    execSync('bun run build:web', { cwd: dir })
     expect(fs.existsSync(path.join(dir, 'build'))).toBe(true)
   }, 120_000)
 })
