@@ -60,7 +60,6 @@
     "@tamagui/create-menu": "workspace:*",
     "@tamagui/dialog": "workspace:*",
     "@tamagui/element": "workspace:*",
-    "@tamagui/elements": "workspace:*",
     "@tamagui/field": "workspace:*",
     "@tamagui/focusable": "workspace:*",
     "@tamagui/font-size": "workspace:*",

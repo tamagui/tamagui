@@ -2824,20 +2824,6 @@
         "react-dom": "*",
       },
     },
-    "code/ui/elements": {
-      "name": "@tamagui/elements",
-      "version": "2.7.7",
-      "dependencies": {
-        "@tamagui/core": "workspace:*",
-      },
-      "devDependencies": {
-        "@tamagui/build": "workspace:*",
-        "react": "19.2.3",
-      },
-      "peerDependencies": {
-        "react": ">=19",
-      },
-    },
     "code/ui/field": {
       "name": "@tamagui/field",
       "version": "2.7.7",
@@ -3567,7 +3553,6 @@
         "@tamagui/create-menu": "workspace:*",
         "@tamagui/dialog": "workspace:*",
         "@tamagui/element": "workspace:*",
-        "@tamagui/elements": "workspace:*",
         "@tamagui/fake-react-native": "workspace:*",
         "@tamagui/field": "workspace:*",
         "@tamagui/focusable": "workspace:*",
@@ -3759,7 +3744,6 @@
         "@tamagui/create-menu": "workspace:*",
         "@tamagui/dialog": "workspace:*",
         "@tamagui/element": "workspace:*",
-        "@tamagui/elements": "workspace:*",
         "@tamagui/field": "workspace:*",
         "@tamagui/focusable": "workspace:*",
         "@tamagui/font-size": "workspace:*",
@@ -5631,8 +5615,6 @@
     "@tamagui/dot-dev": ["@tamagui/dot-dev@workspace:code/tamagui.dev"],
 
     "@tamagui/element": ["@tamagui/element@workspace:code/packages/element"],
-
-    "@tamagui/elements": ["@tamagui/elements@workspace:code/ui/elements"],
 
     "@tamagui/eslint-plugin": ["@tamagui/eslint-plugin@workspace:code/core/eslint-plugin"],
 

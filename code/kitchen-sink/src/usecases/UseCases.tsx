@@ -4,7 +4,6 @@ import '@tamagui/polyfill-dev'
 import {
   Button,
   H1,
-  Header,
   SizableText,
   Square,
   TamaguiProvider,
@@ -133,9 +132,9 @@ export const Sandbox = () => {
         >
           {/* <SelectDemo /> */}
 
-          <Header data-hello="world">
+          <YStack render="header" data-hello="world">
             <StyledSizableText>ok</StyledSizableText>
-          </Header>
+          </YStack>
 
           {/* <Button accessibilityRole="link">hi</Button> */}
 
