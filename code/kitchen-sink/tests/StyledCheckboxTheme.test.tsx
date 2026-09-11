@@ -7,7 +7,9 @@ test.beforeEach(async ({ page }) => {
 })
 
 const bg = (page: import('@playwright/test').Page, testid: string) =>
-  page.locator(`[data-testid="${testid}"]`).evaluate((el) => getComputedStyle(el).backgroundColor)
+  page
+    .locator(`[data-testid="${testid}"]`)
+    .evaluate((el) => getComputedStyle(el).backgroundColor)
 
 test(`theme passes through createStyledHOC`, async ({ page }) => {
   // green theme base background, v6 light_green `background` = #dcfce7
