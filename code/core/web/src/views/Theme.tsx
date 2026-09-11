@@ -129,15 +129,19 @@ export function getThemedChildren(
   const requiresExtraWrapper = isInverse || forceClassName
 
   // it only ever progresses from false => true => 'wrapped'
-  if (!state.hasEverThemed) {
+  const isFirstThemedRender = !state.hasEverThemed
+  if (isFirstThemedRender) {
     state.hasEverThemed = true
   }
   if (
     requiresExtraWrapper ||
     // if the theme is exactly dark or light, its likely to change between dark/light
-    // and that would require wrapping which would re-parent, so to avoid re-parenting do this
-    themeState.name === 'dark' ||
-    themeState.name === 'light'
+    // and that would require wrapping which would re-parent, so wrap up front. only
+    // on the first themed render though: escalating later is the re-parent we are
+    // trying to avoid, and it unmounts the entire subtree (see Switch, which swaps
+    // between an active theme and none)
+    (isFirstThemedRender &&
+      (themeState.name === 'dark' || themeState.name === 'light'))
   ) {
     state.hasEverThemed = 'wrapped'
   }

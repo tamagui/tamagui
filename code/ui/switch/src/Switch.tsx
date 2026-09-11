@@ -5,7 +5,6 @@ import {
   getVariableValue,
   isWeb,
   styled,
-  Theme,
   type ThemeProps,
   View,
   withStaticProperties,
@@ -43,10 +42,6 @@ export function createSwitch(createProps: {
    * thumb move together. the `activeTheme` prop overrides it per instance.
    */
   activeTheme?: ThemeProps['name']
-  componentThemes?: {
-    frame?: ThemeProps['name']
-    thumb?: ThemeProps['name']
-  }
 }) {
   const Frame = (createProps.Frame ?? SwitchFrame) as typeof SwitchFrame
   const Thumb = (createProps.Thumb ?? SwitchThumbFrame) as typeof SwitchThumbFrame
@@ -60,7 +55,7 @@ export function createSwitch(createProps: {
       props: Omit<GetProps<typeof Thumb>, keyof SwitchThumbProps> & SwitchThumbProps,
       forwardedRef
     ) {
-      const { size: sizeProp, activeStyle, theme, ...thumbProps } = props
+      const { size: sizeProp, activeStyle, ...thumbProps } = props
       const styledContext = SwitchStyledContext.useStyledContext()
       const { size: sizeContext, active, disabled, frameWidth = 0 } = styledContext
       const size = sizeProp ?? sizeContext ?? true
@@ -72,7 +67,7 @@ export function createSwitch(createProps: {
       const distance = frameWidth - thumbWidth
       const x = initialChecked ? (active ? 0 : -distance) : active ? distance : 0
 
-      const thumb = (
+      return (
         <Thumb
           ref={forwardedRef}
           size={size}
@@ -86,9 +81,6 @@ export function createSwitch(createProps: {
           {...(active && activeStyle)}
         />
       )
-
-      const themeName = theme ?? createProps.componentThemes?.thumb
-      return themeName ? <Theme name={themeName}>{thumb}</Theme> : thumb
     }
   )
 
@@ -103,7 +95,6 @@ export function createSwitch(createProps: {
         onCheckedChange,
         activeStyle,
         activeTheme,
-        theme,
         ...props
       } = _props
       const [checked, setChecked] = useControllableState({
@@ -143,28 +134,6 @@ export function createSwitch(createProps: {
         }
       }
 
-      const frame = (
-        <Frame
-          ref={switchRef}
-          render="button"
-          {...(isWeb && { type: 'button' })}
-          size={size}
-          {...props}
-          {...(switchProps as any)}
-          disabled={disabled}
-          {...(checked && activeStyle)}
-        >
-          <View alignSelf="stretch" flex={1} onLayout={handleLayout}>
-            {props.children}
-          </View>
-        </Frame>
-      )
-
-      const frameTheme =
-        (checked ? (activeTheme ?? createProps.activeTheme) : undefined) ??
-        theme ??
-        createProps.componentThemes?.frame
-
       return (
         <>
           <SwitchStyledContext.Provider
@@ -173,15 +142,29 @@ export function createSwitch(createProps: {
             disabled={disabled}
             frameWidth={frameWidth}
           >
-            {frameTheme ? <Theme name={frameTheme}>{frame}</Theme> : frame}
+            <Frame
+              ref={switchRef}
+              render="button"
+              // the track and the thumb swap onto one theme while checked, so
+              // the fill and the knob move together. the key stays present with
+              // a null value so toggling never re-parents the frame.
+              theme={checked ? (activeTheme ?? createProps.activeTheme ?? null) : null}
+              {...(isWeb && { type: 'button' })}
+              size={size}
+              {...props}
+              {...(switchProps as any)}
+              disabled={disabled}
+              {...(checked && activeStyle)}
+            >
+              <View alignSelf="stretch" flex={1} onLayout={handleLayout}>
+                {props.children}
+              </View>
+            </Frame>
           </SwitchStyledContext.Provider>
 
           {bubbleInput}
         </>
       )
-    },
-    {
-      disableTheme: true,
     }
   )
 
