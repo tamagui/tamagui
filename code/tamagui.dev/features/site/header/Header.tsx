@@ -232,7 +232,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         <XStack items="center" gap="2">
           <HeaderLinksPopover>
             <HeaderLink id="core" href="/docs/intro/introduction">
-              Style
+              Core
             </HeaderLink>
 
             <HeaderLink id="ui" href="/ui/intro">
@@ -763,7 +763,7 @@ const HeaderMenuMoreContents = () => {
       <XStack flex={1} flexBasis="auto" flexWrap="wrap" gap="2" width="100%">
         <Link asChild href="/docs/intro/introduction">
           <HeadAnchor grid half>
-            Style
+            Core
           </HeadAnchor>
         </Link>
 
