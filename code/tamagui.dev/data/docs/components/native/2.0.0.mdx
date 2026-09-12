@@ -1,13 +1,11 @@
 ---
 title: Native
-description: Optional native integrations and optimized runtime for better performance and UX
+description: Native integrations for portals, sheets, menus, toasts, and gradients
 name: native
 ---
 
-Tamagui components work great out of the box, but several offer optional native
-integrations for improved performance and platform-native UX. All native
-integrations are opt-in - components work without them, just with slightly
-different behavior.
+Enable platform integrations for Tamagui UI components with `@tamagui/native`.
+For native press handling and the style runtime, see [core Native](/docs/core/native).
 
 ## Setup
 
@@ -44,92 +42,31 @@ npm install react-native-teleport
 import '@tamagui/native/setup-teleport'
 ```
 
-See [Portal docs](/docs/components/portal) for full details.
+See [Portal docs](/ui/portal) for full details.
 
 ## Gesture Handler
 
-**Native gesture handling** - powers two features:
-
-1. **Press events** - `onPress` uses RNGH for more reliable press detection with
-   proper gesture coordination. Matches RN Pressable semantics where only the
-   innermost pressable fires (no double-firing with nested buttons).
-
-2. **Sheet gestures** - makes sheets feel smoother and not get confused with
-   scrollable content during drags.
-
-### Setup
+Enable native gesture coordination for Sheet dragging and scrolling:
 
 ```bash
 npm install react-native-gesture-handler
 ```
 
 ```tsx
-// App.tsx - before any Tamagui imports
-import '@tamagui/native/setup-gesture-handler'
+import { setupGestureHandler } from '@tamagui/native/setup-gesture-handler'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+
+setupGestureHandler({ pressEvents: false, sheet: true })
 
 export default function App() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>{/* Your app */}</GestureHandlerRootView>
+    <GestureHandlerRootView style={{ flex: 1 }}>{/* your app */}</GestureHandlerRootView>
   )
 }
 ```
 
-### Selective Features
-
-If you only want RNGH for specific features, use the configurable setup:
-
-```tsx
-import { setupGestureHandler } from '@tamagui/native/setup-gesture-handler'
-
-// only use RNGH for sheets, not press events
-setupGestureHandler({ pressEvents: false, sheet: true })
-
-// only use RNGH for press events, not sheets
-setupGestureHandler({ pressEvents: true, sheet: false })
-```
-
-### Press Event Behavior
-
-With RNGH enabled, `onPress` follows RN Pressable semantics:
-
-- **Nested pressables** - only the innermost fires (no event bubbling)
-- **Web parity** - `onPress` calls `stopPropagation()` automatically
-- **Use `onClick` on web** if you need standard DOM event bubbling
-
-This aligns to the React Native default behavior of Pressable.
-
-### PressBoundary
-
-If you need a non-Tamagui native wrapper to block a parent Tamagui pressable,
-use `PressBoundary` from `@tamagui/native/gesture-handler`.
-
-This is useful when mixing Tamagui pressables with React Native `Pressable`,
-custom native wrappers, or other components that don't use Tamagui's native
-press ownership automatically.
-
-```tsx
-import { PressBoundary } from '@tamagui/native/gesture-handler'
-import { Pressable } from 'react-native'
-
-export function AvatarLink() {
-  return (
-    <PressBoundary debugName="AvatarLink">
-      <Pressable onPress={() => {}}>
-        {/* your content */}
-      </Pressable>
-    </PressBoundary>
-  )
-}
-```
-
-`PressBoundary` only coordinates with Tamagui's native press ownership. It does
-not monkey-patch React Native bubbling semantics in general.
-
-Native `Menu.Trigger` and `ContextMenu.Trigger` already do this automatically,
-so you should not need extra wrappers or empty `onPress` handlers around them.
-
-See [Sheet docs](/docs/components/sheet) for full details.
+See [Sheet](/ui/sheet) for component usage. For native press events and
+`PressBoundary`, see [core Native](/docs/core/native#gesture-handler).
 
 ## Menu & ContextMenu
 
@@ -164,8 +101,8 @@ npm install zeego @react-native-menu/menu react-native-ios-context-menu react-na
 import '@tamagui/native/setup-zeego'
 ```
 
-See [Menu docs](/docs/components/menu) and
-[ContextMenu docs](/docs/components/context-menu) for full details.
+See [Menu docs](/ui/menu) and
+[ContextMenu docs](/ui/context-menu) for full details.
 
 ## Toast
 
@@ -192,7 +129,7 @@ Then use the `native` prop on ToastProvider:
 <Toast.Provider native>{/* your app */}</Toast.Provider>
 ```
 
-See [Toast docs](/docs/components/toast) for full details.
+See [Toast docs](/ui/toast) for full details.
 
 ## LinearGradient
 
@@ -209,52 +146,9 @@ npm install expo-linear-gradient
 import '@tamagui/native/setup-expo-linear-gradient'
 ```
 
-See [LinearGradient docs](/docs/components/linear-gradient) for full details.
+See [LinearGradient docs](/ui/linear-gradient) for full details.
 
 ## Optimized Native Runtime (Experimental)
 
-<Notice theme="yellow">
-  `@tamagui/native-registry` is experimental. It is designed for React Native 0.82+ applications using the New Architecture (Fabric).
-</Notice>
-
-`@tamagui/native-registry` provides zero-re-render style updates via Fabric ShadowTree commits. It links eligible Fabric native views directly to a lightweight C++ registry, applying theme changes and style updates directly in the native layer without triggering React component re-renders.
-
-### Setup
-
-Install the native module:
-
-```bash
-bun add @tamagui/native-registry react-native-nitro-modules
-```
-
-Because this relies on `react-native-nitro-modules`, adding it requires rebuilding your iOS and Android app binaries.
-
-### Enable the Fast Path
-
-Enable compiler output in `tamagui.build.ts`:
-
-```ts
-import type { TamaguiBuildOptions } from 'tamagui'
-
-export default {
-  config: './tamagui.config.ts',
-  components: ['tamagui'],
-  experimental: {
-    nativeFastPath: true,
-  },
-} satisfies TamaguiBuildOptions
-```
-
-Register the native style engine at app bootstrap before your themed application tree mounts:
-
-```ts
-import * as nativeRegistry from '@tamagui/native-registry'
-import { setNativeStyleEngine } from 'tamagui'
-
-if (nativeRegistry.isAvailable()) {
-  setNativeStyleEngine(nativeRegistry)
-}
-```
-
-When disabled or if the native module is unavailable on the current platform, components automatically fall back to standard React renders.
-
+The native style runtime is configured at the core level. See
+[core Native](/docs/core/native#optimized-native-runtime-experimental) for setup.

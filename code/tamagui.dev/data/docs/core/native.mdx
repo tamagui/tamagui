@@ -1,0 +1,134 @@
+---
+title: Native
+description: Native press handling and the optimized style runtime
+---
+
+Tamagui core renders native views on iOS and Android. Configure it with the same
+[provider](/docs/core/configuration), tokens, and themes you use on web.
+
+`@tamagui/native` supplies optional integrations. Import its setup modules at your
+app entry point before Tamagui imports, and install each integration's native
+dependency in the app.
+
+```bash
+npm install @tamagui/native
+```
+
+## Gesture Handler
+
+`onPress` can use React Native Gesture Handler to coordinate nested pressables.
+Only the innermost pressable fires, matching React Native Pressable semantics.
+
+### Setup
+
+```bash
+npm install react-native-gesture-handler
+```
+
+```tsx
+// app entry point, before any tamagui imports
+import '@tamagui/native/setup-gesture-handler'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+
+export default function App() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>{/* your app */}</GestureHandlerRootView>
+  )
+}
+```
+
+### Selective Features
+
+If you only want RNGH for specific features, use the configurable setup:
+
+```tsx
+import { setupGestureHandler } from '@tamagui/native/setup-gesture-handler'
+
+// only use RNGH for press events, not sheets
+setupGestureHandler({ pressEvents: true, sheet: false })
+```
+
+### Press Event Behavior
+
+With RNGH enabled, `onPress` follows RN Pressable semantics:
+
+- **Nested pressables** - only the innermost fires (no event bubbling)
+- **Web parity** - `onPress` calls `stopPropagation()` automatically
+- **Use `onClick` on web** if you need standard DOM event bubbling
+
+### PressBoundary
+
+If you need a non-Tamagui native wrapper to block a parent Tamagui pressable,
+use `PressBoundary` from `@tamagui/native/gesture-handler`.
+
+This is useful when mixing Tamagui pressables with React Native `Pressable`,
+custom native wrappers, or other components that don't use Tamagui's native
+press ownership automatically.
+
+```tsx
+import { PressBoundary } from '@tamagui/native/gesture-handler'
+import { Pressable } from 'react-native'
+
+export function AvatarLink() {
+  return (
+    <PressBoundary debugName="AvatarLink">
+      <Pressable onPress={() => {}}>
+        {/* your content */}
+      </Pressable>
+    </PressBoundary>
+  )
+}
+```
+
+`PressBoundary` only coordinates with Tamagui's native press ownership. It does
+not monkey-patch React Native bubbling semantics in general.
+
+Native `Menu.Trigger` and `ContextMenu.Trigger` already do this automatically,
+so you should not need extra wrappers or empty `onPress` handlers around them.
+
+## Optimized Native Runtime (Experimental)
+
+<Notice theme="yellow">
+  `@tamagui/native-registry` is experimental. It is designed for React Native 0.82+ applications using the New Architecture (Fabric).
+</Notice>
+
+`@tamagui/native-registry` provides zero-re-render style updates via Fabric ShadowTree commits. It links eligible Fabric native views directly to a lightweight C++ registry, applying theme changes and style updates directly in the native layer without triggering React component re-renders.
+
+### Setup
+
+Install the native module:
+
+```bash
+bun add @tamagui/native-registry react-native-nitro-modules
+```
+
+Because this relies on `react-native-nitro-modules`, adding it requires rebuilding your iOS and Android app binaries.
+
+### Enable the Fast Path
+
+Enable compiler output in `tamagui.build.ts`:
+
+```ts
+import type { TamaguiBuildOptions } from 'tamagui'
+
+export default {
+  config: './tamagui.config.ts',
+  components: ['tamagui'],
+  experimental: {
+    nativeFastPath: true,
+  },
+} satisfies TamaguiBuildOptions
+```
+
+Register the native style engine at app bootstrap before your themed application tree mounts:
+
+```ts
+import * as nativeRegistry from '@tamagui/native-registry'
+import { setNativeStyleEngine } from 'tamagui'
+
+if (nativeRegistry.isAvailable()) {
+  setNativeStyleEngine(nativeRegistry)
+}
+```
+
+When disabled or if the native module is unavailable on the current platform, components automatically fall back to standard React renders.

@@ -82,6 +82,11 @@ initializeVersionCache()
 export default createMiddleware(async ({ request, next }) => {
   const url = new URL(request.url)
 
+  if (/^\/(docs|unstyled|tailwind)\/guides\/cli$/.test(url.pathname)) {
+    url.pathname = url.pathname.replace('/guides/', '/core/')
+    return Response.redirect(url, 301)
+  }
+
   if (
     url.pathname === '/ui/roving-focus' ||
     url.pathname.startsWith('/ui/roving-focus/') ||

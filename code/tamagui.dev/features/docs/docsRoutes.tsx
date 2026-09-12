@@ -6,8 +6,8 @@ export const docsRoutes = [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
       { title: 'Set up with an agent', route: '/docs/intro/agents' },
-      { title: 'Native', route: '/ui/native' },
-      { title: 'CLI', route: '/docs/guides/cli' },
+      { title: 'Native', route: '/docs/core/native' },
+      { title: 'CLI', route: '/docs/core/cli' },
       {
         title: 'Releases',
         route: 'https://github.com/tamagui/tamagui/releases',
