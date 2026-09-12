@@ -14,7 +14,7 @@ export function HomeStyleToggle() {
       onValueChange={setMode}
       width="100%"
     >
-      <YStack gap="3">
+      <YStack gap="5">
         <YStack self="flex-start">
           <Tabs.List
             loop={false}
@@ -71,8 +71,19 @@ export function HomeStyleToggle() {
           </Tabs.List>
         </YStack>
 
-        {/* fixed height so switching modes doesn't resize the hero row */}
-        <Tabs.Content value={mode} forceMount height={370}>
+        {/* fixed height so switching modes doesn't resize the hero row. sized to
+            the taller of the two samples (tamagui, 378) plus the padding and
+            border, since the box is border-box: at 370 the code ran past the
+            bottom edge, which the border made visible */}
+        <Tabs.Content
+          value={mode}
+          forceMount
+          height={406}
+          p="3"
+          rounded="4"
+          borderWidth={0.5}
+          borderColor="color-3"
+        >
           <Text
             render="pre"
             margin={0}
