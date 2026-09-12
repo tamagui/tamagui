@@ -1,6 +1,6 @@
 import type { Href } from 'one'
 import type { ReactNode } from 'react'
-import { Paragraph, ScrollView, styled, Text, useMedia, XStack, YStack } from 'tamagui'
+import { Paragraph, ScrollView, styled, Text, XStack, YStack } from 'tamagui'
 import { Link } from '~/components/Link'
 
 const TableFrame = styled(YStack, {
@@ -111,31 +111,57 @@ function parseCell(content: CellContent): ReactNode {
 }
 
 export function SimpleTable({
+  columnWidths,
   headers,
+  highlightCells = [],
+  minWidth = 760,
+  numericColumns = [],
   rows,
 }: {
+  columnWidths?: (number | `${number}%`)[]
   headers: CellContent[]
+  highlightCells?: [number, number][]
+  minWidth?: number
+  numericColumns?: number[]
   rows: CellContent[][]
 }) {
   const colCount = headers.length
   const colWidth = `${100 / colCount}%` as `${number}%`
-  const media = useMedia()
-  const isMobile = media.sm
+  const highlighted = new Set(highlightCells.map(([row, column]) => `${row}:${column}`))
+  const numeric = new Set(numericColumns)
 
   const table = (
-    <TableFrame {...(isMobile && { minWidth: 760 })}>
-      <TableRow>
+    <TableFrame role="table" width="100%" minWidth={minWidth}>
+      <TableRow role="row">
         {headers.map((header, i) => (
-          <TableCellContainer key={i} head width={colWidth}>
-            <TableCellText head>{header}</TableCellText>
+          <TableCellContainer
+            key={i}
+            role="columnheader"
+            head
+            width={columnWidths?.[i] ?? colWidth}
+          >
+            <TableCellText head width="100%" text={numeric.has(i) ? 'right' : 'left'}>
+              {header}
+            </TableCellText>
           </TableCellContainer>
         ))}
       </TableRow>
       {rows.map((row, i) => (
-        <TableRow key={i} last={i === rows.length - 1}>
+        <TableRow key={i} role="row" last={i === rows.length - 1}>
           {row.map((cell, j) => (
-            <TableCellContainer key={j} width={colWidth}>
-              <TableCellText>{parseCell(cell)}</TableCellText>
+            <TableCellContainer
+              key={j}
+              role="cell"
+              width={columnWidths?.[j] ?? colWidth}
+              bg={highlighted.has(`${i}:${j}`) ? 'green-2' : undefined}
+            >
+              <TableCellText
+                width="100%"
+                text={numeric.has(j) ? 'right' : 'left'}
+                fontVariant={numeric.has(j) ? ['tabular-nums'] : undefined}
+              >
+                {parseCell(cell)}
+              </TableCellText>
             </TableCellContainer>
           ))}
         </TableRow>
@@ -143,9 +169,9 @@ export function SimpleTable({
     </TableFrame>
   )
 
-  if (isMobile) {
-    return <ScrollView horizontal>{table}</ScrollView>
-  }
-
-  return table
+  return (
+    <ScrollView horizontal width="100%">
+      {table}
+    </ScrollView>
+  )
 }

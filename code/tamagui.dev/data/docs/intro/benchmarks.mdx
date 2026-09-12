@@ -3,132 +3,190 @@ title: Benchmarks
 description: Reproducible web and native performance comparisons
 ---
 
-Compiled Tamagui Tailwind mounted faster than NativeWind and Uniwind in every
-measured web scenario. Tailwind CSS was faster than Tamagui in most web cells.
-On the native class fixture, Uniwind was faster than NativeWind in every
-measured cell. The native Tamagui fixtures differ, so this run cannot support a
-Tamagui versus NativeWind or Uniwind ranking.
+Uniwind was fastest in all 15 native cells. Tamagui Tailwind was second in all
+15. On web, Tailwind CSS was fastest in 10 cells, Tamagui Tailwind in three, and
+inline React in two.
 
-These results were recorded on September 1, 2026 HST. They measure one set of
-fixtures on one machine. They are useful for finding costs in those fixtures,
-not for ranking every application.
+Green cells mark the lowest mean in each row. All values are mean milliseconds.
+Lower is faster.
 
 ## Web results
 
 The web fixture renders 200 items, or 60 in the heavy case. Mount starts with an
-empty root. Update changes the fixture state without replacing the root.
-Remount removes and recreates the tree. Timing starts before the React state
-change and ends in `useLayoutEffect`.
+empty root. Update changes fixture state without replacing the root. Remount
+replaces the tree. Timing starts before the React state change and ends in
+`useLayoutEffect`.
 
-Each production build ran in Chromium 151.0.7922.34 on an Apple M5 Pro with 18
-logical CPUs and 64 GiB of memory. The runner used Bun 1.3.14 on Darwin 25.5.0.
-Two warmup rounds preceded 10 retained rounds. Seed `73129` reshuffled the
-framework and scenario order. A behavior gate passed all 50 framework and
-scenario cases before timing.
+Each production build ran in Chromium `151.0.7922.34` on an Apple M5 Pro with 18
+logical CPUs and 64 GiB of memory. The runner used Bun `1.3.14` on Darwin
+`25.5.0`. Two warmup rounds preceded 10 retained rounds. Seed `73129` shuffled
+every framework and scenario round. All 50 behavior checks passed before timing.
 
 Simple, rich, group, and heavy use Tamagui `3.0.0-beta.901.1`. Animated uses
-`3.0.0-beta.917.1`, which flattened all 14 compiler candidates with zero
-bailouts. The other pinned versions are Tailwind CSS `4.3.0`, NativeWind
+Tamagui `3.0.0-beta.917.1`. The animated compiler flattened all 14 candidates
+with zero bailouts. The other versions are Tailwind CSS `4.3.0`, NativeWind
 `5.0.0-preview.4`, React Native Web `0.21.2`, Uniwind `1.11.0`, React `19.2.3`,
 and React DOM `19.2.3`.
 
-All values are mean milliseconds. Lower is faster.
+<Wide>
+  <SimpleTable
+    headers={[
+      'Scenario',
+      'Operation',
+      'Tamagui Tailwind',
+      'Tailwind CSS',
+      'Inline React',
+      'NativeWind v5',
+      'Uniwind',
+    ]}
+    columnWidths={['10%', '10%', '22%', '15%', '15%', '14%', '14%']}
+    numericColumns={[2, 3, 4, 5, 6]}
+    minWidth={960}
+    highlightCells={[
+      [0, 3],
+      [1, 4],
+      [2, 3],
+      [3, 3],
+      [4, 3],
+      [5, 3],
+      [6, 2],
+      [7, 4],
+      [8, 2],
+      [9, 3],
+      [10, 2],
+      [11, 3],
+      [12, 3],
+      [13, 3],
+      [14, 3],
+    ]}
+    rows={[
+      ['Simple', 'Mount', '0.45', '**0.35**', '0.53', '1.60', '1.71'],
+      ['Simple', 'Update', '0.96', '0.98', '**0.90**', '2.43', '2.35'],
+      ['Simple', 'Remount', '0.55', '**0.44**', '0.63', '1.72', '1.80'],
+      ['Rich', 'Mount', '0.57', '**0.33**', '0.90', '1.73', '1.64'],
+      ['Rich', 'Update', '1.14', '**1.06**', '1.07', '2.39', '2.59'],
+      ['Rich', 'Remount', '0.67', '**0.43**', '0.98', '1.82', '2.11'],
+      ['Group', 'Mount', '**0.71**', '0.80', '1.38', '4.21', '5.24'],
+      ['Group', 'Update', '2.23', '2.53', '**2.18**', '6.00', '6.92'],
+      ['Group', 'Remount', '**0.92**', '1.10', '1.83', '5.75', '6.10'],
+      ['Heavy', 'Mount', '0.72', '**0.63**', '1.01', '2.95', '3.11'],
+      ['Heavy', 'Update', '**1.67**', '1.80', '1.70', '4.52', '4.42'],
+      ['Heavy', 'Remount', '1.06', '**0.93**', '1.34', '3.59', '4.00'],
+      ['Animated', 'Mount', '0.42', '**0.31**', '0.57', '1.21', '1.07'],
+      ['Animated', 'Update', '1.91', '**1.14**', '1.25', '1.96', '1.81'],
+      ['Animated', 'Remount', '2.01', '**1.98**', '2.35', '2.81', '2.95'],
+    ]}
+  />
+</Wide>
 
-| Scenario | Operation | Tamagui Tailwind compiled | Tailwind CSS | Inline React | NativeWind v5 | Uniwind |
-| -------- | --------- | ------------------------: | -----------: | -----------: | ------------: | ------: |
-| Simple   | Mount     |                      0.45 |         0.35 |         0.53 |          1.60 |    1.71 |
-| Simple   | Update    |                      0.96 |         0.98 |         0.90 |          2.43 |    2.35 |
-| Simple   | Remount   |                      0.55 |         0.44 |         0.63 |          1.72 |    1.80 |
-| Rich     | Mount     |                      0.57 |         0.33 |         0.90 |          1.73 |    1.64 |
-| Rich     | Update    |                      1.14 |         1.06 |         1.07 |          2.39 |    2.59 |
-| Rich     | Remount   |                      0.67 |         0.43 |         0.98 |          1.82 |    2.11 |
-| Group    | Mount     |                      0.71 |         0.80 |         1.38 |          4.21 |    5.24 |
-| Group    | Update    |                      2.23 |         2.53 |         2.18 |          6.00 |    6.92 |
-| Group    | Remount   |                      0.92 |         1.10 |         1.83 |          5.75 |    6.10 |
-| Heavy    | Mount     |                      0.72 |         0.63 |         1.01 |          2.95 |    3.11 |
-| Heavy    | Update    |                      1.67 |         1.80 |         1.70 |          4.52 |    4.42 |
-| Heavy    | Remount   |                      1.06 |         0.93 |         1.34 |          3.59 |    4.00 |
-| Animated | Mount     |                      0.42 |         0.31 |         0.57 |          1.21 |    1.07 |
-| Animated | Update    |                      1.91 |         1.14 |         1.25 |          1.96 |    1.81 |
-| Animated | Remount   |                      2.01 |         1.98 |         2.35 |          2.81 |    2.95 |
+Tamagui Tailwind mounted faster than NativeWind and Uniwind in all five web
+scenarios. The paired 95% confidence intervals favored Tamagui in each of those
+10 comparisons. Tailwind CSS had lower means than Tamagui in 10 of 15 cells.
+Inline React had the lowest simple and group update means.
 
-Tamagui Tailwind had lower mount means than NativeWind and Uniwind in all five
-scenarios. The paired 95% confidence intervals were below zero for each of
-those 10 comparisons. In the animated fixture, Tamagui also had lower remount
-means than both. Its update difference from NativeWind and Uniwind was not
-resolved by the paired intervals.
-
-Tailwind CSS had lower means than Tamagui Tailwind for 10 of the 15 cells.
-Inline React was lower for simple, rich, group, and animated updates.
-Uniwind was lower than Tamagui Tailwind for animated update. The group mount
-and remount means favored Tamagui over Tailwind CSS, while their paired
-intervals did not resolve a difference.
-
-This is the utility-syntax comparison, so the Tamagui arm uses
-`@tamagui/tailwind`. It does not measure the broader component APIs.
+The Tamagui arm uses `@tamagui/tailwind`. This table does not measure Tamagui's
+component APIs.
 
 ## Native results
 
-The native campaign used standalone Release apps with embedded production
-bundles. It ran on an iOS 26.4 simulator hosted by the same Apple M5 Pro. Two
-warmup rounds preceded 12 retained rounds, with the same seed and a machine-load
-gate. All apps used Expo `57.0.15`, React `19.2.3`, and React Native `0.86.2`.
-The shared class arms used Tailwind CSS `4.3.0`.
+All three Release apps render the same `native-class-bench.tsx` fixture. They use
+the same class strings, component tree, item counts, state changes, and timing
+boundary. Simple, themed, rich, and group render 200 items. Heavy renders 60
+three-component groups.
 
-NativeWind and Uniwind share a byte-identical class fixture and passed the same
-20 by 20 layout gate. NativeWind also used `react-native-css` `3.0.7`,
-React Native Reanimated `4.5.1`, and React Native Worklets `0.10.1`. All values
-are mean milliseconds.
+The fixture uses explicit point dimensions. An earlier smoke run found that
+`w-5` resolved to 52 points under the benchmark's Tamagui config and 20 points
+in the other arms. That fixture was rejected. Fixture version 2 passed an
+independent 20 by 20 layout check in all three apps before timing.
 
-| Scenario | Library       |  Mount | Update | Remount |
-| -------- | ------------- | -----: | -----: | ------: |
-| Simple   | NativeWind v5 |  93.27 |  51.20 |  101.66 |
-| Simple   | Uniwind       |   3.05 |   2.81 |    3.56 |
-| Themed   | NativeWind v5 |  49.27 |  27.45 |   40.47 |
-| Themed   | Uniwind       |   3.36 |   2.87 |    3.32 |
-| Rich     | NativeWind v5 | 159.10 |  67.43 |  143.32 |
-| Rich     | Uniwind       |   3.55 |   3.03 |    3.87 |
-| Group    | NativeWind v5 | 344.18 | 126.82 |  259.79 |
-| Group    | Uniwind       |  11.95 |   8.36 |   12.42 |
-| Heavy    | NativeWind v5 | 141.29 |  86.27 |  165.18 |
-| Heavy    | Uniwind       |   6.63 |   3.94 |    6.88 |
+The campaign used Tamagui Tailwind `3.0.0-beta.917.1`, NativeWind
+`5.0.0-preview.4`, and Uniwind `1.11.0`. NativeWind also used
+`react-native-css` `3.0.7`, Reanimated `4.5.1`, and Worklets `0.10.1`. Every app
+used Expo `57.0.15`, React `19.2.3`, and React Native `0.86.2`.
 
-Uniwind had lower means in every native cell. NativeWind's confidence intervals
-were wide, so the table should not be read as a precise estimate of its typical
-cost.
+The apps ran on an iOS `26.4` simulator on an Apple M5 Pro with 18 logical CPUs
+and 64 GiB of memory. The runner used Bun `1.4.0`, Node `26.3.0`, and
+XcodeBuildMCP `2.3.0` on Darwin `25.5.0`. It waited until three host samples were
+`71.8%`, `63.4%`, and `74.1%` idle. Two warmup rounds preceded 12 retained
+rounds. Seed `73129` shuffled every round.
 
-The Tamagui runtime and compiled native arms use different fixture families.
-They verify Tamagui's runtime and compiler paths, but they are not comparable to
-the class fixture above. A valid native Tamagui versus NativeWind and Uniwind
-comparison still needs one byte-identical fixture and one measurement boundary
-for all three libraries.
+<Wide>
+  <SimpleTable
+    headers={['Scenario', 'Operation', 'Tamagui Tailwind', 'NativeWind v5', 'Uniwind']}
+    columnWidths={['16%', '16%', '24%', '22%', '22%']}
+    numericColumns={[2, 3, 4]}
+    minWidth={960}
+    highlightCells={[
+      [0, 4],
+      [1, 4],
+      [2, 4],
+      [3, 4],
+      [4, 4],
+      [5, 4],
+      [6, 4],
+      [7, 4],
+      [8, 4],
+      [9, 4],
+      [10, 4],
+      [11, 4],
+      [12, 4],
+      [13, 4],
+      [14, 4],
+    ]}
+    rows={[
+      ['Simple', 'Mount', '19.18', '37.41', '**4.13**'],
+      ['Simple', 'Update', '15.00', '27.59', '**3.22**'],
+      ['Simple', 'Remount', '18.23', '71.99', '**4.03**'],
+      ['Themed', 'Mount', '17.91', '53.78', '**3.55**'],
+      ['Themed', 'Update', '14.54', '32.98', '**3.57**'],
+      ['Themed', 'Remount', '18.10', '48.37', '**3.87**'],
+      ['Rich', 'Mount', '39.44', '201.42', '**4.73**'],
+      ['Rich', 'Update', '31.41', '108.29', '**4.11**'],
+      ['Rich', 'Remount', '39.47', '199.20', '**4.83**'],
+      ['Group', 'Mount', '68.48', '516.28', '**15.10**'],
+      ['Group', 'Update', '37.35', '196.06', '**11.24**'],
+      ['Group', 'Remount', '73.19', '396.69', '**16.60**'],
+      ['Heavy', 'Mount', '38.73', '292.36', '**8.16**'],
+      ['Heavy', 'Update', '29.00', '68.76', '**5.02**'],
+      ['Heavy', 'Remount', '39.99', '318.57', '**8.23**'],
+    ]}
+  />
+</Wide>
+
+Uniwind had the lowest mean in every native cell. Its paired 95% confidence
+intervals also favored it over Tamagui in all 15 cells. Tamagui had lower means
+than NativeWind in all 15 cells. Several Tamagui and NativeWind paired intervals
+overlapped zero because NativeWind's observations varied widely.
 
 ## Source record
 
 The cross-framework harness began in `code/comparisons`. It was extracted from
 this monorepo in [commit `300a4db8de`](https://github.com/tamagui/tamagui/commit/300a4db8def094229793e2c416b1a008fc5d20a5)
-so NativeWind does not enter the main workspace dependency graph. The monorepo
-still contains its conformance harness, runtime microbenchmarks, compiler graph
-benchmark, bundle checks, and Tamagui browser fixture.
+so NativeWind does not enter the main workspace dependency graph.
 
-The source values above come from committed result files in the extracted
-comparison repository. The full web receipt is commit `8b45f79809`, the
-animated receipt is `9896f9c488`, and the native receipt is `325483b1b9`. The
-current summary is commit `bd0c96e`. That repository has no public remote yet,
-so the raw receipts cannot currently be linked from this page. The same web
-table is retained in the [Tamagui Tailwind post](/blog/tailwind-mode).
+The web values come from committed receipts `8b45f79809` and `9896f9c488`. The
+native values come from fixture source commit `84fc84bb5d` and receipt commit
+`352925a2ac`. The native receipt contains all 180
+retained observations, 30 warmups, confidence intervals, package versions,
+fixture hashes, bundle hashes, build identities, and behavior signatures. The
+comparison repository does not have a public remote yet. The web table is also
+retained in the [Tamagui Tailwind post](/blog/tailwind-mode).
+
+The monorepo still contains Tamagui's conformance harness, runtime
+microbenchmarks, compiler graph benchmark, bundle checks, and browser fixture.
 
 ## What this does not measure
 
-- The web run covers production rendering after the page is loaded. It does not
-  measure server rendering, hydration, interaction latency, or network cost.
-- The native run uses one simulator. It does not measure physical-device
-  startup, memory, GPU work, energy use, or Android.
-- Compiler acceptance and correct pixels are separate questions. The behavior
-  gates cover these benchmark fixtures. They do not prove visual equivalence
-  for every utility.
-- Small timing differences can move with hardware, browser, operating system,
-  and application shape. Direct claims above use the paired receipts.
-- Bundle size and build time are tracked by the harness but omitted here. They
-  need their own comparison because each tool ships a different amount of
-  runtime and compiler code.
+- The web run covers production rendering after load. It does not measure server
+  rendering, hydration, interaction latency, or network cost.
+- The native run uses one simulator. It does not measure a physical device,
+  Android, startup, memory, GPU work, or energy use.
+- The timers end in `useLayoutEffect`. They include React reconciliation and the
+  synchronous native commit. They do not include the next fully drawn frame.
+- The behavior gate checks this fixture. It does not prove support or visual
+  equivalence for every utility.
+- Compiler acceptance and rendered pixels are separate questions.
+- Small differences can move with hardware, operating system, library version,
+  and application shape.
+- Bundle size and build time are tracked separately. Each library ships a
+  different mix of runtime and build tooling.
