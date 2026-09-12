@@ -9,6 +9,8 @@ export const TakeoutButton = (props: ButtonProps) => {
       boxShadow="0 1px 3px rgba(0, 0, 0, 0.04)"
       size="3"
       rounded="5"
+      py={3}
+      minH={0}
       z="hover:100"
       {...props}
     >

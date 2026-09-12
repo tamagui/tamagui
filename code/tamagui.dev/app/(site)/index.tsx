@@ -1,5 +1,5 @@
 import { TamaguiIconSvg } from '@tamagui/logo'
-import { H1, Paragraph, Text, XStack, YStack } from 'tamagui'
+import { H1, Paragraph, Span, Text, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
 import { PAGE_MAX_WIDTH } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
@@ -7,6 +7,14 @@ import { Link } from '~/components/Link'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { HomeStyleToggle } from '~/features/site/home/HomeStyleToggle'
 import { InstallInput } from '~/features/site/home/InstallInput'
+
+// a superscript marker rather than a second word: at the label's own size it
+// read as heavy as the label and sat on the baseline
+const CtaArrow = () => (
+  <Span fontSize={11} lineHeight={11} ml={1} verticalAlign="top">
+    ↗
+  </Span>
+)
 
 export default function TamaguiHomePage() {
   return (
@@ -64,7 +72,7 @@ export default function TamaguiHomePage() {
               </Paragraph>
             </YStack>
 
-            <XStack gap="3" items="center" flexWrap="wrap">
+            <XStack gap="2" items="center" flexWrap="wrap">
               <Link asChild href="/docs/intro/introduction">
                 <Button
                   render="a"
@@ -73,10 +81,11 @@ export default function TamaguiHomePage() {
                   bg="color"
                   color="background"
                   borderless
-                  aria-label="Style docs"
+                  aria-label="Core docs"
                 >
                   <Button.Text color="background" fontWeight="600">
-                    Style ↗
+                    Core
+                    <CtaArrow />
                   </Button.Text>
                 </Button>
               </Link>
@@ -91,12 +100,20 @@ export default function TamaguiHomePage() {
                   aria-label="Components docs"
                 >
                   <Button.Text color="background" fontWeight="600">
-                    Components ↗
+                    Components
+                    <CtaArrow />
                   </Button.Text>
                 </Button>
               </Link>
               <Link asChild target="_blank" href="https://github.com/tamagui/tamagui">
-                <Button render="a" size="lg" rounded={10} borderless aria-label="GitHub">
+                <Button
+                  render="a"
+                  size="lg"
+                  rounded={10}
+                  variant="quiet"
+                  borderless
+                  aria-label="GitHub"
+                >
                   <GithubIcon width={18} />
                   <Button.Text>GitHub</Button.Text>
                 </Button>

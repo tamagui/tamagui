@@ -78,6 +78,7 @@ export const InstallInput = memo(() => {
         <Button
           size="lg"
           rounded={10}
+          variant="quiet"
           borderless
           icon={prompt.hasCopied ? Check : Bot}
           onPress={prompt.onCopy}
