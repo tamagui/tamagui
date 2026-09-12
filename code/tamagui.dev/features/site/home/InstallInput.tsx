@@ -41,7 +41,7 @@ export const InstallInput = memo(() => {
     <XStack gap="2" items="center" flexWrap="wrap">
       <XStack
         borderWidth={0.5}
-        borderColor="color-5"
+        borderColor="color-3"
         bg="color-1"
         overflow="hidden"
         paddingRight="2"
@@ -85,7 +85,7 @@ export const InstallInput = memo(() => {
           fontFamily="mono"
         >
           <Button.Text color="color-8">
-            {prompt.hasCopied ? 'Copied' : 'Copy agent prompt'}
+            {prompt.hasCopied ? 'Copied' : 'Copy prompt'}
           </Button.Text>
         </Button>
       </TooltipSimple>

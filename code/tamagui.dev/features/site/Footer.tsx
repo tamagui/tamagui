@@ -11,14 +11,11 @@ export const Footer = memo(() => {
     <YStack render="footer" position="relative" mb="10">
       <ContainerLarge>
         <XStack py="7" flexDirection="sm:column" items="sm:center">
-          <YStack items="flex-start sm:center" py="5" flex={2} mb="2" px="6" gap="4">
+          <YStack items="flex-start sm:center" py="5" flex={3} mb="2" px="6" gap="4">
             <Link href="/" aria-label="Homepage">
               <VisuallyHidden>homepage</VisuallyHidden>
               <TamaguiLogo showWords downscale={1} />
             </Link>
-            <Paragraph size="3" opacity={0.25}>
-              built with Tamagui
-            </Paragraph>
           </YStack>
 
           <YStack

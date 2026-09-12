@@ -1,6 +1,6 @@
 import { TamaguiIconSvg } from '@tamagui/logo'
 import { Check } from '@tamagui/lucide-icons-2'
-import { H1, H5, Paragraph, Span, Text, XStack, YStack } from 'tamagui'
+import { EnsureFlexed, H1, H5, Paragraph, Span, Text, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
 import { PAGE_MAX_WIDTH } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
@@ -18,10 +18,11 @@ const CtaArrow = () => (
   <Span
     fontSize={11}
     lineHeight={11}
-    ml={5}
+    ml={10}
     display="inline-block"
     verticalAlign="top"
     y={5}
+    opacity={0.5}
   >
     ↗
   </Span>
@@ -91,7 +92,7 @@ const features: FeaturePart[][] = [
 
 export default function TamaguiHomePage() {
   return (
-    <>
+    <YStack gap={{ md: 100 }}>
       <HeadInfo
         title="Tamagui"
         description="Type-safe styles for React and React Native, with an optimizing compiler and Tailwind compatibility."
@@ -104,10 +105,9 @@ export default function TamaguiHomePage() {
         mx="auto"
         px="4"
         pt="8"
-        pb="8"
         gap="8 gtMd:12"
-        minH="calc(90vh - 280px)"
-        maxH={940}
+        minH="auto gtMd:calc(90vh - 280px)"
+        maxH="auto gtMd:940px"
         justify="center"
       >
         {/* the text column caps at the width its own copy wants, so the code
@@ -122,14 +122,8 @@ export default function TamaguiHomePage() {
           maxW={HERO_ROW_WIDTH}
           mx="auto"
         >
-          <YStack
-            flexGrow={1}
-            flexShrink={1}
-            gap="6"
-            minW={0}
-            width="100%"
-            maxW="gtMd:540px"
-          >
+          <YStack flexGrow={1} flexShrink={1} gap="6" minW={0} maxW="640px">
+            <EnsureFlexed />
             <XStack items="center" gap="4" mb="-4" mt="-3">
               <TamaguiIconSvg width={24} height={24} />
               <Link asChild href="/blog/version-three">
@@ -140,25 +134,27 @@ export default function TamaguiHomePage() {
             </XStack>
 
             <H1
-              fontSize="28px gtXs:32px gtMd:34px"
-              lineHeight="34px gtXs:40px gtMd:46px"
+              fontSize="22px gtXs:24px gtMd:28px"
+              lineHeight="32px gtXs:36px gtMd:40px"
               fontWeight="600"
               letterSpacing={-0.2}
+              textWrap="balance"
             >
-              The (only) complete solution to styling native and web.
+              The best web style library happens to be the best native one, too.
             </H1>
 
             <YStack gap="4" mt="-4">
               <Paragraph size="5" color="color-11">
-                Tamagui has best-in-class performance, the most feature complete styling
-                and component primitives, and makes cross-platform styling feel as simple
-                as the web.
+                Styles and components that are fast everywhere. On web it's pure React, on
+                native it's React Native.
+                Typed inline styles, or Tailwind classes. Runtime, or build time.
+                Add the Rust compiler or native runtime for best-in-class
+                performance everywhere.
               </Paragraph>
 
               <Paragraph size="5" color="color-11">
-                Version 3 gets a Tailwind mode, React Strict DOM, a Rust-rewritten
-                optimizing compiler, and is now the fastest native styling engine with its
-                new 0-render native runtime.
+                v3 trims down, then adds Tailwind, React Strict DOM, and simplified, more
+                web-aligned styling.
               </Paragraph>
             </YStack>
 
@@ -214,19 +210,27 @@ export default function TamaguiHomePage() {
             </YStack>
           </YStack>
 
-          <YStack width="100% gtMd:460px" flexShrink={0}>
+          <YStack maxW="640px" flexGrow={1} flexShrink={1}>
+            <EnsureFlexed />
             <HomeStyleToggle />
           </YStack>
         </XStack>
       </YStack>
 
-      <YStack render="section" width="100%" mx="auto" px="4" pb="12 gtMd:16">
+      <YStack
+        maxW="640px gtMd:none"
+        render="section"
+        width="100%"
+        mx="auto"
+        px="4"
+        pb="12 gtMd:16"
+      >
         {/* the rows are much shorter than half of the hero's 1040, so two 50%
             columns across that width left the whole block sitting well left of
             centre with an empty gutter on the right. this is the width the copy
             actually wants, centered, and the heading shares its left edge */}
         <YStack self="center" width="100%" maxW={900} gap="5">
-          <H5 size="6" color="color-8" fontWeight="700">
+          <H5 size="6" color="color-12" fontWeight="700">
             Featuring
           </H5>
 
@@ -236,11 +240,11 @@ export default function TamaguiHomePage() {
               times specificity and would otherwise hide the underline entirely */}
           <XStack className="link" flexWrap="wrap" rowGap="4">
             {features.map((parts, row) => (
-              <XStack key={row} width="100% gtSm:50%" items="flex-start" gap="2-5">
-                <YStack mt={3} flexShrink={0}>
-                  <Check size={16} color="color-7" />
+              <XStack key={row} width="100% gtMd:50%" items="flex-start" gap="2-5">
+                <YStack y={2} flexShrink={0}>
+                  <Check size={18} color="color-4" />
                 </YStack>
-                <Text fontSize={15} lineHeight={22} color="color-10">
+                <Text fontSize={15} lineHeight={22} color="color-9">
                   {parts.map((part, i) =>
                     typeof part === 'string' ? (
                       <Span key={i}>{part}</Span>
@@ -250,9 +254,9 @@ export default function TamaguiHomePage() {
                           render="a"
                           fontSize="inherit"
                           lineHeight="inherit"
-                          color="color-10 hover:color-12"
+                          color="color-11 hover:color-12"
                           textDecorationLine="underline"
-                          textDecorationColor="color-5"
+                          textDecorationColor="yellow-3"
                         >
                           {part.label}
                         </Text>
@@ -265,6 +269,6 @@ export default function TamaguiHomePage() {
           </XStack>
         </YStack>
       </YStack>
-    </>
+    </YStack>
   )
 }

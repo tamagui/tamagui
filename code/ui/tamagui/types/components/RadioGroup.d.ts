@@ -50,6 +50,8 @@ export declare const RadioGroupItem: import("react").FunctionComponent<Omit<impo
     id?: string;
     labelledBy?: string;
     disabled?: boolean;
+    activeStyle?: import("@tamagui/core").StylePiece;
+    activeTheme?: string | null;
 }, "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     disabled?: boolean | undefined;
     size?: any;
@@ -62,6 +64,8 @@ export declare const RadioGroupItem: import("react").FunctionComponent<Omit<impo
     id?: string;
     labelledBy?: string;
     disabled?: boolean;
+    activeStyle?: import("@tamagui/core").StylePiece;
+    activeTheme?: string | null;
 }, import("@tamagui/core").StackStyleBase, {
     disabled?: boolean | undefined;
     size?: any;
@@ -73,6 +77,8 @@ export declare const RadioGroupItem: import("react").FunctionComponent<Omit<impo
         id?: string;
         labelledBy?: string;
         disabled?: boolean;
+        activeStyle?: import("@tamagui/core").StylePiece;
+        activeTheme?: string | null;
     }, import("@tamagui/core").StackStyleBase, {
         disabled?: boolean | undefined;
         size?: any;
@@ -140,6 +146,8 @@ export declare const RadioGroup: import("react").FunctionComponent<Omit<import("
         id?: string;
         labelledBy?: string;
         disabled?: boolean;
+        activeStyle?: import("@tamagui/core").StylePiece;
+        activeTheme?: string | null;
     }, "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         disabled?: boolean | undefined;
         size?: any;
@@ -152,6 +160,8 @@ export declare const RadioGroup: import("react").FunctionComponent<Omit<import("
         id?: string;
         labelledBy?: string;
         disabled?: boolean;
+        activeStyle?: import("@tamagui/core").StylePiece;
+        activeTheme?: string | null;
     }, import("@tamagui/core").StackStyleBase, {
         disabled?: boolean | undefined;
         size?: any;
@@ -163,6 +173,8 @@ export declare const RadioGroup: import("react").FunctionComponent<Omit<import("
             id?: string;
             labelledBy?: string;
             disabled?: boolean;
+            activeStyle?: import("@tamagui/core").StylePiece;
+            activeTheme?: string | null;
         }, import("@tamagui/core").StackStyleBase, {
             disabled?: boolean | undefined;
             size?: any;

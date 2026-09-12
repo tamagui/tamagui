@@ -78,11 +78,12 @@ export function HomeStyleToggle() {
         <Tabs.Content
           value={mode}
           forceMount
-          height={406}
-          p="3"
+          height={430}
+          p="5"
           rounded="4"
+          bg="color-2"
           borderWidth={0.5}
-          borderColor="color-3"
+          borderColor="color-4"
         >
           <Text
             render="pre"

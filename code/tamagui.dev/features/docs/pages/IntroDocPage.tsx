@@ -77,7 +77,7 @@ export function DocIntroPage() {
         }}
       />
       <DocsTitle>{frontmatter.title}</DocsTitle>
-      <SubTitle>{frontmatter.description || ''}</SubTitle>
+      <SubTitle marginBottom={0}>{frontmatter.description || ''}</SubTitle>
       <ThemeTint>
         <TamaguiExamples.Provider value={examples}>
           <Component components={components as any} />

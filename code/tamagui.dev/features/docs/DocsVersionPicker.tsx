@@ -136,18 +136,20 @@ export function PickerSelect({
   items,
   onValueChange,
   testID,
+  showLabel,
 }: {
   label: string
   value: string
   items: { value: string; label: string }[]
   onValueChange: (value: string) => void
   testID?: string
+  showLabel?: boolean
 }) {
   return (
     <Select
       value={value}
       renderValue={(selectedValue) =>
-        `${label}: ${items.find((item) => item.value === selectedValue)?.label ?? value}`
+        `${showLabel ? `${label}: ` : ``}${items.find((item) => item.value === selectedValue)?.label ?? value}`
       }
       onValueChange={onValueChange}
       disablePreventBodyScroll
@@ -157,7 +159,7 @@ export function PickerSelect({
         testID={testID}
         flex={1}
         height={28}
-        paddingHorizontal="1"
+        paddingHorizontal="2"
         gap="1"
         backgroundColor="color-1"
         borderWidth={1}
