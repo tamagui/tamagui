@@ -62,21 +62,25 @@ tree without a global mode.
 Read the full [Tamagui Tailwind post](/blog/tailwind-mode) for compiler details
 and current utility coverage.
 
-## Three explicit component surfaces
+## Styled and unstyled, by import path
 
-V3 makes the styling choice visible at the import boundary. The `tamagui` root
-remains the full styled barrel, while generated component subpaths let an app
-select only the skins it uses:
+Every component now comes in two halves. The `tamagui` package is the styled
+kit: `Button`, `Dialog`, `Select`, and the rest, with the default skin on. The
+per-component packages and `@tamagui/ui` hold the unstyled half: the behavior
+hooks and the parts, with no styles of their own.
 
 ```tsx
-import { Button } from 'tamagui/button'
-import { Toast, toast } from 'tamagui/toast'
+// the styled kit
+import { Button } from 'tamagui'
+
+// the behavior and parts, for a button of your own
+import { ButtonFrame, ButtonText, useButton } from '@tamagui/button'
 ```
 
-Use `tamagui/unstyled` or `@tamagui/ui` for behavior primitives without the
-default skin. Use `@tamagui/tailwind` for the same primitive layer with Tailwind
-authoring. The Styled, Unstyled, and Tailwind switch on the v3 documentation
-rewrites examples between these authoring modes.
+`tamagui/unstyled` re-exports `@tamagui/ui` for apps that want the whole
+behavior layer under one import. `@tamagui/tailwind` is the same primitive
+layer with Tailwind authoring. The Styled, Unstyled, and Tailwind switch on the
+v3 documentation rewrites every example between them.
 
 ## Conditional styles are flat values
 
