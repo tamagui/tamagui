@@ -36,8 +36,8 @@ export const docsRoutes = [
       { title: 'Styling', route: '/docs/intro/styles' },
       { title: 'styled()', route: '/docs/core/styled' },
       { title: 'Variants', route: '/docs/core/variants' },
-      { title: 'Style Pieces', route: '/docs/core/style-pieces' },
-      { title: 'createStyledContext', route: '/docs/core/create-styled-context' },
+      { title: 'style()', route: '/docs/core/style-pieces' },
+      { title: 'createStyledContext()', route: '/docs/core/create-styled-context' },
     ],
   },
 

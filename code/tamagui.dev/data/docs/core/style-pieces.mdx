@@ -1,9 +1,9 @@
 ---
-title: Style Pieces
+title: style()
 description: Statically-shaped style fragments created with style()
 ---
 
-Style pieces are static style fragments created with the `style()` helper. They are compiled once at definition time and applied via the `style` prop or piece-typed component props.
+`style()` creates static style fragments. They are compiled once at definition time and applied via the `style` prop or piece-typed component props.
 
 ```tsx
 import { html, style } from 'tamagui' // or '@tamagui/core'
@@ -22,7 +22,7 @@ export function Card({ active }: { active?: boolean }) {
 
 ## Module-scope definition
 
-Define style pieces at module scope. When defined at module scope, their CSS rules are resolved and inserted once during module evaluation.
+Call `style()` at module scope so its CSS rules are resolved and inserted once during module evaluation.
 
 If `style()` is called during a component render, Tamagui emits a development warning:
 
@@ -51,7 +51,7 @@ Array elements evaluate in order. Later pieces or style objects override earlier
 
 ## Static shape rule
 
-Style pieces follow the static shape rule. The object passed to `style()` must have statically-known property keys:
+The object passed to `style()` must have statically known property keys:
 
 ```tsx
 // good: static keys, scalar values, and flat clauses
@@ -70,7 +70,7 @@ const badPiece = style({
 })
 ```
 
-Rules for conforming style pieces:
+Rules for `style()` definitions:
 - Static property keys only.
 - No object spreads into the definition literal.
 - No computed keys.

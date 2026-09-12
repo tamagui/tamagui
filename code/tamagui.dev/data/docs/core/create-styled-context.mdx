@@ -1,5 +1,5 @@
 ---
-title: createStyledContext
+title: createStyledContext()
 description: Share variant props across compound components
 ---
 
@@ -17,7 +17,7 @@ export default () => (
 
 Note how the `size="lg"` is set on the outer Button frame. We'd expect this size property to pass down to the Text so that our frame size always matches the text size. It would be cumbersome and bug-prone to have to always pass the size to every sub-component.
 
-Tamagui solves this with `createStyledContext` which acts much like React `createContext`, except it only works with styled components and only controls their variants (for now, we're exploring if it can do more).
+Tamagui solves this with `createStyledContext()` which acts much like React `createContext()`, except it only works with styled components and only controls their variants (for now, we're exploring if it can do more).
 
 You can set it up as follows:
 
