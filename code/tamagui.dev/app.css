@@ -109,9 +109,12 @@ p a,
   text-decoration-color: var(--color-04);
 }
 
+/* a link takes the weight of the text around it. this was a hard 300 against a
+   400 body, so every link on the site rendered a step lighter than the sentence
+   it sat in, and a link inside bold text came out thinner than its neighbours */
 a {
   color: inherit;
-  font-weight: 300;
+  font-weight: inherit;
 }
 
 :is(.tm-paragraph a, .link a, article p a, footer a) {

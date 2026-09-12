@@ -156,7 +156,7 @@ const tamagui = (
 const tailwind = (
   <>
     <Text color={keyword}>import</Text>
-    {` { html, styled }\n  from `}
+    {` { html, styled } from `}
     <Text color={str}>'@tamagui/tailwind'</Text>
     {'\n\n'}
     <Text color={tag}>{'<html.button'}</Text>

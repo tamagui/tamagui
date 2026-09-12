@@ -1,6 +1,6 @@
 import { TamaguiIconSvg } from '@tamagui/logo'
 import { Check } from '@tamagui/lucide-icons-2'
-import { H1, Paragraph, Span, Text, XStack, YStack } from 'tamagui'
+import { H1, H5, Paragraph, Span, Text, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
 import { PAGE_MAX_WIDTH } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
@@ -18,7 +18,7 @@ const CtaArrow = () => (
   <Span
     fontSize={11}
     lineHeight={11}
-    ml={1}
+    ml={5}
     display="inline-block"
     verticalAlign="top"
     y={5}
@@ -27,20 +27,68 @@ const CtaArrow = () => (
   </Span>
 )
 
-const features: { label: string; href: string }[][] = [
-  [{ label: 'Native runtime', href: '/docs/core/native' }],
-  [{ label: 'New Rust compiler', href: '/docs/intro/compiler-install' }],
-  [{ label: 'React Strict DOM html.*', href: '/docs/core/html-primitives' }],
-  [{ label: 'Tailwind support', href: '/docs/core/tailwind' }],
-  [{ label: 'Level-based themes', href: '/docs/core/surfaces' }],
+// the hero row is 540 of copy plus the gap plus the 460 code sample. the
+// Featuring section reuses it so both sit in one centered column and share a
+// left edge, instead of each centering its own different width
+const HERO_ROW_WIDTH = 1040
+
+// each row is one short sentence, and only the object parts are linked, so the
+// line reads as a claim rather than a bare label wearing a link
+type FeaturePart = string | { label: string; href: string }
+
+const features: FeaturePart[][] = [
   [
-    { label: 'Signal-like theme', href: '/docs/core/use-theme' },
-    { label: 'media hooks', href: '/docs/core/use-media' },
+    'A ',
+    { label: 'native runtime', href: '/docs/core/native' },
+    ' with no re-renders at all.',
   ],
-  [{ label: '0-rerender animation drivers', href: '/docs/core/animation-drivers' }],
-  [{ label: '0-runtime mode', href: '/docs/guides/zero-runtime' }],
-  [{ label: 'Flat, typed style values', href: '/docs/guides/flat-values' }],
-  [{ label: 'SSR safe nested themes', href: '/docs/intro/themes' }],
+  [
+    'An ',
+    { label: 'optimizing compiler', href: '/docs/intro/compiler-install' },
+    ' in Rust, flattening your tree.',
+  ],
+  [
+    'A Rust ',
+    { label: 'syntax and theme LSP', href: '/blog/version-three' },
+    ' for every editor.',
+  ],
+  [
+    { label: 'Bundler plugins', href: '/docs/guides/vite' },
+    ' for Vite, Next, Metro, and Webpack.',
+  ],
+  [
+    { label: 'React Strict DOM', href: '/docs/core/html-primitives' },
+    ' primitives, real elements on the web.',
+  ],
+  [
+    'Write ',
+    { label: 'Tailwind classes', href: '/docs/core/tailwind' },
+    ' on the same compiler.',
+  ],
+  [
+    { label: 'Level-based themes', href: '/docs/core/surfaces' },
+    ', nested as deep as you like.',
+  ],
+  [
+    { label: 'Theme', href: '/docs/core/use-theme' },
+    ' and ',
+    { label: 'media hooks', href: '/docs/core/use-media' },
+    ' with signal-like reads.',
+  ],
+  [
+    { label: 'Animation drivers', href: '/docs/core/animation-drivers' },
+    ' driven outside React.',
+  ],
+  [
+    'A ',
+    { label: '0-runtime mode', href: '/docs/guides/zero-runtime' },
+    ' for plain CSS output.',
+  ],
+  [
+    { label: 'Flat, typed style values', href: '/docs/guides/flat-values' },
+    ' with conditions inline.',
+  ],
+  [{ label: 'Themes', href: '/docs/intro/themes' }, ' server rendered, with no flash.'],
 ]
 
 export default function TamaguiHomePage() {
@@ -60,13 +108,21 @@ export default function TamaguiHomePage() {
         pt="8 gtMd:12"
         pb="8"
         gap="8 gtMd:12"
-        minH="calc(100vh - 100px)"
+        minH="calc(100vh - 260px)"
         justify="center"
       >
         {/* the text column caps at the width its own copy wants, so the code
             sample sits next to the paragraphs instead of across a gap the
             growing column left behind */}
-        <XStack flexDirection="column gtMd:row" items="center" justify="center" gap="8">
+        <XStack
+          flexDirection="column gtMd:row"
+          items="center"
+          justify="center"
+          gap="8"
+          width="100%"
+          maxW={HERO_ROW_WIDTH}
+          mx="auto"
+        >
           <YStack
             flexGrow={1}
             flexShrink={1}
@@ -78,7 +134,7 @@ export default function TamaguiHomePage() {
             <XStack items="center" gap="4">
               <TamaguiIconSvg width={24} height={24} />
               <Link asChild href="/blog/version-three">
-                <Text render="a" fontSize={13} color="color-11 hover:color-12">
+                <Text render="a" fontSize={13} color="color-8 hover:color-11">
                   Version 3 is out ↗
                 </Text>
               </Link>
@@ -155,19 +211,6 @@ export default function TamaguiHomePage() {
             </XStack>
 
             <InstallInput />
-
-            <XStack gap="5" flexWrap="wrap">
-              <Link asChild href="/ui/button">
-                <Text render="a" fontSize={13} color="color-11 hover:color-12">
-                  Explore the components ↗
-                </Text>
-              </Link>
-              <Link asChild href="/docs/core/tailwind">
-                <Text render="a" fontSize={13} color="color-11 hover:color-12">
-                  Speaks Tailwind, too ↗
-                </Text>
-              </Link>
-            </XStack>
           </YStack>
 
           <YStack width="100% gtMd:460px" flexShrink={0}>
@@ -176,61 +219,60 @@ export default function TamaguiHomePage() {
         </XStack>
       </YStack>
 
-      {/* the hero width (540 + 32 + 460) plus this section's own side padding, so the list lines
-          up with the copy above rather than the wider page container */}
+      {/* same max width and padding as the hero above, so the heading and the
+          first column line up with the copy rather than sitting on their own
+          narrower grid */}
       <YStack
         render="section"
         width="100%"
-        maxW="gtMd:1064px"
+        maxW={PAGE_MAX_WIDTH}
         mx="auto"
         px="4"
-        py="12 gtMd:16"
-        gap="8"
+        pb="12 gtMd:16"
+        gap="5"
+        maxW={HERO_ROW_WIDTH + 36}
       >
-        <Paragraph size="5" color="color-11" maxW={540}>
-          What you get, on every platform. Each one has a page in the docs.
-        </Paragraph>
+        {/* the heading scale puts size 6 in uppercase with letterspacing, which
+            is the eyebrow style, not what this wants */}
+        <H5 color="color-8" textTransform="none" letterSpacing={0}>
+          Featuring
+        </H5>
 
-        <XStack flexWrap="wrap" rowGap="4">
-          {features.map((feature) => (
+        {/* the `link` class is the site's blog underline: 2px at a 4px offset,
+            thickening on hover. the decoration line and color have to come from
+            props, because tamagui's Text sets text-decoration-line none at four
+            times specificity and would otherwise hide the underline entirely */}
+        <XStack className="link" flexWrap="wrap" rowGap="4">
+          {features.map((parts, row) => (
             <XStack
-              key={feature[0].href}
+              key={row}
               width="100% gtSm:50%"
               pr="gtSm:8"
               items="flex-start"
-              gap="3"
+              gap="2-5"
             >
-              <YStack
-                mt={3}
-                width={16}
-                height={16}
-                rounded={4}
-                borderWidth={1}
-                borderColor="color-6"
-                items="center"
-                justify="center"
-                flexShrink={0}
-              >
-                <Check size={11} color="color-9" />
+              <YStack mt={3} flexShrink={0}>
+                <Check size={16} color="color-7" />
               </YStack>
-              <Text fontSize={15} lineHeight={22} color="color-12">
-                {feature.map((link, i) => (
-                  <Span key={link.href}>
-                    {i > 0 ? ' and ' : ''}
-                    <Link asChild href={link.href}>
+              <Text fontSize={15} lineHeight={22} color="color-10">
+                {parts.map((part, i) =>
+                  typeof part === 'string' ? (
+                    <Span key={i}>{part}</Span>
+                  ) : (
+                    <Link asChild key={i} href={part.href}>
                       <Text
                         render="a"
                         fontSize="inherit"
                         lineHeight="inherit"
-                        color="color-12 hover:color-11"
+                        color="color-10 hover:color-12"
                         textDecorationLine="underline"
-                        textDecorationColor="color-6"
+                        textDecorationColor="color-5"
                       >
-                        {link.label}
+                        {part.label}
                       </Text>
                     </Link>
-                  </Span>
-                ))}
+                  )
+                )}
               </Text>
             </XStack>
           ))}
