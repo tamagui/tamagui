@@ -81,7 +81,11 @@ export const bodyFont = createInterFont(
   },
   {
     sizeSize: (size) => Math.round(size),
-    sizeLineHeight: (size) => Math.round(size * 1.2 + (size >= 20 ? 12 : 8)),
+    // the old curve was size * 1.2 plus a step that jumped from 8 to 12 at size
+    // 20, so 18px came out at ratio 1.67 while 22px came out at 1.75: bigger
+    // text ended up looser than smaller text, and docs body at 16px sat at 27px
+    // which reads airy. this is monotonic and lands 16px on 25px
+    sizeLineHeight: (size) => Math.round(size * 1.35 + 3),
   }
 )
 
