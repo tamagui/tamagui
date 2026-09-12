@@ -201,6 +201,89 @@ const TableHighlight = styled(YStack, {
   bg: 'yellow-1',
 })
 
+const MarkdownTable = ({ children, style, ...props }) => {
+  const sections = React.Children.toArray(children).filter(
+    isValidElement
+  ) as React.ReactElement<{
+    children?: React.ReactNode
+  }>[]
+  const headerRow = React.Children.toArray(sections[0]?.props.children).find(
+    isValidElement
+  ) as React.ReactElement<{ children?: React.ReactNode }> | undefined
+  const headers = React.Children.toArray(headerRow?.props.children).filter(
+    isValidElement
+  ) as React.ReactElement<{ children?: React.ReactNode }>[]
+  const rows = React.Children.toArray(sections[1]?.props.children).filter(
+    isValidElement
+  ) as React.ReactElement<{ children?: React.ReactNode }>[]
+
+  return (
+    <>
+      <YStack display="sm:none" width="100%" maxW="100%" my={20}>
+        <YStack
+          render="table"
+          {...props}
+          display="table"
+          width="100%"
+          style={{ ...style, borderCollapse: 'collapse', tableLayout: 'fixed' }}
+        >
+          {children}
+        </YStack>
+      </YStack>
+
+      <YStack
+        render="dl"
+        display="none sm:flex"
+        width="100%"
+        my={20}
+        borderTopWidth={1}
+        borderTopColor="color-5"
+      >
+        {rows.map((row, rowIndex) => {
+          const cells = React.Children.toArray(row.props.children).filter(
+            isValidElement
+          ) as React.ReactElement<{ children?: React.ReactNode }>[]
+
+          return (
+            <YStack
+              render="div"
+              key={row.key ?? rowIndex}
+              gap={10}
+              py={12}
+              borderBottomWidth={1}
+              borderBottomColor="color-5"
+            >
+              {cells.map((cell, cellIndex) => (
+                <YStack key={cell.key ?? cellIndex} gap={2}>
+                  <Text
+                    render="dt"
+                    fontSize={12}
+                    lineHeight={16}
+                    fontWeight="500"
+                    color="color-9"
+                  >
+                    {headers[cellIndex]?.props.children}
+                  </Text>
+                  <Text
+                    render="dd"
+                    m={0}
+                    fontSize={13}
+                    lineHeight={18}
+                    fontWeight="400"
+                    color="color-11"
+                  >
+                    {cell.props.children}
+                  </Text>
+                </YStack>
+              ))}
+            </YStack>
+          )
+        })}
+      </YStack>
+    </>
+  )
+}
+
 const componentsIn = {
   Tabs: CustomTabs,
   InlineTabs: InlineTabs,
@@ -566,17 +649,7 @@ const componentsIn = {
     )
   },
 
-  table: (props) => (
-    <YStack width="100%" maxW="100%" my={20} overflow="auto">
-      <YStack
-        render="table"
-        width="100%"
-        minW={680}
-        style={{ borderCollapse: 'collapse', tableLayout: 'fixed' }}
-        {...props}
-      />
-    </YStack>
-  ),
+  table: MarkdownTable,
 
   thead: (props) => <YStack render="thead" display="table-header-group" {...props} />,
 
@@ -587,7 +660,7 @@ const componentsIn = {
       render="tr"
       display="table-row"
       borderBottomWidth={1}
-      borderBottomColor="color-4"
+      borderBottomColor="color-5"
       {...props}
     />
   ),
