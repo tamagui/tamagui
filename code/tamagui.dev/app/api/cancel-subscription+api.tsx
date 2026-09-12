@@ -4,6 +4,10 @@ import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import { sendCancellationEmail } from '~/features/email/helpers'
+import {
+  shouldCancelImmediately,
+  stopInvoiceCollection,
+} from '~/features/stripe/cancelSubscription'
 import { stripe } from '~/features/stripe/stripe'
 
 export default apiRoute(async (req) => {
@@ -49,26 +53,37 @@ export default apiRoute(async (req) => {
     )
   }
 
+  console.info('Subscription cancellation requested', {
+    subscriptionId: subId,
+    userId: user.id,
+  })
+
   try {
     const current = await stripe.subscriptions.retrieve(subId)
+    let latestInvoice: Stripe.Invoice | null = null
+    if (current.latest_invoice) {
+      const invoiceId =
+        typeof current.latest_invoice === 'string'
+          ? current.latest_invoice
+          : current.latest_invoice.id
+      latestInvoice = await stripe.invoices.retrieve(invoiceId)
+    }
 
     // a past_due/unpaid subscription has an open renewal invoice that Stripe keeps
-    // retrying. cancel_at_period_end does NOT stop that retry, so the customer would
-    // still get charged. for these we cancel immediately and void the open invoice to
-    // actually stop collection. healthy subs keep the retain-access-until-period-end UX.
-    const isPastDue = current.status === 'past_due' || current.status === 'unpaid'
+    // retrying. an active subscription can also have a draft/open renewal invoice after
+    // Stripe advances its period but before the charge runs. cancel_at_period_end does
+    // not stop either invoice, so stop collection and cancel immediately in those cases.
+    // healthy subscriptions keep the retain-access-until-period-end experience.
+    const cancelImmediately = shouldCancelImmediately(current.status, latestInvoice)
 
     let data: Stripe.Subscription
-    if (isPastDue) {
-      if (current.latest_invoice) {
-        const invoiceId =
-          typeof current.latest_invoice === 'string'
-            ? current.latest_invoice
-            : current.latest_invoice.id
-        const invoice = await stripe.invoices.retrieve(invoiceId)
-        if (invoice.status === 'open' || invoice.status === 'draft') {
-          await stripe.invoices.voidInvoice(invoiceId)
-        }
+    if (cancelImmediately) {
+      if (latestInvoice) {
+        await stopInvoiceCollection(latestInvoice, {
+          disableDraftInvoiceAutoAdvance: (invoiceId) =>
+            stripe.invoices.update(invoiceId, { auto_advance: false }),
+          voidOpenInvoice: (invoiceId) => stripe.invoices.voidInvoice(invoiceId),
+        })
       }
       data = await stripe.subscriptions.cancel(subId)
     } else {
@@ -85,21 +100,45 @@ export default apiRoute(async (req) => {
           : data.customer
       if (customer && !customer.deleted && customer.email) {
         // immediate cancellations end access now; scheduled ones end at period end
-        const periodEnd = isPastDue
+        const periodEnd = cancelImmediately
           ? new Date().toISOString()
           : new Date(data.current_period_end * 1000).toISOString()
-        sendCancellationEmail(customer.email, {
-          name: 'friend',
-          periodEnd,
-        })
+        try {
+          await sendCancellationEmail(customer.email, {
+            name: 'friend',
+            periodEnd,
+          })
+        } catch (error) {
+          console.error('Failed to send subscription cancellation email', {
+            subscriptionId: subId,
+            error,
+          })
+        }
       }
+
+      console.info('Subscription cancellation completed', {
+        subscriptionId: subId,
+        userId: user.id,
+        cancelImmediately,
+        status: data.status,
+        cancelAtPeriodEnd: data.cancel_at_period_end,
+      })
+
       return Response.json({
-        message: isPastDue
+        message: cancelImmediately
           ? 'The subscription is cancelled and the pending charge has been stopped.'
           : 'The subscription is cancelled.',
+        status: data.status,
+        cancel_at_period_end: data.cancel_at_period_end,
+        current_period_end: new Date(data.current_period_end * 1000).toISOString(),
       })
     }
   } catch (error) {
+    console.error('Subscription cancellation failed', {
+      subscriptionId: subId,
+      userId: user.id,
+      error: error instanceof Error ? error.message : String(error),
+    })
     if (error instanceof Stripe.errors.StripeError) {
       return Response.json(
         { message: error.message },
