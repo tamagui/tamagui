@@ -59,8 +59,8 @@ const TooltipContent = createStyledHOC(
         backgroundColor="background"
         alignItems="center"
         pointerEvents="none"
-        paddingHorizontal="5"
-        paddingVertical="4"
+        paddingHorizontal="2"
+        paddingVertical="1"
         {...(zIndexFromContext !== undefined && { zIndex: zIndexFromContext })}
         {...props}
         {...(preventAnimation && { transition: null })}
