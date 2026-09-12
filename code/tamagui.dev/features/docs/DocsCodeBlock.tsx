@@ -7,17 +7,9 @@ import {
   TerminalSquare,
 } from '@tamagui/lucide-icons-2'
 import { useStore } from '@tamagui/use-store'
-import { forwardRef, useId, useState } from 'react'
-import {
-  AnimatePresence,
-  Paragraph,
-  Spacer,
-  TooltipSimple,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { forwardRef, useId } from 'react'
+import { Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
-import { LinearGradient } from '@tamagui/linear-gradient'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { Pre } from '~/components/Pre'
 import { CodeBlockTabs } from '~/components/CodeBlockTabs'
@@ -57,8 +49,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   const storeId = useId()
   const store = useStore(CollapseStore, { id: storeId, isCollapsed: showMore })
   const { isCollapsed, setIsCollapsed } = store
-  const isLong = lines > 22
-  const [isCutoff, setIsCutoff] = useState(isLong && !showMore)
   const showLineNumbers = showLineNumbersIn ?? lines > 10
 
   const command = useBashCommand(children, className)
@@ -138,36 +128,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
         )}
 
         {isPreVisible && (
-          <YStack
-            {...(isCutoff && {
-              maxHeight: 400,
-              ov: 'hidden',
-              br: '4',
-            })}
-          >
-            {isCutoff && (
-              <LinearGradient
-                position="absolute"
-                b={0}
-                l={0}
-                r={0}
-                height={200}
-                colors={['background-0', 'background']}
-                z={1000}
-              >
-                <Spacer flex={1} />
-                <Button
-                  z={10}
-                  size="3"
-                  onPress={() => setIsCutoff(!isCutoff)}
-                  self="center"
-                >
-                  Show more
-                </Button>
-                <Spacer size="4" />
-              </LinearGradient>
-            )}
-
+          <YStack>
             <Pre
               data-invert-line-highlight={isHighlightingLines}
               data-line-numbers={showLineNumbers}
@@ -226,17 +187,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 </XStack>
               )}
             </Pre>
-
-            <AnimatePresence>
-              {isLong && !isCutoff && (
-                <>
-                  <Spacer />
-                  <Button size="3" onPress={() => setIsCutoff(!isCutoff)} self="center">
-                    Show less
-                  </Button>
-                </>
-              )}
-            </AnimatePresence>
           </YStack>
         )}
       </ErrorBoundary>
