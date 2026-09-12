@@ -21,10 +21,18 @@ export const docsRoutes = [
     title: 'Configuration',
     pages: [
       { title: 'Configuration', route: '/docs/core/configuration' },
-      { title: 'Config v6', route: '/docs/core/config-v6' },
-      { title: 'v6 Colors', route: '/docs/core/config-v6-colors' },
       { title: 'Tokens', route: '/docs/core/tokens' },
       { title: 'Themes', route: '/docs/intro/themes' },
+    ],
+  },
+
+  {
+    section: 'core',
+    title: 'Config v6',
+    pages: [
+      { title: 'Config v6', route: '/docs/core/config-v6' },
+      { title: 'Colors', route: '/docs/core/config-v6-colors' },
+      { title: 'Surfaces & Levels', route: '/docs/core/surfaces' },
     ],
   },
 
@@ -50,7 +58,6 @@ export const docsRoutes = [
       { title: 'HTML primitives', route: '/docs/core/html-primitives' },
       { title: 'Tamagui Tailwind', route: '/docs/core/tailwind' },
       { title: 'Theme', route: '/docs/core/theme' },
-      { title: 'Surfaces & levels', route: '/docs/core/surfaces' },
       { title: 'FontLanguage', route: '/docs/core/font-language' },
     ],
   },
