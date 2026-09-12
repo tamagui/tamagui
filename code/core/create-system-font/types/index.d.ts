@@ -17,7 +17,12 @@ export declare const systemFontFamily: {
 	readonly web: "-apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif";
 	readonly native: "System";
 };
-export declare const webSystemFontSizes: {
+export type SystemFontScale = Record<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16, number>;
+export declare const webSystemFontSizes: SystemFontScale;
+export declare const nativeSystemFontSizes: SystemFontScale;
+export declare const defaultSystemFontSizes: SystemFontScale;
+export declare const defaultSystemFontLineHeight: (size: number) => number;
+export declare const v5WebSystemFontSizes: {
 	readonly 1: 12;
 	readonly 2: 13;
 	readonly 3: 14;
@@ -35,7 +40,7 @@ export declare const webSystemFontSizes: {
 	readonly 15: 85;
 	readonly 16: 100;
 };
-export declare const nativeSystemFontSizes: {
+export declare const v5NativeSystemFontSizes: {
 	readonly 1: 11;
 	readonly 2: 12;
 	readonly 3: 15;
@@ -53,8 +58,8 @@ export declare const nativeSystemFontSizes: {
 	readonly 15: 85;
 	readonly 16: 100;
 };
-export declare const defaultSystemFontSizes: typeof nativeSystemFontSizes | typeof webSystemFontSizes;
-export declare const defaultSystemFontLineHeight: (size: number) => number;
+export declare const v5SystemFontSizes: typeof v5NativeSystemFontSizes | typeof v5WebSystemFontSizes;
+export declare const v5SystemFontLineHeight: (size: number) => number;
 export declare const createSystemFont: <
 	A extends GenericFont,
 	Sizes extends SystemFontSizes = typeof webSystemFontSizes
