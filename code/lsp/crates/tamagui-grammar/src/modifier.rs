@@ -15,7 +15,8 @@ use rustc_hash::{FxHashMap, FxHashSet};
 use tamagui_config::ConfigSnapshot;
 
 use crate::generated::{
-    CONTAINER_PREFIX, GROUP_PREFIX, MODIFIER_ALIASES, PLATFORM_MODIFIERS, STATE_MODIFIERS,
+    CONTAINER_PREFIX, GROUP_PREFIX, MAX_NON_PLATFORM_DEPTH, MODIFIER_ALIASES, PLATFORM_MODIFIERS,
+    STATE_MODIFIERS,
 };
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash)]
@@ -254,6 +255,60 @@ impl ModifierRegistry {
         out
     }
 
+    /// Whether `candidate` is a valid next completion after an authored chain.
+    ///
+    /// Completion presents conditions in the canonical platform, theme,
+    /// container, media, group, state order. The runtime normalizes authored
+    /// order, but offering one stable order prevents the editor from suggesting
+    /// duplicate condition kinds or chains that exceed the grammar's distinct
+    /// condition capacity.
+    pub fn can_complete_after(&self, modifiers: &[&str], candidate: &str) -> bool {
+        let kind_order = |kind| match kind {
+            ModifierKind::Platform => 0,
+            ModifierKind::Theme => 1,
+            ModifierKind::Container => 2,
+            ModifierKind::Media => 3,
+            ModifierKind::Group => 4,
+            ModifierKind::State => 5,
+        };
+
+        let mut used = FxHashSet::default();
+        let mut used_kinds = FxHashSet::default();
+        let mut highest_order = 0;
+        let mut has_modifier = false;
+        let mut non_platform_depth = 0;
+
+        for authored in modifiers {
+            let canonical = canonical_modifier(authored);
+            let Some(kind) = self.kind(&canonical) else { return false };
+            let order = kind_order(kind);
+            if !used.insert(canonical) || !used_kinds.insert(kind) {
+                return false;
+            }
+            if has_modifier && order < highest_order {
+                return false;
+            }
+            highest_order = order;
+            has_modifier = true;
+            if kind != ModifierKind::Platform {
+                non_platform_depth += 1;
+                if non_platform_depth > MAX_NON_PLATFORM_DEPTH {
+                    return false;
+                }
+            }
+        }
+
+        let canonical = canonical_modifier(candidate);
+        let Some(kind) = self.kind(&canonical) else { return false };
+        if canonical != candidate || used.contains(&canonical) || used_kinds.contains(&kind) {
+            return false;
+        }
+        if has_modifier && kind_order(kind) < highest_order {
+            return false;
+        }
+        kind == ModifierKind::Platform || non_platform_depth < MAX_NON_PLATFORM_DEPTH
+    }
+
     fn is_container_size(&self, size: &str) -> bool {
         self.container_sizes.contains(size)
     }
@@ -333,5 +388,15 @@ mod tests {
         // an alias is a spelling of `press`, not a second thing to offer
         assert!(!names.contains(&"active".to_string()));
         assert!(!names.contains(&"dark_blue".to_string()));
+    }
+
+    #[test]
+    fn next_completion_follows_the_canonical_condition_order() {
+        let registry = registry();
+        assert!(registry.can_complete_after(&[], "sm"));
+        assert!(registry.can_complete_after(&["sm"], "hover"));
+        assert!(!registry.can_complete_after(&["hover"], "sm"));
+        assert!(!registry.can_complete_after(&["sm"], "md"));
+        assert!(!registry.can_complete_after(&["hover"], "hover"));
     }
 }

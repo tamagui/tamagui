@@ -126,10 +126,15 @@ impl State {
                     // literal: that is what keeps sibling clauses intact
                     text_edit: Some(CompletionTextEdit::Edit(TextEdit {
                         range: replace,
-                        new_text: match completions.context {
-                            // completing a modifier keeps its colon
-                            CursorContext::Modifier => entry.name.to_string(),
-                            CursorContext::Value => entry.name.to_string(),
+                        new_text: match (completions.context, entry.kind) {
+                            // an ambiguous value-position word has no colon yet;
+                            // accepting a modifier turns it into the next clause
+                            // prefix. A cursor inside an existing modifier keeps
+                            // the colon already present in the document.
+                            (CursorContext::Value, EntryKind::Modifier(_)) => {
+                                format!("{}:", entry.name)
+                            }
+                            _ => entry.name.to_string(),
                         },
                     })),
                     ..Default::default()

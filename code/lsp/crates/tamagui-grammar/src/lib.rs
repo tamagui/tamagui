@@ -83,13 +83,33 @@ pub fn complete<'a>(
 
     // otherwise the cursor is in a value, and the unit it replaces is the WORD
     // it sits in rather than the whole payload: `hover:1px solid re|` has three
-    // components and accepting an entry may only touch the third
+    // components and accepting an entry may only touch the third. Until that
+    // word gains a colon it can also be the next modifier, so an empty value,
+    // `g|`, and `gtMd:h|` offer the conditions an author can type next.
     let word = value::word_at(value, offset);
     let typed = &value[word.start..offset.max(word.start)];
+    let mut entries = values.starting_with(typed);
+    let modifiers = parsed
+        .clause_at(offset)
+        .map(|clause| {
+            clause
+                .modifiers
+                .iter()
+                .map(|modifier| modifier.span.of(value))
+                .collect::<Vec<_>>()
+        })
+        .unwrap_or_default();
+    entries.extend(
+        vocabulary
+            .modifiers
+            .starting_with(typed)
+            .into_iter()
+            .filter(|entry| vocabulary.registry.can_complete_after(&modifiers, &entry.name)),
+    );
     Completions {
         replace: word,
         context: CursorContext::Value,
-        entries: values.starting_with(typed),
+        entries,
     }
 }
 
@@ -319,7 +339,7 @@ mod tests {
     fn an_empty_value_offers_the_whole_vocabulary() {
         let (_, v) = setup();
         let c = complete(&v, "", 0, None, None);
-        assert_eq!(c.entries.len(), v.values.len());
+        assert_eq!(c.entries.len(), v.values.len() + v.modifiers.len());
     }
 
     #[test]
@@ -336,7 +356,11 @@ mod tests {
     fn a_space_prop_offers_the_space_scale_and_not_theme_keys() {
         let (_, v) = setup();
         let c = complete(&v, "", 0, Some("space"), None);
-        assert_eq!(names(&c), vec!["4"]);
+        let offered = names(&c);
+        assert!(offered.contains(&"4"));
+        assert!(offered.contains(&"sm"));
+        assert!(offered.contains(&"hover"));
+        assert!(!offered.contains(&"background"));
     }
 
     #[test]
@@ -370,7 +394,13 @@ mod tests {
             [("space", vec!["4", "true"]), ("size", vec!["4"]), ("radius", vec!["4"])]
         {
             let c = complete(&v, "", 0, Some(category), None);
-            assert_eq!(names(&c), expected, "category {category}");
+            let values = c
+                .entries
+                .iter()
+                .filter(|entry| !matches!(entry.kind, EntryKind::Modifier(_)))
+                .map(|entry| &*entry.name)
+                .collect::<Vec<_>>();
+            assert_eq!(values, expected, "category {category}");
         }
 
         // and each scale reports its OWN resolved value, not the winner's
@@ -390,6 +420,9 @@ mod tests {
         assert!(names(&c).contains(&"luminosity"), "got {:?}", names(&c));
         // the theme keys and tokens the untyped fallback would have offered
         for offered in names(&c) {
+            if v.modifiers.contains(offered) {
+                continue;
+            }
             assert!(
                 !v.values.contains(offered) || STANDALONE_BLEND_OVERLAP.contains(&offered),
                 "`{offered}` is a config value, not a blend mode"
@@ -412,7 +445,7 @@ mod tests {
         // an artifact written before the prop map existed names no category
         let (_, v) = setup();
         let c = complete(&v, "", 0, None, Some("border"));
-        assert_eq!(c.entries.len(), v.values.len());
+        assert_eq!(c.entries.len(), v.values.len() + v.modifiers.len());
     }
 
     #[test]
@@ -421,7 +454,7 @@ mod tests {
         // declares no fontSize tokens must not answer with an empty list
         let (_, v) = setup();
         let c = complete(&v, "", 0, Some("fontSize"), None);
-        assert_eq!(c.entries.len(), v.values.len());
+        assert_eq!(c.entries.len(), v.values.len() + v.modifiers.len());
     }
 
     #[test]
@@ -431,14 +464,28 @@ mod tests {
         let (_, v) = setup();
         let value = "hov";
         let c = complete(&v, value, value.len(), Some("color"), None);
-        // `hov` is a value prefix here (no colon yet), so nothing matches; the
-        // point is that filtering does not crash or swallow the modifier path
         assert_eq!(c.context, CursorContext::Value);
+        assert_eq!(names(&c), vec!["hover"]);
 
         let with_colon = "hov:";
         let c = complete(&v, with_colon, 3, Some("color"), None);
         assert_eq!(c.context, CursorContext::Modifier);
         assert_eq!(names(&c), vec!["hover"]);
+    }
+
+    #[test]
+    fn a_media_modifier_can_be_completed_before_a_state() {
+        let (_, v) = setup();
+        let c = complete(&v, "s", 1, Some("space"), None);
+        assert_eq!(names(&c), vec!["sm"]);
+
+        let c = complete(&v, "sm:h", 4, Some("space"), None);
+        assert_eq!(names(&c), vec!["hover"]);
+
+        let c = complete(&v, "hover:", 6, Some("space"), None);
+        let offered = names(&c);
+        assert!(offered.contains(&"4"));
+        assert!(!offered.contains(&"sm"));
     }
 
     #[test]
