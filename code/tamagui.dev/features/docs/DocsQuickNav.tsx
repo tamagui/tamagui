@@ -128,6 +128,7 @@ const NavLineIndicator = ({
 
       {/* Active indicator (animated along path) */}
       <path
+        className="docs-quicknav-active"
         d={path}
         fill="none"
         stroke="var(--color-9)"
