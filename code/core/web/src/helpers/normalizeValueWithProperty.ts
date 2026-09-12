@@ -28,6 +28,15 @@ export function normalizeValueWithProperty(value: any, property = ''): any {
     }
     return value
   }
+  if (
+    value === 'auto' &&
+    (property === 'maxWidth' ||
+      property === 'maxHeight' ||
+      property === 'maxInlineSize' ||
+      property === 'maxBlockSize')
+  ) {
+    return 'none'
+  }
   if (property !== '' && !unitfulProps.has(property)) return value
   if (typeof value === 'boolean') return value
   if (value && typeof value === 'object') {
