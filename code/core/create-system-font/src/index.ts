@@ -22,7 +22,43 @@ export const systemFontFamily = {
   native: 'System',
 } as const
 
-export const webSystemFontSizes = {
+// the whole ramp from one equation. each step is a little bigger than the one
+// before it, 8% at the UI sizes easing up to 19% at the display sizes, because
+// small text wants about a point between steps and big text wants a proportion.
+// the tables this replaced had cliffs: web went 30 to 40 from size 9 to 10, a
+// 33% step sitting between two 15% ones, and native jumped 25% from 2 to 3.
+export type SystemFontScale = Record<
+  1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16,
+  number
+>
+
+const ramp = (start: number): SystemFontScale => {
+  const out: Record<number, number> = {}
+  let px = start
+  for (let i = 1; i <= 16; i++) {
+    out[i] = Math.round(px)
+    px *= Math.min(1.19, 1.05 + i * 0.019)
+  }
+  return out as SystemFontScale
+}
+
+// 11 12 13 14 16 18 21 25 30 36 42 50 60 71 85 101
+export const webSystemFontSizes: SystemFontScale = ramp(11)
+
+// 13 14 15 17 19 22 25 30 35 42 50 60 71 84 100 119
+export const nativeSystemFontSizes: SystemFontScale = ramp(13)
+
+export const defaultSystemFontSizes: SystemFontScale = isNative
+  ? nativeSystemFontSizes
+  : webSystemFontSizes
+
+// eases from about 1.6x at label sizes to 1.35x at display sizes. native runs
+// tighter because its text box has no half leading above the cap line
+export const defaultSystemFontLineHeight = (size: number): number =>
+  isNative ? Math.round(size * 1.2 + 4) : Math.round(size * 1.35 + 3)
+
+// the v5 config pins these so upgrading the package does not resize a v5 app
+export const v5WebSystemFontSizes = {
   1: 12,
   2: 13,
   3: 14,
@@ -41,7 +77,7 @@ export const webSystemFontSizes = {
   16: 100,
 } as const
 
-export const nativeSystemFontSizes = {
+export const v5NativeSystemFontSizes = {
   1: 11,
   2: 12,
   3: 15,
@@ -60,11 +96,13 @@ export const nativeSystemFontSizes = {
   16: 100,
 } as const
 
-export const defaultSystemFontSizes:
-  | typeof nativeSystemFontSizes
-  | typeof webSystemFontSizes = isNative ? nativeSystemFontSizes : webSystemFontSizes
+export const v5SystemFontSizes:
+  | typeof v5NativeSystemFontSizes
+  | typeof v5WebSystemFontSizes = isNative
+  ? v5NativeSystemFontSizes
+  : v5WebSystemFontSizes
 
-export const defaultSystemFontLineHeight = (size: number): number => {
+export const v5SystemFontLineHeight = (size: number): number => {
   if (isNative) return Math.round(size + 5)
   const ratio = 1.5 - Math.max(0, (size - 20) * 0.004)
   return Math.round(size * ratio)

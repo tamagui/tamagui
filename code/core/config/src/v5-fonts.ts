@@ -1,4 +1,8 @@
-import { createSystemFont } from '@tamagui/create-system-font'
+import {
+  createSystemFont,
+  v5SystemFontLineHeight,
+  v5SystemFontSizes,
+} from '@tamagui/create-system-font'
 const isNative = process.env.TAMAGUI_TARGET === 'native'
 
 export { createSystemFont }
@@ -6,6 +10,10 @@ export { createSystemFont }
 // heading line height: native ~120%, web original
 const headingLineHeight = (size: number) =>
   Math.round(isNative ? size * 1.2 : size * 1.12 + 5)
+
+// v5 pins its own size and line height scales. the package defaults moved to a
+// smooth curve for v6, and a v5 app must not resize when it takes the update
+const v5Scale = { sizes: v5SystemFontSizes, sizeLineHeight: v5SystemFontLineHeight }
 
 // pin the v5 font size + lineHeight scales to exact "Npx" strings. numbers are
 // reserved for the v6 multiplier semantics; px strings mean "exact pixels" and
@@ -24,9 +32,10 @@ const pinFontToPx = <F extends { size: any; lineHeight?: any }>(font: F): F => (
 })
 
 export const fonts = {
-  body: pinFontToPx(createSystemFont()),
+  body: pinFontToPx(createSystemFont(v5Scale)),
   heading: pinFontToPx(
     createSystemFont({
+      ...v5Scale,
       font: {
         weight: {
           0: '600',
