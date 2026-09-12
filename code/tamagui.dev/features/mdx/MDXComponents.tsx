@@ -562,6 +562,63 @@ const componentsIn = {
     )
   },
 
+  table: (props) => (
+    <YStack width="100%" maxW="100%" my={20} overflow="auto">
+      <YStack
+        render="table"
+        width="100%"
+        minW={680}
+        style={{ borderCollapse: 'collapse', tableLayout: 'fixed' }}
+        {...props}
+      />
+    </YStack>
+  ),
+
+  thead: (props) => <YStack render="thead" display="table-header-group" {...props} />,
+
+  tbody: (props) => <YStack render="tbody" display="table-row-group" {...props} />,
+
+  tr: (props) => (
+    <YStack
+      render="tr"
+      display="table-row"
+      borderBottomWidth={1}
+      borderBottomColor="color-4"
+      {...props}
+    />
+  ),
+
+  th: (props) => (
+    <Text
+      render="th"
+      display="table-cell"
+      px={12}
+      py={7}
+      fontSize={12}
+      lineHeight={16}
+      fontWeight="500"
+      color="color-9"
+      text="left"
+      style={{ verticalAlign: 'top' }}
+      {...props}
+    />
+  ),
+
+  td: (props) => (
+    <Text
+      render="td"
+      display="table-cell"
+      px={12}
+      py={8}
+      fontSize={13}
+      lineHeight={18}
+      fontWeight="400"
+      color="color-11"
+      style={{ verticalAlign: 'top' }}
+      {...props}
+    />
+  ),
+
   strong: (props) => (
     <Paragraph render="strong" fontSize="inherit" {...props} fontWeight="700" />
   ),
