@@ -38,11 +38,11 @@ export const InstallInput = memo(() => {
   const prompt = useClipboard(agentPrompt)
 
   return (
-    <XStack gap="3" items="center" flexWrap="wrap">
+    <XStack gap="2" items="center" flexWrap="wrap">
       <XStack
-        borderWidth={1}
+        borderWidth={0.5}
         borderColor="color-5"
-        bg="color-2"
+        bg="color-1"
         overflow="hidden"
         paddingRight="2"
         pl="4"
@@ -55,7 +55,7 @@ export const InstallInput = memo(() => {
           {installScript}
         </Paragraph>
         <TooltipSimple
-          placement="top"
+          placement="bottom"
           label={install.hasCopied ? 'Copied' : 'Copy to clipboard'}
         >
           <Button
@@ -72,19 +72,21 @@ export const InstallInput = memo(() => {
       </XStack>
 
       <TooltipSimple
-        placement="top"
+        placement="right"
         label="A prompt pointing your agent at the right docs"
       >
         <Button
-          size="lg"
-          rounded={10}
+          size="md"
           variant="quiet"
           borderless
           icon={prompt.hasCopied ? Check : Bot}
           onPress={prompt.onCopy}
           aria-label="Copy a setup prompt for your coding agent"
+          fontFamily="mono"
         >
-          <Button.Text>{prompt.hasCopied ? 'Copied' : 'Copy agent prompt'}</Button.Text>
+          <Button.Text color="color-8">
+            {prompt.hasCopied ? 'Copied' : 'Copy agent prompt'}
+          </Button.Text>
         </Button>
       </TooltipSimple>
     </XStack>

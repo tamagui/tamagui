@@ -27,9 +27,7 @@ const CtaArrow = () => (
   </Span>
 )
 
-// the hero row is 540 of copy plus the gap plus the 460 code sample. the
-// Featuring section reuses it so both sit in one centered column and share a
-// left edge, instead of each centering its own different width
+// 540 of copy plus the gap plus the 460 code sample
 const HERO_ROW_WIDTH = 1040
 
 // each row is one short sentence, and only the object parts are linked, so the
@@ -105,10 +103,11 @@ export default function TamaguiHomePage() {
         maxW={PAGE_MAX_WIDTH}
         mx="auto"
         px="4"
-        pt="8 gtMd:12"
+        pt="8"
         pb="8"
         gap="8 gtMd:12"
-        minH="calc(100vh - 260px)"
+        minH="calc(90vh - 280px)"
+        maxH={940}
         justify="center"
       >
         {/* the text column caps at the width its own copy wants, so the code
@@ -131,7 +130,7 @@ export default function TamaguiHomePage() {
             width="100%"
             maxW="gtMd:540px"
           >
-            <XStack items="center" gap="4">
+            <XStack items="center" gap="4" mb="-4" mt="-3">
               <TamaguiIconSvg width={24} height={24} />
               <Link asChild href="/blog/version-three">
                 <Text render="a" fontSize={13} color="color-8 hover:color-11">
@@ -141,76 +140,78 @@ export default function TamaguiHomePage() {
             </XStack>
 
             <H1
-              fontSize="28px gtXs:32px gtMd:38px"
+              fontSize="28px gtXs:32px gtMd:34px"
               lineHeight="34px gtXs:40px gtMd:46px"
               fontWeight="600"
-              letterSpacing={0}
+              letterSpacing={-0.2}
             >
-              The style engine that feels great on native and web.
+              The (only) complete solution to styling native and web.
             </H1>
 
             <YStack gap="4" mt="-4">
               <Paragraph size="5" color="color-11">
-                Tamagui is the only style library that gets you platform-native feel while
-                going cross platform, now with Tailwind mode.
+                Tamagui has best-in-class performance, the most feature complete styling
+                and component primitives, and makes cross-platform styling feel as simple
+                as the web.
               </Paragraph>
 
               <Paragraph size="5" color="color-11">
-                Version 3 gets faster and simpler with React Strict DOM, a new Rust
-                optimizing compiler, and a 0-render native runtime. It's the fastest style
-                engine there is on web or native.
+                Version 3 gets a Tailwind mode, React Strict DOM, a Rust-rewritten
+                optimizing compiler, and is now the fastest native styling engine with its
+                new 0-render native runtime.
               </Paragraph>
             </YStack>
 
-            <XStack gap="2" items="center" flexWrap="wrap">
-              <Link asChild href="/docs/intro/introduction">
-                <Button
-                  render="a"
-                  size="lg"
-                  rounded={10}
-                  bg="color"
-                  color="background"
-                  borderless
-                  aria-label="Core docs"
-                >
-                  <Button.Text color="background" fontWeight="600">
-                    Core
-                    <CtaArrow />
-                  </Button.Text>
-                </Button>
-              </Link>
-              <Link asChild href="/ui/intro">
-                <Button
-                  render="a"
-                  size="lg"
-                  rounded={10}
-                  bg="color"
-                  color="background"
-                  borderless
-                  aria-label="Components docs"
-                >
-                  <Button.Text color="background" fontWeight="600">
-                    Components
-                    <CtaArrow />
-                  </Button.Text>
-                </Button>
-              </Link>
-              <Link asChild target="_blank" href="https://github.com/tamagui/tamagui">
-                <Button
-                  render="a"
-                  size="lg"
-                  rounded={10}
-                  variant="quiet"
-                  borderless
-                  aria-label="GitHub"
-                >
-                  <GithubIcon width={18} />
-                  <Button.Text>GitHub</Button.Text>
-                </Button>
-              </Link>
-            </XStack>
+            <YStack gap="4">
+              <XStack gap="3" items="center" flexWrap="wrap">
+                <Link asChild href="/docs/intro/introduction">
+                  <Button
+                    render="a"
+                    size="lg"
+                    rounded={10}
+                    bg="color"
+                    color="background"
+                    borderless
+                    aria-label="Core docs"
+                  >
+                    <Button.Text color="background" fontWeight="600">
+                      Core
+                      <CtaArrow />
+                    </Button.Text>
+                  </Button>
+                </Link>
+                <Link asChild href="/ui/intro">
+                  <Button
+                    render="a"
+                    size="lg"
+                    rounded={10}
+                    borderless
+                    bg="transparent hover:color-2"
+                    aria-label="Components docs"
+                  >
+                    <Button.Text fontWeight="600">
+                      Components
+                      <CtaArrow />
+                    </Button.Text>
+                  </Button>
+                </Link>
+                <Link asChild target="_blank" href="https://github.com/tamagui/tamagui">
+                  <Button
+                    render="a"
+                    size="lg"
+                    rounded={10}
+                    variant="quiet"
+                    borderless
+                    aria-label="GitHub"
+                  >
+                    <GithubIcon width={18} />
+                    <Button.Text>GitHub</Button.Text>
+                  </Button>
+                </Link>
+              </XStack>
 
-            <InstallInput />
+              <InstallInput />
+            </YStack>
           </YStack>
 
           <YStack width="100% gtMd:460px" flexShrink={0}>
@@ -219,64 +220,50 @@ export default function TamaguiHomePage() {
         </XStack>
       </YStack>
 
-      {/* same max width and padding as the hero above, so the heading and the
-          first column line up with the copy rather than sitting on their own
-          narrower grid */}
-      <YStack
-        render="section"
-        width="100%"
-        maxW={PAGE_MAX_WIDTH}
-        mx="auto"
-        px="4"
-        pb="12 gtMd:16"
-        gap="5"
-        maxW={HERO_ROW_WIDTH + 36}
-      >
-        {/* the heading scale puts size 6 in uppercase with letterspacing, which
-            is the eyebrow style, not what this wants */}
-        <H5 color="color-8" textTransform="none" letterSpacing={0}>
-          Featuring
-        </H5>
+      <YStack render="section" width="100%" mx="auto" px="4" pb="12 gtMd:16">
+        {/* the rows are much shorter than half of the hero's 1040, so two 50%
+            columns across that width left the whole block sitting well left of
+            centre with an empty gutter on the right. this is the width the copy
+            actually wants, centered, and the heading shares its left edge */}
+        <YStack self="center" width="100%" maxW={900} gap="5">
+          <H5 size="6" color="color-8" fontWeight="700">
+            Featuring
+          </H5>
 
-        {/* the `link` class is the site's blog underline: 2px at a 4px offset,
-            thickening on hover. the decoration line and color have to come from
-            props, because tamagui's Text sets text-decoration-line none at four
-            times specificity and would otherwise hide the underline entirely */}
-        <XStack className="link" flexWrap="wrap" rowGap="4">
-          {features.map((parts, row) => (
-            <XStack
-              key={row}
-              width="100% gtSm:50%"
-              pr="gtSm:8"
-              items="flex-start"
-              gap="2-5"
-            >
-              <YStack mt={3} flexShrink={0}>
-                <Check size={16} color="color-7" />
-              </YStack>
-              <Text fontSize={15} lineHeight={22} color="color-10">
-                {parts.map((part, i) =>
-                  typeof part === 'string' ? (
-                    <Span key={i}>{part}</Span>
-                  ) : (
-                    <Link asChild key={i} href={part.href}>
-                      <Text
-                        render="a"
-                        fontSize="inherit"
-                        lineHeight="inherit"
-                        color="color-10 hover:color-12"
-                        textDecorationLine="underline"
-                        textDecorationColor="color-5"
-                      >
-                        {part.label}
-                      </Text>
-                    </Link>
-                  )
-                )}
-              </Text>
-            </XStack>
-          ))}
-        </XStack>
+          {/* the `link` class is the site's blog underline: 2px at a 4px offset,
+              thickening on hover. the decoration line and color have to come from
+              props, because tamagui's Text sets text-decoration-line none at four
+              times specificity and would otherwise hide the underline entirely */}
+          <XStack className="link" flexWrap="wrap" rowGap="4">
+            {features.map((parts, row) => (
+              <XStack key={row} width="100% gtSm:50%" items="flex-start" gap="2-5">
+                <YStack mt={3} flexShrink={0}>
+                  <Check size={16} color="color-7" />
+                </YStack>
+                <Text fontSize={15} lineHeight={22} color="color-10">
+                  {parts.map((part, i) =>
+                    typeof part === 'string' ? (
+                      <Span key={i}>{part}</Span>
+                    ) : (
+                      <Link asChild key={i} href={part.href}>
+                        <Text
+                          render="a"
+                          fontSize="inherit"
+                          lineHeight="inherit"
+                          color="color-10 hover:color-12"
+                          textDecorationLine="underline"
+                          textDecorationColor="color-5"
+                        >
+                          {part.label}
+                        </Text>
+                      </Link>
+                    )
+                  )}
+                </Text>
+              </XStack>
+            ))}
+          </XStack>
+        </YStack>
       </YStack>
     </>
   )

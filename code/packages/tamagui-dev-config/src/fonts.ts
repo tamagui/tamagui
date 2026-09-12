@@ -1,5 +1,5 @@
 import { createCherryBombFont } from '@tamagui/font-cherry-bomb'
-import { createInterFont } from '@tamagui/font-inter'
+import { createFont } from '@tamagui/core'
 import { createGenericFont } from './createGenericFont'
 
 const isWeb = process.env.TAMAGUI_TARGET === 'web'
@@ -31,63 +31,48 @@ export const cherryBombFont = createCherryBombFont({
   },
 })
 
-export const headingFont = createInterFont(
-  {
-    family: contrastFamily,
-    size: {
-      true: 14,
-      5: 13,
-      6: 15,
-      9: 30,
-      10: 44,
-    },
-    transform: {
-      6: 'uppercase',
-      7: 'none',
-    },
-    weight: {
-      6: '400',
-      7: '700',
-    },
-    color: {
-      6: 'color-focus',
-      7: 'color',
-    },
-    letterSpacing: {
-      5: 2,
-      6: 1,
-      7: 0,
-      8: 0,
-      9: 0,
-      10: 0,
-      11: 0,
-      12: 0,
-      14: 0,
-      15: 0,
-    },
-  },
-  { sizeLineHeight: (size) => Math.round(size * 1.1 + (size < 30 ? 10 : 5)) }
-)
-
-export const bodyFont = createInterFont(
-  {
-    family: contrastFamily,
-    size: {
-      true: 14,
-    },
-    weight: {
-      1: '400',
-    },
-  },
-  {
-    sizeSize: (size) => Math.round(size),
-    // the old curve was size * 1.2 plus a step that jumped from 8 to 12 at size
-    // 20, so 18px came out at ratio 1.67 while 22px came out at 1.75: bigger
-    // text ended up looser than smaller text, and docs body at 16px sat at 27px
-    // which reads airy. this is monotonic and lands 16px on 25px
-    sizeLineHeight: (size) => Math.round(size * 1.35 + 3),
+// one equation for the whole ramp instead of a hand-written table. each step is
+// a little bigger than the one before it, from 9% at the UI sizes up to 19% at
+// the display sizes, because small text wants roughly a point between steps and
+// big text wants a proportion. the table this replaced had a cliff at the top:
+// 30 to 44 between size 9 and 10, a 47% jump next to neighbours around 15%.
+const sizes = () => {
+  const out: Record<number | 'true', number> = { true: 14 }
+  let px = 11
+  for (let i = 1; i <= 16; i++) {
+    out[i] = Math.round(px)
+    px *= Math.min(1.19, 1.05 + i * 0.019)
   }
-)
+  return out
+}
+
+// 11 12 13 14 16 18 21 25 30 36 42 50 60 71 85 101
+const size = sizes()
+
+const lineHeights = (ratio: number, extra: number) =>
+  Object.fromEntries(
+    Object.entries(size).map(([k, v]) => [k, Math.round(v * ratio + extra)])
+  ) as typeof size
+
+export const headingFont = createFont({
+  family: contrastFamily,
+  size,
+  // eases from 1.4 at label sizes down to 1.3 at display sizes
+  lineHeight: lineHeights(1.25, 2),
+  weight: { 1: '600' },
+  letterSpacing: { 1: 0 },
+})
+
+export const bodyFont = createFont({
+  family: contrastFamily,
+  size,
+  // the old curve was size * 1.2 plus a step that jumped from 8 to 12 at size
+  // 20, so 18px came out at ratio 1.67 while 22px came out at 1.75: bigger text
+  // ended up looser than smaller text. this is monotonic and lands 16px on 25px
+  lineHeight: lineHeights(1.35, 3),
+  weight: { 1: '400' },
+  letterSpacing: { 1: 0 },
+})
 
 export const monoFont = createGenericFont(
   monoFamily,
