@@ -162,12 +162,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           </XGroup>
         </TooltipGroup>
 
-        <SearchButton
-          size="2"
-          theme="accent"
-          rounded="10"
-          boxShadow="0 2px 5px rgba(0, 0, 0, 0.14)"
-        />
+        <SearchButton size="2" variant="quiet" rounded="10" />
 
         <Link target="_blank" href="https://github.com/tamagui/tamagui">
           <XStack group containerType="normal">

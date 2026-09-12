@@ -5,7 +5,7 @@ import { SizableText, TooltipSimple } from 'tamagui'
 import { Button, type ButtonProps } from '~/components/Button'
 import { SearchContext } from '~/features/site/search/SearchContext'
 
-export const SearchButton = memo(({ theme = 'accent', ...props }: ButtonProps) => {
+export const SearchButton = memo((props: ButtonProps) => {
   const { onOpen, onInput } = useContext(SearchContext)
 
   const ref = useRef(null)
@@ -46,7 +46,6 @@ export const SearchButton = memo(({ theme = 'accent', ...props }: ButtonProps) =
             /
           </SizableText>
         }
-        theme={theme}
         {...props}
       />
     </TooltipSimple>
