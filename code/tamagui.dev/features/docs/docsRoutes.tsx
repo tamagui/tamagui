@@ -21,8 +21,12 @@ export const docsRoutes = [
     title: 'Configuration',
     pages: [
       { title: 'Configuration', route: '/docs/core/configuration' },
+      { title: 'TamaguiProvider', route: '/docs/core/tamagui-provider' },
       { title: 'Tokens', route: '/docs/core/tokens' },
+      { title: 'Fonts', route: '/docs/core/fonts' },
       { title: 'Themes', route: '/docs/intro/themes' },
+      { title: 'Shorthands', route: '/docs/core/shorthands' },
+      { title: 'Settings', route: '/docs/core/settings' },
     ],
   },
 
