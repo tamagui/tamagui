@@ -3,10 +3,12 @@ title: Fonts
 description: Define font families with createFont and load custom fonts on native.
 ---
 
-Fonts are the one token category with structure. Each family carries its own size,
-line height, weight, and letter spacing scales, so two families can have different
-vertical rhythm. Create one with `createFont` and pass it to `createTamagui` under
-`fonts`:
+<IntroParagraph>
+  Fonts are the one token category with structure. Each family carries its own
+  size, line height, weight, and letter spacing scales.
+</IntroParagraph>
+
+Create one with `createFont` and pass it to `createTamagui` under `fonts`:
 
 ```tsx fileName="tamagui.config.ts"
 import { createFont, createTamagui, isWeb } from 'tamagui'

@@ -3,7 +3,12 @@ title: useMedia
 description: Respond to different screen sizes
 ---
 
-Define your media rules in the media object of your `tamagui.config.ts`:
+<IntroParagraph>
+  `useMedia` reads the same named media rules that style props use for
+  responsive conditions.
+</IntroParagraph>
+
+Define those rules in the media object of your `tamagui.config.ts`:
 
 ```tsx line=2-6
 export default createTamagui({
@@ -39,13 +44,13 @@ Now in any component you may import `useMedia` or add media clauses to style val
 
 Use media names as typed object keys or string modifiers on the style prop:
 
-<MDXTabs id="use-media-inline-syntax" defaultValue="styled">
+<MDXTabs codeSyntax defaultValue="string">
 <MDXTabs.List>
-  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
   <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+  <MDXTabs.Tab value="typed">Typed</MDXTabs.Tab>
 </MDXTabs.List>
 
-<MDXTabs.Content value="styled">
+<MDXTabs.Content value="typed">
 
 ```tsx
 import { useState } from 'react'

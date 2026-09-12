@@ -3,9 +3,13 @@ title: Shorthands
 description: Map short prop names to any style property.
 ---
 
-Shorthands let you write `<html.div px={20} />` instead of
-`<html.div paddingHorizontal={20} />`. Define them on `createTamagui` under
-`shorthands`. Each key maps to one style property:
+<IntroParagraph>
+  Shorthands give frequently used style props shorter names, such as `px` for
+  `paddingHorizontal`.
+</IntroParagraph>
+
+Define them on `createTamagui` under `shorthands`. Each key maps to one style
+property:
 
 ```tsx fileName="tamagui.config.ts"
 // as const keeps the keys literal so types flow through

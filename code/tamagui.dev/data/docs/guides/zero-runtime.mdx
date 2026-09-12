@@ -3,11 +3,13 @@ title: Zero-runtime mode
 description: Build a web entry with generated CSS and no Tamagui component runtime
 ---
 
-Zero-runtime mode is an experimental, web-only compiler tier for pages whose
-Tamagui styling can be fully resolved at build time. A successful zero entry
-contains lowered React host JSX and one generated CSS artifact. Its JavaScript
-graph contains no Tamagui renderer, provider, style engine, config parser,
-theme state, media state, or component animation machinery.
+<IntroParagraph>
+  Zero-runtime mode compiles eligible web entries to React host elements and one
+  CSS artifact with no Tamagui component runtime in their JavaScript graph.
+</IntroParagraph>
+
+This experimental tier is for pages whose Tamagui styling can be fully resolved
+at build time.
 
 React and React DOM remain. Ordinary React host elements can still use React's
 `style` prop, which sits outside the Tamagui zero-runtime contract.

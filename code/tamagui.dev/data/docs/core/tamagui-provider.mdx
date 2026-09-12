@@ -3,8 +3,12 @@ title: TamaguiProvider
 description: Mount your config, generate its CSS, and trim theme JS from the client bundle.
 ---
 
-`TamaguiProvider` takes the object returned by `createTamagui` and makes it available
-to every component below it. Render it once at the root of your app:
+<IntroParagraph>
+  `TamaguiProvider` makes the object returned by `createTamagui` available to
+  every component below it.
+</IntroParagraph>
+
+Render it once at the root of your app:
 
 ```tsx line=3-5 fileName="App.tsx"
 import { TamaguiProvider } from 'tamagui'

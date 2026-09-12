@@ -5,10 +5,13 @@ name: surface
 component: Surface
 ---
 
-Surface is a copied fixture, not a framework component. It is a `YStack` plus a
-`level` prop and a set of composable chrome and interaction facets. Nothing is on
-by default: a bare `<Surface />` renders no chrome and no interaction styling, and
-every facet is opt-in at the use site.
+<IntroParagraph>
+  Surface is a copy-paste `YStack` recipe with relative theme levels and
+  composable visual or interaction facets.
+</IntroParagraph>
+
+Nothing is on by default. A bare `<Surface />` renders no chrome and no
+interaction styling, and every facet is opt-in at the use site.
 
 ```tsx
 import { Surface } from 'tamagui'

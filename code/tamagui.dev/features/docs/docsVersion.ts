@@ -1,13 +1,19 @@
 export type DocsSyntax = 'styled' | 'unstyled' | 'tailwind'
 export type DocsProductVersion = 'v3' | 'v2' | 'v1'
 
-export const docsProductVersions: DocsProductVersion[] = ['v3', 'v2', 'v1']
+export const docsProductVersions: DocsProductVersion[] = ['v3', 'v2']
 export const docsSyntaxes: DocsSyntax[] = ['styled', 'unstyled', 'tailwind']
 
 export const docsSyntaxLabels: Record<DocsSyntax, string> = {
   styled: 'Styled',
   unstyled: 'Unstyled',
   tailwind: 'Tailwind',
+}
+
+export function getDocsSyntaxParam(value: string | null): DocsSyntax | undefined {
+  if (value === 'tailwind') return 'tailwind'
+  if (value === 'unstyled') return 'unstyled'
+  if (value === 'styled' || value === 'tamagui') return 'styled'
 }
 
 export type DocsVersionFrontmatter = {
@@ -54,10 +60,8 @@ export function getDocsSyntaxPath(pathname: string, syntax: DocsSyntax) {
 }
 
 export function getDocsSyntax(pathname: string, search?: URLSearchParams): DocsSyntax {
-  const param = search?.get('syntax')
-  if (param === 'tailwind') return 'tailwind'
-  if (param === 'unstyled') return 'unstyled'
-  if (param === 'styled' || param === 'tamagui') return 'styled'
+  const param = getDocsSyntaxParam(search?.get('syntax') ?? null)
+  if (param) return param
   if (pathname.startsWith('/tailwind')) return 'tailwind'
   if (pathname.startsWith('/unstyled')) return 'unstyled'
   return 'styled'
@@ -70,12 +74,16 @@ export function getDocsLinkHref(href: string, syntax: DocsSyntax) {
   if (url.pathname.endsWith('.md')) return href
   const canonical = getCanonicalDocsPath(url.pathname)
   if (!canonical.startsWith('/docs/') && !canonical.startsWith('/ui/')) return href
-  const explicitSyntax = url.searchParams.has('syntax') || canonical !== url.pathname
+  const syntaxParam = getDocsSyntaxParam(url.searchParams.get('syntax'))
+  const hasDocsSyntaxParam = syntaxParam !== undefined
+  const explicitSyntax = hasDocsSyntaxParam || canonical !== url.pathname
   url.pathname = getDocsSyntaxPath(
     url.pathname,
-    explicitSyntax ? getDocsSyntax(url.pathname, url.searchParams) : syntax
+    explicitSyntax ? (syntaxParam ?? getDocsSyntax(url.pathname)) : syntax
   )
-  url.searchParams.delete('syntax')
+  if (hasDocsSyntaxParam) {
+    url.searchParams.delete('syntax')
+  }
   return `${url.pathname}${url.search}${url.hash}`
 }
 

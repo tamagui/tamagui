@@ -3,11 +3,14 @@ title: Compiler tiers
 description: How Tamagui moves from runtime components to extracted host output
 ---
 
-Tamagui compilation is a ladder. An app can keep the full runtime, move
-configuration-static CSS into a build artifact, or enforce a web entry with no
-Tamagui component runtime. Inside an ordinary compiled app, each component is
-also handled independently. One dynamic component does not turn extraction off
-for the rest of the file.
+<IntroParagraph>
+  Tamagui compilation is a ladder. An app can keep the full runtime, move
+  configuration-static CSS into a build artifact, or enforce a web entry with
+  no Tamagui component runtime.
+</IntroParagraph>
+
+Inside an ordinary compiled app, each component is handled independently. One
+dynamic component does not turn extraction off for the rest of the file.
 
 ## The build ladder
 

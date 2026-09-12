@@ -16,6 +16,7 @@ import { CodeBlockTabs } from '~/components/CodeBlockTabs'
 import { useBashCommand } from '~/hooks/useBashCommand'
 import { useClipboard } from '~/hooks/useClipboard'
 import { toggleDocsTinted } from './docsTint'
+import { useCodeSyntaxTabs } from './MDXTabs'
 
 class CollapseStore {
   isCollapsed: boolean
@@ -50,6 +51,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   const store = useStore(CollapseStore, { id: storeId, isCollapsed: showMore })
   const { isCollapsed, setIsCollapsed } = store
   const showLineNumbers = showLineNumbersIn ?? lines > 10
+  const showCodeSyntax = useCodeSyntaxTabs()
 
   const command = useBashCommand(children, className)
   const { isTerminalCommand, showTabs, transformedCommand } = command
@@ -64,14 +66,13 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
       <Button
         aria-label="Copy code to clipboard"
         size="2"
+        height={28}
+        minHeight={28}
         display="inline-flex"
-        // with no title row it floats over the code, so keep it out of the way
-        // until the pointer is here. touch has no hover, so small screens keep it
-        {...(!showFileName &&
-          !showTabs && {
-            opacity: '0 sm:1 group-hover/code:1',
-            transition: 'quickest',
-          })}
+        variant="outlined"
+        borderWidth="0-5"
+        opacity="0 sm:1 group-hover/code:1"
+        transition="quickest"
         icon={hasCopied ? CheckCircle : Copy}
         onPress={() => {
           onCopy()
@@ -167,6 +168,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   <XStack ml="auto">{copyButton}</XStack>
                 </XStack>
               )}
+
+              {showCodeSyntax && <YStack height={36} shrink={0} />}
 
               <CodeBlockTabs
                 command={command}

@@ -156,13 +156,13 @@ In v2, `color` is not a direct prop on the Button frame. Instead, style your
 text through `Button.Text`. For interactive color changes on hover or press, use
 Tamagui's `group` prop to coordinate styles between parent and child:
 
-<MDXTabs id="build-button-group-syntax" defaultValue="styled">
+<MDXTabs codeSyntax defaultValue="string">
 <MDXTabs.List>
-  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
   <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+  <MDXTabs.Tab value="typed">Typed</MDXTabs.Tab>
 </MDXTabs.List>
 
-<MDXTabs.Content value="styled">
+<MDXTabs.Content value="typed">
 
 ```tsx
 export default () => (
@@ -250,13 +250,13 @@ or go ahead and create that starter using `npm create tamagui@latest`.
 With that in mind, we can create the outer frame of the button fairly simply,
 like so:
 
-<MDXTabs id="build-button-frame-syntax" defaultValue="styled">
+<MDXTabs codeSyntax defaultValue="string">
 <MDXTabs.List>
-  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
   <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+  <MDXTabs.Tab value="typed">Typed</MDXTabs.Tab>
 </MDXTabs.List>
 
-<MDXTabs.Content value="styled">
+<MDXTabs.Content value="typed">
 
 ```tsx
 import { View, styled } from '@tamagui/core'

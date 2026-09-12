@@ -7,6 +7,11 @@ package: button
 demoName: Button
 ---
 
+<IntroParagraph>
+  Button combines accessible press behavior with shared sizing, icons, themes,
+  and full HTML form semantics.
+</IntroParagraph>
+
 <HeroContainer demoMultiple>
   <ButtonDemo />
 </HeroContainer>
@@ -174,13 +179,13 @@ export default () => (
 Combine `Button.Text` with the `group` prop on Button to coordinate text styles
 across hover, press, and focus states:
 
-<MDXTabs id="button-3-interactive-syntax" defaultValue="styled">
+<MDXTabs codeSyntax defaultValue="string">
 <MDXTabs.List>
-  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
   <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+  <MDXTabs.Tab value="typed">Typed</MDXTabs.Tab>
 </MDXTabs.List>
 
-<MDXTabs.Content value="styled">
+<MDXTabs.Content value="typed">
 
 ```tsx
 import { Button } from 'tamagui'

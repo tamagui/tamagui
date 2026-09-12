@@ -3,11 +3,15 @@ title: Themes
 description: Create themes and sub-themes
 ---
 
-Themes map neatly to CSS variables: they are objects whose values you want to
-contextually change at any point in your React tree. Bare theme names are the
-first lookup for style values, and `useTheme` exposes them directly. Tamagui
-allows nesting themes in both the definition and at runtime. At
-runtime Tamagui resolves theme values upwards, ultimately all the way back to
+<IntroParagraph>
+  Themes map neatly to CSS variables: they are objects whose values you want to
+  contextually change at any point in your React tree. Tamagui lets you define,
+  nest, and read them on web and native.
+</IntroParagraph>
+
+Bare theme names are the first lookup for style values, and `useTheme` exposes
+them directly. Tamagui allows nesting themes in both the definition and at
+runtime. Tamagui resolves theme values upwards, ultimately all the way back to
 tokens.
 
 For the recommended theme setup, see the [Config v6 docs](/docs/core/config-v6).

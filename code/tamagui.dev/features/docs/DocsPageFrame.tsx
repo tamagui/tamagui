@@ -5,6 +5,7 @@ import { Paragraph, View, XStack, YStack } from 'tamagui'
 import { Container } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { DocsQuickNav, type Heading } from './DocsQuickNav'
+import { MDXTabsSearchProvider } from './MDXTabs'
 import { DocsVersionPickerPortal } from './DocsVersionPicker'
 import type { DocsVersionFrontmatter } from './docsVersion'
 
@@ -34,7 +35,9 @@ export function DocsPageFrame({
       <YStack flex={1} minW={0} flexBasis="auto" py="7" px="4 gtSm:6">
         <YStack render="article">
           <Container px={0} maxW={860} position="relative">
-            {children}
+            <MDXTabsSearchProvider search={initialSearch}>
+              {children}
+            </MDXTabsSearchProvider>
           </Container>
 
           <Container px={0} maxW={860}>

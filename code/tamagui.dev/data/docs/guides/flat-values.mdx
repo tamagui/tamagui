@@ -3,18 +3,21 @@ title: Flat Conditional Values
 description: The V3 flat-value syntax and migration workflow
 ---
 
-V3 puts every condition in the value of the property it changes. Tokens and
-theme values are bare names. Each property accepts a typed object or string
-clauses; the two spellings render identically. V2 condition objects such as
+<IntroParagraph>
+  V3 puts every condition in the value of the property it changes. Each
+  property accepts string clauses or a typed object, and both render identically.
+</IntroParagraph>
+
+Tokens and theme values are bare names. V2 condition objects such as
 `hoverStyle={{ backgroundColor: ... }}` have no runtime path.
 
-<MDXTabs id="flat-values-syntax" defaultValue="styled">
+<MDXTabs codeSyntax defaultValue="string">
 <MDXTabs.List>
-  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
   <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+  <MDXTabs.Tab value="typed">Typed</MDXTabs.Tab>
 </MDXTabs.List>
 
-<MDXTabs.Content value="styled">
+<MDXTabs.Content value="typed">
 
 ```tsx
 <html.div
@@ -55,13 +58,13 @@ clause := modifier (":" modifier)* ":" payload
 The base and each payload are ordinary property values. A registered modifier
 chain starts a new clause; the last matching clause wins.
 
-<MDXTabs id="flat-values-grammar" defaultValue="styled">
+<MDXTabs codeSyntax defaultValue="string">
 <MDXTabs.List>
-  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
   <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+  <MDXTabs.Tab value="typed">Typed</MDXTabs.Tab>
 </MDXTabs.List>
 
-<MDXTabs.Content value="styled">
+<MDXTabs.Content value="typed">
 
 ```tsx
 <html.div
@@ -97,13 +100,13 @@ contain spaces. An empty payload is invalid; clear a property with a real value 
 Do not put clauses in the raw `transform` prop. Use the flattened transform
 family instead:
 
-<MDXTabs id="flat-values-transforms" defaultValue="styled">
+<MDXTabs codeSyntax defaultValue="string">
 <MDXTabs.List>
-  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
   <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+  <MDXTabs.Tab value="typed">Typed</MDXTabs.Tab>
 </MDXTabs.List>
 
-<MDXTabs.Content value="styled">
+<MDXTabs.Content value="typed">
 
 ```tsx
 <html.div
@@ -184,13 +187,13 @@ while both conditions match.
 Shorthands and longhands merge one property program at a time. A later base
 replaces the earlier base without erasing unrelated clauses:
 
-<MDXTabs id="flat-values-merging" defaultValue="styled">
+<MDXTabs codeSyntax defaultValue="string">
 <MDXTabs.List>
-  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
   <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+  <MDXTabs.Tab value="typed">Typed</MDXTabs.Tab>
 </MDXTabs.List>
 
-<MDXTabs.Content value="styled">
+<MDXTabs.Content value="typed">
 
 ```tsx
 <html.div backgroundColor={{ default: 'gray', hover: 'blue' }} bg="red" />
@@ -219,13 +222,13 @@ replaces the earlier base without erasing unrelated clauses:
 
 A group exposes parent state. A query container supplies dimensions.
 
-<MDXTabs id="flat-values-groups" defaultValue="styled">
+<MDXTabs codeSyntax defaultValue="string">
 <MDXTabs.List>
-  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
   <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+  <MDXTabs.Tab value="typed">Typed</MDXTabs.Tab>
 </MDXTabs.List>
 
-<MDXTabs.Content value="styled">
+<MDXTabs.Content value="typed">
 
 ```tsx
 <html.div group>

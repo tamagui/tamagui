@@ -3,8 +3,11 @@ title: Upgrading to v3
 description: A complete guide for migrating Tamagui v2 apps to Tamagui v3.
 ---
 
-Tamagui v3 removes deprecated APIs, makes tokens and themes more predictable,
-and unifies the overlay Adapt path across Dialog, Popover, Select, and Sheet.
+<IntroParagraph>
+  Tamagui v3 removes deprecated APIs, makes tokens and themes more predictable,
+  and gives every adaptive overlay the same composition model.
+</IntroParagraph>
+
 Most migrations are mechanical, but the Sheet anatomy, token changes, and focus
 behavior should be verified in real screens.
 
@@ -577,13 +580,13 @@ hooks had to gather those objects to produce resolved props and styles. In v3,
 the base value and every conditional clause for a style live on that style's
 single property:
 
-<MDXTabs id="upgrade-property-syntax" defaultValue="styled">
+<MDXTabs codeSyntax defaultValue="string">
 <MDXTabs.List>
-  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
   <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+  <MDXTabs.Tab value="typed">Typed</MDXTabs.Tab>
 </MDXTabs.List>
 
-<MDXTabs.Content value="styled">
+<MDXTabs.Content value="typed">
 
 ```tsx
 <View opacity={{ default: 1, hover: 0.7, sm: 0.8 }} />

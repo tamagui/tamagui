@@ -1,5 +1,5 @@
 import { createMiddleware } from 'one'
-import { getDocsLinkHref } from '~/features/docs/docsVersion'
+import { getDocsLinkHref, getDocsSyntaxParam } from '~/features/docs/docsVersion'
 import fs from 'node:fs'
 import path from 'node:path'
 
@@ -96,7 +96,7 @@ export default createMiddleware(async ({ request, next }) => {
     return Response.redirect(new URL('/ui/focus-scope', url.origin), 301)
   }
 
-  if (url.searchParams.has('syntax')) {
+  if (getDocsSyntaxParam(url.searchParams.get('syntax'))) {
     const href = `${url.pathname}${url.search}`
     const canonicalHref = getDocsLinkHref(href, 'styled')
     if (canonicalHref !== href) {

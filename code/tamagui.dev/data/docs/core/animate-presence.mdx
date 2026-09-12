@@ -3,7 +3,13 @@ title: AnimatePresence
 description: Animate components as they mount and unmount
 ---
 
-AnimatePresence animates direct children before they unmount. It is inspired by and forked from [Framer Motion](https://github.com/framer/motion), but works with any animation driver in Tamagui.
+<IntroParagraph>
+  AnimatePresence animates direct children before they unmount. It works with
+  every animation driver in Tamagui.
+</IntroParagraph>
+
+It is inspired by and forked from
+[Framer Motion](https://github.com/framer/motion).
 
 To use with `@tamagui/core`, install and import `@tamagui/animate-presence`. It's already bundled and exported from `tamagui`.
 
@@ -12,13 +18,13 @@ To use with `@tamagui/core`, install and import `@tamagui/animate-presence`. It'
 Use `enter` and `exit` object keys or string clauses to define how each
 property animates in and out:
 
-<MDXTabs id="presence-values-syntax" defaultValue="styled">
+<MDXTabs codeSyntax defaultValue="string">
 <MDXTabs.List>
-  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
   <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+  <MDXTabs.Tab value="typed">Typed</MDXTabs.Tab>
 </MDXTabs.List>
 
-<MDXTabs.Content value="styled">
+<MDXTabs.Content value="typed">
 
 ```tsx
 import { AnimatePresence, html } from 'tamagui'

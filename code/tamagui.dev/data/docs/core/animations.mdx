@@ -3,6 +3,11 @@ title: Animations
 description: Swap out animation drivers per-platform or at runtime
 ---
 
+<IntroParagraph>
+  Tamagui animates style props through swappable drivers, with the same
+  component API across web and native.
+</IntroParagraph>
+
 <HeroContainer>
   <AnimationsDemo />
 </HeroContainer>
@@ -68,13 +73,13 @@ apply to all animatable styles, similar to setting `all` in a CSS `transition`.
 
 Use a `hover` object key or a `hover:` string clause to animate a state value:
 
-<MDXTabs id="animations-hover-syntax" defaultValue="styled">
+<MDXTabs codeSyntax defaultValue="string">
 <MDXTabs.List>
-  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
   <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+  <MDXTabs.Tab value="typed">Typed</MDXTabs.Tab>
 </MDXTabs.List>
 
-<MDXTabs.Content value="styled">
+<MDXTabs.Content value="typed">
 
 ```tsx
 <html.div transition="quick" scale={{ default: 1, hover: 1.1 }} />
@@ -121,13 +126,13 @@ to change the key.
 Setting an `enter` object key or an `enter:` string clause tells a property to
 start at that value, then animate to its base value after mount:
 
-<MDXTabs id="animations-enter-syntax" defaultValue="styled">
+<MDXTabs codeSyntax defaultValue="string">
 <MDXTabs.List>
-  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
   <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+  <MDXTabs.Tab value="typed">Typed</MDXTabs.Tab>
 </MDXTabs.List>
 
-<MDXTabs.Content value="styled">
+<MDXTabs.Content value="typed">
 
 ```tsx
 <html.div transition="quick" opacity={{ default: 1, enter: 0 }} />

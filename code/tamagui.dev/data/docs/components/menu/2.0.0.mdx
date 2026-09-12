@@ -6,6 +6,11 @@ component: Menu
 package: menu
 ---
 
+<IntroParagraph>
+  Menu presents keyboard-navigable actions, selections, groups, and submenus in
+  a popover or platform-native menu.
+</IntroParagraph>
+
 <HeroContainer>
   <MenuDemo />
 </HeroContainer>
@@ -802,13 +807,13 @@ mouse and keyboard navigation in sync, with only one item highlighted at a time.
 
 When you hover over an item, it receives focus, which activates the `focus:` clause. When you use arrow keys to navigate, focus moves to the new item, removing the highlight from the previous one.
 
-<MDXTabs id="menu-highlight-syntax" defaultValue="styled">
+<MDXTabs codeSyntax defaultValue="string">
 <MDXTabs.List>
-  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
   <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+  <MDXTabs.Tab value="typed">Typed</MDXTabs.Tab>
 </MDXTabs.List>
 
-<MDXTabs.Content value="styled">
+<MDXTabs.Content value="typed">
 
 ```tsx
 // default highlight follows focus

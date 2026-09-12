@@ -3,11 +3,14 @@ title: useTheme
 description: Creating and using theme values
 ---
 
-Access the current theme in context with `useTheme`. Tamagui themes operate much
-the same as
-[CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
-do, and so
-[they can nest and override each other contextually](/docs/intro/themes).
+<IntroParagraph>
+  `useTheme` reads the current theme as a typed object whose values update with
+  the surrounding theme context.
+</IntroParagraph>
+
+Tamagui themes operate much like
+[CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties),
+so [they can nest and override each other contextually](/docs/intro/themes).
 
 Note that the object that useTheme returns is the current theme, proxied upwards
 to every parent theme, finally proxying back to your tokens. This means it

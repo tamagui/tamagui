@@ -4,6 +4,13 @@ import { expect, test } from '@playwright/test'
 
 const PAGE = '/docs/guides/how-to-upgrade'
 
+async function waitForDocsHydration(page: import('@playwright/test').Page) {
+  await page.waitForFunction(() => {
+    const button = document.querySelector('[aria-label="Copy code to clipboard"]')
+    return button && Object.keys(button).some((key) => key.startsWith('__reactProps'))
+  })
+}
+
 for (const syntax of ['tailwind', 'unstyled']) {
   test(`${syntax} docs navigate between pages without reloading the document`, async ({
     page,
@@ -206,6 +213,77 @@ test('installation code controls share one row and copy the selected command', a
   await expect
     .poll(() => page.evaluate(() => navigator.clipboard.readText()))
     .toBe(command)
+})
+
+test('conditional code defaults to String and switches without navigating', async ({
+  page,
+  context,
+}) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write'])
+  await page.goto('/docs/intro/styles')
+  const syntax = page.getByRole('tablist', { name: 'code syntax' })
+  const string = syntax.getByRole('tab', { name: 'String', exact: true })
+  const typed = syntax.getByRole('tab', { name: 'Typed', exact: true })
+  await expect(string).toHaveAttribute('aria-selected', 'true')
+  await waitForDocsHydration(page)
+
+  const block = syntax.locator('xpath=following::*[self::pre][1]')
+  await expect(block).toContainText('backgroundColor="red hover:blue')
+  await page.evaluate(() => {
+    ;(window as any).__codeSyntaxMarker = true
+  })
+
+  await typed.click()
+  await expect(page).toHaveURL(/\/docs\/intro\/styles\?syntax=typed$/)
+  await expect(typed).toHaveAttribute('aria-selected', 'true')
+  await expect(block).toContainText('backgroundColor={{')
+  expect(await page.evaluate(() => (window as any).__codeSyntaxMarker)).toBe(true)
+
+  await block.hover()
+  await block.getByRole('button', { name: 'Copy code to clipboard' }).click()
+  await expect
+    .poll(() => page.evaluate(() => navigator.clipboard.readText()))
+    .toContain('backgroundColor={{')
+})
+
+test('a direct Typed URL renders Typed and code controls share the page value', async ({
+  page,
+  request,
+}) => {
+  const response = await request.get('/docs/intro/styles?syntax=typed', {
+    maxRedirects: 0,
+  })
+  expect(response.status()).toBe(200)
+
+  await page.goto('/docs/guides/flat-values?syntax=typed')
+  const syntax = page.getByRole('tablist', { name: 'code syntax' })
+  await expect(syntax).toHaveCount(5)
+  const typedTabs = syntax.getByRole('tab', { name: 'Typed', exact: true })
+  await expect
+    .poll(() =>
+      typedTabs.evaluateAll((tabs) => tabs.every((tab) => tab.ariaSelected === 'true'))
+    )
+    .toBe(true)
+  await waitForDocsHydration(page)
+
+  const string = syntax.first().getByRole('tab', { name: 'String', exact: true })
+  const typed = syntax.first().getByRole('tab', { name: 'Typed', exact: true })
+  await typed.focus()
+  await page.keyboard.press('ArrowLeft')
+  await expect(string).toBeFocused()
+  await page.keyboard.press('Enter')
+  await expect(page).toHaveURL(/\/docs\/guides\/flat-values\?syntax=string$/)
+  const stringTabs = syntax.getByRole('tab', { name: 'String', exact: true })
+  await expect
+    .poll(() =>
+      stringTabs.evaluateAll((tabs) => tabs.every((tab) => tab.ariaSelected === 'true'))
+    )
+    .toBe(true)
+})
+
+test('Tailwind docs omit the conditional code syntax control', async ({ page }) => {
+  await page.goto('/tailwind/guides/flat-values')
+  await expect(page.getByRole('tablist', { name: 'code syntax' })).toHaveCount(0)
 })
 
 test('a direct docs URL keeps its syntax and content with a saved preference', async ({
