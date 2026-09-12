@@ -28,8 +28,10 @@ export const createInterFont = <A extends GenericFont>(
     lineHeight: Object.fromEntries(
       Object.entries(size).map(([k, v]) => [k, sizeLineHeight(getVariableValue(v))])
     ),
+    // 400. this used to default to 300, so every app that took the preset
+    // rendered its body copy a step lighter than it asked for
     weight: {
-      4: '300',
+      4: '400',
     },
     letterSpacing: {
       4: 0,
