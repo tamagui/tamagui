@@ -92,7 +92,7 @@ const features: FeaturePart[][] = [
 
 export default function TamaguiHomePage() {
   return (
-    <YStack gap={{ md: 100 }}>
+    <YStack gap="100px gtMd:0">
       <HeadInfo
         title="Tamagui"
         description="Type-safe styles for React and React Native, with an optimizing compiler and Tailwind compatibility."
@@ -140,16 +140,20 @@ export default function TamaguiHomePage() {
               letterSpacing={-0.2}
               textWrap="balance"
             >
-              The best web style library happens to be the best native one, too.
+              Fast on web. Fast on native.
+              <br />
+              Now, in Typed or Tailwind.
             </H1>
 
             <YStack gap="4" mt="-4">
               <Paragraph size="5" color="color-11">
-                Styles and components that are fast everywhere. On web it's pure React, on
-                native it's React Native.
-                Typed inline styles, or Tailwind classes. Runtime, or build time.
-                Add the Rust compiler or native runtime for best-in-class
-                performance everywhere.
+                Feels like web, runs like native, with zero-cost abstractions from
+                compiler to runtime.
+              </Paragraph>
+
+              <Paragraph size="5" color="color-11">
+                Typed inline styles, or Tailwind classes. Runtime, or build time. Add the
+                Rust compiler or native runtime for best-in-class performance everywhere.
               </Paragraph>
 
               <Paragraph size="5" color="color-11">
