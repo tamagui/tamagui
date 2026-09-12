@@ -257,7 +257,7 @@ const componentsIn = {
   LI,
   Link,
   Strong: (props) => (
-    <Paragraph render="strong" fontSize="inherit" fontWeight="700" {...props} />
+    <Paragraph render="strong" fontSize="inherit" fontWeight="600" {...props} />
   ),
 
   TamaguiExamplesCode,
@@ -436,11 +436,11 @@ const componentsIn = {
     <H2
       position="relative"
       width={`fit-content` as any}
-      mt={32}
+      mt={24}
       mb={12}
       data-heading
-      fontSize={28}
-      lineHeight={36}
+      fontSize={26}
+      lineHeight={34}
       fontWeight="500"
       color="color-12"
       {...props}
@@ -450,14 +450,14 @@ const componentsIn = {
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading data-heading mt={24} mb={8} id={id}>
+    <LinkHeading data-heading mt={18} mb={8} id={id}>
       <H3
         maxW="100%"
         position="relative"
         width={`fit-content` as any}
         id={id}
-        fontSize={23}
-        lineHeight={30}
+        fontSize={22}
+        lineHeight={29}
         color="color-11"
         fontWeight="500"
         {...props}
@@ -624,7 +624,7 @@ const componentsIn = {
   ),
 
   strong: (props) => (
-    <Paragraph render="strong" fontSize="inherit" {...props} fontWeight="700" />
+    <Paragraph render="strong" fontSize="inherit" {...props} fontWeight="600" />
   ),
 
   img: ({ ...props }) => (
