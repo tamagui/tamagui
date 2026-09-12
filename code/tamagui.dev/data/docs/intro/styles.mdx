@@ -151,9 +151,15 @@ type TextStyleBase = BaseViewStyle & {
 Every style prop takes conditions in two spellings, a string of clauses or a
 flat object. These render the same thing:
 
-```tsx
-<html.div backgroundColor="red hover:blue sm:green sm:hover:purple" />
+<MDXTabs id="style" defaultValue="styled">
+<MDXTabs.List>
+  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
+  <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+</MDXTabs.List>
 
+<MDXTabs.Content value="styled">
+
+```tsx
 <html.div
   backgroundColor={{
     default: 'red',
@@ -163,6 +169,17 @@ flat object. These render the same thing:
   }}
 />
 ```
+
+</MDXTabs.Content>
+
+<MDXTabs.Content value="string">
+
+```tsx
+<html.div backgroundColor="red hover:blue sm:green sm:hover:purple" />
+```
+
+</MDXTabs.Content>
+</MDXTabs>
 
 The object keys are the same modifiers the string uses, with `default` for the
 base value. There is no mode to pick, and you can mix them per prop in one

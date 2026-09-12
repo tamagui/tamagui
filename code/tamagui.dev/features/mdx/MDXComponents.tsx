@@ -65,9 +65,11 @@ import { unwrapText } from '~/helpers/unwrapText'
 import { PACKAGE_MANAGERS, pkgCommands, useBashCommand } from '~/hooks/useBashCommand'
 import { useClipboard } from '~/hooks/useClipboard'
 import { DocCodeBlock } from '../docs/DocsCodeBlock'
+import { DocsCollapsible } from '../docs/DocsCollapsible'
 import { HeroContainer } from '../docs/HeroContainer'
 import { Highlights } from '../docs/Highlights'
 import { InlineTabs } from '../docs/InlineTabs'
+import { MDXTabs } from '../docs/MDXTabs'
 import { PropsTable } from '../docs/PropsTable'
 import { VersionSwitcher } from '../docs/VersionSwitcher'
 import * as Demos from '../docs/demos'
@@ -202,6 +204,8 @@ const TableHighlight = styled(YStack, {
 const componentsIn = {
   Tabs: CustomTabs,
   InlineTabs: InlineTabs,
+  MDXTabs,
+  Collapsible: DocsCollapsible,
 
   SocialLinksRow: () => (
     <YStack mt="6" mx="-4">
@@ -486,7 +490,7 @@ const componentsIn = {
       className="docs-paragraph"
       display="block"
       fontSize={16}
-      lineHeight={27}
+      lineHeight={25}
       mt={0}
       mb={16}
       color="color-11"

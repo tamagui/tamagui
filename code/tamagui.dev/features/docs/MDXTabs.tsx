@@ -1,32 +1,31 @@
-import { useStore, useStoreSelector } from '@tamagui/use-store'
-import { forwardRef } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 import type { TabsProps, TabsTabProps } from 'tamagui'
 import { Paragraph, Tabs, XStack, styled, withStaticProperties } from 'tamagui'
 import { type Href, useLocalSearchParams, useRouter } from 'one'
 
-class TabsStore {
-  active = 'styled'
-}
-
 function TabsComponent(props: TabsProps) {
   const router = useRouter()
-  const store = useStore(TabsStore)
   const params = useLocalSearchParams()
 
   const id = props.id || 'value'
+  const valueFromUrl =
+    typeof params[id] === 'string' ? (params[id] as string) : (props.defaultValue ?? '')
+  const [value, setValue] = useState(valueFromUrl)
+
+  useEffect(() => {
+    setValue(valueFromUrl)
+  }, [valueFromUrl])
 
   const updateUrl = (newValue: string) => {
-    store.active = newValue
+    setValue(newValue)
     const url = new URL(location.href)
     url.searchParams.set(id, newValue)
     url.hash = '' // having this set messes with the scroll
-    router.replace(url as Href, {
+
+    router.replace(url.toString() as Href, {
       scroll: false,
     })
   }
-
-  const value =
-    typeof params[id] === 'string' ? (params[id] as string) : (props.defaultValue ?? '')
 
   return (
     <Tabs
@@ -41,8 +40,6 @@ function TabsComponent(props: TabsProps) {
 }
 
 const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
-  const isActive = useStoreSelector(TabsStore, (x) => x.active === props.value)
-
   return (
     <Tabs.Tab
       // disableActiveTheme
@@ -54,9 +51,9 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
       outlineColor="focus:outline-color"
       outlineWidth="focus:2px"
       outlineStyle="focus:solid"
-      {...(isActive && {
+      activeStyle={{
         backgroundColor: 'color-7 hover:color-7 focus:color-7',
-      })}
+      }}
       ref={ref as any}
     >
       <Paragraph size="3">{props.children}</Paragraph>
