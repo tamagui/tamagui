@@ -1,14 +1,14 @@
 ---
 title: Tamagui 3
 publishedAt: '2026-07-10'
-description: Simpler APIs, a web-first core, stronger composition, and Tailwind syntax on the same compiler.
+description: React Strict DOM and Tailwind syntax on one compiler, plus simpler APIs, a web-first core, and stronger composition.
 by: nate
 ---
 
 <IntroParagraph large>
-  Tamagui 3 is the simplification release: fewer legacy aliases, fewer hidden
-  wrappers, more web-standard APIs, and a cleaner path between Tamagui props,
-  composable UI, and Tailwind utility syntax.
+  Tamagui 3 is about simplification, performance, and alignment with the web:
+  fewer legacy aliases, fewer hidden wrappers, more web-standard APIs, and a
+  cleaner path between Tamagui props, composable UI, and Tailwind utility syntax.
 </IntroParagraph>
 
 Tamagui has always been about one source of UI truth across React Native and
@@ -21,8 +21,6 @@ leaving Tamagui's compiler, theme system, or native output behind.
 
 <Notice>Give this blog post and the upgrade guide to your coding agent before migrating.</Notice>
 
-## The theme of v3
-
 Version 3 has three goals:
 
 - **Simplify the core.** Deprecated props and compatibility helpers are gone,
@@ -33,20 +31,25 @@ Version 3 has three goals:
 - **Unify syntax choices.** Tamagui props and Tailwind classes now flow through
   one compiler and one token system instead of competing styling stacks.
 
-## Tamagui Tailwind
+## React Strict DOM and Tamagui Tailwind
 
-The headline new feature is a package-selected Tailwind frontend. Import its
-components and write utility classes in `className`:
+The headline of v3 is two features that arrive together: React Strict DOM and a
+package-selected Tailwind frontend.
+
+React Strict DOM means `html` is the authoring surface. You write real semantic
+elements, and they render as actual DOM on web and their React Native
+equivalents on native. The Tailwind frontend puts utility classes in `className`
+on that same surface:
 
 ```tsx
-import { View } from '@tamagui/tailwind'
+import { html } from '@tamagui/tailwind'
 
 export function Card() {
   return (
-    <View className="flex flex-row items-center gap-3 p-4 rounded-lg bg-slate-100">
-      <View className="w-10 h-10 rounded-full bg-blue-500" />
-      <View className="flex-1 h-2 rounded-md bg-slate-300" />
-    </View>
+    <html.div className="flex flex-row items-center gap-3 p-4 rounded-lg bg-slate-100">
+      <html.div className="w-10 h-10 rounded-full bg-blue-500" />
+      <html.div className="flex-1 h-2 rounded-md bg-slate-300" />
+    </html.div>
   )
 }
 ```
