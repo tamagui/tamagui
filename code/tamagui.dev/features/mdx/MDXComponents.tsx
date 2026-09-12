@@ -496,9 +496,10 @@ const componentsIn = {
 
   a: ({ href = '', children, ...props }) => {
     return (
-      <Link className="link" href={href as Href} asChild>
+      <Link href={href as Href} asChild>
         <Paragraph
           render="a"
+          className="mdx-inline-link"
           fontSize="inherit"
           display="inline"
           cursor="pointer"
