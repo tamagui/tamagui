@@ -3748,7 +3748,28 @@ export function walkConditionalValue(
           : property === 'x' || property === 'y'
             ? 0
             : null
-    if (resting !== null && !(state as DirectState).flatPropertyLayers?.has(property)) {
+    // a transform is emitted under its composition key on the class path, so
+    // the ownership check has to ask about that key. asking for the authored
+    // name always misses there and stamps this base over the styled default
+    // that already owns the property, dropping its lifecycle clauses with it
+    const layers = (state as DirectState).flatPropertyLayers
+    const owned =
+      !canGenerateCSS || !state.flatShouldDoClasses
+        ? layers?.has(property)
+        : property === 'scale'
+          ? layers?.has('--t-scale-x') || layers?.has('--t-scale-y')
+          : layers?.has(
+              property === 'x'
+                ? '--t-x'
+                : property === 'y'
+                  ? '--t-y'
+                  : property === 'scaleX'
+                    ? '--t-scale-x'
+                    : property === 'scaleY'
+                      ? '--t-scale-y'
+                      : property
+            )
+    if (resting !== null && !owned) {
       emitConditionalValue(
         state,
         property,
