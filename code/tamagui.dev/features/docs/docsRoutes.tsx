@@ -46,7 +46,6 @@ export const docsRoutes = [
     section: 'core',
     title: 'Components',
     pages: [
-      { title: 'Props', route: '/docs/intro/props' },
       { title: 'View & Text', route: '/docs/core/view-and-text' },
       { title: 'HTML primitives', route: '/docs/core/html-primitives' },
       { title: 'Tamagui Tailwind', route: '/docs/core/tailwind' },

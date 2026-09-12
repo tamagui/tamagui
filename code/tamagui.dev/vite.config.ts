@@ -408,6 +408,11 @@ export function useGroupMedia() {
             permanent: true,
           },
           {
+            source: '/docs/intro/props',
+            destination: '/docs/core/view-and-text',
+            permanent: true,
+          },
+          {
             source: '/docs/core/variables',
             destination: '/docs/core/theme#inline-values',
             permanent: true,
