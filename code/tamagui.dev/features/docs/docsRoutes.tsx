@@ -66,13 +66,19 @@ export const docsRoutes = [
     ],
   },
 
-  // Hooks section
+  // exports section
   {
     section: 'core',
-    title: 'Hooks',
+    title: 'Exports',
     pages: [
+      { title: 'Overview', route: '/docs/core/exports' },
+      { title: 'Constants', route: '/docs/core/exports#constants' },
+      { title: 'Helpers', route: '/docs/core/exports#helpers' },
+      { title: 'Hooks', route: '/docs/core/exports#hooks' },
       { title: 'useMedia', route: '/docs/core/use-media' },
       { title: 'useTheme', route: '/docs/core/use-theme' },
+      { title: 'Components', route: '/docs/core/exports#components' },
+      { title: 'Type Helpers', route: '/docs/core/exports#type-helpers' },
     ],
   },
 
@@ -130,7 +136,6 @@ export const docsRoutes = [
       { title: 'Developing', route: '/docs/guides/developing' },
       { title: 'create-tamagui', route: '/docs/guides/create-tamagui-app' },
       { title: 'Server Rendering', route: '/docs/core/server-rendering' },
-      { title: 'Extras', route: '/docs/core/exports' },
     ],
   },
 
@@ -239,4 +244,7 @@ export const docsRoutes = [
 ]
 
 export const allDocsRoutes = docsRoutes.flatMap((x) => x.pages || [])
-export const allNotPending = allDocsRoutes.filter((x) => !x['pending'])
+// section anchors belong in the sidebar, not page-to-page navigation
+export const allNotPending = allDocsRoutes.filter(
+  (x) => !x['pending'] && !x.route.includes('#')
+)

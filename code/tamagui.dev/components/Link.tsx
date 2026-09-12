@@ -31,6 +31,11 @@ export const Link = ({ href, replace, asChild, delayNavigate, ...props }: LinkPr
       cursor="pointer"
       {...props}
       {...linkProps}
+      onPress={
+        typeof resolvedHref === 'string' && resolvedHref.includes('#')
+          ? undefined
+          : linkProps.onPress
+      }
       {...(delayNavigate && {
         onPress(e) {
           e.preventDefault()
@@ -65,6 +70,11 @@ export const ParagraphLink = ({
       outlineColor="hover:red"
       {...props}
       {...(linkProps as any)}
+      onPress={
+        typeof resolvedHref === 'string' && resolvedHref.includes('#')
+          ? undefined
+          : linkProps.onPress
+      }
       {...(delayNavigate && {
         onPress(e) {
           e.preventDefault()

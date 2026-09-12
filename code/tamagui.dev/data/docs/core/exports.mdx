@@ -1,24 +1,22 @@
 ---
-title: 'Other exports'
-description: Helpful functions and constants
+title: Exports
+description: Constants, helpers, hooks, components, and types
 ---
 
-Let's take a quick look through some of the useful other exports in
-`@tamagui/core`.
+Import core utilities from `tamagui` or `@tamagui/core`. Ref utilities are
+available from `tamagui` or `@tamagui/element`.
 
 ## Constants
 
 [Constants are re-exported from @tamagui/constants](https://github.com/tamagui/tamagui/blob/main/code/core/constants/src/constants.ts):
 
 - `isWeb` - True if targeting the web. Will be true both for SSR and client.
-- `isBrowser` - `typeof document !== 'undefined'`
+- `isBrowser` - True when both `navigator` and `location` are defined.
 - `isServer` - `isWeb && !isBrowser`.
 - `isClient` - `isWeb && isBrowser`.
-- `useIsomorphicLayoutEffect` - `isServer ? useEffect : useLayoutEffect`. Helper
-  for SSR rendering without warnings.
 - `isChrome` - client-side Chrome
 - `isWebTouchable` - web-only touch-device (client side only)
-- `isTouchable` - True for any touch device (client side only).
+- `isTouchable` - True on native or touch-capable web clients.
 
 ---
 
@@ -171,9 +169,34 @@ const [selectedProps, remainingProps] = splitStyleProps(props, {
 Filter maps infer the selected keys precisely. A callback can return a type
 predicate on `originalKey` when its rule narrows to a known key union.
 
+### getWebElement
+
+A runtime utility that narrows a `TamaguiElement` to an `HTMLElement`. Throws if
+the element is not an HTMLElement. Useful for platform-specific code where you
+know you're on web.
+
+```tsx
+import { getWebElement } from 'tamagui' // or '@tamagui/element'
+
+// Narrows to HTMLElement
+const el = getWebElement(ref.current)
+
+// Or narrow to a specific element type
+const input = getWebElement<HTMLInputElement>(ref.current)
+input.selectionStart // typed correctly
+```
+
 ---
 
 ## Hooks
+
+See [useMedia](/docs/core/use-media) for media queries and
+[useTheme](/docs/core/use-theme) for theme values.
+
+### useIsomorphicLayoutEffect
+
+Uses `useEffect` on the server and `useLayoutEffect` on the client to avoid
+layout effect warnings during server rendering.
 
 ### useWebRef
 
@@ -228,23 +251,6 @@ function MyInput(props, forwardedRef) {
 }
 ```
 
-### getWebElement
-
-A runtime utility that narrows a `TamaguiElement` to an `HTMLElement`. Throws if
-the element is not an HTMLElement. Useful for platform-specific code where you
-know you're on web.
-
-```tsx
-import { getWebElement } from 'tamagui' // or '@tamagui/element'
-
-// Narrows to HTMLElement
-const el = getWebElement(ref.current)
-
-// Or narrow to a specific element type
-const input = getWebElement<HTMLInputElement>(ref.current)
-input.selectionStart // typed correctly
-```
-
 ### useThemeName
 
 Returns the string name of the current theme.
@@ -258,6 +264,8 @@ side, not server side).
 
 SSR-friendly, returns true if SSR has completed on the client, false before
 hydration done. On server it's always false.
+
+## Components
 
 ### ClientOnly
 
