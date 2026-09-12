@@ -1,0 +1,167 @@
+---
+title: Settings
+description: Strictness, SSR, theme class placement, and other createTamagui settings.
+---
+
+Pass a `settings` object to `createTamagui` to control type strictness, SSR
+behavior, and how themes reach the DOM:
+
+```tsx fileName="tamagui.config.ts"
+export const config = createTamagui({
+  // ...
+  settings: {
+    disableSSR: true,
+    allowedStyleValues: 'somewhat-strict-web',
+    defaultFont: 'body',
+  },
+})
+```
+
+[`@tamagui/config/v6`](/docs/core/config-v6) sets sensible values for all of these.
+Spread `defaultConfig.settings` and override the keys you need.
+
+## Options
+
+<PropsTable
+  data={[
+    {
+      name: `disableSSR`,
+      type: `boolean`,
+      description: `For SSR compatibility on the web, Tamagui renders once with the mediaQueryDefaultActive values for every media query, then renders again with the real values so hydration matches the server. Set this to true to skip the first pass and render with live media state right away, which is what client-only (SPA) apps want. See Server Rendering for the ClientOnly component and related hooks.`,
+    },
+    {
+      name: `defaultFont`,
+      required: false,
+      type: `string`,
+      description: `The key of the font given to createTamagui that text falls back to when it sets no fontFamily, so "body" or "heading".`,
+    },
+    {
+      name: 'mediaQueryDefaultActive',
+      required: false,
+      type: 'Record<string, boolean>',
+      description: `Which media queries count as active on the first render. Used for SSR.`,
+    },
+    {
+      name: 'addThemeClassName',
+      required: false,
+      type: "false | 'html' | 'body'",
+      default: false,
+      description: `Where to put the root theme className on web. Styling <body> with theme CSS variables needs the class on body or above. When false, the class goes on the element TamaguiProvider renders.`,
+    },
+    {
+      name: 'selectionStyles',
+      required: false,
+      type: '(theme) => ({ backgroundColor: Variable | string; color: Variable | string })',
+      default: false,
+      description: `Generates ::selection styles for text selection on the web.`,
+    },
+    {
+      name: 'shouldAddPrefersColorThemes',
+      required: false,
+      type: 'boolean',
+      default: `true`,
+      description: `Generates prefers-color-scheme media queries for your light and dark themes. Increases total CSS size.`,
+    },
+    {
+      name: 'onlyAllowShorthands',
+      required: false,
+      type: 'boolean',
+      default: false,
+      description: `Removes the types for the long-form version of every shorthand you define. See Shorthands.`,
+    },
+    {
+      name: 'styleValueSyntax',
+      required: false,
+      type: `'string' | 'object'`,
+      default: `undefined`,
+      description: `Restrict conditional style values to one syntax. Flat values accept both the string form (bg="red hover:blue") and the object form (bg={{ default: 'red', hover: 'blue' }}). Setting this narrows the types to one form, makes the runtime warn on the other in development, and tells tamagui generate-prompt and the skills to only show that form.`,
+    },
+    {
+      name: `allowedStyleValues`,
+      required: false,
+      type: 'AllowedStyleValuesSetting',
+      description: `Controls type validation of single-token style values. See below. Run tamagui check --strict to validate conditional payloads against the project config too.`,
+    },
+    {
+      name: 'fastSchemeChange',
+      required: false,
+      type: 'boolean',
+      default: false,
+      description: `On iOS, returns color values as DynamicColorIOS so light and dark switches skip a re-render. The defaultTheme you pass to TamaguiProvider must match the current system color scheme.`,
+    },
+    {
+      name: 'optimizeFor',
+      required: false,
+      type: `'updates' | 'first-render'`,
+      default: `'updates' on web, 'first-render' on native`,
+      description: `Chooses the render performance tradeoff. "updates" tracks which theme and media keys each component reads so changes re-render only their consumers, at a small per-component first-render cost. "first-render" skips per-key tracking for the fastest initial render; theme and media changes still apply but re-render coarsely. This is a startup-level setting. Do not change it at runtime.`,
+    },
+  ]}
+/>
+
+## allowedStyleValues
+
+Controls which values the types accept for token-backed style props:
+
+- `false` (default): any string, or number for styles that accept numbers
+- `strict`: only tokens for any token-enabled property
+- `strict-web`: same as strict, plus web-only values like `auto` and `inherit`
+- `somewhat-strict`: tokens, or:
+  - for `space` and `size`: percentage strings or numbers
+  - for `radius`: numbers
+  - for `zIndex`: numbers
+  - for `color`: named colors or rgba and hsla strings
+- `somewhat-strict-web`: same as somewhat-strict, plus web-only values
+
+Pass one value for every category, or an object to set each category on its own:
+
+```tsx
+type AllowedValueSetting =
+  | boolean
+  | 'strict'
+  | 'somewhat-strict'
+  | 'strict-web'
+  | 'somewhat-strict-web'
+
+type AllowedStyleValuesSetting =
+  | AllowedValueSetting
+  | {
+      space?: AllowedValueSetting
+      size?: AllowedValueSetting
+      radius?: AllowedValueSetting
+      zIndex?: AllowedValueSetting
+      color?: AllowedValueSetting
+    }
+```
+
+## Environment variables
+
+A few behaviors are set with environment variables rather than `settings`. Your
+bundler can then drop the code paths you do not use. On web, use the Tamagui Vite or
+Next.js plugin, or define them in your own bundler config. On native the extra size
+is small enough not to matter.
+
+<PropsTable
+  data={[
+    {
+      name: 'TAMAGUI_TARGET',
+      type: `'web' | 'native'`,
+      description: `Which platform the bundle runs on. The Vite and Next.js plugins set it to web. Native builds set it to native on their own.`,
+    },
+    {
+      name: 'TAMAGUI_CSS_VARIABLE_PREFIX',
+      type: 'string',
+      description: `Prefix added to every CSS variable Tamagui generates on web. Use it to avoid collisions with another library's custom properties.`,
+    },
+    {
+      name: 'TAMAGUI_CSS_LAYER',
+      type: 'string',
+      description: `Wraps all generated CSS in a named @layer so other stylesheets can order themselves against it.`,
+    },
+    {
+      name: 'TAMAGUI_DISABLE_NO_THEME_WARNING',
+      type: `'1'`,
+      description: `Silences the development warning when a component renders without any theme. Set it when you use Tamagui without themes on purpose.`,
+    },
+  ]}
+/>

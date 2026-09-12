@@ -1,0 +1,124 @@
+---
+title: Fonts
+description: Define font families with createFont and load custom fonts on native.
+---
+
+Fonts are the one token category with structure. Each family carries its own size,
+line height, weight, and letter spacing scales, so two families can have different
+vertical rhythm. Create one with `createFont` and pass it to `createTamagui` under
+`fonts`:
+
+```tsx fileName="tamagui.config.ts"
+import { createFont, createTamagui, isWeb } from 'tamagui'
+
+const interFont = createFont({
+  family: isWeb ? 'Inter, Helvetica, Arial, sans-serif' : 'Inter',
+  size: {
+    1: 12,
+    2: 14,
+    3: 15,
+    // ...
+  },
+  lineHeight: {
+    1: 17,
+    2: 22,
+    3: 25,
+    // ...
+  },
+  weight: {
+    4: '300',
+    6: '600',
+  },
+  letterSpacing: {
+    4: 0,
+    8: -1,
+  },
+
+  // android needs the weight mapped to the font file's family name
+  // find it with: otfinfo --family Inter.ttf
+  face: {
+    400: { normal: 'Inter', italic: 'Inter-Italic' },
+    500: { normal: 'InterBold', italic: 'InterBold-Italic' },
+  },
+})
+
+export const config = createTamagui({
+  fonts: {
+    heading: interFont,
+    body: interFont,
+  },
+  // ...
+})
+```
+
+Keys can be any string. The `tamagui` components expect number keys `1` through `10`
+on `size`, so [headings](/ui/headings) and sized text resolve automatically.
+
+`createFont` fills gaps for you. When `lineHeight`, `weight`, or `letterSpacing`
+define fewer keys than `size`, each missing key carries the previous value forward,
+and keys before the first one you define take that first value:
+
+```tsx
+const systemFont = createFont({
+  family: isWeb ? 'Helvetica, Arial, sans-serif' : 'System',
+  size: { 1: 12, 2: 14, 3: 15 },
+  lineHeight: { 2: 22 }, // 1 becomes 22
+  weight: { 1: '300', 3: '600' }, // 2 becomes 300
+  letterSpacing: { 1: 0, 2: -1 }, // 3 becomes -1
+})
+```
+
+Set `settings.defaultFont` to the key of the family that text should use when no
+`fontFamily` is given. See [Settings](/docs/core/settings).
+
+## Face
+
+On Android, React Native picks a font file by name and ignores `fontWeight`. The
+`face` map tells Tamagui which file name to use for each weight and style. Without
+it, every weight renders with the same file. iOS and web ignore `face`.
+
+## Loading fonts on native
+
+React Native has to load custom font files before it can use them. Tamagui does not
+handle loading. With Expo, use `useFonts` from `expo-font` and gate rendering on the
+result. The [Expo guide](/docs/guides/expo#loading-fonts) walks through both
+`@tamagui/font-inter` and `@expo-google-fonts`. Without Expo, follow the React Native
+docs for linking font assets.
+
+The name you load must match the name used in `family` and in `face`:
+
+```tsx fileName="App.tsx"
+import { useFonts } from 'expo-font'
+
+function App() {
+  const [loaded] = useFonts({
+    Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
+    InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
+  })
+
+  if (!loaded) {
+    return null
+  }
+
+  return <MyApp />
+}
+```
+
+## Using font tokens
+
+Text components read a family with `fontFamily`. Style props such as `fontSize`
+and `lineHeight` accept a key from that family's scale. `SizableText`, `Paragraph`,
+and the headings take a `size` prop that picks `fontSize`, `lineHeight`, `weight`,
+and `letterSpacing` from the family together:
+
+```tsx
+<Text fontFamily="body" fontSize="3" lineHeight="3">
+  Hello world
+</Text>
+
+<SizableText fontFamily="heading" size="3">
+  Hello world
+</SizableText>
+```
+
+For per-language font switching, see [FontLanguage](/docs/core/font-language).

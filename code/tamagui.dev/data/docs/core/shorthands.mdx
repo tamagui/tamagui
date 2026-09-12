@@ -1,0 +1,57 @@
+---
+title: Shorthands
+description: Map short prop names to any style property.
+---
+
+Shorthands let you write `<html.div px={20} />` instead of
+`<html.div paddingHorizontal={20} />`. Define them on `createTamagui` under
+`shorthands`. Each key maps to one style property:
+
+```tsx fileName="tamagui.config.ts"
+// as const keeps the keys literal so types flow through
+const shorthands = {
+  ac: 'alignContent',
+  ai: 'alignItems',
+  als: 'alignSelf',
+  bg: 'backgroundColor',
+  br: 'borderRadius',
+  f: 'flex',
+  m: 'margin',
+  px: 'paddingHorizontal',
+  w: 'width',
+  // ...
+} as const
+
+export const config = createTamagui({
+  shorthands,
+  // ...
+})
+```
+
+Shorthands work everywhere a style prop works: inline props, `styled`, variants,
+media and pseudo clauses, and the compiler flattens them the same way it flattens
+the long form.
+
+```tsx
+<html.div br="lg" bg="background" px="4" />
+```
+
+[`@tamagui/config/v6`](/docs/core/config-v6) ships with Tailwind-aligned names such
+as `w`, `h`, `p`, `m`, `px`, `rounded`, `items`, and `justify`. Spread
+`defaultConfig.shorthands` to extend them.
+
+## Only allowing shorthands
+
+Set `settings.onlyAllowShorthands` to remove the long-form prop types for every
+property that has a shorthand. Autocomplete then shows one spelling per property:
+
+```tsx fileName="tamagui.config.ts"
+export const config = createTamagui({
+  shorthands,
+  settings: {
+    onlyAllowShorthands: true,
+  },
+})
+```
+
+This is type-level only. The runtime still accepts the long form.

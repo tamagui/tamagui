@@ -1,0 +1,151 @@
+---
+title: TamaguiProvider
+description: Mount your config, generate its CSS, and trim theme JS from the client bundle.
+---
+
+`TamaguiProvider` takes the object returned by `createTamagui` and makes it available
+to every component below it. Render it once at the root of your app:
+
+```tsx line=3-5 fileName="App.tsx"
+import { TamaguiProvider } from 'tamagui'
+import { config } from './tamagui.config'
+
+export default function App() {
+  return (
+    <TamaguiProvider config={config} defaultTheme="light">
+      <AppContents />
+    </TamaguiProvider>
+  )
+}
+```
+
+Import `tamagui.config.ts` in one place near the root. Importing it from many files
+invites circular imports and breaks hot reloading. Other files reach the config
+through style props, `useMedia`, `useTheme`, or getters like `getTokenValue`. The full
+object is available from `getConfig` when you need it.
+
+Set your root theme with `defaultTheme` instead of wrapping the app in `<Theme>`.
+That keeps the [`fastSchemeChange` setting](/docs/core/settings) working on native,
+and lets light and dark switches on web use media query updates during SSR.
+
+## Props
+
+<PropsTable
+  data={[
+    {
+      name: 'config',
+      required: true,
+      type: 'TamaguiInternalConfig',
+      description: `The object returned by createTamagui.`,
+    },
+    {
+      name: 'defaultTheme',
+      required: false,
+      type: 'string',
+      description: `The initial top level theme. Falls back to the first theme in your config when null or undefined, which covers useColorScheme() returning null on the first render.`,
+    },
+    {
+      name: 'disableInjectCSS',
+      required: false,
+      type: 'boolean',
+      description: `By default Tamagui inserts its CSS with useInsertionEffect on load. Turn this on when you serve the CSS yourself, which every SSR setup should. See Generating CSS below.`,
+    },
+    {
+      name: 'insets',
+      required: false,
+      type: '{ top?: number; bottom?: number; left?: number; right?: number }',
+      description: `Safe area insets for iOS. Required for vertical Slider to behave on iOS. Pass the value from the useSafeAreaInsets() hook.`,
+    },
+    {
+      name: 'className',
+      required: false,
+      type: 'string',
+      description: `Extra class names for the root element on web.`,
+    },
+  ]}
+/>
+
+## Generating CSS
+
+On the client, Tamagui injects the CSS for your configuration into `document.head`.
+For production you want that CSS served with the page. Set `disableInjectCSS` on
+`TamaguiProvider`, then pick one of three ways to emit it.
+
+If your framework has server-side layouts, render it inline:
+
+```tsx fileName=app/_layout.tsx
+import { config } from './tamagui.config'
+
+export default () => (
+  <html>
+    <head>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: config.getCSS(),
+        }}
+      />
+    </head>
+    <body>
+      <Slot />
+    </body>
+  </html>
+)
+```
+
+To share one CSS file across every page, use the `outputCSS` option of a bundler
+plugin and import the generated file in your app:
+
+```tsx fileName=vite.config.ts
+import { tamaguiPlugin } from '@tamagui/cli/vite'
+
+export default {
+  plugins: [
+    tamaguiPlugin({
+      config: './src/tamagui.config.ts',
+      outputCSS: './src/tamagui.generated.css',
+    }),
+  ],
+}
+```
+
+Or generate it with the CLI. Create a `tamagui.build.ts`:
+
+```tsx fileName=tamagui.build.ts
+import type { TamaguiBuildOptions } from 'tamagui'
+
+export default {
+  components: ['tamagui'],
+  config: './config/tamagui.config.ts',
+  outputCSS: './tamagui.generated.css',
+} satisfies TamaguiBuildOptions
+```
+
+Then run:
+
+```bash
+npx @tamagui/cli generate
+```
+
+The [CLI guide](/docs/guides/cli#generate) covers `generate` and the other commands.
+
+## Tree shaking themes
+
+Theme JS can reach 20KB or more. Tamagui writes every theme value to a CSS variable,
+and the client can read those variables back from the DOM instead of loading the
+theme object. Dropping themes from the client bundle helps Lighthouse scores.
+
+This only applies to server rendered web apps such as Next.js, One, and Vite SSR.
+The CSS must come from `config.getCSS()` or a bundler plugin's `outputCSS` so it is
+present before hydration. Metro, Expo, and static sites keep their themes in JS.
+
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig, themes } from '@tamagui/config/v6'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui({
+  ...defaultConfig,
+  // only load themes on server - client hydrates from CSS
+  // for non-One Vite apps, use import.meta.env.SSR instead
+  themes: process.env.VITE_ENVIRONMENT === 'client' ? ({} as typeof themes) : themes,
+})
+```
