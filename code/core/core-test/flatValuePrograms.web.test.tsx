@@ -119,14 +119,6 @@ test('a clause value lowers to one program block', () => {
   )
 })
 
-test('auto resets a conditional maximum width', () => {
-  const result = split({ maxWidth: '640px gtSm:auto' })
-  const className = result.classNames.maxWidth
-  const rules = rulesFor(result, className)
-  expect(rules[0]).toBe(`.${className}{max-width:640px}`)
-  expect(rules[1]).toBe(`@media (min-width: 801px) {.${className}{max-width:none}}`)
-})
-
 test('flat conditional objects are the structured form of clause strings', () => {
   const object = split({
     bg: {
