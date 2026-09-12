@@ -80,17 +80,60 @@ const softenLightBorder = <Theme extends Record<string, any>>(theme: Theme): The
   }
 }
 
+// V5's neutral light ramp is 100 97 93 85 80 70 59 45, so it drops eight
+// lightness points from color3 to color4 where the steps on either side move
+// four and five. Everything sitting on that step reads two steps off the page
+// instead of one: the default button fill, table cells, code block backgrounds,
+// component preview blocks. 88% is the value that puts the sequence back in
+// order (3 4 5 8 10 11 14) and it leaves color5 where it already is.
+//
+// Only the neutral family has this. Every tinted light theme already steps
+// evenly, and `light_gray` uses 85% at color6 legitimately, so the palette has
+// to be identified before substituting. Sub-themes carry no ramp, only resolved
+// values, which is why this matches on the value rather than on `color-4`:
+// inside this one palette, 85% always means the fourth step of the ramp.
+const NEUTRAL_STEP_4 = 'hsla(0, 0%, 85%, 1)'
+const NEUTRAL_STEP_4_LIFTED = 'hsla(0, 0%, 88%, 1)'
+const tintNames = ['gray', 'blue', 'red', 'yellow', 'green']
+
 const v6Themes = toV6Themes(selectedThemes)
 
+// Membership is decided per object, not per name, because several names share
+// one object and they all have to move together: `dark_brand` IS the light
+// palette (brand inverses), so splitting them would emit a second copy of every
+// selector into the render-blocking stylesheet and leave the two disagreeing.
+//
+// The name is only how the set is seeded. A light-named theme that resolves to a
+// dark fill never gets in, which is what keeps `light_brand` (85% is an accent)
+// and `light_Tooltip` (85% is the text color) out.
+const neutralLightPalette = new Set<object>()
+for (const [themeName, theme] of Object.entries(v6Themes)) {
+  const parts = themeName.split('_')
+  if (parts[0] !== 'light' || parts.some((part) => tintNames.includes(part))) continue
+  const background = hsla.exec(theme.background)
+  if (background && Number(background[3]) > 50) neutralLightPalette.add(theme)
+}
+
+const liftNeutralStep4 = <Theme extends Record<string, any>>(theme: Theme): Theme => {
+  if (!neutralLightPalette.has(theme)) return theme
+  let next: Theme | undefined
+  for (const key of Object.keys(theme)) {
+    if (theme[key] !== NEUTRAL_STEP_4) continue
+    next ??= { ...theme }
+    next[key as keyof Theme] = NEUTRAL_STEP_4_LIFTED as Theme[keyof Theme]
+  }
+  return next ?? theme
+}
+
 // several names alias one object above, so keep that sharing through the edit
-const softened = new Map<object, object>()
+const edited = new Map<object, object>()
 
 export const themes = Object.fromEntries(
   Object.entries(v6Themes).map(([themeName, theme]) => {
-    let next = softened.get(theme)
+    let next = edited.get(theme)
     if (!next) {
-      next = softenLightBorder(theme)
-      softened.set(theme, next)
+      next = softenLightBorder(liftNeutralStep4(theme))
+      edited.set(theme, next)
     }
     return [themeName, next]
   })

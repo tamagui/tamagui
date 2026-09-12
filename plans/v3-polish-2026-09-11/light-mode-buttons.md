@@ -1,92 +1,128 @@
 # Light mode buttons are dark, and it is not the v6 config
 
-All numbers below are RAN: measured with playwright against the running site on
-:8095, light scheme, `/docs/intro/introduction`. `L` is relative luminance on a
-0-100 scale, which is what the eye actually reads, not HSL lightness.
+Landed. All numbers are RAN: measured off the built theme pack and the
+regenerated `tamagui.generated.css`. `L` is HSL lightness where the ramp is
+quoted directly, and relative luminance where steps are compared, because that
+is what the eye reads.
 
-## Short version
+## What was wrong
 
-You are right, and "up 1" is the right instinct. The button fill sits on
-`color-4`, which is on the far side of the single biggest step in the light ramp.
-It is not a v6 setting. The site does not use `@tamagui/config/v6` colors at all.
+V5's neutral light ramp, in HSL lightness:
 
-## The light ramp
+| token | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| lightness | 100 | 97 | 93 | **85** | 80 | 70 | 59 | 45 |
+| step | | 3 | 4 | **8** | 5 | 10 | 11 | 14 |
 
-| token | hex | L | step down from previous |
-| --- | --- | --- | --- |
-| `color-1` | `#ffffff` | 100 | |
-| `color-2` | `#f7f7f7` | 93.0 | 7.0 |
-| `color-3` | `#ededed` | 84.7 | 8.3 |
-| `color-4` | `#d9d9d9` | 69.4 | **15.3** |
-| `color-5` | `#cccccc` | 60.4 | 9.0 |
-| `color-6` | `#b3b3b3` | 45.1 | 15.3 |
+Every step grows except that one. It spikes to 8 and drops back to 5. In relative
+luminance the same cliff reads 8.3, **15.3**, 9.0.
 
-The page background is `color-2` (`#f7f7f7`). The 3 to 4 step is nearly twice the
-steps on either side of it, and the button fill lands on the far side of it. So
-the button is not one step off the page, it is two steps off the page and the
-second step is the outsized one: 23.6 luminance points total.
+It is the only one. I checked every light theme in the pack: `light_gray`,
+`light_blue`, `light_red`, `light_yellow` and `light_green` all step evenly, and
+only the neutral `light` theme trips an automated "this step is more than 1.5x
+both its neighbours" test. The shipped v3 default (`@tamagui/config/v6`) does not
+have it either, so this was a v5-pack problem and not something v3 ships.
 
-That is the whole bug. `color-4` is disproportionately dark for its position in
-the ramp, and the button fill is the most visible thing standing on it.
+## The correction
 
-## What the button actually resolves to
+`color-4` moves from 85% to 88%. That is the value that puts the sequence back in
+order, and it leaves `color-5` exactly where it already sits:
 
-Measured inside the `Button` sub-theme scope:
+| | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| lightness | 100 | 97 | 93 | **88** | 80 | 70 | 59 | 45 |
+| luminance step | | 7.0 | 8.3 | **10.1** | 14.2 | 15.3 | 14.6 | 13.4 |
 
-| state | hex | L | |
-| --- | --- | --- | --- |
-| rest | `#d9d9d9` | 69.4 | |
-| hover | `#ededed` | 84.7 | 15.3 lighter than rest |
-| press | `#cccccc` | 60.4 | 9.0 darker than rest |
+88% is also where the independent target landed: a relative luminance of 76,
+picked to sit between its neighbours, converts to 88.6% lightness.
 
-This ordering is correct and should stay. Hover lightens, press darkens, and the
-rest fill starts below the page background so hover has room to move toward it
-without reaching it. Hover at 84.7 is still 8.3 points clear of the 93.0 page, so
-the button stays a distinct shape under the cursor.
+Applied in `code/packages/tamagui-dev-config/src/themes.ts`, not in
+`@tamagui/themes/v5-subtle`. That pack is v5 compat and must keep rendering v5
+apps identically, the same constraint that made `v5-fonts.ts` pin its scales.
 
-Anything that lifts the rest state has to keep that structure. Shifting the
-triple up a step does not: rest would land on `color-3` (84.7) and hover would
-have to go to `color-2` (93.0), which is the page background exactly, so the
-button would dissolve into the page on hover.
+## Two corrections to what this document used to say
 
-## Where it comes from
+**The button fill was never `color-4`.** It is `background` on the `light_Button`
+sub-theme, an independent key that merely held the same 85%. Sub-themes carry no
+ramp, only resolved values. So the fix had to move both, and a change to
+`color-4` alone would have done nothing to the button.
 
-Not v6. `code/packages/tamagui-dev-config/src/themes.ts` lines 1-2:
+**This does not retire `MAX_LIGHT_BORDER_GAP`.** The old note claimed the cap
+existed only because of this ramp step. Reading the raw pre-cap values: 33 tinted
+light themes have a border more than 8 points below their own background and are
+genuinely moved by the cap, `light_yellow` by 21. The cap stays.
 
-```ts
-import { toV6Themes } from '@tamagui/config/v6-base'
-import { themes as v5Themes } from '@tamagui/themes/v5-subtle'
-```
+## Why the substitution is by value, and scoped per object
 
-The site deliberately keeps the v5-subtle palette and only borrows v6's theme-key
-grammar. So the values are v5's, and `@tamagui/config/v6`'s own colors are not in
-play. Changing the v6 preset would do nothing here.
+Inside the neutral light palette, 85% always means the fourth step of the ramp,
+so matching on the value catches the sub-themes that have no `color-4` key to
+match on. Identifying the palette first is what keeps that safe. Three themes
+would have been corrupted by a blind value substitution:
 
-Worth knowing: this exact ramp step has already bitten the site once, and there is
-a comment in that same file saying so:
+| theme | key at 85% | what it is |
+| --- | --- | --- |
+| `light_gray` | `color-6` | a legitimate sixth step of a different ramp |
+| `light_brand` | `accent-4` | an accent on a dark fill (brand inverses) |
+| `light_Tooltip` | `color-9` | the *text* color on a dark tooltip |
 
-> V5's light gray ramp puts `border-color` on color4, twelve lightness points
-> below a 97% background, so every card, input and code block on the site is
-> outlined in `#d9d9d9`.
+Two conditions seed the set, and each catches what the other misses: the name
+test excludes the tints, and a `background` lightness over 50 excludes the
+light-named themes that resolve to dark fills.
 
-That was fixed with a `MAX_LIGHT_BORDER_GAP = 8` cap on borders. The button fill
-is the same `#d9d9d9` and the same root cause, in a slot the cap does not reach.
+**Membership is then held per object, not per name.** Several names share one
+theme object, and `dark_brand` *is* the light palette, because brand inverses.
+Deciding per name split that object in two: the generated CSS emitted a second
+copy of every `.t_dark_brand*` selector, and the two copies disagreed about
+`color-4`. Seeding the set by name and applying it by object identity keeps the
+aliases together. The check that catches a regression here is that the CSS diff
+changes declaration bodies only and no selector text at all.
 
-## What I would change
+## What moved
 
-Smooth the 3-to-4 step in the light ramp, rather than moving the button off
-`color-4`. Its neighbours step 8.3 and 9.0, so `color-4` should sit around L 76
-instead of 69.4. Every state then rises together and the ordering is untouched:
-rest lifts about 7 points, hover stays on `color-3`, press stays on `color-5`.
+56 themes in the neutral light family, in three shapes:
 
-This is the same fix as the border-gap cap, applied to the ramp itself instead of
-to one consumer, so it also retires that cap's reason for existing. It repaints
-everything else standing on `color-4`, which is the risk and the point: the
-border cap exists because that token is wrong for more than just buttons.
+| count | example | keys |
+| --- | --- | --- |
+| 27 | `light_surface2` | `background` (this is the button fill) |
+| 28 | `light_surface1` | `background-press`, `border-color`, `border-color-hover` |
+| 1 | `light` | `color-4`, `border-color-focus` |
 
-I have not derived the hex or checked what else moves. Say go and I will measure
-every `color-4` consumer on the site first, then land it.
+Site code reading `color-4` directly, all of which lighten by one ramp step:
+`SimpleTable`, `MDXComponents` code blocks, `InlineTabs`, `DocsCollapsible`,
+`DocsQuickNav` (an SVG stroke), `PropsTable`, `IconStack`, `ComponentPreview`,
+`BentoComponentItem`, `CodeWindow`, `CustomTabs`, `StepExportCode`, and a
+text-shadow in `app.css`.
 
-## What I did not check
+## Result
 
-Whether the dark scheme has the mirror problem. Every number here is light only.
+Verified by resolving the variable chain in the regenerated
+`tamagui.generated.css`, not from the source config:
+
+| | before | after |
+| --- | --- | --- |
+| button rest | 85 | **88** |
+| button hover | 93 | 93 |
+| button press | 80 | 80 |
+| page background | 97 | 97 |
+| `light` border (capped) | 89 | 89 |
+
+Rest lifts 3 lightness points, 5.1 in luminance. Hover still lightens and press
+still darkens, which is the convention and was never the problem.
+
+## The one thing left open
+
+3 points is what the ramp allows. Pushing `color-4` further, to 90, would make
+step 3-to-4 equal 3 and step 4-to-5 equal 10, which is the same cliff inverted.
+So if the button should be lighter still, that is a separate decision: move the
+`light_Button` background off the ramp step rather than move the ramp. I have not
+done that, because it trades a smooth ramp for one component.
+
+Also unchecked: whether the dark scheme has a mirror problem. Every number here
+is light only.
+
+## Unrelated thing worth writing down
+
+`light_level2_Button` resolves to `background` 93 on a `light_level2` surface
+whose background is also 93, because v5 ships no Button sub-theme at that level
+and the lookup falls back to the parent. A button inside a level2 surface has no
+fill of its own at rest. That is not this bug and I have not touched it.
