@@ -11,7 +11,17 @@ import { InstallInput } from '~/features/site/home/InstallInput'
 // a superscript marker rather than a second word: at the label's own size it
 // read as heavy as the label and sat on the baseline
 const CtaArrow = () => (
-  <Span fontSize={11} lineHeight={11} ml={1} verticalAlign="top">
+  // verticalAlign top pins it to the line box, which sits above the cap line, so
+  // the arrow floated off the top of the label. the nudge lands its top edge on
+  // the top of the letters
+  <Span
+    fontSize={11}
+    lineHeight={11}
+    ml={1}
+    display="inline-block"
+    verticalAlign="top"
+    y={5}
+  >
     ↗
   </Span>
 )

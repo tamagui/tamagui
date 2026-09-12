@@ -13,21 +13,20 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
 
   return (
     <YStack
-      mb="2"
+      mb="5"
       fd="gtSm:row"
       justifyContent="gtSm:space-between"
       {...(disableTitle && {
         mt: 0,
       })}
     >
-      <YStack
-        minH={142}
-        flex="gtSm:1"
-        maxW={disableLinks ? 'gtSm:100%' : 'gtSm:400px'}
-        mr="gtSm:5"
-      >
+      <YStack flex="gtSm:1" maxW={disableLinks ? 'gtSm:100%' : 'gtSm:400px'} mr="gtSm:5">
         {!disableTitle && (
-          <H2 fontFamily="body" mb={0} fontWeight="800" size="6">
+          // the gap under the title and the gap between items are two different
+          // spacings: the title needs room, the items want almost none. they had
+          // been driven off one value, so tightening the list kept closing up the
+          // title with it
+          <H2 fontFamily="body" mb="3" fontWeight="800" size="6">
             Features
           </H2>
         )}
@@ -40,17 +39,21 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
           gap={0}
           minW={140}
           render="nav"
-          aria-labelledby="site-component-info-header"
+          aria-labelledby="site-component-info-heading"
         >
           <VisuallyHidden>
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>
           <YStack marginTop={0} marginBottom={0} gap="0-5">
             {frontmatter.versions && frontmatter.versions.length > 1 && (
-              <SourceVersionSwitcher
-                versions={frontmatter.versions}
-                componentName={frontmatter.name || frontmatter.component || ''}
-              />
+              // the version switcher reads as this column's heading, so it gets
+              // the title gap while the links below it stay tight
+              <YStack mb="2">
+                <SourceVersionSwitcher
+                  versions={frontmatter.versions}
+                  componentName={frontmatter.name || frontmatter.component || ''}
+                />
+              </YStack>
             )}
 
             <Link

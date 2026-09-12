@@ -124,14 +124,14 @@ const NavLineIndicator = ({
       }}
     >
       {/* Background path (subtle gray) */}
-      <path d={path} fill="none" stroke="var(--color-3)" strokeWidth="1" opacity={0.4} />
+      <path d={path} fill="none" stroke="var(--color-4)" strokeWidth="1" />
 
       {/* Active indicator (animated along path) */}
       <path
         d={path}
         fill="none"
-        stroke="var(--color-8)"
-        strokeWidth="1.5"
+        stroke="var(--color-9)"
+        strokeWidth="2"
         strokeLinecap="round"
         strokeDasharray={`${segmentHalf * 2} ${totalLength}`}
         strokeDashoffset={-(activeDistance - segmentHalf)}
@@ -294,8 +294,6 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
 
           <DocsThemePicker />
 
-          <Separator opacity={0.5} mr="6" />
-
           <YStack
             render="nav"
             aria-labelledby="site-quick-nav-heading"
@@ -304,7 +302,7 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
             display={headings.length === 0 ? 'none' : 'flex'}
             gap="2"
           >
-            <H4 mb="2" color="color-5" size="5" id="site-quick-nav-heading">
+            <H4 mb="2" color="color-10" size="5" id="site-quick-nav-heading">
               Contents
             </H4>
 
