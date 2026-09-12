@@ -42,6 +42,15 @@ export function DocsVersionPicker({
     }
   }, [hydrated, pathname, pendingSearch, searchParams])
 
+  React.useEffect(() => {
+    const syncSearch = () => {
+      setPendingSearch(null)
+      setSearchString(window.location.search.slice(1))
+    }
+    window.addEventListener('popstate', syncSearch)
+    return () => window.removeEventListener('popstate', syncSearch)
+  }, [])
+
   const state = getDocsVersionState({
     pathname,
     search: new URLSearchParams(searchString),
