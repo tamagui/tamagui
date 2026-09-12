@@ -3,10 +3,8 @@ title: Next.js Guide
 description: How to set up Tamagui with Next.js
 ---
 
-<Notice theme="green">
-  Running `npm create tamagui@latest` lets you choose the `starter-free` starter which is
-  a nicely configured Next.js app where you can take or leave whatever you want.
-</Notice>
+Running `npm create tamagui@latest` lets you choose the `starter-free` starter which is
+a nicely configured Next.js app where you can take or leave whatever you want.
 
 Create a new [Next.js](https://nextjs.org/docs/getting-started/installation)
 project:
@@ -135,10 +133,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-<Notice theme="blue">
-  With React 19, Tamagui automatically injects runtime styles via style tags. The
-  `outputCSS` file handles themes and tokens that are generated at build time.
-</Notice>
+With React 19, Tamagui automatically injects runtime styles via style tags. The
+`outputCSS` file handles themes and tokens that are generated at build time.
 
 Run `npx tamagui build` once to generate the initial CSS file, then commit it.
 
@@ -421,10 +417,8 @@ export default class Document extends NextDocument {
 }
 ```
 
-<Notice theme="blue">
-  Tamagui automatically injects styles at runtime. You can optionally generate a static
-  CSS file - see the [Static CSS Output](#static-css-output) section.
-</Notice>
+Tamagui automatically injects styles at runtime. You can optionally generate a static
+CSS file - see the [Static CSS Output](#static-css-output) section.
 
 ### pages/\_app.tsx
 
@@ -581,10 +575,8 @@ Then import it in your `_app.tsx`:
 import '../public/tamagui.generated.css'
 ```
 
-<Notice theme="green">
-  With `outputCSS`, you don't need `getCSS()` in your `_document.tsx` - all styles are
-  handled by the static CSS file and runtime style injection.
-</Notice>
+With `outputCSS`, you don't need `getCSS()` in your `_document.tsx` - all styles are
+handled by the static CSS file and runtime style injection.
 
 ## App Router (Webpack)
 
@@ -672,10 +664,8 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
 }
 ```
 
-<Notice theme="green">
-  The `getNewCSS` helper in Tamagui will keep track of the last call and only return new
-  styles generated since the last usage.
-</Notice>
+The `getNewCSS` helper in Tamagui will keep track of the last call and only return new
+styles generated since the last usage.
 
 Then add it to your `app/layout.tsx`:
 
@@ -795,8 +785,6 @@ Then link the generated CSS file in your `app/layout.tsx`:
 import '../public/tamagui.generated.css'
 ```
 
-<Notice theme="green">
-  With React 19, Tamagui automatically injects runtime styles via style tags on the
-  server. The `outputCSS` file handles themes and tokens generated at build time, so you
-  don't need any `getCSS()` calls in your provider.
-</Notice>
+With React 19, Tamagui automatically injects runtime styles via style tags on the
+server. The `outputCSS` file handles themes and tokens generated at build time, so you
+don't need any `getCSS()` calls in your provider.

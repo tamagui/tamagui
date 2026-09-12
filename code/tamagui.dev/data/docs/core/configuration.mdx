@@ -3,16 +3,11 @@ title: Configuration
 description: Set up media queries, tokens, themes, and more.
 ---
 
-Configuration in Tamagui controls things like tokens, themes, media queries,
-animations, shorthands, and settings.
+Configuration controls tokens, themes, media queries, animations, shorthands, and
+settings. Start with [`@tamagui/config/v6`](/docs/core/config-v6) for default tokens,
+Tailwind-aligned shorthands, and themes.
 
-First, create a `tamagui.config.ts` file.
-
-<Notice theme="blue">
-  We recommend starting with [`@tamagui/config/v6`](/docs/core/config-v6), our preset
-  configuration with sensible defaults, Tailwind-aligned shorthands, and a complete theme
-  system.
-</Notice>
+Create a `tamagui.config.ts` file:
 
 ```bash
 npm install @tamagui/config
@@ -110,11 +105,9 @@ declare module 'tamagui' {
 }
 ```
 
-<Notice theme="green">
-  In this guide we import everything from `tamagui`, but if you are using the lower-level
-  style library only, you can change the imports in this guide out for `@tamagui/core`,
-  which is a strict subset.
-</Notice>
+In this guide we import everything from `tamagui`, but if you are using the lower-level
+style library only, you can change the imports in this guide out for `@tamagui/core`,
+which is a strict subset.
 
 Finally, pass your `config` export to a `<TamaguiProvider />` at the root of
 your app:
@@ -297,10 +290,8 @@ export const tokens = createTokens({
 })
 ```
 
-<Notice theme="green">
-  If using the compiler, your tamagui.config.ts is parsed at build-time. For this reason,
-  we recommend keeping it relatively simple. Avoid importing heavy dependencies.
-</Notice>
+If using the compiler, your tamagui.config.ts is parsed at build-time. For this reason,
+we recommend keeping it relatively simple. Avoid importing heavy dependencies.
 
 ## TamaguiProvider
 
@@ -457,10 +448,8 @@ const interFont = createFont({
 })
 ```
 
-<Notice theme="blue">
-  We use numbered keys as an example, but you can use any strings you'd like. The optional
-  default styles in `tamagui` make use of number keys 1-10.
-</Notice>
+We use numbered keys as an example, but you can use any strings you'd like. The optional
+default styles in `tamagui` make use of number keys 1-10.
 
 This gives you a lot of power over customizing every aspect of your design based
 on each font family. In other styling libraries that follow the Theme UI spec,
