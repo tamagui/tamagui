@@ -1,4 +1,5 @@
 import { TamaguiIconSvg } from '@tamagui/logo'
+import { Check } from '@tamagui/lucide-icons-2'
 import { H1, Paragraph, Span, Text, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
 import { PAGE_MAX_WIDTH } from '~/components/Containers'
@@ -25,6 +26,22 @@ const CtaArrow = () => (
     ↗
   </Span>
 )
+
+const features: { label: string; href: string }[][] = [
+  [{ label: 'Native runtime', href: '/docs/core/native' }],
+  [{ label: 'New Rust compiler', href: '/docs/intro/compiler-install' }],
+  [{ label: 'React Strict DOM html.*', href: '/docs/core/html-primitives' }],
+  [{ label: 'Tailwind support', href: '/docs/core/tailwind' }],
+  [{ label: 'Level-based themes', href: '/docs/core/surfaces' }],
+  [
+    { label: 'Signal-like theme', href: '/docs/core/use-theme' },
+    { label: 'media hooks', href: '/docs/core/use-media' },
+  ],
+  [{ label: '0-rerender animation drivers', href: '/docs/core/animation-drivers' }],
+  [{ label: '0-runtime mode', href: '/docs/guides/zero-runtime' }],
+  [{ label: 'Flat, typed style values', href: '/docs/guides/flat-values' }],
+  [{ label: 'SSR safe nested themes', href: '/docs/intro/themes' }],
+]
 
 export default function TamaguiHomePage() {
   return (
@@ -58,7 +75,14 @@ export default function TamaguiHomePage() {
             width="100%"
             maxW="gtMd:540px"
           >
-            <TamaguiIconSvg width={24} height={24} />
+            <XStack items="center" gap="4">
+              <TamaguiIconSvg width={24} height={24} />
+              <Link asChild href="/blog/version-three">
+                <Text render="a" fontSize={13} color="color-11 hover:color-12">
+                  Version 3 is out ↗
+                </Text>
+              </Link>
+            </XStack>
 
             <H1
               fontSize="28px gtXs:32px gtMd:38px"
@@ -149,6 +173,67 @@ export default function TamaguiHomePage() {
           <YStack width="100% gtMd:460px" flexShrink={0}>
             <HomeStyleToggle />
           </YStack>
+        </XStack>
+      </YStack>
+
+      {/* the hero width (540 + 32 + 460) plus this section's own side padding, so the list lines
+          up with the copy above rather than the wider page container */}
+      <YStack
+        render="section"
+        width="100%"
+        maxW="gtMd:1064px"
+        mx="auto"
+        px="4"
+        py="12 gtMd:16"
+        gap="8"
+      >
+        <Paragraph size="5" color="color-11" maxW={540}>
+          What you get, on every platform. Each one has a page in the docs.
+        </Paragraph>
+
+        <XStack flexWrap="wrap" rowGap="4">
+          {features.map((feature) => (
+            <XStack
+              key={feature[0].href}
+              width="100% gtSm:50%"
+              pr="gtSm:8"
+              items="flex-start"
+              gap="3"
+            >
+              <YStack
+                mt={3}
+                width={16}
+                height={16}
+                rounded={4}
+                borderWidth={1}
+                borderColor="color-6"
+                items="center"
+                justify="center"
+                flexShrink={0}
+              >
+                <Check size={11} color="color-9" />
+              </YStack>
+              <Text fontSize={15} lineHeight={22} color="color-12">
+                {feature.map((link, i) => (
+                  <Span key={link.href}>
+                    {i > 0 ? ' and ' : ''}
+                    <Link asChild href={link.href}>
+                      <Text
+                        render="a"
+                        fontSize="inherit"
+                        lineHeight="inherit"
+                        color="color-12 hover:color-11"
+                        textDecorationLine="underline"
+                        textDecorationColor="color-6"
+                      >
+                        {link.label}
+                      </Text>
+                    </Link>
+                  </Span>
+                ))}
+              </Text>
+            </XStack>
+          ))}
         </XStack>
       </YStack>
     </>
