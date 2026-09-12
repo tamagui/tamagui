@@ -65,9 +65,12 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
   // compute initial open section synchronously (SSR-safe)
   const currentSectionKey = currentPath ? getSectionKeyForPath(currentPath) : ''
 
-  // track open sections - initialized with current section
-  const [openSections, setOpenSections] = React.useState<string[]>(
-    currentSectionKey ? [currentSectionKey] : []
+  // open every section on both the server and the first client render
+  const [openSections, setOpenSections] = React.useState<string[]>(() =>
+    docsRoutes.flatMap((section) => {
+      const key = section.title || section.label
+      return key ? [key] : []
+    })
   )
 
   // update when navigating to a different section
@@ -245,6 +248,7 @@ const AccordionSection = ({
   return (
     <Accordion.Item value={section.title}>
       <Accordion.Trigger
+        group="docs-section"
         padding={0}
         backgroundColor="transparent hover:color-2 press:color-1"
         borderWidth={0}
@@ -266,6 +270,7 @@ const AccordionSection = ({
 
               <YStack
                 transition={{ preset: 'quick', properties: 'transform' }}
+                opacity="0.2 group-hover/docs-section:0.6 group-focus-visible/docs-section:1"
                 rotate={open ? '180deg' : '0deg'}
               >
                 <ChevronDown color="color-8" size="1" />
