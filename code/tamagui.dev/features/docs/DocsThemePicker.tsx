@@ -1,5 +1,6 @@
 import useSWR from 'swr'
 import { XStack } from 'tamagui'
+import { bentoStore } from '~/features/bento/BentoStore'
 import {
   themeBuilderStore,
   useThemeBuilderStore,
@@ -38,6 +39,7 @@ export function DocsThemePicker() {
 
           const theme = data?.themes.find((option) => String(option.id) === value)
           if (theme) {
+            bentoStore.disableTint = false
             themeBuilderStore.updateGenerate(theme.themeData, theme.searchQuery, theme.id)
           }
         }}
