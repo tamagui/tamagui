@@ -1,128 +1,135 @@
-# Light mode buttons are dark, and it is not the v6 config
+# The two neutral ramps each break once
 
 Landed. All numbers are RAN: measured off the built theme pack and the
-regenerated `tamagui.generated.css`. `L` is HSL lightness where the ramp is
-quoted directly, and relative luminance where steps are compared, because that
-is what the eye reads.
+regenerated `tamagui.generated.css`. Steps are CIE L\*, which is the axis the eye
+actually reads; HSL lightness is quoted where the ramp itself is.
+
+## Strict monotonicity is the wrong target
+
+Worth settling first, because it was the premise going in. A 12-step scale is not
+supposed to have evenly growing steps. The steps sit in role bands (1-2 page
+background, 3-5 component fills, 6-8 borders, 9-10 solid, 11-12 text) and the
+boundaries between bands are meant to jump. Radix, measured in L\*:
+
+| | steps |
+| --- | --- |
+| radix gray light | 1 3 3 3 2 4 7 **17** 4 12 **30** |
+| radix slate dark | 4 5 4 3 4 6 10 5 5 **22** 21 |
+
+Radix reverses direction nine times in the light ramp alone, and its single
+biggest step is at 8 to 9, the border-to-solid boundary. So "every step bigger
+than the last" would be a worse scale, not a better one.
+
+The defect worth chasing is a spike **inside** a band: a step more than 1.5x both
+its neighbours, which breaks a smooth run rather than marking a boundary. That
+test found 10 across the site's 12 root themes. Two of them were the neutrals.
 
 ## What was wrong
 
-V5's neutral light ramp, in HSL lightness:
+Both neutral ramps had exactly one, and they mirror each other.
 
-| token | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+| light | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | lightness | 100 | 97 | 93 | **85** | 80 | 70 | 59 | 45 |
-| step | | 3 | 4 | **8** | 5 | 10 | 11 | 14 |
+| L\* step | | 2.8 | 3.5 | **7.4** | 7.1 | 9.1 | 10.9 | 13.6 |
 
-Every step grows except that one. It spikes to 8 and drops back to 5. In relative
-luminance the same cliff reads 8.3, **15.3**, 9.0.
+| dark | 4 | 5 | 6 | 7 | 8 | 9 |
+| --- | --- | --- | --- | --- | --- | --- |
+| lightness | 14 | 20 | 27 | **40** | 47 | 52 |
+| L\* step | | 7.0 | 8.0 | **13.9** | 7.2 | 5.1 |
 
-It is the only one. I checked every light theme in the pack: `light_gray`,
-`light_blue`, `light_red`, `light_yellow` and `light_green` all step evenly, and
-only the neutral `light` theme trips an automated "this step is more than 1.5x
-both its neighbours" test. The shipped v3 default (`@tamagui/config/v6`) does not
-have it either, so this was a v5-pack problem and not something v3 ships.
+Light drops 8 lightness points at step 4 where its neighbours move 4 and 5. Dark
+jumps 13.9 L\* at step 7 where its neighbours move 8.0 and 7.2. Both land inside a
+band, so whatever sits on them reads a step further from the page than it should:
+in light the default button fill, table cells, code blocks and preview blocks; in
+dark the hover borders and focus fills.
 
 ## The correction
 
-`color-4` moves from 85% to 88%. That is the value that puts the sequence back in
-order, and it leaves `color-5` exactly where it already sits:
+`color-4` 85% to **88%**, `color-7` 40% to **36%**. Each is the value that puts
+its sequence back in order without moving the step after it:
 
-| | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| lightness | 100 | 97 | 93 | **88** | 80 | 70 | 59 | 45 |
-| luminance step | | 7.0 | 8.3 | **10.1** | 14.2 | 15.3 | 14.6 | 13.4 |
+| | steps after |
+| --- | --- |
+| neutral light | 2.8 3.5 4.6 7.1 9.1 10.9 13.6 15.7 11.5 7.0 12.8 |
+| neutral dark | 3.6 2.9 4.9 7.0 8.0 9.8 11.4 5.1 14.4 12.1 18.0 |
 
-88% is also where the independent target landed: a relative luminance of 76,
-picked to sit between its neighbours, converts to 88.6% lightness.
+Both now pass the spike test. Neither new value collides with an existing step in
+either ramp, so no two steps merge.
 
 Applied in `code/packages/tamagui-dev-config/src/themes.ts`, not in
 `@tamagui/themes/v5-subtle`. That pack is v5 compat and must keep rendering v5
 apps identically, the same constraint that made `v5-fonts.ts` pin its scales.
 
-## Two corrections to what this document used to say
+## Correction: the first version of this fix had a hole
 
-**The button fill was never `color-4`.** It is `background` on the `light_Button`
-sub-theme, an independent key that merely held the same 85%. Sub-themes carry no
-ramp, only resolved values. So the fix had to move both, and a change to
-`color-4` alone would have done nothing to the button.
+The light fix landed first, scoped by name to "light-named themes that resolve to
+a light background". That missed both places the same ramp shows up under a
+different name:
 
-**This does not retire `MAX_LIGHT_BORDER_GAP`.** The old note claimed the cap
-existed only because of this ramp step. Reading the raw pre-cap values: 33 tinted
-light themes have a border more than 8 points below their own background and are
-genuinely moved by the cap, `light_yellow` by 21. The cap stays.
+- **Every root carries both ramps.** The opposite scheme's lives under `accent-*`.
+  So `light.color-4` moved to 88% while `dark.accent-4` stayed at 85%, and the two
+  copies of one step disagreed.
+- **The accent theme swaps them again.** `light_accent` holds the dark ramp under
+  `color-*`, and `dark_accent` holds the light ramp under `color-*`. A name test
+  keyed on `light`/`dark` gets both backwards.
 
-## Why the substitution is by value, and scoped per object
+Two earlier claims in this document were also wrong and are gone: that the button
+fill sits on `color-4` (it is `background` on `light_Button`, an independent key
+that merely held the same value), and that this retires `MAX_LIGHT_BORDER_GAP`
+(33 tinted light themes have a border more than 8 points below their background,
+`light_yellow` by 21; the cap stays).
 
-Inside the neutral light palette, 85% always means the fourth step of the ramp,
-so matching on the value catches the sub-themes that have no `color-4` key to
-match on. Identifying the palette first is what keeps that safe. Three themes
-would have been corrupted by a blind value substitution:
+## How it is scoped now
 
-| theme | key at 85% | what it is |
-| --- | --- | --- |
-| `light_gray` | `color-6` | a legitimate sixth step of a different ramp |
-| `light_brand` | `accent-4` | an accent on a dark fill (brand inverses) |
-| `light_Tooltip` | `color-9` | the *text* color on a dark tooltip |
+One substitution by value over every non-tinted theme, both strings at once. By
+value rather than by key, because sub-themes carry resolved values and no ramp at
+all, so there is no `color-4` on `light_Button` to match. Across the whole object
+rather than by name, because of the two misses above.
 
-Two conditions seed the set, and each catches what the other misses: the name
-test excludes the tints, and a `background` lightness over 50 excludes the
-light-named themes that resolve to dark fills.
+Inside the non-tinted family each string has exactly one meaning. Gray is
+desaturated like the neutrals and genuinely collides, so tinted names come out
+first, held per object because several names share one: `dark_brand` **is** the
+light palette and `light_brand` **is** the dark one. Deciding per name split those
+objects and the generated CSS emitted a second copy of every `.t_dark_brand*`
+selector with the two copies disagreeing.
 
-**Membership is then held per object, not per name.** Several names share one
-theme object, and `dark_brand` *is* the light palette, because brand inverses.
-Deciding per name split that object in two: the generated CSS emitted a second
-copy of every `.t_dark_brand*` selector, and the two copies disagreed about
-`color-4`. Seeding the set by name and applying it by object identity keeps the
-aliases together. The check that catches a regression here is that the CSS diff
-changes declaration bodies only and no selector text at all.
+**Order matters.** The substitution runs before `softenLightBorder`, which derives
+a capped border from the background. On a 93% surface that cap lands on 85%
+itself, so running it first would hand its own output back to the substitution and
+pull those borders three points off the cap.
 
-## What moved
+## Verification
 
-56 themes in the neutral light family, in three shapes:
+| check | result |
+| --- | --- |
+| selector sets in the generated CSS | 232 before, 232 after, same order, zero added or removed |
+| `.t_dark --color-7` | 40% to 36% |
+| `.t_dark --accent-4` | 85% to 88% |
+| light palette `--accent-7` | 40% to 36% |
+| light palette `--color-4` | 88%, unchanged |
+| `light_gray.color-6` | 85%, untouched |
+| `light.border-color` | 89%, still the 97-8 cap |
+| `light_surface1.border-color` | 85%, still the 93-8 cap |
+| object sharing | `light === dark_brand` and `dark === light_brand` still hold, with equal values |
+| spike scan, 12 roots | 10 before, 8 after; both neutrals clean |
 
-| count | example | keys |
-| --- | --- | --- |
-| 27 | `light_surface2` | `background` (this is the button fill) |
-| 28 | `light_surface1` | `background-press`, `border-color`, `border-color-hover` |
-| 1 | `light` | `color-4`, `border-color-focus` |
+## What is left
 
-Site code reading `color-4` directly, all of which lighten by one ramp step:
-`SimpleTable`, `MDXComponents` code blocks, `InlineTabs`, `DocsCollapsible`,
-`DocsQuickNav` (an SVG stroke), `PropsTable`, `IconStack`, `ComponentPreview`,
-`BentoComponentItem`, `CodeWindow`, `CustomTabs`, `StepExportCode`, and a
-text-shadow in `app.css`.
+The 8 remaining spikes are all tinted themes. Five sit on a band boundary and are
+the same shape Radix has, so they are fine as they are:
 
-## Result
+`light_gray` 8-9, `light_red` 8-9, `dark_yellow` 8-9, `dark_green` 8-9,
+`light_yellow` 10-11.
 
-Verified by resolving the variable chain in the regenerated
-`tamagui.generated.css`, not from the source config:
+Three are genuinely inside a band and would be the next thing to fix, if anyone
+cares about the tinted themes: `dark_gray` 7-8 (11.0 against 5.3 and 5.3),
+`dark_yellow` 4-5 (steps 4 and 5 are nearly the same color), `dark_green` 2-3.
+Nobody has complained about any of them and they are not the page default.
 
-| | before | after |
-| --- | --- | --- |
-| button rest | 85 | **88** |
-| button hover | 93 | 93 |
-| button press | 80 | 80 |
-| page background | 97 | 97 |
-| `light` border (capped) | 89 | 89 |
-
-Rest lifts 3 lightness points, 5.1 in luminance. Hover still lightens and press
-still darkens, which is the convention and was never the problem.
-
-## The one thing left open
-
-3 points is what the ramp allows. Pushing `color-4` further, to 90, would make
-step 3-to-4 equal 3 and step 4-to-5 equal 10, which is the same cliff inverted.
-So if the button should be lighter still, that is a separate decision: move the
-`light_Button` background off the ramp step rather than move the ramp. I have not
-done that, because it trades a smooth ramp for one component.
-
-Also unchecked: whether the dark scheme has a mirror problem. Every number here
-is light only.
-
-## Unrelated thing worth writing down
-
-`light_level2_Button` resolves to `background` 93 on a `light_level2` surface
-whose background is also 93, because v5 ships no Button sub-theme at that level
-and the lookup falls back to the parent. A button inside a level2 surface has no
-fill of its own at rest. That is not this bug and I have not touched it.
+Still open from before: 3 points is what the light ramp allows, so if the button
+should be lighter still, that means taking `light_Button` off the ramp step rather
+than moving the ramp again. And `light_level2_Button` resolves to `background` 93
+on a `light_level2` surface that is also 93, because v5 ships no Button sub-theme
+at that level and the lookup falls back to the parent. A button inside a level2
+surface has no fill of its own at rest. Neither is touched here.
