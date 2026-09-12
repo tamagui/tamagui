@@ -1,8 +1,12 @@
-# The two neutral ramps each break once
+# v5-subtle: nine scales each broke once
 
-Landed. All numbers are RAN: measured off the built theme pack and the
-regenerated `tamagui.generated.css`. Steps are CIE L\*, which is the axis the eye
-actually reads; HSL lightness is quoted where the ramp itself is.
+Landed in `@tamagui/themes/v5-subtle` itself. All numbers are RAN: measured off
+`generated-v5-subtle.ts` and the regenerated `tamagui.generated.css`. Steps are
+CIE L\*, which is the axis the eye actually reads; HSL lightness is quoted where
+the ramp itself is.
+
+`@tamagui/themes/v5` is untouched, deliberately. It stays the byte-exact compat
+anchor for a v5 app; subtle is the opinionated pack and can be corrected.
 
 ## Strict monotonicity is the wrong target
 
@@ -21,115 +25,117 @@ biggest step is at 8 to 9, the border-to-solid boundary. So "every step bigger
 than the last" would be a worse scale, not a better one.
 
 The defect worth chasing is a spike **inside** a band: a step more than 1.5x both
-its neighbours, which breaks a smooth run rather than marking a boundary. That
-test found 10 across the site's 12 root themes. Two of them were the neutrals.
+its neighbours, which breaks a smooth run rather than marking a boundary. Plus
+the degenerate case, two adjacent steps holding the same color. Across the pack's
+28 root themes that found nine distinct broken ramps.
 
-## What was wrong
+## What changed
 
-Both neutral ramps had exactly one, and they mirror each other.
+Eight ramp steps retuned and one duplicate broken up. Each new value is the one
+that evens out the run it sits in, computed rather than eyeballed.
 
-| light | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| lightness | 100 | 97 | 93 | **85** | 80 | 70 | 59 | 45 |
-| L\* step | | 2.8 | 3.5 | **7.4** | 7.1 | 9.1 | 10.9 | 13.6 |
+| ramp | step | was | now |
+| --- | --- | --- | --- |
+| neutral light | color4 | 85% | **87%** |
+| neutral dark | color7 | 40% | **37%** |
+| `light_yellow` | color2 | `hsla(0, 0%, 100%)` | **`hsla(56, 61%, 95%)`** |
+| `light_orange` | color4 | 85% | **86%** |
+| `dark_gray` | color8, color9 | 38%, 43% | **34%, 41%** |
+| `dark_yellow` | color4 | 8% | **10%** |
+| `dark_green` | color2 | 9% | **10%** |
+| `dark_purple` | color8 | 50% | **45%** |
+| `dark_teal` | color4 | 12% | **13%** |
 
-| dark | 4 | 5 | 6 | 7 | 8 | 9 |
-| --- | --- | --- | --- | --- | --- | --- |
-| lightness | 14 | 20 | 27 | **40** | 47 | 52 |
-| L\* step | | 7.0 | 8.0 | **13.9** | 7.2 | 5.1 |
+The two neutrals are the ones the site runs on, and they mirror each other. Light
+dropped 8 lightness points at step 4 where its neighbours moved 4 and 5; dark
+jumped 13.9 L\* at step 7 where its neighbours moved 8.0 and 7.2. Both land inside
+a band, so whatever sits on them read a step further from the page than it
+should: in light the default button fill, table cells, code blocks and preview
+blocks, in dark the hover borders and focus fills.
 
-Light drops 8 lightness points at step 4 where its neighbours move 4 and 5. Dark
-jumps 13.9 L\* at step 7 where its neighbours move 8.0 and 7.2. Both land inside a
-band, so whatever sits on them reads a step further from the page than it should:
-in light the default button fill, table cells, code blocks and preview blocks; in
-dark the hover borders and focus fills.
+`light_yellow` was the worst of the rest. color1 and color2 were both pure white,
+so the theme had eleven distinct values for twelve steps and, because `background`
+is color2 and `backgroundHover` is color1, a yellow surface had no hover step at
+all.
 
-## The correction
-
-`color-4` 85% to **88%**, `color-7` 40% to **36%**. Each is the value that puts
-its sequence back in order without moving the step after it:
-
-| | steps after |
+| ramp | steps before, then after |
 | --- | --- |
-| neutral light | 2.8 3.5 4.6 7.1 9.1 10.9 13.6 15.7 11.5 7.0 12.8 |
-| neutral dark | 3.6 2.9 4.9 7.0 8.0 9.8 11.4 5.1 14.4 12.1 18.0 |
+| neutral light | 2.8 3.5 **7.1** 4.6 9.1 10.9 13.6 15.7 11.5 7.0 12.8 |
+| | 2.8 3.5 **5.3 6.4** 9.1 10.9 13.6 15.7 11.5 7.0 12.8 |
+| neutral dark | 3.6 2.9 4.9 7.0 8.0 **13.9** 7.2 5.1 14.4 12.1 18.0 |
+| | 3.6 2.9 4.9 7.0 8.0 **10.6 10.5** 5.1 14.4 12.1 18.0 |
+| `light_yellow` | **0.0** 5.1 5.9 6.2 5.8 6.1 11.4 11.3 10.7 26.5 15.9 |
+| | **2.4 2.7** 5.9 6.2 5.8 6.1 11.4 11.3 10.7 26.5 15.9 |
+| `light_orange` | 1.8 2.3 **5.3** 3.5 4.9 5.0 7.6 7.5 3.9 8.6 25.1 |
+| | 1.8 2.3 **4.5 4.3** 4.9 5.0 7.6 7.5 3.9 8.6 25.1 |
+| `dark_gray` | 3.8 3.5 3.8 3.3 5.0 5.3 **11.0** 5.3 4.8 22.5 20.1 |
+| | 3.8 3.5 3.8 3.3 5.0 5.3 **6.8 7.4 6.8** 22.5 20.1 |
+| `dark_yellow` | 2.0 2.5 **0.9** 7.8 4.2 9.9 9.2 36.9 7.6 6.9 12.1 |
+| | 2.0 2.5 **4.0 4.8** 4.2 9.9 9.2 36.9 7.6 6.9 12.1 |
+| `dark_green` | **2.7 6.7** 4.3 7.1 4.9 6.5 8.0 12.9 4.0 11.6 14.8 |
+| | **4.2 5.3** 4.3 7.1 4.9 6.5 8.0 12.9 4.0 11.6 14.8 |
+| `dark_purple` | 2.3 6.3 4.6 3.2 5.2 6.8 **10.2 1.5** 5.0 22.2 15.9 |
+| | 2.3 6.3 4.6 3.2 5.2 6.8 **5.8 5.9** 5.0 22.2 15.9 |
+| `dark_teal` | 2.7 4.9 4.4 **8.4** 5.3 6.6 7.7 12.4 4.7 11.8 14.3 |
+| | 2.7 4.9 **6.1 6.8** 5.3 6.6 7.7 12.4 4.7 11.8 14.3 |
 
-Both now pass the spike test. Neither new value collides with an existing step in
-either ramp, so no two steps merge.
+## Why the edit is not simply "change nine strings"
 
-Applied in `code/packages/tamagui-dev-config/src/themes.ts`, not in
-`@tamagui/themes/v5-subtle`. That pack is v5 compat and must keep rendering v5
-apps identically, the same constraint that made `v5-fonts.ts` pin its scales.
+`generated-v5-subtle.ts` holds one deduplicated `colors` pool and every theme
+references it by index, so an index is a value, not a role. Editing one in place
+moves every theme that happens to land on that value. Three of the nine collided:
 
-## Correction: the first version of this fix had a hole
+- **85%** is the neutral light color4 *and* `light_gray` color6. Gray keeps 85%
+  on a new pool entry; the shared slot became 87%.
+- **38%** is `dark_gray` color8 *and* `light_neutral`/`dark_neutral` color11. The
+  neutral family keeps the slot; dark_gray moved to a new entry at 34%.
+- **pure white** is `light_yellow` color2 and roughly a hundred other references,
+  color1 among them. Only the five refs that resolve from color2 moved.
 
-The light fix landed first, scoped by name to "light-named themes that resolve to
-a light background". That missed both places the same ramp shows up under a
-different name:
+That last split needed the role of each key, which `light_yellow` cannot supply
+because its color1 and color2 were identical. `light_blue` has the same node
+shape, so its keys name the roles: `color2`, `background` and `backgroundActive`
+derive from color2, while `color1` and `backgroundHover` derive from color1.
 
-- **Every root carries both ramps.** The opposite scheme's lives under `accent-*`.
-  So `light.color-4` moved to 88% while `dark.accent-4` stayed at 85%, and the two
-  copies of one step disagreed.
-- **The accent theme swaps them again.** `light_accent` holds the dark ramp under
-  `color-*`, and `dark_accent` holds the light ramp under `color-*`. A name test
-  keyed on `light`/`dark` gets both backwards.
+The pool also makes the fix reach places a per-theme edit would miss. Every root
+carries both schemes, the opposite one under `accent*`, and the `_accent` and
+`_Tooltip` subthemes hold the ramp reversed, so the same step appears under four
+different key names. They all share the index, so they all move together.
 
-Two earlier claims in this document were also wrong and are gone: that the button
-fill sits on `color-4` (it is `background` on `light_Button`, an independent key
-that merely held the same value), and that this retires `MAX_LIGHT_BORDER_GAP`
-(33 tinted light themes have a border more than 8 points below their background,
-`light_yellow` by 21; the cap stays).
+## The site config got simpler
 
-## How it is scoped now
-
-One substitution by value over every non-tinted theme, both strings at once. By
-value rather than by key, because sub-themes carry resolved values and no ramp at
-all, so there is no `color-4` on `light_Button` to match. Across the whole object
-rather than by name, because of the two misses above.
-
-Inside the non-tinted family each string has exactly one meaning. Gray is
-desaturated like the neutrals and genuinely collides, so tinted names come out
-first, held per object because several names share one: `dark_brand` **is** the
-light palette and `light_brand` **is** the dark one. Deciding per name split those
-objects and the generated CSS emitted a second copy of every `.t_dark_brand*`
-selector with the two copies disagreeing.
-
-**Order matters.** The substitution runs before `softenLightBorder`, which derives
-a capped border from the background. On a 93% surface that cap lands on 85%
-itself, so running it first would hand its own output back to the substitution and
-pull those borders three points off the cap.
+`tamagui-dev-config/src/themes.ts` was patching these two neutral steps by value
+after the fact, because the pack was treated as frozen. That is gone. The
+substitution is now provably dead: 40% no longer exists in the pool and 85%
+survives only inside the gray family, which the patch excluded anyway.
+`softenLightBorder` stays, it does a different job.
 
 ## Verification
 
 | check | result |
 | --- | --- |
+| resolved values across all 390 theme names | 273 refs changed, every one of them the ten intended values, nothing else |
+| roots with an in-band spike or a duplicated step | 28 before had 9, now 0 |
 | selector sets in the generated CSS | 232 before, 232 after, same order, zero added or removed |
-| `.t_dark --color-7` | 40% to 36% |
-| `.t_dark --accent-4` | 85% to 88% |
-| light palette `--accent-7` | 40% to 36% |
-| light palette `--color-4` | 88%, unchanged |
-| `light_gray.color-6` | 85%, untouched |
-| `light.border-color` | 89%, still the 97-8 cap |
-| `light_surface1.border-color` | 85%, still the 93-8 cap |
-| object sharing | `light === dark_brand` and `dark === light_brand` still hold, with equal values |
-| spike scan, 12 roots | 10 before, 8 after; both neutrals clean |
+| `.t_dark --color-7` | 40% to 37% |
+| `.t_dark --accent-4` | 85% to 87% |
+| light palette `--color-4` | 85% to 87% |
+| `light_gray.color6` | 85%, untouched |
+| `light_neutral.color11` | 38%, untouched |
+| `light_yellow.backgroundHover` | still pure white, now a step above `background` |
+| light palette `border-color` | 89%, still the 97-8 cap |
+| `bun run check` at the repo root | green |
 
 ## What is left
 
-The 8 remaining spikes are all tinted themes. Five sit on a band boundary and are
-the same shape Radix has, so they are fine as they are:
+Nine spikes remain and all nine are at a band boundary, the same shape Radix has:
+`light_gray`, `light_red`, `light_pink`, `light_purple`, `dark_yellow`,
+`dark_green`, `dark_orange` and `dark_teal` at 8-9, and `light_yellow` at 10-11.
+Those are the border-to-solid and solid-to-text jumps and they are meant to be
+there.
 
-`light_gray` 8-9, `light_red` 8-9, `dark_yellow` 8-9, `dark_green` 8-9,
-`light_yellow` 10-11.
-
-Three are genuinely inside a band and would be the next thing to fix, if anyone
-cares about the tinted themes: `dark_gray` 7-8 (11.0 against 5.3 and 5.3),
-`dark_yellow` 4-5 (steps 4 and 5 are nearly the same color), `dark_green` 2-3.
-Nobody has complained about any of them and they are not the page default.
-
-Still open from before: 3 points is what the light ramp allows, so if the button
-should be lighter still, that means taking `light_Button` off the ramp step rather
-than moving the ramp again. And `light_level2_Button` resolves to `background` 93
-on a `light_level2` surface that is also 93, because v5 ships no Button sub-theme
-at that level and the lookup falls back to the parent. A button inside a level2
-surface has no fill of its own at rest. Neither is touched here.
+Two things this does not touch. `light_level2_Button` resolves to `background` 93
+on a `light_level2` surface that is also 93, because v5 ships no Button subtheme
+at that level and the lookup falls back to the parent, so a button inside a level2
+surface has no fill of its own at rest. And `light_yellow` color9 is lighter than
+color8, because a saturated yellow solid is bright; Radix yellow does the same.

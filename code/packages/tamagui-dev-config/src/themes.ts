@@ -80,69 +80,16 @@ const softenLightBorder = <Theme extends Record<string, any>>(theme: Theme): The
   }
 }
 
-// Each neutral ramp breaks once. Light runs 100 97 93 85 80 70 59 45 and drops
-// eight lightness points at step 4 where the steps on either side move four and
-// five. Dark runs 4 8 10 14 20 27 40 47 and jumps 13.9 in CIE L* at step 7 where
-// its neighbours move 8.0 and 7.2. Both are a break inside a band rather than
-// between two, so whatever sits on them reads a step further from the page than
-// it should: in light the default button fill, table cells, code blocks and
-// preview blocks, in dark the hover borders and focus fills.
-//
-// 88% and 36% put each sequence back in order without moving the step after it.
-//
-// The substitution is by value across the whole theme rather than by key or by
-// name, for three reasons. Sub-themes carry resolved values and no ramp at all,
-// so there is no `color-4` on `light_Button` to match. Every root carries BOTH
-// ramps, the opposite scheme's under `accent-*`. And the accent theme swaps them
-// again, so `light_accent` holds the dark ramp under `color-*`. Keying on the
-// name missed the last two and left `dark.accent-4` disagreeing with
-// `light.color-4` about the same step.
-//
-// Inside the non-tinted family each of these two strings has exactly one
-// meaning. Gray is desaturated like the neutrals and genuinely collides
-// (`light_gray` uses 85% at color6), so tinted themes come out first.
-const neutralRampFixes = [
-  ['hsla(0, 0%, 85%, 1)', 'hsla(0, 0%, 88%, 1)'],
-  ['hsla(0, 0%, 40%, 1)', 'hsla(0, 0%, 36%, 1)'],
-] as const
-const tintNames = ['gray', 'blue', 'red', 'yellow', 'green']
-
 const v6Themes = toV6Themes(selectedThemes)
-
-// Exclusion is held per object, not per name, because several names share one
-// object: `dark_brand` IS the light palette and `light_brand` IS the dark one.
-// Deciding per name split those objects in two, and the generated CSS emitted a
-// second copy of every `.t_dark_brand*` selector with the two copies disagreeing.
-// Any object a tinted name points to is out, whichever name reaches it first.
-const tinted = new Set<object>()
-for (const [themeName, theme] of Object.entries(v6Themes)) {
-  if (themeName.split('_').some((part) => tintNames.includes(part))) tinted.add(theme)
-}
-
-const smoothNeutralRamps = <Theme extends Record<string, any>>(theme: Theme): Theme => {
-  if (tinted.has(theme)) return theme
-  let next: Theme | undefined
-  for (const key of Object.keys(theme)) {
-    const fix = neutralRampFixes.find(([from]) => theme[key] === from)
-    if (!fix) continue
-    next ??= { ...theme }
-    next[key as keyof Theme] = fix[1] as Theme[keyof Theme]
-  }
-  return next ?? theme
-}
 
 // several names alias one object above, so keep that sharing through the edit
 const edited = new Map<object, object>()
 
-// the ramps are smoothed first. softenLightBorder derives a capped border from
-// the background, and on a 93% surface that cap lands on 85% itself, so running
-// it first would hand its own output back to the substitution and pull those
-// borders three points off the cap.
 export const themes = Object.fromEntries(
   Object.entries(v6Themes).map(([themeName, theme]) => {
     let next = edited.get(theme)
     if (!next) {
-      next = softenLightBorder(smoothNeutralRamps(theme))
+      next = softenLightBorder(theme)
       edited.set(theme, next)
     }
     return [themeName, next]

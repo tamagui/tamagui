@@ -13,16 +13,16 @@ of the session; every lane is stopped.
 | 6 | Notice background much weaker, site wide | claude | done, `a9def8b71c` |
 | 7 | /docs/intro/agents: cut the fluff, rewrite so it reads well | agy | done, `8322da78dd`, then folded into its parent by `6a8f4873f5` |
 | 8 | Docs nav: fold Style > Components > Props into View & Text | agy | done, `6a8f4873f5` |
-| 9 | Light-mode site buttons read too dark; write up what the v6 config is doing | claude | done, `6ddcd2bfa0` then widened to both ramps |
+| 9 | Light-mode site buttons read too dark; write up what the v6 config is doing | claude | done, `6ddcd2bfa0`, then widened to both ramps, then fixed at source in `v5-subtle` |
 | 10 | Left sidebar version select must cover the core docs too, and adapt properly; grok reviews | agy + grok | done, `07d2023224` and `72a3c568e9` |
 | 11 | Docs should show both the typed and the string style, like the Styling page does | agy | not verified, no commit found |
 | 12 | Notice has stray bottom padding on a single-line notice | claude | done, `a9def8b71c` |
 
 ## Still open
 
-- **Item 9 is closed.** `light-mode-buttons.md` has the measurements. Both neutral
-  ramps had one bad step and both are fixed. What is still open there is the three
-  in-band spikes left in the tinted themes, which nobody has complained about.
+- **Item 9 is closed.** `light-mode-buttons.md` has the measurements. Nine ramps
+  in `v5-subtle` each broke once and all nine are fixed in the pack itself, so the
+  site config no longer patches them. Every spike left is at a band boundary.
 - **Item 11.** No commit touches it. Either it was dropped when the docs
   restructure landed or it was never started.
 - **mdx inline links.** `MDXComponents.tsx` pins them to `Theme name="gray"`.
