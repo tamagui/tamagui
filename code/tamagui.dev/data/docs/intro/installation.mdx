@@ -41,21 +41,6 @@ yarn add tamagui
 The `tamagui` package is a superset of core, so anywhere the docs reference
 `@tamagui/core`, you can replace it with `tamagui`.
 
-<Notice>
-
-Web-only apps need `react-native` as a dev dependency. Native and universal apps
-already have it. Nothing imports it at runtime on web, but Tamagui's prop types
-reference React Native's, so without it you lose typing and autocomplete:
-
-```bash
-yarn add -D react-native
-```
-
-React Native ships its own types, so there's no separate `@types` package. In a
-monorepo, put it in the app or the workspace root rather than a leaf package.
-
-</Notice>
-
 Next, you'll want to set up your [configuration](/docs/core/configuration) and
 provide it with `TamaguiProvider`:
 
@@ -132,7 +117,7 @@ just the above setup.
 
 Once you have Tamagui installed, you'll want to explore:
 
-- **[CLI](/docs/guides/cli)** - Command-line tools for building, optimizing, and
+- **[CLI](/docs/core/cli)** - Command-line tools for building, optimizing, and
   managing your Tamagui projects
 - **[Bundler Setup](/docs/guides/next-js)** - Integration guides for Next.js,
   Expo, Vite, Webpack, Metro, and more

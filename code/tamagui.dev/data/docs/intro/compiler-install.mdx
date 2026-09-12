@@ -362,7 +362,7 @@ compatibility parts of the plugins, plus dev-mode debugging and `data-`
 attributes.
 
 For complete CLI documentation including all available commands, see the
-[CLI Guide](/docs/guides/cli).
+[CLI Guide](/docs/core/cli).
 
 #### Setup
 
@@ -540,7 +540,7 @@ alongside it. Metro/Expo uses `.native.tsx` on native, and web bundlers use `.we
 The Tamagui CLI optimizes your components in-place (or to an output directory),
 then your bundler processes the already-optimized files.
 
-**Learn more:** See the [CLI Guide](/docs/guides/cli) for documentation on all
+**Learn more:** See the [CLI Guide](/docs/core/cli) for documentation on all
 CLI commands including `check`, `generate`, `add`, and more.
 
 ## Props
@@ -663,17 +663,3 @@ import { html } from '@tamagui/core'
 
 export default () => <html.div disableOptimization />
 ```
-
-### Web-only apps
-
-Native and universal apps already have `react-native` installed. Web-only apps
-need it as a dev dependency:
-
-```bash
-yarn add -D react-native
-```
-
-Nothing imports it at runtime on web, but Tamagui's prop types reference React
-Native's, so without it you lose typing and autocomplete. React Native ships its
-own types, so there's no separate `@types` package. In a monorepo, put it in the
-app or the workspace root rather than a leaf package.
