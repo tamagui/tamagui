@@ -6,12 +6,9 @@ All numbers below are RAN: measured with playwright against the running site on
 
 ## Short version
 
-You are right, and "up 1" is exactly the right instinct. The button fill sits on
+You are right, and "up 1" is the right instinct. The button fill sits on
 `color-4`, which is on the far side of the single biggest step in the light ramp.
 It is not a v6 setting. The site does not use `@tamagui/config/v6` colors at all.
-
-There is also a second thing you did not ask about: the hover state is inverted.
-The button gets **lighter** on hover, not darker.
 
 ## The light ramp
 
@@ -29,20 +26,28 @@ steps on either side of it, and the button fill lands on the far side of it. So
 the button is not one step off the page, it is two steps off the page and the
 second step is the outsized one: 23.6 luminance points total.
 
+That is the whole bug. `color-4` is disproportionately dark for its position in
+the ramp, and the button fill is the most visible thing standing on it.
+
 ## What the button actually resolves to
 
 Measured inside the `Button` sub-theme scope:
 
-| state | hex | L |
-| --- | --- | --- |
-| rest | `#d9d9d9` | 69.4 |
-| hover | `#ededed` | 84.7 |
-| press | `#cccccc` | 60.4 |
+| state | hex | L | |
+| --- | --- | --- | --- |
+| rest | `#d9d9d9` | 69.4 | |
+| hover | `#ededed` | 84.7 | 15.3 lighter than rest |
+| press | `#cccccc` | 60.4 | 9.0 darker than rest |
 
-Hover is 15.3 points **lighter** than rest. On a light page the convention is
-that hover darkens slightly, so this reads as the button going flat or
-disappearing under the cursor rather than responding. Press then jumps 24 points
-down from hover. The three states are not ordered.
+This ordering is correct and should stay. Hover lightens, press darkens, and the
+rest fill starts below the page background so hover has room to move toward it
+without reaching it. Hover at 84.7 is still 8.3 points clear of the 93.0 page, so
+the button stays a distinct shape under the cursor.
+
+Anything that lifts the rest state has to keep that structure. Shifting the
+triple up a step does not: rest would land on `color-3` (84.7) and hover would
+have to go to `color-2` (93.0), which is the page background exactly, so the
+button would dissolve into the page on hover.
 
 ## Where it comes from
 
@@ -69,25 +74,18 @@ is the same `#d9d9d9` and the same root cause, in a slot the cap does not reach.
 
 ## What I would change
 
-Shift the whole triple up one step. This fixes the darkness and the inverted
-hover in one move:
+Smooth the 3-to-4 step in the light ramp, rather than moving the button off
+`color-4`. Its neighbours step 8.3 and 9.0, so `color-4` should sit around L 76
+instead of 69.4. Every state then rises together and the ordering is untouched:
+rest lifts about 7 points, hover stays on `color-3`, press stays on `color-5`.
 
-| state | now | proposed |
-| --- | --- | --- |
-| rest | `#d9d9d9` (69.4) | `#ededed` (84.7) |
-| hover | `#ededed` (84.7) | `#d9d9d9` (69.4) |
-| press | `#cccccc` (60.4) | `#cccccc` (60.4) |
+This is the same fix as the border-gap cap, applied to the ramp itself instead of
+to one consumer, so it also retires that cap's reason for existing. It repaints
+everything else standing on `color-4`, which is the risk and the point: the
+border cap exists because that token is wrong for more than just buttons.
 
-Rest becomes one step off the page instead of two. Hover darkens instead of
-lightening. Press keeps its current value and still reads as the firmest state.
-
-The alternative is to cap the light ramp's 3-to-4 step the way the border gap is
-already capped, which fixes every consumer of `color-4` at once rather than the
-button alone. That is the more correct fix and the riskier one, since it repaints
-anything else sitting on `color-4`. I would do the button triple first and look at
-a ramp cap separately.
-
-Say the word and I will make the change. I have not touched it yet.
+I have not derived the hex or checked what else moves. Say go and I will measure
+every `color-4` consumer on the site first, then land it.
 
 ## What I did not check
 
