@@ -796,21 +796,50 @@ A scrollable container for menu items. Use this inside `Menu.Content` when you h
 
 ### Item Highlight Behavior
 
-Menu items use a `focus:` clause for highlighting rather than a `hover:` clause. This ensures a unified highlight experience when switching between mouse and keyboard navigation - only one item is ever highlighted at a time.
+Menu items use the `focus` condition for highlighting. Write it as a typed
+object key or a `focus:` string clause. Focusing the highlighted item keeps
+mouse and keyboard navigation in sync, with only one item highlighted at a time.
 
 When you hover over an item, it receives focus, which activates the `focus:` clause. When you use arrow keys to navigate, focus moves to the new item, removing the highlight from the previous one.
 
-```jsx
-// Default behavior uses the focus clause for highlight
+<MDXTabs id="menu-highlight-syntax" defaultValue="styled">
+<MDXTabs.List>
+  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
+  <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+</MDXTabs.List>
+
+<MDXTabs.Content value="styled">
+
+```tsx
+// default highlight follows focus
 <Menu.Item>
   <Menu.ItemTitle>Settings</Menu.ItemTitle>
 </Menu.Item>
 
-// Custom highlight styling uses focus, not hover
+// customize the focus highlight
+<Menu.Item backgroundColor={{ focus: 'blue-5' }}>
+  <Menu.ItemTitle>Custom Highlight</Menu.ItemTitle>
+</Menu.Item>
+```
+
+</MDXTabs.Content>
+
+<MDXTabs.Content value="string">
+
+```tsx
+// default highlight follows focus
+<Menu.Item>
+  <Menu.ItemTitle>Settings</Menu.ItemTitle>
+</Menu.Item>
+
+// customize the focus highlight
 <Menu.Item backgroundColor="focus:blue-5">
   <Menu.ItemTitle>Custom Highlight</Menu.ItemTitle>
 </Menu.Item>
 ```
+
+</MDXTabs.Content>
+</MDXTabs>
 
 <Notice>
   Avoid using a `hover:` background clause on Menu.Item. This can cause "double

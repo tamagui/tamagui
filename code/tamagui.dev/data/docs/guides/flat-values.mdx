@@ -4,7 +4,29 @@ description: The V3 flat-value syntax and migration workflow
 ---
 
 V3 puts every condition in the value of the property it changes. Tokens and
-theme values are bare names, and condition-object styling has no runtime path.
+theme values are bare names. Each property accepts a typed object or string
+clauses; the two spellings render identically. V2 condition objects such as
+`hoverStyle={{ backgroundColor: ... }}` have no runtime path.
+
+<MDXTabs id="flat-values-syntax" defaultValue="styled">
+<MDXTabs.List>
+  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
+  <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+</MDXTabs.List>
+
+<MDXTabs.Content value="styled">
+
+```tsx
+<html.div
+  bg={{ default: 'background', hover: 'background-hover', dark: 'blue-500' }}
+  p={{ default: '4', sm: '6' }}
+  opacity={{ disabled: 0.5 }}
+/>
+```
+
+</MDXTabs.Content>
+
+<MDXTabs.Content value="string">
 
 ```tsx
 <html.div
@@ -14,9 +36,16 @@ theme values are bare names, and condition-object styling has no runtime path.
 />
 ```
 
+</MDXTabs.Content>
+</MDXTabs>
+
 ## Value grammar
 
-Every conditional style value uses one grammar:
+Typed objects use modifier names as keys and `default` for the base value.
+Compound keys such as `'dark:hover'` require every condition to match. These
+are per-property values, distinct from the removed V2 condition objects.
+
+String clauses use this grammar:
 
 ```txt
 value  := base? clause*
@@ -25,6 +54,28 @@ clause := modifier (":" modifier)* ":" payload
 
 The base and each payload are ordinary property values. A registered modifier
 chain starts a new clause; the last matching clause wins.
+
+<MDXTabs id="flat-values-grammar" defaultValue="styled">
+<MDXTabs.List>
+  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
+  <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+</MDXTabs.List>
+
+<MDXTabs.Content value="styled">
+
+```tsx
+<html.div
+  p={{ default: '4', sm: '6' }}
+  backgroundColor={{ default: 'red', hover: 'blue', 'dark:hover': 'navy' }}
+  width={{ default: '100%', md: '42rem' }}
+  boxShadow={{ default: '0 2px 8px #0003', hover: '0 4px 16px #0004' }}
+  scale={{ default: 1, enter: 0.9, exit: 0.9 }}
+/>
+```
+
+</MDXTabs.Content>
+
+<MDXTabs.Content value="string">
 
 ```tsx
 <html.div
@@ -36,6 +87,9 @@ chain starts a new clause; the last matching clause wins.
 />
 ```
 
+</MDXTabs.Content>
+</MDXTabs>
+
 Payloads run until the next registered modifier chain, including when they
 contain spaces. An empty payload is invalid; clear a property with a real value such as `none`,
 `transparent`, `initial`, or `unset`.
@@ -43,9 +97,31 @@ contain spaces. An empty payload is invalid; clear a property with a real value 
 Do not put clauses in the raw `transform` prop. Use the flattened transform
 family instead:
 
+<MDXTabs id="flat-values-transforms" defaultValue="styled">
+<MDXTabs.List>
+  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
+  <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+</MDXTabs.List>
+
+<MDXTabs.Content value="styled">
+
+```tsx
+<html.div
+  scale={{ default: 1, hover: 1.05 }}
+  rotate={{ default: '0deg', hover: '5deg' }}
+/>
+```
+
+</MDXTabs.Content>
+
+<MDXTabs.Content value="string">
+
 ```tsx
 <html.div scale="1 hover:1.05" rotate="0deg hover:5deg" />
 ```
+
+</MDXTabs.Content>
+</MDXTabs>
 
 ## Token and theme lookup
 
@@ -108,6 +184,26 @@ while both conditions match.
 Shorthands and longhands merge one property program at a time. A later base
 replaces the earlier base without erasing unrelated clauses:
 
+<MDXTabs id="flat-values-merging" defaultValue="styled">
+<MDXTabs.List>
+  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
+  <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+</MDXTabs.List>
+
+<MDXTabs.Content value="styled">
+
+```tsx
+<html.div backgroundColor={{ default: 'gray', hover: 'blue' }} bg="red" />
+// backgroundColor is red; hover is blue
+
+<html.div p={{ default: '4', sm: '6' }} px="2" />
+// left and right bases are 2; their sm clauses remain 6
+```
+
+</MDXTabs.Content>
+
+<MDXTabs.Content value="string">
+
 ```tsx
 <html.div backgroundColor="gray hover:blue" bg="red" />
 // backgroundColor is red; hover is blue
@@ -116,9 +212,38 @@ replaces the earlier base without erasing unrelated clauses:
 // left and right bases are 2; their sm clauses remain 6
 ```
 
+</MDXTabs.Content>
+</MDXTabs>
+
 ## Groups and containers
 
 A group exposes parent state. A query container supplies dimensions.
+
+<MDXTabs id="flat-values-groups" defaultValue="styled">
+<MDXTabs.List>
+  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
+  <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+</MDXTabs.List>
+
+<MDXTabs.Content value="styled">
+
+```tsx
+<html.div group>
+  <html.span color={{ default: 'gray', 'group-hover': 'black' }} />
+</html.div>
+
+<html.div container>
+  <html.span width={{ default: '100%', '@sm': '50%' }} />
+</html.div>
+
+<html.div group="card" container="card">
+  <html.span color={{ default: 'gray', '@sm/card:group-hover/card': 'black' }} />
+</html.div>
+```
+
+</MDXTabs.Content>
+
+<MDXTabs.Content value="string">
 
 ```tsx
 <html.div group>
@@ -134,12 +259,15 @@ A group exposes parent state. A query container supplies dimensions.
 </html.div>
 ```
 
+</MDXTabs.Content>
+</MDXTabs>
+
 Plain `sm:` is a viewport query. `@sm:` measures the nearest query container.
 Only size-measuring media keys register a container form.
 
 ## Editor support
 
-Flat values are strings, so TypeScript can only take autocomplete so far. It
+For the string spelling, TypeScript can only take autocomplete so far. It
 offers each prop's token union plus every bare modifier prefix (`hover:`,
 `sm:`, `dark:`), but not the cross product: that union is over a million
 members, which TypeScript rejects outright and then returns *no* completions at
@@ -188,7 +316,7 @@ tamagui check
 ## Migrate an existing app
 
 The codemod in the Tamagui repository is the migration path. It recognizes old
-token spellings and condition objects, rewrites every statically eligible site,
+token spellings and V2 condition objects, rewrites every statically eligible site,
 and reports anything that still needs a human decision.
 
 For example, this V2 source is migration input only:
@@ -241,7 +369,7 @@ syntax the tool cannot safely infer. Common manual cases include:
 - ordering across an opaque spread that may set the same property.
 
 Fix those rows directly in flat syntax. Do not add a compatibility setting or
-restore a condition-object parser.
+restore a V2 condition-object parser.
 
 After the write, search the migrated source for old authoring:
 

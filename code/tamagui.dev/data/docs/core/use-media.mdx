@@ -37,8 +37,43 @@ Now in any component you may import `useMedia` or add media clauses to style val
 
 ### Inline props
 
+Use media names as typed object keys or string modifiers on the style prop:
+
+<MDXTabs id="use-media-inline-syntax" defaultValue="styled">
+<MDXTabs.List>
+  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
+  <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+</MDXTabs.List>
+
+<MDXTabs.Content value="styled">
+
 ```tsx
-import { Button, XStack, useMedia } from 'tamagui' // note: design system can use @tamagui/core
+import { useState } from 'react'
+import { Button, XStack } from 'tamagui' // note: design system can use @tamagui/core
+
+export default () => {
+  const [x, setX] = useState(0)
+  return (
+    <XStack
+      backgroundColor={{
+        default: 'red',
+        gtSm: 'blue',
+        gtMd: x > 0.5 ? 'green' : 'yellow',
+      }}
+    >
+      <Button onPress={() => setX(Math.random())}>Hello</Button>
+    </XStack>
+  )
+}
+```
+
+</MDXTabs.Content>
+
+<MDXTabs.Content value="string">
+
+```tsx
+import { useState } from 'react'
+import { Button, XStack } from 'tamagui' // note: design system can use @tamagui/core
 
 export default () => {
   const [x, setX] = useState(0)
@@ -51,6 +86,9 @@ export default () => {
   )
 }
 ```
+
+</MDXTabs.Content>
+</MDXTabs>
 
 In this example we are doing mobile-first design, where clauses override the base as the viewport gets wider. The ternary payload in `gtMd:` is extractable with Tamagui and still outputs simple CSS.
 

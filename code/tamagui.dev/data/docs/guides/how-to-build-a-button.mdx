@@ -156,6 +156,28 @@ In v2, `color` is not a direct prop on the Button frame. Instead, style your
 text through `Button.Text`. For interactive color changes on hover or press, use
 Tamagui's `group` prop to coordinate styles between parent and child:
 
+<MDXTabs id="build-button-group-syntax" defaultValue="styled">
+<MDXTabs.List>
+  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
+  <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+</MDXTabs.List>
+
+<MDXTabs.Content value="styled">
+
+```tsx
+export default () => (
+  <Button group="btn" bg="pink">
+    <Button.Text color={{ default: 'blue', 'group-hover/btn': 'red' }}>
+      Hello world
+    </Button.Text>
+  </Button>
+)
+```
+
+</MDXTabs.Content>
+
+<MDXTabs.Content value="string">
+
 ```tsx
 export default () => (
   <Button group="btn" bg="pink">
@@ -165,6 +187,9 @@ export default () => (
   </Button>
 )
 ```
+
+</MDXTabs.Content>
+</MDXTabs>
 
 By setting `group="btn"` on the Button frame, any child can reference that group
 with modifiers such as `group-hover/btn:` and `group-press/btn:`.
@@ -225,6 +250,48 @@ or go ahead and create that starter using `npm create tamagui@latest`.
 With that in mind, we can create the outer frame of the button fairly simply,
 like so:
 
+<MDXTabs id="build-button-frame-syntax" defaultValue="styled">
+<MDXTabs.List>
+  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
+  <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+</MDXTabs.List>
+
+<MDXTabs.Content value="styled">
+
+```tsx
+import { View, styled } from '@tamagui/core'
+
+const ButtonFrame = styled(View, {
+  // displayName sets the React debugging identity
+  displayName: 'Button',
+
+  alignItems: 'center',
+  flexDirection: 'row',
+
+  // bare values look for theme first, then fall back to tokens
+  backgroundColor: {
+    default: 'background',
+    hover: 'background-hover',
+    press: 'background-press',
+  },
+
+  // these all use tokens
+  // note that size tokens are used only for these properties:
+  //   width, height, minWidth, minHeight, maxWidth and maxHeight
+  height: 'md', // 46
+
+  // meanwhile our radius token is used here
+  borderRadius: 'md', // 8
+
+  // and space tokens are used for all others
+  paddingHorizontal: 'sm', // 25
+})
+```
+
+</MDXTabs.Content>
+
+<MDXTabs.Content value="string">
+
 ```tsx
 import { View, styled } from '@tamagui/core'
 
@@ -252,6 +319,9 @@ const ButtonFrame = styled(View, {
 })
 ```
 
+</MDXTabs.Content>
+</MDXTabs>
+
 This gets us a simple rounded rectangle that uses the `md` tokens from your
 design system and the `background` styles from your theme.
 
@@ -261,7 +331,8 @@ reads the active theme's semantic `background` values directly. Components that
 need to sit above their surroundings wrap their frame in an explicit `level2`
 theme boundary.
 
-Finally, the `hover:` and `press:` clauses make the frame respond to interaction.
+Finally, the `hover` and `press` object keys (or `hover:` and `press:` string
+clauses) make the frame respond to interaction.
 
 Next we'll want a Text component to go inside:
 

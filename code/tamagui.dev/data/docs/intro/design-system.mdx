@@ -98,9 +98,31 @@ per-language fonts.
 Named media queries in the config become modifiers on every style prop, keys
 on `useMedia`, and container query names:
 
+<MDXTabs id="design-system-media-syntax" defaultValue="styled">
+<MDXTabs.List>
+  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
+  <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+</MDXTabs.List>
+
+<MDXTabs.Content value="styled">
+
+```tsx
+<html.div
+  flexDirection={{ default: 'column', md: 'row' }}
+  padding={{ default: '4', lg: '8' }}
+/>
+```
+
+</MDXTabs.Content>
+
+<MDXTabs.Content value="string">
+
 ```tsx
 <html.div flexDirection="column md:row" padding="4 lg:8" />
 ```
+
+</MDXTabs.Content>
+</MDXTabs>
 
 The v6 preset defines `xs`, `sm`, `md`, `lg`, `xl`, and `xxl` as min-width
 queries with matching `max-sm` style variants, plus `hoverable` and

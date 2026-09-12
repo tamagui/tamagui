@@ -9,7 +9,40 @@ To use with `@tamagui/core`, install and import `@tamagui/animate-presence`. It'
 
 ## Basic Usage
 
-Use `enter:` and `exit:` clauses to define how each property animates in and out:
+Use `enter` and `exit` object keys or string clauses to define how each
+property animates in and out:
+
+<MDXTabs id="presence-values-syntax" defaultValue="styled">
+<MDXTabs.List>
+  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
+  <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+</MDXTabs.List>
+
+<MDXTabs.Content value="styled">
+
+```tsx
+import { AnimatePresence, html } from 'tamagui'
+
+export const MyComponent = ({ isVisible }) => (
+  <AnimatePresence>
+    {isVisible && (
+      <html.div
+        key="my-square"
+        transition="bouncy"
+        backgroundColor="green"
+        size={50}
+        opacity={{ enter: 0, exit: 0 }}
+        y={{ enter: 10, exit: -10 }}
+        scale={{ enter: 0.9, exit: 0.9 }}
+      />
+    )}
+  </AnimatePresence>
+)
+```
+
+</MDXTabs.Content>
+
+<MDXTabs.Content value="string">
 
 ```tsx
 import { AnimatePresence, html } from 'tamagui'
@@ -30,6 +63,9 @@ export const MyComponent = ({ isVisible }) => (
   </AnimatePresence>
 )
 ```
+
+</MDXTabs.Content>
+</MDXTabs>
 
 Note you don't even need to set `opacity` on the base style. Tamagui knows to normalize
 styles like opacity and scale to 1 (and y to 0) if it's not defined on the base styles

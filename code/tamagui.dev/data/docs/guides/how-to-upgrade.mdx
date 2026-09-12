@@ -36,8 +36,10 @@ separate work. The [agent briefs](/docs/intro/installation#set-up-with-an-agent)
 
 ## Required: migrate tokens and conditional styles
 
-V3 accepts bare token and theme names and flat property clauses only. There is
-no runtime compatibility path for sigil-prefixed values or condition objects.
+V3 accepts bare token and theme names, with conditions expressed as typed
+objects or string clauses on each style property. There is no runtime
+compatibility path for sigil-prefixed values or V2 condition objects such as
+`hoverStyle`.
 Run the codemod from your project root before the API-specific steps below:
 
 ```bash
@@ -575,9 +577,28 @@ hooks had to gather those objects to produce resolved props and styles. In v3,
 the base value and every conditional clause for a style live on that style's
 single property:
 
+<MDXTabs id="upgrade-property-syntax" defaultValue="styled">
+<MDXTabs.List>
+  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
+  <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+</MDXTabs.List>
+
+<MDXTabs.Content value="styled">
+
+```tsx
+<View opacity={{ default: 1, hover: 0.7, sm: 0.8 }} />
+```
+
+</MDXTabs.Content>
+
+<MDXTabs.Content value="string">
+
 ```tsx
 <View opacity="1 hover:0.7 sm:0.8" />
 ```
+
+</MDXTabs.Content>
+</MDXTabs>
 
 The styled component interprets that value. Pass the property through instead
 of flattening the component's styles in JavaScript. If a wrapper must separate

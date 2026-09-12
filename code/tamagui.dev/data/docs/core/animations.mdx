@@ -66,7 +66,32 @@ import { animationsCSS } from '@tamagui/config/animations-css'
 The `transition` prop accepts the name of an animation you've configured. By default, animations will
 apply to all animatable styles, similar to setting `all` in a CSS `transition`.
 
-Here's an example animating a `hover:` clause:
+Use a `hover` object key or a `hover:` string clause to animate a state value:
+
+<MDXTabs id="animations-hover-syntax" defaultValue="styled">
+<MDXTabs.List>
+  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
+  <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+</MDXTabs.List>
+
+<MDXTabs.Content value="styled">
+
+```tsx
+<html.div transition="quick" scale={{ default: 1, hover: 1.1 }} />
+```
+
+</MDXTabs.Content>
+
+<MDXTabs.Content value="string">
+
+```tsx
+<html.div transition="quick" scale="1 hover:1.1" />
+```
+
+</MDXTabs.Content>
+</MDXTabs>
+
+Here is an interactive example:
 
 <HeroContainer>
   <AnimationsHoverDemo />
@@ -93,8 +118,31 @@ to change the key.
 
 ### Enter clauses
 
-Setting an `enter:` clause tells a property to start at that value, then
-animate to its base value after mount:
+Setting an `enter` object key or an `enter:` string clause tells a property to
+start at that value, then animate to its base value after mount:
+
+<MDXTabs id="animations-enter-syntax" defaultValue="styled">
+<MDXTabs.List>
+  <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
+  <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+</MDXTabs.List>
+
+<MDXTabs.Content value="styled">
+
+```tsx
+<html.div transition="quick" opacity={{ default: 1, enter: 0 }} />
+```
+
+</MDXTabs.Content>
+
+<MDXTabs.Content value="string">
+
+```tsx
+<html.div transition="quick" opacity="1 enter:0" />
+```
+
+</MDXTabs.Content>
+</MDXTabs>
 
 <HeroContainer>
   <AnimationsEnterDemo />
