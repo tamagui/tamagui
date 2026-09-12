@@ -2,7 +2,7 @@ import { Check, ChevronDown } from '@tamagui/lucide-icons-2'
 import { type Href, router, usePathname, useSearchParams } from 'one'
 import React from 'react'
 import { createPortal } from 'react-dom'
-import { Select, XStack } from 'tamagui'
+import { Paragraph, Select, XStack, YStack } from 'tamagui'
 import {
   docsProductVersions,
   docsSyntaxes,
@@ -24,11 +24,23 @@ export function DocsVersionPicker({
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [hydrated, setHydrated] = React.useState(false)
-  const searchString = hydrated ? searchParams.toString() : (initialSearch ?? '')
+  const [searchString, setSearchString] = React.useState(initialSearch ?? '')
+  const [pendingSearch, setPendingSearch] = React.useState<string | null>(null)
 
   React.useEffect(() => {
     setHydrated(true)
+    setSearchString(window.location.search.slice(1))
   }, [])
+
+  React.useEffect(() => {
+    if (!hydrated) return
+    const currentSearch = window.location.search.slice(1)
+    if (pendingSearch === null) {
+      setSearchString(currentSearch)
+    } else if (pendingSearch === currentSearch) {
+      setPendingSearch(null)
+    }
+  }, [hydrated, pathname, pendingSearch, searchParams])
 
   const state = getDocsVersionState({
     pathname,
@@ -41,42 +53,59 @@ export function DocsVersionPicker({
 
   if (!isDocsPath) return null
 
+  const navigate = (href: string) => {
+    const nextSearch = new URL(href, window.location.origin).search.slice(1)
+    setPendingSearch(nextSearch)
+    setSearchString(nextSearch)
+    router.push(href as Href)
+  }
+
   const setVersion = (productVersion: string) => {
-    router.push(
+    navigate(
       getDocsVersionHref({
         state,
         productVersion: productVersion as DocsProductVersion,
-      }) as Href
+      })
     )
   }
 
   const setSyntax = (syntax: string) => {
-    router.push(getDocsVersionHref({ state, syntax: syntax as DocsSyntax }) as Href)
+    navigate(getDocsVersionHref({ state, syntax: syntax as DocsSyntax }))
   }
 
   return (
-    <XStack gap="2" items="center" width="100%">
-      <PickerSelect
-        label="Version"
-        value={state.productVersion}
-        items={docsProductVersions.map((version) => ({
-          value: version,
-          label: version,
-        }))}
-        onValueChange={setVersion}
-      />
+    <YStack gap="2" width="100%">
+      <XStack gap="1" items="center" width="100%">
+        <PickerSelect
+          label="Version"
+          testID="docs-version"
+          value={state.productVersion}
+          items={docsProductVersions.map((version) => ({
+            value: version,
+            label: version,
+          }))}
+          onValueChange={setVersion}
+        />
 
-      <PickerSelect
-        label="Syntax"
-        testID="docs-syntax"
-        value={state.syntax}
-        items={docsSyntaxes.map((syntax) => ({
-          value: syntax,
-          label: docsSyntaxLabels[syntax],
-        }))}
-        onValueChange={setSyntax}
-      />
-    </XStack>
+        <PickerSelect
+          label="Syntax"
+          testID="docs-syntax"
+          value={state.syntax}
+          items={docsSyntaxes.map((syntax) => ({
+            value: syntax,
+            label: docsSyntaxLabels[syntax],
+          }))}
+          onValueChange={setSyntax}
+        />
+      </XStack>
+
+      {!state.isComponentDoc && !state.hasArchivedContent && (
+        <Paragraph data-testid="docs-version-fallback" size="1" color="color-9">
+          The latest available page is shown because archived {state.productVersion} prose
+          was not preserved for this route.
+        </Paragraph>
+      )}
+    </YStack>
   )
 }
 
@@ -108,6 +137,9 @@ export function PickerSelect({
   return (
     <Select
       value={value}
+      renderValue={(selectedValue) =>
+        `${label}: ${items.find((item) => item.value === selectedValue)?.label ?? value}`
+      }
       onValueChange={onValueChange}
       disablePreventBodyScroll
       zIndex={200000}
@@ -116,13 +148,13 @@ export function PickerSelect({
         testID={testID}
         flex={1}
         height={28}
-        paddingHorizontal="2"
+        paddingHorizontal="1"
         gap="1"
         backgroundColor="color-1"
         borderWidth={1}
         borderColor="border-color"
         borderRadius="4"
-        minW={label === 'Version' ? 64 : 88}
+        minW={label === 'Version' ? 80 : label === 'Syntax' ? 108 : 120}
       >
         <Select.Value placeholder={label} fontSize="1" />
         <Select.Icon marginLeft="auto">
