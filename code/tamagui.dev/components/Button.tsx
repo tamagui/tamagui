@@ -21,7 +21,13 @@ import {
 export type ButtonSize = SizeTokens
 
 const buttonFrameSizeVariant = styled.dynamic<ButtonSize>((val, env) => {
-  return resolveSize(val, env).frame
+  const { frame, controlHeight } = resolveSize(val, env)
+  return {
+    ...frame,
+    // Keep text buttons at the same outer height as circular buttons. The
+    // resolved control height excludes this frame's 1px border on each side.
+    minHeight: controlHeight + 2,
+  }
 })
 
 const buttonTextSizeVariant = styled.dynamic<ButtonSize>((val, env) => {
