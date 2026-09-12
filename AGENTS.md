@@ -3,15 +3,12 @@
 `CLAUDE.md` is a symlink to this file, so Claude, Codex, and every other agent
 read the same rules. Put durable, repo-wide agent guidance here.
 
-## Finish what you start, then merge it back
+## Finish what you start
 
 The most common failure here is stopping early: a fix left on a branch, a
 migration written but never applied, a "critical, will do next" item dropped.
 Don't do that. If you were asked to do something, it is not done until:
 
-- it is committed, pushed, validated, and **merged back to `main`** (or a PR is
-  opened and driven to merge) — "I left it on a branch" / "I prepared the SQL"
-  is not done;
 - it is **validated at the layer it changes**: typecheck/build for code, a real
   request or Playwright run for site behavior, an applied-and-verified query for
   a DB/RLS change. "Should work" is not validation;
@@ -28,6 +25,12 @@ npm, force-pushing, rotating credentials, or changing prod infra (Cloudflare,
 DNS, Railway settings): pause and confirm for those, and hand them back with the
 exact steps when they block you. Everything else, finish it.
 
+### Subjective work stays uncommitted until review
+
+Do not commit or push subjective visual, design, copy, or UX changes until the
+user has reviewed the live result and explicitly approved it. Leaving those
+changes uncommitted while review is active is intentional, not unfinished work.
+
 ## Worktrees: create in one place, leave none behind
 
 Worktrees pile up. Measured 2026-09-01: the fleet held about 470 linked
@@ -40,8 +43,9 @@ unpushed. Rules:
   handed off, or abandoned) either `git worktree remove <path>` from the primary
   checkout, or leave it clean with every commit pushed to its branch, and say
   which in your final report.
-- Uncommitted work in a worktree at session end is lost work. Commit it to the
-  branch and push, as a `wip:` commit if unfinished, before you stop.
+- Uncommitted work in a worktree at session end is normally lost work. Subjective
+  work awaiting review is the exception: leave the worktree intact and hand off
+  its exact path and status without creating or pushing a `wip:` commit.
 - A long task in the shared checkout that will not be committable for hours
   belongs in a worktree so a co-tenant push cannot publish it half done.
 - Managers prune without asking: any worktree with no live owner, a clean tree,
