@@ -1,0 +1,159 @@
+---
+title: Style props
+description: Every style property Tamagui accepts, and how each renders per platform
+---
+
+Tamagui accepts the React Native style properties on every styled component,
+plus the additions listed here. The full types are exported as `ViewStyle` and
+`TextStyle`. For the base set, see the React Native docs (v3 targets React
+Native 0.82):
+
+- [React Native View style props](https://reactnative.dev/docs/view-style-props)
+- [React Native Text style props](https://reactnative.dev/docs/text-style-props)
+
+Every value may also be a token, a theme key, or a
+[conditional value](/docs/intro/styles#conditional-values).
+
+## Cross-platform additions
+
+These render on web and native.
+
+| Prop | Value | Notes |
+| --- | --- | --- |
+| `boxShadow` | string, object, or array | Accepts theme colors inside the string, such as `"0 0 10px shadow-color"`. |
+| `filter` | CSS filter string | `brightness` and `opacity` everywhere; `blur`, `contrast`, and the rest need Android 12+. |
+| `backgroundImage` | `linear-gradient()` or `radial-gradient()` | Accepts tokens and theme colors. `url()` is web only; use `ImageBackground` on native. |
+| `border` | `"1px solid border-color"` | Expands to width, style, and color per side on native. Native supports one border for all sides. |
+| `outline` | `"2px solid outline-color"` | Expands to `outlineWidth`, `outlineStyle`, and `outlineColor` on native. |
+| `outlineColor`, `outlineWidth`, `outlineOffset`, `outlineStyle` | color, space, space, `solid`, `dotted`, or `dashed` | |
+| `textShadow` | `"2px 2px 4px shadow-color"` | Multiple shadows are web only. |
+| `cursor` | CSS cursor | Web, and iOS 17+ for trackpad, stylus, and gaze. |
+| `position` | `absolute`, `relative`, `fixed`, `static`, `sticky` | `fixed` becomes `absolute` on native. |
+| `display` | `flex`, `none`, `contents`, and the CSS values | |
+| `mixBlendMode` | `normal`, `multiply`, `screen`, `overlay`, and the rest | |
+| `isolation` | `auto` or `isolate` | |
+| `boxSizing` | `border-box` or `content-box` | |
+
+### Flat transforms
+
+Each of these is a top-level prop that folds into the `transform` array:
+
+| Prop | Value |
+| --- | --- |
+| `x`, `y` | number |
+| `scale`, `scaleX`, `scaleY` | number |
+| `rotate`, `rotateX`, `rotateY`, `rotateZ` | string such as `"45deg"` |
+| `skewX`, `skewY` | string |
+| `perspective` | number |
+| `matrix` | number array |
+
+## Web-only props
+
+These are typed and accepted everywhere, and render only on web:
+
+| Group | Props |
+| --- | --- |
+| Background | `background`, `backgroundAttachment`, `backgroundBlendMode`, `backgroundClip`, `backgroundOrigin`, `backgroundPosition`, `backgroundRepeat`, `backgroundSize` |
+| Borders | `borderTop`, `borderRight`, `borderBottom`, `borderLeft`, `borderImage` |
+| Masks | `mask`, `maskImage`, `maskBorder`, `maskBorderMode`, `maskBorderOutset`, `maskBorderRepeat`, `maskBorderSlice`, `maskBorderSource`, `maskBorderWidth`, `maskClip`, `maskComposite`, `maskMode`, `maskOrigin`, `maskPosition`, `maskRepeat`, `maskSize`, `maskType` |
+| Layout | `float`, `overflowBlock`, `overflowInline`, `contain`, `transformStyle` |
+| Effects | `backdropFilter`, `clipPath` |
+| Text and input | `caretColor`, `textEmphasis`, `touchAction` |
+
+## Text props
+
+Text components accept the view props above plus the React Native text
+styles: `color`, `fontFamily`, `fontSize`, `fontStyle`, `fontWeight`,
+`letterSpacing`, `lineHeight`, `textAlign`, `textDecorationColor`,
+`textDecorationLine`, `textDecorationStyle`, `textShadowColor`,
+`textShadowOffset`, `textShadowRadius`, and `textTransform`.
+
+### Font size values
+
+v3 separates raw numbers from exact pixel strings:
+
+```tsx
+<html.span fontSize={17}>Platform line height</html.span>
+<html.span fontSize="17px">Exact px size</html.span>
+```
+
+`fontSize={17}` is a platform value and keeps the platform-default line
+height. `fontSize="17px"` passes through as CSS on web and parses to a number
+on native. The v5 config pins its font `size` and `lineHeight` scales to px
+strings so v2 output is preserved.
+
+## Variables inside shorthand strings
+
+`boxShadow`, `backgroundImage`, `filter`, `border`, `outline`, and
+`textShadow` resolve tokens and theme keys inside the string on both platforms.
+`borderTop` and friends and `background` do the same on web only.
+
+```tsx
+<html.div boxShadow="0 0 10px shadow-color" />
+<html.div boxShadow="0 0 5px shadow-color, 0 0 15px color" />
+<html.div backgroundImage="linear-gradient(to bottom, background, color)" />
+<html.div filter="blur(7px)" />
+
+// web: boxShadow: "0 0 10px var(--t-shadow-shadow-color)"
+// native: boxShadow: "0 0 10px rgba(0,0,0,0.2)"
+```
+
+### border
+
+```tsx
+<html.div border="1px solid border-color" />
+<html.div border="2px dashed red" />
+<html.div border="none" />
+```
+
+On web the shorthand passes straight through. On native it expands to
+`borderTopWidth`, `borderRightWidth`, `borderBottomWidth`, `borderLeftWidth`,
+`borderStyle`, and the four `border*Color` props. Native supports a single
+border for all sides, so use the per-side props for anything else.
+
+### outline
+
+```tsx
+<html.div outline="2px solid outline-color" />
+<html.div outline="1px dashed red" />
+<html.div outline="none" />
+```
+
+On native this expands to `outlineWidth`, `outlineStyle`, and `outlineColor`.
+
+### backgroundImage
+
+```tsx
+<html.div backgroundImage="linear-gradient(to bottom, background, color)" />
+<html.div backgroundImage="radial-gradient(circle, white, black)" />
+```
+
+`linear-gradient()` and `radial-gradient()` work on both platforms. `url()`
+is web only, so use `ImageBackground` for images on native.
+
+### textShadow
+
+```tsx
+<html.span textShadow="2px 2px 4px shadow-color">Shadowed</html.span>
+
+// multiple shadows, web only
+<html.span textShadow="1px 1px 2px shadow-color, 0 0 8px color">Glowing</html.span>
+```
+
+The individual `textShadowColor`, `textShadowOffset`, and `textShadowRadius`
+props also work. Native renders one text shadow.
+
+## rem units
+
+`rem` works on both platforms. Browsers handle it natively, and native
+converts it to pixels using `PixelRatio.getFontScale()`, so it follows the
+user's font size preference:
+
+```tsx
+<html.div padding="1rem" />
+<html.span fontSize="1.5rem" />
+```
+
+The base font size defaults to 16 and is set with
+`settings.remBaseFontSize`. On native, `1rem` with a base of 16 equals
+`16 * PixelRatio.getFontScale()` pixels.

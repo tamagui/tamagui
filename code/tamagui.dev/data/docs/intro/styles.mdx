@@ -1,157 +1,57 @@
 ---
 title: Styling
-description: Tamagui accepts a superset of React Native styles
+description: Style props, conditional values, and the modifiers that control them
 ---
 
-Tamagui supports a superset of the React Native style properties on to any
-styled component: the [`html.*` primitives](/docs/core/html-primitives), the
-base [View and Text components](/docs/core/view-and-text), or through the
-[`styled()` function](/docs/core/styled) as the second argument.
-
-Here's how that looks in practice:
+<IntroParagraph>
+  Styles in Tamagui are props. Every component accepts the React Native style
+  properties plus a set of web additions, and every value can carry conditions
+  for state, screen size, theme, platform, and parent.
+</IntroParagraph>
 
 ```tsx
-import { View, styled } from '@tamagui/core'
+import { html } from 'tamagui'
 
-const StyledView = styled(View, {
-  padding: 10,
-})
-
-const MyView = () => (
-  <StyledView
-    backgroundColor="red hover:green"
-  />
+export const Card = () => (
+  <html.article
+    padding="4 md:6"
+    borderRadius="lg"
+    backgroundColor="background hover:background-hover"
+  >
+    <html.p color="color-11">Hello</html.p>
+  </html.article>
 )
 ```
 
-The types for the full set of styles accepted by styled, View and Text are
-exported as `ViewStyle` and `TextStyle`.
+`padding`, `borderRadius`, and `backgroundColor` are style props. `"4"` and
+`"lg"` are tokens, `background` is a theme key, and `md:` and `hover:` are
+modifiers. That is the whole grammar. The same props go on
+[`html.*`](/docs/intro/components), `View`, `Text`, and the second argument of
+[`styled()`](/docs/core/styled).
 
-For the full base styles, see the React Native docs (version 3 targets React
-Native 0.82):
+## Values
 
-- [React Native View style props](https://reactnative.dev/docs/view-style-props)
-- [React Native Text style props](https://reactnative.dev/docs/text-style-props)
+A style value is one of:
 
-The full Tamagui typed style props can be simplified to something like this,
-except the values can also accept one of your design tokens:
+| Value | Example | Resolves to |
+| --- | --- | --- |
+| Number | `padding={16}` | 16 pixels on every platform |
+| Pixel string | `padding="16px"` | An exact pixel value, even when a token has the same name |
+| Token | `padding="4"`, `borderRadius="lg"` | The token from that prop's category |
+| Theme key | `color="color-11"` | The active theme's value, updating when the theme changes |
+| CSS value | `display="flex"`, `boxShadow="0 2px 8px shadow-3"` | Passed through on web and converted on native |
+| `rem` | `padding="1rem"` | Scaled by the user's font size on native |
 
-```tsx
-import { ViewStyle as RNViewStyle } from 'react-native'
-
-type BaseViewStyle = RNViewStyle & FlatTransformStyles & CrossPlatformStyles & WebOnlyStyles
-
-// Cross-platform styles:
-type CrossPlatformStyles = {
-  boxShadow?: BoxShadowValue  // string, object, or array
-  filter?: FilterValue        // brightness, opacity cross-platform; blur, contrast, etc. Android 12+
-  backgroundImage?: string    // linear-gradient, radial-gradient; supports tokens
-  cursor?: Properties['cursor'] // web + iOS 17+ (trackpad/stylus/gaze)
-  mixBlendMode?: 'normal' | 'multiply' | 'screen' | 'overlay' | ... // blend modes
-  isolation?: 'auto' | 'isolate'
-  boxSizing?: 'border-box' | 'content-box'
-  display?: 'flex' | 'none' | 'contents' | ...
-  position?: 'absolute' | 'relative' | 'fixed' | 'static' | 'sticky'  // 'fixed' converts to 'absolute' on native
-  border?: BorderValue         // shorthand: "1px solid borderColor"; expands on native
-  outline?: OutlineValue       // shorthand: "2px solid outlineColor"; expands on native
-  outlineColor?: ColorValue
-  outlineOffset?: SpaceValue
-  outlineStyle?: 'solid' | 'dotted' | 'dashed'
-  outlineWidth?: SpaceValue
-}
-
-// these are accepted but only render on web:
-type WebOnlyStyles =  {
-  contain?: Properties['contain']
-  touchAction?: Properties['touchAction']
-  backdropFilter?: Properties['backdropFilter']
-  backgroundOrigin: Properties['backgroundOrigin'],
-  backgroundPosition: Properties['backgroundPosition'],
-  backgroundRepeat: Properties['backgroundRepeat'],
-  backgroundSize: Properties['backgroundSize']
-  backgroundColor: Properties['backgroundColor']
-  backgroundClip: Properties['backgroundClip']
-  backgroundBlendMode: Properties['backgroundBlendMode']
-  backgroundAttachment: Properties['backgroundAttachment']
-  background: Properties['background']
-  clipPath: Properties['clipPath'],
-  caretColor: Properties['caretColor']
-  transformStyle: Properties['transformStyle'],
-  mask: Properties['mask'],
-  maskImage: Properties['maskImage'],
-  textEmphasis: Properties['textEmphasis'],
-  borderImage: Properties['borderImage'],
-  float: Properties['float']
-  overflowBlock: Properties['overflowBlock']
-  overflowInline: Properties['overflowInline']
-  maskBorder: Properties['maskBorder']
-  maskBorderMode: Properties['maskBorderMode']
-  maskBorderOutset: Properties['maskBorderOutset']
-  maskBorderRepeat: Properties['maskBorderRepeat']
-  maskBorderSlice: Properties['maskBorderSlice']
-  maskBorderSource: Properties['maskBorderSource']
-  maskBorderWidth: Properties['maskBorderWidth']
-  maskClip: Properties['maskClip']
-  maskComposite: Properties['maskComposite']
-  maskMode: Properties['maskMode']
-  maskOrigin: Properties['maskOrigin']
-  maskPosition: Properties['maskPosition']
-  maskRepeat: Properties['maskRepeat']
-  maskSize: Properties['maskSize']
-  maskType: Properties['maskType']
-}
-
-// these turn into the equivalent transform style props:
-type FlatTransformStyles = {
-  x?: number
-  y?: number
-  perspective?: number
-  scale?: number
-  scaleX?: number
-  scaleY?: number
-  skewX?: string
-  skewY?: string
-  matrix?: number[]
-  rotate?: string
-  rotateY?: string
-  rotateX?: string
-  rotateZ?: string
-}
-
-// Every style value may also be conditional, written as a string or an object.
-// Both combine a base value with state, viewport, theme, platform, group, or
-// container clauses:
-//
-//   backgroundColor="background hover:background-hover dark:gray-950"
-//   backgroundColor={{ default: 'background', hover: 'background-hover', dark: 'gray-950' }}
-//   padding="2 sm:4"
-
-// Text style starts with this base but builds up the same:
-type TextStyleBase = BaseViewStyle & {
-  color?: string,
-  fontFamily?: string,
-  fontSize?: number | string,
-  fontStyle?: string,
-  fontWeight?: string,
-  letterSpacing?: number | string,
-  lineHeight?: number | string,
-  textAlign?: string,
-  textDecorationColor?: string,
-  textDecorationLine?: string,
-  textDecorationStyle?: string,
-  textShadowColor?: string,
-  textShadowOffset?: string,
-  textShadowRadius?: string,
-  textTransform?: string,
-}
-```
+[Design system](/docs/intro/design-system) covers where tokens and theme keys
+come from. [Style props](/docs/core/style-props) lists every prop, including
+the ones that only render on web.
 
 ## Conditional values
 
 Every style prop takes conditions in two spellings, a string of clauses or a
 flat object. These render the same thing:
 
-<MDXTabs id="style" defaultValue="styled">
+<MDXTabs id="style-syntax" defaultValue="styled">
 <MDXTabs.List>
   <MDXTabs.Tab value="styled">Typed</MDXTabs.Tab>
   <MDXTabs.Tab value="string">String</MDXTabs.Tab>
@@ -190,256 +90,81 @@ component:
 ```
 
 Strings are shorter for one or two conditions. Objects work better when the
-values are numbers, when the conditions stack up, or when you build the value in
-code. Both compile to identical CSS.
+values are numbers, when the conditions stack up, or when you build the value
+in code. Both compile to identical CSS.
 
 An object only counts as conditional when it has a `default` key or its first
 key is a valid modifier. A plain value object like
 `shadowOffset={{ width: 0, height: 2 }}` is left alone.
 
-## Font size values
+## Modifiers
 
-v3 distinguishes raw numeric font sizes from exact px strings:
+Every modifier applies to just the property carrying it. They fall into five
+groups:
 
-- `fontSize={17}` is a numeric platform value and keeps the platform-default
-  line-height path.
-- `fontSize="17px"` is an exact pixel value. Web passes it through as CSS;
-  native parses it to a number.
+| Group | Modifiers | Example |
+| --- | --- | --- |
+| State | `hover:`, `press:`, `focus:`, `focus-visible:`, `focus-within:`, `disabled:` | `scale="press:0.98"` |
+| Screen size | any media name from your config, such as `sm:` or `max-md:` | `padding="4 md:8"` |
+| Theme | `dark:`, `light:`, or a top-level theme name | `color="dark:white"` |
+| Platform | `web:`, `native:`, `ios:`, `android:` | `paddingTop="ios:12"` |
+| Parent | `group-hover:`, `group-press:`, `group-focus:`, `@sm:` container queries | `color="group-hover:white"` |
 
-The v5 config font `size` and `lineHeight` scales are pinned to px strings in
-v3, preserving v2 visual output while making exact px intent explicit.
+Modifiers stack. `sm:hover:purple` applies on hover at the `sm` breakpoint.
+When several clauses match, the most specific one wins.
+[Flat conditional values](/docs/guides/flat-values) has the full precedence rules and
+grammar.
 
-```tsx
-<html.span fontSize={17}>Platform line height</html.span>
-<html.span fontSize="17px">Exact px size</html.span>
-```
-
-## State modifiers
-
-Add state clauses directly to the property they change:
-
-- **`hover:`** - while hovering (web only, maps to CSS `:hover`)
-- **`press:`** - while pressing
-- **`focus:`** - while focused (maps to CSS `:focus`)
-- **`focus-visible:`** - while keyboard-focused (maps to CSS `:focus-visible`)
-- **`focus-within:`** - while a child has focus (maps to CSS `:focus-within`)
-- **`disabled:`** - while `disabled={true}`
+### States
 
 ```tsx
 <html.button
   backgroundColor="background hover:background-hover press:background-press"
   scale="press:0.98"
-  outlineColor="focus:blue-500 focus-visible:blue-500"
-  outlineWidth="focus:2px focus-visible:2px"
-  outlineStyle="focus:solid"
+  outlineColor="focus-visible:blue-500"
+  outlineWidth="focus-visible:2px"
+  outlineStyle="focus-visible:solid"
   borderColor="focus-within:blue-500"
   opacity="disabled:0.5"
 />
 ```
 
-### Enter and Exit Styles
+`hover:` is web only. `focus:`, `focus-visible:`, and `focus-within:` map to the
+matching CSS pseudo-classes on web.
 
-For mount/unmount animations, use clauses on each animated property:
+### Enter and exit
 
-- **`enter:`** - Initial value when the component mounts (animates _from_ it)
-- **`exit:`** - Final value when the component unmounts (animates _to_ it)
+For mount and unmount animations, `enter:` is the value the property animates
+from on mount, and `exit:` is the value it animates to on unmount:
 
 ```tsx
 <html.div opacity="enter:0 exit:0" />
-<html.div opacity={{ enter: 0, exit: 0 }} />
 ```
 
-See [Animations](/docs/core/animations) for more details on enter/exit animations.
+See [Animations](/docs/core/animations).
 
-## rem Units
+### Screen size
 
-Tamagui supports `rem` units cross-platform. On web, browsers handle rem natively. On native, Tamagui converts rem values to pixels using `PixelRatio.getFontScale()` to respect the user's font size preferences.
-
-```tsx
-// works on both web and native
-<html.div padding="1rem" />
-<html.span fontSize="1.5rem" />
-```
-
-You can configure the base font size (default 16) in your config:
-
-```tsx
-createTamagui({
-  settings: {
-    remBaseFontSize: 16, // default
-  },
-})
-```
-
-On native, `1rem` with a base of 16 equals `16 * PixelRatio.getFontScale()` pixels, scaling with the user's accessibility settings.
-
-## CSS Shorthand with Variables
-
-Tamagui supports using `variables` directly inside CSS shorthand string values.
-This is particularly useful for `boxShadow` and `backgroundImage` where you want
-to reference theme colors:
-
-```tsx
-// boxShadow with variables
-<html.div boxShadow="0 0 10px shadow-color" />
-<html.div boxShadow="0 0 5px shadow-color, 0 0 15px color" />
-
-// backgroundImage with linear-gradient (cross-platform, RN 0.76+)
-<html.div backgroundImage="linear-gradient(to bottom, background, color)" />
-<html.div backgroundImage="linear-gradient(45deg, black 0%, white 50%, black 100%)" />
-
-// filter with a CSS length
-<html.div filter="blur(7px)" />
-
-// On web: resolves to CSS custom properties
-// boxShadow: "0 0 10px var(--t-shadow-shadow-color)"
-// backgroundImage: "linear-gradient(to bottom, var(--background), var(--color))"
-
-// On native: resolves to raw values
-// boxShadow: "0 0 10px rgba(0,0,0,0.2)"
-// backgroundImage: "linear-gradient(to bottom, #fff, #000)"
-```
-
-Supported shorthand properties with variable resolution:
-
-- `boxShadow` - Works on both web and native
-- `backgroundImage` - Works on both web and native (see below)
-- `filter` - Works on both web and native
-- `border` - Works on both web and native (expands to borderWidth/Style/Color on native)
-- `outline` - Works on both web and native (expands to outlineWidth/Style/Color on native)
-- `borderTop`, `borderRight`, `borderBottom`, `borderLeft` - Web only
-- `background` - Web only
-
-### border
-
-The `border` shorthand now works cross-platform:
-
-```tsx
-// Works on both web and native
-<html.div border="1px solid borderColor" />
-<html.div border="2px dashed red" />
-<html.div border="none" />
-```
-
-On web, the CSS shorthand is passed through directly. On native, it expands to individual properties:
-- `borderWidth` → `borderTopWidth`, `borderRightWidth`, `borderBottomWidth`, `borderLeftWidth`
-- `borderStyle` → `borderStyle`
-- `borderColor` → `borderTopColor`, `borderRightColor`, `borderBottomColor`, `borderLeftColor`
-
-Note: On native, only a single border (all sides) is supported. For per-side borders on native, use individual props.
-
-### outline
-
-The `outline` shorthand works cross-platform, similar to `border`:
-
-```tsx
-// Works on both web and native
-<html.div outline="2px solid outline-color" />
-<html.div outline="1px dashed red" />
-<html.div outline="none" />
-```
-
-On web, the CSS shorthand is passed through directly. On native, it expands to `outlineWidth`, `outlineStyle`, and `outlineColor`.
-
-### backgroundImage
-
-Supports `linear-gradient()` and `radial-gradient()` cross-platform. Does not
-support `url()` on native - use `<ImageBackground>` for images.
-
-```tsx
-<html.div backgroundImage="linear-gradient(to bottom, background, color)" />
-<html.div backgroundImage="radial-gradient(circle, white, black)" />
-```
-
-### textShadow
-
-Text shadows support CSS shorthand with token resolution, just like `boxShadow`:
-
-```tsx
-import { html } from 'tamagui'
-
-// CSS shorthand with tokens
-<html.span textShadow="2px 2px 4px shadow-color">
-  Shadowed Text
-</html.span>
-
-// multiple shadows (web only)
-<html.span textShadow="1px 1px 2px shadow-color, 0 0 8px color">
-  Glowing Text
-</html.span>
-```
-
-You can also use the individual React Native props:
-
-```tsx
-<html.span
-  textShadowColor="shadow-color"
-  textShadowOffset={{ width: 2, height: 2 }}
-  textShadowRadius={4}
->
-  Shadowed Text
-</html.span>
-```
-
-On native, only a single text shadow is supported (React Native limitation).
-
-## Parent based styling
-
-Tamagui has a variety of ways to style a child based on the "parent", a parent
-being one of: platform, screen size, theme, or group. They are modifiers in the
-same flat value program as the base and state values.
-
-For example you can target `dark:`, `ios:`, `group-hover/card:`, or a media
-query such as `large:`. Every clause controls just the property carrying it.
-
-#### Media query
-
-Based on whatever media queries you define in `createTamagui`, use its name as
-a modifier on native and web.
-
-If you defined your media query like:
-
-```tsx
-createTamagui({
-  media: {
-    sm: { maxWidth: 800 },
-  },
-})
-```
-
-Then you can use it like:
+Media queries come from `createTamagui({ media })`. Each name is a modifier on
+native and web:
 
 ```tsx
 <html.span color="red sm:blue" />
 ```
 
-### Theme
+### Theme and platform
 
-Theme style props let you style a child based on a parent theme. At the moment,
-they only can target your top level themes, so if you have `light`, and
-`light_subtle` themes, then only `light` can be targeted.
-
-Use them like so:
+Theme modifiers target top-level themes. With `light` and `light_subtle`
+defined, only `light` can be targeted. Platform modifiers cover `ios`,
+`android`, `web`, and `native`:
 
 ```tsx
-<html.span color="dark:white" />
+<html.span color="dark:white ios:white" />
 ```
 
-### Platform
+### Groups
 
-Platform style props let you style a child based on the platform the app is
-running on. This can be one of `ios`, `android`, `web`, or `native` (iOS and
-Android).
-
-Use it like so:
-
-```tsx
-<html.span color="ios:white" />
-```
-
-### Group
-
-Groups let children target a parent interaction state:
+Mark a parent with `group` and children can react to its state:
 
 ```tsx
 <html.div group>
@@ -447,14 +172,11 @@ Groups let children target a parent interaction state:
 </html.div>
 ```
 
-Now only when the parent element is hovered the text will turn white. The allowed
-pseudo modifiers are `hover` (web only), `press`, and `focus`.
-
-For more advanced use cases you can use named groups:
+The states are `hover` (web only), `press`, and `focus`. Name a group to
+target it from further down:
 
 ```tsx
 <html.div group="card">
-  <html.span>Outer</html.span>
   <html.div group>
     <html.span color="gray group-hover/card:blue">Inner</html.span>
     <html.span color="gray group-hover:green">Sibling</html.span>
@@ -462,29 +184,24 @@ For more advanced use cases you can use named groups:
 </html.div>
 ```
 
-Now the `Inner` text will turn blue when the `card` group is hovered, and the
-`Sibling` text will turn green when its parent is hovered.
-
-To make this typed, you need to set `TypeOverride` alongside the same area you
-set up your Tamagui types:
+`Inner` turns blue when the `card` group is hovered. `Sibling` turns green
+when its nearest group is hovered. For completion on named groups, declare
+them next to your config types:
 
 ```tsx
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends AppConfig {}
 
-  // If you want completion for named groups such as group-hover/card,
-  // define your group names here:
   interface TypeOverride {
     groupNames(): 'card' | 'header' | 'sidebar'
   }
 }
 ```
 
-#### Group Container
+### Container queries
 
-The final feature of group styles is the ability to style a child only when the
-parent is of a certain size. On the web these are known as "container queries",
-which is what Tamagui outputs as CSS under the hood. They look like this:
+Add `container` to a group and children can respond to the parent's size,
+using the same media names. Web outputs a CSS container query:
 
 ```tsx
 <html.div group container>
@@ -492,83 +209,45 @@ which is what Tamagui outputs as CSS under the hood. They look like this:
 </html.div>
 ```
 
-Now the text will be white, but only when the container matches the media query `sm`.
-This uses the same media query breakpoints you defined in
-`createTamagui({ media })`. You can see it also works with pseudo styles!
+Named containers work the same way with `@sm/card:`.
 
-For more advanced use cases, you can use named groups with container queries:
-
-```tsx
-<html.div group="card" container containerName="card">
-  <html.div group>
-    <html.span color="gray @sm/card:white @sm/card:group-hover/card:green" />
-    <html.span color="gray @sm:white @sm:group-hover:green" />
-  </html.div>
-</html.div>
-```
-
-Now the first text will be white when the `card` parent matches `sm`, and the
-second text will be white when no named parent matches `sm`.
-
-_A note on group containers and native_
-
-On Native, we don't have access to the layout of a React component as it first
-renders. Only once we get the dimensions from the `onLayout` callback after the
-first render are we able to apply group container styles.
-
-Because of this, we've done two things.
-
-First, there's a new property `untilMeasured`:
-
-```tsx
-<html.div group container untilMeasured="hide">
-  <html.span color="gray @sm:white" />
-</html.div>
-```
-
-This takes two options, `show` or `hide`. If unset it defaults to `show`, which
-means it will render before it measures. With `hide` set, the container will be
-set to `opacity` 0 until it finishes measuring.
-
-Alternatively, if you know the dimensions your container will be up-front, you
-can set width and height on the container. When either of these are set, the
-children will attempt to use these values on first render and if they satisfy
-the media query, you'll avoid the need for a double render altogether.
+On native the container's size is only known after the first `onLayout`, so
+children render once before the query applies. Set `untilMeasured="hide"` on
+the container to keep it at opacity 0 until measured, or give the container an
+explicit `width` and `height` so children can resolve the query on first
+render.
 
 ## Order is important
 
-It's important to note that the order of style properties is significant. This
-is really important for two reasons:
-
-1. You want to control which styles are overridden.
-2. You have a variant that expands into multiple style properties, and you need
-   to control it.
-
-Let's see how it lets us control overriding styles:
+Later props win. That gives you control over overrides and makes variants
+predictable:
 
 ```tsx
-import { View, ViewProps } from '@tamagui/core'
+import { View, ViewProps } from 'tamagui'
 
-export default (props: ViewProps) => <View background="red" {...props} width={200} />
+export default (props: ViewProps) => (
+  <View backgroundColor="red" {...props} width={200} />
+)
 ```
 
-In this case we set a default `background` to red, but it can be overridden by
-props. But we set `width` _after_ the prop spread, so width is _always_ going to
-be set to 200.
+`backgroundColor` can be overridden by `props`. `width` sits after the spread,
+so it is always 200.
 
-It also is necessary for variants to make sense. Say we have a variant `huge`
-that sets `scale` to 2 and `borderRadius` to 100:
+The same rule applies to variants that expand into several properties:
 
 ```tsx
-// this will be scale = 3
-export default (props: ViewProps) => <MyView huge scale={3} />
+// scale is 3
+<MyView huge scale={3} />
 
-// this will be scale = 2
-export default (props: ViewProps) => <MyView scale={3} huge />
+// scale is 2
+<MyView scale={3} huge />
 ```
 
-If order wasn't important, how would you expect these two different usages to
-work? You'd have to make order important _somewhere_. If you do it in the
-`styled()` helper somewhere, you end up having no flexibility and would end up
-with boilerplate. Making the prop order important gives us maximum
-expressiveness and is easy to understand.
+## Next
+
+- [Style props](/docs/core/style-props) for every accepted property and how it
+  renders per platform.
+- [styled()](/docs/core/styled) and [Variants](/docs/core/variants) for
+  reusable components.
+- [Flat conditional values](/docs/guides/flat-values) for the complete value
+  grammar and editor support.

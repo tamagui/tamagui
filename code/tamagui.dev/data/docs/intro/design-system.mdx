@@ -1,0 +1,126 @@
+---
+title: Design system
+description: Tokens, themes, fonts, and media queries, and how they reach your styles
+---
+
+<IntroParagraph>
+  A Tamagui config is a small design system. Style props resolve their values
+  against it, so `padding="4"` and `color="color-11"` mean the same thing on
+  every screen and every platform.
+</IntroParagraph>
+
+Most apps start from the `@tamagui/config/v6` preset and customize from there.
+It ships Tailwind's spacing scale, the full Tailwind palette, adaptive light
+and dark themes, and Tailwind-aligned shorthands:
+
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig } from '@tamagui/config/v6'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui(defaultConfig)
+
+declare module 'tamagui' {
+  interface TamaguiCustomConfig extends typeof config {}
+}
+```
+
+See [Config v6](/docs/core/config-v6) for what the preset contains and
+[Configuration](/docs/core/configuration) for building one from scratch.
+
+## Tokens
+
+Tokens are named static values. They become CSS variables on web and plain
+values on native, and every style prop accepts a token from the matching
+category:
+
+| Category | Style props it feeds | v6 example |
+| --- | --- | --- |
+| `space` | padding, margin, gap, inset | `padding="4"` is 16px |
+| `size` | width, height, min and max sizes | `width="64"` |
+| `radius` | borderRadius and its corners | `borderRadius="lg"` |
+| `color` | any color prop | `backgroundColor="blue-500"` |
+| `zIndex` | zIndex | `zIndex="1"` |
+
+A bare value such as `"4"` looks up the token for that prop's category. Numbers
+are pixels, and `"4px"` or `px(4)` forces a pixel value when a token has the
+same name. See [Tokens](/docs/core/tokens).
+
+## Themes
+
+Themes are values that change per subtree, most often colors. A theme is an
+object of keys, and sub-themes named `parent_child` fall back to their parent:
+
+```tsx
+themes: {
+  light: { background: '#fff', color: '#000' },
+  dark: { background: '#000', color: '#fff' },
+  dark_blue: { background: '#0b1a33', color: '#e5efff' },
+}
+```
+
+Style props read theme keys by name, so `backgroundColor="background"` follows
+whichever theme is active. The v6 preset adds an adaptive ramp, `color-1`
+through `color-11`, that steps from the page background toward the strongest
+foreground in both schemes:
+
+```tsx
+<html.div backgroundColor="color-2" borderColor="color-5">
+  <html.p color="color-11">Adapts to light and dark</html.p>
+</html.div>
+```
+
+Switch themes with `<Theme name="dark">` or a `theme` prop. See
+[Themes](/docs/intro/themes) for sub-themes, component themes, and inverse
+themes, and [Creating themes](/docs/guides/theme-builder) to generate full
+suites.
+
+## Fonts
+
+Fonts are tokens with structure. Each family carries its own size, line height,
+weight, and letter spacing scales, so `fontSize="lg"` and `lineHeight="lg"`
+pull from the same family. Text components pick a family with `fontFamily`, and
+`SizableText`, `Paragraph`, and the headings take a `size` prop that sets all
+four at once:
+
+```tsx
+<html.p fontFamily="body" fontSize="lg" lineHeight="lg">
+  Body copy
+</html.p>
+
+<Paragraph size="lg">Body copy</Paragraph>
+```
+
+See [Fonts](/docs/core/fonts) for `createFont`, native font files, and
+per-language fonts.
+
+## Media queries
+
+Named media queries in the config become modifiers on every style prop, keys
+on `useMedia`, and container query names:
+
+```tsx
+<html.div flexDirection="column md:row" padding="4 lg:8" />
+```
+
+The v6 preset defines `xs`, `sm`, `md`, `lg`, `xl`, and `xxl` as min-width
+queries with matching `max-sm` style variants, plus `hoverable` and
+`touchable`. See [useMedia](/docs/core/use-media).
+
+## Where the pieces meet
+
+```tsx
+<html.button
+  paddingHorizontal="4"
+  paddingVertical="2"
+  borderRadius="md"
+  backgroundColor="background hover:background-hover press:background-press"
+  color="color"
+  fontSize="sm md:base"
+>
+  Save
+</html.button>
+```
+
+Spacing and radius come from tokens, colors from the active theme, font size
+from the body font, and `md:` from the media config. The compiler turns all of
+it into atomic CSS on web, and the runtime resolves the same values on native.

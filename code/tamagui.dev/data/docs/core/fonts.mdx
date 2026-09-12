@@ -121,4 +121,53 @@ and `letterSpacing` from the family together:
 </SizableText>
 ```
 
-For per-language font switching, see [FontLanguage](/docs/core/font-language).
+## Per-language fonts
+
+A font name with a `_` suffix is a language variant of the base family. Define
+`body_cn` next to `body` and load both font files:
+
+```tsx
+import { createFont, createTamagui } from 'tamagui'
+
+export default createTamagui({
+  fonts: {
+    body: createFont({
+      family: 'Inter, Helvetica, Arial, sans-serif',
+      // ...
+    }),
+    body_cn: createFont({
+      family: 'Inter-CN',
+      // ...
+    }),
+  },
+})
+```
+
+`FontLanguage` then switches a family for a whole subtree. Every component
+reading `fontFamily="body"` inside it picks up the variant, with no prop
+changes on the text itself:
+
+```tsx
+import { FontLanguage, html } from 'tamagui'
+
+export default () => (
+  <FontLanguage body="cn">
+    <html.span fontFamily="body">你好</html.span>
+  </FontLanguage>
+)
+```
+
+The suffix name is yours to choose. The reserved value `default` resets a
+family to its base font:
+
+```tsx
+<FontLanguage body="cn">
+  <html.span fontFamily="body">你好</html.span>
+  <FontLanguage body="default">
+    <html.span fontFamily="body">Hello</html.span>
+  </FontLanguage>
+</FontLanguage>
+```
+
+On web, `FontLanguage` swaps a CSS variable, so changing language does not
+re-render the text.

@@ -4,91 +4,194 @@ description: Get Tamagui set up, step by step
 ---
 
 <IntroParagraph>
-  Tamagui is easy to set up as we've invested into "0-config" installs for all bundlers.
-  That said, it's easy to get lost if you start configuring too many things too early.
+  Tamagui installs with no bundler configuration on web or native. Start small,
+  and add the compiler and bundler plugins once the basics work.
 </IntroParagraph>
 
-Use `npm create tamagui@latest` to pick one of our starter templates.
+The fastest start is a starter template:
 
-If you are installing through a coding agent, hand it the brief instead of doing
-this by hand: [Set up with an agent](/docs/intro/agents) has a copy-paste prompt
-for a new project and another for upgrading an existing one.
+```bash
+npm create tamagui@latest
+```
+
+<Collapsible id="set-up-with-an-agent" title="Set up with an agent">
+
+Paste this brief into your coding agent for a new project:
+
+```
+Add Tamagui v3 to this project. Run `npx tamagui@beta setup` and follow the brief it
+prints, adapting it to this project's bundler and framework. Do not skip the
+verification step at the end, and tell me anything you had to skip or guess at.
+```
+
+For a project that already uses Tamagui v1 or v2:
+
+```
+Upgrade this project to Tamagui v3. Run `npx tamagui@beta migrate --from v2` and
+follow the brief it prints. Aim for the intermediate checkpoint: V3 APIs with my
+existing design values. Identify the package version and config version separately.
+If I use Config v5 or v5-subtle, keep it; do not move to Config v6, remap its colors
+or scales, or convert the whole app to html.* or Tailwind in this pass.
+
+Run the flat-values codemod in dry-run first, show me the report, and wait for me to
+read it before you write anything. Tell me every site the codemod refused and why.
+After the required API changes, compare the same screens and interactions against
+the baseline. A working V3 app on Config v5 is a completed upgrade. List optional
+Config v6 or frontend changes separately; do not begin them automatically.
+```
+
+For v1 projects, use `--from v1` to run the v1-to-v2 migration first.
+
+For an app already on v3 with Config v5:
+
+```
+This app already uses Tamagui V3 with Config v5. Check what remains of the API
+migration before changing anything. Keep Config v5 and our current resolved design
+values. Do not rerun completed codemods or adopt Config v6 by default. Validate the
+remaining changes in real screens, and report any optional design migration as a
+separate follow-up.
+```
+
+If you later choose Config v6, start a separate change with its own visual baseline.
+The same token name can resolve to a different spacing, font, or color value, and
+breakpoint names can change meaning. See
+[the staged config migration](/docs/guides/how-to-upgrade#recommended-defer-config-v6-to-its-own-migration).
+
+**Describe your design system.** Generate a reference for your project's tokens,
+themes, and components, commit it, and include it in your agent's context:
+
+```bash
+npx tamagui@beta generate-prompt
+```
+
+**Skills.** If your agent supports
+[skills](https://github.com/tamagui/tamagui/tree/v3-beta/skills), install the
+Tamagui skills:
+
+```bash
+npx skills add https://github.com/tamagui/tamagui/tree/v3-beta/skills
+```
+
+`tamagui` covers authoring: `styled()`, variants, flat values, tokens and themes,
+animations, and what the compiler does. `tamagui-upgrade-v3` covers the migration:
+order, codemod reports, unsupported cases, and verification.
+
+**Check the result.**
+
+- Tokens have no `$` prefix. Conditional values are strings
+  (`bg="background hover:background-hover"`) or typed objects
+  (`bg={{ default: 'background', hover: 'background-hover' }}`).
+- Matching clauses resolve by platform, condition count, then category (media,
+  container, theme, group, state).
+- Install every `tamagui` and `@tamagui/*` package at the same exact version.
+  `tamagui check` finds mismatches.
+- Run the app and check tokens, layouts, and interactions in real screens.
+
+</Collapsible>
 
 ## Requirements
 
-- **React Native 0.81+** with New Architecture enabled (for native apps)
 - **React 19+**
-- **TypeScript 5+** (required)
+- **TypeScript 5+**
+- **React Native 0.81+** with the New Architecture enabled, for native apps.
+  Tamagui uses newer style features such as `boxShadow` and `filter`. On web
+  there are no version restrictions.
 
-Tamagui takes advantage of new style features in React Native 0.81+ including
-`boxShadow`, `filter`, and more. On web, there are no version restrictions.
+## Install
 
-## Installation
-
-To install from scratch:
-
-```bash
-yarn add @tamagui/core
-```
-
-Core is just the style library. If you plan to use our full UI kit, you can
-avoid installing `@tamagui/core` and instead:
+Install the full UI kit:
 
 ```bash
-yarn add tamagui
+yarn add tamagui @tamagui/config
 ```
 
-The `tamagui` package is a superset of core, so anywhere the docs reference
-`@tamagui/core`, you can replace it with `tamagui`.
+Or install only the style library. The `tamagui` package is a superset of
+`@tamagui/core`, so anywhere the docs reference core you can use either:
 
-Next, you'll want to set up your [configuration](/docs/core/configuration) and
-provide it with `TamaguiProvider`:
+```bash
+yarn add @tamagui/core @tamagui/config
+```
+
+## Choose a styling frontend
+
+Tamagui has two ways to write styles. Both produce the same output, and the
+choice is per import path, so you can mix them later. Pick one to start.
+
+<MDXTabs id="frontend" defaultValue="props">
+<MDXTabs.List>
+  <MDXTabs.Tab value="props">Style props</MDXTabs.Tab>
+  <MDXTabs.Tab value="tailwind">Tailwind</MDXTabs.Tab>
+</MDXTabs.List>
+
+<MDXTabs.Content value="props">
+
+Typed style props on semantic `html.*` elements. This is the recommended base
+for new apps. It reads like React Native, stays close to the web, and needs no
+extra package.
 
 ```tsx fileName="App.tsx"
-import { TamaguiProvider, html } from '@tamagui/core'
-import config from './tamagui.config' // your configuration
-
-export default function App() {
-  return (
-    <TamaguiProvider config={config} defaultTheme="light">
-      <html.div width={200} height={200} backgroundColor="background" />
-    </TamaguiProvider>
-  )
-}
-```
-
-We have a recommended preset configuration called `@tamagui/config`:
-
-```bash
-yarn add @tamagui/config
-```
-
-You can use it like so:
-
-```tsx fileName="App.tsx"
-import { TamaguiProvider, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, createTamagui, html } from 'tamagui'
 import { defaultConfig } from '@tamagui/config/v6'
 
-// you usually export this from a tamagui.config.ts file
 const config = createTamagui(defaultConfig)
 
-type Conf = typeof config
-
-// make imports typed
-declare module '@tamagui/core' {
-  interface TamaguiCustomConfig extends Conf {}
+declare module 'tamagui' {
+  interface TamaguiCustomConfig extends typeof config {}
 }
 
-export default () => {
-  return <TamaguiProvider config={config} defaultTheme="light">{/* your app here */}</TamaguiProvider>
-}
+export default () => (
+  <TamaguiProvider config={config} defaultTheme="light">
+    <html.div width={200} height={200} backgroundColor="background" />
+  </TamaguiProvider>
+)
 ```
 
-<Notice>
-  Set your root theme using the `defaultTheme` prop on `TamaguiProvider` rather than wrapping your app with `<Theme>`. This ensures the [`fastSchemeChange` setting](/docs/core/configuration#settings) works on native, and allows light/dark changes on web to use faster media query-based updates during SSR.
-</Notice>
+Continue with [Components](/docs/intro/components) and
+[Styling](/docs/intro/styles).
 
-And that's it!
+</MDXTabs.Content>
+
+<MDXTabs.Content value="tailwind">
+
+Tailwind utility classes on `className`, extracted to atomic CSS on web and
+resolved to native styles on iOS and Android.
+
+```bash
+yarn add @tamagui/tailwind
+```
+
+```tsx fileName="App.tsx"
+import { TamaguiProvider, createTamagui } from 'tamagui'
+import { html } from '@tamagui/tailwind'
+import { defaultConfig } from '@tamagui/config/v6'
+
+const config = createTamagui(defaultConfig)
+
+declare module 'tamagui' {
+  interface TamaguiCustomConfig extends typeof config {}
+}
+
+export default () => (
+  <TamaguiProvider config={config} defaultTheme="light">
+    <html.div className="w-[200px] h-[200px] bg-background" />
+  </TamaguiProvider>
+)
+```
+
+Continue with [Tailwind](/docs/core/tailwind).
+
+</MDXTabs.Content>
+</MDXTabs>
+
+You usually export the config from a `tamagui.config.ts` file. See
+[Configuration](/docs/core/configuration) for what goes in it.
+
+Set your root theme with the `defaultTheme` prop on `TamaguiProvider` rather
+than wrapping the app in `<Theme>`. That keeps the
+[`fastSchemeChange` setting](/docs/core/settings) working on native and lets
+light and dark switch through media queries during SSR on web.
+
+That is the whole setup:
 
 <Preview>
   <DemoButton />
@@ -102,41 +205,14 @@ export default function Demo() {
 }
 ```
 
-From here, we recommend
-[spending some time understanding configuration](/docs/core/configuration).
+Every feature works at runtime, so nothing above depends on a bundler plugin.
+When you are ready for production, [set up the compiler](/docs/intro/compiler-install)
+for smaller bundles and faster renders.
 
-100% of Tamagui features work at both runtime and compile-time, which makes it
-both easy to use and fast. Because it works fully at runtime, and because we've
-invested a lot into building it such that it doesn't need any special bundler
-configuration to work on either native or web, you can begin using Tamagui with
-just the above setup.
+## Bundler guides
 
----
-
-## Next Steps
-
-Once you have Tamagui installed, you'll want to explore:
-
-- **[CLI](/docs/core/cli)** - Command-line tools for building, optimizing, and
-  managing your Tamagui projects
-- **[Bundler Setup](/docs/guides/next-js)** - Integration guides for Next.js,
-  Expo, Vite, Webpack, Metro, and more
-- **[Design Systems](/docs/guides/design-systems)** - Build your own optimized
-  component library with Tamagui
-
-Later on, you can [set up the compiler](/docs/intro/compiler-install) to gain
-more performance and some nice development helpers.
-
----
-
-## Bundler Guides
-
-Tamagui generally doesn't require any special bundler setup as we've worked hard
-to make it "just work" without configuration in a wide variety of environments.
-
-That said, the broader React Native and React Native Web ecosystem is filled
-with packages that do need configuration. Tamagui provides a variety of bundler
-plugins that help with that:
+Tamagui itself needs no bundler setup. The wider React Native and React Native
+Web ecosystem often does, so Tamagui ships plugins that handle it:
 
 <Spacer />
 
@@ -184,3 +260,11 @@ plugins that help with that:
     colorOffset={4}
   />
 </Grid>
+
+## Next steps
+
+- **[CLI](/docs/core/cli)** for building, checking versions, and generating
+  agent prompts.
+- **[Design system](/docs/intro/design-system)** for tokens, themes, and fonts.
+- **[Custom UI package](/docs/guides/design-systems)** to build your own
+  optimized component library.

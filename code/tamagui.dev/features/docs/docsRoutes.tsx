@@ -5,7 +5,10 @@ export const docsRoutes = [
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
-      { title: 'Set up with an agent', route: '/docs/intro/agents' },
+      { title: 'Components', route: '/docs/intro/components' },
+      { title: 'Styling', route: '/docs/intro/styles' },
+      { title: 'Design system', route: '/docs/intro/design-system' },
+      { title: 'Tailwind', route: '/docs/core/tailwind' },
       { title: 'Native', route: '/docs/core/native' },
       { title: 'CLI', route: '/docs/core/cli' },
       {
@@ -25,6 +28,7 @@ export const docsRoutes = [
       { title: 'Tokens', route: '/docs/core/tokens' },
       { title: 'Fonts', route: '/docs/core/fonts' },
       { title: 'Themes', route: '/docs/intro/themes' },
+      { title: 'Theme component', route: '/docs/core/theme' },
       { title: 'Shorthands', route: '/docs/core/shorthands' },
       { title: 'Settings', route: '/docs/core/settings' },
     ],
@@ -45,7 +49,7 @@ export const docsRoutes = [
     section: 'core',
     title: 'Styling',
     pages: [
-      { title: 'Styling', route: '/docs/intro/styles' },
+      { title: 'Style props', route: '/docs/core/style-props' },
       { title: 'styled()', route: '/docs/core/styled' },
       { title: 'Variants', route: '/docs/core/variants' },
       { title: 'style()', route: '/docs/core/style-pieces' },
@@ -60,9 +64,6 @@ export const docsRoutes = [
     pages: [
       { title: 'View & Text', route: '/docs/core/view-and-text' },
       { title: 'HTML primitives', route: '/docs/core/html-primitives' },
-      { title: 'Tamagui Tailwind', route: '/docs/core/tailwind' },
-      { title: 'Theme', route: '/docs/core/theme' },
-      { title: 'FontLanguage', route: '/docs/core/font-language' },
     ],
   },
 
@@ -102,7 +103,6 @@ export const docsRoutes = [
       { title: 'Compiler tiers', route: '/docs/core/compiler-tiers' },
       { title: 'Zero-runtime mode', route: '/docs/guides/zero-runtime' },
       { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
-      { title: 'Background', route: '/docs/intro/why-a-compiler' },
     ],
   },
 

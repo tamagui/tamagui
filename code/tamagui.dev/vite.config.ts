@@ -408,6 +408,21 @@ export function useGroupMedia() {
             permanent: true,
           },
           {
+            source: '/docs/intro/why-a-compiler',
+            destination: '/docs/intro/introduction#why-a-compiler',
+            permanent: true,
+          },
+          {
+            source: '/docs/intro/agents',
+            destination: '/docs/intro/installation#set-up-with-an-agent',
+            permanent: true,
+          },
+          {
+            source: '/docs/core/font-language',
+            destination: '/docs/core/fonts#per-language-fonts',
+            permanent: true,
+          },
+          {
             source: '/docs/intro/props',
             destination: '/docs/core/view-and-text',
             permanent: true,

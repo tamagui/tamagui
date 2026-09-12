@@ -6,6 +6,108 @@ title: Introduction
 
 <GetStarted />
 
+## Two ways to write styles
+
+Tamagui ships two styling frontends. Both compile to the same atomic CSS on web
+and the same native styles on iOS and Android, and both accept the same tokens,
+themes, and media queries.
+
+**Style props** on the `html.*` elements are the recommended base. They are
+typed, they read like React Native, and they stay close to the web:
+
+```tsx
+import { html } from 'tamagui'
+
+export const Card = () => (
+  <html.article padding="4" borderRadius="lg" backgroundColor="background">
+    <html.h2 fontSize="6">Hello</html.h2>
+    <html.p color="color-11 hover:color-12">World</html.p>
+  </html.article>
+)
+```
+
+**Tailwind** classes on `className` are the other option, for teams who already
+think in utilities:
+
+```tsx
+import { html } from '@tamagui/tailwind'
+
+export const Card = () => (
+  <html.article className="p-4 rounded-lg bg-background">
+    <html.h2 className="text-2xl">Hello</html.h2>
+    <html.p className="text-color-11 hover:text-color-12">World</html.p>
+  </html.article>
+)
+```
+
+The choice is per import path, so one app can use both. Read
+[Components](/docs/intro/components) for the style prop path and
+[Tailwind](/docs/core/tailwind) for the utility path.
+
+## Why a compiler
+
+Cross-platform apps live inside a trilemma. Pick two of: an app that feels
+native, one codebase for native and web, and shipping fast.
+
+<YStack w="100%" items="center" my="md:4">
+  <Image
+    title="The Frontend Trilemma: Choose two of: A native-feeling app, Deploying to native and web, and share code between the two apps."
+    src="/trilemma.svg"
+    size="hero"
+    height={540}
+    width={640}
+    objectFit="contain"
+  />
+</YStack>
+
+React Native shares logic between platforms and asks you to write views twice
+for the best result. React Native Web pushed the shared line further up the
+tree, but on the web its styles stay in JavaScript. Media queries, themes, and
+interactive styles run as hooks that touch every component, so pages re-render
+more than they should and bundles grow with every screen.
+
+Tamagui moves that line again with an optimizing compiler, `@tamagui/static`.
+It reads your components at build time and:
+
+<YStack py="4">
+  <Features
+    size="5"
+    items={[
+      `Extracts every style prop, media query, theme value, and interactive state into atomic CSS.`,
+      `Removes most inline styles through partial evaluation and hoisting.`,
+      `Flattens styled components into a plain div or View, so the tree gets shallower.`,
+      `Turns useMedia and useTheme expressions into media queries and CSS variables.`,
+    ]}
+  />
+</YStack>
+
+Here is what that looks like in code:
+
+<TamaguiExamplesCode />
+
+The `Text` became a `p` and the `YStack` became a `div`. On native the same
+pass produces `Text` and `View`. Flattening is where most of the speed comes
+from. Across real apps around a third to a half of components flatten, and the
+result on web is close to hand-written CSS. On native the output is within a
+few percent of hand-optimized React Native, with the whole feature set intact.
+
+Everything still works at runtime. The compiler is an optimization you can add
+later, and a component it cannot optimize simply renders the normal way. See
+[Benchmarks](/docs/intro/benchmarks) for numbers and
+[Compiler installation](/docs/intro/compiler-install) to turn it on.
+
+## Where to go next
+
+- [Installation](/docs/intro/installation) sets up a project or hands the job
+  to a coding agent.
+- [Components](/docs/intro/components) covers `html.*`, `View`, `Text`, and how
+  they render on each platform.
+- [Styling](/docs/intro/styles) explains style props, conditional values, and
+  states.
+- [Design system](/docs/intro/design-system) introduces tokens, themes, and
+  fonts.
+- [Tailwind](/docs/core/tailwind) covers the utility class frontend.
+
 #### Highlights
 
 <Highlights
@@ -13,8 +115,8 @@ title: Introduction
   disableTitle
   large
   features={[
-    `Core only has one dependency - React - but supports the full React Native View and Text API, a superset of the React Native Style API, styled(), powerful hooks, and the typed design system helpers in ~28Kb on web.`,
-    `A smart, partial-evaluating compiler gives 0-runtime performance with the ergonomics of writing your code however you want - even inline, logic-filled code is optimized.`,
+    `Core only has one dependency, React, but supports the full React Native View and Text API, a superset of the React Native Style API, styled(), powerful hooks, and the typed design system helpers in ~28Kb on web.`,
+    `A smart, partial-evaluating compiler gives 0-runtime performance with the ergonomics of writing your code however you want. Even inline, logic-filled code is optimized.`,
     `Every feature works at runtime and compile-time, so none of the usual limits of 0-runtime libraries, while optionally getting the same great performance.`,
     `useTheme and useMedia hooks with signal-like granularity and dirty tracking.`,
     `Unstyled and styled versions of all components.`,

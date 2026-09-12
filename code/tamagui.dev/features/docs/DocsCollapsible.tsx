@@ -5,14 +5,16 @@ import { Accordion, Paragraph, XStack, YStack } from 'tamagui'
 // a single fold for docs pages: a quiet row with a chevron that opens into
 // regular mdx block content. used from mdx as <Collapsible title="...">
 export const DocsCollapsible = ({
+  id,
   title,
   children,
 }: {
+  id?: string
   title: string
   children: React.ReactNode
 }) => {
   return (
-    <Accordion type="single" collapsible my="4">
+    <Accordion id={id} type="single" collapsible my="4">
       <Accordion.Item value="content">
         <Accordion.Trigger
           group="docs-collapsible"
