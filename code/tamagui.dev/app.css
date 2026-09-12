@@ -73,6 +73,17 @@ body .preview {
   text-decoration: none;
 }
 
+:root:root a.mdx-inline-link {
+  text-decoration-line: underline;
+  text-decoration-color: var(--color-6);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+:root:root a.mdx-inline-link:hover {
+  text-decoration-color: var(--color-8);
+}
+
 p a,
 .t_Link {
   text-decoration: underline;
@@ -173,14 +184,20 @@ span._display-1adg3ll > span._display-xoduu5 {
 }
 
 /* a notice body is one Paragraph div holding whatever mdx put inside it, so
-   paragraphs nested in one take the notice's type instead of docs body type */
-.paragraph-parent .docs-paragraph {
+   paragraphs nested in one take the notice's type instead of docs body type.
+   tamagui emits every atomic class with its selector repeated four times, so the
+   `mb={16}` the mdx `p` mapping sets lands at specificity (0,4,0). repeating
+   ours five deep is what it takes to clear that; anything less loses and every
+   notice keeps 16px of dead space under its last line */
+.paragraph-parent .docs-paragraph.docs-paragraph.docs-paragraph.docs-paragraph {
   margin: 0;
   font-size: inherit;
   line-height: inherit;
 }
 
-.paragraph-parent .docs-paragraph + .docs-paragraph {
+.paragraph-parent
+  .docs-paragraph
+  + .docs-paragraph.docs-paragraph.docs-paragraph.docs-paragraph {
   margin-top: 10px;
 }
 
