@@ -19,7 +19,9 @@ export type CheckboxExtraProps = {
     value?: string;
 };
 export type CheckboxProps = CheckboxBaseProps & CheckboxExtraProps;
-type CheckboxBehaviorProps = CheckboxExtraProps & Pick<PressableProps, 'onPress'>;
+type CheckboxBehaviorProps = CheckboxExtraProps & {
+    onPress?: PressableProps['onPress'];
+};
 export declare function useCheckbox<R, P extends CheckboxBehaviorProps>(props: P, [checked, setChecked]: [
     CheckedState,
     React.Dispatch<React.SetStateAction<CheckedState>>
@@ -27,9 +29,9 @@ export declare function useCheckbox<R, P extends CheckboxBehaviorProps>(props: P
     bubbleInput: React.JSX.Element | null;
     checkboxRef: (node: R | null) => void;
     checkboxProps: {
-        role: string;
+        role: "checkbox";
         'aria-labelledby': string | undefined;
-        'aria-checked': string | boolean;
+        'aria-checked': "mixed" | boolean;
     } & Omit<P, "disabled" | "labelledBy" | "name" | "onCheckedChange" | "required" | "value"> & {
         type?: string | undefined;
         value?: string | undefined;

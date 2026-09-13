@@ -52,8 +52,7 @@ describe('create-tamagui CLI', () => {
       // Simulate user input
       await writeWithDelay(`${projectName}`, 300)
       await writeWithDelay('\r', 300) // Enter
-      // Select starter-free template (6th option) - arrow down 5 times then enter
-      await writeWithDelay('\x1B[B', 300) // Arrow down
+      // select starter-free template (5th option)
       await writeWithDelay('\x1B[B', 300) // Arrow down
       await writeWithDelay('\x1B[B', 300) // Arrow down
       await writeWithDelay('\x1B[B', 300) // Arrow down

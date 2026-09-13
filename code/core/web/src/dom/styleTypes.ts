@@ -51,7 +51,7 @@ type SpaceValue = number | string | true
 
 type FlexAlignType = 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline'
 
-type BorderStyleValue = 'solid' | 'dotted' | 'dashed'
+type BorderStyleValue = 'solid' | 'dotted' | 'dashed' | 'none' | 'hidden'
 
 type FontVariantValue =
   | 'small-caps'

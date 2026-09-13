@@ -43,7 +43,7 @@ type SizeValue = number | string | true;
 /** a space token name, a CSS length, or `true` for the token named `true` */
 type SpaceValue = number | string | true;
 type FlexAlignType = 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline';
-type BorderStyleValue = 'solid' | 'dotted' | 'dashed';
+type BorderStyleValue = 'solid' | 'dotted' | 'dashed' | 'none' | 'hidden';
 type FontVariantValue = 'small-caps' | 'oldstyle-nums' | 'lining-nums' | 'tabular-nums' | 'common-ligatures' | 'no-common-ligatures' | 'discretionary-ligatures' | 'no-discretionary-ligatures' | 'historical-ligatures' | 'no-historical-ligatures' | 'contextual' | 'no-contextual' | 'proportional-nums' | 'stylistic-one' | 'stylistic-two' | 'stylistic-three' | 'stylistic-four' | 'stylistic-five' | 'stylistic-six' | 'stylistic-seven' | 'stylistic-eight' | 'stylistic-nine' | 'stylistic-ten' | 'stylistic-eleven' | 'stylistic-twelve' | 'stylistic-thirteen' | 'stylistic-fourteen' | 'stylistic-fifteen' | 'stylistic-sixteen' | 'stylistic-seventeen' | 'stylistic-eighteen' | 'stylistic-nineteen' | 'stylistic-twenty';
 type LinearGradientValue = {
     type: 'linear-gradient';
