@@ -14,7 +14,7 @@ export declare const LabelFrame: React.FunctionComponent<Omit<import("@tamagui/w
 export type LabelProps = GetProps<typeof LabelFrame> & {
     htmlFor?: string;
 };
-export declare const Label: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+export declare const Label: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/react-native-types/src").Text | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const useLabelContext: (element?: HTMLElement | null) => string | undefined;
