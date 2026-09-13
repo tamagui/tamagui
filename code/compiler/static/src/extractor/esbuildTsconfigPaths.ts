@@ -22,10 +22,11 @@ function loadTsconfig(
   }
 
   if (typeof tsconfig === 'string') {
-    if (!fs.existsSync(tsconfig)) {
-      throw new Error(`Specified tsconfig file not found: ${tsconfig}`)
+    const configPath = path.resolve(cwd, tsconfig)
+    if (!fs.existsSync(configPath)) {
+      throw new Error(`Specified tsconfig file not found: ${configPath}`)
     }
-    return { path: path.resolve(tsconfig), config: parseTsconfig(tsconfig) }
+    return { path: configPath, config: parseTsconfig(configPath) }
   }
 
   return {

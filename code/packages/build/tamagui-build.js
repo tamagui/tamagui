@@ -1110,7 +1110,9 @@ async function emitDeclarationsWithTsgo(targetDir, allFiles) {
 
   try {
     await new Promise((resolve, reject) => {
-      const child = childProcess.spawn(tsgoPath, args, { stdio: 'inherit' })
+      const child = childProcess.spawn(process.execPath, [tsgoPath, ...args], {
+        stdio: 'inherit',
+      })
       child.once('error', reject)
       child.once('exit', (code, signal) => {
         if (code === 0) {
