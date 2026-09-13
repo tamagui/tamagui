@@ -110,6 +110,7 @@
     "@tamagui/metro-plugin": "workspace:*",
     "@types/jest": "29.5.14",
     "@types/pngjs": "^6.0.5",
+    "babel-jest": "^29.7.0",
     "babel-plugin-module-resolver": "^5.0.2",
     "detox": "20.47.0",
     "html-webpack-plugin": "^5.5.0",
@@ -118,7 +119,6 @@
     "one": "1.25.13",
     "pngjs": "^7.0.0",
     "pod-install": "^0.3.2",
-    "ts-jest": "^29.4.5",
     "webpack": "^5.88.2",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.5"
