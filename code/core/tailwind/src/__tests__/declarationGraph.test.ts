@@ -1,15 +1,19 @@
 import { execFileSync } from 'node:child_process'
 import { createRequire } from 'node:module'
+import { dirname, resolve } from 'node:path'
 import { describe, expect, test } from 'vitest'
 
 const require = createRequire(import.meta.url)
 const packageDirectory = new URL('../..', import.meta.url).pathname
 
 function listDeclarationFiles(entry: string) {
+  const typescriptPackagePath = require.resolve('typescript/package.json')
+  const typescriptPackage = require(typescriptPackagePath)
+
   return execFileSync(
     process.execPath,
     [
-      require.resolve('typescript/bin/tsc'),
+      resolve(dirname(typescriptPackagePath), typescriptPackage.bin.tsc),
       entry,
       '--ignoreConfig',
       '--noEmit',
