@@ -384,16 +384,6 @@ export function createComponent<
           React.useContext(NativeMenuContext)
         : false
 
-    if (
-      !process.env.TAMAGUI_IS_CORE_NODE &&
-      process.env.NODE_ENV === 'development' &&
-      debugProp === 'profile' &&
-      !time
-    ) {
-      const timer = require('@tamagui/timer').timer()
-      time = timer.start()
-      globalThis['time'] = time
-    }
     // pick up globalThis.time if set externally (e.g. by a profiling harness)
     if (process.env.NODE_ENV === 'development' && !time && (globalThis as any).time) {
       time = (globalThis as any).time

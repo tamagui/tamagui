@@ -1459,7 +1459,6 @@
         "@tamagui/normalize-css-color": "workspace:*",
         "@tamagui/react-native-types": "workspace:*",
         "@tamagui/style-grammar": "workspace:*",
-        "@tamagui/timer": "workspace:*",
         "@tamagui/types": "workspace:*",
         "@tamagui/use-did-finish-ssr": "workspace:*",
         "@tamagui/use-event": "workspace:*",
