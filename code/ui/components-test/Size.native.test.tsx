@@ -1,5 +1,5 @@
 import { defaultConfig } from '@tamagui/config/v6'
-import { TamaguiProvider, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, createTamagui, resolveSize } from '@tamagui/core'
 import { themed } from '@tamagui/helpers-icon'
 import { Tabs } from '@tamagui/tabs'
 import { createRequire } from 'node:module'
@@ -51,11 +51,21 @@ async function renderButton(size?: any) {
   }
 }
 
+function resolveConfiguredSize(size: any) {
+  return resolveSize(size, {
+    tokens: config.tokensParsed,
+    font: config.fontsParsed.body,
+    fonts: config.fontsParsed,
+    sizes: config.sizes,
+  })
+}
+
 describe('named control sizes on native', () => {
-  test('md is a recipe of tokens and never a height', async () => {
+  test('md is a recipe while the button skin pins its resolved outer height', async () => {
+    expect(resolveConfiguredSize('md').frame.minHeight).toBeUndefined()
     expect(await renderButton('md')).toEqual({
       height: undefined,
-      minHeight: undefined,
+      minHeight: 38,
       paddingVertical: 8,
       paddingHorizontal: 16,
       fontSize: 14,
@@ -85,10 +95,13 @@ describe('named control sizes on native', () => {
   })
 
   test('a token key honestly indexes the config scales', async () => {
+    const resolved = resolveConfiguredSize('$4')
+    expect(resolved.frame.minHeight).toBe(config.tokensParsed.size['4'])
     expect(await renderButton('$4')).toMatchObject({
-      minHeight: 16,
+      minHeight: resolved.controlHeight + 2,
       paddingHorizontal: config.tokensParsed.space['4'].val,
       fontSize: config.fontsParsed.body.size['4'].val,
+      lineHeight: config.fontsParsed.body.lineHeight['4'].val,
     })
   })
 
