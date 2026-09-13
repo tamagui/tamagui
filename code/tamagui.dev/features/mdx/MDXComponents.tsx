@@ -223,9 +223,15 @@ const MarkdownTable = ({ children, style, ...props }) => {
         <YStack
           render="table"
           {...props}
-          display="table"
           width="100%"
-          style={{ ...style, borderCollapse: 'collapse', tableLayout: 'fixed' }}
+          style={
+            {
+              ...style,
+              display: 'table',
+              borderCollapse: 'collapse',
+              tableLayout: 'fixed',
+            } as any
+          }
         >
           {children}
         </YStack>

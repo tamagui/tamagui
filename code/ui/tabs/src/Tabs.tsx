@@ -104,7 +104,8 @@ type TabsTabExtraProps = TabsScopeProps & {
   activeTheme?: string | null
 }
 
-export type TabsTabProps = GetProps<typeof TabsTabFrame> & TabsTabExtraProps
+export type TabsTabProps = React.ComponentPropsWithoutRef<typeof TabsTabFrame> &
+  TabsTabExtraProps
 
 type TabsContentExtraProps = TabsScopeProps & {
   /** The value that selects this content. */

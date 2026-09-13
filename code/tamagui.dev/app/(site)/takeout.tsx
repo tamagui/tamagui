@@ -25,7 +25,18 @@ export default function TakeoutPage() {
 
       <LoadCherryBomb />
 
-      <YStack items="center" justify="center" gap="8" px="4" py="10" minH="80vh" minW="850px sm:90%" maxW={850} self="center" position="relative">
+      <YStack
+        items="center"
+        justify="center"
+        gap="8"
+        px="4"
+        py="10"
+        minH="80vh"
+        minW="850px sm:90%"
+        maxW={850}
+        self="center"
+        position="relative"
+      >
         <YStack
           position="absolute"
           pointerEvents="none"

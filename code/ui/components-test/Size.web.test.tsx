@@ -5,6 +5,7 @@ import {
   SizeContext as CoreSizeContext,
   TamaguiProvider,
   createTamagui,
+  resolveSize,
 } from '@tamagui/core'
 import { themed } from '@tamagui/helpers-icon'
 import { SizeContext } from '@tamagui/size'
@@ -63,11 +64,21 @@ function renderButton(size?: any) {
   return result
 }
 
+function resolveConfiguredSize(size: any) {
+  return resolveSize(size, {
+    tokens: config.tokensParsed,
+    font: config.fontsParsed.body,
+    fonts: config.fontsParsed,
+    sizes: config.sizes,
+  })
+}
+
 describe('named control sizes on web', () => {
-  test('md is a recipe of tokens and never a height', () => {
+  test('md is a recipe while the button skin pins its resolved outer height', () => {
+    expect(resolveConfiguredSize('md').frame.minHeight).toBeUndefined()
     expect(renderButton('md')).toEqual({
       height: '',
-      minHeight: undefined,
+      minHeight: 38,
       paddingVertical: 8,
       paddingHorizontal: 16,
       fontSize: 14,
@@ -97,20 +108,23 @@ describe('named control sizes on web', () => {
   })
 
   test('a token key honestly indexes the config scales', () => {
+    expect(resolveConfiguredSize('$4').frame.minHeight).toBe(
+      config.tokensParsed.size['4']
+    )
     expect(renderButton('$4')).toMatchObject({
-      // a floor under v6's spacing-shaped size scale, not the height
-      minHeight: 16,
+      // the skin raises the 16px token floor to fit 22px text plus 8px padding
+      minHeight: 40,
       paddingHorizontal: config.tokensParsed.space['4'].val,
       fontSize: config.fontsParsed.body.size['4'].val,
     })
   })
 
   test('a token-keyed button reaches the DOM with room around its label', () => {
-    // the collapsed Button: 16px of frame around 23px of text. the padding has
+    // the collapsed Button: 16px of frame around 22px of text. the padding has
     // to survive the style pass, not just come out of resolveSize
     const rendered = renderButton('$4')
     expect(rendered.paddingVertical).toBe(8)
-    expect(rendered.lineHeight).toBe(23)
+    expect(rendered.lineHeight).toBe(22)
   })
 
   test('shares one singleton through size, core, and tamagui exports', () => {

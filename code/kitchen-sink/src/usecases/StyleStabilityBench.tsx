@@ -117,7 +117,7 @@ function ItemGrid({ scenarioId, counter }: { scenarioId: ScenarioId; counter: nu
   const Component = scenarioComponents[scenarioId]
   // counter in dep forces re-render of all children
   return useMemo(() => {
-    const arr = []
+    const arr: React.ReactElement[] = []
     for (let i = 0; i < NODE_COUNT; i++) {
       arr.push(<Component key={i} />)
     }
@@ -263,7 +263,7 @@ export function StyleStabilityBench() {
       flex={1}
       padding={16}
       gap={12}
-      backgroundColor="$background"
+      backgroundColor="background"
     >
       <Text fontSize={18} fontWeight="bold">
         Style Stability Bench ({NODE_COUNT} nodes × {SAMPLE_COUNT} samples)
@@ -335,7 +335,7 @@ export function StyleStabilityBench() {
                   testID={`bench-${id}-vs-rn`}
                   accessibilityLabel={`vs-rn:${speedup.toFixed(1)}`}
                   fontSize={12}
-                  color={speedup > 10 ? 'red' : speedup < -5 ? 'green' : '$color'}
+                  color={speedup > 10 ? 'red' : speedup < -5 ? 'green' : 'color'}
                 >
                   vs RN StyleSheet: {speedup > 0 ? '+' : ''}
                   {speedup.toFixed(1)}%
@@ -351,7 +351,7 @@ export function StyleStabilityBench() {
           testID="bench-summary"
           gap={4}
           padding={8}
-          backgroundColor="$backgroundStrong"
+          backgroundColor="background-press"
           borderRadius={8}
         >
           <Text fontSize={14} fontWeight="bold">

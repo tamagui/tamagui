@@ -122,7 +122,7 @@ export const ButtonIcon = ({ size, ...props }: ButtonBehaviorIconProps) => {
   return (
     <ButtonBehaviorIcon
       {...props}
-      size={size ?? getThemedIconSize(context?.size ?? true)}
+      size={size ?? getThemedIconSize((context?.size as ButtonSize | undefined) ?? true)}
     />
   )
 }

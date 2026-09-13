@@ -7,12 +7,18 @@ import {
   useState,
 } from 'react'
 import type { TabsProps, TabsTabProps } from 'tamagui'
-import { Paragraph, Tabs, XStack, styled, withStaticProperties } from 'tamagui'
+import { Paragraph, Tabs, XStack, style, styled, withStaticProperties } from 'tamagui'
 import { type Href, useLocalSearchParams, usePathname, useRouter } from 'one'
 
 const codeSyntaxChangeEvent = 'docs-code-syntax-change'
 const MDXTabsContext = createContext({ codeSyntax: false, isTailwind: false })
 const MDXTabsSearchContext = createContext('')
+const codeTabActiveStyle = style({
+  backgroundColor: 'color-1 hover:color-1 focus:color-1',
+})
+const tabActiveStyle = style({
+  backgroundColor: 'color-7 hover:color-7 focus:color-7',
+})
 
 export function useCodeSyntaxTabs() {
   const { codeSyntax, isTailwind } = useContext(MDXTabsContext)
@@ -130,9 +136,7 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
         outlineColor="focus-visible:outline-color"
         outlineWidth="focus-visible:2px"
         outlineStyle="focus-visible:solid"
-        activeStyle={{
-          backgroundColor: 'color-1 hover:color-1 focus:color-1',
-        }}
+        activeStyle={codeTabActiveStyle}
         ref={ref as any}
       >
         <Paragraph size="2" color="color-11">
@@ -153,9 +157,7 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
       outlineColor="focus:outline-color"
       outlineWidth="focus:2px"
       outlineStyle="focus:solid"
-      activeStyle={{
-        backgroundColor: 'color-7 hover:color-7 focus:color-7',
-      }}
+      activeStyle={tabActiveStyle}
       ref={ref as any}
     >
       <Paragraph size="3">{props.children}</Paragraph>

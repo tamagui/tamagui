@@ -1,5 +1,6 @@
 import { TamaguiIconSvg } from '@tamagui/logo'
 import { Check } from '@tamagui/lucide-icons-2'
+import type { Href } from 'one'
 import { EnsureFlexed, H1, H5, Paragraph, Span, Text, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
 import { PAGE_MAX_WIDTH } from '~/components/Containers'
@@ -33,7 +34,7 @@ const HERO_ROW_WIDTH = 1040
 
 // each row is one short sentence, and only the object parts are linked, so the
 // line reads as a claim rather than a bare label wearing a link
-type FeaturePart = string | { label: string; href: string }
+type FeaturePart = string | { label: string; href: Href }
 
 const features: FeaturePart[][] = [
   [

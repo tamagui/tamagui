@@ -33,7 +33,9 @@ export type CheckboxExtraProps = {
 
 export type CheckboxProps = CheckboxBaseProps & CheckboxExtraProps
 
-type CheckboxBehaviorProps = CheckboxExtraProps & Pick<PressableProps, 'onPress'>
+type CheckboxBehaviorProps = CheckboxExtraProps & {
+  onPress?: PressableProps['onPress']
+}
 
 export function useCheckbox<R, P extends CheckboxBehaviorProps>(
   props: P,
@@ -116,6 +118,6 @@ export function useCheckbox<R, P extends CheckboxBehaviorProps>(
         onKeyDown: disabled ? undefined : handleKeyDown,
       }),
       onPress: disabled ? undefined : handlePress,
-    },
+    } satisfies PressableProps,
   }
 }
