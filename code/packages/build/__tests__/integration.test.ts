@@ -87,6 +87,9 @@ describe('tamagui-build integration test', () => {
     expect(esmOutput).toContain('./star.mjs')
     expect(esmOutput).toContain('import("./lazy.mjs")')
     expect(esmOutput).toContain('./common.mjs')
+    expect(esmOutput).toContain('require("./common.mjs")')
+    expect(esmOutput).not.toContain('globalThis.require')
+    expect(esmOutput).not.toMatch(/\bvar __require/)
     expect(readFileSync(join(distPath, 'esm', 'index.native.js'), 'utf-8')).toContain(
       './nativeOnly.native.js'
     )

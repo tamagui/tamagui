@@ -227,6 +227,51 @@ function stripRolldownRegionComments(contents) {
     .replace(/^\/\/#endregion[^\n]*(?:\n|$)/gm, '')
 }
 
+const preserveRequireModuleId = 'tamagui-build:preserve-require'
+const preserveRequirePlugin = {
+  name: 'tamagui-build-preserve-require',
+  resolveId(id) {
+    if (id === preserveRequireModuleId) return id
+  },
+  load(id) {
+    if (id === preserveRequireModuleId) {
+      return 'export const require = globalThis.require'
+    }
+  },
+}
+
+function restoreGlobalRequire(contents) {
+  const injected = contents.match(
+    /(?:\r?\n)?\/\/#region tamagui-build:preserve-require\r?\nconst ([\w$]+) = globalThis\.require;\r?\n[ \t\r\n]*\/\/#endregion\r?\n/
+  )
+  if (injected) {
+    contents = contents.replace(injected[0], '\n')
+    if (injected[1] !== 'require') {
+      const identifier = injected[1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      contents = contents.replace(
+        new RegExp(`\\b${identifier}\\b`, 'g'),
+        'require'
+      )
+    }
+  }
+
+  const runtime = contents.match(
+    /\/\/#region \\0rolldown\/runtime\.js\r?\n([\s\S]*?)\/\/#endregion\r?\n?/
+  )
+  const helper = runtime?.[1].match(
+    /var (__require(?:\$\d+)?) = \/\* @__PURE__ \*\/ \(\(x\) =>[\s\S]*?Calling `require`[\s\S]*?\r?\n\}\);\r?\n/
+  )
+  if (!helper) return contents
+
+  const remainingRuntime = runtime[1].replace(helper[0], '')
+  contents = contents.replace(
+    remainingRuntime.trim() ? helper[0] : runtime[0],
+    ''
+  )
+  const identifier = helper[1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  return contents.replace(new RegExp(`\\b${identifier}\\b`, 'g'), 'require')
+}
+
 async function pruneUnusedImports(contents, filePath) {
   if (!contents.includes('import')) {
     return contents
@@ -236,9 +281,15 @@ async function pruneUnusedImports(contents, filePath) {
 
   const bundle = await rolldown({
     input: entryId,
-    external: (id) => id !== entryId,
+    external: (id) => id !== entryId && id !== preserveRequireModuleId,
     platform: 'neutral',
+    transform: {
+      inject: {
+        require: [preserveRequireModuleId, 'require'],
+      },
+    },
     plugins: [
+      preserveRequirePlugin,
       {
         name: 'tamagui-build-prune-entry',
         resolveId(id) {
@@ -267,7 +318,9 @@ async function pruneUnusedImports(contents, filePath) {
       minify: false,
     })
     const chunk = result.output.find((item) => item.type === 'chunk')
-    return chunk?.code ? stripRolldownRegionComments(chunk.code) : contents
+    return chunk?.code
+      ? stripRolldownRegionComments(restoreGlobalRequire(chunk.code))
+      : contents
   } finally {
     await bundle.close?.()
   }
@@ -387,7 +440,7 @@ async function fullySpecifyOutputs(
         }
 
         transformed.set(file.path, {
-          code: stripRolldownRegionComments(chunk.code).replace(
+          code: stripRolldownRegionComments(restoreGlobalRequire(chunk.code)).replace(
             /\n?\/\/# sourceMappingURL=.*(?:\n|$)/g,
             ''
           ),
