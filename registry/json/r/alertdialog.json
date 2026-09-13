@@ -3,7 +3,7 @@
   "name": "alertdialog",
   "type": "registry:ui",
   "title": "AlertDialog",
-  "description": "v2-look AlertDialog: scrim background on the Overlay and background/border/padding/radius/elevation on the Content, over the unstyled @tamagui/ui AlertDialog behavior.",
+  "description": "v2-look AlertDialog: scrim background on the Overlay and background/border/padding/radius/shadow on the Content, over the unstyled @tamagui/ui AlertDialog behavior.",
   "files": [
     {
       "path": "components/tamagui/AlertDialog.tsx",

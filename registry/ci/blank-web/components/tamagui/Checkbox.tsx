@@ -3,6 +3,10 @@ import { type GetProps, resolveSize, styled, withStaticProperties } from '@tamag
 
 export const CheckboxFrame = styled(CheckboxBehavior, {
   displayName: 'Checkbox',
+  // checked swaps the whole frame onto the brand theme, so the fill, the border
+  // and the check glyph (icons read theme.color, they do not inherit CSS color)
+  // all move together. the same convention drives Switch and ToggleGroup.Item.
+  activeTheme: 'brand',
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: 'background press:background-press',
@@ -13,12 +17,14 @@ export const CheckboxFrame = styled(CheckboxBehavior, {
   outlineWidth: 'focus-visible:2px',
   variants: {
     size: styled.dynamic<any>((size, env) => {
-      // the check is an icon, so the box is the size's icon square
-      const controlSize = resolveSize(size, env).icon
+      // the box reads as a control next to its label, so it sits a step above
+      // the icon square the check glyph is drawn at (Switch.tsx uses the same
+      // 1.4 for its track, so the two read as the same weight at one size)
+      const controlSize = Math.round(resolveSize(size, env).icon * 1.4)
       return {
         width: controlSize,
         height: controlSize,
-        borderRadius: Math.max(3, Math.round(controlSize / 5)),
+        borderRadius: Math.max(4, Math.round(controlSize / 4)),
       }
     }),
 

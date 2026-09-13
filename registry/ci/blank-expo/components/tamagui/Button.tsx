@@ -30,8 +30,12 @@ import { getThemedIconSize } from '@tamagui/helpers-tamagui'
 export type ButtonSize = SizeTokens
 
 const buttonFrameSizeVariant = styled.dynamic<ButtonSize>((val, env) => {
+  const { frame, controlHeight } = resolveSize(val, env)
   return {
-    ...resolveSize(val, env).frame,
+    ...frame,
+    // Keep text buttons at the same outer height as circular buttons. The
+    // resolved control height excludes this frame's 1px border on each side.
+    minHeight: controlHeight + 2,
     // `size` is a control preset, not square geometry. keep the frame's width
     // content-driven even if an outer styled layer also recognizes `size` as
     // the generic width/height shorthand.

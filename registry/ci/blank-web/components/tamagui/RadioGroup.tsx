@@ -7,6 +7,9 @@ export const RadioGroupFrame = styled(RadioGroupBehavior, {
 
 export const RadioGroupItem = styled(RadioGroupBehavior.Item, {
   displayName: 'RadioGroupItem',
+  // selected swaps the whole item onto the brand theme, the same convention
+  // Checkbox, Switch and ToggleGroup.Item use, so the four read as one family
+  activeTheme: 'brand',
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: 'background hover:background-hover press:background-press',
@@ -18,8 +21,10 @@ export const RadioGroupItem = styled(RadioGroupBehavior.Item, {
   outlineWidth: 'focus-visible:2px',
   variants: {
     size: styled.dynamic<any>((size, env) => {
-      // the check is an icon, so the box is the size's icon square
-      const controlSize = resolveSize(size, env).icon
+      // a radio reads as a control next to its label, so it matches the
+      // checkbox square and the switch track rather than the icon square
+      // (Checkbox.tsx and Switch.tsx use the same 1.4)
+      const controlSize = Math.round(resolveSize(size, env).icon * 1.4)
       return {
         width: controlSize,
         height: controlSize,
