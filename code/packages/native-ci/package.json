@@ -41,6 +41,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@expo/cli": "^57.0.17",
     "@expo/fingerprint": "~0.20.6"
   },
   "devDependencies": {
