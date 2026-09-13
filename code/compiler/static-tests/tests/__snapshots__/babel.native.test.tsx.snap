@@ -94,9 +94,9 @@ exports[`conditional font family lowers per-branch with per-family size resoluti
     )
   }
 
-function __TamaguiNativeStyle98() { return __TamaguiNativeStyle98._ ?? (__TamaguiNativeStyle98._ = {"fontFamily":"-apple-system, system-ui, BlinkMacSystemFont, \\"Segoe UI\\", Roboto, Helvetica, Arial, sans-serif","fontSize":22,"fontWeight":400,"letterSpacing":0,"lineHeight":33}); } __TamaguiNativeStyle98();
+function __TamaguiNativeStyle98() { return __TamaguiNativeStyle98._ ?? (__TamaguiNativeStyle98._ = {"fontFamily":"-apple-system, system-ui, BlinkMacSystemFont, \\"Segoe UI\\", Roboto, Helvetica, Arial, sans-serif","fontSize":21,"fontWeight":400,"letterSpacing":0,"lineHeight":31}); } __TamaguiNativeStyle98();
 const __TamaguiNativeText = require('react-native').Text;
-const __TamaguiStableText98 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle98._ ?? __TamaguiNativeStyle98(), { "color": _theme["color"]?.get() }, expressions[0] ? {} : {"fontWeight":700,"lineHeight":30}], true, false);"
+const __TamaguiStableText98 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle98._ ?? __TamaguiNativeStyle98(), { "color": _theme["color"]?.get() }, expressions[0] ? {} : {"fontWeight":700,"lineHeight":29}], true, false);"
 `;
 
 exports[`do NOT flatten dynamic values with theme access 1`] = `

@@ -95,10 +95,13 @@ export function buildCSSRuleSets(
 ): string[] {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
     const cssRuleSets: string[] = []
-    const sep = process.env.NODE_ENV === 'development' ? ' ' : ''
+    const developmentWhitespace = process.env.NODE_ENV === 'development'
+    const sep = developmentWhitespace ? ' ' : ''
 
     function declarationsToRuleSet(decs: string[], selector = '') {
-      return `:root${selector} {${sep}${[...decs].join(`;${sep}`)}\n}`
+      return `:root${selector}${sep}{${sep}${[...decs].join(`;${sep}`)}${
+        developmentWhitespace ? '\n' : ''
+      }}`
     }
 
     // non-font tokens
@@ -129,7 +132,7 @@ export function buildCSSRuleSets(
         // These are defaults, so an atomic style prop must be able to override
         // them regardless of stylesheet insertion order.
         const sharedSelectors = `:where(${[...fontSelectors, '.is_View'].join(', ')})`
-        cssRuleSets.push(`${sharedSelectors} {font-family: var(--f-family)}`)
+        cssRuleSets.push(`${sharedSelectors}${sep}{font-family:${sep}var(--f-family)}`)
       }
     }
 
@@ -236,7 +239,7 @@ const getStaticCSS = (
   const pointerEventsCSS = `:where(._pe-boxonly)>* {pointer-events:none;}
 :where(._pe-boxnone)>* {pointer-events:auto;}`
 
-  const designSystem = `._ovs-contain {overscroll-behavior:contain;}
+  const baseDesignSystem = `._ovs-contain {overscroll-behavior:contain;}
 .t_unmounted .is_View, .t_unmounted .is_Text { transition: none !important; }
 :where(.is_View) { display: flex; align-items: stretch; flex-direction: column; flex-basis: auto; box-sizing: border-box; min-height: 0; min-width: 0; flex-shrink: 0; }
 :where(.is_Text) { display: inline; box-sizing: border-box; word-wrap: break-word; white-space: pre-wrap; margin: 0; }
@@ -244,7 +247,18 @@ const getStaticCSS = (
 ._dsp_contents {display:contents;}
 ._no_backdrop::backdrop {display: none;}
 ${pointerEventsCSS}
-${hideScrollBarsCSS}
+${hideScrollBarsCSS}`
+  const designSystem = `${
+    process.env.NODE_ENV === 'production'
+      ? baseDesignSystem
+          .replaceAll(' {', '{')
+          .replaceAll('{ ', '{')
+          .replaceAll(': ', ':')
+          .replaceAll('; ', ';')
+          .replaceAll(';}', '}')
+          .replaceAll('\n', '')
+      : baseDesignSystem
+  }
 ${autoVarCSS}
 ${themeConfig.cssRuleSets.join(separator)}`
 

@@ -29,6 +29,9 @@ export function getThemeCSSRules(props: {
   ) {
     const cssRuleSets: string[] = []
     const { config, themeName, theme, names } = props
+    const whitespace = process.env.NODE_ENV === 'development' ? ' ' : ''
+    const mediaIndent = process.env.NODE_ENV === 'development' ? '\n    ' : ''
+    const mediaClose = process.env.NODE_ENV === 'development' ? '\n  ' : ''
 
     // special case for SSR
     const hasDarkLight =
@@ -149,7 +152,7 @@ export function getThemeCSSRules(props: {
         })
         .join(', ') + `, .tm_xxt`
 
-    const css = `${selectorsString} {${vars}}`
+    const css = `${selectorsString}${whitespace}{${vars}}`
     cssRuleSets.push(css)
 
     if (getSetting('shouldAddPrefersColorThemes')) {
@@ -195,12 +198,12 @@ export function getThemeCSSRules(props: {
             : ''
           const fgString = theme.color ? `color:${variableToString(theme.color)}` : ''
           bodyRulesString =
-            bgString || fgString ? `body{${bgString}${fgString}}\n    ` : ''
+            bgString || fgString ? `body{${bgString}${fgString}}${mediaIndent}` : ''
         }
 
-        cssRuleSets.push(`@media(prefers-color-scheme:${baseName}){
-    ${bodyRulesString}${lessSpecificSelectors} {${vars}}
-  }`)
+        cssRuleSets.push(
+          `@media(prefers-color-scheme:${baseName}){${mediaIndent}${bodyRulesString}${lessSpecificSelectors}${whitespace}{${vars}}${mediaClose}}`
+        )
       }
     }
 
