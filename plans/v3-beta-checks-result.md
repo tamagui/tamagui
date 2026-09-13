@@ -7,6 +7,7 @@ The repair is split across these commits:
 - `bdac251aca` removes optional whitespace from production CSS variable declarations so the zero-runtime starter stays inside its unchanged gzip limits.
 - `7c59094172` applies the same deliberate Button control-height contract to the native size coverage.
 - `2e905de12e` removes the remaining optional formatting from production design-system and theme CSS.
+- `f329e4a2be` pins native conditional font extraction to the deliberate v6 font metrics and strengthens its per-branch assertions.
 
 No test assertion, timeout, retry, skip, coverage requirement, or size budget was loosened.
 
@@ -30,3 +31,4 @@ No test assertion, timeout, retry, skip, coverage requirement, or size budget wa
 - `bun run check` passed all dependency, unused, Tamagui, reference, path, web-type, and LSP pin checks.
 - Checks run `34778035179` proved all three integration shards and the workspace type check green at `15eb984a9e`; its failures exposed the remaining unit type contract and common production CSS formatting.
 - Checks run `34780130123` kept those lanes green and narrowed the remaining unit failure to the native counterpart of the already-proven Button contract. Its zero-runtime failure showed the first formatting pass reduced every CSS artifact without fully recovering the Metro islands ceiling.
+- Checks run `34781159173` passed every job except the native compiler snapshot fixed in `f329e4a2be`. Both zero-runtime jobs passed with the unchanged budgets.
