@@ -95,7 +95,7 @@ export function buildCSSRuleSets(
 ): string[] {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
     const cssRuleSets: string[] = []
-    const sep = ' '
+    const sep = process.env.NODE_ENV === 'development' ? ' ' : ''
 
     function declarationsToRuleSet(decs: string[], selector = '') {
       return `:root${selector} {${sep}${[...decs].join(`;${sep}`)}\n}`
