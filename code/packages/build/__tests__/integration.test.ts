@@ -29,6 +29,7 @@ const distCjsFilePath = join(distPath, 'cjs', 'index.cjs')
 const watchDistCjsFilePath = join(watchDistPath, 'cjs', 'watch.cjs')
 const distEsmFilePath = join(distPath, 'esm', 'index.mjs')
 const distTypesFilePath = join(simplePackagePath, 'types', 'index.d.ts')
+const downstreamBundlePath = join(simplePackagePath, 'downstream-bundle.cjs')
 const temporaryFailureSourcePath = join(simplePackagePath, 'src', 'build-failure.ts')
 const temporaryStaleSourcePath = join(simplePackagePath, 'src', 'stale-output.ts')
 const jsMainPackagePath = join(__dirname, 'fixtures', 'js-main-package')
@@ -87,9 +88,6 @@ describe('tamagui-build integration test', () => {
     expect(esmOutput).toContain('./star.mjs')
     expect(esmOutput).toContain('import("./lazy.mjs")')
     expect(esmOutput).toContain('./common.mjs')
-    expect(esmOutput).toContain('require("./common.mjs")')
-    expect(esmOutput).not.toContain('globalThis.require')
-    expect(esmOutput).not.toMatch(/\bvar __require/)
     expect(readFileSync(join(distPath, 'esm', 'index.native.js'), 'utf-8')).toContain(
       './nativeOnly.native.js'
     )
@@ -116,6 +114,22 @@ describe('tamagui-build integration test', () => {
     expect(esmModule.starMarker).toBe('star-marker')
     expect(esmModule.dottedNameMarker).toBe('dotted-name-marker')
     expect((await esmModule.loadLazy()).lazyMarker).toBe('lazy-marker')
+
+    const { build } = await import('esbuild')
+    const downstreamBuild = await build({
+      entryPoints: [distEsmFilePath],
+      bundle: true,
+      format: 'cjs',
+      platform: 'node',
+      write: false,
+    })
+    writeFileSync(downstreamBundlePath, downstreamBuild.outputFiles[0].contents)
+    try {
+      const downstreamModule = require(downstreamBundlePath)
+      expect(downstreamModule.loadCommon().commonMarker).toBe('common-marker')
+    } finally {
+      unlinkSync(downstreamBundlePath)
+    }
     expect(existsSync(join(distPath, 'cjs', 'index.cjs'))).toBe(true)
     expect(existsSync(join(distPath, 'esm', 'index.js'))).toBe(true)
     expect(existsSync(join(distPath, 'jsx', 'index.js'))).toBe(true)
