@@ -5,6 +5,8 @@ The repair is split across these commits:
 - `15eb984a9e` fixes the strict type-check failures and restores the intended v6 font-scale behavior in unit and browser integration coverage.
 - `9b503af5a4` brings the remaining unit contracts in sync with deliberate API and template changes.
 - `bdac251aca` removes optional whitespace from production CSS variable declarations so the zero-runtime starter stays inside its unchanged gzip limits.
+- `7c59094172` applies the same deliberate Button control-height contract to the native size coverage.
+- `2e905de12e` removes the remaining optional formatting from production design-system and theme CSS.
 
 No test assertion, timeout, retry, skip, coverage requirement, or size budget was loosened.
 
@@ -23,7 +25,8 @@ No test assertion, timeout, retry, skip, coverage requirement, or size budget wa
 - `code/core/web`: 20 files and 98 tests/type assertions passed.
 - `code/core/cli`: 6 files and 37 tests passed.
 - `code/core/create-tamagui`: 20 tests passed.
-- Pinned Node 24.16 zero-runtime measurement passed all six unchanged graph-size ceilings. Vite was 4099/4104 bytes, Next was 4117/4121 bytes, and Metro was 4117/4459 bytes for base/islands respectively.
+- Pinned Node 24.16 zero-runtime measurement passed all six unchanged graph-size ceilings. Vite was 4058/4063 bytes, Next was 4076/4080 bytes, and Metro was 4076/4410 bytes for base/islands respectively.
 - `bun run lint` passed with two pre-existing warnings.
 - `bun run check` passed all dependency, unused, Tamagui, reference, path, web-type, and LSP pin checks.
-- Checks run `34778035179` proved all three integration shards and the workspace type check green at `15eb984a9e`; its only failures were the unit and zero-runtime cases fixed by the next two commits.
+- Checks run `34778035179` proved all three integration shards and the workspace type check green at `15eb984a9e`; its failures exposed the remaining unit type contract and common production CSS formatting.
+- Checks run `34780130123` kept those lanes green and narrowed the remaining unit failure to the native counterpart of the already-proven Button contract. Its zero-runtime failure showed the first formatting pass reduced every CSS artifact without fully recovering the Metro islands ceiling.
