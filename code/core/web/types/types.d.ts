@@ -364,6 +364,7 @@ export type TamaguiComponentStateRef = {
     nativeMediaQueued?: boolean;
     nativeThemeState?: ThemeState;
     nativePushedKeys?: Set<string>;
+    prevStyle?: Record<string, any> | null;
 };
 export type ComponentGroupEmitter = {
     listeners: Set<GroupStateListener>;
@@ -2070,6 +2071,7 @@ export type SplitStyleProps = {
     canPlatformPseudo?: boolean;
     isAnimated: boolean;
     isExiting?: boolean;
+    prevStyle?: Record<string, any> | null;
 };
 export interface PresenceContextProps {
     id: string;

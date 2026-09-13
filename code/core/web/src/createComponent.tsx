@@ -777,6 +777,7 @@ export function createComponent<
       canPlatformPseudo: componentState.platformPseudo,
       displayName,
       styledContext: styledContextValue,
+      prevStyle: isWeb ? undefined : stateRef.current.prevStyle,
     } as const
 
     const themeName = themeState?.name || ''
@@ -1309,6 +1310,12 @@ export function createComponent<
       mediaGroups,
     } = splitStyles || {}
     const groupSetRevision = useGroupSetRevision(pseudoGroups, mediaGroups)
+
+    // native style stability: persist the resolved style for next render's
+    // inline comparison (see getSplitStyles prevStyle tracking)
+    if (!isWeb) {
+      stateRef.current.prevStyle = splitStylesStyle || null
+    }
 
     const propsWithAnimation = props as UseAnimationProps
 

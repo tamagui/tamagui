@@ -714,6 +714,10 @@ export type TamaguiComponentStateRef = {
   // but absent from the next push are sent as null (reset-to-default),
   // matching what a real re-render's style diff would do
   nativePushedKeys?: Set<string>
+
+  // native style stability: the most recently resolved style object, reused
+  // when the next render's resolved values are identical (see getSplitStyles)
+  prevStyle?: Record<string, any> | null
 }
 
 export type ComponentGroupEmitter = {
@@ -3483,6 +3487,10 @@ export type SplitStyleProps = {
   canPlatformPseudo?: boolean
   isAnimated: boolean
   isExiting?: boolean
+  // native style stability: previous render's resolved style object, used to
+  // return the same reference when the resolved values haven't changed (avoids
+  // React Native's diffNestedProperty + cloneNodeWithNewProps on every re-render)
+  prevStyle?: Record<string, any> | null
 }
 
 // Presence

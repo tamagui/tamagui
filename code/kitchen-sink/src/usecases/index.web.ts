@@ -294,6 +294,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   StyleCompatCase: () => require('./StyleCompatCase').StyleCompatCase,
   StylePlatform: () => require('./StylePlatform').StylePlatform,
   StyleProp: () => require('./StyleProp').StyleProp,
+  StyleStabilityBench: () => require('./StyleStabilityBench').StyleStabilityBench,
   SliderFormCase: () => require('./SliderFormCase').SliderFormCase,
   TabsOnInteraction: () => require('./TabsOnInteraction').TabsOnInteraction,
   TabsHeadlessCase: () => require('./TabsHeadlessCase').TabsHeadlessCase,

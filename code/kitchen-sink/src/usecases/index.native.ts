@@ -175,6 +175,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   StyledViewOnFocus: () => require('./StyledViewOnFocus').StyledViewOnFocus,
   StylePlatform: () => require('./StylePlatform').StylePlatform,
   StyleProp: () => require('./StyleProp').StyleProp,
+  StyleStabilityBench: () => require('./StyleStabilityBench').StyleStabilityBench,
   TabsOnInteraction: () => require('./TabsOnInteraction').TabsOnInteraction,
   TextNestedInheritance: () => require('./TextNestedInheritance').TextNestedInheritance,
   TextOverflowEllipsis: () => require('./TextOverflowEllipsis').TextOverflowEllipsis,

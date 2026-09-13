@@ -1249,6 +1249,18 @@ export const getSplitStyles: StyleSplitter = (
   }
   ;(styleState as DirectState).flatStyleStaticConfig = styleStaticConfig
 
+  // native style stability: if the caller gave us the previous render's style
+  // object we track it so the per-key merge can compare inline and skip the
+  // object allocation when nothing changed
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    const prev = styleProps.prevStyle
+    if (prev) {
+      ;(styleState as DirectState).flatPrevStyle = prev
+      ;(styleState as DirectState).flatStyleChanged = false
+      ;(styleState as DirectState).flatStyleKeyCount = 0
+    }
+  }
+
   if (
     process.env.NODE_ENV === 'development' &&
     (debug === 'profile' || (globalThis as any).time)
@@ -1643,6 +1655,23 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
+  // native style stability: the inline per-key compare during mergeStyle found
+  // no value changes. fixStyles/transforms/parent defaults are all deterministic
+  // on those same values, so if key count matches the style is identical — swap
+  // in the prev ref so RN skips diffNestedProperty entirely.
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    const direct = styleState as DirectState
+    const prevStyle = direct.flatPrevStyle
+    if (
+      prevStyle &&
+      styleState.style &&
+      !direct.flatStyleChanged &&
+      Object.keys(prevStyle).length === Object.keys(styleState.style).length
+    ) {
+      styleState.style = prevStyle as any
+    }
+  }
+
   // built without conditional spreads: this runs once per component render and
   // each spread transpiles to an ownKeys/defineProperty helper chain that
   // profiles at several percent of total style-resolution time
@@ -2032,6 +2061,18 @@ function mergeStyle(
     ) {
       viewProps[nativeTextInputColorProps[key]] = out
     } else {
+      // native style stability: compare each value inline against the previous
+      // render's style object. if every key matches we can return the prev ref
+      // and skip RN's diffNestedProperty + cloneNodeWithNewProps entirely.
+      if (process.env.TAMAGUI_TARGET === 'native') {
+        const direct = styleState as DirectState
+        if (direct.flatPrevStyle) {
+          direct.flatStyleKeyCount = (direct.flatStyleKeyCount || 0) + 1
+          if (!direct.flatStyleChanged && direct.flatPrevStyle[key] !== out) {
+            direct.flatStyleChanged = true
+          }
+        }
+      }
       styleState.style ||= {}
       styleState.style[key] = out
       if (shouldTrackStyleTokenProvenance) {
@@ -2161,6 +2202,10 @@ type DirectState = GetStyleState & {
   flatDynamicThemeAccess?: boolean
   flatTextShadow?: Record<string, any>
   flatWebShadow?: any[]
+  // native style stability: inline-compared during the style loop
+  flatPrevStyle?: Record<string, any> | null
+  flatStyleChanged?: boolean
+  flatStyleKeyCount?: number
 }
 
 // orders the authored boxShadow value against the shadow-part record so the
