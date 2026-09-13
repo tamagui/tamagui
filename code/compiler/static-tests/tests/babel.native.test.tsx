@@ -141,7 +141,8 @@ test(`conditional font family lowers per-branch with per-family size resolution`
   // the test config's families share one family string; the branch difference
   // shows up as the heading font's own metrics resolved per branch
   expect(whenTrue).not.toEqual(whenFalse)
-  expect(whenFalse.fontWeight).toBe(700)
+  expect(whenTrue).toEqual({})
+  expect(whenFalse).toEqual({ fontWeight: 700, lineHeight: 29 })
   expect(output.stats.flattened).toBeGreaterThan(0)
   expect(output.diagnostics).toEqual([])
   expect(code).toMatchSnapshot()
