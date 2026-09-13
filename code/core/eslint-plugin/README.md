@@ -6,7 +6,6 @@ parsing, configured candidate validation, and v6 built-in names to
 
 ```ts
 // eslint.config.ts
-import parser from '@typescript-eslint/parser'
 import tamagui from '@tamagui/eslint-plugin'
 import { createGrammarConfigView } from '@tamagui/style-grammar/tooling'
 import config from './tamagui.config'
@@ -16,7 +15,6 @@ const grammarConfig = createGrammarConfigView(config)
 export default [
   {
     files: ['**/*.{ts,tsx}'],
-    languageOptions: { parser },
     plugins: { tamagui },
     rules: {
       'tamagui/valid-flat-values': ['error', { config: grammarConfig }],

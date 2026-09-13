@@ -39,7 +39,6 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "@typescript-eslint/parser": "8.65.0",
     "eslint": "10.8.0",
     "vitest": "4.1.0"
   }
