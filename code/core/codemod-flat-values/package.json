@@ -27,13 +27,12 @@
   },
   "dependencies": {
     "@tamagui/helpers": "workspace:*",
-    "@tamagui/language-service": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/style-grammar": "workspace:*",
     "ts-morph": "^28.0.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "typescript": "~6.0.3"
+    "typescript": "7.0.2"
   }
 }

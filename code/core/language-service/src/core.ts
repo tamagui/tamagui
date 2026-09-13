@@ -2,7 +2,7 @@
 //
 // Browser-safe by contract: no node imports, no typescript imports. Everything
 // here works from the serialized config JSON the Tamagui compiler emits
-// (`.tamagui/tamagui.config.json`), so the same engine powers the tsserver
+// (`.tamagui/tamagui.config.json`), so the same engine powers the language server
 // plugin, the VS Code extension, the CLI checker, and in-browser IDEs.
 //
 // The @tamagui/style-grammar engine owns candidate meaning; this module adds

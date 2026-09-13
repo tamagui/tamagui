@@ -36,7 +36,7 @@ const { transformSync: oxcTransformSync } = require('oxc-transform')
 const { getTsconfig } = require('get-tsconfig')
 const path = require('node:path')
 const childProcess = require('node:child_process')
-const { getTypeScriptNativePath } = require('./typescript-native')
+const { getTypeScriptPath } = require('./typescript-path')
 const {
   printEsbuildError,
   printBuildError,
@@ -1017,7 +1017,7 @@ async function pruneStaleDeclarations(targetDir, allFiles) {
 }
 
 async function emitDeclarationsWithTsgo(targetDir, allFiles) {
-  const tsgoPath = getTypeScriptNativePath()
+  const tsgoPath = getTypeScriptPath()
   const declarationProject = `.tamagui-build-tsconfig-${process.pid}.json`
   const sourceProject = path
     .relative(process.cwd(), path.resolve(tsProject || 'tsconfig.json'))

@@ -68,6 +68,7 @@
     "fast-glob": "^3.2.11",
     "find-root": "^1.1.0",
     "fs-extra": "^11.2.0",
+    "get-tsconfig": "^4.14.0",
     "js-yaml": "^4.1.0",
     "react-native-web": "~0.21.0"
   },
@@ -80,7 +81,7 @@
     "null-loader": "^4.0.1",
     "react": "19.2.3",
     "react-native": "0.86.2",
-    "typescript": "~6.0.3"
+    "typescript": "7.0.2"
   },
   "peerDependencies": {
     "react": ">=19"

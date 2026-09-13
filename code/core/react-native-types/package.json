@@ -19,7 +19,7 @@
     "access": "public"
   },
   "scripts": {
-    "generate": "bun scripts/generate.ts",
+    "generate": "node --experimental-strip-types scripts/generate.ts",
     "test:web": "vitest --typecheck --run"
   },
   "dependencies": {},
@@ -28,6 +28,6 @@
   },
   "devDependencies": {
     "react-native": "0.86.2",
-    "typescript": "~6.0.3"
+    "typescript": "7.0.2"
   }
 }

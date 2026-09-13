@@ -25,7 +25,7 @@
     "@types/react": "~19.2.0",
     "babel-preset-expo": "~57.0.7",
     "react-test-renderer": "19.2.3",
-    "typescript": "~6.0.3",
+    "typescript": "7.0.2",
     "vitest-native": "npm:vitest@4.1.0"
   }
 }

@@ -17,7 +17,8 @@ import { execFileSync } from 'node:child_process'
 import { createRequire } from 'node:module'
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
-import ts from 'typescript'
+import { API } from 'typescript/unstable/sync'
+import * as ts from 'typescript/unstable/ast'
 
 const PKG = resolve(import.meta.dirname, '..')
 
@@ -214,12 +215,8 @@ type Parsed = {
  * against the wrong arity. So resolution follows each file's own imports.
  */
 function parseFile(file: string): Parsed {
-  const src = ts.createSourceFile(
-    file,
-    readFileSync(file, 'utf8'),
-    ts.ScriptTarget.Latest,
-    true
-  )
+  const src = program.getSourceFile(file)
+  if (!src) throw new Error(`TypeScript did not load ${file}`)
   const decls = new Map<string, Decl>()
   const aliases = new Map<string, Alias>()
   const starExports: string[] = []
@@ -318,7 +315,7 @@ function referencedNames(node: ts.Node): string[] {
     if (ts.isExpressionWithTypeArguments(n) && ts.isIdentifier(n.expression)) {
       found.add(n.expression.text)
     }
-    ts.forEachChild(n, visit)
+    n.forEachChild(visit)
   }
   // from `node` itself, not its children: its own type parameters bind here too
   visit(node)
@@ -335,6 +332,26 @@ if (!files.length) {
   )
   process.exit(1)
 }
+
+const configPath = resolve(PKG, '.generate.tsconfig.json')
+const config = JSON.stringify({
+  compilerOptions: { noLib: true, skipLibCheck: true },
+  files,
+})
+const api = new API({
+  cwd: PKG,
+  fs: {
+    readFile: (file) => (file === configPath ? config : undefined),
+    fileExists: (file) => (file === configPath ? true : undefined),
+  },
+})
+const snapshot = api.updateSnapshot({ openProjects: [configPath] })
+const project = snapshot.getProject(configPath)
+if (!project) {
+  api.close()
+  throw new Error('TypeScript did not create the declaration extraction project')
+}
+const { program } = project
 
 const parsed = new Map<string, Parsed>()
 for (const file of files) parsed.set(file, parseFile(file))
@@ -509,3 +526,6 @@ console.info(
   `✓ wrote src/generated.d.ts — ${collected.size} declarations from react-native ${version} ` +
     `(${body.split('\n').length} lines)`
 )
+
+snapshot.dispose()
+api.close()

@@ -12,7 +12,7 @@
     "tamagui-build.js",
     "tamagui-build-workspace.js",
     "tamagui-tsgo.js",
-    "typescript-native.js",
+    "typescript-path.js",
     "teesx.sh"
   ],
   "bin": {
@@ -44,16 +44,8 @@
     "lodash.debounce": "^4.0.8",
     "oxc-transform": "^0.112.0",
     "picomatch": "4.0.4",
-    "rolldown": "1.2.4"
-  },
-  "optionalDependencies": {
-    "@typescript/typescript-darwin-arm64": "7.1.0-dev.20260722.1",
-    "@typescript/typescript-darwin-x64": "7.1.0-dev.20260722.1",
-    "@typescript/typescript-linux-arm": "7.1.0-dev.20260722.1",
-    "@typescript/typescript-linux-arm64": "7.1.0-dev.20260722.1",
-    "@typescript/typescript-linux-x64": "7.1.0-dev.20260722.1",
-    "@typescript/typescript-win32-arm64": "7.1.0-dev.20260722.1",
-    "@typescript/typescript-win32-x64": "7.1.0-dev.20260722.1"
+    "rolldown": "1.2.4",
+    "typescript": "7.0.2"
   },
   "peerDependencies": {
     "babel-plugin-react-compiler": ">=1"

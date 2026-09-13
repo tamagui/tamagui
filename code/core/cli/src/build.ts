@@ -1,5 +1,6 @@
 import {
   CompilerFrontend,
+  createTsconfigPathsMatcher,
   loadTamagui,
   loadTamaguiBuildConfigSync,
   compilerProjectStamp,
@@ -14,13 +15,6 @@ import { tmpdir } from 'node:os'
 import { spawn } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { createRequire } from 'node:module'
-import {
-  findConfigFile,
-  nodeModuleNameResolver,
-  parseJsonConfigFileContent,
-  readConfigFile,
-  sys,
-} from 'typescript'
 
 const cliVersion = (
   createRequire(typeof __filename === 'string' ? __filename : import.meta.url)(
@@ -163,24 +157,16 @@ export const build = async (
     const require = createRequire(
       typeof __filename === 'string' ? __filename : import.meta.url
     )
-    const configPath =
-      findConfigFile(root, sys.fileExists, 'tsconfig.json') ||
-      findConfigFile(root, sys.fileExists, 'jsconfig.json')
-    const compilerOptions = configPath
-      ? parseJsonConfigFileContent(
-          (() => {
-            const loaded = readConfigFile(configPath, sys.readFile)
-            if (loaded.error) throw new Error(String(loaded.error.messageText))
-            return loaded.config
-          })(),
-          sys,
-          dirname(configPath)
-        ).options
-      : {}
+    const tsconfigPaths = createTsconfigPathsMatcher(undefined, root)
     const resolveCompilerId = (specifier: string, importer: string): string | null => {
-      const resolved = nodeModuleNameResolver(specifier, importer, compilerOptions, sys)
-        .resolvedModule?.resolvedFileName
-      if (resolved && !resolved.endsWith('.d.ts')) return resolved
+      for (const candidate of tsconfigPaths?.(specifier) ?? []) {
+        try {
+          const resolved = require.resolve(candidate, {
+            paths: [dirname(importer), root],
+          })
+          if (!resolved.endsWith('.d.ts')) return resolved
+        } catch {}
+      }
       try {
         return require.resolve(specifier, { paths: [dirname(importer), root] })
       } catch {

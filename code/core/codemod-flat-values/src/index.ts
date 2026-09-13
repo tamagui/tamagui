@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, relative, resolve } from 'node:path'
-import { resolveTamaguiHost } from '@tamagui/language-service/host'
 import { stylePropsTextOnly } from '@tamagui/helpers'
 import {
   IndentationText,
@@ -325,12 +324,23 @@ for (const [shorthand, longhand] of Object.entries(shorthands)) {
 }
 
 function typeAwareHost(node: Node): HostView | undefined {
-  const checker = node.getProject().getTypeChecker().compilerObject
-  const host = resolveTamaguiHost(
-    checker as unknown as Parameters<typeof resolveTamaguiHost>[0],
-    node.compilerNode as unknown as Parameters<typeof resolveTamaguiHost>[1]
-  )
-  if (!host) return host
+  const checker = node.getProject().getTypeChecker()
+  const componentType = checker.getTypeAtLocation(node)
+  if (!componentType.getProperty('staticConfig')) return undefined
+
+  const propsTypes = componentType
+    .getCallSignatures()
+    .flatMap((signature) => signature.getParameters().slice(0, 1))
+    .map((props) => checker.getTypeOfSymbolAtLocation(props, node))
+  if (propsTypes.length === 0) return undefined
+
+  const host: HostView = {
+    displayName: node.getText(),
+    accepts: (property) =>
+      propsTypes.some(
+        (propsType) => propsType.getApparentType().getProperty(property) !== undefined
+      ),
+  }
 
   // The conversion resolves an authored shorthand to its longhand before asking
   // the host, and `onlyAllowShorthands: true` omits exactly those longhands from

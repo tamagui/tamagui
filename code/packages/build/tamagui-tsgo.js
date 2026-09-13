@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 const { spawnSync } = require('node:child_process')
-const { getTypeScriptNativePath } = require('./typescript-native')
+const { getTypeScriptPath } = require('./typescript-path')
 
-const result = spawnSync(getTypeScriptNativePath(), process.argv.slice(2), {
+const result = spawnSync(getTypeScriptPath(), process.argv.slice(2), {
   stdio: 'inherit',
 })
 

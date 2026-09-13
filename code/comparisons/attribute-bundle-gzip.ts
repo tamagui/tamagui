@@ -39,8 +39,13 @@
 import { eachMapping, TraceMap } from '@jridgewell/trace-mapping'
 import { readdirSync, readFileSync } from 'fs'
 import { join } from 'path'
-import ts from 'typescript'
+import { API } from 'typescript/unstable/async'
+import * as ts from 'typescript/unstable/ast'
 import { gzipSync } from 'zlib'
+import {
+  topLevelDeclarations,
+  type TopLevelDeclaration,
+} from './shared/topLevelDeclarations'
 
 const args = process.argv.slice(2)
 const dirs = args.filter((a) => !a.startsWith('--'))
@@ -418,14 +423,14 @@ function loadParserClusterManifest(checkpointName: string) {
   return { checkpoint, manifest, selectorNames }
 }
 
-type TopLevelDeclaration = {
-  kind: 'function' | 'variable'
+type AstTopLevelDeclaration = {
+  kind: TopLevelDeclaration['kind']
   name: string
   node: ts.Node
 }
 
-function findTopLevelDeclarations(sourceFile: ts.SourceFile, name: string) {
-  const declarations: TopLevelDeclaration[] = []
+function findAstTopLevelDeclarations(sourceFile: ts.SourceFile, name: string) {
+  const declarations: AstTopLevelDeclaration[] = []
   for (const statement of sourceFile.statements) {
     if (ts.isFunctionDeclaration(statement) && statement.name?.text === name) {
       declarations.push({ kind: 'function', name, node: statement })
@@ -449,38 +454,70 @@ function topLevelRuntimeDeclaration(node: ts.Node): ts.Statement | undefined {
   }
 }
 
-function privateDeclarationDependencies(sourceFile: ts.SourceFile, root: ts.Node) {
-  const options: ts.CompilerOptions = {
-    allowJs: true,
-    noResolve: true,
-    target: ts.ScriptTarget.Latest,
-  }
-  const defaultHost = ts.createCompilerHost(options)
-  const host: ts.CompilerHost = {
-    ...defaultHost,
-    fileExists: (fileName) => fileName === sourceFile.fileName,
-    getSourceFile: (fileName) =>
-      fileName === sourceFile.fileName ? sourceFile : undefined,
-    readFile: (fileName) =>
-      fileName === sourceFile.fileName ? sourceFile.text : undefined,
-  }
-  const checker = ts.createProgram([sourceFile.fileName], options, host).getTypeChecker()
-  const dependencies = new Map<string, TopLevelDeclaration>()
-  const visited = new Set<ts.Node>([root])
-  const queue = [root]
+async function privateDeclarationDependencies(
+  sourceName: string,
+  source: string,
+  root: TopLevelDeclaration
+) {
+  const sourceFilePath = '/__tamagui_bundle_source__.js'
+  const configPath = '/__tamagui_bundle_tsconfig__.json'
+  const config = JSON.stringify({
+    compilerOptions: { allowJs: true, noResolve: true, target: 'ESNext' },
+    files: [sourceFilePath],
+  })
+  const api = new API({
+    cwd: '/',
+    fs: {
+      readFile: (file) => {
+        if (file === sourceFilePath) return source
+        if (file === configPath) return config
+      },
+      fileExists: (file) =>
+        file === sourceFilePath || file === configPath ? true : undefined,
+    },
+  })
+  const snapshot = await api.updateSnapshot({ openProjects: [configPath] })
+  try {
+    const project = snapshot.getProject(configPath)
+    const sourceFile = await project?.program.getSourceFile(sourceFilePath)
+    if (!project || !sourceFile) {
+      fail(`TypeScript did not load parser cluster source ${sourceName}`)
+    }
+    const rootNode = findAstTopLevelDeclarations(sourceFile, root.name).find(
+      (candidate) => candidate.kind === root.kind
+    )?.node
+    if (!rootNode) {
+      fail(`TypeScript did not find parser cluster declaration ${root.name}`)
+    }
 
-  while (queue.length > 0) {
-    const owner = queue.pop()!
-    const visit = (node: ts.Node) => {
-      if (ts.isIdentifier(node)) {
-        const symbol = checker.getSymbolAtLocation(node)
-        for (const declaration of symbol?.declarations ?? []) {
-          if (declaration.getSourceFile() !== sourceFile) continue
+    const dependencies = new Map<string, AstTopLevelDeclaration>()
+    const visited = new Set<ts.Node>([rootNode])
+    const queue = [rootNode]
+
+    while (queue.length > 0) {
+      const owner = queue.pop()!
+      const identifiers: ts.Identifier[] = []
+      const collect = (node: ts.Node) => {
+        if (ts.isIdentifier(node)) identifiers.push(node)
+        node.forEachChild(collect)
+      }
+      owner.forEachChild(collect)
+
+      for (const identifier of identifiers) {
+        const symbol = await project.checker.getSymbolAtLocation(identifier)
+        for (const handle of symbol?.declarations ?? []) {
+          const declaration = await handle.resolve(project)
+          if (!declaration || declaration.getSourceFile().fileName !== sourceFilePath) {
+            continue
+          }
           const topLevel = topLevelRuntimeDeclaration(declaration)
           if (!topLevel) continue
-          for (const candidate of findTopLevelDeclarations(sourceFile, node.text)) {
+          for (const candidate of findAstTopLevelDeclarations(
+            sourceFile,
+            identifier.text
+          )) {
             if (candidate.node !== topLevel) continue
-            if (candidate.node !== root) {
+            if (candidate.node !== rootNode) {
               dependencies.set(`${candidate.kind}:${candidate.name}`, candidate)
             }
             if (!visited.has(candidate.node)) {
@@ -490,15 +527,16 @@ function privateDeclarationDependencies(sourceFile: ts.SourceFile, root: ts.Node
           }
         }
       }
-      ts.forEachChild(node, visit)
     }
-    ts.forEachChild(owner, visit)
-  }
 
-  return [...dependencies.values()]
+    return [...dependencies.values()].map(({ kind, name }) => ({ kind, name }))
+  } finally {
+    await snapshot.dispose()
+    await api.close()
+  }
 }
 
-function declarationSegments(
+async function declarationSegments(
   attributed: ReturnType<typeof attribute>,
   selectorName: string,
   selector: Extract<ParserClusterSelector, { kind: 'declaration' }>
@@ -508,14 +546,9 @@ function declarationSegments(
     return { declarationPresent: false, sourcePresent: false, segments: [] as Segment[] }
   }
 
-  const sourceFile = ts.createSourceFile(
-    selector.source,
-    source,
-    ts.ScriptTarget.Latest,
-    true,
-    ts.ScriptKind.JS
+  const declarations = topLevelDeclarations(selector.source, source).filter(
+    (declaration) => declaration.name === selector.declaration
   )
-  const declarations = findTopLevelDeclarations(sourceFile, selector.declaration)
   if (declarations.length > 1) {
     fail(
       `parser cluster declaration ${selectorName} is ambiguous in ${selector.source}: found ${declarations.length}`
@@ -531,20 +564,20 @@ function declarationSegments(
     )
   }
 
-  const start = declaration.node.getStart(sourceFile)
-  const end = declaration.node.getEnd()
+  const lineOffsets = [0]
+  for (let index = 0; index < source.length; index++) {
+    if (source.charCodeAt(index) === 10) lineOffsets.push(index + 1)
+  }
   const segments = (attributed.segments.get(selector.source) ?? []).filter((segment) => {
     if (segment.originalLine < 1) return false
-    const position = sourceFile.getPositionOfLineAndCharacter(
-      segment.originalLine - 1,
-      segment.originalColumn
-    )
-    return position >= start && position < end
+    const position =
+      (lineOffsets[segment.originalLine - 1] ?? source.length) + segment.originalColumn
+    return position >= declaration.start && position < declaration.end
   })
   return {
     declarationPresent: true,
     privateDependencies: selector.closePrivateDependencies
-      ? privateDeclarationDependencies(sourceFile, declaration.node)
+      ? await privateDeclarationDependencies(selector.source, source, declaration)
       : [],
     sourcePresent: true,
     segments,
@@ -584,7 +617,7 @@ if (deletionPool) {
       if (selector.kind === 'source') {
         segments = left.segments.get(selector.source) ?? []
       } else if (selector.kind === 'declaration') {
-        const result = declarationSegments(left, `${family}[${index}]`, selector)
+        const result = await declarationSegments(left, `${family}[${index}]`, selector)
         if (!result.declarationPresent) {
           fail(
             `deletion-pool declaration ${family}[${index}] is missing from ${selector.source}`
@@ -646,7 +679,7 @@ if (parserClusterCheckpoint) {
       selectedSegments = left.segments.get(selector.source) ?? []
       sourcePresent = selectedSegments.length > 0
     } else {
-      const result = declarationSegments(left, name, selector)
+      const result = await declarationSegments(left, name, selector)
       sourcePresent = result.sourcePresent
       selectedSegments = result.segments
       if (expected.state === 'present' && !result.declarationPresent) {

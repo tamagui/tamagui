@@ -15,7 +15,7 @@ import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { promisify } from 'node:util'
 
-import ts from 'typescript'
+import { API, DiagnosticCategory } from 'typescript/unstable/async'
 import { afterEach, describe, expect, test } from 'vitest'
 
 const execFileAsync = promisify(execFile)
@@ -134,60 +134,62 @@ export const Regular = () => <regularHtml.div />
       'utf8'
     )
 
-    const options: ts.CompilerOptions = {
-      jsx: ts.JsxEmit.ReactJSX,
-      module: ts.ModuleKind.ESNext,
-      moduleResolution: ts.ModuleResolutionKind.Bundler,
-      noEmit: true,
-      skipLibCheck: true,
-      strict: true,
-      target: ts.ScriptTarget.ESNext,
-    }
-    // the deprecation hint is a language-service suggestion, which is what an
-    // editor renders and what `tsc` deliberately never reports as a problem
-    const service = ts.createLanguageService({
-      directoryExists: ts.sys.directoryExists,
-      fileExists: ts.sys.fileExists,
-      getCompilationSettings: () => options,
-      getCurrentDirectory: () => root,
-      getDefaultLibFileName: (settings) => ts.getDefaultLibFilePath(settings),
-      getDirectories: ts.sys.getDirectories,
-      getScriptFileNames: () => [fixture],
-      getScriptSnapshot: (name) => {
-        const text = ts.sys.readFile(name)
-        return text === undefined ? undefined : ts.ScriptSnapshot.fromString(text)
+    const configPath = join(root, 'tsconfig.json')
+    const config = JSON.stringify({
+      compilerOptions: {
+        allowSyntheticDefaultImports: true,
+        jsx: 'react-jsx',
+        module: 'ESNext',
+        moduleResolution: 'Bundler',
+        noEmit: true,
+        skipLibCheck: true,
+        strict: true,
+        target: 'ESNext',
       },
-      getScriptVersion: () => '1',
-      readDirectory: ts.sys.readDirectory,
-      readFile: ts.sys.readFile,
-      realpath: ts.sys.realpath,
+      files: [fixture],
     })
-    const source = service.getProgram()!.getSourceFile(fixture)!
+    const api = new API({
+      cwd: root,
+      fs: {
+        readFile: (file) => (file === configPath ? config : undefined),
+        fileExists: (file) => (file === configPath ? true : undefined),
+      },
+    })
+    const snapshot = await api.updateSnapshot({ openProjects: [configPath] })
+    try {
+      const project = snapshot.getProject(configPath)
+      if (!project) throw new Error('TypeScript did not load the DOM fixture project')
+      const { program } = project
+      // the deprecation hint is a language-service suggestion, which is what an
+      // editor renders and what `tsc` deliberately never reports as a problem
+      const source = await program.getSourceFile(fixture)
+      if (!source) throw new Error('TypeScript did not load the DOM fixture')
 
-    // a deprecation must not break the build
-    expect(
-      service
-        .getSemanticDiagnostics(fixture)
-        .map((diagnostic) => ts.flattenDiagnosticMessageText(diagnostic.messageText, ' '))
-    ).toEqual([])
+      // a deprecation must not break the build
+      expect(
+        (await program.getSemanticDiagnostics(fixture))
+          .filter((diagnostic) => diagnostic.category === DiagnosticCategory.Error)
+          .map((diagnostic) => diagnostic.text)
+      ).toEqual([])
 
-    const deprecated = new Set(
-      service
-        .getSuggestionDiagnostics(fixture)
-        .filter((diagnostic) => diagnostic.reportsDeprecated)
-        .map((diagnostic) =>
-          source.text.slice(diagnostic.start, diagnostic.start + diagnostic.length)
-        )
-    )
+      const deprecated = new Set(
+        (await program.getSuggestionDiagnostics(fixture))
+          .filter((diagnostic) => diagnostic.reportsDeprecated)
+          .map((diagnostic) => source.text.slice(diagnostic.pos, diagnostic.end))
+      )
 
-    // the demoted frontend, through both of its aliases
-    expect(deprecated).toContain('domHtml')
-    expect(deprecated).toContain('domStyle')
-    expect(deprecated).toContain('coreDomHtml')
-    expect(deprecated).toContain('coreDomStyle')
-    expect(deprecated).toContain('CompiledStyle')
-    // the control: regular `html.*` is the recommended API and carries no hint,
-    // so a blanket deprecation of everything named `html` would fail here
-    expect(deprecated).not.toContain('regularHtml')
+      // the demoted frontend, through both of its aliases
+      expect(deprecated).toContain('domHtml')
+      expect(deprecated).toContain('domStyle')
+      expect(deprecated).toContain('coreDomHtml')
+      expect(deprecated).toContain('coreDomStyle')
+      expect(deprecated).toContain('CompiledStyle')
+      // the control: regular `html.*` is the recommended API and carries no hint,
+      // so a blanket deprecation of everything named `html` would fail here
+      expect(deprecated).not.toContain('regularHtml')
+    } finally {
+      await snapshot.dispose()
+      await api.close()
+    }
   })
 })

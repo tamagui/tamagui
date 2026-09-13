@@ -6,21 +6,15 @@
   "sideEffects": false,
   "source": "src/index.ts",
   "files": [
-    "index.cjs",
     "src",
     "types",
     "dist"
   ],
-  "main": "index.cjs",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.mjs",
   "types": "types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
-    "./host": {
-      "types": "./types/host.d.ts",
-      "import": "./dist/esm/host.mjs",
-      "default": "./dist/esm/host.mjs"
-    },
     "./core": {
       "types": "./types/core.d.ts",
       "import": "./dist/esm/core.mjs",
@@ -54,7 +48,7 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./index.cjs",
+      "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
     }
   },
@@ -71,13 +65,9 @@
     "@tamagui/style-grammar": "workspace:*",
     "sucrase": "3.35.1"
   },
-  "peerDependencies": {
-    "typescript": ">=5.7"
-  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "oxc-parser": "^0.112.0",
-    "typescript": "~6.0.3",
     "vitest": "4.1.0"
   }
 }

@@ -3,7 +3,7 @@
 import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { gzipSync } from 'node:zlib'
-import ts from 'typescript'
+import { topLevelDeclarations } from './shared/topLevelDeclarations'
 
 const args = process.argv.slice(2)
 const modulePath = args.find((arg) => arg.startsWith('--module='))?.slice(9)
@@ -19,46 +19,28 @@ if (!modulePath || !suffix || !bench) {
 }
 
 const source = readFileSync(modulePath, 'utf8')
-const sourceFile = ts.createSourceFile(
-  modulePath,
-  source,
-  ts.ScriptTarget.Latest,
-  true,
-  ts.ScriptKind.JS
-)
 const declarations: Array<{ kind: 'function' | 'variable'; line: number; name: string }> =
   []
 
-for (const statement of sourceFile.statements) {
-  if (ts.isFunctionDeclaration(statement) && statement.name && statement.body) {
-    declarations.push({
-      kind: 'function',
-      line:
-        sourceFile.getLineAndCharacterOfPosition(statement.getStart(sourceFile)).line + 1,
-      name: statement.name.text,
-    })
+for (const declaration of topLevelDeclarations(modulePath, source)) {
+  if (
+    declaration.kind === 'variable' &&
+    ![
+      'ArrowFunctionExpression',
+      'FunctionExpression',
+      'ObjectExpression',
+      'ArrayExpression',
+      'NewExpression',
+      'CallExpression',
+    ].includes(declaration.initializerType || '')
+  ) {
     continue
   }
-  if (!ts.isVariableStatement(statement)) continue
-  for (const declaration of statement.declarationList.declarations) {
-    if (!ts.isIdentifier(declaration.name) || !declaration.initializer) continue
-    if (
-      !ts.isArrowFunction(declaration.initializer) &&
-      !ts.isFunctionExpression(declaration.initializer) &&
-      !ts.isObjectLiteralExpression(declaration.initializer) &&
-      !ts.isArrayLiteralExpression(declaration.initializer) &&
-      !ts.isNewExpression(declaration.initializer) &&
-      !ts.isCallExpression(declaration.initializer)
-    ) {
-      continue
-    }
-    declarations.push({
-      kind: 'variable',
-      line:
-        sourceFile.getLineAndCharacterOfPosition(statement.getStart(sourceFile)).line + 1,
-      name: declaration.name.text,
-    })
-  }
+  declarations.push({
+    kind: declaration.kind,
+    line: declaration.line,
+    name: declaration.name,
+  })
 }
 
 function build(replacement?: string) {

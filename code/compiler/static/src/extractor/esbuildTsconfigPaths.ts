@@ -2,102 +2,84 @@ import type { Plugin } from 'esbuild'
 import fs from 'node:fs'
 import path from 'node:path'
 import {
-  findConfigFile,
-  nodeModuleNameResolver,
-  parseJsonConfigFileContent,
-  readConfigFile,
-  sys,
-} from 'typescript'
+  createPathsMatcher,
+  getTsconfig,
+  parseTsconfig,
+  type TsConfigJsonResolved,
+  type TsConfigResult,
+} from 'get-tsconfig'
 
 const name = 'tsconfig-paths'
 
-interface Tsconfig {
-  compilerOptions?: {
-    baseUrl?: string
-    paths?: Record<string, string[]>
-  }
-}
+type Tsconfig = Pick<TsConfigJsonResolved, 'compilerOptions'>
 
-export function TsconfigPathsPlugin(): Plugin {
-  const compilerOptions = loadCompilerOptionsFromTsconfig()
-
-  return {
-    name,
-    setup({ onResolve }) {
-      onResolve({ filter: /.*/ }, (args) => {
-        // skip @tamagui packages - they should be externalized, not resolved via tsconfig
-        if (args.path.startsWith('@tamagui/')) {
-          return null
-        }
-
-        const paths = compilerOptions.paths || {}
-        const hasMatchingPath = Object.keys(paths).some((p) =>
-          new RegExp(p.replace('*', '\\w*')).test(args.path)
-        )
-
-        if (!hasMatchingPath) {
-          return null
-        }
-
-        const { resolvedModule } = nodeModuleNameResolver(
-          args.path,
-          args.importer,
-          compilerOptions,
-          sys
-        )
-
-        if (!resolvedModule) {
-          return null
-        }
-
-        const { resolvedFileName } = resolvedModule
-
-        if (!resolvedFileName || resolvedFileName.endsWith('.d.ts')) {
-          return null
-        }
-
-        return {
-          path: resolvedFileName,
-        }
-      })
-    },
-  }
-}
-
-export function loadCompilerOptionsFromTsconfig(tsconfig?: Tsconfig | string) {
+function loadTsconfig(
+  tsconfig?: Tsconfig | string,
+  cwd = process.cwd()
+): TsConfigResult | null {
   if (!tsconfig) {
-    const configPath =
-      findConfigFile(process.cwd(), sys.fileExists, 'tsconfig.json') ||
-      findConfigFile(process.cwd(), sys.fileExists, 'jsconfig.json')
-
-    if (configPath) {
-      return parseTsconfig(configPath)
-    }
-    return {}
+    return getTsconfig(cwd) || getTsconfig(cwd, 'jsconfig.json')
   }
 
   if (typeof tsconfig === 'string') {
-    if (fs.existsSync(tsconfig)) {
-      return parseTsconfig(tsconfig)
-    } else {
+    if (!fs.existsSync(tsconfig)) {
       throw new Error(`Specified tsconfig file not found: ${tsconfig}`)
     }
+    return { path: path.resolve(tsconfig), config: parseTsconfig(tsconfig) }
   }
 
-  const baseDir = process.cwd()
-  const parsed = parseJsonConfigFileContent(tsconfig, sys, baseDir)
-  return parsed.options
+  return {
+    path: path.join(cwd, 'tsconfig.json'),
+    config: tsconfig,
+  }
 }
 
-function parseTsconfig(configFilePath: string) {
-  const configFile = readConfigFile(configFilePath, sys.readFile)
-  if (configFile.error) {
-    throw new Error(
-      `Error reading tsconfig file '${configFilePath}': ${configFile.error.messageText}`
-    )
-  }
+export function createTsconfigPathsMatcher(
+  tsconfig?: Tsconfig | string,
+  cwd = process.cwd()
+): ((specifier: string) => string[]) | null {
+  const loaded = loadTsconfig(tsconfig, cwd)
+  return loaded ? createPathsMatcher(loaded) : null
+}
 
-  const baseDir = path.dirname(configFilePath)
-  const parsed = parseJsonConfigFileContent(configFile.config, sys, baseDir)
-  return parsed.options
+export function TsconfigPathsPlugin(): Plugin {
+  const pathsMatcher = createTsconfigPathsMatcher()
+
+  return {
+    name,
+    setup(build) {
+      build.onResolve({ filter: /.*/ }, async (args) => {
+        if (
+          !pathsMatcher ||
+          args.path.startsWith('@tamagui/') ||
+          (args.pluginData as { tamaguiTsconfigPaths?: boolean } | undefined)
+            ?.tamaguiTsconfigPaths
+        ) {
+          return null
+        }
+
+        for (const candidate of pathsMatcher(args.path)) {
+          const resolved = await build.resolve(candidate, {
+            importer: args.importer,
+            kind: args.kind,
+            namespace: args.namespace,
+            resolveDir: args.resolveDir,
+            pluginData: {
+              ...(args.pluginData as object | undefined),
+              tamaguiTsconfigPaths: true,
+            },
+          })
+          if (
+            resolved.errors.length === 0 &&
+            resolved.path &&
+            !resolved.path.endsWith('.d.ts')
+          ) {
+            return resolved
+          }
+        }
+
+        return null
+      })
+    },
+  }
 }

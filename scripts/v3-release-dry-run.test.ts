@@ -398,7 +398,7 @@ describe('G1 tarball audits', () => {
       expect(manifest.devDependencies[name]).toBeDefined()
     }
     expect(manifest.devDependencies['react-native']).toBe('0.86.2')
-    expect(manifest.devDependencies['react-native-web']).toBe('^0.21.0')
+    expect(manifest.devDependencies['react-native-web']).toBe('~0.21.0')
   })
 
   test('accepts a minimal inventory and rejects tests, fixtures, cache, and unsafe paths', () => {

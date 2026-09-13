@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto'
 import { realpathSync } from 'node:fs'
 import { lstat, readFile, readdir, realpath, stat } from 'node:fs/promises'
 import { isAbsolute, join, relative, resolve, sep } from 'node:path'
-import ts from 'typescript'
+import { parseSync, Visitor } from 'oxc-parser'
 
 export type JsonObject = Record<string, unknown>
 
@@ -464,9 +464,16 @@ async function walkFiles(dir: string): Promise<string[]> {
   return output
 }
 
-function bareImports(source: string): Set<string> {
+function bareImports(source: string, file: string): Set<string> {
   const imports = new Set<string>()
-  const file = ts.createSourceFile('packed.js', source, ts.ScriptTarget.Latest, false)
+  const extension = extensionOf(file)
+  if (
+    !['.cjs', '.cts', '.d.ts', '.js', '.jsx', '.mjs', '.mts', '.ts', '.tsx'].includes(
+      extension
+    )
+  ) {
+    return imports
+  }
   const add = (specifier: string) => {
     if (
       !specifier.startsWith('.') &&
@@ -476,32 +483,49 @@ function bareImports(source: string): Set<string> {
       imports.add(specifier)
     }
   }
-  const visit = (node: ts.Node) => {
-    if (
-      (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
-      node.moduleSpecifier &&
-      ts.isStringLiteralLike(node.moduleSpecifier)
-    ) {
-      add(node.moduleSpecifier.text)
-    } else if (
-      ts.isImportEqualsDeclaration(node) &&
-      ts.isExternalModuleReference(node.moduleReference) &&
-      node.moduleReference.expression &&
-      ts.isStringLiteralLike(node.moduleReference.expression)
-    ) {
-      add(node.moduleReference.expression.text)
-    } else if (
-      ts.isCallExpression(node) &&
-      node.arguments.length === 1 &&
-      ts.isStringLiteralLike(node.arguments[0]!) &&
-      (node.expression.kind === ts.SyntaxKind.ImportKeyword ||
-        (ts.isIdentifier(node.expression) && node.expression.text === 'require'))
-    ) {
-      add(node.arguments[0]!.text)
-    }
-    ts.forEachChild(node, visit)
+  const parsed = parseSync(file, source, {
+    lang:
+      extension === '.d.ts'
+        ? 'dts'
+        : /tsx?$|[cm]ts$/.test(extension)
+          ? extension.endsWith('x')
+            ? 'tsx'
+            : 'ts'
+          : extension.endsWith('x')
+            ? 'jsx'
+            : 'js',
+    sourceType: 'unambiguous',
+  })
+  if (parsed.errors.length) {
+    throw new Error(
+      `could not parse packed JavaScript:\n${parsed.errors
+        .map((error) => error.codeframe || error.message)
+        .join('\n')}`
+    )
   }
-  visit(file)
+  new Visitor({
+    ImportDeclaration: (node) => add(String(node.source.value)),
+    ExportAllDeclaration: (node) => add(String(node.source.value)),
+    ExportNamedDeclaration: (node) => {
+      if (node.source) add(String(node.source.value))
+    },
+    ImportExpression: (node) => {
+      if (node.source.type === 'Literal' && typeof node.source.value === 'string') {
+        add(node.source.value)
+      }
+    },
+    CallExpression: (node) => {
+      if (
+        node.callee.type === 'Identifier' &&
+        node.callee.name === 'require' &&
+        node.arguments.length === 1 &&
+        node.arguments[0]?.type === 'Literal' &&
+        typeof node.arguments[0].value === 'string'
+      ) {
+        add(node.arguments[0].value)
+      }
+    },
+  }).visit(parsed.program)
   return imports
 }
 
@@ -566,7 +590,7 @@ export async function auditExtractedPackage(
       if (containsPackageReference(content, deleted))
         throw new Error(`${manifest.name} ${relativeFile} references deleted ${deleted}`)
     }
-    const imports = bareImports(content)
+    const imports = bareImports(content, relativeFile)
     if (
       relativeFile.startsWith('dist/') &&
       ([...imports].some((specifier) =>

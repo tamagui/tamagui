@@ -1,9 +1,6 @@
-import type ts from "typescript";
-export interface TamaguiLanguageServicePluginConfig {
-	/** Path to the config JSON emitted by the Tamagui compiler. */
-	configPath?: string;
-}
-declare const init: ts.server.PluginModuleFactory;
-export default init;
+export * from "./core";
+export * from "./document";
+export * from "./extract-estree";
+export * from "./extract-sucrase";
 
 //# sourceMappingURL=index.d.ts.map

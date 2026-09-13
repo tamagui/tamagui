@@ -1,5 +1,5 @@
 import type { Plugin } from 'vite'
-import ts from 'typescript'
+import { topLevelDeclarations } from './topLevelDeclarations'
 
 type ReplacementSpec = {
   file: string
@@ -31,46 +31,25 @@ export function bundleTopLevelReplacementPlugin(): Plugin | false {
       const spec = specs.find(({ file }) => id.replaceAll('\\', '/').endsWith(file))
       if (!spec) return
 
-      const sourceFile = ts.createSourceFile(
-        id,
-        code,
-        ts.ScriptTarget.Latest,
-        true,
-        ts.ScriptKind.JS
-      )
       const edits: Array<{ start: number; end: number; value: string }> = []
       const found = new Set<string>()
 
-      for (const statement of sourceFile.statements) {
-        if (
-          ts.isFunctionDeclaration(statement) &&
-          statement.name &&
-          statement.body &&
-          spec.names.has(statement.name.text)
-        ) {
-          found.add(statement.name.text)
+      for (const declaration of topLevelDeclarations(id, code)) {
+        if (!spec.names.has(declaration.name)) continue
+        found.add(declaration.name)
+        if (declaration.kind === 'function') {
           edits.push({
-            start: statement.body.getStart(sourceFile),
-            end: statement.body.getEnd(),
+            start: declaration.replacementStart,
+            end: declaration.replacementEnd,
             value: '{return globalThis.__bundleAuditOpaque(...arguments)}',
           })
           continue
         }
-        if (!ts.isVariableStatement(statement)) continue
-        for (const declaration of statement.declarationList.declarations) {
-          if (
-            ts.isIdentifier(declaration.name) &&
-            declaration.initializer &&
-            spec.names.has(declaration.name.text)
-          ) {
-            found.add(declaration.name.text)
-            edits.push({
-              start: declaration.initializer.getStart(sourceFile),
-              end: declaration.initializer.getEnd(),
-              value: '(...args)=>globalThis.__bundleAuditOpaque(...args)',
-            })
-          }
-        }
+        edits.push({
+          start: declaration.replacementStart,
+          end: declaration.replacementEnd,
+          value: '(...args)=>globalThis.__bundleAuditOpaque(...args)',
+        })
       }
 
       for (const name of spec.names) {

@@ -32,7 +32,8 @@
 //   2  usage error (bad args, no tsconfig, no matching attributes)
 //   3  the probe is not in an augmented program, so the run proves nothing
 
-import ts from 'typescript'
+import { API, TypeFlags } from 'typescript/unstable/sync'
+import * as ts from 'typescript/unstable/ast'
 import { dirname, resolve } from 'node:path'
 import { existsSync } from 'node:fs'
 
@@ -63,21 +64,23 @@ if (!configPath) {
   console.error(`no tsconfig.json found at or above ${file}`)
   process.exit(2)
 }
-const parsed = ts.parseJsonConfigFileContent(
-  ts.readConfigFile(configPath, ts.sys.readFile).config,
-  ts.sys,
-  dirname(configPath)
-)
-
-const program = ts.createProgram([file], parsed.options)
-const checker = program.getTypeChecker()
+const api = new API({ cwd: dirname(configPath) })
+const snapshot = api.updateSnapshot({
+  openProjects: [configPath],
+  openFiles: [file],
+})
+const project = snapshot.getDefaultProjectForFile(file)
+if (!project) {
+  api.close()
+  console.error(`could not load the TypeScript project for ${file}`)
+  process.exit(2)
+}
+const { program, checker } = project
 const source = program.getSourceFile(file)
 if (!source) {
   console.error(`could not load ${file}`)
   process.exit(2)
 }
-
-const F = ts.TypeFlags
 
 // Token unions only exist when the user's config is merged into
 // `TamaguiCustomConfig`. Unaugmented, that interface has no members and every
@@ -85,7 +88,9 @@ const F = ts.TypeFlags
 // every prop. Checking it directly is what separates a broken probe from a
 // broken prop type.
 function configAugmentation() {
-  for (const sourceFile of program.getSourceFiles()) {
+  for (const sourceFileName of program.getSourceFileNames()) {
+    const sourceFile = program.getSourceFile(sourceFileName)
+    if (!sourceFile) continue
     let found = null
     const walk = (node) => {
       if (found) return
@@ -93,7 +98,7 @@ function configAugmentation() {
         found = node
         return
       }
-      ts.forEachChild(node, walk)
+      node.forEachChild(walk)
     }
     walk(sourceFile)
     if (!found) continue
@@ -106,19 +111,25 @@ function configAugmentation() {
 }
 
 function describe(type) {
-  const parts = type.isUnion() ? type.types : [type]
+  const parts = type.isUnionType() ? type.getTypes() : [type]
   let stringLiterals = 0
   let tokenLiterals = 0
   let templates = 0
   const nonLiteral = []
   for (const part of parts) {
-    if (part.flags & F.StringLiteral) {
+    if (part.isStringLiteralType()) {
       stringLiterals++
       if (String(part.value).startsWith('$')) tokenLiterals++
-    } else if (part.flags & F.TemplateLiteral) {
+    } else if (part.isTemplateLiteralType()) {
       templates++
     } else if (
-      !(part.flags & (F.NumberLiteral | F.Number | F.Boolean | F.BooleanLiteral))
+      !(
+        part.flags &
+        (TypeFlags.NumberLiteral |
+          TypeFlags.Number |
+          TypeFlags.Boolean |
+          TypeFlags.BooleanLiteral)
+      )
     ) {
       if (nonLiteral.length < 6) nonLiteral.push(checker.typeToString(part))
     }
@@ -159,7 +170,7 @@ function visit(node) {
       })
     }
   }
-  ts.forEachChild(node, visit)
+  node.forEachChild(visit)
 }
 visit(source)
 
@@ -225,3 +236,6 @@ if (expectTokens) {
       `(config augmentation: ${config.memberCount} members)`
   )
 }
+
+snapshot.dispose()
+api.close()

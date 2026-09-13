@@ -11,6 +11,7 @@ export * from './extractor/watchTamaguiConfig';
 export * from './registerRequire';
 export { detectModuleFormat, clearFormatCache } from './extractor/detectModuleFormat';
 export { esbundleTamaguiConfig } from './extractor/bundle';
+export { createTsconfigPathsMatcher } from './extractor/esbuildTsconfigPaths';
 export * from './getPragmaOptions';
 export * from './zero';
 export { generateConfigMarkdown } from './extractor/generateConfigMarkdown';

@@ -17,7 +17,7 @@ import path from 'node:path'
 import { createRequire } from 'node:module'
 import { pathToFileURL } from 'node:url'
 import { promisify } from 'node:util'
-import ts from 'typescript'
+import { API, DiagnosticCategory } from 'typescript/unstable/async'
 import { build, createServer, isRunnableDevEnvironment } from 'vite'
 import type { Plugin } from 'vite'
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
@@ -1650,23 +1650,46 @@ test('isolates extraction caches and rebuilds CSS for a config-only dependency',
 
 test('published declarations typecheck for a package consumer', async () => {
   const consumerPath = path.resolve(__dirname, 'types/consumer.ts')
-  const program = ts.createProgram([consumerPath], {
-    allowSyntheticDefaultImports: true,
-    module: ts.ModuleKind.ESNext,
-    moduleResolution: ts.ModuleResolutionKind.Bundler,
-    noEmit: true,
-    skipLibCheck: true,
-    strict: true,
-    target: ts.ScriptTarget.ES2022,
+  const configPath = path.resolve(__dirname, 'types/tsconfig.generated.json')
+  const config = JSON.stringify({
+    compilerOptions: {
+      allowSyntheticDefaultImports: true,
+      module: 'ESNext',
+      moduleResolution: 'Bundler',
+      noEmit: true,
+      skipLibCheck: true,
+      strict: true,
+      target: 'ES2022',
+    },
+    files: [consumerPath],
   })
-  const diagnostics = ts.getPreEmitDiagnostics(program)
-  expect(
-    ts.formatDiagnosticsWithColorAndContext(diagnostics, {
-      getCanonicalFileName: (fileName) => fileName,
-      getCurrentDirectory: () => process.cwd(),
-      getNewLine: () => '\n',
-    })
-  ).toBe('')
+  const api = new API({
+    cwd: __dirname,
+    fs: {
+      readFile: (file) => (file === configPath ? config : undefined),
+      fileExists: (file) => (file === configPath ? true : undefined),
+    },
+  })
+  const snapshot = await api.updateSnapshot({ openProjects: [configPath] })
+  try {
+    const program = snapshot.getProject(configPath)?.program
+    if (!program) throw new Error('TypeScript did not load the declaration fixture')
+    const diagnostics = [
+      ...(await program.getConfigFileParsingDiagnostics()),
+      ...(await program.getProgramDiagnostics()),
+      ...(await program.getGlobalDiagnostics()),
+      ...(await program.getSemanticDiagnostics()),
+    ].filter((diagnostic) => diagnostic.category === DiagnosticCategory.Error)
+    expect(
+      diagnostics.map(
+        (diagnostic) =>
+          `${diagnostic.fileName || configPath}:${diagnostic.pos} ${diagnostic.text}`
+      )
+    ).toEqual([])
+  } finally {
+    await snapshot.dispose()
+    await api.close()
+  }
 
   const pluginTypes = await readFile(
     path.resolve(__dirname, '../types/plugin.d.ts'),
