@@ -71,44 +71,9 @@ export function sendProductRenewalEmail(
   email: string,
   args: { name: string; product_name: string; amount_due?: number }
 ) {
-  if (process.env.NODE_ENV !== 'production') {
-    console.info(`Not sending email to ${email} since we're not on prod.`)
-    return
-  }
-
-  const client = new postmark.ServerClient(serverToken)
-
-  const amountText = args.amount_due
-    ? `<strong>$${(args.amount_due / 100).toFixed(2)}</strong>`
-    : 'the renewal amount'
-
-  const htmlBody = wrapEmail(`
-  <h1>Hey ${args.name}!</h1>
-
-  <p><strong>Your subscription to ${args.product_name} will renew in approximately 7 days for ${amountText}.</strong></p>
-
-  <p>If you'd like to continue, no action is needed — your subscription will renew automatically.</p>
-
-  <p>If you'd like to cancel before the renewal, you can do so from your account page:</p>
-
-  <div class="cta-container">
-    <a href="https://tamagui.dev/account" class="cta-button">Manage Subscription</a>
-  </div>
-
-  ${whatYouGetSection}
-
-  <p>If you have any questions, just reply to this email or reach out at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
-
-  ${emailFooter}
-  `)
-
-  return client.sendEmail({
-    ...trackedTransactionalEmail,
-    From: 'support@tamagui.dev',
-    To: email,
-    Subject: `Your ${args.product_name} subscription renews in ~7 days`,
-    HtmlBody: htmlBody,
-  })
+  // Auto-renewing subscriptions and renewal warning emails are disabled
+  console.info(`Renewal warning emails are disabled; skipping sendProductRenewalEmail to ${email}`)
+  return
 }
 
 // shared email styles
@@ -193,121 +158,18 @@ export function sendV1UpgradeEmail(
   email: string,
   args: { name: string; subscriptionId: string; amount_due?: number }
 ) {
-  if (process.env.NODE_ENV !== 'production') {
-    console.info(`Not sending V1 upgrade email to ${email} since we're not on prod.`)
-    return
-  }
-
-  const client = new postmark.ServerClient(serverToken)
-  const couponCode = 'RENEWAL30'
-
-  const amountText = args.amount_due
-    ? `<strong>$${(args.amount_due / 100).toFixed(2)}</strong>`
-    : 'the renewal amount'
-
-  const htmlBody = wrapEmail(`
-  <h1>Hey ${args.name}!</h1>
-
-  <p><strong>Your Tamagui Pro subscription will renew in approximately 7 days for ${amountText}.</strong></p>
-
-  <p>We've applied <strong>30% off</strong> to your upcoming renewal.</p>
-
-  <p>If you'd like to continue, no action is needed. If you'd like to cancel before renewal, you can do so from your account page:</p>
-
-  <div class="cta-container">
-    <a href="https://tamagui.dev/account" class="cta-button">Manage Subscription</a>
-  </div>
-
-  <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;" />
-
-  <h2>Consider upgrading to Takeout 2</h2>
-
-  <p>We've been working hard on the next generation. <strong>Takeout 2</strong> features Tamagui 2, One 1, and Zero — a more realtime, responsive and Rails-like starter for React Native + Web.</p>
-
-  <ul>
-    <li><strong>Takeout 2</strong> - >95 Lighthouse, tons of scripts, helpers, hooks and UI in the box.</li>
-    <li><strong>Takeout Static</strong> - Simplified web-only starter with 100 Lighthouse.</li>
-    <li><strong>Unlimited Team Members</strong> - No more per-seat pricing.</li>
-  </ul>
-
-  <p>If you want to buy another project or share the discount with a friend, use this code at checkout:</p>
-
-  <div class="coupon-box">
-    <div class="coupon-discount">30% off</div>
-    <div class="coupon-code">${couponCode}</div>
-  </div>
-
-  <p>Check out the demo: <a href="https://takeout.tamagui.dev">takeout.tamagui.dev</a></p>
-
-  <p>If you have any questions, just reply to this email or reach out at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
-
-  ${emailFooter}
-  `)
-
-  return client.sendEmail({
-    ...trackedTransactionalEmail,
-    From: 'support@tamagui.dev',
-    To: email,
-    Subject: 'Your Tamagui Pro subscription renews in ~7 days',
-    HtmlBody: htmlBody,
-  })
+  // Auto-renewing subscriptions and renewal warning emails are disabled
+  console.info(`Renewal warning emails are disabled; skipping sendV1UpgradeEmail to ${email}`)
+  return
 }
 
 /**
  * Legacy confirmation email kept for backwards compatibility with old V2-renewal links.
  */
 export function sendV2RenewalEnabledEmail(email: string, args: { name: string }) {
-  if (process.env.NODE_ENV !== 'production') {
-    console.info(
-      `Not sending V2 renewal enabled email to ${email} since we're not on prod.`
-    )
-    return
-  }
-
-  const client = new postmark.ServerClient(serverToken)
-  const couponCode = 'RENEWAL30'
-
-  const htmlBody = wrapEmail(`
-  <h1>Your Renewal Discount Is Set</h1>
-
-  <p>Hey ${args.name},</p>
-
-  <p>We've applied <strong>30% off</strong> to your renewal.</p>
-
-  <p>If you want to buy another project or share the discount with a friend, use this code at checkout:</p>
-
-  <div class="coupon-box">
-    <div class="coupon-discount">30% off</div>
-    <div class="coupon-code">${couponCode}</div>
-  </div>
-
-  <h2>What happens next?</h2>
-
-  <p>Your current subscription will renew automatically with the discount applied unless you cancel it first.</p>
-
-  <p>You'll get access to:</p>
-  <ul>
-    <li><strong>Takeout 2</strong> - The complete React Native + Web starter with Tamagui 2, One 1, and Zero</li>
-    <li><strong>Takeout Static</strong> - Web-only starter with 100 Lighthouse score</li>
-    <li><strong>Bento Components</strong> - Full source repo access</li>
-    <li><strong>Unlimited Team Members</strong> - No per-seat pricing</li>
-    <li><strong>1 Year of Updates</strong> - Included with your purchase</li>
-  </ul>
-
-  <p>You can manage your subscription anytime from your <a href="https://tamagui.dev/account">account page</a>.</p>
-
-  <p>If you have any questions, just reply to this email or reach out at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
-
-  ${emailFooter}
-  `)
-
-  return client.sendEmail({
-    ...trackedTransactionalEmail,
-    From: 'support@tamagui.dev',
-    To: email,
-    Subject: 'Your Tamagui renewal discount is set',
-    HtmlBody: htmlBody,
-  })
+  // Auto-renewing subscriptions and renewal warning emails are disabled
+  console.info(`Renewal warning emails are disabled; skipping sendV2RenewalEnabledEmail to ${email}`)
+  return
 }
 
 /**
