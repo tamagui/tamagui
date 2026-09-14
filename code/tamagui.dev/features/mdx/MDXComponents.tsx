@@ -88,7 +88,7 @@ const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) =
       render="p"
       size={large ? '8' : '7'}
       fontSize={19}
-      lineHeight={28}
+      lineHeight="28px"
       fontWeight="400"
       letterSpacing={-0.2}
       mb="5"
