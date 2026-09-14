@@ -17,7 +17,11 @@ public surface is smaller, tokens are more predictable, and overlays compose
 better. The Tailwind frontend runs utility classes through the same compiler,
 theme system, and native output.
 
-<Notice>Give this blog post and the upgrade guide to your coding agent before migrating.</Notice>
+<Notice>
+  Give this blog post and the upgrade guide to your coding agent before migrating:
+
+  <CopyAgentSetupButton type="upgrade" mt="2" />
+</Notice>
 
 Version 3 has three goals:
 
@@ -793,10 +797,12 @@ npx tamagui@beta setup              # a project that has never had Tamagui
 npx tamagui@beta migrate --from v2  # a project already on v2 (or --from v1)
 ```
 
-[Set up with an agent](/docs/intro/installation#set-up-with-an-agent) has the
-copy-paste prompts, including the one that makes the agent stop at the codemod
-report instead of writing straight through it. If you are doing it by hand,
-start with the [v3 upgrade guide](/docs/guides/how-to-upgrade). It has the
+Copy the agent prompt to make the agent stop at the codemod report instead of
+writing straight through it:
+
+<CopyAgentSetupButton type="upgrade" my="2" />
+
+If you are doing it by hand, start with the [v3 upgrade guide](/docs/guides/how-to-upgrade). It has the
 breaking change checklist, codemod commands, and verification steps.
 
 Tooling now installs as one package. `@tamagui/cli` exports the bundler
