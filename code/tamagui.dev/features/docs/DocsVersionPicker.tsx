@@ -157,6 +157,7 @@ export function PickerSelect({
     >
       <Select.Trigger
         testID={testID}
+        aria-label={label}
         flex={1}
         height={28}
         paddingHorizontal="2"
