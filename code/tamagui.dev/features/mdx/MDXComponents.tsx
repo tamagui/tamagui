@@ -267,7 +267,7 @@ const MarkdownTable = ({ children, style, ...props }) => {
                   <Text
                     render="dt"
                     fontSize={12}
-                    lineHeight={16}
+                    lineHeight="16px"
                     fontWeight="500"
                     color="color-9"
                   >
@@ -277,7 +277,7 @@ const MarkdownTable = ({ children, style, ...props }) => {
                     render="dd"
                     m={0}
                     fontSize={13}
-                    lineHeight={18}
+                    lineHeight="18px"
                     fontWeight="400"
                     color="color-11"
                   >
@@ -652,7 +652,7 @@ const componentsIn = {
       <LI
         render="li"
         fontSize={16}
-        lineHeight={27}
+        lineHeight="26px"
         pb={0}
         mb={4}
         className="docs-paragraph"
@@ -685,7 +685,7 @@ const componentsIn = {
       px={12}
       py={7}
       fontSize={12}
-      lineHeight={16}
+      lineHeight="16px"
       fontWeight="500"
       color="color-9"
       text="left"
@@ -701,7 +701,7 @@ const componentsIn = {
       px={12}
       py={8}
       fontSize={13}
-      lineHeight={18}
+      lineHeight="18px"
       fontWeight="400"
       color="color-11"
       style={{ verticalAlign: 'top' }}
@@ -910,9 +910,9 @@ const componentsIn = {
                     <span style={{ color: 'var(--color-12)' }}>@tamagui/core</span>
                   </CodeInline>
                 </Link>
-                &nbsp; is the base style library. It expands the React Native style API
-                with CSS capabilities, SSR support, and optimized runtime performance
-                without external dependencies.
+                &nbsp; is the base style library. It provides a web-aligned universal
+                style system with SSR support, typed tokens, and optimized runtime
+                performance across web and native.
               </LI>
             </Theme>
 
