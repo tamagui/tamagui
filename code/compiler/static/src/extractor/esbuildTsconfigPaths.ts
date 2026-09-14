@@ -1,103 +1,97 @@
 import type { Plugin } from 'esbuild'
+import {
+  createPathsMatcher,
+  getTsconfig,
+  parseTsconfig,
+  type TsConfigJsonResolved,
+  type TsConfigResult,
+} from 'get-tsconfig'
 import fs from 'node:fs'
 import path from 'node:path'
-import {
-  findConfigFile,
-  nodeModuleNameResolver,
-  parseJsonConfigFileContent,
-  readConfigFile,
-  sys,
-} from 'typescript'
 
 const name = 'tsconfig-paths'
 
-interface Tsconfig {
-  compilerOptions?: {
-    baseUrl?: string
-    paths?: Record<string, string[]>
-  }
-}
+type TsconfigPathMatcher = (specifier: string) => string[]
 
 export function TsconfigPathsPlugin(): Plugin {
-  const compilerOptions = loadCompilerOptionsFromTsconfig()
+  const matchTsconfigPath = loadTsconfigPathMatcher()
 
   return {
     name,
-    setup({ onResolve }) {
-      onResolve({ filter: /.*/ }, (args) => {
+    setup(build) {
+      build.onResolve({ filter: /.*/ }, async (args) => {
+        if (
+          args.pluginData &&
+          typeof args.pluginData === 'object' &&
+          args.pluginData.tamaguiTsconfigPathsResolved === true
+        ) {
+          return null
+        }
+
         // skip @tamagui packages - they should be externalized, not resolved via tsconfig
         if (args.path.startsWith('@tamagui/')) {
           return null
         }
 
-        const paths = compilerOptions.paths || {}
-        const hasMatchingPath = Object.keys(paths).some((p) =>
-          new RegExp(p.replace('*', '\\w*')).test(args.path)
-        )
-
-        if (!hasMatchingPath) {
-          return null
+        for (const candidate of matchTsconfigPath(args.path)) {
+          const resolved = await build.resolve(candidate, {
+            importer: args.importer,
+            kind: args.kind,
+            namespace: args.namespace,
+            pluginData: {
+              ...(args.pluginData && typeof args.pluginData === 'object'
+                ? args.pluginData
+                : {}),
+              tamaguiTsconfigPathsResolved: true,
+            },
+            resolveDir: args.resolveDir,
+          })
+          if (
+            resolved.path &&
+            !resolved.path.endsWith('.d.ts') &&
+            resolved.errors.length === 0
+          ) {
+            return resolved
+          }
         }
 
-        const { resolvedModule } = nodeModuleNameResolver(
-          args.path,
-          args.importer,
-          compilerOptions,
-          sys
-        )
-
-        if (!resolvedModule) {
-          return null
-        }
-
-        const { resolvedFileName } = resolvedModule
-
-        if (!resolvedFileName || resolvedFileName.endsWith('.d.ts')) {
-          return null
-        }
-
-        return {
-          path: resolvedFileName,
-        }
+        return null
       })
     },
   }
 }
 
-export function loadCompilerOptionsFromTsconfig(tsconfig?: Tsconfig | string) {
+export function loadTsconfigPathMatcher(
+  tsconfig?: TsConfigJsonResolved | string
+): TsconfigPathMatcher {
+  let result: TsConfigResult | null
   if (!tsconfig) {
-    const configPath =
-      findConfigFile(process.cwd(), sys.fileExists, 'tsconfig.json') ||
-      findConfigFile(process.cwd(), sys.fileExists, 'jsconfig.json')
-
-    if (configPath) {
-      return parseTsconfig(configPath)
-    }
-    return {}
-  }
-
-  if (typeof tsconfig === 'string') {
+    result = getTsconfig(process.cwd()) || getTsconfig(process.cwd(), 'jsconfig.json')
+  } else if (typeof tsconfig === 'string') {
     if (fs.existsSync(tsconfig)) {
-      return parseTsconfig(tsconfig)
+      const configPath = path.resolve(tsconfig)
+      result = { config: parseTsconfig(configPath), path: configPath }
     } else {
       throw new Error(`Specified tsconfig file not found: ${tsconfig}`)
     }
+  } else {
+    result = { config: tsconfig, path: path.join(process.cwd(), 'tsconfig.json') }
   }
 
-  const baseDir = process.cwd()
-  const parsed = parseJsonConfigFileContent(tsconfig, sys, baseDir)
-  return parsed.options
-}
+  if (!result) return () => []
+  const matchPaths = createPathsMatcher(result)
+  const patterns = Object.keys(result.config.compilerOptions?.paths || {})
+  if (!matchPaths || patterns.length === 0) return () => []
 
-function parseTsconfig(configFilePath: string) {
-  const configFile = readConfigFile(configFilePath, sys.readFile)
-  if (configFile.error) {
-    throw new Error(
-      `Error reading tsconfig file '${configFilePath}': ${configFile.error.messageText}`
-    )
+  return (specifier) => {
+    const matchesExplicitPath = patterns.some((pattern) => {
+      const wildcardIndex = pattern.indexOf('*')
+      if (wildcardIndex === -1) return pattern === specifier
+      return (
+        specifier.startsWith(pattern.slice(0, wildcardIndex)) &&
+        specifier.endsWith(pattern.slice(wildcardIndex + 1))
+      )
+    })
+    return matchesExplicitPath ? matchPaths(specifier) : []
   }
-
-  const baseDir = path.dirname(configFilePath)
-  const parsed = parseJsonConfigFileContent(configFile.config, sys, baseDir)
-  return parsed.options
 }

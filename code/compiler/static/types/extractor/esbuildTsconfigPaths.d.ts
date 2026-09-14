@@ -1,11 +1,7 @@
 import type { Plugin } from 'esbuild';
-interface Tsconfig {
-    compilerOptions?: {
-        baseUrl?: string;
-        paths?: Record<string, string[]>;
-    };
-}
+import { type TsConfigJsonResolved } from 'get-tsconfig';
+type TsconfigPathMatcher = (specifier: string) => string[];
 export declare function TsconfigPathsPlugin(): Plugin;
-export declare function loadCompilerOptionsFromTsconfig(tsconfig?: Tsconfig | string): import("typescript").CompilerOptions;
+export declare function loadTsconfigPathMatcher(tsconfig?: TsConfigJsonResolved | string): TsconfigPathMatcher;
 export {};
 //# sourceMappingURL=esbuildTsconfigPaths.d.ts.map
