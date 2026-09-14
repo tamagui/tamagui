@@ -160,7 +160,12 @@ function Scenario03_InitialFalse() {
               y="enter:-3px exit:-3px"
               size={16}
             >
-              <Text color="color-1" fontFamily="monospace" fontSize={10} lineHeight="10px">
+              <Text
+                color="color-1"
+                fontFamily="monospace"
+                fontSize={10}
+                lineHeight="10px"
+              >
                 {countString}
               </Text>
             </Circle>
