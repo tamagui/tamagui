@@ -32,3 +32,6 @@ No test assertion, timeout, retry, skip, coverage requirement, or size budget wa
 - Checks run `34778035179` proved all three integration shards and the workspace type check green at `15eb984a9e`; its failures exposed the remaining unit type contract and common production CSS formatting.
 - Checks run `34780130123` kept those lanes green and narrowed the remaining unit failure to the native counterpart of the already-proven Button contract. Its zero-runtime failure showed the first formatting pass reduced every CSS artifact without fully recovering the Metro islands ceiling.
 - Checks run `34781159173` passed every job except the native compiler snapshot fixed in `f329e4a2be`. Both zero-runtime jobs passed with the unchanged budgets.
+- Checks run `34782061174` passed all 12 jobs at `80f2d0c6d3`, including the workspace check, unit tests, all three integration shards, and both zero-runtime gates.
+- PR `#4216` was squash-merged as `b45915b10e`. Its commit tree `8d1794c83ad40606c3638bfd41f59af272c1d644` exactly matches the reviewed and green PR head tree.
+- Post-merge Checks run `34856477978` passed at `b45915b10e`. The same SHA also completed Registry, Detox, and Maestro successfully; Maestro's first attempt stopped during a GitHub release download with HTTP 504, and the unchanged rerun passed.
