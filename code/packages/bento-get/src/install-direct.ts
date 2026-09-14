@@ -23,10 +23,8 @@ async function main() {
   if (!componentName) {
     console.error('Usage: bento-get <componentName>')
     console.error('Example: bento-get SwitchCustomIcons')
-    console.error('\nAvailable FREE components:')
-    componentsList
-      .filter((c) => c.isOSS)
-      .forEach((c) => console.error(`  - ${c.fileName} (${c.name})`))
+    console.error('\nAvailable components:')
+    componentsList.forEach((c) => console.error(`  - ${c.fileName} (${c.name})`))
     process.exit(1)
   }
 
@@ -46,18 +44,10 @@ async function main() {
   }
 
   console.info(`Found component: ${component.name} (${component.fileName})`)
-  console.info(`Type: ${component.isOSS ? 'FREE' : 'PRO'}`)
 
-  // Check for token if PRO component
+  // Token is optional
   const tokenStore = new Conf({ projectName: 'bento-cli/v3.0' })
-  let accessToken = tokenStore.get('accessToken') as string | undefined
-
-  if (!component.isOSS && !accessToken) {
-    console.error('\nThis is a PRO component and requires authentication.')
-    console.error('Please run the interactive `npx bento-get` to authenticate,')
-    console.error('or set your token at https://tamagui.dev/account')
-    process.exit(1)
-  }
+  const accessToken = tokenStore.get('accessToken') as string | undefined
 
   // Fetch component
   console.info('\nFetching component...')
