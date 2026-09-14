@@ -32,7 +32,7 @@ export function DocsPageFrame({
     <>
       <DocsVersionPickerPortal frontmatter={frontmatter} initialSearch={initialSearch} />
       {/* main content */}
-      <YStack render="main" flex={1} minW={0} flexBasis="auto" py="7" px="4 gtSm:6">
+      <YStack render="main" flex={1} minW={0} flexBasis="auto" py="8" px="4 gtSm:6">
         <YStack render="article">
           <Container px={0} maxW={860} position="relative">
             <MDXTabsSearchProvider search={initialSearch}>
@@ -58,7 +58,7 @@ export function DocsPageFrame({
                       flex={1}
                       width="50%"
                       p="5"
-                      rounded="2"
+                      rounded="3"
                       borderWidth={1}
                       items="center"
                       gap="4"
@@ -93,7 +93,7 @@ export function DocsPageFrame({
                       flex={1}
                       width="50%"
                       p="5"
-                      rounded="2"
+                      rounded="3"
                       borderWidth={1}
                       items="center"
                       justify="flex-end"

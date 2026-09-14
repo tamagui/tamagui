@@ -139,6 +139,10 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               id={id}
               justify="center"
               bg="color-2"
+              borderWidth={1}
+              borderColor="color-3"
+              rounded="4"
+              overflow="hidden"
               position="relative"
               group="code"
             >
