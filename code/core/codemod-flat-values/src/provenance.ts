@@ -28,6 +28,7 @@ function rootIdentifier(node: Node): Identifier | null {
 export function createProvenance(): {
   isTamaguiElement: (opening: JsxOpeningElement | JsxSelfClosingElement) => boolean
   isTamaguiStyledCall: (call: CallExpression) => boolean
+  isTamaguiStyleCall: (call: CallExpression) => boolean
 } {
   const resolved = new Map<Node, boolean>()
   const active = new Set<Node>()
@@ -177,6 +178,15 @@ export function createProvenance(): {
     return fromIdentifier(callee)
   }
 
+  const isTamaguiStyleCall = (call: CallExpression): boolean => {
+    const callee = call.getExpression()
+    if (!Node.isPropertyAccessExpression(callee)) return false
+    const method = callee.getName()
+    if (method !== 'style' && method !== 'resolve' && method !== 'dynamic') return false
+    const owner = rootIdentifier(callee.getExpression())
+    return owner !== null && fromIdentifier(owner)
+  }
+
   /**
    * A value re-bound from Tamagui: an alias (`const Sheet = SheetRaw as ...`), a
    * member of one, or the result of a Tamagui factory (`styled`,
@@ -206,5 +216,6 @@ export function createProvenance(): {
       return fromIdentifier(tag)
     },
     isTamaguiStyledCall,
+    isTamaguiStyleCall,
   }
 }

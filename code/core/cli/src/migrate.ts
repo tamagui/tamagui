@@ -84,8 +84,10 @@ V3 accepts bare token/theme names and flat clauses only. Run the transactional
 flat-values codemod from your project root, dry run first:
 
 \`\`\`bash
-npx @tamagui/codemod-flat-values --report flat-values-report.md ./src
+npx @tamagui/codemod-flat-values --source-semantics v2-pixels \\
+  --report flat-values-report.md ./src
 npx @tamagui/codemod-flat-values --write \\
+  --source-semantics v2-pixels \\
   --report flat-values-report.md \\
   --json flat-values-report.json \\
   ./src
@@ -231,12 +233,14 @@ const padding = getVariableValue(getSize(size)) * 0.6
 
 Use explicit token keys when you need a named smaller or larger token. Use numeric multiplication when proportional sizing is intended.
 
-### 8. Audit font size values
+### 8. Migrate line heights and audit font size values
 
 - \`fontSize={17}\` is a raw numeric platform value and keeps platform-default line-height behavior.
 - \`fontSize="17px"\` is an exact pixel value.
-- Configured font \`size\` and \`lineHeight\` tokens should use px strings when exact web pixels are intended.
-- Convert custom config font tokens to px strings if exact pixels were intended.
+- V3 interprets numeric Tamagui \`lineHeight\` props as ratios on web and native. The flat-values command above explicitly selects \`v2-pixels\`, so old numeric Tamagui styles become px strings, including values below 4.
+- Keep raw React Native and Restyle numeric styles unchanged. Review every \`ambiguous-line-height-*\` report entry where a shared object, untyped expression, or extracted token value needs a boundary-specific decision.
+- Configured font \`lineHeight\` numbers remain absolute pixels. Numeric strings such as \`"1.5"\` are ratios, while \`"24px"\` is explicit. The codemod does not rewrite font configuration.
+- Rerun the codemod with the same source semantics until it reports no remaining line-height work. Explicit px output is idempotent.
 
 ### 9. Update FocusScope
 

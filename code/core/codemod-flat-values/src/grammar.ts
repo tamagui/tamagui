@@ -58,14 +58,21 @@ export type {
 
 export { shorthands }
 
-function renameBuiltInTokens(value: unknown): unknown {
+function normalizeV3Payload(value: unknown, prop = ''): unknown {
+  if (
+    typeof value === 'number' &&
+    Number.isFinite(value) &&
+    (prop === 'lineHeight' || prop === 'lh')
+  ) {
+    return String(value)
+  }
   if (typeof value === 'string') return replaceV6BuiltInTokens(value)
-  if (Array.isArray(value)) return value.map(renameBuiltInTokens)
+  if (Array.isArray(value)) return value.map((item) => normalizeV3Payload(item, prop))
   if (value === null || typeof value !== 'object') return value
 
   const renamed: Record<string, unknown> = {}
   for (const key in value) {
-    renamed[key] = renameBuiltInTokens((value as Record<string, unknown>)[key])
+    renamed[key] = normalizeV3Payload((value as Record<string, unknown>)[key], key)
   }
   return renamed
 }
@@ -75,7 +82,7 @@ export function convertLegacyConditionProp(
   value: unknown,
   options: ConvertLegacyConditionOptions
 ): LegacyConditionResult | null {
-  return convertLegacyConditionPropLocal(propName, renameBuiltInTokens(value), options)
+  return convertLegacyConditionPropLocal(propName, normalizeV3Payload(value), options)
 }
 
 /** every prop spelling the codemod treats as carrying a style value */

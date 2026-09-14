@@ -90,7 +90,7 @@ export function HomeStyleToggle() {
             margin={0}
             fontFamily="mono"
             fontSize={12}
-            lineHeight={18}
+            lineHeight="18px"
             color="color-12"
           >
             {mode === 'tailwind' ? tailwind : tamagui}

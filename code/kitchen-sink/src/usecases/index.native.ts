@@ -7,6 +7,7 @@
 import type { ComponentType } from 'react'
 
 const loaders: Record<string, () => ComponentType<any>> = {
+  StyleCompatCase: () => require('./StyleCompatCase').StyleCompatCase,
   ThemeUpdateCase: () => require('./ThemeUpdateCase').ThemeUpdateCase,
   ThemeUpdateNativeCase: () => require('./ThemeUpdateNativeCase').ThemeUpdateNativeCase,
   NativeRegistrySpikeCase: () =>

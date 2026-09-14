@@ -1,4 +1,13 @@
-import { View, Text, createTamagui, getSplitStyles, styled } from '@tamagui/core'
+import {
+  View,
+  Text,
+  createTamagui,
+  createVariable,
+  insertFont,
+  getSplitStyles,
+  styled,
+  type ComponentContextI,
+} from '@tamagui/core'
 import { DialogPortalFrame } from '@tamagui/dialog'
 import { beforeAll, describe, expect, test, vi } from 'vitest'
 
@@ -9,6 +18,186 @@ beforeAll(() => {
 })
 
 describe('getSplitStyles', () => {
+  test.each([1.5, 24, 0])(
+    'numeric lineHeight %s multiplies the final font size in either prop order',
+    (lineHeight) => {
+      for (const props of [
+        { fontSize: 20, lineHeight },
+        { lineHeight, fontSize: 20 },
+      ]) {
+        expect(getSplitStylesFor(props, Text).style?.lineHeight).toBe(20 * lineHeight)
+      }
+    }
+  )
+
+  test('numeric strings are ratios and explicit px lengths stay absolute', () => {
+    expect(
+      getSplitStylesFor({ lineHeight: '1.5', fontSize: 20 }, Text).style?.lineHeight
+    ).toBe(30)
+    expect(
+      getSplitStylesFor({ lineHeight: '24px', fontSize: 20 }, Text).style?.lineHeight
+    ).toBe(24)
+    expect(getSplitStylesFor({ lineHeight: 1.5 }, Text).style).toMatchObject({
+      fontSize: 14,
+      lineHeight: 21,
+    })
+  })
+
+  test('inherits semantic ratios and preserves absolute font variables', () => {
+    const parent = getSplitStylesFor({ fontSize: 20, lineHeight: 1.5 }, Text)
+    expect(parent.nativeTextMetrics).toEqual({ fontSize: 20, lineHeight: 1.5 })
+    const context = { parentFontSize: 20, parentLineHeight: 1.5 }
+    expect(getSplitStylesFor({ fontSize: 10 }, Text, { context }).style).toMatchObject({
+      fontSize: 10,
+      lineHeight: 15,
+    })
+    expect(getSplitStylesFor({ lineHeight: 2 }, Text, { context }).style).toMatchObject({
+      fontSize: 20,
+      lineHeight: 40,
+    })
+    expect(
+      getSplitStylesFor({ fontSize: 10, lineHeight: '30px' }, Text, { context })
+        .nativeTextMetrics?.lineHeight
+    ).toBe('30px')
+    for (const [value, expected] of [
+      [24, 24],
+      ['24px', 24],
+      ['1.5', 30],
+    ] as const) {
+      const lineHeight = createVariable({ key: 'leading', name: 'leading', val: value })
+      expect(
+        getSplitStylesFor({ lineHeight, fontSize: 20 }, Text).style?.lineHeight
+      ).toBe(expected)
+    }
+  })
+
+  test('a font-size-only media change recalculates leading in either prop order', () => {
+    for (const props of [
+      { lineHeight: 1.5, fontSize: '20px sm:40px' },
+      { fontSize: '20px sm:40px', lineHeight: 1.5 },
+    ]) {
+      expect(
+        getSplitStylesFor(props, Text, { mediaState: { sm: false } }).style?.lineHeight
+      ).toBe(30)
+      expect(
+        getSplitStylesFor(props, Text, { mediaState: { sm: true } }).style?.lineHeight
+      ).toBe(60)
+    }
+  })
+
+  test('inherited animated fonts retain their live channel until a local size shadows it', () => {
+    const context = {
+      parentFontSize: 40,
+      parentLineHeight: 1.5,
+      animatedText: { fontSize: {}, driver: 'native' },
+    }
+    const inherited = getSplitStylesFor({}, Text, { context })
+    expect(inherited.style?.fontSize).toBeUndefined()
+    expect(inherited.style?.lineHeight).toBeUndefined()
+    expect(
+      getSplitStylesFor({ lineHeight: 2 }, Text, { context }).style?.lineHeight
+    ).toBeUndefined()
+    expect(
+      getSplitStylesFor({ lineHeight: '24px' }, Text, { context }).style?.lineHeight
+    ).toBe(24)
+    const liveOnly = getSplitStylesFor({}, Text, {
+      context: { ...context, parentFontSize: undefined },
+    })
+    expect(liveOnly.style?.fontSize).toBeUndefined()
+    expect(liveOnly.style?.lineHeight).toBeUndefined()
+    expect(inherited.nativeTextMetrics).toEqual({
+      fontSize: 40,
+      lineHeight: 1.5,
+      inheritsFontSize: true,
+    })
+    const local = getSplitStylesFor({ fontSize: 10 }, Text, { context })
+    expect(local.style).toMatchObject({ fontSize: 10, lineHeight: 15 })
+    expect(local.nativeTextMetrics?.inheritsFontSize).toBeUndefined()
+  })
+
+  test('compiler variable getters preserve native pixel units', () => {
+    const lineHeight = {
+      ...createVariable({ key: 'leading', name: 'leading', val: 20 }),
+      get: () => 20,
+    }
+    expect(
+      getSplitStylesFor({ fontSize: 14, lineHeight }, Text, {
+        resolveValues: 'except-theme',
+      }).style?.lineHeight
+    ).toBe(20)
+  })
+
+  test('dynamic variants preserve explicit lengths and relative values', () => {
+    const Sized = styled(Text, {
+      variants: {
+        leading: styled.dynamic<any>((value) => ({ lineHeight: value })),
+      },
+    })
+    for (const [leading, expected] of [
+      ['24px', 24],
+      [1.5, 30],
+      ['1.5', 30],
+    ] as const) {
+      expect(getSplitStylesFor({ leading, fontSize: 20 }, Sized).style?.lineHeight).toBe(
+        expected
+      )
+    }
+  })
+
+  test('inserted font tokens preserve numeric pixels and string ratios through dynamic sizing', () => {
+    insertFont('leading-test', {
+      family: 'System',
+      size: { ratio: 20, tinyPixel: 20, pixels: 20 },
+      lineHeight: { ratio: '1.5', tinyPixel: 1.5, pixels: '24px' },
+    })
+    const Sized = styled(Text, {
+      variants: {
+        size: styled.dynamic<string>((key, { font }) => ({
+          fontSize: font?.size[key],
+          lineHeight: font?.lineHeight[key],
+        })),
+      },
+    })
+    for (const [size, expected] of [
+      ['ratio', 30],
+      ['tinyPixel', 1.5],
+      ['pixels', 24],
+    ] as const) {
+      expect(
+        getSplitStylesFor({ fontFamily: 'leading-test', size }, Sized).style?.lineHeight
+      ).toBe(expected)
+      expect(
+        getSplitStylesFor(
+          { fontFamily: 'leading-test', fontSize: 20, lineHeight: size },
+          Text
+        ).style?.lineHeight
+      ).toBe(expected)
+    }
+  })
+
+  test('line-height resets clear ratios and inheritance keeps their semantic value', () => {
+    const context = { parentFontSize: 20, parentLineHeight: 1.5 }
+    for (const lineHeight of ['inherit', 'unset']) {
+      const result = getSplitStylesFor({ fontSize: 10, lineHeight }, Text, { context })
+      expect(result.style?.lineHeight).toBe(15)
+      expect(result.nativeTextMetrics?.lineHeight).toBe(1.5)
+    }
+    for (const lineHeight of ['normal', 'initial']) {
+      const result = getSplitStylesFor({ fontSize: 10, lineHeight }, Text, { context })
+      expect(result.style?.lineHeight).toBeUndefined()
+      expect(result.nativeTextMetrics?.lineHeight).toBe('normal')
+    }
+  })
+
+  test.each([-1, Number.NaN, Number.POSITIVE_INFINITY])(
+    'invalid ratio %s never reaches native layout or descendant metrics',
+    (lineHeight) => {
+      const result = getSplitStylesFor({ fontSize: 20, lineHeight }, Text)
+      expect(result.style?.lineHeight).toBeUndefined()
+      expect(result.nativeTextMetrics?.lineHeight).toBeUndefined()
+    }
+  )
+
   test('an adapted dialog portal resolves native layout without text style warnings', () => {
     const originalNodeEnv = process.env.NODE_ENV
     process.env.NODE_ENV = 'development'
@@ -384,6 +573,7 @@ function getSplitStylesFor(
   props: Record<string, any>,
   Component = View,
   options: {
+    context?: Partial<ComponentContextI>
     mediaState?: Record<string, any>
     groupContext?: any
     resolveValues?: 'none' | 'value' | 'web' | 'auto'
@@ -409,7 +599,7 @@ function getSplitStylesFor(
       resolveValues: options.resolveValues,
     },
     undefined,
-    undefined,
+    options.context as ComponentContextI | undefined,
     options.groupContext,
     undefined,
     undefined

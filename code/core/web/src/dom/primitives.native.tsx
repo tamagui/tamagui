@@ -34,12 +34,21 @@ import type {
 import { createComponent } from '../createComponent'
 import { textStaticConfig } from '../views/Text'
 import { viewStaticConfig } from '../views/View'
+import { ComponentContext } from '../contexts/ComponentContext'
+import { getConfig } from '../config'
+import { NativeTextBinding } from '../helpers/NativeTextBinding'
+import {
+  resolveTextMetrics,
+  type NativeTextContext,
+  type NativeTextMetrics,
+} from '../helpers/nativeTextMetrics'
 
 type DOMMetadata = {
   __inherit?: boolean
   __inheritedStyles?: Record<string, unknown>
   __tag?: string
   __styles?: ReadonlyArray<Record<string, unknown> | false | null | undefined>
+  __textMetrics?: NativeTextMetrics
   ref?: Ref<unknown>
   children?: unknown
 }
@@ -52,7 +61,6 @@ const refFacades = new WeakMap<object, Map<string, object>>()
 const viewportScaleContext = createContext({ scale: 1 })
 type InheritedTextStyle = {
   style: Record<string, unknown>
-  lineHeightMultiplier?: number
 }
 const emptyInheritedTextStyle: InheritedTextStyle = { style: {} }
 const inheritedTextStyleContext = createContext<InheritedTextStyle>(
@@ -293,13 +301,17 @@ function hasInheritableStyle(style: unknown) {
 
 function resolveInheritedTextStyle(
   style: unknown,
-  parent: InheritedTextStyle
-): InheritedTextStyle {
+  parent: InheritedTextStyle,
+  context: NativeTextContext,
+  authoredMetrics?: NativeTextMetrics
+) {
   const values = (Array.isArray(style) ? style.flat(Infinity) : [style]).filter(
     Boolean
   ) as Record<string, unknown>[]
   const inherited = { ...parent.style }
-  let lineHeightMultiplier = parent.lineHeightMultiplier
+  if (context.parentFontSize !== undefined) inherited.fontSize = context.parentFontSize
+  let lineHeight: unknown
+  let ownsFontSize = false
   for (const value of values) {
     for (const property of inheritableTextProperties) {
       if (!(property in value)) continue
@@ -308,24 +320,29 @@ function resolveInheritedTextStyle(
         if (!(property in parent.style)) inherited[property] = undefined
         continue
       }
-      if (property === 'lineHeight' && typeof next === 'number') {
-        lineHeightMultiplier = next
+      if (property === 'lineHeight') {
+        // primitive styles are already host lengths; only metadata carries a ratio.
+        lineHeight = typeof next === 'number' ? `${next}px` : next
       } else {
+        if (property === 'fontSize') ownsFontSize = true
         inherited[property] =
           typeof next === 'string' && /^-?(?:\d+\.?\d*|\.\d+)px$/.test(next)
             ? Number(next.slice(0, -2))
             : next
-        if (property === 'lineHeight') lineHeightMultiplier = undefined
       }
     }
   }
-  if (lineHeightMultiplier !== undefined) {
-    inherited.lineHeight =
-      typeof inherited.fontSize === 'number'
-        ? lineHeightMultiplier * inherited.fontSize
-        : lineHeightMultiplier
+  if (authoredMetrics?.fontSize !== undefined && !authoredMetrics.inheritsFontSize) {
+    inherited.fontSize = authoredMetrics.fontSize
+    ownsFontSize = true
   }
-  return { style: inherited, lineHeightMultiplier }
+  if (!ownsFontSize && context.animatedText) delete inherited.fontSize
+  const metrics = resolveTextMetrics(
+    inherited,
+    authoredMetrics ? authoredMetrics.lineHeight : lineHeight,
+    context
+  )
+  return { style: inherited, metrics }
 }
 
 function DOMViewWithInheritedStyle({
@@ -336,15 +353,23 @@ function DOMViewWithInheritedStyle({
   style: unknown
 }) {
   const parent = useContext(inheritedTextStyleContext)
-  const value = resolveInheritedTextStyle(style, parent)
-  return jsx(inheritedTextStyleContext.Provider, {
-    value,
-    children: renderDOMView(props),
+  const context = useContext(ComponentContext)
+  const value = resolveInheritedTextStyle(style, parent, context, props.__textMetrics)
+  return jsx(ComponentContext.Provider, {
+    ...context,
+    parentFontSize: value.metrics.fontSize,
+    parentLineHeight: value.metrics.lineHeight,
+    animatedText: value.metrics.inheritsFontSize ? context.animatedText : null,
+    children: jsx(inheritedTextStyleContext.Provider, {
+      value,
+      children: renderDOMView(props),
+    }),
   })
 }
 
 function resolvedDOMView(props: DOMViewProps) {
   if (
+    !props.__textMetrics &&
     !hasInheritableStyle(props.style) &&
     !hasInheritableStyle(props.__inheritedStyles)
   ) {
@@ -358,38 +383,80 @@ function resolvedDOMView(props: DOMViewProps) {
 
 function DOMTextWithInheritedStyle({ props }: { props: DOMTextProps }) {
   const parent = useContext(inheritedTextStyleContext)
-  const value = resolveInheritedTextStyle([props.style, props.__inheritedStyles], parent)
+  const context = useContext(ComponentContext)
+  const value = resolveInheritedTextStyle(
+    [props.style, props.__inheritedStyles],
+    parent,
+    context,
+    props.__textMetrics
+  )
   const resolved = {
     ...props,
     style: [props.style, value.style],
   } as DOMTextProps
-  return jsx(inheritedTextStyleContext.Provider, {
-    value,
-    children: renderDOMText(resolved),
+  let content = renderDOMText(resolved)
+  const driver =
+    context.animatedText && (context.animationDriver ?? getConfig().animations)
+  if (value.metrics.inheritsFontSize && context.animatedText && driver?.useTextMetrics) {
+    content = jsx(NativeTextBinding, {
+      element: content,
+      useTextMetrics: driver.useTextMetrics,
+      inheritedText: context.animatedText,
+      lineHeight: value.metrics.lineHeight,
+    })
+  }
+  return jsx(ComponentContext.Provider, {
+    ...context,
+    inText: true,
+    parentFontSize: value.metrics.fontSize,
+    parentLineHeight: value.metrics.lineHeight,
+    animatedText: value.metrics.inheritsFontSize ? context.animatedText : null,
+    children: jsx(inheritedTextStyleContext.Provider, {
+      value,
+      children: content,
+    }),
   })
 }
 
 function resolvedDOMText(props: DOMTextProps) {
-  return props.__inherit
+  return props.__inherit || props.__textMetrics
     ? jsx(DOMTextWithInheritedStyle, { props: resolveDOMMetadata(props) })
     : renderDOMText(resolveDOMMetadata(props))
 }
 
 function DOMTextInputWithInheritedStyle({ props }: { props: DOMTextInputProps }) {
   const parent = useContext(inheritedTextStyleContext)
+  const context = useContext(ComponentContext)
   const inherited = resolveInheritedTextStyle(
     [props.style, props.__inheritedStyles],
-    parent
+    parent,
+    context,
+    props.__textMetrics
   )
   const resolved = {
     ...props,
     style: [props.style, inherited.style],
   } as DOMTextInputProps
+  const driver =
+    context.animatedText && (context.animationDriver ?? getConfig().animations)
+  if (
+    inherited.metrics.inheritsFontSize &&
+    context.animatedText &&
+    driver?.useTextMetrics
+  ) {
+    return jsx(NativeTextBinding, {
+      element: renderDOMTextInput(resolved),
+      useTextMetrics: driver.useTextMetrics,
+      inheritedText: context.animatedText,
+      lineHeight: inherited.metrics.lineHeight,
+      isInput: true,
+    })
+  }
   return renderDOMTextInput(resolved)
 }
 
 function resolvedDOMTextInput(props: DOMTextInputProps) {
-  return props.__inherit
+  return props.__inherit || props.__textMetrics
     ? jsx(DOMTextInputWithInheritedStyle, { props: resolveDOMMetadata(props) })
     : renderDOMTextInput(resolveDOMMetadata(props))
 }
@@ -412,7 +479,7 @@ function mergeRuntimeStyles(
     merged ||= {}
     for (const property in style) {
       const value = style[property]
-      if (unitlessNumberProperties.has(property)) {
+      if (property === 'lineHeight' || unitlessNumberProperties.has(property)) {
         merged[property] = value
       } else if (typeof value === 'number' && Number.isFinite(value)) {
         merged[property] = `${value}px`
@@ -462,10 +529,19 @@ function DOMViewWithViewportRef(props: DOMViewProps) {
 }
 
 function renderDOMView(resolved: DOMViewProps) {
-  if (resolved.onClick === undefined && !('__inheritedStyles' in resolved)) {
+  if (
+    resolved.onClick === undefined &&
+    !('__inheritedStyles' in resolved) &&
+    !('__textMetrics' in resolved)
+  ) {
     return jsx(View, resolved)
   }
-  const { __inheritedStyles: _, onClick, ...hostProps } = resolved
+  const {
+    __inheritedStyles: _,
+    __textMetrics: _metrics,
+    onClick,
+    ...hostProps
+  } = resolved
   if (onClick === undefined)
     return jsx(View, hostProps)
     // react native's View has no press handling, so a clickable one is a Pressable
@@ -483,10 +559,19 @@ function DOMTextWithViewportRef(props: DOMTextProps) {
 }
 
 function renderDOMText(resolved: DOMTextProps) {
-  if (resolved.onClick === undefined && !('__inheritedStyles' in resolved)) {
+  if (
+    resolved.onClick === undefined &&
+    !('__inheritedStyles' in resolved) &&
+    !('__textMetrics' in resolved)
+  ) {
     return jsx(Text, resolved)
   }
-  const { __inheritedStyles: _, onClick, ...hostProps } = resolved
+  const {
+    __inheritedStyles: _,
+    __textMetrics: _metrics,
+    onClick,
+    ...hostProps
+  } = resolved
   if (onClick === undefined)
     return jsx(Text, hostProps)
     // react native's Text presses on its own, so this stays one element
@@ -508,11 +593,19 @@ function renderDOMImage(resolved: DOMImageProps) {
     resolved.onClick === undefined &&
     resolved.onLoad === undefined &&
     resolved.onError === undefined &&
-    !('__inheritedStyles' in resolved)
+    !('__inheritedStyles' in resolved) &&
+    !('__textMetrics' in resolved)
   ) {
     return jsx(Image, resolved)
   }
-  const { __inheritedStyles: _, onClick, onLoad, onError, ...hostProps } = resolved
+  const {
+    __inheritedStyles: _,
+    __textMetrics: _metrics,
+    onClick,
+    onLoad,
+    onError,
+    ...hostProps
+  } = resolved
   if (onClick === undefined && onLoad === undefined && onError === undefined) {
     return jsx(Image, hostProps)
   }
@@ -537,11 +630,19 @@ function renderDOMTextInput(resolved: DOMTextInputProps) {
     resolved.onChange === undefined &&
     resolved.onInput === undefined &&
     resolved.onKeyDown === undefined &&
-    !('__inheritedStyles' in resolved)
+    !('__inheritedStyles' in resolved) &&
+    !('__textMetrics' in resolved)
   ) {
     return jsx(TextInput, resolved)
   }
-  const { __inheritedStyles: _, onChange, onInput, onKeyDown, ...hostProps } = resolved
+  const {
+    __inheritedStyles: _,
+    __textMetrics: _metrics,
+    onChange,
+    onInput,
+    onKeyDown,
+    ...hostProps
+  } = resolved
   if (onChange === undefined && onInput === undefined && onKeyDown === undefined) {
     return jsx(TextInput, hostProps)
   }
@@ -554,6 +655,7 @@ function renderDOMTextInput(resolved: DOMTextInputProps) {
 }
 
 const DOMRuntimeViewFrame = createComponent({
+  isDOM: true,
   ...viewStaticConfig,
   validStyles: { ...viewStaticConfig.validStyles, ...textStaticConfig.validStyles },
   neverSkipProps: domEventProps,
@@ -562,6 +664,7 @@ const DOMRuntimeViewFrame = createComponent({
   displayName: 'DOMRuntimeView',
 })
 const DOMRuntimeTextFrame = createComponent({
+  isDOM: true,
   ...textStaticConfig,
   neverSkipProps: domEventProps,
   Component: DOMText as any,
@@ -569,6 +672,7 @@ const DOMRuntimeTextFrame = createComponent({
   displayName: 'DOMRuntimeText',
 })
 const DOMRuntimeImageFrame = createComponent({
+  isDOM: true,
   ...viewStaticConfig,
   validStyles: { ...viewStaticConfig.validStyles, ...textStaticConfig.validStyles },
   neverSkipProps: domEventProps,
@@ -577,6 +681,7 @@ const DOMRuntimeImageFrame = createComponent({
   displayName: 'DOMRuntimeImage',
 })
 const DOMRuntimeTextInputFrame = createComponent({
+  isDOM: true,
   ...textStaticConfig,
   neverSkipProps: domEventProps,
   Component: DOMTextInput as any,

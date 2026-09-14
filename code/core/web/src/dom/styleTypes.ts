@@ -477,7 +477,7 @@ interface TextStyle {
     | 'black'
   includeFontPadding?: boolean
   letterSpacing?: number
-  lineHeight?: number
+  lineHeight?: number | Px | `${number}`
   numberOfLines?: number
   textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify'
   textAlignVertical?: 'auto' | 'top' | 'bottom' | 'center'

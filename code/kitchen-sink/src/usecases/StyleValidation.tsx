@@ -119,7 +119,7 @@ const Typography = () => (
       fontSize={18}
       fontWeight="700"
       color="rgb(17,24,39)"
-      lineHeight={24}
+      lineHeight="24px"
       letterSpacing={1.5}
     >
       Bold 18px

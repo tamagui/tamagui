@@ -200,7 +200,7 @@ export function runtimeType(expression: Expression): RuntimeType {
       literals.push(String(part.getLiteralValue()))
       continue
     }
-    if (part.isString()) {
+    if (part.isString() || part.isTemplateLiteral()) {
       strings++
       continue
     }

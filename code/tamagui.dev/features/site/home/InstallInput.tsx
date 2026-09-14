@@ -51,7 +51,7 @@ export const InstallInput = memo(() => {
         items="center"
         rounded={10}
       >
-        <Paragraph fontSize={14} fontWeight="500" fontFamily="mono" lineHeight={20}>
+        <Paragraph fontSize={14} fontWeight="500" fontFamily="mono" lineHeight="20px">
           {installScript}
         </Paragraph>
         <TooltipSimple

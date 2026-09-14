@@ -50,6 +50,7 @@ export {
 } from './helpers/splitStyleProps'
 export { normalizeColor } from './helpers/normalizeColor'
 export { normalizeStyle } from './helpers/normalizeStyle'
+export { resolveTextMetrics } from './helpers/nativeTextMetrics'
 export { containsThemeRef, themeRefKey } from './helpers/themeRef'
 export { getStyleTags } from './helpers/wrapStyleTags'
 
@@ -87,6 +88,8 @@ export type {
   AnimationDriver,
   AnimationDriverStub,
   AnimationDriverWithAnimatedNumbers,
+  AnimatedTextChannel,
+  NativeTextMetrics,
   AnimationsConfig,
   BorderValue,
   BoxShadowValue,

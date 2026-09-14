@@ -18,10 +18,13 @@ import {
   useIsomorphicLayoutEffect,
   View,
   type AnimationDriverWithAnimatedNumbers,
+  type NativeTextMetrics,
+  type TransitionProp,
   type UniversalAnimatedNumber,
   createRefComponent,
 } from '@tamagui/core'
 import { useThemeWithState } from '@tamagui/web/internal-runtime'
+import { TextInputHost } from './textInputHost'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import normalizeColor from '@react-native/normalize-colors'
 import React, { useMemo, useRef } from 'react'
@@ -90,6 +93,13 @@ type AnimationSnapshot = {
   statics: Record<string, unknown>
   transforms: Array<Record<string, unknown>>
   gatedKeys: Record<string, boolean>
+  /**
+   * the leading is a ratio of a font size that can move under it, so the mapper
+   * multiplies the two live factors instead of animating a lineHeight of its
+   * own. false for an absolute length, for `normal`, and for a font size that
+   * is already at rest.
+   */
+  derivesLeading: boolean
   /**
    * for each animated key (transform sub-keys as `transform:key`), the value the
    * previous committed render painted for it, when one exists and is animatable.
@@ -257,6 +267,42 @@ const getImplicitDefault = (
   return suffixIndex > 0 ? `${value}${targetValue.slice(suffixIndex)}` : value
 }
 
+// A numeric authored lineHeight is a RATIO of the resolved font size, not a
+// length. Core finalizes the destination to fontSize * ratio and reports the
+// ratio back on `nativeTextMetrics`, so the painted leading has to be
+// fontSize * ratio on EVERY frame, not only at the destination. An absolute px
+// leading, and any raw react-native style, keeps its own value and its own
+// timeline.
+const getLeadingRatio = (metrics: { lineHeight?: unknown } | undefined | null) => {
+  const ratio = metrics?.lineHeight
+  return typeof ratio === 'number' && Number.isFinite(ratio) && ratio >= 0
+    ? ratio
+    : undefined
+}
+
+// The mapper cannot multiply two reanimated DESCRIPTORS, but it can multiply
+// two live numbers: the font size this node paints is mirrored into a shared
+// value frame by frame (see applyAnimation) and the ratio rides a shared value
+// of its own, so the leading is their product, recomputed on every frame either
+// factor moves. That is what makes a font size and a ratio changing together
+// paint fs(t) * r(t) instead of a ramp to fs_end * r_end.
+//
+// A transition covering neither key leaves both to land in the same commit,
+// already coherent, so there is nothing to derive. An inherited font size runs
+// on the ancestor's clock and never has an entry here, so it always derives.
+const derivesLeadingProduct = (
+  style: Record<string, unknown>,
+  ratio: number | undefined,
+  inheritsFontSize: boolean,
+  resolved: ResolvedTransition
+) =>
+  ratio !== undefined &&
+  (inheritsFontSize ||
+    (typeof style.lineHeight === 'number' &&
+      typeof style.fontSize === 'number' &&
+      (!!getTransitionForKey(resolved, 'fontSize') ||
+        !!getTransitionForKey(resolved, 'lineHeight'))))
+
 const COLOR_STYLE_KEYS: Record<string, boolean> = {
   backgroundColor: true,
   borderColor: true,
@@ -312,7 +358,8 @@ const buildSnapshot = (
   statics: Record<string, unknown>,
   transforms: Array<Record<string, unknown>>,
   previousKeys: Set<string>,
-  lastPainted: Record<string, unknown>
+  lastPainted: Record<string, unknown>,
+  derivesLeading = false
 ): {
   value: AnimationSnapshot
   painted: Record<string, unknown>
@@ -346,6 +393,7 @@ const buildSnapshot = (
 
   const snapshotTransforms = transforms.map(cloneStyleRecord)
   const keys = new Set(Object.keys(snapshotAnimated))
+  if (derivesLeading) keys.add('lineHeight')
   for (const transform of snapshotTransforms) {
     const key = Object.keys(transform)[0]
     const value = key ? transform[key] : undefined
@@ -355,10 +403,25 @@ const buildSnapshot = (
   }
 
   const seeds: Record<string, unknown> = {}
+  const staticTransforms = getAnimatedTransforms(snapshotStatics.transform)
+  for (const transform of staticTransforms) {
+    const key = Object.keys(transform)[0]
+    if (keys.has(`transform:${key}`) && previousKeys.has(`transform:${key}`))
+      seeds[`transform:${key}`] = transform[key]
+  }
   for (const key of keys) {
-    let value = lastPainted[key]
-    if (typeof value !== 'number' && typeof value !== 'string') continue
+    // React carries the first animated value until the mapper owns the key.
+    // later commits can coalesce before its first run, so their destinations
+    // are not evidence of a painted predecessor.
+    let value = previousKeys.has(key)
+      ? (seeds[key] ?? snapshotStatics[key] ?? lastPainted[key])
+      : lastPainted[key]
+    if (typeof value !== 'number' && typeof value !== 'string') {
+      delete seeds[key]
+      continue
+    }
     if (value === 'auto' || (typeof value === 'string' && value.startsWith('calc'))) {
+      delete seeds[key]
       continue
     }
     if (COLOR_STYLE_KEYS[key]) value = normalizeAnimationColor(value)
@@ -367,13 +430,15 @@ const buildSnapshot = (
 
   const gatedKeys: Record<string, boolean> = {}
   for (const key of keys) gatedKeys[key] = true
+  // a derived leading is a product the mapper computes, not an animation with a
+  // completion callback, so no enter/exit cycle can wait on it
+  if (derivesLeading) delete gatedKeys.lineHeight
 
   const removedKeys = getRemovedAnimatedKeys(keys, previousKeys)
   const painted: Record<string, unknown> = {
     ...snapshotStatics,
     ...snapshotAnimated,
   }
-  const staticTransforms = getAnimatedTransforms(snapshotStatics.transform)
   painted.transform = snapshotTransforms.length ? snapshotTransforms : staticTransforms
   for (const transform of staticTransforms) {
     const key = Object.keys(transform)[0]
@@ -390,6 +455,7 @@ const buildSnapshot = (
       statics: snapshotStatics,
       transforms: snapshotTransforms,
       gatedKeys,
+      derivesLeading,
       seeds,
       removedKeys,
       removeTransform: Object.keys(removedKeys).some((key) =>
@@ -429,7 +495,8 @@ const applyAnimation = <T extends number | string>(
   config: TransitionConfig,
   callback?: AnimationCallback,
   seedValue?: number | string,
-  validateStartAsColor = false
+  validateStartAsColor = false,
+  publishTo?: SharedValue<number>
 ): T => {
   'worklet'
   const delay = config.delay
@@ -510,6 +577,31 @@ const applyAnimation = <T extends number | string>(
     }
   }
 
+  // a published font size mirrors what THIS descriptor paints, frame by frame.
+  // descendants that inherit the size read the mirror, so the host's own
+  // animation stays the only clock: no shadow animation, no second config, and
+  // nothing to keep in sync when this one is interrupted.
+  if (isAnimationDescriptor && publishTo) {
+    const startedOn = animatedValue.onStart
+    animatedValue.onStart = (
+      animation: any,
+      value: unknown,
+      timestamp: number,
+      previousAnimation: unknown
+    ) => {
+      'worklet'
+      startedOn(animation, value, timestamp, previousAnimation)
+      publishTo.value = animation.current
+    }
+    const framedOn = animatedValue.onFrame
+    animatedValue.onFrame = (animation: any, now: number) => {
+      'worklet'
+      const finished = framedOn(animation, now)
+      publishTo.value = animation.current
+      return finished
+    }
+  }
+
   if (isAnimationDescriptor && delay && delay > 0) {
     animatedValue = withDelay(delay, animatedValue)
   }
@@ -534,13 +626,16 @@ const animateSnapshotValue = (
   markExitKeyDone: (key: string, cycleId: number, finished: boolean) => void,
   markEnterKeyDone: (key: string, cycleId: number) => void,
   markUpdateKeyDone: (key: string, cycleId: number, finished: boolean) => void,
-  validateStartAsColor = false
+  validateStartAsColor = false,
+  publishTo?: SharedValue<number>
 ): number | string => {
   'worklet'
 
   const cycleGated =
     gated && (currentlyExiting || currentlyCompletingEnter || currentlyCompletingUpdate)
   if (!previouslyEmitted && seedValue === undefined && !cycleGated) {
+    // painted plainly, so the mirror takes it straight
+    if (publishTo && typeof targetValue === 'number') publishTo.value = targetValue
     return targetValue
   }
 
@@ -569,7 +664,8 @@ const animateSnapshotValue = (
     previouslyEmitted
       ? undefined
       : ((seedValue ?? getImplicitDefault(implicitKey, targetValue)) as number | string),
-    validateStartAsColor
+    validateStartAsColor,
+    publishTo
   )
 }
 
@@ -733,6 +829,12 @@ function createWebAnimatedComponent(defaultTag: 'div' | 'span') {
 const AnimatedView = createWebAnimatedComponent('div')
 const AnimatedText = createWebAnimatedComponent('span')
 
+// a TextInput never inherits font size from an ancestor Text on native, so the
+// binding hook has to hand it a host that accepts animated styles of its own.
+// built on first use: the compiler evaluates tamagui.config.ts against a
+// react-native stub that has no TextInput, and never binds any text.
+let animatedTextInput: React.ComponentType<any> | undefined
+
 // =============================================================================
 // Transition Config Builder
 // =============================================================================
@@ -855,6 +957,38 @@ export function createAnimations<A extends AnimationsConfig>(
     animations,
     usePresence,
     ResetPresence,
+
+    // binds a descendant that has no font size of its own to the ancestor's
+    // animated one. no clock here: the worklet reads the ancestor's shared
+    // value, so the font size and a ratio leading land on the same frame.
+    useTextMetrics: ({ inheritedText, lineHeight }) => {
+      const node =
+        inheritedText?.driver === 'reanimated'
+          ? (inheritedText.fontSize as SharedValue<number>)
+          : null
+      // an absolute or `normal` leading still needs the font size bound, it
+      // just keeps the leading the caller already resolved.
+      const ratio = typeof lineHeight === 'number' ? lineHeight : null
+      const animatedStyle = useAnimatedStyle(() => {
+        'worklet'
+        if (!node) return {}
+        const fontSize = node.value
+        return ratio === null ? { fontSize } : { fontSize, lineHeight: fontSize * ratio }
+      }, [node, ratio])
+      const textChannel = inheritedText ?? null
+      // TextInputHost is absent only in the web build, which core never hands a
+      // channel, so this is the same condition as `node` twice over.
+      if (!node || !TextInputHost) return { style: null, textChannel }
+      animatedTextInput ||= Animated.createAnimatedComponent(TextInputHost)
+      return {
+        // reanimated's animated style is an opaque handle its own hosts read,
+        // not a plain object, so it does not fit the contract's Record shape.
+        style: animatedStyle as unknown as Record<string, unknown>,
+        textChannel,
+        Text: isWeb ? AnimatedText : Animated.Text,
+        TextInput: animatedTextInput,
+      }
+    },
 
     // =========================================================================
     // useAnimatedNumber - For imperative animated values
@@ -990,6 +1124,7 @@ export function createAnimations<A extends AnimationsConfig>(
         stateRef,
         styleState,
         onTransition,
+        inheritedText,
       } = animationProps
 
       // State flags
@@ -1009,6 +1144,10 @@ export function createAnimations<A extends AnimationsConfig>(
 
       // Use effectiveTransition computed by createComponent (single source of truth)
       const effectiveTransition = styleState?.effectiveTransition ?? props.transition
+      // core reports a numeric (ratio) leading on nativeTextMetrics; a px
+      // length and 'normal' are reported as themselves and stay independent.
+      const leadingRatio = getLeadingRatio(styleState?.nativeTextMetrics)
+
       // Use 'enter' if we're mounting OR if we just finished entering
       const animationState: 'enter' | 'exit' | 'default' = isExiting
         ? 'exit'
@@ -1023,6 +1162,49 @@ export function createAnimations<A extends AnimationsConfig>(
       )
 
       const disableAnimation = isHydrating || !hasTransition(resolvedTransition)
+
+      // this subtree's live font size, mirrored off whatever the host's own
+      // fontSize animation paints (see applyAnimation): one clock, not two.
+      // descendants read it, and so does this node's own leading whenever that
+      // leading is a ratio of the size.
+      const fontSizeShared = useSharedValue(
+        typeof style.fontSize === 'number' ? style.fontSize : 0
+      )
+      const publishesFontSize = !disableAnimation && typeof style.fontSize === 'number'
+      const ownTextChannel = useMemo(
+        () => ({ fontSize: fontSizeShared, driver: 'reanimated' }),
+        [fontSizeShared]
+      )
+      // an inherited font size: core leaves this node's own fontSize out of the
+      // style and reports the ratio, so the leading is the ANCESTOR's live font
+      // size times this node's ratio, read straight off the ancestor's mirror.
+      const inheritedFontSize =
+        leadingRatio !== undefined &&
+        typeof style.fontSize !== 'number' &&
+        inheritedText?.driver === 'reanimated'
+          ? (inheritedText.fontSize as SharedValue<number>)
+          : null
+      // the font size the leading is a ratio OF: an ancestor's when this node
+      // has none of its own, otherwise the one this node paints.
+      const leadingFontSize = inheritedFontSize ?? fontSizeShared
+      // the leading's other factor. the ratio is this node's own property, so it
+      // rides the entry that names lineHeight while the font size stays on its
+      // own clock, and the product is exact at every frame either way.
+      const leadingRatioShared = useSharedValue(leadingRatio ?? 0)
+      // the ratio the painted leading was last built from. `undefined` means the
+      // leading was a length or `normal`, which has no ratio to move from, so
+      // the next ratio starts the product instead of ramping into it.
+      const paintedRatioRef = useRef(leadingRatio)
+      const applyLeadingRatio = (ratio: number | undefined, config: TransitionConfig) => {
+        const previous = paintedRatioRef.current
+        if (previous === ratio) return
+        paintedRatioRef.current = ratio
+        if (ratio === undefined) return
+        leadingRatioShared.value =
+          previous === undefined || disableAnimation
+            ? ratio
+            : applyAnimation(ratio, config)
+      }
 
       // Theme state for dynamic values - use themeName from props instead of hook
       const isDark = themeName?.startsWith('dark') || false
@@ -1292,6 +1474,13 @@ export function createAnimations<A extends AnimationsConfig>(
         isExiting ? paintedPredecessor : null,
       ])
 
+      const derivesLeading = derivesLeadingProduct(
+        animatedStyles,
+        leadingRatio,
+        !!inheritedFontSize,
+        resolvedTransition
+      )
+
       const renderSnapshot = useMemo(
         () =>
           buildSnapshot(
@@ -1299,15 +1488,22 @@ export function createAnimations<A extends AnimationsConfig>(
             staticStyles,
             getAnimatedTransforms(animatedStyles.transform),
             committedRenderKeysRef.current,
-            paintedPredecessor
+            paintedPredecessor,
+            derivesLeading
           ),
-        [animatedStyles, staticStyles, isExiting ? paintedPredecessor : null]
+        [
+          animatedStyles,
+          staticStyles,
+          isExiting ? paintedPredecessor : null,
+          derivesLeading,
+        ]
       )
       const renderSnapshotRef = useSharedValue<AnimationSnapshot>({
         animated: {},
         statics: {},
         transforms: [],
         gatedKeys: {},
+        derivesLeading: false,
         seeds: {},
         removedKeys: {},
         removeTransform: false,
@@ -1435,69 +1631,99 @@ export function createAnimations<A extends AnimationsConfig>(
         }
       }, [baseConfig, propertyConfigs, disableAnimation, isHydrating])
 
+      // only the style the mapper is actually reading may move the ratio: while
+      // an emitted pseudo style is latched it owns the leading, and the emitter
+      // has already written the ratio that goes with it.
+      useIsomorphicLayoutEffect(() => {
+        if (emitterSnapshotRef.value !== null) return
+        applyLeadingRatio(leadingRatio, propertyConfigs.lineHeight ?? baseConfig)
+      })
+
       // =========================================================================
       // avoidRerenders: register style emitter callback
       // when hover/press/etc state changes, this is called instead of re-rendering
       // =========================================================================
-      useStyleEmitter?.(
-        (nextStyle: Record<string, unknown>, effectiveTransition, pseudoActive) => {
-          // while exiting, the exit render owns the style — a pseudo flip mid-exit
-          // (hover-out as the element fades under the cursor) must not re-latch the
-          // base style over the in-flight exit targets.
-          if (isExitingJSRef.current) return
-          // track whether a self pseudo is active so the render-time layout effect knows whether
-          // this emitter snapshot is a transient override to keep latched or a base it can drop.
-          pseudoActiveRef.current = pseudoActive === true
+      // the fourth argument is the emitted style's own nativeTextMetrics: the
+      // emitter re-runs getSplitStyles outside render, so the ratio that
+      // describes the style it hands over is never the ratio the last render
+      // resolved (a pseudo can replace the leading with an absolute length).
+      const onEmittedStyle = (
+        nextStyle: Record<string, unknown>,
+        effectiveTransition: TransitionProp | null | undefined,
+        pseudoActive?: boolean,
+        nextMetrics?: NativeTextMetrics
+      ) => {
+        // while exiting, the exit render owns the style — a pseudo flip mid-exit
+        // (hover-out as the element fades under the cursor) must not re-latch the
+        // base style over the in-flight exit targets.
+        if (isExitingJSRef.current) return
+        // track whether a self pseudo is active so the render-time layout effect knows whether
+        // this emitter snapshot is a transient override to keep latched or a base it can drop.
+        pseudoActiveRef.current = pseudoActive === true
 
-          // effectiveTransition is computed in createComponent based on entering/exiting pseudo states
-          // rebuild config whenever transition changes (entering OR exiting pseudo states)
-          const transitionToUse = effectiveTransition ?? props.transition
-          const { baseConfig: newBase, propertyConfigs: newPropertyConfigs } =
-            buildTransitionConfig(
-              transitionToUse,
-              animations,
-              animationState,
-              getStyleKeys(nextStyle)
-            )
+        // effectiveTransition is computed in createComponent based on entering/exiting pseudo states
+        // rebuild config whenever transition changes (entering OR exiting pseudo states)
+        const transitionToUse = effectiveTransition ?? props.transition
+        const emittedLeadingRatio = getLeadingRatio(nextMetrics)
+        const {
+          baseConfig: newBase,
+          propertyConfigs: newPropertyConfigs,
+          resolved: emittedResolved,
+        } = buildTransitionConfig(
+          transitionToUse,
+          animations,
+          animationState,
+          getStyleKeys(nextStyle)
+        )
 
-          // update configRef with the new config
-          configRef.value = {
-            baseConfig: newBase,
-            propertyConfigs: newPropertyConfigs,
-            disableAnimation: configRef.value.disableAnimation,
-            isHydrating: configRef.value.isHydrating,
-          }
+        // update configRef with the new config
+        configRef.value = {
+          baseConfig: newBase,
+          propertyConfigs: newPropertyConfigs,
+          disableAnimation: configRef.value.disableAnimation,
+          isHydrating: configRef.value.isHydrating,
+        }
 
-          const previousKeys = emitterKeysRef.current ?? committedRenderKeysRef.current
-          const { animated, statics } = splitAnimationStyles(
-            nextStyle,
-            isDark,
-            configRef.value.disableAnimation
-          )
-          const snapshot = buildSnapshot(
+        const previousKeys = emitterKeysRef.current ?? committedRenderKeysRef.current
+        const { animated, statics } = splitAnimationStyles(
+          nextStyle,
+          isDark,
+          configRef.value.disableAnimation
+        )
+        // the emitted style resolves its own leading: a pseudo can replace a
+        // ratio with a length, which unbinds the product for as long as it holds
+        const emittedDerivesLeading = derivesLeadingProduct(
+          animated,
+          emittedLeadingRatio,
+          !!inheritedFontSize,
+          emittedResolved
+        )
+        applyLeadingRatio(emittedLeadingRatio, newPropertyConfigs.lineHeight ?? newBase)
+        const snapshot = buildSnapshot(
+          animated,
+          statics,
+          getAnimatedTransforms(animated.transform),
+          previousKeys,
+          lastPaintedRef.current,
+          emittedDerivesLeading
+        )
+        emitterSnapshotRef.value = snapshot.value
+        emitterKeysRef.current = snapshot.keys
+        lastPaintedRef.current = snapshot.painted
+
+        if (
+          process.env.NODE_ENV === 'development' &&
+          props.debug &&
+          props.debug !== 'profile'
+        ) {
+          console.info('[animations-reanimated] useStyleEmitter update', {
             animated,
             statics,
-            getAnimatedTransforms(animated.transform),
-            previousKeys,
-            lastPaintedRef.current
-          )
-          emitterSnapshotRef.value = snapshot.value
-          emitterKeysRef.current = snapshot.keys
-          lastPaintedRef.current = snapshot.painted
-
-          if (
-            process.env.NODE_ENV === 'development' &&
-            props.debug &&
-            props.debug !== 'profile'
-          ) {
-            console.info('[animations-reanimated] useStyleEmitter update', {
-              animated,
-              statics,
-              transforms: snapshot.value.transforms,
-            })
-          }
+            transforms: snapshot.value.transforms,
+          })
         }
-      )
+      }
+      useStyleEmitter?.(onEmittedStyle)
 
       // Compute and register exit keys synchronously during render to avoid race conditions
       // This must happen BEFORE useAnimatedStyle runs so callbacks have a populated set
@@ -1693,6 +1919,9 @@ export function createAnimations<A extends AnimationsConfig>(
 
             const targetValue = animatedValues[key]
             emitted[key] = true
+            // taken after this loop, so the font size it multiplies is the one
+            // this frame paints
+            if (key === 'lineHeight' && snapshot.derivesLeading) continue
             if (typeof targetValue !== 'number' && typeof targetValue !== 'string') {
               result[key] = targetValue
               continue
@@ -1714,8 +1943,16 @@ export function createAnimations<A extends AnimationsConfig>(
               markExitKeyDone,
               markEnterKeyDone,
               markUpdateKeyDone,
-              !!COLOR_STYLE_KEYS[key]
+              !!COLOR_STYLE_KEYS[key],
+              key === 'fontSize' ? fontSizeShared : undefined
             )
+          }
+
+          // the live font size this leading is a ratio of, times the ratio: a
+          // product, so both factors are the ones on screen this frame
+          if (snapshot.derivesLeading) {
+            emitted.lineHeight = true
+            result.lineHeight = leadingFontSize.value * leadingRatioShared.value
           }
 
           // Handle transforms
@@ -1786,6 +2023,9 @@ export function createAnimations<A extends AnimationsConfig>(
               isCompletingUpdateRef,
               updateCycleIdShared,
               markUpdateKeyDone,
+              fontSizeShared,
+              leadingRatioShared,
+              inheritedFontSize,
             ]
           : undefined
       )
@@ -1814,6 +2054,14 @@ export function createAnimations<A extends AnimationsConfig>(
       // commit bridge above keeps React commits from wiping its inline writes.
       return {
         style: [staticStyles, animatedStyle],
+        // what descendants inherit: this node's mirror when it owns a font size
+        // that moves, nothing when it owns one that does not (react-native
+        // inherits that statically), otherwise what it inherited itself
+        textChannel: publishesFontSize
+          ? ownTextChannel
+          : typeof style.fontSize === 'number'
+            ? null
+            : (inheritedText ?? null),
       }
     },
   }

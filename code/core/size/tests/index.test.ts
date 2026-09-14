@@ -43,6 +43,21 @@ describe('resolveSize', () => {
     expect(resolveSize(undefined, env)).toEqual(resolveSize('md', env))
   })
 
+  test('relative font leading sizes the control using its font size', () => {
+    for (const [lineHeight, controlHeight] of [
+      ['1.5', 37],
+      ['24px', 40],
+      [24, 40],
+      [0, 16],
+    ] as const) {
+      const sized = resolveSize('md', {
+        ...env,
+        font: { ...env.font!, lineHeight: { sm: lineHeight } },
+      })
+      expect(sized.controlHeight).toBe(controlHeight)
+    }
+  })
+
   test('unknown names and numeric control sizes resolve the configured default', () => {
     const expected = resolveSize('md', env)
     expect(resolveSize('missing' as any, env)).toEqual(expected)

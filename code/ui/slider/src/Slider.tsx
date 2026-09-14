@@ -13,6 +13,7 @@ import {
   createStyledHOC,
   createRefComponent,
   getVariableValue,
+  resolveTextMetrics,
   resolveSize,
   styled,
   useConfiguration,
@@ -441,7 +442,14 @@ const SliderActive = createStyledHOC(
 const thumbSize = (val: SizeTokens | number | true, env?: SizeResolverEnv) => {
   if (typeof val === 'number') return val
   const { text } = resolveSize(val, env)
-  return getVariableValue(text.lineHeight ?? text.fontSize) as number
+  const metrics: Record<string, unknown> = {
+    fontSize: Number.parseFloat(String(getVariableValue(text.fontSize))),
+  }
+  resolveTextMetrics(
+    metrics,
+    typeof text.lineHeight === 'number' ? `${text.lineHeight}px` : text.lineHeight
+  )
+  return (metrics.lineHeight ?? metrics.fontSize) as number
 }
 
 const getThumbSize = styled.dynamic<SizeTokens | number | true>((val, env) => {

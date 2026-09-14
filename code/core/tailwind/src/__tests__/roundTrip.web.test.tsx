@@ -199,6 +199,22 @@ describe('PASS 1 — 1b: aligned named typography', () => {
     expect(typeof fromClass.fontSize).toBe('string')
     expect(typeof fromClass.lineHeight).toBe('string')
   })
+
+  test('authored line-height ratios and explicit pixels round-trip without changing units', () => {
+    const ratio = convertedClassName(`<Text lineHeight={1.5} />`)
+    expect(ratio).toContain('leading-[1.5]')
+    expect(flat(ratio).lineHeight).toBe('1.5')
+    expect(classStyle(ratio, Text).lineHeight).toBe(
+      styleOf({ lineHeight: 1.5 }, Text).lineHeight
+    )
+
+    const pixels = convertedClassName(`<Text lineHeight="24px" />`)
+    expect(pixels).toContain('leading-[24px]')
+    expect(flat(pixels).lineHeight).toBe('24px')
+    expect(classStyle(pixels, Text).lineHeight).toBe(
+      styleOf({ lineHeight: '24px' }, Text).lineHeight
+    )
+  })
 })
 
 describe('PASS 1 — 1c: fractional border width', () => {

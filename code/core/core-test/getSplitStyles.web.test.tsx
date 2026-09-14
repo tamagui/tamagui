@@ -10,6 +10,7 @@ import {
   createTamagui,
   createVariable,
   getConfig,
+  insertFont,
   styled,
 } from '../web/src'
 import { getSplitStyles } from '../web/src'
@@ -21,6 +22,77 @@ beforeAll(() => {
 })
 
 describe('getSplitStyles', () => {
+  test.each([1.5, 24, 0])(
+    'numeric lineHeight %s is unitless in classes and inline',
+    (lineHeight) => {
+      for (const noClass of [false, true]) {
+        const result = getSplitStyles(
+          { fontSize: 20, lineHeight },
+          Text.staticConfig,
+          {},
+          '',
+          defaultComponentState,
+          { noClass }
+        )!
+        if (noClass) {
+          expect(result.style?.lineHeight).toBe(lineHeight)
+        } else {
+          expect(rulesForProperty(result, 'lineHeight').join('')).toContain(
+            `line-height:${lineHeight}`
+          )
+          expect(rulesForProperty(result, 'lineHeight').join('')).not.toContain(
+            `line-height:${lineHeight}px`
+          )
+        }
+      }
+    }
+  )
+
+  test('literal font Variables retain absolute units while ratio Variables remain relative', () => {
+    for (const [value, expected] of [
+      [24, '24px'],
+      ['24px', '24px'],
+      ['1.5', '1.5'],
+    ] as const) {
+      const lineHeight = createVariable({ key: 'leading', name: 'leading', val: value })
+      const result = getSplitStyles(
+        { fontSize: 20, lineHeight },
+        Text.staticConfig,
+        {},
+        '',
+        defaultComponentState,
+        { noClass: true, resolveValues: 'value' }
+      )!
+      expect(result.style?.lineHeight).toBe(expected)
+    }
+  })
+
+  test('inserted font tokens keep numeric pixel lengths and relative strings', () => {
+    const font = insertFont('leading-test', {
+      family: 'System',
+      size: { ratio: 20, tinyPixel: 20, pixels: 20 },
+      lineHeight: { ratio: '1.5', tinyPixel: 1.5, pixels: '24px' },
+    })
+    for (const [lineHeight, expected] of [
+      ['ratio', '1.5'],
+      ['tinyPixel', '1.5px'],
+      ['pixels', '24px'],
+    ] as const) {
+      const result = getSplitStyles(
+        { fontFamily: 'leading-test', fontSize: 20, lineHeight },
+        Text.staticConfig,
+        {},
+        '',
+        defaultComponentState,
+        { noClass: true, resolveValues: 'value' }
+      )!
+      expect(result.style?.lineHeight).toBe(expected)
+      expect(font.lineHeight[lineHeight].val).toBe(
+        lineHeight === 'ratio' ? '1.5' : parseFloat(expected)
+      )
+    }
+  })
+
   test.each(['background', 'variable'] as const)(
     'inline %s keeps CSS theme variables unless literal values are requested',
     (input) => {
