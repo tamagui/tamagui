@@ -36,6 +36,7 @@ import {
   styled,
 } from 'tamagui'
 import { Button } from '~/components/Button'
+import { CopyAgentSetupButton } from '~/components/CopyAgentSetupButton'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { Code, CodeInline } from '~/components/Code'
 import { CustomTabs } from '~/components/CustomTabs'
@@ -295,6 +296,8 @@ const componentsIn = {
   InlineTabs: InlineTabs,
   MDXTabs,
   Collapsible: DocsCollapsible,
+  CopyAgentSetupButton,
+  CopyAgentButton: CopyAgentSetupButton,
 
   SocialLinksRow: () => (
     <YStack mt="6" mx="-4">
@@ -1011,17 +1014,13 @@ const componentsIn = {
             </Card>
           </XStack>
 
-          <XStack gap="5" flexWrap="wrap">
+          <XStack gap="5" flexWrap="wrap" items="center">
             <Link asChild href="/docs/guides/how-to-upgrade">
               <Text render="a" fontSize={14} color="color-11 hover:color-12">
                 Upgrading from v1 or v2 ↗
               </Text>
             </Link>
-            <Link asChild href="/docs/intro/agents">
-              <Text render="a" fontSize={14} color="color-11 hover:color-12">
-                Setting up with a coding agent ↗
-              </Text>
-            </Link>
+            <CopyAgentSetupButton variant="quiet" size="sm" />
             <Link asChild href="/ui/native">
               <Text render="a" fontSize={14} color="color-11 hover:color-12">
                 Native integrations & runtime ↗

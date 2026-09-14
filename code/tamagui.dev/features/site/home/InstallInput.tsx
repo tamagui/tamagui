@@ -3,35 +3,11 @@ import { memo } from 'react'
 import { Paragraph, TooltipSimple, XStack } from 'tamagui'
 import { Button } from '~/components/Button'
 
+import { AGENT_SETUP_PROMPT } from '~/components/CopyAgentSetupButton'
 import { useClipboard } from '~/hooks/useClipboard'
 
 const installScript = 'npm create tamagui@latest'
-
-const agentPrompt = `Set up Tamagui v3 in this project. Read the docs pages that match my situation before writing any code, and follow them exactly rather than guessing at APIs.
-
-Start here: https://tamagui.dev/docs/intro/introduction
-
-New project:
-- https://tamagui.dev/docs/intro/installation
-
-Adding to an existing app, plus the guide for its bundler:
-- https://tamagui.dev/docs/intro/installation
-- Vite: https://tamagui.dev/docs/guides/vite
-- Expo / Metro: https://tamagui.dev/docs/guides/expo
-- Next.js: https://tamagui.dev/docs/guides/next-js
-- One: https://tamagui.dev/docs/guides/one
-- Webpack: https://tamagui.dev/docs/guides/webpack
-
-Upgrading from v1 or v2:
-- https://tamagui.dev/docs/guides/how-to-upgrade
-
-Then read these regardless:
-- Style syntax: https://tamagui.dev/docs/intro/styles
-- Tailwind classNames: https://tamagui.dev/docs/core/tailwind
-- Compiler setup: https://tamagui.dev/docs/intro/compiler-install
-- Ready-made briefs and the mistakes agents make most: https://tamagui.dev/docs/intro/agents
-
-Tell me which of the three situations you detected before you change anything.`
+const agentPrompt = AGENT_SETUP_PROMPT
 
 export const InstallInput = memo(() => {
   const install = useClipboard(installScript)
