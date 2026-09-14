@@ -16,21 +16,18 @@ export function DataTable({
     <ScrollView horizontal>
       <YStack
         borderWidth={1}
-        borderColor="$borderColor"
+        borderColor="border-color"
         flex={1}
+        my="4"
+        rounded="4"
+        overflow="hidden"
+        mx="-4 sm:0px"
         aria-label={hasAriaLabel ? ariaLabel : 'Component Props'}
         aria-labelledby={ariaLabelledBy}
-        my="$4"
-        rounded="$4"
-        overflow="hidden"
-        mx="$-4"
-        $sm={{
-          mx: 0,
-        }}
       >
         {!!title && (
-          <XStack items="center" py="$2" px="$4" bg="$borderColor">
-            <H3 size="$3">{title}</H3>
+          <XStack items="center" py="2" px="4" bg="border-color">
+            <H3 size="3">{title}</H3>
           </XStack>
         )}
 
@@ -39,23 +36,22 @@ export function DataTable({
             <XStack
               items="center"
               position="relative"
-              py="$3"
-              px="$4"
-              $sm={{ flexDirection: 'column' }}
+              py="3"
+              px="4"
+              flexDirection="sm:column"
             >
               {items.map((item) => (
                 <H4
-                  color="$color"
+                  color="color"
                   fontWeight="700"
-                  key={item}
                   maxW={100}
-                  fontFamily="$mono"
                   textTransform="none"
                   items="center"
                   justify="center"
                   text="center"
-                  size="$4"
                   width={200}
+                  key={item}
+                  size="4"
                 >
                   {item}
                 </H4>

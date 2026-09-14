@@ -8,9 +8,11 @@ import { MDXProvider } from '~/features/docs/MDXProvider'
 import { MDXTabs } from '~/features/docs/MDXTabs'
 import { components } from '~/features/mdx/MDXComponents'
 
-export async function loader() {
+export async function loader(props) {
   const { getMDXBySlug } = await import('~/features/mdx/getMDXBySlug')
-  const { frontmatter, code } = await getMDXBySlug('data/etc', 'dpa')
+  const { getDocsMode } = await import('~/features/docs/isTailwindMode')
+  const mode = getDocsMode(props)
+  const { frontmatter, code } = await getMDXBySlug('data/etc', 'dpa', { mode })
   return {
     frontmatter,
     code,
@@ -27,7 +29,7 @@ export default function DPAPage() {
         description={frontmatter.description || ''}
       />
 
-      <Container py="$10">
+      <Container py="10">
         <MDXProvider frontmatter={frontmatter}>
           <ThemeTint>
             <MDXTabs id="type" defaultValue="styled">

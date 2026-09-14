@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import createDOMProps from '..'
+import { createDOMProps } from '..'
 
 const createProps = (props) => createDOMProps(null, props)
 
@@ -24,15 +24,15 @@ describe('modules/createDOMProps', () => {
         )
       })
 
-      test('when "focusable" is true', () => {
-        expect(createProps({ accessibilityRole, focusable: true })).toEqual(
-          expect.not.objectContaining({ tabIndex: '-1' })
+      test('when "tabIndex" is 0', () => {
+        expect(createProps({ accessibilityRole, tabIndex: 0 })).toEqual(
+          expect.objectContaining({ tabIndex: 0 })
         )
       })
 
-      test('when "focusable" is false', () => {
-        expect(createProps({ accessibilityRole, focusable: false })).toEqual(
-          expect.objectContaining({ tabIndex: '-1' })
+      test('when "tabIndex" is -1', () => {
+        expect(createProps({ accessibilityRole, tabIndex: -1 })).toEqual(
+          expect.objectContaining({ tabIndex: -1 })
         )
       })
 
@@ -56,15 +56,9 @@ describe('modules/createDOMProps', () => {
         )
       })
 
-      test('when "focusable" is true', () => {
-        expect(createProps({ accessibilityRole, focusable: true })).toEqual(
-          expect.objectContaining({ tabIndex: '0' })
-        )
-      })
-
-      test('when "focusable" is false', () => {
-        expect(createProps({ accessibilityRole, focusable: false })).toEqual(
-          expect.objectContaining({ tabIndex: '-1' })
+      test('when "tabIndex" is -1', () => {
+        expect(createProps({ accessibilityRole, tabIndex: -1 })).toEqual(
+          expect.objectContaining({ tabIndex: -1 })
         )
       })
 
@@ -86,16 +80,23 @@ describe('modules/createDOMProps', () => {
     })
 
     describe('with unfocusable accessibilityRole', () => {
-      test('when "focusable" is true', () => {
-        expect(createProps({ focusable: true })).toEqual(
-          expect.objectContaining({ tabIndex: '0' })
+      test('when "tabIndex" is 0', () => {
+        expect(createProps({ tabIndex: 0 })).toEqual(
+          expect.objectContaining({ tabIndex: 0 })
         )
       })
 
-      test('when "focusable" is false', () => {
-        expect(createProps({ focusable: false })).toEqual(
-          expect.objectContaining({ tabIndex: '-1' })
+      test('when "tabIndex" is -1', () => {
+        expect(createProps({ tabIndex: -1 })).toEqual(
+          expect.objectContaining({ tabIndex: -1 })
         )
+      })
+
+      test('strips "focusable"', () => {
+        const props = createProps({ focusable: false })
+
+        expect(props).not.toHaveProperty('focusable')
+        expect(props).not.toHaveProperty('tabIndex')
       })
     })
   })

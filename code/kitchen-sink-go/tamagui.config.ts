@@ -1,7 +1,8 @@
-import { defaultConfig } from '@tamagui/config/v5'
+import { defaultConfig } from '@tamagui/config/v6'
+import { themes } from '@tamagui/config/v6'
 import { createTamagui } from 'tamagui'
 
-const tamaguiConfig = createTamagui(defaultConfig)
+const tamaguiConfig = createTamagui({ ...defaultConfig, themes })
 
 export type Conf = typeof tamaguiConfig
 

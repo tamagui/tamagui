@@ -25,7 +25,7 @@ function PortalItemSim({ children }: { children: any }) {
 let innerRenders = 0
 function Inner() {
   innerRenders++
-  return <View backgroundColor="$background" />
+  return <View backgroundColor="background" />
 }
 
 const bgOf = (tree: any) => {
@@ -39,7 +39,7 @@ describe('native portal theme repropagation', () => {
     const baseline = render(
       <TamaguiProvider defaultTheme="light" config={config}>
         <Theme name="light">
-          <View backgroundColor="$background" />
+          <View backgroundColor="background" />
         </Theme>
       </TamaguiProvider>
     )
@@ -47,7 +47,7 @@ describe('native portal theme repropagation', () => {
       <TamaguiProvider defaultTheme="light" config={config}>
         <Theme name="light">
           <PortalItemSim>
-            <View backgroundColor="$background" />
+            <View backgroundColor="background" />
           </PortalItemSim>
         </Theme>
       </TamaguiProvider>

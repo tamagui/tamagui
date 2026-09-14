@@ -15,6 +15,7 @@ import { Link } from '~/components/Link'
 import { BentoButton } from '../site/BentoButton'
 import { ConsultingButton } from '../site/ConsultingButton'
 import { TakeoutButton } from '../site/TakeoutButton'
+import { DocsThemePicker } from './DocsThemePicker'
 
 export type Heading = {
   id: string
@@ -122,14 +123,15 @@ const NavLineIndicator = ({
         pointerEvents: 'none',
       }}
     >
-      {/* Background path (gray) */}
-      <path d={path} fill="none" stroke="var(--color4)" strokeWidth="1" />
+      {/* Background path (subtle gray) */}
+      <path d={path} fill="none" stroke="var(--color-4)" strokeWidth="1" />
 
       {/* Active indicator (animated along path) */}
       <path
+        className="docs-quicknav-active"
         d={path}
         fill="none"
-        stroke="var(--color9)"
+        stroke="var(--color-9)"
         strokeWidth="2"
         strokeLinecap="round"
         strokeDasharray={`${segmentHalf * 2} ${totalLength}`}
@@ -212,13 +214,22 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
 
   // Measure container and item positions with levels
   useEffect(() => {
-    if (!containerRef.current || headings.length === 0) return
+    if (headings.length === 0) return
 
+    let rafId: number
     const measurePositions = () => {
       const container = containerRef.current
-      if (!container) return
+      if (!container) {
+        rafId = requestAnimationFrame(measurePositions)
+        return
+      }
 
       const items = container.querySelectorAll('[data-nav-item]')
+      if (items.length === 0) {
+        rafId = requestAnimationFrame(measurePositions)
+        return
+      }
+
       const data: Array<{ top: number; height: number; level: number }> = []
 
       items.forEach((item, index) => {
@@ -237,39 +248,37 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
     }
 
     // Measure after render
-    requestAnimationFrame(measurePositions)
+    rafId = requestAnimationFrame(measurePositions)
 
     // Re-measure on resize
     window.addEventListener('resize', measurePositions)
-    return () => window.removeEventListener('resize', measurePositions)
+    return () => {
+      cancelAnimationFrame(rafId)
+      window.removeEventListener('resize', measurePositions)
+    }
   }, [headings])
 
   return (
     <YStack
       render="aside"
       className="is-sticky"
-      display="none"
-      $gtLg={{
-        display: 'flex',
-        width: 280,
-        z: 1,
-        position: 'sticky',
-        t: 20,
-        height: 'calc(100vh - 20px)',
-        alignSelf: 'flex-start',
-        shrink: 0,
-      }}
+      display="none gtLg:flex"
+      width="gtLg:200px"
+      z="gtLg:1"
+      position="gtLg:sticky"
+      t="gtLg:20px"
+      height="gtLg:calc(100vh - 20px)"
+      alignSelf="gtLg:flex-start"
+      shrink="gtLg:0"
     >
       <ScrollView showsVerticalScrollIndicator={false}>
-        <YStack gap="$5" pt={68} pb="$10">
-          <XStack items="center" gap="$5">
+        <YStack gap="5" pt={68} pb="10">
+          <XStack items="center" gap="5">
             <Link
               target="_blank"
               href={href(`${process.env.ONE_SERVER_URL}${pathname}.md` as any)}
             >
-              <SizableText size="$3" fontFamily="$mono">
-                .md
-              </SizableText>
+              <SizableText size="3">.md</SizableText>
             </Link>
 
             <Separator minH={20} vertical />
@@ -278,34 +287,28 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
               target="_blank"
               href={href(`${process.env.ONE_SERVER_URL}/llms.txt` as any)}
             >
-              <SizableText size="$3" fontFamily="$mono">
-                llms.txt
-              </SizableText>
+              <SizableText size="3">llms.txt</SizableText>
             </Link>
           </XStack>
 
-          <Separator opacity={0.5} mr="$6" />
+          <Separator opacity={0.5} mr="6" />
+
+          <DocsThemePicker />
 
           <YStack
             render="nav"
             aria-labelledby="site-quick-nav-heading"
-            mb="$10"
-            mt="$2"
+            mb="10"
+            mt="2"
             display={headings.length === 0 ? 'none' : 'flex'}
-            gap="$2"
+            gap="2"
           >
-            <H4
-              fontFamily="$mono"
-              size="$5"
-              mb="$2"
-              color="$color10"
-              id="site-quick-nav-heading"
-            >
+            <H4 mb="2" color="color-10" size="5" id="site-quick-nav-heading">
               Contents
             </H4>
 
             <ScrollView maxH="calc(100vh - 300px)">
-              <YStack ref={containerRef as any} py="$2" pl={24} position="relative">
+              <YStack ref={containerRef as any} py="2" pl={24} position="relative">
                 <NavLineIndicator
                   items={itemData}
                   activeIndex={activeIndex}
@@ -320,7 +323,7 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
                       key={`${id}-${index}`}
                       data-nav-item
                       pl={Math.max(0, level - 2) * 12}
-                      py="$1"
+                      py="1"
                     >
                       <a
                         onClick={(e) => {
@@ -332,17 +335,10 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
                       >
                         <Paragraph
                           render="span"
-                          size={level === 2 ? '$3' : '$2'}
-                          color={
-                            index === activeIndex
-                              ? '$color12'
-                              : level === 2
-                                ? '$color11'
-                                : '$color10'
-                          }
+                          size={level === 2 ? '3' : '2'}
+                          color={`${index === activeIndex ? 'color-12' : level === 2 ? 'color-11' : 'color-10'} hover:color-12`}
                           cursor="pointer"
                           fontWeight={level === 2 ? '500' : '400'}
-                          hoverStyle={{ color: '$color12' }}
                         >
                           {title}
                         </Paragraph>
@@ -354,7 +350,7 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
             </ScrollView>
           </YStack>
 
-          <YStack gap="$2" px="$4">
+          <YStack gap="2" px="4">
             <Theme name="green">
               <Link width="100%" href="/bento">
                 <BentoButton />

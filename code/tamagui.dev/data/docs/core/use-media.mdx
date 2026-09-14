@@ -3,7 +3,12 @@ title: useMedia
 description: Respond to different screen sizes
 ---
 
-Define your media rules in the media object of your `tamagui.config.ts`:
+<IntroParagraph>
+  `useMedia` reads the same named media rules that style props use for
+  responsive conditions.
+</IntroParagraph>
+
+Define those rules in the media object of your `tamagui.config.ts`:
 
 ```tsx line=2-6
 export default createTamagui({
@@ -24,10 +29,8 @@ export default createTamagui({
 })
 ```
 
-<Notice theme="blue">
-  Choose the naming convention you prefer. We use `sm`, `md`, `lg` and `gtSm` etc. Where
-  "gt" means "greater than".
-</Notice>
+Choose the naming convention you prefer. We use `sm`, `md`, `lg` and `gtSm` etc. Where
+"gt" means "greater than".
 
 The order here is important: items defined further down will override items before. In this example, `xs` is the weakest, `gtXs` will override it, and so on.
 
@@ -35,23 +38,32 @@ Behind the scenes, we convert this object syntax into media query syntax with a 
 
 ### Usage
 
-Now in any component you may import and use `useMedia` or `$` prefixed media prop styles.
+Now in any component you may import `useMedia` or add media clauses to style values.
 
 ### Inline props
 
+Use media names as typed object keys or string modifiers on the style prop:
+
+<MDXTabs codeSyntax defaultValue="string">
+<MDXTabs.List>
+  <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+  <MDXTabs.Tab value="typed">Typed</MDXTabs.Tab>
+</MDXTabs.List>
+
+<MDXTabs.Content value="typed">
+
 ```tsx
-import { Button, XStack, useMedia } from 'tamagui' // note: design system can use @tamagui/core
+import { useState } from 'react'
+import { Button, XStack } from 'tamagui' // note: design system can use @tamagui/core
 
 export default () => {
   const [x, setX] = useState(0)
   return (
     <XStack
-      backgroundColor="red"
-      $gtSm={{
-        backgroundColor: 'blue',
-      }}
-      $gtMd={{
-        backgroundColor: x > 0.5 ? 'green' : 'yellow',
+      backgroundColor={{
+        default: 'red',
+        gtSm: 'blue',
+        gtMd: x > 0.5 ? 'green' : 'yellow',
       }}
     >
       <Button onPress={() => setX(Math.random())}>Hello</Button>
@@ -60,7 +72,30 @@ export default () => {
 }
 ```
 
-In this example we are doing mobile-first design, where the base props will be overridden as the viewport gets wider. Notice the ternary logic in `$gtMd`: this is extractable with Tamagui, and will still output simple CSS with no leftover style props in your component's render function.
+</MDXTabs.Content>
+
+<MDXTabs.Content value="string">
+
+```tsx
+import { useState } from 'react'
+import { Button, XStack } from 'tamagui' // note: design system can use @tamagui/core
+
+export default () => {
+  const [x, setX] = useState(0)
+  return (
+    <XStack
+      backgroundColor={`red gtSm:blue gtMd:${x > 0.5 ? 'green' : 'yellow'}`}
+    >
+      <Button onPress={() => setX(Math.random())}>Hello</Button>
+    </XStack>
+  )
+}
+```
+
+</MDXTabs.Content>
+</MDXTabs>
+
+In this example we are doing mobile-first design, where clauses override the base as the viewport gets wider. The ternary payload in `gtMd:` is extractable with Tamagui and still outputs simple CSS.
 
 ### Hooks
 

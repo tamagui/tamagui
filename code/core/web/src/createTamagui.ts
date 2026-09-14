@@ -9,15 +9,18 @@ import {
   createThemeCSS,
   createTokenCSS,
   getCSS as getCSSHelper,
+  type GetCSSState,
 } from './helpers/createDesignSystem'
 import { scanAllSheets } from './helpers/insertStyleRule'
 import { proxyThemesToParents } from './helpers/proxyThemeToParents'
 import { ensureThemeVariable } from './helpers/themes'
+import { mergeConfigVariablesIntoTheme } from './helpers/configVariables'
 import { configureMedia } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
 import { Tamagui } from './Tamagui'
 import type {
   CreateTamaguiProps,
+  AnimationDriverLike,
   DedupedTheme,
   DedupedThemes,
   GenericFont,
@@ -26,7 +29,6 @@ import type {
   TamaguiInternalConfig,
   ThemeParsed,
   ThemesLikeObject,
-  TokensMerged,
   TokensParsed,
   Variable,
 } from './types'
@@ -36,13 +38,45 @@ import type {
  * Following the principle: only add px to predefined categories that need them.
  * Custom categories default to unitless.
  */
-function shouldTokenCategoryHaveUnits(category: string): boolean {
-  // From TokenCategories type: 'color' | 'space' | 'size' | 'radius' | 'zIndex'
-  // These are the only predefined categories that should get px units
-  const UNIT_CATEGORIES = new Set(['size', 'space', 'radius'])
+// css keywords are case-insensitive, so the rejection is too
+const reservedCssIdentsLower: ReadonlySet<string> = new Set([
+  'inherit',
+  'initial',
+  'unset',
+  'revert',
+  'none',
+  'auto',
+  'transparent',
+  'currentcolor',
+])
 
-  // Only add px to predefined dimensional categories
-  // Custom categories (like 'opacity', 'customWidth') default to unitless
+// every built-in category whose values are bare numbers standing for a CSS
+// length. a unitless length is invalid CSS outside quirks mode, so the browser
+// drops the whole declaration: `width:var(--c-width-10)` against
+// `--c-width-10:40` leaves the element at auto width, silently. the tailwind
+// coverage work added the width/inline-size/flex-basis/outline/perspective
+// scales without adding them here, which made every one of those tokens a no-op
+// on web.
+// zIndex is unitless by definition, and color/boxShadow hold strings (which
+// variableToCSS passes through untouched), so none of them belong here. custom
+// categories still default to unitless.
+const UNIT_CATEGORIES: ReadonlySet<string> = new Set([
+  'size',
+  'space',
+  'radius',
+  'width',
+  'minWidth',
+  'maxWidth',
+  'inlineSize',
+  'minInlineSize',
+  'maxInlineSize',
+  'flexBasis',
+  'outlineWidth',
+  'outlineOffset',
+  'perspective',
+])
+
+function shouldTokenCategoryHaveUnits(category: string): boolean {
   return UNIT_CATEGORIES.has(category)
 }
 
@@ -53,9 +87,49 @@ function initializeTamaguiConfig(config: TamaguiInternalConfig) {
   configureMedia(config)
 }
 
+export function installTamaguiConfig(config: TamaguiInternalConfig) {
+  setTokens(config.tokensParsed)
+  initializeTamaguiConfig(config)
+  return config
+}
+
+function createParsedTokens(tokensIn: CreateTamaguiProps['tokens']): TokensParsed {
+  const parsed: Record<string, any> = createVariables(tokensIn || {})
+  for (const category of ['color', 'space', 'size', 'radius', 'zIndex'] as const) {
+    parsed[category] ||= {}
+  }
+  return parsed as TokensParsed
+}
+
+function isNamesOnlyThemeProjection(
+  themes: Record<string, Record<string, unknown>>
+): boolean {
+  const names = Object.keys(themes)
+  if (names.length === 0) return false
+
+  return names.every((name) => {
+    const theme = themes[name]
+    if (!theme || typeof theme !== 'object') return false
+    const variables = Object.keys(theme)
+    return variables.length > 0 && variables.every((key) => theme[key] === undefined)
+  })
+}
+
 export function createTamagui<Conf extends CreateTamaguiProps>(
   configIn: Conf
 ): InferTamaguiConfig<Conf> {
+  // Zero-runtime mode: config parsing and CSS generation run in the separate
+  // 'full' evaluation environment that produces the owned CSS artifact, so
+  // reaching this from a zero client graph means a config reference survived
+  // compilation. Reference erasure is what removes the module; this throw is the
+  // loud secondary failure and the seam Vite and webpack fold the body at. The
+  // full `process.env` comparison is written out here on purpose.
+  if (process.env.TAMAGUI_RUNTIME === 'zero') {
+    throw new Error(
+      `[tamagui zero-runtime] createTamagui ran in a zero-runtime graph. Config parsing and CSS generation happen at build time in this mode and the bundler loads the generated CSS artifact. Remove the client config reference or make this entry full-runtime.`
+    )
+  }
+
   // if config already exists (e.g., from another copy of tamagui in vite ssr), reuse it
   const existingConfig = getConfigMaybe()
 
@@ -66,32 +140,36 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   }
 
   // ensure variables
-  const tokensParsed: TokensParsed = {} as any
-  const tokens = createVariables(configIn.tokens || {})
+  const tokensParsed = createParsedTokens(configIn.tokens)
+  const tokens = tokensParsed
 
   if (configIn.tokens) {
-    // faster lookups
-    const tokensMerged: TokensMerged = {} as any
     for (const cat in tokens) {
-      tokensParsed[cat] = {}
-      tokensMerged[cat] = {}
       const tokenCat = tokens[cat]
       for (const key in tokenCat) {
-        const val = tokenCat[key]
-        const prefixedKey = `$${key}`
-        tokensParsed[cat][prefixedKey] = val as any
-        tokensMerged[cat][prefixedKey] = val as any
-        tokensMerged[cat][key] = val as any
+        // determinism rule: CSS-wide keywords are reserved, so a token by one
+        // of these names is unreachable (the resolver short-circuits reserved
+        // idents before any lookup) and would silently render the CSS keyword
+        if (reservedCssIdentsLower.has(key.toLowerCase())) {
+          throw new Error(
+            `Token tokens.${cat}.${key} takes a reserved CSS-wide keyword name. These always resolve as literal CSS ("${key.toLowerCase()}"), so this token could never be referenced. Rename it.`
+          )
+        }
       }
     }
-    setTokens(tokensMerged)
+    setTokens(tokensParsed)
   }
 
   let foundThemes: DedupedThemes | undefined
   if (configIn.themes) {
     const noThemes = Object.keys(configIn.themes).length === 0
-    if (noThemes && !process.env.TAMAGUI_DID_OUTPUT_CSS) {
-      foundThemes = scanAllSheets(noThemes, tokensParsed)
+    const namesOnlyThemes = isNamesOnlyThemeProjection(configIn.themes)
+    if (noThemes || namesOnlyThemes) {
+      // A names-only client projection keeps the grammar/config revision
+      // deterministic while the CSS remains authoritative for actual values.
+      // This holds with an output CSS artifact too: that artifact is exactly
+      // the CSS an empty-themes client hydrates from.
+      foundThemes = scanAllSheets(true, tokensParsed)
     }
   }
 
@@ -114,7 +192,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       for (const familyName in fontTokens) {
         const font = fontTokens[familyName]
         const fontParsed = parseFont(font)
-        res[`$${familyName}`] = fontParsed
+        res[familyName] = fontParsed
         if (!fontSizeTokens && fontParsed.size) {
           fontSizeTokens = new Set(Object.keys(fontParsed.size))
         }
@@ -123,34 +201,59 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     })()
   }
 
-  const specificTokens = {}
+  const {
+    defaultSize: _removedDefaultSize,
+    defaultTokens: _removedDefaultTokens,
+    ...settingsIn
+  } = (configIn.settings || {}) as NonNullable<CreateTamaguiProps['settings']> & {
+    defaultSize?: unknown
+    defaultTokens?: unknown
+  }
+  const defaultFontSetting = configIn.settings?.defaultFont
+  const defaultFont = defaultFontSetting
+  const defaultFontToken =
+    (defaultFont
+      ? defaultFont
+      : fontsParsed?.body
+        ? 'body'
+        : Object.keys(fontsParsed || {})[0]) || ''
+  if (defaultFont && !fontsParsed?.[defaultFontToken]) {
+    throw new Error(
+      `settings.defaultFont points to missing font "${defaultFontToken}". Configure fonts.${defaultFont} or choose an existing default.`
+    )
+  }
+
+  // a named size reads its font key from the component's font, falling back to
+  // the default font, so the default font must carry every recipe's key or
+  // text sized by name renders with no font size at all
+  if (process.env.NODE_ENV === 'development' && configIn.sizes && fontsParsed) {
+    const fontSizes = fontsParsed[defaultFontToken]?.size ?? {}
+    const missing = Object.entries(configIn.sizes).flatMap(([name, spec]) =>
+      typeof spec === 'object' && !(spec.fontSize in fontSizes)
+        ? [`${name} (fontSize "${spec.fontSize}")`]
+        : []
+    )
+    if (missing.length) {
+      console.error(
+        `fonts.${defaultFontToken} lacks the font size keys these named sizes use: ${missing.join(
+          ', '
+        )}. Wrap the font with withTailwindTypeScale from @tamagui/config/v6, or give "sizes" keys your fonts define.`
+      )
+    }
+  }
 
   const themeConfig = (() => {
-    // populate specificTokens (needed for runtime)
-    const sortedTokenKeys = Object.keys(tokens).sort()
-    for (const key of sortedTokenKeys) {
-      const sortedSubKeys = Object.keys(tokens[key]).sort()
-      for (const skey of sortedSubKeys) {
-        const variable = tokens[key][skey] as any as Variable
-        specificTokens[`$${key}.${skey}`] = variable
-
-        if (process.env.NODE_ENV === 'development') {
-          if (typeof variable === 'undefined') {
-            throw new Error(
-              `No value for tokens.${key}.${skey}:\n${JSON.stringify(variable, null, 2)}`
-            )
-          }
-        }
-      }
-    }
-
     // CSS generation (tree-shaken when TAMAGUI_DID_OUTPUT_CSS is set)
     const declarations = createTokenCSS(tokens as any, shouldTokenCategoryHaveUnits)
     const fontDeclarations = createFontCSS(fontsParsed, registerFontVariables)
-    const cssRuleSets = buildCSSRuleSets(declarations, fontDeclarations)
+    const cssRuleSets = buildCSSRuleSets(declarations, fontDeclarations, defaultFontToken)
 
     const themesIn = configIn.themes as ThemesLikeObject
-    const dedupedThemes = foundThemes ?? getThemesDeduped(themesIn, tokens.color)
+    const dedupedThemes =
+      foundThemes ??
+      getThemesDeduped(themesIn, tokens.color, configIn.variables, {
+        tokensParsed,
+      })
     const themes = proxyThemesToParents(dedupedThemes, Object.keys(themesIn))
 
     return {
@@ -168,37 +271,13 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   // Merge built-in shorthands with user shorthands (user takes precedence)
   const shorthands = { ...builtinShorthands, ...userShorthands }
 
-  const lastCSSIndex = { value: -1 }
+  const cssState: GetCSSState = { lastIndex: -1, static: null }
 
   const getCSS: GetCSS = (opts = {}) => {
-    return getCSSHelper(themeConfig, opts, lastCSSIndex)
+    return getCSSHelper(themeConfig, opts, cssState)
   }
 
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })
-
-  const defaultFontSetting = configIn.settings?.defaultFont
-
-  const defaultFont = (() => {
-    let val = defaultFontSetting
-    if (val?.[0] === '$') {
-      val = val.slice(1)
-    }
-    return val
-  })()
-
-  const defaultPositionSetting = configIn.settings?.defaultPosition || 'static'
-
-  const defaultProps = configIn.defaultProps || {}
-  // apply defaultPosition via defaultProps when not static
-  if (process.env.TAMAGUI_TARGET === 'web' && defaultPositionSetting !== 'static') {
-    defaultProps.View = {
-      ...defaultProps.View,
-      position: defaultPositionSetting,
-    }
-  }
-
-  // ensure prefixed with $
-  const defaultFontToken = defaultFont ? `$${defaultFont}` : ''
 
   // Text inherits font from root via CSS, no need for default fontFamily
   // only explicit fontFamily prop should add font_* class
@@ -210,10 +289,13 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const resolvedDriver = resolveAnimationDriver(inputAnimations)
   // multi-driver when resolveAnimationDriver extracted .default (returned different ref)
   const isMultiDriver = resolvedDriver !== null && resolvedDriver !== inputAnimations
-  const resolvedAnimations = resolvedDriver ?? inputAnimations
-  const animationDrivers = isMultiDriver
-    ? (inputAnimations as Record<string, any>)
-    : undefined
+  let animationDrivers: Record<string, AnimationDriverLike | null> | undefined
+  if (isMultiDriver) {
+    animationDrivers = {}
+    for (const name in inputAnimations) {
+      animationDrivers[name] = resolveAnimationDriver(inputAnimations[name])
+    }
+  }
 
   const config: TamaguiInternalConfig = {
     fonts: {},
@@ -222,13 +304,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     media: {},
     ...configIn,
     // normalized animations (resolved from multi-driver format if needed)
-    animations: resolvedAnimations ?? defaultAnimationDriver,
+    animations: resolvedDriver ?? defaultAnimationDriver,
     animationDrivers,
-    defaultProps,
-    settings: {
-      webContainerType: 'inline-size',
-      ...configIn.settings,
-    },
+    settings: settingsIn,
     tokens: tokens as any,
     // vite made this into a function if it wasn't set
     shorthands,
@@ -245,7 +323,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     getCSS,
     defaultFont,
     fontSizeTokens: fontSizeTokens || new Set(),
-    specificTokens,
     defaultFontToken,
     // const tokens = [...getToken(tokens.size[0])]
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }
@@ -270,28 +347,28 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 // dedupes the themes if given them via JS config
 function getThemesDeduped(
   themes: ThemesLikeObject,
-  colorTokens?: Record<string, any>
+  colorTokens?: Record<string, any>,
+  variables?: CreateTamaguiProps['variables'],
+  variablesCtx?: {
+    tokensParsed: TokensParsed
+  }
 ): DedupedThemes {
   const dedupedThemes: DedupedThemes = []
   const existing = new Map<string, DedupedTheme>()
 
-  // Sort theme names for deterministic CSS output order
-  const sortedThemeNames = Object.keys(themes).sort()
+  // keep base themes first so inverse aliases share their declaration blocks
+  const sortedThemeNames = Object.keys(themes).sort((a, b) => {
+    const aIsBase = a === 'light' || a === 'dark'
+    const bIsBase = b === 'light' || b === 'dark'
+    return aIsBase === bIsBase ? a.localeCompare(b) : aIsBase ? -1 : 1
+  })
 
   // first, de-dupe and parse them
   for (const themeName of sortedThemeNames) {
-    // forces us to separate the dark/light themes (otherwise we generate bad t_light prefix selectors)
-    const darkOrLightSpecificPrefix = themeName.startsWith('dark')
-      ? 'dark'
-      : themeName.startsWith('light')
-        ? 'light'
-        : ''
-
     const rawTheme = themes[themeName]
 
     // dont force referential equality but may need something more consistent than JSON.stringify
-    // separate between dark/light
-    const key = darkOrLightSpecificPrefix + JSON.stringify(rawTheme)
+    const key = JSON.stringify(rawTheme)
 
     // if existing, avoid
     if (existing.has(key)) {
@@ -309,6 +386,18 @@ function getThemesDeduped(
     for (const key in theme) {
       // make sure properly names theme variables
       ensureThemeVariable(theme, key)
+    }
+
+    // custom variables merge into base themes only; sub-themes inherit them
+    // via proxyThemesToParents (native) and the CSS cascade (web), so a
+    // a ThemeUpdate patch survives sub-theme switches below it
+    if (variables && variablesCtx && !themeName.includes('_')) {
+      mergeConfigVariablesIntoTheme(
+        theme as any,
+        themeName,
+        variables,
+        variablesCtx.tokensParsed
+      )
     }
 
     // set deduped

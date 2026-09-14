@@ -7,28 +7,26 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'ButtonUnstyled', type: 'useCase' })
 })
 
-function expectEmptyStyles(styles: any) {
+function expectPlainStyles(styles: any) {
   expect(styles.backgroundColor).toBe(`rgba(0, 0, 0, 0)`)
   expect(styles.padding).toBe(`0px`)
   expect(styles.borderWidth).toBe(`0px`)
 }
 
-test(`unstyled prop works when used with styled()`, async ({ page }) => {
-  const button = page.locator('#unstyled-inline')
+test(`parent variants work inline`, async ({ page }) => {
+  const button = page.locator('#plain-inline')
   const styles = await getStyles(button)
 
-  expectEmptyStyles(styles)
+  expectPlainStyles(styles)
 
   await whilePressed(button, async () => {
     const pressStyles = await getStyles(button)
-    expectEmptyStyles(pressStyles)
+    expectPlainStyles(pressStyles)
   })
 })
 
-test(`unstyled prop works when used with styled() + merges when its own variant unstyled is also set`, async ({
-  page,
-}) => {
-  const button = page.locator('#unstyled-merged')
+test(`a styled child merges its own definition of a parent variant`, async ({ page }) => {
+  const button = page.locator('#plain-merged')
   const styles = await getStyles(button)
 
   expect(styles.backgroundColor).toBe(`rgba(0, 0, 0, 0)`)
@@ -39,18 +37,18 @@ test(`unstyled prop works when used with styled() + merges when its own variant 
     const pressStyles = await getStyles(button)
     expect(styles.backgroundColor).toBe(`rgba(0, 0, 0, 0)`)
     expect(pressStyles.borderLeftWidth).toBe('2px')
-    expect(pressStyles.borderColor).toBe('rgb(0, 128, 0)')
+    expect(pressStyles.borderColor).toBe('rgba(0, 0, 0, 0)')
   })
 })
 
-test(`unstyled prop works when used inline`, async ({ page }) => {
-  const button = page.locator('#unstyled-styled')
+test(`styled options accept an inherited variant default`, async ({ page }) => {
+  const button = page.locator('#plain-styled')
   const styles = await getStyles(button)
 
-  expectEmptyStyles(styles)
+  expectPlainStyles(styles)
 
   await whilePressed(button, async () => {
     const pressStyles = await getStyles(button)
-    expectEmptyStyles(pressStyles)
+    expectPlainStyles(pressStyles)
   })
 })

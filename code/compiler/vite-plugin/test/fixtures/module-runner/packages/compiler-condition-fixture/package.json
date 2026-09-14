@@ -1,0 +1,12 @@
+{
+  "name": "@tamagui/compiler-condition-fixture",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "tamagui-compiler": "./compiler.mjs",
+      "import": "./runtime.mjs",
+      "default": "./runtime.mjs"
+    }
+  }
+}

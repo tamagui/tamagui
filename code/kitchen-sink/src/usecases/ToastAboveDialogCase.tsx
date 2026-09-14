@@ -1,7 +1,6 @@
-import { Dialog } from '@tamagui/dialog'
-import { toast, Toast, useToasts, type ToastPosition } from '@tamagui/toast/v2'
+import { toast, Toast, useToasts, type ToastPosition } from '@tamagui/toast'
 import { useRef, useState } from 'react'
-import { Button, H4, Paragraph, XStack, YStack } from 'tamagui'
+import { Button, Dialog, H4, Paragraph, XStack, YStack } from 'tamagui'
 
 export function ToastAboveDialogCase() {
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -20,10 +19,10 @@ export function ToastAboveDialogCase() {
         <ToastList />
       </Toast.Viewport>
 
-      <YStack gap="$4" padding="$4">
+      <YStack gap="4" padding="4">
         <H4>Toast Above Dialog Test</H4>
 
-        <XStack gap="$3">
+        <XStack gap="3">
           <Button testID="open-dialog" onPress={() => setDialogOpen(true)}>
             Open Dialog
           </Button>
@@ -34,21 +33,17 @@ export function ToastAboveDialogCase() {
 
         <Dialog modal open={dialogOpen} onOpenChange={setDialogOpen}>
           <Dialog.Portal>
-            <Dialog.Overlay
-              key="overlay"
-              opacity={0.5}
-              enterStyle={{ opacity: 0 }}
-              exitStyle={{ opacity: 0 }}
-            />
+            <Dialog.Overlay key="overlay" opacity="0.5 enter:0 exit:0" />
             <Dialog.Content
               key="content"
               elevate
               bordered
               testID="dialog-content"
-              enterStyle={{ y: -20, opacity: 0, scale: 0.9 }}
-              exitStyle={{ y: 10, opacity: 0, scale: 0.95 }}
-              gap="$4"
-              padding="$4"
+              y="enter:-20px exit:10px"
+              opacity="enter:0 exit:0"
+              scale="enter:0.9 exit:0.95"
+              gap="4"
+              padding="4"
             >
               <H4>Dialog</H4>
               <Paragraph>
@@ -75,8 +70,8 @@ function ToastList() {
     <>
       {toasts.map((t, index) => (
         <Toast.Item key={t.id} toast={t} index={index} testID="toast-item">
-          <XStack gap="$3" alignItems="flex-start">
-            <YStack flex={1} gap="$1">
+          <XStack gap="3" alignItems="flex-start">
+            <YStack flex={1} gap="1">
               <Toast.Title>
                 {typeof t.title === 'function' ? t.title() : t.title}
               </Toast.Title>

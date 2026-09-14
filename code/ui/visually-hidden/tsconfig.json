@@ -6,6 +6,9 @@
   },
   "references": [
     {
+      "path": "../../core/constants"
+    },
+    {
       "path": "../../core/web"
     }
   ],

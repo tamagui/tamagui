@@ -28,11 +28,11 @@ const SharedPopoverTrigger = memo(function SharedPopoverTrigger({
   renderCountRef.current++
 
   return (
-    <View gap="$1.5" items="center">
+    <View gap={4} items="center">
       <Popover.Trigger scope={scope} asChild onMouseEnter={() => setActiveLabel(label)}>
         <Button data-testid={triggerTestId}>{label}</Button>
       </Popover.Trigger>
-      <Text data-testid={countTestId} fontSize="$1" textAlign="center">
+      <Text data-testid={countTestId} fontSize="1" textAlign="center">
         renders: {renderCountRef.current}
       </Text>
     </View>
@@ -52,11 +52,11 @@ const SharedMenuTrigger = memo(function SharedMenuTrigger({
   renderCountRef.current++
 
   return (
-    <View gap="$1.5" items="center">
+    <View gap={4} items="center">
       <Menu.Trigger asChild>
         <Button data-testid={triggerTestId}>{label}</Button>
       </Menu.Trigger>
-      <Text data-testid={countTestId} fontSize="$1" textAlign="center">
+      <Text data-testid={countTestId} fontSize="1" textAlign="center">
         renders: {renderCountRef.current}
       </Text>
     </View>
@@ -68,8 +68,8 @@ export function GlobalScopedTriggerIsolationCase() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <YStack flex={1} gap="$8" p="$6" bg="$background">
-      <YStack gap="$2">
+    <YStack flex={1} gap="8" p="6" bg="background">
+      <YStack gap="2">
         <SizableText fontWeight="bold" data-testid="global-popover-label">
           Controlled global popover with memoized triggers
         </SizableText>
@@ -86,7 +86,7 @@ export function GlobalScopedTriggerIsolationCase() {
           placement="bottom-start"
           offset={8}
         >
-          <XStack gap="$4">
+          <XStack gap="4">
             <SharedPopoverTrigger
               scope="global-shared-popover"
               triggerTestId="global-popover-trigger-1"
@@ -114,10 +114,10 @@ export function GlobalScopedTriggerIsolationCase() {
             scope="global-shared-popover"
             data-testid="global-popover-content"
             disableFocusScope
-            p="$3"
+            p="3"
             minWidth={180}
-            enterStyle={{ y: -8, opacity: 0 }}
-            exitStyle={{ y: -8, opacity: 0 }}
+            y="enter:-8px exit:-8px"
+            opacity="enter:0 exit:0"
           >
             <Popover.Arrow scope="global-shared-popover" />
             <Paragraph>{activePopoverLabel || 'Shared hoverable popover'}</Paragraph>
@@ -125,7 +125,7 @@ export function GlobalScopedTriggerIsolationCase() {
         </Popover>
       </YStack>
 
-      <YStack gap="$2">
+      <YStack gap="2">
         <SizableText fontWeight="bold" data-testid="global-menu-label">
           Chat-style global menu context with memoized triggers
         </SizableText>
@@ -136,7 +136,7 @@ export function GlobalScopedTriggerIsolationCase() {
           placement="bottom-start"
           offset={8}
         >
-          <XStack gap="$4">
+          <XStack gap="4">
             <SharedMenuTrigger
               triggerTestId="global-menu-trigger-1"
               countTestId="global-menu-trigger-1-renders"
@@ -157,11 +157,11 @@ export function GlobalScopedTriggerIsolationCase() {
           <Menu.Portal>
             <Menu.Content
               data-testid="global-menu-content"
-              p="$2"
+              p="2"
               minWidth={180}
               borderWidth={1}
-              borderColor="$borderColor"
-              elevation="$3"
+              borderColor="border-color"
+              boxShadow="0 4px 12px shadow-color"
             >
               <Menu.Item key="alpha" textValue="Alpha">
                 <Menu.ItemTitle>Alpha</Menu.ItemTitle>

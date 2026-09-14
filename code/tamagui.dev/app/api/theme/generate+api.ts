@@ -6,7 +6,6 @@ import { z } from 'zod'
 import { apiRoute } from '~/features/api/apiRoute'
 import { generateWithCloudflareWorkersAI } from '~/features/api/cloudflareWorkersAI'
 import { serverEnv } from '~/features/api/serverEnv'
-import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { checkThemeGenerationRateLimit } from '~/features/api/rateLimit'
@@ -54,44 +53,12 @@ function convertToThemeSuiteItemData(
       light: true,
       dark: true,
     },
-    templateStrategy: 'base',
   }
 }
 
 export default apiRoute(async (req) => {
+  // login is required here only because generation costs real LLM spend
   const { user } = await ensureAuth({ req })
-
-  try {
-    const { hasPro } = await ensureAccess({ user })
-
-    console.info(`[theme/generate] user=${user.email} hasPro=${hasPro}`)
-
-    if (!hasPro) {
-      console.info(`[theme/generate] user=${user.email} denied - no Pro access`)
-      throw Response.json(
-        {
-          error: `Must have Pro account`,
-        },
-        {
-          status: 400,
-        }
-      )
-    }
-  } catch (err) {
-    // re-throw Response errors as-is
-    if (err instanceof Response) {
-      throw err
-    }
-    console.error(`[theme/generate] user=${user.email} access check error:`, err)
-    throw Response.json(
-      {
-        error: `Must have Pro account`,
-      },
-      {
-        status: 400,
-      }
-    )
-  }
 
   const body = await readBodyJSON(req)
   const prompt = body.prompt?.trim()
@@ -179,7 +146,7 @@ export default apiRoute(async (req) => {
   const fullPrompt = `
 Help generate themes that contain two light + dark color palettes. The new
 Tamagui palette system generates base and accent palettes in dark and light.
-Each palette has 12 items, from index 1 to 12, to save space you can leave
+Each palette has 11 items, from index 1 to 11. To save space you can leave
 out indices and we spread between.
 
 Each row gives hue/sat/lum pairs of light,dark, like this:
@@ -189,33 +156,33 @@ index: light-hue,dark-hue light-sat,dark-sat light-lum,dark-lum
 Here's an example of a subtle theme a desaturated base, and blue accent:
 
 1: 0,0 .2,.2 .99,.02
-10: 0,0 .2,.2 .5,.5
-11: 0,0 .2,.2 .15,.925
-12: 0,0 .2,.2 .03,.98
+9: 0,0 .2,.2 .5,.5
+10: 0,0 .2,.2 .15,.925
+11: 0,0 .2,.2 .03,.98
 
 1: 250,250 .5,.5 .6,.35
-10: 250,250 .5,.5 .5,.6
-11: 250,250 .5,.5 .2,.9
-12: 250,250 .5,.5 .1,.95
+9: 250,250 .5,.5 .5,.6
+10: 250,250 .5,.5 .2,.9
+11: 250,250 .5,.5 .1,.95
 
 For example here's a more bright theme for neopolitan ice cream:
 
 1: 324,324 .35,.35 .92,.06
-10: 324,324 .7,.7 .5,.5
-11: 23,23 .6,.6 .22,.6
-12: 23,23 .85,.85 .03,.67
+9: 324,324 .7,.7 .5,.5
+10: 23,23 .6,.6 .22,.6
+11: 23,23 .85,.85 .03,.67
 
 1: 54,54 .12,.12 .99,.3
-10: 54,54 .12,.12 .6,.6
-11: 54,54 .12,.12 .3,.9
-12: 54,54 .12,.12 .2,.99
+9: 54,54 .12,.12 .6,.6
+10: 54,54 .12,.12 .3,.9
+11: 54,54 .12,.12 .2,.99
 
 Notes:
 
 - If the user asks for specifics as to colors, indices, then do that instead
   of any specific instructions here.
 
-- Always be sure to have the 1-3 have good contrast against 10-12 - enough to
+- Always be sure to have the 1-3 have good contrast against 9-11, enough to
   read text on bg - mostly using lum.
   
 - For a more fun theme free to change hue from 1 to 10.
@@ -223,8 +190,8 @@ Notes:
 - Foregrounds always need to stand out from backgrounds (and accent fg can
   sometimes be set on base bg)
   
-- In general set just a few anchors, usually 1, 10, 11, 12, maybe a few more,
-  and make sure the hue values most of the time match for 1-10 and for 11-12
+- In general set just a few anchors, usually 1, 9, 10, 11, maybe a few more,
+  and make sure the hue values most of the time match for 1-9 and for 10-11
   
 - Don't be afraid to have a few different hues! If there's a secondary color
   make the accent 1-10 use it.
@@ -236,17 +203,17 @@ Notes:
 
 - For more wild themes, a hue that changes between base 1-10 can have an epic effect, like a sunset
   
-- Generally 1 to 8 are backgrounds, 10 to 12 are foregrounds.
+- Generally 1 to 8 are backgrounds, 9 to 11 are foregrounds.
     
-- In general for text to look good you need your 11 and 12 index to contrast well the 1 through 7.
+- In general for text to look good you need indices 10 and 11 to contrast well with 1 through 7.
   
 - Dark themes usually start darker at 1 and go lighter, while the light does the opposite (1 index is light).
 
-- Accent 12 must look good on top of accent 4 - don't clash them too much.
+- Accent 11 must look good on top of accent 4. Keep their contrast comfortable.
 
 - Adding an anchor at index 5 even if it just slightly changes hue or accelerates
 saturation, makes for a more interesting theme, it's generally nice especially
-the more hues you need as you can do it on both accent and base. Another hue change at 11
+the more hues you need as you can do it on both accent and base. Another hue change at 10
 also often looks good if you need more colors.
 
 - A white bg in light mode / black bg in dark mode often looks good, but if the theme calls

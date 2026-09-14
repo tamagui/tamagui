@@ -17,16 +17,11 @@ export async function getOptions({
   let config = ''
   try {
     config = await getDefaultTamaguiConfigPath()
+  } catch {}
+
+  try {
     pkgJson = await readJSON(join(root, 'package.json'))
-  } catch {
-    if (loadTamaguiOptions) {
-      console.warn(
-        chalk.yellow(
-          `Warning: no tamagui.config.ts found in ${root}. Commands that need a config may fail.`
-        )
-      )
-    }
-  }
+  } catch {}
 
   const filledOptions = {
     platform: 'native',
@@ -39,6 +34,13 @@ export async function getOptions({
   if (loadTamaguiOptions) {
     const { loadTamaguiBuildConfigSync } = require('@tamagui/static/loadTamagui')
     finalOptions = loadTamaguiBuildConfigSync(filledOptions)
+    if (!finalOptions.config) {
+      console.warn(
+        chalk.yellow(
+          `Warning: no Tamagui config found in ${root}. Commands that need a config may fail.`
+        )
+      )
+    }
   }
 
   return {

@@ -7,6 +7,11 @@ package: image
 demoName: Image
 ---
 
+<IntroParagraph>
+  Image provides a lightweight cross-platform image component with Tamagui
+  style props and pluggable renderers.
+</IntroParagraph>
+
 <HeroContainer noPad>
   <ImageDemo />
 </HeroContainer>
@@ -17,10 +22,10 @@ demoName: Image
 
 <Highlights
   features={[
-    'Supports SSR.',
-    'Works on native and web.',
-    'Accepts Tamagui style props.',
-    'Pluggable architecture with createImage for expo-image and more.',
+    'Server rendering support',
+    'Native and web support',
+    'Full Tamagui style props',
+    'Pluggable image renderers, including expo-image, through createImage',
   ]}
 />
 
@@ -57,14 +62,14 @@ Image styles. Remote images must resolve to a nonzero layout size, so use fixed
 dimensions or place percentage-sized images inside a parent with defined dimensions:
 
 ```tsx
-<View width={320} height={200}>
+<html.div width={320} height={200}>
   <Image
     src="https://example.com/photo.jpg"
     width="100%"
     height="100%"
     objectFit="cover"
   />
-</View>
+</html.div>
 ```
 
 Tamagui converts a string `src` to `source={{ uri: src }}` on native. Layout

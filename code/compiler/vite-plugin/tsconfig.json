@@ -13,9 +13,6 @@
       "path": "../static"
     }
   ],
-  "exclude": [
-    "types",
-    "dist",
-    "**/__tests__"
-  ]
+  "include": ["src"],
+  "exclude": ["types", "dist", "**/__tests__", "src/**/*.test.ts"]
 }

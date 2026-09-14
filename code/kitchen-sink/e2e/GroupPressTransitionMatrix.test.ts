@@ -1,5 +1,5 @@
 /**
- * Regression: $group-press stays stuck on children after release when the
+ * Regression: group-press stays stuck on children after release when the
  * parent frame has `transition` and gestures end OFF the element.
  *
  * Only the specific sequence reproduces it:

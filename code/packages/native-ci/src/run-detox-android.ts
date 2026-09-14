@@ -14,7 +14,7 @@
 
 import { withMetro } from './metro'
 import { parseDetoxArgs, runDetoxTests } from './detox'
-import { waitForDevice, setupAdbReverse, ensureAndroidFolder } from './android'
+import { waitForDevice, setupAdbReverse, ensureAndroidFolder } from './android-utils'
 
 const options = parseDetoxArgs('android')
 

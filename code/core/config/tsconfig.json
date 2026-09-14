@@ -5,28 +5,21 @@
   },
   "exclude": [
     "types",
-    "v5.d.ts",
-    "v5.cjs",
-    "v5-css.d.ts",
-    "v5-css.cjs",
-    "v5-rn.d.ts",
-    "v5-rn.cjs",
-    "v5-reanimated.d.ts",
-    "v5-reanimated.cjs",
-    "v5-motion.d.ts",
-    "v5-motion.cjs",
-    "v5-subtle.d.ts",
-    "v5-subtle.cjs",
-    "v4.d.ts",
-    "v4.cjs",
-    "v3.cjs",
-    "v3.d.ts",
-    "v2.d.ts",
-    "v2.cjs",
-    "v2-reanimated.d.ts",
-    "v2-reanimated.js",
-    "v2-native.d.ts",
-    "v2-native.js",
+    "animations-css.d.ts",
+    "animations-css.cjs",
+    "animations-rn.d.ts",
+    "animations-rn.cjs",
+    "animations-reanimated.d.ts",
+    "animations-reanimated.cjs",
+    "animations-motion.d.ts",
+    "animations-motion.cjs",
+    "v6.d.ts",
+    "v6.cjs",
+    "v6-base.d.ts",
+    "v6-base.cjs",
+    "v6-builder.d.ts",
+    "v6-builder.cjs",
+    "scripts",
     "dist",
     "**/__tests__"
   ],
@@ -35,25 +28,22 @@
       "path": "../animations-css"
     },
     {
-      "path": "../animations-moti"
+      "path": "../animations-motion"
     },
     {
       "path": "../animations-react-native"
     },
     {
-      "path": "../colors"
+      "path": "../animations-reanimated"
     },
     {
-      "path": "../font-inter"
-    },
-    {
-      "path": "../font-silkscreen"
-    },
-    {
-      "path": "../react-native-media-driver"
+      "path": "../create-system-font"
     },
     {
       "path": "../shorthands"
+    },
+    {
+      "path": "../style-grammar"
     },
     {
       "path": "../themes"

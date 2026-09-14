@@ -3,7 +3,10 @@ title: Server Rendering
 description: Advanced SSR, hydration, and client-only rendering in Tamagui
 ---
 
-Tamagui takes a unique approach to server-side rendering that goes beyond typical SSR solutions, ensuring perfect hydration with zero flickering even when using spring animations.
+<IntroParagraph>
+  Tamagui renders responsive styles and animation state on the server so the
+  first client frame can hydrate without flickering.
+</IntroParagraph>
 
 ## How It Works
 
@@ -144,7 +147,7 @@ import { useClientValue } from '@tamagui/use-did-finish-ssr'
 function WindowInfo() {
   const width = useClientValue(() => window.innerWidth)
 
-  return <Text>{width ? `${width}px` : 'Loading...'}</Text>
+  return <html.span>{width ? `${width}px` : 'Loading...'}</html.span>
 }
 ```
 

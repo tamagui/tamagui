@@ -249,10 +249,7 @@ export function inline(
     let prop = originalProp
     let value = originalValue
 
-    if (
-      !Object.prototype.hasOwnProperty.call(style, originalProp) ||
-      originalValue == null
-    ) {
+    if (originalValue == null) {
       continue
     }
 
@@ -290,7 +287,7 @@ export function inline(
       nextStyle[prop] = value
     }
 
-    if (PROPERTIES_I18N.hasOwnProperty(originalProp)) {
+    if (originalProp in PROPERTIES_I18N) {
       frozenProps[prop] = true
     }
   }

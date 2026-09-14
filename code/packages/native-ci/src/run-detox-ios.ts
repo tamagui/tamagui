@@ -13,7 +13,7 @@
 
 import { withMetro } from './metro'
 import { parseDetoxArgs, runDetoxTests } from './detox'
-import { ensureIOSFolder, ensureIOSApp } from './ios'
+import { ensureIOSFolder, ensureIOSApp } from './ios-utils'
 
 const options = parseDetoxArgs('ios')
 

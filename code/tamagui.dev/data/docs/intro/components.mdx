@@ -1,0 +1,125 @@
+---
+title: Components
+description: The elements you build with, and what they render on each platform
+---
+
+<IntroParagraph>
+  Every Tamagui component takes style props. This page covers the base elements
+  those props go on, and which one to reach for.
+</IntroParagraph>
+
+## html.* is the base
+
+Start with the `html` export. Each member is a semantic HTML element on web
+and the matching React Native primitive on native, and all of them take the
+same typed style props:
+
+```tsx
+import { html } from 'tamagui'
+
+export const Article = () => (
+  <html.article maxWidth={720} margin="auto" padding="4 md:8">
+    <html.h1 fontSize="8">A semantic heading</html.h1>
+    <html.p color="color-11" marginTop="4">
+      The same source renders semantic tags on web and native primitives in a
+      native app.
+    </html.p>
+  </html.article>
+)
+```
+
+We recommend `html.*` for new code. It keeps the web output semantic and
+accessible with no extra work, and native gets the same tree through a small
+set of backing primitives:
+
+| You write | Web renders | Native renders |
+| --- | --- | --- |
+| `html.div`, `html.article`, `html.section`, `html.ul`, and other layout tags | that element | `View` |
+| `html.span`, `html.p`, `html.h1` through `html.h6`, `html.strong`, and other text tags | that element | `Text` |
+| `html.img` | `img` | `Image` |
+| `html.input`, `html.textarea` | that element | `TextInput` |
+
+Props follow the element. `html.a` takes `href`, `html.img` takes `src` and
+`alt`, and void elements such as `br` and `img` reject children in TypeScript.
+Native support is explicit: an element with no faithful native equivalent, such
+as `html.select`, is rejected on native rather than swapped for something else.
+See [HTML primitives](/docs/core/html-primitives) for the element list and the
+native rules.
+
+## View and Text
+
+`View` and `Text` are the two primitives everything else is built on. They match
+React Native's `View` and `Text` and add the Tamagui style props on top:
+
+```tsx
+import { View, Text } from 'tamagui'
+
+export const Hello = () => (
+  <View padding="4">
+    <Text color="color">Hello</Text>
+  </View>
+)
+```
+
+Reach for them when you are porting React Native code, when a library expects
+a `View`, or when you want an element with no semantic meaning. Both render a
+`div` and a `span` on web. See [View & Text](/docs/core/view-and-text) for the
+full prop reference, including event handlers and the non-style props Tamagui
+adds.
+
+## Reusable components with styled()
+
+`styled()` wraps any of the above into a named component with default styles
+and typed variants. Inline props and `styled()` are both optimized by the
+compiler, so pick whichever reads better:
+
+```tsx
+import { html, styled } from 'tamagui'
+
+export const Card = styled(html.article, {
+  padding: '4',
+  borderRadius: 'lg',
+  backgroundColor: 'background',
+
+  variants: {
+    elevated: {
+      true: { boxShadow: '0 4px 12px shadow-3' },
+    },
+  } as const,
+})
+
+// <Card elevated />
+```
+
+See [styled()](/docs/core/styled) and [Variants](/docs/core/variants).
+
+## Themes in the tree
+
+`Theme` switches the theme for a subtree, and any component takes a `theme`
+prop for the same thing at one level:
+
+```tsx
+import { Button, Theme } from 'tamagui'
+
+export const Panel = () => (
+  <Theme name="dark">
+    <Button>Dark</Button>
+    <Button theme="blue">Dark blue</Button>
+  </Theme>
+)
+```
+
+See [Theme](/docs/core/theme) for `ThemeUpdate`, custom variables, and how
+sub-themes resolve.
+
+## The UI kit
+
+The `tamagui` package adds styled, accessible components on top of these
+primitives: `Button`, `Dialog`, `Sheet`, `Select`, and the rest of the
+[UI kit](/ui/intro). Every one of them accepts `unstyled` to drop its default
+styles and keep only its behavior.
+
+## Prefer utility classes?
+
+The same elements exist in `@tamagui/tailwind`, styled with `className`
+instead of props. See [Tailwind](/docs/core/tailwind).

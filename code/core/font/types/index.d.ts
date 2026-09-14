@@ -1,7 +1,8 @@
 import type { CreateTamaguiProps } from '@tamagui/web';
+type FontDefinition = NonNullable<CreateTamaguiProps['fonts']>[string];
 export declare function addFont(props: {
     fontFamilyName: string;
-    fontFamily: CreateTamaguiProps['fonts'][keyof CreateTamaguiProps['fonts']];
+    fontFamily: FontDefinition;
     insertCSS?: boolean;
     update?: boolean;
 }): {
@@ -9,7 +10,8 @@ export declare function addFont(props: {
     fontFamilyToken?: undefined;
     fontDeclaration?: undefined;
 } | {
-    fontFamilyToken: never;
+    fontFamily?: undefined;
+    fontFamilyToken: import("@tamagui/web").GenericFont<string | number | symbol>;
     fontDeclaration: {
         [x: string]: {
             name: string;
@@ -17,6 +19,6 @@ export declare function addFont(props: {
             language: string;
         };
     };
-    fontFamily?: undefined;
 } | undefined;
+export {};
 //# sourceMappingURL=index.d.ts.map

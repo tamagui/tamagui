@@ -1,6 +1,7 @@
 import React from 'react'
-import { Select, Label, YStack, XStack, Button } from 'tamagui'
-import { ChevronDown } from '@tamagui/lucide-icons-2'
+import { Label, YStack, XStack, View } from 'tamagui'
+import { Button } from '../components/Button'
+import { Select } from '../components/Select'
 
 // Render value helpers for SSR support
 const fruitsAndVeggiesLabels: Record<string, string> = {
@@ -32,9 +33,9 @@ export function SelectFocusScopeCase() {
   const [value5, setValue5] = React.useState('')
 
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       {/* Basic Select with Focus Trap */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Label htmlFor="basic-select">Basic Select (Focus Trapped)</Label>
         <Select
           id="basic-select"
@@ -42,8 +43,9 @@ export function SelectFocusScopeCase() {
           onValueChange={setValue1}
           renderValue={(v) => fruitsAndVeggiesLabels[v]}
         >
-          <Select.Trigger data-testid="basic-select-trigger" iconAfter={ChevronDown}>
+          <Select.Trigger data-testid="basic-select-trigger">
             <Select.Value placeholder="Select an option" />
+            <Select.Icon />
           </Select.Trigger>
 
           <Select.Content data-testid="basic-select-content">
@@ -51,15 +53,15 @@ export function SelectFocusScopeCase() {
             <Select.Viewport data-testid="basic-select-viewport">
               <Select.Group>
                 <Select.Label>Fruits</Select.Label>
-                <Select.Item data-testid="select-apple" value="apple" index={0}>
+                <Select.Item data-testid="select-apple" value="apple">
                   <Select.ItemText>Apple</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="select-banana" value="banana" index={1}>
+                <Select.Item data-testid="select-banana" value="banana">
                   <Select.ItemText>Banana</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="select-orange" value="orange" index={2}>
+                <Select.Item data-testid="select-orange" value="orange">
                   <Select.ItemText>Orange</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
@@ -67,11 +69,11 @@ export function SelectFocusScopeCase() {
 
               <Select.Group>
                 <Select.Label>Vegetables</Select.Label>
-                <Select.Item data-testid="select-carrot" value="carrot" index={3}>
+                <Select.Item data-testid="select-carrot" value="carrot">
                   <Select.ItemText>Carrot</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="select-broccoli" value="broccoli" index={4}>
+                <Select.Item data-testid="select-broccoli" value="broccoli">
                   <Select.ItemText>Broccoli</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
@@ -83,7 +85,7 @@ export function SelectFocusScopeCase() {
       </YStack>
 
       {/* Select with Custom Content */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Label htmlFor="custom-select">Select with Custom Content</Label>
         <Select
           id="custom-select"
@@ -91,44 +93,40 @@ export function SelectFocusScopeCase() {
           onValueChange={setValue2}
           renderValue={(v) => colorLabels[v]}
         >
-          <Select.Trigger data-testid="custom-select-trigger" iconAfter={ChevronDown}>
+          <Select.Trigger data-testid="custom-select-trigger">
             <Select.Value placeholder="Choose a color" />
+            <Select.Icon />
           </Select.Trigger>
 
           <Select.Content data-testid="custom-select-content">
             <Select.Viewport data-testid="custom-select-viewport">
-              <YStack padding="$2" gap="$2">
-                <Select.Item data-testid="select-red" value="red" index={0}>
-                  <XStack gap="$2" alignItems="center">
-                    <View
-                      width={20}
-                      height={20}
-                      backgroundColor="red"
-                      borderRadius="$2"
-                    />
+              <YStack padding="2" gap="2">
+                <Select.Item data-testid="select-red" value="red">
+                  <XStack gap="2" alignItems="center">
+                    <View width={20} height={20} backgroundColor="red" borderRadius="2" />
                     <Select.ItemText>Red</Select.ItemText>
                   </XStack>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="select-green" value="green" index={1}>
-                  <XStack gap="$2" alignItems="center">
+                <Select.Item data-testid="select-green" value="green">
+                  <XStack gap="2" alignItems="center">
                     <View
                       width={20}
                       height={20}
                       backgroundColor="green"
-                      borderRadius="$2"
+                      borderRadius="2"
                     />
                     <Select.ItemText>Green</Select.ItemText>
                   </XStack>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="select-blue" value="blue" index={2}>
-                  <XStack gap="$2" alignItems="center">
+                <Select.Item data-testid="select-blue" value="blue">
+                  <XStack gap="2" alignItems="center">
                     <View
                       width={20}
                       height={20}
                       backgroundColor="blue"
-                      borderRadius="$2"
+                      borderRadius="2"
                     />
                     <Select.ItemText>Blue</Select.ItemText>
                   </XStack>
@@ -141,30 +139,31 @@ export function SelectFocusScopeCase() {
       </YStack>
 
       {/* Multiple Selects for Tab Order Testing */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Label>Multiple Selects</Label>
-        <XStack gap="$3" flexWrap="wrap">
+        <XStack gap="3" flexWrap="wrap">
           <Select
             value={value3}
             onValueChange={setValue3}
-            size="$3"
+            size="3"
             renderValue={(v) => sizeLabels[v]}
           >
-            <Select.Trigger data-testid="small-select-trigger" iconAfter={ChevronDown}>
+            <Select.Trigger data-testid="small-select-trigger">
               <Select.Value placeholder="Size" />
+              <Select.Icon />
             </Select.Trigger>
 
             <Select.Content data-testid="small-select-content">
               <Select.Viewport>
-                <Select.Item data-testid="select-small" value="small" index={0}>
+                <Select.Item data-testid="select-small" value="small">
                   <Select.ItemText>Small</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="select-medium" value="medium" index={1}>
+                <Select.Item data-testid="select-medium" value="medium">
                   <Select.ItemText>Medium</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="select-large" value="large" index={2}>
+                <Select.Item data-testid="select-large" value="large">
                   <Select.ItemText>Large</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
@@ -177,7 +176,7 @@ export function SelectFocusScopeCase() {
       </YStack>
 
       {/* Select with Default Value - tests keyboard nav with pre-selected item */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Label htmlFor="default-value-select">Select with Default Value</Label>
         <Select
           id="default-value-select"
@@ -185,8 +184,9 @@ export function SelectFocusScopeCase() {
           onValueChange={setValue4}
           renderValue={(v) => fruitsAndVeggiesLabels[v]}
         >
-          <Select.Trigger data-testid="default-select-trigger" iconAfter={ChevronDown}>
+          <Select.Trigger data-testid="default-select-trigger">
             <Select.Value placeholder="Select an option" />
+            <Select.Icon />
           </Select.Trigger>
 
           <Select.Content data-testid="default-select-content">
@@ -194,27 +194,23 @@ export function SelectFocusScopeCase() {
             <Select.Viewport data-testid="default-select-viewport">
               <Select.Group>
                 <Select.Label>Fruits</Select.Label>
-                <Select.Item data-testid="default-select-apple" value="apple" index={0}>
+                <Select.Item data-testid="default-select-apple" value="apple">
                   <Select.ItemText>Apple</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="default-select-banana" value="banana" index={1}>
+                <Select.Item data-testid="default-select-banana" value="banana">
                   <Select.ItemText>Banana</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="default-select-orange" value="orange" index={2}>
+                <Select.Item data-testid="default-select-orange" value="orange">
                   <Select.ItemText>Orange</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="default-select-carrot" value="carrot" index={3}>
+                <Select.Item data-testid="default-select-carrot" value="carrot">
                   <Select.ItemText>Carrot</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item
-                  data-testid="default-select-broccoli"
-                  value="broccoli"
-                  index={4}
-                >
+                <Select.Item data-testid="default-select-broccoli" value="broccoli">
                   <Select.ItemText>Broccoli</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
@@ -226,7 +222,7 @@ export function SelectFocusScopeCase() {
       </YStack>
 
       {/* Select with lazyMount - tests positioning with deferred rendering */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Label htmlFor="lazy-select">Lazy Mount Select</Label>
         <Select
           id="lazy-select"
@@ -235,8 +231,9 @@ export function SelectFocusScopeCase() {
           lazyMount
           renderValue={(v) => fruitsAndVeggiesLabels[v]}
         >
-          <Select.Trigger data-testid="lazy-select-trigger" iconAfter={ChevronDown}>
+          <Select.Trigger data-testid="lazy-select-trigger">
             <Select.Value placeholder="Select an option" />
+            <Select.Icon />
           </Select.Trigger>
 
           <Select.Content data-testid="lazy-select-content">
@@ -244,15 +241,15 @@ export function SelectFocusScopeCase() {
             <Select.Viewport data-testid="lazy-select-viewport">
               <Select.Group>
                 <Select.Label>Fruits</Select.Label>
-                <Select.Item data-testid="lazy-select-apple" value="apple" index={0}>
+                <Select.Item data-testid="lazy-select-apple" value="apple">
                   <Select.ItemText>Apple</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="lazy-select-banana" value="banana" index={1}>
+                <Select.Item data-testid="lazy-select-banana" value="banana">
                   <Select.ItemText>Banana</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="lazy-select-orange" value="orange" index={2}>
+                <Select.Item data-testid="lazy-select-orange" value="orange">
                   <Select.ItemText>Orange</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
@@ -267,4 +264,3 @@ export function SelectFocusScopeCase() {
 }
 
 // Add missing import
-import { View } from 'tamagui'

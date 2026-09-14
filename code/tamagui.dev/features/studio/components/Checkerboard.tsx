@@ -3,7 +3,8 @@ import { YStack } from 'tamagui'
 
 export const Checkerboard = (props: YStackProps) => (
   <YStack
-    fullscreen
+    position="absolute"
+    inset={0}
     {...props}
     style={{
       background: `#eee url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill-opacity=".25" ><rect x="5" width="5" height="5" /><rect y="5" width="5" height="5" /></svg>')`,

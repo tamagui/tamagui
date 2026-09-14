@@ -1,4 +1,10 @@
+import React from 'react'
+
 const emtpyComponent = () => null
+
+// real context: consumers (tamagui's useChildren) call React.useContext on it,
+// the proxyWorm fallback object would break that
+const TextAncestorContext = React.createContext(false)
 
 function proxyWorm() {
   return new Proxy(
@@ -6,6 +12,7 @@ function proxyWorm() {
       StyleSheet: {
         create() {},
       },
+      unstable_TextAncestorContext: TextAncestorContext,
       Platform: {
         OS: 'web',
       },
@@ -15,7 +22,14 @@ function proxyWorm() {
       TextInput: emtpyComponent,
       ScrollView: emtpyComponent,
       Dimensions: {
+        get: () => ({ width: 1024, height: 768, scale: 2, fontScale: 1 }),
         addEventListener(cb) {},
+      },
+      PixelRatio: {
+        get: () => 2,
+        getFontScale: () => 1,
+        getPixelSizeForLayoutSize: (size) => Math.round(size * 2),
+        roundToNearestPixel: (size) => Math.round(size * 2) / 2,
       },
       Appearance: {
         getColorScheme: () => 'light',
@@ -46,12 +60,16 @@ export const Text = proxy.Text
 export const TextInput = proxy.TextInput
 export const ScrollView = proxy.ScrollView
 export const Dimensions = proxy.Dimensions
+export const PixelRatio = proxy.PixelRatio
 export const Pressable = proxy.Pressable
 export const Animated = proxy.Animated
 export const Easing = proxy.Easing
 export const Appearance = proxy.Appearance
 export const findNodeHandle = proxy.findNodeHandle
 export const unstable_batchedUpdates = proxy.unstable_batchedUpdates
+export const unstable_TextAncestorContext = proxy.unstable_TextAncestorContext
+export const codegenNativeCommands = () => ({})
+export const codegenNativeComponent = () => emtpyComponent
 
 // Default export
 export default proxy

@@ -5,7 +5,7 @@ import { useState, useRef } from 'react'
 
 /**
  * tests that Input autoFocus works both standalone and after a menu closes,
- * and that onCloseAutoFocus with preventDefault properly prevents focus restoration.
+ * and that onCloseAutoFocus cancellation properly prevents focus restoration.
  */
 export function InputAutoFocusAfterMenuCase() {
   const [showInput, setShowInput] = useState(false)
@@ -13,7 +13,7 @@ export function InputAutoFocusAfterMenuCase() {
   const customInputRef = useRef<HTMLInputElement>(null) as any
 
   return (
-    <YStack padding="$4" gap="$4" alignItems="flex-start">
+    <YStack padding="4" gap="4" alignItems="flex-start">
       {/* standalone autoFocus test */}
       <Input
         data-testid="autofocus-input"
@@ -30,11 +30,11 @@ export function InputAutoFocusAfterMenuCase() {
         <Menu.Portal zIndex={100}>
           <Menu.Content
             data-testid="menu-content"
-            p="$2"
+            p="2"
             minWidth={200}
             borderWidth={1}
-            borderColor="$borderColor"
-            elevation="$3"
+            borderColor="border-color"
+            boxShadow="0 4px 12px shadow-color"
           >
             <Menu.Item
               data-testid="menu-item-show-input"
@@ -56,7 +56,7 @@ export function InputAutoFocusAfterMenuCase() {
         />
       )}
 
-      {/* onCloseAutoFocus preventDefault test: prevent focus restore + manually focus a custom target */}
+      {/* onCloseAutoFocus cancellation test: prevent focus restore + manually focus a custom target */}
       <Input
         ref={customInputRef}
         data-testid="custom-focus-target"
@@ -73,13 +73,13 @@ export function InputAutoFocusAfterMenuCase() {
         <Menu.Portal zIndex={100}>
           <Menu.Content
             data-testid="prevent-default-menu-content"
-            p="$2"
+            p="2"
             minWidth={200}
             borderWidth={1}
-            borderColor="$borderColor"
-            elevation="$3"
+            borderColor="border-color"
+            boxShadow="0 4px 12px shadow-color"
             onCloseAutoFocus={(event) => {
-              event.preventDefault()
+              event.cancel()
               // manually focus a custom target instead of the trigger
               customInputRef.current?.focus()
               setPreventDefaultFocusTarget('custom-focused')

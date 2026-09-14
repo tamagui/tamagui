@@ -5,48 +5,19 @@
   },
   "references": [
     {
-      "path": "../../core/compose-refs"
-    },
-    {
-      "path": "../../core/constants"
-    },
-    {
       "path": "../../core/core"
-    },
-    {
-      "path": "../../core/create-context"
-    },
-    {
-      "path": "../../core/get-token"
-    },
-    {
-      "path": "../../core/helpers"
-    },
-    {
-      "path": "../../core/use-controllable-state"
-    },
-    {
-      "path": "../../core/use-previous"
-    },
-    {
-      "path": "../focusable"
-    },
-    {
-      "path": "../label"
     },
     {
       "path": "../radio-headless"
     },
     {
       "path": "../roving-focus"
-    },
-    {
-      "path": "../stacks"
     }
   ],
   "exclude": [
     "types",
     "dist",
+    "test",
     "**/__tests__"
   ]
 }

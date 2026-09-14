@@ -1,7 +1,8 @@
+import { createStyledHOC, styled, View } from '@tamagui/core'
 import { autoUpdate, offset, useFloatingRaw as useFloating } from '@tamagui/floating'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import type { TamaguiElement } from '@tamagui/core'
-import { YStack } from '@tamagui/stacks'
+import { composeEventHandlers } from '@tamagui/helpers'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
 
@@ -18,19 +19,23 @@ import type {
 
 const SCROLL_UP_BUTTON_NAME = 'SelectScrollUpButton'
 
-export const SelectScrollUpButton = React.forwardRef<
-  TamaguiElement,
-  SelectScrollButtonProps
->((props: SelectScopedProps<SelectScrollButtonProps>, forwardedRef) => {
-  return (
-    <SelectScrollButtonImpl
-      componentName={SCROLL_UP_BUTTON_NAME}
-      {...props}
-      dir="up"
-      ref={forwardedRef}
-    />
-  )
+export const SelectScrollButtonFrame = styled(View, {
+  displayName: 'SelectScrollButton',
 })
+
+export const SelectScrollUpButton = createStyledHOC(
+  SelectScrollButtonFrame,
+  (props: SelectScopedProps<SelectScrollButtonProps>, forwardedRef) => {
+    return (
+      <SelectScrollButtonImpl
+        partClassName={`is_${SCROLL_UP_BUTTON_NAME}`}
+        {...props}
+        dir="up"
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 SelectScrollUpButton.displayName = SCROLL_UP_BUTTON_NAME
 
@@ -40,29 +45,30 @@ SelectScrollUpButton.displayName = SCROLL_UP_BUTTON_NAME
 
 const SCROLL_DOWN_BUTTON_NAME = 'SelectScrollDownButton'
 
-export const SelectScrollDownButton = React.forwardRef<
-  TamaguiElement,
-  SelectScrollButtonProps
->((props: SelectScopedProps<SelectScrollButtonProps>, forwardedRef) => {
-  return (
-    <SelectScrollButtonImpl
-      componentName={SCROLL_DOWN_BUTTON_NAME}
-      {...props}
-      dir="down"
-      ref={forwardedRef}
-    />
-  )
-})
+export const SelectScrollDownButton = createStyledHOC(
+  SelectScrollButtonFrame,
+  (props: SelectScopedProps<SelectScrollButtonProps>, forwardedRef) => {
+    return (
+      <SelectScrollButtonImpl
+        partClassName={`is_${SCROLL_DOWN_BUTTON_NAME}`}
+        {...props}
+        dir="down"
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 SelectScrollDownButton.displayName = SCROLL_DOWN_BUTTON_NAME
 
-type SelectScrollButtonImplElement = TamaguiElement
-
 const SelectScrollButtonImpl = React.memo(
-  React.forwardRef<SelectScrollButtonImplElement, SelectScrollButtonImplProps>(
-    (props, forwardedRef) => {
-      const { scope, dir, componentName, ...scrollIndicatorProps } = props
-      const { forceUpdate, open, fallback, setScrollTop, setInnerOffset, ...context } =
+  createStyledHOC(
+    SelectScrollButtonFrame,
+    (props: SelectScrollButtonImplProps, forwardedRef) => {
+      const { scope, dir, partClassName, ...scrollIndicatorProps } = props
+      const { className, onPointerEnter, onPointerLeave, ...frameProps } =
+        scrollIndicatorProps
+      const { open, fallback, updateScrollArrows, setInnerOffset, ...context } =
         useSelectContext(scope)
       const floatingRef = context.floatingContext?.refs.floating
 
@@ -81,8 +87,17 @@ const SelectScrollButtonImpl = React.memo(
         whileElementsMounted: (...args) => autoUpdate(...args, { animationFrame: true }),
       })
 
-      // @ts-ignore TODO react 19 type needs fix
-      const composedRef = useComposedRefs(forwardedRef, refs.setFloating)
+      const setFloatingRef = React.useCallback(
+        (node: TamaguiElement | null) => {
+          refs.setFloating(node as HTMLElement | null)
+        },
+        [refs.setFloating]
+      )
+      const composedRef = useComposedRefs(forwardedRef, setFloatingRef)
+
+      React.useEffect(() => {
+        return () => cancelAnimationFrame(frameRef.current)
+      }, [])
 
       if (!isVisible) {
         return null
@@ -94,7 +109,7 @@ const SelectScrollButtonImpl = React.memo(
         if (fallback) {
           if (floating.current) {
             floating.current.scrollTop -= amount
-            flushSync(() => setScrollTop!(floating.current?.scrollTop ?? 0))
+            updateScrollArrows!()
           }
         } else {
           flushSync(() => setInnerOffset!((value) => value - amount))
@@ -102,17 +117,17 @@ const SelectScrollButtonImpl = React.memo(
       }
 
       return (
-        <YStack
+        <SelectScrollButtonFrame
           ref={composedRef}
-          componentName={componentName}
+          className={`${partClassName} ${className || ''}`.trim()}
           aria-hidden
-          {...scrollIndicatorProps}
+          {...frameProps}
           zIndex={1000}
           position={strategy}
           left={x || 0}
           top={y || 0}
           width={`calc(${(floatingRef?.current?.offsetWidth ?? 0) - 2}px)`}
-          onPointerEnter={() => {
+          onPointerEnter={composeEventHandlers(onPointerEnter as any, () => {
             statusRef.current = 'active'
             let prevNow = Date.now()
 
@@ -150,11 +165,11 @@ const SelectScrollButtonImpl = React.memo(
 
             cancelAnimationFrame(frameRef.current)
             frameRef.current = requestAnimationFrame(frame)
-          }}
-          onPointerLeave={() => {
+          })}
+          onPointerLeave={composeEventHandlers(onPointerLeave as any, () => {
             statusRef.current = 'idle'
             cancelAnimationFrame(frameRef.current)
-          }}
+          })}
         />
       )
     }

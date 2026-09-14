@@ -10,15 +10,15 @@ export function StepSchemes() {
   const store = useThemeBuilderStore()
 
   return (
-    <YStack flex={1} my="$4" gap="$4">
+    <YStack flex={1} my="4" gap="4">
       <H4>Dark and light schemes</H4>
 
-      <Paragraph size="$5" color="$color10">
+      <Paragraph size="5" color="color-10">
         At the base of your themes we recommend a light and dark theme, but you can choose
         just one.
       </Paragraph>
 
-      <XStack gap="$3">
+      <XStack gap="3">
         <Option
           onChange={(val) => {
             store.setSelectedScheme('light', val)
@@ -74,38 +74,35 @@ const Option = ({
   return (
     <Label
       flex={1}
-      htmlFor={id}
-      p="$3"
+      p="3"
       display="flex"
       borderWidth={1}
-      theme={active ? 'blue' : null}
-      bg={active ? '$color3' : '$color2'}
-      borderColor={active ? '$color6' : '$color7'}
-      rounded="$5"
-      gap="$4"
+      bg={`${active ? 'color-3' : 'color-2'}`}
+      borderColor={`${active ? 'color-6' : 'color-7'} hover:${active ? 'color-6' : 'color-8'}`}
+      rounded="5"
+      gap="4"
       items="center"
-      hoverStyle={{
-        borderColor: active ? '$color6' : '$color8',
-      }}
+      htmlFor={id}
+      theme={active ? 'blue' : null}
     >
       <Checkbox
         checked={active ?? false}
         onCheckedChange={onChange}
         id={id}
-        size="$6"
+        size="6"
         value={value}
       >
         <Checkbox.Indicator
-        // backgroundColor={active ? '$color8' : '$color1'}
+        // backgroundColor={active ? 'color-8' : 'color-1'}
         >
           <Check />
         </Checkbox.Indicator>
       </Checkbox>
 
-      <YStack gap="$2" flex={1}>
-        <Paragraph size="$5">{label}</Paragraph>
+      <YStack gap="2" flex={1}>
+        <Paragraph size="5">{label}</Paragraph>
         {!!description && (
-          <Paragraph size="$3" lineHeight="$1" color="$color9">
+          <Paragraph size="3" lineHeight="1" color="color-9">
             {description}
           </Paragraph>
         )}

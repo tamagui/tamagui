@@ -5,8 +5,6 @@ export const isWeb: boolean = false
 export const isBrowser: boolean = false
 export const isServer: boolean = false
 export const isClient: boolean = true
-/** @deprecated use isBrowser instead */
-export const isWindowDefined: boolean = false
 export const useIsomorphicLayoutEffect: typeof useEffect = useLayoutEffect
 export const isChrome: boolean = false
 export const isWebTouchable: boolean = false
@@ -30,6 +28,16 @@ export const isTV: boolean =
   Platform?.isTV ||
   process.env.TEST_NATIVE_PLATFORM === 'androidtv' ||
   process.env.TEST_NATIVE_PLATFORM === 'tvos'
+
+export function platformMatches(name: string): boolean {
+  if (name === 'web') return isWeb
+  if (name === 'native') return !isWeb
+  if (name === 'ios') return isIos
+  if (name === 'android') return isAndroid
+  if (name === 'tvos') return isIos && isTV
+  if (name === 'androidtv') return isAndroid && isTV
+  return name === 'tv' && isTV
+}
 
 const platforms = {
   ios: 'ios',

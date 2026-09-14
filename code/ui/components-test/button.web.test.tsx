@@ -1,14 +1,27 @@
 import '@testing-library/jest-dom'
 import 'vitest-axe/extend-expect'
 
-import { Button } from '@tamagui/button'
+import { Button } from 'tamagui'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { View, TamaguiProvider, createTamagui } from '@tamagui/core'
+import { SizeContext, View, TamaguiProvider, createTamagui, styled } from '@tamagui/core'
 import type { RenderResult } from '@testing-library/react'
 import { render } from '@testing-library/react'
 import { beforeEach, describe, expect, it } from 'vitest'
 
 const conf = createTamagui(getDefaultTamaguiConfig())
+
+const PlainButton = styled(Button, {
+  variants: {
+    plain: {
+      true: {
+        borderRadius: 3,
+        gap: 2,
+        height: 33,
+        padding: 0,
+      },
+    },
+  } as const,
+})
 
 function ButtonTest(props: React.ComponentProps<typeof Button>) {
   return (
@@ -34,17 +47,13 @@ global.ResizeObserver = class ResizeObserver {
   disconnect() {}
 }
 
-describe('Button with Button.Text for font styling', () => {
+describe('Button root text styling', () => {
   let rendered: RenderResult
   let button: HTMLElement
   let buttonText: HTMLElement
 
   beforeEach(() => {
-    rendered = render(
-      <ButtonTest>
-        <Button.Text fontFamily="$heading">Test</Button.Text>
-      </ButtonTest>
-    )
+    rendered = render(<ButtonTest fontFamily="heading">Test</ButtonTest>)
     button = rendered.getByRole(BUTTON_ROLE)
     buttonText = rendered.getByText('Test')
   })
@@ -69,5 +78,84 @@ describe('Button basic functionality', () => {
     const { getByRole } = render(<ButtonTest>Click me</ButtonTest>)
     const button = getByRole(BUTTON_ROLE)
     expect(button).toHaveAttribute('tabindex', '0')
+  })
+
+  // issue #3914
+  it('should forward native button html props to the element', () => {
+    const { getByRole } = render(
+      <ButtonTest
+        type="submit"
+        form="myForm"
+        formAction="/submit"
+        formMethod="post"
+        formTarget="_blank"
+        formNoValidate
+        name="submitBtn"
+        value="submit"
+      >
+        Submit
+      </ButtonTest>
+    )
+    const button = getByRole(BUTTON_ROLE)
+    expect(button).toHaveAttribute('type', 'submit')
+    expect(button).toHaveAttribute('form', 'myForm')
+    expect(button).toHaveAttribute('formaction', '/submit')
+    expect(button).toHaveAttribute('formmethod', 'post')
+    expect(button).toHaveAttribute('formtarget', '_blank')
+    expect(button).toHaveAttribute('formnovalidate')
+    expect(button).toHaveAttribute('name', 'submitBtn')
+    expect(button).toHaveAttribute('value', 'submit')
+  })
+})
+
+describe('Button sizing through context', () => {
+  it('takes size from a surrounding SizeContext', () => {
+    const { getByTestId } = render(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <SizeContext.Provider size="2">
+          <Button data-testid="from-context">Grouped</Button>
+        </SizeContext.Provider>
+        <Button data-testid="from-prop" size="2">
+          Direct
+        </Button>
+        <Button data-testid="default">Default</Button>
+      </TamaguiProvider>
+    )
+
+    // jsdom has no layout, so compare a property every size path sets
+    const padding = (id: string) => getComputedStyle(getByTestId(id)).paddingInline
+    expect(padding('from-context')).toBe(padding('from-prop'))
+    expect(padding('from-context')).not.toBe(padding('default'))
+  })
+
+  it('lets circular resolver geometry override the size dynamic', () => {
+    const { getByTestId } = render(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <Button data-testid="circular" size="2" circular>
+          C
+        </Button>
+      </TamaguiProvider>
+    )
+
+    const style = getComputedStyle(getByTestId('circular'))
+    expect(style.width).not.toBe('')
+    expect(style.width).toBe(style.height)
+    expect(style.borderRadius).toBe('1000px')
+  })
+
+  it('lets child variants override size dynamic geometry', () => {
+    const { getByTestId } = render(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <PlainButton data-testid="plain" size="2" plain>
+          Plain
+        </PlainButton>
+      </TamaguiProvider>
+    )
+
+    const style = getComputedStyle(getByTestId('plain'))
+    expect(style.padding).toBe('0px')
+    expect(style.height).toBe('33px')
+    expect(style.borderRadius).toBe('3px')
+    expect(style.gap).toBe('2px')
   })
 })

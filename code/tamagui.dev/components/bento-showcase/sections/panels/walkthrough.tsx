@@ -6,8 +6,8 @@ import { Showcase } from '~/components/bento-showcase/_Showcase'
 type Props = ReturnType<typeof walkthroughGetComponentCodes>
 export function walkthrough(props: Props) {
   return (
-    <YStack py="$8" gap="$10">
-      <YStack gap="$12">
+    <YStack py="8" gap="10">
+      <YStack gap="12">
         <Showcase
           fileName={Walkthrough.WalkThroughDemo.fileName}
           title="Jumping Walkthrough"

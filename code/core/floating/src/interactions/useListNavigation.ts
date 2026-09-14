@@ -525,6 +525,11 @@ export function useListNavigation(
     virtual,
   ])
 
+  // read at event time so the item props stay stable across the floating
+  // element mounting; consumers hold them in context beside every item
+  const floatingRef = useRef(elements.floating)
+  floatingRef.current = elements.floating
+
   const item = useMemo(() => {
     function syncCurrentTarget(currentTarget: HTMLElement | null) {
       if (!latestOpenRef.current) return
@@ -563,13 +568,13 @@ export function useListNavigation(
         onNavigate()
 
         if (!virtual) {
-          elements.floating?.focus({ preventScroll: true })
+          floatingRef.current?.focus({ preventScroll: true })
         }
       },
     }
 
     return itemProps
-  }, [latestOpenRef, focusItemOnHover, listRef, onNavigate, virtual, elements.floating])
+  }, [latestOpenRef, focusItemOnHover, listRef, onNavigate, virtual])
 
   return useMemo(
     () => (enabled ? { reference, floating, item } : {}),

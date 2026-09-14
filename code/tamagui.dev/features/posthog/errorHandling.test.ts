@@ -50,9 +50,7 @@ describe('errorHandling filtering and limiting', () => {
       expect(shouldIgnoreError(new Error('net::ERR_BLOCKED_BY_CLIENT'))).toBe(true)
       expect(shouldIgnoreError(new Error('Failed to fetch'))).toBe(true)
       expect(
-        shouldIgnoreError(
-          new Error('NetworkError when attempting to fetch resource.')
-        )
+        shouldIgnoreError(new Error('NetworkError when attempting to fetch resource.'))
       ).toBe(true)
       expect(shouldIgnoreError(new Error('Load failed'))).toBe(true)
     })

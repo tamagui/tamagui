@@ -15,31 +15,33 @@ export function TestModal() {
         <Sheet modal snapPoints={[20, 40, 80]}>
           <Sheet.Handle
             h={10}
-            bg="$background"
-            o={1} // Uncommenting this causes a rare crash on native iOS Safari
+            bg="background"
             width="25%"
-            m="$0"
-            mb="$1"
-            mt="$5"
+            marginRight="0"
+            marginLeft="0"
+            mb="1"
+            mt="5"
             alignSelf="center"
-            pos="absolute"
             t={-40}
+            opacity={1}
+            position="absolute"
           />
 
-          <Sheet.Overlay height={windowHeight} width={windowWidth} bg="$background" />
+          <Sheet.Overlay height={windowHeight} width={windowWidth} bg="background" />
 
           {/* Uncommenting this causes a rare crash on native iOS Safari */}
-          <Sheet.Frame theme="red">
+          <Sheet.Container theme="red">
+            <Sheet.Background />
             <Sheet.ScrollView>
               <TDialog.Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
         </Sheet>
       </TDialog.Adapt>
 
       <TDialog.Portal>
         <TDialog.Content>
-          <YStack gap="$4" p="$4">
+          <YStack gap="4" p="4">
             <H1>
               Esse nulla magna reprehenderit sunt ea elit. Voluptate amet elit
               reprehenderit tempor duis duis. Nostrud adipisicing duis in sunt adipisicing

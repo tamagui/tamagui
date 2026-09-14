@@ -48,12 +48,14 @@
     "@tamagui/popover": "workspace:*",
     "@tamagui/popper": "workspace:*",
     "@tamagui/portal": "workspace:*",
+    "@tamagui/react-native-types": "workspace:*",
     "@tamagui/remove-scroll": "workspace:*",
     "@tamagui/roving-focus": "workspace:*",
     "@tamagui/text": "workspace:*",
     "@tamagui/use-callback-ref": "workspace:*",
     "@tamagui/use-direction": "workspace:*",
-    "@tamagui/web": "workspace:*"
+    "@tamagui/web": "workspace:*",
+    "sf-symbols-typescript": "^2.2.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

@@ -7,6 +7,11 @@ package: shapes
 demoName: Shapes
 ---
 
+<IntroParagraph>
+  Square and Circle turn one size value into matching width and height with full
+  Tamagui styling.
+</IntroParagraph>
+
 <HeroContainer>
   <ShapesDemo />
 </HeroContainer>
@@ -17,8 +22,8 @@ demoName: Shapes
 
 <Highlights
   features={[
-    'Accepts size props as number or token value.',
-    'Sets min and max width and height.',
+    'Numeric or token-based sizes',
+    'Minimum and maximum width and height',
   ]}
 />
 
@@ -39,9 +44,9 @@ import { Circle, Square } from 'tamagui'
 
 export default () => (
   <>
-    <Square size="$4" />
+    <Square size="4" />
     <Square size={100} />
-    <Circle size="$4" />
+    <Circle size="4" />
     <Circle size={100} />
   </>
 )
@@ -51,7 +56,7 @@ export default () => (
 
 ### Square
 
-Square extends Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+Square extends View inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[

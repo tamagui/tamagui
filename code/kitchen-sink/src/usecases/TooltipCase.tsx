@@ -2,7 +2,7 @@ import { Button, Paragraph, Tooltip, TooltipSimple, YStack } from 'tamagui'
 
 export function TooltipCase() {
   return (
-    <YStack flex={1} gap="$8" p="$4" bg="$background">
+    <YStack flex={1} gap="8" p="4" bg="background">
       <TooltipComp />
 
       <TooltipSimple label="wtf">
@@ -20,8 +20,10 @@ function TooltipComp() {
       </Tooltip.Trigger>
 
       <Tooltip.Content
-        enterStyle={{ x: 0, y: -4, opacity: 0, scale: 0.96 }}
-        exitStyle={{ x: 0, y: -4, opacity: 0, scale: 0.96 }}
+        x="enter:0 exit:0"
+        y="enter:-4px exit:-4px"
+        opacity="enter:0 exit:0"
+        scale="enter:0.96 exit:0.96"
         transition="bouncy"
       >
         <Tooltip.Arrow />

@@ -6,17 +6,11 @@ const DEPTH = 64
 function NestedGroup({ index, active }: { index: number; active: boolean }) {
   const group = `nested-${index}` as `nested-${number}`
   const parent = index === 0 ? 'root' : `nested-${index - 1}`
-  const groupProps =
-    index === 0
-      ? {}
-      : {
-          [`$group-${parent}-press`]: {
-            opacity: active ? 0.96 : 0.95,
-          },
-        }
-
   return (
-    <YStack group={group} {...groupProps}>
+    <YStack
+      group={group}
+      opacity={index === 0 ? undefined : `group-press/${parent}:${active ? 0.96 : 0.95}`}
+    >
       {index >= DEPTH ? (
         <Text testID="nested-group-ready">{active ? 'active' : 'idle'}</Text>
       ) : (
@@ -33,7 +27,7 @@ export function GroupNestedNotifyLoopCase() {
     <YStack
       testID="nested-group-root"
       group="root"
-      pressStyle={{ opacity: 0.9 }}
+      opacity="press:0.9"
       onPress={() => setActive((x) => !x)}
     >
       <NestedGroup index={0} active={active} />

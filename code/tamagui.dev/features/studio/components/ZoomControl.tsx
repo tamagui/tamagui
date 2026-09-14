@@ -1,6 +1,7 @@
 import { RefreshCw, ZoomIn, ZoomOut } from '@tamagui/lucide-icons-2'
 import type { Dispatch, SetStateAction } from 'react'
-import { Button, Group, SizableText, XStack } from 'tamagui'
+import { Group, SizableText, XStack } from 'tamagui'
+import { Button } from '~/components/Button'
 
 export const ZoomControls = ({
   value,
@@ -14,20 +15,20 @@ export const ZoomControls = ({
   const handleResetZoom = () => onChange(1)
 
   return (
-    <XStack items="center" gap="$4">
-      <Group orientation="horizontal" size="$2">
+    <XStack items="center" gap="4">
+      <Group orientation="horizontal" size="2">
         <Group.Item>
-          <Button size="$2" icon={ZoomOut} onPress={handleZoomOut} />
+          <Button size="2" icon={ZoomOut} onPress={handleZoomOut} />
         </Group.Item>
         <Group.Item>
-          <Button size="$2" icon={RefreshCw} onPress={handleResetZoom} />
+          <Button size="2" icon={RefreshCw} onPress={handleResetZoom} />
         </Group.Item>
         <Group.Item>
-          <Button size="$2" icon={ZoomIn} onPress={handleZoomIn} />
+          <Button size="2" icon={ZoomIn} onPress={handleZoomIn} />
         </Group.Item>
       </Group>
 
-      <SizableText size="$2">{value * 100}%</SizableText>
+      <SizableText size="2">{value * 100}%</SizableText>
     </XStack>
   )
 }

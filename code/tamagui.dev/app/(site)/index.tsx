@@ -1,140 +1,282 @@
-import { setTintIndex } from '@tamagui/logo'
-import { useLoader } from 'one'
-import { useEffect } from 'react'
-import { YStack } from 'tamagui'
+import { TamaguiIconSvg } from '@tamagui/logo'
+import { Check } from '@tamagui/lucide-icons-2'
+import type { Href } from 'one'
+import { EnsureFlexed, H1, H5, Paragraph, Span, Text, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
+import { PAGE_MAX_WIDTH } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
-import { HomeAnimations } from '~/features/site/home/HomeAnimations'
-import { HomeCommunity } from '~/features/site/home/HomeCommunity'
-import { HomeExampleProps } from '~/features/site/home/HomeExampleProps'
-import { HomeExamples } from '~/features/site/home/HomeExamples'
-import { HomeFeaturesGrid } from '~/features/site/home/HomeFeaturesGrid'
-import { HomeGlow } from '~/features/site/home/HomeGlow'
-import { Hero } from '~/features/site/home/HomeHero'
-import { HomeHeroBelow } from '~/features/site/home/HomeHeroBelow'
-import { HomePerformance } from '~/features/site/home/HomePerformance'
-import { HomeResponsive } from '~/features/site/home/HomeResponsive'
-import { HomeThemes } from '~/features/site/home/HomeThemes'
-import { HomeTypography } from '~/features/site/home/HomeTypography'
-import { HomeSection, SectionTinted, TintSection } from '~/features/site/home/TintSection'
-import {
-  ThemeNameEffect,
-  ThemeNameEffectNoTheme,
-} from '~/features/site/theme/ThemeNameEffect'
+import { Link } from '~/components/Link'
+import { GithubIcon } from '~/features/icons/GithubIcon'
+import { HomeStyleToggle } from '~/features/site/home/HomeStyleToggle'
+import { InstallInput } from '~/features/site/home/InstallInput'
 
-export async function loader() {
-  const { getCompilationExamples } = await import('~/features/mdx/getMDXBySlug')
-  return getCompilationExamples()
-}
+// a superscript marker rather than a second word: at the label's own size it
+// read as heavy as the label and sat on the baseline
+const CtaArrow = () => (
+  // verticalAlign top pins it to the line box, which sits above the cap line, so
+  // the arrow floated off the top of the label. the nudge lands its top edge on
+  // the top of the letters
+  <Span
+    fontSize={11}
+    lineHeight={11}
+    ml={10}
+    display="inline-block"
+    verticalAlign="top"
+    y={5}
+    opacity={0.5}
+  >
+    ↗
+  </Span>
+)
+
+// 540 of copy plus the gap plus the 460 code sample
+const HERO_ROW_WIDTH = 1040
+
+// each row is one short sentence, and only the object parts are linked, so the
+// line reads as a claim rather than a bare label wearing a link
+type FeaturePart = string | { label: string; href: Href }
+
+const features: FeaturePart[][] = [
+  [
+    'A ',
+    { label: 'native runtime', href: '/docs/core/native' },
+    ' with no re-renders at all.',
+  ],
+  [
+    'An ',
+    { label: 'optimizing compiler', href: '/docs/intro/compiler-install' },
+    ' in Rust, flattening your tree.',
+  ],
+  [
+    'A Rust ',
+    { label: 'syntax and theme LSP', href: '/blog/version-three' },
+    ' for every editor.',
+  ],
+  [
+    { label: 'Bundler plugins', href: '/docs/guides/vite' },
+    ' for Vite, Next, Metro, and Webpack.',
+  ],
+  [
+    { label: 'React Strict DOM', href: '/docs/core/html-primitives' },
+    ' primitives, real elements on the web.',
+  ],
+  [
+    'Write ',
+    { label: 'Tailwind classes', href: '/docs/core/tailwind' },
+    ' on the same compiler.',
+  ],
+  [
+    { label: 'Level-based themes', href: '/docs/core/surfaces' },
+    ', nested as deep as you like.',
+  ],
+  [
+    { label: 'Theme', href: '/docs/core/use-theme' },
+    ' and ',
+    { label: 'media hooks', href: '/docs/core/use-media' },
+    ' with signal-like reads.',
+  ],
+  [
+    { label: 'Animation drivers', href: '/docs/core/animation-drivers' },
+    ' driven outside React.',
+  ],
+  [
+    'A ',
+    { label: '0-runtime mode', href: '/docs/guides/zero-runtime' },
+    ' for plain CSS output.',
+  ],
+  [
+    { label: 'Flat, typed style values', href: '/docs/guides/flat-values' },
+    ' with conditions inline.',
+  ],
+  [{ label: 'Themes', href: '/docs/intro/themes' }, ' server rendered, with no flash.'],
+]
 
 export default function TamaguiHomePage() {
-  const { compilationExamples, animationCode } = useLoader(loader)
-
-  useEffect(() => {
-    setTintIndex(3)
-  }, [])
-
-  if (!compilationExamples) {
-    return null
-  }
-
   return (
-    <>
+    <YStack gap="100px gtMd:0">
       <HeadInfo
         title="Tamagui"
-        description="React Native style library and UI kit with the best web performance"
+        description="Type-safe styles for React and React Native, with an optimizing compiler and Tailwind compatibility."
       />
-
-      <ThemeNameEffect colorKey="$color3" />
-
-      <HomeGlow />
 
       <YStack
-        fullscreen
-        className="grain"
-        opacity={0.2}
-        style={{
-          maskImage: `linear-gradient(transparent, rgba(0, 0, 0, 1) 100px)`,
-        }}
-      />
+        render="main"
+        width="100%"
+        maxW={PAGE_MAX_WIDTH}
+        mx="auto"
+        px="4"
+        pt="8"
+        gap="8 gtMd:12"
+        minH="auto gtMd:calc(90vh - 280px)"
+        maxH="auto gtMd:940px"
+        justify="center"
+      >
+        {/* the text column caps at the width its own copy wants, so the code
+            sample sits next to the paragraphs instead of across a gap the
+            growing column left behind */}
+        <XStack
+          flexDirection="column gtMd:row"
+          items="center"
+          justify="center"
+          gap="8"
+          width="100%"
+          maxW={HERO_ROW_WIDTH}
+          mx="auto"
+        >
+          {/* maxW stays under the viewport on small screens: the row centers
+              its children, so an uncapped 640px column would bleed off both
+              edges instead of wrapping */}
+          <YStack flexGrow={1} flexShrink={1} gap="6" minW={0} maxW="100% gtMd:640px">
+            <EnsureFlexed />
+            <XStack items="center" gap="4" mb="-4" mt="-3">
+              <TamaguiIconSvg width={24} height={24} />
+              <Link asChild href="/blog/version-three">
+                <Text render="a" fontSize={13} color="color-8 hover:color-11">
+                  Version 3 is out ↗
+                </Text>
+              </Link>
+            </XStack>
 
-      <TintSection index={0} p={0}>
-        <Hero />
-      </TintSection>
-      <HomeHeroBelow />
-      <TintSection index={2} contain="paint layout" z={1000}>
-        <YStack
-          pointerEvents="none"
-          z={0}
-          fullscreen
-          className="bg-dot-grid"
-          style={{
-            maskImage: `linear-gradient(transparent, #000, transparent)`,
-          }}
-        />
-        <HomeExamples examples={compilationExamples} />
-      </TintSection>
-      <TintSection my={-50} index={3} contain="paint layout" position="relative" z={100}>
-        <YStack
-          pointerEvents="none"
-          z={0}
-          fullscreen
-          className="bg-dot-grid"
-          style={{
-            maskImage: `linear-gradient(transparent, #000, transparent)`,
-          }}
-        />
-        <HomeThemes />
-      </TintSection>
-      <TintSection index={4} mb={-120} z={100}>
-        <HomeResponsive />
-      </TintSection>
-      <TintSection index={5} p={0} z={0}>
-        <SectionTinted gradient bubble>
-          <HomePerformance />
-        </SectionTinted>
-      </TintSection>
-      <TintSection index={6} z={100}>
-        <YStack
-          fullscreen
-          className="bg-grid"
-          style={{
-            maskImage: `linear-gradient(transparent, #000, transparent)`,
-          }}
-        />
-        <HomeAnimations animationCode={animationCode} />
-      </TintSection>
-      <TintSection index={7} z={1}>
-        <HomeFeaturesGrid />
-        <YStack
-          pointerEvents="none"
-          z={2}
-          fullscreen
-          className="bg-dot-grid"
-          style={{
-            maskImage: `linear-gradient(transparent, #000, transparent)`,
-          }}
-        />
-      </TintSection>
-      <TintSection index={8} my="$-4" p={0} z={100}>
-        <SectionTinted z={1000} bubble gradient>
-          <HomeTypography />
-        </SectionTinted>
-      </TintSection>
-      <HomeSection z={10}>
-        <YStack
-          pointerEvents="none"
-          z={0}
-          fullscreen
-          className="bg-dot-grid"
-          style={{
-            maskImage: `linear-gradient(transparent, #000, transparent)`,
-          }}
-        />
-        <HomeExampleProps />
-      </HomeSection>
-      <HomeSection z={0}>
-        <HomeCommunity />
-      </HomeSection>
-    </>
+            <H1
+              fontSize="22px gtXs:24px gtMd:28px"
+              lineHeight="32px gtXs:36px gtMd:40px"
+              fontWeight="600"
+              letterSpacing={-0.2}
+              textWrap="balance"
+            >
+              Fast on web. Fast on native.
+              <br />
+              Now, in Typed or Tailwind.
+            </H1>
+
+            <YStack gap="4" mt="-4">
+              <Paragraph size="5" color="color-11">
+                Feels like web, runs like native, with zero-cost abstractions from
+                compiler to runtime.
+              </Paragraph>
+
+              <Paragraph size="5" color="color-11">
+                Typed inline styles, or Tailwind classes. Runtime, or build time. Add the
+                Rust compiler or native runtime for best-in-class performance everywhere.
+              </Paragraph>
+
+              <Paragraph size="5" color="color-11">
+                v3 trims down, then adds Tailwind, React Strict DOM, and simplified, more
+                web-aligned styling.
+              </Paragraph>
+            </YStack>
+
+            <YStack gap="4">
+              <XStack gap="3" items="center" flexWrap="wrap">
+                <Link asChild href="/docs/intro/introduction">
+                  <Button
+                    render="a"
+                    size="lg"
+                    rounded={10}
+                    bg="color"
+                    color="background"
+                    borderless
+                    aria-label="Core docs"
+                  >
+                    <Button.Text color="background" fontWeight="600">
+                      Core
+                      <CtaArrow />
+                    </Button.Text>
+                  </Button>
+                </Link>
+                <Link asChild href="/ui/intro">
+                  <Button
+                    render="a"
+                    size="lg"
+                    rounded={10}
+                    borderless
+                    bg="transparent hover:color-2"
+                    aria-label="Components docs"
+                  >
+                    <Button.Text fontWeight="600">
+                      Components
+                      <CtaArrow />
+                    </Button.Text>
+                  </Button>
+                </Link>
+                <Link asChild target="_blank" href="https://github.com/tamagui/tamagui">
+                  <Button
+                    render="a"
+                    size="lg"
+                    rounded={10}
+                    variant="quiet"
+                    borderless
+                    aria-label="GitHub"
+                  >
+                    <GithubIcon width={18} />
+                    <Button.Text>GitHub</Button.Text>
+                  </Button>
+                </Link>
+              </XStack>
+
+              <InstallInput />
+            </YStack>
+          </YStack>
+
+          <YStack maxW="100% gtMd:640px" flexGrow={1} flexShrink={1}>
+            <EnsureFlexed />
+            <HomeStyleToggle />
+          </YStack>
+        </XStack>
+      </YStack>
+
+      <YStack
+        maxW="640px gtMd:none"
+        render="section"
+        width="100%"
+        mx="auto"
+        px="4"
+        pb="12 gtMd:16"
+      >
+        {/* the rows are much shorter than half of the hero's 1040, so two 50%
+            columns across that width left the whole block sitting well left of
+            centre with an empty gutter on the right. this is the width the copy
+            actually wants, centered, and the heading shares its left edge */}
+        <YStack self="center" width="100%" maxW={900} gap="5">
+          <H5 size="6" color="color-12" fontWeight="700">
+            Featuring
+          </H5>
+
+          {/* the `link` class is the site's blog underline: 2px at a 4px offset,
+              thickening on hover. the decoration line and color have to come from
+              props, because tamagui's Text sets text-decoration-line none at four
+              times specificity and would otherwise hide the underline entirely */}
+          <XStack className="link" flexWrap="wrap" rowGap="4">
+            {features.map((parts, row) => (
+              <XStack key={row} width="100% gtMd:50%" items="flex-start" gap="2-5">
+                <YStack y={2} flexShrink={0}>
+                  <Check size={18} color="color-4" />
+                </YStack>
+                <Text fontSize={15} lineHeight={22} color="color-9">
+                  {parts.map((part, i) =>
+                    typeof part === 'string' ? (
+                      <Span key={i}>{part}</Span>
+                    ) : (
+                      <Link asChild key={i} href={part.href}>
+                        <Text
+                          render="a"
+                          fontSize="inherit"
+                          lineHeight="inherit"
+                          color="color-11 hover:color-12"
+                          textDecorationLine="underline"
+                          textDecorationColor="yellow-3"
+                        >
+                          {part.label}
+                        </Text>
+                      </Link>
+                    )
+                  )}
+                </Text>
+              </XStack>
+            ))}
+          </XStack>
+        </YStack>
+      </YStack>
+    </YStack>
   )
 }

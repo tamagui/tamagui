@@ -1,5 +1,5 @@
 import type { FontSizeTokens, FontTokens, Variable } from '@tamagui/core'
-import { getConfig, isVariable } from '@tamagui/core'
+import { getConfig, isVariable, resolveSize } from '@tamagui/core'
 
 type GetFontSizeOpts = {
   relativeSize?: number
@@ -7,7 +7,7 @@ type GetFontSizeOpts = {
 }
 
 export const getFontSize = (
-  inSize: FontSizeTokens | null | undefined,
+  inSize: FontSizeTokens | true | null | undefined,
   opts?: GetFontSizeOpts
 ): number => {
   const res = getFontSizeVariable(inSize, opts)
@@ -18,7 +18,7 @@ export const getFontSize = (
 }
 
 export const getFontSizeVariable = (
-  inSize: FontSizeTokens | null | undefined,
+  inSize: FontSizeTokens | true | null | undefined,
   opts?: GetFontSizeOpts
 ): FontSizeTokens | Variable<string> | null | undefined => {
   const token = getFontSizeToken(inSize, opts)
@@ -27,11 +27,11 @@ export const getFontSizeVariable = (
   }
   const conf = getConfig()
   const font = conf.fontsParsed[opts?.font || conf.defaultFontToken]
-  return font?.size[token] as Variable<string>
+  return font?.size[token as string] as Variable<string>
 }
 
 export const getFontSizeToken = (
-  inSize: FontSizeTokens | null | undefined,
+  inSize: FontSizeTokens | true | null | undefined,
   opts?: GetFontSizeOpts
 ): FontSizeTokens | null => {
   if (typeof inSize === 'number') {
@@ -45,9 +45,17 @@ export const getFontSizeToken = (
     font?.size ||
     // fallback to size tokens
     conf.tokensParsed.size
+  // `true` and a named size read the size recipe's font key
+  const key = String(inSize ?? true).replace(/^\$/, '')
   const size =
-    (inSize === '$true' && !('$true' in fontSize) ? '$4' : inSize) ??
-    ('$true' in fontSize ? '$true' : '$4')
+    inSize == null || inSize === true || conf.sizes?.[key] != null
+      ? resolveSize(inSize, {
+          tokens: conf.tokensParsed,
+          font: font as any,
+          fonts: conf.fontsParsed,
+          sizes: conf.sizes,
+        }).fontSizeKey
+      : key
 
   const sizeTokens = Object.keys(fontSize)
 

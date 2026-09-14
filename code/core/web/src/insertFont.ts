@@ -16,7 +16,11 @@ export function insertFont<A extends GenericFont>(
   const font = createFont(fontIn)
   const tokened = createVariables(font, name) as GenericFont
   const parsed = parseFont(tokened) as DeepVariableObject<A>
-  if (process.env.TAMAGUI_TARGET === 'web' && typeof document !== 'undefined') {
+  if (
+    !process.env.TAMAGUI_DID_OUTPUT_CSS &&
+    process.env.TAMAGUI_TARGET === 'web' &&
+    typeof document !== 'undefined'
+  ) {
     const fontVars = registerFontVariables(parsed)
     const styleElement: HTMLStyleElement =
       document.querySelector(`style[${FONT_DATA_ATTRIBUTE_NAME}="${name}"]`) ||
@@ -41,11 +45,11 @@ export function parseFont<A extends GenericFont>(definition: A): DeepVariableObj
       parsed[attrKey] = {}
       for (const key in attr) {
         let val = attr[key] as any
-        // is a theme reference
-        if (val.val?.[0] === '$') {
+        // Font color names resolve against the active theme at use time.
+        if (attrKey === 'color' && typeof val.val === 'string') {
           val = val.val
         }
-        parsed[attrKey][`$${key}`] = val
+        parsed[attrKey][key] = val
       }
     }
   }
@@ -66,7 +70,7 @@ export function registerFontVariables(parsedFont: any) {
         for (const fskey in parsedFont[fkey]) {
           const fval = parsedFont[fkey][fskey]
           if (typeof fval === 'string') {
-            // no need to add its a theme reference like "$borderColor"
+            // theme references do not register font variables
           } else {
             const val = parsedFont[fkey][fskey] as Variable
             registerCSSVariable(val)

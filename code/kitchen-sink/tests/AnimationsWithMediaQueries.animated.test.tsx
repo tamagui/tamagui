@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { setupPage } from './test-utils'
+import { getComputedScale, getComputedTranslateX, setupPage } from './test-utils'
 
 /**
  * Tests for animated properties responding to media query changes.
@@ -7,21 +7,10 @@ import { setupPage } from './test-utils'
  * This tests the useStyleEmitter path which allows style updates without re-renders.
  * When media queries change, the animation driver receives new styles and must
  * update the DOM accordingly.
- *
- * Note: The 'native' driver (animations-react-native) doesn't support avoidReRenders/useStyleEmitter,
- * so these tests are skipped for that driver.
  */
 
 async function getScale(page: Page, testId: string): Promise<number> {
-  return page.evaluate((id) => {
-    const el = document.querySelector(`[data-testid="${id}"]`)
-    if (!el) return -1
-    const transform = getComputedStyle(el).transform
-    if (transform === 'none') return 1
-    // matrix(a, b, c, d, tx, ty) - scaleX is in the 'a' position
-    const match = transform.match(/matrix\(([^,]+),/)
-    return match ? Number.parseFloat(match[1]) : 1
-  }, testId)
+  return getComputedScale(page, `[data-testid="${testId}"]`)
 }
 
 // poll until scale reaches expected value (spring animations may be slow in CI)
@@ -43,28 +32,11 @@ async function waitForScale(
 }
 
 async function getTranslateX(page: Page, testId: string): Promise<number> {
-  return page.evaluate((id) => {
-    const el = document.querySelector(`[data-testid="${id}"]`)
-    if (!el) return NaN
-    const transform = getComputedStyle(el).transform
-    if (transform === 'none') return 0
-    // matrix(a, b, c, d, tx, ty)
-    const matrixMatch = transform.match(/matrix\(([^)]+)\)/)
-    if (matrixMatch) {
-      const values = matrixMatch[1].split(',').map((v: string) => parseFloat(v.trim()))
-      return values[4] || 0
-    }
-    return 0
-  }, testId)
+  return getComputedTranslateX(page, `[data-testid="${testId}"]`)
 }
 
 test.describe('Animations With Media Queries', () => {
-  test.beforeEach(async ({ page }, testInfo) => {
-    // Skip native driver - it doesn't support useStyleEmitter (avoidReRenders)
-    test.skip(
-      testInfo.project.name === 'animated-native',
-      'Native driver does not support avoidReRenders/useStyleEmitter'
-    )
+  test.beforeEach(async ({ page }) => {
     await setupPage(page, { name: 'AnimationsWithMediaQueriesCase', type: 'useCase' })
   })
 
@@ -77,7 +49,7 @@ test.describe('Animations With Media Queries', () => {
   test('scale applies at small viewport', async ({ page }) => {
     await page.setViewportSize({ width: 600, height: 800 })
     const scale = await waitForScale(page, 'test-scale', 0.75)
-    expect(scale, 'scale should be 0.75 at $sm').toBeCloseTo(0.75, 1)
+    expect(scale, 'scale should be 0.75 at sm').toBeCloseTo(0.75, 1)
   })
 
   test('scale updates when resizing from large to small', async ({ page }) => {

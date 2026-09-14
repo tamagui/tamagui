@@ -51,7 +51,7 @@ export function ReanimatedPlatformDriverHoverCase() {
   }, [])
 
   return (
-    <YStack gap="$4" padding="$4">
+    <YStack gap="4" padding="4">
       {/* no transition prop — platform driver makes this ride the emitter, instant.
           base flips red<->blue with `active` (a plain re-render); hover is green.
           this exercises the latch-clear on the driver lane the same way the
@@ -59,10 +59,9 @@ export function ReanimatedPlatformDriverHoverCase() {
       <Square
         testID="driver-square"
         size={tick % 2 === 0 ? 120 : 121}
-        backgroundColor={active ? 'rgb(0, 0, 255)' : 'rgb(255, 0, 0)'}
-        hoverStyle={{ backgroundColor: 'rgb(0, 255, 0)' }}
+        backgroundColor={`${active ? 'rgb(0, 0, 255)' : 'rgb(255, 0, 0)'} hover:rgb(0, 255, 0)`}
       />
-      <XStack gap="$4">
+      <XStack gap="4">
         <Button testID="driver-bump" onPress={() => setTick((v) => v + 1)}>
           Bump {tick}
         </Button>

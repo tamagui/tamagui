@@ -14,13 +14,16 @@
 import { describe, expectTypeOf, test } from 'vitest'
 import { styled } from './styled'
 import { Text } from './views/Text'
-import type { GetProps } from './types'
+import type { FlatStyleValue, GetProps } from './types'
+
+// a variant prop is the branch keys widened with the conditional flat forms
+type Cond<T> = FlatStyleValue<T> | undefined
 
 const Typography = styled(Text, {
   variants: {
     tabular: {
       true: {
-        fontFamily: '$heading',
+        fontFamily: 'heading',
         fontVariant: ['common-ligatures'],
       },
     },
@@ -40,13 +43,11 @@ const Control = styled(Text, {
 
 describe('fontVariant in an as-const variant', () => {
   test('the variant survives inference', () => {
-    expectTypeOf<GetProps<typeof Typography>['tabular']>().toEqualTypeOf<
-      boolean | undefined
-    >()
+    expectTypeOf<GetProps<typeof Typography>['tabular']>().toEqualTypeOf<Cond<boolean>>()
   })
 
   test('the control variant behaves the same', () => {
-    expectTypeOf<GetProps<typeof Control>['bold']>().toEqualTypeOf<boolean | undefined>()
+    expectTypeOf<GetProps<typeof Control>['bold']>().toEqualTypeOf<Cond<boolean>>()
   })
 
   test('fontVariant still accepts a mutable array as a plain prop', () => {

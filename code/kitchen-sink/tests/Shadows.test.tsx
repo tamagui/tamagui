@@ -10,5 +10,6 @@ test.beforeEach(async ({ page }) => {
 test(`shadows work`, async ({ page }) => {
   const button = page.locator('#shadowed')
   const styles = await getStyles(button)
-  expect(styles.boxShadow).toBe(`rgba(0, 0, 0, 0.04) 0px 0px 60px 0px`)
+  // v6 light `shadow-color` is rgba(0, 0, 0, 0.12)
+  expect(styles.boxShadow).toBe(`rgba(0, 0, 0, 0.12) 0px 0px 60px 0px`)
 })

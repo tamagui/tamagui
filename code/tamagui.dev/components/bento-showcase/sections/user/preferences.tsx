@@ -5,49 +5,42 @@ import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,
 } from '~/components/bento-showcase/_Showcase'
-import { BentoShowcaseProvider } from '~/components/bento-showcase/BentoProvider'
 
-type Props = ReturnType<typeof preferencesGetComponentCodes> & {
-  isProUser: boolean
-  showAppropriateModal: () => void
-}
+type Props = ReturnType<typeof preferencesGetComponentCodes>
 
-export function preferences({ isProUser, showAppropriateModal }: Props) {
+export function preferences() {
   return (
-    <BentoShowcaseProvider
-      isProUser={isProUser}
-      showAppropriateModal={showAppropriateModal}
+    <YStack
+      paddingBottom="2 gtLg:0"
+      gap="12"
+      paddingTop="2 gtLg:0"
+      paddingRight="2 gtLg:0"
+      paddingLeft="2 gtLg:0"
     >
-      <YStack pb="$10" gap="$12" p="$2" $gtLg={{ p: '$0' }}>
-        <Showcase
-          unlock={true}
-          fileName={Preferences.Meeting.fileName}
-          title="Meeting Time"
-        >
-          <Wrapper p={0}>
-            <Preferences.Meeting />
-          </Wrapper>
-        </Showcase>
+      <Showcase fileName={Preferences.Meeting.fileName} title="Meeting Time">
+        <Wrapper p={0}>
+          <Preferences.Meeting />
+        </Wrapper>
+      </Showcase>
 
-        <Showcase
-          fileName={Preferences.LocationNotification.fileName}
-          title="Email Preferences"
-        >
-          <Wrapper p={0}>
-            <Preferences.LocationNotification />
-          </Wrapper>
-        </Showcase>
+      <Showcase
+        fileName={Preferences.LocationNotification.fileName}
+        title="Email Preferences"
+      >
+        <Wrapper p={0}>
+          <Preferences.LocationNotification />
+        </Wrapper>
+      </Showcase>
 
-        <Showcase
-          fileName={Preferences.StatusTracker.fileName}
-          title="Employees Status Tracker"
-        >
-          <Wrapper p={0}>
-            <Preferences.StatusTracker />
-          </Wrapper>
-        </Showcase>
-      </YStack>
-    </BentoShowcaseProvider>
+      <Showcase
+        fileName={Preferences.StatusTracker.fileName}
+        title="Employees Status Tracker"
+      >
+        <Wrapper p={0}>
+          <Preferences.StatusTracker />
+        </Wrapper>
+      </Showcase>
+    </YStack>
   )
 }
 

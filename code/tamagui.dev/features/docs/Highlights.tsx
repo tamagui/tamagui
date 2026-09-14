@@ -13,50 +13,47 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
 
   return (
     <YStack
-      mb="$2"
-      $gtSm={{
-        fd: 'row',
-        justifyContent: 'space-between',
-      }}
+      mb="5"
+      fd="gtSm:row"
+      justifyContent="gtSm:space-between"
       {...(disableTitle && {
         mt: 0,
       })}
     >
-      <YStack
-        minH={142}
-        $gtSm={{
-          flex: 1,
-          maxW: disableLinks ? '100%' : 400,
-          mr: '$5',
-        }}
-      >
+      <YStack flex="gtSm:1" maxW={disableLinks ? 'gtSm:100%' : 'gtSm:400px'} mr="gtSm:5">
         {!disableTitle && (
-          <H2 fontFamily="$body" size="$6" mb="$1" fontWeight="800">
+          // the gap under the title and the gap between items are two different
+          // spacings: the title needs room, the items want almost none. they had
+          // been driven off one value, so tightening the list kept closing up the
+          // title with it
+          <H2 fontFamily="body" mb="3" fontWeight="800" size="6">
             Features
           </H2>
         )}
 
-        <YStack render="ul" p={0} m={0} gap="$4">
-          <Features large={large} items={features} />
-        </YStack>
+        <Features large={large} items={features} />
       </YStack>
 
       {!disableLinks && (
         <YStack
-          gap="$3"
-          render="nav"
-          aria-labelledby="site-component-info-header"
+          gap={0}
           minW={140}
+          render="nav"
+          aria-labelledby="site-component-info-heading"
         >
           <VisuallyHidden>
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>
-          <YStack mt={disableTitle ? '$3' : '$6'} my="$3" gap="$3">
+          <YStack marginTop={0} marginBottom={0} gap="0-5">
             {frontmatter.versions && frontmatter.versions.length > 1 && (
-              <SourceVersionSwitcher
-                versions={frontmatter.versions}
-                componentName={frontmatter.name || frontmatter.component || ''}
-              />
+              // the version switcher reads as this column's heading, so it gets
+              // the title gap while the links below it stay tight
+              <YStack mb="2">
+                <SourceVersionSwitcher
+                  versions={frontmatter.versions}
+                  componentName={frontmatter.name || frontmatter.component || ''}
+                />
+              </YStack>
             )}
 
             <Link
@@ -67,18 +64,18 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
               }`}
               target="_blank"
             >
-              <XStack items="center" gap="$1">
-                <SizableText size="$3">View source</SizableText>
-                <YStack opacity={0.5} ml="$0.5">
-                  <ExternalLink size={12} color="var(--colorHover)" />
+              <XStack items="center" gap="1">
+                <SizableText size="3">View source</SizableText>
+                <YStack opacity={0.5} ml="0-5">
+                  <ExternalLink size={12} color="var(--color-hover)" />
                 </YStack>
               </XStack>
             </Link>
             <Link href={`https://www.npmjs.com/package/tamagui`} target="_blank">
-              <XStack items="center" gap="$1">
-                <SizableText size="$3">View on npm</SizableText>
-                <YStack opacity={0.5} ml="$0.5">
-                  <ExternalLink size={12} color="var(--colorHover)" />
+              <XStack items="center" gap="1">
+                <SizableText size="3">View on npm</SizableText>
+                <YStack opacity={0.5} ml="0-5">
+                  <ExternalLink size={12} color="var(--color-hover)" />
                 </YStack>
               </XStack>
             </Link>
@@ -86,25 +83,25 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
               href="https://github.com/tamagui/tamagui/issues/new/choose"
               target="_blank"
             >
-              <XStack items="center" gap="$1">
-                <SizableText size="$3">Report an issue</SizableText>
-                <YStack opacity={0.5} ml="$0.5">
-                  <ExternalLink size={12} color="var(--colorHover)" />
+              <XStack items="center" gap="1">
+                <SizableText size="3">Report an issue</SizableText>
+                <YStack opacity={0.5} ml="0-5">
+                  <ExternalLink size={12} color="var(--color-hover)" />
                 </YStack>
               </XStack>
             </Link>
 
             {/* @ts-ignore */}
             {frontmatter.aria && (
-              <YStack mb="$2">
+              <YStack mb="2">
                 {/* @ts-ignore */}
                 <Link theme="blue" href={frontmatter.aria} target="_blank">
                   <XStack position="relative">
-                    <Paragraph size="$2" color="$color10">
+                    <Paragraph size="2" color="color-10">
                       ARIA design pattern
                     </Paragraph>
-                    <YStack ml="$1">
-                      <Text color="$color9">
+                    <YStack ml="1">
+                      <Text color="color-9">
                         <ExternalLink size={12} color="var(--color)" />
                       </Text>
                     </YStack>

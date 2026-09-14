@@ -1,5 +1,6 @@
 import { Menu } from '@tamagui/menu'
-import { Button, ScrollView, YStack } from 'tamagui'
+import { ScrollView, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Menu dismiss-on-scroll test case
@@ -18,7 +19,7 @@ import { Button, ScrollView, YStack } from 'tamagui'
 const filler = (prefix: string) =>
   Array.from({ length: 30 }).map((_, i) => (
     <YStack key={`${prefix}-${i}`} height={40} justifyContent="center">
-      <Button size="$2" chromeless>
+      <Button size="3" variant="quiet">
         {prefix} row {i + 1}
       </Button>
     </YStack>
@@ -26,13 +27,13 @@ const filler = (prefix: string) =>
 
 export function MenuDismissOnScrollCase() {
   return (
-    <YStack data-testid="page" padding="$4" gap="$4" minHeight={2000}>
+    <YStack data-testid="page" padding="4" gap="4" minHeight={2000}>
       {/* an unrelated scrollable subtree - scrolling this must NOT dismiss */}
       <ScrollView
         data-testid="unrelated-scroll"
         height={160}
         borderWidth={1}
-        borderColor="$borderColor"
+        borderColor="border-color"
       >
         {filler('unrelated')}
       </ScrollView>
@@ -43,13 +44,11 @@ export function MenuDismissOnScrollCase() {
         data-testid="trigger-scroll"
         height={160}
         borderWidth={1}
-        borderColor="$borderColor"
+        borderColor="border-color"
       >
         <Menu>
           <Menu.Trigger asChild>
-            <Button data-testid="menu-trigger" size="$4">
-              Open Menu
-            </Button>
+            <Button data-testid="menu-trigger">Open Menu</Button>
           </Menu.Trigger>
 
           <Menu.Portal zIndex={100}>
@@ -57,9 +56,9 @@ export function MenuDismissOnScrollCase() {
               data-testid="menu-content"
               minWidth={200}
               borderWidth={1}
-              borderColor="$borderColor"
-              elevation="$3"
-              padding="$2"
+              borderColor="border-color"
+              boxShadow="0 4px 12px shadow-color"
+              padding="2"
             >
               <Menu.Item
                 data-testid="menu-item-1"

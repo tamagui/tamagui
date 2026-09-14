@@ -1,5 +1,15 @@
-import { View, Text, createTamagui, getSplitStyles, styled } from '@tamagui/core'
-import { beforeAll, describe, expect, test } from 'vitest'
+import {
+  View,
+  Text,
+  createTamagui,
+  createVariable,
+  insertFont,
+  getSplitStyles,
+  styled,
+  type ComponentContextI,
+} from '@tamagui/core'
+import { DialogPortalFrame } from '@tamagui/dialog'
+import { beforeAll, describe, expect, test, vi } from 'vitest'
 
 import config from '../config-default'
 
@@ -8,6 +18,228 @@ beforeAll(() => {
 })
 
 describe('getSplitStyles', () => {
+  test.each([1.5, 24, 0])(
+    'numeric lineHeight %s multiplies the final font size in either prop order',
+    (lineHeight) => {
+      for (const props of [
+        { fontSize: 20, lineHeight },
+        { lineHeight, fontSize: 20 },
+      ]) {
+        expect(getSplitStylesFor(props, Text).style?.lineHeight).toBe(20 * lineHeight)
+      }
+    }
+  )
+
+  test('numeric strings are ratios and explicit px lengths stay absolute', () => {
+    expect(
+      getSplitStylesFor({ lineHeight: '1.5', fontSize: 20 }, Text).style?.lineHeight
+    ).toBe(30)
+    expect(
+      getSplitStylesFor({ lineHeight: '24px', fontSize: 20 }, Text).style?.lineHeight
+    ).toBe(24)
+    expect(getSplitStylesFor({ lineHeight: 1.5 }, Text).style).toMatchObject({
+      fontSize: 14,
+      lineHeight: 21,
+    })
+  })
+
+  test('inherits semantic ratios and preserves absolute font variables', () => {
+    const parent = getSplitStylesFor({ fontSize: 20, lineHeight: 1.5 }, Text)
+    expect(parent.nativeTextMetrics).toEqual({ fontSize: 20, lineHeight: 1.5 })
+    const context = { parentFontSize: 20, parentLineHeight: 1.5 }
+    expect(getSplitStylesFor({ fontSize: 10 }, Text, { context }).style).toMatchObject({
+      fontSize: 10,
+      lineHeight: 15,
+    })
+    expect(getSplitStylesFor({ lineHeight: 2 }, Text, { context }).style).toMatchObject({
+      fontSize: 20,
+      lineHeight: 40,
+    })
+    expect(
+      getSplitStylesFor({ fontSize: 10, lineHeight: '30px' }, Text, { context })
+        .nativeTextMetrics?.lineHeight
+    ).toBe('30px')
+    for (const [value, expected] of [
+      [24, 24],
+      ['24px', 24],
+      ['1.5', 30],
+    ] as const) {
+      const lineHeight = createVariable({ key: 'leading', name: 'leading', val: value })
+      expect(
+        getSplitStylesFor({ lineHeight, fontSize: 20 }, Text).style?.lineHeight
+      ).toBe(expected)
+    }
+  })
+
+  test('a font-size-only media change recalculates leading in either prop order', () => {
+    for (const props of [
+      { lineHeight: 1.5, fontSize: '20px sm:40px' },
+      { fontSize: '20px sm:40px', lineHeight: 1.5 },
+    ]) {
+      expect(
+        getSplitStylesFor(props, Text, { mediaState: { sm: false } }).style?.lineHeight
+      ).toBe(30)
+      expect(
+        getSplitStylesFor(props, Text, { mediaState: { sm: true } }).style?.lineHeight
+      ).toBe(60)
+    }
+  })
+
+  test('inherited animated fonts retain their live channel until a local size shadows it', () => {
+    const context = {
+      parentFontSize: 40,
+      parentLineHeight: 1.5,
+      animatedText: { fontSize: {}, driver: 'native' },
+    }
+    const inherited = getSplitStylesFor({}, Text, { context })
+    expect(inherited.style?.fontSize).toBeUndefined()
+    expect(inherited.style?.lineHeight).toBeUndefined()
+    expect(
+      getSplitStylesFor({ lineHeight: 2 }, Text, { context }).style?.lineHeight
+    ).toBeUndefined()
+    expect(
+      getSplitStylesFor({ lineHeight: '24px' }, Text, { context }).style?.lineHeight
+    ).toBe(24)
+    const liveOnly = getSplitStylesFor({}, Text, {
+      context: { ...context, parentFontSize: undefined },
+    })
+    expect(liveOnly.style?.fontSize).toBeUndefined()
+    expect(liveOnly.style?.lineHeight).toBeUndefined()
+    expect(inherited.nativeTextMetrics).toEqual({
+      fontSize: 40,
+      lineHeight: 1.5,
+      inheritsFontSize: true,
+    })
+    const local = getSplitStylesFor({ fontSize: 10 }, Text, { context })
+    expect(local.style).toMatchObject({ fontSize: 10, lineHeight: 15 })
+    expect(local.nativeTextMetrics?.inheritsFontSize).toBeUndefined()
+  })
+
+  test('compiler variable getters preserve native pixel units', () => {
+    const lineHeight = {
+      ...createVariable({ key: 'leading', name: 'leading', val: 20 }),
+      get: () => 20,
+    }
+    expect(
+      getSplitStylesFor({ fontSize: 14, lineHeight }, Text, {
+        resolveValues: 'except-theme',
+      }).style?.lineHeight
+    ).toBe(20)
+  })
+
+  test('dynamic variants preserve explicit lengths and relative values', () => {
+    const Sized = styled(Text, {
+      variants: {
+        leading: styled.dynamic<any>((value) => ({ lineHeight: value })),
+      },
+    })
+    for (const [leading, expected] of [
+      ['24px', 24],
+      [1.5, 30],
+      ['1.5', 30],
+    ] as const) {
+      expect(getSplitStylesFor({ leading, fontSize: 20 }, Sized).style?.lineHeight).toBe(
+        expected
+      )
+    }
+  })
+
+  test('inserted font tokens preserve numeric pixels and string ratios through dynamic sizing', () => {
+    insertFont('leading-test', {
+      family: 'System',
+      size: { ratio: 20, tinyPixel: 20, pixels: 20 },
+      lineHeight: { ratio: '1.5', tinyPixel: 1.5, pixels: '24px' },
+    })
+    const Sized = styled(Text, {
+      variants: {
+        size: styled.dynamic<string>((key, { font }) => ({
+          fontSize: font?.size[key],
+          lineHeight: font?.lineHeight[key],
+        })),
+      },
+    })
+    for (const [size, expected] of [
+      ['ratio', 30],
+      ['tinyPixel', 1.5],
+      ['pixels', 24],
+    ] as const) {
+      expect(
+        getSplitStylesFor({ fontFamily: 'leading-test', size }, Sized).style?.lineHeight
+      ).toBe(expected)
+      expect(
+        getSplitStylesFor(
+          { fontFamily: 'leading-test', fontSize: 20, lineHeight: size },
+          Text
+        ).style?.lineHeight
+      ).toBe(expected)
+    }
+  })
+
+  test('line-height resets clear ratios and inheritance keeps their semantic value', () => {
+    const context = { parentFontSize: 20, parentLineHeight: 1.5 }
+    for (const lineHeight of ['inherit', 'unset']) {
+      const result = getSplitStylesFor({ fontSize: 10, lineHeight }, Text, { context })
+      expect(result.style?.lineHeight).toBe(15)
+      expect(result.nativeTextMetrics?.lineHeight).toBe(1.5)
+    }
+    for (const lineHeight of ['normal', 'initial']) {
+      const result = getSplitStylesFor({ fontSize: 10, lineHeight }, Text, { context })
+      expect(result.style?.lineHeight).toBeUndefined()
+      expect(result.nativeTextMetrics?.lineHeight).toBe('normal')
+    }
+  })
+
+  test.each([-1, Number.NaN, Number.POSITIVE_INFINITY])(
+    'invalid ratio %s never reaches native layout or descendant metrics',
+    (lineHeight) => {
+      const result = getSplitStylesFor({ fontSize: 20, lineHeight }, Text)
+      expect(result.style?.lineHeight).toBeUndefined()
+      expect(result.nativeTextMetrics?.lineHeight).toBeUndefined()
+    }
+  )
+
+  test('an adapted dialog portal resolves native layout without text style warnings', () => {
+    const originalNodeEnv = process.env.NODE_ENV
+    process.env.NODE_ENV = 'development'
+    const warning = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    try {
+      const result = getSplitStylesFor(
+        DialogPortalFrame.staticConfig.defaultProps,
+        DialogPortalFrame,
+        { resolveValues: 'value' }
+      )
+
+      expect(result.style).toMatchObject({ position: 'absolute', alignItems: 'center' })
+      expect(result.style?.color).toBeUndefined()
+      expect(warning).not.toHaveBeenCalled()
+    } finally {
+      warning.mockRestore()
+      process.env.NODE_ENV = originalNodeEnv
+    }
+  })
+
+  test('Input color styles lower to native TextInput props', () => {
+    const InputFrame = styled(Text, {}, { isInput: true })
+    const result = getSplitStylesFor(
+      {
+        placeholderTextColor: 'gray',
+        selectionColor: 'blue',
+        cursorColor: 'red',
+        selectionHandleColor: 'green',
+      },
+      InputFrame,
+      { resolveValues: 'value' }
+    )
+
+    expect(result.viewProps).toMatchObject({
+      placeholderTextColor: 'gray',
+      selectionColor: 'blue',
+      cursorColor: 'red',
+      selectionHandleColor: 'green',
+    })
+    expect(result.style).toBeNull()
+  })
+
   test(`styled with variants`, () => {
     const ViewVariants = styled(Text, {
       color: 'blue',
@@ -31,6 +263,23 @@ describe('getSplitStyles', () => {
     expect(styles.style).toEqual({ color: 'red' })
   })
 
+  test(`background lowers single colors to backgroundColor and drops web-only values`, () => {
+    expect(getSplitStylesFor({ background: 'red' }).style).toEqual({
+      backgroundColor: 'red',
+    })
+
+    for (const background of [
+      '#fff url(x.png) no-repeat',
+      'url(x.png)',
+      'linear-gradient(to right, red, blue)',
+    ]) {
+      const { style, viewProps } = getSplitStylesFor({ background })
+      expect(style?.background).toBe(undefined)
+      expect(style?.backgroundColor).toBe(undefined)
+      expect(viewProps.background).toBe(undefined)
+    }
+  })
+
   test(`gap properties are correctly applied`, () => {
     const { style } = getSplitStylesFor({
       columnGap: 10,
@@ -41,49 +290,37 @@ describe('getSplitStyles', () => {
     expect(style?.rowGap).toBe(10)
   })
 
-  test('functional variants see media-resolved sibling variant props', () => {
-    const MediaVariantView = styled(View, {
+  test(`dynamic variants receive true for opt-in sizing policies`, () => {
+    let seenSize: unknown
+    const SpreadSizeView = styled(View, {
       variants: {
-        kind: {
-          info: {},
-          danger: {},
-        },
-        tone: {
-          true: (_val, { props }) => ({
-            backgroundColor: props.kind === 'danger' ? 'red' : 'blue',
-          }),
-        },
+        size: styled.dynamic<any>((val) => {
+          seenSize = val
+          return {
+            opacity: 0.5,
+          }
+        }),
       } as const,
     })
 
-    const { style } = getSplitStylesFor(
+    const spread = getSplitStylesFor(
       {
-        kind: 'info',
-        $sm: {
-          kind: 'danger',
-          tone: true,
-        },
+        size: true,
       },
-      MediaVariantView,
+      SpreadSizeView,
       {
-        mediaState: {
-          sm: true,
-        },
+        resolveValues: 'value',
       }
     )
 
-    expect(style?.backgroundColor).toBe('red')
+    expect(seenSize).toBe(true)
+    expect(spread.style?.opacity).toBe(0.5)
   })
 
-  test('pseudo styles can override read-only parent props', () => {
-    const props = {
-      hoverStyle: {
-        boxShadow: '0 1px 2px black',
-      },
-    }
-
+  test('flat programs can override read-only parent props', () => {
+    const props = {}
     Object.defineProperty(props, 'boxShadow', {
-      value: '0 0 1px black',
+      value: '0 0 1px black hover:0 1px 2px black',
       enumerable: true,
       writable: false,
     })
@@ -91,11 +328,9 @@ describe('getSplitStyles', () => {
     expect(() => getSplitStylesFor(props)).not.toThrow()
   })
 
-  test('native skips hover pseudo style work', () => {
+  test('native skips inactive hover clauses', () => {
     const directHover = getSplitStylesFor({
-      hoverStyle: {
-        backgroundColor: 'red',
-      },
+      backgroundColor: 'hover:red',
     })
 
     expect(directHover.style?.backgroundColor).toBeUndefined()
@@ -104,9 +339,7 @@ describe('getSplitStyles', () => {
       variants: {
         hoverable: {
           true: {
-            hoverStyle: {
-              opacity: 0.5,
-            },
+            opacity: 'hover:0.5',
           },
         },
       } as const,
@@ -129,9 +362,7 @@ describe('getSplitStyles', () => {
 
     const groupHover = getSplitStylesFor(
       {
-        '$group-row-hover': {
-          backgroundColor: 'red',
-        },
+        backgroundColor: 'group-hover/row:red',
       },
       View,
       {
@@ -140,13 +371,14 @@ describe('getSplitStyles', () => {
     )
 
     expect(groupHover.style?.backgroundColor).toBeUndefined()
-    expect(groupHover.pseudoGroups).toBeUndefined()
+    // the program engine registers the subscription — hover-capable native
+    // devices (pointer on iPad) can now source group hover; without a
+    // hovering parent nothing applies
+    expect(groupHover.pseudoGroups?.has('row')).toBe(true)
 
     const groupMedia = getSplitStylesFor(
       {
-        '$group-row-sm': {
-          opacity: 0.5,
-        },
+        opacity: '@sm/row:0.5',
       },
       View,
       {
@@ -264,47 +496,31 @@ describe('getSplitStyles', () => {
     expect(style?.opacity).toBe(0.8)
   })
 
-  test(`$theme-light and $theme-dark styles are applied correctly based on active theme`, () => {
+  test(`light and dark theme clauses apply based on the active theme`, () => {
     const themeProps = {
-      '$theme-light': {
-        backgroundColor: 'white',
-        color: 'black',
-      },
-      '$theme-dark': {
-        backgroundColor: 'black',
-        color: 'white',
-      },
+      backgroundColor: 'light:white dark:black',
+      color: 'light:black dark:white',
     }
 
     // Test with light theme
     const lightResult = getThemeStylesView(themeProps, 'light')
 
-    // Check if light theme values are present in the result
-    const lightResultStr = JSON.stringify(lightResult)
-    expect(lightResultStr).toContain('white')
-    expect(lightResultStr).toContain('black')
+    // white/black are configured color tokens, so the program engine
+    // resolves them config-first to their values
+    expect(lightResult.style?.backgroundColor).toBe('#fff')
+    expect(lightResult.style?.color).toBe('#000')
 
     // Test with dark theme
     const darkResult = getThemeStylesView(themeProps, 'dark')
-
-    // Check if dark theme values are present in the result
-    const darkResultStr = JSON.stringify(darkResult)
-    expect(darkResultStr).toContain('black')
-    expect(darkResultStr).toContain('white')
+    expect(darkResult.style?.backgroundColor).toBe('#000')
+    expect(darkResult.style?.color).toBe('#fff')
   })
 
-  test(`$theme-light and $theme-dark styles don't apply if theme doesn't match`, () => {
+  test(`theme clauses do not apply if the theme does not match`, () => {
     // When using a custom theme that isn't 'light' or 'dark'
     const customResult = getThemeStylesView(
       {
-        '$theme-light': {
-          backgroundColor: 'white',
-        },
-        '$theme-dark': {
-          backgroundColor: 'black',
-        },
-        // Default style
-        backgroundColor: 'blue',
+        backgroundColor: 'blue light:white dark:black',
       },
       'custom'
     )
@@ -353,56 +569,15 @@ describe('getSplitStyles', () => {
   })
 })
 
-describe.skip('getSplitStyles - pseudo prop merging', () => {
-  const StyledButton = styled(View, {
-    name: 'StyledButton',
-    pressStyle: { backgroundColor: 'green' },
-    variants: {
-      variant: {
-        prim: {
-          pressStyle: { backgroundColor: 'blue' },
-        },
-      },
-    },
-  })
-
-  function getPressStyle(props: any) {
-    const { style } = getSplitStyles(
-      props,
-      StyledButton.staticConfig,
-      {} as any,
-      '',
-      {
-        hover: false,
-        press: true, // simulate press state
-        pressIn: true,
-        focus: false,
-        unmounted: false,
-        disabled: false,
-        focusVisible: false,
-      },
-      {
-        isAnimated: false,
-      }
-    )!
-    return style?.backgroundColor
-  }
-
-  test('inline pressStyle should override variant pressStyle', () => {
-    const bg = getPressStyle({ variant: 'prim', pressStyle: { backgroundColor: 'red' } })
-    expect(bg).toBe('red')
-  })
-
-  test('variant pressStyle should be used if no inline pressStyle', () => {
-    const bg = getPressStyle({ variant: 'prim' })
-    expect(bg).toBe('blue')
-  })
-})
-
 function getSplitStylesFor(
   props: Record<string, any>,
   Component = View,
-  options: { mediaState?: Record<string, any>; groupContext?: any } = {}
+  options: {
+    context?: Partial<ComponentContextI>
+    mediaState?: Record<string, any>
+    groupContext?: any
+    resolveValues?: 'none' | 'value' | 'web' | 'auto'
+  } = {}
 ) {
   return getSplitStyles(
     props,
@@ -421,9 +596,10 @@ function getSplitStylesFor(
     {
       isAnimated: false,
       mediaState: options.mediaState,
+      resolveValues: options.resolveValues,
     },
     undefined,
-    undefined,
+    options.context as ComponentContextI | undefined,
     options.groupContext,
     undefined,
     undefined
@@ -433,7 +609,7 @@ function getSplitStylesFor(
 function getThemeStylesView(props: Record<string, any>, themeName: string, tag?: string) {
   return getSplitStyles(
     props,
-    View.staticConfig,
+    Text.staticConfig,
     {} as any,
     themeName,
     {

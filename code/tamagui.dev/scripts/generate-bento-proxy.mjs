@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process'
 import { mkdirSync } from 'node:fs'
 import { existsSync, writeFileSync, readFileSync } from 'node:fs'
 import { homedir } from 'node:os'
@@ -5,6 +6,26 @@ import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
+
+/**
+ * Optional ref pinning. The v3-beta site passes its validated Bento commit in
+ * `TAMAGUI_BENTO_REF`, while the main v2 site keeps building Bento main.
+ */
+function pinBentoRef(bentoPath, silent) {
+  const ref = process.env.TAMAGUI_BENTO_REF
+  if (!bentoPath || !ref || !existsSync(resolve(bentoPath, '.git'))) return
+  execFileSync('git', ['-C', bentoPath, 'fetch', '--quiet', 'origin', ref], {
+    stdio: 'pipe',
+  })
+  execFileSync(
+    'git',
+    ['-C', bentoPath, 'checkout', '--quiet', '--detach', 'FETCH_HEAD'],
+    {
+      stdio: 'pipe',
+    }
+  )
+  if (!silent) console.info(`Pinned bento to ref "${ref}" at ${bentoPath}`)
+}
 
 /**
  * Resolve the optional bento repo. Bento is a sibling checkout (pro features
@@ -16,6 +37,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
  * @returns {string | null} - Absolute path to the bento repo, or null
  */
 export function resolveBentoPath(basePath = __dirname) {
+  // TAMAGUI_BENTO_PATH=0 opts out of a sibling/home bento checkout entirely
+  // (build with stubs even when ~/bento exists)
+  if (process.env.TAMAGUI_BENTO_PATH === '0') {
+    return null
+  }
   const candidates = [
     process.env.TAMAGUI_BENTO_PATH,
     resolve(basePath, '../../../../bento'),
@@ -44,6 +70,8 @@ export function generateBentoProxy(options = {}) {
   const BENTO_PATH = resolveBentoPath(basePath)
   const HELPERS_DIST_PATH = resolve(basePath, '../helpers/dist')
   const hasBento = !!BENTO_PATH
+
+  pinBentoRef(BENTO_PATH, silent)
 
   // Ensure dist exists
   mkdirSync(HELPERS_DIST_PATH, { recursive: true })

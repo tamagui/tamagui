@@ -101,10 +101,6 @@ export function expandStyle(
   }
 
   if (process.env.TAMAGUI_TARGET === 'native') {
-    if (isAndroid && key === 'elevationAndroid') {
-      return [['elevation', value]]
-    }
-
     // native-only value transforms
     switch (key) {
       case 'objectFit': {
@@ -121,9 +117,24 @@ export function expandStyle(
         }
         return
       }
+      case 'visibility': {
+        // native has no visibility; map hidden -> opacity:0 + pointerEvents:none
+        // visible/collapse are dropped (collapse is web-only via CSS)
+        if (value === 'hidden') {
+          return [
+            ['opacity', 0],
+            ['pointerEvents', 'none'],
+          ]
+        }
+        // strip the prop entirely on native (returning [] iterates 0 times in normalizeStyle)
+        return []
+      }
       case 'backgroundImage': {
-        // RN 0.76+ uses experimental_backgroundImage
-        // value may be a parsed array (from parseNativeStyle) or a plain string
+        // RN 0.76+ uses experimental_backgroundImage. a STRING stays on the
+        // `backgroundImage` key so it flows whole into the program engine —
+        // the evaluator parses the winning payload and writes the renamed key
+        // itself. only already-parsed arrays rename here
+        if (typeof value === 'string') return
         return [['experimental_backgroundImage', value]]
       }
       case 'border': {

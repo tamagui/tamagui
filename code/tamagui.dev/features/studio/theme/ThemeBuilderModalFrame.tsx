@@ -43,9 +43,9 @@ export const ThemeBuilderModalFrame = ({
 }
 
 export const ModalTitle = styled(H4, {
-  fontFamily: '$mono',
-  size: '$6',
+  fontFamily: 'mono',
   letterSpacing: 2,
   transition: 'quick',
+  size: '6',
   ellipsis: true,
 })

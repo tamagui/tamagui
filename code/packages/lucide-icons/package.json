@@ -25,6 +25,15 @@
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
     },
+    "./all": {
+      "types": "./types/all.d.ts",
+      "react-native": "./dist/esm/all.native.js",
+      "browser": "./dist/esm/all.mjs",
+      "module": "./dist/esm/all.mjs",
+      "import": "./dist/esm/all.mjs",
+      "require": "./dist/cjs/all.cjs",
+      "default": "./dist/esm/all.mjs"
+    },
     "./icons/AlarmCheck": {
       "types": "./types/icons/AlarmCheck.d.ts",
       "react-native": "./dist/esm/icons/AlarmCheck.native.js",

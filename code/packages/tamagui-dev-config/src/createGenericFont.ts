@@ -20,15 +20,15 @@ const genericFontSizes = {
   16: 124,
 } as const
 
-export function createGenericFont<A extends GenericFont<keyof typeof genericFontSizes>>(
+export function createGenericFont(
   family: string,
-  font: Partial<A> = {},
+  font: Partial<GenericFont<keyof typeof genericFontSizes>> = {},
   {
     sizeLineHeight = (val) => val * 1.35,
   }: {
     sizeLineHeight?: (val: number) => number
   } = {}
-): A {
+) {
   const size = font.size || genericFontSizes
   return createFont({
     family,
@@ -38,6 +38,6 @@ export function createGenericFont<A extends GenericFont<keyof typeof genericFont
     ) as typeof size,
     weight: { 0: '300' },
     letterSpacing: { 4: 0 },
-    ...(font as any),
+    ...font,
   })
 }

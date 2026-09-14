@@ -3,7 +3,7 @@ import { Slider, Theme, XStack } from 'tamagui'
 
 export function SliderDemo() {
   return (
-    <XStack height={200} items="center" gap="$8">
+    <XStack height={200} items="center" gap="8">
       <SimpleSlider height={200} orientation="vertical" />
       <SimpleSlider width={200} />
     </XStack>
@@ -13,8 +13,8 @@ export function SliderDemo() {
 function SimpleSlider({ children, ...props }: SliderProps) {
   return (
     <Slider defaultValue={[50]} max={100} step={1} {...props}>
-      <Slider.Track>
-        <Slider.TrackActive />
+      <Slider.Track testID="slider-track">
+        <Slider.TrackActive testID="slider-track-active" />
       </Slider.Track>
       <Slider.Thumb theme="accent" size={30} borderRadius={100} />
       {children}

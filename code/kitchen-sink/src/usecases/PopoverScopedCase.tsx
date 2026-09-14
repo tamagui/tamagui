@@ -1,21 +1,22 @@
-import { Adapt, Button, Paragraph, Popover, Sheet, XStack, YStack } from 'tamagui'
+import { Adapt, Paragraph, Popover, Sheet, XStack, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 export function PopoverScopedCase() {
   const shouldAdapt = window.location.search.includes('adapt=true')
 
   return (
-    <YStack padding="$4" gap="$4">
-      <Popover size="$5" allowFlip stayInFrame offset={15} resize>
+    <YStack padding="4" gap="4">
+      <Popover size="5" allowFlip stayInFrame offset={15} resize>
         <TestPopoverContent shouldAdapt={shouldAdapt} name="plain" />
         <Popover.Trigger asChild>
           <Button data-testid={`plain-trigger`}>Open Plain</Button>
         </Popover.Trigger>
       </Popover>
 
-      <Popover scope="PopoverA" size="$5" allowFlip stayInFrame offset={15} resize>
+      <Popover scope="PopoverA" size="5" allowFlip stayInFrame offset={15} resize>
         <TestPopoverContent shouldAdapt={shouldAdapt} name="a" />
 
-        <Popover scope="PopoverB" size="$5" allowFlip stayInFrame offset={15} resize>
+        <Popover scope="PopoverB" size="5" allowFlip stayInFrame offset={15} resize>
           <TestPopoverContent shouldAdapt={shouldAdapt} name="b" />
 
           <Popover.Trigger asChild scope="PopoverA">
@@ -36,22 +37,21 @@ const TestPopoverContent = ({ name, shouldAdapt }) => {
     <>
       <Popover.Content
         borderWidth={1}
-        borderColor="$borderColor"
+        borderColor="border-color"
+        backgroundColor="background"
+        boxShadow="0 4px 12px shadow-color"
         width={300}
         height={300}
-        elevate
       >
-        <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+        <Popover.Arrow borderWidth={1} borderColor="border-color" />
 
-        <YStack data-testid={`${name}-popover-content`} gap="$3">
-          <XStack gap="$3">
-            <Paragraph size="$3">Popover {name}</Paragraph>
+        <YStack data-testid={`${name}-popover-content`} gap="3">
+          <XStack gap="3">
+            <Paragraph size="3">Popover {name}</Paragraph>
           </XStack>
 
           <Popover.Close asChild>
-            <Button size="$3" data-testid={`popover-close`}>
-              Close
-            </Button>
+            <Button data-testid={`popover-close`}>Close</Button>
           </Popover.Close>
         </YStack>
       </Popover.Content>
@@ -59,14 +59,14 @@ const TestPopoverContent = ({ name, shouldAdapt }) => {
       {shouldAdapt && (
         <Adapt when={true}>
           <Sheet transition="medium" modal dismissOnSnapToBottom>
-            <Sheet.Frame data-testid={`${name}-sheet-contents`} padding="$4">
+            <Sheet.Container data-testid={`${name}-sheet-contents`} padding="4">
+              <Sheet.Background />
               <Adapt.Contents />
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay
-              backgroundColor="$shadowColor"
+              backgroundColor="shadow-color"
               transition="lazy"
-              enterStyle={{ opacity: 0 }}
-              exitStyle={{ opacity: 0 }}
+              opacity="enter:0 exit:0"
             />
           </Sheet>
         </Adapt>

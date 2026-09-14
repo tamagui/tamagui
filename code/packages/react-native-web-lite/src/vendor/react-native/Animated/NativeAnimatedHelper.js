@@ -374,19 +374,19 @@ function addWhitelistedInterpolationParam(param) {
 }
 
 function isSupportedColorStyleProp(prop) {
-  return SUPPORTED_COLOR_STYLES.hasOwnProperty(prop)
+  return prop in SUPPORTED_COLOR_STYLES
 }
 
 function isSupportedStyleProp(prop) {
-  return SUPPORTED_STYLES.hasOwnProperty(prop)
+  return prop in SUPPORTED_STYLES
 }
 
 function isSupportedTransformProp(prop) {
-  return SUPPORTED_TRANSFORMS.hasOwnProperty(prop)
+  return prop in SUPPORTED_TRANSFORMS
 }
 
 function isSupportedInterpolationParam(param) {
-  return SUPPORTED_INTERPOLATION_PARAMS.hasOwnProperty(param)
+  return param in SUPPORTED_INTERPOLATION_PARAMS
 }
 
 function validateTransform(configs) {

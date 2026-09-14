@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 /* -------------------------------------------------------------------------------------------------
  * SliderImpl
  * -----------------------------------------------------------------------------------------------*/
@@ -8,12 +9,12 @@ import { getVariableValue, styled } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
-import { View } from 'react-native'
 
 import { ARROW_KEYS, PAGE_KEYS, SLIDER_NAME, useSliderContext } from './constants'
+import { SliderResponder } from './SliderResponder'
 import type { ScopedProps, SliderImplProps } from './types'
 
-export const SliderFrame = styled(YStack, {
+const SliderFrameBase = styled(YStack, {
   position: 'relative',
 
   variants: {
@@ -22,29 +23,28 @@ export const SliderFrame = styled(YStack, {
       vertical: {},
     },
 
-    size: (val, extras) => {
-      if (!val) {
-        return
-      }
-      const orientation = extras.props['orientation']
-      const size = Math.round(getVariableValue(getSize(val)) / 6)
-      if (orientation === 'horizontal') {
-        return {
-          height: size,
-          borderRadius: size,
-          justifyContent: 'center',
-        }
-      }
-      return {
-        width: size,
-        borderRadius: size,
-        alignItems: 'center',
-      }
-    },
+    size: styled.dynamic<SliderImplProps['size']>(),
   } as const,
 })
 
-export const SliderImpl = React.forwardRef<View, SliderImplProps>(
+export const SliderFrame = SliderFrameBase.resolve((props) => {
+  if (!props.size) return
+  const size = Math.round(getVariableValue(getSize(props.size as any)) / 6)
+  if (props.orientation === 'horizontal') {
+    return {
+      height: size,
+      borderRadius: size,
+      justifyContent: 'center',
+    }
+  }
+  return {
+    width: size,
+    borderRadius: size,
+    alignItems: 'center',
+  }
+})
+
+export const SliderImpl = createRefComponent<TamaguiElement, SliderImplProps>(
   (props: ScopedProps<SliderImplProps>, forwardedRef) => {
     const {
       __scopeSlider,
@@ -104,10 +104,8 @@ export const SliderImpl = React.forwardRef<View, SliderImplProps>(
     )
 
     return (
-      // wrap with plain RN View for responder events - tamagui views no longer handle responder events on web
-
       <SliderFrame
-        size="$4"
+        size="4"
         ref={forwardedRef as any}
         {...sliderProps}
         data-orientation={sliderProps.orientation}
@@ -129,18 +127,13 @@ export const SliderImpl = React.forwardRef<View, SliderImplProps>(
           },
         })}
       >
-        <View
-          onMoveShouldSetResponderCapture={() => true}
-          onMoveShouldSetResponder={() => true}
-          onStartShouldSetResponder={() => true}
-          onResponderTerminationRequest={() => false}
+        <SliderResponder
           onResponderGrant={handleResponderGrant}
           onResponderMove={handleResponderMove}
           onResponderRelease={handleResponderRelease}
-          style={{ inset: 0, position: 'absolute' }}
         >
           {children}
-        </View>
+        </SliderResponder>
       </SliderFrame>
     )
   }

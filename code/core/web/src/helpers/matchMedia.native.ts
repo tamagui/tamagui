@@ -1,4 +1,7 @@
 import type { MatchMedia, MediaQueryList } from '../types'
+import { formatDiagnostic } from './formatDiagnostic'
+import { mediaObjectToString } from './mediaObjectToString'
+import { mediaQueryConfig } from './mediaState'
 
 let matchMediaImpl: MatchMedia = matchMediaFallback
 
@@ -6,7 +9,19 @@ export const matchMedia: MatchMedia = (...args) => matchMediaImpl(...args)
 
 function matchMediaFallback(query: string): MediaQueryList {
   if (!process.env.IS_STATIC && process.env.NODE_ENV === 'development') {
-    console.warn('warning: matchMedia implementation is not provided.')
+    const keys = Object.keys(mediaQueryConfig).filter(
+      (key) => mediaObjectToString(mediaQueryConfig[key]) === query
+    )
+    console.warn(
+      formatDiagnostic(
+        'TAMAGUI_MATCH_MEDIA_NATIVE',
+        'matchMedia',
+        'no native matchMedia implementation is installed',
+        'Call setupMatchMedia before configuring media queries',
+        'keys,query',
+        { keys, query }
+      )
+    )
   }
   return {
     match: (a, b) => false,

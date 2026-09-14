@@ -7,6 +7,11 @@ package: group
 demoName: Group
 ---
 
+<IntroParagraph>
+  Group arranges related controls horizontally or vertically and shares sizing,
+  shape, and disabled state with its children.
+</IntroParagraph>
+
 <HeroContainer>
   <GroupDemo />
 </HeroContainer>
@@ -17,10 +22,10 @@ demoName: Group
 
 <Highlights
   features={[
-    'Accepts size prop for border radius.',
-    'Align vertically or horizontally.',
-    'Children control their own sizing.',
-    'Disabled prop passes to children.',
+    'Border radius from the size prop',
+    'Vertical or horizontal alignment',
+    'Independent sizing for each child',
+    'Disabled state shared with children',
   ]}
 />
 
@@ -67,12 +72,12 @@ import { Button, XGroup } from 'tamagui'
 export default () => (
   <XGroup>
     <XGroup.Item>
-      <Button size="$3" $gtSm={{ size: '$5' }} icon={Activity}>
+      <Button size="sm" height="gtSm:5" icon={Activity}>
         First
       </Button>
     </XGroup.Item>
     <XGroup.Item>
-      <Button size="$3" $gtSm={{ size: '$5' }} icon={Airplay}>
+      <Button size="sm" height="gtSm:5" icon={Airplay}>
         Second
       </Button>
     </XGroup.Item>
@@ -86,7 +91,7 @@ The `size` prop on Group itself only affects the border radius of the group cont
 import { Button, XGroup } from 'tamagui'
 
 export default () => (
-  <XGroup size="$6">
+  <XGroup size="lg">
     <XGroup.Item>
       <Button>First</Button>
     </XGroup.Item>
@@ -211,7 +216,7 @@ export default () => (
     {
       name: 'size',
       required: false,
-      type: 'string | SizeTokens',
+      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | SizeTokens",
       description: `Sets the border radius of the Group container using your size tokens.`,
     },
     {

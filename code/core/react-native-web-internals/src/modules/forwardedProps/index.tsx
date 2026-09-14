@@ -65,7 +65,6 @@ export const accessibilityProps = {
   accessibilityValueNow: true,
   accessibilityValueText: true,
   dir: true,
-  focusable: true,
 }
 
 export const clickProps = {

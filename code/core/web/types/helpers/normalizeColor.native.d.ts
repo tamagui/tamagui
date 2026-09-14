@@ -1,5 +1,8 @@
 export { rgba } from '@tamagui/normalize-css-color';
-export declare const normalizeColor: (color?: string | null, opacity?: number) => string | undefined;
+type DynamicColor = {
+    dynamic: Record<string, string>;
+};
+export declare const normalizeColor: (color?: string | DynamicColor | null, opacity?: number) => string | DynamicColor | undefined;
 export declare const getRgba: (color: string) => {
     r: number;
     g: number;

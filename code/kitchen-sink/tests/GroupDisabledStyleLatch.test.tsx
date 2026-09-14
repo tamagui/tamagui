@@ -2,11 +2,11 @@ import { expect, test } from '@playwright/test'
 import { setupPage } from './test-utils'
 
 /**
- * Regression test for the group + disabledStyle emitter latch bug (Wez, June 2026).
+ * Regression test for the group + disabled clause emitter latch bug (Wez, June 2026).
  *
- * A `group` frame with pressStyle goes through the avoidReRenders style emitter:
+ * A `group` frame with press clause goes through the avoidReRenders style emitter:
  * the press that toggles `disabled` latches the worklet onto its last-emitted
- * snapshot. The disabled re-render merges disabledStyle into the base style, but
+ * snapshot. The disabled re-render merges disabled clause into the base style, but
  * before the latch-drop fix the worklet kept painting the stale latched green —
  * the circle never went grey even though a child label re-rendered fine. Runs
  * against the reanimated driver where the latch lives.
@@ -21,7 +21,7 @@ const color = (
 const GREEN = 'rgb(27, 122, 61)'
 const GREY = 'rgb(217, 215, 210)'
 
-test.describe('group + disabledStyle emitter latch', () => {
+test.describe('group + disabled clause emitter latch', () => {
   test.beforeEach(async ({ page }) => {
     await setupPage(page, {
       name: 'GroupDisabledStyleLatchCase',
@@ -31,7 +31,7 @@ test.describe('group + disabledStyle emitter latch', () => {
     await page.waitForTimeout(300)
   })
 
-  test('disabledStyle applies after the press that latched the emitter', async ({
+  test('disabled clause applies after the press that latched the emitter', async ({
     page,
   }) => {
     const pressBtn = 'group-disabled-press-btn'
@@ -40,7 +40,7 @@ test.describe('group + disabledStyle emitter latch', () => {
     expect(await color(page, pressBtn, 'backgroundColor'), 'starts green').toBe(GREEN)
     expect(await color(page, plainBtn, 'backgroundColor'), 'starts green').toBe(GREEN)
 
-    // the press itself goes through the emitter (pressStyle), then onPress flips
+    // the press itself goes through the emitter (press clause), then onPress flips
     // disabled via a React re-render whose base style must win over the latch
     await page.getByTestId(pressBtn).click()
     await expect(page.getByTestId('group-disabled-state')).toHaveText('disabled')

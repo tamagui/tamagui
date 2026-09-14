@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { ScrollView, type ScrollView as ScrollViewType } from '@tamagui/scroll-view'
-import { Button, Text, YStack } from 'tamagui'
+import { Text, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 export function ScrollViewRefCase() {
   const scrollRef = useRef<ScrollViewType>(null)
@@ -38,16 +39,16 @@ export function ScrollViewRefCase() {
   }
 
   return (
-    <YStack gap="$2" padding="$2" height={400}>
+    <YStack gap="2" padding="2" height={400}>
       <Text id="status" testID="status">
         {status}
       </Text>
 
-      <YStack flexDirection="row" gap="$2">
+      <YStack flexDirection="row" gap="2">
         <Button
           id="scroll-to-btn"
           testID="scroll-to-btn"
-          size="$2"
+          size="3"
           onPress={handleScrollTo}
         >
           scrollTo(200)
@@ -55,7 +56,7 @@ export function ScrollViewRefCase() {
         <Button
           id="scroll-to-end-btn"
           testID="scroll-to-end-btn"
-          size="$2"
+          size="3"
           onPress={handleScrollToEnd}
         >
           scrollToEnd
@@ -63,7 +64,7 @@ export function ScrollViewRefCase() {
         <Button
           id="get-node-btn"
           testID="get-node-btn"
-          size="$2"
+          size="3"
           onPress={handleGetScrollableNode}
         >
           getScrollableNode
@@ -75,10 +76,10 @@ export function ScrollViewRefCase() {
         id="test-scrollview"
         testID="test-scrollview"
         flex={1}
-        backgroundColor="$background"
+        backgroundColor="background"
       >
         {Array.from({ length: 50 }, (_, i) => (
-          <Text key={i} id={`item-${i}`} padding="$2">
+          <Text key={i} id={`item-${i}`} padding="2">
             Item {i}
           </Text>
         ))}

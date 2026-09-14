@@ -14,7 +14,7 @@ export const PieScreen = () => {
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
     >
-      <YStack borderBottomWidth="$0.25" borderBottomColor="$borderColor" pb="$4">
+      <YStack borderBottomWidth="0-25" borderBottomColor="border-color" pb="4">
         <H4 {...demoProps.headingFontFamilyProps} {...demoProps.headingFontFamilyProps}>
           Traffic Sources
         </H4>

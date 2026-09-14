@@ -7,6 +7,11 @@ package: text
 demoName: Headings
 ---
 
+<IntroParagraph>
+  Heading components map semantic HTML headings to your configured font sizes
+  on web and native.
+</IntroParagraph>
+
 <HeroContainer>
   <HeadingsDemo />
 </HeroContainer>
@@ -17,8 +22,8 @@ demoName: Headings
 
 <Highlights
   features={[
-    'Accepts size prop that works on all styles.',
-    'Define custom fonts with styles per-size.',
+    'One size prop for all styles',
+    'Custom fonts with per-size styles',
   ]}
 />
 
@@ -57,10 +62,10 @@ The `Heading` component is defined as follows:
 ```tsx
 export const Heading = styled(Paragraph, {
   tag: 'span',
-  name: 'Heading',
+  displayName: 'Heading',
   accessibilityRole: 'header',
-  fontFamily: '$heading',
-  size: '$8',
+  fontFamily: 'heading',
+  size: '8',
   margin: 0,
 })
 ```
@@ -73,9 +78,9 @@ Because [Paragraph](/docs/components/text#paragraph) extends [SizableText](/docs
 import { Text } from 'tamagui' // or '@tamagui/core'
 
 const SizableText = styled(Text, {
-  name: 'SizableText',
-  fontFamily: '$body',
-  color: '$color',
+  displayName: 'SizableText',
+  fontFamily: 'body',
+  color: 'color',
 
   variants: {
     size: {
@@ -99,8 +104,7 @@ const SizableText = styled(Text, {
   },
 
   defaultVariants: {
-    // note tamagui uses a generic "true" token that your sizes should set to be the same as the default on your scale
-    size: '$true',
+    size: true,
   },
 })
 ```

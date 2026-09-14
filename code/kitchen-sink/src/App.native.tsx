@@ -37,7 +37,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { useFonts } from 'expo-font'
 import React from 'react'
-import { Appearance, Linking, LogBox, Text, useColorScheme } from 'react-native'
+import { Appearance, Linking, LogBox, Platform, Text, useColorScheme } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { PortalProvider } from 'react-native-teleport'
 import { H1 } from 'tamagui'
@@ -68,12 +68,23 @@ export default function App() {
 
   // Update Appearance when mode changes (for native components)
   React.useEffect(() => {
-    if (mode === 'system') {
-      // RN 0.83+ Kotlin conversion makes setColorScheme non-null on Android
-      // pass 'unspecified' to follow system
-      Appearance.setColorScheme('unspecified' as any)
-    } else {
+    if (mode !== 'system') {
       Appearance.setColorScheme(mode)
+      return
+    }
+    // 'system' means stop overriding. on ios that is already the window default,
+    // so the call has nothing to do there and is actively harmful: RN's
+    // Appearance.setColorScheme writes its JS cache to the string it was given
+    // while leaving RCTAppearance's own _currentColorScheme untouched, so
+    // passing 'unspecified' makes useColorScheme() report the literal
+    // 'unspecified' (which is not a ColorSchemeName) until a later native
+    // appearanceChanged event happens to re-sync the two. that renders light on
+    // a dark device and keeps the DynamicColorIOS gate shut for the whole app.
+    // android does need the explicit reset: RN 0.83's kotlin conversion made
+    // setColorScheme non-null there, and 'unspecified' is how it follows the
+    // system again.
+    if (Platform.OS === 'android') {
+      Appearance.setColorScheme('unspecified' as any)
     }
   }, [mode])
 

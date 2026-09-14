@@ -8,5 +8,10 @@
     "types",
     "dist",
     "**/__tests__"
+  ],
+  "references": [
+    {
+      "path": "../react-native-types"
+    }
   ]
 }

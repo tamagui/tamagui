@@ -1,26 +1,25 @@
+import { resolveSize } from '@tamagui/size'
 import { styled, View, type SizeTokens } from '@tamagui/web'
 
-const getSpacerSize = (size: SizeTokens | number | boolean, { tokens }) => {
-  size = size === true ? '$true' : size
-  const sizePx = tokens.space[size as any] ?? size
+const getSpacerSize = styled.dynamic<SizeTokens | number | boolean>((size, env) => {
+  if (size === false) return
+  const sizePx =
+    typeof size === 'number' ? size : resolveSize(size, env).frame.paddingHorizontal
   return {
     width: sizePx,
     height: sizePx,
     minWidth: sizePx,
     minHeight: sizePx,
   }
-}
+})
 
 export const Spacer = styled(View, {
-  name: 'Spacer',
+  displayName: 'Spacer',
   pointerEvents: 'none',
   render: 'span',
 
   variants: {
-    size: {
-      '...size': getSpacerSize,
-      '...': getSpacerSize,
-    },
+    size: getSpacerSize,
 
     direction: {
       horizontal: {

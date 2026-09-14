@@ -1,123 +1,194 @@
 ---
 title: Benchmarks
-description: Performance tests and comparisons
+description: Reproducible web and native performance comparisons
 ---
 
-Tamagui compares well to the fastest libraries at runtime, and the compiler
-further optimizes your styled components, flattening them down and hoisting
-objects out of your rendering loop (and extracting CSS on the web).
+<IntroParagraph>
+  Uniwind was fastest in all 15 native cells. Tamagui Tailwind was second in all
+  15. On web, Tailwind CSS was fastest in 10 cells, Tamagui Tailwind in three,
+  and inline React in two.
+</IntroParagraph>
 
-With the compiler on Tamagui will output near optimal React code despite giving
-many nice shorthand style props. It has a higher impact on web, but with initial
-support for flattening more dynamic styled components now landed, Tamagui does
-flatten a very high % of your code on all platforms. We look forward to updating
-our benchmarks as we expect we've improved in a number of areas.
+Green cells mark the lowest mean in each row. All values are mean milliseconds.
+Lower is faster.
 
-It's important to note that benchmarks never show a complete picture. Our plan is to
-build out a better benchmarking setup to update this page.
+## Web results
 
-## React Native
+The web fixture renders 200 items, or 60 in the heavy case. Mount starts with an
+empty root. Update changes fixture state without replacing the root. Remount
+replaces the tree. Timing starts before the React state change and ends in
+`useLayoutEffect`.
 
-In [this benchmark](https://github.com/tamagui/benchmarks) Tamagui is within 10%
-of the speed of vanilla React Native, even when using nearly all of Tamagui's
-features. We render list of 28 items with a few sections, text and images.
-Average of 5 runs on a Apple M2 Air:
+Each production build ran in Chromium `151.0.7922.34` on an Apple M5 Pro with 18
+logical CPUs and 64 GiB of memory. The runner used Bun `1.3.14` on Darwin
+`25.5.0`. Two warmup rounds preceded 10 retained rounds. Seed `73129` shuffled
+every framework and scenario round. All 50 behavior checks passed before timing.
 
-<BenchmarkChartNative />
+Simple, rich, group, and heavy use Tamagui `3.0.0-beta.901.1`. Animated uses
+Tamagui `3.0.0-beta.917.1`. The animated compiler flattened all 14 candidates
+with zero bailouts. The other versions are Tailwind CSS `4.3.0`, NativeWind
+`5.0.0-preview.4`, React Native Web `0.21.2`, Uniwind `1.11.0`, React `19.2.3`,
+and React DOM `19.2.3`.
 
-Running Tamagui without the compiler averages `125ms` or ~12% slower. Note that
-the compiler is much more effective on the web as it turns many more props into
-CSS and both bundle size and render performance are more important.
+<Wide>
+  <SimpleTable
+    headers={[
+      'Scenario',
+      'Operation',
+      'Tamagui Tailwind',
+      'Tailwind CSS',
+      'Inline React',
+      'NativeWind v5',
+      'Uniwind',
+    ]}
+    columnWidths={['10%', '10%', '22%', '15%', '15%', '14%', '14%']}
+    numericColumns={[2, 3, 4, 5, 6]}
+    minWidth={960}
+    highlightCells={[
+      [0, 3],
+      [1, 4],
+      [2, 3],
+      [3, 3],
+      [4, 3],
+      [5, 3],
+      [6, 2],
+      [7, 4],
+      [8, 2],
+      [9, 3],
+      [10, 2],
+      [11, 3],
+      [12, 3],
+      [13, 3],
+      [14, 3],
+    ]}
+    rows={[
+      ['Simple', 'Mount', '0.45', '**0.35**', '0.53', '1.60', '1.71'],
+      ['Simple', 'Update', '0.96', '0.98', '**0.90**', '2.43', '2.35'],
+      ['Simple', 'Remount', '0.55', '**0.44**', '0.63', '1.72', '1.80'],
+      ['Rich', 'Mount', '0.57', '**0.33**', '0.90', '1.73', '1.64'],
+      ['Rich', 'Update', '1.14', '**1.06**', '1.07', '2.39', '2.59'],
+      ['Rich', 'Remount', '0.67', '**0.43**', '0.98', '1.82', '2.11'],
+      ['Group', 'Mount', '**0.71**', '0.80', '1.38', '4.21', '5.24'],
+      ['Group', 'Update', '2.23', '2.53', '**2.18**', '6.00', '6.92'],
+      ['Group', 'Remount', '**0.92**', '1.10', '1.83', '5.75', '6.10'],
+      ['Heavy', 'Mount', '0.72', '**0.63**', '1.01', '2.95', '3.11'],
+      ['Heavy', 'Update', '**1.67**', '1.80', '1.70', '4.52', '4.42'],
+      ['Heavy', 'Remount', '1.06', '**0.93**', '1.34', '3.59', '4.00'],
+      ['Animated', 'Mount', '0.42', '**0.31**', '0.57', '1.21', '1.07'],
+      ['Animated', 'Update', '1.91', '**1.14**', '1.25', '1.96', '1.81'],
+      ['Animated', 'Remount', '2.01', '**1.98**', '2.35', '2.81', '2.95'],
+    ]}
+  />
+</Wide>
 
-## Web
+Tamagui Tailwind mounted faster than NativeWind and Uniwind in all five web
+scenarios. The paired 95% confidence intervals favored Tamagui in each of those
+10 comparisons. Tailwind CSS had lower means than Tamagui in 10 of 15 cells.
+Inline React had the lowest simple and group update means.
 
-We forked and ran a few more
-[benchmarks](https://github.com/tamagui/tamagui/tree/24ac758bbe5d6ff2f67f25071df4286e0594f578/starters/benchmark)
-for the web.
+The Tamagui arm uses `@tamagui/tailwind`. This table does not measure Tamagui's
+component APIs.
 
-**Legend:** RNW = react-native-web, SC = styled-components
+## Native results
 
-### Simple component
+All three Release apps render the same `native-class-bench.tsx` fixture. They use
+the same class strings, component tree, item counts, state changes, and timing
+boundary. Simple, themed, rich, and group render 200 items. Heavy renders 60
+three-component groups.
 
-Timing rendering a simple custom component.
+The fixture uses explicit point dimensions. An earlier smoke run found that
+`w-5` resolved to 52 points under the benchmark's Tamagui config and 20 points
+in the other arms. That fixture was rejected. Fixture version 2 passed an
+independent 20 by 20 layout check in all three apps before timing.
 
-<BenchmarkChart
-  data={[
-    { name: 'Tamagui', value: 0.018 },
-    { name: 'RNW', value: 0.057 },
-    { name: 'Dripsy', value: 0.042 },
-    { name: 'Stitches', value: 0.023 },
-    { name: 'Emotion', value: 0.041 },
-  ]}
-/>
+The campaign used Tamagui Tailwind `3.0.0-beta.917.1`, NativeWind
+`5.0.0-preview.4`, and Uniwind `1.11.0`. NativeWind also used
+`react-native-css` `3.0.7`, Reanimated `4.5.1`, and Worklets `0.10.1`. Every app
+used Expo `57.0.15`, React `19.2.3`, and React Native `0.86.2`.
 
-### Updating variants
+The apps ran on an iOS `26.4` simulator on an Apple M5 Pro with 18 logical CPUs
+and 64 GiB of memory. The runner used Bun `1.4.0`, Node `26.3.0`, and
+XcodeBuildMCP `2.3.0` on Darwin `25.5.0`. It waited until three host samples were
+`71.8%`, `63.4%`, and `74.1%` idle. Two warmup rounds preceded 12 retained
+rounds. Seed `73129` shuffled every round.
 
-Changing variants is fast at runtime, and even faster when compiled:
+<Wide>
+  <SimpleTable
+    headers={['Scenario', 'Operation', 'Tamagui Tailwind', 'NativeWind v5', 'Uniwind']}
+    columnWidths={['16%', '16%', '24%', '22%', '22%']}
+    numericColumns={[2, 3, 4]}
+    minWidth={960}
+    highlightCells={[
+      [0, 4],
+      [1, 4],
+      [2, 4],
+      [3, 4],
+      [4, 4],
+      [5, 4],
+      [6, 4],
+      [7, 4],
+      [8, 4],
+      [9, 4],
+      [10, 4],
+      [11, 4],
+      [12, 4],
+      [13, 4],
+      [14, 4],
+    ]}
+    rows={[
+      ['Simple', 'Mount', '19.18', '37.41', '**4.13**'],
+      ['Simple', 'Update', '15.00', '27.59', '**3.22**'],
+      ['Simple', 'Remount', '18.23', '71.99', '**4.03**'],
+      ['Themed', 'Mount', '17.91', '53.78', '**3.55**'],
+      ['Themed', 'Update', '14.54', '32.98', '**3.57**'],
+      ['Themed', 'Remount', '18.10', '48.37', '**3.87**'],
+      ['Rich', 'Mount', '39.44', '201.42', '**4.73**'],
+      ['Rich', 'Update', '31.41', '108.29', '**4.11**'],
+      ['Rich', 'Remount', '39.47', '199.20', '**4.83**'],
+      ['Group', 'Mount', '68.48', '516.28', '**15.10**'],
+      ['Group', 'Update', '37.35', '196.06', '**11.24**'],
+      ['Group', 'Remount', '73.19', '396.69', '**16.60**'],
+      ['Heavy', 'Mount', '38.73', '292.36', '**8.16**'],
+      ['Heavy', 'Update', '29.00', '68.76', '**5.02**'],
+      ['Heavy', 'Remount', '39.99', '318.57', '**8.23**'],
+    ]}
+  />
+</Wide>
 
-<BenchmarkChart
-  data={[
-    { name: 'Tamagui', value: 0.02 },
-    { name: 'RNW', value: 0.063 },
-    { name: 'Dripsy', value: 0.108 },
-    { name: 'Stitches', value: 0.037 },
-    { name: 'Emotion', value: 0.069 },
-    { name: 'SC', value: 0.081 },
-  ]}
-/>
+Uniwind had the lowest mean in every native cell. Its paired 95% confidence
+intervals also favored it over Tamagui in all 15 cells. Tamagui had lower means
+than NativeWind in all 15 cells. Several Tamagui and NativeWind paired intervals
+overlapped zero because NativeWind's observations varied widely.
 
-> Since styled-components and Emotion don't offer a first-class variant API,
-> this was done via prop interpolation.
+## Source record
 
-### Updating inline styles
+The cross-framework harness began in `code/comparisons`. It was extracted from
+this monorepo in [commit `300a4db8de`](https://github.com/tamagui/tamagui/commit/300a4db8def094229793e2c416b1a008fc5d20a5)
+so NativeWind does not enter the main workspace dependency graph.
 
-Tamagui has a big advantage for inline styles, it's the only library to compile
-them and flatten the tree.
+The web values come from committed receipts `8b45f79809` and `9896f9c488`. The
+native values come from fixture source commit `84fc84bb5d` and receipt commit
+`352925a2ac`. The native receipt contains all 180
+retained observations, 30 warmups, confidence intervals, package versions,
+fixture hashes, bundle hashes, build identities, and behavior signatures. The
+comparison repository does not have a public remote yet. The web table is also
+retained in the [Tamagui Tailwind post](/blog/tailwind-mode).
 
-<BenchmarkChart
-  data={[
-    { name: 'Tamagui', value: 0.025 },
-    { name: 'RNW', value: 0.06 },
-    { name: 'Dripsy', value: 0.266 },
-    { name: 'Stitches', value: 0.027 },
-    { name: 'Emotion', value: 0.047 },
-  ]}
-/>
+The monorepo still contains Tamagui's conformance harness, runtime
+microbenchmarks, compiler graph benchmark, bundle checks, and browser fixture.
 
----
+## What this does not measure
 
-### Fully dynamic styles
-
-These benchmarks don't benefit from the compiler. The React Native API surface
-is much more feature-rich than DOM.
-
-<BenchmarkChart
-  data={[
-    { name: 'Tamagui', value: 31.0 },
-    { name: 'Dripsy', value: 57.5 },
-    { name: 'Stitches', value: 14.5 },
-    { name: 'Emotion', value: 49.01 },
-  ]}
-/>
-
-> Note: This test was taken from the
-> [styled-components benchmarks](https://github.com/styled-components/styled-components/tree/main/packages/benchmarks).
-
-### Mounting deep tree
-
-In this test, we mount a tree with many nested nodes.
-
-<BenchmarkChart
-  data={[
-    { name: 'Tamagui', value: 18.61 },
-    { name: 'Dripsy', value: 44.43 },
-    { name: 'Stitches', value: 8.32 },
-    { name: 'Emotion', value: 42.49 },
-    { name: 'SC', value: 51.4 },
-  ]}
-/>
-
-- SC - Styled Components
-
-> Note: This test was taken from the
-> [styled-components benchmarks](https://github.com/styled-components/styled-components/tree/main/packages/benchmarks).
+- The web run covers production rendering after load. It does not measure server
+  rendering, hydration, interaction latency, or network cost.
+- The native run uses one simulator. It does not measure a physical device,
+  Android, startup, memory, GPU work, or energy use.
+- The timers end in `useLayoutEffect`. They include React reconciliation and the
+  synchronous native commit. They do not include the next fully drawn frame.
+- The behavior gate checks this fixture. It does not prove support or visual
+  equivalence for every utility.
+- Compiler acceptance and rendered pixels are separate questions.
+- Small differences can move with hardware, operating system, library version,
+  and application shape.
+- Bundle size and build time are tracked separately. Each library ships a
+  different mix of runtime and build tooling.

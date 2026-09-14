@@ -3,7 +3,8 @@
   "version": "2.7.7",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack --port 3456",
+    "dev": "node ../../core/cli/dist/index.cjs build --target web ./src -- next dev --turbopack --port 3456",
+    "build:turbopack": "node ../../core/cli/dist/index.cjs build --target web ./src -- next build",
     "next-build": "next build",
     "start": "next start --port 3456",
     "test": "bun run test:unit && bun run test:integration",
@@ -16,7 +17,7 @@
     "@tamagui/config": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/next-theme": "workspace:*",
-    "next": "16.1.1",
+    "next": "16.2.11",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native-web": "~0.21.0"
@@ -26,6 +27,6 @@
     "@tamagui/cli": "workspace:*",
     "@types/node": "^22.1.0",
     "@types/react": "~19.2.0",
-    "vitest": "4.0.4"
+    "vitest": "4.1.0"
   }
 }

@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "conformance-native",
+    "slug": "conformance-native",
+    "version": "1.0.0",
+    "scheme": "conformance",
+    "platforms": ["ios"],
+    "ios": {
+      "bundleIdentifier": "dev.tamagui.conformancenative"
+    }
+  }
+}

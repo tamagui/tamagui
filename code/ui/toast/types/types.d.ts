@@ -1,3 +1,4 @@
+export type SwipeDirection = 'vertical' | 'up' | 'down' | 'horizontal' | 'left' | 'right' | 'auto';
 type BurntLayout = {
     iconSize?: {
         width: number;

@@ -3,7 +3,7 @@ import { Button, ListItem, Theme, YStack } from 'tamagui'
 
 export function ButtonIconColor() {
   return (
-    <YStack gap="$4" padding="$4">
+    <YStack gap="4" padding="4">
       {/* button icon should get theme color */}
       <Theme name="red">
         <Button testID="button-themed" icon={Moon} />

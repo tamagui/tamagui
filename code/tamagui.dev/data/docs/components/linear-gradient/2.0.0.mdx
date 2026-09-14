@@ -7,6 +7,11 @@ package: linear-gradient
 demoName: LinearGradient
 ---
 
+<IntroParagraph>
+  LinearGradient renders theme-aware gradients with the same style props on web
+  and native.
+</IntroParagraph>
+
 <HeroContainer>
   <LinearGradientDemo />
 </HeroContainer>
@@ -17,9 +22,9 @@ demoName: LinearGradient
 
 <Highlights
   features={[
-    'Works on native and web.',
-    'Accepts Tamagui style props and theme colors.',
-    'Bundles easily with webpack.',
+    'Native and web support',
+    'Tamagui style props and theme colors',
+    'Webpack bundling support',
   ]}
 />
 
@@ -74,17 +79,17 @@ See the [expo docs](https://docs.expo.dev/versions/latest/sdk/linear-gradient/) 
 
 #### Alternative: backgroundImage style prop
 
-For most gradients, use the [`backgroundImage` style prop](/docs/intro/styles#backgroundimage):
+For most gradients, use the [`backgroundImage` style prop](/docs/core/style-props#backgroundimage):
 
 ```tsx
-<View backgroundImage="linear-gradient(to bottom, $background, $color)" />
+<html.div backgroundImage="linear-gradient(to bottom, background, color)" />
 ```
 
 Use `<LinearGradient>` for precise color stop control.
 
 ---
 
-LinearGradient extends YStack, inheriting [Stack props](/docs/components/stacks) and therefore the [Tamagui standard props](/docs/intro/props), plus:
+LinearGradient extends YStack, inheriting `View` props and therefore the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[

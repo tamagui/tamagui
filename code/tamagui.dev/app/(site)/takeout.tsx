@@ -1,165 +1,79 @@
-import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Image, YStack } from 'tamagui'
-import { ContainerLarge } from '~/components/Containers'
+import { ThemeTintAlt } from '@tamagui/logo'
+import { Suspense, lazy } from 'react'
+import { XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
+import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { HeadInfo } from '~/components/HeadInfo'
-import { Footer } from '~/features/site/Footer'
-import { getActivePromo } from '../../features/site/purchase/promoConfig'
-import { useSubscriptionModal } from '../../features/site/purchase/useSubscriptionModal'
-import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
-
+import { Link } from '~/components/Link'
+import { SubTitle } from '~/components/SubTitle'
 import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
-import { ScreenshotGallery } from '~/features/takeout/ScreenshotGallery'
-import { TakeoutBentoFeatures } from '~/features/takeout/TakeoutBentoFeatures'
-// import { TakeoutGlow } from '~/features/takeout/TakeoutGlow'
-import { TakeoutHeroNew } from '~/features/takeout/TakeoutHeroNew'
-import { TakeoutMenuShowcase } from '~/features/takeout/TakeoutMenuShowcase'
-import { TakeoutTechStack } from '~/features/takeout/TakeoutTechStack'
-import { VersionComparison } from '~/features/takeout/VersionComparison'
-import { VideoSection } from '~/features/takeout/VideoSection'
+import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
 
-export default function TakeoutPageNew() {
-  const { showAppropriateModal } = useSubscriptionModal()
-  const activePromo = getActivePromo()
+const TakeoutBox3D = lazy(() => import('~/features/takeout/TakeoutBox3D'))
 
+export default function TakeoutPage() {
   return (
-    <YStack maxW="100%">
-      <ThemeNameEffect colorKey="$color2" />
-      <LoadCherryBomb />
+    <>
       <HeadInfo
         title="Tamagui Takeout"
-        description="Ship apps everywhere - iOS, Android, and web with one codebase"
+        description="A React Native and web starter kit built on Tamagui and One."
         openGraph={{
           url: '/takeout',
-          images: [
-            {
-              url: '/takeout/social.png',
-            },
-          ],
+          images: [{ url: '/takeout/social.png' }],
         }}
       />
 
-      {/* <PageThemeCarousel /> */}
-
-      {/* <TakeoutGlow /> */}
-
-      <ThemeTintAlt>
-        <YStack
-          position="absolute"
-          l={0}
-          r={0}
-          t={-100}
-          b={0}
-          style={{
-            background:
-              'linear-gradient(140deg, var(--color02), var(--color0), var(--color0), var(--color0))',
-          }}
-          z={-3}
-        />
-      </ThemeTintAlt>
+      <LoadCherryBomb />
 
       <YStack
-        className="grain"
-        fullscreen
-        t={-60}
-        b={0}
-        opacity={0.25}
-        z={0}
-        style={{
-          imageRendering: 'pixelated',
-        }}
-      />
-
-      <ThemeTintAlt offset={0}>
-        <YStack
-          position="absolute"
-          l={0}
-          r={0}
-          t={-100}
-          mixBlendMode="color-burn"
-          b={0}
-          style={{
-            background: 'linear-gradient(10deg, var(--color5), var(--color1))',
-          }}
-          z={-3}
-        />
-      </ThemeTintAlt>
-
-      <ThemeTintAlt offset={3}>
-        <YStack
-          position="absolute"
-          l={0}
-          r={0}
-          t={-100}
-          b={0}
-          style={{
-            background:
-              'linear-gradient(140deg, var(--color02), var(--color0), var(--color0), var(--color0))',
-          }}
-          z={-3}
-        />
-      </ThemeTintAlt>
-
-      <YStack
-        pointerEvents="none"
-        position="absolute"
-        t={-950}
-        l="50%"
-        x={-300}
-        scale={1}
-        rotate="120deg"
-        opacity={0.02}
-        $theme-light={{
-          opacity: 0.12,
-        }}
-        z={-1}
+        items="center"
+        justify="center"
+        gap="8"
+        px="4"
+        py="10"
+        minH="80vh"
+        minW="850px sm:90%"
+        maxW={850}
+        self="center"
+        position="relative"
       >
-        <Image alt="mandala" width={2500} height={2500} src="/takeout/geometric.svg" />
-      </YStack>
-
-      {/* gradient on the end of the page */}
-      <ThemeTint>
         <YStack
-          z={-1}
-          fullscreen
-          style={{
-            background: `linear-gradient(to bottom, transparent, transparent, var(--color2))`,
-          }}
-        />
-      </ThemeTint>
-
-      <ContainerLarge px={0}>
-        {/* Hero Section */}
-        <TakeoutHeroNew
-          onBuyPress={() => showAppropriateModal()}
-          activePromo={activePromo}
-        />
-
-        {/* Version Comparison Section */}
-        <YStack py="$8" px="$4">
-          <VersionComparison />
+          position="absolute"
+          pointerEvents="none"
+          t="30% sm:25%"
+          r="-20% md:-15% sm:-35%"
+          width={450}
+          height={450}
+          scale="md:0.7 sm:0.6"
+          z={100}
+        >
+          <Suspense fallback={null}>
+            <ErrorBoundary noMessage>
+              <TakeoutBox3D />
+            </ErrorBoundary>
+          </Suspense>
         </YStack>
 
-        {/* Tech Stack Section */}
-        <TakeoutTechStack />
+        <TakeoutLogo />
 
-        {/* Menu Showcase Section */}
-        <TakeoutMenuShowcase />
+        <SubTitle size="8" text="center" fontSize="sm:6" lineHeight="sm:6" maxW={640}>
+          Free and open source React Native starter kit.
+        </SubTitle>
 
-        {/* Features Section */}
-        <TakeoutBentoFeatures />
+        <XStack mt="-7" gap="4" items="center" justify="center" flexWrap="wrap">
+          <Link href="https://takeout.tamagui.dev" target="_blank">
+            <Button size="5" variant="outlined">
+              <Button.Text>Demo</Button.Text>
+            </Button>
+          </Link>
 
-        {/* Video Section */}
-        <YStack py="$8" px="$4">
-          <VideoSection />
-        </YStack>
-
-        {/* Screenshot Gallery Section */}
-        <YStack py="$8" px="$4">
-          <ScreenshotGallery />
-        </YStack>
-
-        <Footer />
-      </ContainerLarge>
-    </YStack>
+          <Link href="https://github.com/tamagui/takeout" target="_blank">
+            <Button size="5">
+              <Button.Text>Repo</Button.Text>
+            </Button>
+          </Link>
+        </XStack>
+      </YStack>
+    </>
   )
 }

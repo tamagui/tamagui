@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 import React from 'react'
 
 import type { DismissableBranchProps, DismissableProps } from './DismissableProps'
@@ -28,11 +29,11 @@ export function useDismissableLayersAbove(
   return 0
 }
 
-export const Dismissable = React.forwardRef((props: DismissableProps, _ref) => {
+export const Dismissable = createRefComponent((props: DismissableProps, _ref) => {
   return props.children as any
 })
 
-export const DismissableBranch = React.forwardRef(
+export const DismissableBranch = createRefComponent(
   (props: DismissableBranchProps, _ref) => {
     return props.children as any
   }

@@ -3,14 +3,14 @@ import { YStack } from 'tamagui'
 
 export const CheckCircle = () => (
   <YStack
-    bg="$backgroundHover"
+    bg="background-hover"
     width={25}
     height={25}
     items="center"
     justify="center"
     rounded={100}
-    mr="$2.5"
+    mr="2-5"
   >
-    <Check size={12} color="var(--colorHover)" />
+    <Check size={12} color="var(--color-hover)" />
   </YStack>
 )

@@ -1,17 +1,33 @@
 ---
-title: Tamagui UI
+title: Tamagui Components
 ---
 
 <IntroParagraph>
-  Tamagui UI is a complete suite of components that render nicely on both React web and
+  Tamagui Components is a complete suite of components that render nicely on both React web and
   React Native and come in both styled and unstyled forms.
 </IntroParagraph>
+
+## Install
 
 You can install each component separately, or all of them at once with:
 
 ```bash
 yarn add tamagui
 ```
+
+## React Strict DOM for React Native
+
+Tamagui's UI components follow the React Strict DOM model: DOM-shaped elements and props that render to real native views on native.
+
+The root `html.*` export allows a single component tree to use semantic DOM elements on web and the corresponding React Native primitives on native:
+
+- **Layout elements** (`html.div`, `html.article`, `html.main`, `html.section`, `html.ul`) render to `View` on native and literal semantic tags on web.
+- **Text elements** (`html.p`, `html.span`, `html.strong`, `html.h1`–`html.h6`) render to `Text` on native and matching headings/paragraphs on web.
+- **Media & inputs** (`html.img` maps to `Image`, `html.input` / `html.textarea` map to `TextInput`).
+
+On native, DOM props are mapped to their React Native equivalents (such as `href` on `html.a` and `src` on `html.img`), and raw strings inside layout elements are automatically wrapped. Because each member is a standard Tamagui component, style props accept tokens, themes, shorthands, and flat conditional values with compiler lowering.
+
+For more details, see the [HTML primitives documentation](/docs/core/html-primitives).
 
 ## Setup
 
@@ -21,7 +37,7 @@ You'll need to add a provider to the root of your app (unlike core, where that i
 
 ```tsx
 import { createTamagui, TamaguiProvider, View } from 'tamagui'
-import { defaultConfig } from '@tamagui/config/v5' // for quick config install this
+import { defaultConfig } from '@tamagui/config/v6' // for quick config install this
 
 const config = createTamagui(defaultConfig)
 
@@ -32,4 +48,4 @@ export default () => (
 )
 ```
 
-For a full guide configuration with `createTamagui`, check [the core configuration docs](/docs/core/configuration).
+For a full guide configuration with `createTamagui`, check [the core configuration docs](/docs/core/configuration). For native setup, platform integrations, and the fast-path runtime, see [the Native documentation](/ui/native).

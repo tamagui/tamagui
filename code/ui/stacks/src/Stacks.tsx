@@ -1,38 +1,11 @@
-import type { GetProps, SizeTokens } from '@tamagui/core'
+import type { GetProps } from '@tamagui/core'
 import { View, styled } from '@tamagui/core'
 
-import { getElevation } from './getElevation'
+export interface StackVariants {}
 
-export interface StackVariants {
-  /**
-   * @deprecated use `inset: 0, position: 'absolute'` instead
-   */
-  fullscreen?: boolean
-
-  elevation?: number | SizeTokens
-}
-
-export type YStackProps = Omit<GetProps<typeof YStack>, keyof StackVariants> &
-  StackVariants
-
+export type YStackProps = GetProps<typeof YStack>
 export type XStackProps = YStackProps
 export type ZStackProps = YStackProps
-
-export const fullscreenStyle = {
-  position: 'absolute',
-  inset: 0,
-} as const
-
-const variants = {
-  fullscreen: {
-    true: fullscreenStyle,
-  },
-
-  elevation: {
-    '...size': getElevation,
-    ':number': getElevation,
-  },
-} as const
 
 /**
  * @summary A view that arranges its children in a vertical line.
@@ -40,7 +13,6 @@ const variants = {
  */
 export const YStack = styled(View, {
   flexDirection: 'column',
-  variants,
 })
 
 YStack['displayName'] = 'YStack'
@@ -51,7 +23,6 @@ YStack['displayName'] = 'YStack'
  */
 export const XStack = styled(View, {
   flexDirection: 'row',
-  variants,
 })
 
 XStack['displayName'] = 'XStack'

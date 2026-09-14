@@ -59,6 +59,46 @@ You can run `bun run sandbox` or `bun run dev` (the tamagui website).
 
 ### Local Testing Setup
 
+#### Rebuild before package tests
+
+Test files often run from source while their workspace dependencies resolve
+through built package exports. Native core tests also alias `@tamagui/core` to
+the built `@tamagui/core/native-test` entry. After changing a package, run
+`bun run build` in that package before trusting a dependent suite, or keep
+`bun run watch` running at the repository root while you work. Otherwise the
+test can exercise stale `dist` output instead of the source you just changed.
+
+The [V3 final conformance matrix](./plans/v3-final-conformance-matrix.md)
+records the source, dist, mixed, or artifact topology for each release gate.
+
+#### Component styles: one forward pass and one parse
+
+The component runtime traverses each authored prop, style object, variant
+result, and style string once. By the end of that forward pass it has resolved
+animation and lifecycle state, variants, tokens, conditions, precedence, and
+output. Do not pre-scan a prop or string and parse it again later. Do not hide a
+second traversal in a helper, visitor, `.map`, or `.split`. Do not add a cache
+whose job is to make a redundant component parse cheaper. Prevent the redundant
+parse upstream.
+
+Tooling may build parsed objects outside the component runtime. Inside a
+component, the shared grammar exposes scalar transitions that the component's
+one character loop drives. Add new grammar facts to that transition state
+instead of adding another local scanner.
+
+There is one narrow exception. When the runtime invokes user code, it may
+re-derive the condition state that cannot safely cross that call. This applies
+to functional variants, getters, proxy traps, and authored coercion, and only
+to the condition active at that boundary. The canonical condition identity is
+a string, while reentrant frame scratch is numeric. Keeping that string in a
+module slot would let a nested component corrupt the outer pass. Preserve
+numeric source offsets across the call and re-derive the condition afterward.
+
+This exception does not permit rescanning the declaration, revisiting another
+prop, or re-deriving a condition at an ordinary internal boundary. It exists
+because a string cannot live in the numeric reentrant arena, not because a
+second parse is convenient.
+
 #### Playwright (web integration tests)
 
 Install browser binaries before first run:

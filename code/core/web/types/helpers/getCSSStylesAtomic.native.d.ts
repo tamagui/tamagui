@@ -1,4 +1,12 @@
-export declare const getCSSStylesAtomic: () => void;
-export declare const getStyleAtomic: () => void;
-export declare const styleToCSS: () => void;
+declare const empty: () => void;
+export declare const canGenerateCSS = false;
+export declare const flushDirectStyles: typeof empty;
+export declare const addComposition: typeof empty;
+export declare const registerAtomicSlot: typeof empty;
+export declare const buildAtomicSlotCSS: typeof empty;
+export declare const getCSSStylesAtomic: typeof empty;
+export declare const getCSSStyleAtomic: typeof empty;
+export declare const getStyleAtomic: typeof empty;
+export declare const styleToCSS: typeof empty;
+export {};
 //# sourceMappingURL=getCSSStylesAtomic.native.d.ts.map

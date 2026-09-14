@@ -17,13 +17,13 @@ const breakpoints = {
 
 export const media = {
   // v4 Config
-  maxXs: { maxWidth: breakpoints.xs },
-  max2xs: { maxWidth: breakpoints['2xs'] },
-  maxSm: { maxWidth: breakpoints.sm },
-  maxMd: { maxWidth: breakpoints.md },
-  maxLg: { maxWidth: breakpoints.lg },
-  maxXl: { maxWidth: breakpoints.xl },
-  max2Xl: { maxWidth: breakpoints['2xl'] },
+  'max-xs': { maxWidth: breakpoints.xs },
+  'max-2xs': { maxWidth: breakpoints['2xs'] },
+  'max-sm': { maxWidth: breakpoints.sm },
+  'max-md': { maxWidth: breakpoints.md },
+  'max-lg': { maxWidth: breakpoints.lg },
+  'max-xl': { maxWidth: breakpoints.xl },
+  'max-2xl': { maxWidth: breakpoints['2xl'] },
   // for site
   xl: { maxWidth: 1650 },
   // between lg and xl - for studio usage

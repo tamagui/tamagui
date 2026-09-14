@@ -8,7 +8,7 @@ export const cssLoaderPath =
 export default function loader(this: LoaderContext<TamaguiOptions>) {
   this.async()
   const options = { ...this.getOptions() }
-  let out = Buffer.from(options.cssData, 'base64').toString('utf-8')
+  let out = Buffer.from(options.cssData, 'base64url').toString('utf-8')
   if (out) {
     // use original JS sourcemap
     return this.callback(null, out || '')

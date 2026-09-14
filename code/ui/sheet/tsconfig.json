@@ -18,19 +18,22 @@
       "path": "../../core/core"
     },
     {
-      "path": "../../core/create-context"
+      "path": "../../core/helpers"
     },
     {
-      "path": "../../core/helpers"
+      "path": "../../core/react-native-pan-responder"
+    },
+    {
+      "path": "../../core/react-native-types"
+    },
+    {
+      "path": "../../core/react-native-use-responder-events"
     },
     {
       "path": "../../core/use-constant"
     },
     {
       "path": "../../core/use-controllable-state"
-    },
-    {
-      "path": "../../core/use-keyboard-visible"
     },
     {
       "path": "../animate-presence"

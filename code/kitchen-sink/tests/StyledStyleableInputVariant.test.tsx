@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'StyledStyleableInputVariant', type: 'useCase' })
 })
 
-test(`styled(styleable(styled(RNView))) applies proper variant overrides`, async ({
+test(`styled(createStyledHOC(styled(RNView))) applies proper variant overrides`, async ({
   page,
 }) => {
   const styles = await getStyles(page.locator('#input').first())
@@ -17,6 +17,6 @@ test(`styled(styleable(styled(RNView))) applies proper variant overrides`, async
   expect(styles.borderColor).toBe('rgb(255, 0, 0)')
 
   await page.locator('#input').focus()
-  const focusStyle = await getStyles(page.locator('#input').first())
-  expect(focusStyle.borderColor).toBe('rgb(0, 128, 0)')
+  const focusedStyles = await getStyles(page.locator('#input').first())
+  expect(focusedStyles.borderColor).toBe('rgb(0, 128, 0)')
 })
