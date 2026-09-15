@@ -3572,7 +3572,14 @@ function emitValue(
     return
   }
 
-  if (typeof raw === 'string' && expanded.length > 1) {
+  // an expansion that already computed distinct per-slot values (direction,
+  // visibility) is used as-is; only a same-value fan-out (margin, padding)
+  // distributes the raw string parts per css slot order
+  if (
+    typeof raw === 'string' &&
+    expanded.length > 1 &&
+    expanded.every((entry) => entry[1] === expanded[0][1])
+  ) {
     const parts = splitComponents(raw)
     if (parts.length > 0 && parts.length <= (expanded.length === 4 ? 4 : 2)) {
       for (let index = 0; index < expanded.length; index++) {

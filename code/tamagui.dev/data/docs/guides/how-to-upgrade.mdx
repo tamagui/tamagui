@@ -740,6 +740,47 @@ Examples:
 </Theme>
 ```
 
+### Web-standard style keys
+
+Files you convert to `html.*` should use web-standard style keys. `View` and
+`Text` keep accepting the React Native keys with no warnings, so only rename
+where you adopt the web contract. Find legacy keys with:
+
+```bash
+rg "marginHorizontal|marginVertical|paddingHorizontal|paddingVertical|marginStart|marginEnd|paddingStart|paddingEnd|textAlignVertical|writingDirection|includeFontPadding|elevation|shadowColor|shadowOffset|shadowOpacity|shadowRadius"
+```
+
+Use these replacements:
+
+| Legacy key | Replacement |
+| --- | --- |
+| `marginHorizontal` | `marginInline` (`mx` also works) |
+| `marginVertical` | `marginBlock` (`my` also works) |
+| `paddingHorizontal` | `paddingInline` (`px` also works) |
+| `paddingVertical` | `paddingBlock` (`py` also works) |
+| `marginStart` | `marginInlineStart` |
+| `marginEnd` | `marginInlineEnd` |
+| `paddingStart` | `paddingInlineStart` |
+| `paddingEnd` | `paddingInlineEnd` |
+| `elevation` | `boxShadow` |
+| `shadowColor`, `shadowOffset`, `shadowOpacity`, `shadowRadius` | one `boxShadow` string |
+| `textAlignVertical` | `verticalAlign` |
+| `writingDirection` | `direction` |
+| `includeFontPadding` | remove it, standard CSS font metrics govern text bounds |
+
+```tsx
+// before
+<View marginHorizontal={12} marginVertical={8} writingDirection="rtl" />
+
+// after
+<html.div marginInline={12} marginBlock={8} direction="rtl" />
+```
+
+On native, `direction` maps to `writingDirection` and `verticalAlign` maps to
+`textAlignVertical`, so web-authored styles apply on both platforms.
+Multi-value strings such as `margin="10px 20px"` and `gap="10px 20px"` expand
+per CSS slot order on native.
+
 ### Image source compatibility
 
 Image prefers web-standard `src` for URLs and native `require()` results.

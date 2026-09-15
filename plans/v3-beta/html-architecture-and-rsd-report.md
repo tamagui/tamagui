@@ -11,7 +11,7 @@ This report delivers the analysis and architecture proposals requested regarding
 2. **Web-Aligned `html.*` Contract**: Eliminating `elevation` (since Android New Architecture supports `boxShadow`), deprecating React Native proprietary keys (`writingDirection`, `textAlignVertical`, `includeFontPadding`), and establishing a clean separation where `View`/`Text` remain React Native-aligned while `html.*` is 100% web-aligned.
 3. **Incremental `--to-html` Migration**: A dedicated, file-by-file codemod enabling developers to convert `View`/`Text` components to `html.div`/`html.span` at their own pace.
 4. **Package Architecture**: Separating the 50+ UI primitives into a standalone `@tamagui/components` package, establishing `@tamagui/web` as the first-class styling foundation, and keeping the monolithic `tamagui` package strictly for backwards compatibility.
-5. **CSS Grid on Native Runtime**: Key takeaways from the Claude Opus research report (`plans/v3-beta/grid-native-runtime-report.md`).
+5. **CSS Grid on Native Runtime**: Key takeaways from the Claude Opus CSS Grid research.
 
 ---
 
@@ -162,7 +162,7 @@ Currently, the monorepo has:
 
 ## 6. CSS Grid on Native Runtime (Key Findings from Opus Research)
 
-The Claude Opus worker (`m14461`) completed an exhaustive investigation of CSS Grid on React Native and Yoga (`plans/v3-beta/grid-native-runtime-report.md`). Key takeaways:
+The Claude Opus worker (`m14461`) completed an exhaustive investigation of CSS Grid on React Native and Yoga. Key takeaways:
 
 1. **Upstream Status**:
    - Yoga CSS Grid Part 1 (types only) was merged in March 2026.

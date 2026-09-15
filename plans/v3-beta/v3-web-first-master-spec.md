@@ -143,30 +143,33 @@ Putting `{ margin: 0, padding: 0 }` in JS `defaultProps` on every `html.*` compo
 
 ### The Four-Layer Package Strategy
 
+Arrows point down the depends-on chain: `tamagui` depends on `@tamagui/ui`,
+which depends on `@tamagui/core`, which depends on `@tamagui/web`.
+
 ```
 ┌────────────────────────────────────────────────────────┐
 │                   tamagui                              │
 │  (Backwards-compatible umbrella: core + UI + themes)   │
-└───────────────────────────▲────────────────────────────┘
+└───────────────────────────▼────────────────────────────┘
                             │
-┌───────────────────────────┴────────────────────────────┐
+┌───────────────────────────▼────────────────────────────┐
 │              @tamagui/ui (or /components)              │
 │  (50+ unstyled primitives: Dialog, Popover, Sheet...)  │
-└───────────────────────────▲────────────────────────────┘
+└───────────────────────────▼────────────────────────────┘
                             │
-┌───────────────────────────┴────────────────────────────┐
+┌───────────────────────────▼────────────────────────────┐
 │                   @tamagui/core                        │
 │  (React Native bridge: View, Text, RN types, Pan)      │
-└───────────────────────────▲────────────────────────────┘
+└───────────────────────────▼────────────────────────────┘
                             │
-┌───────────────────────────┴────────────────────────────┐
+┌────────────────────────────────────────────────────────┐
 │                   @tamagui/web                         │
 │  (Ultra-light web styling engine: getSplitStyles, html)│
 └────────────────────────────────────────────────────────┘
 ```
 
 1. **`tamagui`**: Monolithic package maintained for backward compatibility. Re-exports `@tamagui/core`, `@tamagui/ui`, and default themes.
-2. **`@tamagui/ui` (or `@tamagui/components`)**: Intermediate package containing all 50+ UI primitives (Accordion, Alert Dialog, Button, Card, Dialog, Popover, Select, Sheet, Tabs, etc.). Does NOT force `@tamagui/core` down consumers' throats.
+2. **`@tamagui/ui` (or `@tamagui/components`)**: Intermediate package containing all 50+ UI primitives (Accordion, Alert Dialog, Button, Card, Dialog, Popover, Select, Sheet, Tabs, etc.). It depends on `@tamagui/core`: the primitives are built on core's `View` / `Text` and RN bindings.
 3. **`@tamagui/core`**: The React Native bridge. Holds `View`, `Text`, React Native prop tables (`elevation`, `marginHorizontal`), and native responder/gesture bindings.
 4. **`@tamagui/web`**: Pure, lightweight web-first styling engine (`getSplitStyles`, `createComponent`, atomic CSS caching, media queries, `html.*`).
 
@@ -178,17 +181,11 @@ Empirical audit (`bundle-size-ledger.md` & `web-core-split.md`) measured the gzi
 
 | Component / Layer | Baseline | Optimization | Savings (Gzip) |
 | :--- | :--- | :--- | :--- |
-| **Valid Style Props Table** | ~7.2 KB (685 static keys) | Dynamic CSSOM Discovery (`styleCache.get`) | **-1,060 B** (and 2.28× faster) |
 | **React Native Prop Tables** | RN-specific mappings | Moved to `@tamagui/core` | **-320 B** |
 | **Variants Runtime** | Built-in variants engine | Extracted to `@tamagui/variants` carrier | **-806 B** |
 | **Element Layout Hook** | `use-element-layout` | Moved to `@tamagui/core` | **-1,313 B** |
 | **Pseudo-State Listeners** | JS hover/press listeners | Pure CSS for class-emitting elements | **-801 B** |
-| **Total Target Web Bundle** | **26.88 kB gzip** | Fully trimmed `@tamagui/web` | **~19.46 kB gzip (-28%)** |
-
-#### Dynamic CSSOM Discovery Benchmark Results (700,000 lookups):
-- Static dictionary lookup: `21.86 ns/op` (~7 KB static bundle weight)
-- Direct un-cached DOM probe: `115.00 ns/op`
-- **Cached DOM lookup (`styleCache.get(prop)`): `9.57 ns/op` (2.28× FASTER, 0 KB bundle weight)**!
+| **Total Target Web Bundle** | **26.88 kB gzip** | Fully trimmed `@tamagui/web` | **~23.64 kB gzip (~-12%, re-measure with the styled-view and html-div fixtures before claiming)** |
 
 ---
 
@@ -202,7 +199,7 @@ bun tamagui codemod to-html ./src/features/dashboard/Header.tsx
 
 ### Transform Rules:
 1. **Element Mapping**:
-   - `View` -> `html.div`
+   - `View` -> `html.div` with `display="flex" flexDirection="column"` (plus `position="relative"` where children are absolute). `html.div` uses web defaults, so without them `gap` and `alignItems` stop applying and absolutely positioned children re-anchor, because `View` implies `position: relative` on native.
    - `Text` -> `html.span` (or `html.p` if block text)
 2. **Prop Mapping**:
    - `writingDirection: 'ltr' | 'rtl'` -> `direction: 'ltr' | 'rtl'`
@@ -218,10 +215,10 @@ bun tamagui codemod to-html ./src/features/dashboard/Header.tsx
 
 ## 5. CSS Grid Native Runtime Strategy
 
-Based on Opus research in `plans/v3-beta/grid-native-runtime-report.md`:
+The grid findings for the native runtime:
 1. **Tier 1 (Universal Flexbox Emulation)**:
    - Covers 90% of UI grids: `gridTemplateColumns="repeat(N, 1fr)"` and `gap={X}`.
-   - Compiles down to flex-wrap containers with computed percentage widths (`width: calc(100% / N - gap)`).
+   - Compiles down to flex-wrap containers with computed percentage widths (`width: calc((100% - (N - 1) * gap) / N)`). Native has no `calc()`, so Tier 1 must compute widths from measured container width.
    - Zero native runtime dependencies; works immediately on all iOS/Android engines.
 2. **Tier 2 (Yoga Grid Bridge)**:
    - Modern Yoga layout engines (RN 0.74+) include experimental CSS Grid support.
@@ -233,9 +230,7 @@ Based on Opus research in `plans/v3-beta/grid-native-runtime-report.md`:
 
 We hand this specification to the Claude Opus reviewer agent with the following specific review instructions:
 
-1. **Validate Dynamic CSSOM Discovery**:
-   - Confirm SSR/hydration safety for `styleCache.get(prop)` when DOM is not available during server-side rendering.
-2. **Validate Zero-Specificity CSS Resets**:
+1. **Validate Zero-Specificity CSS Resets**:
    - Confirm that `:where(...)` reset rules in `createDesignSystem.ts` cleanly override browser user-agent stylesheets without leaking into third-party non-Tamagui elements.
-3. **Review Package Boundary Mechanics**:
+2. **Review Package Boundary Mechanics**:
    - Verify that `@tamagui/web` can export `html.*` and the style engine without creating circular dependencies when `@tamagui/core` re-exports it.
