@@ -64,9 +64,10 @@ export declare const SliderThumbFrame: React.FunctionComponent<Omit<import("@tam
     elevate?: boolean | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/slider").SliderThumbExtraProps & {
     __scopeSlider?: string;
-}, "circular" | "elevate" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+}, "circular" | "elevate" | "orientation" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
+    orientation?: "horizontal" | "vertical" | undefined;
     size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     ref?: React.Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
@@ -78,6 +79,7 @@ export declare const SliderThumbFrame: React.FunctionComponent<Omit<import("@tam
 }, import("@tamagui/core").StackStyleBase, {
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
+    orientation?: "horizontal" | "vertical" | undefined;
     size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "circular" | "elevate" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
@@ -88,6 +90,7 @@ export declare const SliderThumbFrame: React.FunctionComponent<Omit<import("@tam
     }, import("@tamagui/core").StackStyleBase, {
         circular?: boolean | undefined;
         elevate?: boolean | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
         size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 };
@@ -96,9 +99,10 @@ export declare const SliderThumb: React.FunctionComponent<Omit<import("@tamagui/
     elevate?: boolean | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/slider").SliderThumbExtraProps & {
     __scopeSlider?: string;
-}, "circular" | "elevate" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+}, "circular" | "elevate" | "orientation" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
+    orientation?: "horizontal" | "vertical" | undefined;
     size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     ref?: React.Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
@@ -110,6 +114,7 @@ export declare const SliderThumb: React.FunctionComponent<Omit<import("@tamagui/
 }, import("@tamagui/core").StackStyleBase, {
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
+    orientation?: "horizontal" | "vertical" | undefined;
     size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "circular" | "elevate" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
@@ -120,6 +125,7 @@ export declare const SliderThumb: React.FunctionComponent<Omit<import("@tamagui/
     }, import("@tamagui/core").StackStyleBase, {
         circular?: boolean | undefined;
         elevate?: boolean | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
         size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 };
@@ -163,9 +169,10 @@ export declare const Slider: ((props: import("@tamagui/slider").SliderProps & {
         elevate?: boolean | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/slider").SliderThumbExtraProps & {
         __scopeSlider?: string;
-    }, "circular" | "elevate" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    }, "circular" | "elevate" | "orientation" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         circular?: boolean | undefined;
         elevate?: boolean | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
         size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         ref?: React.Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
@@ -177,6 +184,7 @@ export declare const Slider: ((props: import("@tamagui/slider").SliderProps & {
     }, import("@tamagui/core").StackStyleBase, {
         circular?: boolean | undefined;
         elevate?: boolean | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
         size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "circular" | "elevate" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
@@ -187,6 +195,7 @@ export declare const Slider: ((props: import("@tamagui/slider").SliderProps & {
         }, import("@tamagui/core").StackStyleBase, {
             circular?: boolean | undefined;
             elevate?: boolean | undefined;
+            orientation?: "horizontal" | "vertical" | undefined;
             size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
         }, import("@tamagui/core").StaticConfigPublic];
     };

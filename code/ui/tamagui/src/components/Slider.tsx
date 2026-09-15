@@ -14,7 +14,12 @@ import type * as React from 'react'
 
 export type SliderSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
 
-const SliderSizeContext = createStyledContext<{ size?: SliderSize }>({ size: 'md' })
+// the track is composed below the root, so it never sees the root's orientation
+// prop: the root republishes size + orientation here for the track resolver
+const SliderSizeContext = createStyledContext<{
+  size?: SliderSize
+  orientation?: 'horizontal' | 'vertical'
+}>({ size: 'md', orientation: 'horizontal' })
 
 const resolveSliderSize = (size: unknown): keyof typeof sliderThumbSize =>
   typeof size === 'string' && size in sliderThumbSize
@@ -100,7 +105,10 @@ const SliderRoot = createRefComponent<
   React.ComponentProps<typeof UiSlider>
 >(function Slider(props, ref) {
   return (
-    <SliderSizeContext.Provider size={resolveSliderSize(props.size)}>
+    <SliderSizeContext.Provider
+      size={resolveSliderSize(props.size)}
+      orientation={props.orientation ?? 'horizontal'}
+    >
       <UiSlider {...props} ref={ref} />
     </SliderSizeContext.Provider>
   )
