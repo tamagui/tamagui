@@ -102,7 +102,7 @@ describe('ListItem native composition', () => {
     }
 
     await renderListItem(
-      <ListItem size="10" color="#ff0000">
+      <ListItem size="xl" color="#ff0000">
         <ListItem.Icon>
           <ProbeIcon />
         </ListItem.Icon>
@@ -111,7 +111,7 @@ describe('ListItem native composition', () => {
     )
 
     expect(iconProps.at(-1)).toMatchObject({
-      size: 46,
+      size: 20,
       color: '#ff0000',
     })
   })

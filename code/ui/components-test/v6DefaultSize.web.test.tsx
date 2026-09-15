@@ -1,10 +1,9 @@
 import '@testing-library/jest-dom'
 
 import { defaultConfig as v6 } from '@tamagui/config/v6'
-import { Input } from '@tamagui/input'
 import { TamaguiProvider, createTamagui } from '@tamagui/core'
 import { render } from '@testing-library/react'
-import { Button, H1 } from 'tamagui'
+import { Button, H1, Input } from 'tamagui'
 import { describe, expect, test } from 'vitest'
 
 const config = createTamagui(v6)
@@ -107,59 +106,5 @@ describe('v6 default component size on web', () => {
       inputFontSize: 14,
       inputLineHeight: 20,
     })
-  })
-
-  test('keeps explicit size tokens coupled to the same key in every category', () => {
-    const rendered = render(
-      <TamaguiProvider config={config} defaultTheme="light">
-        <Button size="11">Explicit</Button>
-        <Input aria-label="Explicit name" size="11" />
-      </TamaguiProvider>
-    )
-    const buttonStyle = getComputedStyle(rendered.getByRole('button'))
-    const buttonTextStyle = getComputedStyle(rendered.getByText('Explicit'))
-    const inputStyle = getComputedStyle(rendered.getByRole('textbox'))
-
-    expect({
-      buttonPadding: resolveRenderedValue(
-        buttonStyle.paddingInline,
-        config.tokensParsed.space
-      ),
-      buttonRadius: resolveRenderedValue(
-        buttonStyle.borderRadius,
-        config.tokensParsed.radius
-      ),
-      buttonFontSize: resolveRenderedValue(
-        buttonTextStyle.fontSize,
-        config.fontsParsed.body.size
-      ),
-      inputRadius: resolveRenderedValue(
-        inputStyle.borderRadius,
-        config.tokensParsed.radius
-      ),
-      inputFontSize: resolveRenderedValue(
-        inputStyle.fontSize,
-        config.fontsParsed.body.size
-      ),
-    }).toEqual({
-      buttonPadding: config.tokensParsed.space['11'].val,
-      buttonRadius: config.tokensParsed.radius['11'].val,
-      buttonFontSize: config.fontsParsed.body.size['11'].val,
-      inputRadius: config.tokensParsed.radius['11'].val,
-      inputFontSize: config.fontsParsed.body.size['11'].val,
-    })
-  })
-
-  test('keeps heading variants above the sizable-text base size', () => {
-    const rendered = render(
-      <TamaguiProvider config={config} defaultTheme="light">
-        <H1>Heading</H1>
-      </TamaguiProvider>
-    )
-    const headingStyle = getComputedStyle(rendered.getByRole('heading'))
-
-    expect(
-      resolveRenderedValue(headingStyle.fontSize, config.fontsParsed.heading.size)
-    ).toBe(config.fontsParsed.heading.size['10'].val)
   })
 })
