@@ -15,7 +15,6 @@ import {
   type ListItemBehaviorProps,
   ListItemContext,
   ListItemFrame as ListItemBehaviorFrame,
-  ListItemIcon as ListItemBehaviorIcon,
   type ListItemIconProps as ListItemBehaviorIconProps,
   ListItemSubtitle as ListItemBehaviorSubtitle,
   ListItemText as ListItemBehaviorText,

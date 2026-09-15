@@ -63,7 +63,7 @@ export declare const SliderThumbFrame: React.FunctionComponent<Omit<import("@tam
 };
 export interface SliderThumbExtraProps {
     index?: number;
-    /** thumb px: a number, a font size key, or a skin size name the skin resolves */
+    /** thumb px before its first layout: a number, or a font size key */
     size?: string | number | boolean;
 }
 export type SliderThumbProps = GetProps<typeof SliderThumbFrame> & SliderThumbExtraProps;

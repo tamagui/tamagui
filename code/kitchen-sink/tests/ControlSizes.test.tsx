@@ -14,7 +14,7 @@ const EXPECTED_HEIGHT = { xs: 26, sm: 34, md: 38, lg: 42, xl: 50 } as const
 const EXPECTED_ICON = { xs: 12, sm: 16, md: 16, lg: 16, xl: 20 } as const
 // a checkbox/radio/switch box sits a step above the icon square (icon * 1.4) so
 // it reads as a control next to its label rather than as a glyph
-const EXPECTED_CONTROL = { xs: 17, sm: 22, md: 22, lg: 22, xl: 28 } as const
+const EXPECTED_CONTROL = { xs: 17, sm: 20, md: 22, lg: 25, xl: 28 } as const
 
 test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'ControlSizesCase', type: 'useCase' })

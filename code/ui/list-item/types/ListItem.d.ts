@@ -81,7 +81,6 @@ export type ListItemIconProps = {
     size?: string | number | boolean;
     scaleIcon?: number;
 };
-export declare const ListItemIcon: ({ children, size, scaleIcon }: ListItemIconProps) => any;
 /**
  * The props `useListItem` reads and replaces, so exactly what its result omits.
  */

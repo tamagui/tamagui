@@ -429,31 +429,20 @@ const SliderActive = createStyledHOC(
  * SliderThumb
  * -----------------------------------------------------------------------------------------------*/
 
-// the thumb is a line-height tall circle: 20px at md. skin size names
-// resolve through the same table the tamagui skin styles from; other strings
-// are font size keys measured against the config's default font.
-const thumbSizeTable: Record<string, number> = {
-  xs: 16,
-  sm: 20,
-  md: 20,
-  lg: 24,
-  xl: 28,
-}
-
+// the thumb's px before its first layout: a number as given, a font size key
+// measured as that font's line height, otherwise 20. skins pass px through the
+// root's `size`; the thumb re-measures itself on layout either way.
 const thumbSize = (val: string | number | boolean | null | undefined) => {
   if (typeof val === 'number') return val
   if (typeof val === 'string') {
-    const key = val.replace(/^\$/, '')
-    const tabled = thumbSizeTable[key]
-    if (tabled != null) return tabled
     const conf = getConfig()
     const font = conf.fontsParsed[conf.defaultFontToken]
-    const fontSize = font?.size[key]
+    const fontSize = font?.size[val]
     if (fontSize != null) {
       const metrics: Record<string, unknown> = {
         fontSize: Number.parseFloat(String(getVariableValue(fontSize))),
       }
-      const lineHeight = font?.lineHeight?.[key]
+      const lineHeight = font?.lineHeight?.[val]
       resolveTextMetrics(
         metrics,
         typeof lineHeight === 'number' ? `${lineHeight}px` : lineHeight
@@ -494,7 +483,7 @@ export const SliderThumbFrame = styled(YStack, {
 
 export interface SliderThumbExtraProps {
   index?: number
-  /** thumb px: a number, a font size key, or a skin size name the skin resolves */
+  /** thumb px before its first layout: a number, or a font size key */
   size?: string | number | boolean
 }
 

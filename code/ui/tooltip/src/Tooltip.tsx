@@ -88,8 +88,6 @@ const TooltipArrow = createRefComponent<TamaguiElement, PopperArrowProps>(
 
 export type TooltipProps = ScopedProps<
   PopperProps & {
-    /** arrow size in px */
-    size?: number
     open?: boolean
     children?: React.ReactNode
     onOpenChange?: (open: boolean) => void
@@ -164,8 +162,6 @@ const TooltipComponent = createRefComponent(function Tooltip(
     disableAutoCloseOnScroll,
     zIndex,
     scope = TOOLTIP_SCOPE,
-    // arrow px for TooltipSimple; never forwarded to Popper
-    size: _size,
     ...restProps
   } = props
   const triggerRef = React.useRef<HTMLButtonElement>(null)

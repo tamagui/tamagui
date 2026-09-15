@@ -8,13 +8,15 @@ import { Tooltip } from './Tooltip'
 
 export type TooltipSimpleProps = TooltipProps & {
   disabled?: boolean
+  /** arrow size in px */
+  size?: number
   label?: React.ReactNode
   children?: React.ReactNode
   contentProps?: YStackProps
 }
 
 export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
-  ({ label, children, contentProps, disabled, ...tooltipProps }, ref) => {
+  ({ label, children, contentProps, disabled, size = 7, ...tooltipProps }, ref) => {
     'use no memo'
 
     const child = React.Children.only(children)
@@ -63,7 +65,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
           {...contentProps}
         >
           <Tooltip.Arrow
-            size={tooltipProps.size ?? 7}
+            size={size}
             backgroundColor="background"
             borderColor="border-color"
           />

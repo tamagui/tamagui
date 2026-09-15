@@ -200,7 +200,7 @@ import {
   createStyledHOC,
   ListItemContext,
   ListItemFrame as ListItemBehaviorFrame,
-  ListItemIcon,
+  type ListItemIconProps,
   ListItemSubtitle,
   ListItemText,
   ListItemTitle,
@@ -208,6 +208,7 @@ import {
   useListItem,
   withStaticProperties,
 } from '@tamagui/ui'
+import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 
 const ListItemFrame = styled(ListItemBehaviorFrame, {
   context: ListItemContext,
@@ -215,6 +216,12 @@ const ListItemFrame = styled(ListItemBehaviorFrame, {
   borderColor: 'border-color',
   color: 'color',
 })
+
+// the icon px is yours to decide; the behavior package only publishes color
+const ListItemIcon = ({ children, size = 16 }: ListItemIconProps) => {
+  const { color } = ListItemContext.useStyledContext()
+  return useGetThemedIcon({ size, color })(children)
+}
 
 const ListItemComponent = createStyledHOC(ListItemFrame, function ListItem(props, ref) {
   const { props: listItemProps } = useListItem(props)

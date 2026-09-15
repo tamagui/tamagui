@@ -7,14 +7,15 @@ import { type GetProps, styled } from '@tamagui/core'
 
 export type SwitchSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
 
-// the track is the checkbox square stretched into a pill, so a switch and a
-// checkbox at the same size read as the same weight (Checkbox.tsx uses the same
-// 1.4). the thumb insets by the track's 2px padding on every side.
+// the track is the checkbox square stretched into a pill (1.9 wide), so a
+// switch and a checkbox at the same size read as the same weight (the height
+// ladder is Checkbox.tsx's). the thumb insets by the track's 2px padding on
+// every side.
 const switchTrackSize = {
   xs: { width: 32, height: 17, minHeight: 17 },
-  sm: { width: 42, height: 22, minHeight: 22 },
+  sm: { width: 38, height: 20, minHeight: 20 },
   md: { width: 42, height: 22, minHeight: 22 },
-  lg: { width: 42, height: 22, minHeight: 22 },
+  lg: { width: 48, height: 25, minHeight: 25 },
   xl: { width: 53, height: 28, minHeight: 28 },
 } as const
 
@@ -22,9 +23,9 @@ const THUMB_INSET = 2
 
 const switchThumbSize = {
   xs: { width: 13, height: 13 },
-  sm: { width: 18, height: 18 },
+  sm: { width: 16, height: 16 },
   md: { width: 18, height: 18 },
-  lg: { width: 18, height: 18 },
+  lg: { width: 21, height: 21 },
   xl: { width: 24, height: 24 },
 } as const
 

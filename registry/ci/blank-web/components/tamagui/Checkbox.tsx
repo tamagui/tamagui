@@ -3,14 +3,15 @@ import { type GetProps, styled, withStaticProperties } from '@tamagui/core'
 
 export type CheckboxSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
 
-// the box reads as a control next to its label, so it sits a step above
-// the icon square the check glyph is drawn at (Switch.tsx uses the same
-// 1.4 for its track, so the two read as the same weight at one size)
+// the box reads as a control next to its label, so it sits a step above the
+// icon square the check glyph is drawn at: 1.4 times the 12/14/16/18/20 icon
+// ladder. RadioGroup.tsx and Switch.tsx use the same heights so the three read
+// as one weight at one size
 const checkboxSize = {
   xs: { width: 17, height: 17, borderRadius: 4 },
-  sm: { width: 22, height: 22, borderRadius: 6 },
+  sm: { width: 20, height: 20, borderRadius: 5 },
   md: { width: 22, height: 22, borderRadius: 6 },
-  lg: { width: 22, height: 22, borderRadius: 6 },
+  lg: { width: 25, height: 25, borderRadius: 6 },
   xl: { width: 28, height: 28, borderRadius: 7 },
 } as const
 

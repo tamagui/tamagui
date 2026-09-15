@@ -896,6 +896,23 @@ every styled component and every `createStyledContext` provider, not only
 <Button size={null} />        // no size table applied
 ```
 
+### Smaller size-related removals
+
+- `Checkbox`, `RadioGroup` and `Switch` now step through five real sizes
+  (17, 20, 22, 25 and 28px tall). In the first betas `sm`, `md` and `lg` all
+  rendered at 22px.
+- `Tooltip` no longer accepts `size`. It only ever set the arrow px for
+  `TooltipSimple`, which keeps `size` for that purpose.
+- `@tamagui/ui` no longer exports a `ListItemIcon` component. The behavior
+  package publishes `color` through `ListItemContext`; the icon px is the
+  skin's decision (the `tamagui` ListItem still ships `ListItem.Icon`). The
+  `ListItemIconProps` type stays exported.
+- The unstyled `Slider` and `Slider.Thumb` take `size` as a px number or a font
+  size key. Skin size names (`sm`, `md`) belong to the styled `tamagui` Slider,
+  which resolves them itself.
+- `useToggleGroupItem().color` is `undefined` when no color was set, where it
+  used to be an empty string.
+
 ## 6. Replace token stepping
 
 `@tamagui/get-token` no longer supports runtime scale stepping. Removed APIs:

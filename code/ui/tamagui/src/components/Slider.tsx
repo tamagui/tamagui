@@ -109,7 +109,12 @@ const SliderRoot = createRefComponent<
       size={resolveSliderSize(props.size)}
       orientation={props.orientation ?? 'horizontal'}
     >
-      <UiSlider {...props} ref={ref} />
+      <UiSlider
+        {...props}
+        // the behavior thumb positions itself by px before its first layout
+        size={sliderThumbSize[resolveSliderSize(props.size)].width}
+        ref={ref}
+      />
     </SliderSizeContext.Provider>
   )
 })

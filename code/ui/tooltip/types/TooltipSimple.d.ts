@@ -3,6 +3,8 @@ import * as React from 'react';
 import type { TooltipProps } from './Tooltip';
 export type TooltipSimpleProps = TooltipProps & {
     disabled?: boolean;
+    /** arrow size in px */
+    size?: number;
     label?: React.ReactNode;
     children?: React.ReactNode;
     contentProps?: YStackProps;

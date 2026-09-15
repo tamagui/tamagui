@@ -77,16 +77,6 @@ export type ListItemIconProps = {
   scaleIcon?: number
 }
 
-export const ListItemIcon = ({ children, size, scaleIcon = 1 }: ListItemIconProps) => {
-  const context = ListItemContext.useStyledContext()
-  const getThemedIcon = useGetThemedIcon({
-    size: getThemedIconSize(size ?? context.size ?? true, scaleIcon),
-    color: context.color,
-  })
-
-  return getThemedIcon(children)
-}
-
 /**
  * The props `useListItem` reads and replaces, so exactly what its result omits.
  */

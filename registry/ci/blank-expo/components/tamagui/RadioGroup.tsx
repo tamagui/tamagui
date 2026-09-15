@@ -3,14 +3,14 @@ import { RadioGroup as RadioGroupBehavior } from '@tamagui/radio-group'
 
 export type RadioGroupSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
 
-// a radio reads as a control next to its label, so it matches the
-// checkbox square and the switch track rather than the icon square
-// (Checkbox.tsx and Switch.tsx use the same 1.4)
+// a radio reads as a control next to its label, so it matches the checkbox
+// square and the switch track height rather than the icon square (the same
+// ladder as Checkbox.tsx)
 const radioSize = {
   xs: { width: 17, height: 17 },
-  sm: { width: 22, height: 22 },
+  sm: { width: 20, height: 20 },
   md: { width: 22, height: 22 },
-  lg: { width: 22, height: 22 },
+  lg: { width: 25, height: 25 },
   xl: { width: 28, height: 28 },
 } as const
 
