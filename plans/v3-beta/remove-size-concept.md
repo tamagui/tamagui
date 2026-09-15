@@ -106,6 +106,22 @@ Button, Checkbox, RadioGroup, Select, Switch, Tabs, Input, Card, ListItem,
 Slider, ToggleGroup. Same numbers as today's v6 table so the skin is visually
 unchanged. `Text`/`Paragraph`/`SizableText` keep `size` as the font scale only.
 
+## Core semantics change this pulled in
+
+`mergeProps` and `mergeComponentProps` (`code/core/web/src/helpers/mergeProps.ts`,
+commit `27b7fb391a`) now treat an explicit `undefined` prop as absent: a
+`defaultVariants` value or a styled-context value stands instead of being
+replaced by it. Why: the old size variants were `styled.dynamic` functions, and
+`resolveSelection` calls a function variant with any value, so
+`resolveSize(undefined)` quietly returned the default. Table variants skip an
+`undefined` lookup, so the first table skins turned `<Button size={undefined}>`
+(the kitchen-sink `ControlSizesCase` default row and the `renderButton()` test)
+into an unsized button. The merge layer is the right place because every skin
+and every `createStyledContext` provider has the same shape; it also matches
+the October 2025 rule that undefined context values are not merged. `null`
+still unsets a variant default. Documented in `how-to-upgrade.mdx` under
+"Control sizes are named"; `mergeProps` is a public `@tamagui/web` export.
+
 ## Validation
 
 - `bun run build` in touched packages, `bun run lint`, `bun run check`,

@@ -880,6 +880,22 @@ Tailwind users know.
 If you also adopt the unstyled primitives from `@tamagui/ui`, those own no size
 scale at all, so you provide sizing yourself or through your copied styles.
 
+### An explicit `undefined` prop no longer clears a default
+
+`<Button size={props.size}>` with `props.size` undefined now renders the `md`
+default. In v2 an explicitly passed `undefined` replaced the `defaultVariants`
+value and the styled-context value for that key, and the control rendered with
+no size styles at all. The old size variants were functions that happened to
+absorb `undefined`; the named-size tables do not, so core now treats an
+explicit `undefined` the way React `defaultProps` do: as absent. This applies to
+every styled component and every `createStyledContext` provider, not only
+`size`. To deliberately turn a default variant off, pass `null`:
+
+```tsx
+<Button size={maybeSize} />   // undefined falls back to md
+<Button size={null} />        // no size table applied
+```
+
 ## 6. Replace token stepping
 
 `@tamagui/get-token` no longer supports runtime scale stepping. Removed APIs:

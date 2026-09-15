@@ -1,5 +1,6 @@
-// an explicit undefined caller prop clears only its own property. flex shares
-// an atomic slot with flexDirection and flexWrap, so <XStack flex={undefined}>
+// an explicit undefined caller prop is absent (mergeProps treats it like React
+// defaultProps do), and must never disturb neighbours either. flex shares an
+// atomic slot with flexDirection and flexWrap, so <XStack flex={undefined}>
 // must keep the styled row instead of dropping the whole slot
 
 import { beforeAll, expect, test } from 'vitest'
