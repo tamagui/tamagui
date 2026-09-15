@@ -83,7 +83,7 @@ export default function AcceptInvitePage() {
                 Your GitHub account is already a member of the Tamagui team.
               </Paragraph>
               <Button
-                size="4"
+                size="md"
                 theme="green"
                 onPress={() =>
                   window.open(

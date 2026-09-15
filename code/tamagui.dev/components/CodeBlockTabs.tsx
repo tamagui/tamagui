@@ -48,7 +48,6 @@ export function CodeBlockTabs({
         <Tabs
           activationMode="manual"
           orientation="horizontal"
-          size="4"
           rounded="4"
           group
           mt={1}
