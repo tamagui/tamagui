@@ -188,9 +188,6 @@
       "path": "code/core/helpers"
     },
     {
-      "path": "code/core/size"
-    },
-    {
       "path": "code/core/normalize-css-color"
     },
     {

@@ -59,7 +59,7 @@
       "name": "button",
       "type": "registry:ui",
       "title": "Button",
-      "description": "v2-look Button: token-based sizing through the opt-in @tamagui/size policy, circular and variant (outlined/quiet) skins, icon + text composition on the unstyled @tamagui/ui Button behavior.",
+      "description": "v2-look Button: named sizes from the inline size table, circular and variant (outlined/quiet) skins, icon + text composition on the unstyled @tamagui/ui Button behavior.",
       "dependencies": [
         "@tamagui/button",
         "@tamagui/core",
@@ -210,6 +210,7 @@
       "description": "v2-look ListItem: theme palette, border, cursor, hover/press color styling, text color, the outlined/active appearance, and disabled dimming, over the unstyled @tamagui/ui ListItem behavior (which keeps structural layout + the size mechanism + the disabled pointer-event block).",
       "dependencies": [
         "@tamagui/core",
+        "@tamagui/helpers-tamagui",
         "@tamagui/list-item"
       ],
       "categories": [
@@ -460,7 +461,6 @@
       "description": "v2-look Switch: token-based frame and thumb sizing with theme background and focus styling, over the unstyled @tamagui/ui Switch behavior.",
       "dependencies": [
         "@tamagui/core",
-        "@tamagui/size",
         "@tamagui/switch"
       ],
       "categories": [
