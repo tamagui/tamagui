@@ -1,13 +1,6 @@
 import { href, usePathname } from 'one'
 import { useEffect, useRef, useState } from 'react'
-import {
-  H4,
-  Paragraph,
-  ScrollView,
-  Separator,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { H4, Paragraph, ScrollView, Separator, XStack, YStack } from 'tamagui'
 
 import { Link } from '~/components/Link'
 import { AGENT_SETUP_PROMPT } from '~/components/CopyAgentSetupButton'
