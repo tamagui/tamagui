@@ -1,13 +1,6 @@
-import {
-  CheckCircle,
-  Code2,
-  Copy,
-  FileCode2,
-  Paintbrush,
-  TerminalSquare,
-} from '@tamagui/lucide-icons-2'
+import { Code2, FileCode2, Paintbrush, TerminalSquare } from '@tamagui/lucide-icons-2'
 import { useStore } from '@tamagui/use-store'
-import { forwardRef, useId } from 'react'
+import { forwardRef, useEffect, useId } from 'react'
 import { Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
@@ -17,6 +10,7 @@ import { useBashCommand } from '~/hooks/useBashCommand'
 import { useClipboard } from '~/hooks/useClipboard'
 import { toggleDocsTinted } from './docsTint'
 import { useCodeSyntaxTabs } from './MDXTabs'
+import { CodeChromeButton, CodeChromeRow, useCodeChromeSlot } from './CodeChrome'
 
 class CollapseStore {
   isCollapsed: boolean
@@ -61,27 +55,23 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
 
   const isPreVisible = !isCollapsed || !isCollapsible
 
-  const copyButton = disableCopy ? null : (
-    <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
-      <Button
-        aria-label="Copy code to clipboard"
-        size="xs"
-        height={28}
-        minHeight={28}
-        display="inline-flex"
-        variant="outlined"
-        borderWidth="0-5"
-        opacity="0 sm:1 group-hover/code:1"
-        transition="quickest"
-        icon={hasCopied ? CheckCircle : Copy}
-        onPress={() => {
-          onCopy()
-        }}
-      >
-        Copy
-      </Button>
-    </TooltipSimple>
-  )
+  // inside a syntax-toggle block the copy control belongs in the toggle's row,
+  // which is a sibling above this one, so publish the text up and let that row
+  // render it. keeps the two controls in a single flex row.
+  const slot = useCodeChromeSlot()
+  const publishCopy = showCodeSyntax && !disableCopy
+  useEffect(() => {
+    if (!publishCopy || !slot) return
+    slot.setCopyText(transformedCommand)
+    return () => slot.setCopyText(null)
+  }, [publishCopy, transformedCommand])
+
+  const copyButton =
+    disableCopy || publishCopy ? null : (
+      <CodeChromeButton label="Copy code to clipboard" onPress={onCopy}>
+        {hasCopied ? 'Copied' : 'Copy'}
+      </CodeChromeButton>
+    )
 
   return (
     <YStack
@@ -130,6 +120,11 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
 
         {isPreVisible && (
           <YStack>
+            {/* a standalone block has no syntax toggle, so it gets the same row
+                on its own, with copy right-aligned and lined up identically */}
+            {copyButton && !showFileName && !showTabs && (
+              <CodeChromeRow justify="flex-end">{copyButton}</CodeChromeRow>
+            )}
             <Pre
               data-invert-line-highlight={isHighlightingLines}
               data-line-numbers={showLineNumbers}
@@ -173,8 +168,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 </XStack>
               )}
 
-              {showCodeSyntax && <YStack height={36} shrink={0} />}
-
               <CodeBlockTabs
                 command={command}
                 className={className}
@@ -187,12 +180,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               >
                 {children}
               </CodeBlockTabs>
-
-              {!showFileName && !showTabs && copyButton && (
-                <XStack position="absolute" t="3" r="3">
-                  {copyButton}
-                </XStack>
-              )}
             </Pre>
           </YStack>
         )}

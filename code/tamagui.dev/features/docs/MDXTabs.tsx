@@ -9,13 +9,20 @@ import {
 import type { TabsProps, TabsTabProps } from 'tamagui'
 import { Paragraph, Tabs, XStack, style, styled, withStaticProperties } from 'tamagui'
 import { type Href, useLocalSearchParams, usePathname, useRouter } from 'one'
+import { useClipboard } from '~/hooks/useClipboard'
+import {
+  CODE_CHROME_HEIGHT,
+  CODE_CHROME_TAB_WIDTH,
+  CodeChromeButton,
+  CodeChromeRow,
+  CodeChromeSlotProvider,
+  CodeChromeText,
+  useCodeChromeSlot,
+} from './CodeChrome'
 
 const codeSyntaxChangeEvent = 'docs-code-syntax-change'
-const MDXTabsContext = createContext({ codeSyntax: false, isTailwind: false })
+const MDXTabsContext = createContext({ codeSyntax: false, isTailwind: false, value: '' })
 const MDXTabsSearchContext = createContext('')
-const codeTabActiveStyle = style({
-  backgroundColor: 'color-1 hover:color-1 focus:color-1',
-})
 const tabActiveStyle = style({
   backgroundColor: 'color-7 hover:color-7 focus:color-7',
 })
@@ -102,8 +109,8 @@ function TabsComponent({
     })
   }
 
-  return (
-    <MDXTabsContext.Provider value={{ codeSyntax, isTailwind }}>
+  const tabs = (
+    <MDXTabsContext.Provider value={{ codeSyntax, isTailwind, value }}>
       <Tabs
         onValueChange={updateUrl}
         orientation="horizontal"
@@ -116,32 +123,40 @@ function TabsComponent({
       />
     </MDXTabsContext.Provider>
   )
+
+  // the code block inside a content panel publishes its copy text up to the
+  // toggle's row, so both controls render in one flex row instead of two
+  // absolutely positioned islands
+  return codeSyntax ? <CodeChromeSlotProvider>{tabs}</CodeChromeSlotProvider> : tabs
 }
 
 const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
-  const { codeSyntax } = useContext(MDXTabsContext)
+  const { codeSyntax, value } = useContext(MDXTabsContext)
 
   if (codeSyntax) {
     return (
       <Tabs.Tab
-        height={27}
-        minHeight={27}
-        px="2-5"
+        height={CODE_CHROME_HEIGHT}
+        minHeight={CODE_CHROME_HEIGHT}
+        width={CODE_CHROME_TAB_WIDTH}
+        px={0}
         py={0}
+        items="center"
+        justify="center"
         pointerEvents="auto"
         cursor="pointer"
         rounded="3"
         bg="transparent"
+        borderWidth={0}
+        // above the sliding indicator
+        z={1}
         {...props}
         outlineColor="focus-visible:outline-color"
         outlineWidth="focus-visible:2px"
         outlineStyle="focus-visible:solid"
-        activeStyle={codeTabActiveStyle}
         ref={ref as any}
       >
-        <Paragraph size="2" color="color-11">
-          {props.children}
-        </Paragraph>
+        <CodeChromeText active={value === props.value}>{props.children}</CodeChromeText>
       </Tabs.Tab>
     )
   }
@@ -180,33 +195,74 @@ const TabsListFrame = styled(XStack, {
   minW: 'sm:100%',
 })
 
-const TabsList = (props) => {
-  const { codeSyntax, isTailwind } = useContext(MDXTabsContext)
+// the two codeSyntax values, in render order, so the indicator knows how far to
+// slide. codeSyntax is always this pair (see valueFromUrl above)
+const syntaxOrder = ['string', 'typed']
+
+/** copy, rendered from the text the active code block published upward */
+const CodeSyntaxCopy = () => {
+  const slot = useCodeChromeSlot()
+  const { hasCopied, onCopy } = useClipboard(slot?.copyText ?? '')
+
+  if (!slot?.copyText) return null
+
+  return (
+    <CodeChromeButton label="Copy code to clipboard" onPress={onCopy}>
+      {hasCopied ? 'Copied' : 'Copy'}
+    </CodeChromeButton>
+  )
+}
+
+const TabsList = ({ children, ...props }: any) => {
+  const { codeSyntax, isTailwind, value } = useContext(MDXTabsContext)
 
   if (isTailwind) return null
 
   if (codeSyntax) {
+    const index = Math.max(0, syntaxOrder.indexOf(value))
     return (
-      <XStack position="absolute" t={24} r={86} z={100}>
+      <CodeChromeRow>
         <Tabs.List
           loop={false}
           aria-label="code syntax"
-          height={28}
+          height={CODE_CHROME_HEIGHT}
           p={0}
           gap={0}
-          rounded="4"
-          borderWidth="0-5"
-          borderColor="border-color"
           bg="transparent"
+          borderWidth={0}
+          position="relative"
           {...props}
-        />
-      </XStack>
+        >
+          {/* the background is the whole animation: a soft token sliding under
+              the active label, no border and no button shape */}
+          <div
+            aria-hidden
+            style={{
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              left: 0,
+              width: CODE_CHROME_TAB_WIDTH,
+              borderRadius: 6,
+              backgroundColor: 'var(--color-3)',
+              transform: `translateX(${index * 100}%)`,
+              transition: 'transform 200ms cubic-bezier(0.16, 1, 0.3, 1)',
+              pointerEvents: 'none',
+              zIndex: 0,
+            }}
+          />
+          {children}
+        </Tabs.List>
+        <CodeSyntaxCopy />
+      </CodeChromeRow>
     )
   }
 
   return (
     <TabsListFrame className="sticky">
-      <Tabs.List size="4" width="100%" {...props} />
+      <Tabs.List size="4" width="100%" {...props}>
+        {children}
+      </Tabs.List>
     </TabsListFrame>
   )
 }
