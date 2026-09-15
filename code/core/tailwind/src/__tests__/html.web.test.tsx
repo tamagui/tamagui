@@ -32,9 +32,11 @@ describe('html on the tailwind frontend', () => {
     expect(asHtml.paddingLeft).toBeTruthy()
     expect(asHtml.borderTopLeftRadius).toBeTruthy()
     expect(asHtml.backgroundColor).toBeTruthy()
-    // a tag adds its element defaults on top, and the class still wins over them
+    // a tag adds its semantic defaults on top, and the class still wins over
+    // them; the browser-stylesheet undo is the :where(.is_DOM) host CSS, not a
+    // resolved style prop, so an unpadded tag resolves no padding here
     expect(asHtml).toMatchObject(asView)
-    expect(asHtml.paddingTop).toBe('0px')
+    expect(asHtml.paddingTop).toBeUndefined()
   })
 
   test('resolves a modifier', () => {
@@ -46,8 +48,8 @@ describe('html on the tailwind frontend', () => {
   })
 
   test('keeps the tag element defaults', () => {
-    // the generated button defaults, which is what makes a tag render the same
-    // whether or not a css reset ran
+    // the generated button defaults, which keep a tag's semantic styling
+    // identical across frontends (the browser-stylesheet undo is host CSS)
     expect((html.button as any).staticConfig.defaultProps).toMatchObject(
       (regularHtml.button as any).staticConfig.defaultProps
     )
