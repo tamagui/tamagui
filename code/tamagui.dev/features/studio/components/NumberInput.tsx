@@ -1,9 +1,9 @@
 import { Minus, Plus } from '@tamagui/lucide-icons-2'
-import { Input, type SizeTokens, type InputProps as TamaguiInputProps } from 'tamagui'
-import { Button } from '~/components/Button'
+import { Input, type InputProps as TamaguiInputProps } from 'tamagui'
+import { Button, type ButtonSize } from '~/components/Button'
 
 export type NumberInputProps = {
-  size: SizeTokens
+  size: ButtonSize
   value: number
   onValueChange?: (newValue: number) => void
   min?: number

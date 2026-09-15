@@ -5,7 +5,7 @@ import { selectionStyles } from '@tamagui/config/v6-base'
 // entry point. `@tamagui/config/v5-subtle` re-exports a whole theme pack, and
 // `defaultConfig` holds another, so touching either ships ~250kb of theme values
 // to the browser that the `themes:` line below then replaces.
-import { settings as defaultSettings, sizes } from '@tamagui/config/settings'
+import { settings as defaultSettings } from '@tamagui/config/settings'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands/v4'
@@ -39,7 +39,6 @@ const configuredThemes =
 export const config = {
   shorthands,
   tokens,
-  sizes,
   themes: configuredThemes,
   fonts,
   animations,

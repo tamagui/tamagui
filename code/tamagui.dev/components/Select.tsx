@@ -1,6 +1,11 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
-import type { SelectItemProps, SelectProps, SelectTriggerProps } from 'tamagui'
+import type {
+  SelectItemProps,
+  SelectProps,
+  SelectSize,
+  SelectTriggerProps,
+} from 'tamagui'
 import { Select as TamaguiSelect, YStack, withStaticProperties } from 'tamagui'
 
 export const SelectItem = ({ children, ...props }: SelectItemProps) => {
@@ -31,7 +36,7 @@ const SelectComponent = (
     defaultOpen,
     onOpenChange,
     dir,
-    size,
+    size: sizeIn,
     children,
     onActiveChange,
     renderValue,
@@ -47,9 +52,9 @@ const SelectComponent = (
     defaultOpen,
     onOpenChange,
     dir,
-    size,
+    size: sizeIn as SelectSize,
     renderValue,
-  } as SelectProps
+  }
   return (
     <TamaguiSelect {...selectProps} zIndex={1_000_000}>
       <TamaguiSelect.Trigger

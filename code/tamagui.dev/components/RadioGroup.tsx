@@ -1,5 +1,17 @@
 import { RadioGroup as RadioGroupBehavior } from '@tamagui/radio-group'
-import { resolveSize, styled, withStaticProperties } from 'tamagui'
+import { styled, withStaticProperties } from 'tamagui'
+
+export type SiteRadioSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
+
+// the old recipe's icon px per name: the site radio is the icon square, not
+// the checkbox square the registry skin uses
+const radioSize = {
+  xs: { width: 12, height: 12 },
+  sm: { width: 16, height: 16 },
+  md: { width: 16, height: 16 },
+  lg: { width: 16, height: 16 },
+  xl: { width: 20, height: 20 },
+} as const
 
 const RadioGroupItem = styled(RadioGroupBehavior.Item, {
   displayName: 'SiteRadioGroupItem',
@@ -13,13 +25,10 @@ const RadioGroupItem = styled(RadioGroupBehavior.Item, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: styled.dynamic<any>((value, env) => {
-      const size = resolveSize(value, env).icon
-      return {
-        width: size,
-        height: size,
-      }
-    }),
+    size: {
+      ...radioSize,
+      true: radioSize.md,
+    },
 
     disabled: {
       true: {
@@ -28,6 +37,9 @@ const RadioGroupItem = styled(RadioGroupBehavior.Item, {
       },
     },
   } as const,
+  defaultVariants: {
+    size: 'md',
+  },
 })
 
 const RadioGroupIndicator = styled(RadioGroupBehavior.Indicator, {
