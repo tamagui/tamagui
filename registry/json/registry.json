@@ -62,8 +62,7 @@
       "description": "v2-look Button: named sizes from the inline size table, circular and variant (outlined/quiet) skins, icon + text composition on the unstyled @tamagui/ui Button behavior.",
       "dependencies": [
         "@tamagui/button",
-        "@tamagui/core",
-        "@tamagui/helpers-tamagui"
+        "@tamagui/core"
       ],
       "categories": [
         "form",

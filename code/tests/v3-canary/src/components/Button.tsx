@@ -6,7 +6,6 @@ import {
   ButtonText as ButtonBehaviorText,
   type ButtonBehaviorProps,
   createStyledHOC,
-  getThemedIconSize,
   createStyledContext,
   styled,
   useButton,
@@ -98,9 +97,7 @@ const ButtonComponent = createStyledHOC(
   function CanaryButton(props: ButtonBehaviorProps & { size?: ButtonSize }, ref) {
     const { props: buttonProps } = useButton(props, {
       Text: ButtonText,
-      iconSize: getThemedIconSize(
-        buttonIconSize[resolveButtonSize(props.size as ButtonSize)]
-      ),
+      iconSize: buttonIconSize[resolveButtonSize(props.size as ButtonSize)],
     })
 
     return <ButtonFrame ref={ref} {...buttonProps} />

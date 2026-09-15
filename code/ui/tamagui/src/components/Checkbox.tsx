@@ -1,19 +1,25 @@
 import { Checkbox as CheckboxBehavior } from '@tamagui/checkbox'
-import { type GetProps, type SizeName, styled, withStaticProperties } from '@tamagui/core'
+import {
+  type GetProps,
+  resolveSizing,
+  type SizeName,
+  styled,
+  withStaticProperties,
+} from '@tamagui/core'
 
 export type CheckboxSize = SizeName | boolean
 
-// the box reads as a control next to its label, so it sits a step above the
-// icon square the check glyph is drawn at: 1.4 times the 12/14/16/18/20 icon
-// ladder. RadioGroup.tsx and Switch.tsx use the same heights so the three read
-// as one weight at one size
-const checkboxSize = {
-  xs: { width: 17, height: 17, borderRadius: 4 },
-  sm: { width: 20, height: 20, borderRadius: 5 },
-  md: { width: 22, height: 22, borderRadius: 6 },
-  lg: { width: 25, height: 25, borderRadius: 6 },
-  xl: { width: 28, height: 28, borderRadius: 7 },
-} as const
+// the box reads as a control next to its label, so it sizes off the rung
+// control font size, a step above the text key from md up. RadioGroup.tsx and
+// Switch.tsx use the same heights so the three read as one weight at one size
+const checkboxSize = styled.dynamic<CheckboxSize>((val, env) => {
+  const sizing = resolveSizing(val, env)
+  return {
+    width: sizing.square,
+    height: sizing.square,
+    borderRadius: sizing.radius,
+  }
+})
 
 export const CheckboxFrame = styled(CheckboxBehavior, {
   displayName: 'Checkbox',
@@ -30,10 +36,7 @@ export const CheckboxFrame = styled(CheckboxBehavior, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: {
-      ...checkboxSize,
-      true: checkboxSize.md,
-    },
+    size: checkboxSize,
 
     disabled: {
       true: {

@@ -1,18 +1,21 @@
-import { type GetProps, type SizeName, styled, withStaticProperties } from '@tamagui/core'
+import {
+  type GetProps,
+  resolveSizing,
+  type SizeName,
+  styled,
+  withStaticProperties,
+} from '@tamagui/core'
 import { RadioGroup as RadioGroupBehavior } from '@tamagui/radio-group'
 
 export type RadioGroupSize = SizeName | boolean
 
 // a radio reads as a control next to its label, so it matches the checkbox
 // square and the switch track height rather than the icon square (the same
-// ladder as Checkbox.tsx)
-const radioSize = {
-  xs: { width: 17, height: 17 },
-  sm: { width: 20, height: 20 },
-  md: { width: 22, height: 22 },
-  lg: { width: 25, height: 25 },
-  xl: { width: 28, height: 28 },
-} as const
+// derivation as Checkbox.tsx)
+const radioSize = styled.dynamic<RadioGroupSize>((val, env) => {
+  const side = resolveSizing(val, env).square
+  return { width: side, height: side }
+})
 
 export const RadioGroupFrame = styled(RadioGroupBehavior, {
   displayName: 'RadioGroup',
@@ -33,10 +36,7 @@ export const RadioGroupItem = styled(RadioGroupBehavior.Item, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: {
-      ...radioSize,
-      true: radioSize.md,
-    },
+    size: radioSize,
 
     disabled: {
       true: {

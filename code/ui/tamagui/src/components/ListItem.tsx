@@ -1,12 +1,14 @@
 // Styled ListItem = @tamagui/ui's list-item behavior and parts + the default
 // v2-look skin (theme palette, border, cursor, hover/press color, the outlined
-// and active appearances, disabled dimming) and the size table. @tamagui/ui
+// and active appearances, disabled dimming) and the config sizing ladder. @tamagui/ui
 // ships no ListItem of its own: it exposes `useListItem` and the frame, text,
 // title, subtitle, and icon parts, and a skin decides the rest. This is the
 // single skin definition — the shadcn registry item is generated from this file.
 import {
   createStyledHOC,
   type GetProps,
+  getSizing,
+  resolveSizing,
   type SizeName,
   styled,
   withStaticProperties,
@@ -25,47 +27,42 @@ import {
 
 export type ListItemSize = SizeName | boolean
 
-const listItemFrameSize = {
-  xs: { paddingInline: '2', paddingBlock: '1', gap: '1' },
-  sm: { paddingInline: '3', paddingBlock: '1.5', gap: '1.5' },
-  md: { paddingInline: '4', paddingBlock: '2', gap: '2' },
-  lg: { paddingInline: '6', paddingBlock: '2', gap: '2' },
-  xl: { paddingInline: '8', paddingBlock: '2.5', gap: '2.5' },
-} as const
-
-const listItemTextSize = {
-  xs: { fontSize: 'xs', lineHeight: 'xs' },
-  sm: { fontSize: 'sm', lineHeight: 'sm' },
-  md: { fontSize: 'sm', lineHeight: 'sm' },
-  lg: { fontSize: 'base', lineHeight: 'base' },
-  xl: { fontSize: 'lg', lineHeight: 'lg' },
-} as const
-
-// the subtitle sits one step below the title
-const listItemSubtitleSize = {
-  xs: { fontSize: 'xs', lineHeight: 'xs' },
-  sm: { fontSize: 'xs', lineHeight: 'xs' },
-  md: { fontSize: 'sm', lineHeight: 'sm' },
-  lg: { fontSize: 'sm', lineHeight: 'sm' },
-  xl: { fontSize: 'base', lineHeight: 'base' },
-} as const
-
-const listItemIconSize = {
-  xs: 12,
-  sm: 16,
-  md: 16,
-  lg: 16,
-  xl: 20,
-} as const
-
-// icon px for an explicit size: numbers pass through, skin size names read
-// the table, anything else is the default
-const resolveListItemIconPx = (size: unknown): number | undefined => {
-  if (typeof size === 'number') return size
-  if (typeof size === 'string' && size in listItemIconSize) {
-    return listItemIconSize[size as keyof typeof listItemIconSize]
+// frame geometry and text derive from the config sizing ladder, the same rungs
+// Button uses
+const listItemFrameSize = styled.dynamic<ListItemSize>((val, env) => {
+  const sizing = resolveSizing(val, env)
+  return {
+    paddingInline: sizing.paddingInline,
+    paddingBlock: sizing.paddingBlock,
+    gap: sizing.gap,
   }
-  return undefined
+})
+
+const listItemTextSize = styled.dynamic<ListItemSize>((val, env) => {
+  const sizing = resolveSizing(val, env)
+  return { fontSize: sizing.fontSize, lineHeight: sizing.lineHeight }
+})
+
+// the subtitle sits one step below the title on the type scale, keyed by the
+// title font key so custom rungs keep their own title size
+const subtitleFontSize: Record<string, string> = {
+  xs: 'xs',
+  sm: 'xs',
+  base: 'sm',
+  lg: 'base',
+}
+
+const listItemSubtitleSize = styled.dynamic<ListItemSize>((val, env) => {
+  const sizing = resolveSizing(val, env)
+  const fontSize = subtitleFontSize[sizing.fontSize] ?? sizing.fontSize
+  return { fontSize, lineHeight: fontSize }
+})
+
+// icon px for an explicit size: numbers pass through, size names read the
+// config ladder, absent names the default
+const resolveListItemIconPx = (size: number | string | boolean | undefined): number => {
+  if (typeof size === 'number') return size
+  return getSizing(size as ListItemSize).icon
 }
 
 // the additive-border "outlined" appearance (formerly themeableVariantStyles.outlined
@@ -85,10 +82,7 @@ export const ListItemFrame = styled(ListItemBehaviorFrame, {
   cursor: 'default',
 
   variants: {
-    size: {
-      ...listItemFrameSize,
-      true: listItemFrameSize.md,
-    },
+    size: listItemFrameSize,
 
     variant: {
       outlined,
@@ -116,10 +110,7 @@ export const ListItemText = styled(ListItemBehaviorText, {
   context: ListItemContext,
   displayName: 'ListItemText',
   variants: {
-    size: {
-      ...listItemTextSize,
-      true: listItemTextSize.md,
-    },
+    size: listItemTextSize,
   } as const,
   defaultVariants: {
     size: 'md',
@@ -130,10 +121,7 @@ export const ListItemTitle = styled(ListItemBehaviorTitle, {
   context: ListItemContext,
   displayName: 'ListItemTitle',
   variants: {
-    size: {
-      ...listItemTextSize,
-      true: listItemTextSize.md,
-    },
+    size: listItemTextSize,
   } as const,
   defaultVariants: {
     size: 'md',
@@ -144,10 +132,7 @@ export const ListItemSubtitle = styled(ListItemBehaviorSubtitle, {
   context: ListItemContext,
   displayName: 'ListItemSubtitle',
   variants: {
-    size: {
-      ...listItemSubtitleSize,
-      true: listItemSubtitleSize.md,
-    },
+    size: listItemSubtitleSize,
   } as const,
   defaultVariants: {
     size: 'md',
@@ -161,8 +146,7 @@ export const ListItemIcon = ({
 }: ListItemBehaviorIconProps) => {
   const context = ListItemContext.useStyledContext()
   const getThemedIcon = useGetThemedIcon({
-    size:
-      (resolveListItemIconPx(size ?? context.size) ?? listItemIconSize.md) * scaleIcon,
+    size: resolveListItemIconPx(size ?? context.size) * scaleIcon,
     color: context.color,
   })
 
@@ -177,8 +161,7 @@ const ListItemComponent = createStyledHOC(
     const contextSize = ListItemContext.useStyledContext()?.size
     const size = props.size ?? contextSize ?? 'md'
     const scaleIcon = props.scaleIcon ?? 1
-    const iconSize =
-      props.iconSize ?? (resolveListItemIconPx(size) ?? listItemIconSize.md) * scaleIcon
+    const iconSize = props.iconSize ?? resolveListItemIconPx(size) * scaleIcon
     const { props: listItemProps } = useListItem({
       ...props,
       iconSize,

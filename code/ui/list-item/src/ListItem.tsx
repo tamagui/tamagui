@@ -1,9 +1,15 @@
-import { getThemedIconSize, useGetThemedIcon } from '@tamagui/helpers-tamagui'
+import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { YStack } from '@tamagui/stacks'
 import type { TextParentStyles } from '@tamagui/text'
 import { SizableText, textParentProps, wrapChildrenInText } from '@tamagui/text'
-import type { ColorTokens, GetProps } from '@tamagui/web'
-import { createStyledContext, splitStyleProps, styled, View } from '@tamagui/web'
+import type { ColorTokens, GetProps, SizeName } from '@tamagui/web'
+import {
+  createStyledContext,
+  getSizing,
+  splitStyleProps,
+  styled,
+  View,
+} from '@tamagui/web'
 import type { FunctionComponent, JSX, ReactNode } from 'react'
 
 type IconProp = JSX.Element | FunctionComponent<{ color?: any; size?: any }> | null
@@ -139,8 +145,12 @@ export function useListItem<Props extends ListItemBehaviorProps>(
   // the frame publishes size and color to every part below it, but an `icon`
   // prop is themed here, before the frame renders, so it reads them itself
   const context = ListItemContext.useStyledContext()
+  // size is a control size: a name reads the rung icon px off the config
+  // ladder, a number is px. font keys no longer size icons, pass iconSize.
+  const input = iconSize ?? propsIn.size ?? context.size ?? true
   const getThemedIcon = useGetThemedIcon({
-    size: getThemedIconSize(iconSize ?? propsIn.size ?? context.size ?? true, scaleIcon),
+    size:
+      (typeof input === 'number' ? input : getSizing(input as SizeName).icon) * scaleIcon,
     color: propsIn.color ?? context.color,
   })
 
