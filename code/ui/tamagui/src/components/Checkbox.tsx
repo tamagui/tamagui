@@ -1,7 +1,7 @@
 import { Checkbox as CheckboxBehavior } from '@tamagui/checkbox'
-import { type GetProps, styled, withStaticProperties } from '@tamagui/core'
+import { type GetProps, type SizeName, styled, withStaticProperties } from '@tamagui/core'
 
-export type CheckboxSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
+export type CheckboxSize = SizeName | boolean
 
 // the box reads as a control next to its label, so it sits a step above the
 // icon square the check glyph is drawn at: 1.4 times the 12/14/16/18/20 icon

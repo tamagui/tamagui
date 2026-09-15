@@ -7,6 +7,7 @@
 import {
   createStyledHOC,
   type GetProps,
+  type SizeName,
   styled,
   withStaticProperties,
 } from '@tamagui/core'
@@ -22,7 +23,7 @@ import {
   useListItem,
 } from '@tamagui/list-item'
 
-export type ListItemSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
+export type ListItemSize = SizeName | boolean
 
 const listItemFrameSize = {
   xs: { paddingInline: '2', paddingBlock: '1', gap: '1' },

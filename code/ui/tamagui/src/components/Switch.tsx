@@ -3,9 +3,9 @@ import {
   SwitchFrame as SwitchBehaviorFrame,
   SwitchThumbFrame as SwitchBehaviorThumbFrame,
 } from '@tamagui/switch'
-import { type GetProps, styled } from '@tamagui/core'
+import { type GetProps, type SizeName, styled } from '@tamagui/core'
 
-export type SwitchSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
+export type SwitchSize = SizeName | boolean
 
 // the track is the checkbox square stretched into a pill (1.9 wide), so a
 // switch and a checkbox at the same size read as the same weight (the height
