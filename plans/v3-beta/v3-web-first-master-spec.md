@@ -215,7 +215,7 @@ bun tamagui codemod to-html ./src/features/dashboard/Header.tsx
 
 ## 5. CSS Grid Native Runtime Strategy
 
-Based on Opus research in `plans/v3-beta/grid-native-runtime-report.md`:
+The grid findings for the native runtime:
 1. **Tier 1 (Universal Flexbox Emulation)**:
    - Covers 90% of UI grids: `gridTemplateColumns="repeat(N, 1fr)"` and `gap={X}`.
    - Compiles down to flex-wrap containers with computed percentage widths (`width: calc((100% - (N - 1) * gap) / N)`). Native has no `calc()`, so Tier 1 must compute widths from measured container width.
