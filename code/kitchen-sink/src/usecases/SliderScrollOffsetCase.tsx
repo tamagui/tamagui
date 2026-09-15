@@ -36,7 +36,7 @@ export function SliderScrollOffsetCase() {
         <Slider.Track>
           <Slider.TrackActive />
         </Slider.Track>
-        <Slider.Thumb index={0} circular size="2" />
+        <Slider.Thumb index={0} circular size="xs" />
       </Slider>
 
       {/* makes the document wider than the viewport so the horizontal slider can
@@ -60,7 +60,7 @@ export function SliderScrollOffsetCase() {
         <Slider.Track>
           <Slider.TrackActive />
         </Slider.Track>
-        <Slider.Thumb index={0} circular size="2" />
+        <Slider.Thumb index={0} circular size="xs" />
       </Slider>
 
       <YStack height={600} />

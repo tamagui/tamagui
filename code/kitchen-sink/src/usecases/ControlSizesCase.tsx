@@ -33,13 +33,10 @@ export function ControlSizesCase() {
         <Row key={size} name={size} size={size} />
       ))}
 
-      {/* a token key is v2's index into every scale: under v6 `4` is 16px */}
+{/* size tokens stay geometry: Square 5 is 20px. named sizes are a skin
+      table, so shapes and controls no longer share a size ramp */}
       <XStack gap="3" items="center">
-        <Button testID="sizes-button-token-4" size="4">
-          Token 4
-        </Button>
         <Square testID="sizes-square-5" size="5" backgroundColor="blue-500" />
-        <Square testID="sizes-square-md" size="md" backgroundColor="blue-500" />
       </XStack>
     </YStack>
   )
@@ -87,7 +84,7 @@ function Row({ name, size }: { name: string; size?: (typeof CONTROL_SIZES)[numbe
       <Label testID={`sizes-label-${name}`} size={size}>
         Label
       </Label>
-      <Avatar testID={`sizes-avatar-${name}`} size={size} circular>
+      <Avatar testID={`sizes-avatar-${name}`} size="4" circular>
         <Avatar.Fallback backgroundColor="blue-500" />
       </Avatar>
       <ListItem

@@ -113,13 +113,9 @@ test('checkbox, radio and switch read as one control weight', async ({ page }) =
   }
 })
 
-test('a token key stays on the config scales', async ({ page }) => {
-  // v6 size token 4 is 16px, the same as a Square: no ramp rewrites it
-  const token = await box(page, 'sizes-button-token-4')
-  expect(token!.height).toBeGreaterThanOrEqual(16)
+test('size tokens stay geometry', async ({ page }) => {
+  // v6 size token 5 is 20px: no control ramp rewrites it, and named sizes no
+  // longer size shapes, so only the token-key Square is asserted here
   const square = await box(page, 'sizes-square-5')
   expect(square!.width).toBeCloseTo(20, 0)
-  // a named size on a shape is that size's control height
-  const squareMd = await box(page, 'sizes-square-md')
-  expect(squareMd!.width).toBeCloseTo(36, 0)
 })

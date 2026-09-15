@@ -340,7 +340,7 @@ function PerfBenchmark() {
             </Button>
           ))
         )}
-        <Button size="3" testID="bench-reset" onPress={reset}>
+        <Button size="sm" testID="bench-reset" onPress={reset}>
           Reset
         </Button>
       </XStack>
@@ -447,10 +447,10 @@ export function CompilerExtraction() {
         </Text>
 
         <XStack gap="2" flexWrap="wrap">
-          <Button size="3" testID="compiler-toggle-mode" onPress={toggleTheme}>
+          <Button size="sm" testID="compiler-toggle-mode" onPress={toggleTheme}>
             Toggle Mode
           </Button>
-          <Button size="3" testID="compiler-cycle-subtheme" onPress={cycleSubTheme}>
+          <Button size="sm" testID="compiler-cycle-subtheme" onPress={cycleSubTheme}>
             Cycle Theme
           </Button>
           <Button
