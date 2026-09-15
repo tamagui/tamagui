@@ -208,7 +208,7 @@ function FormSection() {
           </YStack>
         ))}
         <XStack gap="3" alignItems="center">
-          <Switch size="3" />
+          <Switch size="md" />
           <SizableText size="3">Enable notifications</SizableText>
         </XStack>
         <Button>Save Changes</Button>
