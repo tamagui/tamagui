@@ -425,9 +425,9 @@
         "packages/react-strict-dom/src/types/flowtests/html-types-match.js.flow"
       ],
       "tamaguiSources": [
-        "code/core/dom/src/tables/tags.ts:1-557",
+        "code/core/dom/src/tables/tags.ts:1-546",
         "code/core/dom/src/props.ts:1-699",
-        "code/core/web/src/dom/html.tsx:830-880"
+        "code/core/web/src/dom/html.tsx:638-688"
       ],
       "tamaguiTests": [
         "code/core/dom/src/__tests__/conformance.test.ts",
@@ -450,7 +450,7 @@
       ],
       "tamaguiSources": [
         "code/compiler/static/src/compilerHost.ts:762-827",
-        "code/core/web/src/dom/html.tsx:830-880"
+        "code/core/web/src/dom/html.tsx:638-688"
       ],
       "tamaguiTests": [
         "code/compiler/static-tests/tests/domConformance.web.test.tsx",
@@ -762,7 +762,7 @@
         "apps/platform-tests/README.md:1-3"
       ],
       "tamaguiSources": [
-        "code/core/web/src/dom/html.tsx:830-880",
+        "code/core/web/src/dom/html.tsx:638-688",
         "code/core/web/src/dom/primitives.native.tsx:421-616"
       ],
       "tamaguiTests": [

@@ -13,17 +13,6 @@ import type { DefaultStyle, TagName, TagRow } from './types'
  * web and nothing on native. Differences from RSD are in `compatibility.ts`.
  */
 
-/**
- * Undoes the browser default stylesheet, keyed by `display`, before any tag
- * default. Web only: react native has no default stylesheet to undo, so every
- * key here would be a no-op that still costs a style lookup per element.
- */
-export const DISPLAY_WEB_RESET: Readonly<Record<TagRow['display'], DefaultStyle>> = {
-  block: { margin: 0, padding: 0 },
-  inline: { margin: 0, padding: 0, textDecorationLine: 'none' },
-  'inline-block': { margin: 0, padding: 0, borderStyle: 'solid' },
-}
-
 const MONOSPACE: DefaultStyle = { fontFamily: 'monospace' }
 const HEADING: DefaultStyle = { fontSize: '1.5rem', fontWeight: 'bold' }
 

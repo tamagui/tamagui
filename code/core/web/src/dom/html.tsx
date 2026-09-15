@@ -20,17 +20,14 @@ import type {
 import { createComponent } from '../createComponent'
 import type {
   StackNonStyleProps,
-  StackStyleBase,
   StaticConfig,
   TamaguiElement,
   TamaguiTextElement,
   TextNonStyleProps,
-  TextProps,
-  TextStylePropsBase,
+  WithThemeAndShorthands,
 } from '../types'
-import { textStaticConfig } from '../views/Text'
-import type { ViewProps } from '../views/View'
-import { viewStaticConfig } from '../views/View'
+import { htmlStaticConfig, htmlTextStaticConfig } from './htmlStaticConfig'
+import type { TamaguiStyleProps } from './styleTypes'
 
 /**
  * `StaticConfig.Component` is typed for component values, but a literal tag
@@ -47,390 +44,301 @@ type MergeHTMLProps<DOMProps, TamaguiProps, TamaguiNonStyleProps> = Omit<
   TamaguiProps
 
 /**
+ * The html.* style surface: the web contract from `./styleTypes` (not the
+ * react-native-typed `StackStyleBase` / `TextStylePropsBase`) with theme
+ * values, shorthands and clause forms, over the regular Tamagui non-style
+ * props per backing kind.
+ */
+type HtmlStyle = WithThemeAndShorthands<TamaguiStyleProps>
+type HtmlTextProps = TextNonStyleProps & HtmlStyle
+type HtmlViewProps = StackNonStyleProps & HtmlStyle
+
+/**
  * The semantic elements of the Tamagui DOM contract.
  *
  * On web each one is an ordinary Tamagui component that renders the literal
- * tag, so it takes the regular Tamagui style props as well as the strict DOM
- * props for that element. The element defaults below are the browser's own,
- * applied explicitly so a page renders the same whether or not a css reset
- * ran; `compatibility.ts` in `@tamagui/dom` records where they differ from
- * React Strict DOM and why.
+ * tag, so it takes the web style props as well as the strict DOM props for
+ * that element. The element defaults below are the semantic ones, applied
+ * as atomic defaults so author styles still win over them; undoing the
+ * browser's own stylesheet is the zero-specificity `:where(.is_DOM)` reset
+ * instead, so page CSS still reaches these hosts. `compatibility.ts` in
+ * `@tamagui/dom` records where the defaults differ from React Strict DOM
+ * and why.
  */
 const a = createComponent<
-  MergeHTMLProps<StrictDOMAnchorProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMAnchorProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMAnchorProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('a'),
   displayName: 'a',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-  },
 })
 
 const article = createComponent<
-  MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('article'),
   displayName: 'article',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
 })
 
 const aside = createComponent<
-  MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('aside'),
   displayName: 'aside',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
 })
 
 const b = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('b'),
   displayName: 'b',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-    fontWeight: 'bold',
-  },
+  defaultProps: { fontWeight: 'bold' },
 })
 
 const bdi = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('bdi'),
   displayName: 'bdi',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-  },
 })
 
 const bdo = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('bdo'),
   displayName: 'bdo',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-  },
 })
 
 const blockquote = createComponent<
-  MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('blockquote'),
   displayName: 'blockquote',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
 })
 
 const br = createComponent<
-  MergeHTMLProps<StrictDOMVoidProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMVoidProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMVoidProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('br'),
   displayName: 'br',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-  },
 })
 
 const button = createComponent<
-  MergeHTMLProps<StrictDOMButtonProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMButtonProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMButtonProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('button'),
   displayName: 'button',
-  defaultProps: {
-    ...viewStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    borderStyle: 'solid',
-    borderWidth: 1,
-  },
+  defaultProps: { borderWidth: 1 },
 })
 
 const code = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('code'),
   displayName: 'code',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-    fontFamily: 'monospace',
-    fontSize: '1em',
-  },
+  defaultProps: { fontFamily: 'monospace', fontSize: '1em' },
 })
 
 const del = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('del'),
   displayName: 'del',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'line-through',
-  },
+  defaultProps: { textDecorationLine: 'line-through' },
 })
 
 const div = createComponent<
-  MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('div'),
   displayName: 'div',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
 })
 
 const em = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('em'),
   displayName: 'em',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-    fontStyle: 'italic',
-  },
+  defaultProps: { fontStyle: 'italic' },
 })
 
 const fieldset = createComponent<
-  MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('fieldset'),
   displayName: 'fieldset',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
 })
 
 const footer = createComponent<
-  MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('footer'),
   displayName: 'footer',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
 })
 
 const form = createComponent<
-  MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('form'),
   displayName: 'form',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
 })
 
 const h1 = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('h1'),
   displayName: 'h1',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-  },
+  defaultProps: { fontSize: '1.5rem', fontWeight: 'bold' },
 })
 
 const h2 = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('h2'),
   displayName: 'h2',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-  },
+  defaultProps: { fontSize: '1.5rem', fontWeight: 'bold' },
 })
 
 const h3 = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('h3'),
   displayName: 'h3',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-  },
+  defaultProps: { fontSize: '1.5rem', fontWeight: 'bold' },
 })
 
 const h4 = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('h4'),
   displayName: 'h4',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-  },
+  defaultProps: { fontSize: '1.5rem', fontWeight: 'bold' },
 })
 
 const h5 = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('h5'),
   displayName: 'h5',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-  },
+  defaultProps: { fontSize: '1.5rem', fontWeight: 'bold' },
 })
 
 const h6 = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('h6'),
   displayName: 'h6',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-  },
+  defaultProps: { fontSize: '1.5rem', fontWeight: 'bold' },
 })
 
 const header = createComponent<
-  MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('header'),
   displayName: 'header',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
 })
 
 const hr = createComponent<
-  MergeHTMLProps<StrictDOMVoidProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMVoidProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMVoidProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('hr'),
   displayName: 'hr',
   defaultProps: {
-    ...viewStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
     backgroundColor: 'black',
     height: 1,
     borderStyle: 'none',
@@ -440,398 +348,291 @@ const hr = createComponent<
 })
 
 const i = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('i'),
   displayName: 'i',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-    fontStyle: 'italic',
-  },
+  defaultProps: { fontStyle: 'italic' },
 })
 
 const img = createComponent<
-  MergeHTMLProps<StrictDOMImageProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMImageProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMImageProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('img'),
   displayName: 'img',
-  defaultProps: {
-    ...viewStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-    objectFit: 'fill',
-    height: 'auto',
-    maxWidth: '100%',
-  },
+  defaultProps: { objectFit: 'fill', height: 'auto', maxWidth: '100%' },
 })
 
 const input = createComponent<
-  MergeHTMLProps<StrictDOMInputProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMInputProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMInputProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('input'),
   displayName: 'input',
   isInput: true,
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    borderStyle: 'solid',
-    borderWidth: 1,
-  },
+  defaultProps: { borderWidth: 1 },
 })
 
 const ins = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('ins'),
   displayName: 'ins',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'underline',
-  },
+  defaultProps: { textDecorationLine: 'underline' },
 })
 
 const kbd = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('kbd'),
   displayName: 'kbd',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-    fontFamily: 'monospace',
-    fontSize: '1em',
-  },
+  defaultProps: { fontFamily: 'monospace', fontSize: '1em' },
 })
 
 const label = createComponent<
-  MergeHTMLProps<StrictDOMLabelProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMLabelProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMLabelProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('label'),
   displayName: 'label',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-  },
 })
 
 const li = createComponent<
-  MergeHTMLProps<StrictDOMListItemProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMListItemProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMListItemProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('li'),
   displayName: 'li',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
 })
 
 const main = createComponent<
-  MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('main'),
   displayName: 'main',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
 })
 
 const mark = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('mark'),
   displayName: 'mark',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-    backgroundColor: 'yellow',
-    color: 'black',
-  },
+  defaultProps: { backgroundColor: 'yellow', color: 'black' },
 })
 
 const nav = createComponent<
-  MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('nav'),
   displayName: 'nav',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
 })
 
 const ol = createComponent<
-  MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('ol'),
   displayName: 'ol',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
 })
 
 const optgroup = createComponent<
-  MergeHTMLProps<StrictDOMOptionGroupProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMOptionGroupProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMOptionGroupProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('optgroup'),
   displayName: 'optgroup',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
 })
 
 const option = createComponent<
-  MergeHTMLProps<StrictDOMOptionProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMOptionProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMOptionProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('option'),
   displayName: 'option',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0 },
 })
 
 const p = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('p'),
   displayName: 'p',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0 },
 })
 
 const pre = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('pre'),
   displayName: 'pre',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    fontFamily: 'monospace',
-    fontSize: '1em',
-    overflow: 'auto',
-  },
+  defaultProps: { fontFamily: 'monospace', fontSize: '1em', overflow: 'auto' },
 })
 
 const s = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('s'),
   displayName: 's',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'line-through',
-  },
+  defaultProps: { textDecorationLine: 'line-through' },
 })
 
 const section = createComponent<
-  MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('section'),
   displayName: 'section',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
 })
 
 const select = createComponent<
-  MergeHTMLProps<StrictDOMSelectProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMSelectProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMSelectProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('select'),
   displayName: 'select',
-  defaultProps: {
-    ...viewStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    borderStyle: 'solid',
-  },
 })
 
 const span = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('span'),
   displayName: 'span',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-  },
 })
 
 const strong = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('strong'),
   displayName: 'strong',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-    fontWeight: 'bold',
-  },
+  defaultProps: { fontWeight: 'bold' },
 })
 
 const sub = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('sub'),
   displayName: 'sub',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-  },
 })
 
 const sup = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('sup'),
   displayName: 'sup',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-  },
 })
 
 const textarea = createComponent<
-  MergeHTMLProps<StrictDOMTextAreaProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMTextAreaProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMTextAreaProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('textarea'),
   displayName: 'textarea',
   isInput: true,
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    borderStyle: 'solid',
-    borderWidth: 1,
-  },
+  defaultProps: { borderWidth: 1 },
 })
 
 const u = createComponent<
-  MergeHTMLProps<StrictDOMProps, TextProps, TextNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlTextProps, TextNonStyleProps>,
   TamaguiTextElement,
   MergeHTMLProps<StrictDOMProps, TextNonStyleProps, TextNonStyleProps>,
-  TextStylePropsBase
+  TamaguiStyleProps
 >({
-  ...textStaticConfig,
+  ...htmlTextStaticConfig,
   Component: tag('u'),
   displayName: 'u',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'underline',
-  },
+  defaultProps: { textDecorationLine: 'underline' },
 })
 
 const ul = createComponent<
-  MergeHTMLProps<StrictDOMProps, ViewProps, StackNonStyleProps>,
+  MergeHTMLProps<StrictDOMProps, HtmlViewProps, StackNonStyleProps>,
   TamaguiElement,
   MergeHTMLProps<StrictDOMProps, StackNonStyleProps, StackNonStyleProps>,
-  StackStyleBase
+  TamaguiStyleProps
 >({
-  ...viewStaticConfig,
+  ...htmlStaticConfig,
   Component: tag('ul'),
   displayName: 'ul',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
 })
 
 export const html = {

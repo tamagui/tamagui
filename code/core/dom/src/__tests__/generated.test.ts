@@ -7,6 +7,7 @@ import {
   generateDomEventPropsNative,
   generateHtml,
   generateHtmlNative,
+  generateHtmlReset,
 } from '../../scripts/generate-html'
 import { generateProps } from '../../scripts/generate-props'
 import { ATTRIBUTES } from '../tables/attributes'
@@ -67,6 +68,22 @@ describe('the generated html namespace', () => {
     expect(generateDomEventPropsNative()).toBe(read('domEventProps.native.ts'))
     expect(generateHtml()).toBe(read('html.tsx'))
     expect(generateHtmlNative()).toBe(read('html.native.tsx'))
+    expect(generateHtmlReset()).toBe(read('htmlReset.ts'))
+  })
+
+  test('derives the reset selectors from the tag display table', () => {
+    const reset = read('htmlReset.ts')
+    expect(reset).toContain(':where(.is_DOM) { margin: 0; padding: 0; }')
+    for (const [display, declaration] of [
+      ['inline', 'text-decoration: none;'],
+      ['inline-block', 'border-style: solid;'],
+    ] as const) {
+      const tags = TAG_NAMES.filter((tag) => TAGS[tag].display === display)
+      expect(tags.length).toBeGreaterThan(0)
+      expect(reset).toContain(
+        `:where(${tags.map((tag) => `${tag}.is_DOM`).join(', ')}) { ${declaration} }`
+      )
+    }
   })
 
   test('covers every tag on both platforms', () => {

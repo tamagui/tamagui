@@ -9,7 +9,7 @@ import {
 import { COMPATIBILITY, RSD_REFERENCE } from '../tables/compatibility'
 import { EVENTS } from '../tables/events'
 import { NATIVE_BACKING, NATIVE_ELEMENT_DEFAULTS } from '../tables/nativeBacking'
-import { DISPLAY_WEB_RESET, TAGS, TAG_NAMES, TAG_WEB_DEFAULTS } from '../tables/tags'
+import { TAGS, TAG_NAMES, TAG_WEB_DEFAULTS } from '../tables/tags'
 import type { PropTags, TagName } from '../tables/types'
 import snapshot from './rsd-snapshot.json'
 
@@ -189,8 +189,12 @@ describe('value unions', () => {
 })
 
 describe('element default styles', () => {
+  // The browser-stylesheet undo (margin/padding/text-decoration/border-style)
+  // is not an atomic default anymore: it is the zero-specificity
+  // `:where(.is_DOM)` reset generated from the tag display table (see
+  // `htmlReset.ts` in `@tamagui/web`), so only the semantic defaults are
+  // compared here and the moved keys are claimed in `COMPATIBILITY`.
   const webDefaults = (tag: TagName) => ({
-    ...DISPLAY_WEB_RESET[TAGS[tag].display],
     ...TAGS[tag].defaults,
     ...TAG_WEB_DEFAULTS[tag],
   })
