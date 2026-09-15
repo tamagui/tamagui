@@ -1,20 +1,25 @@
 import type { Properties } from 'csstype';
 /**
- * The style grammar `style()` accepts, owned by Tamagui rather than borrowed
+ * The web style contract: the style grammar `style()` accepts and the surface
+ * every `html.*` tag is typed against, owned by Tamagui rather than borrowed
  * from react-native.
  *
  * `@tamagui/core/dom` is the one entry that must typecheck in a project with no
  * react-native installed, so nothing here may reference it. The regular
- * `View`/`Text` props still come from react-native's `ViewStyle`/`TextStyle`;
- * this is a parallel definition of the same property set, not a replacement for
- * those.
+ * `View`/`Text` props stay on react-native's `ViewStyle`/`TextStyle` (see
+ * `StackStyleBase` / `TextStylePropsBase` in `../types`); this is the web-first
+ * property set, not a parallel definition of those.
  *
- * `styleTypes.test-d.ts` holds it to that: it runs where react-native *is*
- * available and asserts, at the type level, that this key set is exactly the key
- * set of `StackStyleBase & TextStylePropsBase`, that every react-native
- * `ViewStyle`/`TextStyle` key appears here, and that every value the regular
- * props accept is accepted here too. Add a property to `types.tsx` without
- * adding it here and that test goes red.
+ * The react-native-only keys (`elevation`, `marginHorizontal`,
+ * `marginVertical`, `paddingHorizontal`, `paddingVertical`, the `shadow*`
+ * longhands, `textAlignVertical`, `includeFontPadding`, `writingDirection`)
+ * are absent here rather than deprecated: on web their replacements
+ * (`boxShadow`, the logical box props, `direction`, `verticalAlign`) are the
+ * contract. `styleTypes.test-d.ts` holds this to that: it runs where
+ * react-native *is* available and asserts, at the type level, that this key
+ * set is exactly the key set of `StackStyleBase & TextStylePropsBase` minus
+ * those keys, and that every value the regular props accept is accepted here
+ * too.
  *
  * Three value forms are deliberately absent, because they only exist at runtime
  * and `style()` is resolved by the compiler:
@@ -145,18 +150,10 @@ interface LayoutStyle {
     margin?: DimensionValue;
     marginBottom?: DimensionValue;
     marginEnd?: DimensionValue;
-    /**
-     * @deprecated React Native legacy prop. Use standard CSS `marginInline` or shorthand `mx`.
-     */
-    marginHorizontal?: DimensionValue;
     marginLeft?: DimensionValue;
     marginRight?: DimensionValue;
     marginStart?: DimensionValue;
     marginTop?: DimensionValue;
-    /**
-     * @deprecated React Native legacy prop. Use standard CSS `marginBlock` or shorthand `my`.
-     */
-    marginVertical?: DimensionValue;
     maxHeight?: DimensionValue;
     maxWidth?: DimensionValue;
     minHeight?: DimensionValue;
@@ -165,18 +162,10 @@ interface LayoutStyle {
     padding?: DimensionValue;
     paddingBottom?: DimensionValue;
     paddingEnd?: DimensionValue;
-    /**
-     * @deprecated React Native legacy prop. Use standard CSS `paddingInline` or shorthand `px`.
-     */
-    paddingHorizontal?: DimensionValue;
     paddingLeft?: DimensionValue;
     paddingRight?: DimensionValue;
     paddingStart?: DimensionValue;
     paddingTop?: DimensionValue;
-    /**
-     * @deprecated React Native legacy prop. Use standard CSS `paddingBlock` or shorthand `py`.
-     */
-    paddingVertical?: DimensionValue;
     /** extends react-native's `position` with the web values */
     position?: 'absolute' | 'relative' | 'fixed' | 'static' | 'sticky';
     right?: DimensionValue;
@@ -298,10 +287,6 @@ interface PaintStyle {
     boxShadow?: ShorthandString;
     caretColor?: Properties['caretColor'];
     clipPath?: Properties['clipPath'];
-    /**
-     * @deprecated React Native / Android only. Use `boxShadow` for cross-platform elevation and shadows.
-     */
-    elevation?: number;
     experimental_backgroundImage?: string | readonly BackgroundImageValue[];
     experimental_backgroundSize?: string | readonly BackgroundSizeValue[];
     experimental_backgroundPosition?: string | readonly RadialGradientPosition[];
@@ -310,25 +295,6 @@ interface PaintStyle {
     isolation?: 'auto' | 'isolate';
     mixBlendMode?: 'normal' | 'multiply' | 'screen' | 'overlay' | 'darken' | 'lighten' | 'color-dodge' | 'color-burn' | 'hard-light' | 'soft-light' | 'difference' | 'exclusion' | 'hue' | 'saturation' | 'color' | 'luminosity' | 'plus-lighter';
     opacity?: number;
-    /**
-     * @deprecated React Native legacy 4-part shadow. Use standard CSS `boxShadow` string.
-     */
-    shadowColor?: ColorValue;
-    /**
-     * @deprecated React Native legacy 4-part shadow. Use standard CSS `boxShadow` string.
-     */
-    shadowOffset?: Readonly<{
-        width: number;
-        height: number;
-    }>;
-    /**
-     * @deprecated React Native legacy 4-part shadow. Use standard CSS `boxShadow` string.
-     */
-    shadowOpacity?: number;
-    /**
-     * @deprecated React Native legacy 4-part shadow. Use standard CSS `boxShadow` string.
-     */
-    shadowRadius?: number;
     visibility?: Properties['visibility'];
 }
 /**
@@ -381,18 +347,10 @@ interface TextStyle {
     fontStyle?: 'normal' | 'italic';
     fontVariant?: readonly FontVariantValue[];
     fontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900' | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 'ultralight' | 'thin' | 'light' | 'medium' | 'regular' | 'semibold' | 'condensedBold' | 'condensed' | 'heavy' | 'black';
-    /**
-     * @deprecated React Native / Android only. Standard CSS font metrics govern text bounding.
-     */
-    includeFontPadding?: boolean;
     letterSpacing?: number;
     lineHeight?: number | Px | `${number}`;
     numberOfLines?: number;
     textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify';
-    /**
-     * @deprecated React Native / Android only. Use `verticalAlign` on inline elements or flexbox alignment on containers.
-     */
-    textAlignVertical?: 'auto' | 'top' | 'bottom' | 'center';
     textDecoration?: ShorthandString;
     textDecorationColor?: ColorValue;
     textDecorationDistance?: number;
@@ -412,10 +370,6 @@ interface TextStyle {
     verticalAlign?: Properties['verticalAlign'];
     whiteSpace?: Properties['whiteSpace'];
     wordWrap?: Properties['wordWrap'];
-    /**
-     * @deprecated React Native legacy prop. Use standard CSS `direction: 'ltr' | 'rtl'`.
-     */
-    writingDirection?: 'auto' | 'ltr' | 'rtl';
 }
 /**
  * Transforms. Tamagui accepts the individual functions as top-level props in

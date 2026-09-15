@@ -52,6 +52,12 @@ describe('createTamagui', () => {
     expect(css).toContain(':where(.is_Text) { display: inline;')
     expect(css).not.toContain('\n.is_View { display: flex;')
     expect(css).not.toContain('\n.is_Text { display: inline;')
+    // the html.* host reset: zero specificity, generated from the tag display
+    // table, and never setting display so the browser stylesheet decides
+    expect(css).toContain(':where(.is_DOM) { margin: 0; padding: 0; }')
+    expect(css).toContain('a.is_DOM')
+    expect(css).toContain('button.is_DOM')
+    expect(css).not.toContain(':where(.is_DOM) { display:')
   })
 
   test(`font reset uses body without depending on sort order when defaultFont is omitted`, () => {

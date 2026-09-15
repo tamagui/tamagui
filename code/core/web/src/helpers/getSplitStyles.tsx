@@ -1755,7 +1755,13 @@ export const getSplitStyles: StyleSplitter = (
         const groupClassName = group ? `t_group_${group}` : ''
         // core host classes carry the base web reset. component hooks are
         // ordinary authored className defaults and do not derive from React identity.
-        let finalClassName = isText ? 'is_Text' : 'is_View'
+        // DOM hosts carry is_DOM (never is_Text/is_View): its :where() reset
+        // sets no display, so the browser stylesheet decides block vs inline.
+        let finalClassName = staticConfig.isDOM
+          ? 'is_DOM'
+          : isText
+            ? 'is_Text'
+            : 'is_View'
         if (fontFamilyClassName) finalClassName += ` ${fontFamilyClassName}`
         let hasPropertyClassNames = false
         if (classNames) {

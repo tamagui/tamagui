@@ -1,5 +1,6 @@
-import { TamaguiProvider, createTamagui, html } from '@tamagui/core'
+import { TamaguiProvider, createTamagui, html, styled } from '@tamagui/core'
 import { render } from '@testing-library/react'
+import { renderToString } from 'react-dom/server'
 import { describe, expect, test } from 'vitest'
 
 import { getDefaultTamaguiConfig } from '../config-default'
@@ -145,6 +146,70 @@ describe('element-specific props', () => {
     expect(button.tagName).toBe('BUTTON')
     button.click()
     expect(clicked).toBe(1)
+  })
+})
+
+describe('the is_DOM host class', () => {
+  const tags = (
+    <>
+      <html.p data-testid="para">x</html.p>
+      <html.h1 data-testid="heading">x</html.h1>
+      <html.span data-testid="inline">x</html.span>
+      <html.button data-testid="button">x</html.button>
+      <html.pre data-testid="pre">x</html.pre>
+    </>
+  )
+
+  test('ssr renders is_DOM and never is_Text or is_View', () => {
+    const out = renderToString(
+      <TamaguiProvider config={config} defaultTheme="light">
+        {tags}
+      </TamaguiProvider>
+    )
+    const host = document.createElement('div')
+    host.innerHTML = out
+    for (const testid of ['para', 'heading', 'inline', 'button', 'pre']) {
+      const className = host.querySelector(`[data-testid="${testid}"]`)?.className ?? ''
+      expect(className, testid).toContain('is_DOM')
+      expect(className, testid).not.toContain('is_Text')
+      expect(className, testid).not.toContain('is_View')
+    }
+  })
+
+  test('leaves display to the browser stylesheet', () => {
+    const { container } = show(tags)
+    // block tags regressed to inline when the hosts carried is_Text
+    expect(getComputedStyle(find(container, '[data-testid="para"]')).display).toBe(
+      'block'
+    )
+    expect(getComputedStyle(find(container, '[data-testid="heading"]')).display).toBe(
+      'block'
+    )
+    expect(getComputedStyle(find(container, '[data-testid="pre"]')).display).toBe('block')
+    // view-backed tags regressed to flex when the hosts carried is_View
+    expect(getComputedStyle(find(container, '[data-testid="button"]')).display).toBe(
+      'inline-block'
+    )
+    // happy-dom ships no UA display for span (real browsers say inline); the
+    // pin is that Tamagui authors none, so the browser default wins
+    expect(getComputedStyle(find(container, '[data-testid="inline"]')).display).toBe('')
+  })
+})
+
+describe('styled(html.*)', () => {
+  test('keeps the tag, the dom props and the host class', () => {
+    // mirrors the kitchen-sink anchor case: styled(html.a) with an href
+    const StyledAnchor = styled(html.a, { color: 'red', padding: 4 })
+    const { container } = show(
+      <StyledAnchor data-testid="anchor" href="#">
+        x
+      </StyledAnchor>
+    )
+    const link = find(container, '[data-testid="anchor"]')
+    expect(link.tagName).toBe('A')
+    expect(link.getAttribute('href')).toBe('#')
+    expect(link.className).toContain('is_DOM')
+    expect(link.className).not.toContain('is_Text')
   })
 })
 

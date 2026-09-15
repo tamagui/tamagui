@@ -27,7 +27,6 @@ import {
 } from '@tamagui/helpers'
 import {
   ATTRIBUTES,
-  DISPLAY_WEB_RESET,
   EVENTS,
   NATIVE_BACKING,
   NATIVE_BLOCK_DEFAULTS,
@@ -1204,10 +1203,13 @@ export function createTamaguiCompilerHost(
       | StaticConfig
       | undefined
     if (!base) return null
+    // Web keeps only the semantic defaults as atomic defaults. Undoing the
+    // browser stylesheet is the `:where(.is_DOM)` host reset, and the
+    // extracted className below keeps the runtime base so compiled hosts
+    // carry `is_DOM` for it to match.
     const platformDefaults =
       platform === 'web'
         ? {
-            ...DISPLAY_WEB_RESET[row.display],
             ...row.defaults,
             ...TAG_WEB_DEFAULTS[tag],
           }
@@ -3429,7 +3431,7 @@ export function createTamaguiCompilerHost(
         split,
         props,
         options.tamaguiConfig,
-        !component.domTag,
+        true,
         Boolean(component.staticConfig.styleFrontend)
       )
       const className = artifacts.className
@@ -3631,7 +3633,7 @@ export function createTamaguiCompilerHost(
             branchSplit,
             branchProps,
             options.tamaguiConfig,
-            !component.domTag,
+            true,
             Boolean(component.staticConfig.styleFrontend)
           )
           leafArtifactsMap.set(leaf, {
