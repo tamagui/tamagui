@@ -517,7 +517,7 @@ export type OnlyAllowShorthandsSetting = TamaguiConfig['settings'] extends {
 export type OnlyShorthandStylePropsSetting = TamaguiConfig['settings'] extends {
     onlyShorthandStyleProps: infer X;
 } ? X : false;
-export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, H extends GenericTamaguiSettings = GenericTamaguiSettings, AnimDriverKeys extends string = string> = {
+export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, H extends GenericTamaguiSettings = GenericTamaguiSettings, S extends GenericSizing = GenericSizing, AnimDriverKeys extends string = string> = {
     fonts: RemoveLanguagePostfixes<F>;
     fontLanguages: GetLanguagePostfixes<F> extends never ? string[] : GetLanguagePostfixes<F>[];
     tokens: A;
@@ -531,6 +531,7 @@ export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes
     animations: AnimationDriverLike<E> | AnimationsConfigObject;
     animationDriverKeys?: AnimDriverKeys;
     settings: H;
+    sizing: S;
 };
 type GetLanguagePostfix<Set> = Set extends string ? Set extends `${string}_${infer Postfix}` ? Postfix : never : never;
 type OmitLanguagePostfix<Set> = Set extends string ? Set extends `${infer Prefix}_${string}` ? Prefix : Set : never;
@@ -538,7 +539,7 @@ type RemoveLanguagePostfixes<F extends GenericFonts> = {
     [Key in OmitLanguagePostfix<keyof F>]: F[Key];
 };
 type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>;
-type ConfProps<A, B, C, D, E, F, I, V = undefined> = {
+type ConfProps<A, B, C, D, E, F, I, Sz, V = undefined> = {
     tokens?: A;
     themes?: B;
     shorthands?: C;
@@ -546,6 +547,7 @@ type ConfProps<A, B, C, D, E, F, I, V = undefined> = {
     animations?: E;
     fonts?: F;
     settings?: I;
+    sizing?: Sz;
     variables?: V;
 };
 type VariableValInScheme<V> = V extends {
@@ -577,7 +579,7 @@ type ExtractAnimationConfig<E> = E extends AnimationDriverLike<infer Config> ? C
 type ExtractAnimationDriverKeys<E> = E extends AnimationDriverLike<any> ? 'default' : E extends {
     default: AnimationDriverLike<any>;
 } ? Extract<keyof E, string> : 'default';
-export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer H, infer V> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? ThemesWithVariables<B, V> : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, ExtractAnimationConfig<E>, F extends GenericFonts ? F : EmptyFonts, H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings, ExtractAnimationDriverKeys<E>> : unknown;
+export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer H, infer Sz, infer V> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? ThemesWithVariables<B, V> : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, ExtractAnimationConfig<E>, F extends GenericFonts ? F : EmptyFonts, H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings, Sz extends GenericSizing ? Sz : GenericSizing, ExtractAnimationDriverKeys<E>> : unknown;
 export type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
 export type RootThemeName<TK extends keyof Themes = keyof Themes> = TK extends string ? string extends TK ? never : TK extends `${string}_${string}` ? never : TK : never;
 type BaseThemeDefinitions = TamaguiConfig['themes'][RootThemeName];
@@ -613,6 +615,7 @@ type ExtractDriver<T> = Extract<T, AnimationDriver<any>>;
 type InferredTransitionKeys = ExtractDriver<TamaguiConfig['animations']> extends AnimationDriver<any> ? GetAnimationsFromDriver<ExtractDriver<TamaguiConfig['animations']>> : GetAnimationsFromMultiDriver<TamaguiConfig['animations']>;
 export type TransitionKeys = InferredTransitionKeys;
 export type AnimationDriverKeys = 'default' | Extract<Exclude<TamaguiConfig['animationDriverKeys'], undefined>, string> | (ReturnType<TypeOverride['animationDrivers']> extends 1 ? never : ReturnType<TypeOverride['animationDrivers']>);
+export type SizeName = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string extends keyof TamaguiConfig['sizing']['sizes'] ? never : Extract<keyof TamaguiConfig['sizing']['sizes'], string>);
 export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>;
 export interface ThemeProps {
     className?: string;
@@ -831,6 +834,38 @@ export interface GenericTamaguiSettings {
     onlyShorthandStyleProps?: boolean;
 }
 export type TamaguiSettings = TamaguiConfig['settings'];
+/** one rung of the control size ladder: token keys only, never pixels */
+export type SizeRecipe = {
+    /** type scale key for the rung text: button labels, list item titles */
+    fontSize: string;
+    /** type scale key the square controls size off: checkbox, radio, switch */
+    controlFontSize: string;
+    paddingInline: string;
+    paddingBlock: string;
+    gap: string;
+    radius: string;
+};
+/** px in, px out: the rules that turn a resolved rung into control geometry */
+export type SizingDerivations = {
+    /** control height without border: the text line box plus vertical padding */
+    height: (r: {
+        fontSize: number;
+        lineHeight: number;
+        paddingBlock: number;
+    }) => number;
+    /** icon px for a rung */
+    icon: (r: {
+        fontSize: number;
+    }) => number;
+    /** square controls: checkbox box, radio circle, switch track height */
+    square: (r: {
+        controlFontSize: number;
+    }) => number;
+};
+export type GenericSizing = {
+    default: string;
+    sizes: Record<string, SizeRecipe>;
+} & SizingDerivations;
 export type BaseStyleProps = {
     [Key in keyof TextStylePropsBase]?: TextStyle[Key] | GetThemeValueForKey<Key>;
 } & {
@@ -867,6 +902,12 @@ export type CreateTamaguiProps = {
         };
     };
     /**
+     * Control size ladder: named rungs of token keys plus the px derivations
+     * that turn a resolved rung into control geometry. Wired from
+     * defaultSizing in v6 configs; override per app with createTamagui({ sizing }).
+     */
+    sizing?: GenericSizing;
+    /**
      * Custom variables: merged into every base theme at createTamagui time, so
      * they resolve like theme keys everywhere (bare names in style props, useTheme(),
      * CSS variable emission) and can be redefined per-subtree via `<Theme>` props.
@@ -881,7 +922,7 @@ export type GetCSS = (opts?: {
     exclude?: 'themes' | 'design-system' | null;
     sinceLastCall?: boolean;
 }) => string;
-export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends GenericTamaguiSettings = GenericTamaguiSettings, AnimDriverKeys extends string = string> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & Omit<CreateTamaguiConfig<A, B, C, D, E, F, G, AnimDriverKeys>, 'tokens'> & {
+export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends GenericTamaguiSettings = GenericTamaguiSettings, S extends GenericSizing = GenericSizing, AnimDriverKeys extends string = string> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & Omit<CreateTamaguiConfig<A, B, C, D, E, F, G, S, AnimDriverKeys>, 'tokens'> & {
     tokens: Tokenify<A>;
     tokensParsed: Tokenify<A>;
     themeConfig: any;
@@ -1971,6 +2012,7 @@ export type StyledDynamicEnv = {
     theme: Themes extends {
         [key: string]: infer B;
     } ? B : unknown;
+    sizing: TamaguiConfig['sizing'];
     fontFamily?: FontFamilyTokens;
     font?: Font;
 };

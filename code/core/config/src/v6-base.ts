@@ -1,7 +1,7 @@
 // the aligned v6 base: Tailwind-aligned shorthands, scales, fonts, media and settings.
 // colors and themes are deliberately separate so createV6Config can accept any pack.
 import { shorthands } from '@tamagui/shorthands/v6'
-import type { CreateTamaguiProps } from '@tamagui/web'
+import type { CreateTamaguiProps, GenericSizing } from '@tamagui/web'
 import { fonts as systemFonts } from './fonts'
 import { media } from './media'
 import { settings as baseSettings } from './settings'
@@ -147,6 +147,63 @@ export const settings = {
   selectionStyles,
 } satisfies CreateTamaguiProps['settings']
 
+/**
+ * The control size ladder. Rungs carry token keys only, never pixels, so
+ * retuning the type, space, or radius scales moves the controls with the text.
+ * The px geometry derives per rung: height is the text line box plus vertical
+ * padding, icons step to 4px, and the square controls (checkbox, radio,
+ * switch) size off controlFontSize, which runs one step above the text key
+ * from md up so the box reads as a control next to its label.
+ */
+export const defaultSizing = {
+  default: 'md',
+  sizes: {
+    xs: {
+      fontSize: 'xs',
+      controlFontSize: 'xs',
+      paddingInline: '2',
+      paddingBlock: '1',
+      gap: '1',
+      radius: 'sm',
+    },
+    sm: {
+      fontSize: 'sm',
+      controlFontSize: 'sm',
+      paddingInline: '3',
+      paddingBlock: '1.5',
+      gap: '1.5',
+      radius: 'md',
+    },
+    md: {
+      fontSize: 'sm',
+      controlFontSize: 'base',
+      paddingInline: '4',
+      paddingBlock: '2',
+      gap: '2',
+      radius: 'md',
+    },
+    lg: {
+      fontSize: 'base',
+      controlFontSize: 'lg',
+      paddingInline: '6',
+      paddingBlock: '2',
+      gap: '2',
+      radius: 'md',
+    },
+    xl: {
+      fontSize: 'lg',
+      controlFontSize: 'xl',
+      paddingInline: '8',
+      paddingBlock: '2.5',
+      gap: '2.5',
+      radius: 'lg',
+    },
+  },
+  height: ({ lineHeight, paddingBlock }) => lineHeight + paddingBlock * 2,
+  icon: ({ fontSize }) => Math.ceil(fontSize / 4) * 4,
+  square: ({ controlFontSize }) => Math.round(controlFontSize * 1.4),
+} satisfies GenericSizing
+
 export type V6Settings = typeof settings
 
 /**
@@ -233,6 +290,7 @@ const alignedConfig = {
   shorthands,
   fonts,
   settings,
+  sizing: defaultSizing,
 }
 
 /** Compose the aligned v6 base with a colors pack into a createTamagui-ready config. */

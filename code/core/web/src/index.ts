@@ -36,6 +36,7 @@ export {
   mutatedAutoVariables,
 } from './helpers/registerCSSVariable'
 export { insertStyleRules } from './helpers/insertStyleRule'
+export { getSizing, resolveSizing, type ResolvedSizing } from './helpers/resolveSizing'
 export { isTamaguiComponent } from './helpers/isTamaguiComponent'
 export { isTamaguiElement } from './helpers/isTamaguiElement'
 export { matchMedia, setupMatchMedia } from './helpers/matchMedia'
@@ -117,8 +118,10 @@ export type {
   FontWeightTokens,
   Fonts,
   GenericFont,
+  GenericSizing,
   GenericStackVariants,
   GenericTamaguiConfig,
+  GenericTamaguiSettings,
   GenericTextVariants,
   GenericVariables,
   GestureReponderEvent,
@@ -158,6 +161,9 @@ export type {
   Size,
   SizeKeys,
   SizeTokens,
+  SizeName,
+  SizeRecipe,
+  SizingDerivations,
   Space,
   SpaceTokens,
   SpaceValue,

@@ -1,5 +1,6 @@
 import { shorthands } from '@tamagui/shorthands'
 import { createFont, createTokens } from '@tamagui/web'
+import type { GenericSizing } from '@tamagui/web'
 import { animations } from './animations'
 
 // basic fallback theme just to have compiler load in decent tate
@@ -217,6 +218,57 @@ export function getDefaultTamaguiConfig(_platform: 'native' | 'web' = 'web') {
     pointerCoarse: { pointer: 'coarse' },
   }
 
+  // control size ladder over this config own scales: fonts only carry 1
+  // and 4 (both 15px), so rungs share the text size and differ in padding
+  const sizing = {
+    default: 'md',
+    sizes: {
+      xs: {
+        fontSize: '1',
+        controlFontSize: '1',
+        paddingInline: '1',
+        paddingBlock: '0.5',
+        gap: '0.5',
+        radius: '1',
+      },
+      sm: {
+        fontSize: '4',
+        controlFontSize: '4',
+        paddingInline: '1.5',
+        paddingBlock: '1',
+        gap: '1',
+        radius: '2',
+      },
+      md: {
+        fontSize: '4',
+        controlFontSize: '4',
+        paddingInline: '2',
+        paddingBlock: '1.5',
+        gap: '1.5',
+        radius: '2',
+      },
+      lg: {
+        fontSize: '4',
+        controlFontSize: '4',
+        paddingInline: '2.5',
+        paddingBlock: '2',
+        gap: '2',
+        radius: '3',
+      },
+      xl: {
+        fontSize: '4',
+        controlFontSize: '4',
+        paddingInline: '3',
+        paddingBlock: '2.5',
+        gap: '2.5',
+        radius: '3',
+      },
+    },
+    height: ({ lineHeight, paddingBlock }) => lineHeight + paddingBlock * 2,
+    icon: ({ fontSize }) => Math.ceil(fontSize / 4) * 4,
+    square: ({ controlFontSize }) => Math.round(controlFontSize * 1.4),
+  } satisfies GenericSizing
+
   return {
     animations,
     shorthands,
@@ -224,6 +276,7 @@ export function getDefaultTamaguiConfig(_platform: 'native' | 'web' = 'web') {
     themes,
     tokens,
     media,
+    sizing,
     settings: {
       shouldAddPrefersColorThemes: true,
       defaultFont: 'body',

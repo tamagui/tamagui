@@ -416,6 +416,62 @@ export declare function getDefaultTamaguiConfig(_platform?: 'native' | 'web'): {
             pointer: string;
         };
     };
+    sizing: {
+        default: string;
+        sizes: {
+            xs: {
+                fontSize: string;
+                controlFontSize: string;
+                paddingInline: string;
+                paddingBlock: string;
+                gap: string;
+                radius: string;
+            };
+            sm: {
+                fontSize: string;
+                controlFontSize: string;
+                paddingInline: string;
+                paddingBlock: string;
+                gap: string;
+                radius: string;
+            };
+            md: {
+                fontSize: string;
+                controlFontSize: string;
+                paddingInline: string;
+                paddingBlock: string;
+                gap: string;
+                radius: string;
+            };
+            lg: {
+                fontSize: string;
+                controlFontSize: string;
+                paddingInline: string;
+                paddingBlock: string;
+                gap: string;
+                radius: string;
+            };
+            xl: {
+                fontSize: string;
+                controlFontSize: string;
+                paddingInline: string;
+                paddingBlock: string;
+                gap: string;
+                radius: string;
+            };
+        };
+        height: ({ lineHeight, paddingBlock }: {
+            fontSize: number;
+            lineHeight: number;
+            paddingBlock: number;
+        }) => number;
+        icon: ({ fontSize }: {
+            fontSize: number;
+        }) => number;
+        square: ({ controlFontSize }: {
+            controlFontSize: number;
+        }) => number;
+    };
     settings: {
         shouldAddPrefersColorThemes: boolean;
         defaultFont: string;

@@ -7,7 +7,7 @@
  * 3. TypeOverride for lazy-loaded drivers
  * 4. Combination scenarios
  *
- * Run with: yarn test:types
+ * Run with: bun run test:web (from code/core/web)
  */
 
 import { expectTypeOf, describe, test } from 'vitest'

@@ -711,6 +711,70 @@ export declare const settings: {
     styleCompat: "web";
     selectionStyles: typeof selectionStyles;
 };
+/**
+ * The control size ladder. Rungs carry token keys only, never pixels, so
+ * retuning the type, space, or radius scales moves the controls with the text.
+ * The px geometry derives per rung: height is the text line box plus vertical
+ * padding, icons step to 4px, and the square controls (checkbox, radio,
+ * switch) size off controlFontSize, which runs one step above the text key
+ * from md up so the box reads as a control next to its label.
+ */
+export declare const defaultSizing: {
+    default: string;
+    sizes: {
+        xs: {
+            fontSize: string;
+            controlFontSize: string;
+            paddingInline: string;
+            paddingBlock: string;
+            gap: string;
+            radius: string;
+        };
+        sm: {
+            fontSize: string;
+            controlFontSize: string;
+            paddingInline: string;
+            paddingBlock: string;
+            gap: string;
+            radius: string;
+        };
+        md: {
+            fontSize: string;
+            controlFontSize: string;
+            paddingInline: string;
+            paddingBlock: string;
+            gap: string;
+            radius: string;
+        };
+        lg: {
+            fontSize: string;
+            controlFontSize: string;
+            paddingInline: string;
+            paddingBlock: string;
+            gap: string;
+            radius: string;
+        };
+        xl: {
+            fontSize: string;
+            controlFontSize: string;
+            paddingInline: string;
+            paddingBlock: string;
+            gap: string;
+            radius: string;
+        };
+    };
+    height: ({ lineHeight, paddingBlock }: {
+        fontSize: number;
+        lineHeight: number;
+        paddingBlock: number;
+    }) => number;
+    icon: ({ fontSize }: {
+        fontSize: number;
+    }) => number;
+    square: ({ controlFontSize }: {
+        controlFontSize: number;
+    }) => number;
+};
 export type V6Settings = typeof settings;
 /**
  * A v6 colors pack: the one seam where color choice enters the config.
@@ -984,6 +1048,62 @@ declare const alignedConfig: {
         onlyAllowShorthands: true;
         styleCompat: "web";
         selectionStyles: typeof selectionStyles;
+    };
+    sizing: {
+        default: string;
+        sizes: {
+            xs: {
+                fontSize: string;
+                controlFontSize: string;
+                paddingInline: string;
+                paddingBlock: string;
+                gap: string;
+                radius: string;
+            };
+            sm: {
+                fontSize: string;
+                controlFontSize: string;
+                paddingInline: string;
+                paddingBlock: string;
+                gap: string;
+                radius: string;
+            };
+            md: {
+                fontSize: string;
+                controlFontSize: string;
+                paddingInline: string;
+                paddingBlock: string;
+                gap: string;
+                radius: string;
+            };
+            lg: {
+                fontSize: string;
+                controlFontSize: string;
+                paddingInline: string;
+                paddingBlock: string;
+                gap: string;
+                radius: string;
+            };
+            xl: {
+                fontSize: string;
+                controlFontSize: string;
+                paddingInline: string;
+                paddingBlock: string;
+                gap: string;
+                radius: string;
+            };
+        };
+        height: ({ lineHeight, paddingBlock }: {
+            fontSize: number;
+            lineHeight: number;
+            paddingBlock: number;
+        }) => number;
+        icon: ({ fontSize }: {
+            fontSize: number;
+        }) => number;
+        square: ({ controlFontSize }: {
+            controlFontSize: number;
+        }) => number;
     };
 };
 /** Compose the aligned v6 base with a colors pack into a createTamagui-ready config. */

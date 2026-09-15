@@ -24,6 +24,7 @@ import type {
   DedupedTheme,
   DedupedThemes,
   GenericFont,
+  GenericSizing,
   GetCSS,
   InferTamaguiConfig,
   TamaguiInternalConfig,
@@ -288,6 +289,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     animations: resolvedDriver ?? defaultAnimationDriver,
     animationDrivers,
     settings: settingsIn,
+    // sizing has no in-package default: v6 configs wire defaultSizing in, and
+    // resolveSizing throws a naming-the-fix error when a config lacks it
+    sizing: configIn.sizing as GenericSizing,
     tokens: tokens as any,
     // vite made this into a function if it wasn't set
     shorthands,
