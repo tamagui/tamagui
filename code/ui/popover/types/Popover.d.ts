@@ -1,6 +1,6 @@
 import '@tamagui/polyfill-dev';
 import type { OpenChangeReason, UseHoverProps } from '@tamagui/floating';
-import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core';
+import type { TamaguiElement, ViewProps } from '@tamagui/core';
 import { type DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
 import { type PopperArrowExtraProps, type PopperArrowProps, type PopperContentProps, type PopperProps } from '@tamagui/popper';
@@ -64,7 +64,6 @@ type PopoverContextValue = {
     hasCustomAnchor: boolean;
     onCustomAnchorAdd(): void;
     onCustomAnchorRemove(): void;
-    size?: SizeTokens;
     breakpointActive?: boolean;
     keepChildrenMounted?: boolean | 'lazy';
     disableDismissable?: boolean;

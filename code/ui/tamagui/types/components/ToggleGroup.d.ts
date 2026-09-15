@@ -1,9 +1,9 @@
 import { type GetProps, type TamaguiElement } from '@tamagui/core';
 import type * as React from 'react';
-export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tamagui/core").StackNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps, "active" | "defaultActiveStyle" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+export type ToggleGroupSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean;
+export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tamagui/core").StackNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps, "active" | "defaultActiveStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
     defaultActiveStyle?: boolean | undefined;
-    size?: any;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     activeStyle?: import("@tamagui/toggle-group/types/Toggle").ToggleProps['activeStyle'];
     activeTheme?: import("@tamagui/toggle-group/types/Toggle").ToggleProps['activeTheme'];
@@ -15,13 +15,12 @@ export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tama
 }, "active" | "defaultActiveStyle" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
     defaultActiveStyle?: boolean | undefined;
-    size?: any;
+    size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     ref?: React.Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").StackNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps, "active" | "defaultActiveStyle" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").StackNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps, "active" | "defaultActiveStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
     defaultActiveStyle?: boolean | undefined;
-    size?: any;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     activeStyle?: import("@tamagui/toggle-group/types/Toggle").ToggleProps['activeStyle'];
     activeTheme?: import("@tamagui/toggle-group/types/Toggle").ToggleProps['activeTheme'];
@@ -33,12 +32,11 @@ export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tama
 }, import("@tamagui/core").StackStyleBase, {
     active?: boolean | undefined;
     defaultActiveStyle?: boolean | undefined;
-    size?: any;
+    size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").StackNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps, "active" | "defaultActiveStyle" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").StackNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps, "active" | "defaultActiveStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
-        size?: any;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         activeStyle?: import("@tamagui/toggle-group/types/Toggle").ToggleProps['activeStyle'];
         activeTheme?: import("@tamagui/toggle-group/types/Toggle").ToggleProps['activeTheme'];
@@ -50,7 +48,7 @@ export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tama
     }, import("@tamagui/core").StackStyleBase, {
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
-        size?: any;
+        size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 };
 export declare const ToggleGroup: ((props: ((import("@tamagui/toggle-group").ToggleGroupProps & {
@@ -59,10 +57,9 @@ export declare const ToggleGroup: ((props: ((import("@tamagui/toggle-group").Tog
     displayName?: string;
     propTypes?: any;
 } & {
-    Item: React.FunctionComponent<Omit<import("@tamagui/core").StackNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps, "active" | "defaultActiveStyle" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    Item: React.FunctionComponent<Omit<import("@tamagui/core").StackNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps, "active" | "defaultActiveStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
-        size?: any;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         activeStyle?: import("@tamagui/toggle-group/types/Toggle").ToggleProps['activeStyle'];
         activeTheme?: import("@tamagui/toggle-group/types/Toggle").ToggleProps['activeTheme'];
@@ -74,13 +71,12 @@ export declare const ToggleGroup: ((props: ((import("@tamagui/toggle-group").Tog
     }, "active" | "defaultActiveStyle" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
-        size?: any;
+        size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         ref?: React.Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
-    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").StackNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps, "active" | "defaultActiveStyle" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").StackNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps, "active" | "defaultActiveStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
-        size?: any;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         activeStyle?: import("@tamagui/toggle-group/types/Toggle").ToggleProps['activeStyle'];
         activeTheme?: import("@tamagui/toggle-group/types/Toggle").ToggleProps['activeTheme'];
@@ -92,12 +88,11 @@ export declare const ToggleGroup: ((props: ((import("@tamagui/toggle-group").Tog
     }, import("@tamagui/core").StackStyleBase, {
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
-        size?: any;
+        size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").StackNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps, "active" | "defaultActiveStyle" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").StackNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps, "active" | "defaultActiveStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
             active?: boolean | undefined;
             defaultActiveStyle?: boolean | undefined;
-            size?: any;
         }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
             activeStyle?: import("@tamagui/toggle-group/types/Toggle").ToggleProps['activeStyle'];
             activeTheme?: import("@tamagui/toggle-group/types/Toggle").ToggleProps['activeTheme'];
@@ -109,7 +104,7 @@ export declare const ToggleGroup: ((props: ((import("@tamagui/toggle-group").Tog
         }, import("@tamagui/core").StackStyleBase, {
             active?: boolean | undefined;
             defaultActiveStyle?: boolean | undefined;
-            size?: any;
+            size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
         }, import("@tamagui/core").StaticConfigPublic];
     };
 };

@@ -1,4 +1,3 @@
-import type { TokenSize } from '@tamagui/size';
 import type { TabsProps } from './Tabs';
 export type TabsContextValue = {
     baseId: string;
@@ -7,7 +6,6 @@ export type TabsContextValue = {
     orientation?: TabsProps['orientation'];
     dir?: TabsProps['dir'];
     activationMode?: TabsProps['activationMode'];
-    size: TokenSize;
     registerTrigger: () => void;
     unregisterTrigger: () => void;
     triggersCount: number;

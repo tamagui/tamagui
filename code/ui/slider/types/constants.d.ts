@@ -1,4 +1,3 @@
-import { type SizeTokens } from '@tamagui/core';
 import type { Direction, SliderContextValue } from './types';
 export declare const SLIDER_NAME = "Slider";
 export declare const SliderContext: import("@tamagui/core").StyledContext<SliderContextValue, "max" | "min" | "orientation" | "size">;
@@ -10,13 +9,13 @@ export declare const SliderOrientationProvider: import("react").Provider<{
     startEdge: 'bottom' | 'left' | 'right';
     endEdge: 'top' | 'right' | 'left';
     sizeProp: 'width' | 'height';
-    size: number | SizeTokens;
+    size: number;
     direction: number;
 }> & import("react").ProviderExoticComponent<Partial<{
     startEdge: 'bottom' | 'left' | 'right';
     endEdge: 'top' | 'right' | 'left';
     sizeProp: 'width' | 'height';
-    size: number | SizeTokens;
+    size: number;
     direction: number;
 }> & {
     children?: import("react").ReactNode;
@@ -25,7 +24,7 @@ export declare const SliderOrientationProvider: import("react").Provider<{
     startEdge: 'bottom' | 'left' | 'right';
     endEdge: 'top' | 'right' | 'left';
     sizeProp: 'width' | 'height';
-    size: number | SizeTokens;
+    size: number;
     direction: number;
 };
 export declare const PAGE_KEYS: string[];

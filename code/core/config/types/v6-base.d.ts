@@ -566,8 +566,7 @@ export declare const tokens: {
     };
 };
 /**
- * Adds the tailwind type-scale keys (`xs sm base lg xl 2xl ...`) a font needs
- * for the named sizes, which read `sizes.md.fontSize` and so on from the font.
+ * Adds the tailwind type-scale keys (`xs sm base lg xl 2xl ...`) to a font.
  * Wrap any font you pass to a v6 config with it.
  */
 export declare function withTailwindTypeScale<F extends {
@@ -750,44 +749,6 @@ type ColorScaleThemeKeys<Scales extends V6ColorScales> = {
 };
 type WithColorScales<Themes extends Record<string, object>, Scales extends V6ColorScales> = {
     [Name in keyof Themes]: Name extends 'light' | 'dark' ? Themes[Name] & ColorScaleThemeKeys<Scales> : Themes[Name];
-};
-/**
- * Named control sizes as recipes of tailwind token keys. Heights are never set:
- * a control is line-height plus vertical padding tall, so at `md` a button is
- * 20 + 8 + 8 = 36px, shadcn's `h-9 px-4 py-2 text-sm`.
- */
-export declare const sizes: {
-    readonly default: 'md';
-    readonly xs: {
-        readonly fontSize: 'xs';
-        readonly paddingX: '2';
-        readonly paddingY: '1';
-        readonly radius: 'sm';
-    };
-    readonly sm: {
-        readonly fontSize: 'sm';
-        readonly paddingX: '3';
-        readonly paddingY: '1.5';
-        readonly radius: 'md';
-    };
-    readonly md: {
-        readonly fontSize: 'sm';
-        readonly paddingX: '4';
-        readonly paddingY: '2';
-        readonly radius: 'md';
-    };
-    readonly lg: {
-        readonly fontSize: 'base';
-        readonly paddingX: '6';
-        readonly paddingY: '2';
-        readonly radius: 'md';
-    };
-    readonly xl: {
-        readonly fontSize: 'lg';
-        readonly paddingX: '8';
-        readonly paddingY: '2.5';
-        readonly radius: 'lg';
-    };
 };
 declare const alignedConfig: {
     media: {
@@ -986,39 +947,6 @@ declare const alignedConfig: {
                 '8xl': 96;
                 '9xl': 128;
             };
-        };
-    };
-    sizes: {
-        readonly default: 'md';
-        readonly xs: {
-            readonly fontSize: 'xs';
-            readonly paddingX: '2';
-            readonly paddingY: '1';
-            readonly radius: 'sm';
-        };
-        readonly sm: {
-            readonly fontSize: 'sm';
-            readonly paddingX: '3';
-            readonly paddingY: '1.5';
-            readonly radius: 'md';
-        };
-        readonly md: {
-            readonly fontSize: 'sm';
-            readonly paddingX: '4';
-            readonly paddingY: '2';
-            readonly radius: 'md';
-        };
-        readonly lg: {
-            readonly fontSize: 'base';
-            readonly paddingX: '6';
-            readonly paddingY: '2';
-            readonly radius: 'md';
-        };
-        readonly xl: {
-            readonly fontSize: 'lg';
-            readonly paddingX: '8';
-            readonly paddingY: '2.5';
-            readonly radius: 'lg';
         };
     };
     settings: {

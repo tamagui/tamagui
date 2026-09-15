@@ -10,6 +10,8 @@ type ScopedProps<P> = Omit<P, 'scope'> & {
 };
 export type TooltipContentProps = ScopedProps<PopoverContentProps>;
 export type TooltipProps = ScopedProps<PopperProps & {
+    /** arrow size in px */
+    size?: number;
     open?: boolean;
     children?: React.ReactNode;
     onOpenChange?: (open: boolean) => void;
@@ -38,6 +40,8 @@ export declare const TooltipGroup: ({ children, delay, preventAnimation, timeout
 }) => React.JSX.Element;
 export declare const closeOpenTooltips: () => void;
 export declare const Tooltip: ((props: Omit<PopperProps & {
+    /** arrow size in px */
+    size?: number;
     open?: boolean;
     children?: React.ReactNode;
     onOpenChange?: (open: boolean) => void;

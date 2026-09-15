@@ -1,9 +1,10 @@
-import type { GetProps, NativeValue, SizeTokens, ViewProps } from '@tamagui/core';
+import type { GetProps, NativeValue, ViewProps } from '@tamagui/core';
 import type { SwitchExtraProps as HeadlessSwitchExtraProps } from '@tamagui/switch-headless';
 import type { SwitchProps as NativeSwitchProps, ViewStyle } from '@tamagui/react-native-types';
 import type { SwitchThumbFrame } from './Switch';
 export type SwitchSharedProps = {
-    size?: SizeTokens | number | true;
+    /** a skin-owned size name (or px), threaded to the skin frames for styling */
+    size?: string | number | boolean;
 };
 export type SwitchBaseProps = ViewProps & SwitchSharedProps;
 export type SwitchFrameActiveStyleProps = {

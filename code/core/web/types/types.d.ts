@@ -577,13 +577,7 @@ type ExtractAnimationConfig<E> = E extends AnimationDriverLike<infer Config> ? C
 type ExtractAnimationDriverKeys<E> = E extends AnimationDriverLike<any> ? 'default' : E extends {
     default: AnimationDriverLike<any>;
 } ? Extract<keyof E, string> : 'default';
-export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer H, infer V> ? Omit<TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? ThemesWithVariables<B, V> : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, ExtractAnimationConfig<E>, F extends GenericFonts ? F : EmptyFonts, H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings, ExtractAnimationDriverKeys<E>>, 'sizes'> & (Conf extends {
-    sizes: infer S;
-} ? {
-    sizes: S;
-} : {
-    sizes?: GenericSizes;
-}) : unknown;
+export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer H, infer V> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? ThemesWithVariables<B, V> : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, ExtractAnimationConfig<E>, F extends GenericFonts ? F : EmptyFonts, H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings, ExtractAnimationDriverKeys<E>> : unknown;
 export type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
 export type RootThemeName<TK extends keyof Themes = keyof Themes> = TK extends string ? string extends TK ? never : TK extends `${string}_${string}` ? never : TK : never;
 type BaseThemeDefinitions = TamaguiConfig['themes'][RootThemeName];
@@ -881,12 +875,6 @@ export type CreateTamaguiProps = {
      */
     variables?: GenericVariables;
     settings?: Partial<GenericTamaguiSettings>;
-    /**
-     * Named control sizes (`xs sm md lg xl` in the default configs). Each is a
-     * recipe of token keys that every sized component reads; `default` names the
-     * one `size={true}` resolves to.
-     */
-    sizes?: GenericSizes;
 };
 export type GetCSS = (opts?: {
     separator?: string;
@@ -914,25 +902,6 @@ export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animatio
 export type UnionableString = string & {};
 export type UnionableNumber = number & {};
 type GenericFontKey = string | number | symbol;
-/** a named control size: a recipe of token keys, never a height */
-export type SizeSpec = {
-    /** font.size / font.lineHeight key, resolved against the component's font */
-    fontSize: string;
-    /** tokens.space keys */
-    paddingX: string;
-    paddingY: string;
-    /** tokens.radius key */
-    radius: string;
-    /** tokens.space key for the gap between icon and text; defaults to paddingY */
-    gap?: string;
-    /** icon px override; defaults to the font size rounded up to the 4px grid */
-    icon?: number;
-};
-export type GenericSizes = {
-    /** the name `size={true}` resolves to */
-    default: string;
-    [name: string]: SizeSpec | string;
-};
 export type GenericFont<Key extends GenericFontKey = GenericFontKey> = {
     size: {
         [key in Key]: number | Variable;
@@ -1136,11 +1105,7 @@ export type ThemeValueFallbackColor = ThemeValueFallback | GetThemeValueFallback
 export type ThemeValueFallbackRadius = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingRadius, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type ThemeValueFallbackZIndex = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingZIndex, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type GetTokenString<A> = A extends string | number ? `${A}` : string;
-/** the names in `config.sizes` (`xs sm md lg xl` in the default configs) */
-export type SizeName = TamaguiConfig extends {
-    sizes: infer S;
-} ? string extends keyof S ? never : Exclude<Extract<keyof S, string>, 'default'> : never;
-export type Size = ThemeValueFallbackSize | GetTokenString<keyof Tokens['size']> | SizeName | OpenStyleString | true;
+export type Size = ThemeValueFallbackSize | GetTokenString<keyof Tokens['size']> | OpenStyleString | true;
 export type SizeTokens = Size;
 export type Space = GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace | true;
 export type SpaceTokens = Space;
@@ -2008,7 +1973,6 @@ export type StyledDynamicEnv = {
     } ? B : unknown;
     fontFamily?: FontFamilyTokens;
     font?: Font;
-    sizes?: GenericSizes;
 };
 /** bare `styled.dynamic<T>()`: a typed prop consumed by styling, given style by `.resolve` */
 export interface StyledDynamicProp<Val = any> {

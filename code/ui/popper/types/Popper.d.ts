@@ -1,4 +1,4 @@
-import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core';
+import type { TamaguiElement, ViewProps } from '@tamagui/core';
 import type { PopupTriggerMap } from '@tamagui/floating';
 import type { Coords, OffsetOptions, Placement, SizeOptions, Strategy, UseFloatingReturn } from '@tamagui/floating';
 import { flip, shift } from '@tamagui/floating';
@@ -7,7 +7,6 @@ type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : ne
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
 export type PopperContextShared = {
     open: boolean;
-    size?: SizeTokens;
     hasFloating: boolean;
     arrowStyle?: Partial<Coords> & {
         centerOffset: number;
@@ -71,7 +70,6 @@ export type PopperProps = {
      * Optional, will disable measuring updates when open is false for better performance
      * */
     open?: boolean;
-    size?: SizeTokens;
     children?: React.ReactNode;
     /**
      * Determine the preferred placement of the content in relation to the trigger
@@ -133,7 +131,8 @@ export declare const PopperContentFrame: React.FunctionComponent<Omit<import("@t
 export declare const PopperContent: import("@tamagui/compose-refs").RefComponent<TamaguiElement, PopperContentProps>;
 export type PopperArrowExtraProps = {
     offset?: number;
-    size?: SizeTokens;
+    /** arrow size in px */
+    size?: number;
     scope?: string;
     /**
      * Enable smooth animation when the arrow position changes
