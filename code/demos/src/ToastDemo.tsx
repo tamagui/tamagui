@@ -206,7 +206,7 @@ function DemoSlider({
         <Slider.Track>
           <Slider.TrackActive />
         </Slider.Track>
-        <Slider.Thumb theme="accent" size={16} borderRadius={100} index={0} />
+        <Slider.Thumb theme="accent" size="xs" borderRadius={100} index={0} />
       </Slider>
       <SizableText userSelect="none" size="2" width={35} textAlign="right">
         {format ? format(value) : Math.round(value)}

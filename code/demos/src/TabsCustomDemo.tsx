@@ -26,7 +26,7 @@ export const TabFrame = styled(TabsBehavior.Tab, {
   paddingInline: '4',
   paddingBlock: '2',
   gap: '2',
-  borderRadius: 'md',
+  borderRadius: '4',
   variants: {
     disabled: {
       true: {

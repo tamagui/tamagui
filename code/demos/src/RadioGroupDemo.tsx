@@ -15,6 +15,15 @@ export function RadioGroupDemo() {
   )
 }
 
+// the label speaks the font scale: these keys are the control font px
+const radioLabelSize = {
+  xs: '2',
+  sm: '4',
+  md: '4',
+  lg: '5',
+  xl: '6',
+} as const
+
 export function RadioGroupItemWithLabel(props: {
   size: RadioGroupSize
   value: string
@@ -27,7 +36,10 @@ export function RadioGroupItemWithLabel(props: {
         <RadioGroup.Indicator />
       </RadioGroup.Item>
 
-      <Label size={props.size} htmlFor={id}>
+      <Label
+        size={typeof props.size === 'string' ? radioLabelSize[props.size] : '4'}
+        htmlFor={id}
+      >
         {props.label}
       </Label>
     </XStack>

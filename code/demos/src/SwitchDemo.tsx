@@ -20,11 +20,26 @@ export function SwitchDemo() {
   )
 }
 
+// the label speaks the font scale: these keys are the control font px
+const switchLabelSize = {
+  xs: '2',
+  sm: '4',
+  md: '4',
+  lg: '5',
+  xl: '6',
+} as const
+
 export function SwitchWithLabel(props: { size: SwitchSize; defaultChecked?: boolean }) {
   const id = `switch-${props.size}-${props.defaultChecked ?? ''}}`
   return (
     <XStack width={200} items="center" gap="4">
-      <Label pr="0" minW={90} justify="flex-end" size={props.size} htmlFor={id}>
+      <Label
+        pr="0"
+        minW={90}
+        justify="flex-end"
+        size={typeof props.size === 'string' ? switchLabelSize[props.size] : '4'}
+        htmlFor={id}
+      >
         Accept
       </Label>
       <Separator minH={20} vertical />

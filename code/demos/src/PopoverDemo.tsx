@@ -67,7 +67,7 @@ export function Demo({
   ...props
 }: PopoverProps & { Icon?: any; Name?: string; shouldAdapt?: boolean }) {
   return (
-    <Popover size="5" allowFlip stayInFrame offset={15} resize {...props}>
+    <Popover allowFlip stayInFrame offset={15} resize {...props}>
       <Popover.Trigger asChild>
         <Button icon={Icon} />
       </Popover.Trigger>
@@ -110,13 +110,13 @@ export function Demo({
           <Label size="3" htmlFor={Name}>
             Name
           </Label>
-          <Input flex={1} size="3" id={Name} />
+          <Input flex={1} size="sm" id={Name} />
         </XStack>
 
         <Popover.Close asChild>
           <Button
             theme="brand"
-            size="3"
+            size="sm"
             onPress={() => {
               /* Custom code goes here, does not interfere with popover closure */
             }}

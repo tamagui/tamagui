@@ -106,7 +106,7 @@ const SheetContents = memo(
           <>
             <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
             <Button
-              size="6"
+              size="xl"
               circular
               icon={ChevronUp}
               onPress={() => setInnerOpen(true)}
@@ -129,7 +129,7 @@ function InnerSheet(props: SheetProps) {
         <Sheet.ScrollView>
           <YStack p="5" gap="8">
             <Button
-              size="6"
+              size="xl"
               circular
               self="center"
               icon={ChevronDown}
