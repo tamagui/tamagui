@@ -91,8 +91,37 @@ tip.
 - PR #4124 (v3-beta into main) is open and conflicting. It is the eventual
   main merge, not a beta gate; resolve it when the beta is cut.
 
+## Landed 2026-09-15
+
+All three lanes are merged to `v3-beta`, plus the follow-up work their reviews
+and CI turned up. Nothing is left on a branch, everything below is pushed.
+
+| Work | Commits | Merged |
+| --- | --- | --- |
+| A. size concept removed (`remove-size-concept.md`) | lane tip `27b7fb391a`, review fixes `f5725d8b5d`, `b0faaf0731` | `f950341de8` |
+| B. html.* web contract, display fix, scoped reset | lane tip `dee9212543` | `7041fbcbd7` |
+| C. web-alignment leftovers and docs | lane tip `a864942add`, coverage `57abff6a01`, `d0049210c6` | `ef2f2aa1f6`, `93fd7cd0b0` |
+| D. inherited-only leading reaches DOM text (CI unit-tests red) | `03a69978d8` | `b6273829ca` |
+| E. size-removal fallout: slider orientation, kitchen-sink sizes, input type test | `43f6aadf48`, `e06052bdec`, `5e9c4862d9` | `0742f1a26b` |
+| CI unblock: site typecheck, lockfile, webpack pin, registry copies, declarations, css, size baseline | `0e7bf80d46`, `1cf5daf95d`, `23eb160a22`, `83bac8d914`, `28a1068e3b`, `9fe7700110`, `af577cefd4`, `8da7f39d76` | on `v3-beta` |
+| Detox: setup-android v4.0.1 (v3 fails `sdkmanager --licenses` on current runners) | `4369bade25` | on `v3-beta` |
+
+Reviews: A reviewed C, B reviewed A (one finding withdrawn after it reproduced
+only in that worker's stale clone), a fresh worker reviewed B and found nothing
+blocking, and A's own findings became lane C's coverage commits. The final
+cleanup pass found no leftovers.
+
+The tip was red before any of this landed: v3-beta had been failing `checks`,
+`unit-tests`, `v3-zero-runtime (starter)` and Detox since 19:54 the night
+before, on commits this plan did not write.
+
+Deliberate cost, recorded in `bundle-size-ledger.md`: the html.* reset is about
++98 bytes of gzip CSS per graph in the zero-runtime starter, paid even by apps
+that never render an html.* element.
+
 ## Done means
 
-All three lanes merged to `v3-beta`, Checks green on the tip, npm beta
-published from that run only on Nate's word, `remove-size-concept.md` and
-this file marked landed with the SHAs.
+All three lanes merged to `v3-beta` (done), Checks green on the tip (this file
+records the run once it is read), npm beta published from that run only on
+Nate's word (not done, and not started), `remove-size-concept.md` and this file
+marked landed with the SHAs (this commit).

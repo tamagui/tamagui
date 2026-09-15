@@ -2,6 +2,16 @@
 
 Decided by Nate 2026-09-14. Replaces the rejected `plans/typed-user-sizes.md`.
 
+Landed 2026-09-15 on `v3-beta`: lane A tip `27b7fb391a` with review fixes
+`f5725d8b5d` and `b0faaf0731`, merged as `f950341de8`, and the integration
+fallout fixed in `43f6aadf48` (slider orientation), `e06052bdec` (kitchen-sink
+named sizes) and `5e9c4862d9` (input type test), merged as `0742f1a26b`. The
+screenshot gate in Validation below could not run: `code/kitchen-sink`'s
+`screenshot` script points at a `playwright-screenshot.config.ts` that does not
+exist in this repo, and the screenshot test itself still reads paths from
+before the repo re-org. Sizes are pinned by unit and computed-style tests
+instead.
+
 ## Why
 
 `size` was hoisted into a global concept: a `sizes` key on `createTamagui`, the
