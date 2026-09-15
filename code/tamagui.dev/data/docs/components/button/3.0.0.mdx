@@ -62,24 +62,8 @@ import { Button } from 'tamagui'
 export default () => <Button size="lg">Lorem ipsum</Button>
 ```
 
-Given your theme defines a size `6`, the button adjusts every property
-appropriately. You can also pass a plain number for an arbitrary size.
-
-To size a group of buttons at once, provide `SizeContext` around them. The button
-frame reads it, so every button and its text and icons follow:
-
-```tsx
-import { Button, SizeContext, XStack } from 'tamagui'
-
-export default () => (
-  <SizeContext.Provider size="sm">
-    <XStack gap="2">
-      <Button>One</Button>
-      <Button>Two</Button>
-    </XStack>
-  </SizeContext.Provider>
-)
-```
+Each name is a row in the Button's own size table (`xs` through `xl`,
+default `md`), so the frame, its text, and its icon agree by construction.
 
 ## Variants
 
@@ -104,11 +88,11 @@ You can pass icons as either elements or components. If passing components,
 Tamagui themes them, passing `size` and `color`. The icon size comes from the
 Button's `size` prop by default.
 
-Set the icon size explicitly with `iconSize` (a `SizeTokens` value, e.g. `"2"`).
+Set the icon size explicitly with `iconSize` (pixels, e.g. `{18}`).
 `scaleIcon` adjusts it further, relative to whichever size was resolved.
 
 Spacing between an icon and the text comes from `gap` on the button frame,
-derived from the `size` token so it stays consistent with the button's
+derived from the `size` table so it stays consistent with the button's
 dimensions.
 
 ```tsx
@@ -229,15 +213,19 @@ how `tamagui`'s own Button is built:
 import {
   ButtonFrame as ButtonBehaviorFrame,
   ButtonText as ButtonBehaviorText,
+  createStyledContext,
   createStyledHOC,
-  SizeContext,
   styled,
   useButton,
   withStaticProperties,
 } from '@tamagui/ui'
 
+const ButtonContext = createStyledContext<{ size?: 'sm' | 'md' | 'lg' }>({
+  size: 'md',
+})
+
 const ButtonFrame = styled(ButtonBehaviorFrame, {
-  context: SizeContext,
+  context: ButtonContext,
   backgroundColor: 'background hover:background-hover press:background-press',
   borderColor: 'border-color hover:border-color-hover',
   borderWidth: 1,
@@ -245,7 +233,7 @@ const ButtonFrame = styled(ButtonBehaviorFrame, {
 })
 
 const ButtonText = styled(ButtonBehaviorText, {
-  context: SizeContext,
+  context: ButtonContext,
   color: 'color',
   fontWeight: '600',
 })
@@ -261,8 +249,9 @@ export const Button = withStaticProperties(ButtonComponent, {
 })
 ```
 
-Because the frame declares `SizeContext`, passing `size` to it is what publishes
-it to the text and icons below. There is no context to assemble by hand.
+Because the frame declares `ButtonContext`, passing `size` to it is what
+publishes it to the text and icons below. Each component owns its context;
+there is no shared size context.
 
 `useButton` also reads `ButtonNestingContext`, which is how a Button inside
 another Button (a `Dialog.Trigger` inside a toolbar button, say) renders as a
@@ -281,8 +270,8 @@ Buttons extend View, inheriting all the
     {
       name: 'size',
       required: false,
-      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | SizeTokens",
-      description: `A named size ("xs" to "xl", default "md") is a recipe of tokens: padding, border radius, font size, and icon size, never a height. A token key ("$4") indexes every scale with that key. Published to Button.Text and Button.Icon through the styled context.`,
+      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
+      description: `A named size ("xs" to "xl", default "md") is a row in the Button's size table: padding, border radius, font size, and icon size, never a height. Published to Button.Text and Button.Icon through the Button context.`,
     },
     {
       name: 'variant',
@@ -325,8 +314,8 @@ Buttons extend View, inheriting all the
     {
       name: 'iconSize',
       required: false,
-      type: 'SizeTokens',
-      description: `Explicitly set the icon size, overriding the one derived from 'size'.`,
+      type: 'number',
+      description: `Explicitly set the icon size in pixels, overriding the one derived from 'size'.`,
     },
     {
       name: 'scaleIcon',

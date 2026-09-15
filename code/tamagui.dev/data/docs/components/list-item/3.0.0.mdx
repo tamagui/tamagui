@@ -261,9 +261,9 @@ ListItem extends View, inheriting all the
     {
       name: 'size',
       required: false,
-      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | SizeTokens",
+      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
       description:
-        'Adjusts padding, min-height, and default font/icon sizes. Uses theme size tokens (e.g., "3", "4"). Published to the parts through the styled context.',
+        'Adjusts padding and default font/icon sizes from the ListItem size table (default "md"). Published to the parts through the ListItem context.',
     },
     {
       name: 'color',
@@ -296,9 +296,9 @@ ListItem extends View, inheriting all the
     {
       name: 'iconSize',
       required: false,
-      type: 'SizeTokens',
+      type: 'number',
       description:
-        'Explicitly set the size of the icon, overriding the size derived from `size`.',
+        'Explicitly set the size of the icon in pixels, overriding the size derived from `size`.',
     },
     {
       name: 'scaleIcon',
@@ -338,8 +338,8 @@ ListItem and ListItem part beneath it.
     {
       name: 'size',
       required: false,
-      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | SizeTokens",
-      description: 'Size token to apply to children ListItems.',
+      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
+      description: 'Named size to apply to children ListItems.',
     },
     {
       name: 'variant',
@@ -377,7 +377,7 @@ Sizes and colors an icon from the surrounding ListItem context.
     {
       name: 'size',
       required: false,
-      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | SizeTokens",
+      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | number",
       description: 'Overrides the size taken from context.',
     },
     {

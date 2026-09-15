@@ -800,12 +800,12 @@ are unrelated.
 Every control that takes `size` (Button, Input, Select, Tabs, ListItem, Label,
 Card, Toggle, Checkbox, RadioGroup, Switch, Slider, Progress, Avatar, Group,
 Tooltip) accepts the same five names: `xs`, `sm`, `md`, `lg`, `xl`. A name is a
-recipe of tokens, never a height: it picks a font size, horizontal and vertical
-padding, and a radius, and the control ends up its line-height plus padding
-tall. That keeps the frame, its text, and its icon aligned by construction.
+row in the component's own size table, never a height: it picks a font size,
+horizontal and vertical padding, and a radius, and the control ends up its
+line-height plus padding tall. That keeps the frame, its text, and its icon aligned by construction.
 The default is `md`.
 
-Under `@tamagui/config/v6` the recipes mirror shadcn:
+Under `@tamagui/config/v6` the tables mirror shadcn:
 
 | name | font size / line-height | paddingX | paddingY | radius | icon | height |
 | ---- | ----------------------- | -------- | -------- | ------ | ---- | ------ |
@@ -825,56 +825,15 @@ import { Button } from 'tamagui'
 <Button size="lg" icon={Check} />
 ```
 
-Token keys still work and now mean exactly what they say. `size="$4"` (or
-`size="4"`) indexes every scale with `4`: `font.size[4]`, `space[4]`,
-`radius[4]`, and `minHeight: size[4]`. Under the v5 config that is the 44px
-control it always was. Under the v6 config `size[4]` is 16px, the same as
-`<Square size="$4" />`. Earlier v3 betas rewrote v6 `size="$4"` to 44px behind
-your back; that ramp is gone. Apps migrating to v6 should move controls to names
-rather than tuning token keys:
-
-```tsx
-// v2 / v5: 44px control
-<Button size="$4" />
-
-// v3 with the v6 config: an honest 16px minHeight, almost certainly not what you meant
-<Button size="$4" />
-
-// v3: the named recipe
-<Button size="md" />
-```
-
-`size={number}` on a control is a dev error and resolves to the default. Numbers
-stay pixels on shapes (`Square`, `Circle`, `Avatar`).
-
-The table lives in your config. `createTamagui` takes a `sizes` key with a
-`default` name and one recipe per name, each written in token keys:
-
-```tsx
-import { defaultConfig } from '@tamagui/config/v6'
-import { createTamagui } from 'tamagui'
-
-export const config = createTamagui({
-  ...defaultConfig,
-  sizes: {
-    default: 'md',
-    ...defaultConfig.sizes,
-    // a compact control for dense tables
-    xs: { fontSize: 'xs', paddingX: '1.5', paddingY: '0.5', radius: 'sm' },
-  },
-})
-```
-
-Each recipe is `{ fontSize, paddingX, paddingY, radius, gap?, icon? }`. `gap`
-defaults to `paddingY`, and `icon` defaults to the font size rounded up to the
-4px grid. Skins read the same table through `resolveSize(value, env)` inside a
-`styled.dynamic` variant and spread its `frame` or `text`.
+Token keys and numbers no longer size controls: `size` on a control only takes
+a name (or `true` for the default), and each component owns its table inline, so
+`size="4"` on a control is a type error. Numbers stay geometry on shapes
+(`Square`, `Circle`, `Avatar` take size tokens) and font keys on text and icons.
 
 Text components speak Tailwind's own scale (`xs`, `sm`, `base`, `lg`, `xl`,
-`2xl` and up), and a control's recipe points at those same keys. `size="md"` on
-`Paragraph` is the `md` recipe's font key, `sm`, so `<Button size="md">` text
-and `<Paragraph size="sm">` text are the same 14/20. Text keeps `base` rather
-than `md` because `text-base` is what Tailwind users know.
+`2xl` and up). `<Button size="md">` text and `<Paragraph size="sm">` text are
+the same 14/20. Text keeps `base` rather than `md` because `text-base` is what
+Tailwind users know.
 
 If you also adopt the unstyled primitives from `@tamagui/ui`, those own no size
 scale at all, so you provide sizing yourself or through your copied styles.

@@ -149,12 +149,6 @@ Contains every component for the popover.
       description: `Must contain Popover.Content`,
     },
     {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-      description: `Passes size down to all sub-components when set for padding, arrow, borderRadius.`,
-    },
-    {
       name: 'placement',
       type: 'Placement',
       required: false,
@@ -259,8 +253,8 @@ Popover. Arrows extend YStack, see [Stacks](/ui/stacks).
     },
     {
       name: 'size',
-      type: 'SizeTokens',
-      description: 'Size of the arrow.',
+      type: 'number',
+      description: 'Size of the arrow in pixels.',
     },
     {
       name: 'offset',
@@ -294,12 +288,6 @@ Extends PopperContent which extends a YStack (see
       default: 'true',
       description:
         'Automatically sets CSS transform-origin based on placement and arrow position. Updates when the popover flips. Enables natural scale animations that grow from the arrow point.',
-    },
-    {
-      name: 'size',
-      type: 'SizeTokens',
-      required: false,
-      description: 'Controls default padding/borderRadius when unstyled is false.',
     },
     {
       name: 'unstyled',

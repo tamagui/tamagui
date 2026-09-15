@@ -90,9 +90,9 @@ Contains every component for the tooltip.
     },
     {
       name: 'size',
-      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | SizeTokens",
+      type: 'number',
       required: false,
-      description: `Passes size down to all sub-components when set for padding, arrow, borderRadius.`,
+      description: `Arrow size in pixels.`,
     },
     {
       name: 'placement',
@@ -164,7 +164,7 @@ Used to trigger opening of the popover when uncontrolled, see YStack in [Stacks]
 
 ### Tooltip.Content
 
-Renders as a YStack (see [Stacks](/ui/stacks)) with an extra `size` prop that accepts any `SizeTokens`.
+Renders as a YStack (see [Stacks](/ui/stacks)); `size` sets width and height.
 
 ### Tooltip.Anchor
 
