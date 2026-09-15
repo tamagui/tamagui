@@ -6,7 +6,6 @@ import {
   type ButtonIconProps as ButtonBehaviorIconProps,
   createStyledHOC,
   type GetProps,
-  getThemedIconSize,
   createStyledContext,
   styled,
   Theme,
@@ -163,7 +162,7 @@ export const ButtonIcon = ({ size, ...props }: ButtonBehaviorIconProps) => {
   return (
     <ButtonBehaviorIcon
       {...props}
-      size={size ?? getThemedIconSize(buttonIconSize[resolveButtonSize(context?.size)])}
+      size={size ?? buttonIconSize[resolveButtonSize(context?.size)]}
     />
   )
 }
@@ -187,9 +186,9 @@ const ButtonComponent = createStyledHOC(
       'md') as ButtonSize
     const { props: buttonProps } = useButton(buttonBehaviorProps, {
       Text: ButtonText,
-      iconSize: getThemedIconSize(
-        typeof size === 'string' ? buttonIconSize[size] : buttonIconSize.md
-      ),
+      iconSize:
+        (typeof size === 'string' ? buttonIconSize[size] : undefined) ??
+        buttonIconSize.md,
     })
 
     const frame = (
