@@ -123,7 +123,7 @@ export const ProgressFrame = styled(YStack, {
 
   variants: {
     size: styled.dynamic<any>((val) => {
-      const size = Math.round(getVariableValue(getSize(val)) * 0.25)
+      const size = Math.round(getVariableValue(getSize(val === true ? 36 : val)) * 0.25)
       return {
         height: size,
         minWidth: getVariableValue(size) * 20,

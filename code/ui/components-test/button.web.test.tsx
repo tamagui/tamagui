@@ -3,7 +3,7 @@ import 'vitest-axe/extend-expect'
 
 import { Button } from 'tamagui'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { SizeContext, View, TamaguiProvider, createTamagui, styled } from '@tamagui/core'
+import { View, TamaguiProvider, createTamagui, styled } from '@tamagui/core'
 import type { RenderResult } from '@testing-library/react'
 import { render } from '@testing-library/react'
 import { beforeEach, describe, expect, it } from 'vitest'
@@ -108,15 +108,15 @@ describe('Button basic functionality', () => {
   })
 })
 
-describe('Button sizing through context', () => {
-  it('takes size from a surrounding SizeContext', () => {
+describe('Button sizing', () => {
+  it('sizes sm off the default and defaults to md', () => {
     const { getByTestId } = render(
       <TamaguiProvider config={conf} defaultTheme="light">
-        <SizeContext.Provider size="2">
-          <Button data-testid="from-context">Grouped</Button>
-        </SizeContext.Provider>
-        <Button data-testid="from-prop" size="2">
+        <Button data-testid="from-prop" size="sm">
           Direct
+        </Button>
+        <Button data-testid="as-default" size="md">
+          Explicit
         </Button>
         <Button data-testid="default">Default</Button>
       </TamaguiProvider>
@@ -124,8 +124,8 @@ describe('Button sizing through context', () => {
 
     // jsdom has no layout, so compare a property every size path sets
     const padding = (id: string) => getComputedStyle(getByTestId(id)).paddingInline
-    expect(padding('from-context')).toBe(padding('from-prop'))
-    expect(padding('from-context')).not.toBe(padding('default'))
+    expect(padding('as-default')).toBe(padding('default'))
+    expect(padding('from-prop')).not.toBe(padding('default'))
   })
 
   it('lets circular resolver geometry override the size dynamic', () => {

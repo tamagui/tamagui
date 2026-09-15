@@ -363,6 +363,9 @@ const SliderTrack = createStyledHOC(
         data-disabled={context.disabled ? '' : undefined}
         data-orientation={context.orientation}
         orientation={context.orientation}
+        // unstyled frame has no size variant, so this never styles: it feeds
+        // the skin's track thickness resolver below
+        size={context.size ?? undefined}
         {...trackProps}
         ref={forwardedRef}
       />
