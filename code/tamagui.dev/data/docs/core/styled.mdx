@@ -11,18 +11,24 @@ description: Extend and build custom and optimizable components
 For the full list of accepted style properties, see the
 [Styles page](/docs/intro/styles).
 
-Create a new component by extending an existing one:
+Start from an `html.*` member for new components. It renders the semantic
+element on web and the matching native primitive on native, and `styled()`
+adds base styles and typed variants while preserving Tamagui's compiler
+optimizations:
 
 ```tsx
-import { GetProps, View, styled } from '@tamagui/core'
+import { GetProps, html, styled } from '@tamagui/core'
 
-export const RoundedSquare = styled(View, {
+export const RoundedSquare = styled(html.div, {
   borderRadius: 20,
 })
 
 // helper to get props for any TamaguiComponent
 export type RoundedSquareProps = GetProps<typeof RoundedSquare>
 ```
+
+`styled()` wraps any Tamagui component. `View` and `Text` stay fully
+supported for code that matches the React Native primitives.
 
 Usage:
 
