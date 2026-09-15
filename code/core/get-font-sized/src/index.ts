@@ -1,15 +1,13 @@
-import type { FontSizeTokens, SizeTokens } from '@tamagui/web'
-import { resolveSize } from '@tamagui/size'
-import { styled, Text } from '@tamagui/web'
+import type { FontSizeTokens } from '@tamagui/web'
+import { styled } from '@tamagui/web'
 
 /**
- * A control's size token is accepted too, so a Label sized like the control
- * next to it shares the same value: `true` and a named size read the size
- * recipe's font key, anything else is a font.size key already. Exported by
- * name so the built types keep the alias and resolve it against the user's
- * config, instead of baking the config-less `string` into the .d.ts.
+ * `size` is the font scale only: a font.size key, a raw px number, or `true`
+ * for the default. `true` reads the type-scale key when the active font
+ * carries it, else the numeric default, so every shipped config keeps its
+ * current default (`sm` on v6, `4` on v5 and the default config).
  */
-export type GetFontSizedInput = FontSizeTokens | SizeTokens | number | true
+export type GetFontSizedInput = FontSizeTokens | number | true
 
 export const getFontSized = styled.dynamic<GetFontSizedInput>(
   (sizeTokenIn = true, env) => {
@@ -33,15 +31,11 @@ export const getFontSized = styled.dynamic<GetFontSizedInput>(
       }
     }
 
-    // `true` and a named size (`md`) read the size recipe's font key, so text
-    // sized "md" matches the text inside a "md" control. any other value is a
-    // font.size key already (`sm`, `2xl`, `4`).
-    const key = String(sizeTokenIn).replace(/^\$/, '')
-    const sizeToken = (
-      sizeTokenIn === true || env.sizes?.[key] != null
-        ? resolveSize(sizeTokenIn, env).fontSizeKey
-        : key
-    ) as Exclude<FontSizeTokens, true>
+    const key =
+      sizeTokenIn === true
+        ? ('sm' in font.size ? 'sm' : '4')
+        : String(sizeTokenIn).replace(/^\$/, '')
+    const sizeToken = key as Exclude<FontSizeTokens, true>
 
     // size related, treat them as overrides
     const fontSize = font.size[sizeToken]
@@ -64,16 +58,3 @@ export const getFontSized = styled.dynamic<GetFontSizedInput>(
     }
   }
 )
-
-export const SizableText = styled(Text, {
-  displayName: 'SizableText',
-  fontFamily: 'body',
-
-  variants: {
-    size: getFontSized,
-  } as const,
-
-  defaultVariants: {
-    size: true,
-  },
-})

@@ -1,17 +1,18 @@
-import { resolveSize } from '@tamagui/size'
-import type { SizeTokens } from '@tamagui/web'
+import type { FontSizeTokens } from '@tamagui/web'
+import { getFontSize } from '@tamagui/font-size'
 
 import { getIcon } from './getIcon'
 import type { ColorProp } from './useCurrentColor'
 import { useCurrentColor } from './useCurrentColor'
 
-/** icon px for a size: the recipe's icon (font size on the 4px grid), numbers are px */
+/** icon px for a size: numbers are px, strings are font size keys, else the 16px default */
 export const getThemedIconSize = (
-  size: SizeTokens | number | null | undefined,
+  size: FontSizeTokens | number | null | undefined,
   scaleIcon = 1
 ) => {
   if (typeof size === 'number') return size * scaleIcon
-  return resolveSize(size).icon * scaleIcon
+  if (typeof size === 'string') return getFontSize(size) * scaleIcon
+  return 16 * scaleIcon
 }
 
 export const useGetThemedIcon = (props: { color: ColorProp; size?: number }) => {

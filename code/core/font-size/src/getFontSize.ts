@@ -1,5 +1,5 @@
 import type { FontSizeTokens, FontTokens, Variable } from '@tamagui/core'
-import { getConfig, isVariable, resolveSize } from '@tamagui/core'
+import { getConfig, isVariable } from '@tamagui/core'
 
 type GetFontSizeOpts = {
   relativeSize?: number
@@ -45,16 +45,13 @@ export const getFontSizeToken = (
     font?.size ||
     // fallback to size tokens
     conf.tokensParsed.size
-  // `true` and a named size read the size recipe's font key
+  // `size` is the font scale only. `true` is the default size: the type-scale
+  // key when the font carries it, else the numeric default (mirrors
+  // getFontSized, so every shipped config keeps its current default).
   const key = String(inSize ?? true).replace(/^\$/, '')
   const size =
-    inSize == null || inSize === true || conf.sizes?.[key] != null
-      ? resolveSize(inSize, {
-          tokens: conf.tokensParsed,
-          font: font as any,
-          fonts: conf.fontsParsed,
-          sizes: conf.sizes,
-        }).fontSizeKey
+    inSize == null || inSize === true
+      ? ('sm' in (font?.size ?? {}) ? 'sm' : '4')
       : key
 
   const sizeTokens = Object.keys(fontSize)
