@@ -34,10 +34,19 @@ function renderButton(size?: any) {
   )
   const button = rendered.getByRole('button')
   const frame = getComputedStyle(button)
+  // jsdom's cascade loses the min-height class behind the base view reset, so
+  // read the rule the class points at
+  const minHeightClass = [...button.classList].find((name) => name.startsWith('_mh-'))
+  const minHeight = minHeightClass
+    ? [...document.styleSheets]
+        .flatMap((sheet) => [...sheet.cssRules])
+        .find((rule) => rule.cssText.startsWith(`.${minHeightClass} `))
+        ?.cssText.match(/min-height: ([^;]+);/)?.[1]
+    : undefined
   const text = getComputedStyle(rendered.getByText('Save'))
   const result = {
     height: frame.height,
-    minHeight: tokenValue(frame.minHeight, config.tokensParsed.size),
+    minHeight: minHeight && tokenValue(minHeight, config.tokensParsed.size),
     paddingVertical: tokenValue(frame.paddingBlock, config.tokensParsed.space),
     paddingHorizontal: tokenValue(frame.paddingInline, config.tokensParsed.space),
     fontSize: tokenValue(text.fontSize, config.fontsParsed.body.size),

@@ -363,9 +363,6 @@ const SliderTrack = createStyledHOC(
         data-disabled={context.disabled ? '' : undefined}
         data-orientation={context.orientation}
         orientation={context.orientation}
-        // unstyled frame has no size variant, so this never styles: it feeds
-        // the skin's track thickness resolver below
-        size={context.size ?? undefined}
         {...trackProps}
         ref={forwardedRef}
       />
@@ -494,6 +491,8 @@ export const SliderThumbFrame = styled(YStack, {
 
 export interface SliderThumbExtraProps {
   index?: number
+  /** thumb px: a number, a font size key, or a skin size name the skin resolves */
+  size?: string | number | boolean
 }
 
 export type SliderThumbProps = GetProps<typeof SliderThumbFrame> & SliderThumbExtraProps
@@ -566,7 +565,6 @@ const SliderThumb = createStyledHOC(
         {...{
           [orientation.startEdge]: `${percent}%`,
         }}
-        size={sizeIn}
         circular={circular}
         {...thumbProps}
         onLayout={(e) => {

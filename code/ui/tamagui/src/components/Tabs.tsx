@@ -30,6 +30,7 @@ const tabsTextSize = {
 
 export const TabsFrame = styled(TabsBehavior, {
   displayName: 'Tabs',
+  context: TabsContext,
 })
 
 export const TabsList = styled(TabsBehavior.List, {

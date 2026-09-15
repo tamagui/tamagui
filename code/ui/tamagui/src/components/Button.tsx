@@ -62,7 +62,9 @@ const buttonIconSize = {
 } as const
 
 const resolveButtonSize = (size: ButtonSize | undefined): keyof typeof buttonHeight =>
-  typeof size === 'string' ? size : 'md'
+  typeof size === 'string' && size in buttonHeight
+    ? (size as keyof typeof buttonHeight)
+    : 'md'
 
 const ButtonFrameBase = styled(ButtonBehaviorFrame, {
   context: ButtonContext,

@@ -32,7 +32,9 @@ const inputLineHeight = {
 } as const
 
 const resolveInputSize = (size: InputSize | undefined): keyof typeof inputSize =>
-  typeof size === 'string' ? size : 'md'
+  typeof size === 'string' && size in inputSize
+    ? (size as keyof typeof inputSize)
+    : 'md'
 
 // line height ships only on web: on native the platform default applies, so an
 // input's height stays padding plus line height on both platforms

@@ -18,6 +18,8 @@ const switchTrackSize = {
   xl: { width: 53, height: 28, minHeight: 28 },
 } as const
 
+const THUMB_INSET = 2
+
 const switchThumbSize = {
   xs: { width: 13, height: 13 },
   sm: { width: 18, height: 18 },

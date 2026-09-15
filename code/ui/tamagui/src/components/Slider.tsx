@@ -4,6 +4,7 @@
 // definition; the shadcn registry item is generated from this file.
 import {
   createRefComponent,
+  createStyledContext,
   styled,
   type TamaguiElement,
   withStaticProperties,
@@ -12,6 +13,13 @@ import { Slider as UiSlider } from '@tamagui/slider'
 import type * as React from 'react'
 
 export type SliderSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
+
+const SliderSizeContext = createStyledContext<{ size?: SliderSize }>({ size: 'md' })
+
+const resolveSliderSize = (size: unknown): keyof typeof sliderThumbSize =>
+  typeof size === 'string' && size in sliderThumbSize
+    ? (size as keyof typeof sliderThumbSize)
+    : 'md'
 
 // the thumb is a line-height tall circle
 const sliderThumbSize = {
@@ -33,17 +41,13 @@ const sliderTrackSize = {
 
 export const SliderTrackFrame = styled(UiSlider.Track, {
   displayName: 'SliderTrack',
+  context: SliderSizeContext,
   backgroundColor: 'background-press',
   borderRadius: 100_000,
 }).resolve((props) => {
   const size = props.size as SliderSize | undefined
   if (size == null || size === false) return
-  const thickness =
-    sliderTrackSize[
-      typeof size === 'string' && size in sliderTrackSize
-        ? (size as keyof typeof sliderTrackSize)
-        : 'md'
-    ]
+  const thickness = sliderTrackSize[resolveSliderSize(size)]
   if (props.orientation === 'vertical') {
     return {
       width: thickness,
@@ -68,6 +72,7 @@ export const SliderActive = SliderActiveFrame
 
 export const SliderThumbFrame = styled(UiSlider.Thumb, {
   displayName: 'SliderThumb',
+  context: SliderSizeContext,
   borderWidth: 2,
   borderColor: 'border-color hover:border-color-hover press:border-color-press',
   backgroundColor: 'background hover:background-hover press:background-press',
@@ -94,7 +99,11 @@ const SliderRoot = createRefComponent<
   TamaguiElement,
   React.ComponentProps<typeof UiSlider>
 >(function Slider(props, ref) {
-  return <UiSlider {...props} ref={ref} />
+  return (
+    <SliderSizeContext.Provider size={resolveSliderSize(props.size)}>
+      <UiSlider {...props} ref={ref} />
+    </SliderSizeContext.Provider>
+  )
 })
 
 export const Slider = withStaticProperties(SliderRoot, {

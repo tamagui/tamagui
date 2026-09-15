@@ -131,7 +131,7 @@ describe('Button sizing', () => {
   it('lets circular resolver geometry override the size dynamic', () => {
     const { getByTestId } = render(
       <TamaguiProvider config={conf} defaultTheme="light">
-        <Button data-testid="circular" size="2" circular>
+        <Button data-testid="circular" size="sm" circular>
           C
         </Button>
       </TamaguiProvider>
@@ -146,7 +146,7 @@ describe('Button sizing', () => {
   it('lets child variants override size dynamic geometry', () => {
     const { getByTestId } = render(
       <TamaguiProvider config={conf} defaultTheme="light">
-        <PlainButton data-testid="plain" size="2" plain>
+        <PlainButton data-testid="plain" size="sm" plain>
           Plain
         </PlainButton>
       </TamaguiProvider>
