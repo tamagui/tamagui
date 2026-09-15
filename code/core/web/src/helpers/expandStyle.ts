@@ -112,8 +112,12 @@ export function expandStyle(
         return [['textAlignVertical', verticalAlignMap[value] || 'auto']]
       }
       case 'direction': {
-        // web authors `direction`; native reads `writingDirection`
-        return [['writingDirection', directionMap[value] || 'auto']]
+        // css direction sets layout order and text base direction; native
+        // splits that across yoga `direction` and text `writingDirection`
+        return [
+          ['direction', value],
+          ['writingDirection', directionMap[value] || 'auto'],
+        ]
       }
       case 'gap': {
         // Yoga has no multi-value gap string, so `gap: "10px 20px"` splits

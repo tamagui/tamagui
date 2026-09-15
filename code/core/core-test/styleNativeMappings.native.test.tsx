@@ -40,23 +40,29 @@ function getStyleFor(props: Record<string, any>, Component = View) {
   return (result as any)?.style
 }
 
-describe('direction maps to writingDirection on native', () => {
-  test('direction rtl on View becomes writingDirection', () => {
+describe('direction keeps Yoga layout direction and maps writingDirection on native', () => {
+  test('direction rtl on View keeps direction and sets writingDirection', () => {
     const style = getStyleFor({ direction: 'rtl' })
+    expect(style?.direction).toBe('rtl')
     expect(style?.writingDirection).toBe('rtl')
-    expect(style?.direction).toBeUndefined()
   })
 
-  test('direction ltr on View becomes writingDirection', () => {
+  test('direction ltr on View keeps direction and sets writingDirection', () => {
     const style = getStyleFor({ direction: 'ltr' })
+    expect(style?.direction).toBe('ltr')
     expect(style?.writingDirection).toBe('ltr')
-    expect(style?.direction).toBeUndefined()
   })
 
-  test('direction on Text becomes writingDirection', () => {
+  test('direction on Text keeps direction and sets writingDirection', () => {
     const style = getStyleFor({ direction: 'rtl' }, Text)
+    expect(style?.direction).toBe('rtl')
     expect(style?.writingDirection).toBe('rtl')
-    expect(style?.direction).toBeUndefined()
+  })
+
+  test('direction inherit keeps Yoga inherit and maps writingDirection to auto', () => {
+    const style = getStyleFor({ direction: 'inherit' })
+    expect(style?.direction).toBe('inherit')
+    expect(style?.writingDirection).toBe('auto')
   })
 })
 
