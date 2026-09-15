@@ -16,6 +16,7 @@ import {
   updateRules,
   wrapStyleRules,
 } from '../web/src/helpers/insertStyleRule'
+import { htmlResetCSS } from '../web/src/dom/htmlReset'
 import {
   getAutoVariableCSS,
   getOrCreateVariable,
@@ -63,9 +64,10 @@ const referenceGetCSS = (
 :where(._pe-boxnone)>* {pointer-events:auto;}`
 
   const designSystem = `._ovs-contain {overscroll-behavior:contain;}
-.t_unmounted .is_View, .t_unmounted .is_Text { transition: none !important; }
+.t_unmounted .is_View, .t_unmounted .is_Text, .t_unmounted .is_DOM { transition: none !important; }
 :where(.is_View) { display: flex; align-items: stretch; flex-direction: column; flex-basis: auto; box-sizing: border-box; min-height: 0; min-width: 0; flex-shrink: 0; }
 :where(.is_Text) { display: inline; box-sizing: border-box; word-wrap: break-word; white-space: pre-wrap; margin: 0; }
+${htmlResetCSS}
 @scope (.is_Text) to (.is_View) { :where(.is_Text) { white-space: inherit; word-wrap: inherit; } }
 ._dsp_contents {display:contents;}
 ._no_backdrop::backdrop {display: none;}
