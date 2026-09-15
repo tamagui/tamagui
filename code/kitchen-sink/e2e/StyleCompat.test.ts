@@ -1,9 +1,24 @@
 import assert from 'node:assert/strict'
 import { by, device, element, waitFor } from 'detox'
 
+import { setAndroidAnimationScales } from './utils/detox'
+
 jest.retryTimes(0)
 
 describe('native line-height metrics', () => {
+  // ci disables system animations for emulator stability, and Reanimated reads
+  // transition_animation_scale as the device reduced-motion signal, so with it
+  // at 0 it skips the animation and paints no intermediate frames at all. This
+  // suite samples frames, so opt the scale back in, exactly as
+  // Accordion.test.ts does, before the app process starts and reads it.
+  beforeAll(() => {
+    setAndroidAnimationScales(1, ['transition_animation_scale'])
+  })
+
+  afterAll(() => {
+    setAndroidAnimationScales(0, ['transition_animation_scale'])
+  })
+
   beforeAll(async () => {
     await device.launchApp({
       newInstance: true,

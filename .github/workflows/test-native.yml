@@ -660,9 +660,7 @@ jobs:
           disk-size: 4G
           force-avd-creation: false
           emulator-boot-timeout: 600
-          # set below instead: Reanimated reads transition_animation_scale as the
-          # device's reduced-motion signal, so the runner must not zero it
-          disable-animations: false
+          disable-animations: true
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
           working-directory: code/kitchen-sink
           script: |
@@ -688,16 +686,6 @@ jobs:
 
             # Verify screen is on and unlocked
             adb shell dumpsys window | grep -E "mAwake|mScreenOn" || true
-
-            # Keep window animations off for Detox stability, but leave the two
-            # scales Reanimated and RN's animators read alone: Reanimated treats
-            # transition_animation_scale of 0 as "reduced motion" and skips the
-            # animation entirely, so a test sampling intermediate frames only
-            # ever sees the end value. iOS runs the same suite with animations
-            # on, and this keeps Android comparable.
-            adb shell settings put global window_animation_scale 0
-            adb shell settings put global transition_animation_scale 1
-            adb shell settings put global animator_duration_scale 1
 
             # Let Detox handle APK installation and ADB reverse setup via reversePorts config
             # --retries 0: no whole-file retry; individual tests retry via jest.retryTimes (e2e/jest.setup.ts)
