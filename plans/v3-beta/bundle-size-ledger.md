@@ -456,3 +456,22 @@ across a piece and a plain value. Clearing `flex` no longer clears
   kitchen-sink Toast and Sheet cases across the CSS, Reanimated, and Motion
   drivers with retries disabled.
 - Baseline re-recorded at 29,625, ceiling 29,775.
+
+## Baseline update, 2026-09-15: html.* zero-specificity reset
+
+html.* hosts stopped spreading `viewStaticConfig` / `textStaticConfig`, so they
+no longer carry per-tag atomic `display` classes; the browser stylesheet decides
+block vs inline. Undoing the browser's own defaults moved from per-component
+default props to three `:where(.is_DOM)` rules in the design-system CSS, which
+is what keeps page CSS like `p { margin: 1em }` reaching html.* on web.
+
+- **RAN** the `v3-zero-runtime (starter)` job on `9fe7700110`: css gzip grew
+  4099 -> 4197 (vite base), 4104 -> 4201 (vite islands), 4118 -> 4215
+  (next-webpack base), 4122 -> 4219 (next-webpack islands), 4118 -> 4215
+  (metro-web base), 4807 -> 4902 (metro-web islands), about +98 bytes per
+  graph for every app, whether or not it renders an html.* element.
+- JavaScript, island JavaScript and the styled-view fixture are unchanged, and
+  `checks` still passes the styled-view ceiling.
+- Accepted as the cost of the zero-specificity reset. If it is worth reclaiming
+  later, the rules could be emitted only for apps that reference html.*.
+- Baseline re-recorded for those six css numbers at `9fe7700110`.

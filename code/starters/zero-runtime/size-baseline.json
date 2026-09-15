@@ -1,5 +1,5 @@
 {
-  "measuredAtCommit": "d7cc56ffb4271b6d754d725ba3c7b7ad7d903c03",
+  "measuredAtCommit": "9fe770011091a1c2edf49f56e477d88d330fe4b9",
   "nodeVersion": "24.16.0",
   "measuredOn": "linux-x64",
   "compression": "Node gzipSync level 9; output depends on Node's bundled zlib",
@@ -12,36 +12,36 @@
     "vite": {
       "base": {
         "jsGzip": 59835,
-        "cssGzip": 4099,
+        "cssGzip": 4197,
         "islandJsGzip": null
       },
       "islands": {
         "jsGzip": 60776,
-        "cssGzip": 4104,
+        "cssGzip": 4201,
         "islandJsGzip": 72843
       }
     },
     "next-webpack": {
       "base": {
         "jsGzip": 141308,
-        "cssGzip": 4118,
+        "cssGzip": 4215,
         "islandJsGzip": null
       },
       "islands": {
         "jsGzip": 142327,
-        "cssGzip": 4122,
+        "cssGzip": 4219,
         "islandJsGzip": 72751
       }
     },
     "metro-web": {
       "base": {
         "jsGzip": 61844,
-        "cssGzip": 4118,
+        "cssGzip": 4215,
         "islandJsGzip": null
       },
       "islands": {
         "jsGzip": 62614,
-        "cssGzip": 4807,
+        "cssGzip": 4902,
         "islandJsGzip": 122546
       }
     }
