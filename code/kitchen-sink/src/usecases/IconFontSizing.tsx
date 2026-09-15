@@ -2,8 +2,8 @@ import { Moon } from '@tamagui/lucide-icons-2'
 import { YStack } from 'tamagui'
 import { Button } from '../components/Button'
 
-// The skin resolves size tokens through the token scales: text + icon follow
-// the font scale at the same token as the frame.
+// Button text follows the font scale at the control size, but the icon reads
+// the Button skin's own icon table, not the font scale.
 export function IconFontSizing() {
   return (
     <YStack gap="4" padding="4">

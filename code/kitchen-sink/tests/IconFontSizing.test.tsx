@@ -30,12 +30,14 @@ async function fontSizePx(page: any, testId: string) {
   })
 }
 
-test('button icon and text resolve through the font scale at the size token', async ({
+test('button icon comes from the skin icon table, text from the font scale', async ({
   page,
 }) => {
-  // kitchen-sink uses the v6 scale: font.body.size.3 === 13, 5 === 16
-  expect(await nestedSvgWidth(page, 'btn-2')).toBe(13)
-  expect(await fontSizePx(page, 'btn-2')).toBe(13)
+  // the Button skin removed the shared size concept: icons read the skin's own
+  // table (sm and lg both 16) while text keeps the font scale (v6 tailwind
+  // sm === 14, base === 16)
+  expect(await nestedSvgWidth(page, 'btn-2')).toBe(16)
+  expect(await fontSizePx(page, 'btn-2')).toBe(14)
   expect(await nestedSvgWidth(page, 'btn-6')).toBe(16)
   expect(await fontSizePx(page, 'btn-6')).toBe(16)
 })
