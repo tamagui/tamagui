@@ -1,53 +1,31 @@
-/**
- * Preserves prop ordering, so that the order most closely matches the last spread objects
- * Useful for having { ...defaultProps, ...props } that ensure props ordering is always kept
- *
- * Honestly this is somehwat backwards logically from Object.assign, reason was that we typically
- * are merging defaultProps, givenProps, but we started using it elsewhere and now its a bit confusing
- * Should look into refactoring this to match common usage
- *
- *    Given:
- *      mergeProps({ a: 1, b: 2 }, { b: 1, a: 2 })
- *    The final key order will be:
- *      b, a
- *
- */
-
 export type GenericProps = Record<string, any>
+
+// layers merge in order (defaults, styled context, the caller's props), so key
+// order in the result follows that order. one rule for every layer: an
+// undefined value never replaces what a lower layer set (React defaultProps
+// semantics); it lands only when nothing set the key, which keeps `key in
+// props` true for a caller who passed the key.
+const mergeLayer = (out: GenericProps, layer: object) => {
+  for (const key in layer) {
+    const value = layer[key]
+    if (value === undefined && key in out) continue
+    out[key] = value
+  }
+}
 
 export const mergeProps = (defaultProps: object, props: object) => {
   const out: GenericProps = {}
-
-  // in general objects keys are sorted by order of insertion
-  // we merge "defaultProps" first as they should come first
-  // (so Object.keys(finalProps) will list [...defaultPropKeys] first)
-  // but we ignore any keys from props, and merge it after, that way
-  // final order is [...defaultPropKeys, ...propKeys]
-
-  // an explicit undefined is absent (React defaultProps semantics): a default
-  // stands instead of being clobbered by it
-
-  // ⚠️ keep in sync with mergeComponentProps logic
-
-  for (const key in defaultProps) {
-    if (key in props && props[key] !== undefined) continue
-    out[key] = defaultProps[key]
-  }
-
-  for (const key in props) {
-    if (props[key] === undefined && key in defaultProps) continue
-    out[key] = props[key]
-  }
-
+  mergeLayer(out, defaultProps)
+  mergeLayer(out, props)
   return out
 }
 
-// merge props but also handles defaultProps + styledContext
+// same merge with a styled-context layer between defaults and props. also
+// reports which context keys the caller's props overrode, in prop order, so
+// the component can stop publishing those to its own descendants.
 export const mergeComponentProps = (
-  // this is "a" in mergeProps
   defaultProps: object | null | undefined,
-  contextProps: object | undefined,
-  // this is "b" in mergeProps
+  contextProps: object | null | undefined,
   props: object
 ) => {
   let overriddenContext: GenericProps | null = null
@@ -56,46 +34,17 @@ export const mergeComponentProps = (
     return [props, overriddenContext] as const
   }
 
-  if (defaultProps && !contextProps) {
-    return [mergeProps(defaultProps, props), overriddenContext] as const
-  }
-
-  // the only unique case is contextProps, we need to track overrides and do something a bit tricky
-  // since we respect prop order for styles, we want to preserve the object key order in overriddenContext
-
   const out: GenericProps = {}
-
-  // ⚠️ keep in sync with mergeProps logic
-  // same logic as mergeProps but tracking overrides!
-
-  for (const key in defaultProps) {
-    if (key in props && props[key] !== undefined) continue
-    out[key] = defaultProps[key]
-  }
-
-  // styled context props go after defaultProps but before props
-  for (const key in contextProps) {
-    if (key in props && props[key] !== undefined) continue
-    const contextValue = contextProps[key]
-    // don't merge undefined context values to preserve inheritance
-    if (contextValue !== undefined) {
-      out[key] = contextValue
-    }
-  }
+  if (defaultProps) mergeLayer(out, defaultProps)
+  if (contextProps) mergeLayer(out, contextProps)
 
   for (const key in props) {
-    // an explicit undefined is absent (React defaultProps semantics): a default
-    // or context value already placed above stands instead of being clobbered
-    if (
-      props[key] === undefined &&
-      ((defaultProps && key in defaultProps) || (contextProps && key in contextProps))
-    ) {
-      continue
-    }
-    out[key] = props[key]
+    const value = props[key]
+    if (value === undefined && key in out) continue
+    out[key] = value
     if (contextProps && key in contextProps) {
       overriddenContext ||= {}
-      overriddenContext[key] = props[key]
+      overriddenContext[key] = value
     }
   }
 
