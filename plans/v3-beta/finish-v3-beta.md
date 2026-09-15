@@ -11,7 +11,8 @@ the order it should land, with what is deliberately deferred.
 
 | Plan | Landed | Left |
 | --- | --- | --- |
-| `web-alignment-steps.md` step 1 (canonical web types, deprecate RN keys) | JSDoc deprecations only (`d02dc01467`) | `direction`, `verticalAlign` mapping to native; remove `includeFontPadding` from types |
+| html.* gets a web-only style contract, View/Text keep RN (`html-architecture-and-rsd-report.md` s3) | not landed. `d02dc01467` put `@deprecated` on `dom/styleTypes.ts`, but only `dom/standalone.ts` reads that file; `dom/html.tsx` still types every tag with `TextStylePropsBase` / `StackStyleBase` from `types.tsx`, which are RN `ViewStyle` / `TextStyle` | make `html.tsx` type against `dom/styleTypes.ts` with the RN keys removed (not deprecated), leave View/Text on the RN types; stop html.* borrowing `viewStaticConfig` / `textStaticConfig` |
+| `web-alignment-steps.md` step 1 (canonical web types, deprecate RN keys) | JSDoc deprecations only, on the standalone-only file | `direction`, `verticalAlign` mapping to native; remove `includeFontPadding` from the html.* types |
 | step 2 (shorthand and logical expansion) | logical props and `inset` already expand in `expandStyle.ts` | verify multi-value strings (`margin: "10px 20px"`, `gap: "10px 20px"`) on native; add if missing |
 | step 3 (`tamagui migrate --web-align` codemod) | nothing | defer past beta; document the renames in the upgrade guide instead |
 | step 4 / 5 (html.* as primary, positioning copy) | nothing | docs only, one pass |
@@ -36,9 +37,16 @@ deleting size sections, and does not touch html.* or the reset.
 Gate: root `lint`, `check`, `typecheck`; kitchen-sink Button/Input/Select/Switch
 screenshots unchanged; `registry:check` green.
 
-### B. html.* display bug and scoped reset
+### B. html.* web contract, display bug, scoped reset
 
-Owner: md group. Fix html.p, h1..h6, pre rendering `display: inline` because
+Owner: md group. First give html.* its own contract: `dom/html.tsx` types
+every tag from `dom/styleTypes.ts`, with `elevation`, `marginHorizontal`,
+`marginVertical`, `paddingHorizontal`, `paddingVertical`, `shadow*`,
+`textAlignVertical`, `includeFontPadding`, `writingDirection` removed from
+that file rather than deprecated. View and Text stay on `StackStyleBase` /
+`TextStylePropsBase` in `types.tsx`, untouched. html.* hosts stop spreading
+`viewStaticConfig` / `textStaticConfig` and get their own static config, which
+is what fixes html.p, h1..h6, pre rendering `display: inline` because
 hosts carry `is_Text`/`is_View`. Give html.* hosts their own class, generate
 `:where(.<class>)` reset rules from the tag display table, remove
 `DISPLAY_WEB_RESET` from `generate-html.ts` and `compilerHost.ts`, keep
