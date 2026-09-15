@@ -687,6 +687,14 @@ jobs:
             # Verify screen is on and unlocked
             adb shell dumpsys window | grep -E "mAwake|mScreenOn" || true
 
+            # `disable-animations: true` zeroes animator_duration_scale along with
+            # the window and transition scales, and Reanimated reads that as the
+            # device's reduced-motion setting: it skips the animation entirely, so
+            # a test sampling intermediate frames only ever sees the end value.
+            # Keep the system window and transition animations off and let app
+            # animators run, which is what the frame-sampling tests expect.
+            adb shell settings put global animator_duration_scale 1
+
             # Let Detox handle APK installation and ADB reverse setup via reversePorts config
             # --retries 0: no whole-file retry; individual tests retry via jest.retryTimes (e2e/jest.setup.ts)
             ./run-detox-android-ci.sh
