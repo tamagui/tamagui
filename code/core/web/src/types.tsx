@@ -2851,7 +2851,10 @@ export interface StackStyleBase
 
 export interface TextStylePropsBase
   extends
-    Omit<RNTextStyle, keyof ExtendedBaseProps | 'fontVariant' | 'lineHeight'>,
+    Omit<
+      RNTextStyle,
+      keyof ExtendedBaseProps | 'fontVariant' | 'lineHeight' | 'includeFontPadding'
+    >,
     ExtendedBaseProps {
   lineHeight?: number | Px | `${number}`
   /**

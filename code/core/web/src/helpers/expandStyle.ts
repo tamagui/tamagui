@@ -7,6 +7,7 @@ import { isAndroid, isWeb } from '@tamagui/constants'
 
 import { getStyleCompat, type StyleCompat } from '../config'
 import type { PropMappedValue } from '../types'
+import { splitComponents } from './borderComponents'
 import { parseBorderShorthand } from './parseBorderShorthand'
 import { parseOutlineShorthand } from './parseOutlineShorthand'
 
@@ -110,6 +111,25 @@ export function expandStyle(
       case 'verticalAlign': {
         return [['textAlignVertical', verticalAlignMap[value] || 'auto']]
       }
+      case 'direction': {
+        // web authors `direction`; native reads `writingDirection`
+        return [['writingDirection', directionMap[value] || 'auto']]
+      }
+      case 'gap': {
+        // Yoga has no multi-value gap string, so `gap: "10px 20px"` splits
+        // into row/column longhands per CSS slot order. a single value stays
+        // on `gap`, which Yoga reads directly
+        if (typeof value === 'string') {
+          const parts = splitComponents(value)
+          if (parts.length === 2) {
+            return [
+              ['rowGap', parts[0]],
+              ['columnGap', parts[1]],
+            ]
+          }
+        }
+        return
+      }
       case 'position': {
         // position: fixed|sticky -> absolute on native
         if (value === 'fixed' || value === 'sticky') {
@@ -193,6 +213,12 @@ const verticalAlignMap: Record<string, string> = {
   middle: 'center',
   bottom: 'bottom',
   auto: 'auto',
+}
+
+const directionMap: Record<string, string> = {
+  ltr: 'ltr',
+  rtl: 'rtl',
+  inherit: 'auto',
 }
 
 // shared expansions
