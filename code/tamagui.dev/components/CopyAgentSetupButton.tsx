@@ -51,7 +51,7 @@ export type CopyAgentSetupButtonProps = {
   label?: string
   tooltip?: string
   size?: ButtonSize
-} & ButtonProps
+} & Omit<ButtonProps, 'type'>
 
 export const CopyAgentSetupButton = ({
   type = 'setup',

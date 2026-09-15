@@ -197,7 +197,7 @@ const ComponentPreview = {
         gap="2-5"
         transition="medium"
       >
-        <Label size="1-5" htmlFor={'switch'}>
+        <Label size="2" htmlFor={'switch'}>
           Switch
         </Label>
 

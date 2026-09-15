@@ -33,9 +33,9 @@ export const CodeInline = styled(Paragraph, {
   rounded: '3',
   fontSize: '90%',
   lineHeight: '70%',
-  px: '1.5',
-  py: '0.5',
-  mx: '0.5',
+  px: 6,
+  py: 2,
+  mx: 2,
   // inline code sits in prose, so it has to wrap rather than push the page wide
   whiteSpace: 'pre-wrap',
   overflowWrap: 'break-word',
