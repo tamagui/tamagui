@@ -1642,6 +1642,21 @@ export const getSplitStyles: StyleSplitter = (
           !(processedProps.asChild && isTamaguiElement(processedProps.children))
       )
       if (staticConfig.isDOM) viewProps.__textMetrics = nativeTextMetrics
+      // resolveTextMetrics writes fontSize/lineHeight after the inline merge
+      // compare above, so an inherited-only change (new parent leading with
+      // unchanged own props) must opt out of the prev-style swap below
+      const directText = styleState as DirectState
+      const prevTextStyle = directText.flatPrevStyle
+      if (prevTextStyle && !directText.flatStyleChanged) {
+        const resolvedTextStyle = styleState.style
+        if (
+          resolvedTextStyle &&
+          (resolvedTextStyle.fontSize !== prevTextStyle.fontSize ||
+            resolvedTextStyle.lineHeight !== prevTextStyle.lineHeight)
+        ) {
+          directText.flatStyleChanged = true
+        }
+      }
     }
     const style = styleState.style
     if (style?.fontFamily) {
