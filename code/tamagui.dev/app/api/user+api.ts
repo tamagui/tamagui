@@ -14,6 +14,16 @@ import {
 } from '~/features/user/helpers'
 
 export default apiRoute(async (req) => {
+  // local dev and secret-less previews have no backend to ask: nobody is
+  // logged in, and that is a 200 null, not a 500. reads the same env the
+  // supabase server client requires in getSupabaseServerClient
+  if (
+    !import.meta.env.NEXT_PUBLIC_SUPABASE_URL ||
+    !import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  ) {
+    return Response.json(null)
+  }
+
   const { user } = await ensureAuth({ req }).catch((err) => {
     if (isResponse(err) && err.status === 401) {
       return { user: null }

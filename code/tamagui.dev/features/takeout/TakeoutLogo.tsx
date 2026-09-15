@@ -21,7 +21,7 @@ export const TakeoutLogo = () => {
           select="none"
           fontFamily="cherryBomb"
           fontSize={320}
-          lineHeight={234}
+          lineHeight="234px"
           whiteSpace="nowrap"
           minW={900}
           text="center"

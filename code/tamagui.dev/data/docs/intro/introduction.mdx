@@ -13,7 +13,7 @@ and the same native styles on iOS and Android, and both accept the same tokens,
 themes, and media queries.
 
 **Style props** on the `html.*` elements are the recommended base. They are
-typed, they read like React Native, and they stay close to the web:
+typed, web-aligned, and compile to atomic CSS or native styles:
 
 ```tsx
 import { html } from 'tamagui'
@@ -46,28 +46,9 @@ The choice is per import path, so one app can use both. Read
 
 ## Why a compiler
 
-Cross-platform apps live inside a trilemma. Pick two of: an app that feels
-native, one codebase for native and web, and shipping fast.
+Cross-platform development often involves trade-offs between native feel, code reuse, and performance. React Native shares logic across platforms, but on web, styling in JavaScript can mean heavy runtime overhead and larger bundles.
 
-<YStack w="100%" items="center" my="md:4">
-  <Image
-    title="The Frontend Trilemma: Choose two of: A native-feeling app, Deploying to native and web, and share code between the two apps."
-    src="/trilemma.svg"
-    size="hero"
-    height={540}
-    width={640}
-    objectFit="contain"
-  />
-</YStack>
-
-React Native shares logic between platforms and asks you to write views twice
-for the best result. React Native Web pushed the shared line further up the
-tree, but on the web its styles stay in JavaScript. Media queries, themes, and
-interactive styles run as hooks that touch every component, so pages re-render
-more than they should and bundles grow with every screen.
-
-Tamagui moves that line again with an optimizing compiler, `@tamagui/static`.
-It reads your components at build time and:
+Tamagui resolves this with `@tamagui/static`, an optimizing compiler that:
 
 <YStack py="4">
   <Features
@@ -115,11 +96,11 @@ later, and a component it cannot optimize simply renders the normal way. See
   disableTitle
   large
   features={[
-    `Core only has one dependency, React, but supports the full React Native View and Text API, a superset of the React Native Style API, styled(), powerful hooks, and the typed design system helpers in ~28Kb on web.`,
-    `A smart, partial-evaluating compiler gives 0-runtime performance with the ergonomics of writing your code however you want. Even inline, logic-filled code is optimized.`,
-    `Every feature works at runtime and compile-time, so none of the usual limits of 0-runtime libraries, while optionally getting the same great performance.`,
-    `useTheme and useMedia hooks with signal-like granularity and dirty tracking.`,
-    `Unstyled and styled versions of all components.`,
+    `Core depends only on React and supports the full React Native View and Text APIs, style props, styled(), hooks, and typed design tokens in ~28Kb on web.`,
+    `The optimizing compiler extracts styles into atomic CSS and flattens styled components at build time.`,
+    `Every feature works with or without the compiler, with graceful fallback to runtime resolution.`,
+    `useTheme and useMedia hooks provide fine-grained subscription updates.`,
+    `Unstyled and styled variants are available for all components.`,
   ]}
 />
 

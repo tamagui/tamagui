@@ -2,6 +2,7 @@ process.env.TAMAGUI_TARGET = 'native'
 
 import {
   TamaguiProvider,
+  Text as CoreText,
   createTamagui,
   setMediaState,
   updateMediaListeners,
@@ -11,6 +12,13 @@ import { expect, test, vi } from 'vitest'
 
 import configDefault from '../config-default'
 import { skipProps } from '../web/src/helpers/skipProps'
+import { setupHooks } from '../web/src/setupHooks'
+import {
+  Text as NativeText,
+  TextInput as NativeTextInput,
+  View as NativeView,
+} from 'react-native'
+import { ComponentContext } from '../web/src/contexts/ComponentContext'
 import { webPropsToSkip } from '../web/src/helpers/webPropsToSkip.native'
 import {
   DOMRuntimeImage,
@@ -53,6 +61,9 @@ vi.mock('@tamagui/constants', async (importOriginal) => ({
 }))
 
 const config = createTamagui(configDefault.getDefaultTamaguiConfig('native'))
+setupHooks({
+  getBaseViews: () => ({ Text: NativeText, View: NativeView, TextAncestor: null }),
+})
 
 function styleValue(node: { props: { style?: unknown } }, key: string) {
   const styles = (Array.isArray(node.props.style) ? node.props.style : [node.props.style])
@@ -86,6 +97,141 @@ function findEvent(
   }
   return instance.props[event]
 }
+
+test('core and DOM text share semantic leading through mixed nesting and updates', () => {
+  const content = (fontSize: number, leading: number | `${number}px`) => (
+    <TamaguiProvider config={config} defaultTheme="light">
+      <CoreText fontSize={fontSize} lineHeight={leading} testID="core-parent">
+        <DOMText __inherit style={{ fontSize: 10 }} testID="dom-child">
+          <CoreText fontSize={8} testID="core-grandchild">
+            mixed
+          </CoreText>
+        </DOMText>
+      </CoreText>
+      <DOMRuntimeView __styles={[{ fontSize, lineHeight: leading }]}>
+        <CoreText fontSize={12} testID="core-under-view">
+          view
+        </CoreText>
+      </DOMRuntimeView>
+    </TamaguiProvider>
+  )
+  let renderer: ReactTestRenderer
+  act(() => {
+    renderer = create(content(20, 1.5))
+  })
+  const leading = (id: string) =>
+    styleValue(findPrimitive(renderer!, 'Text', id), 'lineHeight')
+  expect(leading('core-parent')).toBe(30)
+  expect(leading('dom-child')).toBe(15)
+  expect(leading('core-grandchild')).toBe(12)
+  expect(leading('core-under-view')).toBe(18)
+  act(() => renderer!.update(content(30, '24px')))
+  for (const id of ['core-parent', 'dom-child', 'core-grandchild', 'core-under-view']) {
+    expect(leading(id)).toBe(24)
+  }
+  act(() => renderer!.update(content(30, 2)))
+  expect(leading('core-parent')).toBe(60)
+  expect(leading('dom-child')).toBe(20)
+  expect(leading('core-grandchild')).toBe(16)
+  expect(leading('core-under-view')).toBe(24)
+})
+
+test('asChild preserves leading semantics for Tamagui and raw native children', () => {
+  let renderer: ReactTestRenderer
+  act(() => {
+    renderer = create(
+      <TamaguiProvider config={config} defaultTheme="light">
+        <CoreText asChild fontSize={20} lineHeight={1.5}>
+          <CoreText testID="slotted-core">core</CoreText>
+        </CoreText>
+        <CoreText asChild fontSize={20} lineHeight={1.5}>
+          <NativeText testID="slotted-native">native</NativeText>
+        </CoreText>
+      </TamaguiProvider>
+    )
+  })
+  expect(styleValue(findPrimitive(renderer!, 'Text', 'slotted-core'), 'lineHeight')).toBe(
+    30
+  )
+  expect(
+    styleValue(findPrimitive(renderer!, 'Text', 'slotted-native'), 'lineHeight')
+  ).toBe(30)
+})
+
+test('core and DOM bind inherited font channels and local sizes shadow them', () => {
+  const node = { value: 20 }
+  const channel = { driver: 'fixture', fontSize: node }
+  const driver = {
+    isStub: true,
+    animations: {},
+    useTextMetrics: ({ inheritedText, lineHeight }: any) => ({
+      style: {
+        fontSize: inheritedText.fontSize.value,
+        ...(typeof lineHeight === 'number' && {
+          lineHeight: inheritedText.fontSize.value * lineHeight,
+        }),
+      },
+      textChannel: inheritedText,
+      Text: NativeText,
+      TextInput: NativeTextInput,
+    }),
+  }
+  const content = () => (
+    <TamaguiProvider config={config} defaultTheme="light">
+      <ComponentContext.Provider
+        parentFontSize={40}
+        parentLineHeight={1.5}
+        animatedText={channel}
+        animationDriver={driver as any}
+      >
+        <CoreText testID="bound-core">
+          <DOMText __inherit __textMetrics={{ lineHeight: 2 }} testID="bound-dom">
+            inherited
+          </DOMText>
+        </CoreText>
+        <CoreText fontSize={10} testID="sized-core">
+          <DOMText __inherit __textMetrics={{ lineHeight: 2 }} testID="sized-dom">
+            local
+          </DOMText>
+        </CoreText>
+        <DOMRuntimeTextInput
+          __styles={[{ lineHeight: '24px' }]}
+          __inherit
+          testID="bound-input"
+        />
+      </ComponentContext.Provider>
+    </TamaguiProvider>
+  )
+  let renderer: ReactTestRenderer
+  act(() => {
+    renderer = create(content())
+  })
+  for (const fontSize of [20, 30]) {
+    node.value = fontSize
+    act(() => renderer!.update(content()))
+    expect(styleValue(findPrimitive(renderer!, 'Text', 'bound-core'), 'fontSize')).toBe(
+      fontSize
+    )
+    expect(styleValue(findPrimitive(renderer!, 'Text', 'bound-core'), 'lineHeight')).toBe(
+      fontSize * 1.5
+    )
+    expect(styleValue(findPrimitive(renderer!, 'Text', 'bound-dom'), 'lineHeight')).toBe(
+      fontSize * 2
+    )
+    expect(styleValue(findPrimitive(renderer!, 'Text', 'sized-core'), 'lineHeight')).toBe(
+      15
+    )
+    expect(styleValue(findPrimitive(renderer!, 'Text', 'sized-dom'), 'lineHeight')).toBe(
+      20
+    )
+    expect(
+      styleValue(findPrimitive(renderer!, 'TextInput', 'bound-input'), 'fontSize')
+    ).toBe(fontSize)
+    expect(
+      styleValue(findPrimitive(renderer!, 'TextInput', 'bound-input'), 'lineHeight')
+    ).toBe(24)
+  }
+})
 
 test('standalone DOM context styles recompute for theme, media and interaction', () => {
   setMediaState({ sm: false } as any)

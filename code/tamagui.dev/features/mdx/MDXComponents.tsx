@@ -36,6 +36,7 @@ import {
   styled,
 } from 'tamagui'
 import { Button } from '~/components/Button'
+import { CopyAgentSetupButton } from '~/components/CopyAgentSetupButton'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { Code, CodeInline } from '~/components/Code'
 import { CustomTabs } from '~/components/CustomTabs'
@@ -86,10 +87,12 @@ const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) =
     <Paragraph
       render="p"
       size={large ? '8' : '7'}
-      fontSize="sm:6"
-      lineHeight="sm:6"
-      mb="4"
-      color="accent-1"
+      fontSize={19}
+      lineHeight="28px"
+      fontWeight="400"
+      letterSpacing={-0.2}
+      mb="5"
+      color="color-12"
       {...props}
     >
       {disableUnwrapText ? children : unwrapText(children)}
@@ -264,7 +267,7 @@ const MarkdownTable = ({ children, style, ...props }) => {
                   <Text
                     render="dt"
                     fontSize={12}
-                    lineHeight={16}
+                    lineHeight="16px"
                     fontWeight="500"
                     color="color-9"
                   >
@@ -274,7 +277,7 @@ const MarkdownTable = ({ children, style, ...props }) => {
                     render="dd"
                     m={0}
                     fontSize={13}
-                    lineHeight={18}
+                    lineHeight="18px"
                     fontWeight="400"
                     color="color-11"
                   >
@@ -295,6 +298,8 @@ const componentsIn = {
   InlineTabs: InlineTabs,
   MDXTabs,
   Collapsible: DocsCollapsible,
+  CopyAgentSetupButton,
+  CopyAgentButton: CopyAgentSetupButton,
 
   SocialLinksRow: () => (
     <YStack mt="6" mx="-4">
@@ -525,12 +530,13 @@ const componentsIn = {
     <H2
       position="relative"
       width={`fit-content` as any}
-      mt={24}
+      mt={28}
       mb={12}
       data-heading
-      fontSize={26}
-      lineHeight={34}
-      fontWeight="500"
+      fontSize={24}
+      lineHeight="32px"
+      fontWeight="600"
+      letterSpacing={-0.3}
       color="color-12"
       {...props}
     >
@@ -539,16 +545,17 @@ const componentsIn = {
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading data-heading mt={18} mb={8} id={id}>
+    <LinkHeading data-heading mt={20} mb={8} id={id}>
       <H3
         maxW="100%"
         position="relative"
         width={`fit-content` as any}
         id={id}
-        fontSize={22}
-        lineHeight={29}
-        color="color-11"
-        fontWeight="500"
+        fontSize={20}
+        lineHeight="26px"
+        color="color-12"
+        fontWeight="600"
+        letterSpacing={-0.2}
         {...props}
       >
         {children}
@@ -564,7 +571,7 @@ const componentsIn = {
       mt={24}
       mb={8}
       fontSize={20}
-      lineHeight={28}
+      lineHeight="28px"
       color="color-8"
       data-heading
       {...props}
@@ -579,7 +586,7 @@ const componentsIn = {
       className="docs-paragraph"
       display="block"
       fontSize={16}
-      lineHeight={25}
+      lineHeight="25px"
       mt={0}
       mb={16}
       color="color-11"
@@ -645,7 +652,7 @@ const componentsIn = {
       <LI
         render="li"
         fontSize={16}
-        lineHeight={27}
+        lineHeight="26px"
         pb={0}
         mb={4}
         className="docs-paragraph"
@@ -678,7 +685,7 @@ const componentsIn = {
       px={12}
       py={7}
       fontSize={12}
-      lineHeight={16}
+      lineHeight="16px"
       fontWeight="500"
       color="color-9"
       text="left"
@@ -694,7 +701,7 @@ const componentsIn = {
       px={12}
       py={8}
       fontSize={13}
-      lineHeight={18}
+      lineHeight="18px"
       fontWeight="400"
       color="color-11"
       style={{ verticalAlign: 'top' }}
@@ -740,7 +747,7 @@ const componentsIn = {
       >
         <Image maxW="100%" {...props} />
         {!!children && (
-          <Text render="figcaption" lineHeight={23} color="color-press" mt="2">
+          <Text render="figcaption" lineHeight="23px" color="color-press" mt="2">
             {children}
           </Text>
         )}
@@ -781,7 +788,7 @@ const componentsIn = {
           style={{ width: '100%', display: 'block' }}
         ></video>
       </OffsetBox>
-      <Text render="figcaption" lineHeight={23} mt="2" color="color-press">
+      <Text render="figcaption" lineHeight="23px" mt="2" color="color-press">
         {children}
       </Text>
     </YStack>
@@ -890,8 +897,8 @@ const componentsIn = {
       <YStack gap="1" pb="sm:30px">
         <ThemeTintAlt offset={2}>
           <IntroParagraph large mt="4">
-            Tamagui makes styling React on any platform a delight. All of its features
-            work the same on both React Native and React web.
+            Tamagui provides universal styling and UI components for React. All features
+            work consistently across React Native and web.
           </IntroParagraph>
 
           <UL mt="4" pl="4" gap="2">
@@ -903,11 +910,9 @@ const componentsIn = {
                     <span style={{ color: 'var(--color-12)' }}>@tamagui/core</span>
                   </CodeInline>
                 </Link>
-                &nbsp; is the base style library, it expands on the React Native style API
-                with many features from CSS, all without a single external dependency. It
-                can entirely replace React Native Web in a much lighter package, with full
-                API compatibility, much improved SSR, more features, and much better
-                performance.
+                &nbsp; is the base style library. It provides a web-aligned universal
+                style system with SSR support, typed tokens, and optimized runtime
+                performance across web and native.
               </LI>
             </Theme>
 
@@ -925,10 +930,9 @@ const componentsIn = {
                   fontSize="inherit"
                   href="/docs/intro/benchmarks"
                 >
-                  significantly improves performance
+                  extracts style props into atomic CSS
                 </Link>{' '}
-                through partial analysis, hoisting, and flattening. It makes sharing code
-                between web and native actually feel great.
+                and flattens component trees at build time.
               </LI>
             </Theme>
 
@@ -940,9 +944,9 @@ const componentsIn = {
                     <span style={{ color: 'var(--color-12)' }}>Tamagui Components</span>
                   </CodeInline>
                 </Link>{' '}
-                provides composable components for building common UI elements. It's
-                similar to Radix, but works on native and web, and has a powerful Adapt
-                primitive to shapeshift UI based on the platform or media query.
+                provides accessible, composable UI primitives for web and native,
+                including the Adapt primitive for responsive and platform-specific
+                presentations.
               </LI>
             </Theme>
           </UL>
@@ -1011,17 +1015,13 @@ const componentsIn = {
             </Card>
           </XStack>
 
-          <XStack gap="5" flexWrap="wrap">
+          <XStack gap="5" flexWrap="wrap" items="center">
             <Link asChild href="/docs/guides/how-to-upgrade">
               <Text render="a" fontSize={14} color="color-11 hover:color-12">
                 Upgrading from v1 or v2 ↗
               </Text>
             </Link>
-            <Link asChild href="/docs/intro/agents">
-              <Text render="a" fontSize={14} color="color-11 hover:color-12">
-                Setting up with a coding agent ↗
-              </Text>
-            </Link>
+            <CopyAgentSetupButton variant="quiet" size="sm" />
             <Link asChild href="/ui/native">
               <Text render="a" fontSize={14} color="color-11 hover:color-12">
                 Native integrations & runtime ↗

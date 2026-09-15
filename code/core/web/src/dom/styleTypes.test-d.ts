@@ -97,6 +97,9 @@ declare const check: (definition: TamaguiStyleProps) => void
 check({ padding: 16, backgroundColor: 'surface hover:surface-hover', display: 'flex' })
 check({ transform: [{ scale: 2 }, { rotate: '45deg' }] })
 check({ position: 'fixed', overflowX: 'auto', gridTemplateColumns: '1fr 1fr' })
+check({ fontSize: 20, lineHeight: 1.5 })
+check({ lineHeight: '24px' })
+check({ lineHeight: '1.5' })
 
 // @ts-expect-error not a style property
 check({ notAStyleProperty: 1 })

@@ -60,7 +60,7 @@ export function isTokenValueProp(prop: string): boolean {
 }
 
 // CANONICAL arbitrary-value coercion. an arbitrary `[..]` whose inner is a UNITLESS number
-// (z-[400], aspect-[1.5], leading-[1.25]) or a PX length (p-[18px], text-[14px], border-[0.5px])
+// (z-[400], aspect-[1.5]) or a PX length (p-[18px], text-[14px], border-[0.5px])
 // resolves to a NUMBER: React Native REQUIRES numbers for dimensional + typography props and
 // silently DROPS "Npx"/"400" strings (Yoga parseCSSProperty<CSSNumber,CSSPercentage> rejects px;
 // StyleSheetTypes types fontSize/lineHeight/letterSpacing as number). web accepts the number and
@@ -177,9 +177,10 @@ function tailwindClassToFlatProp(
   // Tailwind's numbered leading scale is the spacing scale (N * 0.25rem),
   // represented as native points at the default 16px root size. Resolve it
   // here instead of letting an application's same-named font token change the
-  // meaning of a Tailwind classname.
+  // meaning of a Tailwind classname. Keep the unit until core lowers it for the
+  // target host, because a bare number is a V3 line-height ratio.
   if (prop === 'lineHeight' && /^\d+(?:\.\d+)?$/.test(value)) {
-    return { key: prop, value: Number(value) * 4 }
+    return { key: prop, value: `${Number(value) * 4}px` }
   }
 
   // grid-cols-N → repeat(N, minmax(0, 1fr)), col-span-N → span N / span N
@@ -253,10 +254,9 @@ function tailwindClassToFlatProp(
     let lhValue: any
     if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
       const inner = decodeArbitrary(value.slice(1, -1))
-      // px length → NUMBER (native-valid: leading-[20px] → 20). a UNITLESS value is a web
-      // lineHeight MULTIPLIER and MUST stay a string (a number would be px-ified to "1.25px"
-      // on web, breaking the multiplier). RN has no unitless multiplier, so this is web-only.
-      lhValue = /^-?\d*\.?\d+px$/.test(inner) ? Number.parseFloat(inner) : inner
+      // preserve both forms until core's target lowering: px is absolute and a
+      // unitless numeric string is a ratio on web and native.
+      lhValue = inner
     } else {
       lhValue = value
     }

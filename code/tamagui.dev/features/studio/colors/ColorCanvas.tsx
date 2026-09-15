@@ -164,7 +164,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
                     }
                     opacity={0.2}
                   />
-                  <Paragraph lineHeight={0} color={labelColor as any}>
+                  <Paragraph lineHeight="0px" color={labelColor as any}>
                     {accentScore !== 'Fail' ? (
                       // @ts-ignore
                       <CheckCircle size={16} color="currentColor" />

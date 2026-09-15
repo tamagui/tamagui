@@ -107,15 +107,7 @@ export const CategorySectionBadge = ({ item }: { item: ComponentSchema }) => {
   )
 }
 
-export const ComponentAccessType = ({ item }: { item: ComponentSchema }) => {
-  return (
-    <Box marginLeft={1} gap={1}>
-      <Text color={'black'} backgroundColor={item?.isOSS ? 'green' : 'blue'}>
-        {item?.isOSS ? 'FREE' : 'PRO'}
-      </Text>
-    </Box>
-  )
-}
+export const ComponentAccessType = ({ item }: { item: ComponentSchema }) => null
 
 export const ResultsCounter = () => {
   const appContext = React.useContext(AppContext)

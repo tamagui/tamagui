@@ -320,7 +320,7 @@ export function FontFamilyInput() {
                       fontSize={12}
                       textTransform="none"
                       letterSpacing={0}
-                      lineHeight={0}
+                      lineHeight="0px"
                       mt={-2}
                     >
                       Aa

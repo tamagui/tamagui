@@ -7,6 +7,7 @@ import type {
   DOMKeyEvent,
 } from '@tamagui/dom'
 import type { ReactNode, Ref } from 'react'
+import type { NativeTextMetrics } from '../helpers/nativeTextMetrics'
 
 /**
  * What the compiler emits for a DOM element on native.
@@ -30,7 +31,9 @@ import type { ReactNode, Ref } from 'react'
 /**
  * Props already resolved by the compiler and forwarded to the native host.
  */
-export type ResolvedNativeProps = Readonly<Record<string, unknown>>
+export type ResolvedNativeProps = Readonly<Record<string, unknown>> & {
+  __textMetrics?: NativeTextMetrics
+}
 
 export type DOMViewProps = ResolvedNativeProps & {
   children?: ReactNode

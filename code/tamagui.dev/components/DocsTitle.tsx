@@ -13,8 +13,9 @@ export const DocsTitle = ({ children }: { children: string }) => {
       mb="2"
       color="color-12"
       fontSize={32}
-      lineHeight={38}
-      fontWeight="600"
+      lineHeight="38px"
+      fontWeight="700"
+      letterSpacing={-0.6}
       maxW="gtSm:90%"
       className="word-break-keep-all"
     >

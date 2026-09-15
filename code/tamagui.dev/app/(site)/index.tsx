@@ -123,7 +123,10 @@ export default function TamaguiHomePage() {
           maxW={HERO_ROW_WIDTH}
           mx="auto"
         >
-          <YStack flexGrow={1} flexShrink={1} gap="6" minW={0} maxW="640px">
+          {/* maxW stays under the viewport on small screens: the row centers
+              its children, so an uncapped 640px column would bleed off both
+              edges instead of wrapping */}
+          <YStack flexGrow={1} flexShrink={1} gap="6" minW={0} maxW="100% gtMd:640px">
             <EnsureFlexed />
             <XStack items="center" gap="4" mb="-4" mt="-3">
               <TamaguiIconSvg width={24} height={24} />
@@ -215,7 +218,7 @@ export default function TamaguiHomePage() {
             </YStack>
           </YStack>
 
-          <YStack maxW="640px" flexGrow={1} flexShrink={1}>
+          <YStack maxW="100% gtMd:640px" flexGrow={1} flexShrink={1}>
             <EnsureFlexed />
             <HomeStyleToggle />
           </YStack>

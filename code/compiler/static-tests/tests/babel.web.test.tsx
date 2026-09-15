@@ -167,6 +167,45 @@ test('font classNames are extracted properly', async () => {
   )
 })
 
+test('numeric text lineHeight extracts as a unitless ratio', async () => {
+  const output = await extractForWeb(
+    `
+    import { Text } from '@tamagui/core'
+    export const App = () => <Text fontSize={20} lineHeight={1.5}>leading</Text>
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  expect(output?.styles).toMatch(/line-height:1\.5(?:[;}])/)
+  expect(output?.styles).not.toContain('line-height:1.5px')
+})
+
+test('numeric-string text lineHeight ratios stay distinct from explicit px lengths', async () => {
+  const output = await extractForWeb(
+    `
+    import { Text } from '@tamagui/core'
+    export const App = () => <>
+      <Text fontSize={20} lineHeight="1.5">ratio</Text>
+      <Text fontSize={20} lineHeight="24px">length</Text>
+    </>
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  expect(output?.styles).toMatch(/line-height:1\.5(?:[;}])/)
+  expect(output?.styles).toMatch(/line-height:24px(?:[;}])/)
+})
+
 test('ternaries + font families works', async () => {
   // one sanity check debug output test
   const output = await extractForWeb(

@@ -5,6 +5,9 @@ import type { ComponentContextI } from '../types'
 const componentContextKeys = [
   'disableSSR',
   'inText',
+  ...(process.env.TAMAGUI_TARGET === 'native'
+    ? (['parentFontSize', 'parentLineHeight', 'animatedText'] as const)
+    : []),
   'language',
   'animationDriver',
   'setParentFocusState',
@@ -18,6 +21,11 @@ export const ComponentContext = createStyledContext<
   {
     disableSSR: undefined,
     inText: false,
+    ...(process.env.TAMAGUI_TARGET === 'native' && {
+      parentFontSize: undefined,
+      parentLineHeight: undefined,
+      animatedText: null,
+    }),
     language: null,
     animationDriver: null,
     setParentFocusState: null,

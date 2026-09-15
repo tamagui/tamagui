@@ -33,6 +33,17 @@ const diagnose = (property: string, value: string) =>
   diagnoseStyleValue(property, value, { config, registry, candidates })
 
 describe('tooling diagnostics', () => {
+  test('rejects negative and non-finite leading ratios with an explicit-unit hint', () => {
+    for (const value of ['-1', 'Infinity', 'NaN', '1e400']) {
+      expect(diagnose('lineHeight', value)).toMatchObject([
+        { code: 'invalid-line-height', property: 'lineHeight' },
+      ])
+    }
+    for (const value of ['0', '1.5', '24', '24px', 'normal']) {
+      expect(diagnose('lineHeight', value)).toEqual([])
+    }
+  })
+
   test.each([
     [
       '  red   hover:blue  sm:dark:calc(1px + 2px)  ',

@@ -14,81 +14,6 @@ The fastest start is a starter template:
 npm create tamagui@latest
 ```
 
-<Collapsible id="set-up-with-an-agent" title="Set up with an agent">
-
-Paste this brief into your coding agent for a new project:
-
-```
-Add Tamagui v3 to this project. Run `npx tamagui@beta setup` and follow the brief it
-prints, adapting it to this project's bundler and framework. Do not skip the
-verification step at the end, and tell me anything you had to skip or guess at.
-```
-
-For a project that already uses Tamagui v1 or v2:
-
-```
-Upgrade this project to Tamagui v3. Run `npx tamagui@beta migrate --from v2` and
-follow the brief it prints. Aim for the intermediate checkpoint: V3 APIs with my
-existing design values. Identify the package version and config version separately.
-If I use Config v5 or v5-subtle, keep it; do not move to Config v6, remap its colors
-or scales, or convert the whole app to html.* or Tailwind in this pass.
-
-Run the flat-values codemod in dry-run first, show me the report, and wait for me to
-read it before you write anything. Tell me every site the codemod refused and why.
-After the required API changes, compare the same screens and interactions against
-the baseline. A working V3 app on Config v5 is a completed upgrade. List optional
-Config v6 or frontend changes separately; do not begin them automatically.
-```
-
-For v1 projects, use `--from v1` to run the v1-to-v2 migration first.
-
-For an app already on v3 with Config v5:
-
-```
-This app already uses Tamagui V3 with Config v5. Check what remains of the API
-migration before changing anything. Keep Config v5 and our current resolved design
-values. Do not rerun completed codemods or adopt Config v6 by default. Validate the
-remaining changes in real screens, and report any optional design migration as a
-separate follow-up.
-```
-
-If you later choose Config v6, start a separate change with its own visual baseline.
-The same token name can resolve to a different spacing, font, or color value, and
-breakpoint names can change meaning. See
-[the staged config migration](/docs/guides/how-to-upgrade#recommended-defer-config-v6-to-its-own-migration).
-
-**Describe your design system.** Generate a reference for your project's tokens,
-themes, and components, commit it, and include it in your agent's context:
-
-```bash
-npx tamagui@beta generate-prompt
-```
-
-**Skills.** If your agent supports
-[skills](https://github.com/tamagui/tamagui/tree/v3-beta/skills), install the
-Tamagui skills:
-
-```bash
-npx skills add https://github.com/tamagui/tamagui/tree/v3-beta/skills
-```
-
-`tamagui` covers authoring: `styled()`, variants, flat values, tokens and themes,
-animations, and what the compiler does. `tamagui-upgrade-v3` covers the migration:
-order, codemod reports, unsupported cases, and verification.
-
-**Check the result.**
-
-- Tokens have no `$` prefix. Conditional values are strings
-  (`bg="background hover:background-hover"`) or typed objects
-  (`bg={{ default: 'background', hover: 'background-hover' }}`).
-- Matching clauses resolve by platform, condition count, then category (media,
-  container, theme, group, state).
-- Install every `tamagui` and `@tamagui/*` package at the same exact version.
-  `tamagui check` finds mismatches.
-- Run the app and check tokens, layouts, and interactions in real screens.
-
-</Collapsible>
-
 ## Requirements
 
 - **React 19+**
@@ -221,42 +146,42 @@ Web ecosystem often does, so Tamagui ships plugins that handle it:
     title="Next.js"
     img="/logos/next-js.svg"
     link="/docs/guides/next-js"
-    subtitle="Full-featured React framework with great developer experience."
+    subtitle="React framework for web applications."
     colorOffset={2}
   />
   <LogoCard
     title="Expo"
     img="/logos/expo.svg"
     link="/docs/guides/expo"
-    subtitle="Platform for creating universal native apps with JavaScript and React."
+    subtitle="Universal React Native application platform."
     colorOffset={6}
   />
   <LogoCard
     title="Vite"
     img="/logos/vite.svg"
     link="/docs/guides/vite"
-    subtitle="Fast and modern development server and build tool."
+    subtitle="Frontend build tool and development server."
     colorOffset={1}
   />
   <LogoCard
     title="Webpack"
     img="/logos/webpack.svg"
     link="/docs/guides/webpack"
-    subtitle="Powerful module bundler for modern JavaScript applications."
+    subtitle="Configurable JavaScript module bundler."
     colorOffset={0}
   />
   <LogoCard
     title="Metro"
     img="/logos/metro.svg"
     link="/docs/guides/metro"
-    subtitle="Fast, scalable, and serverless JavaScript bundler for React Native."
+    subtitle="Default JavaScript bundler for React Native."
     colorOffset={3}
   />
   <LogoCard
     title="One"
     img="/logos/one.svg"
     link="/docs/guides/one"
-    subtitle="Universal React framework with native support."
+    subtitle="Universal React framework for web and native."
     colorOffset={4}
   />
 </Grid>

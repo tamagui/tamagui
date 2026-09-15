@@ -16,9 +16,8 @@ tokens.
 
 For the recommended theme setup, see the [Config v6 docs](/docs/core/config-v6).
 
-Once you've learned the basics here, be sure to
-[check out the ThemeBuilder guide](/docs/guides/theme-builder) for generating
-more interesting theme suites.
+See the [ThemeBuilder guide](/docs/guides/theme-builder) for generating
+custom theme suites.
 
 If you want to style `bento` or `tamagui` components: see
 [Styling `tamagui` UI components](#styling-tamagui-components).
@@ -56,12 +55,9 @@ const dark = {
 
 ### Sub-themes
 
-One of the unique powers of Tamagui is theme nesting. Define a theme with a
-name in the form of `parentName_subName` and Tamagui will let you nest themes,
-with both `parentName` and `subName` being valid theme names.
-
-You can do this as many times as you'd like. Here's an example of having three
-levels:
+Tamagui supports theme nesting. Define sub-themes using the `parentName_subName`
+format, where each segment resolves as a valid theme. Sub-themes can nest across
+multiple levels:
 
 - `dark_green_subtle`
 - `light_green_subtle`
@@ -166,32 +162,20 @@ without a second component-specific lookup system.
 
 ### Styling Tamagui Components
 
-Tamagui comes in two parts: a core library and a full component suite. The core library
-(`@tamagui/core`) is flexible and doesn't have many rules. But the full UI kit
-(`tamagui`) has some standard ways of doing things. This helps make everything
-work well together.
+The `tamagui` component suite uses standard semantic theme keys across all
+components:
 
-In the `tamagui` UI kit, all components use these main theme keys:
+- `background`: component surface color
+- `color`: text and icon color
+- `border-color`: border color
+- `shadow-color`: elevation and shadow color
+- `placeholder-color`: placeholder text color
 
-- `background`: for background colors
-- `color`: for text colors
-- `border-color`: for border colors
-- `shadow-color`: for shadow colors
-- `placeholder-color`: for placeholder text colors (doesn't change when you
-  interact with it)
-
-It also uses special versions of these for when you hover, press, or focus on
-something. For example, `background-hover` or `color-press`.
-
-These keys help standardize how you style components, and make for easy
-re-theming. They are also optional, if you find the theme system too complex for
-your use case, you can always just use plain old style props
-
-...plus all the pseudo variants for each, eg, `background-hover`,
+Each key supports interactive pseudo-states: `background-hover`,
 `background-press`, and `background-focus`.
 
-This means that you can easily re-theme `tamagui`'s UI kit and your own
-components together in both light and dark mode.
+Defining these standard keys lets you re-theme both built-in UI components and
+your own components consistently across light and dark mode.
 
 A minimal theme might look like this:
 

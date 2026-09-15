@@ -4,13 +4,26 @@ import type {
   FlatStyleObject,
   FlatStyleValue,
   FontFamilyTokens,
+  FontLineHeightTokens,
+  GenericFont,
   RootThemeName,
   StackStyle,
+  TextStylePropsBase,
 } from './types'
 
 declare const accepts: <T>(value: T) => void
 
 describe('flat value types', () => {
+  test('leading accepts ratios and explicit lengths without changing font numbers', () => {
+    expectTypeOf<1.5>().toMatchTypeOf<TextStylePropsBase['lineHeight']>()
+    expectTypeOf<'1.5'>().toMatchTypeOf<FontLineHeightTokens>()
+    expectTypeOf<'24px'>().toMatchTypeOf<FontLineHeightTokens>()
+    accepts<GenericFont>({
+      size: { body: 20 },
+      lineHeight: { pixels: 24, ratio: '1.5', explicit: '24px' },
+    })
+  })
+
   test('theme modifiers only include root theme names', () => {
     type ConfigThemeName = 'light' | 'dark' | 'dark_blue' | 'dark_ProgressIndicator'
 

@@ -28,8 +28,8 @@ function pinBentoRef(bentoPath, silent) {
 }
 
 /**
- * Resolve the optional bento repo. Bento is a sibling checkout (pro features
- * only). The normal `~/tamagui` checkout finds it via the sibling-relative
+ * Resolve the optional bento repo. Bento is a sibling checkout.
+ * The normal `~/tamagui` checkout finds it via the sibling-relative
  * path, but git worktrees (e.g. `~/.worktrees/tamagui-main`) break that
  * relative path, so we also check `$TAMAGUI_BENTO_PATH` and `~/bento`.
  *
@@ -88,11 +88,9 @@ export function generateBentoProxy(options = {}) {
 
   if (!hasBento) {
     // Generate stub proxy files for when bento is not available
-    // Bento is optional (pro users only) - /bento pages will show placeholders
     writeFileSync(
       proxyPath,
       `// Stub file for when bento is not available
-// Bento is optional and only needed for pro features - /bento pages will not work without it
 export * as Data from '../../components/bento-showcase/data'
 export * as Sections from '../../components/bento-showcase/sections'
 
@@ -114,9 +112,7 @@ export function CurrentRouteProvider({ children }: { children: React.ReactNode; 
     )
 
     if (!silent) {
-      console.info(
-        'Bento not found - /bento pages will not work (optional, pro users only)'
-      )
+      console.info('Bento repository not found - /bento pages will show placeholders')
     }
   } else {
     // Generate bento-proxy.ts using alias that works in both dev and build

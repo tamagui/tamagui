@@ -6,16 +6,15 @@ export function resolveVariableValue(
   valOrVar: Variable | any,
   resolveValues?: ResolveVariableAs
 ) {
-  if (resolveValues === 'none') {
+  if (resolveValues === 'none' || !isVariable(valOrVar)) {
     return valOrVar
   }
-  if (isVariable(valOrVar)) {
-    if (resolveValues === 'value') {
-      return valOrVar.val
-    }
-
+  let value
+  if (resolveValues === 'value') {
+    value = valOrVar.val
+  } else {
     // @ts-expect-error dynamic variables may expose a platform-aware getter
-    const get = valOrVar?.get
+    const get = valOrVar.get
 
     // compound CSS strings cannot contain native dynamic color objects.
     const needsLiteralColor =
@@ -23,14 +22,14 @@ export function resolveVariableValue(
       key === 'boxShadow' ||
       key === 'textShadow' ||
       key === 'backgroundImage'
-    if (process.env.TAMAGUI_TARGET !== 'native' || !needsLiteralColor) {
-      if (typeof get === 'function') {
-        const resolveDynamicFor = resolveValues === 'web' ? 'web' : undefined
-        return get(resolveDynamicFor)
-      }
-    }
-
-    return process.env.TAMAGUI_TARGET === 'native' ? valOrVar.val : valOrVar.variable
+    value =
+      (process.env.TAMAGUI_TARGET !== 'native' || !needsLiteralColor) &&
+      typeof get === 'function'
+        ? get(resolveValues === 'web' ? 'web' : undefined)
+        : process.env.TAMAGUI_TARGET === 'native'
+          ? valOrVar.val
+          : valOrVar.variable
   }
-  return valOrVar
+  // compiler variables can return native literals from a web-built resolver.
+  return key === 'lineHeight' && typeof value === 'number' ? `${value}px` : value
 }

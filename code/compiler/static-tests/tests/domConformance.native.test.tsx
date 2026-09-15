@@ -82,6 +82,30 @@ test('native text controls lower input semantics and standalone style handles', 
   }
 })
 
+test('native DOM lowering transports semantic text metrics apart from host style', async () => {
+  const output = await extractForNative(`
+    import { html } from '@tamagui/core/dom'
+    export const App = () => <html.div fontSize={20} lineHeight={1.5}>leading</html.div>
+  `)
+
+  expect(output.diagnostics).toEqual([])
+  expect(output.code).toContain('"fontSize":20')
+  expect(output.code).toContain('"lineHeight":1.5')
+  expect(output.code).toContain('__textMetrics={{"fontSize":20,"lineHeight":1.5}}')
+})
+
+test('native DOM style() handles transport their semantic text metrics', async () => {
+  const output = await extractForNative(`
+    import { html, style } from '@tamagui/core/dom'
+    const parent = style({ fontSize: 20, lineHeight: 1.5 })
+    export const App = () => <html.div style={parent}>leading</html.div>
+  `)
+
+  expect(output.diagnostics).toEqual([])
+  expect(output.code).toContain('"fontSize":20,"lineHeight":1.5')
+  expect(output.code).toContain('__textMetrics={{"fontSize":20,"lineHeight":1.5}}')
+})
+
 test('native inline, array and conditional handles become a React Native style array', async () => {
   const output = await extractForNative(`
     import { jsx } from 'react/jsx-runtime'

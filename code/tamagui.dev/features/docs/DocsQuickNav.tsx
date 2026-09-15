@@ -5,16 +5,13 @@ import {
   Paragraph,
   ScrollView,
   Separator,
-  SizableText,
-  Theme,
   XStack,
   YStack,
 } from 'tamagui'
 
 import { Link } from '~/components/Link'
-import { BentoButton } from '../site/BentoButton'
-import { ConsultingButton } from '../site/ConsultingButton'
-import { TakeoutButton } from '../site/TakeoutButton'
+import { AGENT_SETUP_PROMPT } from '~/components/CopyAgentSetupButton'
+import { copyToClipboard } from '~/hooks/useClipboard'
 import { DocsThemePicker } from './DocsThemePicker'
 
 export type Heading = {
@@ -153,6 +150,33 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
 
+  const [copiedMd, setCopiedMd] = useState(false)
+  const [copiedPrompt, setCopiedPrompt] = useState(false)
+
+  const handleCopyMarkdown = async () => {
+    try {
+      const res = await fetch(`${pathname}.md`)
+      if (res.ok) {
+        const text = await res.text()
+        await copyToClipboard(text)
+        setCopiedMd(true)
+        setTimeout(() => setCopiedMd(false), 2000)
+      }
+    } catch (e) {
+      console.error('Failed to copy markdown', e)
+    }
+  }
+
+  const handleCopyPrompt = async () => {
+    try {
+      await copyToClipboard(AGENT_SETUP_PROMPT)
+      setCopiedPrompt(true)
+      setTimeout(() => setCopiedPrompt(false), 2000)
+    } catch (e) {
+      console.error('Failed to copy prompt', e)
+    }
+  }
+
   // Track all currently intersecting headings to pick the best one
   const intersectingHeadings = useRef<Set<string>>(new Set())
 
@@ -273,23 +297,45 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
     >
       <ScrollView showsVerticalScrollIndicator={false}>
         <YStack gap="5" pt={68} pb="10">
-          <XStack items="center" gap="5">
+          <YStack gap="2">
+            <Paragraph
+              render="span"
+              size="2"
+              color="color-7 hover:color-11"
+              cursor="pointer"
+              onPress={handleCopyMarkdown}
+            >
+              {copiedMd ? 'Copied markdown' : 'Copy markdown'}
+            </Paragraph>
+
             <Link
               target="_blank"
-              href={href(`${process.env.ONE_SERVER_URL}${pathname}.md` as any)}
+              href={href(
+                (process.env.ONE_SERVER_URL
+                  ? `${process.env.ONE_SERVER_URL}/llms.txt`
+                  : '/llms.txt') as any
+              )}
             >
-              <SizableText size="3">.md</SizableText>
+              <Paragraph
+                render="span"
+                size="2"
+                color="color-7 hover:color-11"
+                cursor="pointer"
+              >
+                Open llms.txt
+              </Paragraph>
             </Link>
 
-            <Separator minH={20} vertical />
-
-            <Link
-              target="_blank"
-              href={href(`${process.env.ONE_SERVER_URL}/llms.txt` as any)}
+            <Paragraph
+              render="span"
+              size="2"
+              color="color-7 hover:color-11"
+              cursor="pointer"
+              onPress={handleCopyPrompt}
             >
-              <SizableText size="3">llms.txt</SizableText>
-            </Link>
-          </XStack>
+              {copiedPrompt ? 'Copied prompt' : 'Copy prompt'}
+            </Paragraph>
+          </YStack>
 
           <Separator opacity={0.5} mr="6" />
 
@@ -348,22 +394,6 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
                 })}
               </YStack>
             </ScrollView>
-          </YStack>
-
-          <YStack gap="2" px="4">
-            <Theme name="green">
-              <Link width="100%" href="/bento">
-                <BentoButton />
-              </Link>
-            </Theme>
-            <Theme name="gray">
-              <Link width="100%" href="/takeout">
-                <TakeoutButton />
-              </Link>
-            </Theme>
-            <Link width="100%" href="https://addeven.com" target="_blank">
-              <ConsultingButton />
-            </Link>
           </YStack>
         </YStack>
       </ScrollView>

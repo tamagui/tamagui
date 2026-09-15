@@ -125,24 +125,29 @@ describe('native — typography resolves to EXACT NUMBERS (RN StyleSheetTypes nu
     expect(v).toBe(14)
     expect(typeof v).toBe('number')
   })
-  test('lineHeight={20} → 20', () => {
+  test('lineHeight={20} is a ratio against the native root font size', () => {
     const v = resolved(Text, `<Text lineHeight={20} />`, 'lineHeight')
-    expect(v).toBe(20)
+    expect(v).toBe(280)
     expect(typeof v).toBe('number')
+
+    const px = resolved(Text, `<Text lineHeight="24px" />`, 'lineHeight')
+    expect(px).toBe(24)
+    expect(typeof px).toBe('number')
   })
   test('letterSpacing={0} → 0 (not dropped)', () => {
     const v = resolved(Text, `<Text letterSpacing={0} />`, 'letterSpacing')
     expect(v).toBe(0)
     expect(typeof v).toBe('number')
   })
-  test('leading-[20px] → 20 number (native); leading-[1.25] unitless stays a web multiplier', () => {
-    // px lineHeight is native-valid → number 20
+  test('leading px stays explicit until native lowering and unitless leading is a ratio', () => {
     const px = flat('leading-[20px]').lineHeight
-    expect(px).toBe(20)
-    expect(typeof px).toBe('number')
-    // a UNITLESS multiplier stays a string ('1.25') — a number would px-ify to 1.25px on web
-    // (RN has no unitless multiplier; this is web-only semantics, preserved verbatim)
+    expect(px).toBe('20px')
+    expect(typeof px).toBe('string')
     expect(flat('leading-[1.25]').lineHeight).toBe('1.25')
+
+    const ratio = nativeStyle(Text, 'text-[20px] leading-[1.25]')
+    expect(ratio.fontSize).toBe(20)
+    expect(ratio.lineHeight).toBe(25)
   })
 })
 
