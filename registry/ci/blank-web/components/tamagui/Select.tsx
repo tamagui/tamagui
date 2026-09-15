@@ -5,15 +5,11 @@
 // bundleable — no react-native-svg pulled into the core package. Consumers can
 // pass their own icon components as children of the icon parts.
 //
-// Sizing is token-based: `size` accepts a size token or `true`, which resolves
-// through the opt-in @tamagui/size policy shared by Button, Input, Label,
-// ListItem, and Tabs.
+// Sizing is preset-based: `size` is one of xs sm md lg xl (default md), owned
+// inline here like every other skin.
 import {
+  createStyledContext,
   type GetProps,
-  getVariableValue,
-  resolveSize,
-  SizeContext,
-  type SizeTokens,
   styled,
   withStaticProperties,
 } from '@tamagui/core'
@@ -49,32 +45,79 @@ const Check = ({ size = 14 }: { size?: number }) => (
   </IconGlyph>
 )
 
-export type SelectSize = SizeTokens
+export type SelectSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
 
-const selectTriggerSizeVariant = styled.dynamic<SelectSize>((val, env) => {
-  return resolveSize(val, env).frame
-})
+const SelectContext = createStyledContext<{ size?: SelectSize }>({ size: 'md' })
 
-const selectItemSizeVariant = styled.dynamic<SelectSize>((val, env) => {
-  const { frame } = resolveSize(val, env)
-  return {
-    gap: frame.gap,
-    minHeight: frame.minHeight,
-    paddingHorizontal: frame.paddingHorizontal,
-    paddingVertical: frame.paddingVertical,
-  }
-})
+const selectFrameSize = {
+  xs: { paddingInline: '2', paddingBlock: '1', borderRadius: 'sm', gap: '1' },
+  sm: { paddingInline: '3', paddingBlock: '1.5', borderRadius: 'md', gap: '1.5' },
+  md: { paddingInline: '4', paddingBlock: '2', borderRadius: 'md', gap: '2' },
+  lg: { paddingInline: '6', paddingBlock: '2', borderRadius: 'md', gap: '2' },
+  xl: { paddingInline: '8', paddingBlock: '2.5', borderRadius: 'lg', gap: '2.5' },
+} as const
 
-const selectNativeSizeVariant = styled.dynamic<SelectSize>((val, env) => {
-  const { frame, controlHeight } = resolveSize(val, env)
-  return {
-    ...frame,
-    // a native <select> ignores line-height, so give it the control height
-    // plus its 1px border on each side, and room for the chevron
-    height: controlHeight + 2,
-    paddingRight: getVariableValue(frame.paddingHorizontal) + 20,
-  }
-})
+const selectTextSize = {
+  xs: { fontSize: 'xs', lineHeight: 'xs' },
+  sm: { fontSize: 'sm', lineHeight: 'sm' },
+  md: { fontSize: 'sm', lineHeight: 'sm' },
+  lg: { fontSize: 'base', lineHeight: 'base' },
+  xl: { fontSize: 'lg', lineHeight: 'lg' },
+} as const
+
+const selectItemSize = {
+  xs: { gap: '1', paddingHorizontal: '2', paddingVertical: '1' },
+  sm: { gap: '1.5', paddingHorizontal: '3', paddingVertical: '1.5' },
+  md: { gap: '2', paddingHorizontal: '4', paddingVertical: '2' },
+  lg: { gap: '2', paddingHorizontal: '6', paddingVertical: '2' },
+  xl: { gap: '2.5', paddingHorizontal: '8', paddingVertical: '2.5' },
+} as const
+
+const selectNativeSize = {
+  // a native <select> ignores line-height, so it gets the control height
+  // (line height plus vertical padding) plus its 1px border on each side,
+  // and room for the chevron
+  xs: {
+    paddingInline: '2',
+    paddingBlock: '1',
+    borderRadius: 'sm',
+    gap: '1',
+    height: 26,
+    paddingRight: 28,
+  },
+  sm: {
+    paddingInline: '3',
+    paddingBlock: '1.5',
+    borderRadius: 'md',
+    gap: '1.5',
+    height: 34,
+    paddingRight: 32,
+  },
+  md: {
+    paddingInline: '4',
+    paddingBlock: '2',
+    borderRadius: 'md',
+    gap: '2',
+    height: 38,
+    paddingRight: 36,
+  },
+  lg: {
+    paddingInline: '6',
+    paddingBlock: '2',
+    borderRadius: 'md',
+    gap: '2',
+    height: 42,
+    paddingRight: 44,
+  },
+  xl: {
+    paddingInline: '8',
+    paddingBlock: '2.5',
+    borderRadius: 'lg',
+    gap: '2.5',
+    height: 50,
+    paddingRight: 52,
+  },
+} as const
 
 const SelectNative = styled(SizableText, {
   displayName: 'SelectNative',
@@ -86,17 +129,16 @@ const SelectNative = styled(SizableText, {
   outlineWidth: 0,
   userSelect: 'none',
   variants: {
-    size: selectNativeSizeVariant,
+    size: {
+      ...selectNativeSize,
+      true: selectNativeSize.md,
+    },
   } as const,
-  defaultVariants: { size: true },
-})
-
-const selectTextSizeVariant = styled.dynamic<SelectSize>((val, env) => {
-  return resolveSize(val, env).text
+  defaultVariants: { size: 'md' },
 })
 
 export const SelectTrigger = styled(SelectBehavior.Trigger, {
-  context: SizeContext,
+  context: SelectContext,
   displayName: 'SelectTrigger',
   width: '100%',
   maxWidth: '100%',
@@ -110,24 +152,30 @@ export const SelectTrigger = styled(SelectBehavior.Trigger, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: selectTriggerSizeVariant,
+    size: {
+      ...selectFrameSize,
+      true: selectFrameSize.md,
+    },
   } as const,
-  defaultVariants: { size: true },
+  defaultVariants: { size: 'md' },
 })
 
 export const SelectValue = styled(SelectBehavior.Value, {
-  context: SizeContext,
+  context: SelectContext,
   displayName: 'SelectValue',
   color: 'color',
   ellipsis: true,
   variants: {
-    size: selectTextSizeVariant,
+    size: {
+      ...selectTextSize,
+      true: selectTextSize.md,
+    },
   } as const,
-  defaultVariants: { size: true },
+  defaultVariants: { size: 'md' },
 })
 
 export const SelectIcon = styled(SelectBehavior.Icon, {
-  context: SizeContext,
+  context: SelectContext,
   displayName: 'SelectIcon',
   marginLeft: 'auto',
   children: <ChevronDown />,
@@ -139,20 +187,23 @@ export const SelectGroup = styled(SelectBehavior.Group, {
 })
 
 export const SelectLabel = styled(SelectBehavior.Label, {
-  context: SizeContext,
+  context: SelectContext,
   displayName: 'SelectLabel',
   color: 'color-10',
   fontWeight: '600',
   paddingHorizontal: 10,
   paddingVertical: 6,
   variants: {
-    size: selectTextSizeVariant,
+    size: {
+      ...selectTextSize,
+      true: selectTextSize.md,
+    },
   } as const,
-  defaultVariants: { size: true },
+  defaultVariants: { size: 'md' },
 })
 
 export const SelectItem = styled(SelectBehavior.Item, {
-  context: SizeContext,
+  context: SelectContext,
   displayName: 'SelectItem',
   width: '100%',
   maxWidth: '100%',
@@ -167,21 +218,27 @@ export const SelectItem = styled(SelectBehavior.Item, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:1px',
   variants: {
-    size: selectItemSizeVariant,
+    size: {
+      ...selectItemSize,
+      true: selectItemSize.md,
+    },
   } as const,
-  defaultVariants: { size: true },
+  defaultVariants: { size: 'md' },
 })
 
 export const SelectItemText = styled(SelectBehavior.ItemText, {
-  context: SizeContext,
+  context: SelectContext,
   displayName: 'SelectItemText',
   color: 'color',
   userSelect: 'none',
   ellipsis: true,
   variants: {
-    size: selectTextSizeVariant,
+    size: {
+      ...selectTextSize,
+      true: selectTextSize.md,
+    },
   } as const,
-  defaultVariants: { size: true },
+  defaultVariants: { size: 'md' },
 })
 
 export const SelectItemIndicator = styled(SelectBehavior.ItemIndicator, {
@@ -247,9 +304,9 @@ export function SelectRoot<
 >({ size = true, ...props }: SelectRootProps<Value, Multiple>) {
   return (
     <SelectNativeComponentContext.Provider value={SelectNative}>
-      <SizeContext.Provider size={size}>
+      <SelectContext.Provider size={size}>
         <SelectBehavior.Root<Value, Multiple> size={size} {...props} />
-      </SizeContext.Provider>
+      </SelectContext.Provider>
     </SelectNativeComponentContext.Provider>
   )
 }

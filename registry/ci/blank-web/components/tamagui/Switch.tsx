@@ -3,15 +3,30 @@ import {
   SwitchFrame as SwitchBehaviorFrame,
   SwitchThumbFrame as SwitchBehaviorThumbFrame,
 } from '@tamagui/switch'
-import { resolveSize } from '@tamagui/size'
 import { type GetProps, styled } from '@tamagui/core'
+
+export type SwitchSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
 
 // the track is the checkbox square stretched into a pill, so a switch and a
 // checkbox at the same size read as the same weight (Checkbox.tsx uses the same
 // 1.4). the thumb insets by the track's 2px padding on every side.
-const trackHeight = (size: any, env: any) => Math.round(resolveSize(size, env).icon * 1.4)
+const switchTrackSize = {
+  xs: { width: 32, height: 17, minHeight: 17 },
+  sm: { width: 42, height: 22, minHeight: 22 },
+  md: { width: 42, height: 22, minHeight: 22 },
+  lg: { width: 42, height: 22, minHeight: 22 },
+  xl: { width: 53, height: 28, minHeight: 28 },
+} as const
 
 const THUMB_INSET = 2
+
+const switchThumbSize = {
+  xs: { width: 13, height: 13 },
+  sm: { width: 18, height: 18 },
+  md: { width: 18, height: 18 },
+  lg: { width: 18, height: 18 },
+  xl: { width: 24, height: 24 },
+} as const
 
 export const SwitchFrame = styled(SwitchBehaviorFrame, {
   displayName: 'Switch',
@@ -21,14 +36,10 @@ export const SwitchFrame = styled(SwitchBehaviorFrame, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: styled.dynamic<any>((size, env) => {
-      const height = trackHeight(size, env)
-      return {
-        width: Math.round(height * 1.9),
-        height,
-        minHeight: height,
-      }
-    }),
+    size: {
+      ...switchTrackSize,
+      true: switchTrackSize.md,
+    },
 
     // off is a low-contrast trough the page barely registers. on swaps the whole
     // control onto the brand theme, so `background` here is the inverse fill and
@@ -42,6 +53,9 @@ export const SwitchFrame = styled(SwitchBehaviorFrame, {
       true: { cursor: 'not-allowed', opacity: 0.45 },
     },
   } as const,
+  defaultVariants: {
+    size: 'md',
+  },
 })
 
 export const SwitchThumbFrame = styled(SwitchBehaviorThumbFrame, {
@@ -49,13 +63,10 @@ export const SwitchThumbFrame = styled(SwitchBehaviorThumbFrame, {
   borderRadius: 1000,
   boxShadow: '0 1px 2px rgba(0,0,0,0.18)',
   variants: {
-    size: styled.dynamic<any>((size, env) => {
-      const side = trackHeight(size, env) - THUMB_INSET * 2
-      return {
-        width: side,
-        height: side,
-      }
-    }),
+    size: {
+      ...switchThumbSize,
+      true: switchThumbSize.md,
+    },
 
     // the knob stays the light one against the trough in both schemes, and
     // becomes the brand foreground once the track flips to the brand fill.
@@ -64,6 +75,9 @@ export const SwitchThumbFrame = styled(SwitchBehaviorThumbFrame, {
       false: { backgroundColor: 'white' },
     },
   } as const,
+  defaultVariants: {
+    size: 'md',
+  },
 })
 
 export const Switch = createSwitch({

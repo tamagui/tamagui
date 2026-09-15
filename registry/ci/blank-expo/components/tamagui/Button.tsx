@@ -13,42 +13,61 @@ import {
   useButton,
 } from '@tamagui/button'
 import {
+  createStyledContext,
   createStyledHOC,
   type GetProps,
-  resolveSize,
-  SizeContext,
-  type SizeTokens,
   styled,
   Theme,
   type ThemeProps,
-  type TokenSize,
   withStaticProperties,
 } from '@tamagui/core'
 import { getThemedIconSize } from '@tamagui/helpers-tamagui'
 
-// SizeTokens includes `true`, which resolves through @tamagui/size's opt-in policy.
-export type ButtonSize = SizeTokens
+export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
 
-const buttonFrameSizeVariant = styled.dynamic<ButtonSize>((val, env) => {
-  const { frame, controlHeight } = resolveSize(val, env)
-  return {
-    ...frame,
-    // Keep text buttons at the same outer height as circular buttons. The
-    // resolved control height excludes this frame's 1px border on each side.
-    minHeight: controlHeight + 2,
-    // `size` is a control preset, not square geometry. keep the frame's width
-    // content-driven even if an outer styled layer also recognizes `size` as
-    // the generic width/height shorthand.
-    width: 'auto',
-  }
-})
+const ButtonContext = createStyledContext<{ size?: ButtonSize }>({ size: 'md' })
 
-const buttonTextSizeVariant = styled.dynamic<ButtonSize>((val, env) => {
-  return resolveSize(val, env).text
-})
+const buttonFrameSize = {
+  xs: { paddingInline: '2', paddingBlock: '1', borderRadius: 'sm', gap: '1' },
+  sm: { paddingInline: '3', paddingBlock: '1.5', borderRadius: 'md', gap: '1.5' },
+  md: { paddingInline: '4', paddingBlock: '2', borderRadius: 'md', gap: '2' },
+  lg: { paddingInline: '6', paddingBlock: '2', borderRadius: 'md', gap: '2' },
+  xl: { paddingInline: '8', paddingBlock: '2.5', borderRadius: 'lg', gap: '2.5' },
+} as const
+
+const buttonTextSize = {
+  xs: { fontSize: 'xs', lineHeight: 'xs' },
+  sm: { fontSize: 'sm', lineHeight: 'sm' },
+  md: { fontSize: 'sm', lineHeight: 'sm' },
+  lg: { fontSize: 'base', lineHeight: 'base' },
+  xl: { fontSize: 'lg', lineHeight: 'lg' },
+} as const
+
+// control heights (line height plus vertical padding) plus the frame's 1px
+// border on each side: text buttons end up as tall as circular ones
+const buttonHeight = {
+  xs: 26,
+  sm: 34,
+  md: 38,
+  lg: 42,
+  xl: 50,
+} as const
+
+const buttonIconSize = {
+  xs: 12,
+  sm: 16,
+  md: 16,
+  lg: 16,
+  xl: 20,
+} as const
+
+const resolveButtonSize = (size: ButtonSize | undefined): keyof typeof buttonHeight =>
+  typeof size === 'string' && size in buttonHeight
+    ? (size as keyof typeof buttonHeight)
+    : 'md'
 
 const ButtonFrameBase = styled(ButtonBehaviorFrame, {
-  context: SizeContext,
+  context: ButtonContext,
   displayName: 'ButtonFrame',
   className: 'tm-button',
   backgroundColor: 'background hover:background-hover press:background-press',
@@ -61,7 +80,10 @@ const ButtonFrameBase = styled(ButtonBehaviorFrame, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: buttonFrameSizeVariant,
+    size: {
+      ...buttonFrameSize,
+      true: buttonFrameSize.md,
+    },
 
     circular: styled.dynamic<boolean>(),
 
@@ -83,14 +105,24 @@ const ButtonFrameBase = styled(ButtonBehaviorFrame, {
     },
   } as const,
   defaultVariants: {
-    size: true,
+    size: 'md',
   },
 })
 
-export const ButtonFrame = ButtonFrameBase.resolve((props, env) => {
-  if (!props.circular) return
+export const ButtonFrame = ButtonFrameBase.resolve((props) => {
+  if (!props.circular) {
+    const height = buttonHeight[resolveButtonSize(props.size as ButtonSize)]
+    return {
+      // keep text buttons at the same outer height as circular buttons
+      minHeight: height,
+      // `size` is a control preset, not square geometry. keep the frame's width
+      // content-driven even if an outer styled layer also recognizes `size` as
+      // the generic width/height shorthand.
+      width: 'auto',
+    }
+  }
   // the control height plus the frame's 1px border on each side
-  const side = resolveSize(props.size as ButtonSize, env).controlHeight + 2
+  const side = buttonHeight[resolveButtonSize(props.size as ButtonSize)]
   return {
     borderRadius: 1000,
     paddingHorizontal: 0,
@@ -103,26 +135,29 @@ export const ButtonFrame = ButtonFrameBase.resolve((props, env) => {
 })
 
 export const ButtonText = styled(ButtonBehaviorText, {
-  context: SizeContext,
+  context: ButtonContext,
   displayName: 'ButtonText',
   color: 'color',
   fontWeight: '600',
   userSelect: 'none',
   variants: {
-    size: buttonTextSizeVariant,
+    size: {
+      ...buttonTextSize,
+      true: buttonTextSize.md,
+    },
   } as const,
   defaultVariants: {
-    size: true,
+    size: 'md',
   },
 })
 
 export const ButtonIcon = ({ size, ...props }: ButtonBehaviorIconProps) => {
-  const context = SizeContext.useStyledContext()
+  const context = ButtonContext.useStyledContext()
 
   return (
     <ButtonBehaviorIcon
       {...props}
-      size={size ?? getThemedIconSize(context?.size ?? true)}
+      size={size ?? getThemedIconSize(buttonIconSize[resolveButtonSize(context?.size)])}
     />
   )
 }
@@ -134,16 +169,18 @@ const ButtonComponent = createStyledHOC(
     ref
   ) {
     const { theme, ...buttonBehaviorProps } = props
-    // ButtonFrame declares `context: SizeContext`, so passing `size` through to
+    // ButtonFrame declares `context: ButtonContext`, so passing `size` through to
     // it is what publishes size to ButtonText and Button.Icon. The only reason
     // to resolve it here is the `icon` prop, which is themed before the frame
     // renders and so cannot read the context the frame is about to provide.
-    const size = ((buttonBehaviorProps.size as TokenSize | undefined) ??
-      SizeContext.useStyledContext()?.size ??
-      true) as ButtonSize
+    const size = ((buttonBehaviorProps.size as ButtonSize | undefined) ??
+      ButtonContext.useStyledContext()?.size ??
+      'md') as ButtonSize
     const { props: buttonProps } = useButton(buttonBehaviorProps, {
       Text: ButtonText,
-      iconSize: getThemedIconSize(size),
+      iconSize: getThemedIconSize(
+        typeof size === 'string' ? buttonIconSize[size] : buttonIconSize.md
+      ),
     })
 
     const button = (
