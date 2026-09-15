@@ -372,7 +372,7 @@ const PaletteView = memo((props: Props) => {
                 <XStack width={50} overflow="hidden" items="center" justify="center">
                   <Button
                     variant="quiet"
-                    size="2"
+                    size="xs"
                     scaleIcon={1.4}
                     circular
                     icon={anchor ? <Anchor /> : <ArrowLeftRight />}
@@ -439,7 +439,7 @@ const SyncButtons = memo(
         <Theme name={anchor?.[anchorKey].syncLeft ? 'accent' : null}>
           <TooltipSimple label={`Sync ${anchorKey} to last anchor`}>
             <Button
-              size="3"
+              size="sm"
               width={16}
               height={16}
               minWidth={16}
@@ -475,7 +475,7 @@ const SyncButtons = memo(
         <Theme name={anchor?.[anchorKey].sync ? 'accent' : null}>
           <TooltipSimple label={`Sync ${anchorKey} light and dark`}>
             <Button
-              size="3"
+              size="sm"
               width={16}
               height={16}
               minWidth={16}
@@ -505,7 +505,7 @@ const SyncButtons = memo(
         <Theme name={nextAnchor?.[anchorKey].syncLeft ? 'accent' : null}>
           <TooltipSimple label={`Sync ${anchorKey} to next anchor`}>
             <Button
-              size="3"
+              size="sm"
               width={16}
               height={16}
               minWidth={16}

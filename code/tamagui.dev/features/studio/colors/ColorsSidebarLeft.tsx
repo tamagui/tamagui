@@ -21,7 +21,7 @@ const ColorsSidebarPalettes = () => {
           <Tabs
             value={state.colors.scheme}
             onValueChange={(v) => state.colors.setScheme(v)}
-            size="3"
+            size="sm"
           >
             <Tabs.List bg="transparent" gap="3">
               {Object.values(state.colors.palettesByScheme).map(({ id, name }) => (
@@ -58,7 +58,7 @@ const ColorsSidebarPalettes = () => {
         </YStack>
       </SidebarPanelUnpad>
       <Button
-        size="3"
+        size="sm"
         style={{ marginTop: 16, width: '100%' }}
         onPress={() => {
           state.colors.createScale()

@@ -2,7 +2,7 @@ import { styled } from 'tamagui'
 import { Button } from '~/components/Button'
 
 export const ToggleButton = styled(Button, {
-  size: '3',
+  size: 'sm',
   rounded: '0',
   flex: 1,
   variants: {

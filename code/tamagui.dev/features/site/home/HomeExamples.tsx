@@ -76,9 +76,9 @@ export const HomeExamples = memo(
                       theme={i === activeIndex ? 'accent' : null}
                       variant={i !== activeIndex ? 'quiet' : undefined}
                       rounded={0}
-                      size="3"
+                      size="sm"
                     >
-                      <Button.Text size="4" fontWeight="600">
+                      <Button.Text size="md" fontWeight="600">
                         {example.name}
                       </Button.Text>
                     </Button>
@@ -179,17 +179,17 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
               </Heading>
             </Theme>
 
-            <XGroup size="2" borderWidth={1} borderColor="border-color">
+            <XGroup rounded="2" borderWidth={1} borderColor="border-color">
               {examples.map((example, i) => (
                 <XGroup.Item key={i}>
                   <Button
                     aria-label="See example"
                     onPress={() => setActiveIndex(i)}
                     theme={i === activeIndex ? (tint as any) : 'alt1'}
-                    size="2"
+                    size="xs"
                     rounded={0}
                   >
-                    <Button.Text size="2">{example.name}</Button.Text>
+                    <Button.Text size="xs">{example.name}</Button.Text>
                   </Button>
                 </XGroup.Item>
               ))}

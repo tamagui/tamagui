@@ -92,7 +92,7 @@ export const SidePaneHost = memo(() => {
           boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
           borderWidth={2}
           borderColor="border-color"
-          size="4"
+          size="md"
           z={1000}
           circular
           icon={sidePane.panes.length > 1 ? ArrowLeft : X}

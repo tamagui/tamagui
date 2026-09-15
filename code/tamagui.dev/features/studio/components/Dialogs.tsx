@@ -16,7 +16,7 @@ import { useGlobalState } from '../state/useGlobalState'
 const DialogCloseButton = () => (
   <Unspaced>
     <Dialog.Close asChild="except-style">
-      <Button size="3" position="absolute" t="3" r="3" circular icon={X} z={1000} />
+      <Button size="sm" position="absolute" t="3" r="3" circular icon={X} z={1000} />
     </Dialog.Close>
   </Unspaced>
 )
@@ -96,7 +96,7 @@ const CreateThemeDialog = (props: CreateThemeDialogProps) => {
           <Label size="3" width={160} justify="flex-end" htmlFor="theme-name">
             Name
           </Label>
-          <Input size="3" flex={1} id="theme-name" />
+          <Input size="sm" flex={1} id="theme-name" />
         </Fieldset>
         <DialogClose>
           <Button aria-label="Close">Create</Button>

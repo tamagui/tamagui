@@ -202,7 +202,7 @@ export function AnimationsDemoBase(props) {
         l={20}
         icon={Play}
         theme={props.tint}
-        size="5"
+        size="lg"
         circular
         onPress={onPress}
       />

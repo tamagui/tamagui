@@ -84,7 +84,7 @@ export const ChatScreen = () => {
           <Button
             self="center"
             variant="quiet"
-            size="5"
+            size="lg"
             scaleIcon={1.4}
             circular
             icon={Info}

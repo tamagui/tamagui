@@ -13,7 +13,7 @@ export function StudioToggleThemeBuilderScheme() {
         onPress={() => {
           rootStore.theme = 'light'
         }}
-        size="4"
+        size="md"
         rounded="10"
       >
         Light
@@ -23,7 +23,7 @@ export function StudioToggleThemeBuilderScheme() {
         onPress={() => {
           rootStore.theme = 'dark'
         }}
-        size="4"
+        size="md"
         rounded="10"
       >
         Dark

@@ -494,7 +494,7 @@ const componentsIn = {
     <Button
       aria-label="Beta blog post"
       pointerEvents="none"
-      size="2"
+      size="xs"
       theme="yellow"
       position="absolute"
       t={-15}
@@ -1001,7 +1001,7 @@ const componentsIn = {
                   </Code>
                   <Button
                     aria-label="Copy code to clipboard"
-                    size="2"
+                    size="xs"
                     icon={clipBoard.hasCopied ? CheckCircle : Copy}
                     onPress={() => {
                       clipBoard.onCopy()

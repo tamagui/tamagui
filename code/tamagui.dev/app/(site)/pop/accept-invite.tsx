@@ -107,7 +107,7 @@ export default function AcceptInvitePage() {
                 The invite should be in your inbox now.
               </Paragraph>
               <Button
-                size="4"
+                size="md"
                 theme="accent"
                 onPress={() =>
                   window.open(

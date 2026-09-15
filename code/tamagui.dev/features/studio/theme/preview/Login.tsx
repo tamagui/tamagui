@@ -49,7 +49,7 @@ export const LoginScreen = () => {
             <>
               <Button
                 flex={1}
-                size="3"
+                size="sm"
                 icon={IconGitlab}
                 {...demoProps.borderRadiusProps}
                 {...demoProps.buttonOutlineProps}
@@ -58,7 +58,7 @@ export const LoginScreen = () => {
               </Button>
               <Button
                 flex={1}
-                size="3"
+                size="sm"
                 icon={IconGithub}
                 {...demoProps.borderRadiusProps}
                 {...demoProps.buttonOutlineProps}
@@ -107,7 +107,7 @@ export const LoginScreen = () => {
         <YStack mt="4">
           <Theme name="accent">
             <Button
-              size="5"
+              size="lg"
               {...demoProps.borderRadiusProps}
               {...demoProps.buttonOutlineProps}
             >

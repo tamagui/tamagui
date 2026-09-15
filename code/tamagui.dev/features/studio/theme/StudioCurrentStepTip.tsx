@@ -32,7 +32,7 @@ export function StudioCurrentStepTip() {
   const button = (
     <Button
       cursor="default"
-      size="2"
+      size="xs"
       variant="quiet"
       scaleIcon={1.2}
       circular
@@ -50,7 +50,7 @@ export function StudioCurrentStepTip() {
   }
 
   return (
-    <Popover open={show} size="5" allowFlip placement="bottom">
+    <Popover open={show} allowFlip placement="bottom">
       <Popover.Trigger asChild>{button}</Popover.Trigger>
 
       <Theme name="yellow">
@@ -77,7 +77,7 @@ export function StudioCurrentStepTip() {
           <Tip />
 
           <Button
-            size="2"
+            size="xs"
             circular
             position="absolute"
             t="-3"

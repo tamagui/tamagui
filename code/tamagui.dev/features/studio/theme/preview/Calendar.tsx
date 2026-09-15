@@ -55,7 +55,7 @@ export const Calendar = () => {
             px="4"
           >
             <Button
-              size="2"
+              size="xs"
               icon={ChevronLeft}
               circular
               variant="quiet"
@@ -63,7 +63,7 @@ export const Calendar = () => {
             />
             <H4 {...demoProps.headingFontFamilyProps}>September 2023</H4>
             <Button
-              size="2"
+              size="xs"
               icon={ChevronRight}
               circular
               variant="quiet"
@@ -91,7 +91,7 @@ export const Calendar = () => {
       <YStack mt="4">
         <>
           <Button
-            size="5"
+            size="lg"
             {...demoProps.borderRadiusProps}
             {...demoProps.buttonOutlineProps}
           >

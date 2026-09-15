@@ -76,7 +76,7 @@ export const ThemeSwitch = memo(() => {
   const isLight = rootStore.theme === 'light'
 
   return (
-    <Popover open={tipOpen} stayInFrame={{ padding: 10 }} size="3">
+    <Popover open={tipOpen} stayInFrame={{ padding: 10 }}>
       <Popover.Trigger>
         <XStack mx="2" items="center">
           <Switch
@@ -96,7 +96,7 @@ export const ThemeSwitch = memo(() => {
                   render="span"
                   disabled
                   variant="quiet"
-                  size="1"
+                  size="xs"
                   scaleIcon={1}
                   opacity={0.44}
                   x={-1.5}
@@ -112,7 +112,7 @@ export const ThemeSwitch = memo(() => {
                   render="span"
                   disabled
                   variant="quiet"
-                  size="1"
+                  size="xs"
                   scaleIcon={1}
                   opacity={0.25}
                   x={-1.5}
@@ -129,7 +129,7 @@ export const ThemeSwitch = memo(() => {
                     render="span"
                     disabled
                     variant="quiet"
-                    size="1"
+                    size="xs"
                     scaleIcon={1.2}
                     opacity={0.8}
                     y={-0.75}
@@ -141,7 +141,7 @@ export const ThemeSwitch = memo(() => {
                     render="span"
                     disabled
                     variant="quiet"
-                    size="1"
+                    size="xs"
                     scaleIcon={1.2}
                     opacity={0.5}
                     y={-0.75}
@@ -172,12 +172,12 @@ export const ThemeSwitch = memo(() => {
           backgroundColor="background"
           borderWidth={2}
           borderColor="border-color"
-          size="5"
+          size={25}
         />
 
         <Paragraph size="2">{tip}</Paragraph>
         <Button
-          size="1"
+          size="xs"
           circular
           position="absolute"
           t="-2"

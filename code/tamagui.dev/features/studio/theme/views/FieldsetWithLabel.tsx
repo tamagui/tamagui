@@ -49,7 +49,7 @@ export const FieldsetWithLabel = ({
       >
         {isEditing ? (
           <Input
-            size="3"
+            size="sm"
             autoFocus
             onBlur={() => {
               setIsEditing(false)
@@ -88,7 +88,6 @@ export const FieldsetWithLabel = ({
 
             {!!tooltip && (
               <TooltipSimple
-                size="3"
                 label={
                   <YStack p="2" maxW={200}>
                     <Paragraph size="2" lineHeight="1">
@@ -98,7 +97,7 @@ export const FieldsetWithLabel = ({
                 }
               >
                 <Button
-                  size="1"
+                  size="xs"
                   scaleIcon={1.2}
                   ml="2"
                   circular

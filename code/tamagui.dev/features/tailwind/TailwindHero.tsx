@@ -83,11 +83,11 @@ export function TailwindHero() {
           <ButtonLink
             href={'/tailwind/intro/introduction' as Href}
             theme="accent"
-            size="5"
+            size="lg"
           >
             Read the docs
           </ButtonLink>
-          <ButtonLink href={'/tailwind/intro/styles' as Href} variant="quiet" size="5">
+          <ButtonLink href={'/tailwind/intro/styles' as Href} variant="quiet" size="lg">
             How it works
           </ButtonLink>
         </XStack>

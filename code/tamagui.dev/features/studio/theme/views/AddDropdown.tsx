@@ -35,9 +35,9 @@ const Separator = styled(TamaguiSeparator, {
 export const AddDropdown = withStaticProperties(
   function AddDropdown({ children, ...props }: PopoverProps) {
     return (
-      <Popover size="5" allowFlip placement="top" {...props}>
+      <Popover allowFlip placement="top" {...props}>
         <Popover.Trigger asChild>
-          <Button size="3" circular icon={Plus} />
+          <Button size="sm" circular icon={Plus} />
         </Popover.Trigger>
 
         <Popover.Content

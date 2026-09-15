@@ -89,7 +89,7 @@ const Option = ({
         checked={active ?? false}
         onCheckedChange={onChange}
         id={id}
-        size="6"
+        size="xl"
         value={value}
       >
         <Checkbox.Indicator

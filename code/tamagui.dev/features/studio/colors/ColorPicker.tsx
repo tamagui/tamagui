@@ -77,7 +77,7 @@ const HueSlider = memo(
           position="absolute"
           bg="color-1"
           index={0}
-          size="1"
+          size="xs"
           circular
           elevate
         />
@@ -120,7 +120,7 @@ const SatSlider = memo(
           position="absolute"
           bg="color-1"
           index={0}
-          size="1"
+          size="xs"
           circular
           elevate
         />
@@ -162,7 +162,7 @@ const LightSlider = memo(
           position="absolute"
           bg="color-1"
           index={0}
-          size="1"
+          size="xs"
           circular
           elevate
         />
@@ -306,7 +306,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
             backgroundColor="background"
             borderWidth={1}
             borderColor="color-10"
-            size="4"
+            size={22}
           />
           {!props.disableLightness && (
             <>
@@ -315,7 +315,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
                 disabled={props.disabled as boolean}
                 placeholder="Hex"
                 borderWidth={0}
-                size="3"
+                size="sm"
                 width={75}
                 self="center"
                 onFocus={(e) => e.currentTarget.select()}

@@ -12,7 +12,7 @@ export function RandomizeButton() {
           themeBuilderStore.randomizeDemoOptions()
         }}
         icon={Dices}
-        size="3"
+        size="sm"
         rounded="8"
         circular
         scaleIcon={1.3}

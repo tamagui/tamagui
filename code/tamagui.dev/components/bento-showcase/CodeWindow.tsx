@@ -163,7 +163,7 @@ function CopyCodeButton({ onCopy, hasCopied, oneTabLayout = false }) {
       t={oneTabLayout ? 16 : 48}
       r={0}
       m="4"
-      size="3"
+      size="sm"
       onPress={onCopy}
     >
       <Button.Text>{hasCopied ? 'Copied' : 'Copy'}</Button.Text>

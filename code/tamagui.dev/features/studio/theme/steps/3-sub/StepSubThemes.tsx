@@ -99,7 +99,7 @@ export const Themes = memo(() => {
           <Paragraph color="color-10">Add a theme to get started</Paragraph>
           <Button
             theme="accent"
-            size="4"
+            size="md"
             onPress={() => {
               store.showAddThemeMenu = true
             }}

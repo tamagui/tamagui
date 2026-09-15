@@ -55,7 +55,7 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
 
   return (
     <Tabs.Tab
-      size="3"
+      size="sm"
       flex={1}
       px="5"
       pointerEvents="auto"

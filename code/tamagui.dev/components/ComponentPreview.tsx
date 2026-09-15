@@ -208,7 +208,7 @@ const ComponentPreview = {
           marginLeft="auto"
           bg="green-10"
           scale={1}
-          size="2"
+          size="xs"
         >
           <Switch.Thumb borderColor="color-1" bg="white-1" transition="quickest" />
         </Switch>
@@ -313,10 +313,10 @@ const ComponentPreview = {
   Buttons: () => {
     return (
       <ZStack>
-        <Button mb="-6" mr="-6" self="center" icon={User} size="4" theme="accent">
+        <Button mb="-6" mr="-6" self="center" icon={User} size="md" theme="accent">
           Follow
         </Button>
-        <Button mt="-6" ml="-6" self="center" icon={Share} size="4">
+        <Button mt="-6" ml="-6" self="center" icon={Share} size="md">
           Share
         </Button>
       </ZStack>

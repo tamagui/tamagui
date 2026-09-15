@@ -65,7 +65,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
       <Button
         aria-label="Copy code to clipboard"
-        size="2"
+        size="xs"
         height={28}
         minHeight={28}
         display="inline-flex"
@@ -109,7 +109,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               aria-label="Show or hide code"
               theme="brand"
               icon={Code2}
-              size="3"
+              size="sm"
               fontWeight="400"
               z={10}
               onPress={() => setIsCollapsed(!isCollapsed)}
@@ -119,7 +119,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             <TooltipSimple label="Toggle tint on/off">
               <Button
                 theme="brand"
-                size="3"
+                size="sm"
                 onPress={toggleDocsTinted}
                 z={10}
                 icon={Paintbrush}

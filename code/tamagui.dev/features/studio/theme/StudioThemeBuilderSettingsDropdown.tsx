@@ -18,7 +18,6 @@ import type { WritableKeysOf } from './types'
 export const StudioThemeBuilderSettingsDropdown = () => {
   return (
     <Popover
-      size="5"
       allowFlip
       placement="bottom"
       stayInFrame={{
@@ -26,7 +25,7 @@ export const StudioThemeBuilderSettingsDropdown = () => {
       }}
     >
       <Popover.Trigger asChild>
-        <Button size="2" scaleIcon={1.5} variant="quiet" circular icon={Menu}></Button>
+        <Button size="xs" scaleIcon={1.5} variant="quiet" circular icon={Menu}></Button>
       </Popover.Trigger>
 
       <Popover.Content
@@ -45,7 +44,7 @@ export const StudioThemeBuilderSettingsDropdown = () => {
         trapFocus={false}
       >
         <Popover.ScrollView>
-          <YGroup self="center" width={320} size="4">
+          <YGroup self="center" width={320} rounded="4">
             <H6 size="1" lineHeight="10px" pt="3" pb="2" px="3">
               Quick Settings
             </H6>

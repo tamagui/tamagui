@@ -96,7 +96,7 @@ const LogoutButton = () => {
 
   return (
     <Button
-      size="3"
+      size="sm"
       icon={<LogOut />}
       aria-label="Logout"
       onPress={async () => {
@@ -146,7 +146,7 @@ const SubscriptionRow = ({ subscription }: { subscription: Subscription }) => {
       {!subscription.cancel_at_period_end && (
         <Button
           theme="red"
-          size="3"
+          size="sm"
           self="flex-start"
           disabled={isCancelling}
           onPress={async () => {

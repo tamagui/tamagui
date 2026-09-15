@@ -252,7 +252,7 @@ const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
           onPress={() => {
             copyText(content)
           }}
-          size="3"
+          size="sm"
           icon={Copy}
         >
           Copy
@@ -261,7 +261,7 @@ const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
           <Theme name="green">
             <Button
               self="center"
-              size="2"
+              size="xs"
               icon={Download}
               onPress={() => {
                 downloadFile(filename, content)

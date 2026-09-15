@@ -209,7 +209,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
               shadowRadius={10}
               rounded="8"
               placeholder={active ? `Refine this theme` : `Generate a theme`}
-              size="6"
+              size="xl"
               onSubmit={() => {
                 fetchUpdate(active ? 'reply' : 'new')
               }}
@@ -236,7 +236,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
                     handleLogin(e)
                   }
                 }}
-                size="4"
+                size="md"
               >
                 {isLoggedIn ? (active ? 'Refine' : 'Generate') : 'Login'}
               </Button>
@@ -322,7 +322,7 @@ const HistoryButton = ({
 }) => {
   return (
     <XStack group="item" containerType="normal" position="relative">
-      <Button onPress={onPress} size="3" rounded="8" theme={active ? 'accent' : null}>
+      <Button onPress={onPress} size="sm" rounded="8" theme={active ? 'accent' : null}>
         <Button.Icon>{icon}</Button.Icon>
 
         <Button.Text numberOfLines={1} maxW={200}>

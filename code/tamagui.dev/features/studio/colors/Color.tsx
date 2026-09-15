@@ -47,7 +47,7 @@ export function Color({
             </Label>
             <Input
               maxW={55}
-              size="2"
+              size="xs"
               id="color-hue"
               // type="number" // min={0} // max={360}
               value={color.hue as any}
@@ -68,7 +68,7 @@ export function Color({
             </Label>
             <Input
               maxW={55}
-              size="2"
+              size="xs"
               id="color-saturation"
               // type="number" // min={0} // max={360}
               value={color.saturation as any}
@@ -89,7 +89,7 @@ export function Color({
             </Label>
             <Input
               maxW={55}
-              size="2"
+              size="xs"
               id="color-lightness"
               // type="number" // min={0} // max={360}
               value={color.lightness as any}
@@ -118,7 +118,7 @@ export function Color({
         <Code>{toHsla(hex)}</Code>
 
         <Button
-          size="2"
+          size="xs"
           onPress={() => {
             state.colors.deleteColor(Number.parseInt(index))
           }}

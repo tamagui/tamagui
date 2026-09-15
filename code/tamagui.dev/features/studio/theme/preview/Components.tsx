@@ -23,11 +23,11 @@ export const Components = () => {
       <XStack width="100%" {...demoProps.gapPropsLg} flexWrap="wrap">
         <XStack {...demoProps.gapPropsLg}>
           <AccentTheme>
-            <Button size="3" {...demoProps.borderRadiusProps}>
+            <Button size="sm" {...demoProps.borderRadiusProps}>
               Active
             </Button>
           </AccentTheme>
-          <Button size="3" {...demoProps.borderRadiusProps}>
+          <Button size="sm" {...demoProps.borderRadiusProps}>
             Subtle
           </Button>
         </XStack>
@@ -35,22 +35,22 @@ export const Components = () => {
         <Spacer flex={1} />
 
         <XStack {...demoProps.gapPropsLg} flex={1} flexBasis="auto" flexWrap="wrap">
-          <SelectDemoContents size="3" />
+          <SelectDemoContents size="sm" />
         </XStack>
       </XStack>
 
       <XStack gap="4" flexWrap="wrap">
         <YStack flex={1} flexBasis="auto" gap="2">
-          <CheckboxWithLabel defaultChecked size="4" />
+          <CheckboxWithLabel defaultChecked size="md" />
 
           <RadioGroup defaultValue="1" name="form">
             <XStack>
-              <RadioGroupItemWithLabel size="3" value="1" label="First" />
-              <RadioGroupItemWithLabel size="3" value="2" label="Second" />
+              <RadioGroupItemWithLabel size="sm" value="1" label="First" />
+              <RadioGroupItemWithLabel size="sm" value="2" label="Second" />
             </XStack>
           </RadioGroup>
 
-          <SwitchWithLabel size="3" />
+          <SwitchWithLabel size="sm" />
         </YStack>
       </XStack>
 

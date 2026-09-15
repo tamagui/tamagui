@@ -155,14 +155,14 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
     >
       <XStack items="center" gap="4">
         <TooltipGroup delay={tooltipDelay}>
-          <XGroup bg="transparent" items="center" size="5">
+          <XGroup bg="transparent" items="center" rounded="5">
             <XGroup.Item>
               <ThemeToggle borderWidth={0} variant="quiet" />
             </XGroup.Item>
           </XGroup>
         </TooltipGroup>
 
-        <SearchButton size="2" variant="quiet" rounded="10" />
+        <SearchButton size="xs" variant="quiet" rounded="10" />
 
         <Link target="_blank" href="https://github.com/tamagui/tamagui">
           <XStack group containerType="normal">
@@ -256,7 +256,7 @@ const HeaderMenuButton = () => {
     <Popover.Trigger>
       <SlidingPopoverTarget id="menu">
         <Button
-          size="5"
+          size="lg"
           circular
           my={-1}
           bg="transparent hover:shadow-1"
@@ -538,7 +538,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       opacity="1 enter:0 exit:0"
       y="0 enter:3px exit:5px"
     >
-      <Popover.Arrow transition="medium" bg="background-06" animatePosition size="4" />
+      <Popover.Arrow transition="medium" bg="background-06" animatePosition size={23} />
 
       {pointerFine ? (
         <YStack

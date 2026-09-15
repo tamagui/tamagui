@@ -125,7 +125,7 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
               Name
             </Label>
             <Input
-              size="2"
+              size="xs"
               id="scale-name"
               aria-label="Scale name"
               value={scale.name}
@@ -133,7 +133,7 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
             />
           </YStack>
           <Button
-            size="2"
+            size="xs"
             onPress={async () => {
               const confirmed = await rootStore.confirmDialog('confirm-delete', {
                 thingName: `palette`,

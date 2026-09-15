@@ -66,7 +66,7 @@ export const PricingCards = () => {
                 borderWidth={0}
                 htmlFor={htmlId}
               >
-                <RadioGroup.Item id={htmlId} size="3" value={price.value}>
+                <RadioGroup.Item id={htmlId} size="sm" value={price.value}>
                   <RadioGroup.Indicator />
                 </RadioGroup.Item>
                 <YStack flex={1} flexBasis="auto">
@@ -91,14 +91,14 @@ export const PricingCards = () => {
           </Paragraph>
         </Paragraph>
         <XStack gap="2">
-          <Button flex={1} size="5" {...demoProps.borderRadiusProps}>
+          <Button flex={1} size="lg" {...demoProps.borderRadiusProps}>
             Cancel
           </Button>
 
           <AccentTheme>
             <Button
               flex={1}
-              size="5"
+              size="lg"
               {...demoProps.borderRadiusProps}
               {...demoProps.buttonOutlineProps}
             >

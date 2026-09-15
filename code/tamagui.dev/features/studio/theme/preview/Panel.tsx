@@ -90,14 +90,14 @@ export function Panel({
           t="-2"
           z={100}
         >
-          <Popover size="5" allowFlip placement="bottom">
+          <Popover allowFlip placement="bottom">
             <Popover.Trigger asChild>
               <Button
                 theme="accent"
                 onPress={(event) => {
                   event.stopPropagation()
                 }}
-                size="3"
+                size="sm"
                 circular
                 icon={<MoreVertical size="1" />}
               />

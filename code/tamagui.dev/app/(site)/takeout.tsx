@@ -62,13 +62,13 @@ export default function TakeoutPage() {
 
         <XStack mt="-7" gap="4" items="center" justify="center" flexWrap="wrap">
           <Link href="https://takeout.tamagui.dev" target="_blank">
-            <Button size="5" variant="outlined">
+            <Button size="lg" variant="outlined">
               <Button.Text>Demo</Button.Text>
             </Button>
           </Link>
 
           <Link href="https://github.com/tamagui/takeout" target="_blank">
-            <Button size="5">
+            <Button size="lg">
               <Button.Text>Repo</Button.Text>
             </Button>
           </Link>

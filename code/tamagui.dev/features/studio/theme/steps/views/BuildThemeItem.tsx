@@ -19,7 +19,7 @@ export const BuildThemeItem = memo((props: BuildThemeItemProps) => {
 
   return (
     <Button
-      size="4"
+      size="md"
       theme={isActive ? 'accent' : undefined}
       onPress={onPress}
       borderWidth={1}
@@ -38,7 +38,7 @@ export const BuildThemeItem = memo((props: BuildThemeItemProps) => {
 
         {onDelete && (
           <Button
-            size="2"
+            size="xs"
             icon={Trash2}
             circular
             variant="quiet"
