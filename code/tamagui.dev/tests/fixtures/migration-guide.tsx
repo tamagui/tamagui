@@ -6,8 +6,8 @@
 //
 // NOTES:
 // - `import { Button } from 'tamagui/button'` is the styled default skin, so
-//   `<Button size="5" />` compiles against the token size scale below. The
-//   unstyled primitive lives at `tamagui/unstyled` and owns no size scale.
+//   `<Button size="lg" />` compiles against the skin's own named size table.
+//   The unstyled primitive lives at `tamagui/unstyled` and owns no size scale.
 // - a couple of guide snippets use configured values such as the `max-md`
 //   media key. they are reproduced here in a config-agnostic form so this
 //   fixture stays green against tamagui.dev's own config.
@@ -230,9 +230,9 @@ export const Misc = () => (
   </>
 )
 
-// §4 — the styled `tamagui/button` skin takes size tokens; omitting size uses the
-// package-local control policy from @tamagui/size.
-export const StyledButtonSize = () => <Button size="5">Save</Button>
+// §5 — the styled `tamagui/button` skin takes named sizes; omitting size uses the
+// default variant.
+export const StyledButtonSize = () => <Button size="lg">Save</Button>
 
 // §16 — imperative Toast removed; v3 uses the global toast() + the composable parts.
 export function ToastRoot({ children }: { children: React.ReactNode }) {

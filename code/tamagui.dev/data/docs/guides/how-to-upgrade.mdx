@@ -176,8 +176,8 @@ Remove tooling packages that no longer exist in v3:
 | Removed package            | Migration                                                                                                     |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | `@tamagui/babel-plugin`    | Install `@tamagui/cli` and use `@tamagui/cli/vite`, `@tamagui/cli/metro`, or the `tamagui build` precompile command for Turbopack. |
-| `@tamagui/get-button-sized`| Use `resolveSize` from `@tamagui/size` (also exported from `tamagui`); its `frame` and `text` results are ready to spread. |
-| `@tamagui/sizable-context` | Use `SizeContext` from `@tamagui/size`.                                                                        |
+| `@tamagui/get-button-sized`| Copy the `size` variant from the skin component (`tamagui/button` and friends); each component owns its table inline, see §5. |
+| `@tamagui/sizable-context` | Use `createStyledContext` from `@tamagui/core` with your own size names.                                          |
 | `@tamagui/static-sync`     | Remove direct imports. Compiler sessions are owned by the supported bundler adapters.                         |
 | `@tamagui/static-worker`   | Remove direct imports. Metro owns its graph/cache workers through `@tamagui/cli/metro`.                       |
 | `@tamagui/theme-builder`   | Freeze the generated themes or use `@tamagui/config-v5` for the intermediate checkpoint. Adopt `@tamagui/themes/builder` recipes only in a separate v6 migration. |

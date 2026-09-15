@@ -44,8 +44,8 @@ export const config = createTamagui(defaultConfig)
   only when an application adds one; otherwise the literal unitless value is
   preserved.
 
-The config does not choose a global component size. Styled controls get their
-defaults from the optional policy in `@tamagui/size`.
+The config does not choose a global component size. Each styled control owns
+its own `size` variant inline and defaults to its `md` row.
 
 This font-config behavior is distinct from V3 style authoring. A numeric
 Tamagui `lineHeight` prop is a ratio on web and native. Font configuration uses
