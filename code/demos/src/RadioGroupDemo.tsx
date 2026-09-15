@@ -1,4 +1,4 @@
-import type { SizeTokens } from 'tamagui'
+import type { RadioGroupSize } from 'tamagui'
 import { Label, RadioGroup, Theme, XStack, YStack } from 'tamagui'
 
 export function RadioGroupDemo() {
@@ -6,9 +6,9 @@ export function RadioGroupDemo() {
     <Theme name="level3">
       <RadioGroup aria-labelledby="Select one item" defaultValue="3" name="form">
         <YStack width={300} items="center" gap="2">
-          <RadioGroupItemWithLabel size="3" value="2" label="Second value" />
-          <RadioGroupItemWithLabel size="4" value="3" label="Third value" />
-          <RadioGroupItemWithLabel size="5" value="4" label="Fourth value" />
+          <RadioGroupItemWithLabel size="sm" value="2" label="Second value" />
+          <RadioGroupItemWithLabel size="md" value="3" label="Third value" />
+          <RadioGroupItemWithLabel size="lg" value="4" label="Fourth value" />
         </YStack>
       </RadioGroup>
     </Theme>
@@ -16,7 +16,7 @@ export function RadioGroupDemo() {
 }
 
 export function RadioGroupItemWithLabel(props: {
-  size: SizeTokens
+  size: RadioGroupSize
   value: string
   label: string
 }) {

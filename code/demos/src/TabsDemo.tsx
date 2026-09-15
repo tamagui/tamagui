@@ -36,7 +36,7 @@ export function TabsDemo() {
         l="4"
         display="max-xs:none"
       >
-        <Button size="2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
+        <Button size="xs" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
           {demosTitle[demo]}
         </Button>
       </XStack>

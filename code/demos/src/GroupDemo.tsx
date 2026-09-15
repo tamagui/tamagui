@@ -19,12 +19,12 @@ export function GroupDemo() {
       {/* children control their own size and radius */}
       <XGroup>
         <XGroup.Item>
-          <Button size="3" icon={Activity}>
+          <Button size="sm" icon={Activity}>
             First
           </Button>
         </XGroup.Item>
         <XGroup.Item>
-          <Button size="3" icon={Airplay}>
+          <Button size="sm" icon={Airplay}>
             Second
           </Button>
         </XGroup.Item>

@@ -16,7 +16,7 @@ function SimpleSlider({ children, ...props }: SliderProps) {
       <Slider.Track testID="slider-track">
         <Slider.TrackActive testID="slider-track-active" />
       </Slider.Track>
-      <Slider.Thumb theme="accent" size={30} borderRadius={100} />
+      <Slider.Thumb theme="accent" width={30} height={30} borderRadius={100} />
       {children}
     </Slider>
   )

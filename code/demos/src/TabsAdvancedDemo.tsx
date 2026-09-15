@@ -25,7 +25,7 @@ export const TabsAdvancedDemo = () => {
       {demo === 'underline' ? <TabsAdvancedUnderline /> : <TabsAdvancedBackground />}
 
       <XStack items="center" gap="4" position="absolute" b="3" l="4" display="xxs:none">
-        <Button size="2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
+        <Button size="xs" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
           {demosTitle[demo]}
         </Button>
       </XStack>
@@ -82,7 +82,6 @@ const TabsAdvancedBackground = () => {
       value={currentTab}
       onValueChange={setCurrentTab}
       orientation="horizontal"
-      size="4"
       p="2"
       height={150}
       flexDirection="column"
@@ -209,7 +208,6 @@ const TabsAdvancedUnderline = () => {
       value={currentTab}
       onValueChange={setCurrentTab}
       orientation="horizontal"
-      size="4"
       height={150}
       flexDirection="column"
       bg="background"

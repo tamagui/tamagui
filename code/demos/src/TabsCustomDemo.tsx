@@ -4,7 +4,6 @@ import {
   XStack,
   YStack,
   isWeb,
-  resolveSize,
   style,
   styled,
   withStaticProperties,
@@ -12,10 +11,6 @@ import {
 import { Tabs as TabsBehavior } from '@tamagui/tabs'
 
 const transparentActiveStyle = style({ backgroundColor: 'transparent' })
-
-const tabSizeVariant = styled.dynamic<any>((value, env) => {
-  return resolveSize(value, env).frame
-})
 
 const demos = ['horizontal', 'vertical'] as const
 
@@ -28,9 +23,11 @@ export const TabFrame = styled(TabsBehavior.Tab, {
   render: 'button',
   cursor: 'pointer',
   backgroundColor: 'transparent',
+  paddingInline: '4',
+  paddingBlock: '2',
+  gap: '2',
+  borderRadius: 'md',
   variants: {
-    size: tabSizeVariant,
-
     disabled: {
       true: {
         pointerEvents: 'none',
@@ -73,7 +70,7 @@ export function TabsCustomDemo() {
 
       <XStack items="center" gap="4" position="absolute" b="3" l="4" display="xxs:none">
         <Button
-          size="3"
+          size="sm"
           onPress={() => setDemo(demo === 'horizontal' ? 'vertical' : 'horizontal')}
         >
           <Button.Text textTransform="capitalize">{demo}</Button.Text>

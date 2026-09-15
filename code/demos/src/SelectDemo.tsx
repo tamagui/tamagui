@@ -2,7 +2,7 @@ import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import React from 'react'
 
-import type { FontSizeTokens, SelectProps } from 'tamagui'
+import type { SelectProps } from 'tamagui'
 import { Adapt, Label, Select, Sheet, Theme, XStack, YStack, getFontSize } from 'tamagui'
 
 export function SelectDemo() {
@@ -32,6 +32,18 @@ type SelectValue = Lowercase<(typeof items)[number]['name']>
 // Helper to get item label from value - used by renderValue for SSR
 const getItemLabel = (value: string) =>
   items.find((item) => item.name.toLowerCase() === value)?.name
+
+// the trigger chevron matches the trigger text: skin size to font key
+const selectChevronFontSize = {
+  xs: 'xs',
+  sm: 'sm',
+  md: 'sm',
+  lg: 'base',
+  xl: 'lg',
+} as const
+
+const resolveSelectChevronFontSize = (size: unknown) =>
+  selectChevronFontSize[size as keyof typeof selectChevronFontSize] ?? 'md'
 
 export function SelectDemoContents(
   props: SelectProps<SelectValue> & { trigger?: React.ReactNode }
@@ -132,7 +144,7 @@ export function SelectDemoContents(
               width="4"
               pointerEvents="none"
             >
-              <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
+              <ChevronDown size={getFontSize(resolveSelectChevronFontSize(props.size))} />
             </YStack>
           )}
         </Select.Viewport>

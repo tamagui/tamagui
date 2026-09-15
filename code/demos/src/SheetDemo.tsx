@@ -100,7 +100,7 @@ const SheetContents = memo(
   ({ modal, isPercent, innerOpen, setInnerOpen, setOpen }: any) => {
     return (
       <>
-        <Button size="6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
+        <Button size="xl" circular icon={ChevronDown} onPress={() => setOpen(false)} />
         <Input width={200} />
         {modal && isPercent && (
           <>

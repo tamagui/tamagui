@@ -5,9 +5,9 @@ import { Checkbox, Label, Theme, XStack, YStack } from 'tamagui'
 export function CheckboxDemo() {
   return (
     <YStack width={300} items="center" gap="2">
-      <CheckboxWithLabel size="3" />
-      <CheckboxWithLabel size="4" defaultChecked />
-      <CheckboxWithLabel size="5" disabled label="Accept terms (disabled)" />
+      <CheckboxWithLabel size="sm" />
+      <CheckboxWithLabel size="md" defaultChecked />
+      <CheckboxWithLabel size="lg" disabled label="Accept terms (disabled)" />
     </YStack>
   )
 }

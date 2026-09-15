@@ -1,26 +1,26 @@
-import type { SizeTokens } from 'tamagui'
+import type { SwitchSize } from 'tamagui'
 import { Label, Separator, Switch, XStack, YStack } from 'tamagui'
 
 export function SwitchDemo() {
   return (
     <YStack width={200} items="center" gap="3">
       <XStack gap="3" flexDirection="xs:column">
-        <SwitchWithLabel size="3" />
-        <SwitchWithLabel size="3" defaultChecked />
+        <SwitchWithLabel size="sm" />
+        <SwitchWithLabel size="sm" defaultChecked />
       </XStack>
       <XStack gap="3" flexDirection="xs:column">
-        <SwitchWithLabel size="4" />
-        <SwitchWithLabel size="4" defaultChecked />
+        <SwitchWithLabel size="md" />
+        <SwitchWithLabel size="md" defaultChecked />
       </XStack>
       <XStack gap="3" flexDirection="xs:column">
-        <SwitchWithLabel size="5" />
-        <SwitchWithLabel size="5" defaultChecked />
+        <SwitchWithLabel size="lg" />
+        <SwitchWithLabel size="lg" defaultChecked />
       </XStack>
     </YStack>
   )
 }
 
-export function SwitchWithLabel(props: { size: SizeTokens; defaultChecked?: boolean }) {
+export function SwitchWithLabel(props: { size: SwitchSize; defaultChecked?: boolean }) {
   const id = `switch-${props.size}-${props.defaultChecked ?? ''}}`
   return (
     <XStack width={200} items="center" gap="4">
