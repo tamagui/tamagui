@@ -1,7 +1,6 @@
 import {
+  createStyledContext,
   createStyledHOC,
-  resolveSize,
-  SizeContext,
   Text,
   styled,
   withStaticProperties,
@@ -9,9 +8,25 @@ import {
 import { wrapChildrenInText } from '@tamagui/text'
 import { Tabs as TabsBehavior } from '@tamagui/tabs'
 
-const tabSizeVariant = styled.dynamic<any>((size, env) => {
-  return resolveSize(size, env).frame
-})
+export type TabsSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
+
+const TabsContext = createStyledContext<{ size?: TabsSize }>({ size: 'md' })
+
+const tabsTabSize = {
+  xs: { paddingInline: '2', paddingBlock: '1', gap: '1', borderRadius: 'sm' },
+  sm: { paddingInline: '3', paddingBlock: '1.5', gap: '1.5', borderRadius: 'md' },
+  md: { paddingInline: '4', paddingBlock: '2', gap: '2', borderRadius: 'md' },
+  lg: { paddingInline: '6', paddingBlock: '2', gap: '2', borderRadius: 'md' },
+  xl: { paddingInline: '8', paddingBlock: '2.5', gap: '2.5', borderRadius: 'lg' },
+} as const
+
+const tabsTextSize = {
+  xs: { fontSize: 'xs', lineHeight: 'xs' },
+  sm: { fontSize: 'sm', lineHeight: 'sm' },
+  md: { fontSize: 'sm', lineHeight: 'sm' },
+  lg: { fontSize: 'base', lineHeight: 'base' },
+  xl: { fontSize: 'lg', lineHeight: 'lg' },
+} as const
 
 export const TabsFrame = styled(TabsBehavior, {
   displayName: 'Tabs',
@@ -21,8 +36,9 @@ export const TabsList = styled(TabsBehavior.List, {
   displayName: 'TabsList',
 })
 
-const TabsTabBase = styled(TabsBehavior.Tab, {
+const TabsTabFrame = styled(TabsBehavior.Tab, {
   displayName: 'TabsTrigger',
+  context: TabsContext,
   variants: {
     unstyled: {
       false: {
@@ -41,7 +57,10 @@ const TabsTabBase = styled(TabsBehavior.Tab, {
       },
     },
 
-    size: styled.dynamic<any>(),
+    size: {
+      ...tabsTabSize,
+      true: tabsTabSize.md,
+    },
 
     disabled: {
       true: {
@@ -52,30 +71,29 @@ const TabsTabBase = styled(TabsBehavior.Tab, {
   } as const,
   defaultVariants: {
     unstyled: false,
+    size: 'md',
   },
-})
-
-const TabsTabFrame = TabsTabBase.resolve((props, env) => {
-  if (props.unstyled) return
-  return tabSizeVariant(props.size ?? true, env)
 })
 
 const TabsTabText = styled(Text, {
-  context: SizeContext,
+  context: TabsContext,
   fontFamily: 'body',
   color: 'color',
   variants: {
-    size: styled.dynamic<any>((size, env) => resolveSize(size, env).text),
+    size: {
+      ...tabsTextSize,
+      true: tabsTextSize.md,
+    },
   },
   defaultVariants: {
-    size: true,
+    size: 'md',
   },
 })
 
 export const TabsTab = createStyledHOC(TabsTabFrame, function TabsTab(props, ref) {
   const { children, ...frameProps } = props
-  const contextSize = SizeContext.useStyledContext()?.size
-  const size = props.size ?? contextSize ?? true
+  const contextSize = TabsContext.useStyledContext()?.size
+  const size = props.size ?? contextSize ?? 'md'
   return (
     <TabsTabFrame {...frameProps} ref={ref}>
       {wrapChildrenInText(TabsTabText, { children, size })}

@@ -1,5 +1,18 @@
 import { Checkbox as CheckboxBehavior } from '@tamagui/checkbox'
-import { type GetProps, resolveSize, styled, withStaticProperties } from '@tamagui/core'
+import { type GetProps, styled, withStaticProperties } from '@tamagui/core'
+
+export type CheckboxSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
+
+// the box reads as a control next to its label, so it sits a step above
+// the icon square the check glyph is drawn at (Switch.tsx uses the same
+// 1.4 for its track, so the two read as the same weight at one size)
+const checkboxSize = {
+  xs: { width: 17, height: 17, borderRadius: 4 },
+  sm: { width: 22, height: 22, borderRadius: 6 },
+  md: { width: 22, height: 22, borderRadius: 6 },
+  lg: { width: 22, height: 22, borderRadius: 6 },
+  xl: { width: 28, height: 28, borderRadius: 7 },
+} as const
 
 export const CheckboxFrame = styled(CheckboxBehavior, {
   displayName: 'Checkbox',
@@ -16,17 +29,10 @@ export const CheckboxFrame = styled(CheckboxBehavior, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: styled.dynamic<any>((size, env) => {
-      // the box reads as a control next to its label, so it sits a step above
-      // the icon square the check glyph is drawn at (Switch.tsx uses the same
-      // 1.4 for its track, so the two read as the same weight at one size)
-      const controlSize = Math.round(resolveSize(size, env).icon * 1.4)
-      return {
-        width: controlSize,
-        height: controlSize,
-        borderRadius: Math.max(4, Math.round(controlSize / 4)),
-      }
-    }),
+    size: {
+      ...checkboxSize,
+      true: checkboxSize.md,
+    },
 
     disabled: {
       true: {
@@ -35,6 +41,9 @@ export const CheckboxFrame = styled(CheckboxBehavior, {
       },
     },
   } as const,
+  defaultVariants: {
+    size: 'md',
+  },
 })
 
 export const CheckboxIndicator = styled(CheckboxBehavior.Indicator, {

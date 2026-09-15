@@ -1,7 +1,6 @@
 // Styled Slider = the unstyled @tamagui/ui Slider behavior + the default v2-look
-// skin on its Track (track color + radius), TrackActive (fill color + radius),
-// and Thumb (border, background, hover/press/focus color styling). The behavior
-// frames keep fill/clip/positioning + the thumb size mechanism. Single skin
+// skin (track color, fill color, thumb border/background) and the size table.
+// The behavior frames keep fill/clip/positioning and the thumb math. Single skin
 // definition; the shadcn registry item is generated from this file.
 import {
   createRefComponent,
@@ -12,10 +11,49 @@ import {
 import { Slider as UiSlider } from '@tamagui/slider'
 import type * as React from 'react'
 
+export type SliderSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
+
+// the thumb is a line-height tall circle
+const sliderThumbSize = {
+  xs: { width: 16, height: 16, minWidth: 16, minHeight: 16 },
+  sm: { width: 20, height: 20, minWidth: 20, minHeight: 20 },
+  md: { width: 20, height: 20, minWidth: 20, minHeight: 20 },
+  lg: { width: 24, height: 24, minWidth: 24, minHeight: 24 },
+  xl: { width: 28, height: 28, minWidth: 28, minHeight: 28 },
+} as const
+
+// the track is a thin bar: the control height over six, rounded
+const sliderTrackSize = {
+  xs: 4,
+  sm: 5,
+  md: 6,
+  lg: 7,
+  xl: 8,
+} as const
+
 export const SliderTrackFrame = styled(UiSlider.Track, {
   displayName: 'SliderTrack',
   backgroundColor: 'background-press',
   borderRadius: 100_000,
+}).resolve((props) => {
+  const size = props.size as SliderSize | undefined
+  if (size == null || size === false) return
+  const thickness =
+    sliderTrackSize[
+      typeof size === 'string' && size in sliderTrackSize
+        ? (size as keyof typeof sliderTrackSize)
+        : 'md'
+    ]
+  if (props.orientation === 'vertical') {
+    return {
+      width: thickness,
+      borderRadius: thickness,
+    }
+  }
+  return {
+    height: thickness,
+    borderRadius: thickness,
+  }
 })
 
 export const SliderTrack = SliderTrackFrame
@@ -36,6 +74,15 @@ export const SliderThumbFrame = styled(UiSlider.Thumb, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   outlineColor: 'focus-visible:outline-color',
+  variants: {
+    size: {
+      ...sliderThumbSize,
+      true: sliderThumbSize.md,
+    },
+  } as const,
+  defaultVariants: {
+    size: 'md',
+  },
 })
 
 export const SliderThumb = SliderThumbFrame
