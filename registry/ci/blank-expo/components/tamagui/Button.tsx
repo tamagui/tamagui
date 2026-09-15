@@ -16,55 +16,43 @@ import {
   createStyledContext,
   createStyledHOC,
   type GetProps,
+  getSizing,
+  resolveSizing,
   styled,
   Theme,
+  type SizeName,
   type ThemeProps,
   withStaticProperties,
 } from '@tamagui/core'
-import { getThemedIconSize } from '@tamagui/helpers-tamagui'
 
-export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
+export type ButtonSize = SizeName | boolean
 
 const ButtonContext = createStyledContext<{ size?: ButtonSize }>({ size: 'md' })
 
-const buttonFrameSize = {
-  xs: { paddingInline: '2', paddingBlock: '1', borderRadius: 'sm', gap: '1' },
-  sm: { paddingInline: '3', paddingBlock: '1.5', borderRadius: 'md', gap: '1.5' },
-  md: { paddingInline: '4', paddingBlock: '2', borderRadius: 'md', gap: '2' },
-  lg: { paddingInline: '6', paddingBlock: '2', borderRadius: 'md', gap: '2' },
-  xl: { paddingInline: '8', paddingBlock: '2.5', borderRadius: 'lg', gap: '2.5' },
-} as const
+// frame geometry derives from the config sizing ladder: rung token keys for
+// padding, radius, and gap, the control height plus the frame 1px border on
+// each side for min height so text buttons end up as tall as circular ones
+const buttonFrameSize = styled.dynamic<ButtonSize>((val, env) => {
+  const sizing = resolveSizing(val, env)
+  return {
+    paddingInline: sizing.paddingInline,
+    paddingBlock: sizing.paddingBlock,
+    borderRadius: sizing.radius,
+    gap: sizing.gap,
+    // an icon-only button has a 16px content box where a labelled one has a
+    // 20px line box, so without this the two misalign by 4px
+    minHeight: sizing.height + 2,
+    // `size` is a control preset, not square geometry. keep the frame width
+    // content-driven even if an outer styled layer also recognizes `size` as
+    // the generic width/height shorthand.
+    width: 'auto',
+  }
+})
 
-const buttonTextSize = {
-  xs: { fontSize: 'xs', lineHeight: 'xs' },
-  sm: { fontSize: 'sm', lineHeight: 'sm' },
-  md: { fontSize: 'sm', lineHeight: 'sm' },
-  lg: { fontSize: 'base', lineHeight: 'base' },
-  xl: { fontSize: 'lg', lineHeight: 'lg' },
-} as const
-
-// control heights (line height plus vertical padding) plus the frame's 1px
-// border on each side: text buttons end up as tall as circular ones
-const buttonHeight = {
-  xs: 26,
-  sm: 34,
-  md: 38,
-  lg: 42,
-  xl: 50,
-} as const
-
-const buttonIconSize = {
-  xs: 12,
-  sm: 16,
-  md: 16,
-  lg: 16,
-  xl: 20,
-} as const
-
-const resolveButtonSize = (size: ButtonSize | undefined): keyof typeof buttonHeight =>
-  typeof size === 'string' && size in buttonHeight
-    ? (size as keyof typeof buttonHeight)
-    : 'md'
+const buttonTextSize = styled.dynamic<ButtonSize>((val, env) => {
+  const sizing = resolveSizing(val, env)
+  return { fontSize: sizing.fontSize, lineHeight: sizing.lineHeight }
+})
 
 const ButtonFrameBase = styled(ButtonBehaviorFrame, {
   context: ButtonContext,
@@ -80,10 +68,7 @@ const ButtonFrameBase = styled(ButtonBehaviorFrame, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: {
-      ...buttonFrameSize,
-      true: buttonFrameSize.md,
-    },
+    size: buttonFrameSize,
 
     circular: styled.dynamic<boolean>(),
 
@@ -109,20 +94,10 @@ const ButtonFrameBase = styled(ButtonBehaviorFrame, {
   },
 })
 
-export const ButtonFrame = ButtonFrameBase.resolve((props) => {
-  if (!props.circular) {
-    const height = buttonHeight[resolveButtonSize(props.size as ButtonSize)]
-    return {
-      // keep text buttons at the same outer height as circular buttons
-      minHeight: height,
-      // `size` is a control preset, not square geometry. keep the frame's width
-      // content-driven even if an outer styled layer also recognizes `size` as
-      // the generic width/height shorthand.
-      width: 'auto',
-    }
-  }
+export const ButtonFrame = ButtonFrameBase.resolve((props, env) => {
+  if (!props.circular) return
   // the control height plus the frame's 1px border on each side
-  const side = buttonHeight[resolveButtonSize(props.size as ButtonSize)]
+  const side = resolveSizing(props.size as ButtonSize, env).height + 2
   return {
     borderRadius: 1000,
     paddingHorizontal: 0,
@@ -141,10 +116,7 @@ export const ButtonText = styled(ButtonBehaviorText, {
   fontWeight: '600',
   userSelect: 'none',
   variants: {
-    size: {
-      ...buttonTextSize,
-      true: buttonTextSize.md,
-    },
+    size: buttonTextSize,
   } as const,
   defaultVariants: {
     size: 'md',
@@ -154,12 +126,7 @@ export const ButtonText = styled(ButtonBehaviorText, {
 export const ButtonIcon = ({ size, ...props }: ButtonBehaviorIconProps) => {
   const context = ButtonContext.useStyledContext()
 
-  return (
-    <ButtonBehaviorIcon
-      {...props}
-      size={size ?? getThemedIconSize(buttonIconSize[resolveButtonSize(context?.size)])}
-    />
-  )
+  return <ButtonBehaviorIcon {...props} size={size ?? getSizing(context?.size).icon} />
 }
 
 const ButtonComponent = createStyledHOC(
@@ -178,9 +145,7 @@ const ButtonComponent = createStyledHOC(
       'md') as ButtonSize
     const { props: buttonProps } = useButton(buttonBehaviorProps, {
       Text: ButtonText,
-      iconSize: getThemedIconSize(
-        typeof size === 'string' ? buttonIconSize[size] : buttonIconSize.md
-      ),
+      iconSize: getSizing(size).icon,
     })
 
     const button = (
