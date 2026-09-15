@@ -5,8 +5,7 @@ import { createRefComponent } from '@tamagui/core'
 
 import { isWeb } from '@tamagui/constants'
 import type { TamaguiElement } from '@tamagui/core'
-import { getVariableValue, styled } from '@tamagui/core'
-import { getSize } from '@tamagui/get-token'
+import { styled } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 
@@ -14,6 +13,8 @@ import { ARROW_KEYS, PAGE_KEYS, SLIDER_NAME, useSliderContext } from './constant
 import { SliderResponder } from './SliderResponder'
 import type { ScopedProps, SliderImplProps } from './types'
 
+// Unstyled track container: positioning only. Track thickness lives in the
+// tamagui skin (code/ui/tamagui/src/components/Slider.tsx).
 const SliderFrameBase = styled(YStack, {
   position: 'relative',
 
@@ -22,27 +23,10 @@ const SliderFrameBase = styled(YStack, {
       horizontal: {},
       vertical: {},
     },
-
-    size: styled.dynamic<SliderImplProps['size']>(),
   } as const,
 })
 
-export const SliderFrame = SliderFrameBase.resolve((props) => {
-  if (!props.size) return
-  const size = Math.round(getVariableValue(getSize(props.size as any)) / 6)
-  if (props.orientation === 'horizontal') {
-    return {
-      height: size,
-      borderRadius: size,
-      justifyContent: 'center',
-    }
-  }
-  return {
-    width: size,
-    borderRadius: size,
-    alignItems: 'center',
-  }
-})
+export const SliderFrame = SliderFrameBase
 
 export const SliderImpl = createRefComponent<TamaguiElement, SliderImplProps>(
   (props: ScopedProps<SliderImplProps>, forwardedRef) => {
@@ -105,7 +89,6 @@ export const SliderImpl = createRefComponent<TamaguiElement, SliderImplProps>(
 
     return (
       <SliderFrame
-        size="4"
         ref={forwardedRef as any}
         {...sliderProps}
         data-orientation={sliderProps.orientation}

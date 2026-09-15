@@ -1,12 +1,11 @@
 import type { OpenChangeReason } from '@tamagui/floating'
-import { createStyledHOC, createRefComponent, getConfig, styled } from '@tamagui/core'
+import { createStyledHOC, createRefComponent, styled } from '@tamagui/core'
 import '@tamagui/polyfill-dev'
 
 import { FloatingDelayGroup, useDelayGroupContext, type Delay } from '@tamagui/floating'
-import type { SizeTokens, TamaguiElement } from '@tamagui/core'
+import type { TamaguiElement } from '@tamagui/core'
 import { useEvent } from '@tamagui/core'
 import { FloatingOverrideContext } from '@tamagui/floating'
-import { oneSizeSmaller } from '@tamagui/size'
 import { withStaticProperties } from '@tamagui/helpers'
 import type {
   PopoverAnchorProps,
@@ -89,6 +88,8 @@ const TooltipArrow = createRefComponent<TamaguiElement, PopperArrowProps>(
 
 export type TooltipProps = ScopedProps<
   PopperProps & {
+    /** arrow size in px */
+    size?: number
     open?: boolean
     children?: React.ReactNode
     onOpenChange?: (open: boolean) => void
@@ -163,6 +164,8 @@ const TooltipComponent = createRefComponent(function Tooltip(
     disableAutoCloseOnScroll,
     zIndex,
     scope = TOOLTIP_SCOPE,
+    // arrow px for TooltipSimple; never forwarded to Popper
+    size: _size,
     ...restProps
   } = props
   const triggerRef = React.useRef<HTMLButtonElement>(null)
@@ -222,14 +225,11 @@ const TooltipComponent = createRefComponent(function Tooltip(
   const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
   const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
   const contentId = React.useId()
-  const smallerSize = oneSizeSmaller(true, getConfig().sizes)
 
   const content = (
     <FloatingOverrideContext.Provider value={floatingContext}>
-      {/* default tooltip to a smaller size */}
       <Popper
         scope={scope}
-        size={smallerSize as SizeTokens}
         allowFlip
         stayInFrame
         open={open}

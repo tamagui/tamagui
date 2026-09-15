@@ -2,19 +2,13 @@
 
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
 import { isIos, isWeb } from '@tamagui/constants'
-import type {
-  GestureReponderEvent,
-  GetProps,
-  SizeResolverEnv,
-  SizeTokens,
-  TamaguiElement,
-} from '@tamagui/core'
+import type { GestureReponderEvent, GetProps, TamaguiElement } from '@tamagui/core'
 import {
   createStyledHOC,
   createRefComponent,
+  getConfig,
   getVariableValue,
   resolveTextMetrics,
-  resolveSize,
   styled,
   useConfiguration,
   useCreateShallowSetState,
@@ -369,7 +363,6 @@ const SliderTrack = createStyledHOC(
         data-disabled={context.disabled ? '' : undefined}
         data-orientation={context.orientation}
         orientation={context.orientation}
-        size={context.size ?? undefined}
         {...trackProps}
         ref={forwardedRef}
       />
@@ -413,7 +406,6 @@ const SliderActive = createStyledHOC(
         orientation={context.orientation}
         data-orientation={context.orientation}
         data-disabled={context.disabled ? '' : undefined}
-        size={context.size ?? undefined}
         {...rangeProps}
         ref={composedRefs}
         {...{
@@ -437,41 +429,46 @@ const SliderActive = createStyledHOC(
  * SliderThumb
  * -----------------------------------------------------------------------------------------------*/
 
-// the thumb is a line-height tall circle: 20px at md. without a styled env
-// (the SSR estimate below) it measures against the config's default font
-const thumbSize = (val: SizeTokens | number | true, env?: SizeResolverEnv) => {
-  if (typeof val === 'number') return val
-  const { text } = resolveSize(val, env)
-  const metrics: Record<string, unknown> = {
-    fontSize: Number.parseFloat(String(getVariableValue(text.fontSize))),
-  }
-  resolveTextMetrics(
-    metrics,
-    typeof text.lineHeight === 'number' ? `${text.lineHeight}px` : text.lineHeight
-  )
-  return (metrics.lineHeight ?? metrics.fontSize) as number
+// the thumb is a line-height tall circle: 20px at md. skin size names
+// resolve through the same table the tamagui skin styles from; other strings
+// are font size keys measured against the config's default font.
+const thumbSizeTable: Record<string, number> = {
+  xs: 16,
+  sm: 20,
+  md: 20,
+  lg: 24,
+  xl: 28,
 }
 
-const getThumbSize = styled.dynamic<SizeTokens | number | true>((val, env) => {
-  const size = thumbSize(val, env)
-  return {
-    width: size,
-    height: size,
-    minWidth: size,
-    minHeight: size,
+const thumbSize = (val: string | number | boolean | null | undefined) => {
+  if (typeof val === 'number') return val
+  if (typeof val === 'string') {
+    const key = val.replace(/^\$/, '')
+    const tabled = thumbSizeTable[key]
+    if (tabled != null) return tabled
+    const conf = getConfig()
+    const font = conf.fontsParsed[conf.defaultFontToken]
+    const fontSize = font?.size[key]
+    if (fontSize != null) {
+      const metrics: Record<string, unknown> = {
+        fontSize: Number.parseFloat(String(getVariableValue(fontSize))),
+      }
+      const lineHeight = font?.lineHeight?.[key]
+      resolveTextMetrics(metrics, typeof lineHeight === 'number' ? `${lineHeight}px` : lineHeight)
+      return (metrics.lineHeight ?? metrics.fontSize) as number
+    }
   }
-})
+  return 20
+}
 
-// Unstyled thumb frame: positioning + the size mechanism (hit-target
-// dimensions) + the circular shape modifier (opt-in, off by default). Border,
-// background, and hover/press/focus color styling live in the tamagui skin.
+// Unstyled thumb frame: positioning + the circular shape modifier (opt-in, off
+// by default). Hit-target dimensions, border, background, and hover/press/focus
+// color styling live in the tamagui skin.
 export const SliderThumbFrame = styled(YStack, {
   displayName: 'SliderThumb',
   position: 'absolute',
 
   variants: {
-    size: getThumbSize,
-
     circular: {
       true: {
         borderRadius: 100_000,
@@ -512,7 +509,7 @@ const SliderThumb = createStyledHOC(
     const percent =
       value === undefined ? 0 : convertValueToPercentage(value, context.min, context.max)
     const label = getLabel(index, context.values.length)
-    const sizeIn = (sizeProp ?? context.size ?? true) as SizeTokens | number | true
+    const sizeIn = (sizeProp ?? context.size ?? true) as string | number | boolean
     // for SSR
     const [size, setSize] = React.useState(() => thumbSize(sizeIn))
 

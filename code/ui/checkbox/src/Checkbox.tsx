@@ -6,7 +6,7 @@ import type {
   CheckboxExtraProps as HeadlessCheckboxExtraProps,
 } from '@tamagui/checkbox-headless'
 import { isIndeterminate, useCheckbox } from '@tamagui/checkbox-headless'
-import type { GetProps, NativeValue, SizeTokens, StylePiece } from '@tamagui/core'
+import type { GetProps, NativeValue, StylePiece } from '@tamagui/core'
 import {
   createStyledHOC,
   isWeb,
@@ -48,10 +48,6 @@ export const CheckboxFrame = styled(View, {
   } as const,
 })
 
-type CheckboxExpectingVariantProps = {
-  size?: SizeTokens | true
-}
-
 type CheckboxExtraProps = HeadlessCheckboxExtraProps & {
   native?: NativeValue<'web'>
 }
@@ -67,7 +63,6 @@ type CheckboxIndicatorActiveStyleProps = {
 
 export type CheckboxProps = GetProps<typeof CheckboxFrame> &
   CheckboxExtraProps &
-  CheckboxExpectingVariantProps &
   CheckboxFrameActiveStyleProps
 
 type CheckboxIndicatorExtraProps = {

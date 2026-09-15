@@ -1,6 +1,5 @@
 import type {
   NativeValue,
-  SizeTokens,
   TamaguiChangeEventDetails,
   TamaguiEventDetails,
   ViewProps,
@@ -81,7 +80,8 @@ export interface SelectProps<
   defaultOpen?: boolean
   onOpenChange?(open: boolean, details: SelectOpenChangeDetails): void
   dir?: SelectDirection
-  size?: SizeTokens | true
+  /** a skin-owned size name, threaded opaquely to the skin parts */
+  size?: string | boolean
   /**
    * If passed, will render a native component instead of the custom one. Currently only `web` is supported.
    */
@@ -161,7 +161,8 @@ export interface SelectItemParentContextValue {
   /** web only: stable once the list mounts, so it can live beside the items */
   getItemProps?: (userProps?: HTMLProps<HTMLElement> | undefined) => any
   shouldRenderWebNative?: boolean
-  size?: SizeTokens | true
+  /** a skin-owned size name, threaded opaquely to the skin parts */
+  size?: string | boolean
   setActiveIndex: (index: number | null, details?: SelectActiveChangeDetails) => void
   selectedIndex: number
   lastPointerRef: MutableRefObject<{ x: number; y: number }>
@@ -217,7 +218,8 @@ export interface SelectContextValue {
 }
 
 export type SelectViewportExtraProps = SelectScopedProps<{
-  size?: SizeTokens | true
+  /** a skin-owned size name, threaded opaquely to the skin parts */
+  size?: string | boolean
   disableScroll?: boolean
 }>
 

@@ -1,4 +1,3 @@
-import type { FontSizeTokens } from '@tamagui/web'
 import { getFontSize } from '@tamagui/font-size'
 
 import { getIcon } from './getIcon'
@@ -7,11 +6,11 @@ import { useCurrentColor } from './useCurrentColor'
 
 /** icon px for a size: numbers are px, strings are font size keys, else the 16px default */
 export const getThemedIconSize = (
-  size: FontSizeTokens | number | null | undefined,
+  size: string | number | boolean | null | undefined,
   scaleIcon = 1
 ) => {
   if (typeof size === 'number') return size * scaleIcon
-  if (typeof size === 'string') return getFontSize(size) * scaleIcon
+  if (typeof size === 'string') return getFontSize(size as any) * scaleIcon
   return 16 * scaleIcon
 }
 

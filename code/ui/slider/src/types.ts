@@ -1,4 +1,4 @@
-import type { GestureReponderEvent, SizeTokens, TamaguiElement } from '@tamagui/core'
+import type { GestureReponderEvent, TamaguiElement } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import type { YStackProps } from '@tamagui/stacks'
 
@@ -25,9 +25,7 @@ type SliderImplPrivateProps = {
   onStepKeyDown(event: React.KeyboardEvent): void
 }
 
-export type SliderTrackProps = YStackProps & {
-  size?: SizeTokens | true
-}
+export type SliderTrackProps = YStackProps
 
 export interface SliderImplProps extends SliderTrackProps, SliderImplPrivateProps {
   dir?: Direction
@@ -66,7 +64,7 @@ export interface SliderProps
   extends
     Omit<SliderHorizontalProps, keyof SliderOrientationPrivateProps | 'defaultValue'>,
     SliderEventProps {
-  size?: SizeTokens | true
+  size?: string | number | boolean
   name?: string
   disabled?: boolean
   orientation?: React.AriaAttributes['aria-orientation']
@@ -81,7 +79,7 @@ export interface SliderProps
 }
 
 export type SliderContextValue = {
-  size?: SizeTokens | number | true | null
+  size?: string | number | boolean | null
   disabled?: boolean
   min: number
   max: number

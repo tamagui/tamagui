@@ -1,15 +1,11 @@
-import { resolveSize } from '@tamagui/size'
 import { styled, type SizeTokens } from '@tamagui/web'
 
-export const getShapeSize = styled.dynamic<SizeTokens | number | true>((size, env) => {
-  // a number is pixels. a token key is the size scale (v6: `4` is 16px). a
-  // named size or `true` is that size's control height, so a Square "md" is
-  // as tall as a Button "md".
+export const getShapeSize = styled.dynamic<SizeTokens | number>((size, env) => {
+  // a number is px, a string is a size token key (v6: `4` is 16px).
+  // without a size the shape fits its content, like any stack.
   const key = typeof size === 'string' ? size.replace(/^\$/, '') : size
-  const resolved =
-    typeof key === 'number'
-      ? key
-      : (env.tokens.size[key as any] ?? resolveSize(size, env).controlHeight)
+  const resolved = typeof key === 'number' ? key : env.tokens.size[key as any]
+  if (resolved == null) return
   const width = resolved
   const height = resolved
   return {

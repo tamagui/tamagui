@@ -2,14 +2,13 @@
 import { flushSync } from 'react-dom'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core'
+import type { TamaguiElement, ViewProps } from '@tamagui/core'
 import {
   createStyledHOC,
   LayoutMeasurementController,
   View as TamaguiView,
   createRefComponent,
   createStyledContext,
-  getVariableValue,
   registerLayoutNode,
   styled,
 } from '@tamagui/core'
@@ -36,7 +35,6 @@ import {
   size as sizeMiddleware,
   useFloating,
 } from '@tamagui/floating'
-import { getSize } from '@tamagui/get-token'
 import { startTransition } from '@tamagui/start-transition'
 import * as React from 'react'
 
@@ -51,7 +49,6 @@ type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : neve
 
 export type PopperContextShared = {
   open: boolean
-  size?: SizeTokens
   hasFloating: boolean
   arrowStyle?: Partial<Coords> & {
     centerOffset: number
@@ -147,7 +144,6 @@ export type PopperProps = {
    * */
   open?: boolean
 
-  size?: SizeTokens
   children?: React.ReactNode
 
   /**
@@ -347,7 +343,6 @@ function tamaguiAutoUpdate(
 export function Popper(props: PopperProps) {
   const {
     children,
-    size,
     strategy = 'absolute',
     placement = 'bottom',
     stayInFrame,
@@ -489,7 +484,6 @@ export function Popper(props: PopperProps) {
 
   const popperContext = React.useMemo(() => {
     return {
-      size,
       arrowRef: setArrow,
       arrowStyle: middlewareData.arrow,
       onArrowSize: setArrowSize,
@@ -502,7 +496,6 @@ export function Popper(props: PopperProps) {
     } satisfies PopperContextValue
   }, [
     open,
-    size,
     floating,
     JSON.stringify(middlewareData.arrow || null),
     JSON.stringify(middlewareData.transformOrigin || null),
@@ -844,7 +837,8 @@ export const PopperContent = createRefComponent<PopperContentElement, PopperCont
 
 export type PopperArrowExtraProps = {
   offset?: number
-  size?: SizeTokens
+  /** arrow size in px */
+  size?: number
   scope?: string
   /**
    * Enable smooth animation when the arrow position changes
@@ -888,13 +882,7 @@ export const PopperArrow = createRefComponent<TamaguiElement, PopperArrowProps>(
     const context = usePopperContext(scope)
 
     // TODO: get rid! at the very least move up to Popover and simplify
-    const sizeVal =
-      typeof sizeProp === 'number'
-        ? sizeProp
-        : (getVariableValue(getSize(sizeProp ?? context.size ?? true)) as number) * 0.52 -
-          11.5
-
-    const size = Math.max(0, +sizeVal)
+    const size = typeof sizeProp === 'number' ? sizeProp : 7
 
     const { placement } = context
     const refs = useComposedRefs(context.arrowRef, forwardedRef)

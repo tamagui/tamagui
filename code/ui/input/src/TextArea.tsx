@@ -1,6 +1,6 @@
 import { type GetProps, styled } from '@tamagui/web'
 import { Input } from './Input'
-import { defaultStyles, resolveTextAreaSize, textAreaSizeVariant } from './shared'
+import { defaultStyles, resolveTextAreaSize } from './shared'
 
 /**
  * A web-aligned textarea component (multi-line input).
@@ -16,10 +16,6 @@ const TextAreaFrame = styled(Input, {
   height: 'auto',
   ...defaultStyles,
   rows: 3,
-
-  variants: {
-    size: textAreaSizeVariant,
-  } as const,
 })
 
 export const TextArea = TextAreaFrame.resolve(resolveTextAreaSize)

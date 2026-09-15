@@ -1,5 +1,4 @@
 import { createRefComponent } from '@tamagui/core'
-import { resolveSize } from '@tamagui/size'
 import type { YStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
 import * as React from 'react'
@@ -23,8 +22,6 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
     if (!label) {
       return children
     }
-
-    const { frame } = resolveSize(tooltipProps.size ?? true)
 
     return (
       <Tooltip
@@ -56,7 +53,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
           pointerEvents="none"
           paddingHorizontal="2"
           paddingVertical="1"
-          borderRadius={frame.borderRadius}
+          borderRadius={6}
           boxShadow="0 2px 4px shadow-color"
           transition={{
             preset: 'quicker',

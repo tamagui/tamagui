@@ -1,10 +1,8 @@
-import { getFontSized } from '@tamagui/get-font-sized'
 import { getThemedIconSize, useGetThemedIcon } from '@tamagui/helpers-tamagui'
-import { oneSizeSmaller, resolveSize } from '@tamagui/size'
 import { YStack } from '@tamagui/stacks'
 import type { TextParentStyles } from '@tamagui/text'
 import { SizableText, textParentProps, wrapChildrenInText } from '@tamagui/text'
-import type { ColorTokens, FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web'
+import type { ColorTokens, GetProps, SizeTokens } from '@tamagui/web'
 import { createStyledContext, splitStyleProps, styled, View } from '@tamagui/web'
 import type { FunctionComponent, JSX, ReactNode } from 'react'
 
@@ -17,7 +15,7 @@ type IconProp = JSX.Element | FunctionComponent<{ color?: any; size?: any }> | n
  * getting size and color from a ListItem down to its text and icons.
  */
 export const ListItemContext = createStyledContext<{
-  size?: SizeTokens | true
+  size?: string | boolean
   variant?: 'outlined'
   color?: ColorTokens | string
 }>({
@@ -26,30 +24,14 @@ export const ListItemContext = createStyledContext<{
   color: undefined,
 })
 
-export const listItemSizeVariant = styled.dynamic<SizeTokens | true>((val, env) => {
-  const { frame } = resolveSize(val, env)
-  return {
-    minHeight: frame.minHeight,
-    paddingHorizontal: frame.paddingHorizontal,
-    paddingVertical: frame.paddingVertical,
-    gap: frame.gap,
-  }
-})
-
-const listItemSubtitleSizeVariant = styled.dynamic<SizeTokens | true>((val, env) => {
-  return getFontSized(oneSizeSmaller(val, env.sizes) as FontSizeTokens, env)
-})
-
-// structural layout, the size mechanism, and the disabled pointer-event block.
-// theme decoration (palette, border, cursor, the outlined/active appearance,
-// disabled dimming) lives in a skin — see tamagui's components/ListItem.tsx
+// structural layout and the disabled pointer-event block. Sizing (padding,
+// font) lives in a skin — see tamagui's components/ListItem.tsx
 export const ListItemFrame = styled(View, {
   context: ListItemContext,
   displayName: 'ListItemFrame',
   // role is the cross-platform one; render only lands on web
   role: 'listitem',
   render: 'li',
-  size: true,
   alignItems: 'center',
   justifyContent: 'space-between',
   flexWrap: 'nowrap',
@@ -59,8 +41,6 @@ export const ListItemFrame = styled(View, {
   flexDirection: 'row',
 
   variants: {
-    size: listItemSizeVariant,
-
     disabled: {
       true: {
         pointerEvents: 'none',
@@ -84,10 +64,6 @@ export const ListItemSubtitle = styled(ListItemText, {
   displayName: 'ListItemSubtitle',
   opacity: 0.6,
   maxWidth: '100%',
-
-  variants: {
-    size: listItemSubtitleSizeVariant,
-  } as const,
 })
 
 export const ListItemTitle = styled(ListItemText, {
@@ -129,7 +105,7 @@ export type ListItemBehaviorProps = TextParentStyles &
     // read to theme an `icon` prop, then passed through untouched: the frame
     // declares the styled context, so it is what publishes these to the parts
     color?: ColorTokens | string
-    size?: SizeTokens | true
+    size?: string | boolean
   }
 
 /**

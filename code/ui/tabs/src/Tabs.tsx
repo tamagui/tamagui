@@ -4,7 +4,6 @@ import { createStyledHOC, styled, View } from '@tamagui/core'
 import { Group, useGroupItem } from '@tamagui/group'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { RovingFocusGroup, type RovingFocusGroupProps } from '@tamagui/roving-focus'
-import { SizeContext, type TokenSize } from '@tamagui/size'
 import { useTab, useTabContent, useTabs, useTabsList } from '@tamagui/tabs-headless'
 import type { GetProps, StylePiece, TamaguiElement } from '@tamagui/web'
 import { useEvent } from '@tamagui/web'
@@ -16,7 +15,6 @@ const TABS_CONTEXT = 'TabsContext'
 
 export const TabsFrame = styled(View, {
   displayName: 'Tabs',
-  context: SizeContext,
 })
 
 // the list is a Group so the tabs read as one connected control: every tab but
@@ -24,13 +22,11 @@ export const TabsFrame = styled(View, {
 // row rounded only on the outside
 export const TabsListFrame = styled(Group, {
   displayName: 'TabsList',
-  context: SizeContext,
   role: 'tablist',
 })
 
 export const TabsTabFrame = styled(View, {
   displayName: 'TabsTrigger',
-  context: SizeContext,
   role: 'tab',
 
   variants: {
@@ -44,7 +40,6 @@ export const TabsTabFrame = styled(View, {
 
 export const TabsContentFrame = styled(View, {
   displayName: 'TabsContent',
-  context: SizeContext,
 })
 
 type TabsScopeProps = {
@@ -60,8 +55,6 @@ type TabsExtraProps<Tab = string> = TabsScopeProps & {
   defaultValue?: Tab
   /** A function called when a new tab is selected */
   onValueChange?: (value: Tab) => void
-  /** Coordinates a size value with styled descendants. */
-  size?: TokenSize
   /**
    * The orientation the tabs are laid out.
    * Mainly so arrow navigation is done accordingly (left & right vs. up & down).
@@ -275,7 +268,6 @@ export const TabsTab = createStyledHOC(
           })}
           {...tabA11yProps}
           theme={isSelected ? (activeTheme ?? null) : null}
-          size={context.size}
           {...groupItemProps}
           {...triggerProps}
           // after triggerProps so active styles beat base styles from styled() skins
@@ -346,7 +338,6 @@ const TabsComponent = createStyledHOC(
       orientation = 'horizontal',
       dir,
       activationMode = 'automatic',
-      size = true,
       ...tabsProps
     } = props
     const {
@@ -368,28 +359,25 @@ const TabsComponent = createStyledHOC(
     })
 
     return (
-      <SizeContext.Provider size={size}>
-        <TabsProvider
-          scope={__scopeTabs}
-          baseId={baseId}
-          value={value}
-          onChange={setValue}
-          orientation={orientation}
-          dir={direction}
-          activationMode={activationMode}
-          size={size}
-          registerTrigger={registerTrigger}
-          triggersCount={triggersCount}
-          unregisterTrigger={unregisterTrigger}
-        >
-          <TabsFrame
-            direction={direction}
-            {...headlessTabsProps}
-            {...tabsProps}
-            ref={forwardedRef}
-          />
-        </TabsProvider>
-      </SizeContext.Provider>
+      <TabsProvider
+        scope={__scopeTabs}
+        baseId={baseId}
+        value={value}
+        onChange={setValue}
+        orientation={orientation}
+        dir={direction}
+        activationMode={activationMode}
+        registerTrigger={registerTrigger}
+        triggersCount={triggersCount}
+        unregisterTrigger={unregisterTrigger}
+      >
+        <TabsFrame
+          direction={direction}
+          {...headlessTabsProps}
+          {...tabsProps}
+          ref={forwardedRef}
+        />
+      </TabsProvider>
     )
   }
 )

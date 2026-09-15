@@ -1,10 +1,14 @@
-import { resolveSize } from '@tamagui/size'
-import { styled, View, type SizeTokens } from '@tamagui/web'
+import { styled, View, type SpaceTokens } from '@tamagui/web'
 
-const getSpacerSize = styled.dynamic<SizeTokens | number | boolean>((size, env) => {
+const getSpacerSize = styled.dynamic<SpaceTokens | number | false>((size, env) => {
   if (size === false) return
+  // a number is px. `true` is the default gap, else a space token key.
   const sizePx =
-    typeof size === 'number' ? size : resolveSize(size, env).frame.paddingHorizontal
+    typeof size === 'number'
+      ? size
+      : env.tokens.space[
+          size === true ? '4' : String(size).replace(/^\$/, '')
+        ]
   return {
     width: sizePx,
     height: sizePx,

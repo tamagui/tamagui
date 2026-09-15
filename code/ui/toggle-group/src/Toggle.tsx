@@ -1,6 +1,5 @@
 import { createRefComponent } from '@tamagui/compose-refs'
 import { composeEventHandlers } from '@tamagui/helpers'
-import { resolveSize } from '@tamagui/size'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import type { GetProps, StylePiece, TamaguiElement } from '@tamagui/web'
 import { styled, View } from '@tamagui/web'
@@ -13,34 +12,21 @@ import { context } from './context'
 
 const NAME = 'Toggle'
 
-// Unstyled Toggle behavior frame: structural layout, the size mechanism
-// (hit-target dimensions), the native button render, and focus reset only. All
-// theme decoration (palette, border, hover/press/focus color styling) and the
-// default "active" appearance live in the tamagui skin
-// (code/ui/tamagui/src/components/ToggleGroup.tsx). The frame still emits the
-// discrete state (aria-pressed / data-state) via the Toggle component below; the
-// skins can supply a plain style prop object that is applied while active.
+// Unstyled Toggle behavior frame: structural layout, the native button
+// render, and focus reset only. Hit-target dimensions live in the tamagui skin
+// (code/ui/tamagui/src/components/ToggleGroup.tsx). All theme decoration
+// (palette, border, hover/press/focus color styling) and the default "active"
+// appearance live there too. The frame still emits the discrete state
+// (aria-pressed / data-state) via the Toggle component below; the skins can
+// supply a plain style prop object that is applied while active.
 export const ToggleFrame = styled(View, {
   displayName: NAME,
   render: 'button',
   context,
-  size: true,
   alignItems: 'center',
   justifyContent: 'center',
 
   variants: {
-    size: styled.dynamic<any>((val, env) => {
-      if (!val) return
-      // a square hit target: the control height plus the skin's 1px border
-      const { frame, controlHeight } = resolveSize(val, env)
-      const side = controlHeight + 2
-      return {
-        width: side,
-        height: side,
-        borderRadius: frame.borderRadius,
-      }
-    }),
-
     defaultActiveStyle: {
       true: {},
     },
