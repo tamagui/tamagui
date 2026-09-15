@@ -1,25 +1,51 @@
-// a custom skin over the button behavior primitives, sized by the config's
-// named sizes rather than a table of its own: `sm` and `md` are recipes of
-// tokens read through resolveSize, so the frame, text and icon agree.
+// a custom skin over the button behavior primitives. each control owns its
+// size table inline: `sm` and `md` are rows of token keys, so the frame,
+// text and icon agree by construction.
 import {
   ButtonFrame as ButtonBehaviorFrame,
   ButtonText as ButtonBehaviorText,
   type ButtonBehaviorProps,
   createStyledHOC,
   getThemedIconSize,
-  resolveSize,
-  SizeContext,
+  createStyledContext,
   styled,
   useButton,
   withStaticProperties,
 } from 'tamagui'
 
-import type { CanaryConfig } from '../../tamagui.config'
+type ButtonSize = 'sm' | 'md'
 
-type ButtonSize = Exclude<keyof CanaryConfig['sizes'], 'default'>
+const ButtonContext = createStyledContext<{ size?: ButtonSize }>({ size: 'md' })
+
+const buttonFrameSize = {
+  sm: { paddingInline: '3', paddingBlock: '1.5', borderRadius: 'md', gap: '1.5' },
+  md: { paddingInline: '4', paddingBlock: '2', borderRadius: 'md', gap: '2' },
+} as const
+
+const buttonTextSize = {
+  sm: { fontSize: 'sm', lineHeight: 'sm' },
+  md: { fontSize: 'sm', lineHeight: 'sm' },
+} as const
+
+// control heights (line height plus vertical padding) plus the frame's 1px
+// border on each side
+const buttonHeight = {
+  sm: 34,
+  md: 38,
+} as const
+
+const buttonIconSize = {
+  sm: 16,
+  md: 16,
+} as const
+
+const resolveButtonSize = (size: ButtonSize | undefined): keyof typeof buttonHeight =>
+  typeof size === 'string' && size in buttonHeight
+    ? (size as keyof typeof buttonHeight)
+    : 'md'
 
 const ButtonFrameBase = styled(ButtonBehaviorFrame, {
-  context: SizeContext,
+  context: ButtonContext,
   displayName: 'CanaryButtonFrame',
   bg: 'canaryTheme',
   borderColor: 'canary-token',
@@ -30,7 +56,7 @@ const ButtonFrameBase = styled(ButtonBehaviorFrame, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: styled.dynamic<ButtonSize>((val, env) => resolveSize(val, env).frame),
+    size: buttonFrameSize,
     circular: styled.dynamic<boolean>(),
     disabled: {
       true: { opacity: 0.35 },
@@ -39,10 +65,12 @@ const ButtonFrameBase = styled(ButtonBehaviorFrame, {
   defaultVariants: { size: 'md' },
 })
 
-export const ButtonFrame = ButtonFrameBase.resolve((props, env) => {
-  if (!props.circular) return
+export const ButtonFrame = ButtonFrameBase.resolve((props) => {
+  if (!props.circular) {
+    return { minHeight: buttonHeight[resolveButtonSize(props.size as ButtonSize)] }
+  }
   // the control height plus the 1px border on each side
-  const side = resolveSize(props.size as ButtonSize | undefined, env).controlHeight + 2
+  const side = buttonHeight[resolveButtonSize(props.size as ButtonSize)]
   return {
     rounded: 1000,
     paddingHorizontal: 0,
@@ -55,12 +83,12 @@ export const ButtonFrame = ButtonFrameBase.resolve((props, env) => {
 })
 
 export const ButtonText = styled(ButtonBehaviorText, {
-  context: SizeContext,
+  context: ButtonContext,
   displayName: 'CanaryButtonText',
   color: 'white',
   fontWeight: '600',
   variants: {
-    size: styled.dynamic<ButtonSize>((val, env) => resolveSize(val, env).text),
+    size: buttonTextSize,
   } as const,
   defaultVariants: { size: 'md' },
 })
@@ -68,17 +96,14 @@ export const ButtonText = styled(ButtonBehaviorText, {
 const ButtonComponent = createStyledHOC(
   ButtonFrame,
   function CanaryButton(props: ButtonBehaviorProps & { size?: ButtonSize }, ref) {
-    const size = props.size ?? 'md'
-    const { props: buttonProps } = useButton(
-      { ...props, size },
-      { Text: ButtonText, iconSize: getThemedIconSize(size) }
-    )
+    const { props: buttonProps } = useButton(props, {
+      Text: ButtonText,
+      iconSize: getThemedIconSize(
+        buttonIconSize[resolveButtonSize(props.size as ButtonSize)]
+      ),
+    })
 
-    return (
-      <SizeContext.Provider size={size}>
-        <ButtonFrame ref={ref} {...buttonProps} />
-      </SizeContext.Provider>
-    )
+    return <ButtonFrame ref={ref} {...buttonProps} />
   }
 )
 
