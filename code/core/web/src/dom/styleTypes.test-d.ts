@@ -7,11 +7,14 @@ import type { TamaguiStyleProps } from './styleTypes'
  * The drift alarm for `styleTypes.ts`.
  *
  * `@tamagui/core/dom` has to typecheck in a project with no react-native
- * installed, so the style grammar behind `style()` is defined from scratch
- * there. This file keeps that definition honest: it runs here, where
- * react-native *is* available, and checks the owned property set against both
- * react-native's and Tamagui's own. Add a property to `types.tsx` without adding
- * it to `styleTypes.ts` and one of these assertions goes red.
+ * installed, so the web style contract behind `style()` and `html.*` is
+ * defined from scratch there. This file keeps that definition honest: it runs
+ * here, where react-native *is* available, and checks the owned property set
+ * against both react-native's and Tamagui's own. The owned set is the
+ * react-native-typed reference set minus the react-native-only keys the web
+ * contract removes (`RemovedWebKeys`): add a property to `types.tsx` without
+ * adding it here, or re-add a removed key to `styleTypes.ts`, and one of these
+ * assertions goes red.
  *
  * `tsc` checks all of it through `vitest --typecheck`, so a drift is a build
  * failure rather than a message nobody reads.
@@ -41,6 +44,28 @@ type AcceptsValues<Owned, Source> = [ValueGaps<Owned, Source>] extends [never]
 type ReferenceStyle = StackStyleBase & TextStylePropsBase
 
 /**
+ * The react-native-only keys the web contract removes rather than deprecates.
+ * `html.*` and `style()` author `boxShadow`, the logical box props,
+ * `direction` and `verticalAlign` instead.
+ */
+type RemovedWebKeys =
+  | 'elevation'
+  | 'marginHorizontal'
+  | 'marginVertical'
+  | 'paddingHorizontal'
+  | 'paddingVertical'
+  | 'shadowColor'
+  | 'shadowOffset'
+  | 'shadowOpacity'
+  | 'shadowRadius'
+  | 'textAlignVertical'
+  | 'includeFontPadding'
+  | 'writingDirection'
+
+/** the reference set as the web contract sees it: everything but the removed keys */
+type WebReferenceStyle = Omit<ReferenceStyle, RemovedWebKeys>
+
+/**
  * The three value forms `style()` deliberately does not accept: they exist only
  * at runtime, and a `style()` call is resolved by the compiler, so there is
  * nothing for it to read. Stripping them here is what makes the value
@@ -62,22 +87,28 @@ type StaticValue<T> = T extends RuntimeOnlyValue
 type StaticStyle<T> = { [K in keyof T]-?: StaticValue<Exclude<T[K], undefined>> }
 
 //
-// 1. the owned type has exactly the properties the react-native-typed one has:
-//    nothing missing, nothing invented
+// 1. the owned type has exactly the web reference properties: nothing else
+//    missing, nothing invented
 //
-export type _sameKeysAsReference = Assert<SameKeys<TamaguiStyleProps, ReferenceStyle>>
+export type _sameKeysAsWebReference = Assert<
+  SameKeys<TamaguiStyleProps, WebReferenceStyle>
+>
 
 //
-// 2. and it covers react-native's own two style types outright, which is what
-//    matters to anyone writing `style({ ... })` against a react-native mental
-//    model
+// 2. and it covers react-native's own two style types minus the removed keys,
+//    which is what matters to anyone writing `style({ ... })` against a
+//    react-native mental model
 //
-export type _coversViewStyle = Assert<Covers<TamaguiStyleProps, ViewStyle>>
-export type _coversTextStyle = Assert<Covers<TamaguiStyleProps, RNTextStyle>>
-export type _coversReferenceKeys = Assert<Covers<TamaguiStyleProps, ReferenceStyle>>
+export type _coversViewStyle = Assert<
+  Covers<TamaguiStyleProps, Omit<ViewStyle, RemovedWebKeys>>
+>
+export type _coversTextStyle = Assert<
+  Covers<TamaguiStyleProps, Omit<RNTextStyle, RemovedWebKeys>>
+>
 
 //
-// 3. every value the regular Tamagui style props accept is accepted here too,
+// 3. every value the regular Tamagui style props accept (on the keys the web
+//    contract keeps) is accepted here too,
 //    minus the runtime-only forms above. react-native's own value types are
 //    covered by this rather than asserted separately: where they differ from
 //    the reference (`filter` arrays, `transformOrigin` arrays, `DimensionValue`
@@ -85,7 +116,7 @@ export type _coversReferenceKeys = Assert<Covers<TamaguiStyleProps, ReferenceSty
 //    matching the reference is the point.
 //
 export type _acceptsReferenceValues = Assert<
-  AcceptsValues<TamaguiStyleProps, StaticStyle<ReferenceStyle>>
+  AcceptsValues<TamaguiStyleProps, StaticStyle<WebReferenceStyle>>
 >
 
 //
@@ -109,3 +140,25 @@ check({ padding: true })
 check({ transform: [{ scale: 2, rotate: '45deg' }] })
 // @ts-expect-error fontStyle has a fixed set of values
 check({ fontStyle: 'oblique' })
+
+// the removed keys are absent, not deprecated and not optional
+// @ts-expect-error marginHorizontal is marginInline on web
+check({ marginHorizontal: 4 })
+// @ts-expect-error marginVertical is marginBlock on web
+check({ marginVertical: 4 })
+// @ts-expect-error paddingHorizontal is paddingInline on web
+check({ paddingHorizontal: 4 })
+// @ts-expect-error paddingVertical is paddingBlock on web
+check({ paddingVertical: 4 })
+// @ts-expect-error elevation is boxShadow on web
+check({ elevation: 4 })
+// @ts-expect-error the 4-part shadow is one boxShadow string on web
+check({ shadowColor: 'red', shadowOpacity: 0.5, shadowRadius: 4 })
+// @ts-expect-error the 4-part shadow is one boxShadow string on web
+check({ shadowOffset: { width: 0, height: 2 } })
+// @ts-expect-error textAlignVertical is verticalAlign on web
+check({ textAlignVertical: 'center' })
+// @ts-expect-error includeFontPadding has no web spelling
+check({ includeFontPadding: false })
+// @ts-expect-error writingDirection is direction on web
+check({ writingDirection: 'ltr' })

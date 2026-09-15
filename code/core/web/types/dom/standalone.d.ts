@@ -57,7 +57,8 @@ export type DOMStyleProps = {
  * It comes from `./styleTypes`, which owns the property set outright, so this
  * entry typechecks in a project with no react-native installed.
  * `styleTypes.test-d.ts` asserts it still matches `StackStyleBase &
- * TextStylePropsBase` property for property.
+ * TextStylePropsBase` property for property, minus the react-native-only keys
+ * the web contract removes.
  *
  * @deprecated The standalone Tamagui DOM entries are demoted implementation
  * plumbing in V3. They keep working unchanged; new code should import `html`
