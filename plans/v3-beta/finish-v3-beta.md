@@ -1,0 +1,90 @@
+# Finish the v3 beta: tonight's plan (2026-09-14)
+
+State at 19:47: `v3-beta` tip `e1dc4862de`, tree clean, Checks green on the
+last full run (`plans/v3-beta-checks-result.md`), latest npm beta 3.0.0-beta.1313.1.
+Today produced five spec documents and two code commits (RN prop deprecation
+JSDoc in `styleTypes.ts`, `userSelect` to native `selectable`). Everything
+else from today is still paper. This is the list that turns it into code, in
+the order it should land, with what is deliberately deferred.
+
+## Status of today's plans
+
+| Plan | Landed | Left |
+| --- | --- | --- |
+| `web-alignment-steps.md` step 1 (canonical web types, deprecate RN keys) | JSDoc deprecations only (`d02dc01467`) | `direction`, `verticalAlign` mapping to native; remove `includeFontPadding` from types |
+| step 2 (shorthand and logical expansion) | logical props and `inset` already expand in `expandStyle.ts` | verify multi-value strings (`margin: "10px 20px"`, `gap: "10px 20px"`) on native; add if missing |
+| step 3 (`tamagui migrate --web-align` codemod) | nothing | defer past beta; document the renames in the upgrade guide instead |
+| step 4 / 5 (html.* as primary, positioning copy) | nothing | docs only, one pass |
+| Opus review: CSSOM discovery | rejected | drop from master spec |
+| Opus review: reset to `:where()` CSS, html.p/h1/pre render inline bug | nothing | fix the inline bug tonight; scope the reset rule to an html.* class |
+| Opus review: package split web -> core -> ui -> tamagui | nothing | defer past beta; fix the spec diagram |
+| Opus review: function children | rejected | nothing |
+| `typed-user-sizes.md` | rejected | replaced by `remove-size-concept.md`, lands tonight |
+
+## Lanes (three workers, one reviewer)
+
+Each lane is a worktree under `~/.worktrees/tamagui-<slug>` off a fresh
+`origin/v3-beta`, merges back to `v3-beta` when its gate passes. `REVIEW: one
+review of lane A by another model when it finishes; B and C get checks and
+runtime validation only.`
+
+### A. Remove the size concept (`remove-size-concept.md`)
+
+Owner: md group, this is mechanical but wide. Does NOT own docs copy beyond
+deleting size sections, and does not touch html.* or the reset.
+
+Gate: root `lint`, `check`, `typecheck`; kitchen-sink Button/Input/Select/Switch
+screenshots unchanged; `registry:check` green.
+
+### B. html.* display bug and scoped reset
+
+Owner: md group. Fix html.p, h1..h6, pre rendering `display: inline` because
+hosts carry `is_Text`/`is_View`. Give html.* hosts their own class, generate
+`:where(.<class>)` reset rules from the tag display table, remove
+`DISPLAY_WEB_RESET` from `generate-html.ts` and `compilerHost.ts`, keep
+semantic tag defaults as atomic defaults. Does NOT own the package split or
+codemods.
+
+Gate: SSR plus computed-style web test for `p`, `h1`, `span`, `button`, `pre`
+asserting web display values; kitchen-sink html cases visually unchanged.
+
+FLAG(decision): the zero-specificity reset means page CSS like `p { margin: 1em }`
+reaches html.* on web and not on native. Opus recommends accepting and
+documenting it. Lane B proceeds on that assumption unless Nate says otherwise.
+
+### C. Web alignment leftovers and docs
+
+Owner: md group. Native mapping for `direction` and `verticalAlign`; verify
+multi-value `margin`/`padding`/`gap` strings expand on native and add the
+expansion in `expandStyle.ts` if not; remove `includeFontPadding` from the
+public types; one docs pass framing html.* and styled() as the entry points
+and listing the RN key renames in the upgrade guide (replaces the codemod for
+beta). Correct the master spec: drop CSSOM discovery, fix the ui -> core
+dependency diagram, fix the grid formula, note the View -> html.div codemod
+must emit `display="flex" flexDirection="column"`. Does NOT touch size or html
+reset code.
+
+Gate: native unit tests for the three mappings; `lint`, `check`.
+
+## Merge order
+
+A, then B, then C. After each merge: root `lint`, `check`, `typecheck`, then
+push `v3-beta` and read the Checks run once (`plans/v3-beta-checks-result.md`
+has the lanes to expect). A red Checks run is fixed on a branch, never on the
+tip.
+
+## Deferred past beta, on purpose
+
+- Package split (`@tamagui/web` slimming, html-div size gate, `@tamagui/native`
+  out of web's graph, codemod of the 48 ui imports).
+- `tamagui migrate --web-align` codemod.
+- Full headless `@tamagui/ui` usable with a foreign style library; dropping
+  `size` from primitives is the step toward it that ships now.
+- PR #4124 (v3-beta into main) is open and conflicting. It is the eventual
+  main merge, not a beta gate; resolve it when the beta is cut.
+
+## Done means
+
+All three lanes merged to `v3-beta`, Checks green on the tip, npm beta
+published from that run only on Nate's word, `remove-size-concept.md` and
+this file marked landed with the SHAs.
