@@ -33,7 +33,9 @@ export const getFontSized = styled.dynamic<GetFontSizedInput>(
 
     const key =
       sizeTokenIn === true
-        ? ('sm' in font.size ? 'sm' : '4')
+        ? 'sm' in font.size
+          ? 'sm'
+          : '4'
         : String(sizeTokenIn).replace(/^\$/, '')
     const sizeToken = key as Exclude<FontSizeTokens, true>
 

@@ -22,4 +22,3 @@ export const settings = {
 } satisfies CreateTamaguiProps['settings']
 
 export type Settings = typeof settings
-

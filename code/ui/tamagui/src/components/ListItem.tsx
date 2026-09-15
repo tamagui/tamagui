@@ -4,7 +4,12 @@
 // ships no ListItem of its own: it exposes `useListItem` and the frame, text,
 // title, subtitle, and icon parts, and a skin decides the rest. This is the
 // single skin definition — the shadcn registry item is generated from this file.
-import { createStyledHOC, type GetProps, styled, withStaticProperties } from '@tamagui/core'
+import {
+  createStyledHOC,
+  type GetProps,
+  styled,
+  withStaticProperties,
+} from '@tamagui/core'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import {
   type ListItemBehaviorProps,
@@ -173,8 +178,7 @@ const ListItemComponent = createStyledHOC(
     const size = props.size ?? contextSize ?? 'md'
     const scaleIcon = props.scaleIcon ?? 1
     const iconSize =
-      props.iconSize ??
-      (resolveListItemIconPx(size) ?? listItemIconSize.md) * scaleIcon
+      props.iconSize ?? (resolveListItemIconPx(size) ?? listItemIconSize.md) * scaleIcon
     const { props: listItemProps } = useListItem({
       ...props,
       iconSize,

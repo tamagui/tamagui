@@ -50,9 +50,7 @@ export const getFontSizeToken = (
   // getFontSized, so every shipped config keeps its current default).
   const key = String(inSize ?? true).replace(/^\$/, '')
   const size =
-    inSize == null || inSize === true
-      ? ('sm' in (font?.size ?? {}) ? 'sm' : '4')
-      : key
+    inSize == null || inSize === true ? ('sm' in (font?.size ?? {}) ? 'sm' : '4') : key
 
   const sizeTokens = Object.keys(fontSize)
 

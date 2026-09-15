@@ -228,13 +228,7 @@ const TooltipComponent = createRefComponent(function Tooltip(
 
   const content = (
     <FloatingOverrideContext.Provider value={floatingContext}>
-      <Popper
-        scope={scope}
-        allowFlip
-        stayInFrame
-        open={open}
-        {...restProps}
-      >
+      <Popper scope={scope} allowFlip stayInFrame open={open} {...restProps}>
         <PopoverContextProvider
           scope={scope}
           contentId={contentId}

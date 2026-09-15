@@ -454,7 +454,10 @@ const thumbSize = (val: string | number | boolean | null | undefined) => {
         fontSize: Number.parseFloat(String(getVariableValue(fontSize))),
       }
       const lineHeight = font?.lineHeight?.[key]
-      resolveTextMetrics(metrics, typeof lineHeight === 'number' ? `${lineHeight}px` : lineHeight)
+      resolveTextMetrics(
+        metrics,
+        typeof lineHeight === 'number' ? `${lineHeight}px` : lineHeight
+      )
       return (metrics.lineHeight ?? metrics.fontSize) as number
     }
   }

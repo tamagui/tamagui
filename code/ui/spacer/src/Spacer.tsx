@@ -6,9 +6,7 @@ const getSpacerSize = styled.dynamic<SpaceTokens | number | false>((size, env) =
   const sizePx =
     typeof size === 'number'
       ? size
-      : env.tokens.space[
-          size === true ? '4' : String(size).replace(/^\$/, '')
-        ]
+      : env.tokens.space[size === true ? '4' : String(size).replace(/^\$/, '')]
   return {
     width: sizePx,
     height: sizePx,
