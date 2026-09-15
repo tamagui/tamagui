@@ -754,7 +754,7 @@ Use these replacements:
 
 | Legacy key | Replacement |
 | --- | --- |
-| `marginHorizontal` | `marginInline` (`mx` also works) |
+| `marginHorizontal` | `marginInline` (`mx` stays physical left/right, not RTL-aware inline start/end) |
 | `marginVertical` | `marginBlock` (`my` also works) |
 | `paddingHorizontal` | `paddingInline` (`px` also works) |
 | `paddingVertical` | `paddingBlock` (`py` also works) |
@@ -776,8 +776,9 @@ Use these replacements:
 <html.div marginInline={12} marginBlock={8} direction="rtl" />
 ```
 
-On native, `direction` maps to `writingDirection` and `verticalAlign` maps to
-`textAlignVertical`, so web-authored styles apply on both platforms.
+On native, `direction` keeps the Yoga `direction` and also maps to
+`writingDirection`, while `verticalAlign` maps to `textAlignVertical`, so
+web-authored styles apply on both platforms.
 Multi-value strings such as `margin="10px 20px"` and `gap="10px 20px"` expand
 per CSS slot order on native.
 
