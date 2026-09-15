@@ -48,6 +48,7 @@ export function TooltipAnimationCase() {
           opacity="1 enter:0 exit:0"
           transition={{ preset: 'lazy', properties: 'transform, opacity' }}
         >
+          {/* round(v6 size-token 2 = 8px * 0.52); the old - 11.5 offset gives 0 */}
           <Tooltip.Arrow data-testid="tooltip-arrow" size={4} />
           <Paragraph size="2">Tooltip content</Paragraph>
         </Tooltip.Content>
@@ -65,6 +66,7 @@ export function TooltipAnimationCase() {
           opacity="1 enter:0 exit:0"
           transition={{ preset: 'lazy', properties: 'transform, opacity' }}
         >
+          {/* round(v6 size-token 2 = 8px * 0.52); the old - 11.5 offset gives 0 */}
           <Tooltip.Arrow data-testid="tooltip-arrow-2" size={4} />
           <Paragraph size="2">Second tooltip</Paragraph>
         </Tooltip.Content>
@@ -82,6 +84,7 @@ export function TooltipAnimationCase() {
           opacity="1 enter:0 exit:0"
           transition={{ duration: '100ms', properties: 'transform, opacity' }}
         >
+          {/* round(v6 size-token 3 = 12px * 0.52); the old - 11.5 offset gives 0 */}
           <Tooltip.Arrow data-testid="tooltip-arrow-quick" size={6} />
           <Paragraph size="2">Quick tooltip</Paragraph>
         </Tooltip.Content>

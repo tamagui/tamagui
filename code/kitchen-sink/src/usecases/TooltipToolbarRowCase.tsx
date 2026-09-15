@@ -78,6 +78,7 @@ export function TooltipToolbarRowCase() {
           bg="color-2"
           borderWidth={0}
         >
+          {/* round(v6 size-token 3 = 12px * 0.52); the old - 11.5 offset gives 0 */}
           <Tooltip.Arrow size={6} bg="color-2" />
           <Paragraph pointerEvents="none" fontWeight="600" size="2">
             {active}

@@ -20,7 +20,7 @@ export function HomeScreen({ onSelect }: { onSelect: (demoName: string) => void 
         </H1>
 
         <YStack gap="4" maxW={600}>
-          <YGroup size="4">
+          <YGroup>
             {demos.map((demo) => (
               <YGroup.Item key={demo.key}>
                 <ListItem
