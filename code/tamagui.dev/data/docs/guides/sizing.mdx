@@ -64,6 +64,14 @@ The switch track stretches the square into a pill (1.9 wide) and the thumb
 insets by the 2px track padding, so Switch, Checkbox, and RadioGroup read as
 one weight at one size.
 
+## Why controls stopped reading font keys
+
+`size` on a control is a control rung, full stop. Font-key sizing already
+lives where it belongs: `SizableText` owns a `size` variant that reads font
+keys. Nothing was removed, the text meaning just stopped being smuggled
+through every control's `size` prop. Fifteen-pixel text is `SizableText`, a
+15px icon is `iconSize={15}`.
+
 ## Overriding
 
 | tier | what you edit | scope |
