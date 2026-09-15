@@ -96,8 +96,18 @@ export {
   SheetRoot,
   SheetScrollView,
 } from './components/Sheet'
-export { Input, type InputProps, TextArea, type TextAreaProps } from './components/Input'
-export { ToggleGroup, type ToggleGroupItemProps } from './components/ToggleGroup'
+export {
+  Input,
+  type InputProps,
+  type InputSize,
+  TextArea,
+  type TextAreaProps,
+} from './components/Input'
+export {
+  ToggleGroup,
+  type ToggleGroupItemProps,
+  type ToggleGroupSize,
+} from './components/ToggleGroup'
 export { Accordion } from './components/Accordion'
 export {
   AlertDialog,
@@ -106,18 +116,43 @@ export {
 } from './components/AlertDialog'
 export { Dialog, DialogContent, DialogOverlay } from './components/Dialog'
 export { Popover, PopoverArrow, PopoverContent } from './components/Popover'
-export { Slider, SliderActive, SliderThumb, SliderTrack } from './components/Slider'
-export { Switch, SwitchFrame, SwitchThumb, SwitchThumbFrame } from './components/Switch'
-export { Checkbox, CheckboxFrame, CheckboxIndicator } from './components/Checkbox'
+export {
+  Slider,
+  SliderActive,
+  type SliderSize,
+  SliderThumb,
+  SliderTrack,
+} from './components/Slider'
+export {
+  Switch,
+  SwitchFrame,
+  type SwitchSize,
+  SwitchThumb,
+  SwitchThumbFrame,
+} from './components/Switch'
+export {
+  Checkbox,
+  CheckboxFrame,
+  CheckboxIndicator,
+  type CheckboxSize,
+} from './components/Checkbox'
 export {
   RadioGroup,
   RadioGroupFrame,
   RadioGroupIndicator,
   RadioGroupItem,
+  type RadioGroupSize,
 } from './components/RadioGroup'
-export { Tabs, TabsContent, TabsFrame, TabsList, TabsTab } from './components/Tabs'
-export { ListItem, type ListItemProps } from './components/ListItem'
-export { Card, CardFrame, type CardProps } from './components/Card'
+export {
+  Tabs,
+  TabsContent,
+  TabsFrame,
+  TabsList,
+  type TabsSize,
+  TabsTab,
+} from './components/Tabs'
+export { ListItem, type ListItemProps, type ListItemSize } from './components/ListItem'
+export { Card, CardFrame, type CardProps, type CardSize } from './components/Card'
 export { Progress, ProgressIndicator, type ProgressProps } from './components/Progress'
 export { Label, type LabelProps } from './components/Label'
 export { Separator, type SeparatorProps } from './components/Separator'
