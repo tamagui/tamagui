@@ -242,3 +242,23 @@ Shorthands map short prop names to style properties, so `px` can mean
 Settings control type strictness, SSR behavior, theme class placement, and
 performance tradeoffs. A few more behaviors are set with environment variables. See
 [Settings](/docs/core/settings).
+
+### Sizing
+
+Sizing holds the control size ladder: named rungs of token keys plus the rules
+that derive pixel geometry per rung. V6 configs wire in `defaultSizing`, so most
+apps only touch this key to add a size:
+
+```tsx fileName="tamagui.config.ts"
+import { defaultSizing } from '@tamagui/config/v6'
+
+const config = createTamagui({
+  // ...
+  sizing: {
+    ...defaultSizing,
+    sizes: { ...defaultSizing.sizes, xxl: { ...defaultSizing.sizes.xl } },
+  },
+})
+```
+
+See [Control Sizing](/docs/guides/sizing).

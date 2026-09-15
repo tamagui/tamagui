@@ -842,10 +842,11 @@ are unrelated.
 Every control that takes `size` (Button, Input, Select, Tabs, ListItem, Label,
 Card, Toggle, Checkbox, RadioGroup, Switch, Slider, Progress, Avatar, Group,
 Tooltip) accepts the same five names: `xs`, `sm`, `md`, `lg`, `xl`. A name is a
-row in the component's own size table, never a height: it picks a font size,
+rung in the config sizing ladder, never a height: it picks a font size,
 horizontal and vertical padding, and a radius, and the control ends up its
 line-height plus padding tall. That keeps the frame, its text, and its icon aligned by construction.
-The default is `md`.
+The default is `md`. Control height is derived from the rung at build time, not
+tabled per component. See [Control Sizing](/docs/guides/sizing).
 
 Under `@tamagui/config/v6` the tables mirror shadcn:
 
@@ -868,8 +869,9 @@ import { Button } from 'tamagui'
 ```
 
 Token keys and numbers no longer size controls: `size` on a control only takes
-a name (or `true` for the default), and each component owns its table inline, so
-`size="4"` on a control is a type error. Numbers stay geometry on shapes
+a name (or `true` for the default), so `size="4"` on a control is a type error,
+as is the v2 spelling `size="$4"`. Rename those to the matching name
+(`"$4"` is usually `md`). Numbers stay geometry on shapes
 (`Square`, `Circle`, `Avatar` take size tokens) and font keys on text and icons.
 
 Text components speak Tailwind's own scale (`xs`, `sm`, `base`, `lg`, `xl`,

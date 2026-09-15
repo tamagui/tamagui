@@ -74,8 +74,9 @@ export default () => (
 
 ## Sizing
 
-The `size` prop adjusts padding, minimum height, and the default size for the text
-and icons inside. It accepts theme size tokens (e.g., `"3"`, `"4"`).
+The `size` prop adjusts padding and the default size for the text
+and icons inside. It accepts the named control sizes (`xs` through `xl`,
+default `md`). See [Control Sizing](/docs/guides/sizing).
 
 ```tsx
 import { ListItem } from 'tamagui'
@@ -270,7 +271,7 @@ ListItem extends View, inheriting all the
       required: false,
       type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
       description:
-        'Adjusts padding and default font/icon sizes from the ListItem size table (default "md"). Published to the parts through the ListItem context.',
+        'Adjusts padding and default font/icon sizes from the config sizing ladder (default "md"). Published to the parts through the ListItem context. See the Control Sizing guide.',
     },
     {
       name: 'color',

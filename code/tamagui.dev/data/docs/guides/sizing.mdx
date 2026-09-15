@@ -1,0 +1,81 @@
+---
+title: Control Sizing
+description: Size every control from one config ladder instead of per-component tables
+---
+
+<IntroParagraph>
+  Every sized control (Button, ListItem, Checkbox, RadioGroup, Switch) reads its
+  geometry from one ladder in your config. Retune your type scale and the
+  controls move with the text.
+</IntroParagraph>
+
+## The ladder
+
+`createTamagui` takes a `sizing` key. Each rung names token keys, never pixels,
+so the ladder stays valid when you rescale the tokens it points at. V6 configs
+get `defaultSizing` without opting in:
+
+```tsx fileName="tamagui.config.ts"
+import { defaultSizing } from '@tamagui/config/v6'
+import { createTamagui } from 'tamagui'
+
+const config = createTamagui({
+  // ...tokens, themes, fonts
+  sizing: {
+    ...defaultSizing,
+    sizes: {
+      ...defaultSizing.sizes,
+      xxl: {
+        fontSize: '2xl',
+        controlFontSize: '2xl',
+        paddingInline: '10',
+        paddingBlock: '3',
+        gap: '3',
+        radius: 'xl',
+      },
+    },
+  },
+})
+```
+
+Adding a name like `xxl` types it on every control at once: `size` is typed off
+`TamaguiConfig['sizing']['sizes']`, so custom names autocomplete and unknown
+names are type errors. The shipped ladder is `xs` through `xl` with `md` as the
+default.
+
+## The three derivations
+
+Pixel geometry derives per rung from three rules that live beside the ladder in
+`createTamagui({ sizing })`:
+
+- `height`: the text line box plus vertical padding (`lineHeight +
+  paddingBlock * 2`). The frame adds its 1px border each side on top.
+- `icon`: the rung font size stepped to 4px (`ceil(fontSize / 4) * 4`).
+- `square`: the checkbox box, radio circle, and switch track height
+  (`round(controlFontSize * 1.4)`).
+
+`controlFontSize` is the ladder's second font key. Text steps down at `md`
+(`md` text is `sm`, 14px) so buttons stay compact, while the square controls
+size off the raw type scale at the rung's own name (`md` reads `base`, 16px).
+The two mappings differ on purpose, which is why the ladder carries both keys
+instead of deriving one from the other.
+
+The switch track stretches the square into a pill (1.9 wide) and the thumb
+insets by the 2px track padding, so Switch, Checkbox, and RadioGroup read as
+one weight at one size.
+
+## Overriding
+
+| tier | what you edit | scope |
+| ---- | ------------- | ----- |
+| `createTamagui({ sizing })` | your config | global, zero component code |
+| copy from the registry | your own `Button.tsx` | that component |
+| `@tamagui/button` etc. unstyled | everything | full eject, zero styles |
+
+The registry skins are generated from the same files `tamagui` ships, so
+copying one into your app gives you a private Button whose size variant you can
+rewrite freely. The unstyled behavior packages own no size scale at all.
+
+Config earns its place because most apps never touch either tier below it. If
+your app does `import { Button } from 'tamagui'`, you have no Button file to
+edit, so the config ladder is your only lever for control geometry.

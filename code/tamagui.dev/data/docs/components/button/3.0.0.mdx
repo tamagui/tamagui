@@ -62,8 +62,9 @@ import { Button } from 'tamagui'
 export default () => <Button size="lg">Lorem ipsum</Button>
 ```
 
-Each name is a row in the Button's own size table (`xs` through `xl`,
+Each name is a rung in the config sizing ladder (`xs` through `xl`,
 default `md`), so the frame, its text, and its icon agree by construction.
+See [Control Sizing](/docs/guides/sizing).
 
 ## Variants
 
@@ -92,7 +93,7 @@ Set the icon size explicitly with `iconSize` (pixels, e.g. `{18}`).
 `scaleIcon` adjusts it further, relative to whichever size was resolved.
 
 Spacing between an icon and the text comes from `gap` on the button frame,
-derived from the `size` table so it stays consistent with the button's
+derived from the sizing ladder so it stays consistent with the button's
 dimensions.
 
 ```tsx
@@ -271,7 +272,7 @@ Buttons extend View, inheriting all the
       name: 'size',
       required: false,
       type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
-      description: `A named size ("xs" to "xl", default "md") is a row in the Button's size table: padding, border radius, font size, and icon size, never a height. Published to Button.Text and Button.Icon through the Button context.`,
+      description: `A named size ("xs" to "xl", default "md") is a rung in the config sizing ladder: padding, border radius, font size, and icon size, never a height. Published to Button.Text and Button.Icon through the Button context. See the Control Sizing guide.`,
     },
     {
       name: 'variant',
