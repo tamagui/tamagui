@@ -1,12 +1,5 @@
 // re-exports all of @tamagui/web just adds hooks
 export { createRefComponent, type RefProp } from '@tamagui/compose-refs'
-export type * from '@tamagui/size'
-export {
-  createSizeContext,
-  oneSizeSmaller,
-  resolveSize,
-  SizeContext,
-} from '@tamagui/size'
 export * from '@tamagui/web'
 
 import type {

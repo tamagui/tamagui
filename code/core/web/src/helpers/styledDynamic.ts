@@ -166,7 +166,6 @@ export function getDynamicEnv(styleState: GetStyleState): StyledDynamicEnv {
   const next = {
     fonts,
     tokens: conf.tokensParsed,
-    sizes: conf.sizes,
     theme,
     get fontFamily() {
       return (

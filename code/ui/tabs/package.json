@@ -43,7 +43,6 @@
     "@tamagui/helpers": "workspace:*",
     "@tamagui/react-native-types": "workspace:*",
     "@tamagui/roving-focus": "workspace:*",
-    "@tamagui/size": "workspace:*",
     "@tamagui/tabs-headless": "workspace:*",
     "@tamagui/web": "workspace:*"
   },

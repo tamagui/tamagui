@@ -37,7 +37,6 @@
   "dependencies": {
     "@tamagui/create-context": "workspace:*",
     "@tamagui/helpers": "workspace:*",
-    "@tamagui/size": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/web": "workspace:*"
   },

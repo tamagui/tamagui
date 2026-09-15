@@ -6,11 +6,10 @@ import { fonts } from './v5-fonts'
 import type { V5Fonts } from './v5-fonts'
 import { media } from './media'
 import type { Media as V5Media } from './media'
-import { selectionStyles, settings, sizes } from './settings'
+import { selectionStyles, settings } from './settings'
 import type { Settings as V5Settings } from './settings'
 
 export { shorthands } from '@tamagui/shorthands/v4'
-export { sizes } from './settings'
 // static re-exports only, so this compatibility config stays free of the
 // retired v5 theme builder on native.
 export {
@@ -34,7 +33,6 @@ export type V5DefaultConfig = {
   tokens: V5Tokens
   fonts: V5Fonts
   settings: V5Settings
-  sizes: typeof sizes
 }
 
 // base config without animations - users must provide their own
@@ -44,6 +42,5 @@ export const defaultConfig: V5DefaultConfig = {
   themes,
   tokens,
   fonts,
-  sizes,
   settings,
 }

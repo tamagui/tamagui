@@ -1048,23 +1048,16 @@ export type InferTamaguiConfig<Conf> =
     infer H,
     infer V
   >
-    ? Omit<
-        TamaguiInternalConfig<
-          A extends GenericTokens ? A : EmptyTokens,
-          B extends GenericThemes ? ThemesWithVariables<B, V> : EmptyThemes,
-          C extends GenericShorthands ? C : EmptyShorthands,
-          D extends GenericMedia ? D : EmptyMedia,
-          ExtractAnimationConfig<E>,
-          F extends GenericFonts ? F : EmptyFonts,
-          H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings,
-          ExtractAnimationDriverKeys<E>
-        >,
-        'sizes'
-      > &
-        // keep the literal size names so `size="md"` autocompletes and
-        // `SizeName` stays a union: intersecting with the GenericSizes index
-        // signature would fold the names back into string
-        (Conf extends { sizes: infer S } ? { sizes: S } : { sizes?: GenericSizes })
+    ? TamaguiInternalConfig<
+        A extends GenericTokens ? A : EmptyTokens,
+        B extends GenericThemes ? ThemesWithVariables<B, V> : EmptyThemes,
+        C extends GenericShorthands ? C : EmptyShorthands,
+        D extends GenericMedia ? D : EmptyMedia,
+        ExtractAnimationConfig<E>,
+        F extends GenericFonts ? F : EmptyFonts,
+        H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings,
+        ExtractAnimationDriverKeys<E>
+      >
     : unknown
 
 // for use in creation functions so it doesnt get overwritten
@@ -1478,13 +1471,6 @@ export type CreateTamaguiProps = {
   variables?: GenericVariables
 
   settings?: Partial<GenericTamaguiSettings>
-
-  /**
-   * Named control sizes (`xs sm md lg xl` in the default configs). Each is a
-   * recipe of token keys that every sized component reads; `default` names the
-   * one `size={true}` resolves to.
-   */
-  sizes?: GenericSizes
 }
 
 export type GetCSS = (opts?: {
@@ -1535,27 +1521,6 @@ export type UnionableString = string & {}
 export type UnionableNumber = number & {}
 
 type GenericFontKey = string | number | symbol
-
-/** a named control size: a recipe of token keys, never a height */
-export type SizeSpec = {
-  /** font.size / font.lineHeight key, resolved against the component's font */
-  fontSize: string
-  /** tokens.space keys */
-  paddingX: string
-  paddingY: string
-  /** tokens.radius key */
-  radius: string
-  /** tokens.space key for the gap between icon and text; defaults to paddingY */
-  gap?: string
-  /** icon px override; defaults to the font size rounded up to the 4px grid */
-  icon?: number
-}
-
-export type GenericSizes = {
-  /** the name `size={true}` resolves to */
-  default: string
-  [name: string]: SizeSpec | string
-}
 
 export type GenericFont<Key extends GenericFontKey = GenericFontKey> = {
   size: { [key in Key]: number | Variable }
@@ -1887,17 +1852,9 @@ export type ThemeValueFallbackZIndex =
 
 export type GetTokenString<A> = A extends string | number ? `${A}` : string
 
-/** the names in `config.sizes` (`xs sm md lg xl` in the default configs) */
-export type SizeName = TamaguiConfig extends { sizes: infer S }
-  ? string extends keyof S
-    ? never
-    : Exclude<Extract<keyof S, string>, 'default'>
-  : never
-
 export type Size =
   | ThemeValueFallbackSize
   | GetTokenString<keyof Tokens['size']>
-  | SizeName
   | OpenStyleString
   | true
 
@@ -3379,7 +3336,6 @@ export type StyledDynamicEnv = {
   theme: Themes extends { [key: string]: infer B } ? B : unknown
   fontFamily?: FontFamilyTokens
   font?: Font
-  sizes?: GenericSizes
 }
 
 /** bare `styled.dynamic<T>()`: a typed prop consumed by styling, given style by `.resolve` */

@@ -361,7 +361,6 @@
     "@tamagui/separator": "workspace:*",
     "@tamagui/shapes": "workspace:*",
     "@tamagui/sheet": "workspace:*",
-    "@tamagui/size": "workspace:*",
     "@tamagui/slider": "workspace:*",
     "@tamagui/spacer": "workspace:*",
     "@tamagui/spinner": "workspace:*",

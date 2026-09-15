@@ -37,7 +37,6 @@
   "dependencies": {
     "@tamagui/helpers": "workspace:*",
     "@tamagui/react-native-types": "workspace:*",
-    "@tamagui/size": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
