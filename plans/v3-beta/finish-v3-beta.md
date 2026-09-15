@@ -121,7 +121,21 @@ that never render an html.* element.
 
 ## Done means
 
-All three lanes merged to `v3-beta` (done), Checks green on the tip (this file
-records the run once it is read), npm beta published from that run only on
-Nate's word (not done, and not started), `remove-size-concept.md` and this file
-marked landed with the SHAs (this commit).
+- All three lanes merged to `v3-beta`. Done, SHAs above.
+- Checks green on the tip. Done: `Checks` succeeded on `1d97170016`, with
+  `Registry` and `Test iOS Native (Maestro)` green on the same push.
+- npm beta published from that run. Done, automatically: the green Checks run
+  triggered `Release`, whose `Publish v3 beta` job shipped
+  `3.0.0-beta.1341.1` at 2026-09-15T12:50Z. Checked by content, not by version
+  string: the published `@tamagui/core` has no `@tamagui/size` dependency and
+  no `resolveSize` in its dist.
+- `remove-size-concept.md` and this file marked landed with the SHAs. This
+  commit.
+
+Still red, on purpose and written down: `Native Tests (Detox)`.
+`android-actions/setup-android@v4.0.1` is the newest tag the action has; it
+accepts the SDK licenses on current runners but then runs `sdkmanager tools`,
+which fails because the legacy `tools` package no longer exists in the SDK
+repository. The fix is to stop using the action and accept licenses against the
+runner's preinstalled SDK. Detox has been red since before this plan started
+and is not part of the Checks gate or the publish path.
