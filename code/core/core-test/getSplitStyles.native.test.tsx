@@ -378,6 +378,26 @@ describe('getSplitStyles', () => {
     expect(style?.padding).toBeUndefined()
     expect(style?.paddingTop).toBeUndefined()
   })
+
+  test('userSelect lowers to the Text selectable prop', () => {
+    // userSelect reached native through two dead ends: webOnlyStylePropsView put
+    // it in the skip list, which returned before the mapping ran, and it is also
+    // a valid text style key, so the mapping inside the `!isValidStyleKey` branch
+    // was unreachable even past the skip list. types.tsx documents the contract:
+    // "On native, maps to the `selectable` prop on Text (userSelect !== 'none')".
+    // the `select` shorthand the desktop app writes expands to this same key in
+    // the v4/v5/v6 shorthand sets, so mapping userSelect covers both spellings.
+    const selected = getSplitStylesFor({ userSelect: 'text' }, Text, {
+      resolveValues: 'value',
+    })
+    expect(selected.viewProps?.selectable).toBe(true)
+    expect(selected.style?.userSelect).toBeUndefined()
+
+    const cleared = getSplitStylesFor({ userSelect: 'none' }, Text, {
+      resolveValues: 'value',
+    })
+    expect(cleared.viewProps?.selectable).toBe(false)
+  })
 })
 
 function getSplitStylesFor(

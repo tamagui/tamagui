@@ -3,14 +3,21 @@ import { webOnlyStylePropsText, webOnlyStylePropsView } from '@tamagui/helpers'
 // textOverflow is in webOnlyStylePropsText for web CSS, but on native we map
 // textOverflow="ellipsis" to numberOfLines={1} + ellipsizeMode="tail" on Text.
 // Handled specially in getSplitStyles.tsx so we exclude it from the skip list.
-const { textOverflow: __, ...webOnlyStylePropsTextWithoutTextOverflow } =
+const { textOverflow: _textOverflow, ...webOnlyStylePropsTextWithoutTextOverflow } =
   webOnlyStylePropsText
+
+// userSelect is in webOnlyStylePropsView for web CSS, but on native it is the
+// authoring name for Text's selectable prop, mapped in getSplitStyles.tsx. the
+// skip check runs before that mapping, so leaving it in the list dropped the prop
+// on native with no error.
+const { userSelect: _userSelect, ...webOnlyStylePropsViewWithoutUserSelect } =
+  webOnlyStylePropsView
 
 /**
  * Web-only props and event handlers that should be skipped on native
  */
 export const webPropsToSkip = {
-  ...webOnlyStylePropsView,
+  ...webOnlyStylePropsViewWithoutUserSelect,
   ...webOnlyStylePropsTextWithoutTextOverflow,
 
   // Web-only event handlers

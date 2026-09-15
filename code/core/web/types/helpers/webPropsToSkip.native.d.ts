@@ -63,7 +63,6 @@ export declare const webPropsToSkip: {
     transitionDuration: true;
     transitionProperty: true;
     transitionTimingFunction: true;
-    userSelect: true;
     willChange: true;
     WebkitBoxOrient: true;
     WebkitLineClamp: true;
