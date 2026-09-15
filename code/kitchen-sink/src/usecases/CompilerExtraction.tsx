@@ -331,7 +331,7 @@ function PerfBenchmark() {
           (['opt', 'noopt'] as const).map((mode) => (
             <Button
               key={`${scenario}-${mode}`}
-              size="3"
+              size="sm"
               testID={`bench-run-${scenario}-${mode}`}
               onPress={() => run(scenario, mode)}
               disabled={active !== null}
@@ -454,7 +454,7 @@ export function CompilerExtraction() {
             Cycle Theme
           </Button>
           <Button
-            size="3"
+            size="sm"
             testID="compiler-toggle-bench"
             onPress={() => setShowBenchmark((s) => !s)}
           >

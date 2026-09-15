@@ -23,7 +23,7 @@ export function TabsOnInteraction() {
     >
       <Tabs
         defaultValue="tab1"
-        size="4"
+        size="md"
         orientation="horizontal"
         flexDirection="column"
         width={350}

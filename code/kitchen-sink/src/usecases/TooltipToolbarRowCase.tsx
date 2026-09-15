@@ -78,7 +78,7 @@ export function TooltipToolbarRowCase() {
           bg="color-2"
           borderWidth={0}
         >
-          <Tooltip.Arrow size="3" bg="color-2" />
+          <Tooltip.Arrow size={6} bg="color-2" />
           <Paragraph pointerEvents="none" fontWeight="600" size="2">
             {active}
           </Paragraph>

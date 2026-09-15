@@ -2,7 +2,7 @@ import { Button, Popover, styled } from 'tamagui'
 
 export function PopoverContentStyledPlusAnimations() {
   return (
-    <Popover size="5">
+    <Popover>
       <Popover.Trigger asChild>
         <Button>go</Button>
       </Popover.Trigger>

@@ -48,7 +48,7 @@ export function ScrollViewRefCase() {
         <Button
           id="scroll-to-btn"
           testID="scroll-to-btn"
-          size="3"
+          size="sm"
           onPress={handleScrollTo}
         >
           scrollTo(200)
@@ -56,7 +56,7 @@ export function ScrollViewRefCase() {
         <Button
           id="scroll-to-end-btn"
           testID="scroll-to-end-btn"
-          size="3"
+          size="sm"
           onPress={handleScrollToEnd}
         >
           scrollToEnd
@@ -64,7 +64,7 @@ export function ScrollViewRefCase() {
         <Button
           id="get-node-btn"
           testID="get-node-btn"
-          size="3"
+          size="sm"
           onPress={handleGetScrollableNode}
         >
           getScrollableNode

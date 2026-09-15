@@ -53,23 +53,23 @@ export function OnLayoutCase() {
     <YStack padding="4" gap="3">
       {/* controls */}
       <XStack gap="2" flexWrap="wrap">
-        <Button testID="btn-move" size="3" onPress={() => setMoved((v) => !v)}>
+        <Button testID="btn-move" size="sm" onPress={() => setMoved((v) => !v)}>
           toggle move
         </Button>
-        <Button testID="btn-resize" size="3" onPress={() => setResized((v) => !v)}>
+        <Button testID="btn-resize" size="sm" onPress={() => setResized((v) => !v)}>
           toggle resize
         </Button>
         <Button
           testID="btn-parent-resize"
-          size="3"
+          size="sm"
           onPress={() => setParentResized((v) => !v)}
         >
           toggle parent
         </Button>
-        <Button testID="btn-toggle-mount" size="3" onPress={() => setMounted((v) => !v)}>
+        <Button testID="btn-toggle-mount" size="sm" onPress={() => setMounted((v) => !v)}>
           toggle mount
         </Button>
-        <Button testID="btn-swap" size="3" onPress={() => setSwapped((v) => !v)}>
+        <Button testID="btn-swap" size="sm" onPress={() => setSwapped((v) => !v)}>
           toggle swap
         </Button>
       </XStack>

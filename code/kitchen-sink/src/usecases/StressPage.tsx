@@ -204,7 +204,7 @@ function FormSection() {
         {['Name', 'Email', 'Company', 'Role'].map((field) => (
           <YStack key={field} gap="1">
             <Label size="3">{field}</Label>
-            <Input size="3" placeholder={`Enter ${field.toLowerCase()}`} />
+            <Input size="sm" placeholder={`Enter ${field.toLowerCase()}`} />
           </YStack>
         ))}
         <XStack gap="3" alignItems="center">

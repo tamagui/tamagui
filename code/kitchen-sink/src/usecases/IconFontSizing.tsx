@@ -7,10 +7,10 @@ import { Button } from '../components/Button'
 export function IconFontSizing() {
   return (
     <YStack gap="4" padding="4">
-      <Button size="3" icon={Moon} testID="btn-2">
+      <Button size="sm" icon={Moon} testID="btn-2">
         Small
       </Button>
-      <Button size="5" icon={Moon} testID="btn-6">
+      <Button size="lg" icon={Moon} testID="btn-6">
         Large
       </Button>
       {/* direct icon with a token size resolves via the font size scale */}

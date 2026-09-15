@@ -6,17 +6,17 @@ export function PopoverScopedCase() {
 
   return (
     <YStack padding="4" gap="4">
-      <Popover size="5" allowFlip stayInFrame offset={15} resize>
+      <Popover allowFlip stayInFrame offset={15} resize>
         <TestPopoverContent shouldAdapt={shouldAdapt} name="plain" />
         <Popover.Trigger asChild>
           <Button data-testid={`plain-trigger`}>Open Plain</Button>
         </Popover.Trigger>
       </Popover>
 
-      <Popover scope="PopoverA" size="5" allowFlip stayInFrame offset={15} resize>
+      <Popover scope="PopoverA" allowFlip stayInFrame offset={15} resize>
         <TestPopoverContent shouldAdapt={shouldAdapt} name="a" />
 
-        <Popover scope="PopoverB" size="5" allowFlip stayInFrame offset={15} resize>
+        <Popover scope="PopoverB" allowFlip stayInFrame offset={15} resize>
           <TestPopoverContent shouldAdapt={shouldAdapt} name="b" />
 
           <Popover.Trigger asChild scope="PopoverA">

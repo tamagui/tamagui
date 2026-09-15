@@ -126,7 +126,7 @@ function NestedTamaguiTest() {
     <YStack gap="2">
       <Button
         testID="outer-tamagui-button"
-        size="5"
+        size="lg"
         onPress={() => setOuterCount((c) => c + 1)}
       >
         <YStack alignItems="center">

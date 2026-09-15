@@ -19,7 +19,7 @@ import { Button } from '../components/Button'
 const filler = (prefix: string) =>
   Array.from({ length: 30 }).map((_, i) => (
     <YStack key={`${prefix}-${i}`} height={40} justifyContent="center">
-      <Button size="3" variant="quiet">
+      <Button size="sm" variant="quiet">
         {prefix} row {i + 1}
       </Button>
     </YStack>

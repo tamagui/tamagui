@@ -95,15 +95,7 @@ function Demo({
   dataTestId?: string
 }) {
   return (
-    <Popover
-      size="5"
-      allowFlip
-      stayInFrame
-      offset={15}
-      resize
-      data-testid={dataTestId}
-      {...props}
-    >
+    <Popover allowFlip stayInFrame offset={15} resize data-testid={dataTestId} {...props}>
       <Popover.Trigger asChild>
         <Button icon={Icon} id={`${dataTestId}-trigger`} />
       </Popover.Trigger>
@@ -167,7 +159,7 @@ function SimplePopoverTest() {
         <YStack gap="2">
           <Paragraph>This is a simple popover</Paragraph>
           <Popover.Close asChild>
-            <Button size="3" id="simple-popover-close">
+            <Button size="sm" id="simple-popover-close">
               Close
             </Button>
           </Popover.Close>
@@ -205,7 +197,7 @@ export function PopoverAnimatePositionCase() {
             <YStack gap="2" width={200}>
               <Paragraph>Popover with animatePosition</Paragraph>
               <Popover.Close asChild>
-                <Button size="3" id="animate-position-close">
+                <Button size="sm" id="animate-position-close">
                   Close
                 </Button>
               </Popover.Close>

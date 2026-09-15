@@ -75,7 +75,7 @@ export function ToastMultipleCase() {
             {positions.map((pos) => (
               <Button
                 key={pos}
-                size="3"
+                size="sm"
                 backgroundColor={position === pos ? 'color-8' : undefined}
                 onPress={() => setPosition(pos)}
               >

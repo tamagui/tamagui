@@ -33,7 +33,7 @@ export function ControlSizesCase() {
         <Row key={size} name={size} size={size} />
       ))}
 
-{/* size tokens stay geometry: Square 5 is 20px. named sizes are a skin
+      {/* size tokens stay geometry: Square 5 is 20px. named sizes are a skin
       table, so shapes and controls no longer share a size ramp */}
       <XStack gap="3" items="center">
         <Square testID="sizes-square-5" size="5" backgroundColor="blue-500" />
@@ -81,7 +81,7 @@ function Row({ name, size }: { name: string; size?: (typeof CONTROL_SIZES)[numbe
       <Switch testID={`sizes-switch-${name}`} size={size}>
         <Switch.Thumb />
       </Switch>
-      <Label testID={`sizes-label-${name}`} size={size}>
+      <Label testID={`sizes-label-${name}`} size={size === 'md' ? 'sm' : size}>
         Label
       </Label>
       <Avatar testID={`sizes-avatar-${name}`} size="4" circular>

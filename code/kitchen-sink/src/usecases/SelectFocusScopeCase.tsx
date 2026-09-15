@@ -145,7 +145,7 @@ export function SelectFocusScopeCase() {
           <Select
             value={value3}
             onValueChange={setValue3}
-            size="3"
+            size="sm"
             renderValue={(v) => sizeLabels[v]}
           >
             <Select.Trigger data-testid="small-select-trigger">
