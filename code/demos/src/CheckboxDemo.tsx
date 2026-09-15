@@ -2,13 +2,13 @@ import { Check as CheckIcon } from '@tamagui/lucide-icons-2'
 import type { CheckboxSize } from 'tamagui'
 import { Checkbox, Label, Theme, XStack, YStack } from 'tamagui'
 
-// the label speaks the font scale: these keys are the control font px
+// the label speaks the font scale: named sizes hit the old 12/14/14/16/18px on web and native
 const checkboxLabelSize = {
-  xs: '2',
-  sm: '4',
-  md: '4',
-  lg: '5',
-  xl: '6',
+  xs: 'xs',
+  sm: 'sm',
+  md: 'sm',
+  lg: 'base',
+  xl: 'lg',
 } as const
 
 export function CheckboxDemo() {
@@ -43,7 +43,7 @@ export function CheckboxWithLabel({
         </Checkbox>
 
         <Label
-          size={typeof size === 'string' ? checkboxLabelSize[size] : '4'}
+          size={typeof size === 'string' ? checkboxLabelSize[size] : 'sm'}
           htmlFor={id}
           opacity={disabled ? 0.5 : 1}
         >
