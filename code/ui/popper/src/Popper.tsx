@@ -882,6 +882,10 @@ export const PopperArrow = createRefComponent<TamaguiElement, PopperArrowProps>(
     const context = usePopperContext(scope)
 
     // TODO: get rid! at the very least move up to Popover and simplify
+    // arrow px used to be size-token * 0.52 - 11.5, but the offset zeroes every
+    // v6 token (size 2 is 8px: 8 * 0.52 - 11.5 < 0), so call sites pass
+    // round(token * 0.52) instead: v6 2 -> 4, v6 3 -> 6, v5-site 4 -> 23.
+    // the bare default matches the old output for a mid v5 size (36 * 0.52 - 11.5 ≈ 7)
     const size = typeof sizeProp === 'number' ? sizeProp : 7
 
     const { placement } = context

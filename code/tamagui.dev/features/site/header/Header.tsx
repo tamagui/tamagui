@@ -538,6 +538,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       opacity="1 enter:0 exit:0"
       y="0 enter:3px exit:5px"
     >
+      {/* round(v5-site size-token 4 = 44px * 0.52); the old - 11.5 offset gives 11 */}
       <Popover.Arrow transition="medium" bg="background-06" animatePosition size={23} />
 
       {pointerFine ? (
