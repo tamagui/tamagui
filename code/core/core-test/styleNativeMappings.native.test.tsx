@@ -116,3 +116,47 @@ describe('multi-value shorthands expand on native', () => {
     expect(style?.columnGap).toBeUndefined()
   })
 })
+
+describe('visibility lowers to opacity and pointerEvents on native', () => {
+  test('visibility hidden emits opacity 0 plus pointerEvents none and no visibility key', () => {
+    const style = getStyleFor({ visibility: 'hidden' })
+    expect(style?.opacity).toBe(0)
+    expect(style?.pointerEvents).toBe('none')
+    expect(style?.visibility).toBeUndefined()
+  })
+
+  test('visibility visible emits none of the lowered props', () => {
+    const style = getStyleFor({ visibility: 'visible' })
+    expect(style?.opacity).toBeUndefined()
+    expect(style?.pointerEvents).toBeUndefined()
+    expect(style?.visibility).toBeUndefined()
+  })
+})
+
+describe('border and outline shorthands expand to parsed longhands on native', () => {
+  test('border width plus style splits to numeric side widths and borderStyle', () => {
+    const style = getStyleFor({ border: '1px solid' })
+    expect(style?.borderTopWidth).toBe(1)
+    expect(style?.borderRightWidth).toBe(1)
+    expect(style?.borderBottomWidth).toBe(1)
+    expect(style?.borderLeftWidth).toBe(1)
+    expect(style?.borderStyle).toBe('solid')
+    expect(style?.border).toBeUndefined()
+  })
+
+  test('outline none drops Fabric-incompatible outline keys entirely', () => {
+    const style = getStyleFor({ outline: 'none' })
+    expect(style?.outlineWidth).toBeUndefined()
+    expect(style?.outlineStyle).toBeUndefined()
+    expect(style?.outlineColor).toBeUndefined()
+    expect(style?.outline).toBeUndefined()
+  })
+
+  test('outline width plus style plus color splits to parsed outline longhands', () => {
+    const style = getStyleFor({ outline: '2px solid red' })
+    expect(style?.outlineWidth).toBe(2)
+    expect(style?.outlineStyle).toBe('solid')
+    expect(style?.outlineColor).toBe('red')
+    expect(style?.outline).toBeUndefined()
+  })
+})
