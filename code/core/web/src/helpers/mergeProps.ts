@@ -24,14 +24,18 @@ export const mergeProps = (defaultProps: object, props: object) => {
   // but we ignore any keys from props, and merge it after, that way
   // final order is [...defaultPropKeys, ...propKeys]
 
+  // an explicit undefined is absent (React defaultProps semantics): a default
+  // stands instead of being clobbered by it
+
   // ⚠️ keep in sync with mergeComponentProps logic
 
   for (const key in defaultProps) {
-    if (key in props) continue
+    if (key in props && props[key] !== undefined) continue
     out[key] = defaultProps[key]
   }
 
   for (const key in props) {
+    if (props[key] === undefined && key in defaultProps) continue
     out[key] = props[key]
   }
 
@@ -65,13 +69,13 @@ export const mergeComponentProps = (
   // same logic as mergeProps but tracking overrides!
 
   for (const key in defaultProps) {
-    if (key in props) continue
+    if (key in props && props[key] !== undefined) continue
     out[key] = defaultProps[key]
   }
 
   // styled context props go after defaultProps but before props
   for (const key in contextProps) {
-    if (key in props) continue
+    if (key in props && props[key] !== undefined) continue
     const contextValue = contextProps[key]
     // don't merge undefined context values to preserve inheritance
     if (contextValue !== undefined) {
@@ -80,6 +84,14 @@ export const mergeComponentProps = (
   }
 
   for (const key in props) {
+    // an explicit undefined is absent (React defaultProps semantics): a default
+    // or context value already placed above stands instead of being clobbered
+    if (
+      props[key] === undefined &&
+      ((defaultProps && key in defaultProps) || (contextProps && key in contextProps))
+    ) {
+      continue
+    }
     out[key] = props[key]
     if (contextProps && key in contextProps) {
       overriddenContext ||= {}
