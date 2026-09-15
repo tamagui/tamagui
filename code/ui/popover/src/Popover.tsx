@@ -13,7 +13,7 @@ import { Animate } from '@tamagui/animate'
 import { ResetPresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { SizeTokens, GetRef, TamaguiElement, ViewProps } from '@tamagui/core'
+import type { GetRef, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
   createStyledHOC,
   createRefComponent,
@@ -144,7 +144,6 @@ type PopoverContextValue = {
   hasCustomAnchor: boolean
   onCustomAnchorAdd(): void
   onCustomAnchorRemove(): void
-  size?: SizeTokens
   breakpointActive?: boolean
   keepChildrenMounted?: boolean | 'lazy'
   disableDismissable?: boolean

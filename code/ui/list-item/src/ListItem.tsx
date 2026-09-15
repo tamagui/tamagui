@@ -2,7 +2,7 @@ import { getThemedIconSize, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { YStack } from '@tamagui/stacks'
 import type { TextParentStyles } from '@tamagui/text'
 import { SizableText, textParentProps, wrapChildrenInText } from '@tamagui/text'
-import type { ColorTokens, GetProps, SizeTokens } from '@tamagui/web'
+import type { ColorTokens, GetProps } from '@tamagui/web'
 import { createStyledContext, splitStyleProps, styled, View } from '@tamagui/web'
 import type { FunctionComponent, JSX, ReactNode } from 'react'
 
@@ -73,7 +73,7 @@ export const ListItemTitle = styled(ListItemText, {
 
 export type ListItemIconProps = {
   children: ReactNode
-  size?: SizeTokens | true
+  size?: string | number | boolean
   scaleIcon?: number
 }
 
@@ -94,7 +94,7 @@ type ListItemConsumedProps = {
   children?: ReactNode
   icon?: IconProp
   iconAfter?: IconProp
-  iconSize?: SizeTokens | true
+  iconSize?: string | number | boolean
   scaleIcon?: number
   subTitle?: ReactNode
   title?: ReactNode

@@ -1,4 +1,4 @@
-import { createStyledContext, type SizeTokens } from '@tamagui/core'
+import { createStyledContext } from '@tamagui/core'
 
 import type { Direction, SliderContextValue } from './types'
 
@@ -31,7 +31,7 @@ export const {
   startEdge: 'bottom' | 'left' | 'right'
   endEdge: 'top' | 'right' | 'left'
   sizeProp: 'width' | 'height'
-  size: number | SizeTokens
+  size: number
   direction: number
 }>({
   startEdge: 'left',

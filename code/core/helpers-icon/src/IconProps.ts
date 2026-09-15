@@ -1,5 +1,6 @@
 import type {
   ColorTokens,
+  FontSizeTokens,
   GetFinalProps,
   SizeTokens,
   StackStyleBase,
@@ -8,7 +9,7 @@ import type {
 import type { SvgProps } from 'react-native-svg'
 
 export interface IconStyleProps extends StackStyleBase {
-  size?: number | SizeTokens
+  size?: number | FontSizeTokens
   strokeWidth?: number | SizeTokens
   color?: string
 }
