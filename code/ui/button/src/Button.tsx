@@ -141,6 +141,10 @@ const Frame = styled(View, {
         // @ts-ignore
         'aria-disabled': true,
       },
+      false: {
+        // @ts-ignore
+        'aria-disabled': false,
+      },
     },
   } as const,
 
