@@ -352,11 +352,22 @@ jobs:
             # single read here fails on a leaf that published seconds ago. that
             # is what stopped run 34562157824 with all eight already live. poll
             # instead, and only call it missing after the registry has had time.
-            for attempt in $(seq 1 30); do
-              if npm view "@tamagui/$pkg@$VERSION" version > /dev/null 2>&1; then
+            #
+            # every poll reads through a throwaway npm cache. the registry
+            # serves packuments with `cache-control: max-age=300`, so the first
+            # miss would otherwise cache the packument without the new version
+            # and every later attempt would serve that stale entry for the rest
+            # of the window. that is what stopped run 35152134848 with all
+            # eight already live. the 60 attempts (10 minutes) outlast a CDN
+            # edge holding the same 300s entry, primed just before the PUT.
+            for attempt in $(seq 1 60); do
+              POLL_CACHE=$(mktemp -d)
+              if npm --cache "$POLL_CACHE" view "@tamagui/$pkg@$VERSION" version > /dev/null 2>&1; then
+                rm -rf "$POLL_CACHE"
                 break
               fi
-              if [ "$attempt" = "30" ]; then
+              rm -rf "$POLL_CACHE"
+              if [ "$attempt" = "60" ]; then
                 echo "@tamagui/$pkg@$VERSION never became readable"
                 exit 1
               fi
