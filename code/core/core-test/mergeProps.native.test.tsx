@@ -27,11 +27,7 @@ describe('mergeProps', () => {
       }
     )
 
-    expect(Object.keys(result)).toEqual([
-      'backgroundColor',
-      'scale',
-      'variant',
-    ])
+    expect(Object.keys(result)).toEqual(['backgroundColor', 'scale', 'variant'])
     expect(result.variant).toBe('primary')
     expect(result.backgroundColor).toBe('press:orange')
     expect(result.scale).toBe('1 press:0.95')
