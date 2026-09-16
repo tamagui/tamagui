@@ -103,4 +103,26 @@ describe('styled(Button) disabled hook stability', () => {
       }).not.toThrow()
     }
   )
+
+  test('resets the native accessibility state when re-enabled', () => {
+    const app = (disabled: boolean) => (
+      <TamaguiProvider config={config} defaultTheme="light">
+        <Button testID="target-button" disabled={disabled} onPress={() => {}}>
+          Submit
+        </Button>
+      </TamaguiProvider>
+    )
+
+    const rendered = render(app(true))
+    const getTarget = () =>
+      rendered
+        .UNSAFE_getAllByProps({ testID: 'target-button' })
+        .find((node) => 'aria-disabled' in node.props)!
+
+    expect(getTarget().props['aria-disabled']).toBe(true)
+
+    rendered.rerender(app(false))
+
+    expect(getTarget().props['aria-disabled']).toBe(false)
+  })
 })
