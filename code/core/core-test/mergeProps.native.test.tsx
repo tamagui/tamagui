@@ -8,9 +8,9 @@ beforeAll(() => {
 })
 
 describe('mergeProps', () => {
-  test('maintains prop order based on the last spread object', () => {
+  test('maintains layer key order with defaults first', () => {
     const result = mergeProps({ a: 1, b: 2 }, { b: 1, a: 2 })
-    expect(Object.keys(result)).toEqual(['b', 'a'])
+    expect(Object.keys(result)).toEqual(['a', 'b'])
     expect(result).toEqual({ b: 1, a: 2 })
   })
 
@@ -27,7 +27,11 @@ describe('mergeProps', () => {
       }
     )
 
-    expect(Object.keys(result)).toEqual(['scale', 'variant', 'backgroundColor'])
+    expect(Object.keys(result)).toEqual([
+      'backgroundColor',
+      'scale',
+      'variant',
+    ])
     expect(result.variant).toBe('primary')
     expect(result.backgroundColor).toBe('press:orange')
     expect(result.scale).toBe('1 press:0.95')
