@@ -22,6 +22,10 @@ export const ButtonFrame = styled(View, {
       true: {
         pointerEvents: 'none',
       },
+      false: {
+        // @ts-ignore
+        'aria-disabled': false,
+      },
     },
   } as const,
 })
@@ -164,8 +168,8 @@ export function useButton<Props extends ButtonBehaviorProps>(
 
   const resolvedProps = {
     ...frameProps,
+    'aria-disabled': !!disabled,
     ...(disabled && {
-      'aria-disabled': true,
       disabled: true,
       tabIndex: -1,
     }),

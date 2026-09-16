@@ -1,6 +1,6 @@
 process.env.TAMAGUI_TARGET = 'native'
 
-import { ButtonFrame, ButtonText } from '@tamagui/button'
+import { ButtonFrame, ButtonText, useButton } from '@tamagui/button'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { TamaguiProvider, createRefComponent, createTamagui, styled } from '@tamagui/core'
 import { render } from '@testing-library/react-native'
@@ -30,6 +30,16 @@ const WrappedButton = createRefComponent<any, { disabled?: boolean }>(
     )
   }
 )
+
+function TestButton(props: { disabled?: boolean; testID?: string }) {
+  const { props: buttonProps } = useButton({
+    ...props,
+    children: 'Submit',
+    onPress: () => {},
+  })
+
+  return <ButtonFrame {...buttonProps} />
+}
 
 function createGestureStub() {
   const gesture: any = {}
@@ -104,4 +114,24 @@ describe('styled(Button) disabled hook stability', () => {
       }).not.toThrow()
     }
   )
+
+  test('resets the native accessibility state when re-enabled', () => {
+    const app = (disabled: boolean) => (
+      <TamaguiProvider config={config} defaultTheme="light">
+        <TestButton testID="target-button" disabled={disabled} />
+      </TamaguiProvider>
+    )
+
+    const rendered = render(app(true))
+    const getTarget = () =>
+      rendered
+        .UNSAFE_getAllByProps({ testID: 'target-button' })
+        .find((node) => 'aria-disabled' in node.props)!
+
+    expect(getTarget().props['aria-disabled']).toBe(true)
+
+    rendered.rerender(app(false))
+
+    expect(getTarget().props['aria-disabled']).toBe(false)
+  })
 })
