@@ -153,10 +153,12 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
         replacement: rnwl,
       },
       {
-        // rnw-lite ships these flat in dist/esm (no Libraries/ tree survives
-        // the build, Pressability excepted) under the upstream RN names:
-        // codegenNativeComponent + codegenNativeCommands (plural)
-        find: /^react-native\/Libraries\/Utilities\/(codegenNativeComponent|codegenNativeCommands)$/,
+        // scoped to what lite actually ships (flat dist/esm, no Libraries/
+        // tree survives the build, Pressability excepted). anything lite
+        // renames or drops falls through instead of aliasing a missing file
+        find: new RegExp(
+          `^react-native\\/Libraries\\/Utilities\\/(${rnwlFlatModules.join('|')})$`
+        ),
         replacement: `${normalizePath(rnwlBase)}/dist/esm/$1.mjs`,
       },
       {
