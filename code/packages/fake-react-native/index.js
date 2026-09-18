@@ -71,6 +71,11 @@ function proxyWorm() {
         get: () => ({ width: 1024, height: 768 }),
         addEventListener: () => ({ remove: () => {} }),
       },
+      PixelRatio: {
+        get: () => 1,
+        getFontScale: () => 1,
+        roundToNearestPixel: (n) => n,
+      },
       useWindowDimensions,
       Keyboard,
       Appearance: {
@@ -118,6 +123,7 @@ module.exports.PanResponder = proxy.PanResponder
 module.exports.TurboModuleRegistry = proxy.TurboModuleRegistry
 module.exports.processColor = proxy.processColor
 module.exports.Dimensions = proxy.Dimensions
+module.exports.PixelRatio = proxy.PixelRatio
 module.exports.useWindowDimensions = useWindowDimensions
 module.exports.Keyboard = Keyboard
 module.exports.Appearance = proxy.Appearance

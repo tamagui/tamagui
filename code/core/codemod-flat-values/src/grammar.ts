@@ -80,7 +80,7 @@ export function convertLegacyConditionProp(
 
 /** every prop spelling the codemod treats as carrying a style value */
 export const styleProps: ReadonlySet<string> = new Set<string>([
-  ...grammarEntries.map((entry) => entry.prop),
+  ...grammarEntries.filter((entry) => entry.convert !== false).map((entry) => entry.prop),
   ...Object.keys(standaloneValueProps),
   ...Object.keys(stylePropsAll),
   ...Object.keys(shorthands),

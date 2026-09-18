@@ -295,7 +295,8 @@ function tailwindClassToFlatProp(
     if (inner === '') return null
     // px-length + unitless arbitraries become NUMBERS (native requires numbers, drops "Npx"
     // strings); unit/function values stay strings. one canonical rule (arbitraryValue).
-    let resolved = arbitraryValue(inner)
+    // CSS grid properties (which do not exist in RN) stay strings so CSS units like 77px are preserved.
+    let resolved = prop.startsWith('grid') ? inner : arbitraryValue(inner)
     // rotate requires a unit-bearing string on native — a bare number from rotate-[45]
     // triggers a redbox. append deg when the arbitrary resolved to a unitless number.
     if (

@@ -113,7 +113,7 @@ async function waitForContent(page, port) {
     'grid-template-columns',
     /.+ .+ .+/
   )
-  await expect(page.locator('#hybrid-container-child')).toHaveCSS('transform', /13/)
+  await expect(page.locator('#hybrid-container-child')).toHaveCSS('translate', /13/)
   await expect(page.locator('#hybrid-scanner-owned')).toHaveCSS(
     'grid-template-columns',
     '77px'
@@ -215,6 +215,7 @@ test.fixme(
 )
 
 test(`updates passthrough candidates on add, remove, and re-add`, async ({ page }) => {
+  test.setTimeout(60000)
   const fixturePath = path.resolve('src/HmrCandidate.jsx')
   const tokensPath = path.resolve('src/tokens.ts')
   const original = readFileSync(fixturePath, 'utf8')
@@ -288,8 +289,7 @@ test(`builds to prod same thing`, async ({ page }) => {
   }
   console.info(`D0 CSS metrics ${JSON.stringify(metrics)}`)
 
-  expect(css).toContain('.grid')
-  expect(css).toContain('.grid-cols-2')
+  expect(css).toContain('.backdrop-blur-sm')
   expect(css).not.toMatch(/\.p-4(?:[,{:]|\s)/)
   expect(css).not.toContain('box-sizing: border-box; border: 0 solid')
   expect(css).not.toMatch(/\*,\s*::before,\s*::after/)

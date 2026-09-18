@@ -83,9 +83,7 @@ describe('tailwind standard utilities', () => {
       'brightness-105 drop-shadow-md drop-shadow-[red]',
     ]) {
       const rule = ruleFor(View, className, 'filter')
-      expect(rule[StyleObjectValue]).toBe(
-        'brightness(105%) drop-shadow(0 3px 3px red)'
-      )
+      expect(rule[StyleObjectValue]).toBe('brightness(105%) drop-shadow(0 3px 3px red)')
     }
   })
 

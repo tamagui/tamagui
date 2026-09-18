@@ -506,6 +506,17 @@ function chooseEntry(
         valueKind: 'arbitrary',
       }
     }
+    if (
+      prefix === 'grid-cols' ||
+      prefix === 'col-span' ||
+      prefix === 'col-start' ||
+      prefix === 'col-end' ||
+      prefix === 'row-span' ||
+      prefix === 'row-start' ||
+      prefix === 'row-end'
+    ) {
+      return null
+    }
     return { entry: entries[0], valueKind: 'arbitrary' }
   }
 
@@ -602,16 +613,6 @@ function chooseEntry(
       const clamp = entries.find((entry) => entry.prop === 'numberOfLines')
       if (clamp) return { entry: clamp, valueKind: 'convenience', convenience: 'integer' }
     }
-    if (prefix === 'leading') {
-      const lineHeight = entries.find((entry) => entry.prop === 'lineHeight')
-      if (lineHeight) {
-        return {
-          entry: lineHeight,
-          valueKind: 'convenience',
-          convenience: 'integer',
-        }
-      }
-    }
     // grid utilities: grid-cols-3, col-span-2, col-start-1, row-span-3, etc.
     if (
       prefix === 'grid-cols' ||
@@ -658,6 +659,9 @@ function chooseEntry(
         return { entry, valueKind: 'convenience', convenience: 'sizing-keyword' }
       }
       if (entry.tokenCategory === 'zIndex' && numericPattern.test(rawValue)) {
+        return { entry, valueKind: 'convenience', convenience: 'integer' }
+      }
+      if (prefix === 'leading' && numericPattern.test(rawValue)) {
         return { entry, valueKind: 'convenience', convenience: 'integer' }
       }
       continue

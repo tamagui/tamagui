@@ -237,7 +237,12 @@ const grammarEntrySpecs = [
   { prop: 'cursor', prefix: 'cursor' },
   { prop: 'overflowX', prefix: 'overflow-x' },
   { prop: 'overflowY', prefix: 'overflow-y' },
-  { prop: 'numberOfLines', prefix: 'line-clamp', conveniences: ['integer'] },
+  {
+    prop: 'numberOfLines',
+    prefix: 'line-clamp',
+    conveniences: ['integer'],
+    convert: false,
+  },
   { prop: 'textOverflow', prefix: '' },
   { prop: 'userSelect', prefix: 'select' },
   { prop: 'visibility', prefix: '' },

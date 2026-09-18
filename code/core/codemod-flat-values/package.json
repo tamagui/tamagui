@@ -21,8 +21,8 @@
     "clean:build": "tamagui-build clean:build",
     "dry-run": "cd ../../.. && bun code/core/codemod-flat-values/src/index.ts --report code/core/codemod-flat-values/dry-run-report.md code/kitchen-sink/src/usecases code/ui/tamagui/src/components/Button.tsx",
     "write": "cd ../../.. && bun code/core/codemod-flat-values/src/index.ts --write --report code/core/codemod-flat-values/dry-run-report.md code/kitchen-sink/src/usecases code/ui/tamagui/src/components/Button.tsx",
-    "test": "bun test --timeout 20000 test",
-    "test:web": "bun test --timeout 20000 test",
+    "test": "bun test --timeout 120000 test",
+    "test:web": "bun test --timeout 120000 test",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

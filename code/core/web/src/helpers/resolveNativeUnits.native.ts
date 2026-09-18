@@ -12,7 +12,7 @@ export interface UnitContext {
 }
 
 const UNIT_RE = /^([+-]?\s*\d*\.?\d+)(px|rem|em|vw|vh|vmin|vmax|cqi|cqw|cqh|cqb)?$/i
-const DYNAMIC_UNIT_END_RE = /(px|rem|em|vw|vh|vmin|vmax|cqi|cqw|cqh|cqb)$/i
+const DYNAMIC_UNIT_END_RE = /\d\s*(px|rem|em|vw|vh|vmin|vmax|cqi|cqw|cqh|cqb)$/i
 
 export function isDynamicUnitValue(value: unknown): boolean {
   if (typeof value !== 'string') return false

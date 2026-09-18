@@ -327,7 +327,12 @@ describe('candidate grammar', () => {
       outlineStyle: 'none',
     })
     expect(parseCandidate('-outline-offset-1', config)?.entry?.prop).toBe('outlineOffset')
-    expect(parseCandidate('outline-hidden', config)).toBeNull()
+    expect(parseCandidate('outline-hidden', config)?.properties).toEqual({
+      outlineWidth: 2,
+      outlineStyle: 'solid',
+      outlineColor: 'transparent',
+      outlineOffset: 2,
+    })
     expect(parseCandidate('rounded-none', config)?.convenience).toBe('zero')
     expect(parseCandidate('rounded-t-none', config)?.convenience).toBe('zero')
     expect(parseCandidate('bg-transparent', config)?.entry?.prop).toBe('backgroundColor')

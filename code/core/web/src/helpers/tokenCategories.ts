@@ -24,7 +24,7 @@ export function getTokenCategoryForProperty(
     return property === 'shadowRadius' ? 'size' : 'radius'
   }
   if (
-    /^(?:width|height|(?:min|max)(?:Width|Height))$/.test(property) ||
+    /^(?:width|height|flexBasis|(?:min|max)(?:Width|Height))$/.test(property) ||
     property.endsWith('BlockSize') ||
     property.endsWith('InlineSize') ||
     property === 'blockSize' ||

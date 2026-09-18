@@ -44,8 +44,7 @@ export function resolveStyleStaticConfig(
       const isStyle =
         key !== 'transition' && (key in validStyles || key in conf.shorthands)
       if (isVariant || isStyle) {
-        ;(baseStyle ||= authoredBaseStyle ? { ...authoredBaseStyle } : {})[key] =
-          authoredDefaultProps[key]
+        ;(baseStyle ||= {})[key] = authoredDefaultProps[key]
       }
       if (isVariant || !isStyle) {
         ;(defaultProps ||= {})[key] = authoredDefaultProps[key]
@@ -55,7 +54,11 @@ export function resolveStyleStaticConfig(
       }
     }
   }
-  const resolvedBaseStyle = baseStyle || authoredBaseStyle
+  const resolvedBaseStyle = authoredBaseStyle
+    ? baseStyle
+      ? { ...baseStyle, ...authoredBaseStyle }
+      : authoredBaseStyle
+    : baseStyle
   let baseStylePiece
   let baseStylePieces: Record<string, StylePiece> | undefined
   if (resolvedBaseStyle && !(staticConfig as any).disableBaseStylePiece) {

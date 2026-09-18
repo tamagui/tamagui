@@ -24,6 +24,11 @@ function proxyWorm() {
       Dimensions: {
         addEventListener(cb) {},
       },
+      PixelRatio: {
+        get: () => 1,
+        getFontScale: () => 1,
+        roundToNearestPixel: (n) => n,
+      },
       Appearance: {
         getColorScheme: () => 'light',
         addChangeListener: () => {},
@@ -53,6 +58,7 @@ export const Text = proxy.Text
 export const TextInput = proxy.TextInput
 export const ScrollView = proxy.ScrollView
 export const Dimensions = proxy.Dimensions
+export const PixelRatio = proxy.PixelRatio
 export const Pressable = proxy.Pressable
 export const Animated = proxy.Animated
 export const Easing = proxy.Easing

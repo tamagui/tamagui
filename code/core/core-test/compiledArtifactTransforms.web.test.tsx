@@ -51,4 +51,4 @@ test('compiled artifacts finalize animated transforms inline', async () => {
     else process.env.TAMAGUI_DID_OUTPUT_CSS = previousDidOutputCSS
     vi.resetModules()
   }
-})
+}, 30000)

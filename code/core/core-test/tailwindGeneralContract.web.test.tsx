@@ -9,7 +9,7 @@ import { defaultConfig as v6 } from '@tamagui/config/v6'
 import { tamaguiToTailwind } from '../to-tailwind/src/transform'
 import { defaultMediaKeys } from '@tamagui/style-grammar/tooling'
 
-const cls = (out: string) => (/className="([^"]*)"/.exec(out) || [, ''])[1]
+const cls = (out: string) => (/className="([^"]*)"/.exec(out) || [undefined, ''])[1]
 const convert = (s: string, o?: any) =>
   cls(tamaguiToTailwind(s, { renameComponents: false, ...o }))
 

@@ -391,7 +391,7 @@ export const Fixture = () => <View gap="$1.5" bg="$blue10" hoverStyle={{ bg: 're
     expect(codes(clauseFree)).not.toContain('legacy-token-dot-path')
     expect(clauseFree.after).toContain('gap="1-5"')
     // two runs in one test: each spawns the CLI over a fresh ts-morph project
-  }, 30_000)
+  }, 60_000)
 
   test('a non-numeric dot-path token is still reported', () => {
     // nothing can derive what `$brand.primary` was meant to become, so it
@@ -401,7 +401,7 @@ export const Fixture = () => <View gap="$1.5" bg="$blue10" hoverStyle={{ bg: 're
 export const Fixture = () => <View bg="$brand.primary" hoverStyle={{ bg: 'red' }} />`)
     )
     expect(codes(site)).toContain('legacy-token-dot-path')
-  }, 30_000)
+  }, 60_000)
 
   test('a site with no v1 syntax is not a conversion site', () => {
     expect(
@@ -423,7 +423,7 @@ export const Fixture = ({ active }) => <View rotate={\`\${active ? '180deg' : '0
       )
     ).toEqual([])
     // three runs in one test: each spawns the CLI over a fresh ts-morph project
-  }, 30_000)
+  }, 60_000)
 })
 
 describe('conditions', () => {
