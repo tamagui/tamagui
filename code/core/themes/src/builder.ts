@@ -52,6 +52,7 @@ export const semanticThemeKeys = [
   'background-hover',
   'background-press',
   'background-focus',
+  'background-active',
   'border-color',
   'border-color-hover',
   'border-color-press',
@@ -82,6 +83,7 @@ const light = {
   'background-hover': 'white',
   'background-press': 100,
   'background-focus': 'white',
+  'background-active': 'white',
   'border-color': 200,
   'border-color-hover': 300,
   'border-color-press': 200,
@@ -103,6 +105,7 @@ const dark = {
   'background-hover': 900,
   'background-press': 'black',
   'background-focus': 900,
+  'background-active': 900,
   'border-color': 800,
   'border-color-hover': 700,
   'border-color-press': 800,
@@ -119,6 +122,7 @@ const boldLight = {
   'background-hover': 500,
   'background-press': 700,
   'background-focus': 500,
+  'background-active': 500,
   'border-color': 700,
   'border-color-hover': 600,
   'border-color-press': 700,
@@ -140,6 +144,7 @@ const boldDark = {
   'background-hover': 400,
   'background-press': 600,
   'background-focus': 400,
+  'background-active': 400,
   'border-color': 600,
   'border-color-hover': 500,
   'border-color-press': 600,
@@ -152,6 +157,7 @@ const tintLight = {
   'background-hover': 50,
   'background-press': 200,
   'background-focus': 50,
+  'background-active': 50,
   'border-color': 300,
   'border-color-hover': 400,
   'border-color-press': 300,
@@ -173,6 +179,7 @@ const tintDark = {
   'background-hover': 800,
   'background-press': 950,
   'background-focus': 800,
+  'background-active': 800,
   'border-color': 700,
   'border-color-hover': 600,
   'border-color-press': 700,
@@ -237,6 +244,32 @@ function tintLevel<TokenName extends string>(
   }
 }
 
+// the selected state: the background moves to the scale's `background-active`
+// rung, which sits one step toward white from the resting background in every
+// scale, and every hover/press/focus shift pins to its resting value, because
+// a selected surface has no hover or press state. the ramp is untouched:
+// color-1..color-11 stay absolute rungs in every state. `raise` walks
+// `background-active` alongside `background`, so levels keep the same
+// one-rung relationship without special handling here.
+export function activeScale<TokenName extends string>(
+  scale: ThemeScale<TokenName>
+): ThemeScale<TokenName> {
+  const background = scale['background-active']
+  return {
+    ...scale,
+    background,
+    'background-hover': background,
+    'background-press': background,
+    'background-focus': background,
+    'border-color-hover': scale['border-color'],
+    'border-color-press': scale['border-color'],
+    'border-color-focus': scale['border-color'],
+    'color-hover': scale.color,
+    'color-press': scale.color,
+    'color-focus': scale.color,
+  }
+}
+
 export const scales = {
   normal: {
     light: {
@@ -282,6 +315,7 @@ export type DefaultRecipe = {
   palette: Palette
   treatment?: Treatment
   level?: Level
+  active?: boolean
 }
 
 export type Ramp<PaletteName extends string = Palette> = Record<
@@ -326,7 +360,8 @@ export function fromShades<const PaletteName extends string, TokenName extends s
 }
 
 export function getTheme({ recipe }: GetThemeContext<typeof tokens, DefaultRecipe>) {
-  const scale = scales[recipe.treatment ?? 'normal'][recipe.scheme][recipe.level ?? 1]
+  const resting = scales[recipe.treatment ?? 'normal'][recipe.scheme][recipe.level ?? 1]
+  const scale = recipe.active ? activeScale(resting) : resting
   const schemeShadows = shadows[recipe.scheme]
   return {
     ...ramp(recipe.palette, recipe.scheme, scale),
@@ -416,6 +451,10 @@ export const tree = {
       scheme: parent.scheme === 'light' ? 'dark' : 'light',
       children: levels(),
     }),
+    // the selected state. the marker rides the recipe (not `values`) so it
+    // survives deeper nesting: anything mounted under an active theme stays
+    // active until a definition clears it.
+    active: { active: true, children: levels() },
     // black and white name a scheme outright, where `inverse` only flips
     // whichever one the parent happened to be. a menu that has to read as dark
     // over a light page asks for `black` and gets it wherever it is mounted.

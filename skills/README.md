@@ -8,10 +8,11 @@ They install into Claude Code, Codex, Cursor and the other agents the
 | --- | --- |
 | `tamagui` | Authoring: `styled()`, variants, flat values, tokens and themes, components, animations, compiler behavior |
 | `tamagui-upgrade-v3` | Migrating an app from v2 (or v1) to v3: the flat-values codemod, the `$` sigil removal, and every breaking change the codemod cannot do |
+| `tamagui-v6-config` | The v6 theme family: light/dark, accent, brand, inverse, levels, active, the `background-active` key, and recipe-tree authoring |
 
 ## Install
 
-Both skills, from the v3 branch:
+All skills, from the v3 branch:
 
 ```bash
 npx skills add https://github.com/tamagui/tamagui/tree/v3-beta/skills

@@ -7,8 +7,8 @@ import { tokens } from '../src/tokens'
 describe('v6 themes', () => {
   test('the static output matches the authored tree', () => {
     expect(themes).toEqual(authoredThemes)
-    expect(Object.keys(themes)).toHaveLength(162)
-    expect(new Set(Object.values(themes)).size).toBe(34)
+    expect(Object.keys(themes)).toHaveLength(212)
+    expect(new Set(Object.values(themes)).size).toBe(40)
   })
 
   // black and white pin a scheme outright where `inverse` only flips whatever
@@ -36,10 +36,43 @@ describe('v6 themes', () => {
     expect(themes.light_red_level4).toBe(themes.light_red_level3)
   })
 
-  test('brand does not nest', () => {
-    expect(themes.light_brand).toBeDefined()
-    expect('light_brand_level2' in themes).toBe(false)
-    expect('dark_brand_level2' in themes).toBe(false)
+  // brand is the emphasis flip of whatever it sits on: a checked checkbox,
+  // an "on" toggle, a tooltip. it resolves to the same theme as `inverse`,
+  // and levels nest under it the same way.
+  test('brand flips the scheme like inverse', () => {
+    expect(themes.light_brand).toBe(themes.dark)
+    expect(themes.dark_brand).toBe(themes.light)
+    expect(themes.light_brand_level2).toBe(themes.dark_level2)
+    expect(themes.dark_brand_level4).toBe(themes.light_level4)
+  })
+
+  test('active is one rung lighter with hover and press pinned to resting', () => {
+    const { light_active, dark_active } = themes
+    // one rung toward white from the resting background, in both schemes
+    expect(light_active.background).toBe(tokens.color['white'])
+    expect(light_active.background).toBe(themes.light['background-active'])
+    expect(dark_active.background).toBe(tokens.color['mauve-900'])
+    expect(dark_active.background).toBe(themes.dark['background-active'])
+    // no hover or press state: every shift resolves to the resting value
+    for (const theme of [light_active, dark_active]) {
+      expect(theme['background-hover']).toBe(theme.background)
+      expect(theme['background-press']).toBe(theme.background)
+      expect(theme['background-focus']).toBe(theme.background)
+      expect(theme['border-color-hover']).toBe(theme['border-color'])
+      expect(theme['border-color-press']).toBe(theme['border-color'])
+      expect(theme['border-color-focus']).toBe(theme['border-color'])
+      expect(theme['color-hover']).toBe(theme.color)
+      expect(theme['color-press']).toBe(theme.color)
+      expect(theme['color-focus']).toBe(theme.color)
+    }
+    // the ramp stays absolute: active moves the ground, not the ladder
+    expect(light_active['color-1']).toBe(themes.light['color-1'])
+    expect(light_active['color-11']).toBe(themes.light['color-11'])
+    expect(dark_active['color-1']).toBe(themes.dark['color-1'])
+    expect(dark_active['color-11']).toBe(themes.dark['color-11'])
+    // the marker survives nesting: anything under an active theme stays active
+    expect(themes.light_active_level2.background).toBe(tokens.color['mauve-50'])
+    expect(themes.light_active_level2['background-press']).toBe(tokens.color['mauve-50'])
   })
 
   test('deduplicates inverse themes against the opposite recipe scheme', () => {
@@ -68,8 +101,8 @@ describe('v6 themes', () => {
     expect(ramp('brand', 'light', scales.bold.light[1])['color-1']).toBe('brand-950')
     expect(ramp('brand', 'light', scales.tint.light[1])['color-1']).toBe('brand-50')
     expect(ramp('brand', 'dark', scales.bold.dark[1])['color-1']).toBe('brand-950')
-    expect(themes.light_brand['color-1']).toBe(tokens.color['brand-950'])
-    expect(themes.light_brand['color-11']).toBe(tokens.color['brand-50'])
+    expect(themes.light_brand['color-1']).toBe(tokens.color['mauve-950'])
+    expect(themes.light_brand['color-11']).toBe(tokens.color['mauve-50'])
     expect(fromShades('red', scales.tint.light[1]).background).toBe('red-100')
     expect(themes.light_red_level2.background).toBe(tokens.color['red-200'])
   })
@@ -77,10 +110,15 @@ describe('v6 themes', () => {
   test('raises only background and border shade families and clamps endpoints', () => {
     const raised = raise(scales.normal.light[1], 20)
     expect(raised.background).toBe('black')
+    expect(raised['background-active']).toBe('black')
     expect(raised['border-color']).toBe('black')
     expect(raised.color).toBe(950)
     expect(raised['shadow-color']).toBe('shadow-3')
     expect(raised['accent-background']).toBe('brand-600')
+    // the active rung walks with the background, so levels keep the same
+    // one-rung relationship as their base
+    expect(raise(scales.normal.light[1], 1)['background-active']).toBe(50)
+    expect(raise(scales.normal.dark[1], -1)['background-active']).toBe(800)
   })
 
   // a hover is a lift and a press is a push, in both schemes. this held backwards
@@ -98,6 +136,17 @@ describe('v6 themes', () => {
 
     const wrong: string[] = []
     for (const [name, theme] of Object.entries(themes)) {
+      // selected surfaces pin every shift to resting by design, so they are
+      // exempt from the lift/push rule and assert the pin instead
+      if (name.includes('active')) {
+        if (theme['background-hover'] !== theme.background) {
+          wrong.push(`${name} hover ${theme.background} -> ${theme['background-hover']}`)
+        }
+        if (theme['background-press'] !== theme.background) {
+          wrong.push(`${name} press ${theme.background} -> ${theme['background-press']}`)
+        }
+        continue
+      }
       const base = lightness(theme.background)
       if (lightness(theme['background-hover']) <= base) {
         wrong.push(`${name} hover ${theme.background} -> ${theme['background-hover']}`)

@@ -719,6 +719,7 @@ export const bundledDefaultGrammarConfig = {
       'background-hover',
       'background-press',
       'background-focus',
+      'background-active',
       'border-color',
       'border-color-hover',
       'border-color-press',
