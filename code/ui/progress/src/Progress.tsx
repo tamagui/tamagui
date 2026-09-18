@@ -123,10 +123,19 @@ export const ProgressFrame = styled(YStack, {
 
   variants: {
     size: styled.dynamic<any>((val) => {
-      const size = Math.round(getVariableValue(getSize(val === true ? 36 : val)) * 0.25)
+      // getSize hands back the key itself when it is not in the size scale, so
+      // a name like "sm" would multiply to NaN here. A NaN height reads as no
+      // height at all, and the Indicator inside asks for 100% of it, so the
+      // track stops being a bar and fills whatever it is in. Fall back to the
+      // same token `true` uses.
+      const resolved = Number(getVariableValue(getSize(val === true ? 36 : val)))
+      const base = Number.isFinite(resolved)
+        ? resolved
+        : Number(getVariableValue(getSize(36)))
+      const size = Math.round(base * 0.25)
       return {
         height: size,
-        minWidth: getVariableValue(size) * 20,
+        minWidth: size * 20,
         width: '100%',
       }
     }),
