@@ -153,8 +153,11 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
         replacement: rnwl,
       },
       {
-        find: /^react-native\/(Libraries\/Utilities\/codegenNativeComponent|Libraries\/Utilities\/codegenNativeCommand)$/,
-        replacement: `${rnwlBase}/$1`,
+        // rnw-lite ships these flat in dist/esm (no Libraries/ tree survives
+        // the build, Pressability excepted) under the upstream RN names:
+        // codegenNativeComponent + codegenNativeCommands (plural)
+        find: /^react-native\/Libraries\/Utilities\/(codegenNativeComponent|codegenNativeCommands)$/,
+        replacement: `${normalizePath(rnwlBase)}/dist/esm/$1.mjs`,
       },
       {
         find: 'react-native/package.json',
