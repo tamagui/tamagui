@@ -2,63 +2,53 @@
 // @ts-check
 
 /**
- * Disable Auto-Renewing Subscriptions in Stripe
+ * Stop every Stripe subscription renewal and payment retry.
  *
- * Finds all active and trialing subscriptions that currently auto-renew
- * (cancel_at_period_end === false and cancel_at === null) and sets
- * cancel_at_period_end: true so they will not renew when their current period ends.
+ * Active, trialing, and paused subscriptions are scheduled to end at their
+ * current period boundary. Past-due and unpaid subscriptions are canceled
+ * immediately, and collectible open subscription invoices are voided.
+ *
+ * This script calls Stripe directly and does not invoke Tamagui email helpers.
  *
  * Usage:
  *   node scripts/disable-auto-renewals.mjs --dry-run
  *   node scripts/disable-auto-renewals.mjs --apply
  *   node scripts/disable-auto-renewals.mjs --apply --yes
- *
- * Options:
- *   --dry-run       Preview subscriptions that would be updated without making changes (default)
- *   --apply         Apply changes to Stripe (sets cancel_at_period_end: true)
- *   --yes           Skip confirmation prompt when using --apply
- *   --verbose       Show details for all subscriptions (including already cancelled at period end)
  */
 
-import Stripe from 'stripe'
+import { createClient } from '@supabase/supabase-js'
 import * as dotenv from 'dotenv'
 import * as readline from 'readline'
-import { createClient } from '@supabase/supabase-js'
+import Stripe from 'stripe'
 
 dotenv.config()
 
-const STRIPE_KEY = process.env.STRIPE_SECRET_KEY
-if (!STRIPE_KEY) {
+const stripeKey = process.env.STRIPE_SECRET_KEY
+if (!stripeKey) {
   throw new Error('STRIPE_SECRET_KEY is not set')
 }
 
-const stripe = new Stripe(STRIPE_KEY, {
+const stripe = new Stripe(stripeKey, {
   apiVersion: '2020-08-27',
   appInfo: {
     name: 'Tamagui Disable Auto-Renewals',
-    version: '0.1.0',
+    version: '0.2.0',
   },
 })
 
-// Optional Supabase admin sync
-const SUPA_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
-const SUPA_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-/** @type {import('@supabase/supabase-js').SupabaseClient | null} */
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 const supabaseAdmin =
-  SUPA_URL && SUPA_KEY
-    ? createClient(SUPA_URL, SUPA_KEY, {
+  supabaseUrl && supabaseKey
+    ? createClient(supabaseUrl, supabaseKey, {
         auth: { persistSession: false },
       })
     : null
 
 const isApply = process.argv.includes('--apply')
-const isDryRun = process.argv.includes('--dry-run') || !isApply
 const skipConfirmation = process.argv.includes('--yes')
 const isVerbose = process.argv.includes('--verbose')
-
-// Delay between updates to respect rate limits
-const DELAY_MS = 100
+const delayMs = 100
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms))
@@ -67,216 +57,191 @@ function sleep(ms) {
 async function confirm(message) {
   if (skipConfirmation) return true
 
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  })
-
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
   return new Promise((resolve) => {
     rl.question(`${message} (y/N): `, (answer) => {
       rl.close()
-      resolve(answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes')
+      resolve(['y', 'yes'].includes(answer.toLowerCase()))
     })
   })
 }
 
+/** @param {Stripe.Subscription.Status} status */
 async function fetchSubscriptions(status) {
-  const subs = []
-  let hasMore = true
-  let startingAfter = undefined
+  const subscriptions = []
+  for await (const subscription of stripe.subscriptions.list({
+    status,
+    limit: 100,
+    expand: ['data.customer'],
+  })) {
+    subscriptions.push(subscription)
+  }
+  return subscriptions
+}
 
-  while (hasMore) {
-    const response = await stripe.subscriptions.list({
-      status,
-      limit: 100,
-      starting_after: startingAfter,
-      expand: ['data.customer', 'data.items.data.price'],
-    })
-
-    subs.push(...response.data)
-    hasMore = response.has_more
-    if (response.data.length > 0) {
-      startingAfter = response.data[response.data.length - 1].id
+async function fetchCollectibleSubscriptionInvoices() {
+  const invoices = []
+  for await (const invoice of stripe.invoices.list({ status: 'open', limit: 100 })) {
+    if (invoice.subscription && (invoice.auto_advance || invoice.next_payment_attempt)) {
+      invoices.push(invoice)
     }
   }
-
-  return subs
+  return invoices
 }
 
-function formatDate(timestamp) {
-  if (!timestamp) return 'N/A'
-  return new Date(timestamp * 1000).toISOString().split('T')[0]
+function customerLabel(customer) {
+  if (!customer) return 'unknown customer'
+  if (typeof customer === 'string') return customer
+  if (customer.deleted) return customer.id
+  return customer.email || customer.id
 }
 
-function getCustomerInfo(customer) {
-  if (!customer) return { email: 'unknown', name: 'unknown' }
-  if (typeof customer === 'string') return { email: customer, name: customer }
-  if (customer.deleted) return { email: customer.id, name: '(deleted customer)' }
-  return {
-    email: customer.email || customer.id,
-    name: customer.name || customer.email || customer.id,
+function subscriptionLabel(subscription) {
+  const periodEnd = subscription.current_period_end
+    ? new Date(subscription.current_period_end * 1000).toISOString().slice(0, 10)
+    : 'N/A'
+  return `${subscription.id} | ${subscription.status} | ${customerLabel(subscription.customer)} | period ends ${periodEnd}`
+}
+
+async function syncPeriodEndCancellation(subscriptionId) {
+  if (!supabaseAdmin) return
+
+  const { error } = await supabaseAdmin
+    .from('subscriptions')
+    .update({ cancel_at_period_end: true })
+    .eq('id', subscriptionId)
+
+  if (error) {
+    throw new Error(`Supabase sync failed: ${error.message}`)
   }
-}
-
-function getProductSummary(sub) {
-  const items = sub.items?.data || []
-  return items
-    .map((item) => {
-      const price = item.price
-      const amount = price?.unit_amount ? `$${(price.unit_amount / 100).toFixed(2)}` : ''
-      const interval = price?.recurring?.interval ? `/${price.recurring.interval}` : ''
-      const nickname = price?.nickname || price?.product || 'Subscription'
-      return `${nickname}${amount ? ` (${amount}${interval})` : ''}`
-    })
-    .join(', ')
 }
 
 async function main() {
-  console.info('\n══════════════════════════════════════════════════════════════')
-  console.info('       DISABLE AUTO-RENEWING STRIPE SUBSCRIPTIONS')
-  console.info('══════════════════════════════════════════════════════════════\n')
+  console.info('\nDISABLE STRIPE SUBSCRIPTION RENEWALS')
+  console.info(isApply ? 'Mode: LIVE APPLY\n' : 'Mode: DRY RUN\n')
 
-  if (isDryRun) {
-    console.info('🔍 Mode: DRY RUN (no changes will be made)')
-    console.info('   To apply changes, run with: node scripts/disable-auto-renewals.mjs --apply\n')
-  } else {
-    console.info('⚡ Mode: LIVE APPLY (will set cancel_at_period_end: true)\n')
-  }
+  const [active, trialing, paused, pastDue, unpaid, collectibleInvoices] =
+    await Promise.all([
+      fetchSubscriptions('active'),
+      fetchSubscriptions('trialing'),
+      fetchSubscriptions('paused'),
+      fetchSubscriptions('past_due'),
+      fetchSubscriptions('unpaid'),
+      fetchCollectibleSubscriptionInvoices(),
+    ])
 
-  console.info('Fetching active and trialing subscriptions from Stripe...')
-  const [activeSubs, trialingSubs] = await Promise.all([
-    fetchSubscriptions('active'),
-    fetchSubscriptions('trialing'),
-  ])
+  const periodEndTargets = [...active, ...trialing, ...paused].filter(
+    (subscription) => !subscription.cancel_at_period_end && !subscription.cancel_at
+  )
+  const alreadyEnding = [...active, ...trialing, ...paused].filter(
+    (subscription) => subscription.cancel_at_period_end || subscription.cancel_at
+  )
+  const immediateTargets = [...pastDue, ...unpaid]
 
-  const allSubs = [...activeSubs, ...trialingSubs]
-  console.info(`  Total subscriptions fetched: ${allSubs.length} (${activeSubs.length} active, ${trialingSubs.length} trialing)\n`)
+  console.info(`Schedule at period end: ${periodEndTargets.length}`)
+  console.info(`Already scheduled to end: ${alreadyEnding.length}`)
+  console.info(`Cancel immediately (past_due/unpaid): ${immediateTargets.length}`)
+  console.info(`Void collectible subscription invoices: ${collectibleInvoices.length}\n`)
 
-  const autoRenewing = []
-  const alreadyCanceling = []
-
-  for (const sub of allSubs) {
-    const isAutoRenewing = !sub.cancel_at_period_end && !sub.cancel_at
-    const customer = getCustomerInfo(sub.customer)
-    const periodEnd = formatDate(sub.current_period_end)
-    const products = getProductSummary(sub)
-
-    const item = {
-      id: sub.id,
-      status: sub.status,
-      customerEmail: customer.email,
-      customerName: customer.name,
-      currentPeriodEnd: periodEnd,
-      products,
-      sub,
+  if (isVerbose) {
+    for (const subscription of periodEndTargets) {
+      console.info(`  period end: ${subscriptionLabel(subscription)}`)
     }
-
-    if (isAutoRenewing) {
-      autoRenewing.push(item)
-    } else {
-      alreadyCanceling.push(item)
+    for (const subscription of immediateTargets) {
+      console.info(`  immediate: ${subscriptionLabel(subscription)}`)
     }
-  }
-
-  console.info('═'.repeat(60))
-  console.info('                    BREAKDOWN')
-  console.info('═'.repeat(60))
-  console.info(`  Auto-renewing (will disable):     ${autoRenewing.length}`)
-  console.info(`  Already canceling at period end:  ${alreadyCanceling.length}`)
-  console.info(`  Total active/trialing:            ${allSubs.length}`)
-  console.info('═'.repeat(60) + '\n')
-
-  if (autoRenewing.length === 0) {
-    console.info('✅ No auto-renewing subscriptions found! All subscriptions are already canceled or set to cancel at period end.\n')
-    return
-  }
-
-  console.info(`Found ${autoRenewing.length} subscriptions that would be updated:\n`)
-  for (let i = 0; i < autoRenewing.length; i++) {
-    const item = autoRenewing[i]
-    console.info(`  ${(i + 1).toString().padStart(3)}. ${item.id} | ${item.customerEmail.padEnd(30)} | Ends: ${item.currentPeriodEnd} | ${item.products}`)
-  }
-  console.info('')
-
-  if (isDryRun) {
-    console.info('═'.repeat(60))
-    console.info(`🔍 DRY RUN COMPLETE: ${autoRenewing.length} subscriptions would be set to cancel_at_period_end = true.`)
-    console.info('To execute these changes in Stripe, run:')
-    console.info('  node scripts/disable-auto-renewals.mjs --apply')
-    console.info('═'.repeat(60) + '\n')
-    return
-  }
-
-  // Live Apply confirmation
-  const confirmed = await confirm(`\n⚠️  Are you sure you want to disable auto-renew on ${autoRenewing.length} subscriptions in Stripe?`)
-  if (!confirmed) {
-    console.info('Aborted by user.')
-    return
-  }
-
-  console.info(`\nUpdating ${autoRenewing.length} subscriptions in Stripe (delay ${DELAY_MS}ms)...\n`)
-
-  let updated = 0
-  let failed = 0
-  const errors = []
-
-  for (let i = 0; i < autoRenewing.length; i++) {
-    const item = autoRenewing[i]
-    process.stdout.write(`  [${i + 1}/${autoRenewing.length}] Updating ${item.id} (${item.customerEmail})... `)
-
-    try {
-      await stripe.subscriptions.update(item.id, {
-        cancel_at_period_end: true,
-      })
-
-      // Also sync to Supabase if admin client available
-      if (supabaseAdmin) {
-        try {
-          await supabaseAdmin
-            .from('subscriptions')
-            .update({
-              cancel_at_period_end: true,
-            })
-            .eq('id', item.id)
-        } catch (supaErr) {
-          // Non-critical since Stripe webhook will also handle this
-          console.warn(`(Supabase sync note: ${supaErr.message}) `)
-        }
-      }
-
-      updated++
-      console.info('✓')
-    } catch (err) {
-      failed++
-      const msg = err instanceof Error ? err.message : String(err)
-      console.info(`✗ Failed: ${msg}`)
-      errors.push({ id: item.id, email: item.customerEmail, error: msg })
-    }
-
-    if (DELAY_MS > 0) {
-      await sleep(DELAY_MS)
-    }
-  }
-
-  console.info('\n═'.repeat(60))
-  console.info('                    RESULTS')
-  console.info('═'.repeat(60))
-  console.info(`  Successfully updated: ${updated}`)
-  console.info(`  Failed:               ${failed}`)
-  console.info('═'.repeat(60) + '\n')
-
-  if (errors.length > 0) {
-    console.error('Errors encountered:')
-    for (const e of errors) {
-      console.error(`  - ${e.id} (${e.email}): ${e.error}`)
+    for (const invoice of collectibleInvoices) {
+      console.info(`  invoice: ${invoice.id}`)
     }
     console.info('')
   }
 
-  console.info('Done!')
+  const mutationCount =
+    periodEndTargets.length + immediateTargets.length + collectibleInvoices.length
+  if (mutationCount === 0) {
+    console.info('No renewal or retry actions remain.')
+    return
+  }
+
+  if (!isApply) {
+    console.info(
+      `Dry run complete: ${mutationCount} Stripe mutations would be attempted.`
+    )
+    return
+  }
+
+  const confirmed = await confirm(
+    `Stop ${periodEndTargets.length + immediateTargets.length} subscriptions and void ${collectibleInvoices.length} invoices?`
+  )
+  if (!confirmed) {
+    console.info('Aborted.')
+    return
+  }
+
+  let updated = 0
+  const errors = []
+
+  for (const subscription of periodEndTargets) {
+    try {
+      await stripe.subscriptions.update(
+        subscription.id,
+        { cancel_at_period_end: true },
+        { idempotencyKey: `disable-auto-renew-${subscription.id}` }
+      )
+      try {
+        await syncPeriodEndCancellation(subscription.id)
+      } catch (error) {
+        // Stripe is authoritative and its webhook also syncs this update.
+        console.warn(error instanceof Error ? error.message : String(error))
+      }
+      updated++
+    } catch (error) {
+      errors.push({ id: subscription.id, error })
+    }
+    await sleep(delayMs)
+  }
+
+  for (const subscription of immediateTargets) {
+    try {
+      await stripe.subscriptions.cancel(
+        subscription.id,
+        { invoice_now: false, prorate: false },
+        { idempotencyKey: `disable-retries-${subscription.id}` }
+      )
+      updated++
+    } catch (error) {
+      errors.push({ id: subscription.id, error })
+    }
+    await sleep(delayMs)
+  }
+
+  for (const invoice of collectibleInvoices) {
+    try {
+      const current = await stripe.invoices.retrieve(invoice.id)
+      if (current.status === 'open') {
+        await stripe.invoices.voidInvoice(
+          invoice.id,
+          {},
+          { idempotencyKey: `disable-retries-${invoice.id}` }
+        )
+        updated++
+      }
+    } catch (error) {
+      errors.push({ id: invoice.id, error })
+    }
+    await sleep(delayMs)
+  }
+
+  console.info(`Updated: ${updated}`)
+  console.info(`Failed: ${errors.length}`)
+  for (const { id, error } of errors) {
+    console.error(`${id}: ${error instanceof Error ? error.message : String(error)}`)
+  }
+
+  if (errors.length) process.exitCode = 1
 }
 
-main().catch((err) => {
-  console.error('Fatal error:', err)
+main().catch((error) => {
+  console.error('Fatal error:', error)
   process.exit(1)
 })

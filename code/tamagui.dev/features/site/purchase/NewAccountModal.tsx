@@ -20,6 +20,7 @@ import { processError } from '~/features/posthog/errorHandling'
 import useSWR, { mutate } from 'swr'
 import useSWRMutation from 'swr/mutation'
 import {
+  AlertDialog,
   Avatar,
   Button,
   debounce,
@@ -1395,43 +1396,6 @@ const PlanTab = ({
 }
 
 const CancelSubscriptionSection = ({ subscription }: { subscription: Subscription }) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const { refresh } = useUser()
-
-  const isPastDue = isPastDueSubscription(subscription)
-
-  const handleCancel = async () => {
-    const confirmed = window.confirm(
-      isPastDue
-        ? 'Cancel this subscription now? This stops the pending payment retry immediately and ends the subscription.'
-        : 'Are you sure you want to cancel this subscription? You will retain access until the end of your billing period.'
-    )
-    if (!confirmed) return
-
-    setIsLoading(true)
-    try {
-      const res = await authFetch('/api/cancel-subscription', {
-        method: 'POST',
-        body: JSON.stringify({ subscription_id: subscription.id }),
-      })
-      const data = await res.json().catch(() => ({}) as any)
-      if (!res.ok) {
-        alert(
-          `Couldn't cancel: ${data.error || data.message || `server returned ${res.status}`}. Please email support@tamagui.dev and we'll cancel it for you.`
-        )
-        return
-      }
-      alert(data.message || 'Your subscription has been cancelled.')
-      refresh()
-    } catch (err) {
-      alert(
-        `Couldn't cancel: ${err instanceof Error ? err.message : 'unknown error'}. Please email support@tamagui.dev and we'll cancel it for you.`
-      )
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   if (subscription.cancel_at_period_end) {
     return (
       <YStack gap="$3" pt="$4">
@@ -1449,16 +1413,108 @@ const CancelSubscriptionSection = ({ subscription }: { subscription: Subscriptio
   return (
     <YStack gap="$3" pt="$4">
       <Separator />
-      <Button
-        theme="red"
-        disabled={isLoading}
-        onPress={handleCancel}
-        alignSelf="flex-start"
-        size="$3"
-      >
-        <Button.Text>Cancel Subscription</Button.Text>
-      </Button>
+      <CancelSubscriptionButton subscription={subscription} alignSelf="flex-start" />
     </YStack>
+  )
+}
+
+const CancelSubscriptionButton = ({
+  subscription,
+  alignSelf = 'flex-end',
+}: {
+  subscription: Subscription
+  alignSelf?: 'flex-start' | 'flex-end'
+}) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const { refresh } = useUser()
+  const isPastDue = isPastDueSubscription(subscription)
+
+  const handleCancel = async () => {
+    setIsLoading(true)
+    try {
+      const res = await authFetch('/api/cancel-subscription', {
+        method: 'POST',
+        body: JSON.stringify({ subscription_id: subscription.id }),
+      })
+      const data: { error?: string; message?: string } = await res
+        .json()
+        .catch(() => ({}))
+      if (!res.ok) {
+        alert(
+          `Couldn't cancel: ${data.error || data.message || `server returned ${res.status}`}. Please email support@tamagui.dev and we'll cancel it for you.`
+        )
+        return
+      }
+      alert(data.message || 'Your subscription has been cancelled.')
+      refresh()
+    } catch (err) {
+      alert(
+        `Couldn't cancel: ${err instanceof Error ? err.message : 'unknown error'}. Please email support@tamagui.dev and we'll cancel it for you.`
+      )
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <AlertDialog>
+      <AlertDialog.Trigger asChild>
+        <Button
+          theme="red"
+          size="$3"
+          alignSelf={alignSelf}
+          disabled={isLoading || !!subscription.cancel_at_period_end}
+        >
+          <Button.Text>
+            {subscription.cancel_at_period_end
+              ? 'Cancellation Scheduled'
+              : isLoading
+                ? 'Cancelling...'
+                : 'Cancel Subscription'}
+          </Button.Text>
+        </Button>
+      </AlertDialog.Trigger>
+
+      <AlertDialog.Portal>
+        <AlertDialog.Overlay
+          key="cancel-overlay"
+          zIndex={1000000}
+          transition="quick"
+          bg="$shadow6"
+          opacity={1}
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+        <AlertDialog.Content
+          key="cancel-content"
+          zIndex={1000001}
+          elevate
+          bordered
+          width="90%"
+          maxW={480}
+          p="$5"
+        >
+          <YStack gap="$4">
+            <AlertDialog.Title>Cancel subscription?</AlertDialog.Title>
+            <AlertDialog.Description>
+              {isPastDue
+                ? 'This ends the subscription now and stops the pending payment retry.'
+                : 'You will retain access until the end of your current billing period.'}
+            </AlertDialog.Description>
+            <XStack gap="$3" justify="flex-end" flexWrap="wrap">
+              <AlertDialog.Cancel asChild>
+                <Button>Keep subscription</Button>
+              </AlertDialog.Cancel>
+              <AlertDialog.Destructive asChild>
+                <Button theme="red" onPress={handleCancel} disabled={isLoading}>
+                  Cancel subscription
+                </Button>
+              </AlertDialog.Destructive>
+            </XStack>
+          </YStack>
+        </AlertDialog.Content>
+      </AlertDialog.Portal>
+    </AlertDialog>
   )
 }
 
@@ -1638,8 +1694,7 @@ const ManageTab = ({
   teamData: TeamSubscription | undefined
   isTeamLoading: boolean
 }) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const { refresh, subscriptionStatus } = useUser()
+  const { subscriptionStatus } = useUser()
   const {
     projects,
     isLoading: isProjectsLoading,
@@ -1693,42 +1748,6 @@ const ManageTab = ({
       style: 'currency',
       currency: 'USD',
     }).format(amount / 100)
-  }
-
-  // Cancel handler for a specific subscription
-  const handleCancelSubscription = async (subscriptionId: string, isPastDue = false) => {
-    const confirmed = window.confirm(
-      isPastDue
-        ? 'Cancel this subscription now? This stops the pending payment retry immediately and ends the subscription.'
-        : 'Are you sure you want to cancel this subscription? This action cannot be undone.'
-    )
-    if (!confirmed) return
-
-    setIsLoading(true)
-    try {
-      const res = await authFetch('/api/cancel-subscription', {
-        method: 'POST',
-        body: JSON.stringify({
-          subscription_id: subscriptionId,
-        }),
-      })
-
-      const data = await res.json().catch(() => ({}) as any)
-      if (!res.ok) {
-        alert(
-          `Couldn't cancel: ${data.error || data.message || `server returned ${res.status}`}. Please email support@tamagui.dev and we'll cancel it for you.`
-        )
-        return
-      }
-      alert(data.message || 'Your subscription has been cancelled.')
-      refresh()
-    } catch (err) {
-      alert(
-        `Couldn't cancel: ${err instanceof Error ? err.message : 'unknown error'}. Please email support@tamagui.dev and we'll cancel it for you.`
-      )
-    } finally {
-      setIsLoading(false)
-    }
   }
 
   const hasProjects = projects.length > 0
@@ -1827,24 +1846,7 @@ const ManageTab = ({
                 rounded="$4"
               >
                 {!isTeamMember && (
-                  <Button
-                    theme="red"
-                    size="$3"
-                    alignSelf="flex-end"
-                    disabled={isLoading || !!subscription.cancel_at_period_end}
-                    onPress={() =>
-                      handleCancelSubscription(
-                        subscription.id,
-                        isPastDueSubscription(subscription)
-                      )
-                    }
-                  >
-                    <Button.Text>
-                      {subscription.cancel_at_period_end
-                        ? 'Cancellation Scheduled'
-                        : 'Cancel Subscription'}
-                    </Button.Text>
-                  </Button>
+                  <CancelSubscriptionButton subscription={subscription} />
                 )}
                 <YStack
                   p="$4"

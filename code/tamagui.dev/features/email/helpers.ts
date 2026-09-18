@@ -72,7 +72,9 @@ export function sendProductRenewalEmail(
   args: { name: string; product_name: string; amount_due?: number }
 ) {
   // Auto-renewing subscriptions and renewal warning emails are disabled
-  console.info(`Renewal warning emails are disabled; skipping sendProductRenewalEmail to ${email}`)
+  console.info(
+    `Renewal warning emails are disabled; skipping sendProductRenewalEmail to ${email}`
+  )
   return
 }
 
@@ -159,7 +161,9 @@ export function sendV1UpgradeEmail(
   args: { name: string; subscriptionId: string; amount_due?: number }
 ) {
   // Auto-renewing subscriptions and renewal warning emails are disabled
-  console.info(`Renewal warning emails are disabled; skipping sendV1UpgradeEmail to ${email}`)
+  console.info(
+    `Renewal warning emails are disabled; skipping sendV1UpgradeEmail to ${email}`
+  )
   return
 }
 
@@ -168,7 +172,9 @@ export function sendV1UpgradeEmail(
  */
 export function sendV2RenewalEnabledEmail(email: string, args: { name: string }) {
   // Auto-renewing subscriptions and renewal warning emails are disabled
-  console.info(`Renewal warning emails are disabled; skipping sendV2RenewalEnabledEmail to ${email}`)
+  console.info(
+    `Renewal warning emails are disabled; skipping sendV2RenewalEnabledEmail to ${email}`
+  )
   return
 }
 

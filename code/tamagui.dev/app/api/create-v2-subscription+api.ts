@@ -67,7 +67,6 @@ export default apiRoute(async (req) => {
 
   // Track created resources for rollback
   let paidInvoice: Stripe.Invoice | null = null
-  let upgradeSubscription: Stripe.Subscription | null = null
   let supportSubscription: Stripe.Subscription | null = null
 
   try {
@@ -234,6 +233,7 @@ export default apiRoute(async (req) => {
           {
             customer: stripeCustomerId,
             items: [{ price: supportPriceId }],
+            cancel_at_period_end: true,
             payment_settings: {
               save_default_payment_method: 'on_subscription',
             },
@@ -253,12 +253,12 @@ export default apiRoute(async (req) => {
           }
         )
       } catch (supportError) {
-        // Rollback: cancel upgrade subscription and refund invoice
+        // Roll back the one-time license payment if support setup fails.
         console.error(
           'Support subscription creation failed, initiating rollback:',
           supportError
         )
-        await rollbackPayment(paidInvoice, upgradeSubscription)
+        await rollbackPayment(paidInvoice)
         throw supportError
       }
     }
@@ -272,7 +272,7 @@ export default apiRoute(async (req) => {
       success: true,
       invoiceId: invoice.id,
       invoiceStatus: paidInvoice.status,
-      upgradeSubscriptionId: upgradeSubscription?.id || null,
+      upgradeSubscriptionId: null,
       upgradeStartDate: upgradeStartDate.toISOString(),
       supportSubscriptionId: supportSubscription?.id || null,
       supportTier: supportTier || 'chat',

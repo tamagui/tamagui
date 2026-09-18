@@ -12,9 +12,8 @@ import {
   type StaticConfig,
   type TamaguiComponentState,
 } from '@tamagui/web'
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readFileSync, statSync } from 'node:fs'
 import { basename, dirname, resolve, relative } from 'node:path'
-import { nodeModuleNameResolver, sys } from 'typescript'
 import type { ViewStyle } from 'react-native'
 
 import { FAILED_EVAL } from '../constants'
@@ -51,7 +50,7 @@ import { setPropsToFontFamily } from './propsToFontFamilyCache'
 import { timer } from './timer'
 import { validHTMLAttributes } from './validHTMLAttributes'
 import { BailOptimizationError } from './errors'
-import { loadCompilerOptionsFromTsconfig } from './esbuildTsconfigPaths'
+import { loadTsconfigPathMatcher } from './esbuildTsconfigPaths'
 
 const UNTOUCHED_PROPS = {
   key: true,
@@ -182,30 +181,29 @@ export function createExtractor(
   const dynamicComponentCache = new Map<string, LoadedComponents>()
   const dynamicLoadingInProgress = new Set<string>()
 
-  // lazily loaded tsconfig compiler options for path alias resolution
-  let _compilerOptions: any = null
-  function getCompilerOptions() {
-    if (!_compilerOptions) {
+  // lazily loaded tsconfig path matcher for aliased source imports
+  let _matchTsconfigPath: ReturnType<typeof loadTsconfigPathMatcher> | null = null
+  function getTsconfigPathMatcher() {
+    if (!_matchTsconfigPath) {
       try {
-        _compilerOptions = loadCompilerOptionsFromTsconfig()
+        _matchTsconfigPath = loadTsconfigPathMatcher()
       } catch {
-        _compilerOptions = {}
+        _matchTsconfigPath = () => []
       }
     }
-    return _compilerOptions
+    return _matchTsconfigPath
   }
 
   function resolveImportPath(fromFile: string, importPath: string): string | null {
-    if (importPath.startsWith('.')) {
-      // relative path resolution
-      const dir = dirname(fromFile)
-      const base = resolve(dir, importPath)
-      const extensions = ['.tsx', '.ts', '.jsx', '.js']
+    const resolveSourcePath = (base: string) => {
+      if (existsSync(base) && statSync(base).isFile() && !base.endsWith('.d.ts')) {
+        return base
+      }
+      const extensions = ['.tsx', '.ts', '.mts', '.cts', '.jsx', '.js', '.mjs', '.cjs']
       for (const ext of extensions) {
         const full = base + ext
         if (existsSync(full)) return full
       }
-      // try index files
       for (const ext of extensions) {
         const full = resolve(base, `index${ext}`)
         if (existsSync(full)) return full
@@ -213,26 +211,14 @@ export function createExtractor(
       return null
     }
 
+    if (importPath.startsWith('.')) {
+      return resolveSourcePath(resolve(dirname(fromFile), importPath))
+    }
+
     // tsconfig path alias resolution (e.g. ~/foo, @/bar)
-    const compilerOptions = getCompilerOptions()
-    if (compilerOptions.paths) {
-      try {
-        const { resolvedModule } = nodeModuleNameResolver(
-          importPath,
-          fromFile,
-          compilerOptions,
-          sys
-        )
-        if (
-          resolvedModule &&
-          !resolvedModule.resolvedFileName.endsWith('.d.ts') &&
-          !resolvedModule.isExternalLibraryImport
-        ) {
-          return resolvedModule.resolvedFileName
-        }
-      } catch {
-        // fallback - tsconfig resolution failed
-      }
+    for (const candidate of getTsconfigPathMatcher()(importPath)) {
+      const resolved = resolveSourcePath(candidate)
+      if (resolved) return resolved
     }
 
     return null

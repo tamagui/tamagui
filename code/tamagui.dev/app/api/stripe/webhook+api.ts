@@ -451,6 +451,7 @@ async function createV2SubscriptionsIfNeeded({
       const supportSubscription = await stripe.subscriptions.create({
         customer: customerId,
         items: [{ price: supportPriceId }],
+        cancel_at_period_end: true,
         payment_settings: { save_default_payment_method: 'on_subscription' },
         ...(paymentMethodId && { default_payment_method: paymentMethodId }),
         metadata: {
