@@ -17,8 +17,6 @@ import {
 } from '~/features/auth/supabaseAdmin'
 import {
   sendProductPurchaseEmail,
-  sendProductRenewalEmail,
-  sendV1ExpirationEmail,
   sendPaymentFailedEmail,
 } from '~/features/email/helpers'
 import { captureServerError } from '~/features/posthog'
@@ -84,39 +82,27 @@ export default apiRoute(async (req) => {
 
       case 'invoice.upcoming': {
         const info = event.data.object as Stripe.Invoice
+        const subscriptionId =
+          typeof info.subscription === 'string'
+            ? info.subscription
+            : info.subscription?.id
 
-        if (!info.customer_email) {
-          console.error(`No email for invoice`)
-          return
-        }
-
-        // Check if this is a V1 subscription that's expiring
-        const isV1Subscription = info.lines.data.some(
-          (line) =>
-            line.price?.product === STRIPE_PRODUCTS.PRO_SUBSCRIPTION.productId ||
-            line.price?.product === STRIPE_PRODUCTS.PRO_TEAM_SEATS.productId
-        )
-
-        if (isV1Subscription) {
-          // send V1 renewal warning with upgrade info
-          const subscriptionId =
-            typeof info.subscription === 'string'
-              ? info.subscription
-              : info.subscription?.id
-          if (subscriptionId) {
-            await sendV1ExpirationEmail(info.customer_email, {
-              name: 'friend',
-              subscriptionId,
-              amount_due: info.amount_due,
+        // Auto-renewals and renewal warning emails are disabled.
+        // If an upcoming invoice is generated for any subscription, ensure cancel_at_period_end is set so it will not charge.
+        if (subscriptionId) {
+          try {
+            await stripe.subscriptions.update(subscriptionId, {
+              cancel_at_period_end: true,
             })
+            console.info(
+              `Auto-renew disabled on upcoming invoice for subscription ${subscriptionId}`
+            )
+          } catch (err) {
+            console.error(
+              `Failed to disable auto-renew on upcoming invoice for subscription ${subscriptionId}:`,
+              err
+            )
           }
-        } else {
-          // renewal warning for V2 subscriptions
-          await sendProductRenewalEmail(info.customer_email, {
-            name: 'friend',
-            product_name: 'Tamagui Pro',
-            amount_due: info.amount_due,
-          })
         }
         break
       }
@@ -452,28 +438,8 @@ async function createV2SubscriptionsIfNeeded({
       return
     }
 
-    // Create subscriptions (3DS case - API returned early)
-    const oneYearFromNow = new Date()
-    oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1)
-
-    const upgradeSubscription = await stripe.subscriptions.create({
-      customer: customerId,
-      items: [{ price: STRIPE_PRODUCTS.PRO_V2_UPGRADE.priceId }],
-      billing_cycle_anchor: Math.floor(oneYearFromNow.getTime() / 1000),
-      proration_behavior: 'none',
-      payment_settings: { save_default_payment_method: 'on_subscription' },
-      ...(paymentMethodId && { default_payment_method: paymentMethodId }),
-      metadata: {
-        project_name: projectName,
-        project_domain: projectDomain,
-        version: 'v2',
-        type: 'pro_v2_upgrade',
-      },
-    })
-
-    console.info(
-      `Created V2 upgrade subscription: ${upgradeSubscription.id} for ${projectDomain}`
-    )
+    // Note: Auto-renewing upgrade subscriptions are disabled altogether.
+    // Pro V2 licenses are one-time per project without recurring upgrade subscriptions.
 
     // Create support subscription if paid tier selected
     if (supportTier === 'direct' || supportTier === 'sponsor') {
