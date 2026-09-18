@@ -73,6 +73,41 @@ const Card = styled(View, {
 - Prop order matters - later props override earlier ones
 - Variants defined later in the object override earlier ones
 
+### styled.dynamic() (v3) — value-driven variants
+
+A static variant maps fixed keys to fixed styles. When the style derives from
+the prop value itself — a token or a raw number, a font lookup — declare a
+function variant with `styled.dynamic` (v3 flat-value syntax below):
+
+```tsx
+import { styled, XStack } from 'tamagui'
+
+const Disc = styled(XStack, {
+  variants: {
+    size: styled.dynamic<ControlSize | number>((val) => {
+      const d = typeof val === 'number' ? val : sizes[val]
+      return { width: d, height: d, minW: d, minH: d }
+    }),
+  } as const,
+  defaultVariants: {
+    size: 'md',
+  },
+})
+```
+
+**Key rules:**
+- The resolver's second argument is the style env — `fonts`, `tokens`,
+  `theme`, `fontFamily`, `font` — for config-derived values such as
+  `font?.size[val]`.
+- The returned object must use static keys. Development runs a shape check
+  and warns when a spread or a computed key flows from the dynamic input;
+  such a definition deopts instead of compiling.
+- Two forms, two jobs: a function computes styles now, while the bare
+  `styled.dynamic<T>()` declares a pass-through value the component resolves
+  later (usually in `.resolve()`) and styles nothing by itself.
+- A function is accepted only at the variant level. `true: (props) => ...`
+  under a value key silently resolves to no style at all.
+
 ### Stack Components
 
 ```tsx
