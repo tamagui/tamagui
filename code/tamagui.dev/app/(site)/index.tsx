@@ -18,7 +18,7 @@ const CtaArrow = () => (
   // the top of the letters
   <Span
     fontSize={11}
-    lineHeight={11}
+    lineHeight="11px"
     ml={10}
     display="inline-block"
     verticalAlign="top"
@@ -252,7 +252,7 @@ export default function TamaguiHomePage() {
                 <YStack y={2} flexShrink={0}>
                   <Check size={18} color="color-4" />
                 </YStack>
-                <Text fontSize={15} lineHeight={22} color="color-9">
+                <Text fontSize={15} lineHeight="22px" color="color-9">
                   {parts.map((part, i) =>
                     typeof part === 'string' ? (
                       <Span key={i}>{part}</Span>
