@@ -1,11 +1,14 @@
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons-2'
 import { usePathname, type Href } from 'one'
 import type { ReactNode } from 'react'
+import { ScrollView } from 'react-native'
 import { Paragraph, View, XStack, YStack } from 'tamagui'
 import { Container } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { DocsQuickNav, type Heading } from './DocsQuickNav'
+import { DocsMenuContents } from './DocsMenuContents'
 import { MDXTabsSearchProvider } from './MDXTabs'
+import { DocsSyntaxPicker, DocsVersionLinks } from './DocsVersionPicker'
 import { getDocsSyntax, type DocsVersionFrontmatter } from './docsVersion'
 
 type DocsPageFrameProps = {
@@ -33,6 +36,29 @@ export function DocsPageFrame({
   const syntax = getDocsSyntax(usePathname())
   return (
     <>
+      {/* left sidebar - sticky. It lives here rather than in the route layout so
+          syntax and version controls share the loader data and render in SSR. */}
+      <View
+        className="is-sticky"
+        display="none gtMd:flex"
+        position="gtMd:sticky"
+        t="gtMd:28px"
+        height="gtMd:calc(100vh - 28px)"
+        width="gtMd:220px"
+        shrink="gtMd:0px"
+        alignSelf="gtMd:flex-start"
+      >
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <YStack pt={36} pb="18" px="2" gap="4">
+            <YStack px="2" gap="3">
+              <DocsSyntaxPicker />
+              <DocsVersionLinks frontmatter={frontmatter} initialSearch={initialSearch} />
+            </YStack>
+            <DocsMenuContents />
+          </YStack>
+        </ScrollView>
+      </View>
+
       {/* main content */}
       <YStack render="main" flex={1} minW={0} flexBasis="auto" py="8" px="4 gtSm:6">
         <YStack
@@ -148,11 +174,7 @@ export function DocsPageFrame({
       </YStack>
 
       {/* right sidebar - sticky */}
-      <DocsQuickNav
-        headings={headings}
-        frontmatter={frontmatter}
-        initialSearch={initialSearch}
-      />
+      <DocsQuickNav headings={headings} />
     </>
   )
 }

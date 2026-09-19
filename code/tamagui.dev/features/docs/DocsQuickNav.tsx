@@ -6,8 +6,6 @@ import { Link } from '~/components/Link'
 import { AGENT_SETUP_PROMPT } from '~/components/CopyAgentSetupButton'
 import { copyToClipboard } from '~/hooks/useClipboard'
 import { DocsThemePicker } from './DocsThemePicker'
-import { DocsVersionLinks } from './DocsVersionPicker'
-import type { DocsVersionFrontmatter } from './docsVersion'
 
 export type Heading = {
   id: string
@@ -136,15 +134,7 @@ const NavLineIndicator = ({
   )
 }
 
-export function DocsQuickNav({
-  headings = [],
-  frontmatter,
-  initialSearch,
-}: {
-  headings?: Heading[]
-  frontmatter?: DocsVersionFrontmatter
-  initialSearch?: string
-}) {
+export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [itemData, setItemData] = useState<
     Array<{ top: number; height: number; level: number }>
@@ -341,8 +331,6 @@ export function DocsQuickNav({
           </YStack>
 
           <Separator opacity={0.5} mr="6" />
-
-          <DocsVersionLinks frontmatter={frontmatter} initialSearch={initialSearch} />
 
           <DocsThemePicker />
 

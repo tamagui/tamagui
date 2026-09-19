@@ -80,6 +80,15 @@ async function selectDocsSyntax(
 }
 
 test.describe('docs 3-mode code toggle', () => {
+  test('version links remain available at the medium docs layout width', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1100, height: 800 })
+    await page.goto('/docs/intro/installation')
+    await expect(page.getByRole('link', { name: 'v2', exact: true })).toBeVisible()
+    await expect(page.getByRole('link', { name: 'v3', exact: true })).toBeVisible()
+  })
+
   test('styled is the default and the toggle offers all three modes', async ({
     page,
   }) => {
@@ -157,26 +166,18 @@ test.describe('docs 3-mode code toggle', () => {
     await newPage.close()
   })
 
-  test('the syntax tabs preserve the page query after hydration', async ({
-    page,
-  }) => {
+  test('the syntax tabs preserve the page query after hydration', async ({ page }) => {
     await page.goto('/docs/intro/styles?syntax=typed')
     // SSR renders bare hrefs; the live query syncs in after hydration
     await expect
-      .poll(async () =>
-        page.getByTestId('docs-syntax-unstyled').getAttribute('href')
-      )
+      .poll(async () => page.getByTestId('docs-syntax-unstyled').getAttribute('href'))
       .toBe('/unstyled/intro/styles?syntax=typed')
     await expect
-      .poll(async () =>
-        page.getByTestId('docs-syntax-tailwind').getAttribute('href')
-      )
+      .poll(async () => page.getByTestId('docs-syntax-tailwind').getAttribute('href'))
       .toBe('/tailwind/intro/styles?syntax=typed')
   })
 
-  test('version links track the version query and syntax keeps it', async ({
-    page,
-  }) => {
+  test('version links track the version query and syntax keeps it', async ({ page }) => {
     await page.setViewportSize({ width: 1617, height: 975 })
     await page.goto('/docs/intro/installation?version=v2')
     await expect(page.getByTestId('docs-syntax')).toBeVisible()
@@ -186,9 +187,7 @@ test.describe('docs 3-mode code toggle', () => {
     ).toBeVisible()
     await expect(page.getByTestId('docs-version-fallback')).toBeVisible()
     await expect
-      .poll(async () =>
-        page.getByTestId('docs-syntax-unstyled').getAttribute('href')
-      )
+      .poll(async () => page.getByTestId('docs-syntax-unstyled').getAttribute('href'))
       .toBe('/unstyled/intro/installation?version=v2')
   })
 
@@ -216,6 +215,11 @@ test.describe('docs 3-mode code toggle', () => {
     // core utilities and unknown imports stay on their package
     expect(source).toContain(`import { Avatar, styled } from 'tamagui'`)
     expect(source).toContain(`import { ScrollView, style } from 'tamagui'`)
+
+    // This fragment has adjacent JSX roots, so it exercises the parser
+    // fallback rather than the normal whole-module transform.
+    expect(source).toContain(`from '../components/tamagui/Button'`)
+    expect(source).not.toContain(`import { Button } from 'tamagui'`)
   })
 
   test('switching back to Styled navigates to the styled route', async ({ page }) => {

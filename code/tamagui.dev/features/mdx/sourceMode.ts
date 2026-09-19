@@ -456,11 +456,10 @@ export function rewriteSourceImports(
 }
 
 // Fallback for fences that don't parse as a module (before/after comparisons
-// with duplicate declarations, ellipses, fragments). Only styled-SUBPATH
-// specifiers rewrite here, line by line: the subpath module IS the skin file,
-// so the edit is valid regardless of surrounding code. Root 'tamagui' imports
-// need statement structure to split safely, so they stay untouched, as do
-// comment lines and multi-line statements.
+// with duplicate declarations, ellipses, fragments). Simple one-line named
+// imports from the root can still be split safely, and styled-SUBPATH specifiers
+// can always rewrite line by line because the subpath module IS the skin file.
+// Comment lines and multi-line statements stay untouched.
 function rewriteSourceImportsFallback(
   source: string,
   registry: SourceRegistry
@@ -469,6 +468,7 @@ function rewriteSourceImportsFallback(
     .map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
     .join('|')
   if (!subs) return null
+  const rootRe = /^(\s*)import\s*\{([^}\n]+)\}\s*from\s*(['"])tamagui\3\s*;?\s*$/
   const staticRe = new RegExp(`^(\\s*import\\b[^\\n]*?\\bfrom\\s*)(['"])(${subs})\\2`)
   const dynamicRe = new RegExp(
     `(\\bimport\\s*\\(\\s*|\\brequire\\s*\\(\\s*)(['"])(${subs})\\2`,
@@ -480,6 +480,49 @@ function rewriteSourceImportsFallback(
   let didRewrite = false
   const out = source.split('\n').map((line) => {
     if (line.trim().startsWith('//')) return line
+
+    const rootMatch = line.match(rootRe)
+    if (rootMatch) {
+      const [, indent, names, quote] = rootMatch
+      const retained: string[] = []
+      const bySkin = new Map<string, string[]>()
+
+      for (const raw of names.split(',')) {
+        const specifier = raw.trim()
+        const imported = specifier.match(
+          /^(?:type\s+)?([A-Za-z_$][\w$]*)(?:\s+as\s+[A-Za-z_$][\w$]*)?$/
+        )?.[1]
+        const skin = imported ? registry.skinNames.get(imported) : undefined
+        if (!skin) {
+          retained.push(specifier)
+          continue
+        }
+        const group = bySkin.get(skin) ?? []
+        group.push(specifier)
+        bySkin.set(skin, group)
+      }
+
+      if (bySkin.size) {
+        didRewrite = true
+        const declarations: string[] = []
+        if (retained.length) {
+          declarations.push(
+            `${indent}import { ${retained.join(', ')} } from ${quote}tamagui${quote}`
+          )
+        }
+        for (const [skin, specifiers] of bySkin) {
+          if (!seen.has(skin)) {
+            seen.add(skin)
+            skins.push(skin)
+          }
+          declarations.push(
+            `${indent}import { ${specifiers.join(', ')} } from ${quote}${sourceImportFor(skin)}${quote}`
+          )
+        }
+        return declarations.join('\n')
+      }
+    }
+
     let next = line.replace(staticRe, (_m, prefix, quote, spec) => {
       const skin = registry.subpaths.get(spec)!
       if (!seen.has(skin)) {

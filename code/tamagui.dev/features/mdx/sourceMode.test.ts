@@ -149,12 +149,27 @@ function Root() { return null }`
     expect(out.code).toContain('registry item "toast"')
   })
 
-  test('the fallback leaves root imports and comment lines alone', () => {
+  test('the fallback splits simple root imports and leaves comment lines alone', () => {
     const mixed = `// import { Button } from 'tamagui/button'
-import { Button } from 'tamagui'
+import { Button, XStack } from 'tamagui'
 function Root() { return null }
 function Root() { return null }`
-    expect(rewriteSourceImports(mixed, registry)).toBeNull()
+    const out = rewriteSourceImports(mixed, registry)!
+    expect(out.skins).toEqual(['Button'])
+    expect(out.code).toContain(`import { XStack } from 'tamagui'`)
+    expect(out.code).toContain(`import { Button } from '../components/tamagui/Button'`)
+    expect(out.code).toContain(`// import { Button } from 'tamagui/button'`)
+  })
+
+  test('the fallback rewrites fragment examples with adjacent JSX roots', () => {
+    const source = `import { Button } from 'tamagui'
+
+<Button size="sm" />
+<Button size="lg" />`
+    const out = rewriteSourceImports(source, registry)!
+    expect(out.skins).toEqual(['Button'])
+    expect(out.code).toContain(`import { Button } from '../components/tamagui/Button'`)
+    expect(out.code).not.toContain(`from 'tamagui'`)
   })
 
   test('prepends the copy list + npm deps header', () => {
