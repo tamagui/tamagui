@@ -62,11 +62,12 @@ const getListItemSubtitleSize = styled.dynamic<ListItemSize>((val, env) => {
 })
 
 // icon px for an explicit size: numbers pass through, names read the ladder,
-// anything else is the default rung
-const listItemIconPx = (size: unknown, scaleIcon = 1): number => {
+// anything else is the default rung. undefined when nothing resolves, so the
+// icon falls back to its own default size.
+const listItemIconPx = (size: unknown, scaleIcon = 1): number | undefined => {
   if (typeof size === 'number') return size * scaleIcon
-  const icon = resolveSizing(size as ListItemSize)?.icon ?? resolveSizing(undefined).icon
-  return icon * scaleIcon
+  const icon = resolveSizing(size as ListItemSize)?.icon ?? resolveSizing(undefined)?.icon
+  return icon == null ? undefined : icon * scaleIcon
 }
 
 // the additive-border "outlined" appearance (formerly themeableVariantStyles.outlined

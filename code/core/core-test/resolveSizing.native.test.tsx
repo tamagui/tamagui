@@ -36,13 +36,18 @@ test('render code without an env reads the active config', () => {
   expect(resolveSizing('md')).toEqual(resolveSizing('md', env))
 })
 
-test('an unknown name throws in development, degrades in production', () => {
+test('an unknown name resolves to no styles, never throws', () => {
   const prev = process.env.NODE_ENV
   try {
     process.env.NODE_ENV = 'development'
-    expect(() => resolveSizing('xxl' as any, env)).toThrow('unknown size "xxl"')
+    expect(resolveSizing('xxl' as any, env)).toBeUndefined()
   } finally {
     process.env.NODE_ENV = prev
   }
-  expect(resolveSizing('xxl' as any, env)).toEqual(resolveSizing('md', env))
+  expect(resolveSizing('xxl' as any, env)).toBeUndefined()
+})
+
+test('a numeric size resolves to no styles, never throws', () => {
+  expect(resolveSizing('3' as any, env)).toBeUndefined()
+  expect(resolveSizing(3 as any, env)).toBeUndefined()
 })

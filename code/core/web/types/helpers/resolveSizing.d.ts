@@ -78,9 +78,11 @@ export type ResolvedSizing = {
  * `true`/absent resolve to the default rung, `false` to no styles. Without
  * an env (plain render code, no styled.dynamic callback) it reads the active
  * config and default font: a sync global read, not a subscription, so static
- * sizes never re-render on media or theme changes. Unknown names and rungs
- * pointing at missing tokens throw in development and degrade to the default
- * rung in production.
+ * sizes never re-render on media or theme changes. Unknown names resolve to
+ * no styles, exactly like a miss in the old static tables: numeric sizes and
+ * cascaded values pass through variants that do not know them, and must never
+ * throw. A rung pointing at missing tokens is a broken config: it warns in
+ * development and resolves to no styles.
  */
 export declare function resolveSizing(size: false, env?: SizingEnv): undefined;
 export declare function resolveSizing(size: ComponentSize | true | undefined, env?: SizingEnv): ResolvedSizing;

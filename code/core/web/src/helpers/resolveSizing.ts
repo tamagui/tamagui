@@ -94,9 +94,11 @@ const toPx = (value: unknown): number =>
  * `true`/absent resolve to the default rung, `false` to no styles. Without
  * an env (plain render code, no styled.dynamic callback) it reads the active
  * config and default font: a sync global read, not a subscription, so static
- * sizes never re-render on media or theme changes. Unknown names and rungs
- * pointing at missing tokens throw in development and degrade to the default
- * rung in production.
+ * sizes never re-render on media or theme changes. Unknown names resolve to
+ * no styles, exactly like a miss in the old static tables: numeric sizes and
+ * cascaded values pass through variants that do not know them, and must never
+ * throw. A rung pointing at missing tokens is a broken config: it warns in
+ * development and resolves to no styles.
  */
 export function resolveSizing(size: false, env?: SizingEnv): undefined
 export function resolveSizing(
@@ -114,20 +116,9 @@ export function resolveSizing(
   if (size === false) return undefined
   const conf = env?.fonts && env?.tokens ? undefined : getConfig()
   const sizing = { ...defaultSizing, ...(env?.sizing ?? conf?.sizing) }
-  const dev = process.env.NODE_ENV === 'development'
   const name = size === true || size == null ? sizing.default : size
-  const rung: SizeRecipe =
-    sizing.sizes[name] ?? sizing.sizes[sizing.default] ?? defaultSizing.sizes.md
-  const effectiveName = sizing.sizes[name]
-    ? name
-    : sizing.sizes[sizing.default]
-      ? sizing.default
-      : 'md'
-  if ((!sizing.sizes[name] || !sizing.sizes[sizing.default]) && dev) {
-    throw new Error(
-      `unknown size "${name}" (expected one of: ${Object.keys(sizing.sizes).join(', ')})`
-    )
-  }
+  const rung: SizeRecipe | undefined = sizing.sizes[name]
+  if (!rung) return undefined
 
   const keys = {
     fontSize: rung.fontSize,
@@ -140,7 +131,7 @@ export function resolveSizing(
   // an explicit rung geometry wins over derivation (v5 pins its heights)
   if (rung.px) {
     return {
-      name: effectiveName,
+      name,
       ...keys,
       height: rung.px.height,
       icon: rung.px.icon,
@@ -151,24 +142,23 @@ export function resolveSizing(
   const fonts = env?.fonts ?? conf?.fontsParsed
   const tokens = env?.tokens ?? conf?.tokensParsed
   const font = env?.font ?? fonts?.[conf?.defaultFontToken ?? 'body']
-  const derive = (r: SizeRecipe) => ({
-    fontSize: toPx(getVariableValue(font?.size?.[r.fontSize])),
-    control: toPx(getVariableValue(font?.size?.[r.controlFontSize])),
-    lineHeight: toPx(getVariableValue(font?.lineHeight?.[r.fontSize])),
-    paddingBlock: toPx(getVariableValue(tokens?.space?.[r.paddingBlock])),
-  })
-  let px = derive(rung)
+  const px = {
+    fontSize: toPx(getVariableValue(font?.size?.[rung.fontSize])),
+    control: toPx(getVariableValue(font?.size?.[rung.controlFontSize])),
+    lineHeight: toPx(getVariableValue(font?.lineHeight?.[rung.fontSize])),
+    paddingBlock: toPx(getVariableValue(tokens?.space?.[rung.paddingBlock])),
+  }
   if (!Object.values(px).every(Number.isFinite)) {
-    if (dev) {
-      throw new Error(
-        `size "${name}" references a missing token (fontSize "${rung.fontSize}", controlFontSize "${rung.controlFontSize}", paddingBlock "${rung.paddingBlock}")`
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(
+        `[tamagui] size "${name}" references a missing token (fontSize "${rung.fontSize}", controlFontSize "${rung.controlFontSize}", paddingBlock "${rung.paddingBlock}"); resolving to no styles`
       )
     }
-    px = derive(defaultSizing.sizes.md)
+    return undefined
   }
 
   return {
-    name: effectiveName,
+    name,
     ...keys,
     height: px.lineHeight + px.paddingBlock * 2,
     icon: Math.ceil(px.fontSize / 4) * 4,
