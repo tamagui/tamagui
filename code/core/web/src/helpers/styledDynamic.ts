@@ -1,5 +1,6 @@
 import { getSetting } from '../config'
 import { getVariableValue } from '../createVariable'
+import { defaultSizing } from './resolveSizing'
 import type {
   GenericFonts,
   GetStyleState,
@@ -151,7 +152,7 @@ export function styledDynamic(fn?: any) {
 
 /**
  * the env for `styled.dynamic` callbacks and `.resolve` resolvers: tokens,
- * theme, fonts, and the active font. Built once per style pass.
+ * theme, fonts, sizing, and the active font. Built once per style pass.
  */
 export function getDynamicEnv(styleState: GetStyleState): StyledDynamicEnv {
   const cached = (styleState as any).flatDynamicEnv
@@ -167,6 +168,7 @@ export function getDynamicEnv(styleState: GetStyleState): StyledDynamicEnv {
     fonts,
     tokens: conf.tokensParsed,
     theme,
+    sizing: { ...defaultSizing, ...conf.sizing },
     get fontFamily() {
       return (
         getVariableValue(styleState.fontFamily || props.fontFamily) ||

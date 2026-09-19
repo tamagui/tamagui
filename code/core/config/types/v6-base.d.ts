@@ -1,7 +1,9 @@
 import { shorthands } from '@tamagui/shorthands/v6';
+import { defaultSizing } from '@tamagui/web';
 import type { CreateTamaguiProps } from '@tamagui/web';
 import { v6RemovedThemeNames, v6ThemeNameReplacements } from '@tamagui/style-grammar/v6-themes';
 export { shorthands };
+export { defaultSizing };
 export { createSystemFont } from './fonts';
 export { breakpoints, media, mediaQueryDefaultActive } from './media';
 export { tailwindSource } from './v6-tailwind-scales.generated';
@@ -984,6 +986,51 @@ declare const alignedConfig: {
         onlyAllowShorthands: true;
         styleCompat: "web";
         selectionStyles: typeof selectionStyles;
+    };
+    sizing: {
+        readonly default: 'md';
+        readonly sizes: {
+            readonly xs: {
+                readonly fontSize: 'xs';
+                readonly controlFontSize: 'xs';
+                readonly paddingInline: '2';
+                readonly paddingBlock: '1';
+                readonly gap: '1';
+                readonly radius: 'sm';
+            };
+            readonly sm: {
+                readonly fontSize: 'sm';
+                readonly controlFontSize: 'sm';
+                readonly paddingInline: '3';
+                readonly paddingBlock: '1.5';
+                readonly gap: '1.5';
+                readonly radius: 'md';
+            };
+            readonly md: {
+                readonly fontSize: 'sm';
+                readonly controlFontSize: 'base';
+                readonly paddingInline: '4';
+                readonly paddingBlock: '2';
+                readonly gap: '2';
+                readonly radius: 'md';
+            };
+            readonly lg: {
+                readonly fontSize: 'base';
+                readonly controlFontSize: 'lg';
+                readonly paddingInline: '6';
+                readonly paddingBlock: '2';
+                readonly gap: '2';
+                readonly radius: 'md';
+            };
+            readonly xl: {
+                readonly fontSize: 'lg';
+                readonly controlFontSize: 'xl';
+                readonly paddingInline: '8';
+                readonly paddingBlock: '2.5';
+                readonly gap: '2.5';
+                readonly radius: 'lg';
+            };
+        };
     };
 };
 /** Compose the aligned v6 base with a colors pack into a createTamagui-ready config. */

@@ -1401,6 +1401,51 @@ export declare const defaultConfig: {
         styleCompat: "web";
         selectionStyles: typeof import("./v6-base").selectionStyles;
     };
+    sizing: {
+        readonly default: 'md';
+        readonly sizes: {
+            readonly xs: {
+                readonly fontSize: 'xs';
+                readonly controlFontSize: 'xs';
+                readonly paddingInline: '2';
+                readonly paddingBlock: '1';
+                readonly gap: '1';
+                readonly radius: 'sm';
+            };
+            readonly sm: {
+                readonly fontSize: 'sm';
+                readonly controlFontSize: 'sm';
+                readonly paddingInline: '3';
+                readonly paddingBlock: '1.5';
+                readonly gap: '1.5';
+                readonly radius: 'md';
+            };
+            readonly md: {
+                readonly fontSize: 'sm';
+                readonly controlFontSize: 'base';
+                readonly paddingInline: '4';
+                readonly paddingBlock: '2';
+                readonly gap: '2';
+                readonly radius: 'md';
+            };
+            readonly lg: {
+                readonly fontSize: 'base';
+                readonly controlFontSize: 'lg';
+                readonly paddingInline: '6';
+                readonly paddingBlock: '2';
+                readonly gap: '2';
+                readonly radius: 'md';
+            };
+            readonly xl: {
+                readonly fontSize: 'lg';
+                readonly controlFontSize: 'xl';
+                readonly paddingInline: '8';
+                readonly paddingBlock: '2.5';
+                readonly gap: '2.5';
+                readonly radius: 'lg';
+            };
+        };
+    };
 } & {
     themes: {
         dark: Theme & {};

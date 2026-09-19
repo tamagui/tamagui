@@ -51,6 +51,11 @@ export {
 export { normalizeColor } from './helpers/normalizeColor'
 export { normalizeStyle } from './helpers/normalizeStyle'
 export { resolveTextMetrics } from './helpers/nativeTextMetrics'
+export {
+  defaultSizing,
+  resolveSizing,
+  type ResolvedSizing,
+} from './helpers/resolveSizing'
 export { containsThemeRef, themeRefKey } from './helpers/themeRef'
 export { getStyleTags } from './helpers/wrapStyleTags'
 
@@ -96,6 +101,7 @@ export type {
   Color,
   ColorScheme,
   ColorTokens,
+  ComponentSize,
   CreateTamaguiConfig,
   CreateTamaguiProps,
   DebugProp,
@@ -117,6 +123,7 @@ export type {
   FontWeightTokens,
   Fonts,
   GenericFont,
+  GenericSizing,
   GenericStackVariants,
   GenericTamaguiConfig,
   GenericTextVariants,
@@ -157,6 +164,7 @@ export type {
   Shorthands,
   Size,
   SizeKeys,
+  SizeRecipe,
   SizeTokens,
   Space,
   SpaceTokens,

@@ -923,6 +923,7 @@ export type CreateTamaguiConfig<
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
   H extends GenericTamaguiSettings = GenericTamaguiSettings,
+  S extends GenericSizing = GenericSizing,
   // preserve the raw animation driver keys ('default' | 'css' | etc)
   // defaults to string so generic TamaguiInternalConfig accepts any driver keys
   AnimDriverKeys extends string = string,
@@ -947,6 +948,7 @@ export type CreateTamaguiConfig<
   // phantom type for preserving driver keys - never set at runtime, only for type inference
   animationDriverKeys?: AnimDriverKeys
   settings: H
+  sizing: S
 }
 
 type GetLanguagePostfix<Set> = Set extends string
@@ -973,7 +975,7 @@ type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>
 //   body_en: any
 // }>['fonts']
 
-type ConfProps<A, B, C, D, E, F, I, V = undefined> = {
+type ConfProps<A, B, C, D, E, F, I, S, V = undefined> = {
   tokens?: A
   themes?: B
   shorthands?: C
@@ -981,6 +983,7 @@ type ConfProps<A, B, C, D, E, F, I, V = undefined> = {
   animations?: E
   fonts?: F
   settings?: I
+  sizing?: S
   variables?: V
 }
 
@@ -1046,6 +1049,7 @@ export type InferTamaguiConfig<Conf> =
     infer E,
     infer F,
     infer H,
+    infer S,
     infer V
   >
     ? TamaguiInternalConfig<
@@ -1056,6 +1060,7 @@ export type InferTamaguiConfig<Conf> =
         ExtractAnimationConfig<E>,
         F extends GenericFonts ? F : EmptyFonts,
         H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings,
+        S extends GenericSizing ? S : GenericSizing,
         ExtractAnimationDriverKeys<E>
       >
     : unknown
@@ -1420,6 +1425,46 @@ export interface GenericTamaguiSettings {
   onlyShorthandStyleProps?: boolean
 }
 
+/** one rung of the control ladder: token keys only, never pixels */
+export type SizeRecipe = {
+  fontSize: string
+  /**
+   * the type-scale key the square controls (checkbox, radio, switch) size
+   * from. Usually the rung's own name, but text deliberately steps down at
+   * `md`/`lg` so buttons are not chunky while the squares stay on-scale.
+   */
+  controlFontSize: string
+  paddingInline: string
+  paddingBlock: string
+  gap: string
+  radius: string
+}
+
+/**
+ * the user-configurable control ladder. Rung names become the accepted
+ * `size` values (see ComponentSize); the px derivations in resolveSizing are
+ * fixed formulas over the rung's tokens.
+ */
+export type GenericSizing = {
+  default: string
+  sizes: Record<string, SizeRecipe>
+}
+
+/**
+ * the config's control size names: the default ladder plus any custom rungs
+ * from `sizing.sizes`. Stays the five literals (never `string`) when no
+ * custom config is registered.
+ */
+export type ComponentSize =
+  | 'xs'
+  | 'sm'
+  | 'md'
+  | 'lg'
+  | 'xl'
+  | (string extends keyof TamaguiConfig['sizing']['sizes']
+      ? never
+      : Extract<keyof TamaguiConfig['sizing']['sizes'], string>)
+
 export type TamaguiSettings = TamaguiConfig['settings']
 
 export type BaseStyleProps = {
@@ -1471,6 +1516,13 @@ export type CreateTamaguiProps = {
   variables?: GenericVariables
 
   settings?: Partial<GenericTamaguiSettings>
+
+  /**
+   * the control size ladder: rung names become the accepted `size` values.
+   * Spread `defaultSizing` and override `sizes` to add or retune rungs; the
+   * px derivations are fixed formulas over each rung's tokens.
+   */
+  sizing?: GenericSizing
 }
 
 export type GetCSS = (opts?: {
@@ -1488,11 +1540,12 @@ export type TamaguiInternalConfig<
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
   G extends GenericTamaguiSettings = GenericTamaguiSettings,
+  S extends GenericSizing = GenericSizing,
   // preserve the raw animation driver keys ('default' | 'css' | etc)
   // defaults to string so generic TamaguiInternalConfig accepts any driver keys
   AnimDriverKeys extends string = string,
 > = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> &
-  Omit<CreateTamaguiConfig<A, B, C, D, E, F, G, AnimDriverKeys>, 'tokens'> & {
+  Omit<CreateTamaguiConfig<A, B, C, D, E, F, G, S, AnimDriverKeys>, 'tokens'> & {
     // TODO need to make it this but this breaks types, revisit
     // animations: E //AnimationDriver<E>
     tokens: Tokenify<A>
@@ -1507,6 +1560,7 @@ export type TamaguiInternalConfig<
     reactNative?: any
     fontSizeTokens: Set<string>
     settings: Omit<GenericTamaguiSettings, keyof G> & G
+    sizing: Omit<GenericSizing, keyof S> & S
     defaultFont?: string
     defaultFontToken: `${string}`
     // multi-driver animation config (e.g., { default: motionDriver, css: cssDriver })
@@ -3337,6 +3391,7 @@ export type StyledDynamicEnv = {
   fonts: TamaguiConfig['fonts']
   tokens: TokensParsed
   theme: Themes extends { [key: string]: infer B } ? B : unknown
+  sizing: GenericSizing
   fontFamily?: FontFamilyTokens
   font?: Font
 }

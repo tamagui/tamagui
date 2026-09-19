@@ -1,6 +1,7 @@
 // the aligned v6 base: Tailwind-aligned shorthands, scales, fonts, media and settings.
 // colors and themes are deliberately separate so createV6Config can accept any pack.
 import { shorthands } from '@tamagui/shorthands/v6'
+import { defaultSizing } from '@tamagui/web'
 import type { CreateTamaguiProps } from '@tamagui/web'
 import { fonts as systemFonts } from './fonts'
 import { media } from './media'
@@ -18,6 +19,7 @@ import {
 } from '@tamagui/style-grammar/v6-themes'
 
 export { shorthands }
+export { defaultSizing }
 export { createSystemFont } from './fonts'
 export { breakpoints, media, mediaQueryDefaultActive } from './media'
 export { tailwindSource } from './v6-tailwind-scales.generated'
@@ -233,6 +235,7 @@ const alignedConfig = {
   shorthands,
   fonts,
   settings,
+  sizing: defaultSizing,
 }
 
 /** Compose the aligned v6 base with a colors pack into a createTamagui-ready config. */

@@ -3,6 +3,7 @@ import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
 import { defaultAnimationDriver } from './helpers/defaultAnimationDriver'
 import { resolveAnimationDriver } from './helpers/resolveAnimationDriver'
+import { defaultSizing } from './helpers/resolveSizing'
 import {
   buildCSSRuleSets,
   createFontCSS,
@@ -288,6 +289,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     animations: resolvedDriver ?? defaultAnimationDriver,
     animationDrivers,
     settings: settingsIn,
+    sizing: { ...defaultSizing, ...configIn.sizing },
     tokens: tokens as any,
     // vite made this into a function if it wasn't set
     shorthands,

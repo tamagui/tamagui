@@ -12,7 +12,7 @@ export declare function styledDynamic<Val>(): StyledDynamicProp<Val>;
 export declare function styledDynamic<Val>(fn: (value: Val, env: StyledDynamicEnv) => Record<string, any> | null | undefined): StyledDynamicFn<Val>;
 /**
  * the env for `styled.dynamic` callbacks and `.resolve` resolvers: tokens,
- * theme, fonts, and the active font. Built once per style pass.
+ * theme, fonts, sizing, and the active font. Built once per style pass.
  */
 export declare function getDynamicEnv(styleState: GetStyleState): StyledDynamicEnv;
 //# sourceMappingURL=styledDynamic.d.ts.map
