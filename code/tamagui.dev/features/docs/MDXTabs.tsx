@@ -10,7 +10,7 @@ import type { TabsProps, TabsTabProps } from 'tamagui'
 import { Paragraph, Tabs, XStack, style, styled, withStaticProperties } from 'tamagui'
 import { type Href, useLocalSearchParams, usePathname, useRouter } from 'one'
 
-const codeSyntaxChangeEvent = 'docs-code-syntax-change'
+export const codeSyntaxChangeEvent = 'docs-code-syntax-change'
 const MDXTabsContext = createContext({ codeSyntax: false, isTailwind: false })
 const MDXTabsSearchContext = createContext('')
 const codeTabActiveStyle = style({

@@ -1,20 +1,83 @@
 import { Check, ChevronDown } from '@tamagui/lucide-icons-2'
-import { type Href, router, usePathname, useSearchParams } from 'one'
-import React from 'react'
-import { createPortal } from 'react-dom'
+import { type Href, router, usePathname } from 'one'
+import { useEffect, useState } from 'react'
 import { Paragraph, Select, XStack, YStack } from 'tamagui'
+import { Link } from '~/components/Link'
+import { RovingTabs } from '~/components/RovingTabs'
+import { codeSyntaxChangeEvent } from './MDXTabs'
 import {
   docsProductVersions,
   docsSyntaxes,
+  docsSyntaxDescriptions,
   docsSyntaxLabels,
+  getDocsSyntax,
+  getDocsSyntaxPath,
   getDocsVersionHref,
   getDocsVersionState,
-  type DocsProductVersion,
   type DocsSyntax,
   type DocsVersionFrontmatter,
 } from './docsVersion'
 
-export function DocsVersionPicker({
+// The live URL query (?version=, ?syntax=typed). One's useSearchParams only
+// carries route params, never the query string, and reading window.location in
+// render would split SSR from hydration — so the first render (server +
+// hydrating client) uses the initial value and an effect syncs the live query
+// after that. Runs after every render so query-only navigations (version links
+// change only ?version=) are picked up; setting identical state bails out.
+function useDocsQuery(initialSearch = '') {
+  const [query, setQuery] = useState(initialSearch)
+  useEffect(() => {
+    const sync = () => setQuery(window.location.search.slice(1))
+    sync()
+    window.addEventListener('popstate', sync)
+    // the String/Typed code tabs rewrite ?syntax= without navigating
+    window.addEventListener(codeSyntaxChangeEvent, sync)
+    return () => {
+      window.removeEventListener('popstate', sync)
+      window.removeEventListener(codeSyntaxChangeEvent, sync)
+    }
+  })
+  return query
+}
+
+// the 3-mode syntax switch. renders inline (no portal) from the pathname alone,
+// so the server and the hydrated client output the same tabs.
+export function DocsSyntaxPicker() {
+  const pathname = usePathname()
+  const query = useDocsQuery()
+  const syntax = getDocsSyntax(pathname)
+
+  const getSyntaxHref = (nextSyntax: DocsSyntax) => {
+    const nextPath = getDocsSyntaxPath(pathname, nextSyntax)
+    return query ? `${nextPath}?${query}` : nextPath
+  }
+
+  const setSyntax = (nextSyntax: string) => {
+    router.push(getSyntaxHref(nextSyntax as DocsSyntax) as Href)
+  }
+
+  return (
+    <RovingTabs
+      ariaLabel="Docs syntax"
+      testID="docs-syntax"
+      items={docsSyntaxes.map((value) => ({
+        value,
+        label: docsSyntaxLabels[value],
+        title: docsSyntaxDescriptions[value],
+        href: getSyntaxHref(value),
+      }))}
+      value={syntax}
+      onValueChange={setSyntax}
+      textSize="1"
+      panelId="docs-syntax-panel"
+    />
+  )
+}
+
+// product-version links. real <a> elements (modified-clicks work, no JS
+// needed). the loader-provided search keeps the first render (server +
+// hydrating client) correct; the live query syncs after that.
+export function DocsVersionLinks({
   frontmatter,
   initialSearch,
 }: {
@@ -22,38 +85,11 @@ export function DocsVersionPicker({
   initialSearch?: string
 }) {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const [hydrated, setHydrated] = React.useState(false)
-  const [searchString, setSearchString] = React.useState(initialSearch ?? '')
-  const [pendingSearch, setPendingSearch] = React.useState<string | null>(null)
-
-  React.useEffect(() => {
-    setHydrated(true)
-    setSearchString(window.location.search.slice(1))
-  }, [])
-
-  React.useEffect(() => {
-    if (!hydrated) return
-    const currentSearch = window.location.search.slice(1)
-    if (pendingSearch === null) {
-      setSearchString(currentSearch)
-    } else if (pendingSearch === currentSearch) {
-      setPendingSearch(null)
-    }
-  }, [hydrated, pathname, pendingSearch, searchParams])
-
-  React.useEffect(() => {
-    const syncSearch = () => {
-      setPendingSearch(null)
-      setSearchString(window.location.search.slice(1))
-    }
-    window.addEventListener('popstate', syncSearch)
-    return () => window.removeEventListener('popstate', syncSearch)
-  }, [])
+  const query = useDocsQuery(initialSearch)
 
   const state = getDocsVersionState({
     pathname,
-    search: new URLSearchParams(searchString),
+    search: new URLSearchParams(query),
     frontmatter,
   })
 
@@ -62,50 +98,27 @@ export function DocsVersionPicker({
 
   if (!isDocsPath) return null
 
-  const navigate = (href: string) => {
-    const nextSearch = new URL(href, window.location.origin).search.slice(1)
-    setPendingSearch(nextSearch)
-    setSearchString(nextSearch)
-    router.push(href as Href)
-  }
-
-  const setVersion = (productVersion: string) => {
-    navigate(
-      getDocsVersionHref({
-        state,
-        productVersion: productVersion as DocsProductVersion,
-      })
-    )
-  }
-
-  const setSyntax = (syntax: string) => {
-    navigate(getDocsVersionHref({ state, syntax: syntax as DocsSyntax }))
-  }
-
   return (
     <YStack gap="2" width="100%">
-      <XStack gap="1" items="center" width="100%">
-        <PickerSelect
-          label="Version"
-          testID="docs-version"
-          value={state.productVersion}
-          items={docsProductVersions.map((version) => ({
-            value: version,
-            label: version,
-          }))}
-          onValueChange={setVersion}
-        />
-
-        <PickerSelect
-          label="Syntax"
-          testID="docs-syntax"
-          value={state.syntax}
-          items={docsSyntaxes.map((syntax) => ({
-            value: syntax,
-            label: docsSyntaxLabels[syntax],
-          }))}
-          onValueChange={setSyntax}
-        />
+      <XStack gap="3" items="center">
+        {docsProductVersions.map((version) => (
+          <Link
+            asChild
+            key={version}
+            href={getDocsVersionHref({ state, productVersion: version }) as Href}
+          >
+            <Paragraph
+              render="a"
+              size="2"
+              color={version === state.productVersion ? 'color-10' : 'color-7'}
+              cursor="pointer"
+              textDecorationLine="none"
+              aria-current={version === state.productVersion ? 'page' : undefined}
+            >
+              {version}
+            </Paragraph>
+          </Link>
+        ))}
       </XStack>
 
       {!state.isComponentDoc && !state.hasArchivedContent && (
@@ -116,18 +129,6 @@ export function DocsVersionPicker({
       )}
     </YStack>
   )
-}
-
-export function DocsVersionPickerPortal(
-  props: React.ComponentProps<typeof DocsVersionPicker>
-) {
-  const [target, setTarget] = React.useState<HTMLElement | null>(null)
-
-  React.useEffect(() => {
-    setTarget(document.getElementById('docs-version-picker-slot'))
-  }, [])
-
-  return target ? createPortal(<DocsVersionPicker {...props} />, target) : null
 }
 
 export function PickerSelect({

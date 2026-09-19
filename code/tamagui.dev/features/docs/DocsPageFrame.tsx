@@ -1,13 +1,12 @@
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons-2'
-import type { Href } from 'one'
+import { usePathname, type Href } from 'one'
 import type { ReactNode } from 'react'
 import { Paragraph, View, XStack, YStack } from 'tamagui'
 import { Container } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { DocsQuickNav, type Heading } from './DocsQuickNav'
 import { MDXTabsSearchProvider } from './MDXTabs'
-import { DocsVersionPickerPortal } from './DocsVersionPicker'
-import type { DocsVersionFrontmatter } from './docsVersion'
+import { getDocsSyntax, type DocsVersionFrontmatter } from './docsVersion'
 
 type DocsPageFrameProps = {
   children: ReactNode
@@ -28,12 +27,20 @@ export function DocsPageFrame({
   frontmatter,
   initialSearch,
 }: DocsPageFrameProps) {
+  // the syntax tabs switch this article's code variant, so it is their
+  // tabpanel (associated via aria-controls on the tabs, labelled by the
+  // selected tab). derived from the pathname: SSR-stable.
+  const syntax = getDocsSyntax(usePathname())
   return (
     <>
-      <DocsVersionPickerPortal frontmatter={frontmatter} initialSearch={initialSearch} />
       {/* main content */}
       <YStack render="main" flex={1} minW={0} flexBasis="auto" py="8" px="4 gtSm:6">
-        <YStack render="article">
+        <YStack
+          render="article"
+          role="tabpanel"
+          id="docs-syntax-panel"
+          aria-labelledby={`docs-syntax-${syntax}-tab`}
+        >
           <Container px={0} maxW={860} position="relative">
             <MDXTabsSearchProvider search={initialSearch}>
               {children}
@@ -141,7 +148,11 @@ export function DocsPageFrame({
       </YStack>
 
       {/* right sidebar - sticky */}
-      <DocsQuickNav headings={headings} />
+      <DocsQuickNav
+        headings={headings}
+        frontmatter={frontmatter}
+        initialSearch={initialSearch}
+      />
     </>
   )
 }

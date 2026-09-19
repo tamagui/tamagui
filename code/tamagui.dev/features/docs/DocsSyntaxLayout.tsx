@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { ScrollView } from 'react-native'
 import { View, XStack, YStack } from 'tamagui'
 import { DocsMenuContents } from './DocsMenuContents'
+import { DocsSyntaxPicker } from './DocsVersionPicker'
 import { Footer } from '../site/Footer'
 
 export function DocsSyntaxLayout({ children }: { children: ReactNode }) {
@@ -21,7 +22,9 @@ export function DocsSyntaxLayout({ children }: { children: ReactNode }) {
           >
             <ScrollView showsVerticalScrollIndicator={false}>
               <YStack pt={36} pb="18" px="2" gap="4">
-                <View id="docs-version-picker-slot" px="2" />
+                <View px="2">
+                  <DocsSyntaxPicker />
+                </View>
                 <DocsMenuContents />
               </YStack>
             </ScrollView>
