@@ -55,7 +55,7 @@ export declare const RadioGroupItem: import("react").FunctionComponent<Omit<impo
     activeTheme?: string | null;
 }, "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     disabled?: boolean | undefined;
-    size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
+    size?: RadioGroupSize | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     ref?: import("react").Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
 }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
@@ -69,7 +69,7 @@ export declare const RadioGroupItem: import("react").FunctionComponent<Omit<impo
     activeTheme?: string | null;
 }, import("@tamagui/core").StackStyleBase, {
     disabled?: boolean | undefined;
-    size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
+    size?: RadioGroupSize | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         disabled?: boolean | undefined;
@@ -82,7 +82,7 @@ export declare const RadioGroupItem: import("react").FunctionComponent<Omit<impo
         activeTheme?: string | null;
     }, import("@tamagui/core").StackStyleBase, {
         disabled?: boolean | undefined;
-        size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
+        size?: RadioGroupSize | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 };
 export declare const RadioGroupIndicator: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
@@ -151,7 +151,7 @@ export declare const RadioGroup: import("react").FunctionComponent<Omit<import("
         activeTheme?: string | null;
     }, "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         disabled?: boolean | undefined;
-        size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
+        size?: RadioGroupSize | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         ref?: import("react").Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
     }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
@@ -165,7 +165,7 @@ export declare const RadioGroup: import("react").FunctionComponent<Omit<import("
         activeTheme?: string | null;
     }, import("@tamagui/core").StackStyleBase, {
         disabled?: boolean | undefined;
-        size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
+        size?: RadioGroupSize | undefined;
     }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
             disabled?: boolean | undefined;
@@ -178,7 +178,7 @@ export declare const RadioGroup: import("react").FunctionComponent<Omit<import("
             activeTheme?: string | null;
         }, import("@tamagui/core").StackStyleBase, {
             disabled?: boolean | undefined;
-            size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
+            size?: RadioGroupSize | undefined;
         }, import("@tamagui/core").StaticConfigPublic];
     };
     Indicator: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {

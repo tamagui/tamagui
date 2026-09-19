@@ -11,7 +11,7 @@ export declare const CheckboxFrame: import("react").FunctionComponent<Omit<impor
 }, "active" | "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
     disabled?: boolean | undefined;
-    size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
+    size?: CheckboxSize | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     ref?: import("react").Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
 }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "disabled" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
@@ -25,7 +25,7 @@ export declare const CheckboxFrame: import("react").FunctionComponent<Omit<impor
 }, import("@tamagui/core").StackStyleBase, {
     active?: boolean | undefined;
     disabled?: boolean | undefined;
-    size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
+    size?: CheckboxSize | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "disabled" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         active?: boolean | undefined;
@@ -38,7 +38,7 @@ export declare const CheckboxFrame: import("react").FunctionComponent<Omit<impor
     }, import("@tamagui/core").StackStyleBase, {
         active?: boolean | undefined;
         disabled?: boolean | undefined;
-        size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
+        size?: CheckboxSize | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 };
 export declare const CheckboxIndicator: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
@@ -81,7 +81,7 @@ export declare const Checkbox: import("react").FunctionComponent<Omit<import("@t
 }, "active" | "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
     disabled?: boolean | undefined;
-    size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
+    size?: CheckboxSize | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     ref?: import("react").Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
 }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "disabled" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
@@ -95,7 +95,7 @@ export declare const Checkbox: import("react").FunctionComponent<Omit<import("@t
 }, import("@tamagui/core").StackStyleBase, {
     active?: boolean | undefined;
     disabled?: boolean | undefined;
-    size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
+    size?: CheckboxSize | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "disabled" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         active?: boolean | undefined;
@@ -108,7 +108,7 @@ export declare const Checkbox: import("react").FunctionComponent<Omit<import("@t
     }, import("@tamagui/core").StackStyleBase, {
         active?: boolean | undefined;
         disabled?: boolean | undefined;
-        size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
+        size?: CheckboxSize | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 } & {
     Indicator: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{

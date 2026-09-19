@@ -8,6 +8,7 @@ import {
   type ComponentSize,
   createStyledHOC,
   type GetProps,
+  resolveSizing,
   styled,
   withStaticProperties,
 } from '@tamagui/core'
@@ -25,47 +26,46 @@ import {
 
 export type ListItemSize = ComponentSize | boolean
 
-const listItemFrameSize = {
-  xs: { paddingInline: '2', paddingBlock: '1', gap: '1' },
-  sm: { paddingInline: '3', paddingBlock: '1.5', gap: '1.5' },
-  md: { paddingInline: '4', paddingBlock: '2', gap: '2' },
-  lg: { paddingInline: '6', paddingBlock: '2', gap: '2' },
-  xl: { paddingInline: '8', paddingBlock: '2.5', gap: '2.5' },
-} as const
-
-const listItemTextSize = {
-  xs: { fontSize: 'xs', lineHeight: 'xs' },
-  sm: { fontSize: 'sm', lineHeight: 'sm' },
-  md: { fontSize: 'sm', lineHeight: 'sm' },
-  lg: { fontSize: 'base', lineHeight: 'base' },
-  xl: { fontSize: 'lg', lineHeight: 'lg' },
-} as const
-
-// the subtitle sits one step below the title
-const listItemSubtitleSize = {
-  xs: { fontSize: 'xs', lineHeight: 'xs' },
-  sm: { fontSize: 'xs', lineHeight: 'xs' },
-  md: { fontSize: 'sm', lineHeight: 'sm' },
-  lg: { fontSize: 'sm', lineHeight: 'sm' },
-  xl: { fontSize: 'base', lineHeight: 'base' },
-} as const
-
-const listItemIconSize = {
-  xs: 12,
-  sm: 16,
-  md: 16,
-  lg: 16,
-  xl: 20,
-} as const
-
-// icon px for an explicit size: numbers pass through, skin size names read
-// the table, anything else is the default
-const resolveListItemIconPx = (size: unknown): number | undefined => {
-  if (typeof size === 'number') return size
-  if (typeof size === 'string' && size in listItemIconSize) {
-    return listItemIconSize[size as keyof typeof listItemIconSize]
+const getListItemFrameSize = styled.dynamic<ListItemSize>((val, env) => {
+  const sizing = resolveSizing(val, env)
+  if (!sizing) return
+  return {
+    paddingInline: sizing.paddingInline,
+    paddingBlock: sizing.paddingBlock,
+    gap: sizing.gap,
   }
-  return undefined
+})
+
+const getListItemTextSize = styled.dynamic<ListItemSize>((val, env) => {
+  const sizing = resolveSizing(val, env)
+  if (!sizing) return
+  return {
+    fontSize: sizing.fontSize,
+    lineHeight: sizing.lineHeight,
+  }
+})
+
+// the subtitle sits one step below the title: the previous rung's font key,
+// or the rung's own at the bottom of the ladder
+const getListItemSubtitleSize = styled.dynamic<ListItemSize>((val, env) => {
+  const sizing = resolveSizing(val, env)
+  if (!sizing) return
+  const names = Object.keys(env.sizing.sizes)
+  const prev = names[Math.max(0, names.indexOf(sizing.name) - 1)]
+  const prevKey = prev != null ? env.sizing.sizes[prev]?.fontSize : undefined
+  const key = prevKey ?? sizing.fontSize
+  return {
+    fontSize: key,
+    lineHeight: key,
+  }
+})
+
+// icon px for an explicit size: numbers pass through, names read the ladder,
+// anything else is the default rung
+const listItemIconPx = (size: unknown, scaleIcon = 1): number => {
+  if (typeof size === 'number') return size * scaleIcon
+  const icon = resolveSizing(size as ListItemSize)?.icon ?? resolveSizing(undefined).icon
+  return icon * scaleIcon
 }
 
 // the additive-border "outlined" appearance (formerly themeableVariantStyles.outlined
@@ -85,10 +85,7 @@ export const ListItemFrame = styled(ListItemBehaviorFrame, {
   cursor: 'default',
 
   variants: {
-    size: {
-      ...listItemFrameSize,
-      true: listItemFrameSize.md,
-    },
+    size: getListItemFrameSize,
 
     variant: {
       outlined,
@@ -116,10 +113,7 @@ export const ListItemText = styled(ListItemBehaviorText, {
   context: ListItemContext,
   displayName: 'ListItemText',
   variants: {
-    size: {
-      ...listItemTextSize,
-      true: listItemTextSize.md,
-    },
+    size: getListItemTextSize,
   } as const,
   defaultVariants: {
     size: 'md',
@@ -130,10 +124,7 @@ export const ListItemTitle = styled(ListItemBehaviorTitle, {
   context: ListItemContext,
   displayName: 'ListItemTitle',
   variants: {
-    size: {
-      ...listItemTextSize,
-      true: listItemTextSize.md,
-    },
+    size: getListItemTextSize,
   } as const,
   defaultVariants: {
     size: 'md',
@@ -144,10 +135,7 @@ export const ListItemSubtitle = styled(ListItemBehaviorSubtitle, {
   context: ListItemContext,
   displayName: 'ListItemSubtitle',
   variants: {
-    size: {
-      ...listItemSubtitleSize,
-      true: listItemSubtitleSize.md,
-    },
+    size: getListItemSubtitleSize,
   } as const,
   defaultVariants: {
     size: 'md',
@@ -161,8 +149,7 @@ export const ListItemIcon = ({
 }: ListItemBehaviorIconProps) => {
   const context = ListItemContext.useStyledContext()
   const getThemedIcon = useGetThemedIcon({
-    size:
-      (resolveListItemIconPx(size ?? context.size) ?? listItemIconSize.md) * scaleIcon,
+    size: listItemIconPx(size ?? context.size, scaleIcon),
     color: context.color,
   })
 
@@ -177,8 +164,7 @@ const ListItemComponent = createStyledHOC(
     const contextSize = ListItemContext.useStyledContext()?.size
     const size = props.size ?? contextSize ?? 'md'
     const scaleIcon = props.scaleIcon ?? 1
-    const iconSize =
-      props.iconSize ?? (resolveListItemIconPx(size) ?? listItemIconSize.md) * scaleIcon
+    const iconSize = props.iconSize ?? listItemIconPx(size, scaleIcon)
     const { props: listItemProps } = useListItem({
       ...props,
       iconSize,

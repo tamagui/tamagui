@@ -106,12 +106,6 @@ export type UseListItemProps<Props extends ListItemBehaviorProps> = Omit<Omit<Pr
     children: ReactNode;
     color?: Props['color'];
 };
-/**
- * ListItem behavior: theming the icon props and assembling title, subtitle, and
- * children into the frame's single child. Flat text styles are handed directly
- * to generated text, while size and color still reach the parts through the
- * styled context.
- */
 export declare function useListItem<Props extends ListItemBehaviorProps>(propsIn: Props): {
     props: UseListItemProps<Props>;
 };

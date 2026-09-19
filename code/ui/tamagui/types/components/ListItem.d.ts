@@ -22,44 +22,44 @@ export declare const ListItemFrame: import("react").FunctionComponent<Omit<impor
     }, import("@tamagui/core").StaticConfigPublic];
 };
 export declare const ListItemText: import("react").FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "variant" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
-    size?: false | import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+    size?: string | number | boolean | undefined;
     variant?: "outlined" | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
     ref?: import("react").Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
 }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-    size?: false | import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+    size?: string | number | boolean | undefined;
     variant?: "outlined" | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: false | import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+        size?: string | number | boolean | undefined;
         variant?: "outlined" | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 };
 export declare const ListItemTitle: import("react").FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "variant" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
-    size?: false | import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+    size?: string | number | boolean | undefined;
     variant?: "outlined" | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
     ref?: import("react").Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
 }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-    size?: false | import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+    size?: string | number | boolean | undefined;
     variant?: "outlined" | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: false | import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+        size?: string | number | boolean | undefined;
         variant?: "outlined" | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 };
 export declare const ListItemSubtitle: import("react").FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "variant" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
-    size?: false | import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+    size?: string | number | boolean | undefined;
     variant?: "outlined" | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
     ref?: import("react").Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
 }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-    size?: false | import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+    size?: string | number | boolean | undefined;
     variant?: "outlined" | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: false | import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+        size?: string | number | boolean | undefined;
         variant?: "outlined" | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 };
@@ -342,44 +342,44 @@ export declare const ListItem: import("react").FunctionComponent<Omit<import("@t
     };
     Icon: typeof ListItemIcon;
     Subtitle: import("react").FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "variant" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
-        size?: false | import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+        size?: string | number | boolean | undefined;
         variant?: "outlined" | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
         ref?: import("react").Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
     }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: false | import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+        size?: string | number | boolean | undefined;
         variant?: "outlined" | undefined;
     }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-            size?: false | import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+            size?: string | number | boolean | undefined;
             variant?: "outlined" | undefined;
         }, import("@tamagui/core").StaticConfigPublic];
     };
     Text: import("react").FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "variant" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
-        size?: false | import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+        size?: string | number | boolean | undefined;
         variant?: "outlined" | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
         ref?: import("react").Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
     }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: false | import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+        size?: string | number | boolean | undefined;
         variant?: "outlined" | undefined;
     }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-            size?: false | import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+            size?: string | number | boolean | undefined;
             variant?: "outlined" | undefined;
         }, import("@tamagui/core").StaticConfigPublic];
     };
     Title: import("react").FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "variant" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
-        size?: false | import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+        size?: string | number | boolean | undefined;
         variant?: "outlined" | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
         ref?: import("react").Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
     }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: false | import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+        size?: string | number | boolean | undefined;
         variant?: "outlined" | undefined;
     }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-            size?: false | import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+            size?: string | number | boolean | undefined;
             variant?: "outlined" | undefined;
         }, import("@tamagui/core").StaticConfigPublic];
     };

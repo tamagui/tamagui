@@ -2,8 +2,15 @@ import { getThemedIconSize, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { YStack } from '@tamagui/stacks'
 import type { TextParentStyles } from '@tamagui/text'
 import { SizableText, textParentProps, wrapChildrenInText } from '@tamagui/text'
-import type { ColorTokens, GetProps } from '@tamagui/web'
-import { createStyledContext, splitStyleProps, styled, View } from '@tamagui/web'
+import type { ColorTokens, ComponentSize, GetProps } from '@tamagui/web'
+import {
+  createStyledContext,
+  getConfig,
+  resolveSizing,
+  splitStyleProps,
+  styled,
+  View,
+} from '@tamagui/web'
 import type { FunctionComponent, JSX, ReactNode } from 'react'
 
 type IconProp = JSX.Element | FunctionComponent<{ color?: any; size?: any }> | null
@@ -117,6 +124,18 @@ export type UseListItemProps<Props extends ListItemBehaviorProps> = Omit<
  * to generated text, while size and color still reach the parts through the
  * styled context.
  */
+// control names are not font keys ('md' is not on the type scale): translate
+// through the ladder before measuring. Numbers, booleans, and anything the
+// ladder does not name pass through to the font lookup as before.
+type IconSizeInput = string | number | boolean | null | undefined
+
+const toIconFontKey = (size: IconSizeInput): IconSizeInput => {
+  if (typeof size !== 'string') return size
+  const { sizing } = getConfig()
+  if (!sizing?.sizes?.[size]) return size
+  return resolveSizing(size as ComponentSize)?.fontSize ?? size
+}
+
 export function useListItem<Props extends ListItemBehaviorProps>(
   propsIn: Props
 ): { props: UseListItemProps<Props> } {
@@ -140,7 +159,10 @@ export function useListItem<Props extends ListItemBehaviorProps>(
   // prop is themed here, before the frame renders, so it reads them itself
   const context = ListItemContext.useStyledContext()
   const getThemedIcon = useGetThemedIcon({
-    size: getThemedIconSize(iconSize ?? propsIn.size ?? context.size ?? true, scaleIcon),
+    size: getThemedIconSize(
+      toIconFontKey(iconSize ?? propsIn.size ?? context.size ?? true),
+      scaleIcon
+    ),
     color: propsIn.color ?? context.color,
   })
 

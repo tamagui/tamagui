@@ -11,11 +11,22 @@ const testFont = createFont({
     1: 15,
     true: 18,
     10: 46,
+    // the control ladder resolves its geometry from these type keys
+    xs: 12,
+    sm: 14,
+    base: 16,
+    lg: 18,
+    xl: 20,
   },
   lineHeight: {
     1: 20,
     true: 24,
     10: 52,
+    xs: 16,
+    sm: 20,
+    base: 24,
+    lg: 28,
+    xl: 28,
   },
   transform: {},
   weight: {
