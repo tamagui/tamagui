@@ -1,9 +1,8 @@
-process.env.TAMAGUI_TARGET = 'web'
+process.env.TAMAGUI_TARGET = 'native'
 
-// getSize answers a key that is not in the size scale with the key itself, so
-// the track height arithmetic in ProgressFrame used to produce NaN. A NaN
-// height reads as no height, and Progress.Indicator asks for 100% of its
-// track, so the bar stopped being a bar and filled its container.
+// native twin of progress-size.web.test.tsx: the track height arithmetic is
+// shared, but on native a missing height measures the whole surface, so pin
+// the numbers on this target too.
 
 import { expect, test } from 'vitest'
 
@@ -18,6 +17,18 @@ const heightFor = (size: any) =>
   (simplifiedGetSplitStyles(ProgressFrame, { size }, { noClass: true }) as any).style
     ?.height
 
+test('named sizes render the track ladder', () => {
+  expect(heightFor('xs')).toBe(4)
+  expect(heightFor('sm')).toBe(6)
+  expect(heightFor('md')).toBe(9)
+  expect(heightFor('lg')).toBe(12)
+  expect(heightFor('xl')).toBe(16)
+})
+
+test('the default is the md rung', () => {
+  expect(heightFor(true)).toBe(heightFor('md'))
+})
+
 test('a size token keeps its track height', () => {
   expect(heightFor(true)).toBe(9)
   expect(heightFor('8')).toBe(8)
@@ -25,7 +36,7 @@ test('a size token keeps its track height', () => {
 })
 
 test('a size the scale cannot resolve falls back instead of going NaN', () => {
-  for (const size of ['sm', 'md', '$4', 'nonsense']) {
+  for (const size of ['$4', 'nonsense']) {
     expect(heightFor(size), `size=${size}`).toBe(heightFor(true))
   }
 })

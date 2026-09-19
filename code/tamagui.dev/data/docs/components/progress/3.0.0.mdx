@@ -65,8 +65,8 @@ Progress extends [YStack](/ui/stacks), getting [Tamagui standard props](/docs/in
     {
       name: 'size',
       required: false,
-      type: 'SizeTokens | number',
-      description: `Size token or pixels; sets the bar height.`,
+      type: `'xs' | 'sm' | 'md' | 'lg' | 'xl' | SizeTokens | number`,
+      description: `A named size ("xs" to "xl", default "md") is a row in the track height table; a size token or number keeps the historical quarter-scale height.`,
     },
     {
       name: 'value',

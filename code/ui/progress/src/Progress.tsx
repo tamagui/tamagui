@@ -1,7 +1,7 @@
 // forked from Radix UI
 // https://github.com/radix-ui/primitives/blob/main/packages/react/progress/src/Progress.tsx
 
-import type { GetProps } from '@tamagui/core'
+import type { GetProps, SizeTokens } from '@tamagui/core'
 import { createStyledHOC, getVariableValue, isWeb, styled } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
@@ -114,6 +114,52 @@ type ScopedProps<P> = P & { __scopeProgress?: Scope }
 
 type ProgressState = 'indeterminate' | 'complete' | 'loading'
 
+export type ProgressSize =
+  | 'xs'
+  | 'sm'
+  | 'md'
+  | 'lg'
+  | 'xl'
+  | SizeTokens
+  | number
+  | boolean
+
+// the track is a thin bar: named rungs on the xs-xl control ladder, like the
+// slider track. md is the historical default track (size token 36 at quarter
+// scale), so `true` and `md` agree and existing numeric sizes keep their px.
+const progressTrackHeight = {
+  xs: 4,
+  sm: 6,
+  md: 9,
+  lg: 12,
+  xl: 16,
+} as const
+
+const resolveProgressSize = (val: ProgressSize): number => {
+  if (typeof val === 'string' && val in progressTrackHeight) {
+    return progressTrackHeight[val as keyof typeof progressTrackHeight]
+  }
+  // getSize hands back the key itself when it is not in the size scale, so an
+  // unresolvable key would multiply to NaN here. A NaN height reads as no
+  // height at all, and the Indicator inside asks for 100% of it, so the track
+  // stops being a bar and fills whatever it is in. Fall back to the same token
+  // `true` uses.
+  const resolved = Number(getVariableValue(getSize(val === true ? 36 : val)))
+  const base = Number.isFinite(resolved)
+    ? resolved
+    : Number(getVariableValue(getSize(36)))
+  return Math.round(base * 0.25)
+}
+
+const getProgressSize = styled.dynamic<ProgressSize>((val) => {
+  const size = resolveProgressSize(val)
+  return {
+    height: size,
+    minWidth: size * 20,
+    width: '100%',
+  }
+})
+
 // Unstyled Progress frame: the clip (overflow hidden) + the size mechanism
 // (size-derived track height) only. The pill radius and theme background live in
 // the tamagui skin (code/ui/tamagui/src/components/Progress.tsx).
@@ -122,23 +168,7 @@ export const ProgressFrame = styled(YStack, {
   overflow: 'hidden',
 
   variants: {
-    size: styled.dynamic<any>((val) => {
-      // getSize hands back the key itself when it is not in the size scale, so
-      // a name like "sm" would multiply to NaN here. A NaN height reads as no
-      // height at all, and the Indicator inside asks for 100% of it, so the
-      // track stops being a bar and fills whatever it is in. Fall back to the
-      // same token `true` uses.
-      const resolved = Number(getVariableValue(getSize(val === true ? 36 : val)))
-      const base = Number.isFinite(resolved)
-        ? resolved
-        : Number(getVariableValue(getSize(36)))
-      const size = Math.round(base * 0.25)
-      return {
-        height: size,
-        minWidth: size * 20,
-        width: '100%',
-      }
-    }),
+    size: getProgressSize,
   } as const,
 })
 
