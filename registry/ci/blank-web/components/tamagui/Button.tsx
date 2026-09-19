@@ -32,9 +32,12 @@ export type ButtonSize = ComponentSize | boolean
 const ButtonContext = createStyledContext<{ size?: ButtonSize }>({ size: 'md' })
 
 // icon/px lookups outside the size variants: false opts out of the size
-// styles, so those paths read the default rung instead
-const buttonSizing = (size: ButtonSize | undefined, env?: SizingEnv): ResolvedSizing =>
-  resolveSizing(size, env) ?? resolveSizing(undefined, env)
+// styles, so those paths read the default rung instead. undefined when
+// neither the size nor the default rung resolves.
+const buttonSizing = (
+  size: ButtonSize | undefined,
+  env?: SizingEnv
+): ResolvedSizing | undefined => resolveSizing(size, env) ?? resolveSizing(undefined, env)
 
 const getButtonFrameSize = styled.dynamic<ButtonSize>((val, env) => {
   const sizing = resolveSizing(val, env)
@@ -105,8 +108,10 @@ const ButtonFrameBase = styled(ButtonBehaviorFrame, {
 
 export const ButtonFrame = ButtonFrameBase.resolve((props, env) => {
   if (!props.circular) return
+  const sizing = buttonSizing(props.size as ButtonSize, env)
+  if (!sizing) return
   // the control height plus the frame's 1px border on each side
-  const side = buttonSizing(props.size as ButtonSize, env).height + 2
+  const side = sizing.height + 2
   return {
     borderRadius: 1000,
     paddingHorizontal: 0,
@@ -138,7 +143,7 @@ export const ButtonIcon = ({ size, ...props }: ButtonBehaviorIconProps) => {
   return (
     <ButtonBehaviorIcon
       {...props}
-      size={size ?? getThemedIconSize(buttonSizing(context?.size).icon)}
+      size={size ?? getThemedIconSize(buttonSizing(context?.size)?.icon)}
     />
   )
 }
@@ -159,7 +164,7 @@ const ButtonComponent = createStyledHOC(
       'md') as ButtonSize
     const { props: buttonProps } = useButton(buttonBehaviorProps, {
       Text: ButtonText,
-      iconSize: getThemedIconSize(buttonSizing(size).icon),
+      iconSize: getThemedIconSize(buttonSizing(size)?.icon),
     })
 
     const button = (
