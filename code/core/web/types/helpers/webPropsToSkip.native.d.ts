@@ -99,7 +99,6 @@ export declare const webPropsToSkip: {
     onChange: number;
     onInput: number;
     onBeforeInput: number;
-    onScroll: number;
     onCopy: number;
     onCut: number;
     onPaste: number;
