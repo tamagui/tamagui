@@ -55,6 +55,7 @@ export {
   defaultSizing,
   resolveSizing,
   type ResolvedSizing,
+  type SizingEnv,
 } from './helpers/resolveSizing'
 export { containsThemeRef, themeRefKey } from './helpers/themeRef'
 export { getStyleTags } from './helpers/wrapStyleTags'

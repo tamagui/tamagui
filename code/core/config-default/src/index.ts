@@ -4,15 +4,21 @@ import { animations } from './animations'
 
 // basic fallback theme just to have compiler load in decent tate
 export function getDefaultTamaguiConfig(_platform: 'native' | 'web' = 'web') {
+  // the control ladder resolves its geometry from these type keys, so the
+  // fallback fonts carry the same tailwind scale v6 does
+  const typeSize = { xs: 12, sm: 14, base: 16, lg: 18, xl: 20 }
+  const typeLineHeight = { xs: 16, sm: 20, base: 24, lg: 28, xl: 28 }
   const headingFont = createFont({
     family: 'Heading',
     size: {
       1: 15,
       4: 15,
+      ...typeSize,
     },
     lineHeight: {
       1: 15,
       4: 15,
+      ...typeLineHeight,
     },
     transform: {},
     weight: {
@@ -31,10 +37,12 @@ export function getDefaultTamaguiConfig(_platform: 'native' | 'web' = 'web') {
     size: {
       1: 15,
       4: 15,
+      ...typeSize,
     },
     lineHeight: {
       1: 15,
       4: 15,
+      ...typeLineHeight,
     },
     transform: {},
     weight: {

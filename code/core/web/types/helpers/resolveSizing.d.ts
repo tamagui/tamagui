@@ -1,4 +1,11 @@
-import type { ComponentSize, StyledDynamicEnv } from '../types';
+import type { ComponentSize, Font, GenericSizing, TamaguiConfig, TokensParsed } from '../types';
+/** the env slice resolveSizing reads: a styled.dynamic env or hand-built */
+export type SizingEnv = {
+    sizing: GenericSizing;
+    fonts: TamaguiConfig['fonts'];
+    tokens: TokensParsed;
+    font?: Font;
+};
 /**
  * the default control ladder, transcribed from the Button frame/text tables
  * so the derived px are identical by construction. v6 re-exports this;
@@ -75,5 +82,7 @@ export type ResolvedSizing = {
  * pointing at missing tokens throw in development and degrade to the default
  * rung in production.
  */
-export declare const resolveSizing: (size: ComponentSize | boolean | undefined, env?: Pick<StyledDynamicEnv, 'sizing' | 'fonts' | 'tokens' | 'font'>) => ResolvedSizing | undefined;
+export declare function resolveSizing(size: false, env?: SizingEnv): undefined;
+export declare function resolveSizing(size: ComponentSize | true | undefined, env?: SizingEnv): ResolvedSizing;
+export declare function resolveSizing(size: ComponentSize | boolean | undefined, env?: SizingEnv): ResolvedSizing | undefined;
 //# sourceMappingURL=resolveSizing.d.ts.map

@@ -21,7 +21,7 @@ export { splitStyleProps, type SplitStylePropsFilter, type SplitStylePropsFilter
 export { normalizeColor } from './helpers/normalizeColor';
 export { normalizeStyle } from './helpers/normalizeStyle';
 export { resolveTextMetrics } from './helpers/nativeTextMetrics';
-export { defaultSizing, resolveSizing, type ResolvedSizing } from './helpers/resolveSizing';
+export { defaultSizing, resolveSizing, type ResolvedSizing, type SizingEnv, } from './helpers/resolveSizing';
 export { containsThemeRef, themeRefKey } from './helpers/themeRef';
 export { getStyleTags } from './helpers/wrapStyleTags';
 export { createFont } from './createFont';

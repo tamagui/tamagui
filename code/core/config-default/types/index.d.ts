@@ -141,10 +141,20 @@ export declare function getDefaultTamaguiConfig(_platform?: 'native' | 'web'): {
         heading: {
             family: string;
             size: {
+                xs: number;
+                sm: number;
+                base: number;
+                lg: number;
+                xl: number;
                 1: number;
                 4: number;
             };
             lineHeight: {
+                xs: number;
+                sm: number;
+                base: number;
+                lg: number;
+                xl: number;
                 1: number;
                 4: number;
             };
@@ -162,10 +172,20 @@ export declare function getDefaultTamaguiConfig(_platform?: 'native' | 'web'): {
         body: {
             family: string;
             size: {
+                xs: number;
+                sm: number;
+                base: number;
+                lg: number;
+                xl: number;
                 1: number;
                 4: number;
             };
             lineHeight: {
+                xs: number;
+                sm: number;
+                base: number;
+                lg: number;
+                xl: number;
                 1: number;
                 4: number;
             };

@@ -1,6 +1,21 @@
 import { getConfig } from '../config'
 import { getVariableValue } from '../createVariable'
-import type { ComponentSize, GenericSizing, SizeRecipe, StyledDynamicEnv } from '../types'
+import type {
+  ComponentSize,
+  Font,
+  GenericSizing,
+  SizeRecipe,
+  TamaguiConfig,
+  TokensParsed,
+} from '../types'
+
+/** the env slice resolveSizing reads: a styled.dynamic env or hand-built */
+export type SizingEnv = {
+  sizing: GenericSizing
+  fonts: TamaguiConfig['fonts']
+  tokens: TokensParsed
+  font?: Font
+}
 
 /**
  * the default control ladder, transcribed from the Button frame/text tables
@@ -83,10 +98,19 @@ const toPx = (value: unknown): number =>
  * pointing at missing tokens throw in development and degrade to the default
  * rung in production.
  */
-export const resolveSizing = (
+export function resolveSizing(size: false, env?: SizingEnv): undefined
+export function resolveSizing(
+  size: ComponentSize | true | undefined,
+  env?: SizingEnv
+): ResolvedSizing
+export function resolveSizing(
   size: ComponentSize | boolean | undefined,
-  env?: Pick<StyledDynamicEnv, 'sizing' | 'fonts' | 'tokens' | 'font'>
-): ResolvedSizing | undefined => {
+  env?: SizingEnv
+): ResolvedSizing | undefined
+export function resolveSizing(
+  size: ComponentSize | boolean | undefined,
+  env?: SizingEnv
+): ResolvedSizing | undefined {
   if (size === false) return undefined
   const conf = env?.fonts && env?.tokens ? undefined : getConfig()
   const sizing = { ...defaultSizing, ...(env?.sizing ?? conf?.sizing) }
