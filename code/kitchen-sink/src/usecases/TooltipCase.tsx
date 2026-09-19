@@ -5,6 +5,15 @@ export function TooltipCase() {
     <YStack flex={1} gap="8" p="4" bg="background">
       <TooltipComp />
 
+      <Tooltip focus={{ enabled: true }} delay={0} restMs={0}>
+        <Tooltip.Trigger data-testid="focus-tooltip-trigger">
+          <Button>focus tooltip</Button>
+        </Tooltip.Trigger>
+        <Tooltip.Content>
+          <Paragraph data-testid="focus-tooltip-content">focus tooltip content</Paragraph>
+        </Tooltip.Content>
+      </Tooltip>
+
       <TooltipSimple label="wtf">
         <Button>simple tool</Button>
       </TooltipSimple>
