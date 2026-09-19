@@ -15,17 +15,17 @@ then be forward-ported to v3-beta.
 | [#4152 Tooltip keyboard focus](https://github.com/tamagui/tamagui/issues/4152) | In merge queue as [#4222](https://github.com/tamagui/tamagui/pull/4222) | Reproduced on the webpack dev server. Floating focus/blur handlers were generated but lost during `asChild` composition; they are now composed on `PopoverTrigger`. Focus open/blur close regression passes, and related Tooltip suites pass 7/7. |
 | [#4217 Android Button disabled reset](https://github.com/tamagui/tamagui/issues/4217) | In merge queue as [#4223](https://github.com/tamagui/tamagui/pull/4223) | Preserves contributor @boiboif's authored fix from #4219 on a repository branch so required checks can run. Native regression passes 3/3. |
 
-## Fixed issues that are still open
+## Fixed issues closed during this pass
 
-These should be closed after a brief reporter-facing note rather than consuming
-RC work again.
+These were closed with a reporter-facing note and concrete regression evidence
+rather than consuming RC work again.
 
 | Issue | Current evidence | Recommendation |
 | --- | --- | --- |
-| [#4146 vertical Slider drifts after scrolling](https://github.com/tamagui/tamagui/issues/4146) | Main uses track-relative web pointer coordinates and has three browser regressions. All 3 passed against the dev server after rebuilding `@tamagui/slider`. | Close. |
-| [#4031 swapped forwarded ref receives no host](https://github.com/tamagui/tamagui/issues/4031) | Fixed by `26eb212569`; `composedRef.web.test.tsx` covers ref identity handoff. | Close. |
-| [#4000 Button `maxFontSizeMultiplier`](https://github.com/tamagui/tamagui/issues/4000) | Fixed by `1842ec2b55`, covered by native Button tests, and verified by the reporter. | Close. |
-| [#3314 Dialog accessibility](https://github.com/tamagui/tamagui/issues/3314) | Dialog content now exposes the dialog role/modal semantics; the follow-up reports a clean axe result and spec-compliant focus. | Close. |
+| [#4146 vertical Slider drifts after scrolling](https://github.com/tamagui/tamagui/issues/4146) | Main uses track-relative web pointer coordinates and has three browser regressions. All 3 passed against the dev server after rebuilding `@tamagui/slider`. | Closed. |
+| [#4031 swapped forwarded ref receives no host](https://github.com/tamagui/tamagui/issues/4031) | Fixed by `26eb212569`; `composedRef.web.test.tsx` covers ref identity handoff. | Closed. |
+| [#4000 Button `maxFontSizeMultiplier`](https://github.com/tamagui/tamagui/issues/4000) | Fixed by `1842ec2b55`, covered by native Button tests, and verified by the reporter. | Closed. |
+| [#3314 Dialog accessibility](https://github.com/tamagui/tamagui/issues/3314) | Dialog content now exposes the dialog role/modal semantics; the follow-up reports a clean axe result and spec-compliant focus. | Closed. |
 | [#3998 iOS Button `cursor` crash](https://github.com/tamagui/tamagui/issues/3998) | The internal Text cursor is web-gated and a native regression asserts it is not emitted. | Ask the reporter to confirm the broader Fabric-prop portion, then close if clean. |
 
 ## Must investigate before RC1
@@ -48,7 +48,6 @@ Ordered by release risk, not by age.
 ## RC1 recommendation
 
 Do not block RC1 on the full historical backlog. Block it on #4194 and on a
-current-tip result for #3996/#4165. Land the queued interaction fixes, close the
-four clearly fixed issues, and run one focused native Sheet/Reanimated/portal
-matrix. Forward-port each main commit independently to v3-beta and retain the
-same regression at the v3 layer.
+current-tip result for #3996/#4165. Land the queued interaction fixes and run one
+focused native Sheet/Reanimated/portal matrix. Forward-port each main commit
+independently to v3-beta and retain the same regression at the v3 layer.
