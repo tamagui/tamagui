@@ -244,6 +244,15 @@ describe('Web Alignment - Native Event Mapping', () => {
   })
 
   describe('RN event props still work (kept for cross-platform compatibility)', () => {
+    test('onScroll is passed through on native ScrollViews', () => {
+      const handler = () => {}
+      const result = getSplitStylesFor({
+        onScroll: handler,
+      })
+
+      expect(result.viewProps.onScroll).toBe(handler)
+    })
+
     test('onPress is passed through on native', () => {
       const handler = () => {}
       const result = getSplitStylesFor({
