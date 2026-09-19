@@ -601,6 +601,103 @@ describe('tamaguiToTailwind', () => {
   })
 
   describe('edge cases', () => {
+    test('rewrites html primitives to the package-selected Tailwind frontend', () => {
+      const input = `import { html } from 'tamagui'
+
+export const Groups = () => (
+  <html.div group>
+    <html.span color="gray group-hover:white" />
+  </html.div>
+)`
+      const output = tamaguiToTailwind(input, {
+        renameComponents: false,
+        rewriteImports: true,
+      })
+
+      expect(output).toContain(`from "@tamagui/tailwind"`)
+      expect(output).not.toContain(`from 'tamagui'`)
+      expect(output).toContain('<html.div group>')
+      expect(output).toContain('className="color-[gray] group-hover:color-[white]"')
+      expect(output).not.toContain('color="gray group-hover:white"')
+    })
+
+    test('can format rendered examples without retained-line gaps', () => {
+      const input = `import { html } from 'tamagui'
+
+export const Card = () => (
+  <html.article
+    padding="4"
+    borderRadius="lg"
+  >
+    <html.p color="color-11">Hello</html.p>
+  </html.article>
+)`
+      const output = tamaguiToTailwind(input, {
+        renameComponents: false,
+        rewriteImports: true,
+        retainLines: false,
+        tokens: {
+          space: { 4: 16 },
+          radius: { lg: 12 },
+          color: { 'color-11': '#111' },
+        },
+      })
+
+      expect(output).toContain('className="p-4 rounded-lg"')
+      expect(output).not.toContain('\n\n\n')
+    })
+
+    test('splits mixed imports without moving component-library bindings', () => {
+      const input = `import { Button, Text, View } from 'tamagui'
+export const Card = () => <View padding={16}><Button /><Text color="red">Hi</Text></View>`
+      const output = tamaguiToTailwind(input, {
+        renameComponents: false,
+        rewriteImports: true,
+      })
+
+      expect(output).toContain(`import { Button } from 'tamagui'`)
+      expect(output).toMatch(
+        /import \{ (?:Text, View|View, Text) \} from "@tamagui\/tailwind"/
+      )
+      expect(output).toContain('<View className="p-[16px]">')
+      expect(output).toContain('<Button />')
+    })
+
+    test('does not move a primitive used to create a regular styled component', () => {
+      const input = `import { styled, View } from 'tamagui'
+export const Card = styled(View, { padding: '4' })`
+
+      expect(
+        tamaguiToTailwind(input, {
+          renameComponents: false,
+          rewriteImports: true,
+        })
+      ).toBe(input)
+    })
+
+    test('does not add Tailwind classes to primitives from another frontend', () => {
+      const input = `import { View } from '@tamagui/web'
+export const Card = () => <View padding={16} />`
+
+      expect(
+        tamaguiToTailwind(input, {
+          renameComponents: false,
+          rewriteImports: true,
+        })
+      ).toBe(input)
+    })
+
+    test('does not emit Tailwind classes for unbound styled-library components', () => {
+      const input = `<XStack padding={16}><Button backgroundColor="red" /></XStack>`
+
+      expect(
+        tamaguiToTailwind(input, {
+          renameComponents: false,
+          rewriteImports: true,
+        })
+      ).toBe(input)
+    })
+
     test('non-jsx code passes through without crash', () => {
       const input = 'const x = 1 + 2'
       const output = tamaguiToTailwind(input)
