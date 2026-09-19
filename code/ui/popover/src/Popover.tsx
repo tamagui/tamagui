@@ -43,6 +43,7 @@ import {
   type PopperProps,
   PopperProvider,
   usePopperContext,
+  usePopperContextSlow,
 } from '@tamagui/popper'
 import { needsPortalRepropagation, Portal } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
@@ -382,6 +383,7 @@ export const PopoverTrigger = React.memo(
     function PopoverTrigger(props, forwardedRef) {
       const { scope, disablePressTrigger, ...rest } = props
       const triggerContext = usePopoverTriggerContext(scope)
+      const popperContext = usePopperContextSlow(scope)
       const triggerId = React.useId()
       const [open, setOpen] = React.useState(false)
       const anchorTo = triggerContext.anchorTo
@@ -424,7 +426,13 @@ export const PopoverTrigger = React.memo(
           })}
           onMouseEnter={composeEventHandlers(rest.onMouseEnter as any, activateSelf)}
           onPressIn={composeEventHandlers(rest.onPressIn as any, activateSelf)}
-          onFocus={composeEventHandlers(rest.onFocus as any, activateSelf)}
+          onFocus={composeEventHandlers(rest.onFocus as any, (event) => {
+            activateSelf()
+            popperContext.getReferenceProps?.({ ref: triggerElRef }).onFocus?.(event)
+          })}
+          onBlur={composeEventHandlers(rest.onBlur as any, (event) => {
+            popperContext.getReferenceProps?.({ ref: triggerElRef }).onBlur?.(event)
+          })}
         />
       )
 
