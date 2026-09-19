@@ -41,7 +41,27 @@ jobs:
       # bumps of example/tooling deps (vite, undici, tar, react-router, etc.) -
       # run `bun audit` locally to review them.
       - name: Security audit
-        run: bun audit --audit-level critical
+        shell: bash
+        run: |
+          for attempt in 1 2 3 4 5; do
+            set +e
+            output="$(bun audit --audit-level critical 2>&1)"
+            status=$?
+            set -e
+            printf '%s\n' "$output"
+
+            if [[ $status -eq 0 ]]; then
+              exit 0
+            fi
+
+            # Do not mask a real advisory failure. Only retry responses that
+            # mean npm's advisory endpoint itself is temporarily unavailable.
+            if ! grep -Eq 'error: POST .* - (429|5[0-9][0-9])' <<<"$output" || [[ $attempt -eq 5 ]]; then
+              exit "$status"
+            fi
+
+            sleep $((attempt * 15))
+          done
 
       - name: Check
         run: bun run check
