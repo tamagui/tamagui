@@ -832,7 +832,7 @@ export interface GenericTamaguiSettings {
      */
     onlyShorthandStyleProps?: boolean;
 }
-/** one rung of the control ladder: token keys only, never pixels */
+/** one rung of the control ladder: token keys, plus optional pinned geometry */
 export type SizeRecipe = {
     fontSize: string;
     /**
@@ -845,6 +845,16 @@ export type SizeRecipe = {
     paddingBlock: string;
     gap: string;
     radius: string;
+    /**
+     * explicit rung geometry, skipping derivation. For scales whose keys
+     * cannot derive the ladder (v5's numeric scales pin the frozen heights
+     * here so v5 apps never resize).
+     */
+    px?: {
+        height: number;
+        icon: number;
+        square: number;
+    };
 };
 /**
  * the user-configurable control ladder. Rung names become the accepted

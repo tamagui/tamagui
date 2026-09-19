@@ -129,6 +129,25 @@ export function resolveSizing(
     )
   }
 
+  const keys = {
+    fontSize: rung.fontSize,
+    lineHeight: rung.fontSize,
+    paddingInline: rung.paddingInline,
+    paddingBlock: rung.paddingBlock,
+    gap: rung.gap,
+    radius: rung.radius,
+  }
+  // an explicit rung geometry wins over derivation (v5 pins its heights)
+  if (rung.px) {
+    return {
+      name: effectiveName,
+      ...keys,
+      height: rung.px.height,
+      icon: rung.px.icon,
+      square: rung.px.square,
+    }
+  }
+
   const fonts = env?.fonts ?? conf?.fontsParsed
   const tokens = env?.tokens ?? conf?.tokensParsed
   const font = env?.font ?? fonts?.[conf?.defaultFontToken ?? 'body']
@@ -150,12 +169,7 @@ export function resolveSizing(
 
   return {
     name: effectiveName,
-    fontSize: rung.fontSize,
-    lineHeight: rung.fontSize,
-    paddingInline: rung.paddingInline,
-    paddingBlock: rung.paddingBlock,
-    gap: rung.gap,
-    radius: rung.radius,
+    ...keys,
     height: px.lineHeight + px.paddingBlock * 2,
     icon: Math.ceil(px.fontSize / 4) * 4,
     square: Math.round(px.control * 1.4),
