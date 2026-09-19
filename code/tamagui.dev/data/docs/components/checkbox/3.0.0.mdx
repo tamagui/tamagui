@@ -103,10 +103,17 @@ function MyCheckbox({ defaultChecked, onCheckedChange, ...props }) {
 ### Checkbox
 
 `Checkbox` extends YStack inheriting all the
-[props](/ui/stacks), plus:
+[props](/ui/stacks), plus. Sizes come from the shared
+[Sizing](/docs/core/sizing) ladder.
 
 <PropsTable
   data={[
+    {
+      name: 'size',
+      required: false,
+      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
+      description: `A named size ("xs" to "xl", default "md") is a rung in the sizing ladder: the box is the ladder's square derivation at the rung's radius.`,
+    },
     {
       name: 'labeledBy',
       type: 'string',

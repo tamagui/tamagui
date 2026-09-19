@@ -176,7 +176,7 @@ Remove tooling packages that no longer exist in v3:
 | Removed package            | Migration                                                                                                     |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | `@tamagui/babel-plugin`    | Install `@tamagui/cli` and use `@tamagui/cli/vite`, `@tamagui/cli/metro`, or the `tamagui build` precompile command for Turbopack. |
-| `@tamagui/get-button-sized`| Copy the `size` variant from the skin component (`tamagui/button` and friends); each component owns its table inline, see §5. |
+| `@tamagui/get-button-sized`| Call `resolveSizing` from `@tamagui/core` with the size name; see §5. |
 | `@tamagui/sizable-context` | Use `createStyledContext` from `@tamagui/core` with your own size names.                                          |
 | `@tamagui/static-sync`     | Remove direct imports. Compiler sessions are owned by the supported bundler adapters.                         |
 | `@tamagui/static-worker`   | Remove direct imports. Metro owns its graph/cache workers through `@tamagui/cli/metro`.                       |
@@ -842,12 +842,12 @@ are unrelated.
 Every control that takes `size` (Button, Input, Select, Tabs, ListItem, Label,
 Card, Toggle, Checkbox, RadioGroup, Switch, Slider, Progress, Avatar, Group,
 Tooltip) accepts the same five names: `xs`, `sm`, `md`, `lg`, `xl`. A name is a
-row in the component's own size table, never a height: it picks a font size,
+rung in the shared `sizing` ladder, never a height: it picks a font size,
 horizontal and vertical padding, and a radius, and the control ends up its
 line-height plus padding tall. That keeps the frame, its text, and its icon aligned by construction.
 The default is `md`.
 
-Under `@tamagui/config/v6` the tables mirror shadcn:
+Under `@tamagui/config/v6` the ladder mirrors shadcn:
 
 | name | font size / line-height | paddingX | paddingY | radius | icon | height |
 | ---- | ----------------------- | -------- | -------- | ------ | ---- | ------ |
@@ -857,8 +857,11 @@ Under `@tamagui/config/v6` the tables mirror shadcn:
 | `lg` | 16 / 24                 | 24       | 8        | 6      | 16   | 40     |
 | `xl` | 18 / 28                 | 32       | 10       | 8      | 20   | 48     |
 
-Height excludes the 1px border. `@tamagui/config/v5` ships its own table on the
-v5 keys, so the same names work under either config.
+Height excludes the 1px border. `@tamagui/config/v5` ships its own sizing on
+the v5 keys with the same geometry pinned, so the same names work under either
+config. Button, ListItem, Checkbox, RadioGroup, and Switch derive every value
+from the ladder; add rungs by spreading `defaultSizing` (see
+[Sizing](/docs/core/sizing)).
 
 ```tsx
 import { Button } from 'tamagui'
@@ -868,9 +871,9 @@ import { Button } from 'tamagui'
 ```
 
 Token keys and numbers no longer size controls: `size` on a control only takes
-a name (or `true` for the default), and each component owns its table inline, so
-`size="4"` on a control is a type error. Numbers stay geometry on shapes
-(`Square`, `Circle`, `Avatar` take size tokens) and font keys on text and icons.
+a name (or `true` for the default), so `size="4"` on a control is a type error.
+Numbers stay geometry on shapes (`Square`, `Circle`, `Avatar` take size tokens)
+and font keys on text and icons.
 
 Text components speak Tailwind's own scale (`xs`, `sm`, `base`, `lg`, `xl`,
 `2xl` and up). `<Button size="md">` text and `<Paragraph size="sm">` text are
@@ -885,15 +888,14 @@ scale at all, so you provide sizing yourself or through your copied styles.
 `<Button size={props.size}>` with `props.size` undefined now renders the `md`
 default. In v2 an explicitly passed `undefined` replaced the `defaultVariants`
 value and the styled-context value for that key, and the control rendered with
-no size styles at all. The old size variants were functions that happened to
-absorb `undefined`; the named-size tables do not, so core now treats an
-explicit `undefined` the way React `defaultProps` do: as absent. This applies to
-every styled component and every `createStyledContext` provider, not only
-`size`. To deliberately turn a default variant off, pass `null`:
+no size styles at all. Core now treats an explicit `undefined` the way React
+`defaultProps` do: as absent (and the size resolvers default it too). This
+applies to every styled component and every `createStyledContext` provider, not
+only `size`. To deliberately turn a default variant off, pass `null`:
 
 ```tsx
 <Button size={maybeSize} />   // undefined falls back to md
-<Button size={null} />        // no size table applied
+<Button size={null} />        // no size rung applied
 ```
 
 ### Smaller size-related removals

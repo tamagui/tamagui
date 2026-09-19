@@ -224,8 +224,16 @@ RadioGroup extends View, inheriting all the [Tamagui standard props](/docs/intro
 
 ### RadioGroup.Item
 
+Item sizes come from the shared [Sizing](/docs/core/sizing) ladder.
+
 <PropsTable
   data={[
+    {
+      name: 'size',
+      required: false,
+      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
+      description: `A named size ("xs" to "xl", default "md") is a rung in the sizing ladder: the circle is the ladder's square derivation.`,
+    },
     {
       name: 'labeledBy',
       type: 'string',

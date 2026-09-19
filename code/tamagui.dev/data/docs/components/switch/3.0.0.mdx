@@ -110,10 +110,17 @@ function MySwitch({ defaultChecked, onCheckedChange, ...props }) {
 ### Switch
 
 `Switch` extends View inheriting all the
-[Tamagui standard props](/docs/intro/props), plus:
+[Tamagui standard props](/docs/intro/props), plus. Sizes come from the shared
+[Sizing](/docs/core/sizing) ladder.
 
 <PropsTable
   data={[
+    {
+      name: 'size',
+      required: false,
+      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
+      description: `A named size ("xs" to "xl", default "md") is a rung in the sizing ladder: the track is the ladder's square stretched 1.9 wide, and the thumb insets 2px on every side.`,
+    },
     {
       name: 'labeledBy',
       type: 'string',

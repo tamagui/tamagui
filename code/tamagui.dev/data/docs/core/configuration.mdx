@@ -1,11 +1,11 @@
 ---
 title: Configuration
-description: Set up tokens, themes, fonts, media queries, shorthands, and settings.
+description: Set up tokens, themes, fonts, media queries, shorthands, settings, and sizing.
 ---
 
 <IntroParagraph>
   Configuration connects your tokens, themes, media queries, animations,
-  shorthands, and settings to every Tamagui component.
+  shorthands, settings, and sizing to every Tamagui component.
 </IntroParagraph>
 
 Start with [`@tamagui/config/v6`](/docs/core/config-v6) for default tokens,
@@ -242,3 +242,10 @@ Shorthands map short prop names to style properties, so `px` can mean
 Settings control type strictness, SSR behavior, theme class placement, and
 performance tradeoffs. A few more behaviors are set with environment variables. See
 [Settings](/docs/core/settings).
+
+### Sizing
+
+Sizing is the shared control ladder: named rungs from `xs` to `xl` that every
+sized control reads, with geometry derived from your font and space scales.
+Spread `defaultSizing` and add rungs to grow the ladder. See
+[Sizing](/docs/core/sizing).

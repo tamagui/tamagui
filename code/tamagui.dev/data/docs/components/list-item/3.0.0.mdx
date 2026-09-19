@@ -247,7 +247,8 @@ context to assemble by hand.
 ### ListItem
 
 ListItem extends View, inheriting all the
-[Tamagui standard props](/docs/intro/props), plus:
+[Tamagui standard props](/docs/intro/props), plus. Sizes come from the shared
+[Sizing](/docs/core/sizing) ladder.
 
 <PropsTable
   data={[
@@ -270,7 +271,7 @@ ListItem extends View, inheriting all the
       required: false,
       type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
       description:
-        'Adjusts padding and default font/icon sizes from the ListItem size table (default "md"). Published to the parts through the ListItem context.',
+        'A named size ("xs" to "xl", default "md") is a rung in the sizing ladder: padding, font size, and icon size. Published to the parts through the ListItem context. Subtitles render one step below the title.',
     },
     {
       name: 'color',

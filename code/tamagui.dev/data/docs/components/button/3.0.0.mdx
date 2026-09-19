@@ -62,8 +62,9 @@ import { Button } from 'tamagui'
 export default () => <Button size="lg">Lorem ipsum</Button>
 ```
 
-Each name is a row in the Button's own size table (`xs` through `xl`,
-default `md`), so the frame, its text, and its icon agree by construction.
+Each name is a rung in the shared [Sizing](/docs/core/sizing) ladder (`xs`
+through `xl`, default `md`), so the frame, its text, and its icon agree by
+construction.
 
 ## Variants
 
@@ -263,7 +264,8 @@ For a longer walkthrough see
 ## API Reference
 
 Buttons extend View, inheriting all the
-[Tamagui standard props](/docs/intro/props), plus:
+[Tamagui standard props](/docs/intro/props), plus. Sizes come from the shared
+[Sizing](/docs/core/sizing) ladder.
 
 <PropsTable
   data={[
@@ -271,7 +273,7 @@ Buttons extend View, inheriting all the
       name: 'size',
       required: false,
       type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
-      description: `A named size ("xs" to "xl", default "md") is a row in the Button's size table: padding, border radius, font size, and icon size, never a height. Published to Button.Text and Button.Icon through the Button context.`,
+      description: `A named size ("xs" to "xl", default "md") is a rung in the sizing ladder: padding, border radius, font size, and icon size, never a height. Published to Button.Text and Button.Icon through the Button context.`,
     },
     {
       name: 'variant',

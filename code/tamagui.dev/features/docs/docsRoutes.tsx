@@ -31,6 +31,7 @@ export const docsRoutes = [
       { title: 'Theme component', route: '/docs/core/theme' },
       { title: 'Shorthands', route: '/docs/core/shorthands' },
       { title: 'Settings', route: '/docs/core/settings' },
+      { title: 'Sizing', route: '/docs/core/sizing' },
     ],
   },
 
