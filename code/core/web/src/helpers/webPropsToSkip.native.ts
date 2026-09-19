@@ -45,7 +45,6 @@ export const webPropsToSkip = {
   onChange: 1,
   onInput: 1,
   onBeforeInput: 1,
-  onScroll: 1,
   onCopy: 1,
   onCut: 1,
   onPaste: 1,
