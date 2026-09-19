@@ -1,6 +1,7 @@
 // Styled ListItem = @tamagui/ui's list-item behavior and parts + the default
 // v2-look skin (theme palette, border, cursor, hover/press color, the outlined
-// and active appearances, disabled dimming) and the size table. @tamagui/ui
+// and active appearances, disabled dimming) and the sizing ladder.
+// resolveSizing derives every size value from the config. @tamagui/ui
 // ships no ListItem of its own: it exposes `useListItem` and the frame, text,
 // title, subtitle, and icon parts, and a skin decides the rest. This is the
 // single skin definition — the shadcn registry item is generated from this file.
