@@ -8,6 +8,7 @@ import pMap from 'p-map'
 import prompts from 'prompts'
 
 import { ensureNpmAuthentication } from './release-npm-auth'
+import { retryTransientNpmOidcPublish } from './release-publish-retry'
 import { computePublishTag } from './release-publish-tag'
 import { spawnify } from './spawnify'
 import {
@@ -814,7 +815,21 @@ async function run() {
           // approval (passkey) or CI OIDC exchange completes before fanning out;
           // the rest ride npm's no-challenge window in throttled chunks.
           const [firstPkg, ...restPkgs] = pendingPackages
-          await publishOne(firstPkg, true)
+          if (isCI) {
+            await retryTransientNpmOidcPublish({
+              // Keep CI output piped so spawnify includes npm's verbose OIDC
+              // exchange response in the rejected error for classification.
+              publish: () => publishOne(firstPkg),
+              isPublished: () => isPublished(firstPkg),
+              sleep,
+              onRetry: (attempt, delay) =>
+                console.warn(
+                  `npm OIDC exchange was temporarily unavailable; retrying first publish after ${delay}ms (attempt ${attempt + 1}/5)`
+                ),
+            })
+          } else {
+            await publishOne(firstPkg, true)
+          }
           for (let index = 0; index < restPkgs.length; index += 6) {
             await sleep(1000)
             await Promise.all(
