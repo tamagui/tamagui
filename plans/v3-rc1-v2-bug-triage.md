@@ -11,9 +11,9 @@ then be forward-ported to v3-beta.
 | Issue | Status | Evidence |
 | --- | --- | --- |
 | [#4193 Reanimated remount crash](https://github.com/tamagui/tamagui/issues/4193) | Already fixed on main and v3-beta; issue closed | Primitive return values from Reanimated are guarded before touching `onStart`; the native regression is in `ReanimatedInitialUpdater.native.test.tsx`. |
-| [#4163 native ScrollView `onScroll`](https://github.com/tamagui/tamagui/issues/4163) | Merged in [#4221](https://github.com/tamagui/tamagui/pull/4221) | Removed `onScroll` from the native web-prop skip map. Native split-style regression: 21 passed, 7 expected failures. |
-| [#4152 Tooltip keyboard focus](https://github.com/tamagui/tamagui/issues/4152) | In merge queue as [#4222](https://github.com/tamagui/tamagui/pull/4222) | Reproduced on the webpack dev server. Floating focus/blur handlers were generated but lost during `asChild` composition; they are now composed on `PopoverTrigger`. Focus open/blur close regression passes, and related Tooltip suites pass 7/7. |
-| [#4217 Android Button disabled reset](https://github.com/tamagui/tamagui/issues/4217) | In merge queue as [#4223](https://github.com/tamagui/tamagui/pull/4223) | Preserves contributor @boiboif's authored fix from #4219 on a repository branch so required checks can run. Native regression passes 3/3. |
+| [#4163 native ScrollView `onScroll`](https://github.com/tamagui/tamagui/issues/4163) | Merged in [#4221](https://github.com/tamagui/tamagui/pull/4221) and forward-ported to v3-beta | Removed `onScroll` from the native web-prop skip map. Native split-style regression: 21 passed with 7 expected failures on main; 24 passed with 7 expected failures on v3. |
+| [#4152 Tooltip keyboard focus](https://github.com/tamagui/tamagui/issues/4152) | Merged in [#4222](https://github.com/tamagui/tamagui/pull/4222) and forward-ported to v3-beta | Reproduced on the webpack dev server. Floating focus/blur handlers were generated but lost during `asChild` composition; they are now composed on `PopoverTrigger`. Focus open/blur close regression passes, and related Tooltip suites pass 7/7 on both branches. |
+| [#4217 Android Button disabled reset](https://github.com/tamagui/tamagui/issues/4217) | Merged in [#4223](https://github.com/tamagui/tamagui/pull/4223) and adapted for v3-beta | Preserves contributor @boiboif's authorship from #4219. Native regression passes 3/3 on both branches; v3's `useButton` also emits an explicit false accessibility state. |
 
 ## Fixed issues closed during this pass
 
@@ -48,6 +48,6 @@ Ordered by release risk, not by age.
 ## RC1 recommendation
 
 Do not block RC1 on the full historical backlog. Block it on #4194 and on a
-current-tip result for #3996/#4165. Land the queued interaction fixes and run one
-focused native Sheet/Reanimated/portal matrix. Forward-port each main commit
-independently to v3-beta and retain the same regression at the v3 layer.
+current-tip result for #3996/#4165. Run one focused native
+Sheet/Reanimated/portal matrix; the interaction fixes from this pass are already
+on main and v3-beta with regressions at both layers.
