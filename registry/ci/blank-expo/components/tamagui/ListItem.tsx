@@ -5,6 +5,7 @@
 // title, subtitle, and icon parts, and a skin decides the rest. This is the
 // single skin definition — the shadcn registry item is generated from this file.
 import {
+  type ComponentSize,
   createStyledHOC,
   type GetProps,
   styled,
@@ -22,7 +23,7 @@ import {
   useListItem,
 } from '@tamagui/list-item'
 
-export type ListItemSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
+export type ListItemSize = ComponentSize | boolean
 
 const listItemFrameSize = {
   xs: { paddingInline: '2', paddingBlock: '1', gap: '1' },

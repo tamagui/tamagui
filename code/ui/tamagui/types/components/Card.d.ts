@@ -1,5 +1,5 @@
-import { type GetProps } from '@tamagui/core';
-export type CardSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean;
+import { type ComponentSize, type GetProps } from '@tamagui/core';
+export type CardSize = ComponentSize | boolean;
 export declare const CardFrame: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     size?: CardSize | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {

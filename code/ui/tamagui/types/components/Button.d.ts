@@ -1,6 +1,6 @@
 import { type ButtonIconProps as ButtonBehaviorIconProps } from '@tamagui/button';
-import { type GetProps, type ThemeProps } from '@tamagui/core';
-export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean;
+import { type ComponentSize, type GetProps, type ThemeProps } from '@tamagui/core';
+export type ButtonSize = ComponentSize | boolean;
 export declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
     circular?: boolean | undefined;
     disabled?: boolean | undefined;

@@ -1,7 +1,12 @@
-import { type GetProps, styled, withStaticProperties } from '@tamagui/core'
+import {
+  type ComponentSize,
+  type GetProps,
+  styled,
+  withStaticProperties,
+} from '@tamagui/core'
 import { RadioGroup as RadioGroupBehavior } from '@tamagui/radio-group'
 
-export type RadioGroupSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
+export type RadioGroupSize = ComponentSize | boolean
 
 // a radio reads as a control next to its label, so it matches the checkbox
 // square and the switch track height rather than the icon square (the same

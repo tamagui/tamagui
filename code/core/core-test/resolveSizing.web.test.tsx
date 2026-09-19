@@ -8,7 +8,7 @@ process.env.TAMAGUI_TARGET = 'web'
 import { expect, test } from 'vitest'
 
 import { defaultConfig } from '@tamagui/config/v6'
-import { createTamagui, getConfig, resolveSizing } from '../web/src'
+import { type ComponentSize, createTamagui, getConfig, resolveSizing } from '../web/src'
 
 createTamagui(defaultConfig as any)
 
@@ -40,8 +40,7 @@ test('rungs pass keys through and derive the frozen px', () => {
 })
 
 test('outer heights match the frozen button ladder', () => {
-  const outer = (size: 'xs' | 'sm' | 'md' | 'lg' | 'xl') =>
-    resolveSizing(size, env)!.height + 2
+  const outer = (size: ComponentSize) => resolveSizing(size, env)!.height + 2
   expect([outer('xs'), outer('sm'), outer('md'), outer('lg'), outer('xl')]).toEqual([
     26, 34, 38, 42, 50,
   ])

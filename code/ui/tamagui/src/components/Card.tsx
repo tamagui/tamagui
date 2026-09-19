@@ -9,13 +9,14 @@ import {
   CardHeader as CardHeaderBehavior,
 } from '@tamagui/card'
 import {
+  type ComponentSize,
   createStyledContext,
   type GetProps,
   styled,
   withStaticProperties,
 } from '@tamagui/core'
 
-export type CardSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
+export type CardSize = ComponentSize | boolean
 
 const CardContext = createStyledContext<{ size?: CardSize }>({ size: 'md' })
 

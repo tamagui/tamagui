@@ -1,5 +1,5 @@
-import { type GetProps } from '@tamagui/core';
-export type RadioGroupSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean;
+import { type ComponentSize, type GetProps } from '@tamagui/core';
+export type RadioGroupSize = ComponentSize | boolean;
 export declare const RadioGroupFrame: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "orientation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     orientation?: "horizontal" | "vertical" | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {

@@ -1,4 +1,5 @@
 import {
+  type ComponentSize,
   createStyledContext,
   createStyledHOC,
   Text,
@@ -8,7 +9,7 @@ import {
 import { wrapChildrenInText } from '@tamagui/text'
 import { Tabs as TabsBehavior } from '@tamagui/tabs'
 
-export type TabsSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
+export type TabsSize = ComponentSize | boolean
 
 const TabsContext = createStyledContext<{ size?: TabsSize }>({ size: 'md' })
 

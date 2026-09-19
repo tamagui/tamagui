@@ -1,6 +1,6 @@
-import { type TamaguiElement } from '@tamagui/core';
+import { type ComponentSize, type TamaguiElement } from '@tamagui/core';
 import type * as React from 'react';
-export type SliderSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean;
+export type SliderSize = ComponentSize | boolean;
 export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     __scopeSlider?: string;
 }, import("@tamagui/core").StackStyleBase, {

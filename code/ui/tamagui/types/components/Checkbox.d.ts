@@ -1,5 +1,5 @@
-import { type GetProps } from '@tamagui/core';
-export type CheckboxSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean;
+import { type ComponentSize, type GetProps } from '@tamagui/core';
+export type CheckboxSize = ComponentSize | boolean;
 export declare const CheckboxFrame: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "disabled" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
     disabled?: boolean | undefined;

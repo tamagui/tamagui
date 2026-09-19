@@ -4,6 +4,7 @@
 // hit target, the control height plus the skin's 1px border.
 // Single skin definition; the shadcn registry item is generated from this file.
 import {
+  type ComponentSize,
   createRefComponent,
   type GetProps,
   styled,
@@ -13,7 +14,7 @@ import {
 import { ToggleGroup as UiToggleGroup } from '@tamagui/toggle-group'
 import type * as React from 'react'
 
-export type ToggleGroupSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
+export type ToggleGroupSize = ComponentSize | boolean
 
 const toggleGroupItemSize = {
   xs: { width: 26, height: 26, borderRadius: 'sm' },

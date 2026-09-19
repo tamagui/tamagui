@@ -1,7 +1,7 @@
 // forked from Radix UI
 // https://github.com/radix-ui/primitives/blob/main/packages/react/progress/src/Progress.tsx
 
-import type { GetProps, SizeTokens } from '@tamagui/core'
+import type { ComponentSize, GetProps, SizeTokens } from '@tamagui/core'
 import { createStyledHOC, getVariableValue, isWeb, styled } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
@@ -114,15 +114,7 @@ type ScopedProps<P> = P & { __scopeProgress?: Scope }
 
 type ProgressState = 'indeterminate' | 'complete' | 'loading'
 
-export type ProgressSize =
-  | 'xs'
-  | 'sm'
-  | 'md'
-  | 'lg'
-  | 'xl'
-  | SizeTokens
-  | number
-  | boolean
+export type ProgressSize = ComponentSize | SizeTokens | number | boolean
 
 // the track is a thin bar: named rungs on the xs-xl control ladder, like the
 // slider track. md is the historical default track (size token 36 at quarter

@@ -4,6 +4,7 @@
 // `tamagui`. The behavior primitives keep only structural resets. Single skin
 // definition; the shadcn registry item is generated from this file.
 import {
+  type ComponentSize,
   createStyledHOC,
   type GetProps,
   isWeb,
@@ -13,7 +14,7 @@ import {
 } from '@tamagui/core'
 import { Input as UiInput, TextArea as UiTextArea } from '@tamagui/input'
 
-export type InputSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
+export type InputSize = ComponentSize | boolean
 
 const inputSize = {
   xs: { paddingInline: '2', paddingBlock: '1', borderRadius: 'sm', fontSize: 'xs' },

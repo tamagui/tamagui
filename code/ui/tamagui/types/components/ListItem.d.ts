@@ -1,6 +1,6 @@
-import { type GetProps } from '@tamagui/core';
+import { type ComponentSize, type GetProps } from '@tamagui/core';
 import { type ListItemIconProps as ListItemBehaviorIconProps } from '@tamagui/list-item';
-export type ListItemSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean;
+export type ListItemSize = ComponentSize | boolean;
 export declare const ListItemFrame: import("react").FunctionComponent<Omit<import("@tamagui/core").StackNonStyleProps, "active" | "disabled" | "size" | "variant" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
     disabled?: boolean | undefined;

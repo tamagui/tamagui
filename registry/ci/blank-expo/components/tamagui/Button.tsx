@@ -13,6 +13,7 @@ import {
   useButton,
 } from '@tamagui/button'
 import {
+  type ComponentSize,
   createStyledContext,
   createStyledHOC,
   type GetProps,
@@ -23,7 +24,7 @@ import {
 } from '@tamagui/core'
 import { getThemedIconSize } from '@tamagui/helpers-tamagui'
 
-export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
+export type ButtonSize = ComponentSize | boolean
 
 const ButtonContext = createStyledContext<{ size?: ButtonSize }>({ size: 'md' })
 

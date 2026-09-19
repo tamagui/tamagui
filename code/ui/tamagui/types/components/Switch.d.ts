@@ -1,5 +1,5 @@
-import { type GetProps } from '@tamagui/core';
-export type SwitchSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean;
+import { type ComponentSize, type GetProps } from '@tamagui/core';
+export type SwitchSize = ComponentSize | boolean;
 export declare const SwitchFrame: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "active" | "disabled" | "frameWidth" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
     disabled?: boolean | undefined;

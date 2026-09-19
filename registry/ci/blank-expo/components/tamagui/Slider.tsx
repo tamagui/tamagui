@@ -3,6 +3,7 @@
 // The behavior frames keep fill/clip/positioning and the thumb math. Single skin
 // definition; the shadcn registry item is generated from this file.
 import {
+  type ComponentSize,
   createRefComponent,
   createStyledContext,
   styled,
@@ -12,7 +13,7 @@ import {
 import { Slider as UiSlider } from '@tamagui/slider'
 import type * as React from 'react'
 
-export type SliderSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
+export type SliderSize = ComponentSize | boolean
 
 // the track is composed below the root, so it never sees the root's orientation
 // prop: the root republishes size + orientation here for the track resolver

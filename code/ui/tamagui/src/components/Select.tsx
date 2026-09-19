@@ -8,6 +8,7 @@
 // Sizing is preset-based: `size` is one of xs sm md lg xl (default md), owned
 // inline here like every other skin.
 import {
+  type ComponentSize,
   createStyledContext,
   type GetProps,
   styled,
@@ -45,7 +46,7 @@ const Check = ({ size = 14 }: { size?: number }) => (
   </IconGlyph>
 )
 
-export type SelectSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean
+export type SelectSize = ComponentSize | boolean
 
 const SelectContext = createStyledContext<{ size?: SelectSize }>({ size: 'md' })
 

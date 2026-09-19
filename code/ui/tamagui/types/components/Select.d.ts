@@ -1,5 +1,6 @@
+import { type ComponentSize } from '@tamagui/core';
 import { type SelectProps as SelectBehaviorProps, type SelectScopedProps } from '@tamagui/select';
-export type SelectSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean;
+export type SelectSize = ComponentSize | boolean;
 export declare const SelectTrigger: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     scope?: import("@tamagui/select").SelectScopes;
 }, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{

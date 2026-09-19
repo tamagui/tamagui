@@ -1,6 +1,6 @@
-import { type GetProps, type TamaguiElement } from '@tamagui/core';
+import { type ComponentSize, type GetProps, type TamaguiElement } from '@tamagui/core';
 import type * as React from 'react';
-export type ToggleGroupSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | boolean;
+export type ToggleGroupSize = ComponentSize | boolean;
 export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tamagui/core").StackNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps, "active" | "defaultActiveStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
     defaultActiveStyle?: boolean | undefined;
