@@ -6,13 +6,22 @@ export const docsSyntaxes: DocsSyntax[] = ['styled', 'unstyled', 'tailwind']
 
 export const docsSyntaxLabels: Record<DocsSyntax, string> = {
   styled: 'Styled',
-  unstyled: 'Unstyled',
+  unstyled: 'Source',
   tailwind: 'Tailwind',
+}
+
+// accurate one-liners for the syntax tabs: 'unstyled' is source ownership (own
+// the default skins), not the raw `tamagui/unstyled` behavior primitives (an
+// advanced API); tailwind is orthogonal to styled vs source.
+export const docsSyntaxDescriptions: Record<DocsSyntax, string> = {
+  styled: 'Styled: Tamagui components with the default look',
+  unstyled: 'Source: own the default skins, copy-paste them into your app',
+  tailwind: 'Tailwind: utilities on @tamagui/tailwind primitives',
 }
 
 export function getDocsSyntaxParam(value: string | null): DocsSyntax | undefined {
   if (value === 'tailwind') return 'tailwind'
-  if (value === 'unstyled') return 'unstyled'
+  if (value === 'unstyled' || value === 'source') return 'unstyled'
   if (value === 'styled' || value === 'tamagui') return 'styled'
 }
 

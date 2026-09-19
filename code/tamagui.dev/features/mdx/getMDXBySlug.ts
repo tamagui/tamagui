@@ -8,6 +8,8 @@ import {
   type GetMDXOptions,
 } from '@vxrn/mdx-rust'
 import { highlightPlugin } from './highlightPlugin'
+import { defaultConfig as docsCodeConfig } from '@tamagui/config/v6'
+import { loadSourceRegistry, rewriteSourceImports } from './sourceMode'
 
 export { getAllFrontmatter, getAllVersionsFromPath }
 export { getCompilationExamples } from './getCompilationExamples'
@@ -47,7 +49,21 @@ const heroTemplate = {
   },
 }
 
-function loadTransform(): (source: string) => string {
+type TailwindTransform = (
+  source: string,
+  options?: {
+    renameComponents?: boolean
+    rewriteImports?: boolean
+    retainLines?: boolean
+    tokens?: Record<string, Record<string, any>>
+    fonts?: Record<string, any>
+    themes?: Record<string, Record<string, any>>
+    media?: Record<string, any>
+    shorthands?: Record<string, string>
+  }
+) => string
+
+function loadTransform(): TailwindTransform {
   try {
     // resolve through package.json so we always load the current `main` -
     // node caches the pkg's `main` field internally and HMR rebuilds of
@@ -96,7 +112,20 @@ const tailwindTransform = {
 
       try {
         const transform = loadTransform()
-        const tailwindCode = transform(source)
+        // cross-platform examples: keep Tamagui components (no DOM rename),
+        // move JSX-only primitive bindings to the @tamagui/tailwind frontend,
+        // and convert against the v6 default config (what the examples are
+        // written against) so token names resolve.
+        const tailwindCode = transform(source, {
+          renameComponents: false,
+          rewriteImports: true,
+          retainLines: false,
+          tokens: docsCodeConfig.tokens,
+          fonts: docsCodeConfig.fonts,
+          themes: docsCodeConfig.themes,
+          media: docsCodeConfig.media,
+          shorthands: docsCodeConfig.shorthands,
+        })
         if (tailwindCode && tailwindCode !== source) {
           ctx.replaceNode(node, {
             ...node,
@@ -110,29 +139,14 @@ const tailwindTransform = {
   },
 }
 
-// unstyled swaps the `tamagui` root and generated styled-skin subpaths for
-// `tamagui/unstyled`, which re-exports @tamagui/ui's behavior primitives.
-// derive those subpaths from the package map that the registry generator owns,
-// so docs cannot advertise a stale hand-maintained skin set.
-const tamaguiPackage = JSON.parse(
-  fs.readFileSync(requireFn.resolve('tamagui/package.json'), 'utf8')
-) as {
-  exports: Record<string, { types?: string }>
-}
-const styledTamaguiSpecifiers = new Set([
-  'tamagui',
-  ...Object.entries(tamaguiPackage.exports)
-    .filter(
-      ([subpath, target]) =>
-        subpath !== './facets' && target.types?.includes('/components/')
-    )
-    .map(([subpath]) => `tamagui/${subpath.slice(2)}`),
-])
-const styledTamaguiImportRe =
-  /(\bfrom\s+|\bimport\s*\(\s*|\brequire\s*\(\s*)(['"])(tamagui(?:\/[a-z0-9-]+)?)\2/g
-
-const unstyledTransform = {
-  name: 'tamagui-unstyled-transform',
+// source mode is shadcn-like source ownership, NOT an import rewrite to
+// `tamagui/unstyled` (raw behavior primitives stay an advanced API under that
+// subpath). recognized styled-component imports rewrite to local
+// components/tamagui/<Skin> files owned by the reader; core utilities and
+// unknown imports are preserved. the skins + dependency info come from the
+// generated registry items, consumed dependency-closed.
+const sourceTransform = {
+  name: 'tamagui-source-transform',
   element: {
     filter: ['code'],
     visit(node: any, ctx: any) {
@@ -157,25 +171,25 @@ const unstyledTransform = {
       const source = ctx.textContent(node)
       if (!source) return
 
-      const unstyledCode = source.replace(
-        styledTamaguiImportRe,
-        (match, prefix, quote, specifier) =>
-          styledTamaguiSpecifiers.has(specifier)
-            ? `${prefix}${quote}tamagui/unstyled${quote}`
-            : match
-      )
-      if (unstyledCode !== source) {
-        ctx.replaceNode(node, {
-          ...node,
-          children: [{ type: 'text', value: unstyledCode }],
-        })
+      try {
+        const rewritten = rewriteSourceImports(source, loadSourceRegistry())
+        if (rewritten) {
+          ctx.replaceNode(node, {
+            ...node,
+            children: [{ type: 'text', value: rewritten.code }],
+          })
+        }
+      } catch {
+        // transform failed, keep original
       }
     },
   },
 }
 
-// the docs code toggle: 'styled' (default tamagui look), 'unstyled'
-// (@tamagui/ui primitives), 'tailwind' (unstyled primitive + tailwind).
+// the docs code toggle: 'styled' (default tamagui look), 'unstyled' (source
+// mode: examples import owned local skins; the route keeps its /unstyled URL
+// for compatibility), 'tailwind' (@tamagui/tailwind primitives + utilities,
+// orthogonal to styled vs source).
 type CodeMode = 'styled' | 'unstyled' | 'tailwind'
 
 type TamaguiGetMDXOptions = GetMDXOptions & {
@@ -202,7 +216,7 @@ export const getMDXBySlug = async (
     mdastPlugins: [heroTemplate, ...(mdastPlugins ?? [])],
     hastPlugins: [
       ...(mode === 'tailwind' ? [tailwindTransform] : []),
-      ...(mode === 'unstyled' ? [unstyledTransform] : []),
+      ...(mode === 'unstyled' ? [sourceTransform] : []),
       highlightPlugin,
       ...(hastPlugins ?? []),
     ],

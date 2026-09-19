@@ -14,6 +14,8 @@ import { components } from '~/features/mdx/MDXComponents'
 import { getOgUrl } from '~/features/site/getOgUrl'
 import { SubTitle } from '~/components/SubTitle'
 import { DocsTitle } from '~/components/DocsTitle'
+import { OwnedSourceBlock } from '~/features/docs/OwnedSourceBlock'
+import type { OwnedSourcePayload } from '~/features/mdx/sourceMode'
 
 export async function generateStaticParams() {
   const { getAllFrontmatter } = await import('~/features/mdx/getMDXBySlug')
@@ -52,6 +54,15 @@ export async function loader(props: LoaderProps) {
   })
   const [componentName, componentVersion] = subpath.split('/')
   const versions = getAllVersionsFromPath(`data/docs/components/${componentName}`)
+
+  // source mode shows the exact skin the registry ships for this component
+  let source: OwnedSourcePayload | null = null
+  if (mode === 'unstyled') {
+    const { getOwnedSource, loadSourceRegistry } =
+      await import('~/features/mdx/sourceMode')
+    source = getOwnedSource(loadSourceRegistry(), componentName)
+  }
+
   return {
     frontmatter: {
       ...frontmatter,
@@ -60,11 +71,12 @@ export async function loader(props: LoaderProps) {
     },
     search: props.search,
     code,
+    source,
   }
 }
 
 export function DocComponentsPage() {
-  const { frontmatter, code, search } = useLoader(loader)
+  const { frontmatter, code, search, source } = useLoader(loader)
   const { next, previous } = useDocsMenu()
   const Component = React.useMemo(() => getMDXComponent(code), [code])
 
@@ -111,6 +123,7 @@ export function DocComponentsPage() {
           <MDXTabs id="type" defaultValue="styled">
             <Component components={components as any} />
           </MDXTabs>
+          {source && <OwnedSourceBlock source={source} />}
         </DocsThemeTint>
       </MDXProvider>
     </DocsPageFrame>
