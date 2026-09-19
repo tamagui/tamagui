@@ -1,4 +1,5 @@
 import type { TextContextStyles } from '@tamagui/text';
+import { SizableText } from '@tamagui/text';
 import type { GetProps, SizeTokens } from '@tamagui/web';
 import type { FunctionComponent, JSX } from 'react';
 type ButtonVariant = 'outlined';
@@ -216,6 +217,7 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
         children: React.ReactNode;
         scaleIcon?: number;
         size?: SizeTokens;
+        style?: GetProps<typeof SizableText>["style"];
     }) => any;
 };
 export type ButtonProps = GetProps<typeof ButtonComponent>;
