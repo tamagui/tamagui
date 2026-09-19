@@ -362,7 +362,10 @@ test('docs controls render at their final positions before hydration', async ({
 
   const serverContext = await browser.newContext({ javaScriptEnabled: false, viewport })
   const serverPage = await serverContext.newPage()
-  await serverPage.goto(url, { waitUntil: 'domcontentloaded' })
+  // A remote deployment can finish parsing the streamed HTML before its
+  // extracted stylesheet has arrived. Wait for network idle so this compares
+  // hydrated layout with fully styled server HTML, not a transient CSS flash.
+  await serverPage.goto(url, { waitUntil: 'networkidle' })
   const serverRects = await getRects(serverPage)
   await serverContext.close()
 

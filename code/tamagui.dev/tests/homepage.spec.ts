@@ -10,19 +10,19 @@ async function hydratedHome(page: Page) {
 
 for (const [name, path, heading, source] of [
   [
-    'Get started (docs)',
+    'Core docs',
     '/docs/intro/introduction',
     'Introduction',
     'data/docs/intro/introduction',
   ],
   [
-    'Explore the components ↗',
-    '/ui/button',
-    'Button',
-    'data/docs/components/button/3.0.0',
+    'Components docs',
+    '/ui/intro',
+    'Tamagui Components',
+    'data/docs/components/intro/2.0.0',
   ],
   [
-    'Speaks Tailwind, too ↗',
+    'Tailwind classes',
     '/docs/core/tailwind',
     'Tamagui Tailwind',
     'data/docs/core/tailwind',
@@ -35,7 +35,7 @@ for (const [name, path, heading, source] of [
     await page.evaluate(() => {
       ;(window as any).__launchNavigationMarker = true
     })
-    const link = page.locator('main').getByRole('link', { name, exact: true })
+    const link = page.getByRole('link', { name, exact: true })
     await expect(link).toHaveAttribute('href', path)
     expect(await link.evaluate((element) => element.tagName)).toBe('A')
     await link.click()
@@ -75,7 +75,7 @@ test('homepage reaches HTML primitives through the docs navigation', async ({ pa
   await page.evaluate(() => {
     ;(window as any).__launchNavigationMarker = true
   })
-  await page.getByRole('link', { name: 'Get started (docs)', exact: true }).click()
+  await page.getByRole('link', { name: 'Core docs', exact: true }).click()
   await expect(
     page.getByRole('heading', { name: 'Introduction', exact: true }).first()
   ).toBeVisible()
