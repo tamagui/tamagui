@@ -48,16 +48,14 @@ it turns all values into a `Variable`:
 }
 ```
 
-The `useTheme` hook further adds a `.get()` helper function on each Variable for
-extra performance. On the web, this will return the `.variable` property and
-avoid re-rendering if values change, as it assumes you are using the CSS
-variables it generates to update styles. Meanwhile on native it will return
-`.val` and re-render always. But - if you enable the
-[`fastSchemeChange` setting on createTamagui](/docs/core/configuration#settings)
-then `get()` will return a
-[DynamicColorIOS](https://reactnative.dev/docs/dynamiccolorios) on iOS and avoid
-re-rendering there too - unless you do `get('web')` in which case it will only
-optimize for web.
+The `useTheme` hook adds a `.get()` helper function on each Variable for
+performance. On web, `.get()` returns the `.variable` property and avoids
+re-rendering on value changes, because CSS custom properties handle updates
+directly in the browser. On native, `.get()` returns `.val` and re-renders on
+change. When the [`fastSchemeChange` setting on createTamagui](/docs/core/configuration#settings)
+is enabled, `get()` returns a [DynamicColorIOS](https://reactnative.dev/docs/dynamiccolorios)
+value on iOS to avoid re-renders there as well. Passing `get('web')` restricts
+that optimization to web.
 
 ```tsx
 import { useTheme } from '@tamagui/core'

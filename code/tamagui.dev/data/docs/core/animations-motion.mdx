@@ -44,7 +44,7 @@ library to create animation scopes and orchestrate animations. It intelligently
 batches style changes and only animates properties that have changed, optimizing
 performance.
 
-The driver leverages the Web Animations API (WAAPI) which runs animations on the
+The driver uses the Web Animations API (WAAPI), which runs animations on the
 compositor thread when possible, keeping animations smooth even when the main
 thread is busy.
 
@@ -89,8 +89,7 @@ internally.
 
 ### Zero Re-renders
 
-The Motion driver now works with Tamagui to bypasses all internal style changes
-to instead directly hand off directly to Motion.
+The Motion driver bypasses internal style recalculations and hands off updates directly to Motion.
 
 ### WAAPI Performance
 

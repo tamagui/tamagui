@@ -125,10 +125,9 @@ as a menu that always reads as dark over a light page. Levels nest inside them
 as usual, so `<Theme name="black"><Theme name="level2">` steps within the dark
 scheme rather than falling back to the parent's.
 
-In general you want your themes to all be the same shape - the same named keys
-and typed values - but sub-themes can be sub-sets of parent themes. The
-`useTheme` hook and style system will resolve missing keys upwards to parent
-themes, and ultimately to tokens.
+Keep themes consistent in shape, sharing the same named keys and typed values.
+Sub-themes can define subsets of parent themes. The `useTheme` hook and style
+system resolve missing keys upward through parent themes and back to tokens.
 
 #### Component themes
 

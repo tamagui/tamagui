@@ -54,19 +54,15 @@ npx tamagui build --dry-run ./src
 
 **Flags:**
 
-- `--target <platform>` - Target platform: `web`, `native`, or `both` (default:
-  `both`)
-- `--include <pattern>` - Glob pattern to include files
-- `--exclude <pattern>` - Glob pattern to exclude files
-- `--output <path>` - Output directory for optimized files (preserves directory
-  structure). When specified, source files are not modified
-- `--output-around` - Create platform-specific files (`.web.tsx` or `.native.tsx`)
-  next to source files instead of modifying them. Errors if the file already exists
-- `--expect-optimizations <number>` - Fail if fewer than this many components
-  are optimized (useful for CI)
-- `--dry-run` - Preview what would be optimized without writing any files
-- `--debug` - Enable debug output
-- `--verbose` - Enable verbose debug output
+- `--target <platform>`: Target platform: `web`, `native`, or `both` (default: `both`)
+- `--include <pattern>`: Glob pattern to include files
+- `--exclude <pattern>`: Glob pattern to exclude files
+- `--output <path>`: Output directory for optimized files (preserves directory structure). When specified, source files are not modified
+- `--output-around`: Create platform-specific files (`.web.tsx` or `.native.tsx`) next to source files instead of modifying them. Errors if the file already exists
+- `--expect-optimizations <number>`: Fail if fewer than this many components are optimized (useful for CI)
+- `--dry-run`: Preview what would be optimized without writing any files
+- `--debug`: Enable debug output
+- `--verbose`: Enable verbose debug output
 
 **Platform-Specific File Handling:**
 
@@ -152,8 +148,8 @@ npx tamagui check
 
 **Flags:**
 
-- `--debug` - Enable debug output
-- `--verbose` - Enable verbose debug output
+- `--debug`: Enable debug output
+- `--verbose`: Enable verbose debug output
 
 **Example output:**
 
@@ -171,8 +167,8 @@ npx tamagui generate
 
 **Flags:**
 
-- `--debug` - Enable debug output
-- `--verbose` - Enable verbose debug output
+- `--debug`: Enable debug output
+- `--verbose`: Enable verbose debug output
 
 **What it does:**
 
@@ -192,9 +188,9 @@ npx tamagui generate-css
 
 **Flags:**
 
-- `--output <path>` - Custom output path (default: `tamagui.generated.css`)
-- `--debug` - Enable debug output
-- `--verbose` - Enable verbose debug output
+- `--output <path>`: Custom output path (default: `tamagui.generated.css`)
+- `--debug`: Enable debug output
+- `--verbose`: Enable verbose debug output
 
 **Example:**
 
@@ -219,8 +215,8 @@ npx tamagui generate-themes ./themes/input.ts ./themes/generated.ts
 
 **Flags:**
 
-- `--debug` - Enable debug output
-- `--verbose` - Enable verbose debug output
+- `--debug`: Enable debug output
+- `--verbose`: Enable verbose debug output
 
 **Use case:** If you have complex theme generation logic, this command
 pre-computes your themes at build time rather than runtime.
@@ -228,7 +224,7 @@ pre-computes your themes at build time rather than runtime.
 ### add
 
 <Notice theme="green">
-  **Tamagui Pro** - This command is available exclusively to Tamagui Pro members.
+  **Tamagui Pro**: This command is available exclusively to Tamagui Pro members.
 </Notice>
 
 Add pre-configured fonts and icons from Tamagui's curated collections. This
@@ -244,8 +240,8 @@ npx tamagui add icon [packages-path]
 
 **Flags:**
 
-- `--debug` - Enable debug output
-- `--verbose` - Enable verbose debug output
+- `--debug`: Enable debug output
+- `--verbose`: Enable verbose debug output
 
 **Interactive selection:**
 
@@ -296,7 +292,7 @@ Pair it with [migrate](#migrate) for projects already on v1 or v2, or copy the s
 ### generate-prompt
 
 Generate an LLM-friendly markdown file from your Tamagui configuration. This
-creates comprehensive documentation of your design system for use with AI
+generates documentation of your design system for use with AI
 assistants.
 
 ```bash
@@ -305,8 +301,8 @@ npx tamagui generate-prompt
 
 **Flags:**
 
-- `--output <path>` - Custom output path (default: `.tamagui/prompt.md`)
-- `--debug` - Enable debug output
+- `--output <path>`: Custom output path (default: `.tamagui/prompt.md`)
+- `--debug`: Enable debug output
 
 **What it includes:**
 
@@ -323,10 +319,10 @@ better suggestions that align with your design system.
 
 All commands support these flags:
 
-- `--help` - Show help for the command
-- `--version` - Show CLI version
-- `--debug` - Enable debug output
-- `--verbose` - Enable verbose debug output (more detailed than `--debug`)
+- `--help`: Show help for the command
+- `--version`: Show CLI version
+- `--debug`: Enable debug output
+- `--verbose`: Enable verbose debug output (more detailed than `--debug`)
 
 ## Examples
 

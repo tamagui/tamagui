@@ -17,7 +17,7 @@ dynamic component does not turn extraction off for the rest of the file.
 | Tier | What the build emits | What remains at runtime |
 | --- | --- | --- |
 | Ordinary compiled Tamagui | Extracted CSS and flattened host elements wherever analysis succeeds | Provider, config, style engine, theme and media state, animation driver, and component runtime for residual sites |
-| Compiled global CSS | Ordinary compiled output plus the `outputCSS` artifact owned by the integration | Residual components and dynamic theme or media behavior remain; configuration-static CSS generation is removed |
+| Compiled global CSS | Ordinary compiled output plus the `outputCSS` artifact owned by the integration | Residual components and dynamic theme or media behavior remain, while configuration-static CSS generation is removed |
 | Strict zero-runtime | Lowered React host JSX plus one generated CSS artifact | No Tamagui renderer, provider, style engine, config parser, theme state, media state, or component animation runtime in the zero entry |
 
 The compiler is optional for ordinary Tamagui. Without it, components use the
