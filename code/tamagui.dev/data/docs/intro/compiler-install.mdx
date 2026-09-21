@@ -15,7 +15,7 @@ fact we recommend only setting it up once you're ready for production.
 
 The compiler uses Babel to analyze JSX and `styled` functions, then attempts to
 statically analyze and optimize them down to platform-native primitives.
-The end result is less abstraction - like a `div` on web, or plain React Native
+The end result is less abstraction, such as a `div` on web or a plain React Native
 `View` on native:
 
 <br />
@@ -35,7 +35,7 @@ the CLI automatically read from this file, so you only need to define your
 options once.
 
 This file lets the Tamagui CLI read your config and perform operations like
-generating CSS, pre-compiling components, and verifying optimizations — while
+generating CSS, pre-compiling components, and verifying optimizations, while
 also sharing that same configuration with whichever bundler plugin you use.
 Without it, you'd need to duplicate options across your metro, babel, vite,
 or webpack configs.
@@ -54,7 +54,7 @@ export default {
 ```
 
 With this file in place, your bundler plugins can be configured with no options
-at all — they'll pick up everything from `tamagui.build.ts`:
+at all, because they pick up everything from `tamagui.build.ts`:
 
 ```tsx
 // vite: tamaguiPlugin()
@@ -281,7 +281,7 @@ export default defineConfig({
 
 See the [guide](/docs/guides/next-js) for more complete setup.
 
-Next.js with Turbopack (the default) works best with the CLI approach — create a
+Next.js with Turbopack (the default) works best with the CLI approach: create a
 `tamagui.build.ts` and use `tamagui build` to optimize production builds. No
 bundler plugin needed.
 
