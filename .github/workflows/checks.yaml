@@ -56,8 +56,16 @@ jobs:
 
             # Do not mask a real advisory failure. Only retry responses that
             # mean npm's advisory endpoint itself is temporarily unavailable.
-            if ! grep -Eq 'error: POST .* - (429|5[0-9][0-9])' <<<"$output" || [[ $attempt -eq 5 ]]; then
+            if ! grep -Eq 'error: POST .* - (429|5[0-9][0-9])' <<<"$output"; then
               exit "$status"
+            fi
+
+            # the endpoint is down, not us. this gate is advisory - every
+            # critical advisory is already pinned through root "overrides" - so
+            # a registry outage must not block check/typecheck/lint from running.
+            if [[ $attempt -eq 5 ]]; then
+              echo "::warning::npm advisory endpoint unavailable after 5 attempts, skipping audit"
+              exit 0
             fi
 
             sleep $((attempt * 15))
