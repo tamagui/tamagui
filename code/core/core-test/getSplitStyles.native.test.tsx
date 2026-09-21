@@ -91,6 +91,44 @@ describe('getSplitStyles', () => {
     expect(() => getSplitStylesFor(props)).not.toThrow()
   })
 
+  test('explicit null pseudo style overrides a variant pseudo style', () => {
+    const PressableView = styled(View, {
+      variants: {
+        pressable: {
+          true: {
+            pressStyle: {
+              opacity: 0.5,
+            },
+          },
+        },
+      } as const,
+    })
+
+    const { style } = getSplitStylesFor(
+      {
+        pressable: true,
+        pressStyle: null,
+      },
+      PressableView,
+      { pressed: true }
+    )
+
+    expect(style?.opacity).toBeUndefined()
+  })
+
+  test('passes explicit null pseudo styles through native HOCs', () => {
+    const NativeHoc = {
+      staticConfig: {
+        ...View.staticConfig,
+        isHOC: true,
+      },
+    } as typeof View
+
+    const { viewProps } = getSplitStylesFor({ pressStyle: null }, NativeHoc)
+
+    expect(viewProps.pressStyle).toBeNull()
+  })
+
   test('native skips hover pseudo style work', () => {
     const directHover = getSplitStylesFor({
       hoverStyle: {
@@ -402,7 +440,11 @@ describe.skip('getSplitStyles - pseudo prop merging', () => {
 function getSplitStylesFor(
   props: Record<string, any>,
   Component = View,
-  options: { mediaState?: Record<string, any>; groupContext?: any } = {}
+  options: {
+    mediaState?: Record<string, any>
+    groupContext?: any
+    pressed?: boolean
+  } = {}
 ) {
   return getSplitStyles(
     props,
@@ -411,8 +453,8 @@ function getSplitStylesFor(
     '',
     {
       hover: false,
-      press: false,
-      pressIn: false,
+      press: options.pressed ?? false,
+      pressIn: options.pressed ?? false,
       focus: false,
       unmounted: true,
       disabled: false,
