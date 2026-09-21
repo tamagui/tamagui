@@ -241,20 +241,20 @@ export function Demo() {
 
 ### AnimatePresence Props
 
-- **`children`** - One or more Tamagui components with unique `key` props
-- **`initial`** - If `false`, children entering on initial mount won't animate (default: `true`)
-- **`custom`** - Pass data to children's variants for dynamic exit animations
-- **`mode`** - Determines how entering and exiting children render. Use `"wait"` to render one child at a time.
-- **`onExitComplete`** - Callback fired when all exiting children have finished animating
+- **`children`**: one or more Tamagui components with unique `key` props
+- **`initial`**: if `false`, children entering on initial mount will not animate (default: `true`)
+- **`custom`**: pass data to children's variants for dynamic exit animations
+- **`mode`**: determines how entering and exiting children render. Use `"wait"` to render one child at a time.
+- **`onExitComplete`**: callback fired when all exiting children have finished animating
 
 ### Component Props
 
 When used inside AnimatePresence:
 
-- **`enter:` clauses** - Values to animate from when mounting
-- **`exit:` clauses** - Values to animate to when unmounting
-- **`transition`** - Animation configuration (can use `{ enter, exit }` syntax)
-- **`key`** - Required unique identifier for AnimatePresence tracking
+- **`enter:` clauses**: values to animate from when mounting
+- **`exit:` clauses**: values to animate to when unmounting
+- **`transition`**: animation configuration (supports `{ enter, exit }` syntax)
+- **`key`**: required unique identifier for AnimatePresence tracking
 
 ## See Also
 

@@ -123,13 +123,14 @@ export default () => {
 
 As long as **all** of your usages of useMedia are extractable, Tamagui will actually generate your CSS and then fully remove the hook from the output code. You can check this by adding `// debug` to the top of your component.
 
-Of course, you may sometimes use `useMedia` for other purposes than styling. In fact, that's the nice part about Tamagui - if it can't extract, it always falls back to runtime gracefully.
+You can also use `useMedia` for logic outside of styles. If an expression
+cannot be extracted, Tamagui falls back to runtime execution.
 
-Tamagui runtime `useMedia` usage will track which keys are accessed, and only update if the media query matching that key updates. This granular updating is nice for performance.
+Tamagui tracks which keys are accessed, and only updates if the media query matching that key changes.
 
 #### Limitations
 
 The `useMedia` hook uses proxies so it can track which keys you are accessing and only re-render components that need re-rendering based on those keys. The Tamagui compiler also understands straightforward uses of the hook during compile-time and can remove it entirely when targeting the web, in favor of CSS.
 
-- In order to keep things lightweight and simple, the proxied object returned by `useMedia` is not iterable, and you can't check keys on it using `in` or get them using `Object.keys`.
-- It's encouraged to write `const media = useMedia()` and then access your keys like `media.sm` to work best with the compiler. The compiler supports de-structuring, but not re-naming.
+- The proxied object returned by `useMedia` is not iterable, and does not support `in` checks or `Object.keys`.
+- Write `const media = useMedia()` and access keys directly, like `media.sm`, for best results with the compiler. The compiler supports destructuring without renaming.

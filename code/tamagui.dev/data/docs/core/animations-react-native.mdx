@@ -43,11 +43,8 @@ React Native animations are springs, written as a duration and a bounce:
 
 ### Spring Parameters
 
-- **`duration`** - The spring's undamped period in milliseconds, which is what
-  "how fast does this feel" means. It is not a stopwatch: a bouncy spring keeps
-  ringing past it.
-- **`bounce`** - 0 is critically damped, toward 1 is loose and oscillating,
-  negative is sluggish.
+- **`duration`**: the spring's undamped period in milliseconds, defining how fast the animation feels. It is not a fixed cutoff: a bouncy spring continues oscillating past it.
+- **`bounce`**: 0 is critically damped, values toward 1 oscillate, and negative values produce an overdamped spring.
 
 ```tsx
 createAnimations({
@@ -73,9 +70,9 @@ sequence animations.
 
 **Advantages on native:**
 
-- **Built-in** - No additional animation library needed
-- **Spring physics** - Natural, physics-based motion
-- **Mature** - Battle-tested in React Native ecosystem
+- **Built-in**: no additional external animation library needed
+- **Spring physics**: natural, physics-based motion
+- **Reliable**: uses core React Native Animated
 
 **Limitations:**
 

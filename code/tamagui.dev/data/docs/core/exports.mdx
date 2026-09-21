@@ -12,13 +12,13 @@ description: Constants, helpers, hooks, components, and types
 
 [Constants are re-exported from @tamagui/constants](https://github.com/tamagui/tamagui/blob/main/code/core/constants/src/constants.ts):
 
-- `isWeb` - True if targeting the web. Will be true both for SSR and client.
-- `isBrowser` - True when both `navigator` and `location` are defined.
-- `isServer` - `isWeb && !isBrowser`.
-- `isClient` - `isWeb && isBrowser`.
-- `isChrome` - client-side Chrome
-- `isWebTouchable` - web-only touch-device (client side only)
-- `isTouchable` - True on native or touch-capable web clients.
+- `isWeb`: true if targeting the web (true for SSR and client)
+- `isBrowser`: true when both `navigator` and `location` are defined
+- `isServer`: `isWeb && !isBrowser`
+- `isClient`: `isWeb && isBrowser`
+- `isChrome`: client-side Chrome
+- `isWebTouchable`: web-only touch device (client side only)
+- `isTouchable`: true on native or touch-capable web clients
 
 ---
 
@@ -109,11 +109,10 @@ getTokenValue('small', 'size') // returns 14
 type getVariable = (value: Variable) => string
 ```
 
-If given a `Variable` - which comes from a parsed theme or token returned from
-`createTamagui`, `useTheme` or `getTokens` (read more
-[on the useTheme docs](/docs/core/use-theme)).
+Accepts a `Variable` from a parsed theme or token (returned by
+`createTamagui`, `useTheme`, or `getTokens`).
 
-Calling `getVariable(useTheme().color)` returns `var(--color)` on the web, and
+Calling `getVariable(useTheme().color)` returns `var(--color)` on web, and
 `#fff` on other platforms.
 
 ### splitStyleProps

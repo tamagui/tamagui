@@ -24,8 +24,8 @@ These render on web and native.
 | Prop | Value | Notes |
 | --- | --- | --- |
 | `boxShadow` | string, object, or array | Accepts theme colors inside the string, such as `"0 0 10px shadow-color"`. |
-| `filter` | CSS filter string | `brightness` and `opacity` everywhere; `blur`, `contrast`, and the rest need Android 12+. |
-| `backgroundImage` | `linear-gradient()` or `radial-gradient()` | Accepts tokens and theme colors. `url()` is web only; use `ImageBackground` on native. |
+| `filter` | CSS filter string | `brightness` and `opacity` work everywhere, while `blur`, `contrast`, and the rest need Android 12+. |
+| `backgroundImage` | `linear-gradient()` or `radial-gradient()` | Accepts tokens and theme colors. `url()` is web only. Use `ImageBackground` on native. |
 | `border` | `"1px solid border-color"` | Expands to width, style, and color per side on native. Native supports one border for all sides. |
 | `outline` | `"2px solid outline-color"` | Expands to `outlineWidth`, `outlineStyle`, and `outlineColor` on native. |
 | `outlineColor`, `outlineWidth`, `outlineOffset`, `outlineStyle` | color, space, space, `solid`, `dotted`, or `dashed` | |

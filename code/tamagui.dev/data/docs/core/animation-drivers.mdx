@@ -30,7 +30,7 @@ description: Choose and configure animation drivers for your platform
   ]}
 />
 
-You can swap drivers per-platform, or even dynamically load heavier drivers later in your app — for example, starting with the lightweight CSS driver on initial load and upgrading to Motion once the user is authenticated.
+You can swap drivers per platform, or dynamically load heavier drivers later in your app. For example, you can start with the lightweight CSS driver on initial load and upgrade to Motion once the user is authenticated.
 
 ---
 
@@ -119,8 +119,8 @@ export default createTamagui({
 
 **Spring parameters:**
 
-- `duration` - The spring's undamped period in milliseconds, how fast it feels
-- `bounce` - 0 is critically damped, toward 1 is loose, negative is sluggish
+- `duration`: the spring's undamped period in milliseconds, defining how fast it feels
+- `bounce`: 0 is critically damped, toward 1 is loose, and negative is sluggish
 - `stiffness`, `damping`, and `mass` still work for a config already tuned
   against them
 
@@ -188,7 +188,7 @@ Motion uses the Web Animations API (WAAPI) which runs animations on the composit
 
 ## Swapping Drivers
 
-Tamagui provides several ways to use different drivers — at build time per platform, at runtime in specific parts of your app, or dynamically loaded after initial render.
+Tamagui supports several ways to use different drivers: at build time per platform, at runtime in specific parts of your app, or dynamically loaded after initial render.
 
 ### Per-Platform with File Extensions
 
@@ -223,7 +223,7 @@ export default createTamagui({
 
 ### Dynamic with Configuration
 
-Use the `<Configuration>` component to swap the animation driver for a subtree. This is useful for lazy loading heavier drivers only when needed — for example, keeping initial page load fast with CSS animations, then upgrading to Motion for authenticated users:
+Use the `<Configuration>` component to swap the animation driver for a subtree. This is useful for lazy loading heavier drivers only when needed. For example, you can keep initial page load fast with CSS animations, then upgrade to Motion for authenticated users:
 
 ```tsx fileName="app/_layout.tsx"
 import { Configuration, Slot } from 'tamagui'
@@ -242,7 +242,7 @@ export function AuthenticatedLayout() {
 }
 ```
 
-This pattern works well with route-based code splitting — the Motion driver is only loaded when the user navigates to an authenticated route.
+This pattern works well with route-based code splitting, because the Motion driver is only loaded when the user navigates to an authenticated route.
 
 ### Multiple Drivers with animatedBy
 

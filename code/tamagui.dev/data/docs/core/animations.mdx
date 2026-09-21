@@ -27,7 +27,7 @@ description: Swap out animation drivers per-platform or at runtime
   ]}
 />
 
-Add animations to Tamagui with an animation driver. Animation drivers are designed to be swappable, so you can use lightweight CSS animations or other web-focused animation libraries on the web, while using larger but more advanced libraries like Reanimated on native - all without having to change a line outside of configuration.
+Add animations to Tamagui with an animation driver. Animation drivers are designed to be swappable, so you can use lightweight CSS animations or web-focused libraries on the web, while using Reanimated on native, without changing component code outside of configuration.
 
 For this guide, we'll use the React Native driver as an example, but you can choose from several [Animation Drivers](/docs/core/animation-drivers). For mount and unmount animations, see [AnimatePresence](/docs/core/animate-presence).
 
@@ -399,7 +399,7 @@ Priority follows CSS specificity intuition: press > hover > focus. This works wi
 ### Limiting which properties transition
 
 Name the properties in the transition itself, the same way CSS does. In string
-form the property leads the value; in object form it is the `properties` key:
+form the property leads the value, and in object form it is the `properties` key:
 
 ```tsx
 // only transform transitions, everything else jumps
@@ -496,7 +496,7 @@ your code exercise the same surface. They throw a helpful error if no
 mid-lifecycle, which is only a concern with `animatedBy` multi-driver setups.
 
 `useAnimatedNumberStyle` takes a value and a worklet that maps it to a style
-object. Spread that style onto the driver's animated view; on the CSS driver a
+object. Spread that style onto the driver's animated view. On the CSS driver, a
 plain Tamagui view with a `transition` prop interpolates the change.
 
 ```tsx
@@ -580,5 +580,5 @@ Note that because of this constraint, you may see an error if you add the
 
 ## See Also
 
-- [AnimatePresence](/docs/core/animate-presence) - Mount and unmount animations
-- [Animation Drivers](/docs/core/animation-drivers) - Choose and configure animation drivers
+- [AnimatePresence](/docs/core/animate-presence): mount and unmount animations
+- [Animation Drivers](/docs/core/animation-drivers): choose and configure animation drivers

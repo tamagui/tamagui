@@ -240,7 +240,7 @@ const Square = styled(View, {
 #### Environment passed to dynamic variants
 
 The second argument contains the current tokens, theme, and fonts. It never
-contains component props; use `.resolve((props, env) => ...)` when styles depend
+contains component props. Use `.resolve((props, env) => ...)` when styles depend
 on sibling props.
 
 ```tsx

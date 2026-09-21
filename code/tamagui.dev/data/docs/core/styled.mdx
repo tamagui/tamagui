@@ -88,7 +88,7 @@ To learn more about how to use them and all the special types, [see the docs on 
 
 ### Non-working React Native views
 
-You can assume all "utility" views in React Native are not supported: Pressable, TouchableOpacity, and others. They have specific logic for handling events that conflicts with Tamagui. We could support these in the future, but we don't plan on it - you can get all of Pressable functionality for the most part within Tamagui itself, and if you need something outside of it, you can use Pressable directly.
+React Native utility views like Pressable and TouchableOpacity are not supported targets for `styled()`. Their event handling logic conflicts with Tamagui. Tamagui components provide press handling and interaction states internally, or you can render `Pressable` directly when needed.
 
 ## Using on the web
 
@@ -149,7 +149,7 @@ Pass a JSX element to clone with Tamagui's computed props:
 The JSX element's props are merged with Tamagui's computed styles, classNames, and event handlers. This is useful when you need to pass element-specific props like `href` or `target`.
 
 <Notice theme="yellow">
-  JSX element render props are not optimized by the compiler - they will cause a deopt.
+  JSX element render props are not optimized by the compiler and will cause a deopt.
 </Notice>
 
 ### Function
@@ -171,13 +171,13 @@ import { TamaguiComponentState } from '@tamagui/core'
 
 The state object includes:
 
-- `hover` - true when hovered (web)
-- `press` - true when pressed
-- `focus` - true when focused
-- `disabled` - true when disabled
+- `hover`: true when hovered (web)
+- `press`: true when pressed
+- `focus`: true when focused
+- `disabled`: true when disabled
 
 <Notice theme="yellow">
-  Function render props are not optimized by the compiler - they will cause a deopt.
+  Function render props are not optimized by the compiler and will cause a deopt.
 </Notice>
 
 ### Runtime override
