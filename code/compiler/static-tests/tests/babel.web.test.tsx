@@ -343,6 +343,53 @@ test('double ternary + spread', async () => {
   expect(output?.js).toMatchSnapshot()
 })
 
+// https://github.com/tamagui/tamagui/issues/4194
+// two conditional style props on *different* conditions used to emit branches
+// that shadowed each other, and each ternary's copy of the base style would
+// overwrite the other ternary's real value
+test('two ternaries on different conditions resolve every combination', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test({ a, b }) {
+      return <View backgroundColor={a ? 'red' : 'blue'} display={b ? 'flex' : 'none'} />
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  const js = String(output?.js)
+
+  // resolve the emitted ternary chain the way the browser would
+  const classNames = Object.fromEntries(
+    [...js.matchAll(/const (_cn\d*) = "([^"]*)";/g)].map(([, name, value]) => [
+      name,
+      value,
+    ])
+  )
+  const chain = js
+    .match(/className=\{(.*?)\} \/>/)![1]
+    .replace(/_cn\d*/g, (name) => JSON.stringify(classNames[name]))
+
+  for (const [a, b, expected] of [
+    [true, true, ['_bg-red', '_dsp-flex']],
+    [true, false, ['_bg-red', '_dsp-none']],
+    [false, true, ['_bg-blue', '_dsp-flex']],
+    [false, false, ['_bg-blue', '_dsp-none']],
+  ] as const) {
+    const classes = String(new Function('a', 'b', `return ${chain}`)(a, b)).split(' ')
+    expect({ a, b, classes }).toMatchObject({
+      classes: expect.arrayContaining([...expected]),
+    })
+  }
+})
+
 test(`conditional classname keeps base and concats properly`, async () => {
   const output = await extractForWeb(
     `
