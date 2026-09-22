@@ -8,6 +8,7 @@ import {
   useAdaptedCapabilities,
 } from '@tamagui/adapt'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
+import { isWeb } from '@tamagui/constants'
 import { createTamagui } from '@tamagui/core'
 import { getPortal } from '@tamagui/native'
 import React from 'react'
@@ -210,5 +211,42 @@ describe('Adapt native live slot contents', () => {
     })
 
     expect(rendered!.toJSON()).toBe('scroll:true overlay:true dismiss:true')
+  })
+
+  test('platform narrows every when, including when={true}', async () => {
+    const matching = isWeb ? 'web' : 'native'
+    const other = isWeb ? 'native' : 'web'
+
+    function Harness(props: { when?: any; platform?: any }) {
+      return (
+        <AdaptParent scope="AdaptWhenPlatform">
+          <Adapt {...props}>
+            <>active</>
+          </Adapt>
+        </AdaptParent>
+      )
+    }
+
+    const render = async (props: { when?: any; platform?: any }) => {
+      let rendered: TestRenderer.ReactTestRenderer | null = null
+      await act(async () => {
+        rendered = TestRenderer.create(<Harness {...props} />)
+      })
+      const json = rendered!.toJSON()
+      await act(async () => {
+        rendered!.unmount()
+      })
+      return json
+    }
+
+    // when={true} used to short-circuit before the platform check
+    expect(await render({ when: true, platform: other })).toBe(null)
+    expect(await render({ when: true, platform: matching })).toBe('active')
+
+    // unchanged: either prop alone still works
+    expect(await render({ when: true })).toBe('active')
+    expect(await render({ platform: matching })).toBe('active')
+    expect(await render({ platform: other })).toBe(null)
+    expect(await render({})).toBe(null)
   })
 })

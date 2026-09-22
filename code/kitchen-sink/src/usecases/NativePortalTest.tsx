@@ -23,7 +23,7 @@ function SelectWithSheet({ id }: { id: string }) {
         <Select.Icon />
       </Select.Trigger>
 
-      <Adapt when={true} platform="touch">
+      <Adapt when={true}>
         <Sheet modal dismissOnSnapToBottom transition="medium">
           <Sheet.Container>
             <Sheet.Background />

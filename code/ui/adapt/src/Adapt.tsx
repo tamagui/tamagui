@@ -626,10 +626,6 @@ const useAdaptIsActiveGiven = (config: AdaptConfig | null) => {
     return false
   }
 
-  if (when === true) {
-    return true
-  }
-
   let enabled = false
 
   if (platform === 'touch') enabled = isTouchable
@@ -638,8 +634,13 @@ const useAdaptIsActiveGiven = (config: AdaptConfig | null) => {
   else if (platform === 'ios') enabled = isIos
   else if (platform === 'android') enabled = isAndroid
 
+  // platform narrows every `when`, including `when={true}`
   if (platform && enabled == false) {
     return false
+  }
+
+  if (when === true) {
+    return true
   }
 
   if (when && typeof when === 'string') {
