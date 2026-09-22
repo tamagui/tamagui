@@ -18,13 +18,13 @@ export const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] as 
 // surface disappears on a dark one, so each scheme carries its own ladder.
 export const shadows = {
   light: {
-    'shadow-1': 'rgba(0, 0, 0, 0.04)',
-    'shadow-2': 'rgba(0, 0, 0, 0.08)',
-    'shadow-3': 'rgba(0, 0, 0, 0.12)',
-    'shadow-4': 'rgba(0, 0, 0, 0.22)',
-    'shadow-5': 'rgba(0, 0, 0, 0.33)',
-    'shadow-6': 'rgba(0, 0, 0, 0.44)',
-    'shadow-7': 'rgba(0, 0, 0, 0.6)',
+    'shadow-1': 'rgba(0, 0, 0, 0.03)',
+    'shadow-2': 'rgba(0, 0, 0, 0.06)',
+    'shadow-3': 'rgba(0, 0, 0, 0.1)',
+    'shadow-4': 'rgba(0, 0, 0, 0.17)',
+    'shadow-5': 'rgba(0, 0, 0, 0.26)',
+    'shadow-6': 'rgba(0, 0, 0, 0.36)',
+    'shadow-7': 'rgba(0, 0, 0, 0.5)',
   },
   dark: {
     'shadow-1': 'rgba(0, 0, 0, 0.15)',
