@@ -20,7 +20,9 @@ const Frame = styled(View, {
   right: 0,
 })
 
-const Hoc = createStyledHOC(Frame, (props: any, ref: any) => <Frame ref={ref} {...props} />)
+const Hoc = createStyledHOC(Frame, (props: any, ref: any) => (
+  <Frame ref={ref} {...props} />
+))
 
 // a skin layered over a behavior HOC, the way a styled Sheet.Background wraps
 // the behavior package's background
