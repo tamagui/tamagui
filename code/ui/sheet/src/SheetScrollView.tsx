@@ -1,5 +1,5 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { createStyledHOC, isWeb, style, View, type GetProps } from '@tamagui/core'
+import { createStyledHOC, isWeb, View, type GetProps } from '@tamagui/core'
 import type { ScrollViewRef } from '@tamagui/scroll-view'
 import { ScrollView } from '@tamagui/scroll-view'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -18,7 +18,10 @@ import {
 } from './webViewport'
 
 const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
-const sheetContentStyle = style({ minHeight: '100%' })
+// plain object, not a style piece: these values are static (no theme tokens),
+// and style() warns when a lazily-required module first evaluates during a
+// render — which is exactly when a route-level sheet module loads.
+const sheetContentStyle = { minHeight: '100%' }
 
 type SheetScrollViewBaseProps = GetProps<typeof ScrollView>
 
