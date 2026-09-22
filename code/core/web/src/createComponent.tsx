@@ -1858,6 +1858,23 @@ export function createComponent<
         }
       : null
 
+    // press plumbing detached mid-press (a conditional pressStyle/onPress removed
+    // by the same tap's re-render racing the touch-up, e.g. a selection flip):
+    // the release then lands on detached handlers and press latches true,
+    // sticking the press wash with no recovery on native. with no handlers
+    // attached no future event can clear it, so any active press is
+    // definitionally stale — drop it. group subscribers keep theirs: their press
+    // may be parent-driven, and the group channel still delivers its release.
+    useIsomorphicLayoutEffect(() => {
+      const hadPressPlumbing = stateRef.current.hadAttachPress
+      stateRef.current.hadAttachPress = attachPress
+      if (hadPressPlumbing && !attachPress && !pseudoGroups?.size) {
+        const clearPress =
+          stateRef.current.setStateShallow ?? stateRef.current.baseSetStateShallow
+        clearPress?.({ press: false, pressIn: false })
+      }
+    }, [attachPress, pseudoGroups])
+
     if (process.env.TAMAGUI_TARGET === 'native' && events && !asChild) {
       // replicating TouchableWithoutFeedback
       Object.assign(events, {
