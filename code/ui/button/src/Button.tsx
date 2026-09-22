@@ -3,7 +3,7 @@ import { ButtonNestingContext } from '@tamagui/stacks'
 import type { TextParentStyles } from '@tamagui/text'
 import { textParentProps, wrapChildrenInText } from '@tamagui/text'
 import type { GetProps, TamaguiComponentPropsBaseBase } from '@tamagui/web'
-import { splitStyleProps, styled, Text, View } from '@tamagui/web'
+import { isVariable, splitStyleProps, styled, Text, View } from '@tamagui/web'
 import type { FunctionComponent, JSX, ReactNode } from 'react'
 import { useContext } from 'react'
 
@@ -143,9 +143,25 @@ export function useButton<Props extends ButtonBehaviorProps>(
   } = buttonProps
   const { noTextWrap, textProps, ...textStyleProps } = wrappedTextProps
 
+  // the button's resting text color reaches its icons, as it did in v2. an icon
+  // takes one color, so a clause string keeps the theme color and the object
+  // form contributes only its default
+  const { color: textColor } = textStyleProps
+  const restingTextColor =
+    textColor && typeof textColor === 'object' && !isVariable(textColor)
+      ? textColor.default
+      : textColor
+  const iconTextColor =
+    typeof restingTextColor === 'string'
+      ? restingTextColor.includes(':')
+        ? undefined
+        : restingTextColor
+      : isVariable(restingTextColor)
+        ? restingTextColor
+        : undefined
   const resolvedIconSize = iconSize ?? iconSizeOption
   const getThemedIcon = useGetThemedIcon({
-    color: iconColor,
+    color: iconColor ?? iconTextColor,
     size: resolvedIconSize === undefined ? undefined : resolvedIconSize * scaleIcon,
   })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map((item) => {
