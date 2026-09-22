@@ -1,4 +1,4 @@
-import { Check as CheckIcon } from '@tamagui/lucide-icons-2'
+import { Check as CheckIcon } from '@tamagui/local-icons'
 import type { CheckboxSize } from 'tamagui'
 import { Checkbox, Label, Theme, XStack, YStack } from 'tamagui'
 

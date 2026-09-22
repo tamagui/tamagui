@@ -1,4 +1,4 @@
-import { LogOut } from '@tamagui/lucide-icons-2'
+import { LogOut } from '@tamagui/local-icons'
 import { useRouter } from 'one'
 import { useEffect, useState } from 'react'
 import { mutate } from 'swr'

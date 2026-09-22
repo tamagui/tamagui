@@ -28,9 +28,6 @@ export type WithTamaguiProps = LoaderPluginOptions & {
     fullPath: string
   }) => boolean | string | undefined
   disableThemesBundleOptimize?: boolean
-
-  /** By default we add a Next.js modularizeImports option to tree shake @tamagui/lucide-icons-2, this disables it */
-  disableOptimizeLucideIcons?: boolean
 }
 
 /**
@@ -196,13 +193,6 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
             delete webpackConfig.resolve.plugins[0].paths['@tamagui/*']
             // delete webpackConfig.resolve.plugins[0].paths['tamagui']
           }
-        }
-
-        // better shaking for icons:
-        if (!tamaguiOptions.disableOptimizeLucideIcons) {
-          nextConfig.experimental ||= {}
-          nextConfig.experimental.optimizePackageImports ||= []
-          nextConfig.experimental.optimizePackageImports.push('@tamagui/lucide-icons-2')
         }
 
         /**

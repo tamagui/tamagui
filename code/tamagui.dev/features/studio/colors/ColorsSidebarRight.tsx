@@ -1,4 +1,4 @@
-import { CheckCircle, XCircle } from '@tamagui/lucide-icons-2'
+import { CheckCircle, XCircle } from '@tamagui/local-icons'
 import { getContrast } from 'color2k'
 import { memo } from 'react'
 import {

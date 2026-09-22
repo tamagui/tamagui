@@ -1,4 +1,4 @@
-import { Moon, Sun, SunMoon } from '@tamagui/lucide-icons-2'
+import { Moon, Sun, SunMoon } from '@tamagui/local-icons'
 import { useSystemScheme, useUserScheme } from '@vxrn/color-scheme'
 import { memo, useEffect, useState } from 'react'
 import { TooltipSimple } from 'tamagui'

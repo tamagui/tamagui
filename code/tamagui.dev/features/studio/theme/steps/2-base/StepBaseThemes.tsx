@@ -1,9 +1,4 @@
-import {
-  ArrowLeft,
-  ArrowLeftRight,
-  ArrowRight,
-  ArrowUpDown,
-} from '@tamagui/lucide-icons-2'
+import { ArrowLeft, ArrowLeftRight, ArrowRight, ArrowUpDown } from '@tamagui/local-icons'
 import { getStore, Store, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
 import { memo, useState } from 'react'

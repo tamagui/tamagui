@@ -1,5 +1,5 @@
 import { H5, ListItem, Separator, View, Theme } from 'tamagui'
-import { ChevronRight, Star, Trash } from '@tamagui/lucide-icons-2'
+import { ChevronRight, Star, Trash } from '@tamagui/local-icons'
 
 export const ThemedListItem = () => (
   <View gap="4">

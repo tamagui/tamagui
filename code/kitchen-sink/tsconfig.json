@@ -33,7 +33,7 @@
       "path": "../demos"
     },
     {
-      "path": "../packages/lucide-icons"
+      "path": "../packages/local-icons"
     },
     {
       "path": "../ui/toast"

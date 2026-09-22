@@ -1,4 +1,4 @@
-import { CheckCircle2 } from '@tamagui/lucide-icons-2'
+import { CheckCircle2 } from '@tamagui/local-icons'
 import { toast, useToasts } from '@tamagui/toast'
 import { Button, Toast, XStack, YStack } from 'tamagui'
 

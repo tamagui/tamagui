@@ -1,5 +1,5 @@
 import { ThemeTint, useTint } from '@tamagui/logo'
-import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons-2'
+import { ChevronLeft, ChevronRight } from '@tamagui/local-icons'
 import { XStack, YStack, useThemeName } from 'tamagui'
 
 export const PageThemeCarousel = () => {

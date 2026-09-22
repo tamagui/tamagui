@@ -8,7 +8,7 @@ import {
   ShoppingCart,
   Upload,
   User,
-} from '@tamagui/lucide-icons-2'
+} from '@tamagui/local-icons'
 
 import {
   Avatar,

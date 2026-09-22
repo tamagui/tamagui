@@ -1,5 +1,5 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
-import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
+import { ChevronDown, ChevronUp } from '@tamagui/local-icons'
 import type {
   SelectItemProps,
   SelectProps,

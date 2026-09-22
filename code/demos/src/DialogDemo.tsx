@@ -1,4 +1,4 @@
-import { ChevronDown, X } from '@tamagui/lucide-icons-2'
+import { ChevronDown, X } from '@tamagui/local-icons'
 import { useState } from 'react'
 import {
   Adapt,

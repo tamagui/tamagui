@@ -1,4 +1,4 @@
-import { ChevronRight, FilePlus, Settings, Trash2 } from '@tamagui/lucide-icons-2'
+import { ChevronRight, FilePlus, Settings, Trash2 } from '@tamagui/local-icons'
 import { Menu } from '@tamagui/menu'
 import React from 'react'
 import { YStack } from 'tamagui'

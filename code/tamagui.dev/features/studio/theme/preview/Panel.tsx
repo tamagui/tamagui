@@ -1,4 +1,4 @@
-import { MoreVertical } from '@tamagui/lucide-icons-2'
+import { MoreVertical } from '@tamagui/local-icons'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import type { YStackProps } from 'tamagui'
 import {

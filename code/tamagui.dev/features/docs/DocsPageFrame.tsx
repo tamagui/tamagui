@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons-2'
+import { ChevronLeft, ChevronRight } from '@tamagui/local-icons'
 import { usePathname, type Href } from 'one'
 import type { ReactNode } from 'react'
 import { Paragraph, ScrollView, View, XStack, YStack } from 'tamagui'

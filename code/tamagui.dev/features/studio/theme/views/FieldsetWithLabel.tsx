@@ -1,4 +1,4 @@
-import { Info } from '@tamagui/lucide-icons-2'
+import { Info } from '@tamagui/local-icons'
 import { useRef, useState } from 'react'
 import { Heading, Input, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'

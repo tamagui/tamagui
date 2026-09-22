@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, X } from '@tamagui/lucide-icons-2'
+import { ChevronLeft, ChevronRight, X } from '@tamagui/local-icons'
 import { useStore } from '@tamagui/use-store'
 import type { TamaguiElement } from '@tamagui/web'
 import {

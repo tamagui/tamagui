@@ -1,4 +1,4 @@
-import { Bot, Check, Copy } from '@tamagui/lucide-icons-2'
+import { Bot, Check, Copy } from '@tamagui/local-icons'
 import { memo } from 'react'
 import { Paragraph, TooltipSimple, XStack } from 'tamagui'
 import { Button } from '~/components/Button'

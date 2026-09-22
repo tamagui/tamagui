@@ -4,7 +4,7 @@ import {
   ArrowLeftRight,
   ArrowRight,
   ArrowUpDown,
-} from '@tamagui/lucide-icons-2'
+} from '@tamagui/local-icons'
 import { Store, getStore, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
 import { memo } from 'react'

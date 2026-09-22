@@ -1,6 +1,6 @@
 import { CurrentRouteProvider, Data, Sections } from '@tamagui/bento'
 import { listingData } from '~/components/bento-showcase/data'
-import { CircleDashed, Paintbrush } from '@tamagui/lucide-icons-2'
+import { CircleDashed, Paintbrush } from '@tamagui/local-icons'
 import type { Href } from 'one'
 import { Link, useParams } from 'one'
 import { startTransition } from 'react'

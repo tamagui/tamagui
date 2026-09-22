@@ -25,7 +25,7 @@ function Demo2() {
 
 //
 
-import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons-2'
+import { ArrowLeft, ArrowRight } from '@tamagui/local-icons'
 import { Image, XStack, YStack } from 'tamagui'
 
 const GalleryItem = styled(YStack, {

@@ -1,4 +1,4 @@
-import { Globe, Leaf, Puzzle } from '@tamagui/lucide-icons-2'
+import { Globe, Leaf, Puzzle } from '@tamagui/local-icons'
 import { useStore } from '@tamagui/use-store'
 import { Circle, H4, Paragraph, XStack, YStack } from 'tamagui'
 import { BentoStore, ComponentSection } from '~/components/BentoComponentSection'

@@ -2,7 +2,7 @@ import type { Href } from 'one'
 import { createElement, type ReactNode, useRef } from 'react'
 import { SizableText, XStack, YStack } from 'tamagui'
 import { Link } from '~/components/Link'
-import { ExternalLink } from '@tamagui/lucide-icons-2'
+import { ExternalLink } from '@tamagui/local-icons'
 
 type NavItemProps = {
   children: ReactNode

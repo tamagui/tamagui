@@ -1,4 +1,4 @@
-import { ChevronRight, Cloud, Moon, Star, Sun } from '@tamagui/lucide-icons-2'
+import { ChevronRight, Cloud, Moon, Star, Sun } from '@tamagui/local-icons'
 import { ListItem, Separator, XStack, YGroup } from 'tamagui'
 
 // the rows sit on color-1, the step just off the page background, so the list

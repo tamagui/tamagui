@@ -1,4 +1,4 @@
-import { Search as SearchIcon } from '@tamagui/lucide-icons-2'
+import { Search as SearchIcon } from '@tamagui/local-icons'
 import { memo, useContext, useEffect, useRef } from 'react'
 import { SizableText, TooltipSimple } from 'tamagui'
 

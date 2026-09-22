@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from '@tamagui/lucide-icons-2'
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from '@tamagui/local-icons'
 import { Paragraph, XStack, YStack } from 'tamagui'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { StudioPaletteBar } from '../../StudioPaletteBar'

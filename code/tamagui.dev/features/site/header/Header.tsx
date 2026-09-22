@@ -1,5 +1,5 @@
 import { LogoWords, setTintFamily, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import { Check, ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons-2'
+import { Check, ExternalLink, Figma, LogIn, Menu } from '@tamagui/local-icons'
 import { isTouchable, useGet, useMedia } from '@tamagui/web'
 import { useFocusEffect, usePathname, useRouter } from 'one'
 import * as React from 'react'

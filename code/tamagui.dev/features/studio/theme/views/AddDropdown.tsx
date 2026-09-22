@@ -1,4 +1,4 @@
-import { Plus } from '@tamagui/lucide-icons-2'
+import { Plus } from '@tamagui/local-icons'
 import type { ListItemProps, PopoverProps } from 'tamagui'
 import {
   H6,

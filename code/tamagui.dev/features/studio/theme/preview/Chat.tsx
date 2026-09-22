@@ -1,4 +1,4 @@
-import { Info, Send } from '@tamagui/lucide-icons-2'
+import { Info, Send } from '@tamagui/local-icons'
 import React, { memo, useState } from 'react'
 import { Avatar, Form, H4, Input, Paragraph, ScrollView, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'

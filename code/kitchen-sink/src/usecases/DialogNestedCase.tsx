@@ -1,4 +1,4 @@
-import { X } from '@tamagui/lucide-icons-2'
+import { X } from '@tamagui/local-icons'
 import { Button } from '../components/Button'
 import { Adapt, Dialog, Paragraph, Sheet, Unspaced, XStack, YStack } from 'tamagui'
 

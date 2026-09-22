@@ -1,4 +1,4 @@
-import { ExternalLink } from '@tamagui/lucide-icons-2'
+import { ExternalLink } from '@tamagui/local-icons'
 import React from 'react'
 import { H2, Paragraph, SizableText, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
 import { Features } from '~/components/Features'

@@ -1,4 +1,4 @@
-import { ChevronRight } from '@tamagui/lucide-icons-2'
+import { ChevronRight } from '@tamagui/local-icons'
 import React from 'react'
 import { Text, YStack } from 'tamagui'
 import { Button } from '../components/Button'

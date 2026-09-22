@@ -3,7 +3,7 @@
  * Tests that Portal/Sheet/Popover work correctly when using teleport
  */
 
-import { Check } from '@tamagui/lucide-icons-2'
+import { Check } from '@tamagui/local-icons'
 import React from 'react'
 import { Adapt, Popover, Text, XStack, YStack } from 'tamagui'
 import { Button } from '../components/Button'

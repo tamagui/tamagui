@@ -1,4 +1,4 @@
-import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
+import { Check, ChevronDown, ChevronUp } from '@tamagui/local-icons'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import React from 'react'
 

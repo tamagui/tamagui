@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckCircle, Minus, Plus, XCircle } from '@tamagui/lucide-icons-2'
+import { CheckCircle, Minus, Plus, XCircle } from '@tamagui/local-icons'
 import { useObserve } from '@tamagui/use-store'
 import { getContrast, readableColor } from 'color2k'
 import React, { memo } from 'react'

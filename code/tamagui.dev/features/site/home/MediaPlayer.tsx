@@ -1,5 +1,5 @@
 import { Image } from '@tamagui/image'
-import { FastForward, Pause, Rewind } from '@tamagui/lucide-icons-2'
+import { FastForward, Pause, Rewind } from '@tamagui/local-icons'
 import { memo } from 'react'
 import type { ThemeName, YStackProps } from 'tamagui'
 import { Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui'

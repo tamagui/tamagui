@@ -1,4 +1,4 @@
-import { Heart } from '@tamagui/lucide-icons-2'
+import { Heart } from '@tamagui/local-icons'
 import { TooltipSimple, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
 

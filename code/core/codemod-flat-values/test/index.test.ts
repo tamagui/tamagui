@@ -2504,7 +2504,7 @@ export function Example() {
 
 describe('token variant props', () => {
   const source = `import { Button, Input, ListItem, Spacer, YStack, styled } from 'tamagui'
-import { Search } from '@tamagui/lucide-icons'
+import { Search } from '@tamagui/local-icons'
 import { Local } from './local'
 
 export const Big = styled(Button, {

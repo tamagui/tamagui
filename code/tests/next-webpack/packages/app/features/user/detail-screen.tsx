@@ -1,5 +1,5 @@
 import { Button, Paragraph, YStack } from '@my/ui'
-import { ChevronLeft } from '@tamagui/lucide-icons-2'
+import { ChevronLeft } from '@tamagui/local-icons'
 import { useRouter } from 'solito/navigation'
 
 export function UserDetailScreen({ id }: { id: string }) {

@@ -1,4 +1,4 @@
-import { Bot, Check } from '@tamagui/lucide-icons-2'
+import { Bot, Check } from '@tamagui/local-icons'
 import { TooltipSimple } from 'tamagui'
 import { Button, type ButtonProps, type ButtonSize } from '~/components/Button'
 import { useClipboard } from '~/hooks/useClipboard'

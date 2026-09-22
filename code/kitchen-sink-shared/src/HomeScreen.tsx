@@ -1,4 +1,4 @@
-import { ChevronRight } from '@tamagui/lucide-icons-2'
+import { ChevronRight } from '@tamagui/local-icons'
 import { ScrollView } from 'react-native'
 import { H1, ListItem, YGroup, YStack } from 'tamagui'
 import { demos } from './demos'

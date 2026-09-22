@@ -1,4 +1,4 @@
-import { Moon } from '@tamagui/lucide-icons-2'
+import { Moon } from '@tamagui/local-icons'
 import { YStack } from 'tamagui'
 import { Button } from '../components/Button'
 

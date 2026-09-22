@@ -1,4 +1,4 @@
-import { Check, ChevronDown } from '@tamagui/lucide-icons-2'
+import { Check, ChevronDown } from '@tamagui/local-icons'
 import { type Href, router, usePathname } from 'one'
 import { useEffect, useState } from 'react'
 import { Paragraph, Select, XStack, YStack } from 'tamagui'

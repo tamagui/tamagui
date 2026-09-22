@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Accordion, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
-import { ChevronDown, ChevronsDownUp, ChevronsUpDown } from '@tamagui/lucide-icons-2'
+import { ChevronDown, ChevronsDownUp, ChevronsUpDown } from '@tamagui/local-icons'
 import { DocsRouteNavItem } from './DocsRouteNavItem'
 import { docsRoutes } from './docsRoutes'
 import { useDocsMenu } from './useDocsMenu'

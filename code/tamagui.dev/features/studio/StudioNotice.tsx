@@ -1,5 +1,5 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
-import { Check, ChevronLeft, ChevronRight, Lightbulb } from '@tamagui/lucide-icons-2'
+import { Check, ChevronLeft, ChevronRight, Lightbulb } from '@tamagui/local-icons'
 import type React from 'react'
 import { useRef, useState } from 'react'
 import type { ScrollViewProps, XStackProps } from 'tamagui'

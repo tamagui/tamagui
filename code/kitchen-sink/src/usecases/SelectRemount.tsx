@@ -3,7 +3,7 @@
  * https://github.com/tamagui/tamagui/issues/1859
  */
 
-import { Check } from '@tamagui/lucide-icons-2'
+import { Check } from '@tamagui/local-icons'
 import React from 'react'
 import { Adapt, Button, Text, XStack, YStack } from 'tamagui'
 import { Select } from '../components/Select'

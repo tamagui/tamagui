@@ -1,4 +1,4 @@
-import { Heart, Star } from '@tamagui/lucide-icons-2'
+import { Heart, Star } from '@tamagui/local-icons'
 import { YStack, XStack, Text } from 'tamagui'
 
 // smoke case for SVG fill/stroke/strokeWidth on themed icons:

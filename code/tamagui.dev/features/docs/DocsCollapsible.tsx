@@ -1,4 +1,4 @@
-import { ChevronDown } from '@tamagui/lucide-icons-2'
+import { ChevronDown } from '@tamagui/local-icons'
 import type React from 'react'
 import { Accordion, Paragraph, XStack, YStack } from 'tamagui'
 

@@ -1,5 +1,5 @@
 import { ThemeTint } from '@tamagui/logo'
-import { Timer, Waves } from '@tamagui/lucide-icons-2'
+import { Timer, Waves } from '@tamagui/local-icons'
 import type { ReactNode } from 'react'
 import {
   Configuration,
