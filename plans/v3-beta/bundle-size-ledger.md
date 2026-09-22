@@ -475,3 +475,21 @@ is what keeps page CSS like `p { margin: 1em }` reaching html.* on web.
 - Accepted as the cost of the zero-specificity reset. If it is worth reclaiming
   later, the rules could be emitted only for apps that reference html.*.
 - Baseline re-recorded for those six css numbers at `9fe7700110`.
+
+## Baseline update, 2026-09-22: styled HOC default position
+
+A `styled()` wrapper over a `createStyledHOC` component no longer takes the
+`defaultPosition: 'relative'` base layer, so the frame it renders keeps its own
+authored position (an absolute Sheet background or overlay stopped collapsing
+to relative on web).
+
+- **RAN** `checks` on `35a62b31e5` (before the fix): styled-view gzip 29,770,
+  raw 79,317, +145 over the 2026-09-10 baseline.
+- **RAN** `checks` on `ff039281e5` (the fix): gzip 29,776, raw 79,333, one byte
+  past the 29,775 ceiling. The fix costs 6 gzip bytes (16 raw) for the
+  `isStyledHOC` static-config flag and its check; the other 145 bytes are the
+  earlier commits since the last re-record.
+- Accepted as the cost of the fix. The numbers are CI's measurement on the
+  pinned Node 24.16.0 and zlib 1.3.1-e00f703, which is what `--update-baseline`
+  records there.
+- Baseline re-recorded at 29,776, ceiling 29,926.
