@@ -2377,6 +2377,15 @@ function writeStyleRecord(
   const condition =
     conditionOverride !== -1 ? conditionOverride : cursor ? cursor[conditionValue] : 0
   const identity = cursor ? cursor[conditionKey] : ''
+  if (process.env.TAMAGUI_TARGET === 'native' && value === 'unset' && identity !== '') {
+    // a conditional unset means the platform default while the clause is
+    // active. native has no `unset` keyword, so retract the key instead of
+    // writing a string react native rejects. the record keeps its identity,
+    // so it still overrides the earlier clause and loses to a later one
+    value = undefined
+    original = undefined
+    flags |= recordRetract
+  }
   const direct = state as DirectState
   const slots = (direct.flatSlots ||= new Map())
   const sourceLayer = direct.flatPass?.[passSourceLayer] || 0
