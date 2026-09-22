@@ -100,11 +100,8 @@ neither set, Adapt is never active.
 `when` takes any media query key from your config, or a boolean. `platform`
 takes `'web'`, `'native'`, `'ios'`, `'android'` or `'touch'`.
 
-<Notice>
-  `when={true}` forces the adaptation on and skips the platform check entirely,
-  so `<Adapt when={true} platform="touch">` is active on desktop web too. Use a
-  media query string when you want both conditions to apply.
-</Notice>
+When you set both, both must pass. `<Adapt when={true} platform="touch">` is on
+for every width, but only on touch devices.
 
 Because `when` reads media state, you can also drive it from your own logic:
 
@@ -235,13 +232,13 @@ instead of on a timer.
       name: 'when',
       type: 'MediaQueryKey | boolean | null',
       required: false,
-      description: `A media query key from your config, or a boolean. Active when the query matches. true forces the adaptation on and skips the platform check.`,
+      description: `A media query key from your config, or a boolean. Active when the query matches; true is always active.`,
     },
     {
       name: 'platform',
       type: `'web' | 'native' | 'ios' | 'android' | 'touch' | null`,
       required: false,
-      description: `Restricts the adaptation to a platform. Combined with a media query string, both must pass.`,
+      description: `Restricts the adaptation to a platform. When combined with when, both must pass.`,
     },
     {
       name: 'scope',
@@ -297,42 +294,6 @@ where the transition event is `{ phase: 'start' | 'end', cause: 'open' | 'close'
 
 `state` is whatever the adapting component chose to pass through. Dialog passes
 its internal context; Popover and Select pass nothing.
-
-### AdaptCapabilities
-
-Lets an adapt target declare what its container already provides, so content
-does not double up on it. Sheet declares all three when it is the target:
-
-```tsx
-<AdaptCapabilities scroll overlay dismiss>
-  {children}
-</AdaptCapabilities>
-```
-
-<PropsTable
-  data={[
-    {
-      name: 'scroll',
-      type: 'boolean',
-      required: false,
-      description: `The container already scrolls its contents.`,
-    },
-    {
-      name: 'overlay',
-      type: 'boolean',
-      required: false,
-      description: `The container already renders a backdrop overlay.`,
-    },
-    {
-      name: 'dismiss',
-      type: 'boolean',
-      required: false,
-      description: `The container already handles dismissal.`,
-    },
-  ]}
-/>
-
-Read them back with `useAdaptedCapabilities()`.
 
 ## Troubleshooting
 
