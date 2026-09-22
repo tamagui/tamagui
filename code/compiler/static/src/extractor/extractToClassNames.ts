@@ -42,6 +42,10 @@ export type ExtractToClassNamesProps = {
 // this lets us more easily combine everything easily
 // all ternaries in this array ONLY have consequent, they are normalized
 const remove = () => {} // we dont remove after this step
+
+// conditional style props on one element expand to 2^n className branches;
+// 16 is where the hoisted strings stop being cheaper than the runtime path
+const MAX_TERNARY_CONDITIONS = 4
 const spaceString = t.stringLiteral(' ')
 
 export async function extractToClassNames({
@@ -472,19 +476,26 @@ export async function extractToClassNames({
         // normalize tests to reduce duplicates
         const normalizedTernaries = normalizeTernaries(onlyTernaries)
 
+        // every branch below hoists a full className string, so 2^n of them
+        // outgrow what the runtime path costs well before n gets large. past
+        // the cap the element stays a runtime component instead
+        if (normalizedTernaries.length > MAX_TERNARY_CONDITIONS) {
+          throw new BailOptimizationError()
+        }
+
         // expand into the full cross product of every ternary's two arms. each
         // branch carries `test && !otherTest && ...` for every ternary, so the
         // branches are mutually exclusive and cover the whole condition space -
         // which means no branch can shadow another and the order we emit them
         // in doesn't matter.
         type Branch = {
-          test: t.Expression | null
+          tests: t.Expression[]
           styles: object
           fontFamily: string | undefined
         }
 
         let branches: Branch[] = [
-          { test: null, styles: {}, fontFamily: baseFontFamily || undefined },
+          { tests: [], styles: {}, fontFamily: baseFontFamily || undefined },
         ]
 
         for (const ternary of normalizedTernaries) {
@@ -492,14 +503,13 @@ export async function extractToClassNames({
           for (const prev of branches) {
             for (const isConsequent of [true, false]) {
               const arm = isConsequent ? ternary.consequent : ternary.alternate
+              // cloned so no test node lands in the output twice
               const test = isConsequent
                 ? t.cloneNode(ternary.test, true)
                 : t.unaryExpression('!', t.cloneNode(ternary.test, true))
               const hasStyles = arm && Object.keys(arm).length > 0
               next.push({
-                test: prev.test
-                  ? t.logicalExpression('&&', t.cloneNode(prev.test, true), test)
-                  : test,
+                tests: [...prev.tests, test],
                 styles: hasStyles ? mergeProps(prev.styles, arm!) : prev.styles,
                 fontFamily:
                   (hasStyles ? getFontFamilyNameFromProps(arm) : undefined) ||
@@ -513,10 +523,12 @@ export async function extractToClassNames({
         for (const branch of branches) {
           // an arm the source omitted contributes nothing, so the branch falls
           // through the (mutually exclusive) rest of the chain to the base
-          if (!branch.test || !Object.keys(branch.styles).length) continue
+          if (!Object.keys(branch.styles).length) continue
           expandedTernaries.push({
             fontFamily: branch.fontFamily,
-            test: branch.test,
+            test: branch.tests.reduce((left, right) =>
+              t.logicalExpression('&&', left, right)
+            ),
             // the base goes in first so the branch's own values win over it
             consequent: mergeProps(mergeForwardBaseStyle || {}, branch.styles),
             alternate: null,
@@ -529,37 +541,53 @@ export async function extractToClassNames({
 
       // next: create all CSS, build className strings and hoist, and create final node with props
       if (hasTernaries) {
+        const baseString = t.isStringLiteral(baseClassNameExpression)
+          ? baseClassNameExpression.value
+          : ''
+
+        // branches are mutually exclusive, so the ones that resolve to the same
+        // set of classes share one hoisted string behind an or-ed test, and one
+        // that resolves to the base itself falls through to it. atomic classes
+        // make order inside the attribute irrelevant, so the set is the identity
+        const classSet = (className: string) => className.split(' ').sort().join(' ')
+        const baseClassSet = baseString ? classSet(baseString) : null
+        const branchesByClassSet = new Map<
+          string,
+          { className: string; tests: t.Expression[] }
+        >()
+
         for (const ternary of expandedTernaries) {
           if (!ternary.consequent) continue
           const classNames = addStyles(ternary.consequent)
           if (ternary.fontFamily) {
             classNames.unshift(`font_${ternary.fontFamily}`)
           }
-          const baseString = t.isStringLiteral(baseClassNameExpression)
-            ? baseClassNameExpression.value
-            : ''
 
           const fullClassNameWithDups =
             (baseString ? `${baseString} ` : '') + classNames.join(' ')
 
           // we concat here as the base could be conditionally overriden by our classNames
           const fullClassName = concatClassName(fullClassNameWithDups)
+          const key = classSet(fullClassName)
+          if (key === baseClassSet) continue
 
-          const classNameLiteral = t.stringLiteral(fullClassName)
-
-          if (!ternaryClassNameExpr) {
-            ternaryClassNameExpr = t.conditionalExpression(
-              ternary.test,
-              classNameLiteral,
-              baseClassNameExpression
-            )
+          const seen = branchesByClassSet.get(key)
+          if (seen) {
+            seen.tests.push(ternary.test)
           } else {
-            ternaryClassNameExpr = t.conditionalExpression(
-              ternary.test,
-              classNameLiteral,
-              ternaryClassNameExpr
-            )
+            branchesByClassSet.set(key, {
+              className: fullClassName,
+              tests: [ternary.test],
+            })
           }
+        }
+
+        for (const { className, tests } of branchesByClassSet.values()) {
+          ternaryClassNameExpr = t.conditionalExpression(
+            tests.reduce((left, right) => t.logicalExpression('||', left, right)),
+            t.stringLiteral(className),
+            ternaryClassNameExpr || baseClassNameExpression
+          )
         }
       }
 
