@@ -1,8 +1,8 @@
 import type { Href } from 'one'
 import { createElement, type ReactNode, useRef } from 'react'
-import { SizableText, Spacer, XStack, YStack } from 'tamagui'
+import { SizableText, XStack, YStack } from 'tamagui'
 import { Link } from '~/components/Link'
-import { ExternalIcon } from '~/features/icons/ExternalIcon'
+import { ExternalLink } from '@tamagui/lucide-icons-2'
 
 type NavItemProps = {
   children: ReactNode
@@ -75,6 +75,11 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           style={{ textAlign: 'left' }}
         >
           {children}
+          {isExternal && (
+            <SizableText render="span" display="inline-flex" ml="2" y={2}>
+              <ExternalLink size={13} color="var(--color)" aria-label="opens in a new tab" />
+            </SizableText>
+          )}
           {!!icon && (
             <>
               &nbsp;
@@ -84,12 +89,6 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
             </>
           )}
         </SizableText>
-        {isExternal && (
-          <XStack opacity={0.5}>
-            <Spacer size="2" />
-            <ExternalIcon />
-          </XStack>
-        )}
         {pending ? (
           <>
             <XStack flex={1} />

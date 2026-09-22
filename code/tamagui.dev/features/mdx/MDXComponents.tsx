@@ -143,7 +143,7 @@ const codeBlock = (props) => {
     ...rest
   } = props
   return (
-    <YStack mt="3">
+    <YStack mt="2" mb="5">
       <DocCodeBlock
         isHighlightingLines={line !== undefined}
         className={className || 'language-txt'}
@@ -530,8 +530,8 @@ const componentsIn = {
     <H2
       position="relative"
       width={`fit-content` as any}
-      mt={28}
-      mb={12}
+      mt={48}
+      mb={14}
       data-heading
       fontSize={24}
       lineHeight="32px"
@@ -545,7 +545,7 @@ const componentsIn = {
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading data-heading mt={20} mb={8} id={id}>
+    <LinkHeading data-heading mt={32} mb={10} id={id}>
       <H3
         maxW="100%"
         position="relative"
@@ -586,9 +586,9 @@ const componentsIn = {
       className="docs-paragraph"
       display="block"
       fontSize={16}
-      lineHeight="25px"
+      lineHeight="27px"
       mt={0}
-      mb={16}
+      mb={18}
       color="color-11"
       {...props}
     />
@@ -652,9 +652,9 @@ const componentsIn = {
       <LI
         render="li"
         fontSize={16}
-        lineHeight="26px"
+        lineHeight="27px"
         pb={0}
-        mb={4}
+        mb={6}
         className="docs-paragraph"
       >
         {props.children}

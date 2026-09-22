@@ -1,14 +1,15 @@
 ---
-title: HTML primitives
-description: Semantic HTML elements that render on web and native
+title: HTML elements
+description: Semantic HTML elements that render on web and native, in early development
 ---
 
 <IntroParagraph>
-  The root `html.*` export gives one component tree semantic HTML on web and the
-  corresponding React Native primitives on native.
+  The `html` export renders semantic HTML on web and the matching React Native
+  primitives on native. It follows web and React Strict DOM semantics, and suits
+  screens that are mostly web content.
 </IntroParagraph>
 
-Each member is an ordinary Tamagui component, so it accepts Tamagui style props
+Each member is an ordinary Tamagui component, so it takes Tamagui style props
 alongside the DOM props for that element.
 
 ```tsx
@@ -31,9 +32,17 @@ export function Article() {
 
 You can also import `html` from `@tamagui/core`.
 
-`html.*` is the recommended default for new code. [`View` and `Text`](/docs/core/view-and-text) remain fully supported, and
-every `html.*` member is built on one of them, so they take the same style
-props, tokens, themes, and variants.
+## Before you use it
+
+`html.*` is in early development. Its elements keep the browser's default
+`display`, so on web `html.div` and `html.p` are `display: block` and `html.span`
+is inline. React Native only has flex layout, so the same tree can lay out
+differently on native. [`View` and `Text`](/docs/core/view-and-text) are flex
+columns everywhere, which is why they stay the default for cross-platform
+screens.
+
+Every `html.*` member is built on `View` or `Text`, so both take the same style
+props, tokens, themes, and variants, and you can mix them in one tree.
 
 ## What renders
 

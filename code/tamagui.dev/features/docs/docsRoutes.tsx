@@ -64,7 +64,7 @@ export const docsRoutes = [
     title: 'Components',
     pages: [
       { title: 'View & Text', route: '/docs/core/view-and-text' },
-      { title: 'HTML primitives', route: '/docs/core/html-primitives' },
+      { title: 'HTML elements', route: '/docs/core/html-primitives' },
     ],
   },
 

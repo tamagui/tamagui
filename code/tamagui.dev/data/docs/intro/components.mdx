@@ -5,46 +5,8 @@ description: The elements you build with, and what they render on each platform
 
 <IntroParagraph>
   Every Tamagui component takes style props. This page covers the base elements
-  those props go on, and which one to reach for.
+  those props go on, and which one to use when.
 </IntroParagraph>
-
-## html.* is the base
-
-Start with the `html` export. Each member is a semantic HTML element on web
-and the matching React Native primitive on native, and all of them take the
-same typed style props:
-
-```tsx
-import { html } from 'tamagui'
-
-export const Article = () => (
-  <html.article maxWidth={720} margin="auto" padding="4 md:8">
-    <html.h1 fontSize="8">A semantic heading</html.h1>
-    <html.p color="color-11" marginTop="4">
-      The same source renders semantic tags on web and native primitives in a
-      native app.
-    </html.p>
-  </html.article>
-)
-```
-
-We recommend `html.*` for new code. It keeps the web output semantic and
-accessible with no extra work, and native gets the same tree through a small
-set of backing primitives:
-
-| You write | Web renders | Native renders |
-| --- | --- | --- |
-| `html.div`, `html.article`, `html.section`, `html.ul`, and other layout tags | that element | `View` |
-| `html.span`, `html.p`, `html.h1` through `html.h6`, `html.strong`, and other text tags | that element | `Text` |
-| `html.img` | `img` | `Image` |
-| `html.input`, `html.textarea` | that element | `TextInput` |
-
-Props follow the element. `html.a` takes `href`, `html.img` takes `src` and
-`alt`, and void elements such as `br` and `img` reject children in TypeScript.
-Native support is explicit: an element with no faithful native equivalent, such
-as `html.select`, is rejected on native rather than swapped for something else.
-See [HTML primitives](/docs/core/html-primitives) for the element list and the
-native rules.
 
 ## View and Text
 
@@ -55,17 +17,20 @@ React Native's `View` and `Text` and add the Tamagui style props on top:
 import { View, Text } from 'tamagui'
 
 export const Hello = () => (
-  <View padding="4">
-    <Text color="color">Hello</Text>
+  <View padding="4" gap="2">
+    <Text fontSize="6">Hello</Text>
+    <Text color="color-11">The same layout on iOS, Android, and web.</Text>
   </View>
 )
 ```
 
-Reach for them when you are porting React Native code, when a library expects
-a `View`, or when you want an element with no semantic meaning. Both render a
-`div` and a `span` on web. See [View & Text](/docs/core/view-and-text) for the
-full prop reference, including event handlers and the non-style props Tamagui
-adds.
+Use them by default. A `View` is a flex column on every platform, so a layout you
+build once looks the same on web and native. On web they render a `div` and a
+`span`, and you can change the tag with [`render`](/docs/core/styled#render) when
+you need semantic HTML, such as `<View render="nav">`.
+
+See [View & Text](/docs/core/view-and-text) for the full prop reference,
+including event handlers and the non-style props Tamagui adds.
 
 ## Reusable components with styled()
 
@@ -74,9 +39,9 @@ and typed variants. Inline props and `styled()` are both optimized by the
 compiler, so pick whichever reads better:
 
 ```tsx
-import { html, styled } from 'tamagui'
+import { styled, View } from 'tamagui'
 
-export const Card = styled(html.article, {
+export const Card = styled(View, {
   padding: '4',
   borderRadius: 'lg',
   backgroundColor: 'background',
@@ -118,6 +83,35 @@ The `tamagui` package adds styled, accessible components on top of these
 primitives: `Button`, `Dialog`, `Sheet`, `Select`, and the rest of the
 [UI kit](/ui/intro). Every one of them accepts `unstyled` to drop its default
 styles and keep only its behavior.
+
+## HTML elements
+
+The `html` export has an element for each semantic HTML tag, such as
+`html.article`, `html.h1`, and `html.p`. On web each one renders that tag, and on
+native it renders the matching React Native primitive. It follows web and
+[React Strict DOM](https://facebook.github.io/react-strict-dom/) semantics, which
+makes it a good fit for screens that are mostly web content, like docs,
+marketing pages, and articles.
+
+```tsx
+import { html } from 'tamagui'
+
+export const Article = () => (
+  <html.article maxWidth={720} margin="auto" padding="4 md:8">
+    <html.h1 fontSize="8">A semantic heading</html.h1>
+    <html.p color="color-11" marginTop="4">
+      Renders an article, h1, and p on web.
+    </html.p>
+  </html.article>
+)
+```
+
+`html.*` is in early development. Its elements keep the browser's default
+`display`, so `html.div` is `display: block` on web, while React Native only
+supports flex layout. A layout built from `html.*` can therefore look different
+on native. Use `View` and `Text` when the same screen has to look the same
+everywhere. See [HTML elements](/docs/core/html-primitives) for the element list
+and native rules.
 
 ## Prefer utility classes?
 
