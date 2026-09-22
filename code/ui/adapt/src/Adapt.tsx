@@ -680,6 +680,12 @@ export function useAdaptTarget<State = unknown>(
   }
 }
 
+// lets an adapt target declare what its container already provides, so content
+// need not double up on it. currently write-only: Sheet declares all three when
+// it is the target, but nothing reads them back. Dialog.Overlay, Dialog.Close
+// and Select instead check useAdaptIsActive() directly, which assumes the
+// target is a Sheet. reading capabilities there is what would make a non-Sheet
+// target (the render callback, or a custom useAdaptTarget container) correct.
 export const AdaptCapabilities = ({
   children,
   scroll,
