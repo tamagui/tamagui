@@ -22,11 +22,7 @@ import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandlin
 import { getDefaultProps } from './helpers/getDefaultProps'
 import { componentDisplayName } from './helpers/componentDisplayName'
 import { resolveAnimationDriver } from './helpers/resolveAnimationDriver'
-import {
-  getSplitStyles,
-  prepareStaticConfigCompounds,
-  useSplitStyles,
-} from './helpers/getSplitStyles'
+import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import {
   getNativeStyleEngine,
   queueNativeViewState,
@@ -286,8 +282,6 @@ export function createComponent<
       `[tamagui zero-runtime] createComponent ran in a zero-runtime graph. No Tamagui component renderer ships in this mode, so a component reference survived compilation. Fix the site or move the owning module to a declared full-runtime island.`
     )
   }
-
-  prepareStaticConfigCompounds(staticConfig)
 
   let config: TamaguiInternalConfig | null = null
   let resolvedDefaultProps: Record<string, any> | undefined

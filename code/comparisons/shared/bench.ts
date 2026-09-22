@@ -42,7 +42,6 @@ const allScenarios: BenchScenario[] = [
   { id: 'group', name: '3. Nested row layout' },
   { id: 'heavy', name: '4. Heavy page (realistic card list, nested, mixed)' },
   { id: 'animated', name: '5. Dynamic transition' },
-  { id: 'flat', name: '6. Flat values and compounds' },
 ]
 
 const scenarioParam = urlParams.get('scenario')
