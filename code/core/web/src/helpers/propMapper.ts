@@ -1,5 +1,4 @@
 import { isAndroid } from '@tamagui/constants'
-import { scanFlatValue } from '@tamagui/style-grammar/runtime'
 import { isVariable } from '../createVariable'
 import type {
   GetStyleState,
@@ -11,7 +10,7 @@ import type {
   VariantSpreadFunction,
 } from '../types'
 import { variantResolverNames } from '../types'
-import { getCondition } from './directStyle'
+import { getCachedFlatValue } from './directStyle'
 import { expandStyle } from './expandStyle'
 import { resolveVariableValue } from './resolveVariableValue'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
@@ -172,58 +171,24 @@ const resolveVariants: StyleResolver = (
       value in variantDefinition
     )
   ) {
-    // `scanFlatValue` is the same lexer `contributeStyleString` and the
-    // canonical `parseValue` run, and `getCondition` is the same modifier
-    // resolver the style path uses. Both matter: the two paths used to lose
-    // different amounts of a value the grammar refuses, so which one styled a
-    // component decided how much of a typo survived.
-    const starts: number[] = []
-    const ends: number[] = []
-    const modifiers: (string | undefined)[] = []
-    let pendingModifier: string | undefined
-    let sawClause = false
-    let refused = false
-
-    scanFlatValue(value, {
-      segment(start, end, isBase) {
-        if (start === end) {
-          if (!isBase) refused = true
-          return
-        }
-        starts.push(start)
-        ends.push(end)
-        modifiers.push(pendingModifier)
-      },
-      chain(start, end) {
-        if (refused) return false
-        const source = value.slice(start, end)
-        if (!getCondition(styleState, source)) {
-          refused = true
-          return false
-        }
-        pendingModifier = source
-        sawClause = true
-        return true
-      },
-      error() {
-        refused = true
-      },
-    })
-
-    if (refused) return []
-    if (sawClause) {
+    const cached = getCachedFlatValue(styleState.conf, value)
+    if (cached.error) return []
+    const parsed = cached.value!
+    if (parsed.clauses.length > 0) {
       let entries: [string, any, any?, string?][] | undefined
-      for (let index = 0; index < starts.length; index++) {
+      for (let index = -1; index < parsed.clauses.length; index++) {
+        const payload = index === -1 ? parsed.base : parsed.clauses[index].payload
+        if (payload === null) continue
         const resolved = resolveVariantValue(
           key,
-          value.slice(starts[index], ends[index]),
+          payload,
           styleProps,
           styleState,
           parentVariantKey
         )
         if (!resolved) continue
         entries ||= []
-        const modifier = modifiers[index]
+        const modifier = index === -1 ? undefined : cached.conditions![index].source
         for (const entry of resolved) {
           if (modifier !== undefined) entry[3] = modifier
           entries.push(entry)

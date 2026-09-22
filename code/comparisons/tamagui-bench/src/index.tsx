@@ -12,6 +12,7 @@ import {
 
 const BEHAVIOR_VALIDATION =
   new URLSearchParams(window.location.search).get('behaviorValidation') === '1'
+const CACHE_MODE = new URLSearchParams(window.location.search).get('cacheMode')
 
 // ── scenario 1: simple (fully static — compiler CAN flatten) ──
 
@@ -42,6 +43,12 @@ function RichItems({ seed }: { seed: number }) {
   return useMemo(() => {
     const arr = []
     for (let i = 0; i < ITEM_COUNT; i++) {
+      const backgroundColor =
+        CACHE_MODE === 'thrash'
+          ? `rgb(99,102,241) hover:rgb(${(i + seed) % 255},70,229)`
+          : CACHE_MODE === 'warm'
+            ? 'rgb(99,102,241) hover:rgb(79,70,229)'
+            : 'rgb(99,102,241)'
       arr.push(
         <View
           key={i}
@@ -52,7 +59,7 @@ function RichItems({ seed }: { seed: number }) {
           padding={4}
           borderWidth={1}
           borderColor="rgba(0,0,0,0.1)"
-          backgroundColor="rgb(99,102,241)"
+          backgroundColor={backgroundColor}
           margin={1}
         />
       )

@@ -40,6 +40,8 @@ const WARMUPS = Number.parseInt(arg('warmups', '3'), 10)
 const SCALE = arg('scale', '200')
 const LABEL = arg('label', 'baseline')
 const PORT = Number.parseInt(arg('port', '9131'), 10)
+const BUILD_DIR = arg('build-dir', '')
+const CACHE_MODE = arg('cache-mode', '')
 // 100us CPU sampling (default is 1000us) and 4KB heap sampling: enough
 // resolution to separate individual helpers inside one render.
 const CPU_SAMPLING_US = 100
@@ -180,14 +182,20 @@ async function runOnce(page: any) {
 async function main() {
   const releaseLock = acquireBenchmarkLock(`profile-hotpath ${LABEL} ${SCENARIO}`)
   const cwd = join(import.meta.dir, 'tamagui-bench')
-  const outDir = mkdtempSync(join(tmpdir(), 'tamagui-hotpath-'))
+  const outDir = BUILD_DIR || mkdtempSync(join(tmpdir(), 'tamagui-hotpath-'))
   let preview: ChildProcess | undefined
   try {
-    execFileSync(
-      'bunx',
-      ['vite', 'build', '--sourcemap', '--outDir', outDir, '--emptyOutDir'],
-      { cwd, env: { ...process.env, NODE_ENV: 'production', EXTRACT }, stdio: 'inherit' }
-    )
+    if (!BUILD_DIR) {
+      execFileSync(
+        'bunx',
+        ['vite', 'build', '--sourcemap', '--outDir', outDir, '--emptyOutDir'],
+        {
+          cwd,
+          env: { ...process.env, NODE_ENV: 'production', EXTRACT },
+          stdio: 'inherit',
+        }
+      )
+    }
     preview = spawn(
       'bunx',
       [
@@ -209,7 +217,7 @@ async function main() {
     const browser = await chromium.launch()
     const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
     const page = await context.newPage()
-    await page.goto(`http://127.0.0.1:${PORT}/?scenario=${SCENARIO}&scale=${SCALE}`, {
+    await page.goto(`http://127.0.0.1:${PORT}/?scenario=${SCENARIO}&scale=${SCALE}&cacheMode=${CACHE_MODE}`, {
       waitUntil: 'networkidle',
     })
 
@@ -221,7 +229,7 @@ async function main() {
     // long enough to read it (the normal run unmounts the runner when done).
     const countPage = await context.newPage()
     await countPage.goto(
-      `http://127.0.0.1:${PORT}/?scenario=${SCENARIO}&scale=${SCALE}&behaviorValidation=1`,
+      `http://127.0.0.1:${PORT}/?scenario=${SCENARIO}&scale=${SCALE}&cacheMode=${CACHE_MODE}&behaviorValidation=1`,
       { waitUntil: 'networkidle' }
     )
     await countPage.locator('#bench-start').click()
@@ -341,7 +349,7 @@ async function main() {
     console.log(`\n(written to ${OUTPUT})`)
   } finally {
     preview?.kill('SIGTERM')
-    rmSync(outDir, { recursive: true, force: true })
+    if (!BUILD_DIR) rmSync(outDir, { recursive: true, force: true })
     releaseLock()
   }
 }

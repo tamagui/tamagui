@@ -126,6 +126,18 @@ function withinCategoryRank(
   return stateRanks[modifier] ?? 0
 }
 
+/** One modifier's packed contribution, excluding the condition-set depth. */
+export function getClausePrecedencePart(
+  modifier: string,
+  kind: ModifierKind,
+  order: ClausePrecedenceOrder
+): ClausePrecedenceKey {
+  return kind === 'platform'
+    ? grammarPlatformRank(modifier) << platformShift
+    : (categoryRanks[kind] << categoryShift) |
+        withinCategoryRank(modifier, kind, order)
+}
+
 /** Order-insensitive set key used by every clause merge/emission slot. */
 export function clauseConditionSetKey(modifiers: readonly string[]): string {
   if (modifiers.length === 0) return ''

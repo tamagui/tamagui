@@ -25,6 +25,8 @@ export declare function packClausePrecedence(platformRank: number, depth: number
 export type OrderedModifierNames = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>;
 export type ClausePrecedenceOrder = ReadonlyMap<string, number>;
 export declare function createClausePrecedenceOrder(names: OrderedModifierNames | undefined): ClausePrecedenceOrder;
+/** One modifier's packed contribution, excluding the condition-set depth. */
+export declare function getClausePrecedencePart(modifier: string, kind: ModifierKind, order: ClausePrecedenceOrder): ClausePrecedenceKey;
 /** Order-insensitive set key used by every clause merge/emission slot. */
 export declare function clauseConditionSetKey(modifiers: readonly string[]): string;
 export declare function getClausePrecedenceKeyFromKinds(modifiers: readonly string[], kinds: readonly (ModifierKind | undefined)[], order: ClausePrecedenceOrder): ClausePrecedenceKey;
