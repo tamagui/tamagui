@@ -95,13 +95,31 @@ describe('tamagui-build integration test', () => {
     expect(cjsOutput).toContain('import("./lazy.cjs")')
     expect(cjsOutput).toContain('require("./common.cjs")')
     expect(cjsOutput).toContain('require("./explicit.native.cjs")')
+    expect(cjsOutput).toContain('require("./explicit.ios.cjs")')
+    expect(cjsOutput).toContain('require("./explicit.android.cjs")')
     expect(existsSync(join(distPath, 'cjs', 'explicit.native.cjs'))).toBe(true)
+    expect(existsSync(join(distPath, 'cjs', 'explicit.ios.cjs'))).toBe(true)
+    expect(existsSync(join(distPath, 'cjs', 'explicit.android.cjs'))).toBe(true)
     expect(readFileSync(join(distPath, 'cjs', 'index.native.js'), 'utf-8')).toContain(
       'require("./explicit.native.js")'
+    )
+    expect(readFileSync(join(distPath, 'cjs', 'index.native.js'), 'utf-8')).toContain(
+      'require("./explicit.ios.js")'
+    )
+    expect(readFileSync(join(distPath, 'cjs', 'index.native.js'), 'utf-8')).toContain(
+      'require("./explicit.android.js")'
     )
     expect(readFileSync(join(distPath, 'esm', 'index.native.js'), 'utf-8')).toContain(
       'from "./explicit.native.js"'
     )
+    expect(readFileSync(join(distPath, 'esm', 'index.native.js'), 'utf-8')).toContain(
+      'from "./explicit.ios.js"'
+    )
+    expect(readFileSync(join(distPath, 'esm', 'index.native.js'), 'utf-8')).toContain(
+      'from "./explicit.android.js"'
+    )
+    expect(existsSync(join(distPath, 'esm', 'explicit.ios.js'))).toBe(true)
+    expect(existsSync(join(distPath, 'esm', 'explicit.android.js'))).toBe(true)
 
     const require = createRequire(import.meta.url)
     const cjsModule = require(distCjsFilePath)
@@ -109,6 +127,8 @@ describe('tamagui-build integration test', () => {
     expect(cjsModule.starMarker).toBe('star-marker')
     expect(cjsModule.dottedNameMarker).toBe('dotted-name-marker')
     expect(cjsModule.explicitNativeMarker).toBe('explicit-native-marker')
+    expect(cjsModule.explicitIosMarker).toBe('explicit-ios-marker')
+    expect(cjsModule.explicitAndroidMarker).toBe('explicit-android-marker')
     expect(cjsModule.loadCommon().commonMarker).toBe('common-marker')
     expect((await cjsModule.loadLazy()).default.lazyMarker).toBe('lazy-marker')
     expect(esmModule.starMarker).toBe('star-marker')

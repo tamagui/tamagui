@@ -355,8 +355,8 @@ function resolveOutputModuleSpecifier(
     const platformExtension = outputExtension.match(/^\.(native|web|ios|android)\./)?.[1]
     const explicitPlatformExtension = pathname.match(/\.(native|web|ios|android)$/)?.[1]
     let extension = outputExtension
-    if (explicitPlatformExtension && outputExtension === '.mjs') {
-      extension = '.js'
+    if (explicitPlatformExtension) {
+      extension = outputExtension.endsWith('.cjs') ? '.cjs' : '.js'
     } else if (platformExtension && pathname.endsWith(`.${platformExtension}`)) {
       extension = outputExtension.replace(`.${platformExtension}`, '')
     }
@@ -1731,7 +1731,12 @@ async function esbuildWriteIfChanged(
       const shouldPreserveJsAlias =
         preserveJsPathSet.has(path) || preserveJsPathAbsoluteSet.has(path)
 
-      if (!path.includes('.native.') && !shouldPreserveJsAlias) {
+      if (
+        !path.includes('.native.') &&
+        !path.includes('.android.') &&
+        !path.includes('.ios.') &&
+        !shouldPreserveJsAlias
+      ) {
         cleanupNonMjsFiles.push(path)
         cleanupNonMjsFiles.push(path + '.map')
       }
