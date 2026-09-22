@@ -1,8 +1,7 @@
-import { SizableText, Tabs, XStack, YStack } from 'tamagui'
+import { ScrollView, SizableText, Tabs, XStack, YStack } from 'tamagui'
 import { Code } from './Code'
 import { PACKAGE_MANAGERS } from '~/hooks/useBashCommand'
 import { Image } from '@tamagui/image'
-import { ScrollView } from 'react-native'
 
 export function CodeBlockTabs({
   className,

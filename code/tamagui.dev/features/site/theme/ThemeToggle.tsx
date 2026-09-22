@@ -1,9 +1,9 @@
 import { Moon, Sun, SunMoon } from '@tamagui/lucide-icons-2'
 import { useSystemScheme, useUserScheme } from '@vxrn/color-scheme'
 import { memo, useEffect, useState } from 'react'
-import { Appearance } from 'react-native'
-import { isWeb, TooltipSimple } from 'tamagui'
+import { TooltipSimple } from 'tamagui'
 import { Button, type ButtonProps } from '~/components/Button'
+import { setNativeColorScheme } from './setNativeColorScheme'
 
 export const ThemeToggle = memo((props: ButtonProps) => {
   const { onPress, Icon, setting } = useToggleTheme()
@@ -63,10 +63,7 @@ export function useToggleTheme() {
       setVal(next)
 
       setTimeout(() => {
-        if (!isWeb) {
-          Appearance.setColorScheme(next === 'system' ? userScheme.value : next)
-        }
-
+        setNativeColorScheme(next === 'system' ? userScheme.value : next)
         userScheme.set(next)
       }, 20)
     },

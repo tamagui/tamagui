@@ -11,7 +11,6 @@ import {
 } from '@tamagui/lucide-icons-2'
 import type { Href } from 'one'
 import React, { isValidElement, useState } from 'react'
-import { ScrollView } from 'react-native'
 import type { ImageProps, XStackProps } from 'tamagui'
 import {
   Adapt,
@@ -23,6 +22,7 @@ import {
   H5,
   Image,
   Paragraph,
+  ScrollView,
   Separator,
   SizableText,
   Spacer,

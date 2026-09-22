@@ -3,8 +3,7 @@
 // The payload comes from the page loader (serializable); see
 // `getOwnedSource` in ~/features/mdx/sourceMode.
 import { CheckCircle, Copy, FileCode2 } from '@tamagui/lucide-icons-2'
-import { ScrollView } from 'react-native'
-import { Paragraph, XStack, YStack } from 'tamagui'
+import { Paragraph, ScrollView, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
 import { Code } from '~/components/Code'
 import { Pre } from '~/components/Pre'

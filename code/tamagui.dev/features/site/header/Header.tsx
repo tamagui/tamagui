@@ -3,7 +3,8 @@ import { Check, ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons-2
 import { isTouchable, useGet, useMedia } from '@tamagui/web'
 import { useFocusEffect, usePathname, useRouter } from 'one'
 import * as React from 'react'
-import { useWindowDimensions, type LayoutRectangle } from 'react-native'
+import type { LayoutRectangle } from '@tamagui/react-native-types'
+import { useWindowDimensions } from '@tamagui/use-window-dimensions'
 import {
   Adapt,
   AnimatePresence,

@@ -1,6 +1,5 @@
-import { ScrollView } from 'react-native'
 import type { Href } from 'one'
-import { Paragraph, SizableText, Text, XStack, YStack } from 'tamagui'
+import { Paragraph, ScrollView, SizableText, Text, XStack, YStack } from 'tamagui'
 import { ButtonLink } from '~/components/Link'
 import { ContainerLarge } from '~/components/Containers'
 import { HomeH1 } from '~/features/site/home/HomeHeaders'

@@ -1,6 +1,5 @@
-import { ScrollView } from 'react-native'
 import type { YStackProps } from 'tamagui'
-import { YStack } from 'tamagui'
+import { ScrollView, YStack } from 'tamagui'
 
 import { Code } from '~/components/Code'
 import { Pre } from '~/components/Pre'

@@ -1,6 +1,6 @@
 import { X } from '@tamagui/lucide-icons-2'
 import { memo } from 'react'
-import { useWindowDimensions } from 'react-native'
+import { useWindowDimensions } from '@tamagui/use-window-dimensions'
 import type { DialogCloseProps } from 'tamagui'
 import { Dialog, Fieldset, Input, Label, Unspaced, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
