@@ -310,10 +310,15 @@ export function createComponent<
       resolvedStyleStaticConfig = nextStyleStaticConfig
       resolvedDefaultProps = nextStyleStaticConfig.defaultProps
       // the relative-position default is a style, so it joins the base layer
-      // under everything the call site writes
+      // under everything the call site writes. a styled HOC skips it: the
+      // frame its render mounts owns the host element and its own default,
+      // and a wrapper's base reaches that frame as call-site className, where
+      // it would beat the frame's authored position (an absolute background
+      // collapsing to relative)
       if (
         isWeb &&
         !staticConfig.isText &&
+        !staticConfig.isStyledHOC &&
         config.settings.defaultPosition === 'relative' &&
         nextStyleStaticConfig.baseStyle?.position === undefined
       ) {
