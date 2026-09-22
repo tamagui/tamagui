@@ -368,10 +368,7 @@ export type PaletteRecipe = {
   active?: boolean
 }
 
-export type PaletteTheme = Record<
-  keyof Ramp | SemanticThemeKey | ShadowName,
-  string
->
+export type PaletteTheme = Record<keyof Ramp | SemanticThemeKey | ShadowName, string>
 
 // sRGB channels of a hex, rgb() or hsl() color, which is every form a palette
 // is authored in. anything else is unknown and leaves the theme untouched.
@@ -460,7 +457,8 @@ function readable(
   const pairs: [keyof PaletteTheme, (keyof PaletteTheme)[]][] = [
     ['accent-background', ['accent-color']],
   ]
-  if (bold) pairs.push(['background', ['color', 'color-hover', 'color-press', 'color-focus']])
+  if (bold)
+    pairs.push(['background', ['color', 'color-hover', 'color-press', 'color-focus']])
   const valueOf = (token: string) => luminance(colors[token] ?? token)
   for (const [fill, keys] of pairs) {
     const fillLuminance = valueOf(theme[fill])
@@ -476,7 +474,8 @@ function readable(
       if (namedLuminance === null || mirroredLuminance === null) continue
       const namedContrast = contrast(fillLuminance, namedLuminance)
       if (namedContrast >= MIN_TEXT_CONTRAST) continue
-      if (contrast(fillLuminance, mirroredLuminance) > namedContrast) theme[key] = mirrored
+      if (contrast(fillLuminance, mirroredLuminance) > namedContrast)
+        theme[key] = mirrored
     }
   }
   return theme
@@ -543,7 +542,10 @@ export type PaletteThemesInput = {
  */
 export function createPaletteThemes<const Palettes extends PaletteThemesInput>(
   palettes: Palettes
-): { colorTokens: typeof baseColorTokens & PaletteTokens<Palettes>; themes: Record<ThemeNames, Theme> } {
+): {
+  colorTokens: typeof baseColorTokens & PaletteTokens<Palettes>
+  themes: Record<ThemeNames, Theme>
+} {
   const colorTokens = { ...baseColorTokens, ...paletteTokens(palettes) }
   const surface = palettes.surface ? 'surface' : 'mauve'
   const paletteTree = {
@@ -663,8 +665,8 @@ export const tree = {
   },
 } as const
 
-export const themes = createThemes<{ color: Record<string, string> }, typeof tree, PaletteTheme>(
-  tokens,
-  tree,
-  { getTheme }
-)
+export const themes = createThemes<
+  { color: Record<string, string> },
+  typeof tree,
+  PaletteTheme
+>(tokens, tree, { getTheme })
