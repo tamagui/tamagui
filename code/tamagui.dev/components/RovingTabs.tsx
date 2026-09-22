@@ -105,6 +105,7 @@ export function RovingTabs({
             tabIndex={selected ? 0 : -1}
             testID={`${testID}-${item.value}`}
             flex={1}
+            px="3"
             height={28}
             minHeight={28}
             display="flex"

@@ -9,7 +9,7 @@ import { DocsQuickNav, type Heading } from './DocsQuickNav'
 import { DocsMenuContents } from './DocsMenuContents'
 import { MDXTabsSearchProvider } from './MDXTabs'
 import { DocsSyntaxPicker, DocsVersionLinks } from './DocsVersionPicker'
-import { getDocsSyntax, type DocsVersionFrontmatter } from './docsVersion'
+import { docsSyntaxes, getDocsSyntax, type DocsVersionFrontmatter } from './docsVersion'
 
 type DocsPageFrameProps = {
   children: ReactNode
@@ -34,6 +34,13 @@ export function DocsPageFrame({
   // tabpanel (associated via aria-controls on the tabs, labelled by the
   // selected tab). derived from the pathname: SSR-stable.
   const syntax = getDocsSyntax(usePathname())
+  const syntaxes = docsSyntaxes.filter(
+    (value) =>
+      value === 'styled' ||
+      value === syntax ||
+      (value === 'tailwind' && frontmatter?.hasTailwindVariant) ||
+      (value === 'unstyled' && frontmatter?.hasSourceVariant)
+  )
   return (
     <>
       {/* left sidebar - sticky. It lives here rather than in the route layout so
@@ -51,7 +58,6 @@ export function DocsPageFrame({
         <ScrollView showsVerticalScrollIndicator={false}>
           <YStack pt={36} pb="18" px="2" gap="4">
             <YStack px="2" gap="3">
-              <DocsSyntaxPicker />
               <DocsVersionLinks frontmatter={frontmatter} initialSearch={initialSearch} />
             </YStack>
             <DocsMenuContents />
@@ -68,6 +74,18 @@ export function DocsPageFrame({
           aria-labelledby={`docs-syntax-${syntax}-tab`}
         >
           <Container px={0} maxW={860} position="relative">
+            {syntaxes.length > 1 && (
+              <XStack
+                justify="flex-end"
+                mb="4 gtMd:0"
+                position="gtMd:absolute"
+                t="gtMd:0px"
+                r="gtMd:0px"
+                z={1}
+              >
+                <DocsSyntaxPicker syntaxes={syntaxes} />
+              </XStack>
+            )}
             <MDXTabsSearchProvider search={initialSearch}>
               {children}
             </MDXTabsSearchProvider>

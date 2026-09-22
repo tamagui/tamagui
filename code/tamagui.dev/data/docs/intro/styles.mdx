@@ -10,23 +10,23 @@ description: Style props, conditional values, and the modifiers that control the
 </IntroParagraph>
 
 ```tsx
-import { html } from 'tamagui'
+import { Text, View } from 'tamagui'
 
 export const Card = () => (
-  <html.article
+  <View
     padding="4 md:6"
     borderRadius="lg"
     backgroundColor="background hover:background-hover"
   >
-    <html.p color="color-11">Hello</html.p>
-  </html.article>
+    <Text color="color-11">Hello</Text>
+  </View>
 )
 ```
 
 `padding`, `borderRadius`, and `backgroundColor` are style props. `"4"` and
 `"lg"` are tokens, `background` is a theme key, and `md:` and `hover:` are
-modifiers. That is the whole grammar. The same props go on
-[`html.*`](/docs/intro/components), `View`, `Text`, and the second argument of
+modifiers. That is the whole grammar. The same props go on `View`, `Text`,
+every other [component](/docs/intro/components), and the second argument of
 [`styled()`](/docs/core/styled).
 
 ## Values
@@ -60,7 +60,7 @@ flat object. These render the same thing:
 <MDXTabs.Content value="typed">
 
 ```tsx
-<html.div
+<View
   backgroundColor={{
     default: 'red',
     hover: 'blue',
@@ -75,7 +75,7 @@ flat object. These render the same thing:
 <MDXTabs.Content value="string">
 
 ```tsx
-<html.div backgroundColor="red hover:blue sm:green sm:hover:purple" />
+<View backgroundColor="red hover:blue sm:green sm:hover:purple" />
 ```
 
 </MDXTabs.Content>
@@ -86,7 +86,7 @@ base value. There is no mode to pick, and you can mix them per prop in one
 component:
 
 ```tsx
-<html.div backgroundColor="red hover:blue" scale={{ press: 0.98 }} />
+<View backgroundColor="red hover:blue" scale={{ press: 0.98 }} />
 ```
 
 Strings are shorter for one or two conditions. Objects work better when the
@@ -110,10 +110,10 @@ Font configuration keeps a separate compatibility contract. Numeric
 font token and a px string for an explicit absolute token:
 
 ```tsx
-<html.span fontSize={17}>Platform line height</html.span>
-<html.span fontSize="17px">Exact px size</html.span>
-<html.span fontSize={20} lineHeight={1.5}>30px line box</html.span>
-<html.span lineHeight="24px">24px line box</html.span>
+<Text fontSize={17}>Platform line height</Text>
+<Text fontSize="17px">Exact px size</Text>
+<Text fontSize={20} lineHeight={1.5}>30px line box</Text>
+<Text lineHeight="24px">24px line box</Text>
 
 const bodyFont = createFont({
   family: 'Inter',
@@ -166,7 +166,7 @@ Add state clauses directly to the property they change:
 - **`disabled:`**: while `disabled={true}`
 
 ```tsx
-<html.button
+<View
   backgroundColor="background hover:background-hover press:background-press"
   scale="press:0.98"
   outlineColor="focus-visible:blue-500"
@@ -186,7 +186,7 @@ For mount and unmount animations, `enter:` is the value the property animates
 from on mount, and `exit:` is the value it animates to on unmount:
 
 ```tsx
-<html.div opacity="enter:0 exit:0" />
+<View opacity="enter:0 exit:0" />
 ```
 
 See [Animations](/docs/core/animations).
@@ -197,7 +197,7 @@ Media queries come from `createTamagui({ media })`. Each name is a modifier on
 native and web:
 
 ```tsx
-<html.span color="red sm:blue" />
+<Text color="red sm:blue" />
 ```
 
 ### Theme and platform
@@ -207,7 +207,7 @@ defined, only `light` can be targeted. Platform modifiers cover `ios`,
 `android`, `web`, and `native`:
 
 ```tsx
-<html.span color="dark:white ios:white" />
+<Text color="dark:white ios:white" />
 ```
 
 ### Groups
@@ -215,21 +215,21 @@ defined, only `light` can be targeted. Platform modifiers cover `ios`,
 Mark a parent with `group` and children can react to its state:
 
 ```tsx
-<html.div group>
-  <html.span color="gray group-hover:white" />
-</html.div>
+<View group>
+  <Text color="gray group-hover:white" />
+</View>
 ```
 
 The states are `hover` (web only), `press`, and `focus`. Name a group to
 target it from further down:
 
 ```tsx
-<html.div group="card">
-  <html.div group>
-    <html.span color="gray group-hover/card:blue">Inner</html.span>
-    <html.span color="gray group-hover:green">Sibling</html.span>
-  </html.div>
-</html.div>
+<View group="card">
+  <View group>
+    <Text color="gray group-hover/card:blue">Inner</Text>
+    <Text color="gray group-hover:green">Sibling</Text>
+  </View>
+</View>
 ```
 
 `Inner` turns blue when the `card` group is hovered. `Sibling` turns green
@@ -252,9 +252,9 @@ Add `container` to a group and children can respond to the parent's size,
 using the same media names. Web outputs a CSS container query:
 
 ```tsx
-<html.div group container>
-  <html.span color="gray @sm:white @sm:group-hover:green" />
-</html.div>
+<View group container>
+  <Text color="gray @sm:white @sm:group-hover:green" />
+</View>
 ```
 
 Named containers work the same way with `@sm/card:`.

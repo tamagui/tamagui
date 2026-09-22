@@ -8,23 +8,18 @@ description: Re-bind semantic theme values relative to the current subtree
   contrast of semantic color tokens relative to their parent container.
 </IntroParagraph>
 
-## What are surfaces and levels?
+## What they are
 
-A **surface** is a visual container or piece of layout chrome, such as a panel, card, dialog, or toolbar. It establishes a distinct visual plane for the elements inside it.
+A **surface** is a container in your layout, such as a panel, card, dialog, or
+toolbar, with its own background and border.
 
-A **level** is a relative theme step (`level2`, `level3`, `level4`) that shifts semantic color tokens like `background`, `border-color`, and `color` relative to the surrounding context.
+A **level** is a relative theme step (`level2`, `level3`, `level4`). It shifts
+semantic values like `background`, `border-color`, and `color` one or more
+steps from the surrounding theme. In v3, levels are how surfaces get their
+contrast. There is no separate surface theme system.
 
-In Tamagui v3, theme levels handle this contrast shifting. There is no separate Surface theme system.
-
-### When to use them
-
-Use a surface when you need a visual container with consistent background, border, and elevation styling.
-
-Use a level when you want child components to adapt their contrast automatically. When you place a button inside a level 2 card, the button steps up its contrast relative to the card without requiring custom color props or manual color calculations.
-
-### Quick example
-
-Wrap a container in `<Theme name="level2">` to raise its semantic tokens by one step. Elements inside read the updated tokens directly:
+Use a level when a container should stand out from what's around it. Components
+inside it read the shifted values, so they adapt without extra color props:
 
 ```tsx
 import { Button, Text, Theme, YStack } from 'tamagui'
@@ -36,18 +31,19 @@ export function Card() {
         backgroundColor="background"
         borderColor="border-color"
         borderWidth={1}
-        padding="$4"
-        borderRadius="$4"
+        padding="4"
+        borderRadius="4"
       >
         <Text color="color">Level 2 card content</Text>
-        <Button>Automatically steps up contrast</Button>
+        <Button>Save</Button>
       </YStack>
     </Theme>
   )
 }
 ```
 
-The container resolves `background` and `border-color` at level 2. When `Button` renders inside, its own skin steps up contrast relative to that level 2 background.
+The card resolves `background` and `border-color` at level 2. `Button` reads its
+colors relative to that, so it still stands out against the card.
 
 ## Two color vocabularies
 

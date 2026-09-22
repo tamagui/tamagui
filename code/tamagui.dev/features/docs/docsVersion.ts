@@ -2,21 +2,20 @@ export type DocsSyntax = 'styled' | 'unstyled' | 'tailwind'
 export type DocsProductVersion = 'v3' | 'v2' | 'v1'
 
 export const docsProductVersions: DocsProductVersion[] = ['v3', 'v2']
-export const docsSyntaxes: DocsSyntax[] = ['styled', 'unstyled', 'tailwind']
+// picker order. each page offers only the modes that change it: tailwind where
+// the transform rewrites its code, source on component pages with a registry skin.
+export const docsSyntaxes: DocsSyntax[] = ['styled', 'tailwind', 'unstyled']
 
 export const docsSyntaxLabels: Record<DocsSyntax, string> = {
-  styled: 'Styled',
+  styled: 'Tamagui',
   unstyled: 'Source',
   tailwind: 'Tailwind',
 }
 
-// accurate one-liners for the syntax tabs: 'unstyled' is source ownership (own
-// the default skins), not the raw `tamagui/unstyled` behavior primitives (an
-// advanced API); tailwind is orthogonal to styled vs source.
 export const docsSyntaxDescriptions: Record<DocsSyntax, string> = {
-  styled: 'Styled: Tamagui components with the default look',
-  unstyled: 'Source: own the default skins, copy-paste them into your app',
-  tailwind: 'Tailwind: utilities on @tamagui/tailwind primitives',
+  styled: 'Show examples with Tamagui style props',
+  unstyled: 'Copy the default skin into your app and import it from there',
+  tailwind: 'Show examples with Tailwind classes on @tamagui/tailwind',
 }
 
 export function getDocsSyntaxParam(value: string | null): DocsSyntax | undefined {
@@ -26,6 +25,10 @@ export function getDocsSyntaxParam(value: string | null): DocsSyntax | undefined
 }
 
 export type DocsVersionFrontmatter = {
+  // set by getMDXBySlug when the tailwind transform changes this page's code
+  hasTailwindVariant?: boolean
+  // set by the component page loader when the registry ships this skin
+  hasSourceVariant?: boolean
   component?: string
   name?: string
   slug?: string

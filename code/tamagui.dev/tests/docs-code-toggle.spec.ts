@@ -79,7 +79,7 @@ async function selectDocsSyntax(
   await expectDocsSyntax(page, syntax)
 }
 
-test.describe('docs 3-mode code toggle', () => {
+test.describe('docs code toggle', () => {
   test('version links remain available at the medium docs layout width', async ({
     page,
   }) => {
@@ -89,23 +89,30 @@ test.describe('docs 3-mode code toggle', () => {
     await expect(page.getByRole('link', { name: 'v3', exact: true })).toBeVisible()
   })
 
-  test('styled is the default and the toggle offers all three modes', async ({
+  test('guide pages offer Tamagui and Tailwind, component pages Tamagui and Source', async ({
     page,
   }) => {
     await page.goto(PAGE)
-    const trigger = page.getByTestId('docs-syntax')
-    await expect(trigger).toBeVisible()
     await expectDocsSyntax(page, 'styled')
-    await expect(page.getByTestId('docs-syntax-styled')).toBeVisible()
-    await expect(page.getByTestId('docs-syntax-unstyled')).toBeVisible()
+    await expect(page.getByTestId('docs-syntax-styled')).toContainText('Tamagui')
     await expect(page.getByTestId('docs-syntax-tailwind')).toBeVisible()
-    // accurate visible naming: the ownership mode reads Source, and each tab
-    // describes what it shows
+    await expect(page.getByTestId('docs-syntax-unstyled')).toHaveCount(0)
+
+    await page.goto('/ui/button')
+    await expectDocsSyntax(page, 'styled')
     await expect(page.getByTestId('docs-syntax-unstyled')).toContainText('Source')
     await expect(page.getByTestId('docs-syntax-unstyled')).toHaveAttribute(
       'title',
-      /own the default skins/
+      /Copy the default skin/
     )
+    await expect(page.getByTestId('docs-syntax-tailwind')).toHaveCount(0)
+  })
+
+  test('pages whose code has no Tailwind variant hide the toggle', async ({ page }) => {
+    // installation shows its Tailwind setup in its own tabs
+    await page.goto('/docs/intro/installation')
+    await expect(page.getByRole('heading').first()).toBeVisible()
+    await expect(page.getByTestId('docs-syntax')).toHaveCount(0)
   })
 
   test('selecting Tailwind transforms the code and navigates to its syntax route', async ({
@@ -133,16 +140,16 @@ test.describe('docs 3-mode code toggle', () => {
   test('the syntax tabs support roving keyboard navigation', async ({ page }) => {
     await page.goto('/docs/intro/styles')
     const styled = page.getByTestId('docs-syntax-styled')
-    const unstyled = page.getByTestId('docs-syntax-unstyled')
-    await waitForHydration(unstyled)
+    const tailwind = page.getByTestId('docs-syntax-tailwind')
+    await waitForHydration(tailwind)
 
     await styled.focus()
     await expect(styled).toBeFocused()
     await page.keyboard.press('ArrowRight')
-    await expect(unstyled).toBeFocused()
+    await expect(tailwind).toBeFocused()
     await page.keyboard.press('Enter')
-    await expect(page).toHaveURL(/\/unstyled\/intro\/styles$/)
-    await expectDocsSyntax(page, 'unstyled')
+    await expect(page).toHaveURL(/\/tailwind\/intro\/styles$/)
+    await expectDocsSyntax(page, 'tailwind')
   })
 
   test('the syntax tabs are real links associated with the content panel', async ({
@@ -150,8 +157,8 @@ test.describe('docs 3-mode code toggle', () => {
     context,
   }) => {
     await page.goto('/docs/intro/styles')
-    const tab = page.getByTestId('docs-syntax-unstyled')
-    await expect(tab).toHaveAttribute('href', '/unstyled/intro/styles')
+    const tab = page.getByTestId('docs-syntax-tailwind')
+    await expect(tab).toHaveAttribute('href', '/tailwind/intro/styles')
     await expect(tab).toHaveAttribute('aria-controls', 'docs-syntax-panel')
     const panel = page.locator('#docs-syntax-panel')
     await expect(panel).toHaveAttribute('role', 'tabpanel')
@@ -161,7 +168,7 @@ test.describe('docs 3-mode code toggle', () => {
     const popup = context.waitForEvent('page')
     await tab.click({ modifiers: ['Meta'] })
     const newPage = await popup
-    await expect(newPage).toHaveURL(/\/unstyled\/intro\/styles$/)
+    await expect(newPage).toHaveURL(/\/tailwind\/intro\/styles$/)
     await expect(page).toHaveURL(/\/docs\/intro\/styles$/)
     await newPage.close()
   })
@@ -170,16 +177,13 @@ test.describe('docs 3-mode code toggle', () => {
     await page.goto('/docs/intro/styles?syntax=typed')
     // SSR renders bare hrefs; the live query syncs in after hydration
     await expect
-      .poll(async () => page.getByTestId('docs-syntax-unstyled').getAttribute('href'))
-      .toBe('/unstyled/intro/styles?syntax=typed')
-    await expect
       .poll(async () => page.getByTestId('docs-syntax-tailwind').getAttribute('href'))
       .toBe('/tailwind/intro/styles?syntax=typed')
   })
 
   test('version links track the version query and syntax keeps it', async ({ page }) => {
     await page.setViewportSize({ width: 1617, height: 975 })
-    await page.goto('/docs/intro/installation?version=v2')
+    await page.goto('/docs/intro/styles?version=v2')
     await expect(page.getByTestId('docs-syntax')).toBeVisible()
     // loader-provided search: correct on first paint, before the live sync
     await expect(
@@ -187,17 +191,15 @@ test.describe('docs 3-mode code toggle', () => {
     ).toBeVisible()
     await expect(page.getByTestId('docs-version-fallback')).toBeVisible()
     await expect
-      .poll(async () => page.getByTestId('docs-syntax-unstyled').getAttribute('href'))
-      .toBe('/unstyled/intro/installation?version=v2')
+      .poll(async () => page.getByTestId('docs-syntax-tailwind').getAttribute('href'))
+      .toBe('/tailwind/intro/styles?version=v2')
   })
 
-  test('selecting Source rewrites styled imports to owned skins', async ({ page }) => {
+  test('the Source route rewrites styled imports to owned skins', async ({ page }) => {
     await page.goto(PAGE)
     const styled = await codeText(page)
 
-    await selectDocsSyntax(page, 'unstyled')
-
-    await page.waitForURL(/\/unstyled\/guides\/how-to-upgrade/)
+    await page.goto('/unstyled/guides/how-to-upgrade')
     await expectDocsSyntax(page, 'unstyled')
 
     // source mode rewrites recognized styled imports to local skin files and
@@ -231,12 +233,11 @@ test.describe('docs 3-mode code toggle', () => {
   })
 })
 
-// component-doc smoke: all three modes render on real component pages.
-// asserts each mode's rendered code and that the source/tailwind transforms
-// actually apply on a component page, not just the upgrade guide.
+// component-doc smoke: source renders on real component pages, and the
+// tailwind route (no toggle there) leaves component examples unchanged.
 for (const component of ['/ui/button', '/ui/tabs']) {
   const skin = component === '/ui/button' ? 'Button' : 'Tabs'
-  test.describe(`docs 3-mode toggle renders on ${component}`, () => {
+  test.describe(`docs syntax modes render on ${component}`, () => {
     test('styled default, then source rewrites the import and shows the skin', async ({
       page,
     }) => {
@@ -268,9 +269,7 @@ for (const component of ['/ui/button', '/ui/tabs']) {
       await page.goto(component)
       const styled = await codeText(page)
 
-      await selectDocsSyntax(page, 'tailwind')
-      await page.waitForURL(new RegExp(`/tailwind-ui/${component.slice(4)}$`))
-
+      await page.goto(`/tailwind-ui/${component.slice(4)}`)
       await expectDocsSyntax(page, 'tailwind')
       const tailwind = await codeText(page)
       expect(tailwind).toEqual(styled)
@@ -316,7 +315,7 @@ test('syntax switching keeps the picker mounted through browser history', async 
   page,
 }) => {
   await page.goto(PAGE)
-  for (const syntax of ['unstyled', 'tailwind', 'styled']) {
+  for (const syntax of ['tailwind', 'styled', 'tailwind']) {
     await selectDocsSyntax(page, syntax as DocsSyntax)
     await expect(page).toHaveURL(
       new RegExp(`${syntax === 'styled' ? '/docs' : `/${syntax}`}/guides/how-to-upgrade$`)
@@ -325,9 +324,9 @@ test('syntax switching keeps the picker mounted through browser history', async 
     await expect(page.getByRole('heading', { name: /upgrade/i }).first()).toBeVisible()
   }
   await page.goBack()
-  await expectDocsSyntax(page, 'tailwind')
+  await expectDocsSyntax(page, 'styled')
   await page.goBack()
-  await expectDocsSyntax(page, 'unstyled')
+  await expectDocsSyntax(page, 'tailwind')
 })
 
 test('Tailwind styles examples use the Tailwind frontend and converted props', async ({
@@ -410,8 +409,6 @@ test('installation code controls share one row and copy the selected command', a
 }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write'])
   await page.goto('/docs/intro/installation')
-  await expect(page.getByTestId('docs-syntax')).toBeVisible()
-  await waitForDocsHydration(page)
   const block = page
     .locator('pre')
     .filter({ has: page.getByRole('tablist', { name: 'package manager' }) })
@@ -522,12 +519,12 @@ test('a direct docs URL keeps its syntax and content with a saved preference', a
   await expectDocsSyntax(page, 'styled')
   await expect(page).toHaveURL(new RegExp(`${PAGE}$`))
   expect(await codeText(page)).toContain('tamagui/button')
-  await page.getByRole('link', { name: 'Installation', exact: true }).first().click()
+  await page.getByRole('link', { name: 'Styling', exact: true }).first().click()
   await expect(
-    page.getByRole('heading', { name: 'Installation', exact: true }).first()
+    page.getByRole('heading', { name: 'Styling', exact: true }).first()
   ).toBeVisible()
   await expectDocsSyntax(page, 'styled')
-  await expect(page).toHaveURL(/\/docs\/intro\/installation$/)
+  await expect(page).toHaveURL(/\/docs\/intro\/styles$/)
 })
 
 test('saved dark mode paints docs subthemes correctly before and after hydration', async ({
@@ -538,7 +535,7 @@ test('saved dark mode paints docs subthemes correctly before and after hydration
   await page.route('**/*', (route) =>
     route.request().resourceType() === 'script' ? route.abort() : route.continue()
   )
-  await page.goto('/unstyled-ui/intro', { waitUntil: 'domcontentloaded' })
+  await page.goto('/unstyled-ui/button', { waitUntil: 'domcontentloaded' })
   await expect(page.locator('html')).toHaveClass(/t_dark/)
   // the selected syntax tab carries a theme-dependent fill, so it proves the
   // saved scheme paints subthemes before hydration, across a scheme swap, and

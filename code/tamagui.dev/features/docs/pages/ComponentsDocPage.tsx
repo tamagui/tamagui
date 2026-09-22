@@ -56,18 +56,19 @@ export async function loader(props: LoaderProps) {
   const versions = getAllVersionsFromPath(`data/docs/components/${componentName}`)
 
   // source mode shows the exact skin the registry ships for this component
-  let source: OwnedSourcePayload | null = null
-  if (mode === 'unstyled') {
-    const { getOwnedSource, loadSourceRegistry } =
-      await import('~/features/mdx/sourceMode')
-    source = getOwnedSource(loadSourceRegistry(), componentName)
-  }
+  const { getOwnedSource, loadSourceRegistry } = await import('~/features/mdx/sourceMode')
+  const ownedSource: OwnedSourcePayload | null = getOwnedSource(
+    loadSourceRegistry(),
+    componentName
+  )
+  const source = mode === 'unstyled' ? ownedSource : null
 
   return {
     frontmatter: {
       ...frontmatter,
       version: componentVersion || versions[0],
       versions: versions,
+      hasSourceVariant: !!ownedSource,
     },
     search: props.search,
     code,

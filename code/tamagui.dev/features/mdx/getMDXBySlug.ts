@@ -84,7 +84,9 @@ function loadTransform(): TailwindTransform {
   return (s: string) => s
 }
 
-const tailwindTransform = {
+// in tailwind mode this rewrites tsx fences; in styled mode it only records
+// whether it would, so the page shows the syntax toggle only when it matters.
+const createTailwindTransform = (state: { changed: boolean }, replace: boolean) => ({
   name: 'tamagui-tailwind-transform',
   element: {
     filter: ['code'],
@@ -127,6 +129,8 @@ const tailwindTransform = {
           shorthands: docsCodeConfig.shorthands,
         })
         if (tailwindCode && tailwindCode !== source) {
+          state.changed = true
+          if (!replace) return
           ctx.replaceNode(node, {
             ...node,
             children: [{ type: 'text', value: tailwindCode }],
@@ -137,7 +141,7 @@ const tailwindTransform = {
       }
     },
   },
-}
+})
 
 // source mode is shadcn-like source ownership, NOT an import rewrite to
 // `tamagui/unstyled` (raw behavior primitives stay an advanced API under that
@@ -205,6 +209,8 @@ export const getMDXBySlug = async (
   options: TamaguiGetMDXOptions = {}
 ) => {
   const { mode = 'styled', mdastPlugins, hastPlugins, ...rest } = options
+  const tailwindState = { changed: false }
+  const isDocs = basePath.startsWith('data/docs')
 
   const resolvedSlug =
     !slug.includes('.') && basePath.includes('components')
@@ -215,7 +221,9 @@ export const getMDXBySlug = async (
     expressiveCode: false,
     mdastPlugins: [heroTemplate, ...(mdastPlugins ?? [])],
     hastPlugins: [
-      ...(mode === 'tailwind' ? [tailwindTransform] : []),
+      ...(mode === 'tailwind' || (mode === 'styled' && isDocs)
+        ? [createTailwindTransform(tailwindState, mode === 'tailwind')]
+        : []),
       ...(mode === 'unstyled' ? [sourceTransform] : []),
       highlightPlugin,
       ...(hastPlugins ?? []),
@@ -230,6 +238,7 @@ export const getMDXBySlug = async (
       ...result.frontmatter,
       slug: resolvedSlug,
       sourcePath: path.posix.join(basePath, resolvedSlug),
+      hasTailwindVariant: tailwindState.changed,
     },
   }
 }

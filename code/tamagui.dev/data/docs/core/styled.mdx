@@ -11,15 +11,13 @@ description: Extend and build custom and optimizable components
 For the full list of accepted style properties, see the
 [Styles page](/docs/intro/styles).
 
-Start from an `html.*` member for new components. It renders the semantic
-element on web and the matching native primitive on native, and `styled()`
-adds base styles and typed variants while preserving Tamagui's compiler
-optimizations:
+Start from `View` or `Text` for new components. `styled()` adds base styles and
+typed variants, and the compiler still optimizes the result:
 
 ```tsx
-import { GetProps, html, styled } from '@tamagui/core'
+import { GetProps, styled, View } from '@tamagui/core'
 
-export const RoundedSquare = styled(html.div, {
+export const RoundedSquare = styled(View, {
   borderRadius: 20,
 })
 
@@ -27,8 +25,8 @@ export const RoundedSquare = styled(html.div, {
 export type RoundedSquareProps = GetProps<typeof RoundedSquare>
 ```
 
-`styled()` wraps any Tamagui component. `View` and `Text` stay fully
-supported for code that matches the React Native primitives.
+`styled()` wraps any Tamagui component, including the
+[HTML elements](/docs/core/html-primitives) such as `html.article`.
 
 Usage:
 

@@ -7,7 +7,6 @@ import { RovingTabs } from '~/components/RovingTabs'
 import { codeSyntaxChangeEvent } from './MDXTabs'
 import {
   docsProductVersions,
-  docsSyntaxes,
   docsSyntaxDescriptions,
   docsSyntaxLabels,
   getDocsSyntax,
@@ -40,9 +39,9 @@ function useDocsQuery(initialSearch = '') {
   return query
 }
 
-// the 3-mode syntax switch. renders inline (no portal) from the pathname alone,
-// so the server and the hydrated client output the same tabs.
-export function DocsSyntaxPicker() {
+// the syntax switch. renders inline (no portal) from the pathname and loader
+// data, so the server and the hydrated client output the same tabs.
+export function DocsSyntaxPicker({ syntaxes }: { syntaxes: DocsSyntax[] }) {
   const pathname = usePathname()
   const query = useDocsQuery()
   const syntax = getDocsSyntax(pathname)
@@ -60,7 +59,7 @@ export function DocsSyntaxPicker() {
     <RovingTabs
       ariaLabel="Docs syntax"
       testID="docs-syntax"
-      items={docsSyntaxes.map((value) => ({
+      items={syntaxes.map((value) => ({
         value,
         label: docsSyntaxLabels[value],
         title: docsSyntaxDescriptions[value],

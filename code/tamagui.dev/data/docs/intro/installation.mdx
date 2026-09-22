@@ -50,12 +50,11 @@ choice is per import path, so you can mix them later. Pick one to start.
 
 <MDXTabs.Content value="props">
 
-Typed style props on semantic `html.*` elements. This is the recommended base
-for new apps. It reads like React Native, stays close to the web, and needs no
-extra package.
+Typed style props on `View`, `Text`, and every other Tamagui component. This is
+the default for new apps. It reads like React Native and needs no extra package.
 
 ```tsx fileName="App.tsx"
-import { TamaguiProvider, createTamagui, html } from 'tamagui'
+import { TamaguiProvider, View, createTamagui } from 'tamagui'
 import { defaultConfig } from '@tamagui/config/v6'
 
 const config = createTamagui(defaultConfig)
@@ -66,7 +65,7 @@ declare module 'tamagui' {
 
 export default () => (
   <TamaguiProvider config={config} defaultTheme="light">
-    <html.div width={200} height={200} backgroundColor="background" />
+    <View width={200} height={200} backgroundColor="background" />
   </TamaguiProvider>
 )
 ```
@@ -87,7 +86,7 @@ yarn add @tamagui/tailwind
 
 ```tsx fileName="App.tsx"
 import { TamaguiProvider, createTamagui } from 'tamagui'
-import { html } from '@tamagui/tailwind'
+import { View } from '@tamagui/tailwind'
 import { defaultConfig } from '@tamagui/config/v6'
 
 const config = createTamagui(defaultConfig)
@@ -98,7 +97,7 @@ declare module 'tamagui' {
 
 export default () => (
   <TamaguiProvider config={config} defaultTheme="light">
-    <html.div className="w-[200px] h-[200px] bg-background" />
+    <View className="w-[200px] h-[200px] bg-background" />
   </TamaguiProvider>
 )
 ```

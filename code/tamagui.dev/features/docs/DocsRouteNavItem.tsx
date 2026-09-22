@@ -77,7 +77,11 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           {children}
           {isExternal && (
             <SizableText render="span" display="inline-flex" ml="2" y={2}>
-              <ExternalLink size={13} color="var(--color)" aria-label="opens in a new tab" />
+              <ExternalLink
+                size={13}
+                color="var(--color)"
+                aria-label="opens in a new tab"
+              />
             </SizableText>
           )}
           {!!icon && (

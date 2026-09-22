@@ -12,17 +12,17 @@ Tamagui ships two styling frontends. Both compile to the same atomic CSS on web
 and the same native styles on iOS and Android, and both accept the same tokens,
 themes, and media queries.
 
-**Style props** on the `html.*` elements are the recommended base. They are
-typed, web-aligned, and compile to atomic CSS or native styles:
+**Style props** on `View` and `Text` are the default. They are typed and
+compile to atomic CSS on web or native styles on iOS and Android:
 
 ```tsx
-import { html } from 'tamagui'
+import { Text, View } from 'tamagui'
 
 export const Card = () => (
-  <html.article padding="4" borderRadius="lg" backgroundColor="background">
-    <html.h2 fontSize="6">Hello</html.h2>
-    <html.p color="color-11 hover:color-12">World</html.p>
-  </html.article>
+  <View padding="4" borderRadius="lg" backgroundColor="background">
+    <Text fontSize="6">Hello</Text>
+    <Text color="color-11 hover:color-12">World</Text>
+  </View>
 )
 ```
 
@@ -30,13 +30,13 @@ export const Card = () => (
 think in utilities:
 
 ```tsx
-import { html } from '@tamagui/tailwind'
+import { Text, View } from '@tamagui/tailwind'
 
 export const Card = () => (
-  <html.article className="p-4 rounded-lg bg-background">
-    <html.h2 className="text-2xl">Hello</html.h2>
-    <html.p className="text-color-11 hover:text-color-12">World</html.p>
-  </html.article>
+  <View className="p-4 rounded-lg bg-background">
+    <Text className="text-2xl">Hello</Text>
+    <Text className="text-color-11 hover:text-color-12">World</Text>
+  </View>
 )
 ```
 
