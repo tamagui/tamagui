@@ -102,6 +102,70 @@ test('lowers multiple disjoint conditionals on web', async () => {
   expect(output?.js).toMatch(/\(size\) \? "_fs-\d+" : "_fs-\d+"/)
 })
 
+// the v2 shape of #4194: a base value one conditional overrides leaked back in
+// through the other conditional's branches, because each branch carried the
+// whole base. every combination has to pick exactly its own arms
+test('a base value overridden by one conditional does not return through another', async () => {
+  const output = await extractForWeb(
+    `
+    import { styled, Text } from '@tamagui/core'
+    const T = styled(Text, {
+      fontWeight: '400',
+      display: 'inline',
+      variants: { size: { sm: { fontSize: 12, fontWeight: '300' } } } as const,
+    })
+    export function Test({ bold, shown }) {
+      return <T size="sm" fontWeight={bold ? '600' : '500'} display={shown ? 'flex' : 'none'} />
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  const js = output?.js ?? ''
+  const styles = output?.styles ?? ''
+  const classFor = (css: string) => {
+    const name = styles.match(new RegExp(`\\.(_[a-z]+-\\d+)\\{${css}\\}`))?.[1]
+    // an absent rule would make every not.toContain below pass vacuously
+    expect(name, css).toBeTruthy()
+    return name
+  }
+  const expression = js.match(/className=\{([\s\S]*?)\}\s*\/>/)?.[1]
+  expect(expression).toBeTruthy()
+  const classNames = new Function('bold', 'shown', `return ${expression}`) as (
+    bold: boolean,
+    shown: boolean
+  ) => string
+
+  for (const bold of [true, false]) {
+    for (const shown of [true, false]) {
+      const classes = classNames(bold, shown).split(' ')
+      const where = `bold=${bold} shown=${shown}`
+      expect(classes, where).toContain(
+        classFor(bold ? 'font-weight:600' : 'font-weight:500')
+      )
+      expect(classes, where).not.toContain(
+        classFor(bold ? 'font-weight:500' : 'font-weight:600')
+      )
+      expect(classes, where).toContain(classFor(shown ? 'display:flex' : 'display:none'))
+      expect(classes, where).not.toContain(
+        classFor(shown ? 'display:none' : 'display:flex')
+      )
+      // the variant's weight and the base display are overridden in every branch
+      expect(classes, where).not.toContain(classFor('font-weight:300'))
+      expect(classes, where).not.toContain(classFor('display:inline'))
+      expect(classes, where).toContain(classFor('font-size:12px'))
+    }
+  }
+  // each conditional is one segment; the combinations are not cross-multiplied
+  expect(js.match(/\(bold\)/g)).toHaveLength(1)
+  expect(js.match(/\(shown\)/g)).toHaveLength(1)
+})
+
 test('lowers evaluable static spread with mixed style and non-style props on web', async () => {
   const output = await extractForWeb(
     `
