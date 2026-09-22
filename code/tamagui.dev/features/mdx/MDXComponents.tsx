@@ -143,7 +143,7 @@ const codeBlock = (props) => {
     ...rest
   } = props
   return (
-    <YStack mt="2" mb="5">
+    <YStack mt="3">
       <DocCodeBlock
         isHighlightingLines={line !== undefined}
         className={className || 'language-txt'}
@@ -530,7 +530,7 @@ const componentsIn = {
     <H2
       position="relative"
       width={`fit-content` as any}
-      mt={48}
+      mt={40}
       mb={14}
       data-heading
       fontSize={24}
@@ -545,7 +545,7 @@ const componentsIn = {
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading data-heading mt={32} mb={10} id={id}>
+    <LinkHeading data-heading mt={28} mb={10} id={id}>
       <H3
         maxW="100%"
         position="relative"
@@ -1143,7 +1143,7 @@ const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) =
     data-heading
     id={id}
     data-id={id}
-    display="inline-flex"
+    width={`fit-content` as any}
     items="center"
     gap="4"
     {...props}

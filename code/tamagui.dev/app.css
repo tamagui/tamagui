@@ -204,6 +204,13 @@ span._display-1adg3ll > span._display-xoduu5 {
   margin-top: 10px;
 }
 
+/* the docs article is a block container so prose margins collapse. headings
+   and paragraphs are inline Text by default, so they need to be block here.
+   one class deep, so any explicit display prop (0,4,0) still wins */
+.docs-flow :is(h1, h2, h3, h4, h5, h6, p) {
+  display: block;
+}
+
 /*  */
 
 .hero-scroll {

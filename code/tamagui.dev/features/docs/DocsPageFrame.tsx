@@ -73,7 +73,15 @@ export function DocsPageFrame({
           id="docs-syntax-panel"
           aria-labelledby={`docs-syntax-${syntax}-tab`}
         >
-          <Container px={0} maxW={860} position="relative">
+          {/* block, not flex, so prose margins collapse: the gap above a
+              heading is its own margin, not that plus the paragraph's */}
+          <Container
+            className="docs-flow"
+            px={0}
+            maxW={860}
+            position="relative"
+            display="block"
+          >
             {syntaxes.length > 1 && (
               <XStack
                 justify="flex-end"

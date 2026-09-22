@@ -26,6 +26,7 @@ export function CodeBlockTabs({
       showsHorizontalScrollIndicator={false}
     >
       <Code
+        display="block"
         p="4"
         bg="transparent"
         flex={1}
