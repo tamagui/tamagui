@@ -559,6 +559,10 @@ const applyAnimation = <T extends number | string>(
     typeof animatedValue !== 'boolean' &&
     typeof animatedValue !== 'undefined'
 
+  if (isAnimationDescriptor && delay && delay > 0) {
+    animatedValue = withDelay(delay, animatedValue)
+  }
+
   if (isAnimationDescriptor && (seedValue !== undefined || validateStartAsColor)) {
     const innerOnStart = animatedValue.onStart
     animatedValue.onStart = (
@@ -581,6 +585,9 @@ const applyAnimation = <T extends number | string>(
   // descendants that inherit the size read the mirror, so the host's own
   // animation stays the only clock: no shadow animation, no second config, and
   // nothing to keep in sync when this one is interrupted.
+  // (withDelay already wrapped above, before the seed onStart override, per
+  // main's hold-enterStyle-through-delay fix: applying it again here would
+  // double the delay.)
   if (isAnimationDescriptor && publishTo) {
     const startedOn = animatedValue.onStart
     animatedValue.onStart = (
@@ -600,10 +607,6 @@ const applyAnimation = <T extends number | string>(
       publishTo.value = animation.current
       return finished
     }
-  }
-
-  if (isAnimationDescriptor && delay && delay > 0) {
-    animatedValue = withDelay(delay, animatedValue)
   }
 
   return animatedValue as T

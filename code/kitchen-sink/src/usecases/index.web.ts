@@ -73,6 +73,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./CustomStyledAnimatedPopover').CustomStyledAnimatedPopover,
   CustomStyledAnimatedTooltip: () =>
     require('./CustomStyledAnimatedTooltip').CustomStyledAnimatedTooltip,
+  DelayedEnterStyleCase: () => require('./DelayedEnterStyleCase').DelayedEnterStyleCase,
   DriverConditionedDiscreteCase: () =>
     require('./DriverConditionedDiscreteCase').DriverConditionedDiscreteCase,
   DriverDisableAnimationPropsCase: () =>
