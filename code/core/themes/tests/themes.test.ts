@@ -1,6 +1,14 @@
 import { describe, expect, test } from 'bun:test'
 
-import { fromShades, ramp, raise, scales, themes as authoredThemes } from '../src/builder'
+import {
+  createPaletteThemes,
+  fromShades,
+  paletteTokens,
+  ramp,
+  raise,
+  scales,
+  themes as authoredThemes,
+} from '../src/builder'
 import { themes } from '../src/generated'
 import { tokens } from '../src/tokens'
 
@@ -156,5 +164,105 @@ describe('v6 themes', () => {
       }
     }
     expect(wrong).toEqual([])
+  })
+
+  // a palette ramp runs from 50 (palest) to 950 (deepest); dark reads it in
+  // reverse, so one ramp per palette covers both schemes
+  const surface = [
+    '#fbf7f2',
+    '#f3ebe0',
+    '#e6d8c6',
+    '#d6c1a6',
+    '#c0a583',
+    '#a48861',
+    '#866c48',
+    '#66513a',
+    '#4e3f30',
+    '#382d24',
+    '#1c1610',
+  ] as const
+  const copper = [
+    'hsla(40, 61%, 95%, 1)',
+    'hsla(40, 67%, 90%, 1)',
+    'hsla(40, 74%, 84%, 1)',
+    'hsla(40, 78%, 77%, 1)',
+    'hsla(40, 83%, 70%, 1)',
+    'hsla(40, 87%, 60%, 1)',
+    'hsla(40, 90%, 47%, 1)',
+    'hsla(36, 80%, 36%, 1)',
+    'hsla(31, 65%, 28%, 1)',
+    'hsla(27, 60%, 19%, 1)',
+    'hsla(24, 65%, 10%, 1)',
+  ] as const
+  const indigo = [
+    '#eef2ff',
+    '#e0e7ff',
+    '#c6d2ff',
+    '#a3b3ff',
+    '#7c86ff',
+    '#615fff',
+    '#4f39f6',
+    '#432dd7',
+    '#372aac',
+    '#312c85',
+    '#1e1a4d',
+  ] as const
+
+  test('palette tokens name every shade and refuse a short ramp', () => {
+    expect(paletteTokens({ brand: indigo })['brand-50']).toBe('#eef2ff')
+    expect(paletteTokens({ brand: indigo })['brand-950']).toBe('#1e1a4d')
+    expect(() => paletteTokens({ brand: indigo.slice(1) })).toThrow(
+      'palette "brand" needs 11 colors'
+    )
+  })
+
+  test('palette themes ground on the surface ramp and derive the accent from brand', () => {
+    const { colorTokens, themes: palette } = createPaletteThemes({
+      surface,
+      brand: indigo,
+      moss: surface,
+    })
+    expect(colorTokens['surface-50']).toBe(surface[0])
+    expect(colorTokens['moss-500']).toBe(surface[5])
+    expect(colorTokens['mauve-50']).toBe(tokens.color['mauve-50'])
+    expect(Object.keys(palette).sort()).toEqual(Object.keys(themes).sort())
+    expect(palette.light.background).toBe(surface[0])
+    expect(palette.light['background-hover']).toBe(tokens.color.white)
+    expect(palette.light.color).toBe(surface[10])
+    expect(palette.light['color-1']).toBe(surface[0])
+    expect(palette.dark.background).toBe(surface[10])
+    expect(palette.dark['color-1']).toBe(surface[10])
+    expect(palette.dark.color).toBe(surface[0])
+    expect(palette.dark_level2.background).toBe(surface[9])
+    expect(palette.light['accent-background']).toBe(indigo[6])
+    expect(palette.light['accent-color']).toBe(indigo[0])
+    expect(palette.light_accent.background).toBe(indigo[1])
+    expect(palette.light_accent.color).toBe(indigo[7])
+    // a brand ramp redefines the emphasis surface as the solid brand fill
+    expect(palette.light_brand.background).toBe(indigo[6])
+    expect(palette.light_brand.color).toBe(indigo[0])
+    expect(palette.dark_brand.background).toBe(indigo[5])
+    expect(palette.light_inverse).toBe(palette.dark)
+  })
+
+  test('palette themes keep the default ground and emphasis without those ramps', () => {
+    const { themes: palette } = createPaletteThemes({ moss: surface })
+    expect(palette.light).toEqual(themes.light)
+    expect(palette.light_brand).toBe(palette.dark)
+  })
+
+  // copper-600 is a bright penny: white type cannot read on it, so the bold
+  // surface and the accent pair flip to the deep end of the same ramp. the
+  // tint keeps its 700 type, which already reads on the 100 tint.
+  test('a pale brand carries deep type on its fill', () => {
+    const { colorTokens, themes: palette } = createPaletteThemes({ brand: copper })
+    expect(palette.light['accent-background']).toBe(copper[6])
+    expect(palette.light['accent-color']).toBe(copper[10])
+    expect(palette.light_brand.color).toBe(copper[10])
+    expect(palette.light_brand['color-hover']).toBe(copper[10])
+    expect(palette.light_brand.background).toBe(copper[6])
+    expect(palette.dark_brand.color).toBe(copper[10])
+    expect(palette.light_accent.color).toBe(copper[7])
+    expect(colorTokens['brand-600']).toBe(copper[6])
   })
 })

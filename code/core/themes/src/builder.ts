@@ -6,7 +6,7 @@ import {
   type ThemeDefinitionObject,
 } from '@tamagui/create-theme'
 
-import { tokens, type ColorTokenName } from './tokens'
+import { colorTokens as baseColorTokens, tokens, type ColorTokenName } from './tokens'
 
 export { createThemes } from '@tamagui/create-theme'
 export type { GetThemeContext, ThemeDefinitionContext } from '@tamagui/create-theme'
@@ -359,17 +359,209 @@ export function fromShades<const PaletteName extends string, TokenName extends s
   ) as Record<SemanticThemeKey, `${PaletteName}-${Shade}` | TokenName>
 }
 
-export function getTheme({ recipe }: GetThemeContext<typeof tokens, DefaultRecipe>) {
+export type PaletteRecipe = {
+  scheme: Scheme
+  palette: string
+  treatment?: Treatment
+  level?: Level
+  active?: boolean
+}
+
+export type PaletteTheme = Record<
+  keyof Ramp | SemanticThemeKey | ShadowName,
+  string
+>
+
+// sRGB channels of a hex, rgb() or hsl() color, which is every form a palette
+// is authored in. anything else is unknown and leaves the theme untouched.
+function channels(color: string): [number, number, number] | null {
+  const value = color.trim().toLowerCase()
+  const hex = /^#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/.exec(value)
+  if (hex) {
+    const digits =
+      hex[1].length < 6
+        ? hex[1]
+            .split('')
+            .map((digit) => digit + digit)
+            .join('')
+        : hex[1]
+    return [0, 2, 4].map((offset) => parseInt(digits.slice(offset, offset + 2), 16)) as [
+      number,
+      number,
+      number,
+    ]
+  }
+  const fn = /^(rgba?|hsla?)\((.+)\)$/.exec(value)
+  if (!fn) return null
+  const parts = fn[2].split(/[\s,\/]+/).filter(Boolean)
+  if (parts.length < 3) return null
+  const numbers = parts.slice(0, 3).map((part) => Number.parseFloat(part))
+  if (numbers.some((number) => Number.isNaN(number))) return null
+  if (fn[1].startsWith('rgb')) return numbers as [number, number, number]
+  const [hue, saturation, lightness] = [numbers[0], numbers[1] / 100, numbers[2] / 100]
+  const chroma = (1 - Math.abs(2 * lightness - 1)) * saturation
+  const x = chroma * (1 - Math.abs(((hue / 60) % 2) - 1))
+  const sector = Math.floor((((hue % 360) + 360) % 360) / 60)
+  const [r, g, b] = [
+    [chroma, x, 0],
+    [x, chroma, 0],
+    [0, chroma, x],
+    [0, x, chroma],
+    [x, 0, chroma],
+    [chroma, 0, x],
+  ][sector]
+  const m = lightness - chroma / 2
+  return [(r + m) * 255, (g + m) * 255, (b + m) * 255]
+}
+
+function luminance(color: string): number | null {
+  const rgb = channels(color)
+  if (!rgb) return null
+  const [r, g, b] = rgb.map((channel) => {
+    const unit = channel / 255
+    return unit <= 0.03928 ? unit / 12.92 : ((unit + 0.055) / 1.055) ** 2.4
+  })
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b
+}
+
+function contrast(a: number, b: number): number {
+  return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)
+}
+
+const MIN_TEXT_CONTRAST = 4.5
+
+const mirroredShade: Record<Shade, Shade> = {
+  50: 950,
+  100: 900,
+  200: 800,
+  300: 700,
+  400: 600,
+  500: 500,
+  600: 400,
+  700: 300,
+  800: 200,
+  900: 100,
+  950: 50,
+}
+
+// a scale names its type by position: 50 on a 600 fill, brand-50 on
+// brand-600. that holds for a mid or deep palette and fails on a pale one,
+// where the fill is lighter than its type. so where a palette fill carries
+// type, the bold surface and the accent pair, a named type that cannot reach
+// 4.5:1 on its fill gives way to its mirror across the ramp (50 to 950, 200
+// to 800) when that reads better. neutral surfaces and the placeholder keep
+// the scale's word, and the ramp stays absolute.
+function readable(
+  theme: PaletteTheme,
+  colors: Record<string, string>,
+  bold: boolean
+): PaletteTheme {
+  const pairs: [keyof PaletteTheme, (keyof PaletteTheme)[]][] = [
+    ['accent-background', ['accent-color']],
+  ]
+  if (bold) pairs.push(['background', ['color', 'color-hover', 'color-press', 'color-focus']])
+  const valueOf = (token: string) => luminance(colors[token] ?? token)
+  for (const [fill, keys] of pairs) {
+    const fillLuminance = valueOf(theme[fill])
+    if (fillLuminance === null) continue
+    for (const key of keys) {
+      const named = theme[key]
+      const match = /^(.*)-(\d+)$/.exec(named)
+      const shade = match ? (Number(match[2]) as Shade) : null
+      if (!match || !shade || !(shade in mirroredShade)) continue
+      const mirrored = `${match[1]}-${mirroredShade[shade]}`
+      const namedLuminance = valueOf(named)
+      const mirroredLuminance = mirrored in colors ? valueOf(mirrored) : null
+      if (namedLuminance === null || mirroredLuminance === null) continue
+      const namedContrast = contrast(fillLuminance, namedLuminance)
+      if (namedContrast >= MIN_TEXT_CONTRAST) continue
+      if (contrast(fillLuminance, mirroredLuminance) > namedContrast) theme[key] = mirrored
+    }
+  }
+  return theme
+}
+
+export function getTheme({
+  recipe,
+  tokens,
+}: GetThemeContext<{ color: Record<string, string> }, PaletteRecipe>): PaletteTheme {
   const resting = scales[recipe.treatment ?? 'normal'][recipe.scheme][recipe.level ?? 1]
   const scale = recipe.active ? activeScale(resting) : resting
   const schemeShadows = shadows[recipe.scheme]
-  return {
-    ...ramp(recipe.palette, recipe.scheme, scale),
-    ...fromShades(recipe.palette, scale),
-    ...schemeShadows,
-    // the scale names a step on the ladder; the scheme decides what it is worth
-    'shadow-color': schemeShadows[scale['shadow-color']],
+  return readable(
+    {
+      ...ramp(recipe.palette, recipe.scheme, scale),
+      ...fromShades(recipe.palette, scale),
+      ...schemeShadows,
+      // the scale names a step on the ladder; the scheme decides what it is worth
+      'shadow-color': schemeShadows[scale['shadow-color']],
+    },
+    tokens.color,
+    recipe.treatment === 'bold'
+  )
+}
+
+/** eleven colors, from the 50 shade (palest) to 950 (deepest) */
+export type PaletteRamp = readonly string[]
+
+export type PaletteTokens<Palettes extends Record<string, PaletteRamp>> = {
+  [Name in keyof Palettes & string as `${Name}-${Shade}`]: string
+}
+
+/** color tokens for palettes: `{ brand: [...] }` becomes `brand-50` through `brand-950` */
+export function paletteTokens<const Palettes extends Record<string, PaletteRamp>>(
+  palettes: Palettes
+): PaletteTokens<Palettes> {
+  const result: Record<string, string> = {}
+  for (const name in palettes) {
+    const colors = palettes[name]
+    if (colors.length !== shades.length) {
+      throw new Error(
+        `palette "${name}" needs ${shades.length} colors from shade 50 to 950, got ${colors.length}`
+      )
+    }
+    shades.forEach((shade, index) => {
+      result[`${name}-${shade}`] = colors[index]
+    })
   }
+  return result as PaletteTokens<Palettes>
+}
+
+export type PaletteThemesInput = {
+  surface?: PaletteRamp
+  brand?: PaletteRamp
+} & Record<string, PaletteRamp>
+
+/**
+ * the whole theme system from your own palettes. `surface` grounds light and
+ * dark (mauve when absent), `brand` fills the accent tint, the emphasis
+ * `brand` theme and `accent-background` (blue when absent), and any other name
+ * becomes a ramp addressable as `name-50` through `name-950`. dark reads each
+ * ramp in reverse, so one ramp per palette covers both schemes, and every
+ * role (background, hover, press, border, type, placeholder, accent) derives.
+ */
+export function createPaletteThemes<const Palettes extends PaletteThemesInput>(
+  palettes: Palettes
+) {
+  const colorTokens = { ...baseColorTokens, ...paletteTokens(palettes) }
+  const surface = palettes.surface ? 'surface' : 'mauve'
+  const paletteTree = {
+    ...tree,
+    light: { scheme: 'light', palette: surface },
+    dark: { scheme: 'dark', palette: surface },
+    children: {
+      ...tree.children,
+      ...(palettes.brand
+        ? { brand: { palette: 'brand', treatment: 'bold', children: levels() } }
+        : {}),
+    },
+  } as const
+  const themes = createThemes<{ color: Record<string, string> }, typeof paletteTree, PaletteTheme>(
+    { color: colorTokens },
+    paletteTree,
+    { getTheme }
+  )
+  return { colorTokens, themes }
 }
 
 type LevelParent = Record<string, unknown> & { level?: Level }
@@ -468,4 +660,8 @@ export const tree = {
   },
 } as const
 
-export const themes = createThemes(tokens, tree, { getTheme })
+export const themes = createThemes<{ color: Record<string, string> }, typeof tree, PaletteTheme>(
+  tokens,
+  tree,
+  { getTheme }
+)
