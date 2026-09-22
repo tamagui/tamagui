@@ -52,12 +52,18 @@ export const config = createTamagui({
   // accessible from anywhere, never changing dynamically:
   tokens: {
     // width="sm"
-    size: { sm: 8, md: 12, lg: 20 },
+    'size-sm': 8,
+    'size-md': 12,
+    'size-lg': 20,
     // margin="sm"
-    space: { sm: 4, md: 8, lg: 12 },
+    'space-sm': 4,
+    'space-md': 8,
+    'space-lg': 12,
     // radius="none"
-    radius: { none: 0, sm: 3 },
-    color: { white: '#fff', black: '#000' },
+    'radius-none': 0,
+    'radius-sm': 3,
+    'color-white': '#fff',
+    'color-black': '#000',
   },
 
   // themes are like CSS Variables that you can change anywhere in the tree
@@ -146,7 +152,7 @@ You're all set up!
 Let's start with an example of a more complete `tamagui.config.ts`:
 
 ```tsx fileName="tamagui.config.ts"
-import { createFont, createTamagui, createTokens, isWeb } from 'tamagui'
+import { createFont, createTamagui, createTokens, isWeb, prefixTokens } from 'tamagui'
 
 // To work with the tamagui UI kit styled components (which is optional)
 // you'd want the keys used for `size`, `lineHeight`, `weight` and
@@ -194,14 +200,15 @@ const size = {
 }
 
 export const tokens = createTokens({
-  size,
-  space: { ...size, '-1': -5, '-2': -10 },
-  radius: { 0: 0, 1: 3 },
-  zIndex: { 0: 0, 1: 100, 2: 200 },
-  color: {
-    white: '#fff',
-    black: '#000',
-  },
+  ...prefixTokens('size', size),
+  ...prefixTokens('space', { ...size, '-1': -5, '-2': -10 }),
+  'radius-0': 0,
+  'radius-1': 3,
+  'zIndex-0': 0,
+  'zIndex-1': 100,
+  'zIndex-2': 200,
+  'color-white': '#fff',
+  'color-black': '#000',
 })
 
 const config = createTamagui({
@@ -275,27 +282,6 @@ The `createTamagui` function receives a configuration object with properties:
   On Android you need to set the `face` option in `createFont` or else fonts won't pick up
   different weights, due to a React Native restriction.
 </Notice>
-
-Note, for `tamagui` (not core), it expects you to define a `true` token that
-maps to your default size, this way it knows what token to use by default. So
-you'd do something like this:
-
-```tsx
-export const tokens = createTokens({
-  size: {
-    small: 20,
-    medium: 30,
-    true: 30, // note true = 30 just like medium, your default size token
-    large: 40,
-  },
-  space: {
-    small: 10,
-    medium: 20,
-    true: 20, // same goes for space and other token categories
-    large: 30,
-  },
-})
-```
 
 <Notice theme="green">
   If using the compiler, your tamagui.config.ts is parsed at build-time. For this reason,
@@ -508,15 +494,15 @@ well.
 ```tsx
 // passed into createTamagui
 const tokens = createTokens({
-  color: {
-    white: '#fff',
-    black: '#000',
-  },
+  'color-white': '#fff',
+  'color-black': '#000',
 })
 ```
 
-You access tokens then by using `$` prefixes in your values. Tamagui knows which
-tokens to use based on the style property you use.
+You access tokens by their name. The style property you use decides which
+category is searched, so `color="white"` finds `color-white` and
+`borderRadius="sm"` finds `radius-sm`. Write the full name to reach across
+categories.
 
 ```tsx
 const App = () => (

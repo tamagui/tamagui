@@ -356,93 +356,42 @@ function generateMarkdown(config: any): string {
 
   const tokens = config.tamaguiConfig?.tokens || {}
 
-  // Space tokens
-  if (tokens.space) {
-    sections.push('### Space Tokens\n\n')
-    const spaceTokens = Object.entries(tokens.space).sort(([a], [b]) => {
-      // Sort numerically where possible
-      const numA = parseFloat(a)
-      const numB = parseFloat(b)
+  // tokens are flat (`space-1`, `color-blue-500`): the prefix names the category
+  const byCategory: Record<string, [string, unknown][]> = {}
+  for (const key in tokens) {
+    const dash = key.indexOf('-')
+    if (dash === -1) continue
+    ;(byCategory[key.slice(0, dash)] ||= []).push([key.slice(dash + 1), tokens[key]])
+  }
+
+  const titles: Record<string, string> = {
+    space: 'Space Tokens',
+    size: 'Size Tokens',
+    radius: 'Radius Tokens',
+    zIndex: 'Z-Index Tokens',
+    color: 'Color Tokens',
+  }
+  const known = Object.keys(titles)
+  const categories = [
+    ...known.filter((name) => byCategory[name]),
+    ...Object.keys(byCategory)
+      .filter((name) => !known.includes(name))
+      .sort(),
+  ]
+
+  for (const category of categories) {
+    const entries = byCategory[category].sort(([a], [b]) => {
+      // sort numerically where possible
+      const numA = Number.parseFloat(a)
+      const numB = Number.parseFloat(b)
       if (!isNaN(numA) && !isNaN(numB)) {
         return numA - numB
       }
       return a.localeCompare(b)
     })
+    sections.push(`### ${titles[category] || `${category} Tokens`}\n\n`)
     sections.push(
-      spaceTokens
-        .map(([key, value]) => `- \`${key}\`: ${formatTokenValue(value)}`)
-        .join('\n')
-    )
-    sections.push('\n\n')
-  }
-
-  // Size tokens
-  if (tokens.size) {
-    sections.push('### Size Tokens\n\n')
-    const sizeTokens = Object.entries(tokens.size).sort(([a], [b]) => {
-      const numA = parseFloat(a)
-      const numB = parseFloat(b)
-      if (!isNaN(numA) && !isNaN(numB)) {
-        return numA - numB
-      }
-      return a.localeCompare(b)
-    })
-    sections.push(
-      sizeTokens
-        .map(([key, value]) => `- \`${key}\`: ${formatTokenValue(value)}`)
-        .join('\n')
-    )
-    sections.push('\n\n')
-  }
-
-  // Radius tokens
-  if (tokens.radius) {
-    sections.push('### Radius Tokens\n\n')
-    const radiusTokens = Object.entries(tokens.radius).sort(([a], [b]) => {
-      const numA = parseFloat(a)
-      const numB = parseFloat(b)
-      if (!isNaN(numA) && !isNaN(numB)) {
-        return numA - numB
-      }
-      return a.localeCompare(b)
-    })
-    sections.push(
-      radiusTokens
-        .map(([key, value]) => `- \`${key}\`: ${formatTokenValue(value)}`)
-        .join('\n')
-    )
-    sections.push('\n\n')
-  }
-
-  // zIndex tokens
-  if (tokens.zIndex) {
-    sections.push('### Z-Index Tokens\n\n')
-    const zIndexTokens = Object.entries(tokens.zIndex).sort(([a], [b]) => {
-      const numA = parseFloat(a)
-      const numB = parseFloat(b)
-      if (!isNaN(numA) && !isNaN(numB)) {
-        return numA - numB
-      }
-      return a.localeCompare(b)
-    })
-    sections.push(
-      zIndexTokens
-        .map(([key, value]) => `- \`${key}\`: ${formatTokenValue(value)}`)
-        .join('\n')
-    )
-    sections.push('\n\n')
-  }
-
-  // Color tokens
-  if (tokens.color) {
-    sections.push('### Color Tokens\n\n')
-    const colorTokens = Object.entries(tokens.color).sort(([a], [b]) =>
-      a.localeCompare(b)
-    )
-    sections.push(
-      colorTokens
-        .map(([key, value]) => `- \`${key}\`: ${formatTokenValue(value)}`)
-        .join('\n')
+      entries.map(([key, value]) => `- \`${key}\`: ${formatTokenValue(value)}`).join('\n')
     )
     sections.push('\n\n')
   }

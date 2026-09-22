@@ -1,4 +1,4 @@
-import type { AnimationDriver, GenericTamaguiSettings, TamaguiInternalConfig, Token, Tokens, TokensParsed } from './types';
+import type { AnimationDriver, GenericTamaguiSettings, TamaguiInternalConfig, Token, TokenCategories, TokensParsed } from './types';
 export type StyleCompat = 'legacy' | 'react-native' | 'web';
 export declare const getSetting: <Key extends keyof GenericTamaguiSettings>(key: Key) => GenericTamaguiSettings[Key];
 export declare function getStyleCompat(): StyleCompat;
@@ -8,9 +8,9 @@ export declare const getConfig: () => TamaguiInternalConfig;
 export declare const getConfigMaybe: () => TamaguiInternalConfig | null;
 export declare function setTokens(next: TokensParsed): void;
 export declare const getTokens: () => TokensParsed;
-export declare const getTokenObject: (value: Token, group?: keyof Tokens) => import("./types").Variable<any>;
-export declare const getToken: (value: Token, group?: keyof Tokens, useVariable?: boolean) => any;
-export declare const getTokenValue: (value: Token | 'unset' | 'auto', group?: keyof Tokens) => any;
+export declare const getTokenObject: (value: Token, group?: TokenCategories | (string & {})) => import("./types").Variable<any>;
+export declare const getToken: (value: Token, group?: TokenCategories | (string & {}), useVariable?: boolean) => any;
+export declare const getTokenValue: (value: Token | 'unset' | 'auto', group?: TokenCategories | (string & {})) => any;
 /**
  * Note: this is the same as `getTokens`
  */

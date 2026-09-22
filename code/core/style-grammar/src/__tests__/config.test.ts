@@ -26,11 +26,11 @@ describe('createGrammarConfigView', () => {
           light_alt: { borderColor: '#ccc' },
         },
         tokensParsed: {
-          space: { 4: 16 },
-          size: { 10: 40 },
-          radius: { true: 8 },
-          zIndex: { modal: 100 },
-          color: { red9: '#f00' },
+          'space-4': 16,
+          'size-10': 40,
+          'radius-true': 8,
+          'zIndex-modal': 100,
+          'color-red9': '#f00',
         },
         fontsParsed: {
           body: {

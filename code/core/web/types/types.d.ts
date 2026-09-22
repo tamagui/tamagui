@@ -418,44 +418,10 @@ export type GenericVariables = {
     };
 };
 type GenericKey = string;
-export type CreateTokens<Val extends VariableVal = VariableVal> = Record<string, {
-    [key: GenericKey]: Val;
-}> & {
-    color?: {
-        [key: GenericKey]: Val;
-    };
-    space?: {
-        [key: GenericKey]: Val;
-    };
-    size?: {
-        [key: GenericKey]: Val;
-    };
-    radius?: {
-        [key: GenericKey]: Val;
-    };
-    zIndex?: {
-        [key: GenericKey]: Val;
-    };
-};
+export type CreateTokens<Val extends VariableVal = VariableVal> = Record<GenericKey, Val>;
 export type TokenCategories = 'color' | 'space' | 'size' | 'radius' | 'zIndex';
-type Tokenify<A extends GenericTokens> = Omit<{
-    [Key in keyof A]: TokenifyRecord<A[Key]>;
-}, TokenCategories> & {
-    color: TokenifyRecord<A extends {
-        color: any;
-    } ? A['color'] : {}>;
-    space: TokenifyRecord<A extends {
-        space: any;
-    } ? A['space'] : {}>;
-    size: TokenifyRecord<A extends {
-        size: any;
-    } ? A['size'] : {}>;
-    radius: TokenifyRecord<A extends {
-        radius: any;
-    } ? A['radius'] : {}>;
-    zIndex: TokenifyRecord<A extends {
-        zIndex: any;
-    } ? A['zIndex'] : {}>;
+type Tokenify<A extends GenericTokens> = {
+    [Key in keyof A]: CoerceToVariable<A[Key]>;
 };
 type TokenifyRecord<A extends object> = {
     [Key in keyof A]: CoerceToVariable<A[Key]>;
@@ -552,13 +518,7 @@ type ThemesWithVariables<B, V> = [V] extends [undefined] ? B : [keyof V] extends
         [K in keyof V & string]: VariableValInScheme<V[K]> extends PxValue ? number : VariableValInScheme<V[K]>;
     };
 };
-type EmptyTokens = {
-    color: {};
-    space: {};
-    size: {};
-    radius: {};
-    zIndex: {};
-};
+type EmptyTokens = {};
 type EmptyThemes = {};
 type EmptyShorthands = {};
 type EmptyMedia = {};
@@ -589,8 +549,10 @@ export type ThemeParsed = {
 export type ReservedThemePropName = '_isRoot' | 'children' | 'className' | 'contain' | 'debug' | 'deopt' | 'disable' | 'disable-child-theme' | 'forceClassName' | '_themeUpdate' | 'name' | 'nativeUpdate' | 'needsUpdate' | 'passThrough' | 'shallow';
 export type Tokens = TamaguiConfig['tokens'];
 export type TokensParsed = {
-    [Key in keyof Required<Tokens>]: TokenifyRecord<NonNullable<Tokens[Key]>>;
+    [Key in keyof Tokens]: CoerceToVariable<Tokens[Key]>;
 };
+type StripCategory<T, Category extends string> = T extends `${Category}-${infer Rest}` ? Rest : never;
+export type TokensInCategory<Category extends string> = StripCategory<Extract<keyof Tokens, `${Category}-${string}`>, Category>;
 export type Shorthands = TamaguiConfig['shorthands'];
 export type Media = TamaguiConfig['media'];
 export type Themes = TamaguiConfig['themes'];
@@ -1074,19 +1036,19 @@ export type ThemeValueFallbackColor = ThemeValueFallback | GetThemeValueFallback
 export type ThemeValueFallbackRadius = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingRadius, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type ThemeValueFallbackZIndex = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingZIndex, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type GetTokenString<A> = A extends string | number ? `${A}` : string;
-export type Size = ThemeValueFallbackSize | GetTokenString<keyof Tokens['size']> | (string & {}) | true;
+export type Size = ThemeValueFallbackSize | GetTokenString<TokensInCategory<'size'>> | (string & {}) | true;
 export type SizeTokens = Size;
-export type Space = GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace | true;
+export type Space = GetTokenString<TokensInCategory<'space'>> | ThemeValueFallbackSpace | true;
 export type SpaceTokens = Space;
-type ColorTokenBase = GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed>;
+type ColorTokenBase = GetTokenString<TokensInCategory<'color'>> | GetTokenString<keyof ThemeParsed>;
 type TokenWithOpacity = `${string}/${number}`;
 export type Color = ColorTokenBase | CSSColorNames | TokenWithOpacity | (string & {});
 export type ColorTokens = Color;
-export type ZIndex = GetTokenString<keyof Tokens['zIndex']> | ThemeValueFallbackZIndex | number | true;
+export type ZIndex = GetTokenString<TokensInCategory<'zIndex'>> | ThemeValueFallbackZIndex | number | true;
 export type ZIndexTokens = ZIndex;
-export type Radius = GetTokenString<keyof Tokens['radius']> | ThemeValueFallbackRadius | number | RemString | true;
+export type Radius = GetTokenString<TokensInCategory<'radius'>> | ThemeValueFallbackRadius | number | RemString | true;
 export type RadiusTokens = Radius;
-export type Token = GetTokenString<keyof Tokens['radius']> | GetTokenString<keyof Tokens['zIndex']> | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof Tokens['space']> | GetTokenString<keyof Tokens['size']>;
+export type Token = GetTokenString<TokensInCategory<'radius'>> | GetTokenString<TokensInCategory<'zIndex'>> | GetTokenString<TokensInCategory<'color'>> | GetTokenString<TokensInCategory<'space'>> | GetTokenString<TokensInCategory<'size'>>;
 export type ColorStyleProp = ThemeValueFallbackColor | ColorTokens;
 type DefaultFont = TamaguiSettings['defaultFont'];
 export type Fonts = DefaultFont extends string ? TamaguiConfig['fonts'][DefaultFont] : never;

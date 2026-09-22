@@ -183,9 +183,8 @@ export function createStyleTooling(file: SerializedConfigFile): StyleTooling | n
     ...['light', 'dark'].filter((name) => rootThemes.includes(name)),
     ...rootThemes.filter((name) => name !== 'light' && name !== 'dark'),
   ]
-  const tokens = (serialized.tokens || {}) as Readonly<
-    Record<string, Readonly<Record<string, unknown>> | undefined>
-  >
+  // tokens are flat (`color-red`, `radius-sm`): the prefix names the category
+  const tokens = (serialized.tokens || {}) as Readonly<Record<string, unknown>>
   const media = (serialized.media || {}) as Readonly<Record<string, unknown>>
 
   const targetProperty = (name: string): string => config.shorthands?.[name] || name
@@ -212,7 +211,7 @@ export function createStyleTooling(file: SerializedConfigFile): StyleTooling | n
           const color = parseColor(themed.value, annotation.opacity)
           return color ? { color, theme: themed.theme } : null
         }
-        const color = parseColor(tokenValue(tokens.color?.[name]), annotation.opacity)
+        const color = parseColor(tokenValue(tokens[`color-${name}`]), annotation.opacity)
         return color ? { color } : null
       }
       if (annotation.kind === 'identifier') {
@@ -311,14 +310,14 @@ export function createStyleTooling(file: SerializedConfigFile): StyleTooling | n
             lines.push(`- ${theme}: \`${String(value)}\``)
           }
           if (shown === 0) {
-            const value = tokenValue(tokens.color?.[name])
+            const value = tokenValue(tokens[`color-${name}`])
             if (value !== undefined) lines.push(`- \`${String(value)}\``)
           }
           if (annotation.opacity !== undefined) {
             lines.push(`- opacity: ${annotation.opacity}%`)
           }
         } else {
-          const value = tokenValue(tokens[annotation.tokenCategory || '']?.[name])
+          const value = tokenValue(tokens[`${annotation.tokenCategory}-${name}`])
           lines.push(
             `**${name}** · Tamagui ${annotation.tokenCategory} token` +
               (value !== undefined ? ` = \`${String(value)}\`` : '')

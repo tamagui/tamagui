@@ -1,7 +1,8 @@
 // the aligned v6 base: Tailwind-aligned shorthands, scales, fonts, media and settings.
 // colors and themes are deliberately separate so createV6Config can accept any pack.
 import { shorthands } from '@tamagui/shorthands/v6'
-import type { CreateTamaguiProps } from '@tamagui/web'
+import type { CreateTamaguiProps, PrefixedTokens } from '@tamagui/web'
+import { prefixTokens } from '@tamagui/web'
 import { fonts as systemFonts } from './fonts'
 import { media } from './media'
 import { selectionStyles, settings as baseSettings } from './settings'
@@ -26,10 +27,7 @@ export { v6RemovedThemeNames, v6ThemeNameReplacements }
 export { toV6Themes, type V6Theme, type V6Themes } from './v6-themes'
 // space and size deliberately remain separate configured domains even though their default
 // values coincide. z-index is literal, so its identity scale is not configured as tokens.
-export const tokens = {
-  space: tailwindSpace,
-  size: tailwindSize,
-  radius: {
+const radius = {
     0: 0,
     1: 3,
     2: 5,
@@ -43,9 +41,15 @@ export const tokens = {
     10: 34,
     11: 42,
     12: 50,
-    ...tailwindRadius,
-  },
-} as const
+  ...tailwindRadius,
+}
+
+// tokens are flat: `space-4`, `size-4`, `radius-2`
+export const tokens = {
+  ...prefixTokens('space', tailwindSpace),
+  ...prefixTokens('size', tailwindSize),
+  ...prefixTokens('radius', radius),
+}
 
 function withTailwindTypeScale<F extends { size: object; lineHeight: object }>(font: F) {
   return {
@@ -72,7 +76,7 @@ export type V6Settings = typeof settings
  */
 export type V6Colors = {
   themes: NonNullable<CreateTamaguiProps['themes']>
-  /** flat named colors added at tokens.color */
+  /** named colors, added as flat `color-` prefixed tokens */
   colorTokens?: Record<string, string>
   /** extra 12-step color scales merged into the light and dark base themes */
   scales?: V6ColorScales
@@ -164,7 +168,7 @@ export function createV6Config<
   scales?: Scales
 }): typeof alignedConfig & {
   themes: WithColorScales<Themes, Scales>
-  tokens: typeof tokens & { color: ColorTokens }
+  tokens: typeof tokens & PrefixedTokens<'color', ColorTokens>
 }
 export function createV6Config<
   Themes extends NonNullable<CreateTamaguiProps['themes']>,
@@ -183,6 +187,8 @@ export function createV6Config(colors: V6Colors) {
     themes: colors.scales
       ? themesWithColorScales(colors.themes, colors.scales)
       : colors.themes,
-    tokens: colors.colorTokens ? { ...tokens, color: colors.colorTokens } : tokens,
+    tokens: colors.colorTokens
+      ? { ...tokens, ...prefixTokens('color', colors.colorTokens) }
+      : tokens,
   }
 }

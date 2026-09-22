@@ -108,8 +108,8 @@ describe('PASS 1 — 1b: token-first config fidelity', () => {
     const fromClass = classStyle(cls).paddingTop
     const fromProp = styleOf({ padding: '4' }).paddingTop
     expect(cls).toContain('p-4')
-    expect((v6 as any).tokens.space['4']).toBe(16)
-    expect(CFG.tokensParsed.space['4'].val).toBe(16)
+    expect((v6 as any).tokens['space-4']).toBe(16)
+    expect(CFG.tokensParsed['space-4'].val).toBe(16)
     expect(fromClass).toBe(fromProp)
     expect(typeof fromClass).toBe('string')
     expect(typeof fromClass).toBe(typeof fromProp)
@@ -118,7 +118,7 @@ describe('PASS 1 — 1b: token-first config fidelity', () => {
   test('gap="6" emits gap-6 and follows the active space token', () => {
     const cls = convertedClassName(`<View gap="6" />`)
     expect(cls).toContain('gap-6')
-    expect((v6 as any).tokens.space['6']).toBe(24)
+    expect((v6 as any).tokens['space-6']).toBe(24)
     expect(classStyle(cls).gap).toBe(styleOf({ gap: '6' }).gap)
   })
 
@@ -133,14 +133,14 @@ describe('PASS 1 — 1b: token-first config fidelity', () => {
   test('width="10" emits w-10 and follows the active size token', () => {
     const cls = convertedClassName(`<View width="10" />`)
     expect(cls).toContain('w-10')
-    expect((v6 as any).tokens.size['10']).toBe(40)
+    expect((v6 as any).tokens['size-10']).toBe(40)
     expect(classStyle(cls).width).toBe(styleOf({ width: '10' }).width)
   })
 
   test('the configured named radius is the direct Tailwind value', () => {
     const cls = convertedClassName(`<View borderRadius="lg" />`)
     expect(cls).toContain('rounded-lg')
-    expect((v6 as any).tokens.radius.lg).toBe(8)
+    expect((v6 as any).tokens['radius-lg']).toBe(8)
     expect(classStyle(cls).borderTopLeftRadius).toBe(
       styleOf({ borderRadius: 'lg' }).borderTopLeftRadius
     )
@@ -274,7 +274,9 @@ describe('token category system — zIndex sentinel (default config)', () => {
   test('zIndex="10" → z-10 → runtime uses the direct Tailwind value', () => {
     const cls = convertedClassName(`<View zIndex="10" />`)
     expect(cls).toContain('z-10')
-    expect((v6 as any).tokens.zIndex).toBeUndefined()
+    expect(
+      Object.keys((v6 as any).tokens).filter((key) => key.startsWith('zIndex-'))
+    ).toEqual([])
     expect(flat(cls).zIndex).toBe(10)
     expect(String(classStyle(cls).zIndex)).toBe(String(styleOf({ zIndex: '10' }).zIndex))
   })

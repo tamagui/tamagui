@@ -1,6 +1,7 @@
 // v6 defaults: aligned scales and the statically generated recipe-tree themes.
 // no animations are bundled; import a driver from its specific entry.
 import {
+  colorTokens,
   tailwindColors,
   themes,
   tokens as themeTokens,
@@ -19,12 +20,12 @@ export type { Theme as V6Theme, ThemeNames as V6ThemeNames, Themes as V6Themes }
 /** the Tailwind colors pack: color tokens + themes generated from the same palette */
 export const colors = {
   themes,
-  colorTokens: themeTokens.color,
+  colorTokens,
 } satisfies V6Colors
 
 export const tokens = {
   ...baseTokens,
-  color: themeTokens.color,
+  ...themeTokens,
 } as const
 
 export const defaultConfig = createV6Config(colors) satisfies CreateTamaguiProps

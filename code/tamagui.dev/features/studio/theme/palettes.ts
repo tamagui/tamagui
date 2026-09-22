@@ -2,6 +2,7 @@ import {
   createThemes,
   fromShades,
   levels,
+  prefixTokens,
   ramp,
   raise,
   shades,
@@ -171,7 +172,7 @@ type StudioRecipe = {
 }
 
 export function createStudioThemes({ palettes }: BuildThemeSuiteProps) {
-  const tokens = { color: getStudioThemeTokens(palettes) }
+  const tokens = prefixTokens('color', getStudioThemeTokens(palettes))
   const tree = {
     light: { scheme: 'light', palette: 'base-light' },
     dark: { scheme: 'dark', palette: 'base-dark' },

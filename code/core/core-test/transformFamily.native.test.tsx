@@ -83,11 +83,11 @@ test('a clause evaluates per state and recomposes the array', () => {
 test('x resolves space tokens to points', () => {
   const result = split({ x: '4 hover:8' })
   expect(result.style?.transform).toEqual([
-    { translateX: conf.tokensParsed.space['4'].val },
+    { translateX: conf.tokensParsed['space-4'].val },
   ])
   const hovered = split({ x: '4 hover:8' }, { hover: true })
   expect(hovered.style?.transform).toEqual([
-    { translateX: conf.tokensParsed.space['8'].val },
+    { translateX: conf.tokensParsed['space-8'].val },
   ])
 })
 

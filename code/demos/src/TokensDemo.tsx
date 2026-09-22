@@ -1,9 +1,8 @@
-import type { Tokens } from '@tamagui/core'
-import { getConfig } from '@tamagui/core'
+import { getConfig, getTokensInCategory } from '@tamagui/core'
 import React from 'react'
 import { Button, H2, H3, H4, Square, XGroup, XStack, YStack } from 'tamagui'
 
-type Section = 'spaceNegative' | keyof Tokens
+type Section = 'spaceNegative' | 'size' | 'space' | 'radius'
 
 const sections: { name: string; key: Section }[] = [
   {
@@ -54,8 +53,11 @@ export function TokensDemo() {
 }
 
 function SizeSection({ section }: { section: Section }) {
-  const allTokens = getConfig().tokens
-  const tokens = allTokens[section.startsWith('space') ? 'space' : section]
+  const allTokens = getConfig().tokens as any
+  const tokens = getTokensInCategory(
+    allTokens,
+    section.startsWith('space') ? 'space' : section
+  )
   const st = Object.keys(tokens).sort((a, b) =>
     Number.parseFloat(a) > Number.parseFloat(b) ? 1 : -1
   )
@@ -73,7 +75,7 @@ function SizeSection({ section }: { section: Section }) {
             return (
               <XStack width="100%" items="center" key={token}>
                 <YStack width="25%">
-                  <H3 size="6">${token}</H3>
+                  <H3 size="6">{token}</H3>
                 </YStack>
                 <YStack width="20%">
                   <H4 size="5">{tokens[token]?.val}px</H4>
@@ -91,7 +93,7 @@ function SizeSection({ section }: { section: Section }) {
                       ]?.val,
                   })}
                   {...(section === 'radius' && {
-                    size: allTokens.size[token]?.val as any,
+                    size: getTokensInCategory(allTokens, 'size')[token]?.val as any,
                     borderRadius: tokens[token]?.val as any,
                   })}
                 />

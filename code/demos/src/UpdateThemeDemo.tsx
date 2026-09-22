@@ -8,6 +8,7 @@ import {
   XStack,
   YStack,
   getTokens,
+  getTokensInCategory,
   getVariableValue,
   useIsomorphicLayoutEffect,
 } from 'tamagui'
@@ -39,7 +40,7 @@ export function UpdateThemeDemo() {
           // read the app's own palette rather than importing a config: pulling a
           // config entry in here dragged its whole color graph into every
           // consumer of this demo
-          const colors = getTokens().color
+          const colors = getTokensInCategory(getTokens(), 'color')
           const colorKeys = Object.keys(colors)
           const randomColor = getVariableValue(
             colors[colorKeys[Math.floor(Math.random() * colorKeys.length)]]

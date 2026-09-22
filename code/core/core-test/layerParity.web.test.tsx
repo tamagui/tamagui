@@ -26,7 +26,7 @@ beforeAll(() => {
     ...(v6 as any),
     tokens: {
       ...(v6 as any).tokens,
-      color: { ...(v6 as any).tokens.color, collision: '#111111' },
+      'color-collision': '#111111',
     },
     themes: {
       ...(v6 as any).themes,
@@ -101,7 +101,7 @@ test('a modifier name shared by platform and theme classifies identically', () =
     (entry: any) => entry?.[4] ?? []
   )
   expect(rules).toHaveLength(1)
-  expect(rules[0]).toContain('background-color:var(--c-color-collision)')
+  expect(rules[0]).toContain('background-color:var(--c-collision)')
   expect(rules[0]).not.toContain('.t_web')
 })
 
@@ -165,7 +165,7 @@ test('parent markers establish the web capabilities their descendant program tar
 
 test('a bare token path never clamps an out-of-range opacity', () => {
   const result = splitFlat({ backgroundColor: 'black/150' })
-  const blackVar = CFG.tokensParsed.color['black'].variable
+  const blackVar = CFG.tokensParsed['color-black'].variable
   const rules = (
     result.rulesToInsert[result.classNames?.backgroundColor]?.[4] ?? []
   ).join('')

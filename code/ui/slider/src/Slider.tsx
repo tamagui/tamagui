@@ -441,7 +441,7 @@ const SliderActive = createStyledHOC(
 const getThumbSize = styled.dynamic<SizeTokens | number | true>((val) => {
   const tokens = getTokens()
   const sizeToken = resolveSizeToken(val ?? true, 'size')
-  const resolved = typeof sizeToken === 'number' ? sizeToken : tokens.size[sizeToken]
+  const resolved = typeof sizeToken === 'number' ? sizeToken : tokens[`size-${sizeToken}`]
   const size = typeof val === 'number' ? val : getVariableValue(resolved) * 0.86
   return {
     width: size,

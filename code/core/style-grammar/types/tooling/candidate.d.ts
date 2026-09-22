@@ -7,6 +7,13 @@ export interface GrammarConfigView {
 	platformNames?: Names;
 	tokenNames?: Partial<Record<TokenCategory, Names>>;
 	/**
+	* every flat token name as written in the config (`radius-sm`, `brand-card`).
+	* a property's category supplies the default prefix, so `rounded-sm` finds
+	* `radius-sm`; writing the full name reaches across categories the same way
+	* the runtime does
+	*/
+	tokenFullNames?: Names;
+	/**
 	* the media keys that measure a size, so `@key:` is a meaningful container
 	* query. derived by createGrammarConfigView when the media input carries
 	* query information; absent means UNKNOWN, and the modifier registry then

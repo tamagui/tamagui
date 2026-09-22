@@ -1,6 +1,7 @@
 import { getConfigMaybe, setConfig, setTokens } from './config'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
+import { createTokenVariables, getTokensInCategory } from './createTokens'
 import { defaultAnimationDriver } from './helpers/defaultAnimationDriver'
 import { resolveAnimationDriver } from './helpers/resolveAnimationDriver'
 import {
@@ -50,13 +51,10 @@ const reservedCssIdentsLower: ReadonlySet<string> = new Set([
   'currentcolor',
 ])
 
-function shouldTokenCategoryHaveUnits(category: string): boolean {
-  // From TokenCategories type: 'color' | 'space' | 'size' | 'radius' | 'zIndex'
-  // These are the only predefined categories that should get px units
-  const UNIT_CATEGORIES = new Set(['size', 'space', 'radius'])
+// only the dimensional categories get px; custom categories default to unitless
+const UNIT_CATEGORIES = new Set(['size', 'space', 'radius'])
 
-  // Only add px to predefined dimensional categories
-  // Custom categories (like 'opacity', 'customWidth') default to unitless
+function shouldTokenCategoryHaveUnits(category: string): boolean {
   return UNIT_CATEGORIES.has(category)
 }
 
@@ -74,11 +72,7 @@ export function installTamaguiConfig(config: TamaguiInternalConfig) {
 }
 
 function createParsedTokens(tokensIn: CreateTamaguiProps['tokens']): TokensParsed {
-  const parsed: Record<string, any> = createVariables(tokensIn || {})
-  for (const category of ['color', 'space', 'size', 'radius', 'zIndex'] as const) {
-    parsed[category] ||= {}
-  }
-  return parsed as TokensParsed
+  return createTokenVariables(tokensIn || {}) as TokensParsed
 }
 
 function isNamesOnlyThemeProjection(
@@ -124,17 +118,16 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const tokens = tokensParsed
 
   if (configIn.tokens) {
-    for (const cat in tokens) {
-      const tokenCat = tokens[cat]
-      for (const key in tokenCat) {
-        // determinism rule: CSS-wide keywords are reserved, so a token by one
-        // of these names is unreachable (the resolver short-circuits reserved
-        // idents before any lookup) and would silently render the CSS keyword
-        if (reservedCssIdentsLower.has(key.toLowerCase())) {
-          throw new Error(
-            `Token tokens.${cat}.${key} takes a reserved CSS-wide keyword name. These always resolve as literal CSS ("${key.toLowerCase()}"), so this token could never be referenced. Rename it.`
-          )
-        }
+    for (const key in tokens) {
+      // the category is the prefix, so the reserved check is on what follows it
+      const name = key.slice(key.indexOf('-') + 1)
+      // determinism rule: CSS-wide keywords are reserved, so a token by one
+      // of these names is unreachable (the resolver short-circuits reserved
+      // idents before any lookup) and would silently render the CSS keyword
+      if (reservedCssIdentsLower.has(name.toLowerCase())) {
+        throw new Error(
+          `Token tokens.${key} takes a reserved CSS-wide keyword name. These always resolve as literal CSS ("${name.toLowerCase()}"), so this token could never be referenced. Rename it.`
+        )
       }
     }
     setTokens(tokensParsed)
@@ -212,7 +205,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     const themesIn = configIn.themes as ThemesLikeObject
     const dedupedThemes =
       foundThemes ??
-      getThemesDeduped(themesIn, tokens.color, configIn.variables, {
+      getThemesDeduped(themesIn, getTokensInCategory(tokens, 'color'), configIn.variables, {
         tokensParsed,
       })
     const themes = proxyThemesToParents(dedupedThemes, Object.keys(themesIn))
@@ -285,7 +278,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     defaultFont,
     fontSizeTokens: fontSizeTokens || new Set(),
     defaultFontToken,
-    // const tokens = [...getToken(tokens.size[0])]
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }
   }
 

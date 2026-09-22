@@ -36,9 +36,12 @@ describe('tamaguiToTailwind', () => {
         `<View paddingInlineStart="4" paddingInlineEnd="2" paddingBlockStart="4" paddingBlockEnd="2" marginInlineStart="1" marginInlineEnd="4" marginBlockStart="1" marginBlockEnd="4" columnGap="2" rowGap="4" borderInlineStartWidth="2" borderInlineEndColor="white" borderBlockStartWidth="2" borderBlockEndColor="white" borderStartStartRadius="4" borderStartEndRadius="2" borderEndStartRadius="2" borderEndEndRadius="4" />`,
         {
           tokens: {
-            space: { 1: 4, 2: 8, 4: 16 },
-            color: { white: '#fff' },
-            radius: { 2: 8, 4: 16 },
+            'space-1': 4,
+            'space-2': 8,
+            'space-4': 16,
+            'color-white': '#fff',
+            'radius-2': 8,
+            'radius-4': 16,
           },
         }
       )
@@ -112,7 +115,7 @@ describe('tamaguiToTailwind', () => {
       expect(tamaguiToTailwind(`<View margin="4" />`)).toContain('margin="4"')
       expect(
         tamaguiToTailwind(`<View padding="5" gap="6" />`, {
-          tokens: { space: { 5: 20, 6: 24 } },
+          tokens: { 'space-5': 20, 'space-6': 24 },
         })
       ).toContain('p-5 gap-6')
       // numeric literals still bracket their raw px
@@ -120,7 +123,7 @@ describe('tamaguiToTailwind', () => {
     })
 
     test('configured radius and size tokens emit names', () => {
-      const options = { tokens: { radius: { 8: 8 }, size: { 10: 40 } } }
+      const options = { tokens: { 'radius-8': 8, 'size-10': 40 } }
       expect(tamaguiToTailwind(`<View borderRadius="8" />`, options)).toContain(
         'rounded-8'
       )
@@ -393,7 +396,7 @@ describe('tamaguiToTailwind', () => {
 
     test('spacing tokens use the PASSED config names, not their values', () => {
       const out = tamaguiToTailwind(`<View padding="4" />`, {
-        tokens: { space: { 4: 20 } },
+        tokens: { 'space-4': 20 },
       })
       expect(out).toContain('p-4')
     })
@@ -401,7 +404,7 @@ describe('tamaguiToTailwind', () => {
     test('zIndex candidates preserve names for runtime token-or-literal resolution', () => {
       expect(tamaguiToTailwind(`<View zIndex="4" />`)).toContain('z-4')
       const custom = tamaguiToTailwind(`<View zIndex="4" />`, {
-        tokens: { zIndex: { 4: 40 } },
+        tokens: { 'zIndex-4': 40 },
       })
       expect(custom).toContain('z-4')
     })
@@ -409,14 +412,14 @@ describe('tamaguiToTailwind', () => {
     test('a tokenized borderWidth falls through to the SPACE scale (like the runtime)', () => {
       // borderWidth is not its own token category — the runtime resolves it via space
       const out = tamaguiToTailwind(`<View borderWidth="2" />`, {
-        tokens: { space: { 2: 7 }, color: {} },
+        tokens: { 'space-2': 7 },
       })
       expect(out).toContain('border-2')
     })
 
     test('configured color and font tokens stay dynamic (names, never baked to px)', () => {
       const options = {
-        tokens: { color: { color5: '#fff' } },
+        tokens: { 'color-color5': '#fff' },
         fonts: { body: { size: { 5: 16 } } },
       }
       expect(tamaguiToTailwind(`<View backgroundColor="color5" />`, options)).toContain(
@@ -429,10 +432,10 @@ describe('tamaguiToTailwind', () => {
       const options = {
         renameComponents: false,
         tokens: {
-          space: { spaceOnly: 12 },
-          size: { sizeOnly: 24 },
-          radius: { radiusOnly: 8 },
-          color: { colorOnly: 'red' },
+          'space-spaceOnly': 12,
+          'size-sizeOnly': 24,
+          'radius-radiusOnly': 8,
+          'color-colorOnly': 'red',
         },
       }
       const output = tamaguiToTailwind(
@@ -447,7 +450,7 @@ describe('tamaguiToTailwind', () => {
     test('an explicit partial config treats omitted token and font domains as known-empty', () => {
       const options = {
         renameComponents: false,
-        tokens: { space: { 4: 20 } },
+        tokens: { 'space-4': 20 },
       }
       const output = tamaguiToTailwind(
         `<Text padding="4" width="missing" borderRadius="missing" zIndex="missing" color="missing" fontFamily="body" fontSize="5" lineHeight="5" letterSpacing="5" />`,
@@ -462,7 +465,7 @@ describe('tamaguiToTailwind', () => {
     test('configured tokens win reserved conveniences and enums with the same spelling', () => {
       const options = {
         renameComponents: false,
-        tokens: { size: { auto: 1 }, space: { 0: 0 } },
+        tokens: { 'size-auto': 1, 'space-0': 0 },
         fonts: {
           bold: { size: { center: 14 }, lineHeight: {}, letterSpacing: {} },
         },

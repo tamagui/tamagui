@@ -14,9 +14,12 @@ describe('size primitives', () => {
   test('resolves true through an explicit package-local policy', () => {
     const extras = {
       tokens: {
-        size: { 'frame-default': 40, 4: 44 },
-        space: { 'space-default': 12, 4: 14 },
-        radius: { 'radius-default': 8, 4: 10 },
+        'size-frame-default': 40,
+        'size-4': 44,
+        'space-space-default': 12,
+        'space-4': 14,
+        'radius-radius-default': 8,
+        'radius-4': 10,
       },
       font: {
         size: { 'font-default': 16, 4: 18 },
@@ -57,9 +60,9 @@ describe('size primitives', () => {
   test('owns the default control policy without reading Tamagui settings', () => {
     const extras = {
       tokens: {
-        size: { 4: 16 },
-        space: { 4: 16 },
-        radius: { 4: 9 },
+        'size-4': 16,
+        'space-4': 16,
+        'radius-4': 9,
       },
       font: {
         size: { 4: 15 },

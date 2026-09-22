@@ -43,7 +43,7 @@ describe('v6 themes', () => {
     })
     expect(ramp('red', 'dark').color1).toBe('red-950')
     expect(fromShades('red', scales.tint.light[1]).background).toBe('red-100')
-    expect(themes.light_red_level2.background).toBe(tokens.color['red-50'])
+    expect(themes.light_red_level2.background).toBe(tokens['color-red-50'])
   })
 
   test('raises only background and border shade families and clamps endpoints', () => {

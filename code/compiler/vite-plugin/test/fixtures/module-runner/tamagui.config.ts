@@ -56,9 +56,6 @@ export default createTamagui({
   },
   tokens: {
     ...defaultConfig.tokens,
-    space: {
-      ...defaultConfig.tokens.space,
-      fixture: fixtureSpace + commandSpace + configSpace,
-    },
+    'space-fixture': fixtureSpace + commandSpace + configSpace,
   },
 })

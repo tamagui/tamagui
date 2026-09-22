@@ -6,7 +6,7 @@ type ThemeConfig = {
 /**
  * Generates CSS for tokens - registers CSS variables and builds declaration strings
  */
-export declare function createTokenCSS(tokens: Record<string, Record<string, Variable>>, shouldTokenCategoryHaveUnits: (category: string) => boolean): string[];
+export declare function createTokenCSS(tokens: Record<string, Variable>, shouldTokenCategoryHaveUnits: (category: string) => boolean): string[];
 /**
  * Generates CSS for fonts
  */

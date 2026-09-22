@@ -161,7 +161,7 @@ exports[`webpack-tests > 8. styleExpansions 1`] = `
         class="is_View _f-2057920087 _b-1356927054"
       >
         <div
-          class="is_View _f-2057920087 _i-297785135 _p-1610831171 _b-1271940212"
+          class="is_View _f-2057920087 _i-297785135 _p-1610831171 _b-1281463882"
         />
       </div>
     </div>
@@ -248,10 +248,10 @@ exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
     class="_dsp_contents  font_body"
   >
     <span
-      class="is_View _pe-1547870085 _w-640548506 _h-2047729177 _mw-1042395974 _mh-1620098797"
+      class="is_View _pe-1547870085 _w-1594786217 _h-1293000408 _mw-1996633685 _mh-1720630788"
     />
     <span
-      class="is_View _pe-1547870085 _w-1617835419 _h-944907578 _mw-2045465799 _mh-1316547470 _f-1514526504"
+      class="is_View _pe-1547870085 _w-2101237450 _h-1428309609 _mw-1766099466 _mh-1799949501 _f-1514526504"
     />
     <div
       style="display: contents;"
@@ -281,7 +281,7 @@ exports[`webpack-tests > 18. extracts flexWrap property 1`] = `
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _f-1538676587 _g-924523017"
+      class="is_View _f-1538676587 _g-1878760728"
       data-testid="flex-wrap"
     >
       <span
@@ -369,7 +369,7 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _f-2140124617 _br-1889339995 _mw-206346914 _o-2052502900 _p-1700019270 _w-487036092 _b-695440369 _c-958205817"
+      class="is_View _f-2140124617 _br-1405937964 _mw-206346914 _o-2052502900 _p-1640710315 _w-487036092 _b-695440369 _c-958205817"
     >
       <div
         class="is_View _f-1791708213 _g-1913998404 _jc-539327647"
@@ -394,7 +394,7 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _f-2141623076 _br-1889339995 _mw-206346914 _o-2052502900 _p-1700019270 _w-487036092 _b-695440369 _c-958205817"
+      class="is_View _f-2141623076 _br-1405937964 _mw-206346914 _o-2052502900 _p-1640710315 _w-487036092 _b-695440369 _c-958205817"
     >
       <div
         class="is_View _f-1791708213 _g-1913998404 _jc-166379546"
@@ -419,7 +419,7 @@ exports[`webpack-tests > 22. flexWrap with media query conditionals 1`] = `
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _g-924523017 _p-1046123992 _f-1757441471"
+      class="is_View _g-1878760728 _p-91886281 _f-1757441471"
       data-testid="flex-wrap-media"
     >
       <span

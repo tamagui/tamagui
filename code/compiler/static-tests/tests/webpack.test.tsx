@@ -148,7 +148,7 @@ describe('webpack-tests', () => {
     expect(divOn).toBeTruthy()
     expect(divOff).toBeTruthy()
     expect(window.getComputedStyle(divOn!).padding).toBe('')
-    expect(window.getComputedStyle(divOff!).padding).toBe('var(--c-space-4)')
+    expect(window.getComputedStyle(divOff!).padding).toBe('var(--t-space-4)')
   })
 
   test('18. extracts flexWrap property', () => {

@@ -489,7 +489,7 @@ module.exports = createTamagui({
   ...defaultConfig,
   tokens: {
     ...defaultConfig.tokens,
-    space: { ...defaultConfig.tokens.space, fixtureNative: ${space} },
+    'space-fixtureNative': ${space},
   },
 })
 `

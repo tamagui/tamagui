@@ -81,12 +81,14 @@ function createTransformGrammarConfig(
       tokenNames[category] = new Set<string>()
     }
   }
-  for (const category of tokenCategories) {
-    if (options.tokens?.[category]) {
-      const names = tokenNames[category] || new Set<string>()
-      addConfigNames(names, options.tokens[category])
-      tokenNames[category] = names
-    }
+  // tokens are flat (`space-4`, `radius-lg`): the prefix names the category
+  const tokenFullNames = new Set<string>()
+  for (const key in options.tokens) {
+    tokenFullNames.add(key)
+    const dash = key.indexOf('-')
+    if (dash === -1) continue
+    const names = tokenNames[key.slice(0, dash) as TokenCategory]
+    if (names) names.add(key.slice(dash + 1))
   }
   if (options.fonts) {
     tokenNames.fontFamily ||= new Set<string>()
@@ -119,6 +121,7 @@ function createTransformGrammarConfig(
     mediaNames: mediaKeys,
     themeNames,
     tokenNames,
+    tokenFullNames,
   }
 }
 
@@ -137,7 +140,8 @@ export interface TransformOptions {
   // the canonical default shorthands are used. threaded (not a module-global require).
   shorthands?: Record<string, string>
   // Only token/font/theme NAMES are read. Values remain runtime-owned.
-  tokens?: Record<string, Record<string, any>>
+  // flat, as the config writes them: `{ 'space-4': 16, 'radius-lg': 8 }`
+  tokens?: Record<string, any>
   fonts?: Record<string, any>
   themes?: Record<string, Record<string, any>>
   // Precomputed names-only view for dependency-free callers such as CLI bundled defaults.

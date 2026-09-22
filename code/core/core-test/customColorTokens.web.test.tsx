@@ -1,5 +1,5 @@
 import { describe, expect, test, beforeEach } from 'vitest'
-import { createTamagui } from '@tamagui/core'
+import { createTamagui, prefixTokens } from '@tamagui/core'
 
 describe('custom color tokens', () => {
   beforeEach(() => {
@@ -17,11 +17,11 @@ describe('custom color tokens', () => {
 
     const config = {
       tokens: {
-        color: customColors,
-        space: { 4: 10 },
-        size: { 4: 10 },
-        radius: { 4: 10 },
-        zIndex: { 4: 10 },
+        ...prefixTokens('color', customColors),
+        'space-4': 10,
+        'size-4': 10,
+        'radius-4': 10,
+        'zIndex-4': 10,
       },
       themes: {
         light: {
@@ -38,29 +38,29 @@ describe('custom color tokens', () => {
     const tamagui = createTamagui(config)
 
     // Check that custom colors are available in tokensParsed with correct structure
-    expect(tamagui.tokensParsed.color['customRed']).toBeDefined()
-    expect(tamagui.tokensParsed.color['customRed']).toMatchObject({
+    expect(tamagui.tokensParsed['color-customRed']).toBeDefined()
+    expect(tamagui.tokensParsed['color-customRed']).toMatchObject({
       isVar: true,
-      key: 'customRed',
-      name: 'c-color-customRed',
+      key: 'color-customRed',
+      name: 'c-customRed',
       val: '#ff0000',
-      variable: 'var(--c-color-customRed)',
+      variable: 'var(--c-customRed)',
     })
 
-    expect(tamagui.tokensParsed.color['customBlue']).toMatchObject({
+    expect(tamagui.tokensParsed['color-customBlue']).toMatchObject({
       isVar: true,
-      key: 'customBlue',
-      name: 'c-color-customBlue',
+      key: 'color-customBlue',
+      name: 'c-customBlue',
       val: '#0000ff',
-      variable: 'var(--c-color-customBlue)',
+      variable: 'var(--c-customBlue)',
     })
 
-    expect(tamagui.tokensParsed.color['customGreen']).toMatchObject({
+    expect(tamagui.tokensParsed['color-customGreen']).toMatchObject({
       isVar: true,
-      key: 'customGreen',
-      name: 'c-color-customGreen',
+      key: 'color-customGreen',
+      name: 'c-customGreen',
       val: '#00ff00',
-      variable: 'var(--c-color-customGreen)',
+      variable: 'var(--c-customGreen)',
     })
 
     // Theme values normalize equivalent CSS colors to deterministic bytes, while
@@ -86,11 +86,11 @@ describe('custom color tokens', () => {
 
     const config = {
       tokens: {
-        color: customColors,
-        space: { 4: 10 },
-        size: { 4: 10 },
-        radius: { 4: 10 },
-        zIndex: { 4: 10 },
+        ...prefixTokens('color', customColors),
+        'space-4': 10,
+        'size-4': 10,
+        'radius-4': 10,
+        'zIndex-4': 10,
       },
       themes: {
         light: {
@@ -111,12 +111,12 @@ describe('custom color tokens', () => {
     const tamagui = createTamagui(config)
 
     // Check token structure
-    expect(tamagui.tokensParsed.color['customAccent']).toMatchObject({
+    expect(tamagui.tokensParsed['color-customAccent']).toMatchObject({
       isVar: true,
-      key: 'customAccent',
-      name: 'c-color-customAccent',
+      key: 'color-customAccent',
+      name: 'c-customAccent',
       val: '#ff00ff',
-      variable: 'var(--c-color-customAccent)',
+      variable: 'var(--c-customAccent)',
     })
 
     // All themes should have the custom color

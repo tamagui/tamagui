@@ -31,11 +31,8 @@ const config: any = {
   themes: { light: { brand: color }, dark: { brand: color } },
   tokens: {},
   tokensParsed: {
-    color: { $brand: color },
-    radius: {},
-    size: {},
-    space: { $2: space },
-    zIndex: {},
+    'color-$brand': color,
+    'space-$2': space,
   },
 }
 setConfig(config)

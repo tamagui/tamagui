@@ -51,7 +51,7 @@ const GridChildBase = styled(View, {
 const GridChild = GridChildBase.resolve((props, { tokens }) => {
   const columns = Number(props.columns ?? 2)
   const gapToken = props.gap as string
-  const spaceToken = gapToken ? tokens.space[gapToken] : undefined
+  const spaceToken = gapToken ? tokens[`space-${gapToken}`] : undefined
   const gapValue = spaceToken && typeof spaceToken.val === 'number' ? spaceToken.val : 0
   const widthPercent = 100 / columns
   const gapAdjustment = (gapValue * (columns - 1)) / columns

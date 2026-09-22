@@ -19,8 +19,8 @@ import { splitTailwindStyles } from './utils'
 
 const tokens = {
   ...(v6 as any).tokens,
-  space: { ...(v6 as any).tokens.space, 4: 20 },
-  zIndex: { 4: 40 },
+  'space-4': 20,
+  'zIndex-4': 40,
 }
 const media = { ...(v6 as any).media, tablet: { minWidth: 900 } }
 const fonts = { ...(v6 as any).fonts, sans: (v6 as any).fonts.body }
@@ -98,7 +98,7 @@ describe('config-aware tokens (NATIVE) — class names follow runtime-owned valu
   test('overriding space.4 does not mutate the distinct size.4 domain', () => {
     const cls = className(`<View width="4" />`)
     expect(cls).toContain('w-4')
-    expect(tokens.size['4']).toBe(16)
+    expect(tokens['size-4']).toBe(16)
     expect(style({ className: cls }).width).toBe(16)
     expect(style({ className: cls }).width).toBe(style({ width: '4' }).width)
     expect(typeof style({ className: cls }).width).toBe('number')

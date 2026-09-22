@@ -28,7 +28,8 @@ export { createChangeEventDetails, type TamaguiChangeEventDetails, type TamaguiE
 export { createStyledHOC } from './createStyledHOC';
 export { createShorthands } from './createShorthands';
 export { createTamagui, installTamaguiConfig } from './createTamagui';
-export { createTokens } from './createTokens';
+export type { PrefixedTokens } from './createTokens';
+export { createTokens, createTokenVariables, getTokensInCategory, prefixTokens, tokenVariableName, } from './createTokens';
 export { createVariable, createCSSVariable, getVariable, getVariableValue, isVariable, px, variableToString, } from './createVariable';
 export { insertFont, updateFont } from './insertFont';
 export { styled } from './styled';

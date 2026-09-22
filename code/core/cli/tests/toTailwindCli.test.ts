@@ -90,7 +90,7 @@ export function Card() {
 
   it('--write --config <good> uses the authoritative app domains', async () => {
     const dir = await fixture({
-      'tw.config.ts': `export const config = { tokens: { space: { 4: 20 } }, media: { tablet: { minWidth: 900 } } }\n`,
+      'tw.config.ts': `export const config = { tokens: { 'space-4': 20 }, media: { tablet: { minWidth: 900 } } }\n`,
       'A.tsx': `import {View} from 'tamagui'\nexport const A = () => <View padding="4 tablet:10px" />\n`,
     })
     const run = runCli([

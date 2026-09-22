@@ -1,5 +1,5 @@
 import { shorthands } from '@tamagui/shorthands'
-import { createFont, createTokens } from '@tamagui/web'
+import { createFont, createTokens, prefixTokens } from '@tamagui/web'
 import { animations } from './animations'
 
 // basic fallback theme just to have compiler load in decent tate
@@ -125,24 +125,21 @@ export function getDefaultTamaguiConfig(_platform: 'native' | 'web' = 'web') {
   }
 
   const tokens = createTokens({
-    color: {
-      white: '#fff',
-      black: '#000',
-    },
-    radius,
-    zIndex,
-    space,
-    size,
+    ...prefixTokens('color', { white: '#fff', black: '#000' }),
+    ...prefixTokens('radius', radius),
+    ...prefixTokens('zIndex', zIndex),
+    ...prefixTokens('space', space),
+    ...prefixTokens('size', size),
   })
 
   const themes = {
     light: {
-      background: tokens.color.white,
-      color: tokens.color.black,
+      background: tokens['color-white'],
+      color: tokens['color-black'],
     },
     dark: {
-      background: tokens.color.black,
-      color: tokens.color.white,
+      background: tokens['color-black'],
+      color: tokens['color-white'],
     },
     // most of these used for testing:
     dark_blue: {

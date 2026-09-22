@@ -16,7 +16,7 @@ test('config revisions are stable and content-derived', () => {
     ...base,
     tokens: {
       ...base.tokens,
-      space: { ...base.tokens.space, brandNew: 123 },
+      'space-brandNew': 123,
     },
   })
   expect(getConfigRevisionSnapshot(changed).revision).not.toBe(first.revision)

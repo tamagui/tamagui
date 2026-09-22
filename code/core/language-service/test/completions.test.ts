@@ -225,7 +225,8 @@ describe('@tamagui/language-service', () => {
     }
 
     fixture.updateConfig((config) => {
-      config.tamaguiConfig.tokens.color = { green: '#00ff00' }
+      delete config.tamaguiConfig.tokens['color-blue']
+      config.tamaguiConfig.tokens['color-green'] = '#00ff00'
       config.tamaguiConfig.themes = {
         dark: {
           fresh: '#eeeeee',

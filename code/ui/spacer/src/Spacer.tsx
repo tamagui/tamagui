@@ -4,7 +4,7 @@ import { styled, View, type SizeTokens } from '@tamagui/web'
 const getSpacerSize = styled.dynamic<SizeTokens | number | boolean>(
   (size, { tokens }) => {
     const sizeToken = resolveSizeToken(size, 'space')
-    const sizePx = tokens.space[sizeToken as any] ?? sizeToken
+    const sizePx = tokens[`space-${sizeToken}`] ?? sizeToken
     return {
       width: sizePx,
       height: sizePx,

@@ -9,7 +9,7 @@ export const getShapeSize = styled.dynamic<SizeTokens | number | true>(
     // number silently turns <Square size={60} /> into that token's value.
     // resolveTokenSize in @tamagui/size draws the same line.
     const resolved =
-      typeof sizeToken === 'number' ? sizeToken : (tokens.size[sizeToken] ?? sizeToken)
+      typeof sizeToken === 'number' ? sizeToken : (tokens[`size-${sizeToken}`] ?? sizeToken)
     const width = resolved
     const height = resolved
     return {

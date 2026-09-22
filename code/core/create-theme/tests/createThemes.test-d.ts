@@ -7,11 +7,9 @@ import {
 } from '../src/createThemes'
 
 const tokens = {
-  color: {
-    white: '#fff',
-    black: '#000',
-    red: '#f00',
-  },
+  'color-white': '#fff',
+  'color-black': '#000',
+  'color-red': '#f00',
 } as const
 
 type LevelParent = Record<string, unknown> & { level?: number }
@@ -95,7 +93,7 @@ describe('createThemes types', () => {
         light: {
           scheme: 'light',
           values: {
-            // @ts-expect-error values must resolve through tokens.color or a color literal
+            // @ts-expect-error values must resolve through a color token or a color literal
             background: 'missing',
           },
         },
@@ -129,7 +127,7 @@ describe('createThemes types', () => {
       tokens,
       { light: {}, dark: {} },
       {
-        // @ts-expect-error getTheme results must resolve through tokens.color or a color literal
+        // @ts-expect-error getTheme results must resolve through a color token or a color literal
         getTheme: () => ({ background: 'missing' }),
       }
     )

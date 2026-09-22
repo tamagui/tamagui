@@ -57,7 +57,7 @@ export type ControlSizeKey = keyof typeof controlSizes;
 * (v6 carries larger ones like `24`) falls through to the config's size scale,
 * where the value is already a sane large length.
 */
-export declare const resolveControlSize: (value: TokenSize, tokens: Pick<TokensParsed, "size">) => number | Variable;
+export declare const resolveControlSize: (value: TokenSize, tokens: TokensParsed) => number | Variable;
 export declare const resolveSizeToken: <
 	Value,
 	Category extends keyof TokenSizePolicy
@@ -69,7 +69,7 @@ export type CreatedSizeContext<Value extends TokenSize = TokenSize> = StyledCont
 export declare const createSizeContext: <Value extends TokenSize = TokenSize>(defaultSize?: Value) => CreatedSizeContext<Value>;
 export declare const SizeContext: CreatedSizeContext;
 export type SizeResolverExtras = {
-	tokens: Pick<TokensParsed, "size" | "space" | "radius">;
+	tokens: TokensParsed;
 	font: GenericFont;
 	policy?: TokenSizePolicy;
 };

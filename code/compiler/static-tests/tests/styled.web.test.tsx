@@ -70,9 +70,9 @@ describe('styled() tests', () => {
       throw new Error(`No output`)
     }
 
-    expect(output.styles).toContain('padding:var(--c-space-0)')
-    expect(output.styles).toContain('border-radius:var(--c-radius-4)')
-    expect(output.styles).toContain('height:var(--c-size-8)')
+    expect(output.styles).toContain('padding:var(--t-space-0)')
+    expect(output.styles).toContain('border-radius:var(--t-radius-4)')
+    expect(output.styles).toContain('height:var(--t-size-8)')
     expect(output.styles).toContain('background-color:red')
     expect(output.styles).toContain('opacity:0.75')
     expect(output.styles).toContain('width:30px')
@@ -106,13 +106,13 @@ describe('styled() tests', () => {
       throw new Error(`No output`)
     }
 
-    expect(output.styles).toContain('width:var(--c-size-10)')
-    expect(output.styles).toContain('height:var(--c-size-10)')
-    expect(output.styles).toContain('border-top-left-radius:var(--c-radius-xl)')
-    expect(output.styles).toContain('border-top-right-radius:var(--c-radius-xl)')
-    expect(output.styles).toContain('border-top-width:var(--c-space-4)')
-    expect(output.styles).toContain('left:var(--c-space-0)')
-    expect(output.styles).toContain('right:var(--c-space-0)')
+    expect(output.styles).toContain('width:var(--t-size-10)')
+    expect(output.styles).toContain('height:var(--t-size-10)')
+    expect(output.styles).toContain('border-top-left-radius:var(--t-radius-xl)')
+    expect(output.styles).toContain('border-top-right-radius:var(--t-radius-xl)')
+    expect(output.styles).toContain('border-top-width:var(--t-space-4)')
+    expect(output.styles).toContain('left:var(--t-space-0)')
+    expect(output.styles).toContain('right:var(--t-space-0)')
     expect(output.styles).toContain('font-weight:700')
   })
 

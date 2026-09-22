@@ -1,7 +1,5 @@
 export type ThemeValue = string;
-export type ThemeTokens = {
-	color: Record<string, ThemeValue>;
-};
+export type ThemeTokens = Record<string, ThemeValue>;
 export type ThemeRecipe = Record<string, unknown>;
 export type ThemeDefinitionContext<Parent extends ThemeRecipe = ThemeRecipe> = {
 	parent: Parent;
@@ -19,7 +17,8 @@ export type ThemeTree = {
 	children?: ThemeChildren;
 };
 type ColorLiteral = `#${string}` | `rgb${string}` | `hsl${string}` | "transparent";
-type ThemeInputValue<Tokens extends ThemeTokens> = Extract<keyof Tokens["color"], string> | ColorLiteral;
+type StripColorPrefix<T> = T extends `color-${infer Rest}` ? Rest : never;
+type ThemeInputValue<Tokens extends ThemeTokens> = StripColorPrefix<Extract<keyof Tokens, `color-${string}`>> | ColorLiteral;
 type ResolvedDefinition<Definition> = Definition extends (...args: any[]) => infer Result ? Exclude<Result, null> : Definition;
 type DefinitionChildren<Definition> = ResolvedDefinition<Definition> extends {
 	children?: infer Children;

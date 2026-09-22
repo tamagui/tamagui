@@ -8,9 +8,7 @@ module.exports = createTamagui({
   animations,
   tokens: {
     ...defaultConfig.tokens,
-    color: {
-      // an invalid identifier color token (with hyphen) covers the fix for #3737
-      'invalid-identifier': 'rgba(255,255,255,0)',
-    },
+    // an invalid identifier color token (with hyphen) covers the fix for #3737
+    'color-invalid-identifier': 'rgba(255,255,255,0)',
   },
 })

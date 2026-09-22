@@ -11,12 +11,12 @@ import { toV6Themes } from '../src/v6-themes'
 
 describe('v5 compatibility config', () => {
   test('preserves the v5 size and space scales beside the v6 default', () => {
-    expect(tokens.size['4']).toBe(44)
-    expect(tokens.space['4']).toBe(18)
-    expect(tokens.size['0-5']).toBe(4)
-    expect(tokens.space['0-5']).toBe(1)
-    expect(v6DefaultConfig.tokens.size['4']).toBe(16)
-    expect(v6DefaultConfig.tokens.space['4']).toBe(16)
+    expect(tokens['size-4']).toBe(44)
+    expect(tokens['space-4']).toBe(18)
+    expect(tokens['size-0-5']).toBe(4)
+    expect(tokens['space-0-5']).toBe(1)
+    expect(v6DefaultConfig.tokens['size-4']).toBe(16)
+    expect(v6DefaultConfig.tokens['space-4']).toBe(16)
   })
 
   test('preserves the generated 12-step themes and surface names', () => {
@@ -31,8 +31,8 @@ describe('v5 compatibility config', () => {
     const normal = createTamagui(defaultConfig)
     const subtle = createTamagui({ ...subtleDefaultConfig, themes: subtleThemes })
 
-    expect(normal.tokensParsed.size['4'].val).toBe(44)
-    expect(normal.tokensParsed.space['4'].val).toBe(18)
+    expect(normal.tokensParsed['size-4'].val).toBe(44)
+    expect(normal.tokensParsed['space-4'].val).toBe(18)
     expect(normal.fontsParsed.body.size['1'].val).toBe(12)
     expect(normal.fontsParsed.body.size['4'].val).toBe(15)
     expect(normal.fontsParsed.body.size['4'].needsPx).toBe(true)

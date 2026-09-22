@@ -18,33 +18,8 @@ export const isUnitlessVariableKey = (key: string): boolean => {
   return unitlessSuffixes.some((suffix) => lower.endsWith(suffix))
 }
 
-const tokenCategoryOrder = ['color', 'space', 'size', 'radius', 'zIndex'] as const
-
+// token names are flat and globally unique, so a theme inline value is one lookup
 export const findVariableToken = (
   tokensParsed: TokensParsed,
   name: string
-): Variable | undefined => {
-  if (process.env.NODE_ENV === 'development') {
-    let found: Variable | undefined
-    let foundCategory: string | undefined
-    for (const category of tokenCategoryOrder) {
-      const token = tokensParsed[category]?.[name] as Variable | undefined
-      if (!token) continue
-      if (!found) {
-        found = token
-        foundCategory = category
-      } else {
-        warnOnce(
-          `ambiguous:${name}`,
-          `Theme inline value: "${name}" exists in multiple token categories; using "${foundCategory}". Rename one of the colliding tokens.`
-        )
-        break
-      }
-    }
-    return found
-  }
-  for (const category of tokenCategoryOrder) {
-    const token = tokensParsed[category]?.[name] as Variable | undefined
-    if (token) return token
-  }
-}
+): Variable | undefined => tokensParsed[name] as Variable | undefined

@@ -1,5 +1,5 @@
 import { getDefaultTamaguiConfig } from '../../../config-default/src'
-import { createTamagui, getConfig } from '@tamagui/web'
+import { createTamagui, getConfig, getTokensInCategory } from '@tamagui/web'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import { resolveTailwindClassName } from '../candidate'
@@ -16,7 +16,7 @@ describe('claimed candidates become flat props', () => {
   })
 
   test('tailwind half-steps resolve to a configured space token', () => {
-    const space = getConfig().tokensParsed.space
+    const space = getTokensInCategory(getConfig().tokensParsed, 'space')
     const half = '0.5' in space ? '0.5' : '0-5'
     expect(tokenize('p-0.5')).toEqual({ padding: half })
     expect(tokenize('-mt-0.5')).toEqual({

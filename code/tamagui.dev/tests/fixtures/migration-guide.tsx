@@ -201,7 +201,7 @@ export const SquareContext = createStyledContext({ size: '4' as const })
 
 // design-systems.mdx — Circle size dynamic
 const getCircleSize = styled.dynamic<any>((size, { tokens }) => {
-  const value = tokens.size[size] ?? size
+  const value = tokens[`size-${size}`] ?? size
   return { width: value, height: value }
 })
 

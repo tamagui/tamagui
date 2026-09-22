@@ -109,8 +109,8 @@ describe('opt-in size primitives on native', () => {
     const projected = resolveTokenSize(true, extras)
 
     expect(projected.frame.size).toBe(44)
-    expect(projected.frame.space).toBe(config.tokensParsed.space['4'])
-    expect(projected.frame.radius).toBe(config.tokensParsed.radius['4'])
+    expect(projected.frame.space).toBe(config.tokensParsed['space-4'])
+    expect(projected.frame.radius).toBe(config.tokensParsed['radius-4'])
     expect(projected.text.fontSize).toBe(config.fontsParsed.body.size['4'])
     expect(projected.text.lineHeight).toBe(config.fontsParsed.body.lineHeight['4'])
     expect(projected.icon).toBe(config.fontsParsed.body.size['4'])
@@ -119,8 +119,8 @@ describe('opt-in size primitives on native', () => {
         // a control's frame height comes from the control ramp, not the config's
         // spacing scale. v2's `4` step, and the same value `true` resolves to.
         size: 44,
-        space: config.tokensParsed.space['4'],
-        radius: config.tokensParsed.radius['4'],
+        space: config.tokensParsed['space-4'],
+        radius: config.tokensParsed['radius-4'],
       },
       text: {
         fontSize: config.fontsParsed.body.size['4'],
