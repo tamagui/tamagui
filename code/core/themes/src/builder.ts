@@ -4,6 +4,7 @@ import {
   type ThemeChildren,
   type ThemeDefinitionContext,
   type ThemeDefinitionObject,
+  type ThemeInputValue,
 } from '@tamagui/create-theme'
 
 import type { Theme, ThemeNames } from './generated'
@@ -391,7 +392,7 @@ function channels(color: string): [number, number, number] | null {
   }
   const fn = /^(rgba?|hsla?)\((.+)\)$/.exec(value)
   if (!fn) return null
-  const parts = fn[2].split(/[\s,\/]+/).filter(Boolean)
+  const parts = fn[2].split(/[\s,/]+/).filter(Boolean)
   if (parts.length < 3) return null
   const numbers = parts.slice(0, 3).map((part) => Number.parseFloat(part))
   if (numbers.some((number) => Number.isNaN(number))) return null
@@ -483,11 +484,18 @@ function readable(
 
 export function getTheme({
   recipe,
-  tokens,
-}: GetThemeContext<{ color: Record<string, string> }, PaletteRecipe>): PaletteTheme {
+  tokens: themeTokens,
+}:
+  | GetThemeContext<typeof tokens, DefaultRecipe>
+  | GetThemeContext<{ color: Record<string, string> }, PaletteRecipe>): Record<
+  keyof Ramp | SemanticThemeKey | ShadowName,
+  ThemeInputValue<typeof tokens>
+> {
   const resting = scales[recipe.treatment ?? 'normal'][recipe.scheme][recipe.level ?? 1]
   const scale = recipe.active ? activeScale(resting) : resting
   const schemeShadows = shadows[recipe.scheme]
+  // the implementation reads the token values it is handed, so the same
+  // builder serves the default tree and palette trees alike
   return readable(
     {
       ...ramp(recipe.palette, recipe.scheme, scale),
@@ -496,9 +504,9 @@ export function getTheme({
       // the scale names a step on the ladder; the scheme decides what it is worth
       'shadow-color': schemeShadows[scale['shadow-color']],
     },
-    tokens.color,
+    themeTokens.color,
     recipe.treatment === 'bold'
-  )
+  ) as Record<keyof Ramp | SemanticThemeKey | ShadowName, ThemeInputValue<typeof tokens>>
 }
 
 /** eleven colors, from the 50 shade (palest) to 950 (deepest) */

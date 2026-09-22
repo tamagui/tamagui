@@ -30,7 +30,7 @@ export type ThemeTree = {
 
 type ColorLiteral = `#${string}` | `rgb${string}` | `hsl${string}` | 'transparent'
 
-type ThemeInputValue<Tokens extends ThemeTokens> =
+export type ThemeInputValue<Tokens extends ThemeTokens> =
   | Extract<keyof Tokens['color'], string>
   | ColorLiteral
 

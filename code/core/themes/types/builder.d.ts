@@ -1,6 +1,10 @@
-import { type GetThemeContext, type ThemeDefinitionContext } from '@tamagui/create-theme'
+import {
+  type GetThemeContext,
+  type ThemeDefinitionContext,
+  type ThemeInputValue,
+} from '@tamagui/create-theme'
 import type { Theme, ThemeNames } from './generated'
-import { colorTokens as baseColorTokens, type ColorTokenName } from './tokens'
+import { colorTokens as baseColorTokens, tokens, type ColorTokenName } from './tokens'
 export { createThemes } from '@tamagui/create-theme'
 export type { GetThemeContext, ThemeDefinitionContext } from '@tamagui/create-theme'
 export { colorTokens, tailwindColors, tokens } from './tokens'
@@ -382,15 +386,11 @@ export type PaletteRecipe = {
   active?: boolean
 }
 export type PaletteTheme = Record<keyof Ramp | SemanticThemeKey | ShadowName, string>
-export declare function getTheme({
-  recipe,
-  tokens,
-}: GetThemeContext<
-  {
-    color: Record<string, string>
-  },
-  PaletteRecipe
->): PaletteTheme
+export declare function getTheme(
+  context:
+    | GetThemeContext<typeof tokens, DefaultRecipe>
+    | GetThemeContext<{ color: Record<string, string> }, PaletteRecipe>
+): Record<keyof Ramp | SemanticThemeKey | ShadowName, ThemeInputValue<typeof tokens>>
 /** eleven colors, from the 50 shade (palest) to 950 (deepest) */
 export type PaletteRamp = readonly string[]
 export type PaletteTokens<Palettes extends Record<string, PaletteRamp>> = {

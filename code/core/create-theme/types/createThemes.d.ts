@@ -19,7 +19,7 @@ export type ThemeTree = {
 	children?: ThemeChildren;
 };
 type ColorLiteral = `#${string}` | `rgb${string}` | `hsl${string}` | "transparent";
-type ThemeInputValue<Tokens extends ThemeTokens> = Extract<keyof Tokens["color"], string> | ColorLiteral;
+export type ThemeInputValue<Tokens extends ThemeTokens> = Extract<keyof Tokens["color"], string> | ColorLiteral;
 type ResolvedDefinition<Definition> = Definition extends (...args: any[]) => infer Result ? Exclude<Result, null> : Definition;
 type DefinitionChildren<Definition> = ResolvedDefinition<Definition> extends {
 	children?: infer Children;
