@@ -6,6 +6,7 @@ import {
   type ThemeDefinitionObject,
 } from '@tamagui/create-theme'
 
+import type { Theme, ThemeNames } from './generated'
 import { colorTokens as baseColorTokens, tokens, type ColorTokenName } from './tokens'
 
 export { createThemes } from '@tamagui/create-theme'
@@ -542,7 +543,7 @@ export type PaletteThemesInput = {
  */
 export function createPaletteThemes<const Palettes extends PaletteThemesInput>(
   palettes: Palettes
-) {
+): { colorTokens: typeof baseColorTokens & PaletteTokens<Palettes>; themes: Record<ThemeNames, Theme> } {
   const colorTokens = { ...baseColorTokens, ...paletteTokens(palettes) }
   const surface = palettes.surface ? 'surface' : 'mauve'
   const paletteTree = {
@@ -556,11 +557,13 @@ export function createPaletteThemes<const Palettes extends PaletteThemesInput>(
         : {}),
     },
   } as const
-  const themes = createThemes<{ color: Record<string, string> }, typeof paletteTree, PaletteTheme>(
-    { color: colorTokens },
-    paletteTree,
-    { getTheme }
-  )
+  // the tree is the default tree regrounded, so its names are the generated
+  // names, and Theme leaves the values as loose as the stock config types them
+  const themes: Record<ThemeNames, Theme> = createThemes<
+    { color: Record<string, string> },
+    typeof paletteTree,
+    PaletteTheme
+  >({ color: colorTokens }, paletteTree, { getTheme })
   return { colorTokens, themes }
 }
 
