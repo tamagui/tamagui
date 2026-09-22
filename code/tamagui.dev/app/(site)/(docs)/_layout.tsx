@@ -1,11 +1,9 @@
 import { Slot } from 'one'
 import type { CSSProperties } from 'react'
-import { useTheme } from 'tamagui'
 import { useBentoStore } from '~/features/bento/BentoStore'
 import { DocsSyntaxLayout } from '~/features/docs/DocsSyntaxLayout'
 
 export default function DocsLayout() {
-  const theme = useTheme()
   const { disableCustomTheme, themeSuiteUID } = useBentoStore()
   const customThemeActive = !!themeSuiteUID && !disableCustomTheme
 
@@ -15,8 +13,10 @@ export default function DocsLayout() {
       style={
         {
           display: 'contents',
-          '--docs-accent-background': theme['accent-background'].val,
-          '--docs-accent-color': theme['accent-color'].val,
+          // Keep these as CSS variable references. Reading `.val` from useTheme()
+          // produced undefined values during SSR and var(...) after hydration.
+          '--docs-accent-background': 'var(--accent-background)',
+          '--docs-accent-color': 'var(--accent-color)',
         } as CSSProperties
       }
     >

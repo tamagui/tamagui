@@ -1,103 +1,52 @@
 import { useState } from 'react'
-import { SizableText, Tabs, Text, YStack } from 'tamagui'
+import { Text, YStack } from 'tamagui'
+import { RovingTabs } from '~/components/RovingTabs'
 
 const modes = ['tamagui', 'tailwind'] as const
+const modeTabs = modes.map((value) => ({
+  value,
+  label: value[0].toUpperCase() + value.slice(1),
+}))
 
 export function HomeStyleToggle() {
   const [mode, setMode] = useState<string>('tamagui')
 
   return (
-    <Tabs
-      activationMode="manual"
-      orientation="horizontal"
-      value={mode}
-      onValueChange={setMode}
-      width="100%"
-    >
-      <YStack gap="5">
-        <YStack self="flex-start">
-          <Tabs.List
-            loop={false}
-            aria-label="style syntax"
-            position="relative"
-            gap={0}
-            rounded="4"
-          >
-            <div
-              id="indicator"
-              className="indicator"
-              style={{
-                position: 'absolute',
-                top: 0,
-                bottom: 0,
-                left: 0,
-                width: '50%',
-                backgroundColor: 'var(--color-12)',
-                borderRadius: 4,
-                transform: mode === 'tamagui' ? 'translateX(0%)' : 'translateX(100%)',
-                transition: 'transform 200ms cubic-bezier(0.16, 1, 0.3, 1)',
-                pointerEvents: 'none',
-                zIndex: 0,
-              }}
-            />
-            {modes.map((value) => {
-              const active = mode === value
-              return (
-                <Tabs.Tab
-                  key={value}
-                  value={value}
-                  onPress={() => setMode(value)}
-                  px="2-5"
-                  py="1"
-                  width={72}
-                  items="center"
-                  justify="center"
-                  rounded="4"
-                  cursor="pointer"
-                  bg="transparent"
-                  zIndex={1}
-                >
-                  <SizableText
-                    size="2"
-                    color={active ? 'color-1' : 'color-10'}
-                    textTransform="capitalize"
-                    transition="quickest"
-                  >
-                    {value}
-                  </SizableText>
-                </Tabs.Tab>
-              )
-            })}
-          </Tabs.List>
-        </YStack>
+    <YStack gap="5" width="100%">
+      <YStack self="flex-start">
+        <RovingTabs
+          ariaLabel="style syntax"
+          items={modeTabs}
+          value={mode}
+          onValueChange={setMode}
+          tabWidth={72}
+        />
+      </YStack>
 
-        {/* fixed height so switching modes doesn't resize the hero row. sized to
+      {/* fixed height so switching modes doesn't resize the hero row. sized to
             the taller of the two samples (tamagui, 378) plus the padding and
             border, since the box is border-box: at 370 the code ran past the
             bottom edge, which the border made visible */}
-        <Tabs.Content
-          value={mode}
-          forceMount
-          height={430}
-          p="5"
-          rounded="4"
-          bg="color-2"
-          borderWidth={0.5}
-          borderColor="color-4"
+      <YStack
+        height={430}
+        p="5"
+        rounded="4"
+        bg="color-2"
+        borderWidth={0.5}
+        borderColor="color-4"
+      >
+        <Text
+          render="pre"
+          margin={0}
+          fontFamily="mono"
+          fontSize={12}
+          lineHeight={18}
+          color="color-12"
         >
-          <Text
-            render="pre"
-            margin={0}
-            fontFamily="mono"
-            fontSize={12}
-            lineHeight={18}
-            color="color-12"
-          >
-            {mode === 'tailwind' ? tailwind : tamagui}
-          </Text>
-        </Tabs.Content>
+          {mode === 'tailwind' ? tailwind : tamagui}
+        </Text>
       </YStack>
-    </Tabs>
+    </YStack>
   )
 }
 

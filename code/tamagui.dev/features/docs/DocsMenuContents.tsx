@@ -1,7 +1,6 @@
 import * as React from 'react'
-import { Accordion, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
-import { Button } from '~/components/Button'
-import { ChevronDown, ChevronsDownUp, ChevronsUpDown } from '@tamagui/lucide-icons-2'
+import { Accordion, Paragraph, XStack, YStack } from 'tamagui'
+import { ChevronDown } from '@tamagui/lucide-icons-2'
 import { DocsRouteNavItem } from './DocsRouteNavItem'
 import { docsRoutes } from './docsRoutes'
 import { useDocsMenu } from './useDocsMenu'
@@ -89,9 +88,6 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
     groupedItems[key].push(item)
   }
 
-  // get all section keys for toggle all
-  const allSectionKeys = Object.keys(groupedItems).filter((k) => k !== '')
-
   // for UI section, group by label and use accordions
   if (section === 'ui') {
     // group UI items by label
@@ -103,28 +99,11 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
       uiGroupedItems[key].push(item)
     }
 
-    const uiSectionKeys = Object.keys(uiGroupedItems).filter((k) => k !== '')
-    const allExpanded =
-      uiSectionKeys.length > 0 && uiSectionKeys.every((k) => openSections.includes(k))
-
-    const toggleAll = () => {
-      if (allExpanded) {
-        setOpenSections([])
-      } else {
-        setOpenSections(uiSectionKeys)
-      }
-    }
-
     return (
       <div
         style={{ width: '100%', paddingBottom: inMenu ? 0 : 80 }}
         aria-label="Docs Menu"
       >
-        {!inMenu && (
-          <XStack justifyContent="flex-end" pr="2" mb="2">
-            <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
-          </XStack>
-        )}
         <Accordion value={openSections} onValueChange={setOpenSections} type="multiple">
           {Object.keys(uiGroupedItems).map((label) => {
             const items = uiGroupedItems[label]
@@ -143,24 +122,8 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
     )
   }
 
-  const allExpanded =
-    allSectionKeys.length > 0 && allSectionKeys.every((k) => openSections.includes(k))
-
-  const toggleAll = () => {
-    if (allExpanded) {
-      setOpenSections([])
-    } else {
-      setOpenSections(allSectionKeys)
-    }
-  }
-
   return (
     <div style={{ width: '100%', paddingBottom: inMenu ? 0 : 80 }} aria-label="Docs Menu">
-      {!inMenu && (
-        <XStack justifyContent="flex-end" pr="2" mb="2">
-          <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
-        </XStack>
-      )}
       <Accordion value={openSections} onValueChange={setOpenSections} type="multiple">
         {Object.keys(groupedItems).map((sectionTitle) => {
           const items = groupedItems[sectionTitle]
@@ -178,36 +141,6 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
     </div>
   )
 })
-
-// toggle all button component
-const ToggleAllButton = ({
-  expanded,
-  onPress,
-}: {
-  expanded: boolean
-  onPress: () => void
-}) => {
-  return (
-    <TooltipSimple label={expanded ? 'Collapse all' : 'Expand all'} placement="right">
-      <Button
-        circular
-        size="3"
-        my="-3"
-        variant="quiet"
-        opacity="hover:1 press:0.8"
-        backgroundColor="hover:color-3 press:color-2"
-        onPress={onPress}
-        aria-label={expanded ? 'Collapse all sections' : 'Expand all sections'}
-      >
-        {expanded ? (
-          <ChevronsDownUp size={14} color="color-10" />
-        ) : (
-          <ChevronsUpDown size={14} color="color-10" />
-        )}
-      </Button>
-    </TooltipSimple>
-  )
-}
 
 // accordion section for core docs
 const AccordionSection = ({

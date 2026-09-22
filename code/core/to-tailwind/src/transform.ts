@@ -126,6 +126,15 @@ export interface TransformOptions {
   // rename View→div, Text→span, etc. DEFAULT true for the library (tamagui.dev doc snippets);
   // the CLI path passes false so cross-platform Tamagui components are preserved.
   renameComponents?: boolean
+  // Rewrite the primitive imports to the package-selected Tailwind frontend. This is intentionally
+  // conservative: only html, View, and Text bindings used exclusively as JSX elements move from
+  // `tamagui` / `@tamagui/core` to `@tamagui/tailwind`. Component-library and styled() bindings
+  // retain their original frontend, so the transform never emits className for a component that
+  // cannot consume Tailwind utilities on native.
+  rewriteImports?: boolean
+  // Preserve original line numbers for source-file migrations. Rendered docs opt out so removing
+  // multi-line style props does not leave large runs of blank lines in displayed examples.
+  retainLines?: boolean
   // the app config's `media` (object or key list). ANY configured media key round-trips as an
   // identity modifier (`tablet:` stays `tablet:`). when omitted, a default key set is the fallback.
   media?: Record<string, any> | string[]
@@ -152,6 +161,7 @@ interface Ctx {
   shorthands: Record<string, string>
   grammarConfig: GrammarConfigView
   modifierRegistry: ModifierRegistryView
+  rewriteImports: boolean
 }
 
 /**
@@ -204,6 +214,7 @@ export function tamaguiToTailwind(
     shorthands,
     grammarConfig,
     modifierRegistry: createModifierRegistry(grammarConfig).registry,
+    rewriteImports: options.rewriteImports === true,
   }
 
   let ast: t.File
@@ -409,9 +420,16 @@ export function tamaguiToTailwind(
     },
   })
 
+  if (options.rewriteImports && rewriteTailwindFrontendImports(ast)) {
+    didTransform = true
+  }
+
   if (!didTransform) return source // true no-op → original bytes (no generator reformat)
 
-  const output = generate(ast, { retainLines: true, concise: false })
+  const output = generate(ast, {
+    retainLines: options.retainLines !== false,
+    concise: false,
+  })
   return output.code
 }
 
@@ -430,6 +448,8 @@ const knownCompoundComponents = new Set<string>([
   'Popover.Content',
   'Tabs.Tab',
 ])
+
+const tailwindFrontendImports = new Set(['html', 'View', 'Text'])
 
 // a module specifier counts as "tamagui" if it's the umbrella package or any @tamagui/* scope.
 function isTamaguiSource(source: string): boolean {
@@ -498,25 +518,105 @@ function resolveTamaguiComponent(
       } else {
         return null // default import from tamagui isn't a named component
       }
+
+      if (
+        ctx.rewriteImports &&
+        source !== '@tamagui/tailwind' &&
+        ((source !== 'tamagui' && source !== '@tamagui/core') ||
+          !tailwindFrontendImports.has(tamaguiBase) ||
+          !isTailwindFrontendOnlyBinding(binding, tamaguiBase))
+      ) {
+        return null
+      }
     } else {
       return null // LOCAL binding (const/let/function/param) → not tamagui
     }
   } else {
     tamaguiBase = baseName // UNBOUND → legacy built-in assumption
+    if (ctx.rewriteImports && !tailwindFrontendImports.has(tamaguiBase)) return null
   }
 
   const name = memberChain.length ? [tamaguiBase, ...memberChain].join('.') : tamaguiBase
   const isSimpleKnown = memberChain.length === 0 && name in componentToTag
+  const isHTMLPrimitive = tamaguiBase === 'html' && memberChain.length === 1
 
   // gate: known simple, known compound, or caller allowlist — else skip
   if (
     !isSimpleKnown &&
+    !isHTMLPrimitive &&
     !knownCompoundComponents.has(name) &&
     !ctx.componentAllow.has(name)
   ) {
     return null
   }
   return { name, isSimpleKnown, isPlainIdentifier }
+}
+
+function isTailwindFrontendOnlyBinding(binding: any, importedName: string): boolean {
+  return binding.referencePaths.every((referencePath: any) => {
+    const parent = referencePath.parent
+    if (importedName === 'html') {
+      return (
+        t.isJSXMemberExpression(parent) &&
+        parent.object === referencePath.node &&
+        (t.isJSXOpeningElement(referencePath.parentPath?.parent) ||
+          t.isJSXClosingElement(referencePath.parentPath?.parent))
+      )
+    }
+    return (
+      t.isJSXIdentifier(referencePath.node) &&
+      (t.isJSXOpeningElement(parent) || t.isJSXClosingElement(parent)) &&
+      parent.name === referencePath.node
+    )
+  })
+}
+
+function rewriteTailwindFrontendImports(ast: t.File): boolean {
+  let changed = false
+
+  traverse(ast, {
+    ImportDeclaration(path) {
+      const source = String(path.node.source.value)
+      if (source !== 'tamagui' && source !== '@tamagui/core') return
+      if (path.node.importKind === 'type') return
+
+      const moved: t.ImportSpecifier[] = []
+      const retained: t.ImportDeclaration['specifiers'] = []
+
+      for (const specifier of path.node.specifiers) {
+        if (!t.isImportSpecifier(specifier) || specifier.importKind === 'type') {
+          retained.push(specifier)
+          continue
+        }
+        const importedName = t.isIdentifier(specifier.imported)
+          ? specifier.imported.name
+          : String(specifier.imported.value)
+        const binding = path.scope.getBinding(specifier.local.name)
+        if (
+          !tailwindFrontendImports.has(importedName) ||
+          !binding ||
+          !isTailwindFrontendOnlyBinding(binding, importedName)
+        ) {
+          retained.push(specifier)
+          continue
+        }
+        moved.push(specifier)
+      }
+
+      if (!moved.length) return
+      changed = true
+
+      if (!retained.length) {
+        path.node.source = t.stringLiteral('@tamagui/tailwind')
+        return
+      }
+
+      path.node.specifiers = retained
+      path.insertAfter(t.importDeclaration(moved, t.stringLiteral('@tamagui/tailwind')))
+    },
+  })
+
+  return changed
 }
 
 // the prop-prefix a class token targets (modifiers + negation stripped): "hover:p-2" → "p",

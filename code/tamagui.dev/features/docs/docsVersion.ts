@@ -1,7 +1,7 @@
 export type DocsSyntax = 'styled' | 'unstyled' | 'tailwind'
 export type DocsProductVersion = 'v3' | 'v2' | 'v1'
 
-export const docsProductVersions: DocsProductVersion[] = ['v3', 'v2']
+export const docsProductVersions: DocsProductVersion[] = ['v1', 'v2', 'v3']
 export const docsSyntaxes: DocsSyntax[] = ['styled', 'unstyled', 'tailwind']
 
 export const docsSyntaxLabels: Record<DocsSyntax, string> = {

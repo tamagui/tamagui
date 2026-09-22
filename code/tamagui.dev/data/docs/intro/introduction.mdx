@@ -21,7 +21,7 @@ import { html } from 'tamagui'
 export const Card = () => (
   <html.article padding="4" borderRadius="lg" backgroundColor="background">
     <html.h2 fontSize="6">Hello</html.h2>
-    <html.p color="color-11 hover:color-12">World</html.p>
+    <html.p color="color-11 hover:color">World</html.p>
   </html.article>
 )
 ```
@@ -35,7 +35,7 @@ import { html } from '@tamagui/tailwind'
 export const Card = () => (
   <html.article className="p-4 rounded-lg bg-background">
     <html.h2 className="text-2xl">Hello</html.h2>
-    <html.p className="text-color-11 hover:text-color-12">World</html.p>
+    <html.p className="text-color-11 hover:text-color">World</html.p>
   </html.article>
 )
 ```

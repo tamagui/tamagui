@@ -16,6 +16,8 @@ import { BentoButton } from '../site/BentoButton'
 import { ConsultingButton } from '../site/ConsultingButton'
 import { TakeoutButton } from '../site/TakeoutButton'
 import { DocsThemePicker } from './DocsThemePicker'
+import { DocsVersionLinks } from './DocsVersionPicker'
+import type { DocsVersionFrontmatter } from './docsVersion'
 
 export type Heading = {
   id: string
@@ -144,7 +146,13 @@ const NavLineIndicator = ({
   )
 }
 
-export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
+export function DocsQuickNav({
+  headings = [],
+  frontmatter,
+}: {
+  headings?: Heading[]
+  frontmatter?: DocsVersionFrontmatter
+}) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [itemData, setItemData] = useState<
     Array<{ top: number; height: number; level: number }>
@@ -292,6 +300,8 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
           </XStack>
 
           <Separator opacity={0.5} mr="6" />
+
+          <DocsVersionLinks frontmatter={frontmatter} />
 
           <DocsThemePicker />
 
