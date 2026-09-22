@@ -1,4 +1,4 @@
-export declare const animationsReanimated: import("@tamagui/web").AnimationDriver<{
+export declare const animationsReanimated: import("@tamagui/web").AnimationDriverWithAnimatedNumbers<{
     '0ms': {
         type: "timing";
         duration: number;
@@ -99,7 +99,7 @@ export declare const animationsReanimated: import("@tamagui/web").AnimationDrive
         stiffness: number;
     };
 }>;
-export declare const animations: import("@tamagui/web").AnimationDriver<{
+export declare const animations: import("@tamagui/web").AnimationDriverWithAnimatedNumbers<{
     '0ms': {
         type: "timing";
         duration: number;

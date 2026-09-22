@@ -38,8 +38,8 @@ export interface ConditionalEvaluation {
 export declare function evaluateConditionalExpression(resolver: SymbolResolver, reference: ExpressionReference): ConditionalEvaluation | null;
 export declare function evaluateExpression(resolver: SymbolResolver, reference: ExpressionReference): EvaluationResult;
 /**
- * Proves the runtime domain of a dynamic expression without evaluating its
- * changing inputs. This is deliberately narrow: numeric arithmetic and a
+ * proves the runtime domain of a dynamic expression without evaluating its
+ * changing inputs. this is deliberately narrow: numeric arithmetic and a
  * bounded lookup into a static primitive array are the two forms a host style
  * can consume directly without retaining the full Tamagui resolver.
  */

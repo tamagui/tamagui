@@ -1,4 +1,4 @@
-export declare const animationsCSS: import("@tamagui/web").AnimationDriver<{
+export declare const animationsCSS: import("@tamagui/web").AnimationDriverWithAnimatedNumbers<{
     '0ms': string;
     '50ms': string;
     '75ms': string;
@@ -22,7 +22,7 @@ export declare const animationsCSS: import("@tamagui/web").AnimationDriver<{
     quickest: string;
     quickestLessBouncy: string;
 }>;
-export declare const animations: import("@tamagui/web").AnimationDriver<{
+export declare const animations: import("@tamagui/web").AnimationDriverWithAnimatedNumbers<{
     '0ms': string;
     '50ms': string;
     '75ms': string;

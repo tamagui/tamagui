@@ -1,4 +1,4 @@
-export declare const animationsReactNative: import("@tamagui/web").AnimationDriver<{
+export declare const animationsReactNative: import("@tamagui/web").AnimationDriverWithAnimatedNumbers<{
     '0ms': {
         type: "timing";
         duration: number;
@@ -109,7 +109,7 @@ export declare const animationsReactNative: import("@tamagui/web").AnimationDriv
         stiffness: number;
     };
 }>;
-export declare const animations: import("@tamagui/web").AnimationDriver<{
+export declare const animations: import("@tamagui/web").AnimationDriverWithAnimatedNumbers<{
     '0ms': {
         type: "timing";
         duration: number;
