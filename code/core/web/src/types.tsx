@@ -654,6 +654,9 @@ export type TamaguiComponentStateRef = {
   hasEverResetPresence?: boolean
   hasHadEvents?: boolean
   hasRealPressEvents?: boolean
+  // previous render's press-plumbing presence, so a detach mid-press can drop
+  // the in-flight press instead of latching it (see createComponent)
+  hadAttachPress?: boolean
   isListeningToTheme?: boolean
   unPress?: Function
   setStateShallow?: ComponentSetStateShallow
