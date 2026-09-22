@@ -310,6 +310,7 @@ export type TamaguiComponentStateRef = {
     hasEverResetPresence?: boolean;
     hasHadEvents?: boolean;
     hasRealPressEvents?: boolean;
+    hadAttachPress?: boolean;
     isListeningToTheme?: boolean;
     unPress?: Function;
     setStateShallow?: ComponentSetStateShallow;
