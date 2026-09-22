@@ -1,0 +1,349 @@
+---
+title: Adapt
+description: Re-render a component's contents into a different container per breakpoint or platform
+name: adapt
+component: Adapt
+package: adapt
+---
+
+<IntroParagraph>
+  Adapt lets one component render its contents somewhere else. A Select that is a
+  dropdown on desktop becomes a Sheet on touch devices, without duplicating the
+  contents or the open state.
+</IntroParagraph>
+
+<Highlights
+  features={[
+    `Switch containers by media query, by platform, or both`,
+    `Contents move, they are not re-declared`,
+    `Open state, dismissal and exit animations hand off to the new container`,
+    `Built into Dialog, Popover and Select`,
+    `Scoped, so nested adapting components don't capture each other`,
+  ]}
+/>
+
+## Installation
+
+Adapt ships with `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/adapt
+```
+
+## How it works
+
+Adapt is two markers used together:
+
+- `<Adapt>` says **when** to adapt and **what to adapt into**.
+- `<Adapt.Contents />` says **where** inside that new container the original
+  contents should appear.
+
+The contents are not re-rendered from scratch into the new tree. They are
+published to a slot and read by `Adapt.Contents`, so state inside them survives
+the switch, and the adapting component keeps owning `open` / `onOpenChange`.
+
+```tsx
+import { Adapt, Select, Sheet } from 'tamagui'
+
+export default () => (
+  <Select>
+    <Select.Trigger>
+      <Select.Value placeholder="Pick one" />
+    </Select.Trigger>
+
+    <Select.Content>{/* the desktop dropdown */}</Select.Content>
+
+    <Adapt when="max-md" platform="touch">
+      <Sheet modal dismissOnSnapToBottom>
+        <Sheet.Overlay />
+        <Sheet.Container>
+          <Sheet.Background />
+          <Sheet.ScrollView>
+            {/* Select.Content lands here when adapted */}
+            <Adapt.Contents />
+          </Sheet.ScrollView>
+        </Sheet.Container>
+      </Sheet>
+    </Adapt>
+  </Select>
+)
+```
+
+When the `max-md` media query is inactive, the `<Adapt>` subtree renders nothing
+and `Select.Content` renders in place as usual. When it becomes active, the
+Sheet mounts and `Select.Content` moves into it.
+
+`<Adapt>` must be a child of a component that supports adapting. Rendering it
+anywhere else throws. Dialog, Popover and Select also expose it as a static
+property (`<Select.Adapt>`, `<Dialog.Adapt>`, `<Popover.Adapt>`), which is the
+same component.
+
+## Choosing when to adapt
+
+`when` and `platform` are both optional, but at least one is required: with
+neither set, Adapt is never active.
+
+```tsx
+{/* active below the md breakpoint */}
+<Adapt when="max-md">
+
+{/* active on any touch device, at any width */}
+<Adapt platform="touch">
+
+{/* active only on a touch device below md */}
+<Adapt when="max-md" platform="touch">
+
+{/* always active */}
+<Adapt when={true}>
+```
+
+`when` takes any media query key from your config, or a boolean. `platform`
+takes `'web'`, `'native'`, `'ios'`, `'android'` or `'touch'`.
+
+<Notice>
+  `when={true}` forces the adaptation on and skips the platform check entirely,
+  so `<Adapt when={true} platform="touch">` is active on desktop web too. Use a
+  media query string when you want both conditions to apply.
+</Notice>
+
+Because `when` reads media state, you can also drive it from your own logic:
+
+```tsx
+<Adapt when={useMedia().sm && !isEmbedded}>
+  <Sheet>{/* ... */}</Sheet>
+</Adapt>
+```
+
+## Adapting Dialog and Popover
+
+Dialog and Popover use the same handoff. For both, put `Adapt.Contents` inside
+the Sheet's scrollable area:
+
+```tsx
+import { Adapt, Popover, Sheet } from 'tamagui'
+
+export default () => (
+  <Popover>
+    <Popover.Trigger asChild>
+      <Button>Open</Button>
+    </Popover.Trigger>
+
+    <Popover.Content>
+      <Popover.Arrow />
+      {/* ... */}
+    </Popover.Content>
+
+    <Adapt when="max-md">
+      <Sheet snapPointsMode="fit" modal dismissOnSnapToBottom>
+        <Sheet.Overlay />
+        <Sheet.Container>
+          <Sheet.Background />
+          <Sheet.ScrollView>
+            <Adapt.Contents />
+          </Sheet.ScrollView>
+        </Sheet.Container>
+      </Sheet>
+    </Adapt>
+  </Popover>
+)
+```
+
+Adapted content stays mounted through the Sheet's exit animation and only
+unmounts once the Sheet reports that it is fully hidden, so closing looks the
+same whether or not the component is adapted.
+
+Parts that only make sense in the unadapted layout drop out while adapted:
+`Popover.Arrow`, `Dialog.Overlay` and `Dialog.Close` all render `null`, and
+Dialog's content renders without its own frame, focus scope or dismissable
+layer, so the Sheet's take over. `Dialog.Close` takes `displayWhenAdapted` if
+you do want it inside the Sheet.
+
+## Scoping
+
+Leave `scope` off and `<Adapt>` binds to the nearest adapting parent, which is
+what you want nearly always. Nesting is already safe: a parent only reads an
+`<Adapt>` from its own direct children (descending into fragments), so a Dialog
+rendered inside a Popover's content does not steal the Popover's adaptation, or
+hand it its own.
+
+The `scope` on `<Adapt>` is not the `scope` you pass to Dialog, Popover or
+Select. It is that component's internal adapt scope, which is its own scope
+prefixed by the component name:
+
+| Component | Adapt scope            |
+| --------- | ---------------------- |
+| Dialog    | `DialogAdapt<scope>`   |
+| Popover   | `PopoverAdapt<scope>`  |
+| Select    | `AdaptSelect<scope>`   |
+
+An unscoped Dialog is therefore `DialogAdapt`, and `<Dialog scope="settings">`
+is `DialogAdaptsettings`. The same string goes on `<Adapt.Contents />` if you
+scope it.
+
+## Adapting into something other than a Sheet
+
+Anything can be an adapt target. The render-callback form of `children` gives
+you the contents plus the parent's open state, so you can render your own
+container:
+
+```tsx
+import { Adapt } from 'tamagui'
+
+;<Adapt when="max-md">
+  {(contents, { open, onOpenChange }) => (
+    <MyDrawer open={open} onOpenChange={onOpenChange}>
+      {contents}
+    </MyDrawer>
+  )}
+</Adapt>
+```
+
+If your container is a component of its own, read the same state with
+`useAdaptTarget()` instead, which is what Sheet does:
+
+```tsx
+import { useAdaptTarget } from 'tamagui'
+
+function MyDrawer(props) {
+  const adapt = useAdaptTarget()
+
+  // null when this drawer is not currently an adapt target
+  if (!adapt) return <Inline {...props} />
+
+  return (
+    <Drawer
+      open={adapt.open && !adapt.handoff.hidden}
+      onOpenChange={adapt.onOpenChange}
+      onAnimationComplete={adapt.handoff.onTransition}
+    />
+  )
+}
+```
+
+`handoff` is how the parent and the target agree on timing. `handoff.hidden`
+tells the target to play its exit, and calling `handoff.onTransition` with the
+completed transition lets the parent unmount the contents at the right moment
+instead of on a timer.
+
+## API Reference
+
+### Adapt
+
+<PropsTable
+  data={[
+    {
+      name: 'when',
+      type: 'MediaQueryKey | boolean | null',
+      required: false,
+      description: `A media query key from your config, or a boolean. Active when the query matches. true forces the adaptation on and skips the platform check.`,
+    },
+    {
+      name: 'platform',
+      type: `'web' | 'native' | 'ios' | 'android' | 'touch' | null`,
+      required: false,
+      description: `Restricts the adaptation to a platform. Combined with a media query string, both must pass.`,
+    },
+    {
+      name: 'scope',
+      type: 'string',
+      required: false,
+      description: `Binds this Adapt to a specific adapting parent. Defaults to the nearest one.`,
+    },
+    {
+      name: 'children',
+      type: 'JSX.Element | ((contents: React.ReactNode, adapt: AdaptRenderState) => React.ReactNode)',
+      required: true,
+      description: `The container to adapt into, which should contain an Adapt.Contents. As a function, it receives the contents element and { active, open, onOpenChange, state, handoff } so you can render your own container.`,
+    },
+  ]}
+/>
+
+With neither `when` nor `platform` set, Adapt is never active.
+
+### Adapt.Contents
+
+Marks where the adapted contents render inside the new container. Exactly one
+should be rendered while an adaptation is active; in development, zero targets
+or more than one logs an error.
+
+<PropsTable
+  data={[
+    {
+      name: 'scope',
+      type: 'string',
+      required: false,
+      description: `Binds to a specific adapting parent, matching the scope on Adapt.`,
+    },
+  ]}
+/>
+
+### useAdaptIsActive
+
+`useAdaptIsActive(scope?: string): boolean`
+
+Whether an adaptation is currently active. Use it to branch rendering inside
+content that is sometimes adapted.
+
+### useAdaptTarget
+
+`useAdaptTarget<State>(scope?: string): AdaptTarget<State> | null`
+
+Returns `null` unless an adaptation is active. When it is, returns
+`{ open, onOpenChange, state, handoff }`. Calling it also registers the caller
+as the adapt target for development-time validation.
+
+`handoff` is `{ hidden: boolean, skipNextAnimation?: boolean, onTransition: (e) => void }`,
+where the transition event is `{ phase: 'start' | 'end', cause: 'open' | 'close' | 'snap', finished?: boolean }`.
+
+`state` is whatever the adapting component chose to pass through. Dialog passes
+its internal context; Popover and Select pass nothing.
+
+### AdaptCapabilities
+
+Lets an adapt target declare what its container already provides, so content
+does not double up on it. Sheet declares all three when it is the target:
+
+```tsx
+<AdaptCapabilities scroll overlay dismiss>
+  {children}
+</AdaptCapabilities>
+```
+
+<PropsTable
+  data={[
+    {
+      name: 'scroll',
+      type: 'boolean',
+      required: false,
+      description: `The container already scrolls its contents.`,
+    },
+    {
+      name: 'overlay',
+      type: 'boolean',
+      required: false,
+      description: `The container already renders a backdrop overlay.`,
+    },
+    {
+      name: 'dismiss',
+      type: 'boolean',
+      required: false,
+      description: `The container already handles dismissal.`,
+    },
+  ]}
+/>
+
+Read them back with `useAdaptedCapabilities()`.
+
+## Troubleshooting
+
+**"You're rendering a Tamagui `<Adapt />` component without nesting it inside a
+parent that is able to adapt."** — `<Adapt>` or `<Adapt.Contents />` is outside
+a Dialog, Popover or Select. If the component uses `scope`, pass the matching
+`scope` to `<Adapt>` too.
+
+**"Adapt is active but no target registered"** — the adaptation turned on but
+nothing consumed the contents. Add an `<Adapt.Contents />` inside the container
+you adapt into.
+
+**"Adapt expected exactly one target"** — two containers are claiming the same
+scope. Render one `<Adapt.Contents />` per active adaptation.

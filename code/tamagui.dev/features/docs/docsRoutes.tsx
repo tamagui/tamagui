@@ -224,6 +224,7 @@ export const docsRoutes = [
     section: 'ui',
     label: 'Functional',
     pages: [
+      { title: 'Adapt', route: '/ui/adapt' },
       { title: 'Anchor', route: '/ui/anchor' },
       { title: 'Portal', route: '/ui/portal' },
       { title: 'Unspaced', route: '/ui/unspaced' },
