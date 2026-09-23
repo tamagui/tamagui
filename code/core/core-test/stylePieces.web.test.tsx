@@ -132,6 +132,20 @@ describe('style() pieces on web', () => {
       vi.unstubAllEnvs()
     })
 
+    // before the warning test: warnOnce would hide a second warning
+    test('stays quiet for a piece defined after a render', () => {
+      vi.stubEnv('NODE_ENV', 'development')
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const Good = () => null
+      render(<Good />)
+
+      // a lazily loaded module evaluating its module-scope pieces
+      style({ opacity: 0.5 })
+      expect(warn).not.toHaveBeenCalledWith(
+        expect.stringContaining('style() was called during render')
+      )
+    })
+
     test('warns without throwing', () => {
       vi.stubEnv('NODE_ENV', 'development')
       const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
