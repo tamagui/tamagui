@@ -142,7 +142,7 @@ export function BlogSlugPage(props: BlogPost) {
           </YStack>
         )}
 
-        <YStack render="article" px="2">
+        <YStack render="article">
           <Component components={components as any} />
         </YStack>
 

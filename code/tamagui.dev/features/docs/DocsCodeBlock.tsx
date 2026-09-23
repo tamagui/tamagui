@@ -78,7 +78,9 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           onCopy()
         }}
       >
-        Copy
+        {/* icon only on small screens, where it is always shown and would
+            otherwise cover the end of the first line */}
+        <Button.Text display="flex sm:none">Copy</Button.Text>
       </Button>
     </TooltipSimple>
   )

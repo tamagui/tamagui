@@ -2,6 +2,7 @@ import { Paragraph, XStack, YStack } from 'tamagui'
 
 import { Pencil } from '@tamagui/local-icons'
 import { CheckCircle } from './CheckCircle'
+import { CodeInline } from './Code'
 
 export const Features = ({ items, size, large, soon, ...props }: any) => {
   return (
@@ -27,7 +28,14 @@ export const Features = ({ items, size, large, soon, ...props }: any) => {
           </YStack>
           <YStack flex={1}>
             <Paragraph size={size ?? (large ? '5' : '4')} color="gray-11" m={0}>
-              {feature}
+              {/* feature strings come from mdx props, so `code` is still raw backticks */}
+              {typeof feature === 'string'
+                ? feature
+                    .split('`')
+                    .map((part, j) =>
+                      j % 2 ? <CodeInline key={j}>{part}</CodeInline> : part
+                    )
+                : feature}
             </Paragraph>
             {soon && (
               <Paragraph size="2" color="color-9">
