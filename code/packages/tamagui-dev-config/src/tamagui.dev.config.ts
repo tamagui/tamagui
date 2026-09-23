@@ -6,6 +6,7 @@ import { selectionStyles } from '@tamagui/config/v6-base'
 // `defaultConfig` holds another, so touching either ships ~250kb of theme values
 // to the browser that the `themes:` line below then replaces.
 import { settings as defaultSettings } from '@tamagui/config/settings'
+import { defaultSizing } from '@tamagui/config/v5-sizing'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands/v4'
@@ -39,6 +40,9 @@ const configuredThemes =
 export const config = {
   shorthands,
   tokens,
+  // the v5 control ladder: without it sizes resolve against the v6 ladder,
+  // whose keys v5 tokens lack, and controls render with no padding or radius
+  sizing: defaultSizing,
   themes: configuredThemes,
   fonts,
   animations,
