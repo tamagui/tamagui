@@ -340,7 +340,12 @@ jobs:
 
       - name: Setup Android SDK
         if: ${{ !steps.android-cache-check.outputs.cache-hit }}
-        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
+        uses: android-actions/setup-android@40fd30fb8d7440372e1316f5d1809ec01dcd3699 # v4.0.1
+        with:
+          # the action's default package list is 'tools platform-tools', and the
+          # legacy `tools` package was removed from the SDK repository, so
+          # `sdkmanager tools` fails the step on current runner images.
+          packages: 'platform-tools'
 
       - name: Prebuild Android
         if: ${{ !steps.android-cache-check.outputs.cache-hit }}
