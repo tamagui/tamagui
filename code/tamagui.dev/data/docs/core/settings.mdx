@@ -5,7 +5,7 @@ description: Strictness, SSR, theme class placement, and other createTamagui set
 
 <IntroParagraph>
   Pass a `settings` object to `createTamagui` to control type strictness, SSR
-  behavior, and how themes reach the DOM.
+  behavior, flex behavior, units, and how themes reach the DOM.
 </IntroParagraph>
 
 ```tsx fileName="tamagui.config.ts"
@@ -83,6 +83,34 @@ Spread `defaultConfig.settings` and override the keys you need.
       required: false,
       type: 'AllowedStyleValuesSetting',
       description: `Controls type validation of single-token style values. See below. Run tamagui check --strict to validate conditional payloads against the project config too.`,
+    },
+    {
+      name: 'styleCompat',
+      required: false,
+      type: `'legacy' | 'react-native' | 'web'`,
+      default: `'web'`,
+      description: `Which flex expansion semantics to follow where Yoga and CSS differ. Numeric lineHeight values are ratios in every mode.`,
+    },
+    {
+      name: 'remBaseFontSize',
+      required: false,
+      type: 'number',
+      default: `16`,
+      description: `Base font size for rem calculations on native. On web, browsers use the root font size.`,
+    },
+    {
+      name: 'defaultPosition',
+      required: false,
+      type: `'static' | 'relative'`,
+      default: `'static'`,
+      description: `Default position value for all Tamagui components.`,
+    },
+    {
+      name: 'onlyShorthandStyleProps',
+      required: false,
+      type: 'boolean',
+      default: false,
+      description: `Removes the longhand border, outline, and shadow props (borderWidth, outlineWidth, shadowColor, and the rest) from the types, encouraging the combined border, outline, and boxShadow props instead. Type-level only.`,
     },
     {
       name: 'fastSchemeChange',

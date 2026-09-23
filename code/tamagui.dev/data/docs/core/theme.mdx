@@ -1,6 +1,6 @@
 ---
 title: Theme
-description: Change themes contextually
+description: Change the theme for any subtree
 ---
 
 <IntroParagraph>
@@ -9,7 +9,7 @@ description: Change themes contextually
 
 ## Usage
 
-Change themes anywhere in your app like so:
+Change the theme for any subtree:
 
 ```tsx
 import { Button, Theme } from 'tamagui'
@@ -129,13 +129,13 @@ drivers see the same values on both platforms. With `settings.fastSchemeChange`
 on iOS, keys whose light and dark values are literals retain the
 `DynamicColorIOS` fast path.
 
-## Defining Themes
+## Defining themes
 
-Themes live one level below tokens. Tokens are your static variables, where
-themes are more dynamic like CSS variables.
+Themes sit above tokens. Tokens are static values, while themes change per
+subtree like CSS variables.
 
-You can define themes however you want, but for the `tamagui` UI kit, the
-components default styling will use a set of pre-defined keys. Those keys are:
+Define themes however you want, but the `tamagui` components style themselves
+from a set of pre-defined keys:
 
 - `background`, `background-hover`, `background-press`, `background-focus`
 - `border-color`, `border-color-hover`, `border-color-press`, `border-color-focus`
@@ -144,7 +144,7 @@ components default styling will use a set of pre-defined keys. Those keys are:
 These are optional, as you can always set `unstyled` on any Tamagui component to
 use your own styles.
 
-Here's a simplified theme definition:
+A simplified theme definition:
 
 ```tsx
 import { createTamagui, createTokens } from 'tamagui'
@@ -182,8 +182,7 @@ export default createTamagui({
 
 Passing tokens to themes will reduce CSS, but is not required.
 
-You can then access theme values for any style value, either through styled() or
-through a Styled Component like View or Text:
+Access theme values through `styled()` or directly on a component:
 
 ```tsx
 const P = styled(Text, {
@@ -212,8 +211,7 @@ export default () => {
 }
 ```
 
-Notice we just use the name `pink`, easy!
+Notice we just use the name `pink`.
 
-For more on themes see our [advanced theme guide](/docs/guides/theme-builder),
-which introduces `createThemes`, recipe trees, scales, and relative levels for
-larger typed theme suites.
+For larger typed theme suites, see [Creating themes](/docs/guides/theme-builder),
+which introduces `createThemes`, recipe trees, scales, and relative levels.
