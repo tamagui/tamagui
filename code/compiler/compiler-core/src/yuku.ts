@@ -162,6 +162,8 @@ export const yukuFactory: CandidateFactory = {
       ) {
         return
       }
+      // type-only imports erase at build time, so there is nothing to resolve
+      if (node.importKind === 'type' || node.exportKind === 'type') return
       const sourceNode = childNode(node, 'source')
       if (sourceNode && typeof sourceNode.value === 'string') {
         found.push({ start: node.start, specifier: sourceNode.value })
