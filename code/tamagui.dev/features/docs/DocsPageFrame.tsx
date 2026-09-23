@@ -55,11 +55,15 @@ export function DocsPageFrame({
         alignSelf="gtMd:flex-start"
       >
         <ScrollView showsVerticalScrollIndicator={false}>
-          <YStack pt={36} pb="18" px="2" gap="4">
-            <YStack px="2" gap="3">
-              <DocsVersionLinks frontmatter={frontmatter} initialSearch={initialSearch} />
-            </YStack>
-            <DocsMenuContents />
+          <YStack pt={36} pb="18" px="2">
+            <DocsMenuContents
+              header={
+                <DocsVersionLinks
+                  frontmatter={frontmatter}
+                  initialSearch={initialSearch}
+                />
+              }
+            />
           </YStack>
         </ScrollView>
       </View>

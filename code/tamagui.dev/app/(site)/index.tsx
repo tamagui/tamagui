@@ -93,7 +93,7 @@ const features: FeaturePart[][] = [
 
 export default function TamaguiHomePage() {
   return (
-    <YStack gap="100px gtMd:0">
+    <YStack gap="80px gtMd:72px">
       <HeadInfo
         title="Tamagui"
         description="Type-safe styles for React and React Native, with an optimizing compiler and Tailwind compatibility."
@@ -233,11 +233,9 @@ export default function TamaguiHomePage() {
         px="4"
         pb="12 gtMd:16"
       >
-        {/* the rows are much shorter than half of the hero's 1040, so two 50%
-            columns across that width left the whole block sitting well left of
-            centre with an empty gutter on the right. this is the width the copy
-            actually wants, centered, and the heading shares its left edge */}
-        <YStack self="center" width="100%" maxW={900} gap="5">
+        {/* the hero row's width, so the heading and first column share the
+            hero copy's left edge */}
+        <YStack self="center" width="100%" maxW={HERO_ROW_WIDTH} gap="5">
           <H5 size="6" color="color-12" fontWeight="700">
             Featuring
           </H5>

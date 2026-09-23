@@ -552,7 +552,7 @@ const componentsIn = {
         width={`fit-content` as any}
         id={id}
         fontSize={20}
-        lineHeight="26px"
+        lineHeight="28px"
         color="color-12"
         fontWeight="600"
         letterSpacing={-0.2}
@@ -569,13 +569,13 @@ const componentsIn = {
       position="relative"
       width={`fit-content` as any}
       mt={24}
-      mb={8}
-      fontSize={20}
-      lineHeight="28px"
-      color="color-8"
+      mb={6}
+      fontSize={17}
+      lineHeight="26px"
+      color="color-12"
       data-heading
       {...props}
-      fontWeight="400"
+      fontWeight="600"
     />
   ),
 
@@ -610,19 +610,17 @@ const componentsIn = {
           {...props}
         >
           {children}
+          {/* no space before the icon: the underline would run under it */}
           {href.startsWith('http') ? (
-            <>
-              &nbsp;
-              <Text
-                // @ts-ignore
-                fontSize="inherit"
-                display="inline-flex"
-                y={2}
-                ml={-1}
-              >
-                <ExternalIcon />
-              </Text>
-            </>
+            <Text
+              // @ts-ignore
+              fontSize="inherit"
+              display="inline-flex"
+              y={2}
+              ml={3}
+            >
+              <ExternalIcon />
+            </Text>
           ) : null}
         </Paragraph>
       </Link>
@@ -655,6 +653,7 @@ const componentsIn = {
         lineHeight="27px"
         pb={0}
         mb={6}
+        color="color-11"
         className="docs-paragraph"
       >
         {props.children}
@@ -894,30 +893,30 @@ const componentsIn = {
 
   DocsIntro: () => {
     return (
-      <YStack gap="1" pb="sm:30px">
+      <YStack gap="1">
         <ThemeTintAlt offset={2}>
           <IntroParagraph large mt="4">
             Tamagui provides universal styling and UI components for React. All features
             work consistently across React Native and web.
           </IntroParagraph>
 
-          <UL mt="4" pl="4" gap="2">
+          <UL mt="3" mb={0} pl="4" gap="3">
             <Theme name="gray">
-              <LI mb="4" size="6" color="color-11">
+              <LI my={0} fontSize={17} lineHeight="28px" color="color-11">
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/docs/core/configuration">
                   <CodeInline>
                     <span style={{ color: 'var(--color-12)' }}>@tamagui/core</span>
                   </CodeInline>
-                </Link>
-                &nbsp; is the base style library. It provides a web-aligned universal
-                style system with SSR support, typed tokens, and optimized runtime
-                performance across web and native.
+                </Link>{' '}
+                is the base style library. It provides a web-aligned universal style
+                system with SSR support, typed tokens, and optimized runtime performance
+                across web and native.
               </LI>
             </Theme>
 
             <Theme name="gray">
-              <LI mb="4" size="6" color="color-11">
+              <LI my={0} fontSize={17} lineHeight="28px" color="color-11">
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/docs/intro/compiler-install">
                   <CodeInline>
@@ -937,7 +936,7 @@ const componentsIn = {
             </Theme>
 
             <Theme name="gray">
-              <LI mb="4" size="6" color="color-11">
+              <LI my={0} fontSize={17} lineHeight="28px" color="color-11">
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/ui/intro">
                   <CodeInline>
@@ -1021,7 +1020,7 @@ const componentsIn = {
                 Upgrading from v1 or v2 ↗
               </Text>
             </Link>
-            <CopyAgentSetupButton variant="quiet" size="sm" />
+            <CopyAgentSetupButton variant="quiet" size="sm" px={0} bg="transparent" />
             <Link asChild href="/ui/native">
               <Text render="a" fontSize={14} color="color-11 hover:color-12">
                 Native integrations & runtime ↗

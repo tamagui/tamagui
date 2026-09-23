@@ -39,9 +39,12 @@ const sections = {
 export const DocsMenuContents = React.memo(function DocsMenuContents({
   section: propsSection,
   inMenu,
+  header,
 }: {
   inMenu?: boolean
   section?: keyof typeof sections
+  // shares a row with the collapse-all toggle in the sidebar
+  header?: React.ReactNode
 }) {
   const { currentPath, section: docsSection } = useDocsMenu()
   // compiler pages now show core section (merged)
@@ -121,7 +124,8 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
         aria-label="Docs Menu"
       >
         {!inMenu && (
-          <XStack justifyContent="flex-end" pr="2" mb="2">
+          <XStack justifyContent="space-between" items="center" px="4" mb="4">
+            {header}
             <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
           </XStack>
         )}
@@ -157,7 +161,8 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
   return (
     <div style={{ width: '100%', paddingBottom: inMenu ? 0 : 80 }} aria-label="Docs Menu">
       {!inMenu && (
-        <XStack justifyContent="flex-end" pr="2" mb="2">
+        <XStack justifyContent="space-between" items="center" px="4" mb="4">
+          {header}
           <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
         </XStack>
       )}
@@ -222,7 +227,7 @@ const AccordionSection = ({
   currentPath: string
 }) => {
   const content = (
-    <YStack paddingHorizontal="2" paddingVertical="2">
+    <YStack paddingHorizontal="2" paddingTop="0-5" paddingBottom="4">
       {items.map(({ page }, index) => {
         return (
           <DocsRouteNavItem
@@ -254,12 +259,13 @@ const AccordionSection = ({
         borderWidth={0}
         borderRadius="4"
         marginHorizontal="2"
+        marginBottom="0-5"
       >
         {({ open }) => {
           return (
             <XStack
-              paddingVertical="2"
-              paddingHorizontal="3"
+              paddingVertical="1-5"
+              paddingHorizontal="4"
               justifyContent="space-between"
               alignItems="center"
               width="100%"

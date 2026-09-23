@@ -53,7 +53,7 @@ export const compilationCode = [
   {
     name: 'Styles',
     input: {
-      description: 'Use inline props or the `styled` function:',
+      description: 'Use inline style props or styled():',
       examples: [
         {
           name: 'app.tsx',
