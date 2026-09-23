@@ -7,7 +7,7 @@
  */
 
 import { unstable_hasExternalPressOwnership } from '@tamagui/native'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 type PressState =
   | 'idle'
@@ -22,6 +22,12 @@ interface PressRef {
   longPressTimer: ReturnType<typeof setTimeout> | null
   activateTime: number
   blockedByExternalOwnership: boolean
+  // true from the instant onPressIn fires until exactly one onPressOut fires.
+  // A press clause is driven by this pair, so if they ever fall out of sync the
+  // component stays latched in its press look with no event left to clear it.
+  // Every responder exit path (release, terminate, a grant refused for external
+  // ownership) therefore routes through releasePressOut exactly once.
+  pressInOutstanding: boolean
 }
 
 const DEFAULT_LONG_PRESS_DELAY = 500
@@ -42,8 +48,23 @@ export function useMainThreadPressEvents(
       longPressTimer: null,
       activateTime: 0,
       blockedByExternalOwnership: false,
+      pressInOutstanding: false,
     }
   }
+
+  // caller handlers may hold a press open across unmount (a delayed pressOut
+  // timer): drop the timers so nothing fires into an unmounted component. The
+  // press look dies with the view, so no onPressOut is owed here.
+  useEffect(() => {
+    return () => {
+      clearStartTimers()
+      if (ref.current.pressOutTimer) {
+        clearTimeout(ref.current.pressOutTimer)
+        ref.current.pressOutTimer = null
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   if (!enabled || !events) return
 
@@ -56,31 +77,56 @@ export function useMainThreadPressEvents(
   )
 
   function activate(e: any) {
+    if (ref.current.pressInOutstanding) return
+    ref.current.pressInOutstanding = true
     ref.current.state = 'active'
     ref.current.activateTime = Date.now()
     events.onPressIn?.(e)
   }
 
+  // clear the timers that could still *start* a press. A pending pressOut is a
+  // press that already started, so it is never cancelled here — it is either
+  // awaited or flushed by releasePressOut.
+  function clearStartTimers() {
+    if (ref.current.pressInTimer) clearTimeout(ref.current.pressInTimer)
+    if (ref.current.longPressTimer) clearTimeout(ref.current.longPressTimer)
+    ref.current.pressInTimer = null
+    ref.current.longPressTimer = null
+  }
+
+  // the single exit that guarantees pressIn has a matching pressOut.
+  function releasePressOut(e: any) {
+    if (ref.current.pressOutTimer) {
+      clearTimeout(ref.current.pressOutTimer)
+      ref.current.pressOutTimer = null
+    }
+    if (!ref.current.pressInOutstanding) return
+    ref.current.pressInOutstanding = false
+    ref.current.state = 'idle'
+    events.onPressOut?.(e)
+  }
+
   function deactivate(e: any) {
+    if (!ref.current.pressInOutstanding) return
     const pressDuration = Date.now() - ref.current.activateTime
     const remaining = Math.max(minPressDuration - pressDuration, delayPressOut)
 
     if (remaining > 0) {
-      ref.current.pressOutTimer = setTimeout(() => {
-        events.onPressOut?.(e)
-      }, remaining)
+      if (!ref.current.pressOutTimer) {
+        ref.current.pressOutTimer = setTimeout(() => {
+          ref.current.pressOutTimer = null
+          releasePressOut(e)
+        }, remaining)
+      }
     } else {
-      events.onPressOut?.(e)
+      releasePressOut(e)
     }
   }
 
-  function cleanup() {
-    if (ref.current.pressInTimer) clearTimeout(ref.current.pressInTimer)
-    if (ref.current.pressOutTimer) clearTimeout(ref.current.pressOutTimer)
-    if (ref.current.longPressTimer) clearTimeout(ref.current.longPressTimer)
-    ref.current.pressInTimer = null
-    ref.current.pressOutTimer = null
-    ref.current.longPressTimer = null
+  function resetPress(e: any) {
+    releasePressOut(e)
+    clearStartTimers()
+    ref.current.blockedByExternalOwnership = false
   }
 
   // user-supplied responder props (the View's raw RN gesture API) must keep
@@ -101,7 +147,11 @@ export function useMainThreadPressEvents(
   }
 
   viewProps.onResponderGrant = (e: any) => {
-    cleanup()
+    // a new grant always ends any prior press first: its pressOut may still be
+    // sitting in the min-duration timer, and clearing that timer without
+    // firing it is how the previous press latches.
+    releasePressOut(e)
+    clearStartTimers()
 
     if (unstable_hasExternalPressOwnership()) {
       ref.current.state = 'idle'
@@ -130,18 +180,19 @@ export function useMainThreadPressEvents(
   }
 
   viewProps.onResponderRelease = (e: any) => {
+    // external ownership can be claimed *after* this press already started
+    // (a native menu boundary, auto-expiring). The release still owes a
+    // pressOut, or the press look stays latched.
     if (ref.current.blockedByExternalOwnership || unstable_hasExternalPressOwnership()) {
-      cleanup()
-      ref.current.blockedByExternalOwnership = false
-      ref.current.state = 'idle'
+      resetPress(e)
       return
     }
 
     userRelease?.(e)
     const wasLongPressed = ref.current.state === 'longPressed'
-    cleanup()
+    clearStartTimers()
 
-    // if pressIn hasn't fired yet (was in delay), fire it now then immediately deactivate
+    // if pressIn hasn't fired yet (was in delay), fire it now then deactivate
     if (ref.current.state === 'pressing') {
       activate(e)
     }
@@ -151,18 +202,12 @@ export function useMainThreadPressEvents(
     }
 
     deactivate(e)
-    ref.current.state = 'idle'
     ref.current.blockedByExternalOwnership = false
   }
 
   viewProps.onResponderTerminate = (e: any) => {
     userTerminate?.(e)
-    cleanup()
-    if (ref.current.state === 'active' || ref.current.state === 'longPressed') {
-      deactivate(e)
-    }
-    ref.current.state = 'idle'
-    ref.current.blockedByExternalOwnership = false
+    resetPress(e)
   }
 
   viewProps.onResponderTerminationRequest = (e: any) => {
