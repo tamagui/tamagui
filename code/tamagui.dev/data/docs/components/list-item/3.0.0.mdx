@@ -48,7 +48,7 @@ Basic usage involves providing children or using the `title` and `subTitle` prop
 
 ```tsx
 import { ListItem, Separator, YGroup } from 'tamagui'
-import { ChevronRight } from '@tamagui/lucide-icons-2' // Example icon
+import { ChevronRight } from './components/icons' // Example icon (generate your own, see Lucide Icons)
 
 export default () => (
   <YGroup
@@ -95,7 +95,7 @@ Use the `title` and `subTitle` props for a structured layout. These props accept
 
 ```tsx
 import { ListItem, Avatar } from 'tamagui'
-import { User } from '@tamagui/lucide-icons-2'
+import { User } from './components/icons'
 
 export default () => (
   <ListItem
@@ -127,7 +127,7 @@ Icons can be passed to `icon` (before content) or `iconAfter` (after content).
 
 ```tsx
 import { ListItem } from 'tamagui'
-import { Star, Settings } from '@tamagui/lucide-icons-2'
+import { Star, Settings } from './components/icons'
 
 export default () => (
   <>
@@ -169,7 +169,7 @@ Currently supports `outlined` (transparent background with border).
 
 ```tsx
 import { ListItem, YGroup } from 'tamagui'
-import { Trash } from '@tamagui/lucide-icons-2'
+import { Trash } from './components/icons'
 
 export default () => (
   <YGroup>

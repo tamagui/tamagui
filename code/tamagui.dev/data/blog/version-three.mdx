@@ -703,6 +703,10 @@ const ResponsiveIcon = styled(View, {
 </ResponsiveIcon>
 ```
 
+v3 also drops the bundled `@tamagui/lucide-icons-2` package entirely: most apps
+use a few dozen of its ~1700 icons. Generate only the icons you use with the
+[Lucide Icons setup](/ui/lucide-icons) script instead.
+
 ## ScrollView no longer pulls in react-native on web
 
 `@tamagui/scroll-view` now ships a clean web implementation instead of routing
