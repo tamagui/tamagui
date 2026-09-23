@@ -117,13 +117,13 @@ The `disabled` property will pass to children.
   <GroupDisabledDemo />
 </HeroContainer>
 
-## Custom Components & Nested Items
+## Custom components & nested items
 
 Automatic index detection only works when `Group.Item` is a **direct child** of `Group`. If you wrap `Group.Item` inside a custom component, the automatic first/last detection won't work.
 
 You have a few options:
 
-### Option 1: Use `forcePlacement`
+### Option 1: use `forcePlacement`
 
 If you know the position ahead of time, use the `forcePlacement` prop:
 
@@ -144,7 +144,7 @@ export default () => (
 )
 ```
 
-### Option 2: Use `useGroupItem` hook
+### Option 2: use `useGroupItem` hook
 
 For full control, use the `useGroupItem` hook directly in your custom component:
 
@@ -158,7 +158,7 @@ function MyItem({ children, forcePlacement }) {
 }
 ```
 
-### Option 3: Pass placement from parent
+### Option 3: pass placement from parent
 
 Calculate positions in the parent and pass them down:
 
@@ -179,7 +179,7 @@ export default () => (
 )
 ```
 
-## API Reference
+## API reference
 
 ### Group
 

@@ -33,7 +33,7 @@ FocusScope and RovingFocusGroup ship in their own packages:
 npm install @tamagui/focus-scope @tamagui/roving-focus
 ```
 
-## Focus Trapping (FocusScope)
+## Focus trapping (FocusScope)
 
 Wrap any content that needs focus containment or trapping:
 
@@ -54,7 +54,7 @@ export default () => (
 
 In v3, FocusScope renders a `display: contents` wrapper so it does not add an extra layout box around its children.
 
-### Trapped Focus
+### Trapped focus
 
 Use `trapped` to prevent focus from escaping the scope (ideal for modals, dialogs, and sheets):
 
@@ -87,7 +87,7 @@ export default () => (
 )
 ```
 
-### Zero Focus Mode
+### Zero focus mode
 
 Use `noFocus` to disallow focus entirely while the scope is active: focus can land neither inside nor outside the scope. Any element that receives focus is immediately blurred, so `document.activeElement` settles on `document.body`. This takes precedence over `trapped` and auto-focus behavior:
 
@@ -105,7 +105,7 @@ export default () => (
 )
 ```
 
-### Focus Looping
+### Focus looping
 
 Enable `loop` to cycle focus between first and last elements:
 
@@ -125,7 +125,7 @@ export default () => (
 )
 ```
 
-### Animation-Friendly Focusing
+### Animation-friendly focusing
 
 Use `focusOnIdle` to prevent reflows during animations:
 
@@ -146,7 +146,7 @@ export default () => (
 )
 ```
 
-### Advanced Control with FocusScopeController
+### Advanced control with FocusScopeController
 
 Use the controller pattern for managing focus from parent components:
 
@@ -178,7 +178,7 @@ export default () => {
 }
 ```
 
-### FocusScope Props
+### FocusScope props
 
 <PropsTable
   data={[
@@ -241,7 +241,7 @@ export default () => {
   ]}
 />
 
-### FocusScopeController Props
+### FocusScopeController props
 
 Provides context-based control over FocusScope behavior:
 
@@ -300,7 +300,7 @@ Provides context-based control over FocusScope behavior:
 
 The FocusScope component automatically inherits props from the nearest FocusScopeController, with controller props taking precedence over direct props.
 
-## Roving Focus (RovingFocusGroup)
+## Roving focus (RovingFocusGroup)
 
 The roving tabindex pattern manages focus across a group of interactive elements (like toolbars, tab lists, or radio groups) so that the entire group acts as a single tab stop. Arrow keys move focus between items within the group, and pressing Tab moves focus out of the group.
 
@@ -351,7 +351,7 @@ export default () => (
 )
 ```
 
-### Looping Navigation
+### Looping navigation
 
 Enable `loop` to wrap focus from the last item back to the first:
 
@@ -361,7 +361,7 @@ Enable `loop` to wrap focus from the last item back to the first:
 </RovingFocusGroup>
 ```
 
-### Controlled Tab Stop
+### Controlled tab stop
 
 Control which item is the current tab stop via `currentTabStopId` and `onCurrentTabStopIdChange`:
 
@@ -394,7 +394,7 @@ export default () => {
 }
 ```
 
-### Non-Focusable Items
+### Non-focusable items
 
 Give an item a negative `tabIndex` to make it non-focusable and skip it during keyboard navigation:
 
@@ -404,7 +404,7 @@ Give an item a negative `tabIndex` to make it non-focusable and skip it during k
 </RovingFocusGroup.Item>
 ```
 
-### RovingFocusGroup Props
+### RovingFocusGroup props
 
 <PropsTable
   data={[
@@ -457,7 +457,7 @@ Give an item a negative `tabIndex` to make it non-focusable and skip it during k
   ]}
 />
 
-### RovingFocusGroup.Item Props
+### RovingFocusGroup.Item props
 
 <PropsTable
   data={[
@@ -489,7 +489,7 @@ Give an item a negative `tabIndex` to make it non-focusable and skip it during k
   ]}
 />
 
-### Keyboard Navigation
+### Keyboard navigation
 
 | Key | Action |
 | --- | --- |
@@ -499,7 +499,7 @@ Give an item a negative `tabIndex` to make it non-focusable and skip it during k
 | `Home` / `Page Up` | Move focus to first item |
 | `End` / `Page Down` | Move focus to last item |
 
-## Internal Usage in Tamagui
+## Internal usage in Tamagui
 
 FocusScope and RovingFocusGroup power accessibility throughout Tamagui:
 

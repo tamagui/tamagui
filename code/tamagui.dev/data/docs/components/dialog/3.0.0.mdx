@@ -117,7 +117,7 @@ export default () => (
 
 Note that the `Trigger` scope ties to the `Dialog` scope.
 
-## Dismissal Behavior
+## Dismissal behavior
 
 By default, dialogs can be dismissed by:
 
@@ -125,7 +125,7 @@ By default, dialogs can be dismissed by:
 - Pressing the Escape key
 - Clicking a Dialog.Close element
 
-### Modal vs Non-Modal Dialogs
+### Modal vs non-modal dialogs
 
 - **Modal dialogs** (`modal={true}`, which is the default):
   - In v1, have `disableOutsidePointerEvents` set to `true` by default
@@ -141,7 +141,7 @@ In v3, Dialog parts own their presence lifecycle. Overlay and content can finish
 exit animations before unmounting, and `onTransition` reports completion from
 the animated part rather than from the root alone.
 
-### Preventing Outside Dismissal
+### Preventing outside dismissal
 
 To prevent a dialog from closing when clicking outside:
 
@@ -155,7 +155,7 @@ To prevent a dialog from closing when clicking outside:
 </Dialog.Content>
 ```
 
-## API Reference
+## API reference
 
 ### Dialog
 
