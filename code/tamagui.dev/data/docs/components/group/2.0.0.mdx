@@ -1,6 +1,6 @@
 ---
 title: Group
-description: Render horizontal or vertical groups easily
+description: Arrange controls in horizontal or vertical groups
 name: group
 component: Group
 package: group
@@ -41,7 +41,7 @@ npm install @tamagui/group
 
 Use `Group` with `Group.Item` wrapping each child. The `orientation` property determines the layout direction.
 
-Group zeros out the border radius on connecting sides of children - the first child keeps its start radius, the last keeps its end radius, and middle items have no radius on connecting sides. For `YGroup`, this affects top/bottom radius. For `XGroup`, left/right radius.
+Group zeros out the border radius on connecting sides of children: the first child keeps its start radius, the last keeps its end radius, and middle items have no radius on connecting sides. For `YGroup`, this affects top/bottom radius. For `XGroup`, left/right radius.
 
 ```tsx
 import { Button, XGroup } from 'tamagui'
@@ -63,7 +63,7 @@ export default () => (
 
 ## Sizing
 
-In v2, children control their own sizing. Apply size props directly to the child components. For responsive sizing, use media queries on the children:
+Children control their own sizing. Apply size props directly to the child components. For responsive sizing, use media queries on the children:
 
 ```tsx
 import { Activity, Airplay } from './components/icons' // your generated icons, see Lucide Icons

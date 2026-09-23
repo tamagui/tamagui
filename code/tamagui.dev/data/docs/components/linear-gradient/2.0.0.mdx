@@ -69,7 +69,7 @@ import { LinearGradient } from '@tamagui/linear-gradient'
 import { LinearGradient } from 'tamagui/linear-gradient'
 ```
 
-LinearGradient is a YStack that accepts all Tamagui style props as well as theme colors. It places `expo-linear-gradient` inside set to `absoluteFill`.
+LinearGradient is a YStack that accepts all Tamagui style props as well as theme colors. On native it renders `expo-linear-gradient` inside an `absoluteFill` wrapper.
 
 ## API Reference
 
@@ -95,9 +95,9 @@ LinearGradient extends YStack, inheriting `View` props and therefore the [Tamagu
   data={[
     {
       name: 'colors',
-      required: true,
+      required: false,
       type: 'string[]',
-      description: `Two or more colors.`,
+      description: `Two or more colors. Falls back to black and white if omitted.`,
     },
     {
       name: 'locations',

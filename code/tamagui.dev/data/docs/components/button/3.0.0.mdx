@@ -1,6 +1,6 @@
 ---
 title: Button
-description: A simple button component
+description: A pressable button with sizing, icons, and themes
 name: button
 component: Button
 package: button
@@ -39,7 +39,7 @@ import { Button } from 'tamagui'
 
 `@tamagui/button` holds the unstyled half: `useButton` and the parts, with no
 styled `Button` of its own. Import from it when you are building your own button
-rather than using ours - see [Build your own](#build-your-own).
+rather than using ours; see [Build your own](#build-your-own).
 
 ## Usage
 
@@ -51,10 +51,9 @@ export default () => <Button>Lorem ipsum</Button>
 
 ## Sizing
 
-Sizing buttons provides a unique challenge especially for a compiler, because you
-need to adjust many different properties - not just on the outer frame, but on the
-text wrapped inside. Tamagui adjusts padding, border radius, font size, and icon
-size together with the `size` prop.
+Sizing a button means adjusting many properties at once, not just on the outer
+frame but on the text inside it. Tamagui adjusts padding, border radius, font
+size, and icon size together with the `size` prop.
 
 ```tsx
 import { Button } from 'tamagui'
@@ -142,8 +141,8 @@ export default () => (
 ## Text Styling
 
 Button's frame is a `View`, so text style props passed to it are ignored. The one
-exception is `fontFamily`, which forwards to the wrapped text - a font family is a
-base value in practice, so it needs no conditional resolution.
+exception is `fontFamily`, which forwards to the wrapped text, since a font family
+is a base value and needs no conditional resolution.
 
 Everything else goes on `Button.Text`:
 
@@ -429,8 +428,8 @@ and `iconAfter` props, and available for your own compositions.
 ### useButton
 
 Themes the `icon` and `iconAfter` props, wraps bare children in a text, and
-applies the html nesting rules. Returns the props to spread onto a frame - the
-ones it consumed removed, everything else untouched.
+applies the html nesting rules. Returns the props to spread onto a frame, with the
+ones it consumed removed and everything else untouched.
 
 ```tsx
 const { isNested, props } = useButton(props, { Text: MyButtonText })

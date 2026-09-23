@@ -31,10 +31,10 @@ npm install @tamagui/native
 
 ## Portal
 
-**Native portals preserve React context** - the default implementation on native
-uses a JS-based approach that breaks React context, or requires you to hoist data
-awkwardly. With native portals, your custom contexts (navigation, app state)
-work inside Sheet, Dialog, Popover, and other portaled content.
+**Native portals preserve React context**. The default implementation on native
+uses a JS-based approach that breaks React context, or requires you to hoist
+data awkwardly. With native portals, your custom contexts (navigation, app
+state) work inside Sheet, Dialog, Popover, and other portaled content.
 
 ### Setup
 
@@ -75,8 +75,8 @@ See [Sheet](/ui/sheet) for component usage. For native press events and
 
 ## Menu & ContextMenu
 
-**Native menus** - renders platform-native context menus instead of custom
-overlays. Uses iOS's native menu API for haptics, blur effects, and system
+**Native menus** render platform-native context menus instead of custom
+overlays. They use the OS menu API for haptics, blur effects, and system
 integration.
 
 ### Setup
@@ -111,7 +111,7 @@ See [Menu docs](/ui/menu) and
 
 ## Toast
 
-**Native toasts** - uses platform-native toast implementations:
+**Native toasts** use platform-native toast implementations:
 
 - iOS: SPIndicator (system-style indicators)
 - Android: ToastAndroid
@@ -138,7 +138,7 @@ See [Toast docs](/ui/toast) for full details.
 
 ## LinearGradient
 
-**Native gradients** - uses `expo-linear-gradient` for high-performance native gradient rendering.
+**Native gradients** use `expo-linear-gradient` for high-performance native gradient rendering.
 
 ### Setup
 

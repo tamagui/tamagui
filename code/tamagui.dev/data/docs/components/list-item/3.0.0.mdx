@@ -1,6 +1,6 @@
 ---
 title: ListItem
-description: A component for displaying rows of items
+description: Display rows with titles, subtitles, and icons
 name: list-item
 component: ListItem
 package: list-item
@@ -40,7 +40,7 @@ import { ListItem } from 'tamagui'
 
 `@tamagui/list-item` holds the unstyled half: `useListItem` and the parts, with no
 styled `ListItem` of its own. Import from it when you are building your own
-list item rather than using ours - see [Build your own](#build-your-own).
+list item rather than using ours; see [Build your own](#build-your-own).
 
 ## Usage
 
@@ -399,8 +399,8 @@ Sizes and colors an icon from the surrounding ListItem context.
 ### useListItem
 
 Themes the `icon` and `iconAfter` props and assembles `title`, `subTitle`, and
-`children` into a single child. Returns the props to spread onto a frame - the
-ones it consumed removed, everything else untouched.
+`children` into a single child. Returns the props to spread onto a frame, with the
+ones it consumed removed and everything else untouched.
 
 ```tsx
 const { props } = useListItem(props)

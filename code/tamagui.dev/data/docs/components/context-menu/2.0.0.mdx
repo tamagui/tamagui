@@ -45,7 +45,7 @@ yarn add @tamagui/context-menu
 
 For Expo 57 and React Native 0.86, use the Expo UI adapter:
 
-```sh
+```bash
 yarn add @expo/ui
 ```
 
@@ -57,7 +57,7 @@ import '@tamagui/native/setup-expo-ui-menu'
 
 The Zeego adapter remains available for apps on compatible React Native versions:
 
-```sh
+```bash
 yarn add @react-native-menu/menu react-native-ios-context-menu react-native-ios-utilities zeego sf-symbols-typescript
 ```
 
@@ -77,7 +77,7 @@ handlers just to prevent a parent `press:` clause from activating.
 
 Import all parts and piece them together.
 
-```jsx
+```tsx
 import { ContextMenu } from 'tamagui' // or '@tamagui/context-menu'
 
 export default () => (
@@ -455,7 +455,7 @@ On iOS, it renders the native
   ]}
 />
 
-```jsx line=1
+```tsx line=1
 <ContextMenu.ItemIcon
   ios={{
     name: '0.circle.fill', // required
@@ -603,7 +603,7 @@ A menu item with a checkbox that can be toggled on/off.
 Use inside `CheckboxItem` or `RadioItem` to indicate when an item is checked.
 This allows you to conditionally render a checkmark.
 
-```jsx line=1
+```tsx line=1
 <ContextMenu.ItemIndicator>
   <CheckmarkIcon /> {/* This does not work with the native prop. */}
 </ContextMenu.ItemIndicator>
@@ -703,8 +703,7 @@ A container for nested sub-menu components.
 
 ### ContextMenu.SubContent
 
-Renders the content of a sub-menu. Same props as `Content`, excluding `side` and
-`align`.
+Renders the content of a sub-menu. Same props as `Content`.
 
 ### ContextMenu.SubTrigger
 
@@ -767,7 +766,7 @@ works with native iOS menus.
   ]}
 />
 
-```jsx line=1
+```tsx line=1
 <ContextMenu.Preview
   // optional props:
   preferredCommitStyle="pop" // or "dismiss"

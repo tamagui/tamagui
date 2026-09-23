@@ -1,6 +1,6 @@
 ---
 title: FocusScope
-description: Manage keyboard focus trapping and roving navigation accessibly.
+description: Manage keyboard focus trapping and roving navigation accessibly
 name: focus-scope
 component: FocusScope
 package: focus-scope
@@ -11,7 +11,8 @@ package: focus-scope
   within modals and dialogs, and **RovingFocusGroup** for arrow-key roving tabindex navigation across composite widgets.
 </IntroParagraph>
 
-Note that these are web-only components, on native they render children without keyboard navigation management.
+These are web-only components. On native they render their children with no
+keyboard navigation management.
 
 <Highlights
   features={[
@@ -88,7 +89,7 @@ export default () => (
 
 ### Zero Focus Mode
 
-Use `noFocus` to disallow focus entirely while the scope is active - focus can land neither inside nor outside the scope. Any element that receives focus is immediately blurred, so `document.activeElement` settles on `document.body`. This takes precedence over `trapped` and auto-focus behavior:
+Use `noFocus` to disallow focus entirely while the scope is active: focus can land neither inside nor outside the scope. Any element that receives focus is immediately blurred, so `document.activeElement` settles on `document.body`. This takes precedence over `trapped` and auto-focus behavior:
 
 ```tsx
 import { Button, Input, XStack } from 'tamagui'
@@ -206,7 +207,7 @@ export default () => {
       type: 'boolean',
       default: 'false',
       description:
-        'Zero focus mode: while active, focus is allowed neither inside nor outside the scope - anything that receives focus is immediately blurred. Takes precedence over trapped and auto-focus. Web only',
+        'Zero focus mode: while active, focus is allowed neither inside nor outside the scope. Anything that receives focus is immediately blurred. Takes precedence over trapped and auto-focus. Web only',
     },
     {
       name: 'focusOnIdle',

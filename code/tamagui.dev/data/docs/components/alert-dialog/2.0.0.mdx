@@ -27,7 +27,7 @@ demoName: AlertDialog
   ]}
 />
 
-AlertDialog is a modal dialog that interrupts the user with important content and expects a response. It's built on Dialog with stricter accessibility requirements, and [automatically stacks](/ui/z-index) above other content.
+AlertDialog is built on Dialog with stricter accessibility requirements, and [automatically stacks](/ui/z-index) above other content.
 
 ## Installation
 
@@ -140,7 +140,7 @@ Defaults to Paragraph, see [Paragraph](/ui/text#paragraph).
 
 ### AlertDialog.Cancel
 
-Closes the AlertDialog, accepts all YStack props. Recommended to use with your own component and `asChild`.
+Closes the AlertDialog, accepts all View props. Recommended to use with your own component and `asChild`.
 
 <PropsTable
   data={[
@@ -154,7 +154,7 @@ Closes the AlertDialog, accepts all YStack props. Recommended to use with your o
 
 ### AlertDialog.Action
 
-Confirms the AlertDialog action, accepts all YStack props. Recommended to use with your own component and `asChild`.
+Confirms the AlertDialog action, accepts all View props. Recommended to use with your own component and `asChild`.
 
 <PropsTable
   data={[
@@ -168,7 +168,7 @@ Confirms the AlertDialog action, accepts all YStack props. Recommended to use wi
 
 ### AlertDialog.Destructive
 
-A destructive action button for the AlertDialog. When using `native` mode on iOS, this renders with the native red destructive button style. Accepts all YStack props.
+A destructive action button for the AlertDialog. When using `native` mode on iOS, this renders with the native red destructive button style. Accepts all View props.
 
 ```tsx
 <AlertDialog native>

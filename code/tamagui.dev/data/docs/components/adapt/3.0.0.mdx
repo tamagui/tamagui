@@ -255,8 +255,6 @@ instead of on a timer.
   ]}
 />
 
-With neither `when` nor `platform` set, Adapt is never active.
-
 ### Adapt.Contents
 
 Marks where the adapted contents render inside the new container. Exactly one
@@ -298,13 +296,13 @@ its internal context; Popover and Select pass nothing.
 ## Troubleshooting
 
 **"You're rendering a Tamagui `<Adapt />` component without nesting it inside a
-parent that is able to adapt."** — `<Adapt>` or `<Adapt.Contents />` is outside
+parent that is able to adapt."** `<Adapt>` or `<Adapt.Contents />` is outside
 a Dialog, Popover or Select. If the component uses `scope`, pass the matching
 `scope` to `<Adapt>` too.
 
-**"Adapt is active but no target registered"** — the adaptation turned on but
+**"Adapt is active but no target registered"** the adaptation turned on but
 nothing consumed the contents. Add an `<Adapt.Contents />` inside the container
 you adapt into.
 
-**"Adapt expected exactly one target"** — two containers are claiming the same
+**"Adapt expected exactly one target"** two containers are claiming the same
 scope. Render one `<Adapt.Contents />` per active adaptation.
