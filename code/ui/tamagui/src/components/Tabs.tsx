@@ -2,9 +2,8 @@ import {
   type ComponentSize,
   createStyledContext,
   createStyledHOC,
-  resolveSizing,
-  styled,
   Text,
+  styled,
   withStaticProperties,
 } from '@tamagui/core'
 import { wrapChildrenInText } from '@tamagui/text'
@@ -14,25 +13,21 @@ export type TabsSize = ComponentSize | boolean
 
 const TabsContext = createStyledContext<{ size?: TabsSize }>({ size: 'md' })
 
-const getTabsTabSize = styled.dynamic<TabsSize>((val, env) => {
-  const sizing = resolveSizing(val, env)
-  if (!sizing) return
-  return {
-    paddingInline: sizing.paddingInline,
-    paddingBlock: sizing.paddingBlock,
-    gap: sizing.gap,
-    borderRadius: sizing.radius,
-  }
-})
+const tabsTabSize = {
+  xs: { paddingInline: '2', paddingBlock: '1', gap: '1', borderRadius: 'sm' },
+  sm: { paddingInline: '3', paddingBlock: '1.5', gap: '1.5', borderRadius: 'md' },
+  md: { paddingInline: '4', paddingBlock: '2', gap: '2', borderRadius: 'md' },
+  lg: { paddingInline: '6', paddingBlock: '2', gap: '2', borderRadius: 'md' },
+  xl: { paddingInline: '8', paddingBlock: '2.5', gap: '2.5', borderRadius: 'lg' },
+} as const
 
-const getTabsTextSize = styled.dynamic<TabsSize>((val, env) => {
-  const sizing = resolveSizing(val, env)
-  if (!sizing) return
-  return {
-    fontSize: sizing.fontSize,
-    lineHeight: sizing.lineHeight,
-  }
-})
+const tabsTextSize = {
+  xs: { fontSize: 'xs', lineHeight: 'xs' },
+  sm: { fontSize: 'sm', lineHeight: 'sm' },
+  md: { fontSize: 'sm', lineHeight: 'sm' },
+  lg: { fontSize: 'base', lineHeight: 'base' },
+  xl: { fontSize: 'lg', lineHeight: 'lg' },
+} as const
 
 export const TabsFrame = styled(TabsBehavior, {
   displayName: 'Tabs',
@@ -60,11 +55,14 @@ const TabsTabFrame = styled(TabsBehavior.Tab, {
         outlineColor: 'focus-visible:outline-color',
         outlineStyle: 'focus-visible:solid',
         outlineWidth: 'focus-visible:2px',
-        zIndex: 'focus-visible:1',
+        zIndex: 'focus-visible:10',
       },
     },
 
-    size: getTabsTabSize,
+    size: {
+      ...tabsTabSize,
+      true: tabsTabSize.md,
+    },
 
     disabled: {
       true: {
@@ -84,7 +82,10 @@ const TabsTabText = styled(Text, {
   fontFamily: 'body',
   color: 'color',
   variants: {
-    size: getTabsTextSize,
+    size: {
+      ...tabsTextSize,
+      true: tabsTextSize.md,
+    },
   },
   defaultVariants: {
     size: 'md',
