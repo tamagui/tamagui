@@ -8,9 +8,7 @@ description: Simple typed prop styles through styled()
   styles.
 </IntroParagraph>
 
-In a style library you want to be able to succinctly add on conditional values
-that expand into groups of styles. Variants do just that. Before explaining more
-on why and how they work, an example:
+Variants expand a single prop into a group of styles. Example:
 
 ```tsx
 import { type SizeTokens, View, styled } from 'tamagui' // or '@tamagui/core'
@@ -47,51 +45,32 @@ export const Circle = styled(View, {
   may break.
 </Notice>
 
-We can use this styled component like so:
+Usage:
 
 ```tsx
-<Circle pin="top" centered size="lg" />
+<Circle pin="top" centered size="4" />
 ```
 
-This component uses a few different types of variants. Below we'll expand on
-each.
+This component uses a few different types of variants, expanded on below.
 
-But first, why variants?
+## Why variants?
 
-## Why Variants?
-
-You have two basic options for sharing styles across components: share style
-objects and then combine them directly into your render function, or allow
-abstraction in some form.
-
-You can think of `StyleSheet.create` as "a lot of style objects". While this is
-nice in that it's simple, it doesn't enforce any rules, which can get you in
-trouble with both a compiler and a type system.
-
-You end up basically typing props by hand and then doing somewhat arbitrary
-logic to glue it all together inside a functional component. The types may not
-map to the actual output, and a compiler will almost certainly get confused or
-be unable to optimize with any easily unforeseen abstraction.
+Sharing plain style objects means typing props by hand and gluing them together
+with arbitrary logic inside a functional component. The types may not map to
+the actual output, and a compiler cannot optimize what it cannot see.
 
 Variants force you out of the React render function, which means no hooks and a
 much clearer contract: a dynamic takes one value and the style environment, and
 outputs a statically-shaped group of styles. Sibling-prop logic belongs in a
 component `.resolve` callback.
 
-It's nice having this special area just for styling. It keeps your types correct
-by definition. And it ensures the optimizing compiler can understand your styled
-components and people on your team won't "de-opt" it on accident.
-
-And because Variants work with the styled function, they nest without adding an
-extra depth to your render tree. Doing `styled(styled())` results in a single
-React component, and can be optimized and flattened by the compiler as well.
-Whereas it's quite easy for developers to take an existing functional component
-and throw in a new one around it, further de-optimizing a compiler and leading
-to a less clear separation of styled components and regular ones.
+Because variants work with the styled function, they nest without adding depth
+to your render tree. `styled(styled())` is a single React component that the
+compiler can optimize and flatten.
 
 ## Variants
 
-### Typed Variants
+### Typed variants
 
 #### `true` or `false`
 
@@ -116,7 +95,7 @@ export const MyView = styled(View, {
 })
 ```
 
-#### String, Boolean, and Number Domains
+#### String, boolean, and number domains
 
 For an open-ended value domain, declare the prop type on `styled.dynamic`.
 There is no runtime type-key lookup:
@@ -138,7 +117,7 @@ Use an exact-key object when the domain is finite, or one dynamic when it is
 parametric. A key such as `string`, `number`, or `Size` is otherwise just an
 exact literal key.
 
-### Dynamic Token Variants
+### Dynamic token variants
 
 When you write variants, you have to be explicit so TypeScript and the runtime
 know exactly which props you accept. This can be especially cumbersome when you
@@ -184,10 +163,8 @@ const MyButton = styled(View, {
 <MyButton pad="lg" />
 ```
 
-This is verbose, and only gets more verbose if you add more sizes. It would
-require always updating every component every time you change the tokens.
-
-Branded dynamic variants solve this problem. Instead, we can write:
+This is verbose, and every token change means updating every component. With a
+dynamic instead:
 
 ```tsx
 // in your tamagui.config.ts:
@@ -233,7 +210,7 @@ const Square = styled(View, {
 })
 
 // both work:
-<Square size="lg" />
+<Square size="4" />
 <Square size={100} />
 ```
 
@@ -255,14 +232,13 @@ const SizableText = styled(Text, {
 })
 ```
 
-Which you can use:
+Usage:
 
 ```tsx
-<SizableText size="md">Hello world</SizableText>
+<SizableText size="4">Hello world</SizableText>
 ```
 
-Every dynamic variant receives two arguments: the first is the value given to
-the property (`"lg"`), and the second is an object with
+The second argument is always
 `{ theme, tokens, fonts, font, fontFamily }`.
 
 <PropsTable
@@ -295,7 +271,7 @@ the property (`"lg"`), and the second is an object with
   ]}
 />
 
-#### Bare Dynamic Declarations
+#### Bare dynamic declarations
 
 When variant styles depend on sibling props, declare the prop type with bare `styled.dynamic<T>()` and apply the styles in a component `.resolve` callback:
 
@@ -378,7 +354,7 @@ const Square = styled(View, {
 })
 ```
 
-### Variants and Flat Clauses
+### Variants and flat clauses
 
 Variant branches can use the same state and media clauses as any other style value,
 in string or object form:
@@ -406,7 +382,7 @@ state or breakpoint:
 <SizedText size={{ default: 'sm', md: 'md' }} />
 ```
 
-### Variants and Parent Variants
+### Variants and parent variants
 
 Styled components can access their parent components variants, even in their
 variants:

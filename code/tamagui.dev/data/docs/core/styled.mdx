@@ -36,11 +36,11 @@ Usage:
 
 You can pass any prop that is supported by the component you are wrapping in styled.
 
-One really important and useful thing to note about Tamagui style properties: the order is important! [Read more here](/docs/intro/styles#order-is-important)
+Style prop order matters. [Read more here](/docs/intro/styles#order-is-important)
 
 ## Variants
 
-Let's add some variants:
+With variants:
 
 ```tsx
 import { type SizeTokens, View, styled } from '@tamagui/core'
@@ -76,13 +76,13 @@ export const RoundedSquare = styled(View, {
   infer generics as const.
 </Notice>
 
-We can use these like so:
+Usage:
 
 ```tsx
-<RoundedSquare pin="top" centered size="lg" />
+<RoundedSquare pin="top" centered size="4" />
 ```
 
-To learn more about how to use them and all the special types, [see the docs on variants](/docs/core/variants).
+To learn more, [see the docs on variants](/docs/core/variants).
 
 ### Non-working React Native views
 
@@ -130,7 +130,7 @@ const Nav = styled(View, {
 
 This is the recommended approach for semantic HTML and accessibility. String render props are optimized by the Tamagui compiler.
 
-### JSX Element
+### JSX element
 
 Pass a JSX element to clone with Tamagui's computed props:
 
@@ -156,7 +156,8 @@ For full control, pass a render function that receives props and component state
 
 ```tsx
 import { TamaguiComponentState } from '@tamagui/core'
-;<View
+
+<View
   render={(props, state: TamaguiComponentState) => (
     <CustomButton {...props} isHovered={state.hover} isPressed={state.press} />
   )}
@@ -196,7 +197,7 @@ const Box = styled(View, {
 
 ## createStyledHOC
 
-If you want a functional component that renders a Tamagui-styled component inside of it to _also_ be able to be `styled()`, wrap it with `createStyledHOC`. This is a mouthful, let's see an example:
+If a functional component that renders a Tamagui-styled component should itself accept `styled()`, wrap it with `createStyledHOC`. Example:
 
 ```tsx
 // 1. you create a `styled` component as usual:
@@ -214,7 +215,7 @@ const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
 })
 ```
 
-The above code will generally cause weird issues, because Tamagui can't know that it needs to just forward some props down. Instead, Tamagui tries to "resolve" all the style props from `StyledHigherOrderStyledText` before passing them down to `HigherOrderStyledText`. But that causes problems, because now `HigherOrderStyledText` will merge things differently than you'd expect.
+Without the wrapper, Tamagui resolves the style props before passing them down, so the inner component merges variants differently than you'd expect.
 
 The way to fix this is to wrap your `HigherOrderStyledText` with `createStyledHOC`. You'll also want to forward the ref, which is forwarded for you:
 
@@ -235,7 +236,7 @@ const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
 
 Now your component will handle everything properly, even if a theme is changed on `HigherOrderStyledText`, it will be applied.
 
-A final note: you must pass all Tamagui style props given to `HigherOrderStyledText` down to a single `StyledText`, at least if you want everything to work fully correctly.
+Pass all Tamagui style props given to `HigherOrderStyledText` down to a single `StyledText` for everything to work correctly.
 
 And if you'd like to add new props on top of the existing props, annotate the render function's props parameter. The annotated props merge over the wrapped component's props:
 
@@ -256,7 +257,7 @@ const Custom = createStyledHOC(View, (props: ExtraProps) => {
 
 ---
 
-## Component Resolvers (.resolve)
+## Component resolvers (.resolve)
 
 The `.resolve` method attaches a dynamic style resolver to a styled component. It receives the component's complete resolved props and the style environment:
 

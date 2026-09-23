@@ -1,6 +1,6 @@
 ---
 title: useTheme
-description: Creating and using theme values
+description: Read the current theme as typed values
 ---
 
 <IntroParagraph>
@@ -12,11 +12,10 @@ Tamagui themes operate much like
 [CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties),
 so [they can nest and override each other contextually](/docs/intro/themes).
 
-Note that the object that useTheme returns is the current theme, proxied upwards
-to every parent theme, finally proxying back to your tokens. This means it
-behaves just like CSS variables as well, at runtime.
+The returned object proxies up through every parent theme to your tokens, just
+like CSS variables at runtime.
 
-A short example:
+Example:
 
 ```tsx
 import { YStack, useTheme } from 'tamagui'
@@ -52,7 +51,7 @@ The `useTheme` hook adds a `.get()` helper function on each Variable for
 performance. On web, `.get()` returns the `.variable` property and avoids
 re-rendering on value changes, because CSS custom properties handle updates
 directly in the browser. On native, `.get()` returns `.val` and re-renders on
-change. When the [`fastSchemeChange` setting on createTamagui](/docs/core/configuration#settings)
+change. When the [`fastSchemeChange` setting](/docs/core/settings)
 is enabled, `get()` returns a [DynamicColorIOS](https://reactnative.dev/docs/dynamiccolorios)
 value on iOS to avoid re-renders there as well. Passing `get('web')` restricts
 that optimization to web.
@@ -208,29 +207,8 @@ export default () => {
 }
 ```
 
-## Changing the theme at the hook level
+## Reading another theme
 
-This is a more advanced use for building custom hooks or components. Pass an
-explicit theme name to read the matching sub-theme below the current scheme:
-
-```tsx
-function MyComponent(props) {
-  const theme = useTheme(props.theme)
-}
-```
-
-For example, if you have the following themes:
-
-- `dark`
-- `dark_green`
-
-And this code:
-
-```tsx
-<Theme name="dark">
-  <MyComponent theme="green" />
-</Theme>
-```
-
-The above `useTheme` hook returns the `dark_green` theme. V3 does not append a
-component name or inspect uppercase theme segments.
+`useTheme` takes no arguments and reads the ambient theme. To read values under
+a different theme, wrap the reader in `<Theme name="...">` and call `useTheme`
+inside it.
