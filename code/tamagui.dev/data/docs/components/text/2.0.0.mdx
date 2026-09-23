@@ -106,11 +106,11 @@ Paragraph extends SizableText and is defined as:
 ```tsx
 export const Paragraph = styled(SizableText, {
   displayName: 'Paragraph',
-  tag: 'p',
+  render: 'p',
   userSelect: 'auto',
   color: 'color',
-  size: true,
   whiteSpace: 'normal',
+  size: true,
 })
 ```
 
@@ -120,7 +120,7 @@ export const Paragraph = styled(SizableText, {
   careful when nesting items inside a Paragraph.
 </Notice>
 
-## Inline Text Elements
+## Inline text elements
 
 For semantic inline text styling, `@tamagui/text` exports `Strong`, `Em`, and `Span`:
 
@@ -137,11 +137,11 @@ export default () => (
 
 These render to their corresponding HTML elements (`<strong>`, `<em>`, `<span>`) on web while remaining compatible with React Native.
 
-## Text Truncation
+## Text truncation
 
 Tamagui provides two props for truncating text with ellipsis: `ellipsis` for single-line truncation and `numberOfLines` for multi-line clamping.
 
-### Single-line Ellipsis
+### Single-line ellipsis
 
 Use the `ellipsis` prop to truncate text to a single line with an ellipsis:
 
@@ -157,7 +157,7 @@ export default () => (
 
 On web, this applies `text-overflow: ellipsis`, `white-space: nowrap`, and `overflow: hidden`. On native, it sets `numberOfLines={1}`.
 
-### Multi-line Clamping
+### Multi-line clamping
 
 Use the `numberOfLines` prop to clamp text to a specific number of lines:
 
@@ -185,7 +185,7 @@ The `numberOfLines` prop is supported on the base `Text` component from `@tamagu
 as well as `SizableText` and `Paragraph`. The `ellipsis` prop is a shorthand for
 `numberOfLines={1}`.
 
-## API Reference
+## API reference
 
 ### Text
 

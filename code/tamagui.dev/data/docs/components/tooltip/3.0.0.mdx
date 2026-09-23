@@ -56,7 +56,7 @@ export default () => (
 )
 ```
 
-## API Reference
+## API reference
 
 ### Tooltip
 
@@ -68,7 +68,7 @@ Contains every component for the tooltip.
       name: 'children',
       type: 'React.ReactNode',
       required: true,
-      description: `Must contain Popover.Content`,
+      description: `Must contain Tooltip.Content`,
     },
     {
       name: 'groupId',
@@ -86,7 +86,7 @@ Contains every component for the tooltip.
       name: 'delay',
       type: `number | { open?: number; close?: number }`,
       required: false,
-      description: `Maximum time before showing (can be set independently for open/close).`,
+      description: `Time to wait before showing (can be set independently for open/close).`,
     },
     {
       name: 'placement',
@@ -136,7 +136,7 @@ Contains every component for the tooltip.
       name: 'offset',
       type: 'OffsetOptions',
       required: false,
-      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+      description: `Determines the distance the Tooltip appears from the target, see floating-ui offset().`,
     },
     {
       name: 'zIndex',
@@ -147,14 +147,15 @@ Contains every component for the tooltip.
   ]}
 />
 
-<Notice>
-  If using `modal={true}` (which is `true` by default), refer to the [PortalProvider
-  installation](#portalprovider) for more information.
+<Notice theme="blue">
+  On native, pair modal tooltips with [native portal
+  setup](/ui/portal#native-portal-setup-recommended) to preserve React context
+  inside Tooltip content.
 </Notice>
 
 ### Tooltip.Trigger
 
-Used to trigger opening of the popover when uncontrolled, see YStack in [Stacks](/ui/stacks).
+Used to trigger opening of the tooltip when uncontrolled, see YStack in [Stacks](/ui/stacks).
 
 ### Tooltip.Content
 

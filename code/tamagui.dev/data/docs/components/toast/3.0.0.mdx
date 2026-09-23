@@ -1,6 +1,6 @@
 ---
 title: Toast
-description: Beautiful, accessible toasts with smooth animations and gesture support.
+description: Accessible toasts with stacking, gestures, and animations
 name: toast
 component: Toast
 package: toast
@@ -32,7 +32,7 @@ demoName: Toast
 
 ## Installation
 
-Toast ships with `tamagui` — there's nothing extra to install:
+Toast ships with `tamagui`: there's nothing extra to install:
 
 ```tsx
 import { Toast, toast } from 'tamagui/toast'
@@ -41,7 +41,7 @@ import { Toast, toast } from 'tamagui/toast'
 If you're using the unstyled primitives directly, it's also published on its own:
 
 ```bash
-yarn add @tamagui/toast
+npm install @tamagui/toast
 ```
 
 Native OS toasts are opt-in. By default toasts render as in-app Tamagui views on
@@ -49,7 +49,7 @@ every platform, so adding Toast to your app never pulls in a native dependency.
 See [Native toasts](#native-toasts) if you want the real iOS/Android system
 toast.
 
-## Quick Start
+## Quick start
 
 Toast is a composable component API: you mount the parts, and `toast()` drives
 them from anywhere in your app.
@@ -106,7 +106,7 @@ Omit `renderItem` and `Toast.List` renders the default styled toast content.
 </Toast>
 ```
 
-## API
+## API reference
 
 ### toast()
 
@@ -206,7 +206,7 @@ The portal container for toasts. Extends View.
     {
       name: 'offset',
       type: 'number | { top?: number, right?: number, bottom?: number, left?: number }',
-      default: '24',
+      default: '16',
       description: 'Offset from screen edge.',
     },
     {
@@ -288,7 +288,7 @@ const { toasts, expanded, position } = useToasts()
 
 Multiple toasts stack visually. Hover over the stack to expand and see all toasts.
 
-### Swipe to Dismiss
+### Swipe to dismiss
 
 Toasts can be swiped away. The direction is auto-detected based on position:
 - **Web:** Left/right positioned toasts swipe toward their edge, center toasts swipe horizontally
@@ -301,7 +301,7 @@ When `react-native-gesture-handler` is set up via `@tamagui/native/setup-gesture
 Toasts render as in-app Tamagui views on every platform by default. To use the real iOS/Android system toast instead, install [Burnt](https://github.com/nandorojo/burnt) and import its setup module at your app entry:
 
 ```bash
-yarn add burnt
+npm install burnt
 ```
 
 ```tsx
@@ -316,7 +316,7 @@ Then opt in on the root:
 
 Burnt is resolved lazily, so apps that don't set it up never load it and never need the native module.
 
-### Native Safe Area
+### Native safe area
 
 On native, toasts portal to root and automatically respect safe area insets (status bar, Dynamic Island, home indicator) when configured:
 
@@ -343,9 +343,9 @@ function AppInner() {
 }
 ```
 
-The toast reads insets from `TamaguiProvider` via `useConfiguration().insets` — the same mechanism used by other Tamagui components like Slider.
+The toast reads insets from `TamaguiProvider` via `useConfiguration().insets`, the same mechanism used by other Tamagui components like Slider.
 
-### Custom Styling
+### Custom styling
 
 Each part can be styled independently:
 
@@ -360,7 +360,7 @@ Each part can be styled independently:
 </Toast.Item>
 ```
 
-## Upgrading from v2
+## Migrating from v2
 
 The v2 imperative API (`ToastProvider`, `ToastViewport`, `useToastController`, `useToastState`) was removed. Replace the provider tree with the composable parts shown above, and call `toast()` directly instead of going through a controller hook:
 

@@ -23,14 +23,13 @@ demoName: Switch
 
 
 <Highlights
-features={[
-  `Accessible, composable, and customizable`,
-  `Independent frame and thumb styling and animation`,
-  `Sizing with controlled or uncontrolled state`,
-  `Native mobile Switch through the native prop`,
-]}
+  features={[
+    `Accessible, composable, and customizable`,
+    `Independent frame and thumb styling and animation`,
+    `Sizing with controlled or uncontrolled state`,
+    `Native mobile Switch through the native prop`,
+  ]}
 />
-
 
 ## Installation
 
@@ -52,7 +51,7 @@ export default () => (
 )
 ```
 
-### Headless Usage
+### Headless usage
 
 To use the headless switch without `@tamagui/core`, install `@tamagui/switch-headless`:
 
@@ -105,12 +104,12 @@ function MySwitch({ defaultChecked, onCheckedChange, ...props }) {
 }
 ```
 
-## API Reference
+## API reference
 
 ### Switch
 
-`Switch` extends View inheriting all the
-[Tamagui standard props](/docs/intro/props), plus. Sizes come from the shared
+`Switch` extends View, inheriting all the
+[Tamagui standard props](/docs/intro/props). Sizes come from the shared
 [Sizing](/docs/core/sizing) ladder.
 
 <PropsTable
@@ -262,7 +261,7 @@ A tuple of `[checked, setChecked]` where:
 - `checked`: Current boolean state
 - `setChecked`: React state setter function
 
-#### Return Value
+#### Return value
 
 | Property      | Type                | Description                                                                |
 | ------------- | ------------------- | -------------------------------------------------------------------------- |
