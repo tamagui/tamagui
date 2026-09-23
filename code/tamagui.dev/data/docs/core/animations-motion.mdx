@@ -37,22 +37,18 @@ motion whichever driver renders it. There is no need for `'200ms'`-style entries
 any more: a duration is CSS, so `transition="200ms"` works with nothing
 configured.
 
-## How it Works
+## How it works
 
 At runtime, the Motion driver uses the `useAnimate()` hook from the Motion
-library to create animation scopes and orchestrate animations. It intelligently
-batches style changes and only animates properties that have changed, optimizing
-performance.
+library to batch style changes and animate only what changed. It runs through
+the Web Animations API (WAAPI), which animates on the compositor thread when
+possible, keeping animations smooth even when the main thread is busy.
 
-The driver uses the Web Animations API (WAAPI), which runs animations on the
-compositor thread when possible, keeping animations smooth even when the main
-thread is busy.
-
-## Animation Configuration
+## Animation configuration
 
 Motion animations support both spring and timing animations:
 
-### Spring Animations
+### Spring animations
 
 ```tsx
 {
@@ -64,7 +60,7 @@ Motion animations support both spring and timing animations:
 `stiffness`, `damping`, and `mass` still work for a config already tuned against
 them, and `velocity`, `overshootClamping`, and the rest thresholds pass through.
 
-### Timing Animations
+### Timing animations
 
 ```tsx
 {
@@ -87,17 +83,15 @@ internally.
 
 ## Highlights
 
-### Zero Re-renders
+### Zero re-renders
 
 The Motion driver bypasses internal style recalculations and hands off updates directly to Motion.
 
-### WAAPI Performance
+### WAAPI performance
 
-The Web Animations API runs animations on the compositor thread when possible,
-keeping animations smooth even when the main thread is busy. This provides
-off-thread performance comparable to Reanimated, but for web-only applications.
+Off-thread performance comparable to Reanimated, but for web-only applications.
 
-## Platform-Specific Configuration
+## Platform-specific configuration
 
 For cross-platform apps, use Motion on web and Reanimated on native:
 
@@ -127,7 +121,7 @@ import { animations } from './animations'
 
 Your bundler will automatically pick the right file based on the platform.
 
-## See Also
+## See also
 
 - [Animations Introduction](/docs/core/animations)
 - [CSS Driver](/docs/core/animations-css)

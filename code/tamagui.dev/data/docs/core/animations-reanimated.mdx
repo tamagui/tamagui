@@ -40,17 +40,17 @@ export default createTamagui({
 The config format is the same for all four drivers, so a name means the same
 motion whichever driver renders it.
 
-## How it Works
+## How it works
 
 At runtime, this driver parses animatable style properties and hands them over
 to Reanimated using worklets. Animations run on the UI thread for smooth 60fps
 performance.
 
-## Animation Configuration
+## Animation configuration
 
 Reanimated animations support both spring and timing (tween) animations:
 
-### Spring Animations
+### Spring animations
 
 ```tsx
 {
@@ -63,7 +63,7 @@ Reanimated animations support both spring and timing (tween) animations:
 them, and Reanimated's `velocity`, `overshootClamping`, and rest thresholds pass
 through.
 
-### Timing Animations
+### Timing animations
 
 ```tsx
 {
@@ -83,7 +83,7 @@ A plain CSS string means the same thing: `'300ms ease-out'`.
 
 The delay is specified in milliseconds.
 
-## When to Use
+## When to use
 
 **Advantages:**
 
@@ -99,7 +99,7 @@ The delay is specified in milliseconds.
 - More complex than simpler drivers
 - Web-only apps might prefer Motion or CSS drivers
 
-## Platform-Specific Configuration
+## Platform-specific configuration
 
 You can use Reanimated on native and a lighter driver on web:
 
@@ -153,12 +153,12 @@ export const MyComponent = () => (
 )
 ```
 
-## Zero Re-renders
+## Zero re-renders
 
-The Reanimated driver now works with Tamagui to bypasses all internal style
-changes to instead directly hand off to Reanimated worklets.
+The Reanimated driver works with Tamagui to bypass all internal style changes
+and hand off directly to Reanimated worklets.
 
-## Advanced Features
+## Advanced features
 
 Reanimated provides advanced features:
 
@@ -171,7 +171,7 @@ See the
 [Reanimated documentation](https://docs.swmansion.com/react-native-reanimated/)
 for more details.
 
-## See Also
+## See also
 
 - [Animations Introduction](/docs/core/animations)
 - [CSS Driver](/docs/core/animations-css)

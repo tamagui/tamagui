@@ -55,7 +55,7 @@ export default createTamagui({
 
 A config entry is `{ duration, bounce }`, a CSS timing string, or
 `{ type: 'timing', duration, easing }`. `stiffness`, `damping`, and `mass` still
-work for a table that was already tuned against them. The same config resolves
+work for a config already tuned against them. The same config resolves
 to the same motion on all four drivers, so you can swap drivers without
 retuning.
 
@@ -159,8 +159,8 @@ start at that value, then animate to its base value after mount:
 
 ### The transition value
 
-`transition` takes a CSS transition string or an object. Both spell the same
-thing, so pick whichever reads better at the site:
+`transition` takes a CSS transition string or an object. Both forms mean the
+same thing:
 
 ```tsx
 // a css transition, exactly as css writes it
@@ -276,10 +276,10 @@ override runs exactly the numbers your config gave it.
 
 The shipped presets are the same springs on every driver: `quickest`, `quicker`,
 `quick`, `medium`, `slow`, `slowest`, `lazy`, `superLazy`, `bouncy`,
-`superBouncy`, and the `LessBouncy` variants of the three quick ones. Keep your
-own table small. A duration is CSS now, so `transition="200ms"` needs nothing
-configured, and a name is worth having only when it means something a duration
-cannot say.
+`superBouncy`, plus `quickestLessBouncy`, `quickerLessBouncy`, and
+`quickLessBouncy`. Keep your own table small. A duration is CSS now, so
+`transition="200ms"` needs nothing configured, and a name is worth having only
+when it means something a duration cannot say.
 
 ### Delay
 
@@ -305,14 +305,12 @@ export default () => (
 )
 ```
 
-This creates a staggered animation where each square starts 100ms after the
-previous one. It works with all animation drivers and applies to enter, exit,
-and style change animations.
+Each square starts 100ms after the previous one, on enter, exit, and updates.
 
-### Enter/Exit Transitions
+### Enter/exit transitions
 
 `enter` and `exit` set the transition to use while mounting and unmounting.
-This is useful when elements should enter slowly and leave quickly:
+Set them when elements should enter slowly and leave quickly:
 
 ```tsx
 import { AnimatePresence, html } from 'tamagui'
@@ -352,9 +350,11 @@ into it, because the two never run at the same time.
 This works with all four animation drivers (CSS, React Native, Reanimated,
 Motion).
 
-### Pseudo-Style Transitions
+### Pseudo-style transitions
 
-You can specify different transitions for entering and exiting pseudo states like hover, press, and focus. This follows CSS-like semantics where entering a state uses that state's transition, and exiting uses the base transition:
+Specify different transitions for entering and exiting pseudo states like
+hover, press, and focus. Entering a state uses that state's transition, and
+exiting uses the base transition:
 
 ```tsx
 import { Square } from 'tamagui'
@@ -575,10 +575,10 @@ like so:
 <html.div transition={condition ? 'animation-name' : null} />
 ```
 
-Note that because of this constraint, you may see an error if you add the
-`transition` prop to a component in dev mode during HMR. Often just saving once more will remove the error, or reload the page if needed.
+Note that because of this constraint, adding the `transition` prop to a mounted
+component during dev HMR can error. Saving again or reloading clears it.
 
-## See Also
+## See also
 
 - [AnimatePresence](/docs/core/animate-presence): mount and unmount animations
 - [Animation Drivers](/docs/core/animation-drivers): choose and configure animation drivers

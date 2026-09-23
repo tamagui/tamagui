@@ -34,7 +34,7 @@ export default createTamagui({
 
 The config format is the same for all four drivers, so a name means the same
 motion whichever driver renders it. See
-[animations](/docs/core/animations#presets) for the shipped table.
+[Animations](/docs/core/animations#presets) for the shipped table.
 
 The root entry contains CSS component transitions only. If your app uses
 `useAnimatedNumber`, `useAnimatedNumberStyle`, `useAnimatedNumbersStyle`, or
@@ -49,13 +49,13 @@ gestures, so apps using either component with the CSS driver need the extras
 entry. The root entry keeps apps that only use CSS transitions from shipping
 the JavaScript spring and linked-style runtime.
 
-## How it Works
+## How it works
 
 At runtime, the plugin does very little except to set the `transition` property
 in CSS. At compile-time, the compiler does the same, ensuring you get all the
 benefits of prop removal and view flattening even when using animations.
 
-## Animation Configuration
+## Animation configuration
 
 A config entry is a spring, written as `{ duration, bounce }`:
 
@@ -88,7 +88,7 @@ createAnimations({
 The delay (in milliseconds) is applied as CSS `transition-delay`. A CSS
 transition string spells it the CSS way, `transition="200ms ease-out 100ms"`.
 
-### Supported Easing Functions
+### Supported easing functions
 
 - `ease`: default easing (equivalent to `cubic-bezier(0.25, 0.1, 0.25, 1)`)
 - `linear`: no easing, constant speed
@@ -97,14 +97,13 @@ transition string spells it the CSS way, `transition="200ms ease-out 100ms"`.
 - `ease-in-out`: slow start and end
 - `cubic-bezier(x1, y1, x2, y2)`: custom cubic bezier curve
 
-## When to Use
+## When to use
 
 **Advantages:**
 
 - **Smallest bundle size**: minimal JavaScript overhead
 - **Broad compatibility**: works everywhere CSS works
 - **Compiler optimizations**: benefits from static extraction
-- **Simple**: straightforward to understand and configure
 
 **Limitations:**
 
@@ -138,7 +137,7 @@ export const MyComponent = () => (
 )
 ```
 
-## See Also
+## See also
 
 - [Animations Introduction](/docs/core/animations)
 - [React Native Driver](/docs/core/animations-react-native)
