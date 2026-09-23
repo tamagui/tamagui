@@ -19,3 +19,10 @@ export const ExternalCard = styled(View, {
 export const ExternalLabel = styled(Text, {
   color: 'green',
 })
+
+// the shape @tamagui/helpers-icon `themed()` gives every icon: a plain function
+// component carrying a HOC static config so styled() can wrap it
+export const ExternalIcon = (props: { size?: number }) => (
+  <svg width={props.size} height={props.size} />
+)
+ExternalIcon['staticConfig'] = { isHOC: true, acceptsClassName: true }

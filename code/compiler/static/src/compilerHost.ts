@@ -1320,8 +1320,11 @@ export function createTamaguiCompilerHost(
     const defaultProps = resolved.staticConfig.defaultProps ?? {}
     return {
       key: resolved.key,
+      // a HOC (themed icons, createStyledHOC) renders a real component, so
+      // flattening it to a host element drops everything it renders
       canFlatten:
         resolved.staticConfig.acceptsClassName !== false &&
+        !resolved.staticConfig.isHOC &&
         !resolved.staticConfig.neverFlatten &&
         !resolved.staticConfig.context,
       staticConfig: resolved.staticConfig,

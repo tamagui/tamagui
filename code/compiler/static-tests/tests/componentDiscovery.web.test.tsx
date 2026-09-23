@@ -69,6 +69,14 @@ describe('component discovery', () => {
     expect(seen.filter((id) => id.endsWith('/fixtures/external/ui.tsx'))).toHaveLength(1)
   })
 
+  test('a discovered HOC such as a themed icon is never flattened', async () => {
+    const output = await extractForWeb(dedent`
+      import { ExternalIcon } from '@fixture/ui'
+      export const Test = () => <ExternalIcon size={20} />
+    `)
+    expect(output.js).toContain('<ExternalIcon')
+  })
+
   test('a module with no components is remembered and does not retain siblings', async () => {
     const output = await extractForWeb(dedent`
       import { View } from '@tamagui/core'
