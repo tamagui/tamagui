@@ -1,16 +1,15 @@
 {
   "name": "@tamagui/local-icons",
   "version": "2.7.7",
-  "private": true,
-  "description": "Private generated Lucide icon components for in-repo use only, never published",
+  "description": "Generated Lucide icon components for Tamagui",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [
     "types",
     "dist"
   ],
-  "sideEffects": false,
   "type": "module",
+  "sideEffects": false,
   "main": "dist/cjs",
   "module": "dist/esm/index.mjs",
   "types": "./types/index.d.ts",
