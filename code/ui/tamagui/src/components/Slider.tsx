@@ -6,6 +6,11 @@ import {
   type ComponentSize,
   createRefComponent,
   createStyledContext,
+  getConfig,
+  getVariableValue,
+  resolveSizing,
+  type ResolvedSizing,
+  type SizingEnv,
   styled,
   type TamaguiElement,
   withStaticProperties,
@@ -22,38 +27,40 @@ const SliderSizeContext = createStyledContext<{
   orientation?: 'horizontal' | 'vertical'
 }>({ size: 'md', orientation: 'horizontal' })
 
-const resolveSliderSize = (size: unknown): keyof typeof sliderThumbSize =>
-  typeof size === 'string' && size in sliderThumbSize
-    ? (size as keyof typeof sliderThumbSize)
-    : 'md'
+const sliderSizing = (
+  size: SliderSize | undefined,
+  env?: SizingEnv
+): ResolvedSizing | undefined => resolveSizing(size, env) ?? resolveSizing(undefined, env)
 
 // the thumb is a line-height tall circle
-const sliderThumbSize = {
-  xs: { width: 16, height: 16, minWidth: 16, minHeight: 16 },
-  sm: { width: 20, height: 20, minWidth: 20, minHeight: 20 },
-  md: { width: 20, height: 20, minWidth: 20, minHeight: 20 },
-  lg: { width: 24, height: 24, minWidth: 24, minHeight: 24 },
-  xl: { width: 28, height: 28, minWidth: 28, minHeight: 28 },
-} as const
+const getSliderThumbPx = (
+  sizing: ResolvedSizing | undefined,
+  env?: SizingEnv
+): number => {
+  if (!sizing) return 20
+  const conf = env?.fonts && env?.tokens ? undefined : getConfig()
+  const fonts = env?.fonts ?? conf?.fontsParsed
+  const font = env?.font ?? fonts?.[conf?.defaultFontToken ?? 'body']
+  const lh = Number(getVariableValue(font?.lineHeight?.[sizing.fontSize]))
+  return Number.isFinite(lh) ? Math.round(lh) : 20
+}
 
 // the track is a thin bar: the control height over six, rounded
-const sliderTrackSize = {
-  xs: 4,
-  sm: 5,
-  md: 6,
-  lg: 7,
-  xl: 8,
-} as const
+const getSliderTrackThickness = (sizing: ResolvedSizing | undefined): number => {
+  if (!sizing) return 6
+  return Math.round(sizing.height / 6)
+}
 
 export const SliderTrackFrame = styled(UiSlider.Track, {
   displayName: 'SliderTrack',
   context: SliderSizeContext,
   backgroundColor: 'background-press',
   borderRadius: 100_000,
-}).resolve((props) => {
+}).resolve((props, env) => {
   const size = props.size as SliderSize | undefined
-  if (size == null || size === false) return
-  const thickness = sliderTrackSize[resolveSliderSize(size)]
+  if (size === false) return
+  const sizing = sliderSizing(size, env)
+  const thickness = getSliderTrackThickness(sizing)
   if (props.orientation === 'vertical') {
     return {
       width: thickness,
@@ -76,6 +83,18 @@ export const SliderActiveFrame = styled(UiSlider.TrackActive, {
 
 export const SliderActive = SliderActiveFrame
 
+const getSliderThumbSize = styled.dynamic<SliderSize>((val, env) => {
+  const sizing = resolveSizing(val, env)
+  if (!sizing) return
+  const side = getSliderThumbPx(sizing, env)
+  return {
+    width: side,
+    height: side,
+    minWidth: side,
+    minHeight: side,
+  }
+})
+
 export const SliderThumbFrame = styled(UiSlider.Thumb, {
   displayName: 'SliderThumb',
   context: SliderSizeContext,
@@ -86,10 +105,7 @@ export const SliderThumbFrame = styled(UiSlider.Thumb, {
   outlineWidth: 'focus-visible:2px',
   outlineColor: 'focus-visible:outline-color',
   variants: {
-    size: {
-      ...sliderThumbSize,
-      true: sliderThumbSize.md,
-    },
+    size: getSliderThumbSize,
   } as const,
   defaultVariants: {
     size: 'md',
@@ -105,15 +121,18 @@ const SliderRoot = createRefComponent<
   TamaguiElement,
   React.ComponentProps<typeof UiSlider>
 >(function Slider(props, ref) {
+  const size = props.size as SliderSize | undefined
+  const sizing = sliderSizing(size)
+  const thumbPx = getSliderThumbPx(sizing)
   return (
     <SliderSizeContext.Provider
-      size={resolveSliderSize(props.size)}
+      size={size ?? 'md'}
       orientation={props.orientation ?? 'horizontal'}
     >
       <UiSlider
         {...props}
         // the behavior thumb positions itself by px before its first layout
-        size={sliderThumbSize[resolveSliderSize(props.size)].width}
+        size={thumbPx}
         ref={ref}
       />
     </SliderSizeContext.Provider>

@@ -10,7 +10,10 @@
 import {
   type ComponentSize,
   createStyledContext,
+  getConfig,
+  getVariableValue,
   type GetProps,
+  resolveSizing,
   styled,
   withStaticProperties,
 } from '@tamagui/core'
@@ -50,75 +53,51 @@ export type SelectSize = ComponentSize | boolean
 
 const SelectContext = createStyledContext<{ size?: SelectSize }>({ size: 'md' })
 
-const selectFrameSize = {
-  xs: { paddingInline: '2', paddingBlock: '1', borderRadius: 'sm', gap: '1' },
-  sm: { paddingInline: '3', paddingBlock: '1.5', borderRadius: 'md', gap: '1.5' },
-  md: { paddingInline: '4', paddingBlock: '2', borderRadius: 'md', gap: '2' },
-  lg: { paddingInline: '6', paddingBlock: '2', borderRadius: 'md', gap: '2' },
-  xl: { paddingInline: '8', paddingBlock: '2.5', borderRadius: 'lg', gap: '2.5' },
-} as const
+const getSelectTriggerSize = styled.dynamic<SelectSize>((val, env) => {
+  const sizing = resolveSizing(val, env)
+  if (!sizing) return
+  return {
+    paddingInline: sizing.paddingInline,
+    paddingBlock: sizing.paddingBlock,
+    borderRadius: sizing.radius,
+    gap: sizing.gap,
+  }
+})
 
-const selectTextSize = {
-  xs: { fontSize: 'xs', lineHeight: 'xs' },
-  sm: { fontSize: 'sm', lineHeight: 'sm' },
-  md: { fontSize: 'sm', lineHeight: 'sm' },
-  lg: { fontSize: 'base', lineHeight: 'base' },
-  xl: { fontSize: 'lg', lineHeight: 'lg' },
-} as const
+const getSelectTextSize = styled.dynamic<SelectSize>((val, env) => {
+  const sizing = resolveSizing(val, env)
+  if (!sizing) return
+  return {
+    fontSize: sizing.fontSize,
+    lineHeight: sizing.lineHeight,
+  }
+})
 
-const selectItemSize = {
-  xs: { gap: '1', paddingHorizontal: '2', paddingVertical: '1' },
-  sm: { gap: '1.5', paddingHorizontal: '3', paddingVertical: '1.5' },
-  md: { gap: '2', paddingHorizontal: '4', paddingVertical: '2' },
-  lg: { gap: '2', paddingHorizontal: '6', paddingVertical: '2' },
-  xl: { gap: '2.5', paddingHorizontal: '8', paddingVertical: '2.5' },
-} as const
+const getSelectItemSize = styled.dynamic<SelectSize>((val, env) => {
+  const sizing = resolveSizing(val, env)
+  if (!sizing) return
+  return {
+    gap: sizing.gap,
+    paddingHorizontal: sizing.paddingInline,
+    paddingVertical: sizing.paddingBlock,
+  }
+})
 
-const selectNativeSize = {
-  // a native <select> ignores line-height, so it gets the control height
-  // (line height plus vertical padding) plus its 1px border on each side,
-  // and room for the chevron
-  xs: {
-    paddingInline: '2',
-    paddingBlock: '1',
-    borderRadius: 'sm',
-    gap: '1',
-    height: 26,
-    paddingRight: 28,
-  },
-  sm: {
-    paddingInline: '3',
-    paddingBlock: '1.5',
-    borderRadius: 'md',
-    gap: '1.5',
-    height: 34,
-    paddingRight: 32,
-  },
-  md: {
-    paddingInline: '4',
-    paddingBlock: '2',
-    borderRadius: 'md',
-    gap: '2',
-    height: 38,
-    paddingRight: 36,
-  },
-  lg: {
-    paddingInline: '6',
-    paddingBlock: '2',
-    borderRadius: 'md',
-    gap: '2',
-    height: 42,
-    paddingRight: 44,
-  },
-  xl: {
-    paddingInline: '8',
-    paddingBlock: '2.5',
-    borderRadius: 'lg',
-    gap: '2.5',
-    height: 50,
-    paddingRight: 52,
-  },
-} as const
+const getSelectNativeSize = styled.dynamic<SelectSize>((val, env) => {
+  const sizing = resolveSizing(val, env)
+  if (!sizing) return
+  const conf = env?.fonts && env?.tokens ? undefined : getConfig()
+  const tokens = env?.tokens ?? conf?.tokensParsed
+  const padInline = Number(getVariableValue(tokens?.space?.[sizing.paddingInline]))
+  return {
+    paddingInline: sizing.paddingInline,
+    paddingBlock: sizing.paddingBlock,
+    borderRadius: sizing.radius,
+    gap: sizing.gap,
+    height: sizing.height + 2,
+    paddingRight: (Number.isFinite(padInline) ? padInline : 16) + 20,
+  }
+})
 
 const SelectNative = styled(SizableText, {
   displayName: 'SelectNative',
@@ -130,10 +109,7 @@ const SelectNative = styled(SizableText, {
   outlineWidth: 0,
   userSelect: 'none',
   variants: {
-    size: {
-      ...selectNativeSize,
-      true: selectNativeSize.md,
-    },
+    size: getSelectNativeSize,
   } as const,
   defaultVariants: { size: 'md' },
 })
@@ -153,10 +129,7 @@ export const SelectTrigger = styled(SelectBehavior.Trigger, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: {
-      ...selectFrameSize,
-      true: selectFrameSize.md,
-    },
+    size: getSelectTriggerSize,
   } as const,
   defaultVariants: { size: 'md' },
 })
@@ -167,10 +140,7 @@ export const SelectValue = styled(SelectBehavior.Value, {
   color: 'color',
   ellipsis: true,
   variants: {
-    size: {
-      ...selectTextSize,
-      true: selectTextSize.md,
-    },
+    size: getSelectTextSize,
   } as const,
   defaultVariants: { size: 'md' },
 })
@@ -195,10 +165,7 @@ export const SelectLabel = styled(SelectBehavior.Label, {
   paddingHorizontal: 10,
   paddingVertical: 6,
   variants: {
-    size: {
-      ...selectTextSize,
-      true: selectTextSize.md,
-    },
+    size: getSelectTextSize,
   } as const,
   defaultVariants: { size: 'md' },
 })
@@ -219,10 +186,7 @@ export const SelectItem = styled(SelectBehavior.Item, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:1px',
   variants: {
-    size: {
-      ...selectItemSize,
-      true: selectItemSize.md,
-    },
+    size: getSelectItemSize,
   } as const,
   defaultVariants: { size: 'md' },
 })
@@ -234,10 +198,7 @@ export const SelectItemText = styled(SelectBehavior.ItemText, {
   userSelect: 'none',
   ellipsis: true,
   variants: {
-    size: {
-      ...selectTextSize,
-      true: selectTextSize.md,
-    },
+    size: getSelectTextSize,
   } as const,
   defaultVariants: { size: 'md' },
 })

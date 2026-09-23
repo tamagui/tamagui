@@ -15,7 +15,7 @@ export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tama
 }, "active" | "defaultActiveStyle" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
     active?: boolean | undefined;
     defaultActiveStyle?: boolean | undefined;
-    size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
+    size?: ToggleGroupSize | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     ref?: React.Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
 }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").StackNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps, "active" | "defaultActiveStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
@@ -32,7 +32,7 @@ export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tama
 }, import("@tamagui/core").StackStyleBase, {
     active?: boolean | undefined;
     defaultActiveStyle?: boolean | undefined;
-    size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
+    size?: ToggleGroupSize | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").StackNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps, "active" | "defaultActiveStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         active?: boolean | undefined;
@@ -48,7 +48,7 @@ export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tama
     }, import("@tamagui/core").StackStyleBase, {
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
-        size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
+        size?: ToggleGroupSize | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 };
 export declare const ToggleGroup: ((props: ((import("@tamagui/toggle-group").ToggleGroupProps & {
@@ -71,7 +71,7 @@ export declare const ToggleGroup: ((props: ((import("@tamagui/toggle-group").Tog
     }, "active" | "defaultActiveStyle" | "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
-        size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
+        size?: ToggleGroupSize | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         ref?: React.Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
     }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").StackNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps, "active" | "defaultActiveStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
@@ -88,7 +88,7 @@ export declare const ToggleGroup: ((props: ((import("@tamagui/toggle-group").Tog
     }, import("@tamagui/core").StackStyleBase, {
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
-        size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
+        size?: ToggleGroupSize | undefined;
     }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").StackNonStyleProps & Omit<import("@tamagui/core").StackNonStyleProps, "active" | "defaultActiveStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{
             active?: boolean | undefined;
@@ -104,7 +104,7 @@ export declare const ToggleGroup: ((props: ((import("@tamagui/toggle-group").Tog
         }, import("@tamagui/core").StackStyleBase, {
             active?: boolean | undefined;
             defaultActiveStyle?: boolean | undefined;
-            size?: "lg" | "md" | "sm" | "xl" | "xs" | boolean | undefined;
+            size?: ToggleGroupSize | undefined;
         }, import("@tamagui/core").StaticConfigPublic];
     };
 };

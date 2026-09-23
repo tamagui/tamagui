@@ -12,6 +12,7 @@ import {
   type ComponentSize,
   createStyledContext,
   type GetProps,
+  resolveSizing,
   styled,
   withStaticProperties,
 } from '@tamagui/core'
@@ -20,31 +21,28 @@ export type CardSize = ComponentSize | boolean
 
 const CardContext = createStyledContext<{ size?: CardSize }>({ size: 'md' })
 
-const cardRadius = {
-  xs: { borderRadius: 'sm' },
-  sm: { borderRadius: 'md' },
-  md: { borderRadius: 'md' },
-  lg: { borderRadius: 'md' },
-  xl: { borderRadius: 'lg' },
-} as const
+const getCardFrameSize = styled.dynamic<CardSize>((val, env) => {
+  const sizing = resolveSizing(val, env)
+  if (!sizing) return
+  return {
+    borderRadius: sizing.radius,
+  }
+})
 
-const cardPadding = {
-  xs: { padding: '2' },
-  sm: { padding: '3' },
-  md: { padding: '4' },
-  lg: { padding: '6' },
-  xl: { padding: '8' },
-} as const
+const getCardPaddingSize = styled.dynamic<CardSize>((val, env) => {
+  const sizing = resolveSizing(val, env)
+  if (!sizing) return
+  return {
+    padding: sizing.paddingInline,
+  }
+})
 
 export const CardFrame = styled(UiCardFrame, {
   displayName: 'Card',
   context: CardContext,
   backgroundColor: 'background',
   variants: {
-    size: {
-      ...cardRadius,
-      true: cardRadius.md,
-    },
+    size: getCardFrameSize,
   } as const,
   defaultVariants: {
     size: 'md',
@@ -55,10 +53,7 @@ export const CardHeader = styled(CardHeaderBehavior, {
   displayName: 'CardHeader',
   context: CardContext,
   variants: {
-    size: {
-      ...cardPadding,
-      true: cardPadding.md,
-    },
+    size: getCardPaddingSize,
   } as const,
   defaultVariants: {
     size: 'md',
@@ -69,10 +64,7 @@ export const CardFooter = styled(CardFooterBehavior, {
   displayName: 'CardFooter',
   context: CardContext,
   variants: {
-    size: {
-      ...cardPadding,
-      true: cardPadding.md,
-    },
+    size: getCardPaddingSize,
   } as const,
   defaultVariants: {
     size: 'md',

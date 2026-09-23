@@ -7,6 +7,7 @@ import {
   type ComponentSize,
   createRefComponent,
   type GetProps,
+  resolveSizing,
   styled,
   type TamaguiElement,
   withStaticProperties,
@@ -16,13 +17,16 @@ import type * as React from 'react'
 
 export type ToggleGroupSize = ComponentSize | boolean
 
-const toggleGroupItemSize = {
-  xs: { width: 26, height: 26, borderRadius: 'sm' },
-  sm: { width: 34, height: 34, borderRadius: 'md' },
-  md: { width: 38, height: 38, borderRadius: 'md' },
-  lg: { width: 42, height: 42, borderRadius: 'md' },
-  xl: { width: 50, height: 50, borderRadius: 'lg' },
-} as const
+const getToggleGroupItemSize = styled.dynamic<ToggleGroupSize>((val, env) => {
+  const sizing = resolveSizing(val, env)
+  if (!sizing) return
+  const side = sizing.height + 2
+  return {
+    width: side,
+    height: side,
+    borderRadius: sizing.radius,
+  }
+})
 
 export const ToggleGroupItem = styled(UiToggleGroup.Item, {
   displayName: 'ToggleGroupItem',
@@ -36,12 +40,9 @@ export const ToggleGroupItem = styled(UiToggleGroup.Item, {
   outlineColor: 'focus-visible:outline-color',
   outlineWidth: 'focus-visible:2px',
   outlineStyle: 'focus-visible:solid',
-  zIndex: 'focus-visible:10',
+  zIndex: 'focus-visible:1',
   variants: {
-    size: {
-      ...toggleGroupItemSize,
-      true: toggleGroupItemSize.md,
-    },
+    size: getToggleGroupItemSize,
   } as const,
   defaultVariants: {
     size: 'md',
