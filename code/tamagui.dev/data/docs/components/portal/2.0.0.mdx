@@ -11,12 +11,12 @@ package: portal
   Tamagui theme and configuration context.
 </IntroParagraph>
 
-Portal is included in `tamagui` and is used by [Sheet](/docs/components/sheet),
-[Dialog](/docs/components/dialog), [Popover](/docs/components/popover),
-[Select](/docs/components/select), and [Toast](/docs/components/toast). See
+Portal is included in `tamagui` and is used by [Sheet](/ui/sheet),
+[Dialog](/ui/dialog), [Popover](/ui/popover),
+[Select](/ui/select), and [Toast](/ui/toast). See
 [Stacking (zIndex)](/ui/z-index) for how overlay layering works.
 
-## Native Portal Setup (Recommended)
+## Native portal setup (recommended)
 
 On web, React's built-in `createPortal` preserves context automatically. On
 native, the default portal implementation doesn't preserve React context.
@@ -29,13 +29,13 @@ We recommend using
 to solve this. It uses React Native's native portal API to preserve context
 automatically.
 
-### Step 1: Install react-native-teleport
+### Step 1: install react-native-teleport
 
 ```bash
 npm install react-native-teleport
 ```
 
-### Step 2: Import the setup module
+### Step 2: import the setup module
 
 In your app's entry file (index.js or App.tsx), before any Tamagui imports:
 
@@ -65,12 +65,12 @@ function App() {
 }
 ```
 
-## Alternative Approaches
+## Alternative approaches
 
 If you can't use react-native-teleport, there are other ways to handle context
 in portals:
 
-### Component Scoping
+### Component scoping
 
 For Dialog, Popover, and Tooltip, use the `scope` prop to mount a single
 instance at your app root. This avoids portals entirely on native:
@@ -98,7 +98,7 @@ instance at your app root. This avoids portals entirely on native:
 This pattern is also a performance win for lists or tables with many interactive
 elements.
 
-### Manual Context Re-propagation
+### Manual context re-propagation
 
 Wrap portal children with the necessary providers:
 
@@ -121,7 +121,7 @@ const myValue = useContext(MyContext)
 This is more verbose and error-prone as you need to remember to re-propagate
 every context you use.
 
-## API Reference
+## API reference
 
 ### Portal
 
@@ -157,9 +157,9 @@ This automatic stacking is already enabled by default in Dialog, Popover, Sheet,
 components. If you open a Popover from within a Dialog, the Popover will automatically have a
 higher z-index than the Dialog without any configuration needed.
 
-## Technical Details
+## Technical details
 
-[react-native-teleport](https://github.com/nicksrandall/react-native-teleport)
+[react-native-teleport](https://github.com/kirillzyusko/react-native-teleport)
 uses `ReactNativeFabricUIManager.createPortal` (Fabric) or
 `UIManager.createPortal` (Paper) to create true native portals that preserve the
 React fiber tree.
