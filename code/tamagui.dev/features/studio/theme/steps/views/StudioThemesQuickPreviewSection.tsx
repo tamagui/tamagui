@@ -46,7 +46,7 @@ export const StudioThemesQuickPreviewSection = memo(
         contentContainerStyle={previewContentStyle}
       >
         <YStack gap="3" height="100%" flex={1} pt="4" px="4" justify="space-between">
-          <YStack gap="2">
+          <YStack gap="1-5">
             <H3>Preview</H3>
             <Paragraph color="color-11">
               This is just an example, your actual components can use any values from the
@@ -73,7 +73,7 @@ export const StudioThemesQuickPreviewSection = memo(
           </XStack>
 
           <YStack pb="4" gap="4">
-            <XStack my="-2" justify="center">
+            <XStack my="-1-5" justify="center">
               <XStack width={300} items="center" gap="4">
                 <Checkbox
                   id={checkId}

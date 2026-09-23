@@ -45,12 +45,12 @@ export function ComponentItem({
     <Link href={href as any} asChild>
       <YStack
         render="a"
-        width="210px gtMd:calc(25% - 20px)"
+        width="210px lg:calc(25% - 20px)"
         cursor="pointer"
         position="relative"
-        bg="rgba(150,150,150,0.025) gtMd:rgba(255,255,255,0)"
+        bg="rgba(150,150,150,0.025) lg:rgba(255,255,255,0)"
         mt="3"
-        rounded="gtMd:4"
+        rounded="lg:4"
       >
         {/* Preview */}
         <YStack
@@ -72,7 +72,7 @@ export function ComponentItem({
             pointerEvents="none"
             justify="center"
             items="center"
-            p="6"
+            p="8"
           >
             <Preview />
           </YStack>
@@ -95,7 +95,7 @@ export function ComponentItem({
             {numberOfComponents} components
           </H5>
 
-          <YStack position="absolute" t="4" r="4" rotate="20deg" p="2" opacity={0.4}>
+          <YStack position="absolute" t="4" r="4" rotate="20deg" p="1-5" opacity={0.4}>
             <Icon size={20} color="color-12" />
           </YStack>
         </YStack>

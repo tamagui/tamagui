@@ -41,7 +41,7 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
       <Separator />
 
       <SidebarPanel title={`Accent of ${scale.name}.${index}`}>
-        <YStack render="ul" gap="1">
+        <YStack render="ul" gap="0-5">
           {[
             {
               name: 'bg',
@@ -77,10 +77,10 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
 
             return (
               <XStack key={`${name}${i}`} overflow="hidden" items="center">
-                <XStack items="center" flex={1000} gap="2">
+                <XStack items="center" flex={1000} gap="1-5">
                   <Square
                     aria-hidden
-                    size="2-5"
+                    size="8"
                     rounded="2"
                     borderWidth={1}
                     borderColor="border-color"
@@ -95,8 +95,8 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
                   </Paragraph>
                 </XStack>
                 <Spacer flex={1} />
-                <XStack overflow="hidden" flex={1} gap="2" items="center">
-                  <Paragraph size="2" mr="2">
+                <XStack overflow="hidden" flex={1} gap="1-5" items="center">
+                  <Paragraph size="2" mr="1-5">
                     {accent.toFixed(2)}
                   </Paragraph>
                   <Paragraph size="2" ellipsis fontWeight="800">
@@ -119,8 +119,8 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
   return (
     <SidebarRight>
       <SidebarPanel title={`Palette`}>
-        <YStack gap="2">
-          <YStack gap="1">
+        <YStack gap="1-5">
+          <YStack gap="0-5">
             <Label size="2" htmlFor="scale-name">
               Name
             </Label>

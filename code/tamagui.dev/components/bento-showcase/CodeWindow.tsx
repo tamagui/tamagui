@@ -128,7 +128,7 @@ export function CodeWindow({ code, isLoading }: Props) {
               flex={1}
               alignItems="center"
               justifyContent="center"
-              gap="2"
+              gap="1-5"
               key={tab.name}
               value={String(i)}
             >

@@ -28,11 +28,11 @@ export default function TakeoutPage() {
       <YStack
         items="center"
         justify="center"
-        gap="8"
+        gap="11"
         px="4"
-        py="10"
+        py="14"
         minH="80vh"
-        minW="850px sm:90%"
+        minW="850px max-md:90%"
         maxW={850}
         self="center"
         position="relative"
@@ -40,11 +40,11 @@ export default function TakeoutPage() {
         <YStack
           position="absolute"
           pointerEvents="none"
-          t="30% sm:25%"
-          r="-20% md:-15% sm:-35%"
+          t="30% max-md:25%"
+          r="-20% max-lg:-15% max-md:-35%"
           width={450}
           height={450}
-          scale="md:0.7 sm:0.6"
+          scale="max-lg:0.7 max-md:0.6"
           z={100}
         >
           <Suspense fallback={null}>
@@ -56,11 +56,17 @@ export default function TakeoutPage() {
 
         <TakeoutLogo />
 
-        <SubTitle size="8" text="center" fontSize="sm:6" lineHeight="sm:6" maxW={640}>
+        <SubTitle
+          size="8"
+          text="center"
+          fontSize="max-md:6"
+          lineHeight="max-md:6"
+          maxW={640}
+        >
           Free and open source React Native starter kit.
         </SubTitle>
 
-        <XStack mt="-7" gap="4" items="center" justify="center" flexWrap="wrap">
+        <XStack mt="-10" gap="4" items="center" justify="center" flexWrap="wrap">
           <Link href="https://takeout.tamagui.dev" target="_blank">
             <Button size="lg" variant="outlined">
               <Button.Text>Demo</Button.Text>

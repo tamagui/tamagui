@@ -83,7 +83,7 @@ export const BarTabs = memo(function HeaderTabs({
         )}
       </AnimatePresence>
 
-      <Tabs.List loop={false} aria-label="Manage your account" gap="2" bg="transparent">
+      <Tabs.List loop={false} aria-label="Manage your account" gap="1-5" bg="transparent">
         {tabs.map(({ component, value, hasChanges }) => (
           <Tabs.Tab
             key={value}

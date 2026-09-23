@@ -14,7 +14,7 @@ export function HomeStyleToggle() {
       onValueChange={setMode}
       width="100%"
     >
-      <YStack gap="5">
+      <YStack gap="6">
         <YStack self="flex-start">
           <Tabs.List
             loop={false}
@@ -48,7 +48,7 @@ export function HomeStyleToggle() {
                   value={value}
                   onPress={() => setMode(value)}
                   px="2-5"
-                  py="1"
+                  py="0-5"
                   width={72}
                   items="center"
                   justify="center"
@@ -79,7 +79,7 @@ export function HomeStyleToggle() {
           value={mode}
           forceMount
           height={430}
-          p="5"
+          p="6"
           rounded="4"
           bg="color-2"
           borderWidth={0.5}

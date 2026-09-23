@@ -9,8 +9,8 @@ export const Header = () => {
   const store = useThemeBuilderStore()
 
   return (
-    <XStack mt={-20} maxW="100%" gap="6" flex={1} justify="space-between" items="center">
-      <YStack flex={1} flexBasis="auto" maxW={700} gap="5">
+    <XStack mt={-20} maxW="100%" gap="8" flex={1} justify="space-between" items="center">
+      <YStack flex={1} flexBasis="auto" maxW={700} gap="6">
         <H1 mb="-2%" {...demoProps.headingFontFamilyProps} lineHeight="11" size="12">
           {store.themeSuite?.name || 'Design System'}
         </H1>
@@ -18,13 +18,13 @@ export const Header = () => {
 
       <YStack>
         <Square
-          size="9"
-          mx="2"
+          size="24"
+          mx="1-5"
           bg="background-focus @sm/content:red"
           borderColor="color-5"
           {...demoProps.borderRadiusOuterProps}
-          width="lg:100%"
-          maxW="lg:100%"
+          width="max-xl:100%"
+          maxW="max-xl:100%"
           display="@sm/content:none"
         >
           <TamaguiLogo scale={1.5} />

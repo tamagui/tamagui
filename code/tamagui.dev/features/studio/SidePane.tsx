@@ -18,8 +18,8 @@ export const SidePane = ({
   controls?: React.ReactNode
 }) => {
   return (
-    <YStack flex={1} mb="14">
-      <XStack paddingTop="8" paddingRight="8" paddingLeft="8" pb="4">
+    <YStack flex={1} mb="28">
+      <XStack paddingTop="11" paddingRight="11" paddingLeft="11" pb="4">
         <H4 size="10">{title}</H4>
         <Spacer flex={1} />
         {controls}
@@ -28,7 +28,7 @@ export const SidePane = ({
       <YStack flex={1}>
         <ScrollView horizontal={false}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} flex={1}>
-            <YStack p="6" flex={1}>
+            <YStack p="8" flex={1}>
               {children}
             </YStack>
           </ScrollView>

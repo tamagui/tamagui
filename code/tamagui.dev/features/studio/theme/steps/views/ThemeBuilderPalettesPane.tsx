@@ -10,7 +10,7 @@ export const ThemeBuilderPalettesPane = memo(() => {
 
   return (
     <YStack flex={1} gap="4" p="4">
-      <YStack gap="2">
+      <YStack gap="1-5">
         <H4>Color Palettes</H4>
         <Paragraph color="color-10" size="3">
           These are the available color palettes for your themes

@@ -89,7 +89,7 @@ export const OverviewCard = ({
         <Paragraph
           {...demoProps.headingFontFamilyProps}
           fontWeight="400"
-          mb="-2"
+          mb="-1-5"
           color="color-11"
           {...(alternative && {
             color: 'accent-12',
@@ -109,7 +109,7 @@ export const OverviewCard = ({
           {!!badgeText && (
             <Paragraph
               size="2"
-              px="2"
+              px="1-5"
               {...(alternative && {
                 color: 'accent-12',
               })}

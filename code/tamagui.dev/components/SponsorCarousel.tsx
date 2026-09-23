@@ -109,7 +109,7 @@ const sponsors: {
 const CarouselWrapper = styled(YStack, {
   width: '100%',
   position: 'relative',
-  my: '8',
+  my: '11',
 })
 
 const CarouselContainer = styled(YStack, {
@@ -142,7 +142,7 @@ const LogoContainer = styled(YStack, {
   justify: 'center',
   flex: 1,
   rounded: '4',
-  p: '2',
+  p: '1-5',
   position: 'relative',
   width: '100%',
   height: '100%',
@@ -159,11 +159,11 @@ export function SponsorCarousel() {
           <H2 size="10" text="center" color="color">
             Our Sponsors
           </H2>
-          <Paragraph text="center" color="color-10" mt="2" size="5">
+          <Paragraph text="center" color="color-10" mt="1-5" size="5">
             Sponsors who made Tamagui possible
           </Paragraph>
         </YStack>
-        <XStack flexWrap="wrap" justify="center" gap="6" px="6" maxW={1200}>
+        <XStack flexWrap="wrap" justify="center" gap="8" px="8" maxW={1200}>
           {sponsors.map((sponsor) => (
             <SponsorCard key={sponsor.id} {...sponsor} />
           ))}
@@ -196,7 +196,7 @@ function SponsorCard({ link, image, gradient, name }: (typeof sponsors)[0]) {
             ) : (
               <YStack
                 cursor="pointer"
-                p="2"
+                p="1-5"
                 rounded="4"
                 bg="hover:rgba(0,0,0,0.1) press:rgba(0,0,0,0.2)"
                 gap="4"

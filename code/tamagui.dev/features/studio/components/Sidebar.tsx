@@ -7,7 +7,7 @@ import { sidebarWidth } from '../constants'
 
 export const SidebarTitle = styled(H4, {
   fontSize: 16,
-  pt: '2',
+  pt: '1-5',
   px: '3',
 })
 
@@ -73,15 +73,15 @@ export const SidebarPanel = ({
 }: SidebarPanelProps) => {
   return (
     <YStack
-      paddingBottom="2"
+      paddingBottom="1-5"
       px={scrollable ? 0 : '3'}
-      paddingTop="2"
+      paddingTop="1-5"
       borderBottomWidth={1}
       borderBottomColor="border-color"
       {...props}
     >
       {!!(title || controls) && (
-        <XStack px={scrollable ? '3' : 0} items="center" height="3">
+        <XStack px={scrollable ? '3' : 0} items="center" height="9">
           {!!title && (
             <H5 size="2" select="none" cursor="default">
               {title}
@@ -90,7 +90,7 @@ export const SidebarPanel = ({
 
           <Spacer flex={1} />
 
-          <XStack items="center" gap="2">
+          <XStack items="center" gap="1-5">
             {controls}
           </XStack>
         </XStack>
@@ -110,6 +110,6 @@ export const SidebarPanel = ({
 }
 
 export const SidebarPanelUnpad = styled(YStack, {
-  mt: '-2',
+  mt: '-1-5',
   mx: '-3',
 })

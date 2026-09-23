@@ -30,7 +30,7 @@ export const LoginScreen = () => {
       {...demoProps.panelPaddingProps}
     >
       <Form>
-        <YStack borderBottomWidth="0-25" borderBottomColor="border-color" pb="4" gap="3">
+        <YStack borderBottomWidth="0.5px" borderBottomColor="border-color" pb="4" gap="3">
           <H4 {...demoProps.headingFontFamilyProps} text="center">
             Welcome Back!
           </H4>
@@ -68,7 +68,7 @@ export const LoginScreen = () => {
             </>
           </XStack>
 
-          <XStack my="2" width="100%">
+          <XStack my="1-5" width="100%">
             <XStack position="absolute" l={0} r={0} items="center" gap="4">
               <Separator flex={1} />
               <SizableText fontFamily="heading" text="center" color="color-9" size="1">
@@ -78,10 +78,10 @@ export const LoginScreen = () => {
             </XStack>
           </XStack>
 
-          <Spacer size="1" />
+          <Spacer size="0-5" />
 
           <YStack {...demoProps.gapPropsMd}>
-            <Fieldset gap="1">
+            <Fieldset gap="0-5">
               <Label>Username</Label>
               <Input
                 placeholder="Username"
@@ -90,9 +90,9 @@ export const LoginScreen = () => {
               />
             </Fieldset>
 
-            <Spacer size="2" />
+            <Spacer size="1-5" />
 
-            <Fieldset gap="1">
+            <Fieldset gap="0-5">
               <Label>Password</Label>
               <Input
                 placeholder="Password"

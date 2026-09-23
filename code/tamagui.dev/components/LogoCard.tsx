@@ -39,15 +39,15 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
                 <View
                   items="center"
                   justify="center"
-                  height="3"
-                  width="3"
+                  height="9"
+                  width="9"
                   bg="color-6"
                   rounded="4"
                 >
                   {icon}
                 </View>
               ) : (
-                <Avatar rounded="4" p="3" bg="color-6" size="3">
+                <Avatar rounded="4" p="3" bg="color-6" size="9">
                   <Avatar.Image scale={0.6} src={img} />
                   <Avatar.Fallback bg="color-6" borderColor="color-8" />
                 </Avatar>
@@ -56,7 +56,7 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
           </Card.Header>
 
           <Card.Footer transition="quicker" x={isHovered ? 5 : 0}>
-            <ChevronRight size="1" position="absolute" b="4" r="4" color="color-11" />
+            <ChevronRight size="5" position="absolute" b="4" r="4" color="color-11" />
           </Card.Footer>
         </Card>
       </Link>

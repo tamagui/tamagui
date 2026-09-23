@@ -14,13 +14,13 @@ export const InstallInput = memo(() => {
   const prompt = useClipboard(agentPrompt)
 
   return (
-    <XStack gap="2" items="center" flexWrap="wrap">
+    <XStack gap="1-5" items="center" flexWrap="wrap">
       <XStack
         borderWidth={0.5}
         borderColor="color-3"
         bg="color-1"
         overflow="hidden"
-        paddingRight="2"
+        paddingRight="1-5"
         pl="4"
         gap="3"
         height={48}

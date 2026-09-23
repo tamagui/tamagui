@@ -8,14 +8,14 @@ import { TwitterIcon } from '~/features/icons/TwitterIcon'
 
 export const SocialLinksRow = () => {
   return (
-    <XStack gap="4" flexDirection="sm:column">
+    <XStack gap="4" flexDirection="max-md:column">
       <Link
         asChild
         href="https://x.com/tamagui_js"
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Card width="33.33% sm:auto" justify="center" gap="2" p="5">
+        <Card width="33.33% max-md:auto" justify="center" gap="1-5" p="6">
           <TwitterIcon />
           <H4 cursor="pointer">X</H4>
           <Paragraph cursor="pointer" color="color-9">
@@ -29,7 +29,7 @@ export const SocialLinksRow = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Card width="33.33% sm:auto" justify="center" gap="2" p="5">
+        <Card width="33.33% max-md:auto" justify="center" gap="1-5" p="6">
           <DiscordIcon />
           <H4 cursor="pointer">Discord</H4>
           <Paragraph cursor="pointer" color="color-9">
@@ -43,7 +43,7 @@ export const SocialLinksRow = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Card width="33.33% sm:auto" justify="center" gap="2" p="5">
+        <Card width="33.33% max-md:auto" justify="center" gap="1-5" p="6">
           <GithubIcon />
           <H4 cursor="pointer">GitHub</H4>
           <Paragraph cursor="pointer" color="color-9">

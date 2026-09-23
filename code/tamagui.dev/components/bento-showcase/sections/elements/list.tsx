@@ -10,11 +10,11 @@ import {
 export function list() {
   return (
     <YStack
-      paddingBottom="2 gtLg:0"
-      gap="12"
-      paddingTop="2 gtLg:0"
-      paddingRight="2 gtLg:0"
-      paddingLeft="2 gtLg:0"
+      paddingBottom="1-5 xl:0"
+      gap="88px"
+      paddingTop="1-5 xl:0"
+      paddingRight="1-5 xl:0"
+      paddingLeft="1-5 xl:0"
     >
       <Showcase fileName={Lists.HList.fileName} title="Horizontal Covers">
         <Lists.HList />

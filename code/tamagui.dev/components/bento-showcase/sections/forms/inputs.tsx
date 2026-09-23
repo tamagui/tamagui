@@ -6,11 +6,11 @@ import { Showcase, WithSize } from '~/components/bento-showcase/_Showcase'
 export function inputs() {
   return (
     <YStack
-      paddingBottom="2 gtLg:0"
-      gap="12"
-      paddingTop="2 gtLg:0"
-      paddingRight="2 gtLg:0"
-      paddingLeft="2 gtLg:0"
+      paddingBottom="1-5 xl:0"
+      gap="88px"
+      paddingTop="1-5 xl:0"
+      paddingRight="1-5 xl:0"
+      paddingLeft="1-5 xl:0"
     >
       <Showcase
         isInput
@@ -18,7 +18,7 @@ export function inputs() {
         fileName={Inputs.InputWithLabelDemo.fileName}
         title="Input with Label"
       >
-        <View py="8">
+        <View py="11">
           <WithSize>
             <Inputs.InputWithLabelDemo />
           </WithSize>
@@ -30,7 +30,7 @@ export function inputs() {
         fileName={Inputs.OneTimeCodeInputExample.fileName}
         title="One-Time Code Input"
       >
-        <View py="15">
+        <View py="32">
           <WithSize>
             <Inputs.OneTimeCodeInputExample />
           </WithSize>
@@ -42,7 +42,7 @@ export function inputs() {
         fileName={Inputs.InputWithLabelAndMessageDemo.fileName}
         title="Input with Label and Message"
       >
-        <View py="8">
+        <View py="11">
           <WithSize>
             <Inputs.InputWithLabelAndMessageDemo />
           </WithSize>
@@ -54,7 +54,7 @@ export function inputs() {
         fileName={Inputs.InputWithErrorDemo.fileName}
         title="Input with Error"
       >
-        <View py="8">
+        <View py="11">
           <WithSize>
             <Inputs.InputWithErrorDemo />
           </WithSize>
@@ -66,7 +66,7 @@ export function inputs() {
         fileName={Inputs.InputWithLeftIconDemo.fileName}
         title="Input Left Adornment"
       >
-        <View py="8">
+        <View py="11">
           <WithSize>
             <Inputs.InputWithLeftIconDemo />
           </WithSize>
@@ -78,7 +78,7 @@ export function inputs() {
         fileName={Inputs.InputWithRightIconDemo.fileName}
         title="Input Right Adornment"
       >
-        <View py="8">
+        <View py="11">
           <WithSize>
             <Inputs.InputWithRightIconDemo />
           </WithSize>
@@ -90,7 +90,7 @@ export function inputs() {
         fileName={Inputs.InputBothSideIconsExample.fileName}
         title="Input Left/Right Adornment"
       >
-        <View py="8">
+        <View py="11">
           <WithSize>
             <Inputs.InputBothSideIconsExample />
           </WithSize>
@@ -102,7 +102,7 @@ export function inputs() {
         fileName={Inputs.InputGroupedIconsExample.fileName}
         title="Grouped Input with Buttons"
       >
-        <View py="8">
+        <View py="11">
           <WithSize>
             <Inputs.InputGroupedIconsExample />
           </WithSize>
@@ -114,14 +114,14 @@ export function inputs() {
         fileName={Inputs.InputWithRightAddOnDemo.fileName}
         title="Grouped Input with Buttons (Alt)"
       >
-        <View py="8">
+        <View py="11">
           <WithSize>
             <Inputs.InputWithRightAddOnDemo />
           </WithSize>
         </View>
       </Showcase>
       <Showcase short isInput fileName={Inputs.PhoneInputExample.fileName} title="Phone">
-        <View py="8">
+        <View py="11">
           <WithSize>
             <Inputs.PhoneInputExample />
           </WithSize>

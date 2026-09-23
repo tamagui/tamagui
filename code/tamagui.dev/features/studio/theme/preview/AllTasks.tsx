@@ -16,7 +16,7 @@ export const AllTasks = () => {
       {...demoProps.panelPaddingProps}
       bg="background"
     >
-      <YStack borderBottomWidth="0-25" borderBottomColor="border-color" pb="4">
+      <YStack borderBottomWidth="0.5px" borderBottomColor="border-color" pb="4">
         <H4 {...demoProps.headingFontFamilyProps} color="color">
           Tasks
         </H4>
@@ -62,7 +62,7 @@ export const AllTasks = () => {
         </Task>
       </YStack>
 
-      <Spacer size="2" />
+      <Spacer size="1-5" />
     </YStack>
   )
 }
@@ -77,20 +77,20 @@ const Task = ({
   const demoProps = useDemoProps()
   return (
     <ListItem
-      px="2"
+      px="1-5"
       bg="transparent"
       {...props}
       icon={
         <YStack
           theme="accent"
           self="flex-start"
-          mt="1"
+          mt="0-5"
           {...(checked && {
             bg: 'border-color',
           })}
           borderColor="border-color"
-          width="1"
-          height="1"
+          width="5"
+          height="5"
           justify="center"
           items="center"
           flexBasis="auto"
@@ -100,7 +100,7 @@ const Task = ({
         </YStack>
       }
     >
-      <YStack gap="1" opacity={checked ? 0.3 : 1} items="flex-start" flex={1}>
+      <YStack gap="0-5" opacity={checked ? 0.3 : 1} items="flex-start" flex={1}>
         {children}
       </YStack>
     </ListItem>

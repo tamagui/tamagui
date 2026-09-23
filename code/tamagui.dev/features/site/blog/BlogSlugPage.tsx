@@ -21,19 +21,19 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
   const pathname = usePathname()
   const isDraft = pathname.startsWith('/draft')
   return (
-    <YStack mt="-8" pt="12" mb="4" position="relative">
+    <YStack mt="-11" pt="88px" mb="4" position="relative">
       <Container>
-        <YStack mt="2" items="flex-start">
+        <YStack mt="1-5" items="flex-start">
           <ThemeTint>
             <Link href={isDraft ? '/draft' : '/blog'}>
-              <Button size="sm" variant="quiet" icon={ArrowLeft} ml="-2">
+              <Button size="sm" variant="quiet" icon={ArrowLeft} ml="-1-5">
                 <Button.Text>{isDraft ? 'Drafts' : 'Blog'}</Button.Text>
               </Button>
             </Link>
           </ThemeTint>
         </YStack>
 
-        <H1 mt="5" mb="2" color="color-11">
+        <H1 mt="6" mb="1-5" color="color-11">
           {frontmatter.title}
         </H1>
 
@@ -42,7 +42,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
           color="color-11"
           fontWeight="500"
           fontFamily="body"
-          mb="1"
+          mb="0-5"
           size="7"
         >
           {frontmatter.description}
@@ -59,7 +59,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
             </Paragraph>
           </Link>
 
-          <Separator vertical mx="2" />
+          <Separator vertical mx="1-5" />
 
           <Paragraph
             opacity={0.4}
@@ -75,16 +75,16 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
             }).format(new Date(frontmatter.publishedAt || ''))}
           </Paragraph>
 
-          <Separator vertical mx="2" />
+          <Separator vertical mx="1-5" />
 
-          <YStack items="center" display="none gtSm:flex">
+          <YStack items="center" display="none md:flex">
             <Paragraph opacity={0.4} color="color-10" size="3">
               {frontmatter.readingTime?.text}
             </Paragraph>
 
             {frontmatter.type === 'changelog' && (
               <>
-                <Separator vertical mx="2" />
+                <Separator vertical mx="1-5" />
                 <Button>
                   <Button.Text>Changelog</Button.Text>
                 </Button>
@@ -113,7 +113,7 @@ export function BlogSlugPage(props: BlogPost) {
 
       <Container>
         {frontmatter.image && (
-          <YStack pb="6">
+          <YStack pb="8">
             <View
               rounded="4"
               overflow="hidden"
@@ -146,11 +146,11 @@ export function BlogSlugPage(props: BlogPost) {
           <Component components={components as any} />
         </YStack>
 
-        <Separator my="8" mx="auto" />
+        <Separator my="11" mx="auto" />
 
         {relatedPosts && (
           <YStack>
-            <Separator my="8" mx="auto" />
+            <Separator my="11" mx="auto" />
             <H3 mb="3" text="center" textTransform="uppercase">
               Related
             </H3>
@@ -164,7 +164,7 @@ export function BlogSlugPage(props: BlogPost) {
                     // @ts-ignore
                     href={`/blog/${frontmatter.slug}`}
                   >
-                    <YStack gap="2">
+                    <YStack gap="1-5">
                       <H6>{frontmatter.title}</H6>
                       <Paragraph>{frontmatter.description}</Paragraph>
                     </YStack>

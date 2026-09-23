@@ -10,7 +10,7 @@ export const HuePicker = memo(
     return (
       <XStack gap="4" items="center">
         <XGroup>
-          <View width="2" height="2" overflow="hidden">
+          <View width="7" height="7" overflow="hidden">
             <YStack
               select="none"
               pointerEvents="none"
@@ -24,8 +24,8 @@ export const HuePicker = memo(
           </View>
         </XGroup>
 
-        <XStack items="center" gap="4" height="3">
-          <YStack gap="1">
+        <XStack items="center" gap="4" height="9">
+          <YStack gap="0-5">
             <Slider
               orientation="horizontal"
               min={0}

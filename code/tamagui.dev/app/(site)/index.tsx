@@ -93,7 +93,7 @@ const features: FeaturePart[][] = [
 
 export default function TamaguiHomePage() {
   return (
-    <YStack gap="80px gtMd:72px">
+    <YStack gap="80px lg:72px">
       <HeadInfo
         title="Tamagui"
         description="Type-safe styles for React and React Native, with an optimizing compiler and Tailwind compatibility."
@@ -105,20 +105,20 @@ export default function TamaguiHomePage() {
         maxW={PAGE_MAX_WIDTH}
         mx="auto"
         px="4"
-        pt="8"
-        gap="8 gtMd:12"
-        minH="auto gtMd:calc(90vh - 280px)"
-        maxH="auto gtMd:940px"
+        pt="11"
+        gap="11 lg:88px"
+        minH="auto lg:calc(90vh - 280px)"
+        maxH="auto lg:940px"
         justify="center"
       >
         {/* the text column caps at the width its own copy wants, so the code
             sample sits next to the paragraphs instead of across a gap the
             growing column left behind */}
         <XStack
-          flexDirection="column gtMd:row"
+          flexDirection="column lg:row"
           items="center"
           justify="center"
-          gap="8"
+          gap="11"
           width="100%"
           maxW={HERO_ROW_WIDTH}
           mx="auto"
@@ -126,7 +126,7 @@ export default function TamaguiHomePage() {
           {/* maxW stays under the viewport on small screens: the row centers
               its children, so an uncapped 640px column would bleed off both
               edges instead of wrapping */}
-          <YStack flexGrow={1} flexShrink={1} gap="6" minW={0} maxW="100% gtMd:640px">
+          <YStack flexGrow={1} flexShrink={1} gap="8" minW={0} maxW="100% lg:640px">
             <EnsureFlexed />
             <XStack items="center" gap="4" mb="-4" mt="-3">
               <TamaguiIconSvg width={24} height={24} />
@@ -138,8 +138,8 @@ export default function TamaguiHomePage() {
             </XStack>
 
             <H1
-              fontSize="22px gtXs:24px gtMd:28px"
-              lineHeight="32px gtXs:36px gtMd:40px"
+              fontSize="22px sm:24px lg:28px"
+              lineHeight="32px sm:36px lg:40px"
               fontWeight="600"
               letterSpacing={-0.2}
               textWrap="balance"
@@ -218,7 +218,7 @@ export default function TamaguiHomePage() {
             </YStack>
           </YStack>
 
-          <YStack maxW="100% gtMd:640px" flexGrow={1} flexShrink={1}>
+          <YStack maxW="100% lg:640px" flexGrow={1} flexShrink={1}>
             <EnsureFlexed />
             <HomeStyleToggle />
           </YStack>
@@ -226,16 +226,16 @@ export default function TamaguiHomePage() {
       </YStack>
 
       <YStack
-        maxW="640px gtMd:none"
+        maxW="640px lg:none"
         render="section"
         width="100%"
         mx="auto"
         px="4"
-        pb="12 gtMd:16"
+        pb="88px lg:36"
       >
         {/* the hero row's width, so the heading and first column share the
             hero copy's left edge */}
-        <YStack self="center" width="100%" maxW={HERO_ROW_WIDTH} gap="5">
+        <YStack self="center" width="100%" maxW={HERO_ROW_WIDTH} gap="6">
           <H5 size="6" color="color-12" fontWeight="700">
             Featuring
           </H5>
@@ -246,7 +246,7 @@ export default function TamaguiHomePage() {
               times specificity and would otherwise hide the underline entirely */}
           <XStack className="link" flexWrap="wrap" rowGap="4">
             {features.map((parts, row) => (
-              <XStack key={row} width="100% gtMd:50%" items="flex-start" gap="2-5">
+              <XStack key={row} width="100% lg:50%" items="flex-start" gap="2-5">
                 <YStack y={2} flexShrink={0}>
                   <Check size={18} color="color-4" />
                 </YStack>

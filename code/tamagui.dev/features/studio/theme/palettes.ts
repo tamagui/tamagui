@@ -150,7 +150,9 @@ export const studioScales = {
   },
 } as const
 
-export function getStudioThemeTokens(palettes: Record<string, BuildPalette>) {
+export function getStudioThemeTokens(
+  palettes: Record<string, BuildPalette>
+): Record<string, string> {
   const sourcePalettes = palettes.accent
     ? palettes
     : { ...palettes, accent: palettes.base }

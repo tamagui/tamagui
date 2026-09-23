@@ -9,7 +9,7 @@ export const TakeoutLogo = () => {
   return (
     <YStack
       width="100%"
-      height="430px md:350px sm:250px xs:180px xxs:140px"
+      height="430px max-lg:350px max-md:250px max-sm:180px max-xs:140px"
       items="center"
       justify="center"
       position="relative"
@@ -25,7 +25,7 @@ export const TakeoutLogo = () => {
           whiteSpace="nowrap"
           minW={900}
           text="center"
-          scale="md:0.8 sm:0.55 xs:0.42 xxs:0.32"
+          scale="max-lg:0.8 max-md:0.55 max-sm:0.42 max-xs:0.32"
         >
           Take
           <br />

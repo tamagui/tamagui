@@ -285,7 +285,7 @@ export const PaletteView = memo((props: Props) => {
                   select="none"
                   text="right"
                   minW={60}
-                  px="2"
+                  px="1-5"
                   display="block"
                   fontWeight="bold"
                   size="9"

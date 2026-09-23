@@ -110,7 +110,7 @@ export const ExampleAnimations = memo(() => {
         position="relative"
         items="center"
         justify="center"
-        width="60% sm:100%"
+        width="60% max-md:100%"
       >
         <YStack position="absolute" inset={0} z={-1} bg="background" opacity={0.5} />
         {isIntersecting ? (
@@ -120,7 +120,7 @@ export const ExampleAnimations = memo(() => {
 
       <Separator vertical />
 
-      <YStack position="relative" display="sm:none" width="40%">
+      <YStack position="relative" display="max-md:none" width="40%">
         <YStack flex={1} bg="color-1">
           {animationDescriptions.map((item, i) => {
             const isActive = item === animation
@@ -129,7 +129,7 @@ export const ExampleAnimations = memo(() => {
                 key={item.name}
                 theme={isActive ? 'accent' : null}
                 px="4"
-                py="2"
+                py="1-5"
                 bg={isActive ? 'var(--color-2)' : 'var(--color-1)'}
                 borderColor="var(--border-color)"
                 cursor="pointer"

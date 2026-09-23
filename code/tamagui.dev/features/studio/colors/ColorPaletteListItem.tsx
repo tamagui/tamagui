@@ -45,12 +45,12 @@ export const ColorPaletteListItem = ({
       >
         <YStack p="3" width="100%" mt={-1}>
           {!hideTitle && (
-            <H5 size="2" select="none" cursor="default" z={10} mb="1">
+            <H5 size="2" select="none" cursor="default" z={10} mb="0-5">
               Palette: {scale?.name}
             </H5>
           )}
 
-          <YStack width="100%" position="relative" gap="2" z={100}>
+          <YStack width="100%" position="relative" gap="1-5" z={100}>
             {showOffsetIndicators && (
               <XStack>
                 {colors.map((_, index) => (
@@ -115,7 +115,7 @@ export const ColorPaletteListItem = ({
                   12
                 }
               >
-                <YStack height="100%" items="center" justify="flex-end" pb="2">
+                <YStack height="100%" items="center" justify="flex-end" pb="1-5">
                   <YStack
                     x={-14}
                     y={indicateActive < 0 ? -12 : 12}

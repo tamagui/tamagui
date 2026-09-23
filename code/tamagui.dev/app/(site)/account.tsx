@@ -43,11 +43,11 @@ export default function AccountPage() {
     <>
       <HeadInfo title="Account" />
 
-      <YStack mx="auto" maxW={640} width="100%" px="4" py="10" gap="6">
+      <YStack mx="auto" maxW={640} width="100%" px="4" py="14" gap="8">
         <H1 size="9">Account</H1>
 
         <XStack gap="4" items="center">
-          <Avatar circular size="6">
+          <Avatar circular size="16">
             <Avatar.Image
               source={{
                 width: 60,
@@ -59,7 +59,7 @@ export default function AccountPage() {
             />
           </Avatar>
 
-          <YStack flex={1} gap="1">
+          <YStack flex={1} gap="0-5">
             {userDetails?.full_name && <H3 size="6">{userDetails.full_name}</H3>}
             <Paragraph color="color-10">{user.email}</Paragraph>
             {githubUsername && (
@@ -127,7 +127,7 @@ const SubscriptionRow = ({ subscription }: { subscription: Subscription }) => {
 
   return (
     <YStack
-      gap="2"
+      gap="1-5"
       p="4"
       bg="color-2"
       rounded="4"

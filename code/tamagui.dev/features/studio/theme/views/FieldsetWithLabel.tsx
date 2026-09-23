@@ -78,7 +78,7 @@ export const FieldsetWithLabel = ({
             color="color-11"
             text="center"
             {...(tooltip && {
-              pr: '6',
+              pr: '8',
             })}
             render="label"
             size="5"
@@ -89,7 +89,7 @@ export const FieldsetWithLabel = ({
             {!!tooltip && (
               <TooltipSimple
                 label={
-                  <YStack p="2" maxW={200}>
+                  <YStack p="1-5" maxW={200}>
                     <Paragraph size="2" lineHeight="1">
                       {tooltip}
                     </Paragraph>
@@ -99,7 +99,7 @@ export const FieldsetWithLabel = ({
                 <Button
                   size="xs"
                   scaleIcon={1.2}
-                  ml="2"
+                  ml="1-5"
                   circular
                   rounded={100}
                   variant="quiet"
@@ -115,7 +115,7 @@ export const FieldsetWithLabel = ({
       </YStack>
 
       {!!afterLabel && (
-        <XStack position="absolute" t={0} r="4" z={200} bg="color-2" rounded="4" px="2">
+        <XStack position="absolute" t={0} r="4" z={200} bg="color-2" rounded="4" px="1-5">
           {afterLabel}
         </XStack>
       )}

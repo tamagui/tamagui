@@ -28,13 +28,13 @@ export const CurrentTask = () => {
         <H4 {...demoProps.headingFontFamilyProps}>Migrate to v2</H4>
       </YStack>
 
-      <Separator mb="2" />
+      <Separator mb="1-5" />
 
       <YStack flex={1} flexBasis="auto" gap="4">
-        <YStack gap="6">
+        <YStack gap="8">
           <XStack {...demoProps.gapPropsLg}>
             <XStack {...demoProps.gapPropsMd}>
-              <Avatar circular size="3" {...demoProps.borderRadiusProps}>
+              <Avatar circular size="9" {...demoProps.borderRadiusProps}>
                 <Avatar.Image src="https://i.pravatar.cc/300?u=janeee" />
               </Avatar>
               <Paragraph size="3">Jane Doe</Paragraph>
@@ -78,7 +78,7 @@ const TaskSection = ({
 
   return (
     <YStack {...props} {...demoProps.gapPropsMd}>
-      <H6 {...demoProps.headingFontFamilyProps} color="color-9" mb="-2" size="1">
+      <H6 {...demoProps.headingFontFamilyProps} color="color-9" mb="-1-5" size="1">
         {title}
       </H6>
       {children}

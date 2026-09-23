@@ -24,9 +24,9 @@ export default function DemoPage() {
   if (!demoName) {
     return (
       <Theme name="light">
-        <YStack flex={1} items="center" justify="center" p="6" bg="background">
+        <YStack flex={1} items="center" justify="center" p="8" bg="background">
           <H2>No demo specified</H2>
-          <Paragraph color="color-10" mt="2">
+          <Paragraph color="color-10" mt="1-5">
             Try /demo/Menu or /demo/Button
           </Paragraph>
         </YStack>
@@ -42,12 +42,12 @@ export default function DemoPage() {
   if (!DemoComponent) {
     return (
       <Theme name="light">
-        <YStack flex={1} items="center" justify="center" p="6" bg="background">
+        <YStack flex={1} items="center" justify="center" p="8" bg="background">
           <H2>Demo not found</H2>
-          <Paragraph color="color-10" mt="2">
+          <Paragraph color="color-10" mt="1-5">
             Could not find {componentName}
           </Paragraph>
-          <Paragraph color="color-9" mt="2">
+          <Paragraph color="color-9" mt="1-5">
             Try /demo/Menu or /demo/Button
           </Paragraph>
         </YStack>
@@ -57,7 +57,7 @@ export default function DemoPage() {
 
   return (
     <Theme name="light">
-      <YStack flex={1} items="center" justify="center" p="6" bg="background" minH="100vh">
+      <YStack flex={1} items="center" justify="center" p="8" bg="background" minH="100vh">
         <YStack width="100%" maxW={1200}>
           <H2 mb="4">{componentName}</H2>
           <DemoComponent />

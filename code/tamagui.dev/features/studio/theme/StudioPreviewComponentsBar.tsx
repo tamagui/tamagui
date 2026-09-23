@@ -170,7 +170,7 @@ export function BorderRadiusInput() {
         boxShadow="0 4px 12px shadow-color"
         rounded="4"
         px="2-5"
-        py="1"
+        py="0-5"
         y="enter:-4px exit:-4px"
         opacity="enter:0 exit:0"
       >
@@ -270,7 +270,7 @@ export function BorderWidthInput() {
         boxShadow="0 4px 12px shadow-color"
         rounded="4"
         px="2-5"
-        py="1"
+        py="0-5"
         y="enter:-4px exit:-4px"
         opacity="enter:0 exit:0"
       >
@@ -341,7 +341,7 @@ export function FontFamilyInput() {
         boxShadow="0 4px 12px shadow-color"
         rounded="4"
         px="2-5"
-        py="1"
+        py="0-5"
         y="enter:-4px exit:-4px"
         opacity="enter:0 exit:0"
       >
@@ -419,7 +419,7 @@ export function FillStyleInput() {
         boxShadow="0 4px 12px shadow-color"
         rounded="4"
         px="2-5"
-        py="1"
+        py="0-5"
         y="enter:-4px exit:-4px"
         opacity="enter:0 exit:0"
       >
@@ -522,7 +522,7 @@ export function ElevationInput() {
         boxShadow="0 4px 12px shadow-color"
         rounded="4"
         px="2-5"
-        py="1"
+        py="0-5"
         y="enter:-4px exit:-4px"
         opacity="enter:0 exit:0"
       >
@@ -566,7 +566,7 @@ export function SpacingInput() {
                 <ToggleGroupItem value="sm" aria-label="Small Padding">
                   <Square
                     rounded="1"
-                    borderWidth="0-5"
+                    borderWidth="px"
                     borderColor="color"
                     position="relative"
                     size={10}
@@ -588,7 +588,7 @@ export function SpacingInput() {
                 <ToggleGroupItem value="md" aria-label="Medium Padding">
                   <Square
                     rounded="1"
-                    borderWidth="0-5"
+                    borderWidth="px"
                     borderColor="color"
                     position="relative"
                     size={10}
@@ -610,7 +610,7 @@ export function SpacingInput() {
                 <ToggleGroupItem value="lg" aria-label="Large Padding">
                   <Square
                     rounded="1"
-                    borderWidth="0-5"
+                    borderWidth="px"
                     borderColor="color"
                     position="relative"
                     size={10}
@@ -632,7 +632,7 @@ export function SpacingInput() {
         boxShadow="0 4px 12px shadow-color"
         rounded="4"
         px="2-5"
-        py="1"
+        py="0-5"
         y="enter:-4px exit:-4px"
         opacity="enter:0 exit:0"
       >
@@ -708,7 +708,7 @@ export function TextAccentInput() {
         boxShadow="0 4px 12px shadow-color"
         rounded="4"
         px="2-5"
-        py="1"
+        py="0-5"
         y="enter:-4px exit:-4px"
         opacity="enter:0 exit:0"
       >
@@ -750,7 +750,7 @@ export function BackgroundAccentInput() {
             <XStack>
               <XGroup.Item>
                 <ToggleGroupItem value="high" aria-label="Soft Background Accent" p="0">
-                  <XStack items="center" gap="1">
+                  <XStack items="center" gap="0-5">
                     <Square size={8} bg="color" opacity={0.5} />
                   </XStack>
                 </ToggleGroupItem>
@@ -766,7 +766,7 @@ export function BackgroundAccentInput() {
             <XStack>
               <XGroup.Item>
                 <ToggleGroupItem value="low" aria-label="Normal Background Accent" p="0">
-                  <XStack items="center" gap="1">
+                  <XStack items="center" gap="0-5">
                     <Square size={8} bg="color" />
                   </XStack>
                 </ToggleGroupItem>
@@ -784,7 +784,7 @@ export function BackgroundAccentInput() {
         boxShadow="0 4px 12px shadow-color"
         rounded="4"
         px="2-5"
-        py="1"
+        py="0-5"
         y="enter:-4px exit:-4px"
         opacity="enter:0 exit:0"
       >

@@ -46,16 +46,16 @@ export function DocsPageFrame({
           syntax and version controls share the loader data and render in SSR. */}
       <View
         className="is-sticky"
-        display="none gtMd:flex"
-        position="gtMd:sticky"
-        t="gtMd:28px"
-        height="gtMd:calc(100vh - 28px)"
-        width="gtMd:220px"
-        shrink="gtMd:0px"
-        alignSelf="gtMd:flex-start"
+        display="none lg:flex"
+        position="lg:sticky"
+        t="lg:28px"
+        height="lg:calc(100vh - 28px)"
+        width="lg:220px"
+        shrink="lg:0px"
+        alignSelf="lg:flex-start"
       >
         <ScrollView showsVerticalScrollIndicator={false}>
-          <YStack pt={36} pb="18" px="2">
+          <YStack pt={36} pb="40" px="1-5">
             <DocsMenuContents
               header={
                 <DocsVersionLinks
@@ -69,7 +69,7 @@ export function DocsPageFrame({
       </View>
 
       {/* main content */}
-      <YStack render="main" flex={1} minW={0} flexBasis="auto" py="8" px="4 gtSm:6">
+      <YStack render="main" flex={1} minW={0} flexBasis="auto" py="11" px="4 md:8">
         <YStack
           render="article"
           role="tabpanel"
@@ -88,10 +88,10 @@ export function DocsPageFrame({
             {syntaxes.length > 1 && (
               <XStack
                 justify="flex-end"
-                mb="4 gtMd:0"
-                position="gtMd:absolute"
-                t="gtMd:0px"
-                r="gtMd:0px"
+                mb="4 lg:0"
+                position="lg:absolute"
+                t="lg:0px"
+                r="lg:0px"
                 z={1}
               >
                 <DocsSyntaxPicker syntaxes={syntaxes} />
@@ -106,7 +106,7 @@ export function DocsPageFrame({
             {(previous || next) && (
               <XStack
                 aria-label="Pagination navigation"
-                my="9"
+                my="14"
                 justify="space-between"
                 gap="4"
               >
@@ -119,7 +119,7 @@ export function DocsPageFrame({
                       borderColor="border-color hover:color-5"
                       flex={1}
                       width="50%"
-                      p="5"
+                      p="6"
                       rounded="3"
                       borderWidth={1}
                       items="center"
@@ -129,7 +129,7 @@ export function DocsPageFrame({
                     >
                       <View
                         opacity="0 group-hover/card:1"
-                        x="-2 group-hover/card:0"
+                        x="-1-5 group-hover/card:0"
                         transition="quickest"
                       >
                         <ChevronLeft color="color-11" />
@@ -154,7 +154,7 @@ export function DocsPageFrame({
                       borderColor="border-color hover:color-5"
                       flex={1}
                       width="50%"
-                      p="5"
+                      p="6"
                       rounded="3"
                       borderWidth={1}
                       items="center"
@@ -174,7 +174,7 @@ export function DocsPageFrame({
 
                       <View
                         opacity="0 group-hover/card:1"
-                        x="2 group-hover/card:0"
+                        x="1-5 group-hover/card:0"
                         transition="quickest"
                       >
                         <ChevronRight color="color-11" />

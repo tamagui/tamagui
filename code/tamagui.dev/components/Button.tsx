@@ -23,11 +23,11 @@ const ButtonContext = createStyledContext<{ size?: ButtonSize }>({ size: 'md' })
 // old v5 size recipe resolved: xs is 12/19 type on 7/4 padding, sm 13/21 on
 // 13/7, md 14/22 on 18/7, lg 16/25 on 24/10, xl 18/27 on 32/13
 const buttonFrameSize = {
-  xs: { paddingInline: '2', paddingBlock: '1-5', borderRadius: '2', gap: '1-5' },
-  sm: { paddingInline: '3', paddingBlock: '2', borderRadius: '3', gap: '2' },
-  md: { paddingInline: '4', paddingBlock: '2', borderRadius: '4', gap: '2' },
-  lg: { paddingInline: '5', paddingBlock: '2-5', borderRadius: '5', gap: '2-5' },
-  xl: { paddingInline: '6', paddingBlock: '3', borderRadius: '6', gap: '3' },
+  xs: { paddingInline: '1-5', paddingBlock: '1', borderRadius: '2', gap: '1' },
+  sm: { paddingInline: '3', paddingBlock: '1-5', borderRadius: '3', gap: '1-5' },
+  md: { paddingInline: '4', paddingBlock: '1-5', borderRadius: '4', gap: '1-5' },
+  lg: { paddingInline: '6', paddingBlock: '2-5', borderRadius: '5', gap: '2-5' },
+  xl: { paddingInline: '8', paddingBlock: '3', borderRadius: '6', gap: '3' },
 } as const
 
 const buttonTextSize = {

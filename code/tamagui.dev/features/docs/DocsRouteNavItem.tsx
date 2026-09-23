@@ -42,7 +42,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
         items="center"
         justify="flex-start"
         px="4"
-        py="1-5"
+        py="1"
         opacity={pending ? 0.25 : 1}
         bg="hover:background-06 press:background-04"
         pointerEvents={pending ? 'none' : ('inherit' as any)}
@@ -76,7 +76,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
         >
           {children}
           {isExternal && (
-            <SizableText render="span" display="inline-flex" ml="2" y={2}>
+            <SizableText render="span" display="inline-flex" ml="1-5" y={2}>
               <ExternalLink
                 size={13}
                 color="var(--color)"
@@ -98,8 +98,8 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
             <XStack flex={1} />
             <SizableText
               color="color-9"
-              px="2"
-              py="1"
+              px="1-5"
+              py="0-5"
               bg="background"
               rounded="3"
               size="1"

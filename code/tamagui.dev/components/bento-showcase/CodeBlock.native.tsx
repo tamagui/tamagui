@@ -9,7 +9,7 @@ const Code = styled(Paragraph, {
   lineHeight: '18px',
   cursor: 'inherit',
   whiteSpace: 'pre',
-  p: '1',
+  p: '0-5',
   rounded: '4',
   size: '3',
   variants: {

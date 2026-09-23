@@ -98,7 +98,7 @@ export function DocsVersionLinks({
   if (!isDocsPath) return null
 
   return (
-    <YStack gap="2" width="100%">
+    <YStack gap="1-5" width="100%">
       <XStack gap="3" items="center">
         {docsProductVersions.map((version) => (
           <Link
@@ -160,8 +160,8 @@ export function PickerSelect({
         aria-label={label}
         flex={1}
         height={28}
-        paddingHorizontal="2"
-        gap="1"
+        paddingHorizontal="1-5"
+        gap="0-5"
         backgroundColor="color-1"
         borderWidth={1}
         borderColor="border-color"
@@ -181,7 +181,7 @@ export function PickerSelect({
           borderColor="border-color"
           borderRadius="3"
           bg="background"
-          padding="1"
+          padding="0-5"
           boxShadow="0 12px 28px rgba(0, 0, 0, 0.18)"
         >
           <Select.Group>

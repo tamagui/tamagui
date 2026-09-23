@@ -61,7 +61,7 @@ export function HeroContainer({
       {...(noPad && {
         py: 0,
       })}
-      mx={smaller ? 'gtMd:0' : 'gtMd:-4'}
+      mx={smaller ? 'lg:0' : 'lg:-4'}
       id="tamagui-demos-container"
     >
       <AnimationDriverTogglerContextProvider>
@@ -76,11 +76,11 @@ export function HeroContainer({
         {showAnimationDriverControl && (
           <XStack
             position="absolute"
-            display="inline-flex xxs:none"
+            display="inline-flex max-xs:none"
             items="center"
             justify="space-between"
             t={16}
-            l="3 gtMd:4"
+            l="3 lg:4"
           >
             <AnimationControl />
           </XStack>
@@ -129,7 +129,7 @@ const AnimationControl = () => {
       placement="top"
       label={`Animations: ${niceNames[animationDriverToggler.driverName]}`}
     >
-      <XStack gap="2" items="center">
+      <XStack gap="1-5" items="center">
         <Timer size={14} opacity={0.6} />
         <Switch
           size="1"
@@ -162,7 +162,7 @@ const HeroContainerInner = ({
     <Configuration animationDriver={driver} key={driverName}>
       <ErrorBoundary>
         {demoMultiple ? (
-          <XStack gap="3" px="8">
+          <XStack gap="3" px="11">
             <Theme name="gray">
               <Card>{children}</Card>
             </Theme>

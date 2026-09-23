@@ -1,11 +1,11 @@
 import { H1, H2, H3, styled } from 'tamagui'
 
 export const HomeH1 = styled(H1, {
-  mb: '2',
+  mb: '1-5',
   color: 'color-11',
-  fontSize: 'gtSm:10',
-  lineHeight: 'gtSm:10',
-  maxW: 'gtSm:90%',
+  fontSize: 'md:10',
+  lineHeight: 'md:10',
+  maxW: 'md:90%',
   className: 'word-break-keep-all',
   size: '9',
 })
@@ -16,9 +16,9 @@ export const HomeH2 = styled(H2, {
   text: 'center',
   self: 'center',
   maxW: 720,
-  mt: '-2',
-  fontSize: 'sm:10 xs:9',
-  lineHeight: 'sm:10 xs:9',
+  mt: '-1-5',
+  fontSize: 'max-md:10 max-sm:9',
+  lineHeight: 'max-md:10 max-sm:9',
   size: '10',
 })
 
@@ -26,14 +26,14 @@ export const HomeH3 = styled(H3, {
   className: 'word-break-keep-all',
   size: '8',
   text: 'center',
-  color: 'color-10 sm:color',
+  color: 'color-10 max-md:color',
   self: 'center',
   px: 20,
   opacity: 0.9,
   maxW: 720,
-  fontSize: 'sm:6',
-  lineHeight: 'sm:6',
-  fontWeight: 'sm:400',
-  textTransform: 'sm:none',
+  fontSize: 'max-md:6',
+  lineHeight: 'max-md:6',
+  fontWeight: 'max-md:400',
+  textTransform: 'max-md:none',
   displayName: 'HomeH3',
 })

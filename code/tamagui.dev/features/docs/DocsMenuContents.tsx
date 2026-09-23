@@ -227,7 +227,7 @@ const AccordionSection = ({
   currentPath: string
 }) => {
   const content = (
-    <YStack paddingHorizontal="2" paddingTop="0-5" paddingBottom="4">
+    <YStack paddingHorizontal="1-5" paddingTop="px" paddingBottom="4">
       {items.map(({ page }, index) => {
         return (
           <DocsRouteNavItem
@@ -247,7 +247,7 @@ const AccordionSection = ({
 
   // no title = top-level items, render without accordion
   if (!section?.title) {
-    return <YStack marginBottom="2">{content}</YStack>
+    return <YStack marginBottom="1-5">{content}</YStack>
   }
 
   return (
@@ -258,13 +258,13 @@ const AccordionSection = ({
         backgroundColor="transparent hover:color-2 press:color-1"
         borderWidth={0}
         borderRadius="4"
-        marginHorizontal="2"
-        marginBottom="0-5"
+        marginHorizontal="1-5"
+        marginBottom="px"
       >
         {({ open }) => {
           return (
             <XStack
-              paddingVertical="1-5"
+              paddingVertical="1"
               paddingHorizontal="4"
               justifyContent="space-between"
               alignItems="center"
@@ -279,7 +279,7 @@ const AccordionSection = ({
                 opacity="0.2 group-hover/docs-section:0.6 group-focus-visible/docs-section:1"
                 rotate={open ? '180deg' : '0deg'}
               >
-                <ChevronDown color="color-8" size="1" />
+                <ChevronDown color="color-8" size="5" />
               </YStack>
             </XStack>
           )

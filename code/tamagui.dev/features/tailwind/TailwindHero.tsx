@@ -22,7 +22,7 @@ function HeroCode() {
           fontFamily="mono"
           whiteSpace="pre"
           lineHeight="6"
-          px="5"
+          px="6"
           py="4"
           size="4"
         >
@@ -54,7 +54,7 @@ export function TailwindHero() {
         opacity={0.6}
       />
 
-      <ContainerLarge pt="13" pb="8" gap="6" items="center">
+      <ContainerLarge pt="24" pb="11" gap="8" items="center">
         <Paragraph color="accent-7" letterSpacing={1} textTransform="uppercase" size="3">
           Tamagui v3
         </Paragraph>
@@ -78,7 +78,7 @@ export function TailwindHero() {
 
         <HeroCode />
 
-        <XStack gap="3" items="center" flexWrap="wrap" justify="center" pt="2">
+        <XStack gap="3" items="center" flexWrap="wrap" justify="center" pt="1-5">
           <ButtonLink
             href={'/tailwind/intro/introduction' as Href}
             theme="accent"

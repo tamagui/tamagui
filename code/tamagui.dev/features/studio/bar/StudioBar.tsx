@@ -29,7 +29,7 @@ export const StudioBar = memo(function Header() {
       position="fixed"
       self="center"
       items="center"
-      px="5"
+      px="6"
       rounded="10"
       overflow="hidden"
       gap="3"
@@ -41,8 +41,8 @@ export const StudioBar = memo(function Header() {
             b: '2-5',
           }
         : {
-            right: '2',
-            top: '2',
+            right: '1-5',
+            top: '1-5',
           })}
       maxW={192}
       data-tauri-drag-region
@@ -58,7 +58,7 @@ export const StudioBar = memo(function Header() {
         borderWidth={1}
         borderColor="border-color"
       />
-      <XStack mr="2">
+      <XStack mr="1-5">
         <LogoIcon downscale={2.5} />
       </XStack>
 
@@ -78,7 +78,7 @@ export const ThemeSwitch = memo(() => {
   return (
     <Popover open={tipOpen} stayInFrame={{ padding: 10 }}>
       <Popover.Trigger>
-        <XStack mx="2" items="center">
+        <XStack mx="1-5" items="center">
           <Switch
             checked={isLight}
             size="2"
@@ -180,8 +180,8 @@ export const ThemeSwitch = memo(() => {
           size="xs"
           circular
           position="absolute"
-          t="-2"
-          r="-2"
+          t="-1-5"
+          r="-1-5"
           icon={X}
           onPress={() => {
             themeBuilderStore.themeSwitchOpen = false

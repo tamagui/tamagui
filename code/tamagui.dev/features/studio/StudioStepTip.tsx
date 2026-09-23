@@ -37,8 +37,8 @@ export function StudioStepTip() {
       scaleIcon={1.2}
       circular
       icon={Lightbulb}
-      my="-1"
-      ml="2"
+      my="-0-5"
+      ml="1-5"
       onPress={() => {
         setShow(!show)
       }}

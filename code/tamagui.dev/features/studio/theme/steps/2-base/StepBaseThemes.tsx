@@ -42,7 +42,7 @@ export const StepBaseThemes = (_props: StepBaseThemesProps) => {
       overflow="hidden"
       gap="3"
       py="3"
-      px="2"
+      px="1-5"
     >
       {Object.entries(store.palettes).map(([name, palette]) => {
         const isAccent = name === 'accent'
@@ -51,7 +51,7 @@ export const StepBaseThemes = (_props: StepBaseThemesProps) => {
             key={name}
             label={name}
             afterLabel={
-              <XStack gap="2" items="center">
+              <XStack gap="1-5" items="center">
                 {isAccent && (
                   <Select
                     size="2"
@@ -321,7 +321,7 @@ const PaletteView = memo((props: Props) => {
           shouldDim={lightDarkSynced && isDark}
         />
 
-        <YStack py="2">{syncButtons}</YStack>
+        <YStack py="1-5">{syncButtons}</YStack>
 
         <XLabeledItem label={<SizableText size="4">Light</SizableText>}>
           <StepThemeHoverablePalette
@@ -345,7 +345,7 @@ const PaletteView = memo((props: Props) => {
                   select="none"
                   text="right"
                   minW={60}
-                  px="2"
+                  px="1-5"
                   display="block"
                   fontWeight="bold"
                   size="9"
@@ -401,7 +401,7 @@ const PaletteView = memo((props: Props) => {
           />
         </XLabeledItem>
 
-        <YStack py="2">{syncButtons}</YStack>
+        <YStack py="1-5">{syncButtons}</YStack>
 
         <ColorPickerContents
           isActive={isDark}
@@ -608,7 +608,7 @@ export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
         boxShadow="0 4px 12px shadow-color"
         rounded="4"
         px="2-5"
-        py="1"
+        py="0-5"
         y="enter:4px exit:4px"
         opacity="enter:0 exit:0"
       >

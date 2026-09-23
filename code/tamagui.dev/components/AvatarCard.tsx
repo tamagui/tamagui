@@ -14,8 +14,8 @@ export function AvatarCard({ title, subtitle, img, link, colorOffset, ...props }
           render="a"
           transition="quickest"
           flex={1}
-          width="19"
-          height="11"
+          width="64"
+          height="32"
           y="0 hover:-2px press:2px"
           bg="hover:background-hover press:color-2"
           {...props}
@@ -28,12 +28,12 @@ export function AvatarCard({ title, subtitle, img, link, colorOffset, ...props }
                 <H5 size="6" color="color-9">
                   {title}
                 </H5>
-                <Paragraph width="19" lineHeight="1" color="color-8">
+                <Paragraph width="64" lineHeight="1" color="color-8">
                   {subtitle}
                 </Paragraph>
               </YStack>
 
-              <Avatar rounded="4" p="3" bg="color-6" size="3">
+              <Avatar rounded="4" p="3" bg="color-6" size="9">
                 <Avatar.Image scale={0.6} src={img} />
                 <Avatar.Fallback bg="color-6" borderColor="color-8" />
               </Avatar>
@@ -41,7 +41,7 @@ export function AvatarCard({ title, subtitle, img, link, colorOffset, ...props }
           </Card.Header>
 
           <Card.Footer transition="quicker" x={isHovered ? 5 : 0}>
-            <ChevronRight size="1" position="absolute" b="4" r="4" color="color-11" />
+            <ChevronRight size="5" position="absolute" b="4" r="4" color="color-11" />
           </Card.Footer>
         </Card>
       </Link>

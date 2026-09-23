@@ -6,7 +6,7 @@ import { CodeInline } from './Code'
 
 export const Features = ({ items, size, large, soon, ...props }: any) => {
   return (
-    <YStack render="ul" className="tm-list-plain" mt={0} mb="2" {...props} gap="0-5">
+    <YStack render="ul" className="tm-list-plain" mt={0} mb="1-5" {...props} gap="px">
       {items.map((feature, i) => (
         <XStack render="li" key={i}>
           <YStack y={1} mt={large ? 1 : -2}>

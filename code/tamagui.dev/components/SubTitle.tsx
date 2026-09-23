@@ -27,13 +27,13 @@ export const SubTitle = ({ children, ...props }) => {
       position="relative"
       maxW="100%"
       color="color-8"
-      width="100% gtSm:max-content"
+      width="100% md:max-content"
       size="7"
       fontSize={20}
       lineHeight="28px"
       fontWeight="400"
       letterSpacing={-0.2}
-      pb="2"
+      pb="1-5"
       mb="4"
       textWrap="web:balance"
       render="p"

@@ -25,7 +25,15 @@ export const SizeController = createStyledHOC(
     }
     return (
       <Theme name="accent">
-        <YGroup ref={ref} justify="center" items="center" r={0} b={0} gap="1" {...props}>
+        <YGroup
+          ref={ref}
+          justify="center"
+          items="center"
+          r={0}
+          b={0}
+          gap="0-5"
+          {...props}
+        >
           <YGroup.Item>
             <Button
               size="sm"

@@ -40,8 +40,8 @@ export function Color({
           bg={hex as any}
           rounded="2"
         />
-        <XStack overflow="hidden" flex={1} gap="2">
-          <XStack items="center" gap="2">
+        <XStack overflow="hidden" flex={1} gap="1-5">
+          <XStack items="center" gap="1-5">
             <Label size="2" htmlFor="color-hue">
               {scale.curves.hue ? 'H offset' : 'H'}
             </Label>
@@ -62,7 +62,7 @@ export function Color({
               }}
             />
           </XStack>
-          <XStack items="center" gap="2">
+          <XStack items="center" gap="1-5">
             <Label size="2" htmlFor="color-saturation">
               {scale.curves.saturation ? 'S offset' : 'S'}
             </Label>
@@ -83,7 +83,7 @@ export function Color({
               }}
             />
           </XStack>
-          <XStack items="center" gap="2">
+          <XStack items="center" gap="1-5">
             <Label size="2" htmlFor="color-lightness">
               {scale.curves.lightness ? 'L offset' : 'L'}
             </Label>

@@ -39,7 +39,7 @@ export function OwnedSourceBlock({ source }: { source: OwnedSource }) {
     <YStack
       testID="owned-source"
       gap="3"
-      mt="6"
+      mt="8"
       p="4"
       rounded="4"
       borderWidth={1}
@@ -58,8 +58,8 @@ export function OwnedSourceBlock({ source }: { source: OwnedSource }) {
         examples above import from your copy.
       </Paragraph>
 
-      <XStack items="center" gap="2">
-        <FileCode2 size="1" color="color-11" />
+      <XStack items="center" gap="1-5">
+        <FileCode2 size="5" color="color-11" />
         <Code fontSize="2">{source.target}</Code>
         <XStack ml="auto">
           <Button
@@ -70,7 +70,7 @@ export function OwnedSourceBlock({ source }: { source: OwnedSource }) {
             minHeight={28}
             display="inline-flex"
             variant="outlined"
-            borderWidth="0-5"
+            borderWidth="px"
             icon={hasCopied ? CheckCircle : Copy}
             onPress={() => onCopy()}
           >
@@ -98,7 +98,7 @@ export function OwnedSourceBlock({ source }: { source: OwnedSource }) {
       </Pre>
 
       {source.copies.length > 1 && (
-        <YStack gap="1">
+        <YStack gap="0-5">
           <Paragraph size="2" fontWeight="600">
             Also copy
           </Paragraph>
@@ -114,11 +114,11 @@ export function OwnedSourceBlock({ source }: { source: OwnedSource }) {
       )}
 
       {install && (
-        <YStack gap="1">
+        <YStack gap="0-5">
           <Paragraph size="2" fontWeight="600">
             Dependencies
           </Paragraph>
-          <XStack items="center" gap="2">
+          <XStack items="center" gap="1-5">
             <Code fontSize="2" flex={1}>
               {install}
             </Code>
@@ -129,7 +129,7 @@ export function OwnedSourceBlock({ source }: { source: OwnedSource }) {
               height={28}
               minHeight={28}
               variant="outlined"
-              borderWidth="0-5"
+              borderWidth="px"
               icon={installClipboard.hasCopied ? CheckCircle : Copy}
               onPress={() => installClipboard.onCopy()}
             >

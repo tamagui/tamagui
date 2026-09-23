@@ -106,9 +106,9 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     panelPaddingProps: {
       padding:
         demosOptions.spacing === 'lg'
-          ? ('7' as const)
+          ? ('10' as const)
           : demosOptions.spacing === 'md'
-            ? ('5' as const)
+            ? ('6' as const)
             : ('4' as const),
     } as const,
 
@@ -118,13 +118,13 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
           ? ('4' as const)
           : demosOptions.spacing === 'md'
             ? ('3' as const)
-            : ('2' as const),
+            : ('1-5' as const),
     } as const,
 
     gapPropsLg: {
       gap:
         demosOptions.spacing === 'lg'
-          ? ('5' as const)
+          ? ('6' as const)
           : demosOptions.spacing === 'md'
             ? ('4' as const)
             : ('3' as const),

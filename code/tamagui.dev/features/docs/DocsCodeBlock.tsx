@@ -70,8 +70,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
         minHeight={28}
         display="inline-flex"
         variant="outlined"
-        borderWidth="0-5"
-        opacity="0 sm:1 group-hover/code:1"
+        borderWidth="px"
+        opacity="0 max-md:1 group-hover/code:1"
         transition="quickest"
         icon={hasCopied ? CheckCircle : Copy}
         onPress={() => {
@@ -80,7 +80,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
       >
         {/* icon only on small screens, where it is always shown and would
             otherwise cover the end of the first line */}
-        <Button.Text display="flex sm:none">Copy</Button.Text>
+        <Button.Text display="flex max-md:none">Copy</Button.Text>
       </Button>
     </TooltipSimple>
   )
@@ -92,19 +92,19 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
       mb="4"
       {...(isHero && {
         px: '4',
-        mx: '-4 gtMd:-7',
+        mx: '-4 lg:-10',
       })}
     >
       <ErrorBoundary>
         {isCollapsible && (
           <XStack
-            gap="2"
+            gap="1-5"
             position="absolute"
             display="inline-flex"
             items="center"
             justify="flex-end"
             t={-82}
-            r="6"
+            r="8"
             z={0}
           >
             <Button
@@ -153,18 +153,18 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               {showFileName && !showTabs && (
                 <XStack
                   items="center"
-                  gap="2"
+                  gap="1-5"
                   pl="4"
                   pr="3"
-                  height="5"
+                  height="12"
                   py="4"
-                  borderBottomWidth="0-5"
+                  borderBottomWidth="px"
                   borderBottomColor="color-3"
                 >
                   {isTerminalCommand ? (
-                    <TerminalSquare size="1" color="color-11" />
+                    <TerminalSquare size="5" color="color-11" />
                   ) : (
-                    <FileCode2 size="1" color="color-11" />
+                    <FileCode2 size="5" color="color-11" />
                   )}
                   <Paragraph color="color-11">
                     {isTerminalCommand ? 'Terminal' : fileName}

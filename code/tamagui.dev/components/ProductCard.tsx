@@ -37,8 +37,8 @@ export function ProductCard({ product, children, ...props }) {
         items="center"
         justify="center"
         width="55%"
-        minW="20"
-        height="17"
+        minW="72"
+        height="56"
         mx="auto"
         p={0}
         rounded="4"
@@ -65,15 +65,15 @@ export function ProductCard({ product, children, ...props }) {
             position="absolute"
             self="flex-end"
             transition="quicker"
-            y="-10 lg:-6 group-hover/card:-4-5"
-            x="-0-25 group-hover/card:-3-5"
+            y="-14 max-xl:-8 group-hover/card:-5"
+            x="-0.5px group-hover/card:-4"
             rotate="-5deg group-hover/card:0deg"
             scale="1 group-hover/card:1.15"
           >
             {Icon}
           </View>
           <Card.Header>
-            <YStack items="center" gap="5" p="5">
+            <YStack items="center" gap="6" p="6">
               <H3>{title}</H3>
               <Paragraph size="5" color="color-10">
                 {childText}
@@ -83,9 +83,9 @@ export function ProductCard({ product, children, ...props }) {
 
           <Card.Footer transition="quicker" x="0 group-hover/card:5px">
             <ChevronRight
-              size="1"
+              size="5"
               position="absolute"
-              mb="-5"
+              mb="-6"
               b="4"
               r="4"
               color="color-11"

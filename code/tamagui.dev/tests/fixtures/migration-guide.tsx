@@ -50,7 +50,7 @@ const appTabActive = style({ backgroundColor: 'background-press' })
 
 export const AppTab = styled(Tabs.Tab, {
   paddingHorizontal: '3',
-  paddingVertical: '2',
+  paddingVertical: '1-5',
   activeStyle: appTabActive,
 })
 
@@ -218,7 +218,7 @@ export const Circle = styled(YStack, {
 
 export type CircleProps = GetProps<typeof Circle>
 
-export const CircleUsage = () => <Circle size="10" />
+export const CircleUsage = () => <Circle size="24" />
 
 // §6 — numeric vs exact-px font size. the guide also shows fontSize="17px"
 // (an exact px passthrough); the numeric

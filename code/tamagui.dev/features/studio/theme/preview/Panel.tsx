@@ -86,8 +86,8 @@ export function Panel({
           position="absolute"
           opacity={hovered ? 1 : 0}
           transition="100ms"
-          r="-2"
-          t="-2"
+          r="-1-5"
+          t="-1-5"
           z={100}
         >
           <Popover allowFlip placement="bottom">
@@ -99,7 +99,7 @@ export function Panel({
                 }}
                 size="sm"
                 circular
-                icon={<MoreVertical size="1" />}
+                icon={<MoreVertical size="5" />}
               />
             </Popover.Trigger>
 
@@ -140,7 +140,7 @@ export function Panel({
                     gap="3"
                     onPress={() => setAccent((val) => !val)}
                   >
-                    <Paragraph size="3" mr="2" text="left" select="none">
+                    <Paragraph size="3" mr="1-5" text="left" select="none">
                       Accent
                     </Paragraph>
 

@@ -31,12 +31,12 @@ export function Palettes({
         <XStack
           bg="background"
           pointerEvents="none"
-          py="1"
-          px="2"
+          py="0-5"
+          px="1-5"
           justify="space-between"
           items="center"
         >
-          <XStack items="center" gap="1">
+          <XStack items="center" gap="0-5">
             <ArrowLeft opacity={0.33} size={12} />
             <Paragraph size="1">Background</Paragraph>
           </XStack>
@@ -50,18 +50,18 @@ export function Palettes({
               gap="4"
               justify="center"
             >
-              <XStack y={0} items="center" gap="1">
+              <XStack y={0} items="center" gap="0-5">
                 <ArrowUp opacity={0.33} size={12} />
                 <Paragraph size="1">Light</Paragraph>
               </XStack>
-              <XStack y={0} items="center" gap="1">
+              <XStack y={0} items="center" gap="0-5">
                 <Paragraph size="1">Dark</Paragraph>
                 <ArrowDown opacity={0.33} size={12} />
               </XStack>
             </XStack>
           )}
 
-          <XStack items="center" gap="1">
+          <XStack items="center" gap="0-5">
             <Paragraph size="1">Foreground</Paragraph>
             <ArrowRight opacity={0.33} size={12} />
           </XStack>

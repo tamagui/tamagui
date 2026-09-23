@@ -15,7 +15,7 @@ export const StatisticsBarScreen = memo(() => {
       borderColor="color-3"
     >
       <YStack
-        borderBottomWidth="0-25"
+        borderBottomWidth="0.5px"
         borderBottomColor="border-color"
         paddingBottom="0"
         paddingTop="0"
@@ -23,19 +23,19 @@ export const StatisticsBarScreen = memo(() => {
         paddingLeft="0"
       >
         <XStack justify="space-between">
-          <YStack gap="2">
+          <YStack gap="1-5">
             <H4 {...demoProps.headingFontFamilyProps} mt="0" color="color-11">
               New user sign-ups
             </H4>
             <H4 size="10">+1,200</H4>
-            <Paragraph mt="2" {...demoProps.panelDescriptionProps} fontSize="3">
+            <Paragraph mt="1-5" {...demoProps.panelDescriptionProps} fontSize="3">
               Data from the past 6 months
             </Paragraph>
           </YStack>
         </XStack>
       </YStack>
 
-      <YStack flex={1} flexBasis="auto" gap="6" mx="-4" justify="space-around">
+      <YStack flex={1} flexBasis="auto" gap="8" mx="-4" justify="space-around">
         <XStack maxH={200} gap="4">
           <BarChart />
         </XStack>
@@ -58,7 +58,7 @@ export const StatisticsLineScreen = memo(() => {
       overflow="hidden"
     >
       <YStack
-        borderBottomWidth="0-25"
+        borderBottomWidth="0.5px"
         borderBottomColor="border-color"
         paddingBottom="0"
         paddingTop="0"
@@ -66,19 +66,19 @@ export const StatisticsLineScreen = memo(() => {
         paddingLeft="0"
       >
         <XStack justify="space-between">
-          <YStack gap="2">
+          <YStack gap="1-5">
             <H4 {...demoProps.headingFontFamilyProps} mt="0">
               Revenue Growth
             </H4>
             <H4 size="10">$42.3K</H4>
-            <Paragraph mt="1" {...demoProps.panelDescriptionProps} fontSize="3">
+            <Paragraph mt="0-5" {...demoProps.panelDescriptionProps} fontSize="3">
               The past 6 months
             </Paragraph>
           </YStack>
         </XStack>
       </YStack>
 
-      <YStack flex={1} flexBasis="auto" gap="6" mx="-4" justify="space-around">
+      <YStack flex={1} flexBasis="auto" gap="8" mx="-4" justify="space-around">
         <XStack maxH={200} gap="4">
           <LineChart />
         </XStack>

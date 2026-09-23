@@ -58,8 +58,8 @@ export function CodeBlockTabs({
           <YStack width="100%">
             {/* one row: the pickers sit on the same line as the copy button
                 rather than stacking a second header under the title row */}
-            <XStack items="center" gap="2" pl="2" pr="3" py="2">
-              <Tabs.List loop={false} aria-label="package manager" gap="1">
+            <XStack items="center" gap="1-5" pl="1-5" pr="3" py="1-5">
+              <Tabs.List loop={false} aria-label="package manager" gap="0-5">
                 <>
                   {PACKAGE_MANAGERS.map((pkgManager) => (
                     <Tab
@@ -103,10 +103,10 @@ function Tab({
     <Tabs.Tab
       height={28}
       minH={28}
-      pl="2"
+      pl="1-5"
       pr="2-5"
       py={0}
-      gap="1-5"
+      gap="1"
       items="center"
       bg={active ? 'color-1' : 'transparent'}
       opacity={active ? 1 : 0.5}
@@ -114,7 +114,7 @@ function Tab({
       cursor="pointer"
       value={pkgManager}
     >
-      <XStack gap="1-5" items="center" justify="center">
+      <XStack gap="1" items="center" justify="center">
         <Image
           width={16}
           height={16}

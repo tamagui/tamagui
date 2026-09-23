@@ -57,7 +57,7 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
     <Tabs.Tab
       size="sm"
       flex={1}
-      px="5"
+      px="6"
       pointerEvents="auto"
       rounded="5"
       {...props}
@@ -77,20 +77,20 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
 const TabsListFrame = styled(XStack, {
   pointerEvents: 'none',
   maxW: '100%',
-  height: '4',
-  self: 'stretch sm:stretch',
+  height: '11',
+  self: 'stretch max-md:stretch',
   mr: 0,
   mb: 0,
-  pb: '2',
+  pb: '1-5',
   z: 10000,
   position: 'sticky' as any,
-  px: '2',
+  px: '1-5',
   items: 'center',
   borderColor: 'color-4',
-  borderBottomWidth: '1',
+  borderBottomWidth: '0-5',
   rounded: '2',
-  minW: 'sm:100%',
-  mt: 'sm:0px',
+  minW: 'max-md:100%',
+  mt: 'max-md:0px',
 })
 
 const TabsList = (props) => {
@@ -107,7 +107,7 @@ const TabsContent = (props) => {
       width="100%"
       justify="flex-start"
       items="stretch"
-      t="-2"
+      t="-1-5"
       pt="4"
       {...props}
     />

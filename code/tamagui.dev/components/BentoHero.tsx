@@ -12,44 +12,44 @@ export const BentoHero = () => {
       <LoadCherryBomb />
       <ContainerLarge>
         <XStack
-          gap="6"
+          gap="8"
           pb="3"
           bg="transparent"
           justify="space-between"
           width="100%"
-          flexDirection="sm:column"
+          flexDirection="max-md:column"
         >
           <YStack
             mb={40}
             mt={60}
-            maxW="55% sm:100%"
+            maxW="55% max-md:100%"
             z={100}
             justify="space-between"
             flex={10}
-            items="flex-start sm:center"
-            minHeight="sm:max-content"
+            items="flex-start max-md:center"
+            minHeight="max-md:max-content"
           >
             <YStack
               className="ms200 ease-in all"
               transformOrigin="center top"
-              mb="xxs:-80px xs:-80px sm:-60px md:-100px"
-              scale="xxs:0.4 xs:0.5 sm:0.6 md:0.72"
-              self="sm:center"
+              mb="max-xs:-80px max-sm:-80px max-md:-60px max-lg:-100px"
+              scale="max-xs:0.4 max-sm:0.5 max-md:0.6 max-lg:0.72"
+              self="max-md:center"
             >
               <BentoLogo />
             </YStack>
 
-            <Spacer size="6" />
+            <Spacer size="8" />
 
-            <YStack maxW="500px sm:400px" gap="7" mx="auto" px="sm:4">
-              <XStack gap="6">
+            <YStack maxW="500px max-md:400px" gap="10" mx="auto" px="max-md:4">
+              <XStack gap="8">
                 <Paragraph
-                  fontSize="22px md:22px"
+                  fontSize="22px max-lg:22px"
                   text="center"
-                  lineHeight="40px md:38px"
+                  lineHeight="40px max-lg:38px"
                   color="color-11"
                   maxH={120}
-                  mt="md:6"
+                  mt="max-lg:8"
                 >
                   Copy-paste UI for React&nbsp;Native and&nbsp;React web. Free, forever.
                 </Paragraph>
@@ -59,31 +59,31 @@ export const BentoHero = () => {
 
           <YStack
             className="ms300 ease-in all"
-            mr="-300px md:-400px"
+            mr="-300px max-lg:-400px"
             ml={-150}
             maxW={1000}
-            mt="-125px md:-150px"
+            mt="-125px max-lg:-150px"
             pl={100}
             pr={300}
             pt={100}
             x={20}
             mb={-500}
             y={-20}
-            scale="md:0.9"
-            display="sm:none"
+            scale="max-lg:0.9"
+            display="max-md:none"
             style={{
               maskImage: `linear-gradient(rgba(0, 0, 0, 1) 40%, transparent 65%)`,
             }}
           >
             <XStack
               pointerEvents="none"
-              mt="sm:-85px"
-              mb="sm:-60px"
+              mt="max-md:-85px"
+              mb="max-md:-60px"
               style={{
                 transform: `rotate(4deg) scale(0.75)`,
               }}
             >
-              <YStack rounded="4" shadowColor="rgba(0,0,0,0.1)" shadowRadius="8">
+              <YStack rounded="4" shadowColor="rgba(0,0,0,0.1)" shadowRadius="20">
                 <ThemeTintAlt>
                   <Theme name="surface2">
                     <LocationNotification />
@@ -138,7 +138,7 @@ export const BentoHero = () => {
                 rotate="5deg"
                 rounded="4"
                 shadowColor="rgba(0,0,0,0.1)"
-                shadowRadius="8"
+                shadowRadius="20"
               >
                 <ThemeTint>
                   <Theme name="surface1">

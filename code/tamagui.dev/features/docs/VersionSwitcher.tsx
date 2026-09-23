@@ -44,7 +44,7 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
         maxWidth={220}
         height={36}
         paddingHorizontal="3"
-        gap="2"
+        gap="1-5"
         backgroundColor="background"
         borderWidth={1}
         borderColor="border-color"
@@ -78,7 +78,7 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
           justify="center"
           position="relative"
           width="100%"
-          height="3"
+          height="9"
         >
           <YStack z={10}>
             <ChevronUp size={20} />
@@ -125,7 +125,7 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
           justify="center"
           position="relative"
           width="100%"
-          height="3"
+          height="9"
         >
           <YStack z={10}>
             <ChevronDown size={20} />

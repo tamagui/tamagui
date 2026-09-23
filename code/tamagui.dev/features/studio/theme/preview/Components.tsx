@@ -40,7 +40,7 @@ export const Components = () => {
       </XStack>
 
       <XStack gap="4" flexWrap="wrap">
-        <YStack flex={1} flexBasis="auto" gap="2">
+        <YStack flex={1} flexBasis="auto" gap="1-5">
           <CheckboxWithLabel defaultChecked size="md" />
 
           <RadioGroup defaultValue="1" name="form">
@@ -54,7 +54,7 @@ export const Components = () => {
         </YStack>
       </XStack>
 
-      <Spacer size="2" />
+      <Spacer size="1-5" />
     </YStack>
   )
 }

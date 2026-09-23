@@ -43,7 +43,7 @@ export const HomeExamples = memo(
 
     return (
       <ContainerLarge position="relative" flexBasis="auto">
-        <YStack z={1} gap="6" mb="4">
+        <YStack z={1} gap="8" mb="4">
           {!onlyDemo && (
             <YStack items="center" gap="3">
               <HomeH2>A powerful style system</HomeH2>
@@ -64,7 +64,7 @@ export const HomeExamples = memo(
               self="center"
               overflow="hidden"
               {...(onlyDemo && {
-                mt: '-6',
+                mt: '-8',
               })}
             >
               {examples.map((example, i) => {
@@ -91,7 +91,7 @@ export const HomeExamples = memo(
           <XStack
             position="relative"
             justify="space-between"
-            flexDirection="sm:column"
+            flexDirection="max-md:column"
             {...(onlyDemo && {
               flexDirection: 'column',
             })}
@@ -100,18 +100,18 @@ export const HomeExamples = memo(
               key={`input${activeIndex}`}
               flex={1}
               flexBasis="auto"
-              maxW={onlyDemo ? '100%' : '50% sm:100%'}
-              px="2"
+              maxW={onlyDemo ? '100%' : '50% max-md:100%'}
+              px="1-5"
               gap="4"
             >
-              <Paragraph maxW={480} self="center" minH={50} text="center" px="6" size="5">
+              <Paragraph maxW={480} self="center" minH={50} text="center" px="8" size="5">
                 <span style={{ opacity: 0.65 }}>{activeExample.input.description}</span>
               </Paragraph>
               <CodeExamples title="Input" {...activeExample.input} />
             </YStack>
 
             <YStack
-              display="sm:none"
+              display="max-md:none"
               {...(onlyDemo && { display: 'none' })}
               position="absolute"
               l={0}
@@ -130,12 +130,12 @@ export const HomeExamples = memo(
               key={`output${activeIndex}`}
               flex={1}
               flexBasis="auto"
-              maxW={onlyDemo ? '100%' : '50% sm:100%'}
-              mt={onlyDemo ? '6' : 'sm:6'}
-              px="2"
+              maxW={onlyDemo ? '100%' : '50% max-md:100%'}
+              mt={onlyDemo ? '8' : 'max-md:8'}
+              px="1-5"
               gap="4"
             >
-              <Paragraph maxW={480} self="center" minH={50} text="center" px="6" size="5">
+              <Paragraph maxW={480} self="center" minH={50} text="center" px="8" size="5">
                 <span style={{ opacity: 0.65 }}>{activeExample.output.description}</span>
               </Paragraph>
               <CodeExamples title="Output" {...activeExample.output} />
@@ -169,7 +169,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
               <Heading
                 bg="background"
                 color="color"
-                py="1"
+                py="0-5"
                 px="4"
                 rounded="4"
                 size="5"

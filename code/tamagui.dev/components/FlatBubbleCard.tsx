@@ -1,7 +1,7 @@
 import { YStack, styled } from 'tamagui'
 
 export const FlatBubbleCard = styled(YStack, {
-  p: '6',
+  p: '8',
   rounded: '4',
   borderColor: 'border-color',
   borderWidth: 1,

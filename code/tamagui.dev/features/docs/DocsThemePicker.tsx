@@ -23,7 +23,7 @@ export function DocsThemePicker() {
   })
 
   return (
-    <XStack width="100%" pr="6" items="center" gap="2">
+    <XStack width="100%" pr="8" items="center" gap="1-5">
       <PickerSelect
         label="Theme"
         testID="docs-theme"

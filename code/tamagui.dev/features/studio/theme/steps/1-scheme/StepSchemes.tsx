@@ -99,7 +99,7 @@ const Option = ({
         </Checkbox.Indicator>
       </Checkbox>
 
-      <YStack gap="2" flex={1}>
+      <YStack gap="1-5" flex={1}>
         <Paragraph size="5">{label}</Paragraph>
         {!!description && (
           <Paragraph size="3" lineHeight="1" color="color-9">

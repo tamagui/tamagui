@@ -88,7 +88,7 @@ function Matrix({ title, rows }: { title: string; rows: CoverageRow[] }) {
 
 export function TailwindComparison() {
   return (
-    <ContainerLarge py="12" gap="8">
+    <ContainerLarge py="88px" gap="11">
       <YStack items="center" gap="3">
         <HomeH2>Coverage, measured</HomeH2>
         <HomeH3>
@@ -112,7 +112,7 @@ export function TailwindComparison() {
             key={f.name}
             flex={1}
             minWidth={150}
-            gap="2"
+            gap="1-5"
             p="4"
             rounded="6"
             borderWidth={1}
