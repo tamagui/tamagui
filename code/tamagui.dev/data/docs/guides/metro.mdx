@@ -12,7 +12,7 @@ description: How to set up Tamagui with Metro
 
 The default Expo Metro configuration works out of the box:
 
-```ts fileName="metro.config.js"
+```js fileName="metro.config.js"
 const { getDefaultConfig } = require('expo/metro-config')
 
 module.exports = getDefaultConfig(__dirname)
@@ -32,11 +32,11 @@ If Metro is the only bundler this project will ever use, `yarn add
 @tamagui/metro-plugin` on its own is a smaller install and exports exactly the
 same things.
 
-If you have a `tamagui.build.ts` (recommended — see
+If you have a `tamagui.build.ts` (recommended; see
 [compiler install docs](/docs/intro/compiler-install#configuration-with-tamaguibuildts)),
 no options are needed:
 
-```tsx fileName="metro.config.js"
+```js fileName="metro.config.js"
 const { getDefaultConfig } = require('expo/metro-config')
 const { withTamagui } = require('@tamagui/cli/metro')
 
@@ -48,7 +48,7 @@ module.exports = withTamagui(config)
 
 Or pass options inline:
 
-```tsx fileName="metro.config.js"
+```js fileName="metro.config.js"
 const { getDefaultConfig } = require('expo/metro-config')
 const { withTamagui } = require('@tamagui/cli/metro')
 

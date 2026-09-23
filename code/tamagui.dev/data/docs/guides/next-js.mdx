@@ -351,7 +351,7 @@ yarn add @tamagui/next-plugin
 
 Set up the optional Tamagui plugin in `next.config.js`:
 
-```tsx showMore fileName="next.config.js"
+```js showMore fileName="next.config.js"
 const { withTamagui } = require('@tamagui/next-plugin')
 
 module.exports = function (name, { defaultConfig }) {
@@ -419,8 +419,8 @@ export default class Document extends NextDocument {
 }
 ```
 
-Tamagui automatically injects styles at runtime. You can optionally generate a static
-CSS file - see the [Static CSS Output](#static-css-output) section.
+Tamagui automatically injects styles at runtime. You can optionally generate a
+static CSS file; see [Static CSS Output](#static-css-output-pages-router).
 
 ### pages/\_app.tsx
 
@@ -561,7 +561,7 @@ import '../public/tamagui.generated.css'
 
 You can also have the plugin generate CSS during your Next.js build:
 
-```tsx fileName="next.config.js"
+```js fileName="next.config.js"
 const tamaguiPlugin = withTamagui({
   config: './tamagui.config.ts',
   components: ['tamagui'],
@@ -577,7 +577,7 @@ Then import it in your `_app.tsx`:
 import '../public/tamagui.generated.css'
 ```
 
-With `outputCSS`, you don't need `getCSS()` in your `_document.tsx` - all styles are
+With `outputCSS`, you don't need `getCSS()` in your `_document.tsx`; all styles are
 handled by the static CSS file and runtime style injection.
 
 ## App Router (Webpack)
@@ -597,7 +597,7 @@ React Native ecosystem. It requires CommonJS for now because the optimizing
 compiler uses various resolving features that haven't been ported to ESM yet.
 Rename your `next.config.mjs` to `next.config.js` before adding it:
 
-```tsx fileName="next.config.js"
+```js fileName="next.config.js"
 const { withTamagui } = require('@tamagui/next-plugin')
 
 module.exports = function (name, { defaultConfig }) {
@@ -771,7 +771,7 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
 You can generate a static CSS file for your themes and tokens. Use either the
 CLI or the Next.js plugin:
 
-```tsx fileName="next.config.js"
+```js fileName="next.config.js"
 const tamaguiPlugin = withTamagui({
   config: './tamagui.config.ts',
   components: ['tamagui'],
