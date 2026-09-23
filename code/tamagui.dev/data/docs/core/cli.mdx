@@ -138,9 +138,8 @@ For more details, see the
 
 ### check
 
-Check your dependencies for inconsistent versions across your project. This
-helps identify version mismatches that can cause issues, especially in
-monorepos.
+Check flat style values, inconsistent versions, duplicate installs, lockfile
+issues, and missing config:
 
 ```bash
 npx tamagui check
@@ -148,13 +147,13 @@ npx tamagui check
 
 **Flags:**
 
+- `--strict`: Validate conditional style payloads against the project config too
+- `--styles-only`: Skip the dependency checks
+- `--deps-only`: Skip the style checks
 - `--debug`: Enable debug output
 - `--verbose`: Enable verbose debug output
 
-**Example output:**
-
-The command will scan your project and report any packages with mismatched
-versions, helping you maintain consistency across your dependencies.
+The command exits non-zero when it finds diagnostics, so it works as a CI gate.
 
 ### generate
 
@@ -289,10 +288,39 @@ Pair it with [migrate](#migrate) for projects already on v1 or v2, or copy the s
 
 <CopyAgentSetupButton my="2" />
 
+### upgrade
+
+Upgrade all Tamagui packages in your workspace to the latest version:
+
+```bash
+npx tamagui upgrade
+```
+
+**Flags:**
+
+- `--from <version>`: Lower bound of the upgrade range
+- `--to <version>`: Upper bound of the upgrade range
+- `--dry-run`: Preview changes without writing files
+- `--changelog-only`: Print the changelog without changing files
+- `--debug`: Enable debug output
+
+### to-tailwind
+
+Convert Tamagui JSX props in files or globs to Tailwind `className` syntax:
+
+```bash
+npx tamagui to-tailwind ./src
+```
+
+**Flags:**
+
+- `--write`: Write changes to files (default prints a diff)
+- `--config <path>`: Resolve tokens against your Tamagui config (required with `--write`, or pass `--use-default-config`)
+- `--rename-dom`: Rename `View` to `div` and other DOM equivalents
+
 ### generate-prompt
 
-Generate an LLM-friendly markdown file from your Tamagui configuration. This
-generates documentation of your design system for use with AI
+Generate an LLM-friendly markdown file documenting your design system for AI
 assistants.
 
 ```bash
@@ -315,7 +343,7 @@ npx tamagui generate-prompt
 **Use case:** Share this file with AI assistants like Claude or ChatGPT to get
 better suggestions that align with your design system.
 
-## Global Flags
+## Global flags
 
 All commands support these flags:
 
@@ -326,7 +354,7 @@ All commands support these flags:
 
 ## Examples
 
-### Production Build Pipeline
+### Production build pipeline
 
 ```json
 {
@@ -336,7 +364,7 @@ All commands support these flags:
 }
 ```
 
-### CI with Optimization Verification
+### CI with optimization verification
 
 ```json
 {
@@ -349,7 +377,7 @@ All commands support these flags:
 This fails the build if fewer than 10 components are optimized, helping catch
 configuration issues in CI.
 
-### Cross-Platform Mobile App
+### Cross-platform mobile app
 
 ```json
 {
