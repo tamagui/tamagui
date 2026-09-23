@@ -26,7 +26,7 @@ Note that these are web-only components, on native they render children without 
 
 ## Installation
 
-FocusScope and RovingFocusGroup are included in `tamagui`, or can be installed independently:
+FocusScope and RovingFocusGroup ship in their own packages:
 
 ```bash
 npm install @tamagui/focus-scope @tamagui/roving-focus
@@ -37,7 +37,8 @@ npm install @tamagui/focus-scope @tamagui/roving-focus
 Wrap any content that needs focus containment or trapping:
 
 ```tsx
-import { Button, FocusScope, XStack } from 'tamagui'
+import { Button, XStack } from 'tamagui'
+import { FocusScope } from '@tamagui/focus-scope'
 
 export default () => (
   <FocusScope loop trapped>
@@ -57,7 +58,8 @@ In v3, FocusScope renders a `display: contents` wrapper so it does not add an ex
 Use `trapped` to prevent focus from escaping the scope (ideal for modals, dialogs, and sheets):
 
 ```tsx
-import { Button, Dialog, FocusScope, XStack, YStack } from 'tamagui'
+import { Button, Dialog, XStack, YStack } from 'tamagui'
+import { FocusScope } from '@tamagui/focus-scope'
 
 export default () => (
   <Dialog>
@@ -89,7 +91,8 @@ export default () => (
 Use `noFocus` to disallow focus entirely while the scope is active - focus can land neither inside nor outside the scope. Any element that receives focus is immediately blurred, so `document.activeElement` settles on `document.body`. This takes precedence over `trapped` and auto-focus behavior:
 
 ```tsx
-import { Button, FocusScope, Input, XStack } from 'tamagui'
+import { Button, Input, XStack } from 'tamagui'
+import { FocusScope } from '@tamagui/focus-scope'
 
 export default () => (
   <FocusScope noFocus>
@@ -106,7 +109,8 @@ export default () => (
 Enable `loop` to cycle focus between first and last elements:
 
 ```tsx
-import { Button, FocusScope, XStack } from 'tamagui'
+import { Button, XStack } from 'tamagui'
+import { FocusScope } from '@tamagui/focus-scope'
 
 export default () => (
   <FocusScope loop>
@@ -125,7 +129,8 @@ export default () => (
 Use `focusOnIdle` to prevent reflows during animations:
 
 ```tsx
-import { Button, FocusScope, XStack } from 'tamagui'
+import { Button, XStack } from 'tamagui'
+import { FocusScope } from '@tamagui/focus-scope'
 
 export default () => (
   <FocusScope
@@ -145,7 +150,8 @@ export default () => (
 Use the controller pattern for managing focus from parent components:
 
 ```tsx
-import { Button, FocusScope, XStack, YStack } from 'tamagui'
+import { Button, XStack, YStack } from 'tamagui'
+import { FocusScope, FocusScopeController } from '@tamagui/focus-scope'
 import { useState } from 'react'
 
 export default () => {
@@ -157,7 +163,7 @@ export default () => {
         {trapped ? 'Disable' : 'Enable'} Focus Trap
       </Button>
 
-      <FocusScope.Controller trapped={trapped} loop>
+      <FocusScopeController trapped={trapped} loop>
         <FocusScope>
           <XStack gap="4">
             <Button>Controlled</Button>
@@ -165,7 +171,7 @@ export default () => {
             <Button>Behavior</Button>
           </XStack>
         </FocusScope>
-      </FocusScope.Controller>
+      </FocusScopeController>
     </YStack>
   )
 }
@@ -205,7 +211,7 @@ export default () => {
     {
       name: 'focusOnIdle',
       type: 'boolean | number | { min?: number; max?: number }',
-      default: 'false',
+      default: 'true',
       description:
         'When true, waits for idle before focusing using requestIdleCallback. When a number, waits that many ms. Object sets a lower and upper bound. Helps to prevent reflows during animations, as focusing inputs easily blocks main thread.',
     },
@@ -234,7 +240,7 @@ export default () => {
   ]}
 />
 
-### FocusScope.Controller Props
+### FocusScopeController Props
 
 Provides context-based control over FocusScope behavior:
 
@@ -244,61 +250,62 @@ Provides context-based control over FocusScope behavior:
       name: 'enabled',
       type: 'boolean',
       description:
-        'Override enabled state for all child FocusScope.Controller.Scope components',
+        'Override enabled state for all child FocusScope components',
     },
     {
       name: 'loop',
       type: 'boolean',
       description:
-        'Override loop state for all child FocusScope.Controller.Scope components',
+        'Override loop state for all child FocusScope components',
     },
     {
       name: 'trapped',
       type: 'boolean',
       description:
-        'Override trapped state for all child FocusScope.Controller.Scope components',
+        'Override trapped state for all child FocusScope components',
     },
     {
       name: 'noFocus',
       type: 'boolean',
       description:
-        'Override noFocus (zero focus mode) for all child FocusScope.Controller.Scope components',
+        'Override noFocus (zero focus mode) for all child FocusScope components',
     },
     {
       name: 'focusOnIdle',
       type: 'boolean | number',
       description:
-        'Override focusOnIdle behavior for all child FocusScope.Controller.Scope components',
+        'Override focusOnIdle behavior for all child FocusScope components',
     },
     {
       name: 'onMountAutoFocus',
       type: '(event: Event) => void',
       description:
-        'Override onMountAutoFocus handler for all child FocusScope.Controller.Scope components',
+        'Override onMountAutoFocus handler for all child FocusScope components',
     },
     {
       name: 'onUnmountAutoFocus',
       type: '(event: Event) => void',
       description:
-        'Override onUnmountAutoFocus handler for all child FocusScope.Controller.Scope components',
+        'Override onUnmountAutoFocus handler for all child FocusScope components',
     },
     {
       name: 'forceUnmount',
       type: 'boolean',
       description:
-        'Override forceUnmount behavior for all child FocusScope.Controller.Scope components',
+        'Override forceUnmount behavior for all child FocusScope components',
     },
   ]}
 />
 
-The FocusScope component automatically inherits props from the nearest FocusScope.Controller, with controller props taking precedence over direct props.
+The FocusScope component automatically inherits props from the nearest FocusScopeController, with controller props taking precedence over direct props.
 
 ## Roving Focus (RovingFocusGroup)
 
 The roving tabindex pattern manages focus across a group of interactive elements (like toolbars, tab lists, or radio groups) so that the entire group acts as a single tab stop. Arrow keys move focus between items within the group, and pressing Tab moves focus out of the group.
 
 ```tsx
-import { Button, RovingFocusGroup, XStack } from 'tamagui'
+import { Button, XStack } from 'tamagui'
+import { RovingFocusGroup } from '@tamagui/roving-focus'
 
 export default () => (
   <RovingFocusGroup orientation="horizontal" loop>
@@ -322,7 +329,8 @@ export default () => (
 Set `orientation` to `"horizontal"` or `"vertical"` to control which arrow keys navigate:
 
 ```tsx
-import { Button, RovingFocusGroup, YStack } from 'tamagui'
+import { Button, YStack } from 'tamagui'
+import { RovingFocusGroup } from '@tamagui/roving-focus'
 
 export default () => (
   // Up/Down arrows navigate, Left/Right are ignored
@@ -357,7 +365,8 @@ Enable `loop` to wrap focus from the last item back to the first:
 Control which item is the current tab stop via `currentTabStopId` and `onCurrentTabStopIdChange`:
 
 ```tsx
-import { Button, RovingFocusGroup, XStack } from 'tamagui'
+import { Button, XStack } from 'tamagui'
+import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { useState } from 'react'
 
 export default () => {
@@ -386,10 +395,10 @@ export default () => {
 
 ### Non-Focusable Items
 
-Mark items as non-focusable to skip them during keyboard navigation:
+Give an item a negative `tabIndex` to make it non-focusable and skip it during keyboard navigation:
 
 ```tsx
-<RovingFocusGroup.Item focusable={false} asChild>
+<RovingFocusGroup.Item tabIndex={-1} asChild>
   <Button disabled>Disabled</Button>
 </RovingFocusGroup.Item>
 ```
@@ -434,9 +443,9 @@ Mark items as non-focusable to skip them during keyboard navigation:
     },
     {
       name: 'onEntryFocus',
-      type: '(event: Event) => void',
+      type: '(details: RovingFocusEntryDetails) => void',
       description:
-        'Callback when focus enters the group via keyboard. Call event.preventDefault() to prevent default focus behavior.',
+        'Callback when focus enters the group via keyboard. Call details.cancel() to prevent the default focus behavior.',
     },
     {
       name: 'asChild',
@@ -457,11 +466,11 @@ Mark items as non-focusable to skip them during keyboard navigation:
       description: 'A unique identifier for this item. Auto-generated if not provided.',
     },
     {
-      name: 'focusable',
-      type: 'boolean',
-      default: 'true',
+      name: 'tabIndex',
+      type: 'number',
+      default: '0',
       description:
-        'Whether this item should be focusable. Set to false to skip during keyboard navigation.',
+        'Items with a negative tabIndex are skipped during keyboard navigation.',
     },
     {
       name: 'active',

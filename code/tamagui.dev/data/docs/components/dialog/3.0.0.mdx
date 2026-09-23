@@ -54,21 +54,18 @@ import { Dialog } from 'tamagui' // or '@tamagui/dialog'
 export default () => (
   <Dialog>
     <Dialog.Trigger />
-    <Dialog.Portal>
-      <Dialog.Overlay />
-      <Dialog.Content>
-        <Dialog.Title />
-        <Dialog.Description />
-        <Dialog.Close />
-        {/* ... */}
-      </Dialog.Content>
-    </Dialog.Portal>
 
-    {/* Optional: Control focus behavior */}
+    {/* Optional: control focus from a parent */}
     <Dialog.FocusScope loop trapped focusOnIdle={true}>
-      <Dialog.FocusScope.Scope>
-        {/* Focus scope will be applied to children */}
-      </Dialog.FocusScope.Scope>
+      <Dialog.Portal>
+        <Dialog.Overlay />
+        <Dialog.Content>
+          <Dialog.Title />
+          <Dialog.Description />
+          <Dialog.Close />
+          {/* ... */}
+        </Dialog.Content>
+      </Dialog.Portal>
     </Dialog.FocusScope>
   </Dialog>
 )
@@ -196,7 +193,7 @@ Contains every component for the dialog. Beyond
       name: 'modal',
       type: 'boolean',
       default: 'true',
-      description: `Renders into root of app instead of inline.`,
+      description: `When true, traps focus, blocks outside scroll and interaction, and portals into the root of the app. When false, the dialog renders inline and is non-blocking.`,
     },
     {
       name: 'keepChildrenMounted',
@@ -372,7 +369,7 @@ management. Can be used to control focus behavior from a parent component.
     {
       name: 'focusOnIdle',
       type: 'boolean | number',
-      default: 'false',
+      default: 'true',
       description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
     },
     {

@@ -105,7 +105,7 @@ export default () => (
     <Button icon={Star} size="lg">
       Icon sized by Button
     </Button>
-    <Button icon={Star} iconSize="2" size="lg">
+    <Button icon={Star} iconSize={18} size="lg">
       Icon sized explicitly
     </Button>
   </>
@@ -263,8 +263,8 @@ For a longer walkthrough see
 
 ## API Reference
 
-Buttons extend View, inheriting all the
-[Tamagui standard props](/docs/intro/props), plus. Sizes come from the shared
+Button extends View, inheriting all the
+[Tamagui standard props](/docs/intro/props). Sizes come from the shared
 [Sizing](/docs/core/sizing) ladder.
 
 <PropsTable

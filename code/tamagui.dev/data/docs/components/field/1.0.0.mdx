@@ -253,6 +253,12 @@ Contains the field state and validation behavior. It accepts
       description: `Disables the field and its integrated controls.`,
     },
     {
+      name: 'invalid',
+      type: 'boolean',
+      default: 'false',
+      description: `Marks the field invalid without running its validator. Useful for errors known before validation runs.`,
+    },
+    {
       name: 'validate',
       type: 'FieldValidator | StandardSchemaV1',
       description: `Validates the field value. Functions receive (value, formValues).`,

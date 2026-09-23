@@ -181,6 +181,11 @@ Accepts [Tamagui Props](/docs/intro/props), plus:
       description: `Called after synchronous validation passes with projected Field values and submit details.`,
     },
     {
+      name: 'scope',
+      type: 'string',
+      description: `Names this Form so a Form.Trigger rendered elsewhere can target it.`,
+    },
+    {
       name: 'validationMode',
       type: `'onSubmit' | 'onBlur' | 'onChange'`,
       default: `'onSubmit'`,

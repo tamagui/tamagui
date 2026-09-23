@@ -247,8 +247,7 @@ context to assemble by hand.
 ### ListItem
 
 ListItem extends View, inheriting all the
-[Tamagui standard props](/docs/intro/props), plus. Sizes come from the shared
-[Sizing](/docs/core/sizing) ladder.
+[Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[
@@ -304,9 +303,9 @@ ListItem extends View, inheriting all the
     {
       name: 'iconSize',
       required: false,
-      type: 'number',
+      type: 'number | string',
       description:
-        'Explicitly set the size of the icon in pixels, overriding the size derived from `size`.',
+        'Explicitly set the icon size, either in pixels or as a sizing-ladder name, overriding the one derived from `size`.',
     },
     {
       name: 'scaleIcon',

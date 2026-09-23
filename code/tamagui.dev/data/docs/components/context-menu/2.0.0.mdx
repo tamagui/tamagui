@@ -70,7 +70,7 @@ automatically. You should not need extra wrapper views or empty `onPress`
 handlers just to prevent a parent `press:` clause from activating.
 
 <Notice theme="yellow">
-  **Expo Router users:** This import must run _before_ `expo-router/entry`. Create an `index.js` at your project root that imports the setup first, then expo-router, and update your `package.json` main field to `"index.js"`. See the [upgrade guide](/docs/guides/how-to-upgrade#expo-router-entry-point) for details.
+  **Expo Router users:** This import must run _before_ `expo-router/entry`. Create an `index.js` at your project root that imports the setup first, then expo-router, and update your `package.json` main field to `"index.js"`. See the [Expo guide](/docs/guides/expo) for details.
 </Notice>
 
 ## Anatomy
@@ -195,13 +195,22 @@ Contains every component for the ContextMenu.
       name: 'allowFlip',
       type: 'FlipProps | boolean',
       required: false,
+      default: '{ padding: 10 }',
       description: 'Flips the menu to the opposite side if there is insufficient space.',
     },
     {
       name: 'offset',
       type: 'OffsetOptions',
       required: false,
+      default: '10',
       description: 'Distance between the menu and its trigger.',
+    },
+    {
+      name: 'resize',
+      type: 'boolean',
+      default: 'true',
+      required: false,
+      description: 'Constrains the menu to fit within available viewport space.',
     },
     {
       name: 'unstyled',

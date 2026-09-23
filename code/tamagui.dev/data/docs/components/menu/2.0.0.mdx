@@ -1,9 +1,10 @@
 ---
 title: Menu
 description: A selectable list in a popover with nested submenus
-name: dropdown menu
+name: menu
 component: Menu
 package: menu
+demoName: Menu
 ---
 
 <IntroParagraph>
@@ -65,7 +66,7 @@ automatically. You should not need extra wrapper views or empty `onPress`
 handlers just to prevent a parent `press:` clause from activating.
 
 <Notice theme="yellow">
-  **Expo Router users:** This import must run _before_ `expo-router/entry`. Create an `index.js` at your project root that imports the setup first, then expo-router, and update your `package.json` main field to `"index.js"`. See the [upgrade guide](/docs/guides/how-to-upgrade#expo-router-entry-point) for details.
+  **Expo Router users:** This import must run _before_ `expo-router/entry`. Create an `index.js` at your project root that imports the setup first, then expo-router, and update your `package.json` main field to `"index.js"`. See the [Expo guide](/docs/guides/expo) for details.
 </Notice>
 
 ## Anatomy
@@ -188,6 +189,7 @@ Contains every component for the Menu.
       name: 'allowFlip',
       type: 'FlipProps | boolean',
       required: false,
+      default: '{ padding: 10 }',
       description: 'Flips the menu to the opposite side if there is insufficient space.',
     },
     {
@@ -243,8 +245,7 @@ Required for rendering the menu content.
 
 ### Menu.Trigger
 
-The menu will only be triggered when the user right-clicks or long-presses
-within the trigger area.
+Trigger element for the menu. Accepts [Tamagui Props](/docs/intro/props).
 
 <PropsTable
   data={[
@@ -252,10 +253,10 @@ within the trigger area.
       name: 'action',
       required: false,
       type: 'press|longPress',
-      default: 'longPress',
+      default: 'press',
       platform: 'android/ios',
       description:
-        "Works with the native prop and accepts 'press' or 'longPress'. The default is 'longPress' for Menu.",
+        "Works with the native prop and accepts 'press' or 'longPress'. The default is 'press' for Menu.",
     },
   ]}
 />

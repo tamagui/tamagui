@@ -102,8 +102,8 @@ function MyCheckbox({ defaultChecked, onCheckedChange, ...props }) {
 
 ### Checkbox
 
-`Checkbox` extends YStack inheriting all the
-[props](/ui/stacks), plus. Sizes come from the shared
+`Checkbox` extends View, inheriting all the
+[View props](/docs/core/view-and-text). Sizes come from the shared
 [Sizing](/docs/core/sizing) ladder.
 
 <PropsTable
@@ -115,9 +115,9 @@ function MyCheckbox({ defaultChecked, onCheckedChange, ...props }) {
       description: `A named size ("xs" to "xl", default "md") is a rung in the sizing ladder: the box is the ladder's square derivation at the rung's radius.`,
     },
     {
-      name: 'labeledBy',
+      name: 'labelledBy',
       type: 'string',
-      description: `Set aria-labeled-by.`,
+      description: `Set the aria-labelledby attribute.`,
     },
     {
       name: 'name',
@@ -156,16 +156,6 @@ function MyCheckbox({ defaultChecked, onCheckedChange, ...props }) {
       description: 'Callback that fires when the checkbox state is changed.',
     },
     {
-      name: 'sizeAdjust',
-      type: 'number',
-      description: `Adjust the checkbox size scaling by this number.`,
-    },
-    {
-      name: 'scaleIcon',
-      type: 'number',
-      description: `Scale the indicator icon more than usual by this number.`,
-    },
-    {
       name: 'unstyled',
       required: false,
       type: `boolean`,
@@ -188,8 +178,8 @@ function MyCheckbox({ defaultChecked, onCheckedChange, ...props }) {
 
 ### Checkbox.Indicator
 
-`Checkbox.Indicator` extends YStack inheriting all the
-[props](/ui/stacks), plus:
+`Checkbox.Indicator` extends View, inheriting all the
+[View props](/docs/core/view-and-text), plus:
 
 <PropsTable
   data={[
