@@ -81,15 +81,6 @@
       "require": "./dist/cjs/v6-builder.cjs",
       "default": "./dist/esm/v6-builder.mjs"
     },
-    "./v5-sizing": {
-      "types": "./types/v5-sizing.d.ts",
-      "react-native": "./dist/esm/v5-sizing.native.js",
-      "browser": "./dist/esm/v5-sizing.mjs",
-      "module": "./dist/esm/v5-sizing.mjs",
-      "import": "./dist/esm/v5-sizing.mjs",
-      "require": "./dist/cjs/v5-sizing.cjs",
-      "default": "./dist/esm/v5-sizing.mjs"
-    },
     "./settings": {
       "types": "./types/settings.d.ts",
       "react-native": "./dist/esm/settings.native.js",
