@@ -16,6 +16,29 @@ Portal is included in `tamagui` and is used by [Sheet](/ui/sheet),
 [Select](/ui/select), and [Toast](/ui/toast). See
 [Stacking (zIndex)](/ui/z-index) for how overlay layering works.
 
+## PortalProvider
+
+`TamaguiProvider` from `tamagui` already wraps your app in a `PortalProvider`
+with a root `PortalHost`, so most apps need no setup. Add one yourself only when
+you render the bare `TamaguiProvider` from `@tamagui/core`:
+
+```tsx
+import { TamaguiProvider } from '@tamagui/core'
+import { PortalProvider } from '@tamagui/portal'
+
+export function App() {
+  return (
+    <TamaguiProvider config={config}>
+      <PortalProvider shouldAddRootHost>{/* your app */}</PortalProvider>
+    </TamaguiProvider>
+  )
+}
+```
+
+Render only one `PortalProvider` with a root host. Nesting a second one under
+`TamaguiProvider` from `tamagui` mounts two root hosts and causes hydration
+mismatches; pass `shouldAddRootHost={false}` if you need the nested provider.
+
 ## Native portal setup (recommended)
 
 On web, React's built-in `createPortal` preserves context automatically. On
@@ -156,6 +179,25 @@ every context you use.
 This automatic stacking is already enabled by default in Dialog, Popover, Sheet, and other overlay
 components. If you open a Popover from within a Dialog, the Popover will automatically have a
 higher z-index than the Dialog without any configuration needed.
+
+### PortalProvider
+
+<PropsTable
+  data={[
+    {
+      name: 'shouldAddRootHost',
+      type: 'boolean',
+      default: 'true',
+      description: `Mounts a PortalHost at the end of the provider for portals to render into.`,
+    },
+    {
+      name: 'rootHostName',
+      type: 'string',
+      default: `'root'`,
+      description: `Name of the root PortalHost.`,
+    },
+  ]}
+/>
 
 ## Technical details
 
