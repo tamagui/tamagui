@@ -1,5 +1,5 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
-import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
+import { ChevronDown, ChevronUp } from '@tamagui/local-icons'
 import type {
   SelectItemProps,
   SelectProps,
@@ -60,7 +60,7 @@ const SelectComponent = (
       <TamaguiSelect.Trigger
         height={36}
         paddingHorizontal="3"
-        gap="2"
+        gap="1-5"
         backgroundColor="background"
         borderWidth={1}
         borderColor="border-color"
@@ -79,7 +79,7 @@ const SelectComponent = (
           justify="center"
           position="relative"
           width="100%"
-          height="3"
+          height="9"
         >
           <YStack z={10}>
             <ChevronUp size={20} />
@@ -102,7 +102,7 @@ const SelectComponent = (
           borderWidth={1}
           borderColor="border-color"
           borderRadius="4"
-          padding="1"
+          padding="0-5"
           boxShadow="0 12px 28px rgba(0, 0, 0, 0.18)"
           className="blur-medium"
         >
@@ -114,7 +114,7 @@ const SelectComponent = (
           justify="center"
           position="relative"
           width="100%"
-          height="3"
+          height="9"
         >
           <YStack z={10}>
             <ChevronDown size={20} />

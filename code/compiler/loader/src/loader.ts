@@ -28,7 +28,7 @@ export const loader = async function loader(
   const callback = this.async()
   const sourcePath = `${this.resourcePath}`
 
-  if (sourcePath.includes('node_modules') || sourcePath.includes('lucide-icons')) {
+  if (sourcePath.includes('node_modules') || sourcePath.includes('local-icons')) {
     return callback(null, sourceIn)
   }
 

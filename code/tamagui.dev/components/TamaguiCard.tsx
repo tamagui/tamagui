@@ -6,12 +6,12 @@ export function TamaguiCard({ children, title, subTitle, ...props }) {
   return (
     <Card
       p="4"
-      mx="1"
-      marginTop="2"
-      mb="2"
-      width="gtSm:50% sm:auto"
-      maxW="gtSm:calc(50% - var(--space-8)) sm:auto"
-      flex="sm:1"
+      mx="0-5"
+      marginTop="1-5"
+      mb="1-5"
+      width="md:50% max-md:auto"
+      maxW="md:calc(50% - var(--space-8)) max-md:auto"
+      flex="max-md:1"
       {...props}
     >
       <H3

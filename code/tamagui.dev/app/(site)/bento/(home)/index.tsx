@@ -1,4 +1,4 @@
-import { Globe, Leaf, Puzzle } from '@tamagui/lucide-icons-2'
+import { Globe, Leaf, Puzzle } from '@tamagui/local-icons'
 import { useStore } from '@tamagui/use-store'
 import { Circle, H4, Paragraph, XStack, YStack } from 'tamagui'
 import { BentoStore, ComponentSection } from '~/components/BentoComponentSection'
@@ -48,13 +48,13 @@ const Intermediate = () => {
     <ContainerLarge z={1000}>
       <XStack
         gap="4"
-        paddingBottom="6"
-        pt="20px sm:4"
-        mb="-20px sm:0px"
+        paddingBottom="8"
+        pt="20px max-md:4"
+        mb="-20px max-md:0px"
         mx="auto"
         maxW={900}
-        flexDirection="sm:column"
-        px="sm:2"
+        flexDirection="max-md:column"
+        px="max-md:1-5"
       >
         <IntermediateCard Icon={Globe} title="Universal">
           Whether light or dark mode, native or web, or any screen size.
@@ -80,8 +80,8 @@ const IntermediateCard = ({
   Icon?: any
 }) => {
   return (
-    <XStack overflow="hidden" flex={1} gap="5" px="5" py="4" minHeight={80}>
-      <YStack flex={1} gap="2">
+    <XStack overflow="hidden" flex={1} gap="6" px="6" py="4" minHeight={80}>
+      <YStack flex={1} gap="1-5">
         <H4 opacity={0.5} color="color-11" className="text-glow" size="2">
           {title}
         </H4>
@@ -95,7 +95,7 @@ const IntermediateCard = ({
         outlineWidth={1}
         outlineStyle="solid"
         backdropFilter="blur(5px)"
-        size="5"
+        size="12"
         boxShadow="0 1px 2px shadow-color"
       >
         <Icon color="color-11" o={0.85} />

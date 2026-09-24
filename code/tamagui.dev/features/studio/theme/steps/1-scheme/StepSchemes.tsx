@@ -1,4 +1,4 @@
-import { Check } from '@tamagui/lucide-icons-2'
+import { Check } from '@tamagui/local-icons'
 import { Checkbox, H4, Label, Paragraph, Spacer, XStack, YStack } from 'tamagui'
 
 import { useRootStore } from '../../../state/useGlobalState'
@@ -99,7 +99,7 @@ const Option = ({
         </Checkbox.Indicator>
       </Checkbox>
 
-      <YStack gap="2" flex={1}>
+      <YStack gap="1-5" flex={1}>
         <Paragraph size="5">{label}</Paragraph>
         {!!description && (
           <Paragraph size="3" lineHeight="1" color="color-9">

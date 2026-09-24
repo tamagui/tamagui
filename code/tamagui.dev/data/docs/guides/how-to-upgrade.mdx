@@ -149,8 +149,8 @@ these authoring modes.
 
 The V3 roots for `Avatar`, `Tabs`, and `Group` retain behavior and structural
 layout, but no longer supply the old opinionated visual defaults. There are no
-`tamagui/avatar`, `tamagui/tabs`, or `tamagui/group` default-skin subpaths. Keep
-the behavior imports and add the exact visual styles your application needs:
+`tamagui/avatar` or `tamagui/group` default-skin subpaths. Keep the behavior
+imports and add the exact visual styles your application needs:
 
 ```tsx
 import { Avatar, Tabs, styled } from 'tamagui'
@@ -840,8 +840,8 @@ are unrelated.
 ## 5. Control sizes are named
 
 Every control that takes `size` (Button, Input, Select, Tabs, ListItem, Label,
-Card, Toggle, Checkbox, RadioGroup, Switch, Slider, Progress, Avatar, Group,
-Tooltip) accepts the same five names: `xs`, `sm`, `md`, `lg`, `xl`. A name is a
+Card, Toggle, Checkbox, RadioGroup, Switch, Slider, Progress, Avatar, Group)
+accepts the same five names: `xs`, `sm`, `md`, `lg`, `xl`. A name is a
 rung in the shared `sizing` ladder, never a height: it picks a font size,
 horizontal and vertical padding, and a radius, and the control ends up its
 line-height plus padding tall. That keeps the frame, its text, and its icon aligned by construction.

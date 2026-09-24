@@ -1,7 +1,7 @@
 import React from 'react'
 import { Popover, Input, Label, YStack, XStack, TextArea } from 'tamagui'
 import { Button } from '../components/Button'
-import { ChevronDown } from '@tamagui/lucide-icons-2'
+import { ChevronDown } from '@tamagui/local-icons'
 
 export function PopoverFocusScopeCase() {
   return (

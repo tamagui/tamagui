@@ -1,0 +1,16 @@
+{
+  "name": "tamagui-build-test-platform-package",
+  "version": "1.0.0",
+  "license": "MIT",
+  "sideEffects": false,
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "scripts": {
+    "build": "node ../../../tamagui-build.js"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "typescript": "7.0.2"
+  }
+}

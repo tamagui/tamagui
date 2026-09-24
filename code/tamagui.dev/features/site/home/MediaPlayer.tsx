@@ -1,5 +1,5 @@
 import { Image } from '@tamagui/image'
-import { FastForward, Pause, Rewind } from '@tamagui/lucide-icons-2'
+import { FastForward, Pause, Rewind } from '@tamagui/local-icons'
 import { memo } from 'react'
 import type { ThemeName, YStackProps } from 'tamagui'
 import { Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui'
@@ -40,8 +40,8 @@ export const MediaPlayer = memo(
             mb={40}
             {...cardProps}
           >
-            <XStack items="center" p="4" gap="5">
-              <Square position="relative" overflow="hidden" rounded="6" size="8">
+            <XStack items="center" p="4" gap="6">
+              <Square position="relative" overflow="hidden" rounded="6" size="20">
                 <Image src={image} width={90} height={90} />
               </Square>
 
@@ -61,13 +61,13 @@ export const MediaPlayer = memo(
             <XStack
               z={1000}
               width="100%"
-              px="6"
+              px="8"
               py="4"
               bg="background-hover"
               borderBottomRightRadius={17}
               borderBottomLeftRadius={17}
               items="center"
-              gap="5"
+              gap="6"
               justify="center"
               pointerEvents={pointerEvents}
             >
@@ -76,7 +76,7 @@ export const MediaPlayer = memo(
                 bg="background hover:background-hover"
                 boxShadow="0 8px 16px shadow-color hover:0 20px 40px shadow-color"
                 scale="hover:1.025"
-                my="-7"
+                my="-10"
                 icon={Pause}
                 size="xl"
                 circular

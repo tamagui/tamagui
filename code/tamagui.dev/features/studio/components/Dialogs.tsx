@@ -1,4 +1,4 @@
-import { X } from '@tamagui/lucide-icons-2'
+import { X } from '@tamagui/local-icons'
 import { memo } from 'react'
 import { useWindowDimensions } from '@tamagui/use-window-dimensions'
 import type { DialogCloseProps } from 'tamagui'
@@ -59,7 +59,7 @@ export const Dialogs = memo(() => {
           opacity="1 enter:0 exit:0"
           y="0 enter:-20px exit:10px"
           maxW={dimensions.width * 75}
-          p="5"
+          p="6"
         >
           <DialogContents {...dialogProps} />
         </Dialog.Content>
@@ -85,7 +85,7 @@ const CreateThemeDialog = (props: CreateThemeDialogProps) => {
     <>
       <DialogCloseButton />
       <YStack gap="4">
-        <YStack gap="2">
+        <YStack gap="1-5">
           <Dialog.Title size="7">Create Theme</Dialog.Title>
           <Dialog.Description size="3" color="color-9">
             Create a new theme in scope {props.category}.
@@ -110,8 +110,8 @@ const ConfirmDeleteDialog = (props: ConfirmDeleteDialogProps) => {
   return (
     <>
       <DialogCloseButton />
-      <YStack gap="6" p="2">
-        <YStack gap="2">
+      <YStack gap="8" p="1-5">
+        <YStack gap="1-5">
           <Dialog.Title size="7">Delete {props.thingName}?</Dialog.Title>
           <Dialog.Description size="3" color="color-9">
             Are you sure you want to delete {props.thingName}?
@@ -137,8 +137,8 @@ const AlertDialog = (props: StudioAlertDialogProps) => {
   return (
     <>
       <DialogCloseButton />
-      <YStack gap="6" p="2">
-        <YStack gap="2">
+      <YStack gap="8" p="1-5">
+        <YStack gap="1-5">
           <Dialog.Title size="7">{props.title}</Dialog.Title>
           <Dialog.Description size="3" color="color-9">
             {props.message}

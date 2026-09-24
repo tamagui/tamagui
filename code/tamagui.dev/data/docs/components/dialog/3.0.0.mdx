@@ -29,8 +29,9 @@ demoName: Dialog
   ]}
 />
 
-Dialog is a great way to show content inside a new floating window above
-content. Dialogs [automatically stack](/ui/z-index) above other overlays. Be sure to open the code example above for a copy-paste implementation.
+Dialog shows content in a floating window above the page. Dialogs
+[automatically stack](/ui/z-index) above other overlays. Open the code example
+above for a copy-paste implementation.
 
 ## Installation
 
@@ -54,21 +55,18 @@ import { Dialog } from 'tamagui' // or '@tamagui/dialog'
 export default () => (
   <Dialog>
     <Dialog.Trigger />
-    <Dialog.Portal>
-      <Dialog.Overlay />
-      <Dialog.Content>
-        <Dialog.Title />
-        <Dialog.Description />
-        <Dialog.Close />
-        {/* ... */}
-      </Dialog.Content>
-    </Dialog.Portal>
 
-    {/* Optional: Control focus behavior */}
+    {/* Optional: control focus from a parent */}
     <Dialog.FocusScope loop trapped focusOnIdle={true}>
-      <Dialog.FocusScope.Scope>
-        {/* Focus scope will be applied to children */}
-      </Dialog.FocusScope.Scope>
+      <Dialog.Portal>
+        <Dialog.Overlay />
+        <Dialog.Content>
+          <Dialog.Title />
+          <Dialog.Description />
+          <Dialog.Close />
+          {/* ... */}
+        </Dialog.Content>
+      </Dialog.Portal>
     </Dialog.FocusScope>
   </Dialog>
 )
@@ -80,9 +78,9 @@ Dialog supports scoping which lets you mount one or more Dialog instances at the
 root of your app, while having a deeply nested child Trigger or Content attach
 to the proper parent Dialog instance.
 
-In performance sensitive areas you may want to take advantage of this, it allows
-you to only need to render the Dialog.Trigger inside the sensitive area as
-Dialogs aren't the cheapest component - they have a lot of functionality.
+In performance-sensitive areas this lets you render only `Dialog.Trigger` in
+that subtree, since Dialog is not cheap to render and carries a lot of
+functionality.
 
 Here's the basic anatomy of using `scope` and placing your Dialog higher up for
 performance:
@@ -119,7 +117,7 @@ export default () => (
 
 Note that the `Trigger` scope ties to the `Dialog` scope.
 
-## Dismissal Behavior
+## Dismissal behavior
 
 By default, dialogs can be dismissed by:
 
@@ -127,7 +125,7 @@ By default, dialogs can be dismissed by:
 - Pressing the Escape key
 - Clicking a Dialog.Close element
 
-### Modal vs Non-Modal Dialogs
+### Modal vs non-modal dialogs
 
 - **Modal dialogs** (`modal={true}`, which is the default):
   - In v1, have `disableOutsidePointerEvents` set to `true` by default
@@ -143,7 +141,7 @@ In v3, Dialog parts own their presence lifecycle. Overlay and content can finish
 exit animations before unmounting, and `onTransition` reports completion from
 the animated part rather than from the root alone.
 
-### Preventing Outside Dismissal
+### Preventing outside dismissal
 
 To prevent a dialog from closing when clicking outside:
 
@@ -157,7 +155,7 @@ To prevent a dialog from closing when clicking outside:
 </Dialog.Content>
 ```
 
-## API Reference
+## API reference
 
 ### Dialog
 
@@ -196,7 +194,7 @@ Contains every component for the dialog. Beyond
       name: 'modal',
       type: 'boolean',
       default: 'true',
-      description: `Renders into root of app instead of inline.`,
+      description: `When true, traps focus, blocks outside scroll and interaction, and portals into the root of the app. When false, the dialog renders inline and is non-blocking.`,
     },
     {
       name: 'keepChildrenMounted',
@@ -323,7 +321,7 @@ Defaults to Paragraph, see [Paragraph](/ui/text).
 
 ### Dialog.Close
 
-Closes the Dialog, accepts the same props as YStack. Recommended to use with
+Closes the Dialog, accepts the same props as View. Recommended to use with
 your own component and `asChild`.
 
 <PropsTable
@@ -335,8 +333,6 @@ your own component and `asChild`.
     },
   ]}
 />
-
-Just [Tamagui Props](/docs/intro/props).
 
 ### Dialog.FocusScope
 
@@ -372,7 +368,7 @@ management. Can be used to control focus behavior from a parent component.
     {
       name: 'focusOnIdle',
       type: 'boolean | number',
-      default: 'false',
+      default: 'true',
       description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
     },
     {

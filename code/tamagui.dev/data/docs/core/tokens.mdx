@@ -1,6 +1,6 @@
 ---
 title: Tokens
-description: Accessing and using tokens
+description: Named design values for space, size, radius, color, and z-index
 ---
 
 <IntroParagraph>
@@ -11,7 +11,7 @@ description: Accessing and using tokens
 Create them with `createTokens`, then pass them to `createTamagui` as part of
 the [configuration](/docs/core/configuration) object.
 
-## Getting Tokens
+## Getting tokens
 
 For example, if you define some tokens:
 
@@ -79,7 +79,7 @@ const padding = getVariableValue(getSize(size)) * 0.6
 If you need a smaller or larger named token, choose that token explicitly. If
 you need proportional sizing, multiply the resolved numeric value.
 
-### Color Tokens as Fallback Values for Themes
+### Color tokens as fallback values for themes
 
 Color tokens are available as fallback values when you access a theme. So when you `useTheme()` and then access a value that isn't in the theme, it will check for a `tokens.color` with the matching name.
 
@@ -88,15 +88,13 @@ Think of it this way:
 - Tokens are static and are your base values.
 - Themes are dynamic, they can change in your React tree, and live above tokens.
 
-If you are confused by Tamagui themes, don't be. You can avoid them altogether, or avoid learning them until later. Instead, you can just build your app using regular style props and leave out themes altogether. Or, simply use a `light` and a `dark` theme if you want light and dark mode in your app, but avoid using any nested themes.
+You can skip themes at first and build with style props and tokens alone, adding `light` and `dark` themes only when you need them. Avoid nested themes until you need them.
 
-## Using Tokens with Components
+## Using tokens with components
 
 When using `styled` or any Tamagui component like `View`, you can access tokens directly. Just like with `useTheme`, it will first look for a theme value that matches, and if not it will fall back to a token.
 
-Tokens are automatically applied to certain properties. For example, `size` tokens are applied to width and height. And of course `radius` to borderRadius.
-
-Here's how they all apply:
+Tokens apply automatically to matching properties. `size` tokens apply to width and height, `radius` to borderRadius:
 
 <PropsTable
   title="How tokens apply to attributes"
@@ -126,9 +124,9 @@ Here's how they all apply:
   ]}
 />
 
-## Specific Tokens
+## Specific tokens
 
-As of version 1.34, you can also define any custom token values you'd like:
+You can also define custom token categories of your own:
 
 ```tsx
 const tokens = createTokens({
@@ -141,7 +139,7 @@ const tokens = createTokens({
 })
 ```
 
-And then access them using the new "specific tokens" syntax:
+And then access them using the "specific tokens" syntax:
 
 ```tsx
 export default () => (

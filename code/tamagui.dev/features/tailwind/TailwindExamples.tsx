@@ -20,7 +20,7 @@ function ClassLine({ line }: { line: string }) {
 
 export function TailwindExamples() {
   return (
-    <ContainerLarge py="12" gap="8">
+    <ContainerLarge py="88px" gap="11">
       <YStack items="center" gap="3">
         <HomeH2>Classes, or props</HomeH2>
         <HomeH3>
@@ -35,7 +35,7 @@ export function TailwindExamples() {
           <YStack
             key={group.title}
             gap="3"
-            p="5"
+            p="6"
             rounded="6"
             borderWidth={1}
             borderColor="border-color"
@@ -44,7 +44,7 @@ export function TailwindExamples() {
             <Paragraph size="5" color="color-12">
               {group.title}
             </Paragraph>
-            <YStack gap="2">
+            <YStack gap="1-5">
               {group.lines.map((line) => (
                 <ClassLine key={line} line={line} />
               ))}
@@ -59,7 +59,7 @@ export function TailwindExamples() {
         width="100%"
         maxW={760}
         gap="3"
-        p="5"
+        p="6"
         rounded="6"
         borderWidth={1}
         borderColor="border-color"

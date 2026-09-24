@@ -63,7 +63,7 @@ export default () => (
 )
 ```
 
-### Headless Usage
+### Headless usage
 
 To use headless tabs without `@tamagui/core`, install `@tamagui/tabs-headless`:
 
@@ -96,7 +96,7 @@ function MyTabs() {
 }
 ```
 
-## API Reference
+## API reference
 
 ### Tabs
 
@@ -153,7 +153,7 @@ Root tabs component. Extends View. Passing the `size` prop to this component wil
 
 ### Tabs.List
 
-Container for the trigger buttons. Supports scrolling by extending [Group](/docs/components/group). You can disable passing border radius to children by passing `disablePassBorderRadius`.
+Container for the trigger buttons. Supports scrolling by extending [Group](/ui/group).
 
 <PropsTable
   data={[
@@ -170,7 +170,7 @@ Container for the trigger buttons. Supports scrolling by extending [Group](/docs
   Since Tabs.List extends Group, the same limitation applies: automatic border radius
   detection only works when `Tabs.Tab` is a **direct child** of `Tabs.List`. If you wrap
   tabs in custom components, see the [Group docs on nested
-  items](/docs/components/group#custom-components--nested-items) for workarounds.
+  items](/ui/group#custom-components--nested-items) for workarounds.
 </Notice>
 
 ### Tabs.Tab
@@ -232,9 +232,9 @@ Where each tab's content will be shown. Extends [YStack](/ui/stacks), adding:
   ]}
 />
 
-## Headless Props
+## Headless props
 
-### useTabs Return Value
+### useTabs return value
 
 | Property          | Type                                            | Description                           |
 | ----------------- | ----------------------------------------------- | ------------------------------------- |
@@ -276,7 +276,7 @@ const { isSelected, shouldMount, contentProps } = useTabContent({
 
 ### Animations
 
-Here is a demo with more advanced animations using [AnimatePresence](/docs/core/animations#animatepresence-and-exitstyle) and [Tab](#tabstab)'s `onInteraction` prop.
+Here is a demo with more advanced animations using [AnimatePresence](/docs/core/animations#animatepresence-and-exitstyle) and [Tabs.Tab](#tabstab)'s `onInteraction` prop.
 
 <HeroContainer noPad showAnimationDriverControl>
   <TabsAdvancedDemo />

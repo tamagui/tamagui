@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Accordion, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
-import { ChevronDown, ChevronsDownUp, ChevronsUpDown } from '@tamagui/lucide-icons-2'
+import { ChevronDown, ChevronsDownUp, ChevronsUpDown } from '@tamagui/local-icons'
 import { DocsRouteNavItem } from './DocsRouteNavItem'
 import { docsRoutes } from './docsRoutes'
 import { useDocsMenu } from './useDocsMenu'
@@ -39,9 +39,12 @@ const sections = {
 export const DocsMenuContents = React.memo(function DocsMenuContents({
   section: propsSection,
   inMenu,
+  header,
 }: {
   inMenu?: boolean
   section?: keyof typeof sections
+  // shares a row with the collapse-all toggle in the sidebar
+  header?: React.ReactNode
 }) {
   const { currentPath, section: docsSection } = useDocsMenu()
   // compiler pages now show core section (merged)
@@ -121,7 +124,8 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
         aria-label="Docs Menu"
       >
         {!inMenu && (
-          <XStack justifyContent="flex-end" pr="2" mb="2">
+          <XStack justifyContent="space-between" items="center" px="4" mb="4">
+            {header}
             <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
           </XStack>
         )}
@@ -157,7 +161,8 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
   return (
     <div style={{ width: '100%', paddingBottom: inMenu ? 0 : 80 }} aria-label="Docs Menu">
       {!inMenu && (
-        <XStack justifyContent="flex-end" pr="2" mb="2">
+        <XStack justifyContent="space-between" items="center" px="4" mb="4">
+          {header}
           <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
         </XStack>
       )}
@@ -222,7 +227,7 @@ const AccordionSection = ({
   currentPath: string
 }) => {
   const content = (
-    <YStack paddingHorizontal="2" paddingVertical="2">
+    <YStack paddingHorizontal="1-5" paddingTop="px" paddingBottom="4">
       {items.map(({ page }, index) => {
         return (
           <DocsRouteNavItem
@@ -242,7 +247,7 @@ const AccordionSection = ({
 
   // no title = top-level items, render without accordion
   if (!section?.title) {
-    return <YStack marginBottom="2">{content}</YStack>
+    return <YStack marginBottom="1-5">{content}</YStack>
   }
 
   return (
@@ -253,13 +258,14 @@ const AccordionSection = ({
         backgroundColor="transparent hover:color-2 press:color-1"
         borderWidth={0}
         borderRadius="4"
-        marginHorizontal="2"
+        marginHorizontal="1-5"
+        marginBottom="px"
       >
         {({ open }) => {
           return (
             <XStack
-              paddingVertical="2"
-              paddingHorizontal="3"
+              paddingVertical="1"
+              paddingHorizontal="4"
               justifyContent="space-between"
               alignItems="center"
               width="100%"
@@ -273,7 +279,7 @@ const AccordionSection = ({
                 opacity="0.2 group-hover/docs-section:0.6 group-focus-visible/docs-section:1"
                 rotate={open ? '180deg' : '0deg'}
               >
-                <ChevronDown color="color-8" size="1" />
+                <ChevronDown color="color-8" size="5" />
               </YStack>
             </XStack>
           )

@@ -134,7 +134,7 @@ export const SeasonTogglePopover = (props: { children: any }) => {
         backgroundColor="background"
         boxShadow="0 4px 12px shadow-color"
         p="0"
-        t="2"
+        t="1-5"
         overflow="hidden"
         rounded="8"
         transition={{
@@ -147,9 +147,9 @@ export const SeasonTogglePopover = (props: { children: any }) => {
             return (
               <Square
                 key={optionName}
-                size="4"
-                width="sm:5"
-                height="sm:5"
+                size="11"
+                width="max-md:12"
+                height="max-md:12"
                 bg={
                   name === optionName
                     ? 'color-5 hover:color-5 press:color-5'

@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons-2'
+import { ChevronLeft, ChevronRight } from '@tamagui/local-icons'
 import type React from 'react'
 import { H4, SizableText, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
@@ -70,7 +70,7 @@ export const Calendar = () => {
               {...demoProps.borderRadiusProps}
             />
           </XStack>
-          <YStack mt="2" p="2" gap="2">
+          <YStack mt="1-5" p="1-5" gap="1-5">
             <XStack>
               {weekdays.map((day) => (
                 <LabelCell key={day}>{day[0].toUpperCase() + day[1]}</LabelCell>
@@ -105,8 +105,14 @@ export const Calendar = () => {
 
 const LabelCell = ({ children }: { children: React.ReactNode }) => {
   return (
-    <YStack width="3 md:2" height="3 md:2" select="none" justify="center" items="center">
-      <SizableText fontSize="md:2" lineHeight="md:2" text="center" size="4">
+    <YStack
+      width="9 max-lg:7"
+      height="9 max-lg:7"
+      select="none"
+      justify="center"
+      items="center"
+    >
+      <SizableText fontSize="max-lg:2" lineHeight="max-lg:2" text="center" size="4">
         {children}
       </SizableText>
     </YStack>
@@ -117,8 +123,8 @@ const DayCell = ({ day, isDisabled }: { day: number; isDisabled?: boolean }) => 
   const demoProps = useDemoProps()
   return (
     <YStack
-      width="3 md:2"
-      height="3 md:2"
+      width="9 max-lg:7"
+      height="9 max-lg:7"
       cursor={isDisabled ? 'default' : 'pointer'}
       select="none"
       bg={isDisabled ? undefined : 'hover:background-hover'}

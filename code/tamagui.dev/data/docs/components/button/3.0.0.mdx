@@ -1,6 +1,6 @@
 ---
 title: Button
-description: A simple button component
+description: A pressable button with sizing, icons, and themes
 name: button
 component: Button
 package: button
@@ -39,7 +39,7 @@ import { Button } from 'tamagui'
 
 `@tamagui/button` holds the unstyled half: `useButton` and the parts, with no
 styled `Button` of its own. Import from it when you are building your own button
-rather than using ours - see [Build your own](#build-your-own).
+rather than using ours; see [Build your own](#build-your-own).
 
 ## Usage
 
@@ -51,10 +51,9 @@ export default () => <Button>Lorem ipsum</Button>
 
 ## Sizing
 
-Sizing buttons provides a unique challenge especially for a compiler, because you
-need to adjust many different properties - not just on the outer frame, but on the
-text wrapped inside. Tamagui adjusts padding, border radius, font size, and icon
-size together with the `size` prop.
+Sizing a button means adjusting many properties at once, not just on the outer
+frame but on the text inside it. Tamagui adjusts padding, border radius, font
+size, and icon size together with the `size` prop.
 
 ```tsx
 import { Button } from 'tamagui'
@@ -83,7 +82,7 @@ export default () => (
 )
 ```
 
-## Icon Theming
+## Icon theming
 
 You can pass icons as either elements or components. If passing components,
 Tamagui themes them, passing `size` and `color`. The icon size comes from the
@@ -98,21 +97,21 @@ dimensions.
 
 ```tsx
 import { Button } from 'tamagui'
-import { Star } from '@tamagui/lucide-icons-2'
+import { Star } from './components/icons' // your generated icons, see Lucide Icons
 
 export default () => (
   <>
     <Button icon={Star} size="lg">
       Icon sized by Button
     </Button>
-    <Button icon={Star} iconSize="2" size="lg">
+    <Button icon={Star} iconSize={18} size="lg">
       Icon sized explicitly
     </Button>
   </>
 )
 ```
 
-## Web Form Props
+## Web form props
 
 Button supports the standard HTML `<button>` attributes for form integration.
 These are web-only and ignored on native:
@@ -139,11 +138,11 @@ export default () => (
   `type="submit"` explicitly when you want form submission behavior.
 </Notice>
 
-## Text Styling
+## Text styling
 
 Button's frame is a `View`, so text style props passed to it are ignored. The one
-exception is `fontFamily`, which forwards to the wrapped text - a font family is a
-base value in practice, so it needs no conditional resolution.
+exception is `fontFamily`, which forwards to the wrapped text, since a font family
+is a base value and needs no conditional resolution.
 
 Everything else goes on `Button.Text`:
 
@@ -159,7 +158,7 @@ export default () => (
 )
 ```
 
-### Interactive Text Styles
+### Interactive text styles
 
 Combine `Button.Text` with the `group` prop on Button to coordinate text styles
 across hover, press, and focus states:
@@ -261,10 +260,10 @@ another Button (a `Dialog.Trigger` inside a toolbar button, say) renders as a
 For a longer walkthrough see
 [How to Build a Button](/docs/guides/how-to-build-a-button).
 
-## API Reference
+## API reference
 
-Buttons extend View, inheriting all the
-[Tamagui standard props](/docs/intro/props), plus. Sizes come from the shared
+Button extends View, inheriting all the
+[Tamagui standard props](/docs/intro/props). Sizes come from the shared
 [Sizing](/docs/core/sizing) ladder.
 
 <PropsTable
@@ -429,8 +428,8 @@ and `iconAfter` props, and available for your own compositions.
 ### useButton
 
 Themes the `icon` and `iconAfter` props, wraps bare children in a text, and
-applies the html nesting rules. Returns the props to spread onto a frame - the
-ones it consumed removed, everything else untouched.
+applies the html nesting rules. Returns the props to spread onto a frame, with the
+ones it consumed removed and everything else untouched.
 
 ```tsx
 const { isNested, props } = useButton(props, { Text: MyButtonText })

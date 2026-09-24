@@ -32,11 +32,11 @@ export function PropsTable({
       my="4"
       rounded="4"
       overflow="hidden"
-      mx="-4 sm:0px"
+      mx="-4 max-md:0px"
       aria-label={hasAriaLabel ? ariaLabel : 'Component Props'}
       aria-labelledby={ariaLabelledBy}
     >
-      <XStack items="center" py="2" px="4" bg="color-1">
+      <XStack items="center" py="1-5" px="4" bg="color-1">
         <H3 size="3">{title}</H3>
       </XStack>
       {data.map(
@@ -55,7 +55,7 @@ export function PropsTable({
             bg={`${i % 2 === 1 ? 'color-0025' : 'transparent'}`}
           >
             <YStack width="100%">
-              <XStack position="relative" py="1" px="4" flexDirection="sm:column">
+              <XStack position="relative" py="0-5" px="4" flexDirection="max-md:column">
                 <XStack minW="30%" items="center" justify="space-between">
                   <H4
                     color="color"
@@ -85,14 +85,14 @@ export function PropsTable({
 
                 {!!type && (
                   <>
-                    <Separator self="stretch" mx="3-5" my="2" vertical />
+                    <Separator self="stretch" mx="4" my="1-5" vertical />
 
                     <XStack
                       flex={2}
                       flexBasis="auto"
                       minW="30%"
-                      items="center xs:flex-start"
-                      flexDirection="xs:column"
+                      items="center max-sm:flex-start"
+                      flexDirection="max-sm:column"
                     >
                       <Paragraph
                         size="3"
@@ -107,24 +107,24 @@ export function PropsTable({
 
                       <XStack items="center">
                         {defaultValue ? (
-                          <XStack items="center" gap="1">
+                          <XStack items="center" gap="0-5">
                             <Paragraph opacity={0.5} size="2">
                               Default:&nbsp;
                             </Paragraph>
                             {/* @ts-ignore */}
-                            <Code my="-1" bg="background-press">
+                            <Code my="-0-5" bg="background-press">
                               {defaultValue}
                             </Code>
                           </XStack>
                         ) : null}
 
                         {Boolean(defaultValue) && (
-                          <Separator self="stretch" mx="3-5" my="2" vertical />
+                          <Separator self="stretch" mx="4" my="1-5" vertical />
                         )}
 
                         {deprecated ? (
                           <View
-                            width="8"
+                            width="20"
                             items="center"
                             bg="red-2"
                             borderWidth={1}
@@ -143,7 +143,7 @@ export function PropsTable({
               </XStack>
 
               {!!description && (
-                <YStack py="1" px="4">
+                <YStack py="0-5" px="4">
                   <Paragraph size="3" opacity={0.65}>
                     {description}
                   </Paragraph>

@@ -119,7 +119,7 @@ const PalettePreviewPanels = memo(() => {
   if (!palettes) return null
 
   return (
-    <XStack flexWrap="wrap" gap="2">
+    <XStack flexWrap="wrap" gap="1-5">
       {Object.entries(palettes).map(([name, palette]) => {
         if (
           (isThemeDark && !name.startsWith('dark')) ||

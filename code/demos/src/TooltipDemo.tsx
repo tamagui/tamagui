@@ -4,7 +4,7 @@ import {
   ChevronRight,
   ChevronUp,
   Circle,
-} from '@tamagui/lucide-icons-2'
+} from '@tamagui/local-icons'
 import type { TooltipProps } from 'tamagui'
 import { Button, Paragraph, Theme, Tooltip, TooltipGroup, XStack, YStack } from 'tamagui'
 

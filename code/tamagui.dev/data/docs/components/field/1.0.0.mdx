@@ -232,7 +232,7 @@ its own label and description while sharing the root field state.
 </Field>
 ```
 
-## API Reference
+## API reference
 
 ### Field
 
@@ -251,6 +251,12 @@ Contains the field state and validation behavior. It accepts
       type: 'boolean',
       default: 'false',
       description: `Disables the field and its integrated controls.`,
+    },
+    {
+      name: 'invalid',
+      type: 'boolean',
+      default: 'false',
+      description: `Marks the field invalid without running its validator. Useful for errors known before validation runs.`,
     },
     {
       name: 'validate',

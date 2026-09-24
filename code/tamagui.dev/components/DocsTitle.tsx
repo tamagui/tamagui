@@ -10,13 +10,13 @@ import { nbspLastWord } from './SubTitle'
 export const DocsTitle = ({ children }: { children: string }) => {
   return (
     <H1
-      mb="2"
+      mb="1-5"
       color="color-12"
       fontSize={32}
       lineHeight="38px"
       fontWeight="700"
       letterSpacing={-0.6}
-      maxW="gtSm:90%"
+      maxW="md:90%"
       className="word-break-keep-all"
     >
       {nbspLastWord(children)}

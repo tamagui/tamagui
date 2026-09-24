@@ -1,5 +1,5 @@
 import slugify from '@sindresorhus/slugify'
-import { History, Moon, Plus, Sun, X } from '@tamagui/lucide-icons-2'
+import { History, Moon, Plus, Sun, X } from '@tamagui/local-icons'
 import { animations } from '@tamagui/tamagui-dev-config'
 import { useStore } from '@tamagui/use-store'
 import { useUserScheme } from '@vxrn/color-scheme'
@@ -196,7 +196,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
   }
 
   return (
-    <XStack z={1000} mr="lg:6" data-tauri-drag-region className="all ease-in ms300">
+    <XStack z={1000} mr="max-xl:8" data-tauri-drag-region className="all ease-in ms300">
       <YStack flex={1} flexBasis="auto" width="100%" gap="4">
         <XStack flexWrap="wrap" items="center" flex={1} flexBasis="auto" gap="3">
           <XStack minW={300} flex={1} flexBasis="auto" position="relative">
@@ -249,14 +249,14 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
         </XStack>
 
         <ScrollView
-          mx="-6"
-          px="6"
+          mx="-8"
+          px="8"
           flex={1}
           flexBasis="auto"
           horizontal
           showsHorizontalScrollIndicator={false}
         >
-          <XStack gap="2" py="2">
+          <XStack gap="1-5" py="1-5">
             <Link href="/theme">
               <HistoryButton icon={<Plus size={14} />}>New</HistoryButton>
             </Link>

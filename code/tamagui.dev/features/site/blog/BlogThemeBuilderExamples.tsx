@@ -9,7 +9,7 @@ const PaletteExample = ({
   showNegativeIndices?: boolean | undefined
   theme?: string | undefined
 }) => (
-  <YStack gap="2">
+  <YStack gap="1-5">
     {theme && (
       <XStack items="center" gap="4" theme={theme as any}>
         <Separator />
@@ -57,7 +57,7 @@ export const ExamplePalette = ({
   theme?: string
 }) => {
   return (
-    <YStack my="4" gap="2">
+    <YStack my="4" gap="1-5">
       {showLabels && (
         <XStack justify="space-between">
           <Paragraph size="2" color="color-9">
@@ -79,7 +79,7 @@ export const ExamplePalette = ({
 
 export const ExampleTemplate = () => {
   return (
-    <YStack my="4" gap="2">
+    <YStack my="4" gap="1-5">
       <XStack justify="space-between">
         <Paragraph size="2" color="color-9">
           Background

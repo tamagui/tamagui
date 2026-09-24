@@ -1,5 +1,5 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
-import { Check, ChevronLeft, ChevronRight, Lightbulb } from '@tamagui/lucide-icons-2'
+import { Check, ChevronLeft, ChevronRight, Lightbulb } from '@tamagui/local-icons'
 import type React from 'react'
 import { useRef, useState } from 'react'
 import type { ScrollViewProps, XStackProps } from 'tamagui'
@@ -58,7 +58,7 @@ const Panel = ({
       )}
 
       <XStack flex={1}>
-        <YStack flex={1} gap="2">
+        <YStack flex={1} gap="1-5">
           {typeof children === 'string' ? (
             <NoticeParagraph>{children}</NoticeParagraph>
           ) : (
@@ -81,11 +81,11 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
   }
   return (
     <Panel
-      icon={<Lightbulb size="1" color="color-7" />}
+      icon={<Lightbulb size="5" color="color-7" />}
       afterTitle={
         !steps ? null : (
-          <XStack gap="2" items="center">
-            <Paragraph mr="2" color="color-9" size="2">
+          <XStack gap="1-5" items="center">
+            <Paragraph mr="1-5" color="color-9" size="2">
               {index + 1}/{total}
             </Paragraph>
 
@@ -113,7 +113,7 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
       {children ? (
         children
       ) : steps ? (
-        <YStack flex={1} overflow="hidden" mx="-4" my="-2">
+        <YStack flex={1} overflow="hidden" mx="-4" my="-1-5">
           <ScrollViewWithFade showsVerticalScrollIndicator={false}>
             <AnimatePresence initial={false} custom={{ going: direction }}>
               <YStackEnterable
@@ -315,7 +315,7 @@ const YStackEnterable = styled(YStack, {
 })
 
 export const StudioSuccess = (props: PanelProps) => {
-  return <Panel theme="green" icon={<Check size="1" color="color-7" />} {...props} />
+  return <Panel theme="green" icon={<Check size="5" color="color-7" />} {...props} />
 }
 
 export const NoticeParagraph = styled(Paragraph, {

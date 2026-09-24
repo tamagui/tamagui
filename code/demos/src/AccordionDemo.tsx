@@ -1,4 +1,4 @@
-import { ChevronDown } from '@tamagui/lucide-icons-2'
+import { ChevronDown } from '@tamagui/local-icons'
 import { Accordion, Paragraph, Square } from 'tamagui'
 
 export function AccordionDemo() {

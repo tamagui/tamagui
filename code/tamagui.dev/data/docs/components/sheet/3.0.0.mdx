@@ -29,7 +29,7 @@ demoName: Sheet
   ]}
 />
 
-Sheet is a bottom panel that slides up from the bottom of the screen, commonly used for mobile-friendly dialogs and action menus. It supports drag-to-dismiss, multiple snap points, and [automatically stacks](/ui/z-index) above other content.
+Sheet is a bottom panel for mobile-friendly dialogs and action menus. It supports drag-to-dismiss, multiple snap points, and [automatically stacks](/ui/z-index) above other content.
 
 ## Installation
 
@@ -62,7 +62,7 @@ export default () => (
 )
 ```
 
-## API Reference
+## API reference
 
 ### Sheet
 
@@ -102,9 +102,9 @@ Contains every component for the sheet.
     },
     {
       name: 'snapPoints',
-      type: 'number[]',
-      default: `[80, 10]`,
-      description: `Array of numbers, 0-100 that corresponds to % of the screen it should take up. Should go from most visible to least visible in order. Use "open" prop for fully closed.`,
+      type: '(string | number)[]',
+      default: `[80]`,
+      description: `Array of pixels or percents the sheet moves to when dragged. The first is the topmost and default when first opened. Use "open" prop for fully closed.`,
     },
     {
       name: 'onPositionChange',
@@ -118,10 +118,9 @@ Contains every component for the sheet.
       description: `Controls tapping on the overlay to close, defaults to true.`,
     },
     {
-      name: 'animationConfig',
-      type: 'Animated.SpringAnimationConfig',
-      default: 'true',
-      description: `Customize the spring used, passed to react-native Animated.spring().`,
+      name: 'transitionConfig',
+      type: 'AnimatedNumberStrategy',
+      description: `Customize the animation strategy for position transitions.`,
     },
     {
       name: 'native',
@@ -151,15 +150,15 @@ Contains every component for the sheet.
     },
     {
       name: 'portalProps',
-      type: 'Object',
-      description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
+      type: 'PortalProps',
+      description: `Props passed to the Portal that sheet uses when in modal mode.`,
     },
     {
       name: 'moveOnKeyboardChange',
       type: 'boolean',
       default: 'false',
       description:
-        'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.',
+        'Makes the sheet move up when the mobile keyboard opens so the focused input remains visible. Works on native and on mobile web.',
     },
     {
       name: 'preferAdaptParentOpenState',
@@ -284,7 +283,7 @@ prop is driven by UIKit, which does not expose a continuous position. Remove the
 The sheet does not fade anything for you, so an overlay fade is your code. There
 are two supported patterns.
 
-**1. Presence fade** — animates on open and close only. Put enter/exit styles on
+**1. Presence fade** (animates on open and close only). Put enter/exit styles on
 `Sheet.Overlay`:
 
 ```tsx
@@ -295,7 +294,7 @@ are two supported patterns.
 />
 ```
 
-**2. Drag-linked fade** — tracks the finger. Read the animated position and map
+**2. Drag-linked fade** (tracks the finger). Read the animated position and map
 it to opacity with `useAnimatedNumberStyle`:
 
 ```tsx
@@ -343,13 +342,13 @@ Keep `Sheet.Overlay` as the direct child of `Sheet`, then render the hook-driven
 backdrop inside it. The driver's animated view makes the worklet-driven style
 apply on every driver.
 
-## Native Gesture Handler Integration
+## Native gesture handler integration
 
 For the best gesture experience on iOS and Android, Sheet supports optional integration with `react-native-gesture-handler`. This provides:
 
-- **Smooth scroll-to-drag handoffs** - Seamlessly transition between scrolling content and dragging the sheet
+- **Smooth scroll-to-drag handoffs** - transition between scrolling content and dragging the sheet
 - **No gesture conflicts** - Sheet and ScrollView gestures coordinate properly
-- **Native-quality feel** - Matches the behavior of system sheets
+- **Native-quality feel** - matches the behavior of system sheets
 
 #### Setup
 
@@ -395,7 +394,7 @@ This ensures:
 - Dragging down when scroll is at top drags the sheet
 - Direction changes mid-gesture work smoothly
 
-#### Without Gesture Handler
+#### Without gesture handler
 
 If you don't set up `react-native-gesture-handler`, Sheet falls back to React Native's built-in `PanResponder`. This works well for basic use cases but has some limitations on iOS where scroll and pan gestures can occasionally conflict.
 
@@ -408,7 +407,3 @@ and `unmountChildrenWhenHidden` keys off the same closed state.
 
 For Android you need to manually re-propagate any context when using `modal`.
 This is because React Native doesn't support portals yet.
-
-## Native Support
-
-We've deprecated the `native` prop in favor of using Adapt.

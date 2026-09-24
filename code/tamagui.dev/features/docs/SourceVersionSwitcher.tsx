@@ -1,5 +1,5 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
-import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
+import { Check, ChevronDown, ChevronUp } from '@tamagui/local-icons'
 import { type Href, router, useParams, usePathname } from 'one'
 import React from 'react'
 import { Adapt, Select, Sheet, YStack } from 'tamagui'
@@ -46,7 +46,7 @@ export function SourceVersionSwitcher({
     >
       <Select.Trigger
         height={29}
-        paddingHorizontal="2"
+        paddingHorizontal="1-5"
         paddingTop={1}
         paddingBottom={1}
         gap={0}
@@ -84,7 +84,7 @@ export function SourceVersionSwitcher({
           justify="center"
           position="relative"
           width="100%"
-          height="3"
+          height="9"
         >
           <YStack z={10}>
             <ChevronUp size={20} />
@@ -104,7 +104,7 @@ export function SourceVersionSwitcher({
           borderWidth={1}
           borderColor="border-color"
           borderRadius="4"
-          padding="1"
+          padding="0-5"
           boxShadow="0 12px 28px rgba(0, 0, 0, 0.18)"
         >
           <Select.Group>
@@ -131,7 +131,7 @@ export function SourceVersionSwitcher({
           justify="center"
           position="relative"
           width="100%"
-          height="3"
+          height="9"
         >
           <YStack z={10}>
             <ChevronDown size={20} />

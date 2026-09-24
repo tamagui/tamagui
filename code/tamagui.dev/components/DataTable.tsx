@@ -21,12 +21,12 @@ export function DataTable({
         my="4"
         rounded="4"
         overflow="hidden"
-        mx="-4 sm:0px"
+        mx="-4 max-md:0px"
         aria-label={hasAriaLabel ? ariaLabel : 'Component Props'}
         aria-labelledby={ariaLabelledBy}
       >
         {!!title && (
-          <XStack items="center" py="2" px="4" bg="border-color">
+          <XStack items="center" py="1-5" px="4" bg="border-color">
             <H3 size="3">{title}</H3>
           </XStack>
         )}
@@ -38,7 +38,7 @@ export function DataTable({
               position="relative"
               py="3"
               px="4"
-              flexDirection="sm:column"
+              flexDirection="max-md:column"
             >
               {items.map((item) => (
                 <H4

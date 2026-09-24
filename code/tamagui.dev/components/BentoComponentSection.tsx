@@ -88,12 +88,12 @@ export const ComponentSection = () => {
                   <ContainerLarge>
                     <XStack
                       columnGap="4"
-                      rowGap="4 gtMd:20"
+                      rowGap="4 lg:48"
                       flex={1}
                       flexBasis="auto"
                       shrink={1}
-                      maxW="gtMd:100%"
-                      flexWrap={`gtMd:${store.heroVisible ? 'wrap' : 'nowrap'}`}
+                      maxW="lg:100%"
+                      flexWrap={`lg:${store.heroVisible ? 'wrap' : 'nowrap'}`}
                     >
                       {parts.map((props) => {
                         const { route, name, numberOfComponents } = props
@@ -105,7 +105,7 @@ export const ComponentSection = () => {
                         )
                       })}
 
-                      <Spacer width="calc(50vw - 300px)" display="gtMd:none" />
+                      <Spacer width="calc(50vw - 300px)" display="lg:none" />
                     </XStack>
                   </ContainerLarge>
                 </ScrollView>

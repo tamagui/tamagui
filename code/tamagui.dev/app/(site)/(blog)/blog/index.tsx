@@ -24,23 +24,23 @@ export default function Blog() {
   return (
     <>
       <HeadInfo title="Blog — Tamagui" description="What's up with Tamagui." />
-      <Spacer size="7" />
-      <ContainerLarge mb="7">
+      <Spacer size="10" />
+      <ContainerLarge mb="10">
         <H2 size="8" color="color-9">
           Blog
         </H2>
-        <Spacer size="6" />
-        <XStack flexWrap="wrap" gap="4" flexDirection="md:column">
+        <Spacer size="8" />
+        <XStack flexWrap="wrap" gap="4" flexDirection="max-lg:column">
           {frontmatters.map((frontmatter) => (
             <Link asChild key={frontmatter.title} href={`/blog/${frontmatter.slug}`}>
               <TamaguiCard
                 title={frontmatter.title}
                 render="a"
-                width="calc(50% - var(--space-2)) md:100% sm:100%"
+                width="calc(50% - var(--space-2)) max-lg:100% max-md:100%"
                 minH="max-content"
-                maxWidth="md:100% sm:100%"
-                flex="md:unset sm:unset"
-                flexShrink="md:0 sm:0"
+                maxWidth="max-lg:100% max-md:100%"
+                flex="max-lg:unset max-md:unset"
+                flexShrink="max-lg:0 max-md:0"
                 subTitle={
                   <Paragraph opacity={0.5} cursor="inherit" color="color-10" size="3">
                     {Intl.DateTimeFormat('en-US', {

@@ -1,5 +1,5 @@
 import { LogoIcon } from '@tamagui/logo'
-import { Play } from '@tamagui/lucide-icons-2'
+import { Play } from '@tamagui/local-icons'
 import { Button, Image, isWeb, Square, useControllableState, useEvent } from 'tamagui'
 
 export function AnimationsDemo(props) {

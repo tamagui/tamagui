@@ -3,7 +3,6 @@ title: Anchor
 description: Link to external websites
 name: anchor
 component: Anchor
-package: html
 ---
 
 <IntroParagraph>
@@ -16,19 +15,15 @@ package: html
 
 ## Installation
 
-Anchor is already installed in `tamagui`, or you can install it independently:
-
-```bash
-npm install @tamagui/html
-```
+Anchor is already installed in `tamagui`:
 
 ## Usage
 
-The Anchor component provides a way to link to external websites. It extends [SizableText](/docs/components/text#sizable-text), adding the `href`, `target`, and `rel` attributes.
+Anchor extends [SizableText](/ui/text#sizabletext), adding the `href`, `target`, and `rel` attributes.
 
 On native, it uses React Native `Linking.openURL`. On web, it renders an `a` element with `href` set appropriately.
 
-## API Reference
+## API reference
 
 ### Anchor
 

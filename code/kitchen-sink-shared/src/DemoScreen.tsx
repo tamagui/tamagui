@@ -1,5 +1,5 @@
 import * as Demos from '@tamagui/demos'
-import { ArrowLeft } from '@tamagui/lucide-icons-2'
+import { ArrowLeft } from '@tamagui/local-icons'
 import { Button, H1, YStack } from 'tamagui'
 
 export function DemoScreen({

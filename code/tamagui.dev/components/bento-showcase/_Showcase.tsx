@@ -1,4 +1,4 @@
-import { Code, Eye, Info, Link, Minus, Plus } from '@tamagui/lucide-icons-2'
+import { Code, Eye, Info, Link, Minus, Plus } from '@tamagui/local-icons'
 import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import type { SizeTokens, ThemeName } from 'tamagui'
 
@@ -109,7 +109,7 @@ const ShowcaseView = forwardRef<any, Props>(
         >
           <XStack items="center" justify="space-between">
             <XStack items="center" flex={1} gap="3">
-              <H2 size="7" fontWeight="600" bg="background" t="0" l="2">
+              <H2 size="7" fontWeight="600" bg="background" t="0" l="1-5">
                 {title}
               </H2>
             </XStack>
@@ -187,7 +187,7 @@ const ShowcaseView = forwardRef<any, Props>(
                     {children}
                   </YStack>
                 </View>
-                <XStack gap="2" position="absolute" m="4" b={0} r={0} items="flex-end">
+                <XStack gap="1-5" position="absolute" m="4" b={0} r={0} items="flex-end">
                   <SizeController />
                 </XStack>
               </>
@@ -231,8 +231,8 @@ const MessagesFrame = (props: {
         bg="color-1"
         borderBottomWidth={1}
         borderColor="border-color light:gray-6"
-        p="2"
-        gap="2"
+        p="1-5"
+        gap="1-5"
       >
         {['red-10', 'yellow-10', 'green-10'].map((color, index) => (
           <View
@@ -299,7 +299,7 @@ const PhoneFrame = (props: any) => {
       <YStack
         pb={20}
         pt={50}
-        px="6"
+        px="8"
         overflow="hidden"
         width="133.3335%"
         height={800}
@@ -399,7 +399,7 @@ const ResizableBox = createStyledHOC(
         flexBasis="auto"
         items="stretch"
         select="none"
-        gap="2"
+        gap="1-5"
         {...rest}
         ref={ref}
       >
@@ -431,7 +431,7 @@ const ResizableBox = createStyledHOC(
               rounded={1000_000}
             />
             <View
-              height="3 group-hover:4"
+              height="9 group-hover:11"
               width={8}
               l={-2}
               bg="background-04"
@@ -453,8 +453,8 @@ export function Hint({ children }: { children: React.ReactNode }) {
       borderWidth={1}
       borderColor="border-color"
       bg="color-1"
-      paddingTop="2"
-      paddingBottom="2"
+      paddingTop="1-5"
+      paddingBottom="1-5"
       px="3"
       gap="3"
       z={100000}
@@ -534,7 +534,7 @@ export const SizeController = createStyledHOC(XGroup, (props, ref) => {
       bg="background-press"
       r={0}
       b={0}
-      gap="1"
+      gap="0-5"
       overflow="hidden"
       rounded={1_000_000_000}
       {...props}
@@ -543,7 +543,7 @@ export const SizeController = createStyledHOC(XGroup, (props, ref) => {
         <Button
           size="sm"
           variant="quiet"
-          py="2"
+          py="1-5"
           onPress={() => {
             const index = sizes.indexOf(size)
             setSize(sizes[index - 1 < 0 ? 0 : index - 1])
@@ -559,7 +559,7 @@ export const SizeController = createStyledHOC(XGroup, (props, ref) => {
         <Button
           size="sm"
           variant="quiet"
-          py="2"
+          py="1-5"
           onPress={() => {
             const index = sizes.indexOf(size)
             setSize(sizes[index + 1 >= sizes.length ? 4 : index + 1])

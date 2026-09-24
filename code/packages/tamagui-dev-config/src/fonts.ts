@@ -37,14 +37,8 @@ export const cherryBombFont = createCherryBombFont({
 // big text wants a proportion. the table this replaced had a cliff at the top:
 // 30 to 44 between size 9 and 10, a 47% jump next to neighbours around 15%.
 const sizes = () => {
-  // tailwind-name aliases over the ramp steps so shared demos can use named
-  // font sizes that resolve on both the v6 and site configs (xs12 sm14 base16 lg18)
-  const out: Record<number | 'true' | 'xs' | 'sm' | 'base' | 'lg', number> = {
+  const out: Record<number | 'true', number> = {
     true: 14,
-    xs: 12,
-    sm: 14,
-    base: 16,
-    lg: 18,
   }
   let px = 11
   for (let i = 1; i <= 16; i++) {

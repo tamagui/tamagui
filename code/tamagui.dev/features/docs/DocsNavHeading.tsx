@@ -3,7 +3,7 @@ import { H4, styled } from 'tamagui'
 export const DocsNavHeading = styled(H4, {
   px: '3',
   pt: '4',
-  pb: '1',
+  pb: '0-5',
   letterSpacing: 2,
   color: 'gray-9',
   size: '2',

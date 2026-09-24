@@ -15,7 +15,7 @@ export function StudioPaletteBar({
   colors: string[]
 }) {
   return (
-    <YStack mx="2" select="none">
+    <YStack mx="1-5" select="none">
       {showIndices && (
         <XStack overflow="hidden">
           {new Array(colors.length).fill(0).map((_, i) => (

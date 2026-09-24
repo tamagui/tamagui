@@ -152,12 +152,19 @@ function SignIn() {
 
   if (!user)
     return (
-      <YStack flex={1} minH="100vh" items="center" justify="center" p="2" bg="background">
+      <YStack
+        flex={1}
+        minH="100vh"
+        items="center"
+        justify="center"
+        p="1-5"
+        bg="background"
+      >
         <YStack
           minW={300}
           maxW={320}
           justify="space-between"
-          p="2"
+          p="1-5"
           gap="4"
           items="center"
         >
@@ -217,7 +224,7 @@ function SignIn() {
 
                 {showPasswordInput && (
                   <form onSubmit={handleSignin}>
-                    <YStack gap="2">
+                    <YStack gap="1-5">
                       <Input
                         autoComplete="email"
                         placeholder="Email"
@@ -258,7 +265,7 @@ function SignIn() {
                     justify="center"
                     rounded="4"
                   >
-                    <Paragraph text="center" mt="2" color="color-9">
+                    <Paragraph text="center" mt="1-5" color="color-9">
                       Email auth is disabled at the moment.
                     </Paragraph>
                   </YStack>

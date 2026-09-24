@@ -26,11 +26,10 @@ description: Constants, helpers, hooks, components, and types
 
 ### getConfig
 
-The exported `getConfig` will return your fully parsed Tamagui config. This is
-safer than importing it directly as it avoids circular imports. In general you
-want to use `useTheme` to access themes, and
-`getTokens`/`getToken`/`getTokenValue` for tokens, but for other parts of the
-config this can be useful.
+`getConfig` returns your fully parsed Tamagui config. It avoids the circular
+imports that come with importing the config directly. Prefer `useTheme` for
+themes and `getTokens`/`getToken`/`getTokenValue` for tokens, and use this for
+other parts of the config.
 
 ### insertFont
 
@@ -38,9 +37,9 @@ config this can be useful.
 type insertFont = (name: string, fontIn: GenericFont) => ParsedFont
 ```
 
-Will add a new font after initial createTamagui call. Where `GenericFont` is the
-same as a font passed to createTamagui, and `ParsedFont` is the font with the
-subkeys prefixed with `$` and turned into variable objects.
+Adds a new font after the initial `createTamagui` call. `GenericFont` matches a
+font passed to `createTamagui`, and `ParsedFont` is the font with subkeys
+prefixed with `$` and turned into variable objects.
 
 ### updateFont
 
@@ -290,7 +289,7 @@ import { ClientOnly } from 'tamagui' // or '@tamagui/core'
 
 ---
 
-## Type Helpers
+## Type helpers
 
 ### GetProps
 

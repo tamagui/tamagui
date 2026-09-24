@@ -236,6 +236,19 @@ function isLocalDirectory(absoluteDirectory: string) {
   return existsSync(absoluteDirectory) && lstatSync(absoluteDirectory).isDirectory()
 }
 
+// native outputs keep platform-split modules extensionless so the react
+// native bundler resolves .ios/.android over .native at bundle time
+function isNativeOutput(esExtensionDefault: string) {
+  return esExtensionDefault.startsWith('.native')
+}
+
+function hasPlatformSibling(absoluteBasePath: string) {
+  return (
+    existsSync(`${absoluteBasePath}.ios.js`) ||
+    existsSync(`${absoluteBasePath}.android.js`)
+  )
+}
+
 function evaluateTargetModule({
   moduleSpecifier,
   currentModuleExtension,
@@ -250,6 +263,10 @@ function evaluateTargetModule({
   const targetFile = resolve(filenameDirectory, moduleSpecifier)
 
   if (ensureFileExists) {
+    if (isNativeOutput(esExtensionDefault) && hasPlatformSibling(targetFile)) {
+      return false
+    }
+
     for (const extension of tryExtensions) {
       if (existsSync(targetFile + extension)) {
         return moduleSpecifier + esExtensionDefault
@@ -263,6 +280,10 @@ function evaluateTargetModule({
     if (isDirectory) {
       const indexModuleSpecifier = `${moduleSpecifier.replace(/\/$/, '')}/index`
       const indexTargetFile = resolve(filenameDirectory, indexModuleSpecifier)
+
+      if (isNativeOutput(esExtensionDefault) && hasPlatformSibling(indexTargetFile)) {
+        return false
+      }
 
       for (const extension of tryExtensions) {
         if (existsSync(indexTargetFile + extension)) {

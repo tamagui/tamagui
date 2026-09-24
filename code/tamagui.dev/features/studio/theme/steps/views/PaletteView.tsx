@@ -4,7 +4,7 @@ import {
   ArrowLeftRight,
   ArrowRight,
   ArrowUpDown,
-} from '@tamagui/lucide-icons-2'
+} from '@tamagui/local-icons'
 import { Store, getStore, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
 import { memo } from 'react'
@@ -285,7 +285,7 @@ export const PaletteView = memo((props: Props) => {
                   select="none"
                   text="right"
                   minW={60}
-                  px="2"
+                  px="1-5"
                   display="block"
                   fontWeight="bold"
                   size="9"

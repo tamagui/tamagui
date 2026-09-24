@@ -29,12 +29,12 @@ demoName: Popover
   ]}
 />
 
-Popovers are a great way to show content that's only visible when trigger is
-pressed, floating above the current content. They [automatically stack](/ui/z-index) above other content. Be sure to open the code example above for a copy-paste implementation.
+Popover shows content only while its trigger is pressed, floating above the
+current content. It [automatically stacks](/ui/z-index) above other content.
 
 <Notice>
-  Note: Popovers are not a recommended pattern for mobile apps. Instead you can use Adapt
-  and render them as a Sheet, or just conditionally render them to some native UI.
+  Popovers are not a recommended pattern for mobile apps. Use Adapt to render
+  them as a Sheet instead, or conditionally render native UI.
 </Notice>
 
 ## Installation
@@ -130,7 +130,7 @@ export default () => (
 
 Note that the `Trigger` scope ties to the `Popover` scope.
 
-## API Reference
+## API reference
 
 In v3, Popover uses the same Adapt handoff path as Dialog. Adapted content stays
 mounted through the sheet exit animation and unmounts after the sheet reports
@@ -232,11 +232,6 @@ Contains every component for the popover.
 
 For most of these properties, you'll want to reference the
 [floating-ui docs](https://floating-ui.com/docs/getting-started).
-
-<Notice>
-  If using `modal={true}` (which is `true` by default), refer to the [PortalProvider
-  installation](#portalprovider) for more information.
-</Notice>
 
 ### Popover.Arrow
 
@@ -410,7 +405,7 @@ used alongside `<Adapt />` and Sheet, Tamagui will automatically know to remove
 this ScrollView when swapping into the Sheet, as the Sheet must use its own
 ScrollView that handles special logic for interactions with dragging.
 
-## Utility Functions
+## Utility functions
 
 These functions allow you to programmatically manage open popovers.
 

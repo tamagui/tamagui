@@ -1,4 +1,4 @@
-import { ChevronDown } from '@tamagui/lucide-icons-2'
+import { ChevronDown } from '@tamagui/local-icons'
 import type React from 'react'
 import { Accordion, Paragraph, XStack, YStack } from 'tamagui'
 
@@ -34,7 +34,7 @@ export const DocsCollapsible = ({
                 opacity="0.4 group-hover/docs-collapsible:0.8"
                 rotate={open ? '180deg' : '0deg'}
               >
-                <ChevronDown color="color-10" size="1" />
+                <ChevronDown color="color-10" size="5" />
               </YStack>
             </XStack>
           )}
@@ -43,7 +43,7 @@ export const DocsCollapsible = ({
         <Accordion.HeightAnimator overflow="hidden" transition="200ms">
           <Accordion.Content
             px="4"
-            py="2"
+            py="1-5"
             transition="200ms"
             backgroundColor="transparent"
             opacity="exit:0"

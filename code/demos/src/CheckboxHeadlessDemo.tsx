@@ -1,7 +1,7 @@
 import React from 'react'
 import type { CheckboxProps as CheckboxHeadlessProps } from '@tamagui/checkbox-headless'
 import { useCheckbox } from '@tamagui/checkbox-headless'
-import { Check, Minus } from '@tamagui/lucide-icons-2'
+import { Check, Minus } from '@tamagui/local-icons'
 
 import type { View } from 'react-native'
 import { Pressable } from 'react-native'

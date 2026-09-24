@@ -1,4 +1,4 @@
-import { Lightbulb, X } from '@tamagui/lucide-icons-2'
+import { Lightbulb, X } from '@tamagui/local-icons'
 import { useEffect, useState } from 'react'
 import { Popover, Theme } from 'tamagui'
 import { Button } from '~/components/Button'
@@ -37,8 +37,8 @@ export function StudioStepTip() {
       scaleIcon={1.2}
       circular
       icon={Lightbulb}
-      my="-1"
-      ml="2"
+      my="-0-5"
+      ml="1-5"
       onPress={() => {
         setShow(!show)
       }}

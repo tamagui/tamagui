@@ -40,13 +40,13 @@ ContextMenu displays a menu triggered by right-click on web or long-press on mob
 ContextMenu is already installed in `tamagui`, or you can install it independently:
 
 ```bash
-yarn add @tamagui/context-menu
+npm install @tamagui/context-menu
 ```
 
 For Expo 57 and React Native 0.86, use the Expo UI adapter:
 
-```sh
-yarn add @expo/ui
+```bash
+npm install @expo/ui
 ```
 
 Then add the setup import at your app entry point:
@@ -57,8 +57,8 @@ import '@tamagui/native/setup-expo-ui-menu'
 
 The Zeego adapter remains available for apps on compatible React Native versions:
 
-```sh
-yarn add @react-native-menu/menu react-native-ios-context-menu react-native-ios-utilities zeego sf-symbols-typescript
+```bash
+npm install @react-native-menu/menu react-native-ios-context-menu react-native-ios-utilities zeego sf-symbols-typescript
 ```
 
 ```tsx
@@ -70,14 +70,14 @@ automatically. You should not need extra wrapper views or empty `onPress`
 handlers just to prevent a parent `press:` clause from activating.
 
 <Notice theme="yellow">
-  **Expo Router users:** This import must run _before_ `expo-router/entry`. Create an `index.js` at your project root that imports the setup first, then expo-router, and update your `package.json` main field to `"index.js"`. See the [upgrade guide](/docs/guides/how-to-upgrade#expo-router-entry-point) for details.
+  **Expo Router users:** This import must run _before_ `expo-router/entry`. Create an `index.js` at your project root that imports the setup first, then expo-router, and update your `package.json` main field to `"index.js"`. See the [Expo guide](/docs/guides/expo) for details.
 </Notice>
 
 ## Anatomy
 
 Import all parts and piece them together.
 
-```jsx
+```tsx
 import { ContextMenu } from 'tamagui' // or '@tamagui/context-menu'
 
 export default () => (
@@ -131,7 +131,7 @@ export default () => (
 )
 ```
 
-## API Reference
+## API reference
 
 ### ContextMenu
 
@@ -195,13 +195,22 @@ Contains every component for the ContextMenu.
       name: 'allowFlip',
       type: 'FlipProps | boolean',
       required: false,
+      default: '{ padding: 10 }',
       description: 'Flips the menu to the opposite side if there is insufficient space.',
     },
     {
       name: 'offset',
       type: 'OffsetOptions',
       required: false,
+      default: '10',
       description: 'Distance between the menu and its trigger.',
+    },
+    {
+      name: 'resize',
+      type: 'boolean',
+      default: 'true',
+      required: false,
+      description: 'Constrains the menu to fit within available viewport space.',
     },
     {
       name: 'unstyled',
@@ -212,7 +221,7 @@ Contains every component for the ContextMenu.
   ]}
 />
 
-#### Allowing Native Context Menu
+#### Allowing native context menu
 
 You can call `event.preventDefault()` in `onOpenChange` to prevent the Tamagui menu from opening and allow the native browser context menu to appear instead:
 
@@ -446,7 +455,7 @@ On iOS, it renders the native
   ]}
 />
 
-```jsx line=1
+```tsx line=1
 <ContextMenu.ItemIcon
   ios={{
     name: '0.circle.fill', // required
@@ -594,7 +603,7 @@ A menu item with a checkbox that can be toggled on/off.
 Use inside `CheckboxItem` or `RadioItem` to indicate when an item is checked.
 This allows you to conditionally render a checkmark.
 
-```jsx line=1
+```tsx line=1
 <ContextMenu.ItemIndicator>
   <CheckmarkIcon /> {/* This does not work with the native prop. */}
 </ContextMenu.ItemIndicator>
@@ -694,8 +703,7 @@ A container for nested sub-menu components.
 
 ### ContextMenu.SubContent
 
-Renders the content of a sub-menu. Same props as `Content`, excluding `side` and
-`align`.
+Renders the content of a sub-menu. Same props as `Content`.
 
 ### ContextMenu.SubTrigger
 
@@ -758,7 +766,7 @@ works with native iOS menus.
   ]}
 />
 
-```jsx line=1
+```tsx line=1
 <ContextMenu.Preview
   // optional props:
   preferredCommitStyle="pop" // or "dismiss"

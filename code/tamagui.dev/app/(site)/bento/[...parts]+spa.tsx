@@ -1,6 +1,6 @@
 import { CurrentRouteProvider, Data, Sections } from '@tamagui/bento'
 import { listingData } from '~/components/bento-showcase/data'
-import { CircleDashed, Paintbrush } from '@tamagui/lucide-icons-2'
+import { CircleDashed, Paintbrush } from '@tamagui/local-icons'
 import type { Href } from 'one'
 import { Link, useParams } from 'one'
 import { startTransition } from 'react'
@@ -58,7 +58,7 @@ export default function BentoPage() {
           <DetailHeader>{`${section[0].toUpperCase()}${section.slice(1)}`}</DetailHeader>
         </ContainerBento>
 
-        <YStack paddingTop="8" pb="16" position="relative">
+        <YStack paddingTop="11" pb="36" position="relative">
           <YStack
             pointerEvents="none"
             position="absolute"
@@ -80,16 +80,16 @@ export default function BentoPage() {
 
                           toast('Link copied to clipboard')
                         }}
-                        gap="2"
+                        gap="1-5"
                         items="center"
                       >
-                        <Text color="color-12" text="right" px="2">
+                        <Text color="color-12" text="right" px="1-5">
                           {sectionName[0].toUpperCase()}
                           {sectionName.slice(1)}
                         </Text>
                       </XStack>
 
-                      <YStack items="flex-end" gap="2">
+                      <YStack items="flex-end" gap="1-5">
                         {parts.map((partItem, index) => {
                           const { route, name } = partItem
                           const active = route === `/${section}/${part}`
@@ -101,17 +101,17 @@ export default function BentoPage() {
                             >
                               <View
                                 position="relative"
-                                py="2"
+                                py="1-5"
                                 items="center"
                                 justify="center"
-                                gap="2"
+                                gap="1-5"
                                 flex={1}
                               >
                                 <Paragraph
                                   fontWeight="500"
                                   text="right"
                                   color={`${active ? 'accent-color' : 'color-10'}`}
-                                  px="2"
+                                  px="1-5"
                                 >
                                   {name}
                                 </Paragraph>
@@ -161,18 +161,18 @@ export const DetailHeader = (props: { children: string }) => {
   return (
     <YStack t={0} gap="4" px="4" py="4">
       <YStack gap="4">
-        <XStack items="center" justify="space-between" flexDirection="sm:column">
-          <H1 fontSize="sm:9" lineHeight="sm:9" mb="sm:4" size="11">
+        <XStack items="center" justify="space-between" flexDirection="max-md:column">
+          <H1 fontSize="max-md:9" lineHeight="max-md:9" mb="max-md:4" size="11">
             {props.children}
           </H1>
 
           <YStack
-            items="flex-end sm:center"
+            items="flex-end max-md:center"
             z={100}
-            gap="6"
-            y="40px sm:0"
-            mt="-10px sm:0px"
-            mb="sm:40px"
+            gap="8"
+            y="40px max-md:0"
+            mt="-10px max-md:0px"
+            mb="max-md:40px"
           >
             <XStack gap="4">
               <DropTamaguiConfig />
@@ -193,7 +193,7 @@ export const DetailHeader = (props: { children: string }) => {
           </YStack>
         </XStack>
 
-        <XStack p={0.5} items="center" gap="2">
+        <XStack p={0.5} items="center" gap="1-5">
           <Link href="/bento/">
             <Anchor textTransform="capitalize" color="color-9" render="span">
               Bento
@@ -227,8 +227,8 @@ export const DetailHeader = (props: { children: string }) => {
 
 const SideBar = styled(YStack, {
   position: 'sticky' as any,
-  t: '12',
-  gap: '8',
-  px: '8',
-  display: 'lg:none',
+  t: '88px',
+  gap: '11',
+  px: '11',
+  display: 'max-xl:none',
 })

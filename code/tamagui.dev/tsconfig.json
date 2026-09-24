@@ -60,7 +60,7 @@
       "path": "../packages/tamagui-dev-config"
     },
     {
-      "path": "../packages/lucide-icons"
+      "path": "../packages/local-icons"
     },
     {
       "path": "../packages/use-store"

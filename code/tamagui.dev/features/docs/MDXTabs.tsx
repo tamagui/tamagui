@@ -151,7 +151,7 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
       // disableActiveTheme
       size="sm"
       flex={1}
-      px="5"
+      px="6"
       pointerEvents="auto"
       {...props}
       outlineColor="focus:outline-color"
@@ -168,16 +168,16 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
 const TabsListFrame = styled(XStack, {
   pointerEvents: 'none',
   maxW: '50%',
-  mt: '-30px sm:0px',
+  mt: '-30px max-md:0px',
   justify: 'flex-end',
-  self: 'flex-end sm:stretch',
+  self: 'flex-end max-md:stretch',
   t: 70,
   mr: 0,
   mb: 0,
   z: 10000,
   position: 'sticky' as any,
   r: 0,
-  minW: 'sm:100%',
+  minW: 'max-md:100%',
 })
 
 const TabsList = (props) => {
@@ -195,7 +195,7 @@ const TabsList = (props) => {
           p={0}
           gap={0}
           rounded="4"
-          borderWidth="0-5"
+          borderWidth="px"
           borderColor="border-color"
           bg="transparent"
           {...props}

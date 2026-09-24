@@ -21,7 +21,7 @@ describe('studio v6 themes', () => {
     expect(palettes.dark).toHaveLength(11)
 
     const tokens = getStudioThemeTokens(defaultPalettes)
-    expect(Object.keys(tokens)).toHaveLength(44)
+    expect(Object.keys(tokens)).toHaveLength(46)
     expect(tokens['base-light-50']).toBe(palettes.light[0])
     expect(tokens['base-dark-950']).toBe(palettes.dark[0])
   })
@@ -37,6 +37,7 @@ describe('studio v6 themes', () => {
     expect(themes.light_level2).toBeDefined()
     expect(themes.light_accent_level2).toBeDefined()
     expect(themes.light_inverse).toBe(themes.dark)
+    expect(themes.light['background-active']).toBe('#ffffff')
   })
 
   it('exports a scales and tree module using the v6 generator', async () => {

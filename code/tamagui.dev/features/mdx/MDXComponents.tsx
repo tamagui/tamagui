@@ -8,7 +8,7 @@ import {
   Copy,
   File,
   Link as LinkIcon,
-} from '@tamagui/lucide-icons-2'
+} from '@tamagui/local-icons'
 import type { Href } from 'one'
 import React, { isValidElement, useState } from 'react'
 import type { ImageProps, XStackProps } from 'tamagui'
@@ -91,7 +91,7 @@ const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) =
       lineHeight="28px"
       fontWeight="400"
       letterSpacing={-0.2}
-      mb="5"
+      mb="6"
       color="color-12"
       {...props}
     >
@@ -169,9 +169,9 @@ const TableCell = styled(Paragraph, {
   flexBasis: 'auto',
   justify: 'center',
   text: 'center',
-  height: '4',
-  paddingTop: '2',
-  paddingBottom: '2',
+  height: '11',
+  paddingTop: '1-5',
+  paddingBottom: '1-5',
   px: '3',
   size: '5',
   ellipsis: true,
@@ -222,7 +222,7 @@ const MarkdownTable = ({ children, style, ...props }) => {
 
   return (
     <>
-      <YStack display="sm:none" width="100%" maxW="100%" my={20}>
+      <YStack display="max-md:none" width="100%" maxW="100%" my={20}>
         <YStack
           render="table"
           {...props}
@@ -242,7 +242,7 @@ const MarkdownTable = ({ children, style, ...props }) => {
 
       <YStack
         render="dl"
-        display="none sm:flex"
+        display="none max-md:flex"
         width="100%"
         my={20}
         borderTopWidth={1}
@@ -302,12 +302,12 @@ const componentsIn = {
   CopyAgentButton: CopyAgentSetupButton,
 
   SocialLinksRow: () => (
-    <YStack mt="6" mx="-4">
+    <YStack mt="8" mx="-4">
       <SocialLinksRow />
     </YStack>
   ),
 
-  Wide: (props) => <YStack mx="-8 sm:-2">{props.children}</YStack>,
+  Wide: (props) => <YStack mx="-11 max-md:-1-5">{props.children}</YStack>,
 
   Adapt,
 
@@ -390,10 +390,10 @@ const componentsIn = {
             >
               <XStack
                 items="center"
-                gap="2"
-                my="1"
-                py="1"
-                px="2"
+                gap="1-5"
+                my="0-5"
+                py="0-5"
+                px="1-5"
                 self="flex-start"
                 bg="color-2"
                 rounded="3"
@@ -402,7 +402,7 @@ const componentsIn = {
               >
                 <SizableText color="color-11">{transformedCommand}</SizableText>
 
-                <CopyIcon p="0-5" size={16} color="color-10 hover:color-2" />
+                <CopyIcon p="px" size={16} color="color-10 hover:color-2" />
               </XStack>
             </TooltipSimple>
           </ThemeTint>
@@ -430,10 +430,10 @@ const componentsIn = {
               >
                 <XStack
                   items="center"
-                  gap="2"
-                  my="1"
-                  py="1"
-                  px="2"
+                  gap="1-5"
+                  my="0-5"
+                  py="0-5"
+                  px="1-5"
                   self="flex-start"
                   bg="color-2"
                   rounded="3"
@@ -442,14 +442,14 @@ const componentsIn = {
                 >
                   <SizableText color="color-11">{tamaguiCommand}</SizableText>
 
-                  <CopyIcon2 p="0-5" size={16} color="color-10 hover:color-2" />
+                  <CopyIcon2 p="px" size={16} color="color-10 hover:color-2" />
                 </XStack>
               </TooltipSimple>
             </ThemeTintAlt>
           </>
         )}
 
-        <XStack gap="2">
+        <XStack gap="1-5">
           {Object.keys(pkgCommands).map((c) => {
             const isActive = selectedPackageManager === c
             return (
@@ -474,11 +474,11 @@ const componentsIn = {
   TLDR: (props) => {
     return (
       <YStack
-        mx="gtMd:-4"
-        mt="5"
+        mx="lg:-4"
+        mt="6"
         mb="3"
-        px="6"
-        py="2"
+        px="8"
+        py="1-5"
         rounded="6"
         borderWidth={1}
         opacity={0.8}
@@ -514,17 +514,17 @@ const componentsIn = {
   NextJSRouterCard: (props) => {
     return (
       <LogoCard
-        icon={props.title.startsWith('Pages') ? <File size="1" /> : <Box size="1" />}
+        icon={props.title.startsWith('Pages') ? <File size="5" /> : <Box size="5" />}
         {...props}
       />
     )
   },
 
-  Note: (props) => <YStack render="aside" mt="5" mb="5" borderRadius="3" {...props} />,
+  Note: (props) => <YStack render="aside" mt="6" mb="6" borderRadius="3" {...props} />,
 
   Notice,
 
-  h1: (props) => <H1 width="max-content" mb="2" {...props} pos="relative" />,
+  h1: (props) => <H1 width="max-content" mb="1-5" {...props} pos="relative" />,
 
   h2: ({ children, ...props }) => (
     <H2
@@ -552,7 +552,7 @@ const componentsIn = {
         width={`fit-content` as any}
         id={id}
         fontSize={20}
-        lineHeight="26px"
+        lineHeight="28px"
         color="color-12"
         fontWeight="600"
         letterSpacing={-0.2}
@@ -569,13 +569,13 @@ const componentsIn = {
       position="relative"
       width={`fit-content` as any}
       mt={24}
-      mb={8}
-      fontSize={20}
-      lineHeight="28px"
-      color="color-8"
+      mb={6}
+      fontSize={17}
+      lineHeight="26px"
+      color="color-12"
       data-heading
       {...props}
-      fontWeight="400"
+      fontWeight="600"
     />
   ),
 
@@ -610,19 +610,17 @@ const componentsIn = {
           {...props}
         >
           {children}
+          {/* no space before the icon: the underline would run under it */}
           {href.startsWith('http') ? (
-            <>
-              &nbsp;
-              <Text
-                // @ts-ignore
-                fontSize="inherit"
-                display="inline-flex"
-                y={2}
-                ml={-1}
-              >
-                <ExternalIcon />
-              </Text>
-            </>
+            <Text
+              // @ts-ignore
+              fontSize="inherit"
+              display="inline-flex"
+              y={2}
+              ml={3}
+            >
+              <ExternalIcon />
+            </Text>
           ) : null}
         </Paragraph>
       </Link>
@@ -655,6 +653,7 @@ const componentsIn = {
         lineHeight="27px"
         pb={0}
         mb={6}
+        color="color-11"
         className="docs-paragraph"
       >
         {props.children}
@@ -714,7 +713,7 @@ const componentsIn = {
   ),
 
   img: ({ ...props }) => (
-    <YStack render="span" my="6">
+    <YStack render="span" my="8">
       <YStack render="img" {...props} maxW="100%" />
     </YStack>
   ),
@@ -742,12 +741,12 @@ const componentsIn = {
         justify="center"
         overflow="hidden"
         {...(overlap && {
-          mt: '-6',
+          mt: '-8',
         })}
       >
         <Image maxW="100%" {...props} />
         {!!children && (
-          <Text render="figcaption" lineHeight="23px" color="color-press" mt="2">
+          <Text render="figcaption" lineHeight="23px" color="color-press" mt="1-5">
             {children}
           </Text>
         )}
@@ -776,7 +775,7 @@ const componentsIn = {
     size,
     ...props
   }) => (
-    <YStack render="figure" mx={0} my="6">
+    <YStack render="figure" mx={0} my="8">
       <OffsetBox size={size}>
         <video
           src={src}
@@ -788,7 +787,7 @@ const componentsIn = {
           style={{ width: '100%', display: 'block' }}
         ></video>
       </OffsetBox>
-      <Text render="figcaption" lineHeight="23px" mt="2" color="color-press">
+      <Text render="figcaption" lineHeight="23px" mt="1-5" color="color-press">
         {children}
       </Text>
     </YStack>
@@ -798,7 +797,7 @@ const componentsIn = {
     return (
       <YStack
         my="4"
-        px="6"
+        px="8"
         ml="3"
         borderLeftWidth={1}
         borderColor="border-color"
@@ -820,7 +819,7 @@ const componentsIn = {
   },
 
   Preview: (props) => {
-    return <Preview {...props} mt="5" />
+    return <Preview {...props} mt="6" />
   },
 
   MediaPlayerDemo: ({ theme, ...props }) => {
@@ -894,30 +893,30 @@ const componentsIn = {
 
   DocsIntro: () => {
     return (
-      <YStack gap="1" pb="sm:30px">
+      <YStack gap="0-5">
         <ThemeTintAlt offset={2}>
           <IntroParagraph large mt="4">
             Tamagui provides universal styling and UI components for React. All features
             work consistently across React Native and web.
           </IntroParagraph>
 
-          <UL mt="4" pl="4" gap="2">
+          <UL mt="3" mb={0} pl="4" gap="3">
             <Theme name="gray">
-              <LI mb="4" size="6" color="color-11">
+              <LI my={0} fontSize={17} lineHeight="28px" color="color-11">
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/docs/core/configuration">
                   <CodeInline>
                     <span style={{ color: 'var(--color-12)' }}>@tamagui/core</span>
                   </CodeInline>
-                </Link>
-                &nbsp; is the base style library. It provides a web-aligned universal
-                style system with SSR support, typed tokens, and optimized runtime
-                performance across web and native.
+                </Link>{' '}
+                is the base style library. It provides a web-aligned universal style
+                system with SSR support, typed tokens, and optimized runtime performance
+                across web and native.
               </LI>
             </Theme>
 
             <Theme name="gray">
-              <LI mb="4" size="6" color="color-11">
+              <LI my={0} fontSize={17} lineHeight="28px" color="color-11">
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/docs/intro/compiler-install">
                   <CodeInline>
@@ -937,7 +936,7 @@ const componentsIn = {
             </Theme>
 
             <Theme name="gray">
-              <LI mb="4" size="6" color="color-11">
+              <LI my={0} fontSize={17} lineHeight="28px" color="color-11">
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/ui/intro">
                   <CodeInline>
@@ -960,7 +959,7 @@ const componentsIn = {
 
     return (
       <ThemeTint>
-        <YStack gap="5" pt="3" my="5">
+        <YStack gap="6" pt="3" my="6">
           <XStack gap="4" flexWrap="wrap">
             <Link asChild href="/docs/intro/installation">
               <Card
@@ -971,8 +970,8 @@ const componentsIn = {
                 y="0 hover:-2px press:2px"
                 bg="hover:background-hover press:color-2"
               >
-                <Card.Header gap="2">
-                  <XStack items="center" gap="2">
+                <Card.Header gap="1-5">
+                  <XStack items="center" gap="1-5">
                     <H4 size="4" color="color-8">
                       Install
                     </H4>
@@ -987,7 +986,7 @@ const componentsIn = {
             </Link>
 
             <Card flex={1} flexBasis={280}>
-              <Card.Header gap="2">
+              <Card.Header gap="1-5">
                 <H4 size="4" color="color-8">
                   Quick start
                 </H4>
@@ -995,7 +994,7 @@ const componentsIn = {
                   Start from a template with everything already wired up.
                 </Paragraph>
 
-                <XStack items="center" gap="2" mt="2">
+                <XStack items="center" gap="1-5" mt="1-5">
                   <Code flex={1} bg="color-4" p="3" rounded="4" size="4">
                     npm create tamagui@latest
                   </Code>
@@ -1006,7 +1005,7 @@ const componentsIn = {
                     onPress={() => {
                       clipBoard.onCopy()
                     }}
-                    display="inline-flex xs:none"
+                    display="inline-flex max-sm:none"
                   >
                     Copy
                   </Button>
@@ -1015,13 +1014,13 @@ const componentsIn = {
             </Card>
           </XStack>
 
-          <XStack gap="5" flexWrap="wrap" items="center">
+          <XStack gap="6" flexWrap="wrap" items="center">
             <Link asChild href="/docs/guides/how-to-upgrade">
               <Text render="a" fontSize={14} color="color-11 hover:color-12">
                 Upgrading from v1 or v2 ↗
               </Text>
             </Link>
-            <CopyAgentSetupButton variant="quiet" size="sm" />
+            <CopyAgentSetupButton variant="quiet" size="sm" px={0} bg="transparent" />
             <Link asChild href="/ui/native">
               <Text render="a" fontSize={14} color="color-11 hover:color-12">
                 Native integrations & runtime ↗
@@ -1041,17 +1040,17 @@ const componentsIn = {
     return (
       <YStack
         render="aside"
-        gap="2"
+        gap="1-5"
         rounded="4"
-        p="5"
-        mx="-2"
-        mt="2"
+        p="6"
+        mx="-1-5"
+        mt="1-5"
         position="relative"
         {...(cutoff && {
           my: '4',
-          px: '5',
+          px: '6',
           borderWidth: 1,
-          pb: '10',
+          pb: '14',
           bg: 'color-1',
           borderColor: 'border-color',
           maxH: 300,
@@ -1060,7 +1059,7 @@ const componentsIn = {
         {...props}
       >
         {areChildrenString ? (
-          <Paragraph color="color-10" my="-5">
+          <Paragraph color="color-10" my="-6">
             {children}
           </Paragraph>
         ) : (

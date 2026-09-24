@@ -99,8 +99,13 @@ declare const ToastViewportFrame: React.FunctionComponent<Omit<import("@tamagui/
 };
 export type ToastViewportProps = GetProps<typeof ToastViewportFrame> & {
     /**
-     * Offset from screen edge
-     * @default 24
+     * Offset from screen edge, kept as breathing room past the safe area: the
+     * viewport edge itself sits at the `safe` style value (setup-safe-area on
+     * native, env(safe-area-inset-*) on web), so pass a plain number here, not
+     * `insets.top + 8`. A number sets all four sides (on native left/right
+     * define the width); use the object form to move one edge without resizing
+     * the toast.
+     * @default 16
      */
     offset?: number | {
         top?: number;
@@ -161,8 +166,13 @@ export declare const Toast: ((props: ToastRootProps & import("@tamagui/core").Re
 } & {
     Viewport: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "hotkey" | "label" | "offset" | "portalToRoot" | "portalZIndex" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         /**
-         * Offset from screen edge
-         * @default 24
+         * Offset from screen edge, kept as breathing room past the safe area: the
+         * viewport edge itself sits at the `safe` style value (setup-safe-area on
+         * native, env(safe-area-inset-*) on web), so pass a plain number here, not
+         * `insets.top + 8`. A number sets all four sides (on native left/right
+         * define the width); use the object form to move one edge without resizing
+         * the toast.
+         * @default 16
          */
         offset?: number | {
             top?: number;
@@ -191,8 +201,13 @@ export declare const Toast: ((props: ToastRootProps & import("@tamagui/core").Re
         portalZIndex?: number;
     }, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         /**
-         * Offset from screen edge
-         * @default 24
+         * Offset from screen edge, kept as breathing room past the safe area: the
+         * viewport edge itself sits at the `safe` style value (setup-safe-area on
+         * native, env(safe-area-inset-*) on web), so pass a plain number here, not
+         * `insets.top + 8`. A number sets all four sides (on native left/right
+         * define the width); use the object form to move one edge without resizing
+         * the toast.
+         * @default 16
          */
         offset?: number | {
             top?: number;

@@ -1,9 +1,4 @@
-import {
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  ChevronUp,
-} from '@tamagui/lucide-icons-2'
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from '@tamagui/local-icons'
 import { useState } from 'react'
 import type { PopoverProps } from 'tamagui'
 import { Button, Configuration, Popover, Text, XStack, YStack } from 'tamagui'

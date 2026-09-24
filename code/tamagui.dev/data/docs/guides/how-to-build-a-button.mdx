@@ -40,7 +40,7 @@ you need components that want multiple related children.
 
 This guide is more of a primer on designing compound components, teaching advanced
 concepts that aren't necessary if you just want to build your app. If you just want a
-simple, ready to use Button, you can use the [Tamagui Button](/docs/components/button)
+simple, ready to use Button, you can use the [Tamagui Button](/ui/button)
 itself directly.
 
 ### The Final Result
@@ -60,7 +60,7 @@ import {
   styled,
   useTheme,
   withStaticProperties,
-} from '@tamagui/web'
+} from '@tamagui/core'
 import { cloneElement, isValidElement, useContext } from 'react'
 
 export const ButtonContext = createStyledContext({
@@ -152,7 +152,7 @@ export default () => (
 
 ### Styling Text Color
 
-In v2, `color` is not a direct prop on the Button frame. Instead, style your
+In v3, `color` is not a direct prop on the Button frame. Instead, style your
 text through `Button.Text`. For interactive color changes on hover or press, use
 Tamagui's `group` prop to coordinate styles between parent and child:
 
@@ -325,7 +325,7 @@ const ButtonFrame = styled(View, {
 This gets us a simple rounded rectangle that uses the `md` tokens from your
 design system and the `background` styles from your theme.
 
-The `name` property identifies the styled component for configuration and
+The `displayName` property identifies the styled component for configuration and
 debugging. V3 does not select a `light_Button` theme from that name. The frame
 reads the active theme's semantic `background` values directly. Components that
 need to sit above their surroundings wrap their frame in an explicit `level2`
@@ -451,7 +451,7 @@ export const Button = ButtonFrame as typeof ButtonFrame & {
   Text: typeof ButtonText
 }
 
-Button.Text = Text
+Button.Text = ButtonText
 ```
 
 What is this whole `typeof ButtonFrame` thing? It's just TypeScript being
@@ -562,7 +562,7 @@ Here's how we'd solve for size using context in plain-old React, while still
 keeping the compound API:
 
 ```tsx
-import { createContext } from 'react'
+import { createContext, useContext } from 'react'
 import { SizeTokens, GetProps, createStyledHOC, withStaticProperties } from '@tamagui/core'
 import { Button } from './OurButton'
 
@@ -570,7 +570,7 @@ const SizeContext = createContext<SizeTokens>('md')
 
 const ButtonFrame = createStyledHOC(
   Button,
-  ({ size = 'md', ...props }: GetProps<typeof OGB.ButtonFrame>) => {
+  ({ size = 'md', ...props }: GetProps<typeof Button>) => {
     return (
       <SizeContext.Provider value={size}>
         <Button size={size} {...props} />
@@ -579,7 +579,7 @@ const ButtonFrame = createStyledHOC(
   }
 )
 
-const ButtonText = createStyledHOC(Button.Text, (props: GetProps<typeof OGB.ButtonText>) => {
+const ButtonText = createStyledHOC(Button.Text, (props: GetProps<typeof Button.Text>) => {
   const size = useContext(SizeContext)
   return <Button.Text size={size} {...props} />
 })
@@ -589,7 +589,7 @@ export const NewButton = withStaticProperties(ButtonFrame, {
 })
 ```
 
-What the hell is `createStyledHOC`?
+What is `createStyledHOC`?
 
 While it's explained in [the styled docs](/docs/core/styled#createstyledhoc),
 the short of it is: if you want a functional component that returns a styled
@@ -729,7 +729,7 @@ import { getTokens, useTheme } from '@tamagui/core'
 import * as React from 'react'
 
 const ButtonIcon = (props: { children: React.ReactNode }) => {
-  const { size } = React.useContext(ButtonContext)
+  const { size } = React.useContext(ButtonContext.context)
   const tokens = getTokens()
   const smallerSize = tokens.size[size].val * 0.5
   const theme = useTheme()
@@ -787,7 +787,7 @@ a single functional Button component is totally fine.
 But we'd encourage you to give the compound component API a try and see
 how you like it.
 
-With the new Tamagui APIs, we look forward to never having to carefully add a
-forwardRef, re-jig the types, and then manually thread context just to share
-some props between parent and child components, especially when even after all
-of that we'd still somehow accidentally break memoization or scoped values!
+With the new Tamagui APIs, sharing some props between parent and child
+components no longer means carefully adding a forwardRef, re-jigging the types,
+and threading context by hand, only to break memoization or scoped values
+anyway.

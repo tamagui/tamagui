@@ -16,7 +16,7 @@ export const BentoButton = (props: ButtonProps) => {
       {...props}
     >
       <Button.Text fontSize={12}>
-        <Span display="sm:none">Copy-Paste </Span>UI
+        <Span display="max-md:none">Copy-Paste </Span>UI
       </Button.Text>
       <Button.Icon>
         <BentoIcon scale={0.8} />

@@ -148,6 +148,12 @@ export default {
         // fix non-deterministic __esm init ordering bug
         // https://github.com/rolldown/rolldown/issues/3143
         strictExecutionOrder: true,
+        // the tamagui packages are shared by every route; left alone, rolldown
+        // parks them in the biggest lazy route (bento) and every page then
+        // downloads that whole route, reanimated and demos included
+        codeSplitting: {
+          groups: [{ name: 'tamagui', test: /[\\/]code[\\/](core|ui)[\\/]/ }],
+        },
       },
     },
   },

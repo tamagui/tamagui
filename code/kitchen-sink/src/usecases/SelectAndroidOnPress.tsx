@@ -6,7 +6,7 @@
  * This causes Select items to not trigger onValueChange.
  */
 
-import { Check } from '@tamagui/lucide-icons-2'
+import { Check } from '@tamagui/local-icons'
 import React from 'react'
 import { Adapt, Text, YStack } from 'tamagui'
 import { Select } from '../components/Select'

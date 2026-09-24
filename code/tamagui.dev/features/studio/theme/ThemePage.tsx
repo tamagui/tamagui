@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, X } from '@tamagui/lucide-icons-2'
+import { ChevronLeft, ChevronRight, X } from '@tamagui/local-icons'
 import { useStore } from '@tamagui/use-store'
 import type { TamaguiElement } from '@tamagui/web'
 import {
@@ -57,7 +57,7 @@ export function ThemePage() {
     <>
       <Dialogs />
 
-      <YStack shrink={0} flexBasis="auto" mb="10">
+      <YStack shrink={0} flexBasis="auto" mb="14">
         <Suspense fallback={null}>
           <ThemeBuilderModal />
         </Suspense>
@@ -65,23 +65,23 @@ export function ThemePage() {
         <XStack
           width="100%"
           height="max-content"
-          pr="540px lg:0px"
+          pr="540px max-xl:0px"
           pt={10}
           justify="flex-end"
           overflow="hidden"
           z={100}
         >
           <YStack
-            p="4 md:4"
+            p="4 max-lg:4"
             flex={1}
             flexBasis="auto"
-            maxW="calc(min(100vw, 1300px)) md:calc(min(100vw, 900px))"
+            maxW="calc(min(100vw, 1300px)) max-lg:calc(min(100vw, 900px))"
             group="content"
             container
             containerName="content"
           >
             <PreviewTheme>
-              <YStack gap="6">
+              <YStack gap="8">
                 <StudioAIBar initialTheme={{ themeSuite: props.theme }} />
                 <StudioPreviewComponentsBar
                   scrollView={
@@ -124,13 +124,13 @@ const ThemeBuilderModal = memo(() => {
   const StepComponent = currentSection?.children ?? Empty
   const ref = useRef<TamaguiElement>(null)
   const [hide, setHide] = useState(false)
-  const { gtLg } = useMedia()
+  const { xl } = useMedia()
 
   useEffect(() => {
-    if (gtLg) {
+    if (xl) {
       setHide(false)
     }
-  }, [gtLg])
+  }, [xl])
 
   return (
     <YStack
@@ -163,7 +163,7 @@ const ThemeBuilderModal = memo(() => {
         ref={ref}
         boxShadow="0 4px 16px shadow-color"
       >
-        <XStack position="absolute" z={999} t="2" l="2" display="gtLg:none">
+        <XStack position="absolute" z={999} t="1-5" l="1-5" display="xl:none">
           <Button
             size="xs"
             circular
@@ -273,7 +273,7 @@ const ThemeStudioStepButtonsBar = () => {
   }
 
   return (
-    <XStack gap="2">
+    <XStack gap="1-5">
       {typeof location !== 'undefined' &&
         location.host === 'localhost' &&
         lastInserted && (
@@ -331,7 +331,7 @@ const ThemeStudioStepButtonsBar = () => {
 }
 
 const Section = styled(YStack, {
-  gap: '2',
+  gap: '1-5',
   x: 0,
   opacity: 1,
   variants: {

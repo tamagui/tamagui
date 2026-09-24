@@ -12,12 +12,12 @@ type Props = ReturnType<typeof layoutsGetComponentCodes>
 export function layouts() {
   return (
     <YStack
-      paddingBottom="2 gtLg:0"
-      gap="12"
-      paddingTop="2 gtLg:0"
-      paddingRight="2 gtLg:0"
-      paddingLeft="2 gtLg:0"
-      marginHorizontal="@sm/window:2"
+      paddingBottom="1-5 xl:0"
+      gap="88px"
+      paddingTop="1-5 xl:0"
+      paddingRight="1-5 xl:0"
+      paddingLeft="1-5 xl:0"
+      marginHorizontal="@sm/window:1-5"
     >
       <Showcase fileName={Layouts.SignInScreen.fileName} title="Sign-in Form">
         <Wrapper>

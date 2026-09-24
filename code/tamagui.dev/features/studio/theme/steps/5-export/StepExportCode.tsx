@@ -1,5 +1,5 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
-import { Copy, Download } from '@tamagui/lucide-icons-2'
+import { Copy, Download } from '@tamagui/local-icons'
 import { useStore } from '@tamagui/use-store'
 import { useEffect } from 'react'
 import {
@@ -136,8 +136,8 @@ export const StepExportCodeSidebar = () => {
   }
 
   return (
-    <ScrollView paddingBottom="2" pt="4">
-      <YStack gap="8" pt="1" pb="6" px="3">
+    <ScrollView paddingBottom="1-5" pt="4">
+      <YStack gap="11" pt="0-5" pb="8" px="3">
         {platform.steps.map((step, idx) => (
           <YStack key={idx} gap="3">
             <XStack gap="3" items="center" ml="3">
@@ -173,7 +173,7 @@ export const StepExportCodeSidebar = () => {
                         defaultValue={subStep.files[0].filename}
                         orientation="horizontal"
                         flexDirection="column"
-                        gap="2"
+                        gap="1-5"
                         flex={1}
                       >
                         <Tabs.List
@@ -187,9 +187,9 @@ export const StepExportCodeSidebar = () => {
                             <Tabs.Tab
                               key={i}
                               px="3"
-                              pt="2"
+                              pt="1-5"
                               mb={-22}
-                              pb="4-5"
+                              pb="5"
                               bg="color-2"
                               value={file.filename}
                             >
@@ -247,7 +247,7 @@ const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
           end={[0, 0]}
         />
       )}
-      <XStack position="absolute" r="2-5" t={10} gap="2" flexDirection="row-reverse">
+      <XStack position="absolute" r="2-5" t={10} gap="1-5" flexDirection="row-reverse">
         <Button
           onPress={() => {
             copyText(content)

@@ -1,4 +1,4 @@
-import { Calendar, Check, ChevronRight } from '@tamagui/lucide-icons-2'
+import { Calendar, Check, ChevronRight } from '@tamagui/local-icons'
 import React from 'react'
 import { Text, View, YStack } from 'tamagui'
 import { ContextMenu } from './MenuSkins'

@@ -35,10 +35,10 @@ export const PricingCards = () => {
       bg="background"
     >
       <YStack
-        borderBottomWidth="0-25"
+        borderBottomWidth="0.5px"
         borderBottomColor="border-color"
         borderWidth="0"
-        pb="2"
+        pb="1-5"
       >
         <H4 {...demoProps.headingFontFamilyProps} size="4" text="center">
           Subscribe
@@ -90,7 +90,7 @@ export const PricingCards = () => {
             Click here
           </Paragraph>
         </Paragraph>
-        <XStack gap="2">
+        <XStack gap="1-5">
           <Button flex={1} size="lg" {...demoProps.borderRadiusProps}>
             Cancel
           </Button>

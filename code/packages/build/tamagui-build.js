@@ -248,10 +248,7 @@ function restoreGlobalRequire(contents) {
     contents = contents.replace(injected[0], '\n')
     if (injected[1] !== 'require') {
       const identifier = injected[1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-      contents = contents.replace(
-        new RegExp(`\\b${identifier}\\b`, 'g'),
-        'require'
-      )
+      contents = contents.replace(new RegExp(`\\b${identifier}\\b`, 'g'), 'require')
     }
   }
 
@@ -264,10 +261,7 @@ function restoreGlobalRequire(contents) {
   if (!helper) return contents
 
   const remainingRuntime = runtime[1].replace(helper[0], '')
-  contents = contents.replace(
-    remainingRuntime.trim() ? helper[0] : runtime[0],
-    ''
-  )
+  contents = contents.replace(remainingRuntime.trim() ? helper[0] : runtime[0], '')
   const identifier = helper[1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   return contents.replace(new RegExp(`\\b${identifier}\\b`, 'g'), 'require')
 }
@@ -341,6 +335,17 @@ function resolveOutputModuleSpecifier(
   const pathname = suffixIndex === -1 ? specifier : specifier.slice(0, suffixIndex)
 
   const targetPath = path.resolve(path.dirname(filePath), pathname)
+  // a module with .ios/.android siblings stays extensionless on native so the
+  // react native bundler picks the platform file over the .native fallback
+  if (outputExtension.startsWith('.native.') && !path.extname(pathname)) {
+    const hasPlatformFile = [targetPath, path.join(targetPath, 'index')].some((base) =>
+      ['.ios.js', '.android.js'].some(
+        (extension) =>
+          outputPaths.has(`${base}${extension}`) || FSE.existsSync(`${base}${extension}`)
+      )
+    )
+    if (hasPlatformFile) return specifier
+  }
   if (
     pathname.endsWith('.js') &&
     (outputPaths.has(targetPath) || FSE.existsSync(targetPath))

@@ -1,4 +1,4 @@
-import { Bell, Boxes, ChevronRight, Cog, Workflow } from '@tamagui/lucide-icons-2'
+import { Bell, Boxes, ChevronRight, Cog, Workflow } from '@tamagui/local-icons'
 import { Avatar, H4, ListItem, Paragraph, XStack, YStack } from 'tamagui'
 import { useDemoProps } from '~/features/studio/theme/hooks/useDemoProps'
 
@@ -13,9 +13,9 @@ export const UserDropdown = () => {
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
     >
-      <YStack borderBottomWidth="0-25" borderBottomColor="border-color" pb="4">
+      <YStack borderBottomWidth="0.5px" borderBottomColor="border-color" pb="4">
         <XStack gap="4" justify="space-between" items="center" flexWrap="wrap">
-          <Avatar size="5" {...demoProps.borderRadiusProps}>
+          <Avatar size="12" {...demoProps.borderRadiusProps}>
             <Avatar.Image src="https://i.pravatar.cc/300?u=some-user" />
           </Avatar>
           <XStack items="center" flex={1} flexBasis="auto" justify="space-between">
@@ -29,7 +29,7 @@ export const UserDropdown = () => {
         </XStack>
       </YStack>
 
-      <YStack flex={1} flexBasis="auto" mx="-2" gap="2">
+      <YStack flex={1} flexBasis="auto" mx="-1-5" gap="1-5">
         <ListItem
           bg="transparent hover:color-3"
           {...demoProps.borderRadiusProps}

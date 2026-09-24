@@ -1,4 +1,4 @@
-import { Drumstick, Hand } from '@tamagui/lucide-icons-2'
+import { Drumstick, Hand } from '@tamagui/local-icons'
 import type { ButtonProps, ThemeName } from 'tamagui'
 import { Button, XStack, YStack } from 'tamagui'
 

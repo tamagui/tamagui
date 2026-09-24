@@ -1,30 +1,21 @@
 import { animationsCSS } from '@tamagui/config/animations-css'
 import { animationsMotion } from '@tamagui/config/animations-motion'
-import { selectionStyles } from '@tamagui/config/v6-base'
-// the pieces of the v5 default config the site keeps, each from its narrowest
-// entry point. `@tamagui/config/v5-subtle` re-exports a whole theme pack, and
-// `defaultConfig` holds another, so touching either ships ~250kb of theme values
-// to the browser that the `themes:` line below then replaces.
-import { settings as defaultSettings } from '@tamagui/config/settings'
+// v6-base rather than v6: `defaultConfig` carries a whole theme pack the site
+// replaces with its own themes
+import {
+  createV6Config,
+  mediaQueryDefaultActive,
+  withTailwindTypeScale,
+} from '@tamagui/config/v6-base'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
-import { shorthands } from '@tamagui/shorthands/v4'
-import { tokens } from '@tamagui/themes/v5'
 import { bodyFont, cherryBombFont, headingFont, monoFont } from './fonts'
-import { media, mediaQueryDefaultActive } from './media'
 import { clientThemes } from './themeMetadata'
 import { themes } from './themes'
 
 setupDev({
   visualizer: true,
 })
-
-const fonts = {
-  heading: headingFont,
-  body: bodyFont,
-  mono: monoFont,
-  cherryBomb: cherryBombFont,
-}
 
 export const animations = {
   default: animationsMotion,
@@ -36,16 +27,21 @@ const configuredThemes =
     ? (clientThemes as unknown as typeof themes)
     : themes
 
+const v6 = createV6Config({ themes: configuredThemes })
+
 export const config = {
-  shorthands,
-  tokens,
-  themes: configuredThemes,
-  fonts,
+  ...v6,
+  fonts: {
+    heading: withTailwindTypeScale(headingFont),
+    body: withTailwindTypeScale(bodyFont),
+    mono: monoFont,
+    cherryBomb: cherryBombFont,
+  },
   animations,
-  media,
+  // a copy, since the demo media below is assigned onto it
+  media: { ...v6.media },
   settings: {
-    ...defaultSettings,
-    selectionStyles,
+    ...v6.settings,
     mediaQueryDefaultActive,
     allowedStyleValues: 'somewhat-strict-web',
     // allow both shorthands and longhand names for flexibility

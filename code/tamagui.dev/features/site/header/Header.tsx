@@ -1,5 +1,5 @@
 import { LogoWords, setTintFamily, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import { Check, ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons-2'
+import { Check, ExternalLink, Figma, LogIn, Menu } from '@tamagui/local-icons'
 import { isTouchable, useGet, useMedia } from '@tamagui/web'
 import { useFocusEffect, usePathname, useRouter } from 'one'
 import * as React from 'react'
@@ -75,7 +75,7 @@ export function Header(props: HeaderProps) {
         pointerEvents="none"
         justify="center"
         z={10000}
-        px="gtSm:1"
+        px="md:0-5"
         className="all ease-out s1"
       >
         <XStack
@@ -86,15 +86,15 @@ export function Header(props: HeaderProps) {
         >
           <XStack
             className="ease-out all ms300"
-            py="1-5 sm:2"
-            y={`0px sm:-1px${isScrolled ? ' gtSm:6px' : ''}`}
+            py="1 max-md:1-5"
+            y={`0px max-md:-1px${isScrolled ? ' md:6px' : ''}`}
             overflow="hidden"
             contain="paint"
             width="100%"
             bg="transparent"
-            rounded="10 sm:0"
-            borderColor={isScrolled ? 'transparent gtSm:color-5' : 'transparent'}
-            borderWidth="0.5px sm:0px"
+            rounded="10 max-md:0"
+            borderColor={isScrolled ? 'transparent md:color-5' : 'transparent'}
+            borderWidth="0.5px max-md:0px"
           >
             <YStack
               position="absolute"
@@ -128,9 +128,9 @@ export function Header(props: HeaderProps) {
             position="absolute"
             inset={0}
             boxShadow="0 8px 20px shadow-3"
-            opacity={isScrolled ? '0 gtSm:1' : 0}
-            py={isScrolled ? 'gtSm:2' : undefined}
-            y={isScrolled ? 'gtSm:5px' : undefined}
+            opacity={isScrolled ? '0 md:1' : 0}
+            py={isScrolled ? 'md:1-5' : undefined}
+            y={isScrolled ? 'md:5px' : undefined}
           />
         </XStack>
       </XStack>
@@ -151,7 +151,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       items="center"
       position="relative"
       render="header"
-      py={props.minimal ? '4' : props.floating ? 0 : '2'}
+      py={props.minimal ? '4' : props.floating ? 0 : '1-5'}
       z={50000}
     >
       <XStack items="center" gap="4">
@@ -167,11 +167,11 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
         <Link target="_blank" href="https://github.com/tamagui/tamagui">
           <XStack group containerType="normal">
-            <XStack items="center" gap="2" p="2" opacity="0.9 hover:1">
+            <XStack items="center" gap="1-5" p="1-5" opacity="0.9 hover:1">
               <GithubIcon width={22} />
               <>
                 <SizableText
-                  display="xl:none"
+                  display="max-xxl:none"
                   color="color-12"
                   opacity="0.5 group-hover:0.8"
                   size="3"
@@ -188,8 +188,8 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
       <XStack
         position="absolute"
-        opacity="md:0"
-        pointerEvents="none md:none"
+        opacity="max-lg:0"
+        pointerEvents="none max-lg:none"
         z={-1}
         justify="center"
         inset={0}
@@ -201,7 +201,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
             pointerEvents="auto"
             self="center"
             gap="3"
-            ml="-5"
+            ml="-6"
             items="center"
           >
             <SeasonTogglePopover>
@@ -225,7 +225,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       </XStack>
 
       <XStack height={40} justify="flex-end" pointerEvents="auto" render="nav">
-        <XStack items="center" gap="2">
+        <XStack items="center" gap="1-5">
           <HeaderLinksPopover>
             <HeaderLink id="core" href="/docs/intro/introduction">
               Core
@@ -389,7 +389,7 @@ export const HeaderLink = (props: { id: ID; children: string; href: string }) =>
           fontSize={15}
           color="color-9 hover:color-12"
           {...(isActive && { active: true })}
-          display="xs:none"
+          display="max-sm:none"
         >
           {props.children}
         </HeadAnchor>
@@ -602,11 +602,11 @@ const HeaderMenuContents = (props: { id: ID }) => {
       return (
         <>
           <HeaderMenuMoreContents />
-          <Separator borderColor="color-02" opacity={0.25} my="2" />
+          <Separator borderColor="color-02" opacity={0.25} my="1-5" />
           {isOnlyShowingMenu && (
             <>
               <ActivePageDocsMenuContents />
-              <Separator borderColor="color-02" opacity={0.25} my="2" />
+              <Separator borderColor="color-02" opacity={0.25} my="1-5" />
             </>
           )}
           <SeasonChooser />
@@ -616,7 +616,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
 
     if (props.id === 'theme') {
       return (
-        <YStack flex={1} gap="2" flexBasis="auto">
+        <YStack flex={1} gap="1-5" flexBasis="auto">
           {!themeHistories.length ? (
             <>
               <Paragraph
@@ -636,7 +636,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
               </Paragraph>
             </>
           ) : (
-            <YStack gap="2">
+            <YStack gap="1-5">
               <XStack>
                 <HeadAnchor
                   grid
@@ -649,7 +649,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
                     Enabled
                   </SizableText>
 
-                  {bentoTheme.enabled ? <Check ml="2" size={12} /> : null}
+                  {bentoTheme.enabled ? <Check ml="1-5" size={12} /> : null}
                 </HeadAnchor>
                 <HeadAnchor
                   grid
@@ -661,7 +661,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
                     Tint
                   </SizableText>
 
-                  {!bentoStore.disableTint ? <Check ml="2" size={12} /> : null}
+                  {!bentoStore.disableTint ? <Check ml="1-5" size={12} /> : null}
                 </HeadAnchor>
               </XStack>
 
@@ -749,15 +749,15 @@ const HeaderMenuMoreContents = () => {
   }
 
   return (
-    <YStack gap="2" aria-label="Home menu contents">
-      <YStack gap="2" display="gtSm:none">
+    <YStack gap="1-5" aria-label="Home menu contents">
+      <YStack gap="1-5" display="md:none">
         <Link asChild href="/">
           <HeadAnchor grid>Home</HeadAnchor>
         </Link>
-        <Separator bg="color-02" opacity={0.25} my="2" />
+        <Separator bg="color-02" opacity={0.25} my="1-5" />
       </YStack>
 
-      <XStack flex={1} flexBasis="auto" flexWrap="wrap" gap="2" width="100%">
+      <XStack flex={1} flexBasis="auto" flexWrap="wrap" gap="1-5" width="100%">
         <Link asChild href="/docs/intro/introduction">
           <HeadAnchor grid half>
             Core
@@ -783,7 +783,7 @@ const HeaderMenuMoreContents = () => {
         </Link>
       </XStack>
 
-      <Separator bg="color-02" opacity={0.25} my="2" />
+      <Separator bg="color-02" opacity={0.25} my="1-5" />
 
       {!userSwr.data?.user && (
         <HeadAnchor grid onPress={handleLogin}>
@@ -808,7 +808,7 @@ const HeaderMenuMoreContents = () => {
         </Link>
       )}
 
-      <Separator bg="color-02" opacity={0.25} my="2" />
+      <Separator bg="color-02" opacity={0.25} my="1-5" />
 
       <Link asChild href="/takeout">
         <HeadAnchor grid render="a">
@@ -866,7 +866,7 @@ const HeaderMenuMoreContents = () => {
         </HeadAnchor>
       </Link>
 
-      <Separator borderColor="color-02" opacity={0.25} my="2" />
+      <Separator borderColor="color-02" opacity={0.25} my="1-5" />
 
       <Link asChild href="https://github.com/tamagui/tamagui">
         <HeadAnchor target="_blank" grid>
@@ -915,7 +915,7 @@ const SeasonChooser = () => {
         return (
           <Circle
             key={seasonName}
-            size="4"
+            size="11"
             cursor="pointer"
             items="center"
             justify="center"
@@ -964,8 +964,8 @@ const HeadAnchor = styled(Paragraph, {
         width: '100%',
         flex: 1,
         flexBasis: 'auto',
-        paddingTop: '2',
-        paddingBottom: '2',
+        paddingTop: '1-5',
+        paddingBottom: '1-5',
         px: '4',
         backgroundColor: 'hover:color-mix(in srgb, var(--color-8) 10%, transparent 50%)',
       },

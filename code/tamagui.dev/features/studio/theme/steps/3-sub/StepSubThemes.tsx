@@ -49,7 +49,7 @@ export const StepSubThemes = memo(() => {
   }, [store.subThemes.length])
 
   return (
-    <YStack mx="-5" flex={1}>
+    <YStack mx="-6" flex={1}>
       <StageButtonBar steps={steps} />
       <Stage
         current={steps.index}
@@ -63,7 +63,7 @@ export const Themes = memo(() => {
   const store = useThemeBuilderStore()
 
   return (
-    <YStack flex={1} gap="4" py="4" px="2">
+    <YStack flex={1} gap="4" py="4" px="1-5">
       {store.subThemes
         // .sort((a, b) => (a.id === store.selectedSubTheme ? -1 : 1))
         .map((theme) => {
@@ -139,7 +139,7 @@ export function StepSubThemesActions() {
 
           <AddDropdown.Separator />
 
-          <H6 size="1" pt="2" px="3" opacity={0.5}>
+          <H6 size="1" pt="1-5" px="3" opacity={0.5}>
             Custom
           </H6>
 
@@ -354,7 +354,7 @@ export function BaseThemesStepPreview2() {
         We've now generated the following themes:
       </Paragraph>
 
-      <YGroup borderWidth={1} borderColor="border-color" my="2">
+      <YGroup borderWidth={1} borderColor="border-color" my="1-5">
         {fullThemes.map((theme) => {
           return (
             <ListItem

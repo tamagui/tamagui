@@ -1,4 +1,4 @@
-import { Paintbrush, X } from '@tamagui/lucide-icons-2'
+import { Paintbrush, X } from '@tamagui/local-icons'
 import React, { useEffect, useState } from 'react'
 import { Dialog, H2, Paragraph, ScrollView, Theme, TooltipSimple, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
@@ -72,7 +72,7 @@ export const DropTamaguiConfig = () => {
             onPress={() => setShow(true)}
             size="md"
             variant="quiet"
-            display="sm:none"
+            display="max-md:none"
             icon={Paintbrush}
           >
             <Button.Text color={config ? 'green-12' : 'color-12'}>
@@ -105,7 +105,7 @@ export const DropTamaguiConfig = () => {
             scale="enter:0.975 exit:0.975"
             width="95%"
             maxW={600}
-            p="8"
+            p="11"
             key="content"
           >
             <Dialog.Close asChild>

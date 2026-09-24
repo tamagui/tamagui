@@ -150,20 +150,30 @@ export const studioScales = {
   },
 } as const
 
-export function getStudioThemeTokens(palettes: Record<string, BuildPalette>) {
+export function getStudioThemeTokens(
+  palettes: Record<string, BuildPalette>
+): Record<string, string> {
   const sourcePalettes = palettes.accent
     ? palettes
     : { ...palettes, accent: palettes.base }
 
-  return Object.fromEntries(
-    Object.entries(sourcePalettes).flatMap(([name, palette]) => {
-      const built = getThemeSuitePalettes(palette)
-      return (['light', 'dark'] as const).flatMap((scheme) => {
-        const colors = scheme === 'light' ? built.light : [...built.dark].reverse()
-        return shades.map((shade, index) => [`${name}-${scheme}-${shade}`, colors[index]])
+  return {
+    // the scales name white and black directly, past either end of a palette
+    white: '#ffffff',
+    black: '#000000',
+    ...Object.fromEntries(
+      Object.entries(sourcePalettes).flatMap(([name, palette]) => {
+        const built = getThemeSuitePalettes(palette)
+        return (['light', 'dark'] as const).flatMap((scheme) => {
+          const colors = scheme === 'light' ? built.light : [...built.dark].reverse()
+          return shades.map((shade, index) => [
+            `${name}-${scheme}-${shade}`,
+            colors[index],
+          ])
+        })
       })
-    })
-  )
+    ),
+  }
 }
 
 type StudioRecipe = {

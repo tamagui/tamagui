@@ -77,7 +77,6 @@ export const Button = withStaticProperties(ButtonFrame, {
 
 A few things to note here:
 
-- ButtonContext should only be typed and given properties that work across both components. Since they both define a `size` variant, this works.
-- Both tables use the same names, so the frame and text agree. The frame and text can use different token scales.
+- ButtonContext should only be typed and given properties that work across both components. Since both define a `size` variant, this works, even though the frame and text read different token scales.
 - You can use `<Button.Props size="lg"><Button /></Button.Props>` now to set default props for a Button from above.
 - The context pattern currently skips compiler flattening. Avoid using it on low-level primitives like generic Stacks or Text. For higher-level controls like Button, it works well: the compiler still extracts CSS and optimizes render logic.

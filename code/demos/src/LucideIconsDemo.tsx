@@ -11,12 +11,12 @@ export function LucideIconsDemo() {
   const [searchRaw, setSearch] = React.useState('')
   const search = useDebounceValue(searchRaw, 400)
 
-  // the whole icon set is ~1mb, so it loads on demand. it has to come from the
-  // /all entry rather than the index: reading every key off the index namespace
-  // would make bundlers retain all 1700 icons for anyone importing even one.
+  // the icon set loads on demand. it has to come from the /all entry rather
+  // than the index: reading every key off the index namespace would make
+  // bundlers retain every icon for anyone importing even one.
   const [lucideIcons, setLucideIcons] = React.useState<IconEntry[]>([])
   React.useEffect(() => {
-    import('@tamagui/lucide-icons-2/all').then(({ allIcons }) => {
+    import('@tamagui/local-icons/all').then(({ allIcons }) => {
       setLucideIcons(
         Object.keys(allIcons).map((name) => ({
           key: name.toLowerCase(),

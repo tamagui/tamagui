@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/demos",
   "version": "2.7.7",
+  "private": true,
   "license": "MIT",
   "source": "demos/src/index.tsx",
   "files": [
@@ -59,8 +60,8 @@
     "@tamagui/input": "workspace:*",
     "@tamagui/linear-gradient": "workspace:*",
     "@tamagui/list-item": "workspace:*",
+    "@tamagui/local-icons": "workspace:*",
     "@tamagui/logo": "workspace:*",
-    "@tamagui/lucide-icons-2": "workspace:*",
     "@tamagui/menu": "workspace:*",
     "@tamagui/popover": "workspace:*",
     "@tamagui/progress": "workspace:*",

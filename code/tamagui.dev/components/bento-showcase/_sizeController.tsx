@@ -1,4 +1,4 @@
-import { Minus, Plus } from '@tamagui/lucide-icons-2'
+import { Minus, Plus } from '@tamagui/local-icons'
 import type { SizeTokens } from 'tamagui'
 import { Theme, YGroup, createStyledHOC } from 'tamagui'
 import { Button } from '~/components/Button'
@@ -25,7 +25,15 @@ export const SizeController = createStyledHOC(
     }
     return (
       <Theme name="accent">
-        <YGroup ref={ref} justify="center" items="center" r={0} b={0} gap="1" {...props}>
+        <YGroup
+          ref={ref}
+          justify="center"
+          items="center"
+          r={0}
+          b={0}
+          gap="0-5"
+          {...props}
+        >
           <YGroup.Item>
             <Button
               size="sm"

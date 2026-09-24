@@ -1,4 +1,4 @@
-import { Plus } from '@tamagui/lucide-icons-2'
+import { Plus } from '@tamagui/local-icons'
 import type { ListItemProps, PopoverProps } from 'tamagui'
 import {
   H6,
@@ -22,14 +22,14 @@ const Title = styled(H6, {
   text: 'left',
   lineHeight: '10px',
   pt: '4',
-  pb: '2',
+  pb: '1-5',
   px: '3',
   opacity: 0.5,
 })
 
 const Separator = styled(TamaguiSeparator, {
   width: '100%',
-  py: '1',
+  py: '0-5',
 })
 
 export const AddDropdown = withStaticProperties(
@@ -41,7 +41,7 @@ export const AddDropdown = withStaticProperties(
         </Popover.Trigger>
 
         <Popover.Content
-          borderWidth="0-5"
+          borderWidth="px"
           borderColor="border-color"
           p={0}
           y="enter:-7px exit:-7px"
@@ -57,7 +57,7 @@ export const AddDropdown = withStaticProperties(
           trapFocus={false}
         >
           <Popover.ScrollView>{children}</Popover.ScrollView>
-          <Popover.Arrow bg="background" borderColor="border-color" borderWidth="0-5" />
+          <Popover.Arrow bg="background" borderColor="border-color" borderWidth="px" />
         </Popover.Content>
       </Popover>
     )

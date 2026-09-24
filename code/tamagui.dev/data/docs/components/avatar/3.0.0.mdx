@@ -1,6 +1,6 @@
 ---
 title: Avatar
-description: Display aspect-ratio-fixed images with a fallback while loading
+description: Display images at a fixed size with a fallback while loading
 name: avatar
 component: Avatar
 package: avatar
@@ -49,15 +49,15 @@ export default () => (
 )
 ```
 
-## API Reference
+## API reference
 
 ### Avatar
 
-Avatar extends [Square](/docs/components/shapes#shape-props), giving it all the [Tamagui standard props](/docs/intro/props) as well as `size` and `circular`.
+Avatar extends [Square](/ui/shapes#square), giving it all the [Tamagui standard props](/docs/intro/props) as well as `size` and `circular`.
 
 ### Avatar.Fallback
 
-Avatar.Fallback extends [YStack](/docs/components/stacks), plus:
+Avatar.Fallback extends [YStack](/ui/stacks), plus:
 
 <PropsTable
   data={[
@@ -72,4 +72,4 @@ Avatar.Fallback extends [YStack](/docs/components/stacks), plus:
 
 ### Avatar.Image
 
-Avatar.Image extends [Image](/docs/components/image).
+Avatar.Image extends [Image](/ui/image).

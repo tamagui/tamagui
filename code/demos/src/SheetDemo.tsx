@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
+import { ChevronDown, ChevronUp } from '@tamagui/local-icons'
 import React, { memo } from 'react'
 import {
   Button,

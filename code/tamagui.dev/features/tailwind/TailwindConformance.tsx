@@ -39,15 +39,15 @@ function Specimen({ c, leg, scale }: { c: ProofCase; leg: string; scale: number 
 
 function ProofRow({ c, scale }: { c: ProofCase; scale: number }) {
   return (
-    <XStack items="center" justify="center" gap="2" flexWrap="wrap">
+    <XStack items="center" justify="center" gap="1-5" flexWrap="wrap">
       {proofLegs.map((leg, i) => (
-        <XStack key={leg.key} items="center" gap="2">
+        <XStack key={leg.key} items="center" gap="1-5">
           {i > 0 && (
             <SizableText color="color-8" size="5">
               =
             </SizableText>
           )}
-          <YStack items="center" gap="2">
+          <YStack items="center" gap="1-5">
             <Specimen c={c} leg={leg.key} scale={scale} />
             <Paragraph color="color-9" size="1">
               {leg.label}
@@ -61,7 +61,7 @@ function ProofRow({ c, scale }: { c: ProofCase; scale: number }) {
 
 function MatchChip({ diff }: { diff: number }) {
   return (
-    <XStack items="center" gap="2" bg="green-3" rounded={100} px={12} py={5}>
+    <XStack items="center" gap="1-5" bg="green-3" rounded={100} px={12} py={5}>
       <YStack width={7} height={7} rounded={100} bg="green-9" />
       <Paragraph color="green-11" size="1">
         {diff === 0 ? '0.0% diff' : `${diff}% diff`}
@@ -72,7 +72,7 @@ function MatchChip({ diff }: { diff: number }) {
 
 function Stat({ value, label }: { value: string; label: string }) {
   return (
-    <YStack items="center" gap="1" px="6" py="3">
+    <YStack items="center" gap="0-5" px="8" py="3">
       <SizableText color="color-12" size="10">
         {value}
       </SizableText>
@@ -87,7 +87,7 @@ export function TailwindConformance() {
   const featured = proofCases.find((c) => c.featured) ?? proofCases[0]
   const rest = proofCases.filter((c) => c !== featured)
   return (
-    <ContainerLarge py="12" gap="8">
+    <ContainerLarge py="88px" gap="11">
       <YStack items="center" gap="3">
         <HomeH2>Verified pixel by pixel</HomeH2>
         <HomeH3>
@@ -103,8 +103,8 @@ export function TailwindConformance() {
           width="100%"
           maxW={820}
           items="center"
-          gap="5"
-          py="9"
+          gap="6"
+          py="14"
           px="4"
           rounded="8"
           bg="color-2"
@@ -150,11 +150,11 @@ export function TailwindConformance() {
               items="center"
               justify="space-between"
               gap="4"
-              px="5"
+              px="6"
               py="4"
               flexWrap="wrap"
             >
-              <YStack gap="2" minWidth={220} flex={1} items="flex-start">
+              <YStack gap="1-5" minWidth={220} flex={1} items="flex-start">
                 <SizableText fontFamily="mono" color="color-11" size="2">
                   {c.className}
                 </SizableText>

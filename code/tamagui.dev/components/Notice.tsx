@@ -1,5 +1,5 @@
 import { H3, Paragraph, XStack, YStack, styled } from 'tamagui'
-import { AlertTriangle, Info, CheckCircle } from '@tamagui/lucide-icons-2'
+import { AlertTriangle, Info, CheckCircle } from '@tamagui/local-icons'
 
 const getIcon = (theme: string) => {
   switch (theme) {
@@ -29,7 +29,7 @@ export const Notice = ({
   return (
     <NoticeFrame theme={theme} {...props}>
       <XStack gap="3">
-        <YStack flex={1} gap="1">
+        <YStack flex={1} gap="0-5">
           {title && <H3 size="5">{title}</H3>}
           {/* a div, so mdx block content (paragraphs, code fences, lists) can
               nest inside it while single-line inline notices still pick up the

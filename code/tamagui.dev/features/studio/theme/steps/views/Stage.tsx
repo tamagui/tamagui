@@ -40,7 +40,7 @@ const Section = styled(YStack, {
   position: 'absolute',
   inset: 0,
   t: 33,
-  px: '2',
+  px: '1-5',
   variants: {
     isLeft: { true: { x: -30, opacity: 0, pe: 'none' } },
     isRight: { true: { x: 30, opacity: 0, pe: 'none' } },

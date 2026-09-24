@@ -59,7 +59,7 @@ export default function AcceptInvitePage() {
           gap="4"
           maxWidth={420}
           items="center"
-          p="6"
+          p="8"
           borderRadius="6"
           borderWidth={1}
           borderColor="border-color"

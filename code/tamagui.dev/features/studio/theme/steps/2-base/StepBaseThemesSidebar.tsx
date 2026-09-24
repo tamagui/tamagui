@@ -30,10 +30,10 @@ const Contents = ({ themeNameBase }: { themeNameBase: string }) => {
       <XStack position="absolute" t="4" r="4" z={1000}>
         <XStack
           opacity={accentSetting === 'off' ? 0.5 : 1}
-          gap="2"
+          gap="1-5"
           ml="auto"
           items="center"
-          height="2"
+          height="7"
         >
           <Label size="3" color="color">
             Accent
@@ -62,7 +62,7 @@ const Contents = ({ themeNameBase }: { themeNameBase: string }) => {
                   </SizableText>
                   <Separator />
                 </XStack>
-                <YStack rounded="9" bg="background" p="4" mx="-2">
+                <YStack rounded="9" bg="background" p="4" mx="-1-5">
                   <StudioThemesQuickPreviewSection
                     scheme="light"
                     hasAccent={accentSetting !== 'off'}
@@ -83,7 +83,7 @@ const Contents = ({ themeNameBase }: { themeNameBase: string }) => {
                   </SizableText>
                   <Separator />
                 </XStack>
-                <YStack rounded="9" bg="background" p="4" mx="-2">
+                <YStack rounded="9" bg="background" p="4" mx="-1-5">
                   <StudioThemesQuickPreviewSection
                     scheme="dark"
                     hasAccent={accentSetting !== 'off'}

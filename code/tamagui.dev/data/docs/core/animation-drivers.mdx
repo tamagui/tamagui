@@ -34,9 +34,9 @@ You can swap drivers per platform, or dynamically load heavier drivers later in 
 
 ---
 
-## Using Config v6
+## Using config v6
 
-The easiest way to get started is with [`@tamagui/config/v6`](/docs/core/config-v6) and an animation entry for your platform. The entries share matching keys:
+With [`@tamagui/config/v6`](/docs/core/config-v6), add one animation entry for your platform. The entries share matching keys:
 
 ```tsx fileName="tamagui.config.ts"
 import { defaultConfig } from '@tamagui/config/v6'
@@ -93,7 +93,7 @@ string.
 ## React Native Driver
 
 Uses React Native's built-in Animated API with no extra animation-library bundle.
-It runs on native only. Use CSS, Motion, or Reanimated on web.
+Use CSS, Motion, or Reanimated on web.
 
 ### Installation
 
@@ -282,7 +282,7 @@ loadAnimationDriver('spring', driver)
 
 ---
 
-## See Also
+## See also
 
 - [Animations Overview](/docs/core/animations)
 - [AnimatePresence](/docs/core/animate-presence)

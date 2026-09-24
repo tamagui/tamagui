@@ -1,6 +1,6 @@
 ---
 title: ListItem
-description: A component for displaying rows of items
+description: Display rows with titles, subtitles, and icons
 name: list-item
 component: ListItem
 package: list-item
@@ -40,7 +40,7 @@ import { ListItem } from 'tamagui'
 
 `@tamagui/list-item` holds the unstyled half: `useListItem` and the parts, with no
 styled `ListItem` of its own. Import from it when you are building your own
-list item rather than using ours - see [Build your own](#build-your-own).
+list item rather than using ours; see [Build your own](#build-your-own).
 
 ## Usage
 
@@ -48,7 +48,7 @@ Basic usage involves providing children or using the `title` and `subTitle` prop
 
 ```tsx
 import { ListItem, Separator, YGroup } from 'tamagui'
-import { ChevronRight } from '@tamagui/lucide-icons-2' // Example icon
+import { ChevronRight } from './components/icons' // Example icon (generate your own, see Lucide Icons)
 
 export default () => (
   <YGroup
@@ -83,7 +83,7 @@ import { ListItem } from 'tamagui'
 export default () => <ListItem size="lg" title="Large List Item" />
 ```
 
-## Title and SubTitle
+## Title and subTitle
 
 Use the `title` and `subTitle` props for a structured layout. These props accept
 `ReactNode`, so you can pass strings or more complex JSX.
@@ -95,7 +95,7 @@ Use the `title` and `subTitle` props for a structured layout. These props accept
 
 ```tsx
 import { ListItem, Avatar } from 'tamagui'
-import { User } from '@tamagui/lucide-icons-2'
+import { User } from './components/icons'
 
 export default () => (
   <ListItem
@@ -113,7 +113,7 @@ export default () => (
 )
 ```
 
-## Icon Theming
+## Icon theming
 
 Icons can be passed to `icon` (before content) or `iconAfter` (after content).
 
@@ -127,7 +127,7 @@ Icons can be passed to `icon` (before content) or `iconAfter` (after content).
 
 ```tsx
 import { ListItem } from 'tamagui'
-import { Star, Settings } from '@tamagui/lucide-icons-2'
+import { Star, Settings } from './components/icons'
 
 export default () => (
   <>
@@ -162,14 +162,14 @@ export default () => <ListItem variant="outlined" title="Outlined Style" />
 
 Currently supports `outlined` (transparent background with border).
 
-## Apply (Context)
+## Apply (context)
 
 `ListItem.Apply` is the styled context every part reads. Use it to pass `color`,
 `size`, and `variant` to a group of list items at once:
 
 ```tsx
 import { ListItem, YGroup } from 'tamagui'
-import { Trash } from '@tamagui/lucide-icons-2'
+import { Trash } from './components/icons'
 
 export default () => (
   <YGroup>
@@ -242,13 +242,12 @@ Because the frame declares `ListItemContext`, passing `size`, `color`, or
 `variant` to it is what publishes them to the text and icons below. There is no
 context to assemble by hand.
 
-## API Reference
+## API reference
 
 ### ListItem
 
 ListItem extends View, inheriting all the
-[Tamagui standard props](/docs/intro/props), plus. Sizes come from the shared
-[Sizing](/docs/core/sizing) ladder.
+[Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[
@@ -304,9 +303,9 @@ ListItem extends View, inheriting all the
     {
       name: 'iconSize',
       required: false,
-      type: 'number',
+      type: 'number | string',
       description:
-        'Explicitly set the size of the icon in pixels, overriding the size derived from `size`.',
+        'Explicitly set the icon size, either in pixels or as a sizing-ladder name, overriding the one derived from `size`.',
     },
     {
       name: 'scaleIcon',
@@ -400,8 +399,8 @@ Sizes and colors an icon from the surrounding ListItem context.
 ### useListItem
 
 Themes the `icon` and `iconAfter` props and assembles `title`, `subTitle`, and
-`children` into a single child. Returns the props to spread onto a frame - the
-ones it consumed removed, everything else untouched.
+`children` into a single child. Returns the props to spread onto a frame, with the
+ones it consumed removed and everything else untouched.
 
 ```tsx
 const { props } = useListItem(props)

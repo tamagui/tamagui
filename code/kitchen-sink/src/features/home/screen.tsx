@@ -1,4 +1,4 @@
-import { ChevronRight } from '@tamagui/lucide-icons-2'
+import { ChevronRight } from '@tamagui/local-icons'
 import { getGestureHandler } from '@tamagui/native'
 import { useState } from 'react'
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native'

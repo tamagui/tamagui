@@ -279,18 +279,18 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
     <YStack
       render="aside"
       className="is-sticky"
-      display="none gtLg:flex"
-      width="gtLg:200px"
-      z="gtLg:1"
-      position="gtLg:sticky"
-      t="gtLg:20px"
-      height="gtLg:calc(100vh - 20px)"
-      alignSelf="gtLg:flex-start"
-      shrink="gtLg:0"
+      display="none xl:flex"
+      width="xl:200px"
+      z="xl:100"
+      position="xl:sticky"
+      t="xl:20px"
+      height="xl:calc(100vh - 20px)"
+      alignSelf="xl:flex-start"
+      shrink="xl:0"
     >
       <ScrollView showsVerticalScrollIndicator={false}>
-        <YStack gap="5" pt={68} pb="10">
-          <YStack gap="2">
+        <YStack gap="6" pt={68} pb="14">
+          <YStack gap="1-5">
             <Paragraph
               render="span"
               size="2"
@@ -330,24 +330,24 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
             </Paragraph>
           </YStack>
 
-          <Separator opacity={0.5} mr="6" />
+          <Separator opacity={0.5} mr="8" />
 
           <DocsThemePicker />
 
           <YStack
             render="nav"
             aria-labelledby="site-quick-nav-heading"
-            mb="10"
-            mt="2"
+            mb="14"
+            mt="1-5"
             display={headings.length === 0 ? 'none' : 'flex'}
-            gap="2"
+            gap="1-5"
           >
-            <H4 mb="2" color="color-10" size="5" id="site-quick-nav-heading">
+            <H4 mb="1-5" color="color-10" size="5" id="site-quick-nav-heading">
               Contents
             </H4>
 
             <ScrollView maxH="calc(100vh - 300px)">
-              <YStack ref={containerRef as any} py="2" pl={24} position="relative">
+              <YStack ref={containerRef as any} py="1-5" pl={24} position="relative">
                 <NavLineIndicator
                   items={itemData}
                   activeIndex={activeIndex}
@@ -362,7 +362,7 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
                       key={`${id}-${index}`}
                       data-nav-item
                       pl={Math.max(0, level - 2) * 12}
-                      py="1"
+                      py="0-5"
                     >
                       <a
                         onClick={(e) => {

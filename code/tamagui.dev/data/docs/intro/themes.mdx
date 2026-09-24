@@ -10,16 +10,15 @@ description: Create themes and sub-themes
 </IntroParagraph>
 
 Bare theme names are the first lookup for style values, and `useTheme` exposes
-them directly. Tamagui allows nesting themes in both the definition and at
-runtime. Tamagui resolves theme values upwards, ultimately all the way back to
-tokens.
+them directly. Themes nest both in the definition and at runtime, and values
+resolve upward, ultimately all the way back to tokens.
 
 For the recommended theme setup, see the [Config v6 docs](/docs/core/config-v6).
 
 See the [ThemeBuilder guide](/docs/guides/theme-builder) for generating
 custom theme suites.
 
-If you want to style `bento` or `tamagui` components: see
+To style `bento` or `tamagui` components, see
 [Styling `tamagui` UI components](#styling-tamagui-components).
 
 For a copy-paste custom palette and recipe tree, see the
@@ -225,7 +224,7 @@ const light = {
 You can of course do all of this yourself in your own design system with
 `styled`:
 
-If you are building a component with more than one sub-components, you can
+If you are building a component with more than one sub-component, you can
 follow this pattern:
 
 ```tsx
@@ -318,7 +317,7 @@ theme that use those variables. Tamagui will handle defining:
 ```
 
 Which will automatically apply at runtime, or can be gathered for use in SSR
-using `Tamagui.getCSS()`.
+with `config.getCSS()`.
 
 Finally, the compiler on web will extract your views roughly as so:
 
@@ -338,8 +337,8 @@ export const App = () => (
 
 ## Ensuring valid types
 
-Here's what we've landed on which helps ensure everything is typed properly.
-Keep themes in a separate `themes.ts` file, and structure it like this:
+This structure keeps everything typed. Keep themes in a separate `themes.ts`
+file, and structure it like this:
 
 ```tsx
 import { tokens } from './tokens'
@@ -398,7 +397,6 @@ export const allThemes = {
   dark_translucent,
   light_translucent,
 } satisfies { [key: string]: BaseTheme }
-// note: `satisfies` was introduced with TypeScript 4.9
 ```
 
 ## Dynamic Themes

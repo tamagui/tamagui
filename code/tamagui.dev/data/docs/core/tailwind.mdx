@@ -18,7 +18,7 @@ Install `@tamagui/tailwind` and `@tamagui/config`:
 npm install @tamagui/tailwind @tamagui/config
 ```
 
-## Basic Usage
+## Basic usage
 
 Import components directly from `@tamagui/tailwind`:
 
@@ -39,7 +39,7 @@ export function Card() {
 
 The styling frontend is selected by import path. There is no global configuration toggle.
 
-## Semantic Elements
+## Semantic elements
 
 `@tamagui/tailwind` also exports `html`, the same set of semantic elements as `html` from `tamagui`, built on the Tailwind frontend. Same tags, same element defaults, and a class string rather than style props as the styling input:
 
@@ -70,7 +70,7 @@ export const Button = styled(html.button, 'px-4 py-2 rounded-lg', {
 })
 ```
 
-## Vite Integration
+## Vite integration
 
 Applications authoring with `@tamagui/tailwind` use the Vite plugin from `@tamagui/tailwind/vite`:
 
@@ -91,7 +91,7 @@ export default defineConfig({
 
 The plugin wraps the core Tamagui compiler and scans JSX sources for utility candidates.
 
-## Web and Native Resolution
+## Web and native resolution
 
 Tamagui Tailwind components render through the same core engine as standard Tamagui components:
 
@@ -138,7 +138,7 @@ Use `web:`, `native:`, `ios:`, and `android:` to apply platform-specific utiliti
 
 Mark ancestors with `group` or `@container` / `container`, then apply `group-hover:` or `@sm:` on children.
 
-## Arbitrary Values
+## Arbitrary values
 
 Pass arbitrary values inside square brackets:
 
@@ -150,7 +150,7 @@ Tamagui normalizes arbitrary values for cross-platform safety:
 - Unitless numbers (such as `z-[400]`) and pixel lengths (such as `p-[18px]`, `text-[14px]`) resolve to numeric values on native. React Native requires numbers for layout and typography props.
 - CSS units and functions (such as `%`, `rem`, `calc()`, `var()`, hex colors) stay strings.
 
-## Tokens and Color Opacity
+## Tokens and color opacity
 
 Utilities for color, radius, size, and spacing resolve against your Tamagui config tokens:
 
@@ -192,7 +192,7 @@ export const Button = styled(View, 'px-4 py-2 rounded-md font-medium', {
 
 Variant values are class strings. The resulting component accepts `className` and its declared variant props.
 
-## Mixing with Tamagui Components
+## Mixing with Tamagui components
 
 You can mix `@tamagui/tailwind` components and standard `tamagui` components within the same application:
 
@@ -213,7 +213,7 @@ export function MixedTree() {
 
 Each component retains its authoring syntax. Both resolve through the same runtime and theme context.
 
-## Utility Coverage
+## Utility coverage
 
 Claimed utilities are parsed by `@tamagui/style-grammar`. They compile to atomic CSS on web and resolve to React Native styles on iOS and Android.
 

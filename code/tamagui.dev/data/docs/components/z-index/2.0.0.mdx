@@ -9,7 +9,7 @@ name: z-index
   overlays in the order they open.
 </IntroParagraph>
 
-## How It Works
+## How it works
 
 When you open overlay components, Tamagui automatically assigns z-index values so that:
 
@@ -19,7 +19,7 @@ When you open overlay components, Tamagui automatically assigns z-index values s
 
 This means you typically don't need to think about z-index at all.
 
-## When to Set zIndex
+## When to set zIndex
 
 Only set `zIndex` when you need to override the automatic stacking. Common cases:
 
@@ -34,7 +34,7 @@ Only set `zIndex` when you need to override the automatic stacking. Common cases
 </Dialog>
 ```
 
-## Component Defaults
+## Component defaults
 
 All overlay components use the automatic stacking system. Here's where to set `zIndex` if needed:
 
@@ -48,18 +48,18 @@ All overlay components use the automatic stacking system. Here's where to set `z
 | [Tooltip](/ui/tooltip) | `<Tooltip zIndex={...}>` |
 | [Menu](/ui/menu) | `<Menu.Portal zIndex={...}>` |
 | [ContextMenu](/ui/context-menu) | `<ContextMenu.Portal zIndex={...}>` |
-| [Toast](/ui/toast) | Via `ToastViewport` |
+| [Toast](/ui/toast) | Via `position` on `<Toast>` |
 
-## Stacking Hierarchy
+## Stacking hierarchy
 
 By default, components stack in this order (lowest to highest):
 
-1. **Popover, Tooltip, Menu** - Pure auto-stacking, starts around z-index 5001
-2. **Dialog, AlertDialog, Select, Sheet** - Use a higher base (100000+) to ensure they appear above most UI
+1. **Popover, Tooltip, Menu** - pure auto-stacking from a low base
+2. **Dialog, AlertDialog, Select, Sheet** - add a 100000 base to ensure they appear above most UI
 
 Within each category, **mount order determines stacking** - open a popover, then another, the second is on top.
 
-## Nested Stacking
+## Nested stacking
 
 Nested floating elements automatically stack above their parent:
 
@@ -81,27 +81,27 @@ Nested floating elements automatically stack above their parent:
 
 The system tracks parent-child relationships through React context, so nested portals always stack correctly.
 
-## Technical Details
+## Technical details
 
 The stacking system uses two mechanisms:
 
-### Horizontal Stacking (Siblings)
+### Horizontal stacking (siblings)
 
 When multiple overlays open at the same level, each gets an incrementing z-index:
-- First dialog: 105001
-- Second dialog: 105002
-- Third dialog: 105003
+- First dialog: 100001
+- Second dialog: 100002
+- Third dialog: 100003
 
-### Vertical Stacking (Nested)
+### Vertical stacking (nested)
 
 When content opens inside another portal, it reads the parent's z-index from context and adds 1:
-- Dialog opens at 105001
-- Popover inside dialog: 105002
-- Tooltip inside that popover: 105003
+- Dialog opens at 100001
+- Popover inside dialog: 100002
+- Tooltip inside that popover: 100003
 
 This ensures nested content is always visible above its parent, but sibling content opened later can still stack above.
 
-## Portal Component
+## Portal component
 
 The [Portal](/ui/portal) component powers this stacking system. If building custom overlay components, you can use Portal's `stackZIndex` prop:
 

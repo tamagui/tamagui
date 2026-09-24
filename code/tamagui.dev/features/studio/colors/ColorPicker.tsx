@@ -335,7 +335,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
       <XStack
         items="center"
         gap="4"
-        height="3"
+        height="9"
         flex={1}
         {...(props.disabled && {
           opacity: 0.5,
@@ -346,8 +346,8 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
           {...(props.shouldDim && {
             opacity: 0.5,
           })}
-          y="-2"
-          gap="1"
+          y="-1-5"
+          gap="0-5"
           flex={1}
         >
           <SizableText size="1" select="none" color="color-9">
@@ -360,8 +360,8 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
           {...(props.shouldDim && {
             opacity: 0.5,
           })}
-          y="-2"
-          gap="1"
+          y="-1-5"
+          gap="0-5"
           flex={1}
         >
           <SizableText size="1" select="none" color="color-9">
@@ -376,7 +376,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
         </YStack>
 
         {!props.disableLightness && (
-          <YStack y="-2" gap="1" flex={1}>
+          <YStack y="-1-5" gap="0-5" flex={1}>
             <SizableText size="1" select="none" color="color-9">
               Lightness
             </SizableText>

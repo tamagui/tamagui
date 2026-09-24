@@ -39,11 +39,10 @@ If Metro is the only bundler this project will ever use, `yarn add
 @tamagui/metro-plugin` on its own is a smaller install and exports exactly the
 same things.
 
-If you have a `tamagui.build.ts` (recommended — see
+Wrap the Expo Metro config with `withTamagui`. If you have a `tamagui.build.ts`
+(recommended; see
 [compiler install docs](/docs/intro/compiler-install#configuration-with-tamaguibuildts)),
-no options are needed:
-
-Wrap the Expo Metro config with `withTamagui`:
+no options are needed. Otherwise, pass them inline:
 
 ```js fileName="metro.config.js"
 const { getDefaultConfig } = require('expo/metro-config')
@@ -55,12 +54,11 @@ module.exports = withTamagui(getDefaultConfig(__dirname), {
 })
 ```
 
-If you're using a monorepo you probably want to use [this Metro
-configuration](/docs/guides/metro#native).
+If you're using a monorepo, see the [Metro guide](/docs/guides/metro).
 
 ### Expo Router / Web
 
-- First, follow the [Metro configuration guide](/docs/guides/metro#web-support) to enable web support.
+- First, follow the [Metro guide](/docs/guides/metro) to enable web support.
 
 Add `@tamagui/config` and `tamagui` to your `package.json` and install them. Then create a `tamagui.config.ts`:
 

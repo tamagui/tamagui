@@ -265,32 +265,6 @@ the container to keep it at opacity 0 until measured, or give the container an
 explicit `width` and `height` so children can resolve the query on first
 render.
 
-## Order is important
-
-Later props win. That gives you control over overrides and makes variants
-predictable:
-
-```tsx
-import { View, ViewProps } from 'tamagui'
-
-export default (props: ViewProps) => (
-  <View backgroundColor="red" {...props} width={200} />
-)
-```
-
-`backgroundColor` can be overridden by `props`. `width` sits after the spread,
-so it is always 200.
-
-The same rule applies to variants that expand into several properties:
-
-```tsx
-// scale is 3
-<MyView huge scale={3} />
-
-// scale is 2
-<MyView scale={3} huge />
-```
-
 ## Next
 
 - [Style props](/docs/core/style-props) for every accepted property and how it

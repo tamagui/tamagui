@@ -1,6 +1,6 @@
 ---
 title: View & Text
-description: Your base components
+description: View and Text with the full Tamagui style API
 ---
 
 <IntroParagraph>
@@ -27,22 +27,17 @@ export default () => (
 )
 ```
 
-We encourage you to use inline styles. Combined with [shorthands](/docs/core/configuration#shorthands) they can lead to really easy styling, and the Tamagui optimizing compiler will take care of optimizing everything for you so that there is little to no extra cost in performance:
+Inline styles and [shorthands](/docs/core/shorthands) compile away, so prefer them for one-off styles:
 
 ```tsx
 import { View, Text } from 'tamagui' // or '@tamagui/core'
 
 export default () => (
-  <View mx="sm" scale={1.2}>
-    <Text c="color">Hello</Text>
+  <View mx="4" scale={1.2}>
+    <Text color="color">Hello</Text>
   </View>
 )
 ```
-
-<Notice theme="blue">
-  One really important and useful thing to note about Tamagui style properties: the order
-  is important! [Read more here](/docs/intro/styles#order-is-important)
-</Notice>
 
 ## With styled()
 
@@ -77,7 +72,7 @@ export const Circle = styled(View, {
 })
 ```
 
-Inline styles and `styled()` both are optimized by the compiler, so you can author styles using both depending on the use case.
+Both inline styles and `styled()` are compiler-optimized, so pick per use case.
 
 ## Props
 
@@ -91,7 +86,7 @@ object.
 
 Finally, there are a few non-style props Tamagui adds:
 
-### Event Props
+### Event props
 
 All Tamagui View-based components have Pressable-like functionality built in. You don't need to wrap in `Pressable` or `TouchableOpacity` - add event handlers directly:
 
@@ -225,7 +220,7 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
 
 Use these events alongside `press:`, `hover:`, and `focus:` clauses to create interactive components. See the [Style API](/docs/intro/styles) for interaction styling.
 
-### Other Props
+### Other props
 
 <PropsTable
   data={[
@@ -406,11 +401,11 @@ Use these events alongside `press:`, `hover:`, and `focus:` clauses to create in
 
 ]} />
 
-## Event Handlers
+## Event handlers
 
-Tamagui supports all React Native events on all platforms. On web, we also support all standard DOM event handlers:
+Tamagui supports all React Native events on all platforms. On web, all standard DOM event handlers work too:
 
-### Cross-Platform Events
+### Cross-platform events
 
 - `onPress`, `onLongPress`, `onPressIn`, `onPressOut` - Touch/press events that work on both native and web
 
@@ -421,40 +416,40 @@ Tamagui supports all React Native events on all platforms. On web, we also suppo
 
 On native, `e.target.setPointerCapture(pointerId)` and `releasePointerCapture(pointerId)` are supported for drag scenarios where you need to receive move events outside the element bounds.
 
-### Web-Only Events
+### Web-only events
 
 The following events are available on web and automatically ignored on native:
 
-**Mouse Events**
+**Mouse events**
 
 - `onClick`, `onDoubleClick`, `onContextMenu`
 - `onMouseEnter`, `onMouseLeave`, `onMouseMove`, `onMouseOver`, `onMouseOut`
 - `onMouseDown`, `onMouseUp`
 - `onWheel`
 
-**Keyboard Events**
+**Keyboard events**
 
 - `onKeyDown`, `onKeyUp`, `onKeyPress`
 
-**Drag and Drop**
+**Drag and drop**
 
 - `onDrag`, `onDragStart`, `onDragEnd`
 - `onDragEnter`, `onDragLeave`, `onDragOver`
 - `onDrop`
 
-**Input Events**
+**Input events**
 
 - `onChange`, `onInput`, `onBeforeInput`
 
-**Scroll Events**
+**Scroll events**
 
 - `onScroll`
 
-**Clipboard Events**
+**Clipboard events**
 
 - `onCopy`, `onCut`, `onPaste`
 
-**Focus Events**
+**Focus events**
 
 - `onFocus`, `onBlur`
 

@@ -18,10 +18,10 @@ const variants = {
 
 export const Container = styled(YStack, {
   mx: 'auto',
-  px: '4 gtSm:6',
+  px: '4 md:8',
   width: '100%',
   position: 'relative',
-  maxW: 'gtSm:760px gtMd:810px gtLg:810px',
+  maxW: 'md:760px lg:810px xl:810px',
   variants,
 })
 
@@ -30,7 +30,7 @@ export const ContainerLarge = styled(YStack, {
   px: '4',
   width: '100%',
   position: 'relative',
-  maxW: 'gtSm:980px gtMd:1140px',
+  maxW: 'md:980px lg:1140px',
   variants,
 })
 
@@ -38,8 +38,8 @@ export const ContainerXL = styled(YStack, {
   mx: 'auto',
   width: '100%',
   position: 'relative',
-  px: 'gtSm:4',
-  maxW: 'gtSm:980px gtMd:1240px gtLg:1440px',
+  px: 'md:4',
+  maxW: 'md:980px lg:1240px xl:1440px',
   variants,
 })
 
@@ -47,8 +47,8 @@ export const ContainerBento = styled(YStack, {
   mx: 'auto',
   width: '100%',
   position: 'relative',
-  px: 'gtSm:4',
-  maxW: 'gtSm:980px gtMd:1180px gtXl:1300px',
+  px: 'md:4',
+  maxW: 'md:980px lg:1180px xxl:1300px',
   z: 100,
   variants,
 })

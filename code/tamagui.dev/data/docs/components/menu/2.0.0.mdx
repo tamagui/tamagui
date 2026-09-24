@@ -1,9 +1,10 @@
 ---
 title: Menu
 description: A selectable list in a popover with nested submenus
-name: dropdown menu
+name: menu
 component: Menu
 package: menu
+demoName: Menu
 ---
 
 <IntroParagraph>
@@ -35,13 +36,13 @@ Menu displays a list of actions or options in a floating panel triggered by a bu
 Menu is already installed in `tamagui`, or you can install it independently:
 
 ```bash
-yarn add @tamagui/menu
+npm install @tamagui/menu
 ```
 
 For Expo 57 and React Native 0.86, use the Expo UI adapter:
 
-```sh
-yarn add @expo/ui
+```bash
+npm install @expo/ui
 ```
 
 Then add the setup import at your app entry point:
@@ -52,8 +53,8 @@ import '@tamagui/native/setup-expo-ui-menu'
 
 The Zeego adapter remains available for apps on compatible React Native versions:
 
-```sh
-yarn add @react-native-menu/menu react-native-ios-context-menu react-native-ios-utilities zeego sf-symbols-typescript
+```bash
+npm install @react-native-menu/menu react-native-ios-context-menu react-native-ios-utilities zeego sf-symbols-typescript
 ```
 
 ```tsx
@@ -65,14 +66,14 @@ automatically. You should not need extra wrapper views or empty `onPress`
 handlers just to prevent a parent `press:` clause from activating.
 
 <Notice theme="yellow">
-  **Expo Router users:** This import must run _before_ `expo-router/entry`. Create an `index.js` at your project root that imports the setup first, then expo-router, and update your `package.json` main field to `"index.js"`. See the [upgrade guide](/docs/guides/how-to-upgrade#expo-router-entry-point) for details.
+  **Expo Router users:** This import must run _before_ `expo-router/entry`. Create an `index.js` at your project root that imports the setup first, then expo-router, and update your `package.json` main field to `"index.js"`. See the [Expo guide](/docs/guides/expo) for details.
 </Notice>
 
 ## Anatomy
 
 Import all parts and piece them together.
 
-```jsx
+```tsx
 import { Menu } from 'tamagui' // or '@tamagui/menu'
 
 export default () => (
@@ -124,7 +125,7 @@ export default () => (
 )
 ```
 
-## API Reference
+## API reference
 
 ### Menu
 
@@ -188,6 +189,7 @@ Contains every component for the Menu.
       name: 'allowFlip',
       type: 'FlipProps | boolean',
       required: false,
+      default: '{ padding: 10 }',
       description: 'Flips the menu to the opposite side if there is insufficient space.',
     },
     {
@@ -243,8 +245,7 @@ Required for rendering the menu content.
 
 ### Menu.Trigger
 
-The menu will only be triggered when the user right-clicks or long-presses
-within the trigger area.
+Trigger element for the menu. Accepts [Tamagui Props](/docs/intro/props).
 
 <PropsTable
   data={[
@@ -252,10 +253,10 @@ within the trigger area.
       name: 'action',
       required: false,
       type: 'press|longPress',
-      default: 'longPress',
+      default: 'press',
       platform: 'android/ios',
       description:
-        "Works with the native prop and accepts 'press' or 'longPress'. The default is 'longPress' for Menu.",
+        "Works with the native prop and accepts 'press' or 'longPress'. The default is 'press' for Menu.",
     },
   ]}
 />
@@ -430,7 +431,7 @@ On iOS, it renders the native
   ]}
 />
 
-```jsx line=1
+```tsx line=1
 <Menu.ItemIcon
   ios={{
     name: '0.circle.fill', // required
@@ -576,7 +577,7 @@ A menu item with a checkbox that can be toggled on and off.
 ### Menu.RadioGroup
 
 Groups a set of `Menu.RadioItem` and manages the selected value. Works on web
-and native — on native the group is rendered as a native menu group and each
+and native. On native, the group is rendered as a native menu group and each
 `RadioItem` is mapped onto the OS checkmark state so exactly one item shows as
 selected at a time.
 
@@ -677,7 +678,7 @@ dropped automatically.
 Use inside `Menu.CheckboxItem` or `Menu.RadioItem` to indicate when an item is checked.
 This allows you to conditionally render a checkmark.
 
-```jsx line=1
+```tsx line=1
 <Menu.ItemIndicator>
   <CheckmarkIcon /> {/* This does not work with the native prop. */}
 </Menu.ItemIndicator>
@@ -777,8 +778,7 @@ A container for nested submenu components.
 
 ### Menu.SubContent
 
-Renders the content of a submenu. Same props as `Menu.Content`, excluding `side` and
-`align`.
+Renders the content of a submenu. Same props as `Menu.Content`.
 
 ### Menu.SubTrigger
 
@@ -789,7 +789,7 @@ A menu item that opens a submenu on hover or focus. Accepts the same props as
 
 A scrollable container for menu items. Use this inside `Menu.Content` when you have many items that may overflow. The menu automatically constrains to available viewport space (via `resize` prop), and ScrollView handles the overflow. Scrollbars are hidden by default.
 
-```jsx
+```tsx
 <Menu.Content>
   <Menu.ScrollView>
     {/* Many menu items */}
@@ -799,7 +799,7 @@ A scrollable container for menu items. Use this inside `Menu.Content` when you h
 
 ## Styling
 
-### Item Highlight Behavior
+### Item highlight behavior
 
 Menu items use the `focus` condition for highlighting. Write it as a typed
 object key or a `focus:` string clause. Focusing the highlighted item keeps
@@ -848,6 +848,6 @@ When you hover over an item, it receives focus, which activates the `focus:` cla
 
 <Notice>
   Avoid using a `hover:` background clause on Menu.Item. This can cause "double
-  highlighting" when switching between mouse and keyboard - where both the hovered item
+  highlighting" when switching between mouse and keyboard, where both the hovered item
   and the focused item appear highlighted simultaneously.
 </Notice>

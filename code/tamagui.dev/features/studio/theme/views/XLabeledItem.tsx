@@ -22,7 +22,7 @@ export const XLabeledItem = ({ label, children }: { label: any; children: any })
         {label}
       </Label>
 
-      <XStack items="center" gap="2" flex={1}>
+      <XStack items="center" gap="1-5" flex={1}>
         {children}
       </XStack>
     </XStack>

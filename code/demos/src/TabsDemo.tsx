@@ -53,7 +53,7 @@ const HorizontalTabs = () => {
       width="400px max-md:calc(100vw - 32px)"
       height={150}
       rounded="4"
-      borderWidth="0-25"
+      borderWidth="px"
       borderColor="border-color"
     >
       <Tabs.List aria-label="Manage your account">
@@ -96,7 +96,7 @@ const VerticalTabs = () => {
       flexDirection="row"
       width={400}
       rounded="4"
-      borderWidth="0-25"
+      borderWidth="px"
       overflow="hidden"
       borderColor="border-color"
       orientation="vertical"

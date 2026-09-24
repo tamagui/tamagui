@@ -57,7 +57,7 @@
     "@tamagui/font-inter": "workspace:*",
     "@tamagui/get-token": "workspace:*",
     "@tamagui/input": "workspace:*",
-    "@tamagui/lucide-icons-2": "workspace:*",
+    "@tamagui/local-icons": "workspace:*",
     "@tamagui/menu": "workspace:*",
     "@tamagui/native": "workspace:*",
     "@tamagui/native-registry": "workspace:*",

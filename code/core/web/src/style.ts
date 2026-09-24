@@ -75,9 +75,12 @@ export function createStylePiece(
  */
 export function style(definition: StaticShapeStyle): StylePiece {
   if (process.env.NODE_ENV === 'development') {
+    // the owner is the component rendering right now. the hooks dispatcher
+    // (`H`) stays set between renders, so it flags module-scope pieces in any
+    // module loaded after the first render
     const internals = (React as any)
       .__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE
-    if (internals?.H) {
+    if (internals?.A?.getOwner?.()) {
       warnOnce(
         '[tamagui] style() was called during render. Define style pieces at module scope so their rules compile once.'
       )

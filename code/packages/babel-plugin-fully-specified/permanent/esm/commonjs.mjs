@@ -1,5 +1,6 @@
 import { existsSync, lstatSync } from 'node:fs'
 import { dirname, extname, resolve } from 'node:path'
+
 function fullySpecifyCommonJS(api, options) {
   api.assertVersion(7)
   return {
@@ -8,9 +9,7 @@ function fullySpecifyCommonJS(api, options) {
       CallExpression(path, state) {
         const callee = path.get('callee')
         if (
-          callee.isIdentifier({
-            name: 'require',
-          }) &&
+          callee.isIdentifier({ name: 'require' }) &&
           path.node.arguments.length === 1
         ) {
           const arg = path.node.arguments[0]
@@ -33,7 +32,22 @@ function fullySpecifyCommonJS(api, options) {
               if (!hasModuleExtension) {
                 const resolvedPath = resolve(fileDir, moduleSpecifier)
                 let newModuleSpecifier = moduleSpecifier
+                if (
+                  cjsExtension.startsWith('.native') &&
+                  (existsSync(`${resolvedPath}.ios.js`) ||
+                    existsSync(`${resolvedPath}.android.js`))
+                ) {
+                  return
+                }
                 if (isLocalDirectory(resolvedPath)) {
+                  const indexBase = resolve(resolvedPath, 'index')
+                  if (
+                    cjsExtension.startsWith('.native') &&
+                    (existsSync(`${indexBase}.ios.js`) ||
+                      existsSync(`${indexBase}.android.js`))
+                  ) {
+                    return
+                  }
                   const indexPath = resolve(resolvedPath, 'index' + jsExtension)
                   if (existsSync(indexPath)) {
                     if (!newModuleSpecifier.endsWith('/')) {
@@ -63,5 +77,6 @@ function fullySpecifyCommonJS(api, options) {
 function isLocalDirectory(absolutePath) {
   return existsSync(absolutePath) && lstatSync(absolutePath).isDirectory()
 }
+
 export { fullySpecifyCommonJS as default }
 //# sourceMappingURL=commonjs.mjs.map

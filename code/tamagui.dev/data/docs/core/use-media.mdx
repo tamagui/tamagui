@@ -29,16 +29,14 @@ export default createTamagui({
 })
 ```
 
-Choose the naming convention you prefer. We use `sm`, `md`, `lg` and `gtSm` etc. Where
-"gt" means "greater than".
+Name them as you like. We use `sm`, `md`, `lg`, and `gtSm`, where `gt` means
+"greater than".
 
-The order here is important: items defined further down will override items before. In this example, `xs` is the weakest, `gtXs` will override it, and so on.
+Order matters: items defined further down override items before them. Here
+`xs` is the weakest and each entry overrides the ones above it.
 
-Behind the scenes, we convert this object syntax into media query syntax with a simple loop over your object, turning camelCase into hyphen-case, and adding `@media()` around it.
-
-### Usage
-
-Now in any component you may import `useMedia` or add media clauses to style values.
+Tamagui converts each entry to a media query, turning camelCase into
+hyphen-case and wrapping it in `@media()`.
 
 ### Inline props
 

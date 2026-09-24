@@ -13,7 +13,7 @@ It is inspired by and forked from
 
 To use with `@tamagui/core`, install and import `@tamagui/animate-presence`. It's already bundled and exported from `tamagui`.
 
-## Basic Usage
+## Basic usage
 
 Use `enter` and `exit` object keys or string clauses to define how each
 property animates in and out:
@@ -77,16 +77,14 @@ Note you don't even need to set `opacity` on the base style. Tamagui knows to no
 styles like opacity and scale to 1 (and y to 0) if it's not defined on the base styles
 but has an `enter:` or `exit:` clause.
 
-Wrap one or more Tamagui components with AnimatePresence. The child components will animate on enter and exit.
-
 <Notice theme="blue">
   Animated child components must each have a unique key prop so AnimatePresence can track
   their presence in the tree.
 </Notice>
 
-## Enter/Exit Transitions
+## Enter/exit transitions
 
-You can specify different animations for enter (mount) and exit (unmount) transitions. This is useful when you want elements to enter slowly but exit quickly, or vice versa:
+Set `enter` and `exit` transitions when mount and unmount should differ:
 
 ```tsx
 import { AnimatePresence, html } from 'tamagui'
@@ -149,11 +147,11 @@ This works with all four animation drivers (CSS, React Native, Reanimated, Motio
 
 ```
 
-AnimatePresence takes a `custom` prop that allows you to update a variant of the animated child before it runs its exit animation. This is useful for animating a child out of the screen in a different direction before it unmounts, as shown in the example above:
+The `custom` prop updates a child's variant before its exit animation runs, so it can leave in a different direction than it entered:
 
 ```tsx
 import { AnimatePresence } from '@tamagui/animate-presence'
-import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons-2'
+import { ArrowLeft, ArrowRight } from './components/icons' // your generated icons, see Lucide Icons
 import { useState } from 'react'
 import { Button, Image, XStack, YStack, styled } from 'tamagui'
 
@@ -237,7 +235,7 @@ export function Demo() {
 }
 ```
 
-## API Reference
+## API reference
 
 ### AnimatePresence Props
 
@@ -256,7 +254,7 @@ When used inside AnimatePresence:
 - **`transition`**: animation configuration (supports `{ enter, exit }` syntax)
 - **`key`**: required unique identifier for AnimatePresence tracking
 
-## See Also
+## See also
 
 - [Animations Overview](/docs/core/animations)
 - [Animation Drivers](/docs/core/animation-drivers)

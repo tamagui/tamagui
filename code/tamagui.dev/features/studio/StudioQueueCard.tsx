@@ -124,10 +124,10 @@ const QueueCardFrame = ({
           key={deg}
           position="absolute"
           rotate={`${deg}deg`}
-          t="5"
-          l="5"
-          r="5"
-          b="5"
+          t="6"
+          l="6"
+          r="6"
+          b="6"
           rounded="3"
           borderColor="color-8"
           opacity={0.2}
@@ -149,8 +149,8 @@ const QueueCardFrame = ({
 
       <Paragraph
         position="absolute"
-        b="6"
-        l="15"
+        b="8"
+        l="32"
         scale={4}
         opacity={0.015}
         fontWeight="900"
@@ -159,8 +159,8 @@ const QueueCardFrame = ({
         {place}
       </Paragraph>
 
-      <XStack pb="1" items="flex-end">
-        <Paragraph self="flex-start" mr="1" opacity={0.35} ml="-1" size="6">
+      <XStack pb="0-5" items="flex-end">
+        <Paragraph self="flex-start" mr="0-5" opacity={0.35} ml="-0-5" size="6">
           #
         </Paragraph>
         <Paragraph my="-3" fontWeight="900" size="12">
@@ -172,7 +172,7 @@ const QueueCardFrame = ({
 
         <Spacer flex={1} />
 
-        <YStack pb="2">
+        <YStack pb="1-5">
           <LogoIcon />
         </YStack>
       </XStack>

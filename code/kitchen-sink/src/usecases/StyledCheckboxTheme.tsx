@@ -1,4 +1,4 @@
-import { Check } from '@tamagui/lucide-icons-2'
+import { Check } from '@tamagui/local-icons'
 import {
   Checkbox as TamaguiCheckbox,
   styled,

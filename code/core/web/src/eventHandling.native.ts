@@ -152,6 +152,25 @@ export function useEvents(
     // rngh path - hooks
     const callbacksRef = useRef<any>(isUsingRNGH ? {} : null)
     const gestureRef = useRef<any>(null)
+    // pairs pressIn with exactly one pressOut across the Manual observer's
+    // touchesDown/touchesUp/touchesCancelled/finalize channels. RNGH can drop a
+    // trailing touch event (the handler is re-attached to a new view mid-touch,
+    // or cancelled without a touch-cancel), and because the press state lives in
+    // the component's own state a dropped release latches the press look with no
+    // event left to clear it. Guarding here means a stray duplicate release is a
+    // no-op while a missing one is caught by onFinalize / the detach clear below.
+    const pressActiveRef = useRef(false)
+    const beginPress = (e?: any) => {
+      if (pressActiveRef.current) return
+      pressActiveRef.current = true
+      callbacksRef.current.onPressIn?.(e ?? {})
+    }
+    const endPress = (e?: any, firePress = false) => {
+      if (!pressActiveRef.current) return
+      pressActiveRef.current = false
+      if (firePress) callbacksRef.current.onPress?.(e ?? {})
+      callbacksRef.current.onPressOut?.(e ?? {})
+    }
 
     // Real press handlers use the responder system for delivery even when RNGH
     // is configured. RNGH Tap begin/end ordering is not stable enough for
@@ -184,6 +203,10 @@ export function useEvents(
         // Real handlers are delivered by useMainThreadPressEvents above. Clear
         // any cached press-clause observer from an earlier render so it cannot
         // double-fire after onPress appears dynamically.
+        // No observer will run for this component after the swap, so an
+        // in-flight press from that observer is definitionally orphaned —
+        // release it before dropping the gesture.
+        endPress()
         gestureRef.current = null
         return null
       }
@@ -200,14 +223,16 @@ export function useEvents(
             .runOnJS(true)
             .manualActivation(true)
             .onTouchesDown(() => {
-              callbacksRef.current.onPressIn?.({})
+              beginPress()
             })
             .onTouchesUp(() => {
-              callbacksRef.current.onPress?.({})
-              callbacksRef.current.onPressOut?.({})
+              endPress(undefined, true)
             })
             .onTouchesCancelled(() => {
-              callbacksRef.current.onPressOut?.({})
+              endPress()
+            })
+            .onFinalize(() => {
+              endPress()
             })
           gestureRef.current = manual
         } else if (!getIsAndroid()) {
@@ -222,15 +247,19 @@ export function useEvents(
           //
           // Android: skipped — see isAndroid comment at top. Synthesized
           // press-clause handlers fall through to viewProps responder events.
+          //
+          // onFinalize is the safety net for a release RNGH never delivers as a
+          // touch event (handler cancelled/failed without a touch-cancel): it
+          // fires on the gesture's own end/cancel and clears the latch.
           gestureRef.current = Gesture.Manual()
             .runOnJS(true)
             .manualActivation(true)
-            .onTouchesDown((e: any) => callbacksRef.current.onPressIn?.(e))
+            .onTouchesDown((e: any) => beginPress(e))
             .onTouchesUp((e: any) => {
-              callbacksRef.current.onPress?.(e)
-              callbacksRef.current.onPressOut?.(e)
+              endPress(e, true)
             })
-            .onTouchesCancelled((e: any) => callbacksRef.current.onPressOut?.(e))
+            .onTouchesCancelled((e: any) => endPress(e))
+            .onFinalize(() => endPress())
         }
       }
       // TODO update viewProps.hitSlop / events.delayLongPress!

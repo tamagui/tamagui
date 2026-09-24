@@ -1,4 +1,4 @@
-import { ChevronDown } from '@tamagui/lucide-icons-2'
+import { ChevronDown } from '@tamagui/local-icons'
 import { useCallback, useLayoutEffect, useRef, useState } from 'react'
 import {
   measure,

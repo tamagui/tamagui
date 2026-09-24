@@ -8,9 +8,8 @@ description: Put together your own design system.
   optimizations in every app that consumes it.
 </IntroParagraph>
 
-By default, if you just use `styled()` in your app, Tamagui **won't** be able to
-optimize those components. This is because the compiler needs to know about
-those components at build-time.
+If you only use `styled()` inside your app, the compiler cannot optimize those
+components, because it needs to know about them at build time.
 
 Let's break down how to set this up in more detail.
 
@@ -55,7 +54,7 @@ Add package.json:
 }
 ```
 
-If using Typescript, a `tsconfig.json` of your choosing:
+If using TypeScript, a `tsconfig.json` of your choosing:
 
 ```json fileName="tsconfig.json"
 {

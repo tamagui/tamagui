@@ -42,7 +42,6 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/font-cherry-bomb": "workspace:*",
     "@tamagui/font-inter": "workspace:*",
-    "@tamagui/shorthands": "workspace:*",
     "@tamagui/themes": "workspace:*"
   },
   "devDependencies": {
