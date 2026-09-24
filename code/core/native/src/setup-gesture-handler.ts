@@ -63,7 +63,12 @@ export function setupGestureHandler(config?: GestureHandlerConfig): void {
   try {
     // dynamically require RNGH - it should already be imported by the app
     const rngh = require('react-native-gesture-handler')
-    const { Gesture, GestureDetector, ScrollView, GestureHandlerRootView } = rngh
+    const { Gesture, GestureDetector, GestureHandlerRootView } = rngh
+    // gesture handler 3's root ScrollView is the v3 wrapper, which ignores the
+    // sheet's simultaneousHandlers, so a scrolled sheet list keeps the sheet pan
+    // from ever activating. LegacyScrollView (3.x only) still honors the
+    // relation; on 2.x the root ScrollView already is that wrapper.
+    const ScrollView = rngh.LegacyScrollView ?? rngh.ScrollView
 
     if (Gesture && GestureDetector) {
       // only enable if pressEvents is true
