@@ -227,7 +227,6 @@ export const docsRoutes = [
       { title: 'Adapt', route: '/ui/adapt' },
       { title: 'Anchor', route: '/ui/anchor' },
       { title: 'Portal', route: '/ui/portal' },
-      { title: 'Unspaced', route: '/ui/unspaced' },
       { title: 'VisuallyHidden', route: '/ui/visually-hidden' },
     ],
   },

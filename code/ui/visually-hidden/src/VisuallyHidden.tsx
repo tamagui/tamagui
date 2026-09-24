@@ -101,6 +101,3 @@ export const VisuallyHidden: TamaguiComponent<
 
   return <VisuallyHiddenFrame ref={forwardedRef} {...a11yProps} {...rest} />
 }) as any
-
-// @tamgui/core checks for this in spacing
-;(VisuallyHidden as any)['isVisuallyHidden'] = true

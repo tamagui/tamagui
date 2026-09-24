@@ -1330,7 +1330,6 @@ export function createComponent<
       asChild,
       children,
       themeShallow,
-      spaceDirection: _spaceDirection,
       onPress,
       onLongPress,
       onPressIn,

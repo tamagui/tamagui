@@ -1,4 +1,4 @@
-import { Unspaced, XStack, YStack } from 'tamagui'
+import { XStack, YStack } from 'tamagui'
 
 // TODO: rendering these is very expensive, converting to svg might help
 export const Ruler = ({
@@ -18,21 +18,19 @@ export const Ruler = ({
   const Stack = orientation === 'horizontal' ? XStack : YStack
   return (
     <Stack items={rotate ? 'flex-end' : undefined} gap={9}>
-      <Unspaced>
-        <YStack
-          position="absolute"
-          width={orientation === 'horizontal' ? max : undefined}
-          height={orientation === 'vertical' ? max : undefined}
-          borderColor="color-6"
-          borderBottomWidth={orientation === 'horizontal' ? 1 : undefined}
-          borderLeftWidth={orientation === 'vertical' ? 1 : undefined}
-        />
-        <YStack
-          position="absolute"
-          width={orientation === 'horizontal' ? size : undefined}
-          height={orientation === 'vertical' ? size : undefined}
-        />
-      </Unspaced>
+      <YStack
+        position="absolute"
+        width={orientation === 'horizontal' ? max : undefined}
+        height={orientation === 'vertical' ? max : undefined}
+        borderColor="color-6"
+        borderBottomWidth={orientation === 'horizontal' ? 1 : undefined}
+        borderLeftWidth={orientation === 'vertical' ? 1 : undefined}
+      />
+      <YStack
+        position="absolute"
+        width={orientation === 'horizontal' ? size : undefined}
+        height={orientation === 'vertical' ? size : undefined}
+      />
       {Array.from(Array(Math.floor(max / 10) + 1).keys()).map((_, idx) => {
         const currentPx = idx * 10
         const prominent = currentPx % 100 === 0
