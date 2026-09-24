@@ -37,6 +37,8 @@ const jsMainDistPath = join(jsMainPackagePath, 'dist')
 const subpathOnlyPackagePath = join(__dirname, 'fixtures', 'subpath-only-package')
 const subpathOnlyDistPath = join(subpathOnlyPackagePath, 'dist')
 const repositoryRoot = join(__dirname, '../../../..')
+const platformPackagePath = join(__dirname, 'fixtures', 'platform-package')
+const platformDistPath = join(platformPackagePath, 'dist')
 // console.log({
 //   distCjsFilePath,
 //   distEsmFilePath,
@@ -69,6 +71,7 @@ describe('tamagui-build integration test', () => {
     execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
     execSync('rm -rf dist', { cwd: jsMainPackagePath })
     execSync('rm -rf dist && rm -rf types', { cwd: subpathOnlyPackagePath })
+    execSync('rm -rf dist', { cwd: platformPackagePath })
   })
 
   it('should build the package correctly', async () => {
@@ -597,9 +600,7 @@ describe('tamagui-build integration test', () => {
 
     expect(existsSync(join(subpathOnlyDistPath, 'cjs', 'feature.cjs'))).toBe(true)
     expect(existsSync(join(subpathOnlyDistPath, 'esm', 'feature.mjs'))).toBe(true)
-    expect(existsSync(join(subpathOnlyPackagePath, 'types', 'feature.d.ts'))).toBe(
-      true
-    )
+    expect(existsSync(join(subpathOnlyPackagePath, 'types', 'feature.d.ts'))).toBe(true)
 
     const packageJson = JSON.parse(
       readFileSync(join(subpathOnlyPackagePath, 'package.json'), 'utf-8')
@@ -610,10 +611,79 @@ describe('tamagui-build integration test', () => {
     expect(packageJson.exports['.']).toBeUndefined()
   })
 
+  it('should ship .ios/.android files and leave their imports extensionless on native', async () => {
+    execSync('rm -rf dist', { cwd: platformPackagePath })
+    execSync('bun run build', { cwd: platformPackagePath })
+
+    // native esm ships each platform file with its own code
+    const iosOutput = await readFile(
+      join(platformDistPath, 'esm', 'Widget.ios.js'),
+      'utf-8'
+    )
+    const androidOutput = await readFile(
+      join(platformDistPath, 'esm', 'Widget.android.js'),
+      'utf-8'
+    )
+    expect(iosOutput).toContain('ios-widget')
+    expect(androidOutput).toContain('android-widget')
+
+    // base becomes the .native fallback
+    const nativeOutput = await readFile(
+      join(platformDistPath, 'esm', 'Widget.native.js'),
+      'utf-8'
+    )
+    expect(nativeOutput).toContain('base-widget')
+
+    // importer stays extensionless so the RN bundler picks per platform
+    const nativeImporter = await readFile(
+      join(platformDistPath, 'esm', 'index.native.js'),
+      'utf-8'
+    )
+    expect(nativeImporter).toContain('from "./Widget"')
+    expect(nativeImporter).not.toContain('Widget.native.js')
+
+    // native cjs keeps the platform files and the extensionless require
+    expect(existsSync(join(platformDistPath, 'cjs', 'Widget.ios.js'))).toBe(true)
+    expect(existsSync(join(platformDistPath, 'cjs', 'Widget.android.js'))).toBe(true)
+    const nativeCjsImporter = await readFile(
+      join(platformDistPath, 'cjs', 'index.native.js'),
+      'utf-8'
+    )
+    expect(nativeCjsImporter).not.toContain('Widget.native.js')
+
+    // web output is unchanged: base only, fully specified
+    const webOutput = await readFile(join(platformDistPath, 'esm', 'Widget.mjs'), 'utf-8')
+    expect(webOutput).toContain('base-widget')
+    expect(webOutput).not.toContain('ios-widget')
+    expect(webOutput).not.toContain('android-widget')
+    const webImporter = await readFile(
+      join(platformDistPath, 'esm', 'index.mjs'),
+      'utf-8'
+    )
+    expect(webImporter).toContain('./Widget.mjs')
+
+    // platform files ship in native .js/.cjs form, never as web .mjs
+    const shipped = execSync(
+      'find dist \\( -name "*.ios.*" -o -name "*.android.*" \\) | sort',
+      {
+        cwd: platformPackagePath,
+        encoding: 'utf-8',
+      }
+    )
+      .trim()
+      .split('\n')
+      .filter(Boolean)
+    expect(shipped.length).toBeGreaterThan(0)
+    for (const file of shipped) {
+      expect(file).toMatch(/\.(ios|android)\.c?js(\.map)?$/)
+    }
+  })
+
   afterAll(() => {
     // Clean up dist directory after tests
     execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
     execSync('rm -rf dist', { cwd: jsMainPackagePath })
     execSync('rm -rf dist && rm -rf types', { cwd: subpathOnlyPackagePath })
+    execSync('rm -rf dist', { cwd: platformPackagePath })
   })
 })

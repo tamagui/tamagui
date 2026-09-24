@@ -58,7 +58,22 @@ function fullySpecifyCommonJS(api, options) {
                   moduleSpecifier
                 )
                 let newModuleSpecifier = moduleSpecifier
+                if (
+                  cjsExtension.startsWith('.native') &&
+                  ((0, import_node_fs.existsSync)(`${resolvedPath}.ios.js`) ||
+                    (0, import_node_fs.existsSync)(`${resolvedPath}.android.js`))
+                ) {
+                  return
+                }
                 if (isLocalDirectory(resolvedPath)) {
+                  const indexBase = (0, import_node_path.resolve)(resolvedPath, 'index')
+                  if (
+                    cjsExtension.startsWith('.native') &&
+                    ((0, import_node_fs.existsSync)(`${indexBase}.ios.js`) ||
+                      (0, import_node_fs.existsSync)(`${indexBase}.android.js`))
+                  ) {
+                    return
+                  }
                   const indexPath = (0, import_node_path.resolve)(
                     resolvedPath,
                     'index' + jsExtension
