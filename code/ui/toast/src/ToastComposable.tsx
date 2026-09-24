@@ -452,8 +452,11 @@ const ToastViewportFrame = styled(View, {
 
 export type ToastViewportProps = GetProps<typeof ToastViewportFrame> & {
   /**
-   * Offset from screen edge
-   * @default 24
+   * Offset from screen edge. Safe-area insets from TamaguiProvider are added
+   * on top, so pass plain breathing room here, not `insets.top + 8`.
+   * A number sets all four sides (on native left/right define the width);
+   * use the object form to move one edge without resizing the toast.
+   * @default 16
    */
   offset?: number | { top?: number; right?: number; bottom?: number; left?: number }
   /**
@@ -503,9 +506,11 @@ const ToastViewport = createStyledHOC(
     ]
 
     // offset styles
-    // on native, get safe area insets to avoid status bar / Dynamic Island / home indicator
-    // use insets from TamaguiProvider (passed via useConfiguration)
-    // same pattern as Slider — works on native when TamaguiProvider has insets prop
+    // safe-area insets arrive via TamaguiProvider (passed via useConfiguration,
+    // same pattern as Slider): feed TamaguiProvider `insets` from
+    // useSafeAreaInsets() once and the viewport clears the status bar /
+    // Dynamic Island / home indicator on its own — do not add insets.top to
+    // `offset` by hand.
     const { insets: safeInsets } = useConfiguration()
 
     const offsetStyles = React.useMemo(() => {
@@ -521,20 +526,25 @@ const ToastViewport = createStyledHOC(
               left: defaultOffset,
             }
 
+      // additive: the safe inset ends at the notch edge, the offset is the
+      // breathing room below it (a bare `insets.top` sits flush against the
+      // status bar). a number sets all four sides — on native left/right
+      // define the width, so carrying a safe-area top in a number squeezes
+      // the toast into a narrow column; use the object form to move one edge.
       const safeTop = safeInsets?.top ?? 0
       const safeBottom = safeInsets?.bottom ?? 0
+      const safeLeft = safeInsets?.left ?? 0
+      const safeRight = safeInsets?.right ?? 0
 
-      // if safe area already provides spacing, skip the offset to avoid double padding
-      const topOffset = safeTop > 0 ? safeTop : (offsetObj.top ?? defaultOffset)
-      const bottomOffset =
-        safeBottom > 0 ? safeBottom : (offsetObj.bottom ?? defaultOffset)
-
-      if (yPosition === 'top') styles.top = topOffset
-      else styles.bottom = bottomOffset
+      if (yPosition === 'top')
+        styles.top = (offsetObj.top ?? defaultOffset) + safeTop
+      else styles.bottom = (offsetObj.bottom ?? defaultOffset) + safeBottom
 
       if (isWeb) {
-        if (xPosition === 'left') styles.left = offsetObj.left ?? defaultOffset
-        else if (xPosition === 'right') styles.right = offsetObj.right ?? defaultOffset
+        if (xPosition === 'left')
+          styles.left = (offsetObj.left ?? defaultOffset) + safeLeft
+        else if (xPosition === 'right')
+          styles.right = (offsetObj.right ?? defaultOffset) + safeRight
         else {
           styles.left = '50%'
           styles.transform = 'translateX(-50%)'
@@ -542,12 +552,20 @@ const ToastViewport = createStyledHOC(
       } else {
         // native: always set both left + right so viewport fills screen
         // (no fixed width on native — left/right offsets define the width)
-        styles.left = offsetObj.left ?? defaultOffset
-        styles.right = offsetObj.right ?? defaultOffset
+        styles.left = (offsetObj.left ?? defaultOffset) + safeLeft
+        styles.right = (offsetObj.right ?? defaultOffset) + safeRight
       }
 
       return styles
-    }, [offset, yPosition, xPosition])
+    }, [
+      offset,
+      yPosition,
+      xPosition,
+      safeInsets?.top,
+      safeInsets?.right,
+      safeInsets?.bottom,
+      safeInsets?.left,
+    ])
 
     // hotkey
     React.useEffect(() => {
