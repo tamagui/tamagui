@@ -2044,20 +2044,26 @@ export type StyledDynamic<Val = any, Output extends object = Record<string, any>
 export type StyledResolver<Props = Record<string, any>, Output extends object = Record<string, any>> = (props: Props, env: StyledDynamicEnv) => Partial<Output> | null | undefined;
 export type VariantDefinitions<Parent extends StylableComponent = TamaguiComponent, StaticConfig extends StaticConfigPublic = Parent extends {
     __tama: [any, any, any, any, any, infer S];
-} ? S : {}, MyProps extends object = Partial<GetVariantProps<Parent, StaticConfig['isText'] extends true ? true : StaticConfig['isInput'] extends true ? true : false>>, Val = any> = VariantDefinitionFromProps<MyProps, Val> & {
+} ? S : {}, MyProps extends object = VariantStyleProps<Parent, StaticConfig>, Val = any> = VariantDefinitionFromProps<MyProps, Val> & {
     _isEmpty?: 1;
+};
+export type VariantStyleProps<Parent extends StylableComponent, StaticConfig extends StaticConfigPublic> = Partial<GetVariantProps<Parent, StaticConfig['isText'] extends true ? true : StaticConfig['isInput'] extends true ? true : false>>;
+/**
+ * the exact-key check styled() runs on the variants it infers: a key that is
+ * not a style, shorthand, aria/data attribute, or variant of the component is
+ * `never`, since inference alone never flags extra keys.
+ */
+export type StyleOnlyVariants<Variants, AllowedKeys extends PropertyKey> = {
+    [Name in keyof Variants]: Variants[Name] extends StyledDynamic<any, any> ? Variants[Name] : {
+        [Value in keyof Variants[Name]]: Variants[Name][Value] extends object ? {
+            [Key in keyof Variants[Name][Value]]: Key extends AllowedKeys | keyof Variants | `aria-${string}` | `data-${string}` ? Variants[Name][Value][Key] : never;
+        } : Variants[Name][Value];
+    };
 };
 export type StaticStyleInput = string;
 export type GetVariantProps<A extends StylableComponent, IsText extends boolean | undefined> = A extends {
-    __tama: [
-        infer Props,
-        any,
-        infer NonStyledProps,
-        infer BaseStyles,
-        infer VariantProps,
-        any
-    ];
-} ? Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props : WithThemeAndShorthands<IsText extends true ? TextStylePropsBase : StackStyleBase>;
+    __tama: [any, any, any, infer BaseStyles, infer VariantProps, any];
+} ? BaseStyles extends object ? WithThemeAndShorthands<BaseStyles, VariantProps> : {} : WithThemeAndShorthands<IsText extends true ? TextStylePropsBase : StackStyleBase>;
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends object ? {
     [propName: string]: StyledDynamic<any, MyProps> | {
         [Key in string | number | 'true' | 'false']?: MyProps | StaticStyleInput;

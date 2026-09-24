@@ -50,11 +50,9 @@ const RadioGroupFrame = styled(RadioGroupBehavior, {
     orientation: {
       horizontal: {
         flexDirection: 'row',
-        spaceDirection: 'horizontal',
       },
       vertical: {
         flexDirection: 'column',
-        spaceDirection: 'vertical',
       },
     },
   } as const,

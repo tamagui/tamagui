@@ -8,8 +8,8 @@ export const Heading = styled(Text, {
       myVariant: {
         fontFamily: 'body',
         fontSize: 20,
-        lh: '10',
-        fow: '2',
+        lineHeight: '10',
+        fontWeight: '2',
       },
     },
   } as const,

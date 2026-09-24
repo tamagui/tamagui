@@ -45,11 +45,9 @@ export const RadioGroupFrame = styled(View, {
     orientation: {
       horizontal: {
         flexDirection: 'row',
-        spaceDirection: 'horizontal',
       },
       vertical: {
         flexDirection: 'column',
-        spaceDirection: 'vertical',
       },
     },
   } as const,
