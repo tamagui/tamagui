@@ -1,189 +1,179 @@
-var __create = Object.create
-var __defProp = Object.defineProperty
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor
-var __getOwnPropNames = Object.getOwnPropertyNames
-var __getProtoOf = Object.getPrototypeOf,
-  __hasOwnProp = Object.prototype.hasOwnProperty
+"use strict";
+var __create = Object.create;
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
-    for (var name in all)
-      __defProp(target, name, {
-        get: all[name],
-        enumerable: !0,
-      })
-  },
-  __copyProps = (to, from, except, desc) => {
-    if ((from && typeof from == 'object') || typeof from == 'function')
-      for (let key of __getOwnPropNames(from))
-        !__hasOwnProp.call(to, key) &&
-          key !== except &&
-          __defProp(to, key, {
-            get: () => from[key],
-            enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
-          })
-    return to
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
   }
-var __toESM = (mod, isNodeMode, target) => (
-    (target = mod != null ? __create(__getProtoOf(mod)) : {}),
-    __copyProps(
-      // If the importer is in node compatibility mode or this is not an ESM
-      // file that has been converted to a CommonJS file using a Babel-
-      // compatible transform (i.e. "__esModule" has not been set), then set
-      // "default" to the CommonJS "module.exports" for node compatibility.
-      isNodeMode || !mod || !mod.__esModule
-        ? __defProp(target, 'default', {
-            value: mod,
-            enumerable: !0,
-          })
-        : target,
-      mod
-    )
-  ),
-  __toCommonJS = (mod) =>
-    __copyProps(
-      __defProp({}, '__esModule', {
-        value: !0,
-      }),
-      mod
-    )
-var index_exports = {}
+  return to;
+};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+// src/index.ts
+var index_exports = {};
 __export(index_exports, {
-  default: () => FullySpecified,
-})
-module.exports = __toCommonJS(index_exports)
-var import_node_fs = require('node:fs'),
-  import_node_path = require('node:path'),
-  t = __toESM(require('@babel/types'))
-const DEFAULT_OPTIONS = {
-  ensureFileExists: !0,
-  esExtensionDefault: '.mjs',
-  tryExtensions: ['.js'],
-  esExtensions: ['.mjs'],
-  convertProcessEnvToImportMetaEnv: !1,
-}
+  default: () => FullySpecified
+});
+module.exports = __toCommonJS(index_exports);
+var import_node_fs = require("node:fs");
+var import_node_path = require("node:path");
+var t = __toESM(require("@babel/types"));
+var DEFAULT_OPTIONS = {
+  ensureFileExists: true,
+  esExtensionDefault: ".mjs",
+  tryExtensions: [".js"],
+  esExtensions: [".mjs"],
+  convertProcessEnvToImportMetaEnv: false
+};
 function FullySpecified(api, rawOptions = {}) {
-  api.assertVersion(7)
-  const options = normalizeOptions(rawOptions),
-    importDeclarationVisitor = (path, state) => {
-      const filePath = state.file.opts.filename
-      if (!filePath) return
-      const { node } = path
-      if (node.importKind === 'type') return
-      const originalModuleSpecifier = node.source.value,
-        fullySpecifiedModuleSpecifier = getFullySpecifiedModuleSpecifier(
-          originalModuleSpecifier,
-          {
-            filePath,
-            options,
-          }
-        )
-      fullySpecifiedModuleSpecifier && (node.source.value = fullySpecifiedModuleSpecifier)
-    },
-    exportDeclarationVisitor = (path, state) => {
-      const filePath = state.file.opts.filename
-      if (!filePath) return
-      const { node } = path
-      if (node.exportKind === 'type') return
-      const source = node.source
-      if (!source) return
-      const originalModuleSpecifier = source.value,
-        fullySpecifiedModuleSpecifier = getFullySpecifiedModuleSpecifier(
-          originalModuleSpecifier,
-          {
-            filePath,
-            options,
-          }
-        )
-      fullySpecifiedModuleSpecifier && (source.value = fullySpecifiedModuleSpecifier)
+  api.assertVersion(7);
+  const options = normalizeOptions(rawOptions);
+  const importDeclarationVisitor = (path, state) => {
+    const filePath = state.file.opts.filename;
+    if (!filePath) return;
+    const { node } = path;
+    if (node.importKind === "type") return;
+    const originalModuleSpecifier = node.source.value;
+    const fullySpecifiedModuleSpecifier = getFullySpecifiedModuleSpecifier(
+      originalModuleSpecifier,
+      {
+        filePath,
+        options
+      }
+    );
+    if (fullySpecifiedModuleSpecifier) {
+      node.source.value = fullySpecifiedModuleSpecifier;
     }
+  };
+  const exportDeclarationVisitor = (path, state) => {
+    const filePath = state.file.opts.filename;
+    if (!filePath) return;
+    const { node } = path;
+    if (node.exportKind === "type") return;
+    const source = node.source;
+    if (!source) return;
+    const originalModuleSpecifier = source.value;
+    const fullySpecifiedModuleSpecifier = getFullySpecifiedModuleSpecifier(
+      originalModuleSpecifier,
+      {
+        filePath,
+        options
+      }
+    );
+    if (fullySpecifiedModuleSpecifier) {
+      source.value = fullySpecifiedModuleSpecifier;
+    }
+  };
+  const importVisitor = (path, state) => {
+    const filePath = state.file.opts.filename;
+    if (!filePath) return;
+    const parent = path.parent;
+    if (parent.type !== "CallExpression") {
+      return;
+    }
+    const firstArgOfImportCall = parent.arguments[0];
+    if (firstArgOfImportCall.type !== "StringLiteral") {
+      return;
+    }
+    const originalModuleSpecifier = firstArgOfImportCall.value;
+    const fullySpecifiedModuleSpecifier = getFullySpecifiedModuleSpecifier(
+      originalModuleSpecifier,
+      {
+        filePath,
+        options
+      }
+    );
+    if (fullySpecifiedModuleSpecifier) {
+      firstArgOfImportCall.value = fullySpecifiedModuleSpecifier;
+    }
+  };
+  const memberExpressionVisitor = (path) => {
+    if (!options.convertProcessEnvToImportMetaEnv) return;
+    const { node } = path;
+    if (node.object.type === "MemberExpression" && node.object.object.type === "Identifier" && node.object.object.name === "process" && node.object.property.type === "Identifier" && node.object.property.name === "env") {
+      if (node.property.type === "Identifier" && node.property.name === "NODE_ENV") {
+        return;
+      }
+      node.object = t.memberExpression(
+        t.metaProperty(t.identifier("import"), t.identifier("meta")),
+        t.identifier("env")
+      );
+    }
+  };
   return {
-    name: 'babel-plugin-fully-specified',
+    name: "babel-plugin-fully-specified",
     visitor: {
       ImportDeclaration: importDeclarationVisitor,
       ExportNamedDeclaration: exportDeclarationVisitor,
       ExportAllDeclaration: exportDeclarationVisitor,
-      Import: (path, state) => {
-        const filePath = state.file.opts.filename
-        if (!filePath) return
-        const parent = path.parent
-        if (parent.type !== 'CallExpression') return
-        const firstArgOfImportCall = parent.arguments[0]
-        if (firstArgOfImportCall.type !== 'StringLiteral') return
-        const originalModuleSpecifier = firstArgOfImportCall.value,
-          fullySpecifiedModuleSpecifier = getFullySpecifiedModuleSpecifier(
-            originalModuleSpecifier,
-            {
-              filePath,
-              options,
-            }
-          )
-        fullySpecifiedModuleSpecifier &&
-          (firstArgOfImportCall.value = fullySpecifiedModuleSpecifier)
-      },
-      MemberExpression: (path) => {
-        if (!options.convertProcessEnvToImportMetaEnv) return
-        const { node } = path
-        if (
-          node.object.type === 'MemberExpression' &&
-          node.object.object.type === 'Identifier' &&
-          node.object.object.name === 'process' &&
-          node.object.property.type === 'Identifier' &&
-          node.object.property.name === 'env'
-        ) {
-          if (node.property.type === 'Identifier' && node.property.name === 'NODE_ENV')
-            return
-          node.object = t.memberExpression(
-            t.metaProperty(t.identifier('import'), t.identifier('meta')),
-            t.identifier('env')
-          )
-        }
-      },
-    },
-  }
+      Import: importVisitor,
+      MemberExpression: memberExpressionVisitor
+    }
+  };
 }
 function normalizeOptions(rawOptions) {
-  const options = { ...DEFAULT_OPTIONS, ...rawOptions }
-  return (
-    rawOptions.esExtensionDefault &&
-      !rawOptions.tryExtensions &&
-      rawOptions.esExtensionDefault !== DEFAULT_OPTIONS.esExtensionDefault &&
-      (options.tryExtensions = [
-        rawOptions.esExtensionDefault,
-        ...DEFAULT_OPTIONS.tryExtensions.filter(
-          (extension) => extension !== rawOptions.esExtensionDefault
-        ),
-      ]),
-    options
-  )
+  const options = { ...DEFAULT_OPTIONS, ...rawOptions };
+  if (rawOptions.esExtensionDefault && !rawOptions.tryExtensions && rawOptions.esExtensionDefault !== DEFAULT_OPTIONS.esExtensionDefault) {
+    options.tryExtensions = [
+      rawOptions.esExtensionDefault,
+      ...DEFAULT_OPTIONS.tryExtensions.filter(
+        (extension) => extension !== rawOptions.esExtensionDefault
+      )
+    ];
+  }
+  return options;
 }
-function getFullySpecifiedModuleSpecifier(
-  originalModuleSpecifier,
-  { filePath, options }
-) {
-  const fileExt = (0, import_node_path.extname)(filePath),
-    fileDir = (0, import_node_path.dirname)(filePath),
-    isDirectory = isLocalDirectory(
-      (0, import_node_path.resolve)(fileDir, originalModuleSpecifier)
-    ),
-    currentModuleExtension = (0, import_node_path.extname)(originalModuleSpecifier),
-    { tryExtensions, esExtensions, esExtensionDefault, ensureFileExists } = options,
-    targetModule = evaluateTargetModule({
-      moduleSpecifier: originalModuleSpecifier,
-      filenameDirectory: fileDir,
-      filenameExtension: fileExt,
-      currentModuleExtension,
-      isDirectory,
-      tryExtensions,
-      esExtensions,
-      esExtensionDefault,
-      ensureFileExists,
-    })
-  return targetModule === !1 ? null : targetModule
+function getFullySpecifiedModuleSpecifier(originalModuleSpecifier, {
+  filePath,
+  options
+}) {
+  const fileExt = (0, import_node_path.extname)(filePath);
+  const fileDir = (0, import_node_path.dirname)(filePath);
+  const isDirectory = isLocalDirectory((0, import_node_path.resolve)(fileDir, originalModuleSpecifier));
+  const currentModuleExtension = (0, import_node_path.extname)(originalModuleSpecifier);
+  const { tryExtensions, esExtensions, esExtensionDefault, ensureFileExists } = options;
+  const targetModule = evaluateTargetModule({
+    moduleSpecifier: originalModuleSpecifier,
+    filenameDirectory: fileDir,
+    filenameExtension: fileExt,
+    currentModuleExtension,
+    isDirectory,
+    tryExtensions,
+    esExtensions,
+    esExtensionDefault,
+    ensureFileExists
+  });
+  if (targetModule === false) {
+    return null;
+  }
+  return targetModule;
 }
 function isLocalDirectory(absoluteDirectory) {
-  return (
-    (0, import_node_fs.existsSync)(absoluteDirectory) &&
-    (0, import_node_fs.lstatSync)(absoluteDirectory).isDirectory()
-  )
+  return (0, import_node_fs.existsSync)(absoluteDirectory) && (0, import_node_fs.lstatSync)(absoluteDirectory).isDirectory();
+}
+function isNativeOutput(esExtensionDefault) {
+  return esExtensionDefault.startsWith(".native");
+}
+function hasPlatformSibling(absoluteBasePath) {
+  return (0, import_node_fs.existsSync)(`${absoluteBasePath}.ios.js`) || (0, import_node_fs.existsSync)(`${absoluteBasePath}.android.js`);
 }
 function evaluateTargetModule({
   moduleSpecifier,
@@ -194,27 +184,38 @@ function evaluateTargetModule({
   tryExtensions,
   esExtensions,
   esExtensionDefault,
-  ensureFileExists,
+  ensureFileExists
 }) {
-  const targetFile = (0, import_node_path.resolve)(filenameDirectory, moduleSpecifier)
+  const targetFile = (0, import_node_path.resolve)(filenameDirectory, moduleSpecifier);
   if (ensureFileExists) {
-    for (const extension of tryExtensions)
-      if ((0, import_node_fs.existsSync)(targetFile + extension))
-        return moduleSpecifier + esExtensionDefault
-    if (currentModuleExtension && !esExtensions.includes(currentModuleExtension))
-      return !1
-    isDirectory &&
-      !(0, import_node_fs.existsSync)(
-        (0, import_node_path.resolve)(
-          filenameDirectory,
-          currentModuleExtension ? moduleSpecifier : moduleSpecifier + esExtensionDefault
-        )
-      ) &&
-      (moduleSpecifier = `${moduleSpecifier}/index`)
-  } else
-    return (
-      esExtensions.includes(filenameExtension), moduleSpecifier + esExtensionDefault
-    )
-  return !1
+    if (isNativeOutput(esExtensionDefault) && hasPlatformSibling(targetFile)) {
+      return false;
+    }
+    for (const extension of tryExtensions) {
+      if ((0, import_node_fs.existsSync)(targetFile + extension)) {
+        return moduleSpecifier + esExtensionDefault;
+      }
+    }
+    if (currentModuleExtension && !esExtensions.includes(currentModuleExtension)) {
+      return false;
+    }
+    if (isDirectory) {
+      const indexModuleSpecifier = `${moduleSpecifier.replace(/\/$/, "")}/index`;
+      const indexTargetFile = (0, import_node_path.resolve)(filenameDirectory, indexModuleSpecifier);
+      if (isNativeOutput(esExtensionDefault) && hasPlatformSibling(indexTargetFile)) {
+        return false;
+      }
+      for (const extension of tryExtensions) {
+        if ((0, import_node_fs.existsSync)(indexTargetFile + extension)) {
+          return indexModuleSpecifier + esExtensionDefault;
+        }
+      }
+    }
+  } else if (esExtensions.includes(filenameExtension)) {
+    return moduleSpecifier + esExtensionDefault;
+  } else {
+    return moduleSpecifier + esExtensionDefault;
+  }
+  return false;
 }
 //# sourceMappingURL=index.mjs.map

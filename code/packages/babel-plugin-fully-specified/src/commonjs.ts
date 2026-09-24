@@ -37,8 +37,26 @@ export default function fullySpecifyCommonJS(
                 const resolvedPath = resolve(fileDir, moduleSpecifier)
                 let newModuleSpecifier = moduleSpecifier
 
+                // native outputs keep platform-split modules extensionless so
+                // the react native bundler resolves .ios/.android over .native
+                if (
+                  cjsExtension.startsWith('.native') &&
+                  (existsSync(`${resolvedPath}.ios.js`) ||
+                    existsSync(`${resolvedPath}.android.js`))
+                ) {
+                  return
+                }
+
                 // Check if the moduleSpecifier is a directory with an index.cjs file
                 if (isLocalDirectory(resolvedPath)) {
+                  const indexBase = resolve(resolvedPath, 'index')
+                  if (
+                    cjsExtension.startsWith('.native') &&
+                    (existsSync(`${indexBase}.ios.js`) ||
+                      existsSync(`${indexBase}.android.js`))
+                  ) {
+                    return
+                  }
                   const indexPath = resolve(resolvedPath, 'index' + jsExtension)
                   if (existsSync(indexPath)) {
                     // Append '/' if not present

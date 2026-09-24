@@ -145,4 +145,20 @@ describe('transforming actual files', () => {
       ].join('\n')
     )
   })
+
+  test('native output leaves platform-split imports extensionless', () => {
+    const { code } =
+      transformFileSync(
+        path.join(__dirname, 'fixtures', 'platform-split', 'index.native.js'),
+        getTransformOptions({
+          pluginOptions: {
+            ensureFileExists: true,
+            esExtensionDefault: '.native.js',
+            esExtensions: ['.js'],
+          },
+        })
+      ) || {}
+
+    expect(code).toBe(`export * from './Widget';`)
+  })
 })
