@@ -7,6 +7,7 @@ import {
 } from '@tamagui/core'
 import { useSwitch } from '@tamagui/switch-headless'
 import { useControllableState } from '@tamagui/use-controllable-state'
+import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
 import type { LayoutChangeEvent } from 'react-native'
 import { SwitchStyledContext } from './StyledContext'
@@ -72,6 +73,10 @@ export function createSwitch<
       )
       const distance = frameWidth - thumbWidth
       const x = initialChecked ? (active ? 0 : -distance) : active ? distance : 0
+      // alignSelf resolves against the writing direction so the resting edge
+      // flips under rtl, but the translate below never does
+      const direction = useDirection()
+      const thumbX = direction === 'rtl' ? -x : x
 
       return (
         <Thumb
@@ -81,7 +86,7 @@ export function createSwitch<
             size,
           })}
           alignSelf={initialChecked ? 'flex-end' : 'flex-start'}
-          x={x}
+          x={thumbX}
           onLayout={composeEventHandlers(props.onLayout, (e) => {
             const next = e.nativeEvent.layout.width
             setThumbWidth(next)

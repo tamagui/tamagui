@@ -45,6 +45,7 @@
     "@tamagui/stacks": "workspace:*",
     "@tamagui/switch-headless": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
+    "@tamagui/use-direction": "workspace:*",
     "@tamagui/use-previous": "workspace:*"
   },
   "devDependencies": {
