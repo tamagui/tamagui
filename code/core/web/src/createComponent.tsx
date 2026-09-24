@@ -243,6 +243,40 @@ if (isWeb && typeof document !== 'undefined') {
 }
 
 /**
+ * whether any static object variant definition sets a string theme, computed
+ * once per staticConfig. lets getVariantTheme skip its per-render props scan
+ * for the near-totality of components that never set theme in a variant.
+ */
+const staticConfigHasVariantTheme = new WeakMap<object, boolean>()
+
+const configMaySetVariantTheme = (staticConfig: StaticConfig): boolean => {
+  let has = staticConfigHasVariantTheme.get(staticConfig)
+  if (has === undefined) {
+    has = false
+    const variants = staticConfig.variants
+    if (variants) {
+      outer: for (const key in variants) {
+        const variant = variants[key]
+        if (!variant || typeof variant === 'function') continue
+        for (const valueKey in variant) {
+          const definition = variant[valueKey]
+          if (
+            definition &&
+            typeof definition === 'object' &&
+            typeof definition.theme === 'string'
+          ) {
+            has = true
+            break outer
+          }
+        }
+      }
+    }
+    staticConfigHasVariantTheme.set(staticConfig, has)
+  }
+  return has
+}
+
+/**
  * finds a theme set by an active static variant, so the component resolves its
  * own styles against it. without this a variant theme only reaches children
  * (via HOC pass-down) while the frame keeps the base theme on native, where
@@ -256,6 +290,7 @@ const getVariantTheme = (
 ): string | undefined => {
   const variants = staticConfig.variants
   if (!variants) return undefined
+  if (!configMaySetVariantTheme(staticConfig)) return undefined
   // props already include defaultVariants, styled() merges them into defaultProps
   const values: Record<string, any> = {}
   const queue: string[] = []
