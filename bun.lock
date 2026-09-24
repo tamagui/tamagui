@@ -1511,6 +1511,14 @@
         "typescript": "~5.9.2",
       },
     },
+    "code/packages/build/__tests__/fixtures/platform-package": {
+      "name": "tamagui-build-test-platform-package",
+      "version": "1.0.0",
+      "devDependencies": {
+        "@tamagui/build": "workspace:*",
+        "typescript": "~5.9.2",
+      },
+    },
     "code/packages/build/__tests__/fixtures/simple-package": {
       "name": "tamagui-build-test-simple-tpackage",
       "version": "2.0.0-rc.0-1769885482630",
@@ -8343,6 +8351,8 @@
     "tamagui": ["tamagui@workspace:code/ui/tamagui"],
 
     "tamagui-build-test-js-main-package": ["tamagui-build-test-js-main-package@workspace:code/packages/build/__tests__/fixtures/js-main-package"],
+
+    "tamagui-build-test-platform-package": ["tamagui-build-test-platform-package@workspace:code/packages/build/__tests__/fixtures/platform-package"],
 
     "tamagui-build-test-simple-tpackage": ["tamagui-build-test-simple-tpackage@workspace:code/packages/build/__tests__/fixtures/simple-package"],
 
