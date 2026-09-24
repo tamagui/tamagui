@@ -11,7 +11,6 @@ import {
   Select,
   Sheet,
   TooltipSimple,
-  Unspaced,
   View,
   XGroup,
   XStack,
@@ -161,11 +160,9 @@ function DialogInstance({ mode }: { mode: DialogMode }) {
               </Dialog.Close>
             </XStack>
 
-            <Unspaced>
-              <Dialog.Close asChild>
-                <Button position="absolute" r="3" size="xs" circular icon={X} />
-              </Dialog.Close>
-            </Unspaced>
+            <Dialog.Close asChild>
+              <Button position="absolute" r="3" size="xs" circular icon={X} />
+            </Dialog.Close>
           </Dialog.Content>
         </Dialog.FocusScope>
       </Dialog.Portal>

@@ -486,11 +486,9 @@ export const AdaptContents = ({ scope, ...rest }: { scope?: string }) => {
     }
   }, [context.active, context.registerContents, context.unregisterContents])
 
-  // forwards props - see shouldForwardSpace
+  // forwards props
   return React.createElement(context.Contents, { ...rest, scope, key: `stable` })
 }
-
-AdaptContents.shouldForwardSpace = true
 
 export const Adapt = withStaticProperties(
   function Adapt(props: AdaptProps) {

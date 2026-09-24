@@ -1,6 +1,6 @@
 import { X } from '@tamagui/local-icons'
 import { Button } from '../components/Button'
-import { Adapt, Dialog, Paragraph, Sheet, Unspaced, XStack, YStack } from 'tamagui'
+import { Adapt, Dialog, Paragraph, Sheet, XStack, YStack } from 'tamagui'
 
 export function DialogNestedCase() {
   return (
@@ -82,18 +82,9 @@ function DialogInstance({ level = 1 }: { level?: number }) {
               </Dialog.Close>
             </XStack>
 
-            <Unspaced>
-              <Dialog.Close asChild>
-                <Button
-                  position="absolute"
-                  right="3"
-                  top="3"
-                  size="sm"
-                  circular
-                  icon={X}
-                />
-              </Dialog.Close>
-            </Unspaced>
+            <Dialog.Close asChild>
+              <Button position="absolute" right="3" top="3" size="sm" circular icon={X} />
+            </Dialog.Close>
           </YStack>
         </Dialog.Content>
       </Dialog.Portal>

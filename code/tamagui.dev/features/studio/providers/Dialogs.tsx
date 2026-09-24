@@ -2,7 +2,7 @@ import { X } from '@tamagui/local-icons'
 import { memo } from 'react'
 import { useWindowDimensions } from '@tamagui/use-window-dimensions'
 import type { DialogCloseProps } from 'tamagui'
-import { Dialog, Fieldset, Input, Label, Unspaced, XStack, YStack } from 'tamagui'
+import { Dialog, Fieldset, Input, Label, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
 import { rootStore } from '../state/RootStore'
 import type {
@@ -14,11 +14,9 @@ import type {
 import { useGlobalState } from '../state/useGlobalState'
 
 const DialogCloseButton = () => (
-  <Unspaced>
-    <Dialog.Close asChild="except-style">
-      <Button size="sm" position="absolute" t="3" r="3" circular icon={X} z={1000} />
-    </Dialog.Close>
-  </Unspaced>
+  <Dialog.Close asChild="except-style">
+    <Button size="sm" position="absolute" t="3" r="3" circular icon={X} z={1000} />
+  </Dialog.Close>
 )
 
 export const Dialogs = memo(() => {

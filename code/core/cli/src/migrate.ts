@@ -163,7 +163,7 @@ After:
 Search:
 
 \`\`\`bash
-rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\\.Frame|styleable\\(|inlineWhenUnflattened|\\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|getExpandedShorthands|usePropsAndStyle|useProps|useStyle"
+rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\\.Frame|styleable\\(|inlineWhenUnflattened|\\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|getExpandedShorthands|usePropsAndStyle|useProps|useStyle|Unspaced|spacedChildren"
 \`\`\`
 
 Replace:
@@ -182,6 +182,8 @@ Replace:
 - \`createCheckbox\` \`sizeAdjust\` -> explicit sizing math or component styles.
 - \`getExpandedShorthands\` -> \`getExpandedShorthand(key, props)\` when behavior code needs one authored prop and must accept its configured shorthand.
 - \`useProps\`, \`useStyle\`, and \`usePropsAndStyle\` -> keep conditional values on styled Tamagui components; use \`splitStyleProps\` only when a wrapper must partition authored props.
+- \`<Unspaced>\` -> its children, and \`spacedChildren\` -> \`gap\`: stacks no longer insert spacers.
+- a \`theme\`, handler, or other non-style key inside \`variants\` -> set it on a wrapper one level up. Variants hold styles and aria/data attributes only; type checking flags the rest.
 
 V2 could spread one style across its base prop, pseudo-style objects, media
 objects, and platform objects. The removed hooks gathered those separate

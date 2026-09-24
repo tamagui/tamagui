@@ -89,12 +89,12 @@ type AdaptParentProps = {
     state?: unknown;
 };
 export declare const AdaptParent: ({ children, adaptChildren, Contents, scope, open, onOpenChange, state, }: AdaptParentProps) => React.JSX.Element;
-export declare function AdaptContents({ scope, ...rest }: {
+/**
+ * Components
+ */
+export declare const AdaptContents: ({ scope, ...rest }: {
     scope?: string;
-}): React.FunctionComponentElement<any>;
-export declare namespace AdaptContents {
-    var shouldForwardSpace: boolean;
-}
+}) => React.FunctionComponentElement<any>;
 export declare const Adapt: ((props: AdaptProps) => React.JSX.Element) & {
     Contents: typeof AdaptContents;
 };

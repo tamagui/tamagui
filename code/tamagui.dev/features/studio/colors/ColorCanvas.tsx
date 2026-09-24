@@ -4,16 +4,7 @@ import { CheckCircle, Minus, Plus, XCircle } from '@tamagui/local-icons'
 import { useObserve } from '@tamagui/use-store'
 import { getContrast, readableColor } from 'color2k'
 import React, { memo } from 'react'
-import {
-  Paragraph,
-  Spacer,
-  Theme,
-  Unspaced,
-  XGroup,
-  XStack,
-  YStack,
-  ZStack,
-} from 'tamagui'
+import { Paragraph, Spacer, Theme, XGroup, XStack, YStack, ZStack } from 'tamagui'
 import { Button } from '~/components/Button'
 
 import { Canvas } from '../components/Canvas'
@@ -62,9 +53,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
   return (
     <ColorCanvasFrame>
       <XStack p="1-5" gap="4" position="relative">
-        <Unspaced>
-          <YStack position="absolute" inset={0} z={0} bg="background" opacity={0.5} />
-        </Unspaced>
+        <YStack position="absolute" inset={0} z={0} bg="background" opacity={0.5} />
 
         <XGroup>
           {Object.entries(visibleCurves).map(([type, isVisible], i) => {
