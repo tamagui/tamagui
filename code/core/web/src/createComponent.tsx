@@ -242,6 +242,51 @@ if (isWeb && typeof document !== 'undefined') {
   // Mouse move will reset it when there's real mouse activity.
 }
 
+/**
+ * finds a theme set by an active static variant, so the component resolves its
+ * own styles against it. without this a variant theme only reaches children
+ * (via HOC pass-down) while the frame keeps the base theme on native, where
+ * theme values resolve eagerly - on web they bind late through css vars.
+ * only exact static object matches: functional/spread variants need the theme
+ * to evaluate, which is what we are resolving here.
+ */
+const getVariantTheme = (
+  staticConfig: StaticConfig,
+  props: Record<string, any>
+): string | undefined => {
+  const variants = staticConfig.variants
+  if (!variants) return undefined
+  // props already include defaultVariants, styled() merges them into defaultProps
+  const values: Record<string, any> = {}
+  const queue: string[] = []
+  for (const key in props) {
+    if (props[key] != null && key in variants && !(key in values)) {
+      values[key] = props[key]
+      queue.push(key)
+    }
+  }
+  let theme: string | undefined
+  while (queue.length) {
+    const key = queue.shift()!
+    const variant = variants[key]
+    if (!variant || typeof variant === 'function') continue
+    // mirror getVariantDefinition's exact match only
+    const definition = variant[values[key]]
+    if (!definition || typeof definition !== 'object') continue
+    if (typeof definition.theme === 'string') {
+      theme = definition.theme
+    }
+    // variants can set other variants (two layer variants): follow them
+    for (const subKey in definition) {
+      if (subKey in variants && !(subKey in values)) {
+        values[subKey] = definition[subKey]
+        queue.push(subKey)
+      }
+    }
+  }
+  return theme
+}
+
 export function createComponent<
   ComponentPropTypes extends Record<string, any> = {},
   Ref extends TamaguiElement = TamaguiElement,
@@ -603,7 +648,14 @@ export function createComponent<
     const disableThemeProp =
       process.env.TAMAGUI_TARGET === 'native' ? false : props['data-disable-theme']
 
-    const disableTheme = disableThemeProp || isHOC
+    // an active variant can set theme as well, treat it like the theme prop
+    // so the component resolves its own styles against it
+    const variantTheme =
+      'theme' in props ? undefined : getVariantTheme(staticConfig, props)
+
+    // HOCs skip their own theme resolution (the inner component themes via
+    // pass-down), unless a variant theme must apply to their own styles
+    const disableTheme = disableThemeProp || (isHOC && variantTheme === undefined)
 
     if (process.env.NODE_ENV === 'development' && time) time`theme-props`
 
@@ -619,6 +671,8 @@ export function createComponent<
     // a span if they ever set one of these, so avoid wrapping all children with span
     if ('theme' in props) {
       themeStateProps.name = props.theme
+    } else if (variantTheme !== undefined) {
+      themeStateProps.name = variantTheme
     }
     // Always set needsUpdate callback so it can check the ref's latest value
     // This ensures components with $theme-dark/$theme-light re-render on theme change
