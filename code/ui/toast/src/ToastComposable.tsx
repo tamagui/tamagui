@@ -3,13 +3,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { isWeb } from '@tamagui/constants'
 import { getGestureHandler } from '@tamagui/native'
 import type { GetProps, TamaguiElement } from '@tamagui/core'
-import {
-  createStyledContext,
-  styled,
-  useConfiguration,
-  useEvent,
-  View,
-} from '@tamagui/core'
+import { createStyledContext, styled, useEvent, View } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
 import { Portal } from '@tamagui/portal'
 import { XStack, YStack } from '@tamagui/stacks'
@@ -452,10 +446,12 @@ const ToastViewportFrame = styled(View, {
 
 export type ToastViewportProps = GetProps<typeof ToastViewportFrame> & {
   /**
-   * Offset from screen edge. Safe-area insets from TamaguiProvider are added
-   * on top, so pass plain breathing room here, not `insets.top + 8`.
-   * A number sets all four sides (on native left/right define the width);
-   * use the object form to move one edge without resizing the toast.
+   * Offset from screen edge, kept as breathing room past the safe area: the
+   * viewport edge itself sits at the `safe` style value (setup-safe-area on
+   * native, env(safe-area-inset-*) on web), so pass a plain number here, not
+   * `insets.top + 8`. A number sets all four sides (on native left/right
+   * define the width); use the object form to move one edge without resizing
+   * the toast.
    * @default 16
    */
   offset?: number | { top?: number; right?: number; bottom?: number; left?: number }
@@ -505,67 +501,49 @@ const ToastViewport = createStyledHOC(
       'left' | 'center' | 'right',
     ]
 
-    // offset styles
-    // safe-area insets arrive via TamaguiProvider (passed via useConfiguration,
-    // same pattern as Slider): feed TamaguiProvider `insets` from
-    // useSafeAreaInsets() once and the viewport clears the status bar /
-    // Dynamic Island / home indicator on its own — do not add insets.top to
-    // `offset` by hand.
-    const { insets: safeInsets } = useConfiguration()
+    // placement: the viewport edge sits at the `safe` style value
+    // (setup-safe-area on native, env(safe-area-inset-*) on web) and the
+    // offset stays breathing room past it via margin. one path for both
+    // platforms — no provider-insets plumbing here.
+    const defaultOffset = typeof offset === 'number' ? offset : VIEWPORT_OFFSET
+    const offsetObj =
+      typeof offset === 'object'
+        ? offset
+        : {
+            top: defaultOffset,
+            right: defaultOffset,
+            bottom: defaultOffset,
+            left: defaultOffset,
+          }
 
-    const offsetStyles = React.useMemo(() => {
-      const styles: any = {}
-      const defaultOffset = typeof offset === 'number' ? offset : VIEWPORT_OFFSET
-      const offsetObj =
-        typeof offset === 'object'
-          ? offset
-          : {
-              top: defaultOffset,
-              right: defaultOffset,
-              bottom: defaultOffset,
-              left: defaultOffset,
-            }
+    // a number sets all four sides — on native left/right define the width,
+    // so carrying a safe-area top in a number squeezes the toast into a
+    // narrow column; use the object form to move one edge.
+    const edgeProps =
+      yPosition === 'top'
+        ? { top: 'safe' as const, marginTop: offsetObj.top ?? defaultOffset }
+        : { bottom: 'safe' as const, marginBottom: offsetObj.bottom ?? defaultOffset }
 
-      // additive: the safe inset ends at the notch edge, the offset is the
-      // breathing room below it (a bare `insets.top` sits flush against the
-      // status bar). a number sets all four sides — on native left/right
-      // define the width, so carrying a safe-area top in a number squeezes
-      // the toast into a narrow column; use the object form to move one edge.
-      const safeTop = safeInsets?.top ?? 0
-      const safeBottom = safeInsets?.bottom ?? 0
-      const safeLeft = safeInsets?.left ?? 0
-      const safeRight = safeInsets?.right ?? 0
-
-      if (yPosition === 'top')
-        styles.top = (offsetObj.top ?? defaultOffset) + safeTop
-      else styles.bottom = (offsetObj.bottom ?? defaultOffset) + safeBottom
-
-      if (isWeb) {
-        if (xPosition === 'left')
-          styles.left = (offsetObj.left ?? defaultOffset) + safeLeft
-        else if (xPosition === 'right')
-          styles.right = (offsetObj.right ?? defaultOffset) + safeRight
-        else {
-          styles.left = '50%'
-          styles.transform = 'translateX(-50%)'
-        }
-      } else {
-        // native: always set both left + right so viewport fills screen
+    const sideProps = isWeb
+      ? xPosition === 'left'
+        ? { left: 'safe' as const, marginLeft: offsetObj.left ?? defaultOffset }
+        : xPosition === 'right'
+          ? { right: 'safe' as const, marginRight: offsetObj.right ?? defaultOffset }
+          : null
+      : // native: always set both left + right so viewport fills screen
         // (no fixed width on native — left/right offsets define the width)
-        styles.left = (offsetObj.left ?? defaultOffset) + safeLeft
-        styles.right = (offsetObj.right ?? defaultOffset) + safeRight
-      }
+        {
+          left: 'safe' as const,
+          marginLeft: offsetObj.left ?? defaultOffset,
+          right: 'safe' as const,
+          marginRight: offsetObj.right ?? defaultOffset,
+        }
 
-      return styles
-    }, [
-      offset,
-      yPosition,
-      xPosition,
-      safeInsets?.top,
-      safeInsets?.right,
-      safeInsets?.bottom,
-      safeInsets?.left,
-    ])
+    // web center keeps its 50% + translate centering (margins would uncenter it)
+    const centerStyle =
+      isWeb && xPosition === 'center'
+        ? { left: '50%', transform: 'translateX(-50%)' }
+        : null
 
     // hotkey
     React.useEffect(() => {
@@ -597,7 +575,9 @@ const ToastViewport = createStyledHOC(
         aria-label={`${label} ${hotkeyLabel}`}
         tabIndex={-1}
         aria-live="polite"
-        style={offsetStyles}
+        {...edgeProps}
+        {...sideProps}
+        {...(centerStyle ? { style: centerStyle } : null)}
         data-y-position={yPosition}
         data-x-position={xPosition}
         {...(isWeb
