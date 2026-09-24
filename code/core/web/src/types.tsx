@@ -3443,39 +3443,63 @@ export type VariantDefinitions<
   }
     ? S
     : {},
-  MyProps extends object = Partial<
-    GetVariantProps<
-      Parent,
-      StaticConfig['isText'] extends true
-        ? true
-        : StaticConfig['isInput'] extends true
-          ? true
-          : false
-    >
-  >,
+  MyProps extends object = VariantStyleProps<Parent, StaticConfig>,
   Val = any,
 > = VariantDefinitionFromProps<MyProps, Val> & {
   _isEmpty?: 1
 }
 
+export type VariantStyleProps<
+  Parent extends StylableComponent,
+  StaticConfig extends StaticConfigPublic,
+> = Partial<
+  GetVariantProps<
+    Parent,
+    StaticConfig['isText'] extends true
+      ? true
+      : StaticConfig['isInput'] extends true
+        ? true
+        : false
+  >
+>
+
+/**
+ * the exact-key check styled() runs on the variants it infers: a key that is
+ * not a style, shorthand, aria/data attribute, or variant of the component is
+ * `never`, since inference alone never flags extra keys.
+ */
+export type StyleOnlyVariants<Variants, AllowedKeys extends PropertyKey> = {
+  [Name in keyof Variants]: Variants[Name] extends StyledDynamic<any, any>
+    ? Variants[Name]
+    : {
+        [Value in keyof Variants[Name]]: Variants[Name][Value] extends object
+          ? {
+              [Key in keyof Variants[Name][Value]]: Key extends
+                | AllowedKeys
+                | keyof Variants
+                | `aria-${string}`
+                | `data-${string}`
+                ? Variants[Name][Value][Key]
+                : never
+            }
+          : Variants[Name][Value]
+      }
+}
+
 export type StaticStyleInput = string
 
+// variants are styles only: a variant value holds style props and the parent's
+// variants, never a non-style prop such as theme. a component that changes
+// theme with a variant does it one level up, as a theme prop.
 export type GetVariantProps<
   A extends StylableComponent,
   IsText extends boolean | undefined,
 > = A extends {
-  __tama: [
-    infer Props,
-    any,
-    infer NonStyledProps,
-    infer BaseStyles,
-    infer VariantProps,
-    any,
-  ]
+  __tama: [any, any, any, infer BaseStyles, infer VariantProps, any]
 }
-  ? Props extends TamaDefer
-    ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
-    : Props
+  ? BaseStyles extends object
+    ? WithThemeAndShorthands<BaseStyles, VariantProps>
+    : {}
   : WithThemeAndShorthands<IsText extends true ? TextStylePropsBase : StackStyleBase>
 
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends object

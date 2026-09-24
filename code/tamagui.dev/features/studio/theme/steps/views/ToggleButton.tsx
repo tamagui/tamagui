@@ -6,10 +6,8 @@ export const ToggleButton = styled(Button, {
   rounded: '0',
   flex: 1,
   variants: {
+    // the active theme is set by the caller: variants hold styles only
     active: {
-      true: {
-        theme: 'accent',
-      },
       false: {
         variant: 'quiet',
       },

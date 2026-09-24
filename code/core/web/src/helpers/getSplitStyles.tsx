@@ -449,6 +449,7 @@ const passFrontendContainerType = 27
 const passSourceLayer = 28
 const passParentCursor = 29
 const passMapSourceKey = 30
+const passVariantOutput = 31
 
 const passFlags = 13
 
@@ -917,6 +918,30 @@ function contributeProp(
         return
       }
     }
+  }
+
+  // variants hold styles and aria/data attributes (data- is handled above),
+  // which flatten to the same attribute. anything else a variant sets (a
+  // theme, a handler, a prop for the wrapped component) is dropped, so a
+  // variant means the same flattened or not
+  if (
+    pass[passVariantOutput] &&
+    !isValidStyleKeyInit &&
+    !keyInit.startsWith('aria-') &&
+    !(keyInit in stylePropsAll) &&
+    !(keyInit in skipProps) &&
+    !(variants && keyInit in variants) &&
+    !(parentVariants && keyInit in parentVariants) &&
+    !styledContextKeys?.has(keyInit) &&
+    !(styledContext && keyInit in styledContext)
+  ) {
+    if (process.env.NODE_ENV === 'development') {
+      warnOnce(
+        `variant-non-style:${keyInit}`,
+        `a variant set "${keyInit}", which is not a style. Variants hold styles and aria/data attributes only: set "${keyInit}" on the component one level up.`
+      )
+    }
+    return
   }
 
   if (process.env.TAMAGUI_TARGET === 'web') {
@@ -4064,9 +4089,12 @@ export function emitVariantStyle(
       {})[key] = original
   }
   const parent = pass[passParentCursor]
+  const parentVariantOutput = pass[passVariantOutput]
   pass[passParentCursor] = condition
+  pass[passVariantOutput] = true
   contributeProp(pass, key, value, original, disabled)
   pass[passParentCursor] = parent
+  pass[passVariantOutput] = parentVariantOutput
 }
 
 // handles finding and resolving the fontFamily to the token name

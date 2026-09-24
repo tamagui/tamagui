@@ -19,6 +19,7 @@ import type {
   StaticConfig,
   StaticConfigPublic,
   StylableComponent,
+  StyleOnlyVariants,
   StyledContext,
   StyledDynamicFn,
   StyledDynamicProp,
@@ -26,6 +27,7 @@ import type {
   TamaguiComponent,
   ThemeValueGet,
   VariantDefinitions,
+  VariantStyleProps,
 } from './types'
 
 type AreVariantsUndefined<Variants> =
@@ -78,7 +80,15 @@ export type StyledOptions<
   ContextPropKeys
 > & {
   displayName?: string
-  variants?: Variants | undefined
+  variants?:
+    | (Variants &
+        NoInferLocal<
+          StyleOnlyVariants<
+            Variants,
+            keyof VariantStyleProps<ParentComponent, StyledConfig>
+          >
+        >)
+    | undefined
   defaultVariants?: NoInferLocal<GetVariantAcceptedValues<NonNullable<Variants>>>
   context?: Context
   contextProps?: readonly Extract<

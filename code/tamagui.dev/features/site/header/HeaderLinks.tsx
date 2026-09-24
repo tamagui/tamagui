@@ -13,14 +13,14 @@ export const HeadAnchor = styled(Paragraph, {
   variants: {
     grid: {
       true: {
-        fow: '200',
-        ls: 1,
+        fontWeight: '200',
+        letterSpacing: 1,
         w: '100%',
         paddingTop: '1-5',
         paddingBottom: '1-5',
         px: '4',
         backgroundColor: 'hover:color-mix(in srgb, var(--color-8) 10%, transparent 50%)',
-        f: 1,
+        flex: 1,
       },
     },
 
