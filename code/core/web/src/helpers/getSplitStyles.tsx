@@ -637,6 +637,17 @@ export const getSplitStyles: StyleSplitter = (
         console.groupEnd()
       }
 
+      // A null pseudo is an explicit opt-out, including styles supplied by
+      // variants. Keep it through useProps/HOCs so child frames cannot restore it.
+      if (
+        process.env.TAMAGUI_TARGET === 'native' &&
+        key in validPseudoKeys &&
+        props[key] === null
+      ) {
+        if (styleProps.noExpand || isHOC) viewProps[key] = null
+        return
+      }
+
       if (val == null) return
 
       if (process.env.TAMAGUI_TARGET === 'native') {
@@ -1882,6 +1893,11 @@ function passDownProp(
   val: any,
   shouldMergeObject = false
 ) {
+  if (process.env.TAMAGUI_TARGET === 'native' && val === null && key in validPseudoKeys) {
+    viewProps[key] = null
+    return
+  }
+
   if (shouldMergeObject) {
     const next = {
       ...viewProps[key],
