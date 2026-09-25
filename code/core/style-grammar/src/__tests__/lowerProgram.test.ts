@@ -301,7 +301,9 @@ describe('ancestor-scoped conditions are within tests on the subject', () => {
 describe('states', () => {
   test('disabled matches aria-disabled="true", never an enabled control\'s "false"', () => {
     const lowered = lower('opacity', 'disabled:0.5')
-    expect(lowered.rules[0]).toBe(`.${lowered.className}[aria-disabled="true"]{opacity:0.5}`)
+    expect(lowered.rules[0]).toBe(
+      `.${lowered.className}[aria-disabled="true"]{opacity:0.5}`
+    )
   })
 
   test('enter is is-or-within on the unmounted class', () => {
