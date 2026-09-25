@@ -1040,21 +1040,21 @@ const ToastItemInner = createStyledHOC(
       },
     })
 
-    // measure height (web only — native uses fixed height)
+    // measure height. web measures every toast for the expanded offsets; native
+    // expands at the fixed toastHeight pitch, so it only measures the front toast,
+    // which the collapsed stack sizes the cards behind it to
     const handleLayout = React.useCallback(
       (event: any) => {
-        if (!isWeb) return
         if (removed) return
-        if (!ctx.expanded && index !== 0) return
+        if ((!isWeb || !ctx.expanded) && index !== 0) return
         const { height } = event.nativeEvent.layout
         ctx.setToastHeight(toast.id, height)
       },
       [toast.id, ctx.setToastHeight, index, ctx.expanded, removed]
     )
 
-    // remove height on unmount (web only)
+    // remove height on unmount
     React.useEffect(() => {
-      if (!isWeb) return
       return () => {
         ctx.removeToastHeight(toast.id)
       }
@@ -1076,15 +1076,13 @@ const ToastItemInner = createStyledHOC(
       [toast, handleClose]
     )
 
-    // front toast height for collapsed stacking (web only)
+    // front toast height for collapsed stacking
     let frontToastHeight = -1
-    if (isWeb) {
-      for (const t of ctx.toasts) {
-        const h = ctx.heights[t.id]
-        if (h != null && h > 0) {
-          frontToastHeight = h
-          break
-        }
+    for (const t of ctx.toasts) {
+      const h = ctx.heights[t.id]
+      if (h != null && h > 0) {
+        frontToastHeight = h
+        break
       }
     }
 
@@ -1106,15 +1104,15 @@ const ToastItemInner = createStyledHOC(
 
     const computedOpacity = removed && !swipeOut ? 0 : index >= ctx.visibleToasts ? 0 : 1
     const computedZIndex = removed ? 0 : ctx.visibleToasts - index + 1
-    // web: use measured height for smooth expand/collapse transitions
-    // native: fixed height, no constraint needed
-    const computedHeight = isWeb
-      ? ctx.expanded
+    // collapsed, the cards behind the front toast take its height, so a taller
+    // toast never hangs out below the stack. web also pins the measured height
+    // while expanded for smooth expand/collapse transitions
+    const collapsedHeight = !isFront && frontToastHeight > 0 ? frontToastHeight : undefined
+    const computedHeight = ctx.expanded
+      ? isWeb
         ? ctx.heights[toast.id] || undefined
-        : !isFront && frontToastHeight > 0
-          ? frontToastHeight
-          : undefined
-      : undefined
+        : undefined
+      : collapsedHeight
     const computedPointerEvents = index >= ctx.visibleToasts ? 'none' : 'auto'
 
     // gap filler for hover stability
@@ -1164,10 +1162,9 @@ const ToastItemInner = createStyledHOC(
         pointerEvents={computedPointerEvents as any}
         top={isTop ? 0 : undefined}
         bottom={isTop ? undefined : 0}
-        {...(isWeb &&
-          !isFront && {
-            style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
-          })}
+        {...(!isFront && {
+          style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
+        })}
       >
         <DragWrapper
           animatedStyle={animatedStyle}
@@ -1199,6 +1196,9 @@ const ToastItemInner = createStyledHOC(
                 }
               },
             })}
+            // native stacks in a column, so a card sized to the front toast only
+            // shrinks to that height when it fills it (web stretches in its row)
+            {...(!isWeb && computedHeight != null && { flex: 1 })}
             {...rest}
           >
             {/* gap filler to prevent hover flicker */}
