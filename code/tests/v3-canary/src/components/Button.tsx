@@ -18,8 +18,8 @@ type ButtonSize = 'sm' | 'md'
 const ButtonContext = createStyledContext<{ size?: ButtonSize }>({ size: 'md' })
 
 const buttonFrameSize = {
-  sm: { paddingInline: '3', paddingBlock: '1.5', borderRadius: 'md', gap: '1.5' },
-  md: { paddingInline: '4', paddingBlock: '2', borderRadius: 'md', gap: '2' },
+  sm: { paddingInline: '3', paddingBlock: '1.5', rounded: 'md', gap: '1.5' },
+  md: { paddingInline: '4', paddingBlock: '2', rounded: 'md', gap: '2' },
 } as const
 
 const buttonTextSize = {
