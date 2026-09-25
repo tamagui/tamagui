@@ -275,7 +275,7 @@ import { Spinner } from 'tamagui'
 import { Progress } from 'tamagui'
 
 <Progress value={60}>
-  <Progress.Indicator animation="bouncy" />
+  <Progress.Indicator transition="bouncy" />
 </Progress>
 ```
 

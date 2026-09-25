@@ -443,6 +443,10 @@ const applyAnimation = (
     typeof animatedValue !== 'boolean' &&
     typeof animatedValue !== 'undefined'
 
+  if (isAnimationDescriptor && delay && delay > 0) {
+    animatedValue = withDelay(delay, animatedValue)
+  }
+
   if (isAnimationDescriptor && (seedValue !== undefined || validateStartAsColor)) {
     const innerOnStart = animatedValue.onStart
     animatedValue.onStart = (
@@ -459,10 +463,6 @@ const applyAnimation = (
         : seedValue
       innerOnStart(animation, startValue, timestamp, previousAnimation)
     }
-  }
-
-  if (isAnimationDescriptor && delay && delay > 0) {
-    animatedValue = withDelay(delay, animatedValue)
   }
 
   return animatedValue

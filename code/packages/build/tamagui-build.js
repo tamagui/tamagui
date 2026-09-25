@@ -1407,7 +1407,10 @@ async function esbuildWriteIfChanged(
       const shouldPreserveJsAlias =
         preserveJsPathSet.has(path) || preserveJsPathAbsoluteSet.has(path)
 
-      if (!path.includes('.native.') && !shouldPreserveJsAlias) {
+      // keep react native platform files, the bundler picks .ios/.android over .native
+      const isPlatformFile =
+        path.includes('.native.') || path.includes('.ios.') || path.includes('.android.')
+      if (!isPlatformFile && !shouldPreserveJsAlias) {
         cleanupNonMjsFiles.push(path)
         cleanupNonMjsFiles.push(path + '.map')
       }

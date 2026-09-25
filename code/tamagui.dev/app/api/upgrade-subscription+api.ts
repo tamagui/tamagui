@@ -103,10 +103,11 @@ export default apiRoute(async (req) => {
       },
     })
 
-    // Create subscription for monthly options
+    // Create subscription (cancel_at_period_end: true to disable auto-renew)
     const subscription = await stripe.subscriptions.create({
       customer: stripeCustomerId,
       items: items,
+      cancel_at_period_end: true,
       payment_behavior: 'default_incomplete',
       payment_settings: { save_default_payment_method: 'on_subscription' },
       expand: ['latest_invoice.payment_intent'],

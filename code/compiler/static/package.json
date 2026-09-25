@@ -73,6 +73,7 @@
     "find-cache-dir": "^3.3.2",
     "find-root": "^1.1.0",
     "fs-extra": "^11.2.0",
+    "get-tsconfig": "^4.13.6",
     "invariant": "^2.2.4",
     "js-yaml": "^4.1.0",
     "react-native-web": "~0.21.0"

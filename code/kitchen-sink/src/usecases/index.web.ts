@@ -52,6 +52,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./CustomStyledAnimatedPopover').CustomStyledAnimatedPopover,
   CustomStyledAnimatedTooltip: () =>
     require('./CustomStyledAnimatedTooltip').CustomStyledAnimatedTooltip,
+  DelayedEnterStyleCase: () => require('./DelayedEnterStyleCase').DelayedEnterStyleCase,
   DriverDisableAnimationPropsCase: () =>
     require('./DriverDisableAnimationPropsCase').DriverDisableAnimationPropsCase,
   DOMNodeAPIs: () => require('./DOMNodeAPIs').DOMNodeAPIs,

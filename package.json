@@ -171,7 +171,7 @@
     "launch-editor": "2.14.1",
     "lodash": "4.18.1",
     "lodash-es": "4.18.1",
-    "next": "16.2.6",
+    "next": "16.3.4",
     "node-forge": "1.4.0",
     "picomatch": "4.0.4",
     "postcss": "8.5.15",
@@ -191,7 +191,7 @@
     "ws": "8.21.0",
     "yaml": "2.8.3"
   },
-  "packageManager": "bun@1.4.0",
+  "packageManager": "bun@1.4.2",
   "manypkg": {
     "workspaceProtocol": "require",
     "ignoredRules": [
