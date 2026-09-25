@@ -2047,7 +2047,13 @@ export type VariantDefinitions<Parent extends StylableComponent = TamaguiCompone
 } ? S : {}, MyProps extends object = VariantStyleProps<Parent, StaticConfig>, Val = any> = VariantDefinitionFromProps<MyProps, Val> & {
     _isEmpty?: 1;
 };
-export type VariantStyleProps<Parent extends StylableComponent, StaticConfig extends StaticConfigPublic> = Partial<GetVariantProps<Parent, StaticConfig['isText'] extends true ? true : StaticConfig['isInput'] extends true ? true : false>>;
+export type InputColorStyleProps = {
+    placeholderTextColor?: ColorStyleProp;
+    selectionColor?: ColorStyleProp;
+    cursorColor?: ColorStyleProp;
+    selectionHandleColor?: ColorStyleProp;
+};
+export type VariantStyleProps<Parent extends StylableComponent, StaticConfig extends StaticConfigPublic> = Partial<GetVariantProps<Parent, StaticConfig['isText'] extends true ? true : StaticConfig['isInput'] extends true ? true : false>> & (GetStaticConfig<Parent, StaticConfig>['isInput'] extends true ? InputColorStyleProps : {});
 /**
  * the exact-key check styled() runs on the variants it infers: a key that is
  * not a style, shorthand, aria/data attribute, or variant of the component is

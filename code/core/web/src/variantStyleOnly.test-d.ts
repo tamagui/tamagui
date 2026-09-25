@@ -58,3 +58,18 @@ test('a variant value accepts styles, attributes, own variants, and parent varia
     } as const,
   })
 })
+
+test('an input variant accepts the input color styles', () => {
+  const Field = styled(View, { render: 'input' }, { isInput: true } as const)
+  styled(Field, {
+    variants: {
+      muted: { true: { placeholderTextColor: 'red', selectionColor: 'red' } },
+    } as const,
+  })
+  styled(View, {
+    variants: {
+      // @ts-expect-error a view is not an input
+      muted: { true: { placeholderTextColor: 'red' } },
+    } as const,
+  })
+})

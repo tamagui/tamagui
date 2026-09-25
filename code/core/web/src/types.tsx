@@ -3449,6 +3449,14 @@ export type VariantDefinitions<
   _isEmpty?: 1
 }
 
+// the color style props only an input takes (runtime stylePropsInput)
+export type InputColorStyleProps = {
+  placeholderTextColor?: ColorStyleProp
+  selectionColor?: ColorStyleProp
+  cursorColor?: ColorStyleProp
+  selectionHandleColor?: ColorStyleProp
+}
+
 export type VariantStyleProps<
   Parent extends StylableComponent,
   StaticConfig extends StaticConfigPublic,
@@ -3461,7 +3469,10 @@ export type VariantStyleProps<
         ? true
         : false
   >
->
+> &
+  (GetStaticConfig<Parent, StaticConfig>['isInput'] extends true
+    ? InputColorStyleProps
+    : {})
 
 /**
  * the exact-key check styled() runs on the variants it infers: a key that is
