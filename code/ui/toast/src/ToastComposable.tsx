@@ -1107,7 +1107,8 @@ const ToastItemInner = createStyledHOC(
     // collapsed, the cards behind the front toast take its height, so a taller
     // toast never hangs out below the stack. web also pins the measured height
     // while expanded for smooth expand/collapse transitions
-    const collapsedHeight = !isFront && frontToastHeight > 0 ? frontToastHeight : undefined
+    const collapsedHeight =
+      !isFront && frontToastHeight > 0 ? frontToastHeight : undefined
     const computedHeight = ctx.expanded
       ? isWeb
         ? ctx.heights[toast.id] || undefined
