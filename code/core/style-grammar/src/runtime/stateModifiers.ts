@@ -37,7 +37,7 @@ export const stateModifierSelectors: readonly string[] = Object.freeze([
   ':focus',
   ':focus-visible',
   ':active',
-  '[aria-disabled]',
+  '[aria-disabled="true"]',
   '.t_unmounted',
   '.t_exiting',
 ])

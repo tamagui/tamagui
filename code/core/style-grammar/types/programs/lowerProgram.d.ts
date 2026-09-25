@@ -6,7 +6,7 @@ import type { LonghandProgram, ModifierRegistryView } from "../ast/valueTypes";
 */
 export type ConditionScope = "self" | "within" | "is-or-within";
 export interface ConditionSelector {
-	/** compound selector piece, eg `:hover`, `.t_dark`, `[aria-disabled]` */
+	/** compound selector piece, eg `:hover`, `.t_dark`, `[aria-disabled="true"]` */
 	fragment: string;
 	/** defaults to `self` */
 	scope?: ConditionScope;
@@ -18,7 +18,9 @@ export interface ConditionSelector {
 }
 /**
 * Interaction-state selector spellings: `disabled` is an attribute rather than
-* `:disabled`, and enter matches the unmounted class on the subject or above it.
+* `:disabled`, matched on its value because an enabled control may render
+* `aria-disabled="false"`, and enter matches the unmounted class on the subject
+* or above it.
 * Mirrored as data instead of imported because this package must not depend on
 * @tamagui/web.
 *
