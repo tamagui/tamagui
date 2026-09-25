@@ -1618,12 +1618,6 @@ export function createComponent<
         propsIn.children
       )
     } else {
-      // here elementType is either the custom animated driver view, or base view
-      if (hooks.useChildren) {
-        // ONLY native:
-        content = hooks.useChildren(elementType, content || children, viewProps)
-      }
-
       const isRenderPropString = typeof renderProp === 'string'
 
       // this ONLY handles the case where render is NOT a string
@@ -1639,6 +1633,12 @@ export function createComponent<
           viewProps = out.viewProps
           elementType = out.elementType
         }
+      }
+
+      // Resolve custom hosts before applying native view optimizations. Otherwise
+      // useChildren can create content for the base host and bypass render entirely.
+      if (hooks.useChildren) {
+        content = hooks.useChildren(elementType, content || children, viewProps)
       }
 
       if (!content) {
