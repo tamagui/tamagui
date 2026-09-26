@@ -283,7 +283,9 @@ content that is sometimes adapted.
 
 `useAdaptTarget<State>(scope?: string): AdaptTarget<State> | null`
 
-Returns `null` unless an adaptation is active. When it is, returns
+Returns `null` unless an adaptation is active and the caller is under its
+`<Adapt>` element. Pass `scope` to target that adaptation explicitly from
+outside the element. When it is a target, the hook returns
 `{ open, onOpenChange, state, handoff }`. Calling it also registers the caller
 as the adapt target for development-time validation.
 

@@ -490,7 +490,11 @@ export const AdaptContents = ({ scope, ...rest }: { scope?: string }) => {
   }, [context.active, context.registerContents, context.unregisterContents])
 
   // forwards props
-  return React.createElement(context.Contents, { ...rest, scope, key: `stable` })
+  return (
+    <AdaptTargetScope.Provider value={null}>
+      {React.createElement(context.Contents, { ...rest, scope, key: `stable` })}
+    </AdaptTargetScope.Provider>
+  )
 }
 
 export const Adapt = withStaticProperties(

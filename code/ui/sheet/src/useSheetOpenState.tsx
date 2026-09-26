@@ -7,9 +7,9 @@ import type { SheetControllerContextValue } from './useSheetController'
 import { useSheetController } from './useSheetController'
 
 export const useSheetOpenState = (props: SheetProps) => {
-  const adaptContext = useAdaptContext()
   const adaptTargetScope = useAdaptTargetScope()
-  const adapt = useAdaptTarget()
+  const adapt = useAdaptTarget(adaptTargetScope ?? undefined)
+  const adaptContext = useAdaptContext(adaptTargetScope ?? undefined)
   const { isHidden: controllerIsHidden, controller: legacyController } =
     useSheetController(props.scope)
   // an adapt parent can wrap unrelated sheets; only its <Adapt> child owns the handoff.
