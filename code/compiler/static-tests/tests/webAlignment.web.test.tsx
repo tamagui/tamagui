@@ -252,3 +252,23 @@ test('onPress keeps the component on the runtime event path', async () => {
   expect(output?.js).toContain('<View onPress')
   expect(output?.js).not.toContain('<div onPress')
 })
+
+test('onLayout keeps the component on the runtime event path', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+    export function Test(props) {
+      return <View onLayout={props.handler} width={100} />
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  expect(output?.js).toContain('<View onLayout')
+  expect(output?.js).not.toContain('<div onLayout')
+})

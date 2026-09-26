@@ -190,6 +190,24 @@ describe('flatten-tests', () => {
     expect(code).not.toContain('__TamaguiNativeView')
   })
 
+  test(`still flattens onLayout — a bare RN View fires it natively`, async () => {
+    const output = await extractForNative(`
+      import { View } from 'tamagui'
+      export function Test() {
+        return (
+          <View
+            width={60}
+            backgroundColor="rgb(1,2,3)"
+            onLayout={() => console.info('laid out')}
+          />
+        )
+      }
+    `)
+    const code = output?.code ?? ''
+    expect(code).toContain('__TamaguiNativeView')
+    expect(code).toContain('onLayout')
+  })
+
   test(`bails on pointer event handlers — usePointerEvents maps them to touch at runtime`, async () => {
     const output = await extractForNative(`
       import { View } from 'tamagui'

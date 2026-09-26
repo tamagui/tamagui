@@ -1858,13 +1858,16 @@ export function createTamaguiCompilerHost(
       ]
       // both platforms: web needs runtime event mapping, and a flattened bare
       // RN View silently ignores onPress/onLongPress (Tamagui wires press via
-      // its responder system at runtime)
+      // its responder system at runtime). onLayout bails on web only: a
+      // flattened div drops it (the DOM has no onLayout; only useElementLayout
+      // fires it), while a flattened bare RN View fires it natively.
       {
         // DOM primitives (html.*) keep their own event contract (see
         // @tamagui/dom events table) — only bail for tamagui components,
         // whose pointer handlers exist solely via usePointerEvents.
         const needsRuntimeMapping = (name: string) =>
           runtimeEventProps.has(name) ||
+          (platform === 'web' && name === 'onLayout') ||
           (platform === 'native' &&
             !component.domTag &&
             nativePointerEventProps.has(name))
