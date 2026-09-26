@@ -233,10 +233,7 @@ async function analyzePackage(pkg: Package): Promise<MissingDepReport | null> {
     // bun is a runtime environment like node, not a package dependency
     // expo-image is an optional dependency
     // moti is deprecated and animations-moti package intentionally doesn't list it
-    const isBlacklisted =
-      dep === 'bun' ||
-      dep === 'expo-image' ||
-      dep === 'moti'
+    const isBlacklisted = dep === 'bun' || dep === 'expo-image' || dep === 'moti'
     // Filter out self-references (package importing itself, often from JSDoc comments)
     const isSelfReference = dep === pkg.name
     return !isViteOrTest && !isBlacklisted && !isSelfReference
