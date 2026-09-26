@@ -945,7 +945,6 @@
         "@expo/ui": "~57.0.12",
         "@tamagui/build": "workspace:*",
         "burnt": "^0.13.0",
-        "expo-linear-gradient": "~57.0.1",
         "react": "19.2.3",
         "react-native": "0.86.2",
         "react-native-gesture-handler": "~2.32.0",
@@ -959,7 +958,6 @@
       "peerDependencies": {
         "@expo/ui": "*",
         "burnt": "*",
-        "expo-linear-gradient": "*",
         "react": "*",
         "react-native": "*",
         "react-native-gesture-handler": "*",
@@ -973,7 +971,6 @@
       "optionalPeers": [
         "@expo/ui",
         "burnt",
-        "expo-linear-gradient",
         "react-native",
         "react-native-gesture-handler",
         "react-native-keyboard-controller",
@@ -1549,7 +1546,6 @@
         "expo-document-picker": "~57.0.1",
         "expo-font": "~57.0.1",
         "expo-image-picker": "~57.0.7",
-        "expo-linear-gradient": "~57.0.1",
         "expo-linking": "~57.0.7",
         "expo-modules-core": "~57.0.9",
         "expo-splash-screen": "~57.0.7",
@@ -2171,7 +2167,6 @@
         "awesome-phonenumber": "^6.4.0",
         "color2k": "^2.0.2",
         "expo-document-picker": "~57.0.1",
-        "expo-linear-gradient": "~57.0.1",
         "foxact": "^0.2.33",
         "hast-util-to-html": "^8.0.3",
         "hast-util-to-string": "^2.0.0",
@@ -2976,13 +2971,11 @@
       "version": "2.7.7",
       "dependencies": {
         "@tamagui/core": "workspace:*",
-        "@tamagui/native": "workspace:*",
         "@tamagui/react-native-types": "workspace:*",
         "@tamagui/stacks": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
-        "expo-linear-gradient": "~57.0.1",
         "react": "19.2.3",
         "react-native": "0.86.2",
       },
@@ -7044,8 +7037,6 @@
     "expo-image-picker": ["expo-image-picker@57.0.19", "", { "dependencies": { "expo-image-loader": "~57.0.1" }, "peerDependencies": { "expo": "*" } }, "sha512-SWKY235q7TOmlGhFTUWhJZnRqrW/HYHG/6USypa1qgnaQ0ndvToUGjZwVMeAlqtJeqJCXOXSAJzXTxkw7jJc+A=="],
 
     "expo-keep-awake": ["expo-keep-awake@57.0.2", "", { "peerDependencies": { "expo": "*", "react": "*" } }, "sha512-GqgH746wtJImmsbyHmCQoi7cOslKuWQBbJHXr53S35Bpf5UvxCAztvnitUEd7D0QvFN2rvkOhylbZpgZZfBLlQ=="],
-
-    "expo-linear-gradient": ["expo-linear-gradient@57.0.2", "", { "peerDependencies": { "expo": "*", "react": "*", "react-native": "*" } }, "sha512-eGNSfcbdXYvw0B/TQ3nmXKQgj0jLUi3EgsXGlvI79rlXg5RR5dQTkY2yqkf7BQDM3PMd3tqBMZdsLhvBqSUaMg=="],
 
     "expo-linking": ["expo-linking@57.0.10", "", { "dependencies": { "expo-constants": "~57.0.18", "invariant": "^2.2.4" }, "peerDependencies": { "react": "*", "react-native": "*" } }, "sha512-RzRi4l4pIYzjgoCJKnqkO+lUI+M2YX6qgcMIQkIbLAXdcWrykBoKYwHGlmAkdFHQm89GaYcq329yfxG+c1hv8w=="],
 

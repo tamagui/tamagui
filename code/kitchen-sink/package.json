@@ -78,7 +78,6 @@
     "expo-document-picker": "~57.0.1",
     "expo-font": "~57.0.1",
     "expo-image-picker": "~57.0.7",
-    "expo-linear-gradient": "~57.0.1",
     "expo-linking": "~57.0.7",
     "expo-modules-core": "~57.0.9",
     "expo-splash-screen": "~57.0.7",

@@ -75,7 +75,6 @@ npm install @tamagui/native
 | [Safe Area](#safe-area)                       | `react-native-safe-area-context`    | The `safe` style value and safe area aware sheets        |
 | [Menus](#menus)                               | `@expo/ui` or `zeego`               | Platform menus and context menus                         |
 | [Toast](#toast)                               | `burnt`                             | System toasts and indicators                             |
-| [Linear Gradient](#linear-gradient)           | `expo-linear-gradient`              | Native gradient rendering                                |
 
 A typical entry file with several integrations looks like this:
 
@@ -283,16 +282,3 @@ import '@tamagui/native/setup-burnt'
 
 See [Toast](/ui/toast).
 
-### Linear Gradient
-
-`LinearGradient` renders with `expo-linear-gradient` on native.
-
-```bash
-npm install expo-linear-gradient
-```
-
-```tsx
-import '@tamagui/native/setup-expo-linear-gradient'
-```
-
-See [LinearGradient](/ui/linear-gradient).

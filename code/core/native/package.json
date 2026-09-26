@@ -16,8 +16,6 @@
     "gesture-handler.cjs",
     "setup-burnt",
     "setup-burnt.cjs",
-    "setup-expo-linear-gradient",
-    "setup-expo-linear-gradient.cjs",
     "setup-expo-ui-menu",
     "setup-expo-ui-menu.cjs",
     "setup-gesture-handler",
@@ -52,9 +50,6 @@
       ],
       "setup-safe-area": [
         "./types/setup-safe-area.d.ts"
-      ],
-      "setup-expo-linear-gradient": [
-        "./types/setup-expo-linear-gradient.d.ts"
       ],
       "setup-keyboard-controller": [
         "./types/setup-keyboard-controller.d.ts"
@@ -126,15 +121,6 @@
       "require": "./dist/cjs/setup-safe-area.cjs",
       "default": "./dist/esm/setup-safe-area.mjs"
     },
-    "./setup-expo-linear-gradient": {
-      "types": "./types/setup-expo-linear-gradient.d.ts",
-      "react-native": "./dist/esm/setup-expo-linear-gradient.native.js",
-      "browser": "./dist/esm/setup-expo-linear-gradient.mjs",
-      "module": "./dist/esm/setup-expo-linear-gradient.mjs",
-      "import": "./dist/esm/setup-expo-linear-gradient.mjs",
-      "require": "./dist/cjs/setup-expo-linear-gradient.cjs",
-      "default": "./dist/esm/setup-expo-linear-gradient.mjs"
-    },
     "./setup-keyboard-controller": {
       "types": "./types/setup-keyboard-controller.d.ts",
       "react-native": "./dist/esm/setup-keyboard-controller.native.js",
@@ -189,7 +175,6 @@
     "@expo/ui": "~57.0.12",
     "@tamagui/build": "workspace:*",
     "burnt": "^0.13.0",
-    "expo-linear-gradient": "~57.0.1",
     "react": "19.2.3",
     "react-native": "0.86.2",
     "react-native-gesture-handler": "~2.32.0",
@@ -203,7 +188,6 @@
   "peerDependencies": {
     "@expo/ui": "*",
     "burnt": "*",
-    "expo-linear-gradient": "*",
     "react": "*",
     "react-native": "*",
     "react-native-gesture-handler": "*",
@@ -225,9 +209,6 @@
       "optional": true
     },
     "react-native-web": {
-      "optional": true
-    },
-    "expo-linear-gradient": {
       "optional": true
     },
     "react-native-gesture-handler": {

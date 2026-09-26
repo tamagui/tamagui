@@ -36,13 +36,11 @@
   },
   "dependencies": {
     "@tamagui/core": "workspace:*",
-    "@tamagui/native": "workspace:*",
     "@tamagui/react-native-types": "workspace:*",
     "@tamagui/stacks": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "expo-linear-gradient": "~57.0.1",
     "react": "19.2.3",
     "react-native": "0.86.2"
   },

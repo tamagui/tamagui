@@ -7,17 +7,23 @@
  */
 
 import { View, normalizeColor } from '@tamagui/core'
-import type {
-  LinearGradientPoint,
-  LinearGradientProps,
-  NativeLinearGradientPoint,
-} from 'expo-linear-gradient'
-
-export type { LinearGradientPoint, LinearGradientProps } from 'expo-linear-gradient'
-
 import * as React from 'react'
 
-const WebView = View as React.ComponentType<any>
+type NativeLinearGradientPoint = [x: number, y: number]
+
+export type LinearGradientPoint = { x: number; y: number } | NativeLinearGradientPoint
+
+// start and end are the gradient's points here, not View's logical insets.
+export type LinearGradientProps = Omit<React.ComponentProps<typeof View>, 'start' | 'end'> & {
+  colors: readonly string[]
+  locations?: readonly number[] | null
+  start?: LinearGradientPoint | null
+  end?: LinearGradientPoint | null
+}
+
+// one path on every platform: a backgroundImage gradient, which react native
+// draws natively (experimental_backgroundImage) and the web draws as css.
+const GradientView = View as React.ComponentType<any>
 
 // check if start/end points require dimension-aware angle calculation
 function needsDimensionAwareAngle(
@@ -62,7 +68,6 @@ export function LinearGradient({
 
   const linearGradientBackgroundImage = React.useMemo(() => {
     return getLinearGradientBackgroundImage(
-      // @ts-expect-error ok
       colors,
       locations,
       normalizedStart as NativeLinearGradientPoint,
@@ -75,26 +80,14 @@ export function LinearGradient({
   // if we don't need dimension-aware angles, skip the onLayout overhead
   if (!needsLayout) {
     return (
-      <WebView
-        {...props}
-        onLayout={props.onLayout}
-        style={[
-          props.style,
-          // @ts-ignore: [ts] Property 'backgroundImage' does not exist on type 'ViewStyle'.
-          { backgroundImage: linearGradientBackgroundImage },
-        ]}
-      />
+      <GradientView {...props} backgroundImage={linearGradientBackgroundImage} />
     )
   }
 
   return (
-    <WebView
+    <GradientView
       {...props}
-      style={[
-        props.style,
-        // @ts-ignore: [ts] Property 'backgroundImage' does not exist on type 'ViewStyle'.
-        { backgroundImage: linearGradientBackgroundImage },
-      ]}
+      backgroundImage={linearGradientBackgroundImage}
       onLayout={(event) => {
         const { width, height } = event.nativeEvent.layout
 
@@ -116,18 +109,14 @@ export function LinearGradient({
 }
 
 function getLinearGradientBackgroundImage(
-  colors: number[] | string[],
-  locations?: number[] | null,
+  colors: readonly string[],
+  locations?: readonly number[] | null,
   startPoint?: NativeLinearGradientPoint | null,
   endPoint?: NativeLinearGradientPoint | null,
   width = 1,
   height = 1
 ) {
-  const gradientColors = calculateGradientColors(
-    // @ts-expect-error TODO fix numbers
-    colors,
-    locations
-  )
+  const gradientColors = calculateGradientColors(colors, locations)
   const angle = calculatePseudoAngle(width, height, startPoint, endPoint)
   return `linear-gradient(${angle}deg, ${gradientColors.join(', ')})`
 }
@@ -167,7 +156,10 @@ function calculatePseudoAngle(
   return 90 + (Math.atan2(py, px) * 180) / Math.PI
 }
 
-function calculateGradientColors(colors: string[], locations?: number[] | null) {
+function calculateGradientColors(
+  colors: readonly string[],
+  locations?: readonly number[] | null
+) {
   return colors.map((color: string, index: number): string | void => {
     const output = normalizeColor(color)
     if (locations && locations[index] !== undefined) {
