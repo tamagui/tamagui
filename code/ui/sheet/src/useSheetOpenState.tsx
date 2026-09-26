@@ -1,4 +1,4 @@
-import { useAdaptContext, useAdaptTarget } from '@tamagui/adapt'
+import { useAdaptContext, useAdaptTarget, useAdaptTargetScope } from '@tamagui/adapt'
 import React from 'react'
 import { useControllableState } from '@tamagui/use-controllable-state'
 
@@ -7,13 +7,15 @@ import type { SheetControllerContextValue } from './useSheetController'
 import { useSheetController } from './useSheetController'
 
 export const useSheetOpenState = (props: SheetProps) => {
-  const adaptContext = useAdaptContext()
-  const adapt = useAdaptTarget()
+  const adaptTargetScope = useAdaptTargetScope()
+  const adapt = useAdaptTarget(adaptTargetScope ?? undefined)
+  const adaptContext = useAdaptContext(adaptTargetScope ?? undefined)
   const { isHidden: controllerIsHidden, controller: legacyController } =
     useSheetController(props.scope)
-  const shouldUseAdapt = Boolean(
-    adaptContext.open !== undefined || adaptContext.onOpenChange
-  )
+  // an adapt parent can wrap unrelated sheets; only its <Adapt> child owns the handoff.
+  const shouldUseAdapt =
+    adaptTargetScope === adaptContext.scopeName &&
+    Boolean(adaptContext.open !== undefined || adaptContext.onOpenChange)
   // Dialog no longer mounts SheetController while Adapt is inactive, so the
   // hidden state must come from the Adapt parent context even before a target
   // can register through useAdaptTarget().
