@@ -46,6 +46,11 @@ export interface BundleOptions {
    * @default false
    */
   isTest?: boolean
+
+  /**
+   * Additional package ids to preserve as runtime dependencies.
+   */
+  external?: Array<string | RegExp>
 }
 
 /**
@@ -60,6 +65,7 @@ export async function bundleNative(options: BundleOptions): Promise<void> {
     define = {},
     minify = false,
     isTest = false,
+    external: extraExternal = [],
   } = options
 
   const resolvePath = (name: string) => {
@@ -94,21 +100,24 @@ export async function bundleNative(options: BundleOptions): Promise<void> {
   // For test bundles, bundle a fake react-native implementation
   // For production bundles, bundle react-native-web-lite
   // Note: react and all its subpaths (jsx-runtime, compiler-runtime, etc.) must be external
-  const external = isTest
-    ? [/^react($|\/)/, /^react-native($|\/)/]
-    : [
-        /^react($|\/)/,
-        /^react-native-reanimated($|\/)/,
-        /^react-native-worklets($|\/)/,
-        // safe-area-context is a native runtime dep provided by the app; its
-        // source imports TurboModuleRegistry from react-native, which the
-        // react-native-web-lite alias doesn't export. externalize so the bundler
-        // doesn't try to resolve it (same as reanimated/worklets above).
-        /^react-native-safe-area-context($|\/)/,
-        // Reanimated's internal code requires react-native/Libraries/Renderer/shims/ReactFabric
-        // which doesn't exist in the web bundle. Externalize it so the bundler doesn't try to resolve it.
-        /react-native\/Libraries\//,
-      ]
+  const external = (
+    isTest
+      ? [/^react($|\/)/, /^react-native($|\/)/]
+      : [
+          /^react($|\/)/,
+          /^react-native-reanimated($|\/)/,
+          /^react-native-worklets($|\/)/,
+          // safe-area-context is a native runtime dep provided by the app; its
+          // source imports TurboModuleRegistry from react-native, which the
+          // react-native-web-lite alias doesn't export. externalize so the bundler
+          // doesn't try to resolve it (same as reanimated/worklets above).
+          /^react-native-safe-area-context($|\/)/,
+          // Reanimated's internal code requires react-native/Libraries/Renderer/shims/ReactFabric
+          // which doesn't exist in the web bundle. Externalize it so the bundler doesn't try to resolve it.
+          /react-native\/Libraries\//,
+        ]
+  ) as Array<string | RegExp>
+  external.push(...extraExternal)
   const alias = isTest
     ? [
         // Aliases don't work for pre-bundled deps, so we externalize and alias in vitest config

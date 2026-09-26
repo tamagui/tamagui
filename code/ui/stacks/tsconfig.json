@@ -9,9 +9,6 @@
     },
     {
       "path": "../../core/web"
-    },
-    {
-      "path": "../../core/get-button-sized"
     }
   ],
   "exclude": [

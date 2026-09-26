@@ -1,24 +1,31 @@
 import { shorthands } from '@tamagui/shorthands'
 import { createFont, createTokens } from '@tamagui/web'
 import { animations } from './animations'
-import { animations as animationsNative } from './animations.native'
 
 // basic fallback theme just to have compiler load in decent tate
-export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
+export function getDefaultTamaguiConfig(_platform: 'native' | 'web' = 'web') {
+  // the control ladder resolves its geometry from these type keys, so the
+  // fallback fonts carry the same tailwind scale v6 does
+  const typeSize = { xs: 12, sm: 14, base: 16, lg: 18, xl: 20 }
+  const typeLineHeight = { xs: 16, sm: 20, base: 24, lg: 28, xl: 28 }
   const headingFont = createFont({
     family: 'Heading',
     size: {
       1: 15,
+      4: 15,
+      ...typeSize,
     },
     lineHeight: {
       1: 15,
+      4: 15,
+      ...typeLineHeight,
     },
     transform: {},
     weight: {
       1: '400',
     },
     color: {
-      1: '$color',
+      1: 'color',
     },
     letterSpacing: {
       1: 0,
@@ -29,16 +36,20 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
     family: 'System',
     size: {
       1: 15,
+      4: 15,
+      ...typeSize,
     },
     lineHeight: {
       1: 15,
+      4: 15,
+      ...typeLineHeight,
     },
     transform: {},
     weight: {
       1: '400',
     },
     color: {
-      1: '$color',
+      1: 'color',
     },
     letterSpacing: {
       1: 0,
@@ -57,7 +68,6 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
     3: 36,
     3.5: 40,
     4: 44,
-    true: 44,
     4.5: 48,
     5: 52,
     5.5: 59,
@@ -216,7 +226,7 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
   }
 
   return {
-    animations: platform === 'web' ? animations : animationsNative,
+    animations,
     shorthands,
     fonts,
     themes,

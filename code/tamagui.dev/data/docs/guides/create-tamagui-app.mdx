@@ -3,21 +3,22 @@ title: Bootstrapping
 description: Starter kits for React Native
 ---
 
-Set up a starter repo to help you learn about and bootstrap your Tamagui app:
+<IntroParagraph>
+  Start a Tamagui app from a template with the native and web tooling already
+  connected.
+</IntroParagraph>
 
-### Templates
+## Templates
 
-There are four starter templates:
+There are three starter templates:
 
 - Free - Expo, Expo Router, Solito and Next.js (with both `/pages` and `/app`
   dir).
 - Learn - Client-only web app with Webpack or Vite. Useful to understand how to
   set up tamagui.config.ts.
-- [Expo Router](/docs/guides/expo) - The Expo Router default starter with
-  Tamagui added via `@tamagui/metro-plugin`.
 - [Takeout](/takeout) - A more robust, paid and supported starter kit.
 
-### Usage
+## Usage
 
 ```bash
 npm create tamagui@latest
@@ -30,7 +31,7 @@ A big shout out to [Fernando Rojo](https://twitter.com/fernandotherojo) for
 creating [Solito](https://solito.dev), a great library for sharing all your
 views between Expo and Next.js, and the bootstrap repo we borrowed from.
 
-### Starting out
+## Starting out
 
 The starter-free app requires yarn to run.
 
@@ -43,18 +44,17 @@ yarn web # Web local dev
 yarn native # Expo local dev (only for `starter-free`)
 ```
 
-## 📦 Included packages (`starter-free`)
+## Included packages (`starter-free`)
 
 - `tamagui` for cross-platform views, themes and animations
 - `solito` for cross-platform navigation
 - `expo-router` for having same routing concepts between web and native
-- Expo SDK 48
+- Expo
 - Next.js 13
 
-By integrating `Tamagui`, `expo-router`, `Solito`, and `Next.js` you can enjoy
-the power and simplicity of creating universal apps.
+Together they let you build universal apps from one codebase.
 
-## 🗂 Folder layout
+## Folder layout
 
 - `apps` entry points for each app
   - `expo`
@@ -70,7 +70,7 @@ the power and simplicity of creating universal apps.
 You can add other folders inside of `packages/` if you know what you're doing
 and have a good reason to.
 
-## 🏁 Start the app
+## Start the app
 
 - Install dependencies: `yarn`
 
@@ -79,7 +79,7 @@ and have a good reason to.
 - Expo local dev: `yarn native`
   - Runs `expo start`
 
-## 🆕 Add new dependencies
+## Add new dependencies
 
 ### Pure JS dependencies
 

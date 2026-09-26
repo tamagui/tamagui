@@ -1,6 +1,6 @@
 'use client'
 
-import { Lock } from '@tamagui/lucide-icons-2'
+import { Lock } from '@tamagui/local-icons'
 import { H2, Paragraph, YStack } from 'tamagui'
 
 export const SponsorshipRequired = () => {
@@ -43,8 +43,8 @@ export const NotSignedInWithGithub = () => {
 
 const ErrorContainer = ({ children }: { children: React.ReactNode }) => {
   return (
-    <YStack p="$2" items="center" gap="$4">
-      <Lock size="$10" />
+    <YStack p="1-5" items="center" gap="4">
+      <Lock size="24" />
       {children}
     </YStack>
   )

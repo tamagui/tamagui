@@ -17,7 +17,15 @@ type InternalHooks = {
 
   setElementProps?: (node?: any) => void
 
-  useChildren?: (elementType: any, children: any, viewProps: Record<string, any>) => any
+  // native-only. reads TextAncestor context, so createComponent must call it
+  // unconditionally every render — including passthrough renders, where the
+  // implementation returns early right after its hook
+  useChildren?: (
+    elementType: any,
+    children: any,
+    viewProps: Record<string, any>,
+    isPassthrough?: boolean
+  ) => any
 
   getBaseViews?: () => {
     View: any

@@ -1,0 +1,284 @@
+---
+title: Native
+description: The native style runtime and the integrations that make Tamagui feel native on iOS and Android
+---
+
+<IntroParagraph>
+  Tamagui renders real native views on iOS and Android, with the same components,
+  tokens, and themes you use on web. Nothing extra is required to get started. The
+  runtime and integrations below make it faster and more native once you need them.
+</IntroParagraph>
+
+Configure Tamagui with the same [provider](/docs/core/configuration) on native
+and web.
+
+## Native runtime
+
+The native runtime is in beta. It needs React Native 0.82 or newer with the New
+Architecture (Fabric).
+
+By default, a theme change or a style update re-renders the React components that
+use it. `@tamagui/native-registry` moves that work into a small C++ registry. It
+links eligible native views to the registry and applies theme and style updates
+directly through Fabric, so the components don't re-render.
+
+Install it along with Nitro Modules, then rebuild your iOS and Android binaries:
+
+```bash
+npm install @tamagui/native-registry react-native-nitro-modules
+```
+
+Turn on the compiler output in `tamagui.build.ts`:
+
+```ts
+import type { TamaguiBuildOptions } from 'tamagui'
+
+export default {
+  config: './tamagui.config.ts',
+  components: ['tamagui'],
+  experimental: {
+    nativeFastPath: true,
+  },
+} satisfies TamaguiBuildOptions
+```
+
+Register the style engine once at startup, before your app tree mounts:
+
+```ts
+import * as nativeRegistry from '@tamagui/native-registry'
+import { setNativeStyleEngine } from 'tamagui'
+
+if (nativeRegistry.isAvailable()) {
+  setNativeStyleEngine(nativeRegistry)
+}
+```
+
+If the native module isn't available on a platform, components render the normal
+React way, so the same code is safe everywhere.
+
+## Integrations
+
+`@tamagui/native` connects Tamagui to popular React Native libraries. Each
+integration is opt-in: install the library, then import its setup module at your
+app entry point, before any Tamagui imports.
+
+```bash
+npm install @tamagui/native
+```
+
+| Integration                                   | Library                             | What you get                                             |
+| --------------------------------------------- | ----------------------------------- | -------------------------------------------------------- |
+| [Gesture Handler](#gesture-handler)           | `react-native-gesture-handler`      | Correct nested presses, native Sheet drag and scroll     |
+| [Portals](#portals)                           | `react-native-teleport`             | Portaled content that keeps your React context           |
+| [Reanimated](#reanimated)                     | `react-native-reanimated`           | Animations on the UI thread                              |
+| [Keyboard Controller](#keyboard-controller)   | `react-native-keyboard-controller`  | Sheets that track the keyboard frame by frame            |
+| [Safe Area](#safe-area)                       | `react-native-safe-area-context`    | The `safe` style value and safe area aware sheets        |
+| [Menus](#menus)                               | `@expo/ui` or `zeego`               | Platform menus and context menus                         |
+| [Toast](#toast)                               | `burnt`                             | System toasts and indicators                             |
+
+A typical entry file with several integrations looks like this:
+
+```tsx
+// index.js, before any tamagui imports
+import '@tamagui/native/setup-gesture-handler'
+import '@tamagui/native/setup-teleport'
+import '@tamagui/native/setup-keyboard-controller'
+import '@tamagui/native/setup-safe-area'
+```
+
+In a monorepo, install the native libraries in the app package, since native
+modules are linked from there.
+
+### Gesture Handler
+
+With React Native Gesture Handler, `onPress` works the way React Native
+`Pressable` does: when pressables are nested, only the innermost one fires. Sheet
+also uses it to hand off smoothly between dragging the sheet and scrolling its
+content.
+
+```bash
+npm install react-native-gesture-handler
+```
+
+```tsx
+import '@tamagui/native/setup-gesture-handler'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+
+export default function App() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>{/* your app */}</GestureHandlerRootView>
+  )
+}
+```
+
+To use it for only one of the two, call `setupGestureHandler` instead:
+
+```tsx
+import { setupGestureHandler } from '@tamagui/native/setup-gesture-handler'
+
+// presses only, Sheet keeps its default gestures
+setupGestureHandler({ pressEvents: true, sheet: false })
+```
+
+With press events enabled, `onPress` calls `stopPropagation()` on web as well, so
+nested pressables behave the same on both platforms. Use `onClick` on web when you
+want normal DOM bubbling.
+
+#### PressBoundary
+
+Tamagui pressables coordinate with each other automatically. A React Native
+`Pressable` or a custom native wrapper doesn't take part in that, so tapping it can
+also fire a Tamagui pressable around it. Wrap it in `PressBoundary` to stop that:
+
+```tsx
+import { PressBoundary } from '@tamagui/native/gesture-handler'
+import { Pressable } from 'react-native'
+
+export function AvatarLink() {
+  return (
+    <PressBoundary debugName="AvatarLink">
+      <Pressable onPress={() => {}}>{/* your content */}</Pressable>
+    </PressBoundary>
+  )
+}
+```
+
+`PressBoundary` only affects Tamagui pressables. It doesn't change how React
+Native events bubble in general. Native `Menu.Trigger` and `ContextMenu.Trigger`
+already do this for you.
+
+### Portals
+
+On native, Tamagui's default portal re-mounts content at the root, which cuts it
+off from the React context it was declared in. With `react-native-teleport`,
+content inside Sheet, Dialog, Popover, and other portaled components keeps your
+contexts, such as navigation and app state.
+
+```bash
+npm install react-native-teleport
+```
+
+```tsx
+import '@tamagui/native/setup-teleport'
+```
+
+See [Portal](/ui/portal) for details.
+
+### Reanimated
+
+Reanimated runs animations on the UI thread, so they stay smooth while JavaScript
+is busy. It plugs in as an animation driver, so it needs no setup import:
+
+```bash
+npm install @tamagui/animations-reanimated react-native-reanimated
+```
+
+```tsx
+import { createAnimations } from '@tamagui/animations-reanimated'
+```
+
+See the [Reanimated driver](/docs/core/animations-reanimated) for configuration,
+and [animation drivers](/docs/core/animation-drivers) to use it on native with a
+lighter driver on web.
+
+### Keyboard Controller
+
+With `react-native-keyboard-controller`, Sheet follows the keyboard frame by frame
+as it opens and closes, and dragging the sheet can dismiss the keyboard
+interactively.
+
+```bash
+npm install react-native-keyboard-controller
+```
+
+```tsx
+import '@tamagui/native/setup-keyboard-controller'
+import { KeyboardProvider } from 'react-native-keyboard-controller'
+
+export default function App() {
+  return <KeyboardProvider>{/* your app */}</KeyboardProvider>
+}
+```
+
+### Safe Area
+
+This setup lets styles use the device safe area insets, and Sheet uses it to stay
+clear of the notch and home indicator.
+
+```bash
+npm install react-native-safe-area-context
+```
+
+```tsx
+import '@tamagui/native/setup-safe-area'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { TamaguiProvider } from 'tamagui'
+
+export default function App() {
+  return (
+    <SafeAreaProvider>
+      <TamaguiProvider config={config}>{/* your app */}</TamaguiProvider>
+    </SafeAreaProvider>
+  )
+}
+```
+
+`SafeAreaProvider` has to wrap `TamaguiProvider`. Then pass `safe` to any padding
+or margin prop, or to `top`, `bottom`, `left`, `right`, and `inset`:
+
+```tsx
+<View pt="safe" pb="safe" />
+```
+
+On web, `safe` becomes the CSS `env(safe-area-inset-*)` value, so the same code
+works in the browser without this setup.
+
+### Menus
+
+`Menu` and `ContextMenu` can render the platform's own menus, with system haptics
+and blur, when you pass the `native` prop.
+
+```bash
+npm install @expo/ui
+```
+
+```tsx
+import '@tamagui/native/setup-expo-ui-menu'
+```
+
+```tsx
+<Menu native>{/* menu content */}</Menu>
+```
+
+The Zeego adapter is still available for apps on React Native versions it
+supports:
+
+```bash
+npm install zeego @react-native-menu/menu react-native-ios-context-menu react-native-ios-utilities sf-symbols-typescript
+```
+
+```tsx
+import '@tamagui/native/setup-zeego'
+```
+
+See [Menu](/ui/menu) and [ContextMenu](/ui/context-menu).
+
+### Toast
+
+With `burnt`, toasts use the system UI: SPIndicator on iOS, `ToastAndroid` on
+Android, and the Notification API on web.
+
+```bash
+npm install burnt
+```
+
+```tsx
+import '@tamagui/native/setup-burnt'
+```
+
+```tsx
+<Toast.Provider native>{/* your app */}</Toast.Provider>
+```
+
+See [Toast](/ui/toast).
+

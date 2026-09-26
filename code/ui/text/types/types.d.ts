@@ -1,4 +1,40 @@
+import { type Shorthands, type TextStyle, type TextStylePropsBase, type WithShorthands } from '@tamagui/web';
 import type { SizableTextProps } from './SizableText';
+export declare const textParentProps: {
+    readonly WebkitBoxOrient: true;
+    readonly WebkitLineClamp: true;
+    readonly color: true;
+    readonly font: true;
+    readonly fontFamily: true;
+    readonly fontSize: true;
+    readonly fontStyle: true;
+    readonly fontVariant: true;
+    readonly fontWeight: true;
+    readonly letterSpacing: true;
+    readonly lineHeight: true;
+    readonly textAlign: true;
+    readonly textDecoration: true;
+    readonly textDecorationColor: true;
+    readonly textDecorationDistance: true;
+    readonly textDecorationLine: true;
+    readonly textDecorationStyle: true;
+    readonly textOverflow: true;
+    readonly textShadow: true;
+    readonly textShadowColor: true;
+    readonly textShadowOffset: true;
+    readonly textShadowRadius: true;
+    readonly textTransform: true;
+    readonly userSelect: true;
+    readonly verticalAlign: true;
+    readonly whiteSpace: true;
+    readonly wordWrap: true;
+    readonly writingDirection: true;
+    readonly ellipsis: true;
+    readonly maxFontSizeMultiplier: true;
+    readonly noTextWrap: true;
+    readonly numberOfLines: true;
+    readonly textProps: true;
+};
 export type TextContextStyles = {
     color?: SizableTextProps['color'];
     fontWeight?: SizableTextProps['fontWeight'];
@@ -10,8 +46,15 @@ export type TextContextStyles = {
     ellipsis?: SizableTextProps['ellipsis'];
     maxFontSizeMultiplier?: number;
 };
-export type TextParentStyles = TextContextStyles & {
+type TextParentStyleKeys = Extract<keyof TextStylePropsBase, keyof typeof textParentProps>;
+type TextParentStyleProps = Partial<Pick<TextStyle, TextParentStyleKeys>>;
+type TextParentShorthandKeys = {
+    [Key in keyof Shorthands]: Shorthands[Key] extends TextParentStyleKeys ? Key : never;
+}[keyof Shorthands];
+export type TextParentStyles = TextParentStyleProps & Pick<WithShorthands<TextParentStyleProps>, TextParentShorthandKeys> & {
+    maxFontSizeMultiplier?: number;
     textProps?: Partial<SizableTextProps>;
     noTextWrap?: boolean;
 };
+export {};
 //# sourceMappingURL=types.d.ts.map

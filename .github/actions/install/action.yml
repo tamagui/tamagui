@@ -39,7 +39,13 @@ runs:
 
     - name: Install Dependencies
       shell: bash
-      run: bun install --frozen-lockfile
+      # the repository postinstall builds on a fresh checkout, but workspace bins
+      # are linked only after install completes. build explicitly below instead.
+      run: bun install --frozen-lockfile --ignore-scripts
+
+    - name: Build JS
+      shell: bash
+      run: ${{ inputs.workspace-focus && format('bunx turbo run build --filter={0}... -- --skip-types', inputs.workspace-focus) || 'bun run build:js' }}
 
     - name: Re-link workspace bins
       shell: bash

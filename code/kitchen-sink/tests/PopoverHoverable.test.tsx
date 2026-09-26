@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
 import { getBoundingRect, setupPage } from './test-utils'
 
 // helper: get opacity of element by id
@@ -7,6 +7,115 @@ async function getOpacity(page: any, id: string) {
     (sel: string) => parseFloat(getComputedStyle(document.getElementById(sel)!).opacity),
     id
   )
+}
+
+async function hoverAndMeasureOpen(
+  page: Page,
+  triggerSelector: string,
+  contentSelector: string
+) {
+  await page.evaluate(
+    ({ triggerSelector, contentSelector }) => {
+      const timing = { enteredAt: 0, openedAt: 0 }
+      globalThis['__popoverHoverOpenTiming'] = timing
+      const trigger = document.querySelector(triggerSelector)
+      if (!trigger) throw new Error(`missing hover trigger: ${triggerSelector}`)
+
+      trigger.addEventListener(
+        'mouseenter',
+        () => {
+          timing.enteredAt = performance.now()
+        },
+        { once: true }
+      )
+
+      const recordOpen = () => {
+        const content = document.querySelector(contentSelector)
+        if (timing.enteredAt && content?.getAttribute('data-state') === 'open') {
+          timing.openedAt = performance.now()
+          observer.disconnect()
+        }
+      }
+      const observer = new MutationObserver(recordOpen)
+      observer.observe(document.body, {
+        attributes: true,
+        childList: true,
+        subtree: true,
+        attributeFilter: ['data-state'],
+      })
+      recordOpen()
+    },
+    { triggerSelector, contentSelector }
+  )
+
+  await page.locator(triggerSelector).hover()
+  await expect(page.locator(contentSelector)).toBeVisible({ timeout: 3000 })
+
+  return page.evaluate(() => {
+    const timing = globalThis['__popoverHoverOpenTiming']
+    if (!timing?.enteredAt || !timing.openedAt) {
+      throw new Error(`missing hover-open timing: ${JSON.stringify(timing)}`)
+    }
+    return timing.openedAt - timing.enteredAt
+  })
+}
+
+async function leaveAndMeasureClose(
+  page: Page,
+  triggerSelector: string,
+  contentSelector: string
+) {
+  await page.evaluate(
+    ({ triggerSelector, contentSelector }) => {
+      const timing = {
+        leftAt: 0,
+        closedAt: 0,
+        opacitySamples: [] as number[],
+      }
+      globalThis['__popoverHoverCloseTiming'] = timing
+      const trigger = document.querySelector(triggerSelector)
+      if (!trigger) throw new Error(`missing hover trigger: ${triggerSelector}`)
+
+      trigger.addEventListener(
+        'mouseleave',
+        () => {
+          timing.leftAt = performance.now()
+          const sample = () => {
+            const content = document.querySelector(contentSelector)
+            if (!content) {
+              timing.closedAt = performance.now()
+              return
+            }
+            const opacity = Number.parseFloat(getComputedStyle(content).opacity)
+            if (Number.isFinite(opacity)) timing.opacitySamples.push(opacity)
+            requestAnimationFrame(sample)
+          }
+          requestAnimationFrame(sample)
+        },
+        { once: true }
+      )
+    },
+    { triggerSelector, contentSelector }
+  )
+
+  await page.mouse.move(10, 10)
+  await page.waitForFunction(
+    () => {
+      const timing = globalThis['__popoverHoverCloseTiming']
+      return timing?.leftAt > 0 && timing.closedAt > 0
+    },
+    { timeout: 3000 }
+  )
+
+  return page.evaluate(() => {
+    const timing = globalThis['__popoverHoverCloseTiming']
+    return {
+      delay: timing.closedAt - timing.leftAt,
+      minPositiveOpacity:
+        timing.opacitySamples.filter((opacity) => opacity > 0).sort((a, b) => a - b)[0] ??
+        Number.NaN,
+    }
+  })
 }
 
 // Bug 1: delay should apply to both enter AND exit
@@ -19,24 +128,12 @@ test.describe('Popover hoverable delay', () => {
   test('delay applies to enter: popover should not open before delay elapses', async ({
     page,
   }) => {
-    const trigger = page.locator('#delay-trigger')
     const content = page.locator('#delay-content')
 
     await expect(content).not.toBeVisible()
 
-    // hover over trigger
-    await trigger.hover()
-
-    // check immediately after hover (should NOT be open yet - delay is 400ms)
-    await expect(content).not.toBeVisible()
-
-    // wait less than delay - still should not open
-    await page.waitForTimeout(200)
-    await expect(content).not.toBeVisible()
-
-    // wait full delay time - should now be open
-    await page.waitForTimeout(300)
-    await expect(content).toBeVisible({ timeout: 3000 })
+    const openDelay = await hoverAndMeasureOpen(page, '#delay-trigger', '#delay-content')
+    expect(openDelay).toBeGreaterThanOrEqual(350)
   })
 
   test('delay applies to exit: popover should not close before delay elapses', async ({
@@ -50,18 +147,8 @@ test.describe('Popover hoverable delay', () => {
     await page.waitForTimeout(800)
     await expect(content).toBeVisible({ timeout: 3000 })
 
-    // move mouse far away (outside safe zone)
-    await page.mouse.move(10, 10)
-
-    // should still be visible right after (delay is 400ms)
-    await expect(content).toBeVisible()
-
-    // wait less than delay - still should be visible
-    await page.waitForTimeout(200)
-    await expect(content).toBeVisible()
-
-    // wait for delay to elapse + animation - should now be closing
-    await page.waitForTimeout(600)
+    const close = await leaveAndMeasureClose(page, '#delay-trigger', '#delay-content')
+    expect(close.delay).toBeGreaterThanOrEqual(350)
     await expect(content).not.toBeVisible({ timeout: 3000 })
   })
 })
@@ -74,20 +161,16 @@ test.describe('Popover hoverable restMs', () => {
   })
 
   test('restMs delays enter: popover should open after mouse rests', async ({ page }) => {
-    const trigger = page.locator('#restms-trigger')
     const content = page.locator('#restms-content')
 
     await expect(content).not.toBeVisible()
 
-    // hover over trigger
-    await trigger.hover()
-
-    // should not open immediately
-    await expect(content).not.toBeVisible()
-
-    // wait for restMs to elapse
-    await page.waitForTimeout(500)
-    await expect(content).toBeVisible({ timeout: 2000 })
+    const openDelay = await hoverAndMeasureOpen(
+      page,
+      '#restms-trigger',
+      '#restms-content'
+    )
+    expect(openDelay).toBeGreaterThanOrEqual(350)
   })
 
   test('exit without restMs: popover should close quickly after mouse leaves', async ({
@@ -135,21 +218,13 @@ test.describe('Popover hoverable exit animation', () => {
     )
     expect(opacityBefore).toBeGreaterThan(0.9)
 
-    // move mouse far away (outside safe zone) to trigger close
-    await page.mouse.move(10, 10)
-
-    // immediately after leaving - content should still be visible (animation in progress)
-    // the transition is 500ms so it should still be partially visible
-    await page.waitForTimeout(50)
-
-    const opacityDuring = await content.evaluate((el) =>
-      parseFloat(getComputedStyle(el).opacity)
+    const close = await leaveAndMeasureClose(
+      page,
+      '#exitanim-trigger',
+      '#exitanim-content'
     )
-    // should be animating - opacity should be > 0 (not instantly gone to 0)
-    expect(opacityDuring).toBeGreaterThan(0)
-
-    // wait for animation to complete (500ms + buffer)
-    await page.waitForTimeout(600)
+    expect(close.minPositiveOpacity).toBeGreaterThan(0)
+    expect(close.minPositiveOpacity).toBeLessThan(1)
     await expect(content).not.toBeVisible({ timeout: 2000 })
   })
 })
@@ -198,32 +273,26 @@ test.describe('Popover hoverable safePolygon', () => {
   })
 
   test('restMs applies on re-hover (not just first hover)', async ({ page }) => {
-    const trigger = page.locator('#safepoly-trigger')
     const content = page.locator('#safepoly-content')
 
-    // first hover: should respect restMs (260ms)
-    await trigger.hover()
-    // should NOT be open before restMs elapses
-    await page.waitForTimeout(100)
-    await expect(content).not.toBeVisible()
-    // wait for restMs
-    await page.waitForTimeout(250)
-    await expect(content).toBeVisible({ timeout: 2000 })
+    const firstOpenDelay = await hoverAndMeasureOpen(
+      page,
+      '#safepoly-trigger',
+      '#safepoly-content'
+    )
+    expect(firstOpenDelay).toBeGreaterThanOrEqual(220)
 
     // move far away to close
     await page.mouse.move(10, 10)
     await page.waitForTimeout(500)
     await expect(content).not.toBeVisible({ timeout: 2000 })
 
-    // re-hover: restMs should still apply (not open instantly)
-    await trigger.hover()
-    // check after 100ms - should NOT be open yet (restMs is 260ms)
-    await page.waitForTimeout(100)
-    await expect(content).not.toBeVisible()
-
-    // wait for restMs to elapse
-    await page.waitForTimeout(250)
-    await expect(content).toBeVisible({ timeout: 2000 })
+    const secondOpenDelay = await hoverAndMeasureOpen(
+      page,
+      '#safepoly-trigger',
+      '#safepoly-content'
+    )
+    expect(secondOpenDelay).toBeGreaterThanOrEqual(220)
   })
 })
 
@@ -242,17 +311,12 @@ test.describe('Popover hoverable scoped multi-trigger', () => {
   test('scoped: delay applies to enter - should not open immediately', async ({
     page,
   }) => {
-    const trigger = page.locator('#nav-trigger-about')
-    const content = page.locator('#nav-content')
-
-    await trigger.hover()
-
-    // should NOT be open right away (300ms delay)
-    await expect(content).not.toBeVisible()
-
-    // wait for delay
-    await page.waitForTimeout(450)
-    await expect(content).toBeVisible({ timeout: 2000 })
+    const openDelay = await hoverAndMeasureOpen(
+      page,
+      '#nav-trigger-about',
+      '#nav-content'
+    )
+    expect(openDelay).toBeGreaterThanOrEqual(250)
   })
 
   test('scoped: exit animation plays when hovering away', async ({ page }) => {
@@ -276,16 +340,9 @@ test.describe('Popover hoverable scoped multi-trigger', () => {
     const opacityBefore = await getOpacity(page, 'nav-content')
     expect(opacityBefore).toBeGreaterThan(0.9)
 
-    // move far away to trigger close
-    await page.mouse.move(10, 10)
-
-    // check opacity shortly after - should still be > 0 (animating out with 500ms transition)
-    await page.waitForTimeout(50)
-    const opacityDuring = await getOpacity(page, 'nav-content')
-    expect(opacityDuring).toBeGreaterThan(0)
-
-    // wait for animation to complete (500ms + buffer)
-    await page.waitForTimeout(600)
+    const close = await leaveAndMeasureClose(page, '#nav-trigger-about', '#nav-content')
+    expect(close.minPositiveOpacity).toBeGreaterThan(0)
+    expect(close.minPositiveOpacity).toBeLessThan(1)
     await expect(content).not.toBeVisible({ timeout: 2000 })
   })
 

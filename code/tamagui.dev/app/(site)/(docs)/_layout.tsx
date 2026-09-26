@@ -1,59 +1,51 @@
 import { Slot } from 'one'
-import { ScrollView } from 'react-native'
-import { View, XStack, YStack } from 'tamagui'
-import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
-import { Footer } from '~/features/site/Footer'
-import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
+import type { CSSProperties } from 'react'
+import { useBentoStore } from '~/features/bento/BentoStore'
+import { DocsSyntaxLayout } from '~/features/docs/DocsSyntaxLayout'
 
 export default function DocsLayout() {
-  // disabled route-based tint changes
-  // const themeName = useThemeName()
+  const { disableCustomTheme, themeSuiteUID } = useBentoStore()
+  const customThemeActive = !!themeSuiteUID && !disableCustomTheme
 
   return (
-    <>
-      <ThemeNameEffect colorKey="$color1" />
-      <YStack
-        position="absolute"
-        inset={0}
-        maxH={1000}
-        z={0}
-        backgroundImage="linear-gradient($color3, $colorTransparent)"
-      />
+    <div
+      className={customThemeActive ? 'docs-theme-accents' : undefined}
+      style={
+        {
+          display: 'contents',
+          // Keep these as CSS variable references. Reading `.val` from useTheme()
+          // produced undefined values during SSR and var(...) after hydration.
+          '--docs-accent-background': 'var(--accent-background)',
+          '--docs-accent-color': 'var(--accent-color)',
+        } as CSSProperties
+      }
+    >
+      <style>{`
+        :root:root .docs-theme-accents article .t_Link {
+          color: var(--docs-accent-color);
+          text-decoration-color: var(--docs-accent-background);
+        }
 
-      {/* <YStack z={-1} fullscreen bg="$accent12" /> */}
+        .docs-theme-accents .sidebar-indicator,
+        .docs-theme-accents article .tm-button {
+          background-color: var(--docs-accent-background);
+        }
 
-      {/* main layout container */}
-      <YStack minH="100vh" position="relative" z={1}>
-        {/* content row with sidebar */}
-        <XStack mx="auto" maxW={1400} width="100%">
-          {/* left sidebar - sticky */}
-          <View
-            className="is-sticky"
-            display="none"
-            $gtMd={{
-              display: 'flex',
-              position: 'sticky',
-              t: 20,
-              height: 'calc(100vh - 20px)',
-              width: 245,
-              shrink: 0,
-              alignSelf: 'flex-start',
-              x: 20,
-            }}
-          >
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <YStack pt={55} pb="$18" px="$2">
-                <DocsMenuContents />
-              </YStack>
-            </ScrollView>
-          </View>
+        .docs-theme-accents :is(a, button):focus-visible {
+          outline-color: var(--docs-accent-background) !important;
+        }
 
-          <Slot />
-        </XStack>
-      </YStack>
+        .docs-theme-accents .docs-quicknav-active {
+          stroke: var(--docs-accent-background);
+        }
 
-      {/* footer outside the main layout */}
-      <Footer />
-    </>
+        .docs-theme-accents article pre {
+          border: 1px solid var(--docs-accent-background);
+        }
+      `}</style>
+      <DocsSyntaxLayout>
+        <Slot />
+      </DocsSyntaxLayout>
+    </div>
   )
 }

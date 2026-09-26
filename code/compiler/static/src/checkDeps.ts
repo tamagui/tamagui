@@ -359,7 +359,7 @@ export async function checkDeps(root: string) {
 
   if (issues.length === 0) {
     console.info(`Tamagui dependencies look good ✅`)
-    process.exit(0)
+    return
   }
 
   for (let i = 0; i < issues.length; i++) {
@@ -367,5 +367,6 @@ export async function checkDeps(root: string) {
     console.error(issues[i])
   }
 
-  process.exit(1)
+  // the caller owns the exit; `tamagui check` still has the style half to run
+  process.exitCode = 1
 }

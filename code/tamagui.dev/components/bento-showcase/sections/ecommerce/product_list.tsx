@@ -9,7 +9,13 @@ import {
 type Props = ReturnType<typeof product_listGetComponentCodes>
 export function product_list(props: Props) {
   return (
-    <YStack pb="$10" gap="$12" padding="$2" $gtLg={{ padding: '$0' }}>
+    <YStack
+      paddingBottom="1-5 xl:0"
+      gap="88px"
+      paddingTop="1-5 xl:0"
+      paddingRight="1-5 xl:0"
+      paddingLeft="1-5 xl:0"
+    >
       <Showcase fileName={ProductList.ProductList.fileName} title="Product List">
         <Wrapper p={0}>
           <ProductList.ProductList />

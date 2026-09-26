@@ -1,82 +1,84 @@
+import { useCallback, useMemo } from 'react'
 import type { HTMLProps } from 'react'
 import type { ElementProps } from './types'
+
+type PropGetter = (userProps?: Record<string, any>) => Record<string, any>
 
 // merges prop getters from multiple interaction hooks.
 // event handlers are chained (all run), first non-undefined return value wins.
 // non-function props: user props override hook props.
+//
+// the getters are memoized on the hook outputs so a consumer can hold the
+// result in context: every interaction hook memoizes its props, so a render
+// that changes none of them keeps the same getters
 export function useInteractions(propsList: Array<ElementProps | void>) {
-  const filtered = propsList.filter(Boolean) as ElementProps[]
+  const referenceDeps = propsList.map((props) => props?.reference)
+  const floatingDeps = propsList.map((props) => props?.floating)
+  const itemDeps = propsList.map((props) => props?.item)
 
-  // collect all event handlers by event name for each element type
-  const referenceFns = new Map<string, Array<(...args: any[]) => any>>()
-  const floatingFns = new Map<string, Array<(...args: any[]) => any>>()
-  const itemFns = new Map<string, Array<(...args: any[]) => any>>()
+  const getReferenceProps = useCallback<PropGetter>(
+    (userProps) => mergeProps(referenceDeps, userProps),
+    referenceDeps
+  )
+  const getFloatingProps = useCallback<PropGetter>(
+    (userProps) => mergeProps(floatingDeps, userProps),
+    floatingDeps
+  )
+  const getItemProps = useCallback<PropGetter>(
+    (userProps) => mergeProps(itemDeps, userProps, true),
+    itemDeps
+  )
 
-  const referenceStatic: Record<string, any> = {}
-  const floatingStatic: Record<string, any> = {}
-
-  for (const props of filtered) {
-    if (props.reference) {
-      collectProps(props.reference as any, referenceFns, referenceStatic)
-    }
-    if (props.floating) {
-      collectProps(props.floating as any, floatingFns, floatingStatic)
-    }
-    if (props.item && typeof props.item === 'object') {
-      collectProps(props.item as any, itemFns, {})
-    }
-  }
-
-  return {
-    getReferenceProps(userProps?: HTMLProps<Element>) {
-      return buildProps(referenceFns, referenceStatic, userProps)
-    },
-    getFloatingProps(userProps?: HTMLProps<HTMLElement>) {
-      return buildProps(floatingFns, floatingStatic, userProps)
-    },
-    getItemProps(userProps?: HTMLProps<HTMLElement>) {
-      return buildProps(itemFns, {}, userProps)
-    },
-  }
+  return useMemo(
+    () => ({
+      getReferenceProps: getReferenceProps as (
+        userProps?: HTMLProps<Element>
+      ) => Record<string, any>,
+      getFloatingProps: getFloatingProps as (
+        userProps?: HTMLProps<HTMLElement>
+      ) => Record<string, any>,
+      getItemProps: getItemProps as (
+        userProps?: HTMLProps<HTMLElement>
+      ) => Record<string, any>,
+    }),
+    [getReferenceProps, getFloatingProps, getItemProps]
+  )
 }
 
-function collectProps(
-  props: Record<string, any>,
-  fnMap: Map<string, Array<(...args: any[]) => any>>,
-  staticMap: Record<string, any>
-) {
-  for (const key of Object.keys(props)) {
-    if (typeof props[key] === 'function') {
-      let arr = fnMap.get(key)
-      if (!arr) {
-        arr = []
-        fnMap.set(key, arr)
-      }
-      arr.push(props[key])
-    } else {
-      staticMap[key] = props[key]
-    }
-  }
-}
-
-function buildProps(
-  fnMap: Map<string, Array<(...args: any[]) => any>>,
-  staticProps: Record<string, any>,
-  userProps?: Record<string, any>
+function mergeProps(
+  list: Array<Record<string, any> | ((...args: any[]) => any) | void>,
+  userProps?: Record<string, any>,
+  objectsOnly = false
 ): Record<string, any> {
+  const fnMap = new Map<string, Array<(...args: any[]) => any>>()
   // hook static props first, then user props override
-  const result: Record<string, any> = { ...staticProps }
+  const result: Record<string, any> = {}
+
+  for (const props of list) {
+    if (!props || (objectsOnly && typeof props !== 'object')) continue
+    for (const key of Object.keys(props)) {
+      const value = (props as Record<string, any>)[key]
+      if (typeof value === 'function') {
+        let arr = fnMap.get(key)
+        if (!arr) {
+          arr = []
+          fnMap.set(key, arr)
+        }
+        arr.push(value)
+      } else {
+        result[key] = value
+      }
+    }
+  }
 
   // merge event handlers from hooks
   for (const [key, fns] of fnMap) {
-    const hookHandler = (...args: any[]) => {
+    result[key] = (...args: any[]) => {
       for (const fn of fns) {
-        const result = fn(...args)
-        if (result !== undefined) return result
+        const out = fn(...args)
+        if (out !== undefined) return out
       }
     }
-
-    result[key] = hookHandler
   }
 
   // user props override everything — but chain event handlers

@@ -7,6 +7,9 @@
   "references": [
     {
       "path": "../core"
+    },
+    {
+      "path": "../style-grammar"
     }
   ],
   "exclude": [

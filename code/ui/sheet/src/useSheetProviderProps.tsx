@@ -22,13 +22,7 @@ export type SheetContextValue = ReturnType<typeof useSheetProviderProps> & {
   setHasScrollView: (val: boolean) => void
 }
 
-export function useSheetProviderProps(
-  props: SheetProps,
-  state: SheetOpenState,
-  options: {
-    onOverlayComponent?: (comp: any) => void
-  } = {}
-) {
+export function useSheetProviderProps(props: SheetProps, state: SheetOpenState) {
   const handleRef = React.useRef<TamaguiElement>(null)
   const contentRef = React.useRef<TamaguiElement>(null)
   const [frameSize, setFrameSize] = React.useState<number>(0)
@@ -179,23 +173,7 @@ export function useSheetProviderProps(
     return bridge
   })
 
-  // Handle both new disableRemoveScroll and deprecated forceRemoveScrollEnabled
-  let disableRemoveScroll: boolean | undefined
-  if (props.disableRemoveScroll !== undefined) {
-    // New prop: disableRemoveScroll={true} means RemoveScroll is disabled
-    disableRemoveScroll = props.disableRemoveScroll || !open || !props.modal
-  } else if (props.forceRemoveScrollEnabled !== undefined) {
-    // Deprecated prop: forceRemoveScrollEnabled can override the default
-    if (process.env.NODE_ENV === 'development') {
-      console.warn(
-        '[Sheet] forceRemoveScrollEnabled is deprecated. Use disableRemoveScroll instead.'
-      )
-    }
-    disableRemoveScroll = !props.forceRemoveScrollEnabled
-  } else {
-    // Default: disabled when not open or not modal
-    disableRemoveScroll = !open || !props.modal
-  }
+  const disableRemoveScroll = props.disableRemoveScroll || !open || !props.modal
 
   const maxSnapPoint = snapPoints[0]
   const screenSize =
@@ -218,8 +196,7 @@ export function useSheetProviderProps(
     setFrameSize,
     dismissOnOverlayPress: props.dismissOnOverlayPress ?? true,
     dismissOnSnapToBottom: props.dismissOnSnapToBottom ?? false,
-    onOverlayComponent: options.onOverlayComponent,
-    scope: props.__scopeSheet,
+    scope: props.scope ?? '',
     hasFit,
     position,
     snapPoints,
@@ -227,7 +204,7 @@ export function useSheetProviderProps(
     setMaxContentSize,
     setPosition,
     setPositionImmediate,
-    onlyShowFrame: false,
+    onlyShowContainer: false,
   }
 
   return providerProps

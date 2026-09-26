@@ -4,15 +4,7 @@ const StyledButton = styled(Button, {
   variants: {
     reddish: {
       true: {
-        backgroundColor: 'yellow',
-
-        pressStyle: {
-          backgroundColor: 'red',
-        },
-
-        hoverStyle: {
-          backgroundColor: 'green',
-        },
+        backgroundColor: 'yellow hover:green press:red',
       },
     },
   } as const,

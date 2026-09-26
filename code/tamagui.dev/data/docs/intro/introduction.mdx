@@ -6,6 +6,89 @@ title: Introduction
 
 <GetStarted />
 
+## Two ways to write styles
+
+Tamagui ships two styling frontends. Both compile to the same atomic CSS on web
+and the same native styles on iOS and Android, and both accept the same tokens,
+themes, and media queries.
+
+**Style props** on `View` and `Text` are the default. They are typed and
+compile to atomic CSS on web or native styles on iOS and Android:
+
+```tsx
+import { Text, View } from 'tamagui'
+
+export const Card = () => (
+  <View padding="4" borderRadius="lg" backgroundColor="background">
+    <Text fontSize="6">Hello</Text>
+    <Text color="color-11 hover:color-12">World</Text>
+  </View>
+)
+```
+
+**Tailwind** classes on `className` are the other option, for teams who already
+think in utilities:
+
+```tsx
+import { Text, View } from '@tamagui/tailwind'
+
+export const Card = () => (
+  <View className="p-4 rounded-lg bg-background">
+    <Text className="text-2xl">Hello</Text>
+    <Text className="text-color-11 hover:text-color-12">World</Text>
+  </View>
+)
+```
+
+The choice is per import path, so one app can use both. Read
+[Components](/docs/intro/components) for the style prop path and
+[Tailwind](/docs/core/tailwind) for the utility path.
+
+## Why a compiler
+
+Cross-platform development often involves trade-offs between native feel, code reuse, and performance. React Native shares logic across platforms, but on web, styling in JavaScript can mean heavy runtime overhead and larger bundles.
+
+Tamagui resolves this with `@tamagui/static`, an optimizing compiler that:
+
+<YStack py="4">
+  <Features
+    size="5"
+    items={[
+      `Extracts every style prop, media query, theme value, and interactive state into atomic CSS.`,
+      `Removes most inline styles through partial evaluation and hoisting.`,
+      `Flattens styled components into a plain div or View, so the tree gets shallower.`,
+      `Turns useMedia and useTheme expressions into media queries and CSS variables.`,
+    ]}
+  />
+</YStack>
+
+Here is what that looks like in code:
+
+<TamaguiExamplesCode />
+
+The `Text` became a `p` and the `YStack` became a `div`. On native the same
+pass produces `Text` and `View`. Flattening is where most of the speed comes
+from. Across real apps around a third to a half of components flatten, and the
+result on web is close to hand-written CSS. On native the output is within a
+few percent of hand-optimized React Native, with the whole feature set intact.
+
+Everything still works at runtime. The compiler is an optimization you can add
+later, and a component it cannot optimize simply renders the normal way. See
+[Benchmarks](/docs/intro/benchmarks) for numbers and
+[Compiler installation](/docs/intro/compiler-install) to turn it on.
+
+## Where to go next
+
+- [Installation](/docs/intro/installation) sets up a project or hands the job
+  to a coding agent.
+- [Components](/docs/intro/components) covers `html.*`, `View`, `Text`, and how
+  they render on each platform.
+- [Styling](/docs/intro/styles) explains style props, conditional values, and
+  states.
+- [Design system](/docs/intro/design-system) introduces tokens, themes, and
+  fonts.
+- [Tailwind](/docs/core/tailwind) covers the utility class frontend.
+
 #### Highlights
 
 <Highlights
@@ -13,11 +96,11 @@ title: Introduction
   disableTitle
   large
   features={[
-    `Core only has one dependency - React - but supports the full React Native View and Text API, a superset of the React Native Style API, styled(), powerful hooks, and the typed design system helpers in ~28Kb on web.`,
-    `A smart, partial-evaluating compiler gives 0-runtime performance with the ergonomics of writing your code however you want - even inline, logic-filled code is optimized.`,
-    `Every feature works at runtime and compile-time, so none of the usual limits of 0-runtime libraries, while optionally getting the same great performance.`,
-    `useTheme and useMedia hooks with signal-like granularity and dirty tracking.`,
-    `Unstyled and styled versions of all components.`,
+    `Core depends only on React and supports the full React Native View and Text APIs, style props, styled(), hooks, and typed design tokens in ~28KB on web.`,
+    `The optimizing compiler extracts styles into atomic CSS and flattens styled components at build time.`,
+    `Every feature works with or without the compiler, with graceful fallback to runtime resolution.`,
+    `useTheme and useMedia hooks provide fine-grained subscription updates.`,
+    `Unstyled and styled variants are available for all components.`,
   ]}
 />
 
@@ -40,6 +123,6 @@ A big thanks to:
 - [Stitches](https://stitches.dev) for the variants pattern.
 - [JSXStyle](https://github.com/jsxstyle/jsxstyle) for providing the original
   version of the compiler.
-- [Modulz](https://github.com/modulz) for Radix of which we've adopted many APIs, and for the initial structure for this website.
+- [Modulz](https://github.com/modulz) for Radix, which inspired many of our component APIs, and for the initial structure of this website.
 - [Framer Motion](https://github.com/framer/motion) for the AnimatePresence
   implementation.

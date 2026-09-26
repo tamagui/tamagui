@@ -1,15 +1,25 @@
-import { createStyledContext, type SizeTokens } from '@tamagui/core'
+import { createStyledContext } from '@tamagui/core'
 
 import type { Direction, SliderContextValue } from './types'
 
 export const SLIDER_NAME = 'Slider'
 
-export const SliderContext = createStyledContext<SliderContextValue>({
-  size: '$true',
-  min: 0,
-  max: 100,
-  orientation: 'horizontal',
-} as SliderContextValue)
+const sliderContextKeys = ['size', 'min', 'max', 'orientation'] as const
+
+export const SliderContext = createStyledContext<
+  SliderContextValue,
+  (typeof sliderContextKeys)[number]
+>(
+  {
+    size: true,
+    min: 0,
+    max: 100,
+    orientation: 'horizontal',
+  } as SliderContextValue,
+  {
+    keys: sliderContextKeys,
+  }
+)
 
 export const { Provider: SliderProvider, useStyledContext: useSliderContext } =
   SliderContext
@@ -21,7 +31,7 @@ export const {
   startEdge: 'bottom' | 'left' | 'right'
   endEdge: 'top' | 'right' | 'left'
   sizeProp: 'width' | 'height'
-  size: number | SizeTokens
+  size: number
   direction: number
 }>({
   startEdge: 'left',

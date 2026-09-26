@@ -1,11 +1,16 @@
 ---
 title: Image
-description: A pure, lightweight Image component with Tamagui style props
+description: A lightweight cross-platform Image with Tamagui style props
 name: image
 component: Image
 package: image
 demoName: Image
 ---
+
+<IntroParagraph>
+  Image provides a lightweight cross-platform image component with Tamagui
+  style props and pluggable renderers.
+</IntroParagraph>
 
 <HeroContainer noPad>
   <ImageDemo />
@@ -17,10 +22,10 @@ demoName: Image
 
 <Highlights
   features={[
-    'Supports SSR.',
-    'Works on native and web.',
-    'Accepts Tamagui style props.',
-    'Pluggable architecture with createImage for expo-image and more.',
+    'Server rendering support',
+    'Native and web support',
+    'Full Tamagui style props',
+    'Pluggable image renderers, including expo-image, through createImage',
   ]}
 />
 
@@ -44,7 +49,7 @@ export default () => (
 )
 ```
 
-You can also use `objectFit` to control how the image fits its container:
+Use `objectFit` to control how the image fits its container:
 
 ```tsx
 <Image src="https://example.com/photo.jpg" width="100%" height={300} objectFit="cover" />
@@ -57,14 +62,14 @@ Image styles. Remote images must resolve to a nonzero layout size, so use fixed
 dimensions or place percentage-sized images inside a parent with defined dimensions:
 
 ```tsx
-<View width={320} height={200}>
+<html.div width={320} height={200}>
   <Image
     src="https://example.com/photo.jpg"
     width="100%"
     height="100%"
     objectFit="cover"
   />
-</View>
+</html.div>
 ```
 
 Tamagui converts a string `src` to `source={{ uri: src }}` on native. Layout
@@ -104,7 +109,7 @@ export default () => (
 )
 ```
 
-### createImage Options
+### createImage options
 
 <SimpleTable
   headers={['Option', 'Type', 'Default', 'Description']}
@@ -176,7 +181,7 @@ On React Native, use `accessible` and `accessibilityLabel` for screen reader sup
 />
 ```
 
-## API Reference
+## API reference
 
 ### Image
 
@@ -222,7 +227,7 @@ Extends View with [Tamagui props](/docs/intro/props), plus:
   ]}
 />
 
-### Web-only Props
+### Web-only props
 
 These props pass through to the native `<img>` element on web:
 
@@ -271,7 +276,7 @@ These props pass through to the native `<img>` element on web:
   ]}
 />
 
-### Accessibility Props
+### Accessibility props
 
 <PropsTable
   data={[

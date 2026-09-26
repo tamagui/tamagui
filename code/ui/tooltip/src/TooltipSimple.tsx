@@ -1,5 +1,5 @@
-import { getSpace } from '@tamagui/get-token'
-import type { SizableStackProps } from '@tamagui/stacks'
+import { createRefComponent } from '@tamagui/core'
+import type { YStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
 import * as React from 'react'
 
@@ -8,13 +8,15 @@ import { Tooltip } from './Tooltip'
 
 export type TooltipSimpleProps = TooltipProps & {
   disabled?: boolean
+  /** arrow size in px */
+  size?: number
   label?: React.ReactNode
   children?: React.ReactNode
-  contentProps?: SizableStackProps
+  contentProps?: YStackProps
 }
 
-export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
-  ({ label, children, contentProps, disabled, ...tooltipProps }, ref) => {
+export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
+  ({ label, children, contentProps, disabled, size = 7, ...tooltipProps }, ref) => {
     'use no memo'
 
     const child = React.Children.only(children)
@@ -46,35 +48,33 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
         </Tooltip.Trigger>
 
         <Tooltip.Content
-          enterStyle={{ y: -4, opacity: 0, scale: 0.96 }}
-          exitStyle={{ y: -4, opacity: 0, scale: 0.96 }}
-          scale={1}
-          elevation="$0.5"
-          opacity={1}
+          theme="brand"
+          y="enter:-4px exit:-4px"
+          scale="1 enter:0.96 exit:0.96"
+          opacity="1 enter:0 exit:0"
           pointerEvents="none"
-          paddingVertical={getSpace(tooltipProps.size || '$true', {
-            shift: -4,
-          })}
-          animateOnly={['transform', 'opacity']}
-          transition={[
-            'quicker',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
+          paddingHorizontal="2"
+          paddingVertical="1"
+          borderRadius={6}
+          boxShadow="0 2px 4px shadow-color"
+          transition={{
+            preset: 'quicker',
+            properties: 'transform, opacity',
+            opacity: { preset: 'quicker', spring: { overshootClamping: true } },
+          }}
           {...contentProps}
         >
-          <Tooltip.Arrow />
+          <Tooltip.Arrow
+            size={size}
+            backgroundColor="background"
+            borderColor="border-color"
+          />
           <Paragraph
             maxWidth={350}
             overflow="hidden"
-            size="$3"
             textAlign="center"
-            $platform-web={{
-              textWrap: 'balance',
-            }}
+            textWrap="web:balance"
+            size="3"
           >
             {label}
           </Paragraph>

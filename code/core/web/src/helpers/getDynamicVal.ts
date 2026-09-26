@@ -28,6 +28,10 @@ const colorStyleKeys: Record<string, boolean> = {
   textShadowColor: true,
   tintColor: true,
   outlineColor: true,
+  placeholderTextColor: true,
+  selectionColor: true,
+  cursorColor: true,
+  selectionHandleColor: true,
 }
 
 /**

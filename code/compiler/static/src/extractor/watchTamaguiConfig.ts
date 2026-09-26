@@ -1,6 +1,11 @@
 import type { TamaguiOptions } from '@tamagui/types'
+import { createRequire } from 'node:module'
 import { esbuildWatchFiles, generateThemesAndLog, getOptions } from './loadTamagui'
 import { regenerateConfig } from './regenerateConfig'
+
+const nodeRequire = createRequire(
+  typeof __filename === 'string' ? __filename : import.meta.url
+)
 
 let isWatching = false
 
@@ -43,7 +48,7 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
   if (themeBuilderInput) {
     let inputPath = themeBuilderInput
     try {
-      inputPath = require.resolve(themeBuilderInput)
+      inputPath = nodeRequire.resolve(themeBuilderInput)
     } catch {
       // ok
     }

@@ -5,10 +5,7 @@ export function FocusVisibleButton() {
     <Button
       id="focus-visible-button"
       borderColor="red"
-      borderWidth={1}
-      focusVisibleStyle={{
-        borderWidth: 2,
-      }}
+      borderWidth="1px focus-visible:2px"
     />
   )
 }

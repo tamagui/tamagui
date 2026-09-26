@@ -1,0 +1,9 @@
+{
+  "name": "@tamagui/comparison-v2-control",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@tamagui/config-default": "2.6.2",
+    "tamagui": "2.6.2"
+  }
+}

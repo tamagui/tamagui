@@ -1,15 +1,11 @@
-import {
-  type CreateBaseMenuProps,
-  createNativeMenu,
-  withNativeMenu,
-} from '@tamagui/create-menu'
+import { createNativeMenu, withNativeMenu } from '@tamagui/create-menu'
 import { isWeb, withStaticProperties } from '@tamagui/web'
 import React from 'react'
 import { DROPDOWN_MENU_CONTEXT, createNonNativeMenu } from './createNonNativeMenu'
 
-export function createMenu(params: CreateBaseMenuProps) {
+export function createMenu() {
   const { Menu: NativeMenuRoot } = createNativeMenu('Menu')
-  const NonNativeMenu = createNonNativeMenu(params)
+  const NonNativeMenu = createNonNativeMenu()
 
   const COMMON_PARAMS = {
     isRoot: false,

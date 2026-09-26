@@ -1,9 +1,9 @@
 export declare const context: import("@tamagui/web").StyledContext<{
-    color: string;
+    color?: string;
     active: boolean;
-}>;
+}, "active" | "color">;
 export declare const useToggleGroupItem: () => {
-    color: string;
+    color?: string;
     active: boolean;
 };
 //# sourceMappingURL=context.d.ts.map

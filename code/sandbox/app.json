@@ -2,15 +2,19 @@
   "expo": {
     "name": "one-example",
     "slug": "one-example",
-    "newArchEnabled": true,
     "platforms": ["ios", "android"],
-    "plugins": ["vxrn/expo-plugin"],
+    "plugins": [
+      "vxrn/expo-plugin",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./public/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#000000"
+        }
+      ]
+    ],
     "icon": "./public/app-icon.png",
-    "splash": {
-      "image": "./public/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#000000"
-    },
     "ios": {
       "bundleIdentifier": "com.natew.oneexample"
     },

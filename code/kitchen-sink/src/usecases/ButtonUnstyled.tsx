@@ -1,15 +1,27 @@
 import { Button, styled } from 'tamagui'
 
-const Unstyled = styled(Button, {
-  unstyled: true,
+const PlainButton = styled(Button, {
+  variants: {
+    plain: {
+      true: {
+        backgroundColor: 'transparent hover:transparent press:transparent',
+        padding: 0,
+        borderWidth: 0,
+        borderColor: 'hover:transparent press:transparent',
+      },
+    },
+  } as const,
 })
 
-const UnstyledMerged = styled(Button, {
-  unstyled: true,
+const PlainStyled = styled(PlainButton, {
+  plain: true,
+})
+
+const PlainMerged = styled(PlainButton, {
+  plain: true,
 
   variants: {
-    // override one thing
-    unstyled: {
+    plain: {
       true: {
         borderWidth: 2,
         borderColor: 'green',
@@ -20,12 +32,12 @@ const UnstyledMerged = styled(Button, {
 
 export const ButtonUnstyled = () => (
   <>
-    <Button id="unstyled-inline" unstyled>
+    <PlainButton id="plain-inline" plain>
       hi
-    </Button>
+    </PlainButton>
 
-    <Unstyled id="unstyled-styled">hi</Unstyled>
+    <PlainStyled id="plain-styled">hi</PlainStyled>
 
-    <UnstyledMerged id="unstyled-merged">hi</UnstyledMerged>
+    <PlainMerged id="plain-merged">hi</PlainMerged>
   </>
 )

@@ -5,7 +5,6 @@ tags:
 - runFlow: OpenApp.yaml
 - scrollUntilVisible:
     element: 'Toast'
-    centerElement: true
 - tapOn: 'Toast'
 - waitForAnimationToEnd
 

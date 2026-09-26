@@ -1,6 +1,6 @@
 appId: com.tamagui.kitchen-sink
 ---
-# Test that shorthand CSS properties with $variables render correctly on native
+# Test that shorthand CSS properties with theme variables render correctly on native
 - launchApp
 - tapOn:
     text: 'All Test Cases'
@@ -19,5 +19,5 @@ appId: com.tamagui.kitchen-sink
     id: 'border-var'
 - assertVisible:
     id: 'boxshadow-plain'
-# Note: boxShadow with $variable resolves to actual color on native (RN 0.77+)
+# Note: boxShadow with a theme variable resolves to an actual color on native (RN 0.77+)
 # border shorthand is web-only; native falls back to individual border props

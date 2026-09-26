@@ -10,12 +10,6 @@
   ],
   "references": [
     {
-      "path": "../create-theme"
-    },
-    {
-      "path": "../theme-builder"
-    },
-    {
       "path": "../types"
     }
   ]

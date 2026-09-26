@@ -26,6 +26,35 @@
     "react-hooks/rules-of-hooks": "error",
     "typescript/consistent-type-imports": "off"
   },
+  "overrides": [
+    {
+      "files": [
+        "code/tamagui.dev/**/*.ts",
+        "code/tamagui.dev/**/*.tsx"
+      ],
+      "excludeFiles": [
+        "**/*.native.ts",
+        "**/*.native.tsx"
+      ],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              {
+                "name": "react-native",
+                "message": "web is independent of react-native in v3; import ScrollView/View/etc from 'tamagui' or a @tamagui/* package, and put native-only code in a .native.tsx file"
+              },
+              {
+                "name": "react-native-web",
+                "message": "web is independent of react-native-web in v3; import from 'tamagui' or a @tamagui/* package"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
   "ignorePatterns": [
     "**/scripts/**",
     "**/.tamagui/**",

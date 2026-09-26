@@ -13,59 +13,25 @@ const variants = {
 
 export const Container = styled(YStack, {
   mx: 'auto',
-  px: '$4',
+  paddingLeft: '4',
+  pr: '4 md:1-5 lg:1-5 xl:14',
   width: '100%',
-
-  $gtSm: {
-    maxW: 700,
-    pr: '$2',
-  },
-
-  $gtMd: {
-    maxW: 740,
-    pr: '$2',
-  },
-
-  $gtLg: {
-    maxW: 800,
-    pr: '$10',
-  },
-
+  maxW: 'md:700px lg:740px xl:800px',
   variants,
 })
 
 export const ContainerLarge = styled(YStack, {
   mx: 'auto',
-  px: '$4',
+  px: '4',
   width: '100%',
-
-  $gtSm: {
-    maxW: 980,
-  },
-
-  $gtMd: {
-    maxW: 1140,
-  },
-
+  maxW: 'md:980px lg:1140px',
   variants,
 })
 
 export const ContainerXL = styled(YStack, {
   mx: 'auto',
-  px: '$4',
+  px: '4',
   width: '100%',
-
-  $gtSm: {
-    maxW: 980,
-  },
-
-  $gtMd: {
-    maxW: 1240,
-  },
-
-  $gtLg: {
-    maxW: 1440,
-  },
-
+  maxW: 'md:980px lg:1240px xl:1440px',
   variants,
 })

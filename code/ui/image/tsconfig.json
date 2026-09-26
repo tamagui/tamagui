@@ -13,6 +13,9 @@
       "path": "../../core/constants"
     },
     {
+      "path": "../../core/react-native-types"
+    },
+    {
       "path": "../../core/web"
     }
   ]

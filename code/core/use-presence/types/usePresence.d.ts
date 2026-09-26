@@ -1,5 +1,5 @@
-import type { PresenceContextProps, UsePresenceResult } from "@tamagui/web";
-export declare function usePresence(): UsePresenceResult;
+import type { PresenceContextProps, PresenceRegistration, UsePresenceResult } from "@tamagui/web";
+export declare function usePresence(registration?: PresenceRegistration): UsePresenceResult;
 /**
 * Similar to `usePresence`, except `useIsPresent` simply returns whether or not the component is present.
 * There is no `safeToRemove` function.

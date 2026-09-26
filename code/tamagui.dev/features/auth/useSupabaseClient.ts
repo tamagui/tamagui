@@ -1,4 +1,4 @@
-import { AuthClient, type Session } from '@supabase/auth-js'
+import type { AuthClient, Session } from '@supabase/auth-js'
 import { useEffect, useState } from 'react'
 import { useSWRConfig } from 'swr'
 
@@ -8,89 +8,70 @@ type SupabaseAuthOnlyClient = {
   auth: InstanceType<typeof AuthClient>
 }
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-// Initialize client eagerly - @supabase/auth-js is small (~30kb) and has no ws/realtime deps
-function createClient(): SupabaseAuthOnlyClient | null {
-  if (typeof window === 'undefined') return null
-
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-    console.error(`Missing supabase info`)
-    return null
-  }
-
-  const authClient = new AuthClient({
-    url: `${SUPABASE_URL}/auth/v1`,
-    headers: {
-      apikey: SUPABASE_ANON_KEY,
-      Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-    },
-    storageKey: 'sb-auth-token',
-    storage: window.localStorage,
-    flowType: 'pkce',
-    detectSessionInUrl: false, // We handle OAuth callback manually in /auth
-    lockAcquireTimeout: 30000, // 30s to avoid lock steal/broken errors from tab throttling
-  })
-
-  return { auth: authClient }
-}
+const STORAGE_KEY = 'sb-auth-token'
 
 let client: SupabaseAuthOnlyClient | null = null
+let loading: Promise<SupabaseAuthOnlyClient | null> | null = null
+
+// auth-js is ~97kb with the webauthn helper it depends on, and the site header
+// mounts useUser on every page. load it on demand instead: a signed-out visitor
+// never pays for it, and a signed-in one only pays when the token needs refreshing.
+export function getAuthClient(): Promise<SupabaseAuthOnlyClient | null> {
+  if (typeof window === 'undefined') return Promise.resolve(null)
+  if (client) return Promise.resolve(client)
+  loading ||= import('./authClient').then(({ createAuthClient }) => {
+    client = createAuthClient()
+    if (client) {
+      globalThis['supabaseClient'] = client
+    }
+    return client
+  })
+  return loading
+}
+
+function readStoredSession(): { access_token: string; expires_at?: number } | null {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (!stored) return null
+    const parsed = JSON.parse(stored)
+    return typeof parsed?.access_token === 'string' ? parsed : null
+  } catch {
+    return null
+  }
+}
 
 // Get the current access token - can be called outside React
 export async function getAccessToken(): Promise<string | null> {
   if (typeof window === 'undefined') return null
 
-  // Ensure client is initialized
-  if (!client) {
-    client = createClient()
-    if (client) {
-      globalThis['supabaseClient'] = client
-    }
+  const stored = readStoredSession()
+  if (!stored) return null
+
+  // only pull in auth-js when the stored token is spent and needs a refresh
+  if (stored.expires_at && stored.expires_at * 1000 - Date.now() > 60_000) {
+    return stored.access_token
   }
 
-  // Try via client first
-  if (client) {
-    const { data, error } = await client.auth.getSession()
-    if (!error && data.session) {
-      return data.session.access_token
-    }
-  }
+  const supabase = await getAuthClient()
+  if (!supabase) return null
 
-  // Fallback: read directly from localStorage
-  // This handles the case where SWR fetches before the client is fully ready
-  try {
-    const stored = localStorage.getItem('sb-auth-token')
-    if (stored) {
-      const parsed = JSON.parse(stored)
-      if (parsed.access_token) {
-        return parsed.access_token
-      }
-    }
-  } catch {
-    // ignore parse errors
-  }
-
-  return null
+  const { data, error } = await supabase.auth.getSession()
+  return error ? null : (data.session?.access_token ?? null)
 }
 
 export function useSupabaseClient(given?: SupabaseAuthOnlyClient) {
   const [current, setCurrent] = useState(() => given ?? client)
 
   useEffect(() => {
-    // if we already have it in state, nothing to do
     if (current) return
-    // if module-level client exists, sync it to state
-    if (client) {
-      setCurrent(client)
-      return
-    }
-    // otherwise create it
-    client = createClient()
-    if (client) {
-      globalThis['supabaseClient'] = client
-      setCurrent(client)
+    let cancelled = false
+    getAuthClient().then((next) => {
+      if (!cancelled && next) {
+        setCurrent(next)
+      }
+    })
+    return () => {
+      cancelled = true
     }
   }, [current])
 

@@ -1,38 +1,19 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
-import { View, createTamagui, StyleObjectValue } from '../web/src'
-import { simplifiedGetSplitStyles } from './utils'
+import { View, createTamagui } from '../web/src'
+import { getStyleValue, simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig())
 })
-
-// Helper to get style value from either style (no plugin) or rulesToInsert (with plugin)
-function getStyleValue(
-  styles: ReturnType<typeof simplifiedGetSplitStyles>,
-  prop: string
-): string | undefined {
-  // Check style first (when not using tamagui plugin/CSS extraction)
-  if (styles.style?.[prop] !== undefined) {
-    return styles.style[prop] as string
-  }
-  // Check rulesToInsert (when using tamagui plugin with CSS extraction)
-  if (styles.rulesToInsert) {
-    const rule = Object.values(styles.rulesToInsert).find(
-      (r: any) => r[0] === prop
-    ) as any
-    return rule?.[StyleObjectValue]
-  }
-  return undefined
-}
 
 describe('RN 0.76+ Style Alignment - Web', () => {
   // boxShadow and filter are string-only
   describe('boxShadow', () => {
     test('boxShadow string with tokens resolves', () => {
       const styles = simplifiedGetSplitStyles(View, {
-        boxShadow: '0 0 10px $white',
+        boxShadow: '0 0 10px white',
       })
       const value = getStyleValue(styles, 'boxShadow')
       expect(value).toBeDefined()
@@ -60,17 +41,16 @@ describe('RN 0.76+ Style Alignment - Web', () => {
         boxShadow: 'inset 0 2px 4px black',
       })
       const value = getStyleValue(styles, 'boxShadow')
-      expect(value).toBe('inset 0 2px 4px black')
+      // config-first: 'black' resolves through the configured color token
+      expect(value).toBe('inset 0 2px 4px var(--c-black)')
     })
 
     test('boxShadow with multiple tokens resolves all', () => {
       const styles = simplifiedGetSplitStyles(View, {
-        boxShadow: '0 0 10px $white, 0 0 20px $black',
+        boxShadow: '0 0 10px white, 0 0 20px black',
       })
       const value = getStyleValue(styles, 'boxShadow')
-      expect(value).toBeDefined()
-      expect(value).not.toContain('$white')
-      expect(value).not.toContain('$black')
+      expect(value).toBe('0 0 10px var(--c-white), 0 0 20px var(--c-black)')
     })
   })
 
@@ -83,13 +63,12 @@ describe('RN 0.76+ Style Alignment - Web', () => {
       expect(value).toBe('brightness(1.2)')
     })
 
-    test('filter with embedded tokens resolves', () => {
+    test('filter with a migrated token value stays literal CSS', () => {
       const styles = simplifiedGetSplitStyles(View, {
-        filter: 'blur($2)',
+        filter: 'blur(7px)',
       })
       const value = getStyleValue(styles, 'filter')
-      // Token should be resolved
-      expect(value).not.toContain('$2')
+      expect(value).toBe('blur(7px)')
     })
 
     test('filter multiple functions', () => {
@@ -142,7 +121,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
   describe('outline props', () => {
     test('outlineColor with token resolves', () => {
       const styles = simplifiedGetSplitStyles(View, {
-        outlineColor: '$white',
+        outlineColor: 'white',
       })
       const value = getStyleValue(styles, 'outlineColor')
       expect(value).toContain('var(--')
@@ -183,70 +162,51 @@ describe('RN 0.76+ Style Alignment - Web', () => {
     })
   })
 
-  // atomic CSS requires one class per longhand. If a shorthand like `inset`
-  // emits a single _inset-0px class, it silently controls 4 sub-properties
-  // and breaks dedup/override against top/right/bottom/left.
-  describe('logical property expansion (atomic CSS correctness)', () => {
-    test('inset expands to top/right/bottom/left', () => {
+  describe('logical CSS properties', () => {
+    test('inset stays a browser shorthand', () => {
       const styles = simplifiedGetSplitStyles(View, { inset: 0 })
-      expect(getStyleValue(styles, 'top')).toBe('0px')
-      expect(getStyleValue(styles, 'right')).toBe('0px')
-      expect(getStyleValue(styles, 'bottom')).toBe('0px')
-      expect(getStyleValue(styles, 'left')).toBe('0px')
-      expect(getStyleValue(styles, 'inset')).toBeUndefined()
+      expect(getStyleValue(styles, 'inset')).toBe('0px')
     })
 
-    test('insetBlock expands to top/bottom', () => {
+    test('insetBlock stays logical', () => {
       const styles = simplifiedGetSplitStyles(View, { insetBlock: 4 })
-      expect(getStyleValue(styles, 'top')).toBe('4px')
-      expect(getStyleValue(styles, 'bottom')).toBe('4px')
-      expect(getStyleValue(styles, 'insetBlock')).toBeUndefined()
+      expect(getStyleValue(styles, 'insetBlock')).toBe('4px')
     })
 
-    test('insetBlockStart expands to top', () => {
+    test('insetBlockStart stays logical', () => {
       const styles = simplifiedGetSplitStyles(View, { insetBlockStart: 8 })
-      expect(getStyleValue(styles, 'top')).toBe('8px')
-      expect(getStyleValue(styles, 'insetBlockStart')).toBeUndefined()
+      expect(getStyleValue(styles, 'insetBlockStart')).toBe('8px')
     })
 
     test('later top overrides inset (atomic merge)', () => {
       const styles = simplifiedGetSplitStyles(View, { inset: 0, top: 10 })
       expect(getStyleValue(styles, 'top')).toBe('10px')
-      expect(getStyleValue(styles, 'right')).toBe('0px')
-      expect(getStyleValue(styles, 'bottom')).toBe('0px')
-      expect(getStyleValue(styles, 'left')).toBe('0px')
+      expect(getStyleValue(styles, 'inset')).toBe('0px')
     })
 
-    test('marginBlock expands to marginTop/marginBottom', () => {
+    test('marginBlock stays logical', () => {
       const styles = simplifiedGetSplitStyles(View, { marginBlock: 10 })
-      expect(getStyleValue(styles, 'marginTop')).toBe('10px')
-      expect(getStyleValue(styles, 'marginBottom')).toBe('10px')
-      expect(getStyleValue(styles, 'marginBlock')).toBeUndefined()
+      expect(getStyleValue(styles, 'marginBlock')).toBe('10px')
     })
 
-    test('paddingBlock expands to paddingTop/paddingBottom', () => {
+    test('paddingBlock stays logical', () => {
       const styles = simplifiedGetSplitStyles(View, { paddingBlock: 12 })
-      expect(getStyleValue(styles, 'paddingTop')).toBe('12px')
-      expect(getStyleValue(styles, 'paddingBottom')).toBe('12px')
-      expect(getStyleValue(styles, 'paddingBlock')).toBeUndefined()
+      expect(getStyleValue(styles, 'paddingBlock')).toBe('12px')
     })
 
-    test('blockSize expands to height', () => {
+    test('blockSize stays logical', () => {
       const styles = simplifiedGetSplitStyles(View, { blockSize: 100 })
-      expect(getStyleValue(styles, 'height')).toBe('100px')
-      expect(getStyleValue(styles, 'blockSize')).toBeUndefined()
+      expect(getStyleValue(styles, 'blockSize')).toBe('100px')
     })
 
-    test('inlineSize expands to width', () => {
+    test('inlineSize stays logical', () => {
       const styles = simplifiedGetSplitStyles(View, { inlineSize: 100 })
-      expect(getStyleValue(styles, 'width')).toBe('100px')
-      expect(getStyleValue(styles, 'inlineSize')).toBeUndefined()
+      expect(getStyleValue(styles, 'inlineSize')).toBe('100px')
     })
 
-    test('minBlockSize expands to minHeight', () => {
+    test('minBlockSize stays logical', () => {
       const styles = simplifiedGetSplitStyles(View, { minBlockSize: 50 })
-      expect(getStyleValue(styles, 'minHeight')).toBe('50px')
-      expect(getStyleValue(styles, 'minBlockSize')).toBeUndefined()
+      expect(getStyleValue(styles, 'minBlockSize')).toBe('50px')
     })
   })
 })

@@ -1,0 +1,67 @@
+{
+  "typography": {
+    "samples": [
+      33.27966600000002,
+      33.657249999999976,
+      37.129332999999974,
+      36.032959000000005,
+      36.49854099999993,
+      34.62549999999999,
+      38.35133300000007
+    ],
+    "medianMs": 36.032959000000005,
+    "checksum": "{\"hasMedia\":false,\"fontFamily\":\"body\",\"viewProps\":{\"className\":\"is_Text font_body _ff-398455870 _fs-1892529921 _lh-95508644 _fw-2094995091 _ls-981199540\"},\"style\":null,\"classNames\":{\"fontFamily\":\"_ff-398455870\",\"fontSize\":\"_fs-1892529921\",\"lineHeight\":\"_lh-95508644\",\"fontWeight\":\"_fw-2094995091\",\"letterSpacing\":\"_ls-981199540\"},\"rulesToInsert\":{\"_ff-398455870\":[\"fontFamily\",\"var(--f-family)\",\"_ff-398455870\",null,[\"._ff-398455870{font-family:var(--f-family)}\"]],\"_fs-1892529921\":[\"fontSize\",\"var(--f-size-4)\",\"_fs-1892529921\",null,[\"._fs-1892529921{font-size:var(--f-size-4)}\"]],\"_lh-95508644\":[\"lineHeight\",\"var(--f-lineHeight-4)\",\"_lh-95508644\",null,[\"._lh-95508644{line-height:var(--f-lineHeight-4)}\"]],\"_fw-2094995091\":[\"fontWeight\",\"var(--f-weight-4)\",\"_fw-2094995091\",null,[\"._fw-2094995091{font-weight:var(--f-weight-4)}\"]],\"_ls-981199540\":[\"letterSpacing\",\"var(--f-letterSpacing-4)\",\"_ls-981199540\",null,[\"._ls-981199540{letter-spacing:var(--f-letterSpacing-4)}\"]]}}"
+  },
+  "regular": {
+    "samples": [
+      18.322374999999965,
+      18.359540999999922,
+      20.718375000000037,
+      18.80854099999999,
+      17.841583000000014,
+      17.76145900000006,
+      19.140709000000015
+    ],
+    "medianMs": 18.359540999999922,
+    "checksum": "{\"hasMedia\":false,\"viewProps\":{\"className\":\"is_View _p-416156015 _b-533410013 card selected user\"},\"style\":null,\"classNames\":{\"padding\":\"_p-416156015\",\"background\":\"_b-533410013\"},\"rulesToInsert\":{\"_p-416156015\":[\"padding\",\"var(--t-space-4)\",\"_p-416156015\",null,[\"._p-416156015{padding:var(--t-space-4)}\"]],\"_b-533410013\":[\"backgroundColor\",\"blue\",\"_b-533410013\",null,[\"._b-533410013{background-color:red}\",\"@media (hover: hover) {._b-533410013:where(:hover){background-color:blue}}\"]]},\"programStates\":{},\"platformPseudo\":true}"
+  },
+  "owned": {
+    "samples": [
+      34.41712499999994,
+      34.6653339999998,
+      38.42812499999991,
+      39.053125000000136,
+      32.276792000000114,
+      31.645499999999856,
+      30.793332999999848
+    ],
+    "medianMs": 34.41712499999994,
+    "checksum": "{\"hasMedia\":false,\"viewProps\":{\"className\":\"is_View _d-255188251 _p-416156015 _g-1878760728 _b-533410013 rounded-lg\"},\"style\":null,\"classNames\":{\"display\":\"_d-255188251\",\"padding\":\"_p-416156015\",\"gap\":\"_g-1878760728\",\"background\":\"_b-533410013\"},\"rulesToInsert\":{\"_d-255188251\":[\"display\",\"flex\",\"_d-255188251\",null,[\"._d-255188251{display:flex}\"]],\"_p-416156015\":[\"padding\",\"var(--t-space-4)\",\"_p-416156015\",null,[\"._p-416156015{padding:var(--t-space-4)}\"]],\"_g-1878760728\":[\"gap\",\"var(--t-space-2)\",\"_g-1878760728\",null,[\"._g-1878760728{gap:var(--t-space-2)}\"]],\"_b-533410013\":[\"backgroundColor\",\"blue\",\"_b-533410013\",null,[\"._b-533410013{background-color:red}\",\"@media (hover: hover) {._b-533410013:where(:hover){background-color:blue}}\"]]},\"programStates\":{},\"platformPseudo\":true}"
+  },
+  "composed": {
+    "samples": [
+      27.55616699999996,
+      26.953250000000025,
+      27.61191699999995,
+      26.09354200000007,
+      26.474166999999852,
+      26.03129100000001,
+      26.451332999999977
+    ],
+    "medianMs": 26.474166999999852,
+    "checksum": "{\"hasMedia\":false,\"viewProps\":{\"className\":\"is_View _p-416156015 _b-679090140 _bs-968027644\"},\"style\":null,\"classNames\":{\"padding\":\"_p-416156015\",\"background\":\"_b-679090140\",\"boxShadow\":\"_bs-968027644\"},\"rulesToInsert\":{\"_p-416156015\":[\"padding\",\"var(--t-space-4)\",\"_p-416156015\",null,[\"._p-416156015{padding:var(--t-space-4)}\"]],\"_b-679090140\":[\"backgroundImage\",\"linear-gradient(to right, red, blue)\",\"_b-679090140\",null,[\"._b-679090140{background-image:linear-gradient(to right, red, blue)}\"]],\"_bs-968027644\":[\"boxShadow\",\"0 0 0 4px red\",\"_bs-968027644\",null,[\"._bs-968027644{box-shadow:0 0 0 2px red}\",\"@media (hover: hover) {._bs-968027644:where(:hover){box-shadow:0 0 0 4px red}}\"]]},\"programStates\":{},\"platformPseudo\":true}"
+  },
+  "mixed": {
+    "samples": [
+      23.535167,
+      24.599292000000105,
+      26.241042000000107,
+      20.328874999999925,
+      20.417667000000165,
+      22.075833000000102,
+      20.602416000000176
+    ],
+    "medianMs": 22.075833000000102,
+    "checksum": "{\"hasMedia\":false,\"viewProps\":{\"className\":\"is_View _p-416156015 user-class other-class\",\"style\":{\"backgroundColor\":\"red\",\"boxShadow\":\"0 0 0 2px currentColor\"}},\"style\":{\"backgroundColor\":\"red\",\"boxShadow\":\"0 0 0 2px currentColor\"},\"classNames\":{\"padding\":\"_p-416156015\"},\"rulesToInsert\":{\"_p-416156015\":[\"padding\",\"var(--t-space-4)\",\"_p-416156015\",null,[\"._p-416156015{padding:var(--t-space-4)}\"]]},\"programStates\":{},\"platformPseudo\":true}"
+  }
+}

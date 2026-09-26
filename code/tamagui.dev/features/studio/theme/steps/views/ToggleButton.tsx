@@ -1,17 +1,15 @@
-import { Button, styled } from 'tamagui'
+import { styled } from 'tamagui'
+import { Button } from '~/components/Button'
 
 export const ToggleButton = styled(Button, {
-  size: '$2.5',
-  rounded: '$0',
+  size: 'sm',
+  rounded: '0',
   flex: 1,
-
   variants: {
+    // the active theme is set by the caller: variants hold styles only
     active: {
-      true: {
-        theme: 'accent',
-      },
       false: {
-        chromeless: true,
+        variant: 'quiet',
       },
     },
   } as const,

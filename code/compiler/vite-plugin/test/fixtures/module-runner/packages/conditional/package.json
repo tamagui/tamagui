@@ -1,0 +1,11 @@
+{
+  "name": "@fixture/conditional",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "browser": "./browser.ts",
+      "default": "./default.ts"
+    }
+  }
+}

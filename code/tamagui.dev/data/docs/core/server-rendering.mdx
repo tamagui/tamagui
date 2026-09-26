@@ -3,19 +3,22 @@ title: Server Rendering
 description: Advanced SSR, hydration, and client-only rendering in Tamagui
 ---
 
-Tamagui takes a unique approach to server-side rendering that goes beyond typical SSR solutions, ensuring perfect hydration with zero flickering even when using spring animations.
+<IntroParagraph>
+  Tamagui renders responsive styles and animation state on the server so the
+  first client frame can hydrate without flickering.
+</IntroParagraph>
 
-## How It Works
+## How it works
 
-Unlike other libraries that simply render default values and re-render on the client, Tamagui uses a three-phase approach:
+Tamagui renders in three phases:
 
 1. **Server**: Renders with proper CSS media queries for everything, including components using spring animation drivers (which normally require hard-coded values)
 2. **Client (first render)**: Renders with CSS to match the server output perfectly
 3. **Client (after hydration)**: Seamlessly swaps to springs and animations
 
-This approach delivers perfect hydration with zero flickering, even for complex responsive layouts with animations.
+Hydration matches the server output without flickering, even for responsive layouts with animations.
 
-## Opting Out
+## Opting out
 
 You can opt out of SSR entirely or for specific parts of your app.
 
@@ -40,7 +43,7 @@ When `disableSSR` is true:
 - No double render occurs
 - Your entire app is wrapped with `<ClientOnly enabled>`
 
-### Partial: ClientOnly Component
+### Partial: ClientOnly component
 
 For fine-grained control, wrap specific parts of your tree:
 
@@ -62,7 +65,7 @@ function MyComponent() {
 }
 ```
 
-## Configuration Component
+## Configuration component
 
 The `Configuration` component is essentially a shorthand for `ClientOnly`. It accepts [configuration settings](/docs/core/configuration) like `disableSSR`:
 
@@ -93,7 +96,7 @@ function ResponsiveComponent() {
 }
 ```
 
-## SSR Hooks
+## SSR hooks
 
 ### useDidFinishSSR
 
@@ -144,13 +147,13 @@ import { useClientValue } from '@tamagui/use-did-finish-ssr'
 function WindowInfo() {
   const width = useClientValue(() => window.innerWidth)
 
-  return <Text>{width ? `${width}px` : 'Loading...'}</Text>
+  return <html.span>{width ? `${width}px` : 'Loading...'}</html.span>
 }
 ```
 
-## Best Practices
+## Best practices
 
-### When to Use disableSSR
+### When to use disableSSR
 
 **Use it for:**
 
@@ -164,7 +167,7 @@ function WindowInfo() {
 - Server-rendered frameworks (Next.js SSR/SSG)
 - Fast initial page loads
 
-### When to Use ClientOnly
+### When to use ClientOnly
 
 **Use it for:**
 
@@ -190,13 +193,13 @@ function ProductPage({ product }) {
 }
 ```
 
-### When to Use Hooks
+### When to use hooks
 
 - `useDidFinishSSR`: Conditional rendering based on hydration state
 - `useIsClientOnly`: Checking client-only context for browser APIs
 - `useClientValue`: Shorthand for client-only values
 
-## Package Reference
+## Package reference
 
 ```tsx
 import {
@@ -207,8 +210,8 @@ import {
 } from '@tamagui/use-did-finish-ssr'
 ```
 
-## See Also
+## See also
 
-- [Configuration](/docs/core/configuration) - Learn more about settings
-- [useMedia](/docs/core/use-media) - Responsive media queries
-- [Themes](/docs/intro/themes) - Theme system and context
+- [Configuration](/docs/core/configuration): learn more about settings
+- [useMedia](/docs/core/use-media): responsive media queries
+- [Themes](/docs/intro/themes): theme system and context

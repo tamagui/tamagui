@@ -1,17 +1,18 @@
 ---
-title: Native UI
-description: Optional native integrations for better performance and UX
+title: Native
+description: Native integrations for portals, sheets, menus, toasts, and gradients
 name: native
 ---
 
-# Native Integrations
+<IntroParagraph>
+  `@tamagui/native` connects Tamagui UI components to platform integrations for
+  gestures, portals, sheets, menus, toasts, and gradients.
+</IntroParagraph>
 
-Tamagui components work great out of the box, but several offer optional native
-integrations for improved performance and platform-native UX. All native
-integrations are opt-in - components work without them, just with slightly
-different behavior.
+For native press handling and the style runtime, see
+[core Native](/docs/core/native).
 
-## @tamagui/native Package
+## Setup
 
 The `@tamagui/native` package provides setup utilities for native integrations.
 Import the setup modules at your app's entry point, before any Tamagui imports.
@@ -24,16 +25,16 @@ npm install @tamagui/native
   `@tamagui/native` is a light setup package. When you use one of its optional
   integrations, make sure the matching native dependency is installed in your
   app as well, such as `react-native-gesture-handler`, `react-native-teleport`,
-  `zeego`, or `burnt`. In a monorepo, install those native packages in the
+  `@expo/ui`, `zeego`, or `burnt`. In a monorepo, install those native packages in the
   parent app or workspace root rather than a leaf package.
 </Notice>
 
 ## Portal
 
-**Native portals preserve React context** - the default implementation on native
-uses a JS-based approach that breaks React context, or requires you to hoist data
-awkwardly. With native portals, your custom contexts (navigation, app state)
-work inside Sheet, Dialog, Popover, and other portaled content.
+**Native portals preserve React context**. The default implementation on native
+uses a JS-based approach that breaks React context, or requires you to hoist
+data awkwardly. With native portals, your custom contexts (navigation, app
+state) work inside Sheet, Dialog, Popover, and other portaled content.
 
 ### Setup
 
@@ -46,108 +47,47 @@ npm install react-native-teleport
 import '@tamagui/native/setup-teleport'
 ```
 
-See [Portal docs](/docs/components/portal) for full details.
+See [Portal docs](/ui/portal) for full details.
 
 ## Gesture Handler
 
-**Native gesture handling** - powers two features:
-
-1. **Press events** - `onPress` uses RNGH for more reliable press detection with
-   proper gesture coordination. Matches RN Pressable semantics where only the
-   innermost pressable fires (no double-firing with nested buttons).
-
-2. **Sheet gestures** - makes sheets feel smoother and not get confused with
-   scrollable content during drags.
-
-### Setup
+Enable native gesture coordination for Sheet dragging and scrolling:
 
 ```bash
 npm install react-native-gesture-handler
 ```
 
 ```tsx
-// App.tsx - before any Tamagui imports
-import '@tamagui/native/setup-gesture-handler'
+import { setupGestureHandler } from '@tamagui/native/setup-gesture-handler'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+
+setupGestureHandler({ pressEvents: false, sheet: true })
 
 export default function App() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>{/* Your app */}</GestureHandlerRootView>
+    <GestureHandlerRootView style={{ flex: 1 }}>{/* your app */}</GestureHandlerRootView>
   )
 }
 ```
 
-### Selective Features
-
-If you only want RNGH for specific features, use the configurable setup:
-
-```tsx
-import { setupGestureHandler } from '@tamagui/native/setup-gesture-handler'
-
-// only use RNGH for sheets, not press events
-setupGestureHandler({ pressEvents: false, sheet: true })
-
-// only use RNGH for press events, not sheets
-setupGestureHandler({ pressEvents: true, sheet: false })
-```
-
-### Press Event Behavior
-
-With RNGH enabled, `onPress` follows RN Pressable semantics:
-
-- **Nested pressables** - only the innermost fires (no event bubbling)
-- **Web parity** - `onPress` calls `stopPropagation()` automatically
-- **Use `onClick` on web** if you need standard DOM event bubbling
-
-This aligns to the React Native default behavior of Pressable.
-
-### PressBoundary
-
-If you need a non-Tamagui native wrapper to block a parent Tamagui pressable,
-use `PressBoundary` from `@tamagui/native/gesture-handler`.
-
-This is useful when mixing Tamagui pressables with React Native `Pressable`,
-custom native wrappers, or other components that don't use Tamagui's native
-press ownership automatically.
-
-```tsx
-import { PressBoundary } from '@tamagui/native/gesture-handler'
-import { Pressable } from 'react-native'
-
-export function AvatarLink() {
-  return (
-    <PressBoundary debugName="AvatarLink">
-      <Pressable onPress={() => {}}>
-        {/* your content */}
-      </Pressable>
-    </PressBoundary>
-  )
-}
-```
-
-`PressBoundary` only coordinates with Tamagui's native press ownership. It does
-not monkey-patch React Native bubbling semantics in general.
-
-Native `Menu.Trigger` and `ContextMenu.Trigger` already do this automatically,
-so you should not need extra wrappers or empty `onPress` handlers around them.
-
-See [Sheet docs](/docs/components/sheet) for full details.
+See [Sheet](/ui/sheet) for component usage. For native press events and
+`PressBoundary`, see [core Native](/docs/core/native#gesture-handler).
 
 ## Menu & ContextMenu
 
-**Native menus** - renders platform-native context menus instead of custom
-overlays. Uses iOS's native menu API for haptics, blur effects, and system
+**Native menus** render platform-native context menus instead of custom
+overlays. They use the OS menu API for haptics, blur effects, and system
 integration.
 
 ### Setup
 
 ```bash
-npm install zeego @react-native-menu/menu react-native-ios-context-menu react-native-ios-utilities sf-symbols-typescript
+npm install @expo/ui
 ```
 
 ```tsx
 // App.tsx - before any Tamagui imports
-import '@tamagui/native/setup-zeego'
+import '@tamagui/native/setup-expo-ui-menu'
 ```
 
 Then use the `native` prop:
@@ -156,12 +96,22 @@ Then use the `native` prop:
 <Menu native>{/* menu content */}</Menu>
 ```
 
-See [Menu docs](/docs/components/menu) and
-[ContextMenu docs](/docs/components/context-menu) for full details.
+The Zeego adapter remains available for apps on compatible React Native versions:
+
+```bash
+npm install zeego @react-native-menu/menu react-native-ios-context-menu react-native-ios-utilities sf-symbols-typescript
+```
+
+```tsx
+import '@tamagui/native/setup-zeego'
+```
+
+See [Menu docs](/ui/menu) and
+[ContextMenu docs](/ui/context-menu) for full details.
 
 ## Toast
 
-**Native toasts** - uses platform-native toast implementations:
+**Native toasts** use platform-native toast implementations:
 
 - iOS: SPIndicator (system-style indicators)
 - Android: ToastAndroid
@@ -184,11 +134,11 @@ Then use the `native` prop on ToastProvider:
 <Toast.Provider native>{/* your app */}</Toast.Provider>
 ```
 
-See [Toast docs](/docs/components/toast) for full details.
+See [Toast docs](/ui/toast) for full details.
 
 ## LinearGradient
 
-**Native gradients** - uses `expo-linear-gradient` for high-performance native gradient rendering.
+**Native gradients** use `expo-linear-gradient` for high-performance native gradient rendering.
 
 ### Setup
 
@@ -201,4 +151,9 @@ npm install expo-linear-gradient
 import '@tamagui/native/setup-expo-linear-gradient'
 ```
 
-See [LinearGradient docs](/docs/components/linear-gradient) for full details.
+See [LinearGradient docs](/ui/linear-gradient) for full details.
+
+## Optimized native runtime (experimental)
+
+The native style runtime is configured at the core level. See
+[core Native](/docs/core/native#native-runtime) for setup.

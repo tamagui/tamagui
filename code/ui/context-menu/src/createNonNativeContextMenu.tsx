@@ -1,7 +1,9 @@
-import type BaseMenuTypes from '@tamagui/create-menu'
-import { createBaseMenu, type CreateBaseMenuProps } from '@tamagui/create-menu'
+import { createRefComponent } from '@tamagui/compose-refs'
+import type * as BaseMenuTypes from '@tamagui/create-menu'
+import { createBaseMenu } from '@tamagui/create-menu'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import {
+  createStyledHOC,
   composeEventHandlers,
   composeRefs,
   createStyledContext,
@@ -44,6 +46,7 @@ type ContextMenuContextValue = {
 
 interface ContextMenuProps extends BaseMenuTypes.MenuProps {
   children?: React.ReactNode
+  defaultOpen?: boolean
   onOpenChange?(open: boolean, event?: ContextMenuOpenChangeEvent): void
   dir?: Direction
   modal?: boolean
@@ -55,7 +58,6 @@ interface ContextMenuTriggerProps extends ViewProps {
 
 type ContextMenuPortalProps = React.ComponentPropsWithoutRef<BaseMenu['Portal']>
 
-type ContextMenuContentElement = React.ComponentRef<BaseMenu['Content']>
 interface ContextMenuContentProps extends Omit<
   React.ComponentPropsWithoutRef<BaseMenu['Content']>,
   'onEntryFocus' | 'side' | 'sideOffset' | 'align'
@@ -85,13 +87,12 @@ interface ContextMenuSubProps extends BaseMenuTypes.MenuSubProps {
 }
 
 type ContextMenuSubTriggerProps = React.ComponentPropsWithoutRef<BaseMenu['SubTrigger']>
-type ContextMenuSubContentElement = React.ComponentRef<BaseMenu['Content']>
 type ContextMenuSubContentProps = React.ComponentPropsWithoutRef<BaseMenu['SubContent']>
 
 /* -----------------------------------------------------------------------------------------------*/
 
-export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
-  const { Menu } = createBaseMenu(params)
+export function createNonNativeContextMenu() {
+  const { Menu } = createBaseMenu()
 
   /* -------------------------------------------------------------------------------------------------
    * ContextMenu
@@ -103,8 +104,22 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
     createStyledContext<ContextMenuContextValue>()
 
   const ContextMenuComp = (props: ScopedProps<ContextMenuProps>) => {
-    const { scope, children, onOpenChange, dir, modal = true, ...rest } = props
-    const [open, setOpen] = React.useState(false)
+    const {
+      scope,
+      children,
+      onOpenChange,
+      open: openProp,
+      defaultOpen,
+      dir,
+      modal = true,
+      ...rest
+    } = props
+    // onOpenChange carries an event a caller can cancel, so it is called from
+    // handleOpenChange instead of through useControllableState's onChange
+    const [open, setOpen] = useControllableState({
+      prop: openProp,
+      defaultProp: defaultOpen ?? false,
+    })
     const triggerRef = React.useRef<TamaguiElement>(null)
 
     const handleOpenChange = React.useCallback(
@@ -113,7 +128,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
         if (event?.defaultPrevented) return
         setOpen(open)
       },
-      [onOpenChange]
+      [onOpenChange, setOpen]
     )
 
     return (
@@ -148,9 +163,18 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const TRIGGER_NAME = 'ContextMenuTrigger'
 
-  const ContextMenuTrigger = View.styleable<ScopedProps<ContextMenuTriggerProps>>(
-    (props, forwardedRef) => {
-      const { scope, style, disabled = false, asChild, children, ...triggerProps } = props
+  const ContextMenuTrigger = createStyledHOC(
+    View,
+    (props: ScopedProps<ContextMenuTriggerProps>, forwardedRef) => {
+      const {
+        scope,
+        style,
+        className,
+        disabled = false,
+        asChild,
+        children,
+        ...triggerProps
+      } = props
       const context = useContextMenuContext(scope)
       const pointRef = React.useRef<Point>({ x: 0, y: 0 })
       const virtualRef = React.useMemo(
@@ -223,7 +247,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
           <Menu.Anchor scope={scope || CONTEXTMENU_CONTEXT} virtualRef={virtualRef} />
           <Comp
             render="span"
-            componentName={TRIGGER_NAME}
+            className={`is_${TRIGGER_NAME} ${className || ''}`.trim()}
             id={context.triggerId}
             data-state={context.open ? 'open' : 'closed'}
             data-disabled={disabled ? '' : undefined}
@@ -319,36 +343,37 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const CONTENT_NAME = 'ContextMenuContent'
 
-  const ContextMenuContent = React.forwardRef<
-    ContextMenuContentElement,
-    ScopedProps<ContextMenuContentProps>
-  >((props, forwardedRef) => {
-    const { scope, ...contentProps } = props
-    const context = useContextMenuContext(scope)
-    const hasInteractedOutsideRef = React.useRef(false)
+  const ContextMenuContent = createStyledHOC(
+    Menu.Content,
+    (props: ScopedProps<ContextMenuContentProps>, forwardedRef) => {
+      const { scope, ...contentProps } = props
+      const context = useContextMenuContext(scope)
+      const hasInteractedOutsideRef = React.useRef(false)
 
-    return (
-      <Menu.Content
-        id={context.contentId}
-        aria-labelledby={context.triggerId}
-        scope={scope || CONTEXTMENU_CONTEXT}
-        {...contentProps}
-        ref={forwardedRef}
-        onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-          if (!hasInteractedOutsideRef.current) context.triggerRef.current?.focus()
-          hasInteractedOutsideRef.current = false
-          event.preventDefault()
-        })}
-        onInteractOutside={composeEventHandlers(props.onInteractOutside, (event) => {
-          const originalEvent = event.detail.originalEvent as PointerEvent
-          const ctrlLeftClick =
-            originalEvent.button === 0 && originalEvent.ctrlKey === true
-          const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-          if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
-        })}
-      />
-    )
-  })
+      return (
+        <Menu.Content
+          id={context.contentId}
+          aria-labelledby={context.triggerId}
+          scope={scope || CONTEXTMENU_CONTEXT}
+          {...contentProps}
+          ref={forwardedRef}
+          onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
+            if (!hasInteractedOutsideRef.current) context.triggerRef.current?.focus()
+            hasInteractedOutsideRef.current = false
+            event.cancel()
+          })}
+          onInteractOutside={composeEventHandlers(props.onInteractOutside, (event) => {
+            if (event.interaction !== 'pointer' || !event.event) return
+            const originalEvent = event.event
+            const ctrlLeftClick =
+              originalEvent.button === 0 && originalEvent.ctrlKey === true
+            const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+            if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
+          })}
+        />
+      )
+    }
+  )
 
   ContextMenuContent.displayName = CONTENT_NAME
 
@@ -358,14 +383,14 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const ITEM_NAME = 'ContextMenuItem'
 
-  const ContextMenuItem = React.forwardRef<
+  const ContextMenuItem = createRefComponent<
     TamaguiElement,
     ScopedProps<ContextMenuItemProps>
   >((props, forwardedRef) => {
-    const { scope, ...itemProps } = props
+    const { scope, className, ...itemProps } = props
     return (
       <Menu.Item
-        componentName={ITEM_NAME}
+        className={`is_${ITEM_NAME} ${className || ''}`.trim()}
         scope={scope || CONTEXTMENU_CONTEXT}
         {...itemProps}
         ref={forwardedRef}
@@ -381,14 +406,14 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const CHECKBOX_ITEM_NAME = 'ContextMenuCheckboxItem'
 
-  const ContextMenuCheckboxItem = React.forwardRef<
+  const ContextMenuCheckboxItem = createRefComponent<
     TamaguiElement,
     ScopedProps<ContextMenuCheckboxItemProps>
   >((props, forwardedRef) => {
-    const { scope, ...checkboxItemProps } = props
+    const { scope, className, ...checkboxItemProps } = props
     return (
       <Menu.CheckboxItem
-        componentName={CHECKBOX_ITEM_NAME}
+        className={`is_${CHECKBOX_ITEM_NAME} ${className || ''}`.trim()}
         scope={scope || CONTEXTMENU_CONTEXT}
         {...checkboxItemProps}
         ref={forwardedRef}
@@ -404,7 +429,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const RADIO_GROUP_NAME = 'ContextMenuRadioGroup'
 
-  const ContextMenuRadioGroup = React.forwardRef<
+  const ContextMenuRadioGroup = createRefComponent<
     ContextMenuRadioGroupElement,
     ScopedProps<ContextMenuRadioGroupProps>
   >((props, forwardedRef) => {
@@ -426,14 +451,14 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const RADIO_ITEM_NAME = 'ContextMenuRadioItem'
 
-  const ContextMenuRadioItem = React.forwardRef<
+  const ContextMenuRadioItem = createRefComponent<
     TamaguiElement,
     ScopedProps<ContextMenuRadioItemProps>
   >((props, forwardedRef) => {
-    const { scope, ...radioItemProps } = props
+    const { scope, className, ...radioItemProps } = props
     return (
       <Menu.RadioItem
-        componentName={RADIO_ITEM_NAME}
+        className={`is_${RADIO_ITEM_NAME} ${className || ''}`.trim()}
         scope={scope || CONTEXTMENU_CONTEXT}
         {...radioItemProps}
         ref={forwardedRef}
@@ -449,19 +474,20 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const INDICATOR_NAME = 'ContextMenuItemIndicator'
 
-  const ContextMenuItemIndicator = Menu.ItemIndicator.styleable<
-    ScopedProps<ContextMenuItemIndicatorProps>
-  >((props, forwardedRef) => {
-    const { scope, ...itemIndicatorProps } = props
-    return (
-      <Menu.ItemIndicator
-        componentName={INDICATOR_NAME}
-        scope={scope || CONTEXTMENU_CONTEXT}
-        {...itemIndicatorProps}
-        ref={forwardedRef}
-      />
-    )
-  })
+  const ContextMenuItemIndicator = createStyledHOC(
+    Menu.ItemIndicator,
+    (props: ScopedProps<ContextMenuItemIndicatorProps>, forwardedRef) => {
+      const { scope, className, ...itemIndicatorProps } = props
+      return (
+        <Menu.ItemIndicator
+          className={`is_${INDICATOR_NAME} ${className || ''}`.trim()}
+          scope={scope || CONTEXTMENU_CONTEXT}
+          {...itemIndicatorProps}
+          ref={forwardedRef}
+        />
+      )
+    }
+  )
 
   ContextMenuItemIndicator.displayName = INDICATOR_NAME
 
@@ -499,12 +525,13 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const SUB_TRIGGER_NAME = 'ContextMenuSubTrigger'
 
-  const ContextMenuSubTrigger = View.styleable<ScopedProps<ContextMenuSubTriggerProps>>(
-    (props, forwardedRef) => {
-      const { scope, ...subTriggerProps } = props
+  const ContextMenuSubTrigger = createStyledHOC(
+    View,
+    (props: ScopedProps<ContextMenuSubTriggerProps>, forwardedRef) => {
+      const { scope, className, ...subTriggerProps } = props
       return (
         <Menu.SubTrigger
-          componentName={SUB_TRIGGER_NAME}
+          className={`is_${SUB_TRIGGER_NAME} ${className || ''}`.trim()}
           scope={scope || CONTEXTMENU_CONTEXT}
           {...subTriggerProps}
           ref={forwardedRef}
@@ -521,38 +548,38 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const SUB_CONTENT_NAME = 'ContextMenuSubContent'
 
-  const ContextMenuSubContent = React.forwardRef<
-    ContextMenuSubContentElement,
-    ScopedProps<ContextMenuSubContentProps>
-  >((props, forwardedRef) => {
-    const { scope, ...subContentProps } = props
-    return (
-      <Menu.SubContent
-        scope={scope || CONTEXTMENU_CONTEXT}
-        {...subContentProps}
-        ref={forwardedRef}
-        style={
-          isWeb
-            ? {
-                ...(props.style as object),
-                ...({
-                  '--tamagui-context-menu-content-transform-origin':
-                    'var(--tamagui-popper-transform-origin)',
-                  '--tamagui-context-menu-content-available-width':
-                    'var(--tamagui-popper-available-width)',
-                  '--tamagui-context-menu-content-available-height':
-                    'var(--tamagui-popper-available-height)',
-                  '--tamagui-context-menu-trigger-width':
-                    'var(--tamagui-popper-anchor-width)',
-                  '--tamagui-context-menu-trigger-height':
-                    'var(--tamagui-popper-anchor-height)',
-                } as React.CSSProperties),
-              }
-            : null
-        }
-      />
-    )
-  })
+  const ContextMenuSubContent = createStyledHOC(
+    Menu.SubContent,
+    (props: ScopedProps<ContextMenuSubContentProps>, forwardedRef) => {
+      const { scope, ...subContentProps } = props
+      return (
+        <Menu.SubContent
+          scope={scope || CONTEXTMENU_CONTEXT}
+          {...subContentProps}
+          ref={forwardedRef}
+          style={
+            isWeb
+              ? {
+                  ...(props.style as object),
+                  ...({
+                    '--tamagui-context-menu-content-transform-origin':
+                      'var(--tamagui-popper-transform-origin)',
+                    '--tamagui-context-menu-content-available-width':
+                      'var(--tamagui-popper-available-width)',
+                    '--tamagui-context-menu-content-available-height':
+                      'var(--tamagui-popper-available-height)',
+                    '--tamagui-context-menu-trigger-width':
+                      'var(--tamagui-popper-anchor-width)',
+                    '--tamagui-context-menu-trigger-height':
+                      'var(--tamagui-popper-anchor-height)',
+                  } as React.CSSProperties),
+                }
+              : null
+          }
+        />
+      )
+    }
+  )
 
   ContextMenuSubContent.displayName = SUB_CONTENT_NAME
 
@@ -562,14 +589,14 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const ARROW_NAME = 'ContextMenuArrow'
 
-  const ContextMenuArrow = React.forwardRef<
+  const ContextMenuArrow = createRefComponent<
     TamaguiElement,
     ScopedProps<ContextMenuArrowProps>
   >((props, forwardedRef) => {
-    const { scope, ...arrowProps } = props
+    const { scope, className, ...arrowProps } = props
     return (
       <Menu.Arrow
-        componentName={ARROW_NAME}
+        className={`is_${ARROW_NAME} ${className || ''}`.trim()}
         scope={scope || CONTEXTMENU_CONTEXT}
         {...arrowProps}
         ref={forwardedRef}

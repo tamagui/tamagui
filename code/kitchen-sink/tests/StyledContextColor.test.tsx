@@ -58,9 +58,9 @@ test(`explicit context provider passes color to children`, async ({ page }) => {
   expect(textStyles.color).toContain('0, 0, 255') // blue in rgb
 })
 
-// This is the key test for issue #3676 - $color reference to context value
+// This is the key test for issue #3676 - color reference to context value
 // Test with explicit Provider (like direct Button usage with color prop)
-test(`$color reference in child variant gets parent color from Provider (issue #3676)`, async ({
+test(`color reference in child variant gets parent color from Provider (issue #3676)`, async ({
   page,
 }) => {
   const text = page.getByTestId('context-ref-text-link')
@@ -70,12 +70,12 @@ test(`$color reference in child variant gets parent color from Provider (issue #
 
   // Text should be green because:
   // 1. Provider sets color: 'green'
-  // 2. Child uses color: '$color' which should resolve to 'green' from context
+  // 2. Child uses color: 'color' which should resolve to 'green' from context
   expect(textStyles.color).toContain('0, 128, 0') // green in rgb
 })
 
 // Test with variant setting color (more complex case)
-test(`$color reference works when parent variant sets color`, async ({ page }) => {
+test(`color reference works when parent variant sets color`, async ({ page }) => {
   const button = page.getByTestId('context-ref-button-primary')
   await expect(button).toBeVisible()
 
@@ -86,9 +86,9 @@ test(`$color reference works when parent variant sets color`, async ({ page }) =
   expect(textStyles.color).toContain('0, 0, 255') // blue in rgb
 })
 
-// Issue #3670 - pressStyle color not working on styled Button
+// Issue #3670 - press clause color not working on styled Button
 // Requires disableClassName to enable runtime press handling (not CSS transitions)
-test(`pressStyle color propagates to children via context (issue #3670)`, async ({
+test(`press clause color propagates to children via context (issue #3670)`, async ({
   page,
 }) => {
   const button = page.getByTestId('press-style-button')

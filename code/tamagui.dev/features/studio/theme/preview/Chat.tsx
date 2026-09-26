@@ -1,16 +1,7 @@
-import { Info, Send } from '@tamagui/lucide-icons-2'
+import { Info, Send } from '@tamagui/local-icons'
 import React, { memo, useState } from 'react'
-import {
-  Avatar,
-  Button,
-  Form,
-  H4,
-  Input,
-  Paragraph,
-  ScrollView,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Avatar, Form, H4, Input, Paragraph, ScrollView, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { AccentTheme } from '../../components/AccentTheme'
 import { useDemoProps } from '../hooks/useDemoProps'
 
@@ -75,15 +66,15 @@ export const ChatScreen = () => {
         m={-30}
         mt={-30}
         px={30}
-        py="$5"
-        rounded="$4"
-        mb="$2"
-        borderBottomWidth="$0.25"
-        borderBottomColor="$borderColor"
+        py="6"
+        rounded="4"
+        mb="1-5"
+        borderBottomWidth="0.5px"
+        borderBottomColor="border-color"
       >
         <XStack justify="space-between">
           <YStack>
-            <H4 {...demoProps.headingFontFamilyProps} size="$4">
+            <H4 {...demoProps.headingFontFamilyProps} size="4">
               Group Chat
             </H4>
             <Paragraph {...demoProps.panelDescriptionProps}>
@@ -92,8 +83,8 @@ export const ChatScreen = () => {
           </YStack>
           <Button
             self="center"
-            chromeless
-            size="$5"
+            variant="quiet"
+            size="lg"
             scaleIcon={1.4}
             circular
             icon={Info}
@@ -102,7 +93,7 @@ export const ChatScreen = () => {
       </YStack>
 
       <YStack flex={1} flexBasis="auto">
-        <ScrollView m="$-4" p="$6">
+        <ScrollView m="-4" p="8">
           <YStack {...demoProps.gapPropsMd}>
             {messages.map((message, idx) => {
               const isLastFromUser =
@@ -116,7 +107,7 @@ export const ChatScreen = () => {
                     includeAvatar={isLastFromUser}
                   />
                   {/* this is nice to separate diff groups but commenting out for now: */}
-                  {/* {isLastFromUser && <Spacer size="$1" />} */}
+                  {/* {isLastFromUser && <Spacer size="1" />} */}
                 </React.Fragment>
               )
             })}
@@ -124,8 +115,8 @@ export const ChatScreen = () => {
         </ScrollView>
       </YStack>
 
-      <YStack mt="$4">
-        <Form flexDirection="row" onSubmit={() => sendMessage(input)} gap="$2">
+      <YStack mt="4">
+        <Form flexDirection="row" gap="1-5" onSubmit={() => sendMessage(input)}>
           <Input
             value={input}
             onChange={(e) => setInput(e.target?.value ?? '')}
@@ -166,12 +157,12 @@ const ChatMessage = memo(
 
     let contents = (
       <YStack
-        px="$2.5"
-        py="$2"
+        px="2-5"
+        py="1-5"
         {...demoProps.borderRadiusProps}
         {...(isUser ? demoProps.chatFrameActiveProps : demoProps.chatFrameProps)}
       >
-        <Paragraph lineHeight="$2" maxW={200} {...demoProps.chatTextProps}>
+        <Paragraph lineHeight="2" maxW={200} {...demoProps.chatTextProps}>
           {message}
         </Paragraph>
       </YStack>
@@ -185,16 +176,16 @@ const ChatMessage = memo(
       <XStack
         self={isUser ? 'flex-end' : 'flex-start'}
         flexDirection={isUser ? 'row-reverse' : 'row'}
-        gap="$2"
+        gap="1-5"
       >
         {includeAvatar ? (
-          <Avatar size="$2" mt="$1" {...demoProps.borderRadiusProps}>
+          <Avatar size="7" mt="0-5" {...demoProps.borderRadiusProps}>
             <Avatar.Image src={avatarSrc} />
           </Avatar>
         ) : (
-          <YStack width="$2" />
+          <YStack width="7" />
         )}
-        <XStack items="flex-end" mb="$1">
+        <XStack items="flex-end" mb="0-5">
           {contents}
         </XStack>
       </XStack>

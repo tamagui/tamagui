@@ -6,6 +6,10 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 const ROOT_DIR = join(__dirname, '..')
 const APP_SCREEN_PATH = join(ROOT_DIR, 'packages/app/features/home/screen.tsx')
 
+function normalizeOutput(value: string) {
+  return value.replace(/[ \t]+$/gm, '')
+}
+
 function resetAppPackage() {
   try {
     execSync(`bun run test:clean`, {
@@ -35,19 +39,19 @@ describe('Package.json exports support', () => {
     })
 
     // check web optimization
-    const webOptimized = readFileSync(APP_SCREEN_PATH, 'utf-8')
+    const webOptimized = normalizeOutput(readFileSync(APP_SCREEN_PATH, 'utf-8'))
     expect(webOptimized).toMatchSnapshot('web-optimized')
 
     // check css file
     const cssPath = join(ROOT_DIR, 'packages/app/features/home/_screen.css')
     expect(existsSync(cssPath)).toBe(true)
-    const cssContent = readFileSync(cssPath, 'utf-8')
+    const cssContent = normalizeOutput(readFileSync(cssPath, 'utf-8'))
     expect(cssContent).toMatchSnapshot('web-css')
 
     // check native optimization
     const nativePath = APP_SCREEN_PATH.replace('.tsx', '.native.tsx')
     expect(existsSync(nativePath)).toBe(true)
-    const nativeOptimized = readFileSync(nativePath, 'utf-8')
+    const nativeOptimized = normalizeOutput(readFileSync(nativePath, 'utf-8'))
     expect(nativeOptimized).toMatchSnapshot('native-optimized')
   })
 
@@ -63,12 +67,12 @@ describe('Package.json exports support', () => {
     )
 
     // check outputs
-    const webOptimized = readFileSync(APP_SCREEN_PATH, 'utf-8')
+    const webOptimized = normalizeOutput(readFileSync(APP_SCREEN_PATH, 'utf-8'))
     expect(webOptimized).toMatchSnapshot('web-optimized-single')
 
     const nativePath = APP_SCREEN_PATH.replace('.tsx', '.native.tsx')
     expect(existsSync(nativePath)).toBe(true)
-    const nativeOptimized = readFileSync(nativePath, 'utf-8')
+    const nativeOptimized = normalizeOutput(readFileSync(nativePath, 'utf-8'))
     expect(nativeOptimized).toMatchSnapshot('native-optimized-single')
   })
 })

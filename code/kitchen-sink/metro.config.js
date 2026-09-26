@@ -64,4 +64,11 @@ config.resolver.resolveRequest = (context, moduleName, platform) => {
 module.exports = withTamagui(config, {
   components: ['tamagui'],
   config: './src/tamagui.config.ts',
+  experimental: {
+    // native fast path compiler emit (plans/native-fast-path.md). opt in per
+    // metro session with TAMAGUI_NATIVE_FAST_PATH=1; with no engine set the
+    // emitted wrapper falls back to the normal theme-hook path, so this only
+    // changes behavior for cases that install @tamagui/native-registry
+    nativeFastPath: process.env.TAMAGUI_NATIVE_FAST_PATH === '1',
+  },
 })

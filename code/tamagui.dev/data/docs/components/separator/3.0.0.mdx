@@ -1,0 +1,69 @@
+---
+title: Separator
+description: Create borders between components
+name: separator
+component: Separator
+package: separator
+demoName: Separator
+---
+
+<IntroParagraph>
+  Separator draws an accessible horizontal or vertical boundary between groups
+  of content.
+</IntroParagraph>
+
+<HeroContainer>
+  <SeparatorDemo />
+</HeroContainer>
+
+```tsx hero template=Separator
+
+```
+
+<Highlights
+  features={[
+    `Horizontal and vertical orientation`,
+    `Web separator role and aria-orientation`,
+  ]}
+/>
+
+## Installation
+
+Separator is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/separator
+```
+
+## Usage
+
+Separator uses the `borderWidth` and `borderColor` attributes for its style, so override those when extending it.
+
+```tsx
+export default () => (
+  <XStack alignItems="center">
+    <Paragraph>Blog</Paragraph>
+    <Separator alignSelf="stretch" vertical />
+    <Paragraph>Docs</Paragraph>
+    <Separator alignSelf="stretch" vertical />
+    <Paragraph>Source</Paragraph>
+  </XStack>
+)
+```
+
+## API reference
+
+### Separator
+
+Separator extends View, inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'vertical',
+      required: false,
+      type: 'boolean',
+      description: `Shows the separator vertically.`,
+    },
+  ]}
+/>

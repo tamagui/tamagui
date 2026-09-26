@@ -6,25 +6,25 @@ import { useTint } from './useTint'
 
 // T A M A G U I
 // default: white white white white red green blue
-// hover: yellow yellow yellow color12 red green blue
+// hover: yellow yellow yellow color-12 red green blue
 const defaultColors = [
-  'var(--color12)',
-  'var(--color12)',
-  'var(--color12)',
-  'var(--color12)',
-  'var(--red9)',
-  'var(--green9)',
-  'var(--blue9)',
+  'var(--color-12)',
+  'var(--color-12)',
+  'var(--color-12)',
+  'var(--color-12)',
+  'var(--red-9)',
+  'var(--green-9)',
+  'var(--blue-9)',
 ]
 
 const hoveredColors = [
-  'var(--yellow9)',
-  'var(--yellow9)',
-  'var(--yellow9)',
-  'var(--color12)',
-  'var(--red9)',
-  'var(--green9)',
-  'var(--blue9)',
+  'var(--yellow-9)',
+  'var(--yellow-9)',
+  'var(--yellow-9)',
+  'var(--color-12)',
+  'var(--red-9)',
+  'var(--green-9)',
+  'var(--blue-9)',
 ]
 
 export const LogoWords: React.MemoExoticComponent<
@@ -72,7 +72,7 @@ export const LogoWords: React.MemoExoticComponent<
   }, [Tint])
 
   const getColor = (i: number) => {
-    if (hovered) return `var(--${Tint.tints[i]}9)`
+    if (hovered) return `var(--${Tint.tints[i]}-9)`
     return defaultColors[i]
   }
 
@@ -86,16 +86,16 @@ export const LogoWords: React.MemoExoticComponent<
     <XStack
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      paddingVertical="$2"
-      data-tauri-drag-region
-      marginVertical="$-2"
+      paddingVertical="2"
+      marginVertical="-2"
       position="relative"
+      {...props}
+      data-tauri-drag-region
       className="logo-words"
       onLayout={(e) => {
         setLayout(e.nativeEvent.layout as any)
       }}
-      // @ts-ignore
-      onMouseMove={(e: MouseEvent) => {
+      onMouseMove={(e: React.MouseEvent<HTMLDivElement>) => {
         if (!layout) return
         const x = e.clientX - layout.pageX
         // Total width divided into 7 sections (one for each letter)
@@ -104,7 +104,6 @@ export const LogoWords: React.MemoExoticComponent<
         const section = Math.min(6, Math.floor(x / sectionWidth))
         Tint.setTintIndex(section)
       }}
-      {...props}
     >
       {animated && (
         <Circle
@@ -113,10 +112,9 @@ export const LogoWords: React.MemoExoticComponent<
           top={0}
           left={0}
           y={mounted === 'start' ? -30 : -4}
-          // the last i is less wide
           x={x}
-          size={4}
-          backgroundColor="$color12"
+          backgroundColor="color-12"
+          style={{ width: 4, height: 4 }}
         />
       )}
 

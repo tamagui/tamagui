@@ -1,2 +1,163 @@
-import{existsSync as x,lstatSync as D}from"node:fs";import{dirname as S,extname as P,resolve as g}from"node:path";import*as f from"@babel/types";var y={ensureFileExists:!0,esExtensionDefault:".mjs",tryExtensions:[".js"],esExtensions:[".mjs"],convertProcessEnvToImportMetaEnv:!1};function I(e,s={}){e.assertVersion(7);let l=j(s),p=(i,t)=>{let o=t.file.opts.filename;if(!o)return;let{node:r}=i;if(r.importKind==="type")return;let n=r.source.value,a=E(n,{filePath:o,options:l});a&&(r.source.value=a)},c=(i,t)=>{let o=t.file.opts.filename;if(!o)return;let{node:r}=i;if(r.exportKind==="type")return;let n=r.source;if(!n)return;let a=n.value,d=E(a,{filePath:o,options:l});d&&(n.value=d)};return{name:"babel-plugin-fully-specified",visitor:{ImportDeclaration:p,ExportNamedDeclaration:c,ExportAllDeclaration:c,Import:(i,t)=>{let o=t.file.opts.filename;if(!o)return;let r=i.parent;if(r.type!=="CallExpression")return;let n=r.arguments[0];if(n.type!=="StringLiteral")return;let a=n.value,d=E(a,{filePath:o,options:l});d&&(n.value=d)},MemberExpression:i=>{if(!l.convertProcessEnvToImportMetaEnv)return;let{node:t}=i;if(t.object.type==="MemberExpression"&&t.object.object.type==="Identifier"&&t.object.object.name==="process"&&t.object.property.type==="Identifier"&&t.object.property.name==="env"){if(t.property.type==="Identifier"&&t.property.name==="NODE_ENV")return;t.object=f.memberExpression(f.metaProperty(f.identifier("import"),f.identifier("meta")),f.identifier("env"))}}}}}function j(e){let s={...y,...e};return e.esExtensionDefault&&!e.tryExtensions&&e.esExtensionDefault!==y.esExtensionDefault&&(s.tryExtensions=[e.esExtensionDefault,...y.tryExtensions.filter(l=>l!==e.esExtensionDefault)]),s}function E(e,{filePath:s,options:l}){let p=P(s),c=S(s),u=M(g(c,e)),m=P(e),{tryExtensions:i,esExtensions:t,esExtensionDefault:o,ensureFileExists:r}=l,n=F({moduleSpecifier:e,filenameDirectory:c,filenameExtension:p,currentModuleExtension:m,isDirectory:u,tryExtensions:i,esExtensions:t,esExtensionDefault:o,ensureFileExists:r});return n===!1?null:n}function M(e){return x(e)&&D(e).isDirectory()}function b(e){return e.startsWith(".native")}function v(e){return x(`${e}.ios.js`)||x(`${e}.android.js`)}function F({moduleSpecifier:e,currentModuleExtension:s,isDirectory:l,filenameDirectory:p,filenameExtension:c,tryExtensions:u,esExtensions:m,esExtensionDefault:i,ensureFileExists:t}){let o=g(p,e);if(t){if(b(i)&&v(o))return!1;for(let r of u)if(x(o+r))return e+i;if(s&&!m.includes(s))return!1;if(l){let r=`${e.replace(/\/$/,"")}/index`,n=g(p,r);if(b(i)&&v(n))return!1;for(let a of u)if(x(n+a))return r+i}}else return m.includes(c),e+i;return!1}export{I as default};
+import { existsSync, lstatSync } from 'node:fs'
+import { dirname, extname, resolve } from 'node:path'
+import * as t from '@babel/types'
+const DEFAULT_OPTIONS = {
+  ensureFileExists: !0,
+  esExtensionDefault: '.mjs',
+  tryExtensions: ['.js'],
+  esExtensions: ['.mjs'],
+  convertProcessEnvToImportMetaEnv: !1,
+}
+function FullySpecified(api, rawOptions = {}) {
+  api.assertVersion(7)
+  const options = normalizeOptions(rawOptions),
+    importDeclarationVisitor = (path, state) => {
+      const filePath = state.file.opts.filename
+      if (!filePath) return
+      const { node } = path
+      if (node.importKind === 'type') return
+      const originalModuleSpecifier = node.source.value,
+        fullySpecifiedModuleSpecifier = getFullySpecifiedModuleSpecifier(
+          originalModuleSpecifier,
+          {
+            filePath,
+            options,
+          }
+        )
+      fullySpecifiedModuleSpecifier && (node.source.value = fullySpecifiedModuleSpecifier)
+    },
+    exportDeclarationVisitor = (path, state) => {
+      const filePath = state.file.opts.filename
+      if (!filePath) return
+      const { node } = path
+      if (node.exportKind === 'type') return
+      const source = node.source
+      if (!source) return
+      const originalModuleSpecifier = source.value,
+        fullySpecifiedModuleSpecifier = getFullySpecifiedModuleSpecifier(
+          originalModuleSpecifier,
+          {
+            filePath,
+            options,
+          }
+        )
+      fullySpecifiedModuleSpecifier && (source.value = fullySpecifiedModuleSpecifier)
+    }
+  return {
+    name: 'babel-plugin-fully-specified',
+    visitor: {
+      ImportDeclaration: importDeclarationVisitor,
+      ExportNamedDeclaration: exportDeclarationVisitor,
+      ExportAllDeclaration: exportDeclarationVisitor,
+      Import: (path, state) => {
+        const filePath = state.file.opts.filename
+        if (!filePath) return
+        const parent = path.parent
+        if (parent.type !== 'CallExpression') return
+        const firstArgOfImportCall = parent.arguments[0]
+        if (firstArgOfImportCall.type !== 'StringLiteral') return
+        const originalModuleSpecifier = firstArgOfImportCall.value,
+          fullySpecifiedModuleSpecifier = getFullySpecifiedModuleSpecifier(
+            originalModuleSpecifier,
+            {
+              filePath,
+              options,
+            }
+          )
+        fullySpecifiedModuleSpecifier &&
+          (firstArgOfImportCall.value = fullySpecifiedModuleSpecifier)
+      },
+      MemberExpression: (path) => {
+        if (!options.convertProcessEnvToImportMetaEnv) return
+        const { node } = path
+        if (
+          node.object.type === 'MemberExpression' &&
+          node.object.object.type === 'Identifier' &&
+          node.object.object.name === 'process' &&
+          node.object.property.type === 'Identifier' &&
+          node.object.property.name === 'env'
+        ) {
+          if (node.property.type === 'Identifier' && node.property.name === 'NODE_ENV')
+            return
+          node.object = t.memberExpression(
+            t.metaProperty(t.identifier('import'), t.identifier('meta')),
+            t.identifier('env')
+          )
+        }
+      },
+    },
+  }
+}
+function normalizeOptions(rawOptions) {
+  const options = { ...DEFAULT_OPTIONS, ...rawOptions }
+  return (
+    rawOptions.esExtensionDefault &&
+      !rawOptions.tryExtensions &&
+      rawOptions.esExtensionDefault !== DEFAULT_OPTIONS.esExtensionDefault &&
+      (options.tryExtensions = [
+        rawOptions.esExtensionDefault,
+        ...DEFAULT_OPTIONS.tryExtensions.filter(
+          (extension) => extension !== rawOptions.esExtensionDefault
+        ),
+      ]),
+    options
+  )
+}
+function getFullySpecifiedModuleSpecifier(
+  originalModuleSpecifier,
+  { filePath, options }
+) {
+  const fileExt = extname(filePath),
+    fileDir = dirname(filePath),
+    isDirectory = isLocalDirectory(resolve(fileDir, originalModuleSpecifier)),
+    currentModuleExtension = extname(originalModuleSpecifier),
+    { tryExtensions, esExtensions, esExtensionDefault, ensureFileExists } = options,
+    targetModule = evaluateTargetModule({
+      moduleSpecifier: originalModuleSpecifier,
+      filenameDirectory: fileDir,
+      filenameExtension: fileExt,
+      currentModuleExtension,
+      isDirectory,
+      tryExtensions,
+      esExtensions,
+      esExtensionDefault,
+      ensureFileExists,
+    })
+  return targetModule === !1 ? null : targetModule
+}
+function isLocalDirectory(absoluteDirectory) {
+  return existsSync(absoluteDirectory) && lstatSync(absoluteDirectory).isDirectory()
+}
+function evaluateTargetModule({
+  moduleSpecifier,
+  currentModuleExtension,
+  isDirectory,
+  filenameDirectory,
+  filenameExtension,
+  tryExtensions,
+  esExtensions,
+  esExtensionDefault,
+  ensureFileExists,
+}) {
+  const targetFile = resolve(filenameDirectory, moduleSpecifier)
+  if (ensureFileExists) {
+    for (const extension of tryExtensions)
+      if (existsSync(targetFile + extension)) return moduleSpecifier + esExtensionDefault
+    if (currentModuleExtension && !esExtensions.includes(currentModuleExtension))
+      return !1
+    isDirectory &&
+      !existsSync(
+        resolve(
+          filenameDirectory,
+          currentModuleExtension ? moduleSpecifier : moduleSpecifier + esExtensionDefault
+        )
+      ) &&
+      (moduleSpecifier = `${moduleSpecifier}/index`)
+  } else
+    return (
+      esExtensions.includes(filenameExtension), moduleSpecifier + esExtensionDefault
+    )
+  return !1
+}
+export { FullySpecified as default }
 //# sourceMappingURL=index.js.map

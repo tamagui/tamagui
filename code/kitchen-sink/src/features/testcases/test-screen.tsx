@@ -36,14 +36,14 @@ export function TestScreen() {
       <YStack
         outlineStyle="solid"
         outlineColor="red"
-        outlineWidth="$2"
+        outlineWidth="2"
         flex={1}
         justify="center"
         items="center"
-        bg="$background"
-        gap="$4"
+        bg="background"
+        gap="4"
       >
-        <YStack minW={200} maxW={600} items="center" p="$4" rounded="$6">
+        <YStack minW={200} maxW={600} items="center" p="4" rounded="6">
           <DemoComponent />
         </YStack>
       </YStack>

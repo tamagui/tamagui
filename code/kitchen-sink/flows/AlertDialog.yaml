@@ -5,7 +5,6 @@ tags:
 - runFlow: OpenApp.yaml
 - scrollUntilVisible:
     element: 'AlertDialog'
-    centerElement: true
 - tapOn: 'AlertDialog'
 - assertVisible: 'Show Alert'
 # Test: tap button, dialog appears

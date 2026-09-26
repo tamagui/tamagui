@@ -4,6 +4,7 @@
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "license": "MIT",
   "source": "src/index.ts",
+  "types": "./types/index.d.ts",
   "files": [
     "src",
     "types",
@@ -33,6 +34,7 @@
     "access": "public"
   },
   "scripts": {
+    "build": "tamagui-build",
     "test": "vitest --run"
   },
   "dependencies": {
@@ -40,6 +42,6 @@
   },
   "devDependencies": {
     "@babel/types": "^7.25.4",
-    "vitest": "4.0.4"
+    "vitest": "4.1.0"
   }
 }

@@ -5,7 +5,6 @@ tags:
 - runFlow: OpenApp.yaml
 - scrollUntilVisible:
     element: 'Sheet'
-    centerElement: true
 - tapOn: 'Sheet'
 - assertVisible: 'Open'
 # Test: sheet opens when button tapped

@@ -5,7 +5,12 @@ export const docsRoutes = [
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
-      { title: 'CLI', route: '/docs/guides/cli' },
+      { title: 'Components', route: '/docs/intro/components' },
+      { title: 'Styling', route: '/docs/intro/styles' },
+      { title: 'Design system', route: '/docs/intro/design-system' },
+      { title: 'Tailwind', route: '/docs/core/tailwind' },
+      { title: 'Native', route: '/docs/core/native' },
+      { title: 'CLI', route: '/docs/core/cli' },
       {
         title: 'Releases',
         route: 'https://github.com/tamagui/tamagui/releases',
@@ -19,9 +24,24 @@ export const docsRoutes = [
     title: 'Configuration',
     pages: [
       { title: 'Configuration', route: '/docs/core/configuration' },
-      { title: 'Config v5', route: '/docs/core/config-v5' },
+      { title: 'TamaguiProvider', route: '/docs/core/tamagui-provider' },
       { title: 'Tokens', route: '/docs/core/tokens' },
+      { title: 'Fonts', route: '/docs/core/fonts' },
       { title: 'Themes', route: '/docs/intro/themes' },
+      { title: 'Theme component', route: '/docs/core/theme' },
+      { title: 'Shorthands', route: '/docs/core/shorthands' },
+      { title: 'Settings', route: '/docs/core/settings' },
+      { title: 'Sizing', route: '/docs/core/sizing' },
+    ],
+  },
+
+  {
+    section: 'core',
+    title: 'Config v6',
+    pages: [
+      { title: 'Config v6', route: '/docs/core/config-v6' },
+      { title: 'Colors', route: '/docs/core/config-v6-colors' },
+      { title: 'Surfaces & Levels', route: '/docs/core/surfaces' },
     ],
   },
 
@@ -30,10 +50,11 @@ export const docsRoutes = [
     section: 'core',
     title: 'Styling',
     pages: [
-      { title: 'Styling', route: '/docs/intro/styles' },
+      { title: 'Style props', route: '/docs/core/style-props' },
       { title: 'styled()', route: '/docs/core/styled' },
       { title: 'Variants', route: '/docs/core/variants' },
-      { title: 'createStyledContext', route: '/docs/core/create-styled-context' },
+      { title: 'style()', route: '/docs/core/style-pieces' },
+      { title: 'createStyledContext()', route: '/docs/core/create-styled-context' },
     ],
   },
 
@@ -42,20 +63,24 @@ export const docsRoutes = [
     section: 'core',
     title: 'Components',
     pages: [
-      { title: 'Props', route: '/docs/intro/props' },
       { title: 'View & Text', route: '/docs/core/view-and-text' },
-      { title: 'Theme', route: '/docs/core/theme' },
-      { title: 'FontLanguage', route: '/docs/core/font-language' },
+      { title: 'HTML elements', route: '/docs/core/html-primitives' },
     ],
   },
 
-  // Hooks section
+  // exports section
   {
     section: 'core',
-    title: 'Hooks',
+    title: 'Exports',
     pages: [
+      { title: 'Overview', route: '/docs/core/exports' },
+      { title: 'Constants', route: '/docs/core/exports#constants' },
+      { title: 'Helpers', route: '/docs/core/exports#helpers' },
+      { title: 'Hooks', route: '/docs/core/exports#hooks' },
       { title: 'useMedia', route: '/docs/core/use-media' },
       { title: 'useTheme', route: '/docs/core/use-theme' },
+      { title: 'Components', route: '/docs/core/exports#components' },
+      { title: 'Type Helpers', route: '/docs/core/exports#type-helpers' },
     ],
   },
 
@@ -76,8 +101,9 @@ export const docsRoutes = [
     title: 'Compiler',
     pages: [
       { title: 'Installation', route: '/docs/intro/compiler-install' },
+      { title: 'Compiler tiers', route: '/docs/core/compiler-tiers' },
+      { title: 'Zero-runtime mode', route: '/docs/guides/zero-runtime' },
       { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
-      { title: 'Background', route: '/docs/intro/why-a-compiler' },
     ],
   },
 
@@ -100,7 +126,8 @@ export const docsRoutes = [
     title: 'Guides',
     section: 'core',
     pages: [
-      { title: 'Upgrading from v1 to v2', route: '/docs/guides/how-to-upgrade' },
+      { title: 'Upgrading to v3', route: '/docs/guides/how-to-upgrade' },
+      { title: 'Flat Conditional Values', route: '/docs/guides/flat-values' },
       { title: 'Custom UI Package', route: '/docs/guides/design-systems' },
       { title: 'Creating Custom Themes', route: '/docs/guides/theme-builder' },
       {
@@ -110,7 +137,6 @@ export const docsRoutes = [
       { title: 'Developing', route: '/docs/guides/developing' },
       { title: 'create-tamagui', route: '/docs/guides/create-tamagui-app' },
       { title: 'Server Rendering', route: '/docs/core/server-rendering' },
-      { title: 'Extras', route: '/docs/core/exports' },
     ],
   },
 
@@ -121,11 +147,22 @@ export const docsRoutes = [
     // title: 'tamagui',
     pages: [
       { title: 'Install', route: '/ui/intro' },
+      { title: 'Native', route: '/ui/native' },
+      { title: 'Stacking (zIndex)', route: '/ui/z-index' },
+    ],
+  },
+
+  {
+    section: 'ui',
+    label: 'Base',
+    pages: [
       { title: 'Stacks', route: '/ui/stacks' },
+      { title: 'Surface', route: '/ui/surface' },
       { title: 'Headings', route: '/ui/headings' },
       { title: 'Text', route: '/ui/text' },
-      { title: 'Native', route: '/ui/native' },
-      { title: 'Z-Index', route: '/ui/z-index' },
+      { title: 'ScrollView', route: '/ui/scroll-view' },
+      { title: 'Group', route: '/ui/group' },
+      { title: 'FocusScope', route: '/ui/focus-scope' },
     ],
   },
 
@@ -135,6 +172,7 @@ export const docsRoutes = [
     pages: [
       { title: 'Button', route: '/ui/button' },
       { title: 'Checkbox', route: '/ui/checkbox' },
+      { title: 'Field', route: '/ui/field' },
       { title: 'Form', route: '/ui/form' },
       { title: 'Input & TextArea', route: '/ui/inputs' },
       { title: 'Label', route: '/ui/label' },
@@ -168,7 +206,6 @@ export const docsRoutes = [
       { title: 'Tabs', route: '/ui/tabs' },
       { title: 'Tooltip', route: '/ui/tooltip' },
       { title: 'Toast', route: '/ui/toast' },
-      { title: 'Toast v2', route: '/ui/toast-2' },
     ],
   },
 
@@ -187,14 +224,9 @@ export const docsRoutes = [
     section: 'ui',
     label: 'Functional',
     pages: [
+      { title: 'Adapt', route: '/ui/adapt' },
       { title: 'Anchor', route: '/ui/anchor' },
-      { title: 'FocusScope', route: '/ui/focus-scope' },
-      { title: 'Group', route: '/ui/group' },
-      { title: 'HTML Elements', route: '/ui/html-elements' },
       { title: 'Portal', route: '/ui/portal' },
-      { title: 'RovingFocusGroup', route: '/ui/roving-focus' },
-      { title: 'ScrollView', route: '/ui/scroll-view' },
-      { title: 'Unspaced', route: '/ui/unspaced' },
       { title: 'VisuallyHidden', route: '/ui/visually-hidden' },
     ],
   },
@@ -213,4 +245,7 @@ export const docsRoutes = [
 ]
 
 export const allDocsRoutes = docsRoutes.flatMap((x) => x.pages || [])
-export const allNotPending = allDocsRoutes.filter((x) => !x['pending'])
+// section anchors belong in the sidebar, not page-to-page navigation
+export const allNotPending = allDocsRoutes.filter(
+  (x) => !x['pending'] && !x.route.includes('#')
+)

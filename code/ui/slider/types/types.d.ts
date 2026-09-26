@@ -1,5 +1,5 @@
-import type { GestureReponderEvent, SizeTokens, TamaguiElement } from '@tamagui/core';
-import type { SizableStackProps } from '@tamagui/stacks';
+import type { GestureReponderEvent, TamaguiElement } from '@tamagui/core';
+import type { YStackProps } from '@tamagui/stacks';
 export type ScopedProps<P> = P & {
     __scopeSlider?: string;
 };
@@ -17,7 +17,7 @@ type SliderImplPrivateProps = {
     onEndKeyDown(event: React.KeyboardEvent): void;
     onStepKeyDown(event: React.KeyboardEvent): void;
 };
-export type SliderTrackProps = SizableStackProps;
+export type SliderTrackProps = YStackProps;
 export interface SliderImplProps extends SliderTrackProps, SliderImplPrivateProps {
     dir?: Direction;
     orientation: 'horizontal' | 'vertical';
@@ -44,7 +44,7 @@ export interface SliderVerticalProps extends SliderOrientationProps {
     dir?: Direction;
 }
 export interface SliderProps extends Omit<SliderHorizontalProps, keyof SliderOrientationPrivateProps | 'defaultValue'>, SliderEventProps {
-    size?: SizeTokens;
+    size?: string | number | boolean;
     name?: string;
     disabled?: boolean;
     orientation?: React.AriaAttributes['aria-orientation'];
@@ -58,7 +58,7 @@ export interface SliderProps extends Omit<SliderHorizontalProps, keyof SliderOri
     onValueChange?(value: number[]): void;
 }
 export type SliderContextValue = {
-    size?: SizeTokens | number | null;
+    size?: string | number | boolean | null;
     disabled?: boolean;
     min: number;
     max: number;
@@ -66,6 +66,12 @@ export type SliderContextValue = {
     valueIndexToChangeRef: React.MutableRefObject<number>;
     thumbs: Map<TamaguiElement, number>;
     orientation: SliderProps['orientation'];
+};
+export type SliderResponderProps = {
+    onResponderGrant: (event: any) => void;
+    onResponderMove: (event: any) => void;
+    onResponderRelease: (event: any) => void;
+    children?: React.ReactNode;
 };
 export {};
 //# sourceMappingURL=types.d.ts.map

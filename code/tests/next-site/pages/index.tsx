@@ -1,4 +1,4 @@
-import { X } from '@tamagui/lucide-icons-2'
+import { X } from '@tamagui/local-icons'
 import { HeroTypography } from '../components/HeroTypography'
 
 export default function Home() {

@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { getConfigMaybe } from './config'
+import { getVariable } from './createVariable'
 import { useMedia } from './hooks/useMedia'
 import { useTheme } from './hooks/useTheme'
 import { ThemeStateContext } from './hooks/useThemeState'
@@ -8,6 +9,7 @@ import { ThemeStateContext } from './hooks/useThemeState'
 
 const EMPTY_EXPRESSIONS: any[] = []
 const EMPTY_THEME = {}
+const FALLBACK_THEME_CACHE = new WeakMap<object, Record<string, any>>()
 
 export const _withStableStyle = (
   Component: any,
@@ -15,54 +17,70 @@ export const _withStableStyle = (
   hasThemeKeys?: boolean,
   hasMediaKeys?: boolean
 ) =>
-  React.memo(
-    React.forwardRef((props: any, ref) => {
-      const { _expressions = EMPTY_EXPRESSIONS, ...rest } = props
+  React.memo(function WithStableStyle(props: any) {
+    const { ref, ...propsWithoutRef } = props
+    const { _expressions = EMPTY_EXPRESSIONS, ...rest } = propsWithoutRef
 
-      const parentId = useContext(ThemeStateContext)
+    const parentId = useContext(ThemeStateContext)
 
-      // compile-time constants per wrapper, so conditional hooks are stable
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const theme = hasThemeKeys && parentId ? useTheme() : null
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const media = hasMediaKeys ? useMedia() : null
+    // compile-time constants per wrapper, so conditional hooks are stable
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const theme = hasThemeKeys && parentId ? useTheme() : null
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const media = hasMediaKeys ? useMedia() : null
 
-      const resolvedExpressions = media
-        ? _expressions.map((expr: any) =>
-            Array.isArray(expr)
-              ? !!(media[expr[0]] && expr[1])
-              : typeof expr === 'string'
-                ? media[expr]
-                : expr
-          )
-        : _expressions
+    const resolvedExpressions = media
+      ? _expressions.map((expr: any) =>
+          // ['gtLg', cond] needs the media query and the runtime condition
+          Array.isArray(expr)
+            ? !!(media[expr[0]] && expr[1])
+            : typeof expr === 'string'
+              ? media[expr]
+              : expr
+        )
+      : _expressions
 
-      let resolvedTheme: any = theme || EMPTY_THEME
-      if (hasThemeKeys && !parentId) {
-        // monorepo edge case: ThemeStateContext is from a different instance
-        const config = getConfigMaybe()
-        const themes = config?.themes
-        if (themes) {
-          for (const k in themes) {
-            resolvedTheme = themes.light || themes.dark || themes[k]
-            break
+    let resolvedTheme: any = theme || EMPTY_THEME
+    if (hasThemeKeys && !parentId) {
+      // monorepo edge case: ThemeStateContext is from a different instance
+      const config = getConfigMaybe()
+      const themes = config?.themes
+      if (themes) {
+        for (const k in themes) {
+          const fallbackTheme = themes.light || themes.dark || themes[k]
+          let gettableTheme = FALLBACK_THEME_CACHE.get(fallbackTheme)
+          if (!gettableTheme) {
+            gettableTheme = {}
+            for (const key in fallbackTheme) {
+              const value = fallbackTheme[key]
+              gettableTheme[key] =
+                typeof (value as any)?.get === 'function'
+                  ? value
+                  : {
+                      ...(value && typeof value === 'object' ? value : { val: value }),
+                      get: () => getVariable(value),
+                    }
+            }
+            FALLBACK_THEME_CACHE.set(fallbackTheme, gettableTheme)
           }
-        }
-        if (process.env.NODE_ENV === 'development') {
-          console.warn(
-            '[@tamagui] _withStableStyle: no ThemeStateContext found. ' +
-              'This usually means duplicate tamagui instances in a monorepo. ' +
-              'Falling back to default theme from config.'
-          )
+          resolvedTheme = gettableTheme
+          break
         }
       }
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(
+          '[@tamagui] _withStableStyle: no ThemeStateContext found. ' +
+            'This usually means duplicate tamagui instances in a monorepo. ' +
+            'Falling back to default theme from config.'
+        )
+      }
+    }
 
-      return (
-        <Component
-          ref={ref}
-          style={createStyle(resolvedTheme, resolvedExpressions)}
-          {...rest}
-        />
-      )
-    })
-  )
+    return (
+      <Component
+        ref={ref}
+        style={createStyle(resolvedTheme, resolvedExpressions)}
+        {...rest}
+      />
+    )
+  })

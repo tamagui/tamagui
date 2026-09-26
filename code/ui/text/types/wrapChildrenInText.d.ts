@@ -1,12 +1,9 @@
-import type { SizeTokens } from '@tamagui/web';
 import React from 'react';
 import type { TextParentStyles } from './types';
 type Props = TextParentStyles & {
     children?: React.ReactNode;
-    size?: SizeTokens;
+    size?: unknown;
 };
-export declare function wrapChildrenInText(TextComponent: any, propsIn: Props & {
-    unstyled?: boolean;
-}, extraProps?: Record<string, any>): React.ReactNode[] | (number | bigint | Iterable<React.ReactNode> | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | React.JSX.Element)[];
+export declare function wrapChildrenInText(TextComponent: any, propsIn: Props & {}, extraProps?: Record<string, any>): React.ReactNode[];
 export {};
 //# sourceMappingURL=wrapChildrenInText.d.ts.map

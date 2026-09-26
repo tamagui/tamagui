@@ -232,6 +232,22 @@ test.describe('Toast Stacking', () => {
     // front toast should have highest z-index
     const numericZIndices = zIndices.map((z) => parseInt(z) || 0)
     expect(numericZIndices[0]).toBeGreaterThan(numericZIndices[1])
+
+    // collapsed stack peeks by exactly `gap` per index (the case sets gap={12}).
+    // guards against the y offset being read as a space token instead of pixels.
+    const offsets = await page.$$eval('[role="status"]', (els) =>
+      els.map((el) => {
+        const positionWrapper = el.parentElement?.parentElement as HTMLElement
+        const style = getComputedStyle(positionWrapper)
+        // the css driver writes the `translate` property, other drivers `transform`
+        const y =
+          style.translate !== 'none'
+            ? Number.parseFloat(style.translate.split(' ')[1] ?? '0')
+            : new DOMMatrixReadOnly(style.transform).f
+        return Math.round(y)
+      })
+    )
+    expect(offsets).toEqual([0, -12, -24, -36])
   })
 
   test('hover expands stacked toasts', async ({ page }) => {

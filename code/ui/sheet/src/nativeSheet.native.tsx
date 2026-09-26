@@ -1,0 +1,85 @@
+import { YStack } from '@tamagui/stacks'
+import type { FunctionComponent } from 'react'
+import { useEffect, useRef } from 'react'
+import { Platform, View } from 'react-native'
+import { SheetNativeSystemContext, SheetProvider } from './SheetContext'
+import type { SheetNativeModal, SheetNativePlatforms, SheetProps } from './types'
+import { useSheetOpenState } from './useSheetOpenState'
+import { useSheetProviderProps } from './useSheetProviderProps'
+
+const nativeSheets: Record<SheetNativePlatforms, FunctionComponent<SheetProps> | null> = {
+  ios: null,
+}
+
+export function getNativeSheet(platform: SheetNativePlatforms) {
+  if (Platform.OS !== platform) return null
+  return nativeSheets[platform]
+}
+
+export function setupNativeSheet(
+  platform: SheetNativePlatforms,
+  RNIOSModal: SheetNativeModal
+) {
+  const { ModalSheetView, ModalSheetViewMainContent } = RNIOSModal
+
+  if (platform === 'ios') {
+    nativeSheets[platform] = (props: SheetProps) => {
+      const state = useSheetOpenState(props)
+      const providerProps = useSheetProviderProps(props, state)
+
+      const { open, setOpen } = state
+      const ref = useRef<{
+        presentModal: Function
+        dismissModal: Function
+      }>(undefined)
+
+      useEffect(() => {
+        if (open) {
+          ref.current?.presentModal()
+        } else {
+          ref.current?.dismissModal()
+        }
+      }, [open])
+
+      function setOpenInternal(next: boolean) {
+        props.onOpenChange?.(open)
+        setOpen(next)
+      }
+
+      return (
+        <SheetNativeSystemContext.Provider value>
+          <SheetProvider
+            setHasScrollView={emptyFn}
+            keyboardOccludedHeight={0}
+            isKeyboardVisible={false}
+            keyboardStableFrameHeight={0}
+            {...providerProps}
+            onlyShowContainer
+          >
+            <ModalSheetView ref={ref} onModalDidDismiss={() => setOpenInternal(false)}>
+              <ModalSheetViewMainContent>
+                <View style={{ flex: 1 }}>{props.children}</View>
+              </ModalSheetViewMainContent>
+            </ModalSheetView>
+
+            {/* for some reason select triggers wont show on native if this isn't inside the actual tree not inside implementation... */}
+            {/* so just hiding it here for now... not great... */}
+            <YStack
+              position="absolute"
+              display="none"
+              pointerEvents="none"
+              width={0}
+              height={0}
+            >
+              {props.children}
+            </YStack>
+          </SheetProvider>
+        </SheetNativeSystemContext.Provider>
+      )
+    }
+  }
+}
+
+const emptyFn = () => {
+  // TODO
+}

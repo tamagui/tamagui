@@ -8,6 +8,9 @@
       "path": "../../core/core"
     },
     {
+      "path": "../../core/react-native-types"
+    },
+    {
       "path": "../stacks"
     }
   ],

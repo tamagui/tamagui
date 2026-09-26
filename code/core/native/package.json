@@ -8,6 +8,29 @@
     "**/setup-*",
     "**/gesture-handler*"
   ],
+  "files": [
+    "src",
+    "types",
+    "dist",
+    "gesture-handler",
+    "gesture-handler.cjs",
+    "setup-burnt",
+    "setup-burnt.cjs",
+    "setup-expo-ui-menu",
+    "setup-expo-ui-menu.cjs",
+    "setup-gesture-handler",
+    "setup-gesture-handler.cjs",
+    "setup-keyboard-controller",
+    "setup-keyboard-controller.cjs",
+    "setup-safe-area",
+    "setup-safe-area.cjs",
+    "setup-teleport",
+    "setup-teleport.cjs",
+    "setup-worklets",
+    "setup-worklets.cjs",
+    "setup-zeego",
+    "setup-zeego.cjs"
+  ],
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
@@ -27,9 +50,6 @@
       ],
       "setup-safe-area": [
         "./types/setup-safe-area.d.ts"
-      ],
-      "setup-expo-linear-gradient": [
-        "./types/setup-expo-linear-gradient.d.ts"
       ],
       "setup-keyboard-controller": [
         "./types/setup-keyboard-controller.d.ts"
@@ -101,15 +121,6 @@
       "require": "./dist/cjs/setup-safe-area.cjs",
       "default": "./dist/esm/setup-safe-area.mjs"
     },
-    "./setup-expo-linear-gradient": {
-      "types": "./types/setup-expo-linear-gradient.d.ts",
-      "react-native": "./dist/esm/setup-expo-linear-gradient.native.js",
-      "browser": "./dist/esm/setup-expo-linear-gradient.mjs",
-      "module": "./dist/esm/setup-expo-linear-gradient.mjs",
-      "import": "./dist/esm/setup-expo-linear-gradient.mjs",
-      "require": "./dist/cjs/setup-expo-linear-gradient.cjs",
-      "default": "./dist/esm/setup-expo-linear-gradient.mjs"
-    },
     "./setup-keyboard-controller": {
       "types": "./types/setup-keyboard-controller.d.ts",
       "react-native": "./dist/esm/setup-keyboard-controller.native.js",
@@ -156,19 +167,67 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "dependencies": {
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/react-native-types": "workspace:*"
+  },
   "devDependencies": {
+    "@expo/ui": "~57.0.12",
     "@tamagui/build": "workspace:*",
-    "burnt": "^0.12.2",
+    "burnt": "^0.13.0",
     "react": "19.2.3",
     "react-native": "0.86.2",
     "react-native-gesture-handler": "~2.32.0",
     "react-native-keyboard-controller": "1.21.11",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-teleport": "^1.0.0",
+    "react-native-web": "~0.21.0",
     "react-native-worklets-core": "^1.0.0",
     "zeego": "^3.0.0"
   },
   "peerDependencies": {
-    "react": "*"
+    "@expo/ui": "*",
+    "burnt": "*",
+    "react": "*",
+    "react-native": "*",
+    "react-native-gesture-handler": "*",
+    "react-native-keyboard-controller": "*",
+    "react-native-safe-area-context": "*",
+    "react-native-teleport": "*",
+    "react-native-web": "*",
+    "react-native-worklets-core": "*",
+    "zeego": "*"
+  },
+  "peerDependenciesMeta": {
+    "@expo/ui": {
+      "optional": true
+    },
+    "burnt": {
+      "optional": true
+    },
+    "react-native": {
+      "optional": true
+    },
+    "react-native-web": {
+      "optional": true
+    },
+    "react-native-gesture-handler": {
+      "optional": true
+    },
+    "react-native-keyboard-controller": {
+      "optional": true
+    },
+    "react-native-safe-area-context": {
+      "optional": true
+    },
+    "react-native-teleport": {
+      "optional": true
+    },
+    "react-native-worklets-core": {
+      "optional": true
+    },
+    "zeego": {
+      "optional": true
+    }
   }
 }

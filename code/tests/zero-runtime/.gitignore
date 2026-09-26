@@ -1,0 +1,9 @@
+dist
+dist-*
+.next
+.next-*
+.tamagui
+next-env.d.ts
+public
+public-metro
+test-results

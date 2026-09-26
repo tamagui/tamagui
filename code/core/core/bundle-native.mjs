@@ -17,6 +17,8 @@ await bundleNative({
   fileName: 'test.native.cjs',
   isTest: true,
   define: {
-    'process.env.NODE_ENV': JSON.stringify('test'),
+    // tests exercise test-only paths and temporarily switch to development
+    // to assert diagnostics, so preserve the runtime environment in this artifact
+    'process.env.NODE_ENV': 'globalThis.process.env.NODE_ENV',
   },
 })

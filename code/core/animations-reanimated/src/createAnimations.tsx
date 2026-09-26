@@ -1,4 +1,13 @@
-import { getEffectiveAnimation, normalizeTransition } from '@tamagui/animation-helpers'
+import {
+  easingToBezier,
+  forAnimationState,
+  getTransitionForKey,
+  hasTransition,
+  resolveTransition,
+  type ResolvedEntry,
+  type ResolvedTransition,
+  type AnimationsConfig,
+} from '@tamagui/animation-helpers'
 import {
   getSplitStyles,
   hooks,
@@ -7,17 +16,22 @@ import {
   useComposedRefs,
   useEvent,
   useIsomorphicLayoutEffect,
-  useThemeWithState,
   View,
-  type AnimationDriver,
+  type AnimationDriverWithAnimatedNumbers,
+  type NativeTextMetrics,
+  type TransitionProp,
   type UniversalAnimatedNumber,
+  createRefComponent,
 } from '@tamagui/core'
+import { useThemeWithState } from '@tamagui/web/internal-runtime'
+import { TextInputHost } from './textInputHost'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import normalizeColor from '@react-native/normalize-colors'
-import React, { forwardRef, useMemo, useRef } from 'react'
+import React, { useMemo, useRef } from 'react'
 import type { SharedValue } from 'react-native-reanimated'
 import Animated_, {
   cancelAnimation,
+  Easing,
   runOnJS,
   runOnUI,
   useAnimatedReaction,
@@ -80,10 +94,17 @@ type AnimationSnapshot = {
   transforms: Array<Record<string, unknown>>
   gatedKeys: Record<string, boolean>
   /**
+   * the leading is a ratio of a font size that can move under it, so the mapper
+   * multiplies the two live factors instead of animating a lineHeight of its
+   * own. false for an absolute length, for `normal`, and for a font size that
+   * is already at rest.
+   */
+  derivesLeading: boolean
+  /**
    * for each animated key (transform sub-keys as `transform:key`), the value the
    * previous committed render painted for it, when one exists and is animatable.
    * the worklet animates a mapper-fresh key FROM its seed instead of snapping —
-   * this is how an enterStyle value painted statically during mount becomes the
+   * this is how an enter-clause value painted statically during mount becomes the
    * start point once the key turns animated. keys with no seed paint their target
    * directly (a key appearing from nothing has nothing to animate from).
    */
@@ -136,17 +157,34 @@ type AnimationCallback = (finished?: boolean) => void
 
 type MapperState = {
   emitted: Record<string, boolean>
+  // static keys a style emitter has written through the mapper. nothing else
+  // may emit statics: reanimated snapshots this worklet's first-render output
+  // per style handle and re-applies that snapshot under every later style
+  // prop, so a static emitted on mount (a disabled mount's pointerEvents:
+  // 'none', its opacity) would outlive the render that removed it. render
+  // statics reach the view through the staticStyles element instead.
+  ownedStatics: Record<string, boolean>
 }
 
 const updateMapperState = isWeb
-  ? (state: SharedValue<MapperState>, emitted: Record<string, boolean>) => {
+  ? (
+      state: SharedValue<MapperState>,
+      emitted: Record<string, boolean>,
+      ownedStatics: Record<string, boolean>
+    ) => {
       state.value.emitted = emitted
+      state.value.ownedStatics = ownedStatics
     }
-  : (state: SharedValue<MapperState>, emitted: Record<string, boolean>) => {
+  : (
+      state: SharedValue<MapperState>,
+      emitted: Record<string, boolean>,
+      ownedStatics: Record<string, boolean>
+    ) => {
       'worklet'
       if (!globalThis._WORKLET) return
       state.modify((current) => {
         current.emitted = emitted
+        current.ownedStatics = ownedStatics
         return current
       }, false)
     }
@@ -199,7 +237,7 @@ const getRemovedAnimatedKeys = (
 }
 
 // implicit start values for style keys that were never painted (e.g. a key
-// introduced by exitStyle with no base value). most numerics default to 0.
+// introduced by an exit clause with no base value). most numerics default to 0.
 const getImplicitDefault = (
   key: string,
   targetValue: number | string
@@ -228,6 +266,42 @@ const getImplicitDefault = (
   }
   return suffixIndex > 0 ? `${value}${targetValue.slice(suffixIndex)}` : value
 }
+
+// A numeric authored lineHeight is a RATIO of the resolved font size, not a
+// length. Core finalizes the destination to fontSize * ratio and reports the
+// ratio back on `nativeTextMetrics`, so the painted leading has to be
+// fontSize * ratio on EVERY frame, not only at the destination. An absolute px
+// leading, and any raw react-native style, keeps its own value and its own
+// timeline.
+const getLeadingRatio = (metrics: { lineHeight?: unknown } | undefined | null) => {
+  const ratio = metrics?.lineHeight
+  return typeof ratio === 'number' && Number.isFinite(ratio) && ratio >= 0
+    ? ratio
+    : undefined
+}
+
+// The mapper cannot multiply two reanimated DESCRIPTORS, but it can multiply
+// two live numbers: the font size this node paints is mirrored into a shared
+// value frame by frame (see applyAnimation) and the ratio rides a shared value
+// of its own, so the leading is their product, recomputed on every frame either
+// factor moves. That is what makes a font size and a ratio changing together
+// paint fs(t) * r(t) instead of a ramp to fs_end * r_end.
+//
+// A transition covering neither key leaves both to land in the same commit,
+// already coherent, so there is nothing to derive. An inherited font size runs
+// on the ancestor's clock and never has an entry here, so it always derives.
+const derivesLeadingProduct = (
+  style: Record<string, unknown>,
+  ratio: number | undefined,
+  inheritsFontSize: boolean,
+  resolved: ResolvedTransition
+) =>
+  ratio !== undefined &&
+  (inheritsFontSize ||
+    (typeof style.lineHeight === 'number' &&
+      typeof style.fontSize === 'number' &&
+      (!!getTransitionForKey(resolved, 'fontSize') ||
+        !!getTransitionForKey(resolved, 'lineHeight'))))
 
 const COLOR_STYLE_KEYS: Record<string, boolean> = {
   backgroundColor: true,
@@ -284,8 +358,13 @@ const buildSnapshot = (
   statics: Record<string, unknown>,
   transforms: Array<Record<string, unknown>>,
   previousKeys: Set<string>,
-  lastPainted: Record<string, unknown>
-) => {
+  lastPainted: Record<string, unknown>,
+  derivesLeading = false
+): {
+  value: AnimationSnapshot
+  painted: Record<string, unknown>
+  keys: Set<string>
+} => {
   const snapshotAnimated: Record<string, unknown> = {}
   const snapshotStatics = cloneStyleRecord(statics)
 
@@ -314,6 +393,7 @@ const buildSnapshot = (
 
   const snapshotTransforms = transforms.map(cloneStyleRecord)
   const keys = new Set(Object.keys(snapshotAnimated))
+  if (derivesLeading) keys.add('lineHeight')
   for (const transform of snapshotTransforms) {
     const key = Object.keys(transform)[0]
     const value = key ? transform[key] : undefined
@@ -323,10 +403,25 @@ const buildSnapshot = (
   }
 
   const seeds: Record<string, unknown> = {}
+  const staticTransforms = getAnimatedTransforms(snapshotStatics.transform)
+  for (const transform of staticTransforms) {
+    const key = Object.keys(transform)[0]
+    if (keys.has(`transform:${key}`) && previousKeys.has(`transform:${key}`))
+      seeds[`transform:${key}`] = transform[key]
+  }
   for (const key of keys) {
-    let value = lastPainted[key]
-    if (typeof value !== 'number' && typeof value !== 'string') continue
+    // React carries the first animated value until the mapper owns the key.
+    // later commits can coalesce before its first run, so their destinations
+    // are not evidence of a painted predecessor.
+    let value = previousKeys.has(key)
+      ? (seeds[key] ?? snapshotStatics[key] ?? lastPainted[key])
+      : lastPainted[key]
+    if (typeof value !== 'number' && typeof value !== 'string') {
+      delete seeds[key]
+      continue
+    }
     if (value === 'auto' || (typeof value === 'string' && value.startsWith('calc'))) {
+      delete seeds[key]
       continue
     }
     if (COLOR_STYLE_KEYS[key]) value = normalizeAnimationColor(value)
@@ -335,14 +430,16 @@ const buildSnapshot = (
 
   const gatedKeys: Record<string, boolean> = {}
   for (const key of keys) gatedKeys[key] = true
+  // a derived leading is a product the mapper computes, not an animation with a
+  // completion callback, so no enter/exit cycle can wait on it
+  if (derivesLeading) delete gatedKeys.lineHeight
 
   const removedKeys = getRemovedAnimatedKeys(keys, previousKeys)
   const painted: Record<string, unknown> = {
     ...snapshotStatics,
     ...snapshotAnimated,
   }
-  const staticTransforms = getAnimatedTransforms(snapshotStatics.transform)
-  delete painted.transform
+  painted.transform = snapshotTransforms.length ? snapshotTransforms : staticTransforms
   for (const transform of staticTransforms) {
     const key = Object.keys(transform)[0]
     if (key) painted[`transform:${key}`] = transform[key]
@@ -358,6 +455,7 @@ const buildSnapshot = (
       statics: snapshotStatics,
       transforms: snapshotTransforms,
       gatedKeys,
+      derivesLeading,
       seeds,
       removedKeys,
       removeTransform: Object.keys(removedKeys).some((key) =>
@@ -392,13 +490,14 @@ const createReanimatedConfig = (config: TransitionConfig): Record<string, unknow
 /**
  * Apply animation to a value based on config, with optional completion callback
  */
-const applyAnimation = (
-  targetValue: number | string,
+const applyAnimation = <T extends number | string>(
+  targetValue: T,
   config: TransitionConfig,
   callback?: AnimationCallback,
   seedValue?: number | string,
-  validateStartAsColor = false
-): number | string => {
+  validateStartAsColor = false,
+  publishTo?: SharedValue<number>
+): T => {
   'worklet'
   const delay = config.delay
   const reanimatedConfig = createReanimatedConfig(config)
@@ -416,6 +515,23 @@ const applyAnimation = (
       reanimatedConfig as WithSpringConfig,
       callback
     )
+
+    // reanimated stamps lastTimestamp from performance.now() when an animation
+    // starts outside a frame (an event handler), then steps it on the frame
+    // timestamp, which is the frame's start and lags performance.now() badly
+    // when frames are starved. the delta goes negative, and the closed-form
+    // spring exponentiates instead of decaying: a tooltip crossing triggers on
+    // a loaded machine lands at translate -33,554,430px for a frame before it
+    // relaxes back. reanimated clamps the delta's upper bound only, so hold the
+    // clock monotonic before it reaches the spring math.
+    const innerOnFrame = animatedValue.onFrame
+    animatedValue.onFrame = (animation: any, now: number) => {
+      'worklet'
+      return innerOnFrame(
+        animation,
+        now < animation.lastTimestamp ? animation.lastTimestamp : now
+      )
+    }
   }
 
   // reanimated starts a descriptor from its per-view history for the key — the
@@ -465,7 +581,35 @@ const applyAnimation = (
     }
   }
 
-  return animatedValue
+  // a published font size mirrors what THIS descriptor paints, frame by frame.
+  // descendants that inherit the size read the mirror, so the host's own
+  // animation stays the only clock: no shadow animation, no second config, and
+  // nothing to keep in sync when this one is interrupted.
+  // (withDelay already wrapped above, before the seed onStart override, per
+  // main's hold-enterStyle-through-delay fix: applying it again here would
+  // double the delay.)
+  if (isAnimationDescriptor && publishTo) {
+    const startedOn = animatedValue.onStart
+    animatedValue.onStart = (
+      animation: any,
+      value: unknown,
+      timestamp: number,
+      previousAnimation: unknown
+    ) => {
+      'worklet'
+      startedOn(animation, value, timestamp, previousAnimation)
+      publishTo.value = animation.current
+    }
+    const framedOn = animatedValue.onFrame
+    animatedValue.onFrame = (animation: any, now: number) => {
+      'worklet'
+      const finished = framedOn(animation, now)
+      publishTo.value = animation.current
+      return finished
+    }
+  }
+
+  return animatedValue as T
 }
 
 const animateSnapshotValue = (
@@ -478,16 +622,23 @@ const animateSnapshotValue = (
   gated: boolean,
   currentlyExiting: boolean,
   exitCycleId: number,
-  currentlyCompletingAnimation: boolean,
-  didAnimateCycleId: number,
+  currentlyCompletingEnter: boolean,
+  enterCycleId: number,
+  currentlyCompletingUpdate: boolean,
+  updateCycleId: number,
   markExitKeyDone: (key: string, cycleId: number, finished: boolean) => void,
-  markDidAnimateKeyDone: (key: string, cycleId: number, finished: boolean) => void,
-  validateStartAsColor = false
+  markEnterKeyDone: (key: string, cycleId: number) => void,
+  markUpdateKeyDone: (key: string, cycleId: number, finished: boolean) => void,
+  validateStartAsColor = false,
+  publishTo?: SharedValue<number>
 ): number | string => {
   'worklet'
 
-  const cycleGated = gated && (currentlyExiting || currentlyCompletingAnimation)
+  const cycleGated =
+    gated && (currentlyExiting || currentlyCompletingEnter || currentlyCompletingUpdate)
   if (!previouslyEmitted && seedValue === undefined && !cycleGated) {
+    // painted plainly, so the mirror takes it straight
+    if (publishTo && typeof targetValue === 'number') publishTo.value = targetValue
     return targetValue
   }
 
@@ -497,10 +648,15 @@ const animateSnapshotValue = (
       'worklet'
       runOnJS(markExitKeyDone)(key, exitCycleId, finished ?? false)
     }
-  } else if (gated && currentlyCompletingAnimation) {
+  } else if (gated && currentlyCompletingEnter) {
+    callback = () => {
+      'worklet'
+      runOnJS(markEnterKeyDone)(key, enterCycleId)
+    }
+  } else if (gated && currentlyCompletingUpdate) {
     callback = (finished) => {
       'worklet'
-      runOnJS(markDidAnimateKeyDone)(key, didAnimateCycleId, finished ?? false)
+      runOnJS(markUpdateKeyDone)(key, updateCycleId, finished ?? false)
     }
   }
 
@@ -511,7 +667,8 @@ const animateSnapshotValue = (
     previouslyEmitted
       ? undefined
       : ((seedValue ?? getImplicitDefault(implicitKey, targetValue)) as number | string),
-    validateStartAsColor
+    validateStartAsColor,
+    publishTo
   )
 }
 
@@ -590,23 +747,19 @@ const ANIMATABLE_PROPERTIES: Record<string, boolean> = {
 /**
  * Check if a style property can be animated
  */
-const canAnimateProperty = (
-  key: string,
-  value: unknown,
-  animateOnly?: string[]
-): boolean => {
+const canAnimateProperty = (key: string, value: unknown): boolean => {
   if (!ANIMATABLE_PROPERTIES[key]) return false
   if (value === 'auto') return false
   if (typeof value === 'string' && value.startsWith('calc')) return false
-  if (animateOnly && !animateOnly.includes(key)) return false
   return true
 }
 
+// narrowing to a subset of properties is the transition's own job: a key no
+// entry covers gets `instantConfig()` in `buildTransitionConfig` and snaps.
 const splitAnimationStyles = (
   style: Record<string, unknown>,
   isDark: boolean,
-  disableAnimation: boolean,
-  animateOnly?: string[]
+  disableAnimation: boolean
 ) => {
   const animated: Record<string, unknown> = {}
   const statics: Record<string, unknown> = {}
@@ -615,7 +768,7 @@ const splitAnimationStyles = (
     const value = resolveDynamicValue(style[key], isDark)
     if (value === undefined) continue
 
-    if (!disableAnimation && canAnimateProperty(key, value, animateOnly)) {
+    if (!disableAnimation && canAnimateProperty(key, value)) {
       animated[key] = cloneAnimationValue(value)
     } else {
       statics[key] = cloneAnimationValue(value)
@@ -637,7 +790,7 @@ function createWebAnimatedComponent(defaultTag: 'div' | 'span') {
   const isText = defaultTag === 'span'
 
   const Component = Animated.createAnimatedComponent(
-    forwardRef((propsIn: any, ref) => {
+    createRefComponent((propsIn: any, ref) => {
       const { forwardedRef, render = defaultTag, ...rest } = propsIn
       const hostRef = useRef<HTMLElement>(null)
       const composedRefs = useComposedRefs(forwardedRef, ref, hostRef)
@@ -667,8 +820,9 @@ function createWebAnimatedComponent(defaultTag: 'div' | 'span') {
         stateRef as any,
         false
       )
+      const { nativeID, ...webProps } = transformedProps ?? viewProps
 
-      return <Element {...transformedProps} ref={composedRefs} />
+      return <Element {...webProps} ref={composedRefs} />
     })
   )
   ;(Component as any).acceptRenderProp = true
@@ -678,6 +832,12 @@ function createWebAnimatedComponent(defaultTag: 'div' | 'span') {
 const AnimatedView = createWebAnimatedComponent('div')
 const AnimatedText = createWebAnimatedComponent('span')
 
+// a TextInput never inherits font size from an ancestor Text on native, so the
+// binding hook has to hand it a host that accepts animated styles of its own.
+// built on first use: the compiler evaluates tamagui.config.ts against a
+// react-native stub that has no TextInput, and never binds any text.
+let animatedTextInput: React.ComponentType<any> | undefined
+
 // =============================================================================
 // Transition Config Builder
 // =============================================================================
@@ -685,71 +845,69 @@ const AnimatedText = createWebAnimatedComponent('span')
 type TransitionConfigResult = {
   baseConfig: TransitionConfig
   propertyConfigs: Record<string, TransitionConfig>
+  resolved: ResolvedTransition
+}
+
+const defaultConfig: TransitionConfig = { type: 'spring' }
+
+/** one resolved entry as reanimated's own animation config */
+function entryToReanimated(entry: ResolvedEntry): TransitionConfig {
+  if (entry.timing.kind === 'spring') {
+    return {
+      type: 'spring',
+      stiffness: entry.timing.stiffness,
+      damping: entry.timing.damping,
+      mass: entry.timing.mass,
+      delay: entry.delayMs || undefined,
+    }
+  }
+  const bezier = easingToBezier(entry.timing.easing)
+  return {
+    type: 'timing',
+    duration: entry.timing.durationMs,
+    // Easing.bezier returns a worklet, which is what withTiming wants. a
+    // `linear()` or `steps()` easing has no bezier form, so leave it to
+    // reanimated's default rather than applying something that isn't it.
+    easing: bezier
+      ? Easing.bezier(bezier[0], bezier[1], bezier[2], bezier[3])
+      : undefined,
+    delay: entry.delayMs || undefined,
+  }
 }
 
 /**
  * Builds animation config from a transition prop.
  * Shared logic used in both initial render and style emitter updates.
+ *
+ * Everything meaningful happens in `resolveTransition`, which the other three
+ * drivers also call. This only translates the result into reanimated's shape.
  */
-function buildTransitionConfig<A extends Record<string, TransitionConfig>>(
+function buildTransitionConfig(
   transition: any,
-  animations: A,
+  animations: AnimationsConfig,
   animationState: 'enter' | 'exit' | 'default',
   styleKeys: Set<string>
 ): TransitionConfigResult {
-  const normalized = normalizeTransition(transition)
-  const effectiveKey = getEffectiveAnimation(normalized, animationState)
-
-  let base = cloneTransitionConfig(
-    effectiveKey
-      ? (animations[effectiveKey as keyof typeof animations] ??
-          ({ type: 'spring' } as TransitionConfig))
-      : ({ type: 'spring' } as TransitionConfig)
+  const resolved = forAnimationState(
+    resolveTransition(transition, { animations: animations as Record<string, unknown> }),
+    animationState
   )
 
-  if (normalized.delay) {
-    base = cloneTransitionConfig({ ...base, delay: normalized.delay })
-  }
+  const base = resolved.all ? entryToReanimated(resolved.all) : { ...defaultConfig }
 
-  if (normalized.config) {
-    base = cloneTransitionConfig({ ...base, ...normalized.config })
-    // infer type: 'timing' if duration is provided without spring params
-    if (
-      base.type !== 'timing' &&
-      normalized.config.duration !== undefined &&
-      normalized.config.damping === undefined &&
-      normalized.config.stiffness === undefined &&
-      normalized.config.mass === undefined
-    ) {
-      base = cloneTransitionConfig({ ...base, type: 'timing' })
-    }
-  }
-
-  // build per-property configs
   const propertyConfigs: Record<string, TransitionConfig> = {}
-
   for (const key of styleKeys) {
-    const propAnimation = normalized.properties[key]
-    if (typeof propAnimation === 'string') {
-      propertyConfigs[key] = cloneTransitionConfig(
-        animations[propAnimation as keyof typeof animations] ?? base
-      )
-    } else if (propAnimation && typeof propAnimation === 'object') {
-      const configType = (propAnimation as any).type
-      const baseForProp = configType
-        ? (animations[configType as keyof typeof animations] ?? base)
-        : base
-      propertyConfigs[key] = cloneTransitionConfig({
-        ...baseForProp,
-        ...propAnimation,
-      } as TransitionConfig)
-    } else {
-      propertyConfigs[key] = cloneTransitionConfig(base)
-    }
+    const entry = getTransitionForKey(resolved, key)
+    // a key no entry covers must SNAP, not animate with some default spring.
+    // `transition={{ opacity: '150ms' }}` names opacity and nothing else, and
+    // that has to mean the same thing here as it does in a stylesheet.
+    propertyConfigs[key] = entry ? entryToReanimated(entry) : instantConfig()
   }
 
-  return { baseConfig: base, propertyConfigs }
+  return { baseConfig: base, propertyConfigs, resolved }
 }
+
+const instantConfig = (): TransitionConfig => ({ type: 'timing', duration: 0 })
 
 /**
  * Extracts all style keys including transform sub-properties.
@@ -784,36 +942,56 @@ function getStyleKeys(style: Record<string, unknown>): Set<string> {
  * @example
  * ```tsx
  * const animations = createAnimations({
- *   fast: { type: 'spring', damping: 20, stiffness: 250 },
- *   slow: { type: 'timing', duration: 500 },
+ *   fast: { duration: 200, bounce: 0.2 },
+ *   slow: { type: 'timing', duration: 500, easing: 'ease-out' },
  * })
- *
  * ```
  */
-export function createAnimations<A extends Record<string, TransitionConfig>>(
-  animationsConfig: A
-): AnimationDriver<A> {
-  // Normalize animation configs - default to spring if not specified
-  // This matches behavior of moti and motion drivers
-  const animations = {} as A
-  for (const key in animationsConfig) {
-    animations[key] = cloneTransitionConfig({
-      type: 'spring',
-      ...animationsConfig[key],
-    }) as A[typeof key]
-  }
-
+export function createAnimations<A extends AnimationsConfig>(
+  animations: A
+): AnimationDriverWithAnimatedNumbers<A> {
   return {
     needsCustomComponent: true,
     View: isWeb ? AnimatedView : Animated.View,
     Text: isWeb ? AnimatedText : Animated.Text,
-    isReactNative: true,
     inputStyle: 'value',
     outputStyle: 'inline',
     avoidReRenders: true,
     animations,
     usePresence,
     ResetPresence,
+
+    // binds a descendant that has no font size of its own to the ancestor's
+    // animated one. no clock here: the worklet reads the ancestor's shared
+    // value, so the font size and a ratio leading land on the same frame.
+    useTextMetrics: ({ inheritedText, lineHeight }) => {
+      const node =
+        inheritedText?.driver === 'reanimated'
+          ? (inheritedText.fontSize as SharedValue<number>)
+          : null
+      // an absolute or `normal` leading still needs the font size bound, it
+      // just keeps the leading the caller already resolved.
+      const ratio = typeof lineHeight === 'number' ? lineHeight : null
+      const animatedStyle = useAnimatedStyle(() => {
+        'worklet'
+        if (!node) return {}
+        const fontSize = node.value
+        return ratio === null ? { fontSize } : { fontSize, lineHeight: fontSize * ratio }
+      }, [node, ratio])
+      const textChannel = inheritedText ?? null
+      // TextInputHost is absent only in the web build, which core never hands a
+      // channel, so this is the same condition as `node` twice over.
+      if (!node || !TextInputHost) return { style: null, textChannel }
+      animatedTextInput ||= Animated.createAnimatedComponent(TextInputHost)
+      return {
+        // reanimated's animated style is an opaque handle its own hosts read,
+        // not a plain object, so it does not fit the contract's Record shape.
+        style: animatedStyle as unknown as Record<string, unknown>,
+        textChannel,
+        Text: isWeb ? AnimatedText : Animated.Text,
+        TextInput: animatedTextInput,
+      }
+    },
 
     // =========================================================================
     // useAnimatedNumber - For imperative animated values
@@ -948,7 +1126,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         themeName,
         stateRef,
         styleState,
-        onDidAnimate,
+        onTransition,
+        inheritedText,
       } = animationProps
 
       // State flags
@@ -968,41 +1147,119 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
       // Use effectiveTransition computed by createComponent (single source of truth)
       const effectiveTransition = styleState?.effectiveTransition ?? props.transition
-      const normalized = normalizeTransition(effectiveTransition)
+      // core reports a numeric (ratio) leading on nativeTextMetrics; a px
+      // length and 'normal' are reported as themselves and stay independent.
+      const leadingRatio = getLeadingRatio(styleState?.nativeTextMetrics)
+
       // Use 'enter' if we're mounting OR if we just finished entering
       const animationState: 'enter' | 'exit' | 'default' = isExiting
         ? 'exit'
         : isMounting || justFinishedEntering
           ? 'enter'
           : 'default'
-      const animationKey = getEffectiveAnimation(normalized, animationState)
+      const resolvedTransition = forAnimationState(
+        resolveTransition(effectiveTransition, {
+          animations: animations as Record<string, unknown>,
+        }),
+        animationState
+      )
 
-      const disableAnimation = isHydrating || !animationKey
+      const disableAnimation = isHydrating || !hasTransition(resolvedTransition)
+
+      // this subtree's live font size, mirrored off whatever the host's own
+      // fontSize animation paints (see applyAnimation): one clock, not two.
+      // descendants read it, and so does this node's own leading whenever that
+      // leading is a ratio of the size.
+      const fontSizeShared = useSharedValue(
+        typeof style.fontSize === 'number' ? style.fontSize : 0
+      )
+      const publishesFontSize = !disableAnimation && typeof style.fontSize === 'number'
+      const ownTextChannel = useMemo(
+        () => ({ fontSize: fontSizeShared, driver: 'reanimated' }),
+        [fontSizeShared]
+      )
+      // an inherited font size: core leaves this node's own fontSize out of the
+      // style and reports the ratio, so the leading is the ANCESTOR's live font
+      // size times this node's ratio, read straight off the ancestor's mirror.
+      const inheritedFontSize =
+        leadingRatio !== undefined &&
+        typeof style.fontSize !== 'number' &&
+        inheritedText?.driver === 'reanimated'
+          ? (inheritedText.fontSize as SharedValue<number>)
+          : null
+      // the font size the leading is a ratio OF: an ancestor's when this node
+      // has none of its own, otherwise the one this node paints.
+      const leadingFontSize = inheritedFontSize ?? fontSizeShared
+      // the leading's other factor. the ratio is this node's own property, so it
+      // rides the entry that names lineHeight while the font size stays on its
+      // own clock, and the product is exact at every frame either way.
+      const leadingRatioShared = useSharedValue(leadingRatio ?? 0)
+      // the ratio the painted leading was last built from. `undefined` means the
+      // leading was a length or `normal`, which has no ratio to move from, so
+      // the next ratio starts the product instead of ramping into it.
+      const paintedRatioRef = useRef(leadingRatio)
+      const applyLeadingRatio = (ratio: number | undefined, config: TransitionConfig) => {
+        const previous = paintedRatioRef.current
+        if (previous === ratio) return
+        paintedRatioRef.current = ratio
+        if (ratio === undefined) return
+        leadingRatioShared.value =
+          previous === undefined || disableAnimation
+            ? ratio
+            : applyAnimation(ratio, config)
+      }
 
       // Theme state for dynamic values - use themeName from props instead of hook
       const isDark = themeName?.startsWith('dark') || false
 
       // Get sendExitComplete callback from presence
       const sendExitComplete = presence?.[1]
-      const onDidAnimateRef = useRef(onDidAnimate)
-      useIsomorphicLayoutEffect(() => {
-        onDidAnimateRef.current = onDidAnimate
-      }, [onDidAnimate])
+      const onTransitionRef = useRef(onTransition)
+      onTransitionRef.current = onTransition
+      const emit = (
+        phase: 'start' | 'end',
+        cause: 'enter' | 'exit' | 'update',
+        finished?: boolean
+      ) => {
+        onTransitionRef.current?.(
+          phase === 'end' ? { phase, cause, finished } : { phase, cause }
+        )
+      }
+      const enterStartedRef = useRef(false)
+      const exitStartedRef = useRef(false)
+      const updateStartedRef = useRef(false)
+      const isExitingJSRef = useRef(false)
+      isExitingJSRef.current = isExiting
 
-      const didAnimateCycleIdRef = useRef(0)
-      const pendingDidAnimateKeysRef = useRef<Set<string>>(new Set())
-      const didAnimateCompletedRef = useRef(false)
-      const isCompletingAnimationRef = useSharedValue(false)
-      const didAnimateCycleIdShared = useSharedValue(0)
-      const markDidAnimateKeyDone = useEvent(
+      // =========================================================================
+      // Update cycle state: an in-place style transition while mounted (not
+      // enter/exit). drives the onTransition 'update' lifecycle events and the
+      // components (e.g. accordion HeightAnimator) that retain content through
+      // an in-place transition.
+      // =========================================================================
+      const updateCycleIdRef = useRef(0)
+      const pendingUpdateKeysRef = useRef<Set<string>>(new Set())
+      const updateCompletedRef = useRef(false)
+      const isCompletingUpdateRef = useSharedValue(false)
+      const updateCycleIdShared = useSharedValue(0)
+      // an interrupted key still resolves its participation in this cycle. it
+      // used to be dropped on the floor, which left the key in the pending set
+      // forever and hung the update cycle: no 'end' event, and any component
+      // waiting on one (accordion's HeightAnimator) stayed latched.
+      const updateInterruptedRef = useRef(false)
+      const markUpdateKeyDone = useEvent(
         (key: string, cycleId: number, finished: boolean) => {
-          if (!finished || cycleId !== didAnimateCycleIdRef.current) return
-          if (didAnimateCompletedRef.current) return
-          pendingDidAnimateKeysRef.current.delete(key)
-          if (pendingDidAnimateKeysRef.current.size === 0) {
-            didAnimateCompletedRef.current = true
-            isCompletingAnimationRef.value = false
-            onDidAnimateRef.current?.()
+          if (cycleId !== updateCycleIdRef.current) return
+          if (updateCompletedRef.current) return
+          if (!finished) updateInterruptedRef.current = true
+          pendingUpdateKeysRef.current.delete(key)
+          if (pendingUpdateKeysRef.current.size === 0) {
+            updateCompletedRef.current = true
+            isCompletingUpdateRef.value = false
+            if (updateStartedRef.current) {
+              updateStartedRef.current = false
+              emit('end', 'update', !updateInterruptedRef.current)
+            }
           }
         }
       )
@@ -1034,23 +1291,55 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           // check if all exit animations are done
           if (pendingExitKeysRef.current.size === 0) {
             exitCompletedRef.current = true
+            if (exitStartedRef.current) {
+              exitStartedRef.current = false
+              // exit 'end' fires immediately before presence safeToRemove
+              emit('end', 'exit', true)
+            }
             sendExitComplete?.()
           }
         }
       )
 
+      // =========================================================================
+      // Enter cycle state for the onTransition enter 'end' event
+      // =========================================================================
+      const enterCycleIdRef = useRef(0)
+      const pendingEnterKeysRef = useRef<Set<string>>(new Set())
+      const enterCompletedRef = useRef(false)
+
+      const markEnterKeyDone = useEvent((key: string, cycleId: number) => {
+        if (cycleId !== enterCycleIdRef.current) return
+        if (enterCompletedRef.current) return
+        if (isExitingJSRef.current) return
+
+        pendingEnterKeysRef.current.delete(key)
+
+        if (pendingEnterKeysRef.current.size === 0) {
+          enterCompletedRef.current = true
+          if (enterStartedRef.current) {
+            enterStartedRef.current = false
+            emit('end', 'enter', true)
+          }
+        }
+      })
+
       // SharedValue to pass exit state into worklet
       const isExitingRef = useSharedValue(isExiting)
       const exitCycleIdShared = useSharedValue(exitCycleIdRef.current)
+      const isCompletingEnterRef = useSharedValue(false)
+      const enterCycleIdShared = useSharedValue(enterCycleIdRef.current)
 
       // start new exit cycle only on transition INTO exiting (not every render while exiting)
       if (justStartedExiting) {
         exitCycleIdRef.current++
         exitCompletedRef.current = false
         pendingExitKeysRef.current.clear()
-        didAnimateCycleIdRef.current++
-        pendingDidAnimateKeysRef.current.clear()
-        didAnimateCompletedRef.current = true
+        enterCycleIdRef.current++
+        pendingEnterKeysRef.current.clear()
+        updateCycleIdRef.current++
+        pendingUpdateKeysRef.current.clear()
+        updateCompletedRef.current = true
       }
       // invalidate pending callbacks when exit is canceled/interrupted
       if (justStoppedExiting) {
@@ -1062,11 +1351,28 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       useIsomorphicLayoutEffect(() => {
         isExitingRef.value = isExiting
         exitCycleIdShared.value = exitCycleIdRef.current
+        isCompletingEnterRef.value =
+          !isExiting && justFinishedEntering && Boolean(onTransitionRef.current)
+        enterCycleIdShared.value = enterCycleIdRef.current
         if (justStartedExiting) {
-          isCompletingAnimationRef.value = false
-          didAnimateCycleIdShared.value = didAnimateCycleIdRef.current
+          isCompletingUpdateRef.value = false
+          updateCycleIdShared.value = updateCycleIdRef.current
         }
-      }, [isExiting, exitCycleIdRef.current, justStartedExiting])
+      }, [
+        isExiting,
+        justFinishedEntering,
+        exitCycleIdRef.current,
+        enterCycleIdRef.current,
+        justStartedExiting,
+      ])
+
+      // exit interrupted by a re-enter: report the exit as finished:false
+      useIsomorphicLayoutEffect(() => {
+        if (justStoppedExiting && exitStartedRef.current && !exitCompletedRef.current) {
+          exitStartedRef.current = false
+          emit('end', 'exit', false)
+        }
+      }, [justStoppedExiting])
 
       // track previous exiting state
       React.useEffect(() => {
@@ -1085,22 +1391,47 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // see the styles memo below
       const carryRef = useRef<Record<string, unknown>>({})
 
+      // commits during exit must keep the predecessor from before exit began,
+      // even if they publish again before the UI mapper consumes the first one.
+      const exitSeedRef = useRef<Record<string, unknown> | null>(null)
+      const paintedPredecessor = isExiting
+        ? (exitSeedRef.current ?? lastPaintedRef.current)
+        : lastPaintedRef.current
+      useIsomorphicLayoutEffect(() => {
+        exitSeedRef.current = isExiting ? paintedPredecessor : null
+      }, [isExiting, paintedPredecessor])
+
       // Separate styles into animated and static
       const { animatedStyles, staticStyles, nextCarry } = useMemo(() => {
-        const animateOnly = props.animateOnly as string[] | undefined
         const { animated, statics } = splitAnimationStyles(
           style as Record<string, unknown>,
           isDark,
-          disableAnimation,
-          animateOnly
+          disableAnimation
         )
+
+        // retain the predecessor's composition when exit only targets some transforms.
+        if (isExiting && animated.transform) {
+          const remaining = getAnimatedTransforms(animated.transform).map(
+            cloneStyleRecord
+          )
+          const previous = getAnimatedTransforms(paintedPredecessor.transform)
+          if (previous.length) {
+            animated.transform = previous
+              .map((entry) => {
+                const key = Object.keys(entry)[0]
+                const index = remaining.findIndex((target) => key in target)
+                return index < 0 ? cloneStyleRecord(entry) : remaining.splice(index, 1)[0]
+              })
+              .concat(remaining)
+          }
+        }
 
         // every animated key keeps its FIRST animated value in React's style for
         // as long as it stays animated. the value never changes across renders,
         // so React's per-key style diff never touches the key again and the
         // mapper's inline writes survive every commit — reanimated's Fabric
         // commit hook provides this guarantee on native, web has no equivalent.
-        // during enter the carry is the enterStyle (the mapper animates over it);
+        // during enter the carry is the enter-clause value (the mapper animates over it);
         // a key appearing post-mount (a just-measured height) paints its value in
         // the same commit the mapper first sees it, a frame before the mapper's
         // first write.
@@ -1112,13 +1443,46 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }
         for (const key in animated) {
           if (!(key in nextCarry)) {
-            nextCarry[key] = cloneAnimationValue(animated[key])
+            const target = animated[key]
+            if (isExiting && key === 'transform') {
+              nextCarry[key] = getAnimatedTransforms(target).map((transform) => {
+                const initial = cloneStyleRecord(transform)
+                for (const part in initial) {
+                  const value = initial[part]
+                  if (typeof value === 'number' || typeof value === 'string') {
+                    initial[part] =
+                      paintedPredecessor[`transform:${part}`] ??
+                      getImplicitDefault(part, value)
+                  }
+                }
+                return initial
+              })
+            } else {
+              nextCarry[key] = cloneAnimationValue(
+                isExiting && (typeof target === 'number' || typeof target === 'string')
+                  ? (paintedPredecessor[key] ?? getImplicitDefault(key, target))
+                  : target
+              )
+            }
           }
           statics[key] = nextCarry[key]
         }
 
         return { animatedStyles: animated, staticStyles: statics, nextCarry }
-      }, [disableAnimation, style, isDark, props.animateOnly])
+      }, [
+        disableAnimation,
+        style,
+        isDark,
+        isExiting,
+        isExiting ? paintedPredecessor : null,
+      ])
+
+      const derivesLeading = derivesLeadingProduct(
+        animatedStyles,
+        leadingRatio,
+        !!inheritedFontSize,
+        resolvedTransition
+      )
 
       const renderSnapshot = useMemo(
         () =>
@@ -1127,15 +1491,22 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             staticStyles,
             getAnimatedTransforms(animatedStyles.transform),
             committedRenderKeysRef.current,
-            lastPaintedRef.current
+            paintedPredecessor,
+            derivesLeading
           ),
-        [animatedStyles, staticStyles]
+        [
+          animatedStyles,
+          staticStyles,
+          isExiting ? paintedPredecessor : null,
+          derivesLeading,
+        ]
       )
       const renderSnapshotRef = useSharedValue<AnimationSnapshot>({
         animated: {},
         statics: {},
         transforms: [],
         gatedKeys: {},
+        derivesLeading: false,
         seeds: {},
         removedKeys: {},
         removeTransform: false,
@@ -1179,22 +1550,28 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // unmounts immediately (the dialog-exit-snap). mirrored into a plain ref so the
       // emitter callback (which runs outside render) can read it.
       const pseudoActiveRef = useRef(false)
-      const isExitingJSRef = useRef(false)
-      isExitingJSRef.current = isExiting
       // the committed render is the worklet's source of truth whenever the emitter is not
       // latched, so every render must publish its snapshot — not just the renders that drop
       // a latch. animated keys live only in this snapshot after mount (staticStyles carries
       // them during mount only), so a render that never publishes leaves the worklet reading
       // an empty snapshot and the animated properties never reach the screen at all.
+      // The first emitter snapshot can already contain the browser's real media-query state
+      // while the first render still contains mediaQueryDefaultActive for hydration. Publish
+      // that render behind the latch, but do not let it replace the fresher runtime snapshot.
       const publishedSnapshotRef = useRef<object | null>(null)
       useIsomorphicLayoutEffect(() => {
+        const renderChanged = publishedSnapshotRef.current !== renderSnapshot.value
         const droppingLatch =
-          (isExiting || !pseudoActiveRef.current) && emitterSnapshotRef.value !== null
+          (isExiting ||
+            (!pseudoActiveRef.current &&
+              publishedSnapshotRef.current !== null &&
+              renderChanged)) &&
+          emitterSnapshotRef.value !== null
         // when the latch drops, keys the emitter owned that this render no longer has must
         // be cleared too, otherwise reanimated keeps painting the stale emitted value
         const emitterKeys = droppingLatch ? emitterKeysRef.current : null
 
-        if (droppingLatch || publishedSnapshotRef.current !== renderSnapshot.value) {
+        if (droppingLatch || renderChanged) {
           const removedKeys = emitterKeys
             ? {
                 ...renderSnapshot.value.removedKeys,
@@ -1257,104 +1634,139 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }
       }, [baseConfig, propertyConfigs, disableAnimation, isHydrating])
 
+      // only the style the mapper is actually reading may move the ratio: while
+      // an emitted pseudo style is latched it owns the leading, and the emitter
+      // has already written the ratio that goes with it.
+      useIsomorphicLayoutEffect(() => {
+        if (emitterSnapshotRef.value !== null) return
+        applyLeadingRatio(leadingRatio, propertyConfigs.lineHeight ?? baseConfig)
+      })
+
       // =========================================================================
       // avoidRerenders: register style emitter callback
       // when hover/press/etc state changes, this is called instead of re-rendering
       // =========================================================================
-      useStyleEmitter?.(
-        (nextStyle: Record<string, unknown>, effectiveTransition, pseudoActive) => {
-          // while exiting, the exit render owns the style — a pseudo flip mid-exit
-          // (hover-out as the element fades under the cursor) must not re-latch the
-          // base style over the in-flight exit targets.
-          if (isExitingJSRef.current) return
-          // track whether a self pseudo is active so the render-time layout effect knows whether
-          // this emitter snapshot is a transient override to keep latched or a base it can drop.
-          pseudoActiveRef.current = pseudoActive === true
-          const animateOnly = props.animateOnly as string[] | undefined
+      // the fourth argument is the emitted style's own nativeTextMetrics: the
+      // emitter re-runs getSplitStyles outside render, so the ratio that
+      // describes the style it hands over is never the ratio the last render
+      // resolved (a pseudo can replace the leading with an absolute length).
+      const onEmittedStyle = (
+        nextStyle: Record<string, unknown>,
+        effectiveTransition: TransitionProp | null | undefined,
+        pseudoActive?: boolean,
+        nextMetrics?: NativeTextMetrics
+      ) => {
+        // while exiting, the exit render owns the style — a pseudo flip mid-exit
+        // (hover-out as the element fades under the cursor) must not re-latch the
+        // base style over the in-flight exit targets.
+        if (isExitingJSRef.current) return
+        // track whether a self pseudo is active so the render-time layout effect knows whether
+        // this emitter snapshot is a transient override to keep latched or a base it can drop.
+        pseudoActiveRef.current = pseudoActive === true
 
-          // effectiveTransition is computed in createComponent based on entering/exiting pseudo states
-          // rebuild config whenever transition changes (entering OR exiting pseudo states)
-          const transitionToUse = effectiveTransition ?? props.transition
-          const { baseConfig: newBase, propertyConfigs: newPropertyConfigs } =
-            buildTransitionConfig(
-              transitionToUse,
-              animations,
-              animationState,
-              getStyleKeys(nextStyle)
-            )
+        // effectiveTransition is computed in createComponent based on entering/exiting pseudo states
+        // rebuild config whenever transition changes (entering OR exiting pseudo states)
+        const transitionToUse = effectiveTransition ?? props.transition
+        const emittedLeadingRatio = getLeadingRatio(nextMetrics)
+        const {
+          baseConfig: newBase,
+          propertyConfigs: newPropertyConfigs,
+          resolved: emittedResolved,
+        } = buildTransitionConfig(
+          transitionToUse,
+          animations,
+          animationState,
+          getStyleKeys(nextStyle)
+        )
 
-          // update configRef with the new config
-          configRef.value = {
-            baseConfig: newBase,
-            propertyConfigs: newPropertyConfigs,
-            disableAnimation: configRef.value.disableAnimation,
-            isHydrating: configRef.value.isHydrating,
-          }
+        // update configRef with the new config
+        configRef.value = {
+          baseConfig: newBase,
+          propertyConfigs: newPropertyConfigs,
+          disableAnimation: configRef.value.disableAnimation,
+          isHydrating: configRef.value.isHydrating,
+        }
 
-          const previousKeys = emitterKeysRef.current ?? committedRenderKeysRef.current
-          const { animated, statics } = splitAnimationStyles(
-            nextStyle,
-            isDark,
-            configRef.value.disableAnimation,
-            animateOnly
-          )
-          const snapshot = buildSnapshot(
+        const previousKeys = emitterKeysRef.current ?? committedRenderKeysRef.current
+        const { animated, statics } = splitAnimationStyles(
+          nextStyle,
+          isDark,
+          configRef.value.disableAnimation
+        )
+        // the emitted style resolves its own leading: a pseudo can replace a
+        // ratio with a length, which unbinds the product for as long as it holds
+        const emittedDerivesLeading = derivesLeadingProduct(
+          animated,
+          emittedLeadingRatio,
+          !!inheritedFontSize,
+          emittedResolved
+        )
+        applyLeadingRatio(emittedLeadingRatio, newPropertyConfigs.lineHeight ?? newBase)
+        const snapshot = buildSnapshot(
+          animated,
+          statics,
+          getAnimatedTransforms(animated.transform),
+          previousKeys,
+          lastPaintedRef.current,
+          emittedDerivesLeading
+        )
+        emitterSnapshotRef.value = snapshot.value
+        emitterKeysRef.current = snapshot.keys
+        lastPaintedRef.current = snapshot.painted
+
+        if (
+          process.env.NODE_ENV === 'development' &&
+          props.debug &&
+          props.debug !== 'profile'
+        ) {
+          console.info('[animations-reanimated] useStyleEmitter update', {
             animated,
             statics,
-            getAnimatedTransforms(animated.transform),
-            previousKeys,
-            lastPaintedRef.current
-          )
-          emitterSnapshotRef.value = snapshot.value
-          emitterKeysRef.current = snapshot.keys
-          lastPaintedRef.current = snapshot.painted
-
-          if (
-            process.env.NODE_ENV === 'development' &&
-            props.debug &&
-            props.debug !== 'profile'
-          ) {
-            console.info('[animations-reanimated] useStyleEmitter update', {
-              animated,
-              statics,
-              transforms: snapshot.value.transforms,
-            })
-          }
+            transforms: snapshot.value.transforms,
+          })
         }
-      )
+      }
+      useStyleEmitter?.(onEmittedStyle)
 
       // Compute and register exit keys synchronously during render to avoid race conditions
       // This must happen BEFORE useAnimatedStyle runs so callbacks have a populated set
       const exitKeysRegistered = useRef(false)
+      const enterKeysRegistered = useRef(false)
+
+      if (!isExiting && justFinishedEntering && onTransition) {
+        const enterKeys = getGatedKeys(renderSnapshot.value)
+        enterCycleIdRef.current++
+        enterCompletedRef.current = false
+        pendingEnterKeysRef.current = new Set(enterKeys)
+        enterKeysRegistered.current = enterKeys.length > 0
+      }
+
       if (justStartedExiting && sendExitComplete) {
         const exitKeys = getGatedKeys(renderSnapshot.value)
         pendingExitKeysRef.current = new Set(exitKeys)
         exitKeysRegistered.current = exitKeys.length > 0
       }
 
-      // onDidAnimate is an internal completion hook used by components that
-      // need to retain content through an in-place style transition. register
-      // the exact keys that can animate before publishing the cycle to the
-      // worklet; shared values are only written from the layout effect, never
-      // from the mapper that reads them.
-      const previousDidAnimateStyleRef = useRef<string | null>(null)
-      const didAnimateStyle = onDidAnimate ? JSON.stringify(style) : null
-      const previousDidAnimateStyle = previousDidAnimateStyleRef.current
-      const shouldRegisterDidAnimate =
-        didAnimateStyle !== null &&
-        previousDidAnimateStyle !== null &&
-        previousDidAnimateStyle !== didAnimateStyle &&
+      // update cycle: a genuine in-place style change while mounted (not
+      // entering or exiting). register the exact keys that can animate before
+      // publishing the cycle to the worklet; shared values are only written
+      // from the layout effect, never from the mapper that reads them.
+      const previousUpdateStyleRef = useRef<string | null>(null)
+      const updateStyle = onTransition ? JSON.stringify(style) : null
+      const previousUpdateStyle = previousUpdateStyleRef.current
+      const shouldRegisterUpdate =
+        updateStyle !== null &&
+        previousUpdateStyle !== null &&
+        previousUpdateStyle !== updateStyle &&
         !isExiting &&
         !isEntering &&
         !justFinishedEntering
-      const didAnimateKeys = shouldRegisterDidAnimate
-        ? getGatedKeys(renderSnapshot.value)
-        : []
+      const updateKeys = shouldRegisterUpdate ? getGatedKeys(renderSnapshot.value) : []
 
       useIsomorphicLayoutEffect(() => {
-        if (didAnimateStyle === null) {
-          previousDidAnimateStyleRef.current = null
-          isCompletingAnimationRef.value = false
+        if (updateStyle === null) {
+          previousUpdateStyleRef.current = null
+          isCompletingUpdateRef.value = false
           return
         }
 
@@ -1362,32 +1774,82 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         // captured previous value prevents StrictMode's repeated effect from
         // registering the same transition twice.
         const previousStyleStillCurrent =
-          previousDidAnimateStyleRef.current === previousDidAnimateStyle
-        previousDidAnimateStyleRef.current = didAnimateStyle
-        if (!shouldRegisterDidAnimate || !previousStyleStillCurrent) return
+          previousUpdateStyleRef.current === previousUpdateStyle
+        previousUpdateStyleRef.current = updateStyle
+        if (!shouldRegisterUpdate || !previousStyleStillCurrent) return
 
-        const cycleId = ++didAnimateCycleIdRef.current
-        pendingDidAnimateKeysRef.current = new Set(didAnimateKeys)
-        didAnimateCompletedRef.current = didAnimateKeys.length === 0
-        isCompletingAnimationRef.value = didAnimateKeys.length > 0
-        didAnimateCycleIdShared.value = cycleId
-        if (didAnimateKeys.length === 0) {
-          onDidAnimateRef.current?.()
+        const cycleId = ++updateCycleIdRef.current
+        pendingUpdateKeysRef.current = new Set(updateKeys)
+        updateInterruptedRef.current = false
+        updateCompletedRef.current = updateKeys.length === 0
+        isCompletingUpdateRef.value = updateKeys.length > 0
+        updateCycleIdShared.value = cycleId
+
+        // a superseded in-flight update reports finished:false before the new
+        // cycle starts; a zero-key cycle reports an immediate start/end pair
+        if (updateStartedRef.current) {
+          emit('end', 'update', false)
         }
-      }, [didAnimateStyle, shouldRegisterDidAnimate])
+        updateStartedRef.current = true
+        emit('start', 'update')
+        if (updateKeys.length === 0) {
+          updateStartedRef.current = false
+          emit('end', 'update', true)
+        }
+      }, [updateStyle, shouldRegisterUpdate])
 
       // handle zero-animation case in effect (after render commit)
       React.useEffect(() => {
         if (!justStartedExiting || !sendExitComplete) return
 
+        // enter or update still in flight when exit begins is reported as finished:false
+        if (enterStartedRef.current) {
+          enterStartedRef.current = false
+          emit('end', 'enter', false)
+        }
+        if (updateStartedRef.current) {
+          updateStartedRef.current = false
+          emit('end', 'update', false)
+        }
+
+        // emit exit start once per exit cycle
+        if (onTransitionRef.current && !exitStartedRef.current) {
+          exitStartedRef.current = true
+          emit('start', 'exit')
+        }
+
         // if no keys were registered, complete immediately
         if (!exitKeysRegistered.current && pendingExitKeysRef.current.size === 0) {
           if (!exitCompletedRef.current) {
             exitCompletedRef.current = true
+            if (exitStartedRef.current) {
+              exitStartedRef.current = false
+              emit('end', 'exit', true)
+            }
             sendExitComplete()
           }
         }
       }, [justStartedExiting, sendExitComplete])
+
+      React.useEffect(() => {
+        if (isExiting || !justFinishedEntering || !onTransition) return
+
+        // emit enter start once per enter cycle
+        if (!enterStartedRef.current) {
+          enterStartedRef.current = true
+          emit('start', 'enter')
+        }
+
+        if (!enterKeysRegistered.current && pendingEnterKeysRef.current.size === 0) {
+          if (!enterCompletedRef.current) {
+            enterCompletedRef.current = true
+            if (enterStartedRef.current) {
+              enterStartedRef.current = false
+              emit('end', 'enter', true)
+            }
+          }
+        }
+      }, [isExiting, justFinishedEntering, onTransition])
 
       // the worklet's own record of which animated keys it has emitted (mirrors
       // reanimated's per-view style history, which resets whenever a key leaves
@@ -1397,6 +1859,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // the mapper doesn't react to its own history write.
       const mapperStateRef = useSharedValue<MapperState>({
         emitted: {},
+        ownedStatics: {},
       })
       // Create animated style
       const animatedStyle = useAnimatedStyle(
@@ -1408,12 +1871,14 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           if (config.disableAnimation || config.isHydrating) {
             // the empty return wipes reanimated's per-key history, so ours
             // resets with it
-            updateMapperState(mapperStateRef, {})
+            updateMapperState(mapperStateRef, {}, {})
             return {}
           }
 
           const previouslyEmitted = mapperState.emitted
           const emitted: Record<string, boolean> = {}
+          const previouslyOwned = mapperState.ownedStatics
+          const ownedStatics: Record<string, boolean> = {}
 
           const result: Record<string, any> = {}
 
@@ -1422,22 +1887,27 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           const snapshot = emitterSnapshot ?? renderSnapshotRef.value
 
           // Use emitter values if available, otherwise use the committed render snapshot.
-          // statics must fall back to the render's staticStyles (not {}): once an
-          // emitter snapshot has applied static keys, reanimated never unsets
-          // them, so after the latch drops a stale emitted value (e.g. a border
-          // color that missed animateOnly) would keep painting over the fresh
-          // style prop forever
+          // statics fall back to the render's staticStyles for keys the mapper
+          // owns (see MapperState): once an emitter snapshot has applied a
+          // static key, reanimated never unsets it, so after the latch drops a
+          // stale emitted value (e.g. a border color that could not animate)
+          // would keep painting over the fresh style prop forever
           const animatedValues = snapshot.animated
           const staticValues = snapshot.statics
 
-          // read exit state from shared values
+          // read lifecycle state from shared values
           const currentlyExiting = isExitingRef.value
           const currentCycleId = exitCycleIdShared.value
-          const currentlyCompletingAnimation = isCompletingAnimationRef.value
-          const currentDidAnimateCycleId = didAnimateCycleIdShared.value
+          const currentlyCompletingEnter = isCompletingEnterRef.value
+          const currentEnterCycleId = enterCycleIdShared.value
+          const currentlyCompletingUpdate = isCompletingUpdateRef.value
+          const currentUpdateCycleId = updateCycleIdShared.value
 
-          // Include static values from emitter (for hover/press style changes)
+          // Include static values from emitter (for hover/press style changes).
+          // a render snapshot only refreshes keys an emitter already wrote.
           for (const key in staticValues) {
+            if (!emitterSnapshot && !previouslyOwned[key]) continue
+            ownedStatics[key] = true
             result[key] = staticValues[key]
           }
           for (const key in snapshot.removedKeys) {
@@ -1452,6 +1922,9 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
             const targetValue = animatedValues[key]
             emitted[key] = true
+            // taken after this loop, so the font size it multiplies is the one
+            // this frame paints
+            if (key === 'lineHeight' && snapshot.derivesLeading) continue
             if (typeof targetValue !== 'number' && typeof targetValue !== 'string') {
               result[key] = targetValue
               continue
@@ -1466,12 +1939,23 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               !!snapshot.gatedKeys[key],
               currentlyExiting,
               currentCycleId,
-              currentlyCompletingAnimation,
-              currentDidAnimateCycleId,
+              currentlyCompletingEnter,
+              currentEnterCycleId,
+              currentlyCompletingUpdate,
+              currentUpdateCycleId,
               markExitKeyDone,
-              markDidAnimateKeyDone,
-              !!COLOR_STYLE_KEYS[key]
+              markEnterKeyDone,
+              markUpdateKeyDone,
+              !!COLOR_STYLE_KEYS[key],
+              key === 'fontSize' ? fontSizeShared : undefined
             )
+          }
+
+          // the live font size this leading is a ratio of, times the ratio: a
+          // product, so both factors are the ones on screen this frame
+          if (snapshot.derivesLeading) {
+            emitted.lineHeight = true
+            result.lineHeight = leadingFontSize.value * leadingRatioShared.value
           }
 
           // Handle transforms
@@ -1504,10 +1988,13 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
                     !!snapshot.gatedKeys[subKey],
                     currentlyExiting,
                     currentCycleId,
-                    currentlyCompletingAnimation,
-                    currentDidAnimateCycleId,
+                    currentlyCompletingEnter,
+                    currentEnterCycleId,
+                    currentlyCompletingUpdate,
+                    currentUpdateCycleId,
                     markExitKeyDone,
-                    markDidAnimateKeyDone
+                    markEnterKeyDone,
+                    markUpdateKeyDone
                   ),
                 })
               } else {
@@ -1520,7 +2007,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             }
           }
 
-          updateMapperState(mapperStateRef, emitted)
+          updateMapperState(mapperStateRef, emitted, ownedStatics)
 
           return result
         },
@@ -1533,9 +2020,15 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               isExitingRef,
               exitCycleIdShared,
               markExitKeyDone,
-              isCompletingAnimationRef,
-              didAnimateCycleIdShared,
-              markDidAnimateKeyDone,
+              isCompletingEnterRef,
+              enterCycleIdShared,
+              markEnterKeyDone,
+              isCompletingUpdateRef,
+              updateCycleIdShared,
+              markUpdateKeyDone,
+              fontSizeShared,
+              leadingRatioShared,
+              inheritedFontSize,
             ]
           : undefined
       )
@@ -1549,7 +2042,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         props.debug !== 'profile'
       ) {
         console.info('[animations-reanimated] useAnimations', {
-          animationKey,
+          resolvedTransition,
           componentState,
           isExiting,
           animatedStyles,
@@ -1564,6 +2057,14 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // commit bridge above keeps React commits from wiping its inline writes.
       return {
         style: [staticStyles, animatedStyle],
+        // what descendants inherit: this node's mirror when it owns a font size
+        // that moves, nothing when it owns one that does not (react-native
+        // inherits that statically), otherwise what it inherited itself
+        textChannel: publishesFontSize
+          ? ownTextChannel
+          : typeof style.fontSize === 'number'
+            ? null
+            : (inheritedText ?? null),
       }
     },
   }

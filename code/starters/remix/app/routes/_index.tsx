@@ -14,39 +14,25 @@ export const meta: MetaFunction = () => {
 
 const Section = styled(View, {
   render: 'section',
-  p: '$6',
-  gap: '$6',
-  $sm: {
-    p: '$4',
-  },
-  $md: {
-    p: '$6',
-    maxW: 600,
-  },
-  $lg: {
-    p: '$8',
-  },
+  p: '6 sm:4 md:6 lg:8',
+  gap: '6',
+  maxW: 'md:600px',
 })
 
 const ButtonOuter = styled(View, {
   render: 'button',
-  bg: '$background',
-  rounded: '$4',
+  bg: 'background',
+  rounded: '4',
   cursor: 'pointer',
-  p: '$4',
+  p: '4',
   maxW: 'fit-content' as any,
   display: 'unset',
-  pressStyle: {
-    opacity: 0.8,
-  },
-  hoverStyle: {
-    opacity: 0.9,
-  },
+  opacity: 'hover:0.9 press:0.8',
 })
 
 const ButtonText = styled(Text, {
   fontWeight: 'bold',
-  textAlign: 'center',
+  text: 'center',
   render: 'span',
 })
 
@@ -56,37 +42,14 @@ export default function Index() {
     setTheme(theme === 'light' ? 'dark' : 'light')
   }
   return (
-    <View
-      theme={theme}
-      flexDirection="column"
-      gap={16}
-      bg="$background"
-      minHeight="100vh"
-    >
-      <View
-        render="header"
-        padding="$6"
-        borderBottomWidth={1}
-        borderBottomColor="$borderColor"
-      >
-        <Text
-          render="h1"
-          fontSize={24}
-          $lg={{
-            fontSize: 32,
-          }}
-        >
+    <View theme={theme} flexDirection="column" gap={16} bg="background" minH="100vh">
+      <View render="header" p="6" borderBottomWidth={1} borderBottomColor="border-color">
+        <Text render="h1" fontSize="24px lg:32px">
           Welcome to Tamagui with Remix
         </Text>
       </View>
       <Section>
-        <Text
-          render="h2"
-          fontSize={24}
-          $lg={{
-            fontSize: 32,
-          }}
-        >
+        <Text render="h2" fontSize="24px lg:32px">
           Introduction
         </Text>
         <Text>
@@ -94,13 +57,7 @@ export default function Index() {
         </Text>
       </Section>
       <Section>
-        <Text
-          render="h2"
-          fontSize={24}
-          $lg={{
-            fontSize: 32,
-          }}
-        >
+        <Text render="h2" fontSize="24px lg:32px">
           Features
         </Text>
         <Text>
@@ -112,13 +69,7 @@ export default function Index() {
         </Text>
       </Section>
       <Section>
-        <Text
-          render="h2"
-          fontSize={24}
-          $lg={{
-            fontSize: 32,
-          }}
-        >
+        <Text render="h2" fontSize="24px lg:32px">
           Works with themes
         </Text>
         <Text>
@@ -130,13 +81,7 @@ export default function Index() {
         </ButtonOuter>
       </Section>
       <Section>
-        <Text
-          render="h2"
-          fontSize={24}
-          $lg={{
-            fontSize: 32,
-          }}
-        >
+        <Text render="h2" fontSize="24px lg:32px">
           Go Native
         </Text>
         <Text>
@@ -147,20 +92,8 @@ export default function Index() {
           native performance and capabilities without having to rewrite your components.
         </Text>
       </Section>
-      <View
-        render="footer"
-        padding="$6"
-        justifyContent="center"
-        marginTop="auto"
-        paddingTop={100}
-      >
-        <Text
-          render="p"
-          fontSize={16}
-          $lg={{
-            fontSize: '$3',
-          }}
-        >
+      <View render="footer" p="6" justify="center" mt="auto" pt={100}>
+        <Text render="p" fontSize="16px lg:3">
           &copy; {new Date().getFullYear()} Tamagui with Remix.
         </Text>
       </View>

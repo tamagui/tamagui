@@ -5,25 +5,15 @@ export function StylePlatform() {
     <>
       <View
         id="style-platform"
-        $platform-web={{
-          my: 10,
-          overflowY: 'scroll',
-          backgroundColor: 'red',
-        }}
+        my="web:10px"
+        overflowY="web:scroll"
+        backgroundColor="web:red"
       />
       <View
         id="style-platform-hover"
         width={100}
         height={100}
-        backgroundColor="blue"
-        hoverStyle={{
-          backgroundColor: 'yellow',
-        }}
-        $platform-web={{
-          hoverStyle: {
-            backgroundColor: 'green',
-          },
-        }}
+        backgroundColor="blue hover:yellow web:hover:green"
       />
     </>
   )

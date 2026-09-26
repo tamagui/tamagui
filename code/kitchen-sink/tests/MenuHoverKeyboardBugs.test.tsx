@@ -7,9 +7,9 @@ test.describe('Menu hover/keyboard bug fixes', () => {
   })
 
   /**
-   * Bug 1: hoverStyle should not cause double highlighting
+   * Bug 1: hover clause should not cause double highlighting
    * When you hover an item and then use keyboard to navigate away WITHOUT moving the mouse,
-   * the hovered item's hoverStyle can persist alongside the keyboard-focused item's highlight,
+   * the hovered item's hover clause can persist alongside the keyboard-focused item's highlight,
    * resulting in two items appearing highlighted at once.
    *
    * The key scenario: mouse is still over item1, but keyboard navigates to item2.
@@ -47,7 +47,7 @@ test.describe('Menu hover/keyboard bug fixes', () => {
 
     // now use keyboard to move to item 2
     // CRITICAL: do NOT move the mouse - it stays over item1
-    // this is the exact scenario where hoverStyle causes double highlight
+    // this is the exact scenario where hover clause causes double highlight
     await page.keyboard.press('ArrowDown')
     await page.waitForTimeout(150)
 
@@ -62,11 +62,11 @@ test.describe('Menu hover/keyboard bug fixes', () => {
       (el) => getComputedStyle(el).backgroundColor
     )
 
-    // item2 should have highlighted bg (via data-highlighted/focusStyle)
+    // item2 should have highlighted bg (via data-highlighted/focus clause)
     expect(item2BgAfterArrow).not.toBe(defaultBg)
 
     // CRITICAL: item1 should NOT have highlighted background even though mouse is still over it
-    // If this fails, it means hoverStyle is causing double highlight
+    // If this fails, it means hover clause is causing double highlight
     expect(item1BgAfterArrow).toBe(defaultBg)
   })
 

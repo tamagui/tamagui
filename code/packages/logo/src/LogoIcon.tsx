@@ -15,10 +15,8 @@ export const LogoIcon = ({
       className="unselectable"
       alignSelf="center"
       marginVertical={-10}
-      pressStyle={{
-        opacity: 0.7,
-        scaleX: -1,
-      }}
+      opacity="press:0.7"
+      scaleX="press:-1"
     >
       <TamaguiIconSvg
         className="tamagui-icon"

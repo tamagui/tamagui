@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import type { TamaguiElement, ViewProps } from 'tamagui'
-import { isWeb, View, withStaticProperties } from 'tamagui'
+import { createStyledHOC, isWeb, View, withStaticProperties } from 'tamagui'
 
 // 3D Card Context - shared hover state between container and items
 const MouseEnterContext = createContext<
@@ -112,8 +112,9 @@ export type Card3DItemProps = {
   translateZ?: number
 }
 
-const Card3DItem = View.styleable<Card3DItemProps>(
-  ({ translateZ = 0, children, ...rest }, forwardedRef) => {
+const Card3DItem = createStyledHOC(
+  View,
+  ({ translateZ = 0, children, ...rest }: Card3DItemProps & ViewProps, forwardedRef) => {
     const [ref, setRef] = useState<TamaguiElement | null>(null)
     const [isMouseEntered] = useMouseEnter()
 

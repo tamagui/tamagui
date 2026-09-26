@@ -1,0 +1,282 @@
+---
+title: Lucide Icons
+description: Generate only the icons you use, typed and themed for Tamagui
+name: lucide-icons
+component: LucideIcons
+package: lucide-icons
+demoName: LucideIcons
+---
+
+<IntroParagraph>
+  Tamagui v3 ships no bundled icon package. Instead you generate typed SVG
+  icon components for only the icons you use, rendering consistently on web
+  and native.
+</IntroParagraph>
+
+<HeroContainer noPad>
+  <LucideIconsDemo />
+</HeroContainer>
+
+The browser above is this site's own generated set, built with the script on
+this page. v2's `@tamagui/lucide-icons-2` shipped all ~1700 Lucide icons as
+one dependency; most apps use a few dozen, so v3 replaces it with
+autogeneration: one tree-shakeable file per icon, typed `IconProps`, and the
+same `themed` size/color behavior through `@tamagui/helpers-icon`.
+
+## Setup
+
+Install the runtime dependencies plus the generator:
+
+```bash
+npm install react-native-svg @tamagui/helpers-icon
+npm install -D lucide-static cheerio
+```
+
+<Notice>
+  If you're using icons in a monorepo, install `react-native-svg` in the parent
+  app or workspace root rather than a leaf package.
+</Notice>
+
+Copy this script to `scripts/generate-icons.mjs`, list the icons you use in
+`ICONS`, and run it with `node ./scripts/generate-icons.mjs`. It writes one
+component per icon plus an index into `components/icons`:
+
+```js
+#!/usr/bin/env node
+// Generates themed Tamagui icon components from lucide svg files.
+// Edit ICONS, then run: node ./scripts/generate-icons.mjs
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { createRequire } from 'node:module'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { load as cheerioLoad } from 'cheerio'
+
+const require = createRequire(import.meta.url)
+const appDir = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
+const outDir = path.join(appDir, 'components', 'icons')
+
+// PascalCase names, as exported from the generated index:
+const ICONS = ['Plus', 'Search', 'X']
+
+const camelCase = (x) => x.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase())
+const upperCamelCase = (id) =>
+  id
+    .split('-')
+    .map((w) => (w ? w[0].toUpperCase() + w.slice(1) : w))
+    .join('')
+
+const lucideIconsDir = path.join(
+  path.dirname(require.resolve('lucide-static/package.json')),
+  'icons'
+)
+
+const svgByName = new Map()
+for (const file of readdirSync(lucideIconsDir)) {
+  if (file.endsWith('.svg')) {
+    svgByName.set(upperCamelCase(file.slice(0, -'.svg'.length)), file)
+  }
+}
+
+const missing = ICONS.filter((name) => !svgByName.has(name))
+if (missing.length) {
+  throw new Error(
+    `unknown icon names (check current names on lucide.dev): ${missing.join(', ')}`
+  )
+}
+
+mkdirSync(outDir, { recursive: true })
+
+for (const name of ICONS) {
+  const svg = readFileSync(path.join(lucideIconsDir, svgByName.get(name)), 'utf-8')
+  const $ = cheerioLoad(svg, { xmlMode: true })
+
+  // Because CSS does not exist on Native platforms
+  // We need to duplicate the styles applied to the
+  // SVG to its children
+  const svgAttribs = $('svg')[0].attribs
+  delete svgAttribs['xmlns']
+  const attribsOfInterest = {}
+  for (const key of Object.keys(svgAttribs)) {
+    if (
+      ![
+        'height',
+        'width',
+        'viewBox',
+        'fill',
+        'stroke-width',
+        'stroke-linecap',
+        'stroke-linejoin',
+      ].includes(key)
+    ) {
+      attribsOfInterest[key] = svgAttribs[key]
+    }
+  }
+
+  $('*').each((index, el) => {
+    for (const x of Object.keys(el.attribs)) {
+      if (x.includes('-')) {
+        $(el).attr(camelCase(x), el.attribs[x]).removeAttr(x)
+      }
+      if (x === 'stroke') {
+        $(el).attr(x, 'currentColor')
+      }
+    }
+
+    // For every element that is NOT svg ...
+    if (el.name !== 'svg') {
+      for (const key of Object.keys(attribsOfInterest)) {
+        $(el).attr(camelCase(key), attribsOfInterest[key])
+      }
+    }
+
+    if (el.name === 'svg') {
+      $(el).attr('otherProps', '...')
+    }
+  })
+
+  const contents = $('svg')
+    .toString()
+    .replace(/ class="[^"]+"/g, '')
+    .replace(/ version="[^"]+"/g, '')
+    .replace(/stroke="currentColor"/g, 'stroke={color}')
+    .replace('width="24"', 'width={size}')
+    .replace('height="24"', 'height={size}')
+    .replace('otherProps="..."', '{...otherProps}')
+    .replace('<svg', '<Svg')
+    .replace('</svg', '</Svg')
+    .replace(/<circle/g, '<_Circle')
+    .replace(/<\/circle/g, '</_Circle')
+    .replace(/<ellipse/g, '<Ellipse')
+    .replace(/<\/ellipse/g, '</Ellipse')
+    .replace(/<g/g, '<G')
+    .replace(/<\/g/g, '</G')
+    .replace(/<linear-gradient/g, '<LinearGradient')
+    .replace(/<\/linear-gradient/g, '</LinearGradient')
+    .replace(/<radial-gradient/g, '<RadialGradient')
+    .replace(/<\/radial-gradient/g, '</RadialGradient')
+    .replace(/<path/g, '<Path')
+    .replace(/<\/path/g, '</Path')
+    .replace(/<line/g, '<Line')
+    .replace(/<\/line/g, '</Line')
+    .replace(/<polygon/g, '<Polygon')
+    .replace(/<\/polygon/g, '</Polygon')
+    .replace(/<polyline/g, '<Polyline')
+    .replace(/<\/polyline/g, '</Polyline')
+    .replace(/<rect/g, '<Rect')
+    .replace(/<\/rect/g, '</Rect')
+    .replace(/<symbol/g, '<Symbol')
+    .replace(/<\/symbol/g, '</Symbol')
+    .replace(/<text/g, '<_Text')
+    .replace(/<\/text/g, '</_Text')
+    .replace(/<use/g, '<Use')
+    .replace(/<\/use/g, '</Use')
+    .replace(/<defs/g, '<Defs')
+    .replace(/<\/defs/g, '</Defs')
+    .replace(/<stop/g, '<Stop')
+    .replace(/<\/stop/g, '</Stop')
+    .replace(/px/g, '')
+
+  writeFileSync(
+    path.join(outDir, `${name}.tsx`),
+    `// @ts-nocheck
+import React, { memo } from 'react'
+import type { IconProps } from '@tamagui/helpers-icon'
+import {
+  Svg,
+  Circle as _Circle,
+  Ellipse,
+  G,
+  LinearGradient,
+  RadialGradient,
+  Line,
+  Path,
+  Polygon,
+  Polyline,
+  Rect,
+  Symbol,
+  Text as _Text,
+  Use,
+  Defs,
+  Stop,
+} from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
+
+type IconComponent = (propsIn: IconProps) => JSX.Element
+
+export const ${name}: IconComponent = themed(
+  memo(function ${name}(props: IconProps) {
+    const { color = 'black', size = 24, ...otherProps } = props
+    return (${contents})
+  })
+)
+`,
+    'utf-8'
+  )
+}
+
+writeFileSync(
+  path.join(outDir, 'index.ts'),
+  ICONS.map((name) => `export { ${name} } from './${name}'`).join('\n') + '\n',
+  'utf-8'
+)
+
+console.info(`generated ${ICONS.length} icons into components/icons`)
+```
+
+Run your own formatter over `components/icons` afterwards. The Tamagui repo
+runs the same logic in
+`code/packages/local-icons/bin/generate.mjs`, extended with an `all` entry and
+backwards-compat shims for a few renamed Lucide icons.
+
+## Usage
+
+Use them as regular React components:
+
+```tsx
+import { Button } from 'tamagui'
+import { Plus } from './components/icons'
+
+// Button will automatically pass size/theme to icon
+export default () => <Button icon={Plus}>Hello world</Button>
+
+// or you can control it
+export default () => <Button icon={<Plus size="4" />}>Hello world</Button>
+```
+
+They accept your theme keys for color and your font size tokens for size. In v3,
+`size="4"` resolves through the current font's `font.size.4` scale so icons
+line up with `4` text. Raw numeric sizes are unchanged.
+
+```tsx
+<Plus size="4" color="color" />
+<Plus size={18} color="blue-500" />
+```
+
+Themed icons no longer run full Tamagui style resolution, so media and pseudo
+props are not accepted directly on the icon. Wrap the icon when you need those
+styles:
+
+```tsx
+import { View, styled } from 'tamagui'
+
+const IconFrame = styled(View, {
+  opacity: 'sm:0.6',
+  scale: 'hover:1.05',
+})
+
+<IconFrame>
+  <Plus size="4" />
+</IconFrame>
+```
+
+## Migrating from v2
+
+Replace `@tamagui/lucide-icons-2` imports with your generated directory and add
+every icon you use to `ICONS`. The script throws on unknown names: a few v2
+names were old Lucide names that no longer ship (for example `AlertCircle` is
+now `CircleAlert`), so check current names on
+[lucide.dev](https://lucide.dev/) when it does.
+
+## Credit
+
+The great [Lucide Icons](https://lucide.dev/), a superset of the wonderful [Feather Icons](https://feathericons.com/).

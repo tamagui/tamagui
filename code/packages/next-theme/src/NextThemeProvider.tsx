@@ -161,7 +161,6 @@ export const NextThemeProvider: React.FunctionComponent<ThemeProviderProps> = me
 
     const contextValue = useMemo(() => {
       const value: UseThemeProps = {
-        theme,
         current: theme,
         set,
         toggle,

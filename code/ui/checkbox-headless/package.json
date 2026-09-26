@@ -42,6 +42,7 @@
     "@tamagui/focusable": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/label": "workspace:*",
+    "@tamagui/react-native-types": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-previous": "workspace:*",
     "@tamagui/web": "workspace:*"

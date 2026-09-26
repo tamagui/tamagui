@@ -1,12 +1,13 @@
-import type { SizableStackProps } from '@tamagui/stacks'
-import type { SizeVariantSpreadFunction } from '@tamagui/web'
+import { styled, type SizeTokens } from '@tamagui/web'
 
-export const getShapeSize: SizeVariantSpreadFunction<SizableStackProps> = (
-  size,
-  { tokens }
-) => {
-  const width = tokens.size[size] ?? size
-  const height = tokens.size[size] ?? size
+export const getShapeSize = styled.dynamic<SizeTokens | number>((size, env) => {
+  // a number is px, a string is a size token key (v6: `4` is 16px).
+  // without a size the shape fits its content, like any stack.
+  const key = typeof size === 'string' ? size.replace(/^\$/, '') : size
+  const resolved = typeof key === 'number' ? key : env.tokens.size[key as any]
+  if (resolved == null) return
+  const width = resolved
+  const height = resolved
   return {
     width,
     height,
@@ -15,4 +16,4 @@ export const getShapeSize: SizeVariantSpreadFunction<SizableStackProps> = (
     maxHeight: height,
     minHeight: height,
   }
-}
+})

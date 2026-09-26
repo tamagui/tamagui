@@ -2,12 +2,13 @@
 import { flushSync } from 'react-dom'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core'
+import type { TamaguiElement, ViewProps } from '@tamagui/core'
 import {
+  createStyledHOC,
   LayoutMeasurementController,
   View as TamaguiView,
+  createRefComponent,
   createStyledContext,
-  getVariableValue,
   registerLayoutNode,
   styled,
 } from '@tamagui/core'
@@ -34,12 +35,10 @@ import {
   size as sizeMiddleware,
   useFloating,
 } from '@tamagui/floating'
-import { getSpace } from '@tamagui/get-token'
-import type { SizableStackProps, YStackProps } from '@tamagui/stacks'
-import { YStack } from '@tamagui/stacks'
 import { startTransition } from '@tamagui/start-transition'
 import * as React from 'react'
-import { Keyboard, useWindowDimensions } from 'react-native'
+
+import { useRepositionOnNative } from './useRepositionOnNative'
 
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never
@@ -50,7 +49,6 @@ type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : neve
 
 export type PopperContextShared = {
   open: boolean
-  size?: SizeTokens
   hasFloating: boolean
   arrowStyle?: Partial<Coords> & {
     centerOffset: number
@@ -65,7 +63,7 @@ export type PopperContextValue = UseFloatingReturn & PopperContextShared
 
 export const PopperContextFast = createStyledContext<PopperContextValue>(
   // since we always provide this we can avoid setting here
-  {} as PopperContextValue,
+  {},
   'Popper__'
 )
 
@@ -85,7 +83,7 @@ export type PopperContextSlowValue = Pick<
 
 export const PopperContextSlow = createStyledContext<PopperContextSlowValue>(
   // since we always provide this we can avoid setting here
-  {} as PopperContextSlowValue,
+  {},
   'PopperSlow__'
 )
 
@@ -146,7 +144,6 @@ export type PopperProps = {
    * */
   open?: boolean
 
-  size?: SizeTokens
   children?: React.ReactNode
 
   /**
@@ -346,7 +343,6 @@ function tamaguiAutoUpdate(
 export function Popper(props: PopperProps) {
   const {
     children,
-    size,
     strategy = 'absolute',
     placement = 'bottom',
     stayInFrame,
@@ -484,41 +480,10 @@ export function Popper(props: PopperProps) {
 
   const { middlewareData } = floating
 
-  if (process.env.TAMAGUI_TARGET === 'native') {
-    // On Native there's no autoupdate so we call update() when necessary
-
-    // Subscribe to window dimensions (orientation, scale, etc...)
-    const dimensions = useWindowDimensions()
-
-    // Subscribe to keyboard state
-    const [keyboardOpen, setKeyboardOpen] = React.useState(false)
-    React.useEffect(() => {
-      const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-        startTransition(() => {
-          setKeyboardOpen(true)
-        })
-      })
-      const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-        startTransition(() => {
-          setKeyboardOpen(false)
-        })
-      })
-
-      return () => {
-        showSubscription.remove()
-        hideSubscription.remove()
-      }
-    }, [])
-
-    useIsomorphicLayoutEffect(() => {
-      if (passThrough) return
-      floating.update()
-    }, [passThrough, dimensions, keyboardOpen])
-  }
+  useRepositionOnNative(floating.update, passThrough)
 
   const popperContext = React.useMemo(() => {
     return {
-      size,
       arrowRef: setArrow,
       arrowStyle: middlewareData.arrow,
       onArrowSize: setArrowSize,
@@ -531,7 +496,6 @@ export function Popper(props: PopperProps) {
     } satisfies PopperContextValue
   }, [
     open,
-    size,
     floating,
     JSON.stringify(middlewareData.arrow || null),
     JSON.stringify(middlewareData.transformOrigin || null),
@@ -559,10 +523,11 @@ export type PopperAnchorExtraProps = {
   virtualRef?: React.RefObject<any>
   scope?: string
 }
-export type PopperAnchorProps = YStackProps
+export type PopperAnchorProps = ViewProps
 
-export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
-  function PopperAnchor(props, forwardedRef) {
+export const PopperAnchor = createStyledHOC(
+  TamaguiView,
+  function PopperAnchor(props: PopperAnchorExtraProps, forwardedRef) {
     const { virtualRef, scope, ...rest } = props
     const context = usePopperContextSlow(scope)
     const { getReferenceProps, refs, update } = context
@@ -658,56 +623,30 @@ export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
 
 type PopperContentElement = TamaguiElement
 
-export type PopperContentProps = SizableStackProps & {
+export type PopperContentProps = ViewProps & {
   scope?: string
   /**
    * Enable smooth animation when the content position changes (e.g., when flipping sides)
    */
   animatePosition?: boolean | 'even-when-repositioning'
-  /** @deprecated Use `animatePosition` instead */
-  enableAnimationForPositionChange?: boolean | 'even-when-repositioning'
   passThrough?: boolean
 }
 
-export const PopperContentFrame = styled(YStack, {
-  name: 'PopperContent',
-
-  variants: {
-    unstyled: {
-      true: {},
-    },
-
-    size: {
-      '...size': (val, { tokens }) => {
-        return {
-          padding: tokens.space[val],
-          borderRadius: tokens.radius[val],
-        }
-      },
-    },
-  } as const,
+export const PopperContentFrame = styled(TamaguiView, {
+  displayName: 'PopperContent',
 })
 
-export const PopperContent = React.forwardRef<PopperContentElement, PopperContentProps>(
+export const PopperContent = createRefComponent<PopperContentElement, PopperContentProps>(
   function PopperContent(props, forwardedRef) {
     // detect controlled animatePosition before destructuring. when the user passes
     // animatePosition (even with a currently-falsy value like undefined or false),
     // toggling it later must not flip 'transition' presence on the inner View - that
     // would change useComponentState's hasAnimationProp mid-life, conditionally calling
     // useAnimations/usePresence and tripping React's "Should have a queue" invariant.
-    const isAnimatePosControlled =
-      'animatePosition' in props || 'enableAnimationForPositionChange' in props
+    const isAnimatePosControlled = 'animatePosition' in props
 
-    const {
-      scope,
-      animatePosition,
-      enableAnimationForPositionChange,
-      children,
-      passThrough,
-      unstyled,
-      ...rest
-    } = props
-    const animatePos = animatePosition ?? enableAnimationForPositionChange
+    const { scope, animatePosition, children, passThrough, ...rest } = props
+    const animatePos = animatePosition
     const context = usePopperContext(scope)
 
     const {
@@ -717,7 +656,6 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       x,
       y,
       getFloatingProps,
-      size,
       isPositioned,
       transformOrigin,
       update,
@@ -735,7 +673,7 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
     // when animatePosition=true, disableAnimation state changes cycle the DOM node
     // (null then re-mount). we block all null calls here to prevent floating-ui from
     // losing its reference mid-cycle; genuine unmount is handled by the useEffect below.
-    // for same-node cycling (animateOnly prop change without remount), refs.setFloating
+    // for same-node cycling (transition prop change without remount), refs.setFloating
     // is a no-op in floating-ui (same-node guard), so we call update() to force recompute.
     const lastNodeRef = React.useRef<any>(null)
     const safeSetFloating = React.useCallback(
@@ -839,14 +777,13 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       position: strategy,
       opacity: hide ? 0 : 1,
       // when animatePosition is controlled by the user, always emit these keys with
-      // safe no-op values (transition: undefined, animateOnly: []) so the inner
-      // View's hook count stays stable across animatePos toggles. animatePresence
-      // must always be false here too, to short-circuit usePresence consistently.
+      // safe no-op values (transition: 'none') so the inner View's hook count
+      // stays stable across animatePos toggles. animatePresence must always be
+      // false here too, to short-circuit usePresence consistently.
       ...(isAnimatePosControlled && {
-        transition: animatePos ? rest.transition : undefined,
-        // animateOnly: [] turns off transitions while keeping styles applied,
-        // letting the element move to its position silently before animations start
-        animateOnly: animatePos && !disableAnimation ? rest.animateOnly : [],
+        // `none` keeps the styles applied while turning transitions off, letting
+        // the element move to its position silently before animations start
+        transition: animatePos && !disableAnimation ? rest.transition : 'none',
         animatePresence: false,
       }),
     }
@@ -878,11 +815,9 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
           <PopperContentFrame
             key="popper-content-frame"
             passThrough={passThrough}
-            unstyled={unstyled}
             {...(!passThrough && {
               'data-placement': placement,
               'data-strategy': strategy,
-              size,
               ...style,
               ...transformOriginStyle,
               ...rest,
@@ -902,7 +837,8 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
 
 export type PopperArrowExtraProps = {
   offset?: number
-  size?: SizeTokens
+  /** arrow size in px */
+  size?: number
   scope?: string
   /**
    * Enable smooth animation when the arrow position changes
@@ -910,45 +846,21 @@ export type PopperArrowExtraProps = {
   animatePosition?: boolean
 }
 
-export type PopperArrowProps = YStackProps & PopperArrowExtraProps
+export type PopperArrowProps = ViewProps & PopperArrowExtraProps
 
-export const PopperArrowFrame = styled(YStack, {
-  name: 'PopperArrow',
-
-  variants: {
-    unstyled: {
-      false: {
-        borderColor: '$borderColor',
-        backgroundColor: '$background',
-        position: 'relative',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+export const PopperArrowFrame = styled(TamaguiView, {
+  displayName: 'PopperArrow',
+  position: 'relative',
 })
 
-const PopperArrowOuterFrame = styled(YStack, {
-  name: 'PopperArrowOuter',
-
-  variants: {
-    unstyled: {
-      false: {
-        position: 'absolute',
-        zIndex: 1_000_000,
-        pointerEvents: 'none',
-        overflow: 'hidden',
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+const PopperArrowOuterFrame = styled(TamaguiView, {
+  displayName: 'PopperArrowOuter',
+  position: 'absolute',
+  zIndex: 1_000_000,
+  pointerEvents: 'none',
+  overflow: 'hidden',
+  alignItems: 'center',
+  justifyContent: 'center',
 })
 
 const opposites = {
@@ -960,7 +872,7 @@ const opposites = {
 
 type Sides = keyof typeof opposites
 
-export const PopperArrow = React.forwardRef<TamaguiElement, PopperArrowProps>(
+export const PopperArrow = createRefComponent<TamaguiElement, PopperArrowProps>(
   function PopperArrow(propsIn, forwardedRef) {
     // see PopperContent for why we detect controlled animatePosition before destructuring
     const isAnimatePosControlled = 'animatePosition' in propsIn
@@ -970,17 +882,11 @@ export const PopperArrow = React.forwardRef<TamaguiElement, PopperArrowProps>(
     const context = usePopperContext(scope)
 
     // TODO: get rid! at the very least move up to Popover and simplify
-    const sizeVal =
-      typeof sizeProp === 'number'
-        ? sizeProp
-        : getVariableValue(
-            getSpace(sizeProp ?? context.size, {
-              shift: -2,
-              bounds: [2],
-            })
-          )
-
-    const size = Math.max(0, +sizeVal)
+    // arrow px used to be size-token * 0.52 - 11.5, but the offset zeroes every
+    // v6 token (size 2 is 8px: 8 * 0.52 - 11.5 < 0), so call sites pass
+    // round(token * 0.52) instead: v6 2 -> 4, v6 3 -> 6, v5-site 4 -> 23.
+    // the bare default matches the old output for a mid v5 size (36 * 0.52 - 11.5 ≈ 7)
+    const size = typeof sizeProp === 'number' ? sizeProp : 7
 
     const { placement } = context
     const refs = useComposedRefs(context.arrowRef, forwardedRef)
@@ -1009,6 +915,16 @@ export const PopperArrow = React.forwardRef<TamaguiElement, PopperArrowProps>(
         arrowStyle[oppSide] = -size
         innerArrowStyle[oppSide] = size / 2
       }
+      // extend the clip into the content by the border width so the arrow fill
+      // covers the content border and does not leave a line across the base
+      const overlap = typeof borderWidth === 'number' ? borderWidth : 0
+      if (overlap) {
+        if (isVertical) {
+          arrowStyle.height = size + overlap
+        } else {
+          arrowStyle.width = size + overlap
+        }
+      }
       if (oppSide === 'top' || oppSide === 'bottom') {
         arrowStyle.left = 0
       }
@@ -1029,8 +945,9 @@ export const PopperArrow = React.forwardRef<TamaguiElement, PopperArrowProps>(
         {...arrowStyle}
         {...(!arrowPositioned && { opacity: 0 })}
         {...(isAnimatePosControlled && {
-          transition: animatePosition ? transition : undefined,
-          animateOnly: animatePosition ? ['transform'] : [],
+          // the arrow only ever moves, so its transition names `transform` and
+          // nothing else: `left`/`top` have to jump with the popper, not trail it
+          transition: animatePosition ? { transform: transition } : 'none',
           animatePresence: false,
         })}
       >

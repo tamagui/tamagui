@@ -1,0 +1,59 @@
+{
+  "name": "@tamagui/local-icons",
+  "version": "2.7.7",
+  "description": "Generated Lucide icon components for Tamagui",
+  "license": "MIT",
+  "source": "src/index.ts",
+  "files": [
+    "types",
+    "dist"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "dist/cjs",
+  "module": "dist/esm/index.mjs",
+  "types": "./types/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.mjs"
+    },
+    "./all": {
+      "types": "./types/all.d.ts",
+      "react-native": "./dist/esm/all.native.js",
+      "browser": "./dist/esm/all.mjs",
+      "module": "./dist/esm/all.mjs",
+      "import": "./dist/esm/all.mjs",
+      "require": "./dist/cjs/all.cjs",
+      "default": "./dist/esm/all.mjs"
+    }
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build",
+    "generate": "node ./bin/generate.mjs"
+  },
+  "dependencies": {
+    "@tamagui/core": "workspace:*",
+    "@tamagui/helpers-icon": "workspace:*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "cheerio": "^1.0.0-rc.5",
+    "lucide-static": "^0.508.0",
+    "prop-types": "^15.7.2",
+    "react": "19.2.3",
+    "react-native-svg": "15.15.4"
+  },
+  "peerDependencies": {
+    "react": ">=19"
+  }
+}

@@ -1,6 +1,17 @@
-import { getNativeOnlyMarker } from './nativeOnly'
+import { getNativeOnlyMarker } from './nativeOnly.js'
+import { explicitNativeMarker } from './explicit.native'
+import { explicitIosMarker } from './explicit.ios'
+import { explicitAndroidMarker } from './explicit.android'
 
 export { nestedHello } from './nested'
+export * from './star'
+export * from './dotted.name'
+export { explicitNativeMarker, explicitIosMarker, explicitAndroidMarker }
+
+export const loadLazy = () => import('./lazy')
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+export const loadCommon = () => require('./common')
 
 export const greet = (name: string): string => {
   return `Hello, ${name}!`
@@ -28,7 +39,9 @@ export function guardNativeSideEffects(items: string[], debug?: string) {
 }
 
 export function getPlatformMarker() {
-  return process.env.TAMAGUI_TARGET === 'native' ? 'native-only-marker' : 'web-only-marker'
+  return process.env.TAMAGUI_TARGET === 'native'
+    ? 'native-only-marker'
+    : 'web-only-marker'
 }
 
 export function getNativeImportMarker() {

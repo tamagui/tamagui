@@ -7,7 +7,7 @@ type GetFontSizeOpts = {
 }
 
 export const getFontSize = (
-  inSize: FontSizeTokens | null | undefined,
+  inSize: FontSizeTokens | true | null | undefined,
   opts?: GetFontSizeOpts
 ): number => {
   const res = getFontSizeVariable(inSize, opts)
@@ -18,7 +18,7 @@ export const getFontSize = (
 }
 
 export const getFontSizeVariable = (
-  inSize: FontSizeTokens | null | undefined,
+  inSize: FontSizeTokens | true | null | undefined,
   opts?: GetFontSizeOpts
 ): FontSizeTokens | Variable<string> | null | undefined => {
   const token = getFontSizeToken(inSize, opts)
@@ -27,11 +27,11 @@ export const getFontSizeVariable = (
   }
   const conf = getConfig()
   const font = conf.fontsParsed[opts?.font || conf.defaultFontToken]
-  return font?.size[token] as Variable<string>
+  return font?.size[token as string] as Variable<string>
 }
 
 export const getFontSizeToken = (
-  inSize: FontSizeTokens | null | undefined,
+  inSize: FontSizeTokens | true | null | undefined,
   opts?: GetFontSizeOpts
 ): FontSizeTokens | null => {
   if (typeof inSize === 'number') {
@@ -45,9 +45,12 @@ export const getFontSizeToken = (
     font?.size ||
     // fallback to size tokens
     conf.tokensParsed.size
+  // `size` is the font scale only. `true` is the default size: the type-scale
+  // key when the font carries it, else the numeric default (mirrors
+  // getFontSized, so every shipped config keeps its current default).
+  const key = String(inSize ?? true).replace(/^\$/, '')
   const size =
-    (inSize === '$true' && !('$true' in fontSize) ? '$4' : inSize) ??
-    ('$true' in fontSize ? '$true' : '$4')
+    inSize == null || inSize === true ? ('sm' in (font?.size ?? {}) ? 'sm' : '4') : key
 
   const sizeTokens = Object.keys(fontSize)
 

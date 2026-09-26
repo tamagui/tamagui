@@ -1,4 +1,4 @@
-import type { TextStyle, ViewStyle } from 'react-native'
+import type { TextStyle, ViewStyle } from '@tamagui/react-native-types'
 
 export type ShorthandViewStyleProps = {
   w?: ViewStyle['width']

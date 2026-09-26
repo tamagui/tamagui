@@ -1,20 +1,11 @@
 'use client'
 
-import { CheckCircle, Minus, Plus, XCircle } from '@tamagui/lucide-icons-2'
+import { CheckCircle, Minus, Plus, XCircle } from '@tamagui/local-icons'
 import { useObserve } from '@tamagui/use-store'
 import { getContrast, readableColor } from 'color2k'
 import React, { memo } from 'react'
-import {
-  Button,
-  Paragraph,
-  Spacer,
-  Theme,
-  Unspaced,
-  XGroup,
-  XStack,
-  YStack,
-  ZStack,
-} from 'tamagui'
+import { Paragraph, Spacer, Theme, XGroup, XStack, YStack, ZStack } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { Canvas } from '../components/Canvas'
 import { colorsStore } from '../state/ColorsStore'
@@ -61,18 +52,16 @@ export const ColorCanvas = memo(function ColorCanvas() {
 
   return (
     <ColorCanvasFrame>
-      <XStack p="$2" gap="$4" position="relative">
-        <Unspaced>
-          <YStack fullscreen z={0} bg="$background" opacity={0.5} />
-        </Unspaced>
+      <XStack p="1-5" gap="4" position="relative">
+        <YStack position="absolute" inset={0} z={0} bg="background" opacity={0.5} />
 
         <XGroup>
           {Object.entries(visibleCurves).map(([type, isVisible], i) => {
             return (
               <Theme key={`${type}${i}`} name={isVisible ? 'accent' : undefined}>
                 <Button
-                  size="$2"
-                  px="$3"
+                  size="xs"
+                  px="3"
                   aria-label={`Toggle ${type} curve visibility`}
                   aria-pressed={isVisible}
                   onPress={() =>
@@ -91,15 +80,15 @@ export const ColorCanvas = memo(function ColorCanvas() {
 
         <XGroup>
           <Button
-            size="$2"
-            px="$3"
+            size="xs"
+            px="3"
             icon={Minus}
             aria-label="Remove color from end of scale"
             onPress={() => state.colors.popColor()}
           />
           <Button
-            size="$2"
-            px="$3"
+            size="xs"
+            px="3"
             icon={Plus}
             aria-label="Add color to end of scale"
             onPress={() => state.colors.createColor()}
@@ -107,8 +96,8 @@ export const ColorCanvas = memo(function ColorCanvas() {
         </XGroup>
       </XStack>
 
-      <ZStack flex={1} m="$5">
-        <XStack maxW="100%" height="100%" px="$2">
+      <ZStack flex={1} m="6">
+        <XStack maxW="100%" height="100%" px="1-5">
           {scale.colors.map((_, i) => {
             const color = getColor(palette.curves, scale, i)
             const hex = colorToHex(color)
@@ -119,27 +108,27 @@ export const ColorCanvas = memo(function ColorCanvas() {
             return (
               <YStack
                 key={`${color}${i}`}
-                focusable
+                tabIndex={0}
                 onFocus={() => state.colors.setColorIndex(String(i))}
                 flex={1}
                 width={barWidth as any}
                 maxW={barWidth as any}
                 minW={barWidth as any}
                 z={isActive ? 1 : 0}
-                my="$4"
+                my="4"
                 scale={isActive ? 1.02 : 1}
                 overflow="hidden"
                 bg={hex as any}
-                borderTopLeftRadius={i === 0 ? '$4' : 0}
-                borderBottomLeftRadius={i === 0 ? '$4' : 0}
-                borderTopRightRadius={i === scale.colors.length - 1 ? '$4' : 0}
-                borderBottomRightRadius={i === scale.colors.length - 1 ? '$4' : 0}
+                borderTopLeftRadius={i === 0 ? '4' : 0}
+                borderBottomLeftRadius={i === 0 ? '4' : 0}
+                borderTopRightRadius={i === scale.colors.length - 1 ? '4' : 0}
+                borderBottomRightRadius={i === scale.colors.length - 1 ? '4' : 0}
                 {...(isActive && {
-                  borderRadius: '$4',
-                  elevation: '$4',
+                  borderRadius: '4',
+                  boxShadow: '0 4px 12px shadow-color',
                 })}
                 position="relative"
-                p="$2"
+                p="1-5"
                 onPress={() => state.colors.setColorIndex(String(i))}
               >
                 <Spacer flex={1} />
@@ -147,13 +136,14 @@ export const ColorCanvas = memo(function ColorCanvas() {
                   ml="auto"
                   items="flex-end"
                   position="relative"
-                  rounded="$4"
+                  rounded="4"
                   overflow="hidden"
-                  p="$2"
+                  p="1-5"
                 >
                   <YStack
                     z={-1}
-                    fullscreen
+                    position="absolute"
+                    inset={0}
                     bg={
                       isActive
                         ? color.lightness > 50
@@ -163,7 +153,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
                     }
                     opacity={0.2}
                   />
-                  <Paragraph lineHeight={0} color={labelColor as any}>
+                  <Paragraph lineHeight="0px" color={labelColor as any}>
                     {accentScore !== 'Fail' ? (
                       // @ts-ignore
                       <CheckCircle size={16} color="currentColor" />
@@ -173,7 +163,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
                     )}
                   </Paragraph>
                   <Paragraph
-                    size="$3"
+                    size="3"
                     text="right"
                     color={labelColor as any}
                     self="flex-end"

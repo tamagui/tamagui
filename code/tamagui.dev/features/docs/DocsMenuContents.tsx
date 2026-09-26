@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { Accordion, Button, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
-import { ChevronDown, ChevronsDownUp, ChevronsUpDown } from '@tamagui/lucide-icons-2'
+import { Accordion, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
+import { ChevronDown, ChevronsDownUp, ChevronsUpDown } from '@tamagui/local-icons'
 import { DocsRouteNavItem } from './DocsRouteNavItem'
 import { docsRoutes } from './docsRoutes'
 import { useDocsMenu } from './useDocsMenu'
@@ -38,9 +39,12 @@ const sections = {
 export const DocsMenuContents = React.memo(function DocsMenuContents({
   section: propsSection,
   inMenu,
+  header,
 }: {
   inMenu?: boolean
   section?: keyof typeof sections
+  // shares a row with the collapse-all toggle in the sidebar
+  header?: React.ReactNode
 }) {
   const { currentPath, section: docsSection } = useDocsMenu()
   // compiler pages now show core section (merged)
@@ -64,9 +68,12 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
   // compute initial open section synchronously (SSR-safe)
   const currentSectionKey = currentPath ? getSectionKeyForPath(currentPath) : ''
 
-  // track open sections - initialized with current section
-  const [openSections, setOpenSections] = React.useState<string[]>(
-    currentSectionKey ? [currentSectionKey] : []
+  // open every section on both the server and the first client render
+  const [openSections, setOpenSections] = React.useState<string[]>(() =>
+    docsRoutes.flatMap((section) => {
+      const key = section.title || section.label
+      return key ? [key] : []
+    })
   )
 
   // update when navigating to a different section
@@ -117,7 +124,8 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
         aria-label="Docs Menu"
       >
         {!inMenu && (
-          <XStack justifyContent="flex-end" pr="$2" mb="$2">
+          <XStack justifyContent="space-between" items="center" px="4" mb="4">
+            {header}
             <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
           </XStack>
         )}
@@ -153,7 +161,8 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
   return (
     <div style={{ width: '100%', paddingBottom: inMenu ? 0 : 80 }} aria-label="Docs Menu">
       {!inMenu && (
-        <XStack justifyContent="flex-end" pr="$2" mb="$2">
+        <XStack justifyContent="space-between" items="center" px="4" mb="4">
+          {header}
           <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
         </XStack>
       )}
@@ -187,18 +196,18 @@ const ToggleAllButton = ({
     <TooltipSimple label={expanded ? 'Collapse all' : 'Expand all'} placement="right">
       <Button
         circular
-        size="$3"
-        my="$-3"
-        chromeless
-        hoverStyle={{ opacity: 1, backgroundColor: '$color3' }}
-        pressStyle={{ opacity: 0.8, backgroundColor: '$color2' }}
+        size="sm"
+        my="-3"
+        variant="quiet"
+        opacity="hover:1 press:0.8"
+        backgroundColor="hover:color-3 press:color-2"
         onPress={onPress}
         aria-label={expanded ? 'Collapse all sections' : 'Expand all sections'}
       >
         {expanded ? (
-          <ChevronsDownUp size={14} color="$color10" />
+          <ChevronsDownUp size={14} color="color-10" />
         ) : (
-          <ChevronsUpDown size={14} color="$color10" />
+          <ChevronsUpDown size={14} color="color-10" />
         )}
       </Button>
     </TooltipSimple>
@@ -218,7 +227,7 @@ const AccordionSection = ({
   currentPath: string
 }) => {
   const content = (
-    <YStack paddingHorizontal="$2" paddingVertical="$2">
+    <YStack paddingHorizontal="1-5" paddingTop="px" paddingBottom="4">
       {items.map(({ page }, index) => {
         return (
           <DocsRouteNavItem
@@ -238,43 +247,39 @@ const AccordionSection = ({
 
   // no title = top-level items, render without accordion
   if (!section?.title) {
-    return <YStack marginBottom="$2">{content}</YStack>
+    return <YStack marginBottom="1-5">{content}</YStack>
   }
 
   return (
     <Accordion.Item value={section.title}>
       <Accordion.Trigger
-        unstyled
-        backgroundColor="transparent"
+        group="docs-section"
+        padding={0}
+        backgroundColor="transparent hover:color-2 press:color-1"
         borderWidth={0}
-        hoverStyle={{
-          backgroundColor: '$color2',
-        }}
-        pressStyle={{
-          backgroundColor: '$color1',
-        }}
-        borderRadius="$4"
-        marginHorizontal="$2"
+        borderRadius="4"
+        marginHorizontal="1-5"
+        marginBottom="px"
       >
         {({ open }) => {
           return (
             <XStack
-              paddingVertical="$3"
-              paddingHorizontal="$3"
+              paddingVertical="1"
+              paddingHorizontal="4"
               justifyContent="space-between"
               alignItems="center"
               width="100%"
             >
-              <Paragraph size="$5" fontWeight="600" color="$color12">
+              <Paragraph size="3" fontWeight="600" color="color-12">
                 {section.title}
               </Paragraph>
 
               <YStack
-                transition="quick"
+                transition={{ preset: 'quick', properties: 'transform' }}
+                opacity="0.2 group-hover/docs-section:0.6 group-focus-visible/docs-section:1"
                 rotate={open ? '180deg' : '0deg'}
-                animateOnly={['transform']}
               >
-                <ChevronDown color="$color8" size="$1" />
+                <ChevronDown color="color-8" size="5" />
               </YStack>
             </XStack>
           )
@@ -283,10 +288,10 @@ const AccordionSection = ({
 
       <Accordion.HeightAnimator overflow="hidden" transition="200ms">
         <Accordion.Content
-          unstyled
+          padding={0}
           transition="200ms"
           backgroundColor="transparent"
-          exitStyle={{ opacity: 0 }}
+          opacity="exit:0"
         >
           {content}
         </Accordion.Content>

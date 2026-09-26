@@ -1,198 +1,146 @@
-import { useState } from 'react'
-import type { TabLayout, TabsTabProps, ViewProps } from 'tamagui'
-import { SizableText, XStack } from 'tamagui'
-import { AnimatePresence, Tabs, YStack } from 'tamagui'
-import { Code } from './Code'
-import { useBashCommand, PACKAGE_MANAGERS } from '~/hooks/useBashCommand'
-import { Image } from '@tamagui/image'
-import { ScrollView } from 'react-native'
+// A tablist of real links with roving tabindex and manual activation.
+//
+// Used for docs syntax navigation (Styled / Source / Tailwind), where each tab
+// is a route, not an in-place panel swap:
+//   - every tab renders a real <a href>, so modified clicks (cmd/ctrl-click,
+//     middle-click) keep native link behavior and the control works with no JS;
+//   - plain left-clicks intercept into client-side navigation via onValueChange;
+//   - arrow keys move focus only (manual activation); Enter/Space activates;
+//   - the selected value + hrefs render from props alone (no window reads, no
+//     effects, no portal), so SSR and hydration output is identical;
+//   - tabs point at the content they switch via aria-controls (see panelId).
+import { useRef } from 'react'
+import { Paragraph, XStack } from 'tamagui'
 
-export function RovingTabs({ className, children, code, size, ...rest }) {
-  const { showTabs, transformedCommand, selectedPackageManager, setPackageManager } =
-    useBashCommand(code || children, className)
+export type RovingTabItem = {
+  value: string
+  label: string
+  href: string
+  title?: string
+}
 
-  const [tabState, setTabState] = useState<{
-    intentAt: TabLayout | null
-    activeAt: TabLayout | null
-    prevActiveAt: TabLayout | null
-  }>({
-    intentAt: null,
-    activeAt: null,
-    prevActiveAt: null,
-  })
+export function RovingTabs({
+  ariaLabel,
+  testID,
+  items,
+  value,
+  onValueChange,
+  textSize = '2',
+  panelId,
+}: {
+  ariaLabel: string
+  testID: string
+  items: RovingTabItem[]
+  value: string
+  onValueChange: (value: string) => void
+  textSize?: '1' | '2'
+  panelId?: string
+}) {
+  const tabRefs = useRef<(HTMLElement | null)[]>([])
 
-  const setIntentIndicator = (intentAt: TabLayout | null) =>
-    setTabState((prevTabState) => ({ ...prevTabState, intentAt }))
-  const setActiveIndicator = (activeAt: TabLayout | null) =>
-    setTabState((prevTabState) => ({
-      ...prevTabState,
-      prevActiveAt: tabState.activeAt,
-      activeAt,
-    }))
+  const focusTab = (index: number) => {
+    const count = items.length
+    tabRefs.current[((index % count) + count) % count]?.focus()
+  }
 
-  const { activeAt, intentAt, prevActiveAt } = tabState
-
-  const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
-    if (type === 'select') {
-      setActiveIndicator(layout)
-    } else {
-      setIntentIndicator(layout)
+  const onKeyDown = (event: React.KeyboardEvent, index: number) => {
+    switch (event.key) {
+      case 'ArrowRight':
+      case 'ArrowDown':
+        event.preventDefault()
+        focusTab(index + 1)
+        break
+      case 'ArrowLeft':
+      case 'ArrowUp':
+        event.preventDefault()
+        focusTab(index - 1)
+        break
+      case 'Home':
+        event.preventDefault()
+        focusTab(0)
+        break
+      case 'End':
+        event.preventDefault()
+        focusTab(items.length - 1)
+        break
+      case ' ':
+        // links don't activate on Space; tabs must
+        event.preventDefault()
+        tabRefs.current[index]?.click()
+        break
+      default:
+        break
     }
   }
 
-  const codeContent = (
-    <ScrollView
-      style={{ width: '100%' }}
-      contentContainerStyle={{
-        minWidth: '100%',
-      }}
-      horizontal
-      showsHorizontalScrollIndicator={false}
+  return (
+    <XStack
+      role="tablist"
+      aria-label={ariaLabel}
+      testID={testID}
+      gap={0}
+      p="2px"
+      rounded="4"
+      borderWidth={1}
+      borderColor="border-color"
+      bg="color-1"
+      width="100%"
     >
-      <Code
-        p="$4"
-        bg="transparent"
-        flex={1}
-        className={className}
-        size={size ?? '$4'}
-        lineHeight={size ?? '$4'}
-        {...(showTabs && {
-          whiteSpace: 'nowrap',
-        })}
-        {...rest}
-      >
-        {showTabs ? transformedCommand : children}
-      </Code>
-    </ScrollView>
-  )
-
-  return (
-    <>
-      {showTabs ? (
-        <Tabs
-          activationMode="manual"
-          orientation="horizontal"
-          size="$4"
-          rounded="$4"
-          value={selectedPackageManager}
-          onPress={(e) => e.stopPropagation()}
-          onValueChange={setPackageManager}
-          group
-          mt={1}
-        >
-          <YStack width="100%">
-            <YStack p="$1.5" m="$2" mb={0} rounded="$5">
-              <AnimatePresence initial={false}>
-                {intentAt && (
-                  <TabIndicator
-                    width={intentAt.width}
-                    height={intentAt.height}
-                    x={intentAt.x}
-                    y={intentAt.y}
-                  />
-                )}
-              </AnimatePresence>
-
-              <AnimatePresence initial={false}>
-                {activeAt && (
-                  <TabIndicator
-                    bg="$color6"
-                    width={activeAt.width}
-                    height={activeAt.height}
-                    x={activeAt.x}
-                    y={activeAt.y}
-                  />
-                )}
-              </AnimatePresence>
-
-              <Tabs.List loop={false} aria-label="package manager" gap="$2">
-                <>
-                  {PACKAGE_MANAGERS.map((pkgManager) => (
-                    <Tab
-                      key={pkgManager}
-                      active={selectedPackageManager === pkgManager}
-                      pkgManager={pkgManager}
-                      onInteraction={handleOnInteraction}
-                    />
-                  ))}
-                </>
-              </Tabs.List>
-            </YStack>
-
-            <Tabs.Content value={selectedPackageManager} forceMount>
-              {codeContent}
-            </Tabs.Content>
-          </YStack>
-        </Tabs>
-      ) : (
-        codeContent
-      )}
-    </>
-  )
-}
-
-export function Tab({
-  active,
-  pkgManager,
-  logo,
-  onInteraction,
-}: {
-  active?: boolean
-  pkgManager: string
-  logo?: string
-  onInteraction?: TabsTabProps['onInteraction']
-}) {
-  const imageName = logo ?? pkgManager
-  return (
-    <Tabs.Tab
-      unstyled
-      pl="$2"
-      pr="$2.5"
-      py="$1.5"
-      gap="$1.5"
-      bg="transparent"
-      value={pkgManager}
-      {...(onInteraction && { onInteraction })}
-      cursor="pointer"
-    >
-      <XStack gap="$1.5" items="center" justify="center">
-        <Image
-          width={16}
-          height={16}
-          scale={imageName === 'pnpm' ? 0.7 : 0.8}
-          y={imageName === 'pnpm' ? 0 : 0}
-          src={`/logos/${imageName}.svg`}
-        />
-        <SizableText y={-0.5} size="$2" color="$color11" opacity={active ? 1 : 0.5}>
-          {pkgManager}
-        </SizableText>
-      </XStack>
-    </Tabs.Tab>
-  )
-}
-
-function TabIndicator({ active, ...props }: { active?: boolean } & ViewProps) {
-  return (
-    <YStack
-      position="absolute"
-      pointerEvents="none"
-      t={0}
-      l={0}
-      bg="$color6"
-      opacity={0.7}
-      rounded="$4"
-      transition="quickest"
-      enterStyle={{
-        opacity: 0,
-      }}
-      exitStyle={{
-        opacity: 0,
-      }}
-      {...(active && {
-        bg: '$color8',
-        opacity: 0.6,
+      {items.map((item, index) => {
+        const selected = item.value === value
+        // spread: anchor-only props don't exist on the text prop type
+        const anchorProps = { href: item.href, title: item.title }
+        return (
+          <Paragraph
+            key={item.value}
+            ref={(node) => {
+              tabRefs.current[index] = node as unknown as HTMLElement | null
+            }}
+            render="a"
+            role="tab"
+            id={`${testID}-${item.value}-tab`}
+            {...anchorProps}
+            aria-selected={selected}
+            aria-controls={panelId}
+            tabIndex={selected ? 0 : -1}
+            testID={`${testID}-${item.value}`}
+            flex={1}
+            px="3"
+            height={28}
+            minHeight={28}
+            display="flex"
+            items="center"
+            justify="center"
+            rounded="3"
+            cursor="pointer"
+            size={textSize}
+            color={selected ? 'color-12' : 'color-11'}
+            bg={selected ? 'color-4' : 'transparent'}
+            outlineColor="focus-visible:outline-color"
+            outlineWidth="focus-visible:2px"
+            outlineStyle="focus-visible:solid"
+            onKeyDown={(event) => onKeyDown(event, index)}
+            onPress={(event: any) => {
+              // modified clicks + non-left buttons keep native link behavior
+              // (new tab, new window, context menu); only plain left-clicks
+              // become client-side navigation.
+              if (
+                event.metaKey ||
+                event.altKey ||
+                event.ctrlKey ||
+                event.shiftKey ||
+                (event.button != null && event.button !== 0)
+              ) {
+                return
+              }
+              event.preventDefault()
+              if (!selected) onValueChange(item.value)
+            }}
+          >
+            {item.label}
+          </Paragraph>
+        )
       })}
-      {...props}
-    />
+    </XStack>
   )
 }
