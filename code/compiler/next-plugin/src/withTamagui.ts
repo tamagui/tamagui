@@ -43,10 +43,7 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
 
     return {
       ...nextConfig,
-      transpilePackages: [
-        ...(nextConfig.transpilePackages || []),
-        'expo-linear-gradient',
-      ],
+      transpilePackages: nextConfig.transpilePackages || [],
       webpack: (webpackConfig: any, options: any) => {
         const { dir, config, dev, isServer, webpack } = options
 
@@ -236,7 +233,6 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
               // fullPath === 'tamagui' ||
               fullPath.startsWith('@tamagui') ||
               fullPath === 'react-native-safe-area-context' ||
-              fullPath === 'expo-linear-gradient' ||
               fullPath.startsWith('@react-navigation') ||
               fullPath.startsWith('@gorhom')
             ) {

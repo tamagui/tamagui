@@ -376,7 +376,6 @@ describe('G1 tarball audits', () => {
     // does not drag the 97 MiB react-native subtree in behind them
     const optionalPeers = [
       'burnt',
-      'expo-linear-gradient',
       'react-native',
       'react-native-gesture-handler',
       'react-native-keyboard-controller',

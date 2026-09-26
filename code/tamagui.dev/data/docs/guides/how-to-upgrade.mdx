@@ -182,6 +182,14 @@ Remove tooling packages that no longer exist in v3:
 | `@tamagui/static-worker`   | Remove direct imports. Metro owns its graph/cache workers through `@tamagui/cli/metro`.                       |
 | `@tamagui/theme-builder`   | Freeze the generated themes or use `@tamagui/config-v5` for the intermediate checkpoint. Adopt `@tamagui/themes/builder` recipes only in a separate v6 migration. |
 
+### LinearGradient needs no native setup
+
+`LinearGradient` draws a `backgroundImage` gradient on native, so
+`@tamagui/native/setup-expo-linear-gradient` is gone. Delete that import, and
+remove `expo-linear-gradient` from your dependencies unless your own code uses
+it. Native gradients need React Native 0.76 or later with the new
+architecture.
+
 ### Config and theme compatibility
 
 V3 defaults to Config v6. It also keeps frozen static v5 and v5-subtle packs so

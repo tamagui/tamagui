@@ -232,10 +232,8 @@ async function analyzePackage(pkg: Package): Promise<MissingDepReport | null> {
     const isViteOrTest = dep.includes('vite') || dep.includes('test')
     // bun is a runtime environment like node, not a package dependency
     // expo-image is an optional dependency
-    // expo-linear-gradient is handled by expo
     // moti is deprecated and animations-moti package intentionally doesn't list it
     const isBlacklisted =
-      dep === 'expo-linear-gradient' ||
       dep === 'bun' ||
       dep === 'expo-image' ||
       dep === 'moti'

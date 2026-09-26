@@ -65,11 +65,6 @@ export type NativePortalProviderProps = {
   children: ReactNode
 }
 
-export interface LinearGradientState {
-  enabled: boolean
-  Component: any
-}
-
 export interface BurntState {
   enabled: boolean
   toast: ((options: any) => void) | null

@@ -11,9 +11,8 @@ import { YStack } from '@tamagui/stacks'
 import type { ViewStyle } from '@tamagui/react-native-types'
 
 import type { LinearGradientPoint } from './linear-gradient'
-import { LinearGradient as ExpoLinearGradient } from './linear-gradient'
+import { LinearGradient as GradientBackground } from './linear-gradient'
 
-// taken from expo-linear-gradient
 export type LinearGradientExtraProps = {
   colors?: (ColorTokens | ThemeTokens | (string & {}))[]
   locations?: number[] | null
@@ -61,11 +60,11 @@ export const LinearGradient = createStyledHOC(
 
     return (
       <LinearGradientFrame ref={ref as any} {...stackProps}>
-        <ExpoLinearGradient
+        <GradientBackground
           start={start}
           end={end}
-          colors={colors as any}
-          locations={locations as any}
+          colors={colors}
+          locations={locations}
           style={gradientStyle}
         />
         {children}
