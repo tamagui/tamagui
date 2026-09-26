@@ -17,6 +17,24 @@ vi.mock('react-native', () => ({
   },
 }))
 
+// react native's gradient processor, stubbed to the processed shape it returns:
+// a `{ type, value }` direction, a `position` on every stop, packed int colors
+vi.mock('react-native/Libraries/StyleSheet/processBackgroundImage', () => ({
+  default: (value: unknown) => {
+    if (value !== 'linear-gradient(to bottom, half-red 0%, dynamic)') return []
+    return [
+      {
+        type: 'linear-gradient',
+        direction: { type: 'keyword', value: 'to bottom' },
+        colorStops: [
+          { color: 0x80ff0000, position: '0%' },
+          { color: { dynamic: { light: 0xffffffff, dark: 0xff000000 } }, position: null },
+        ],
+      },
+    ]
+  },
+}))
+
 const { processStyleColors } = await import('../processStyleColors.native')
 
 describe('processStyleColors', () => {
@@ -87,13 +105,7 @@ describe('processStyleColors', () => {
     const dynamic = { dynamic: { light: 'white', dark: 'black' } }
     const props = {
       boxShadow: [{ offsetX: 0, offsetY: 2, blurRadius: 4, color: dynamic }],
-      experimental_backgroundImage: [
-        {
-          type: 'linear-gradient',
-          direction: 'to bottom',
-          colorStops: [{ color: 'half-red', position: '0%' }, { color: dynamic }],
-        },
-      ],
+      experimental_backgroundImage: 'linear-gradient(to bottom, half-red 0%, dynamic)',
     }
 
     expect(processStyleColors(props)).toEqual({
@@ -108,15 +120,14 @@ describe('processStyleColors', () => {
       experimental_backgroundImage: [
         {
           type: 'linear-gradient',
-          direction: 'to bottom',
+          direction: { type: 'keyword', value: 'to bottom' },
           colorStops: [
             { color: { space: 'srgb', r: 1, g: 0, b: 0, a: 0x80 / 255 }, position: '0%' },
-            { color: { dynamic: { light: 0xffffffff, dark: 0xff000000 } } },
+            { color: { dynamic: { light: 0xffffffff, dark: 0xff000000 } }, position: null },
           ],
         },
       ],
     })
     expect(props.boxShadow[0].color).toBe(dynamic)
-    expect(props.experimental_backgroundImage[0].colorStops[0].color).toBe('half-red')
   })
 })

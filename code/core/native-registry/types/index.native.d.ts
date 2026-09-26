@@ -6,7 +6,8 @@ export declare function isAvailable(): boolean;
 /**
 * Link a mounted view to the engine. Captures the ShadowNode once, returns
 * a handle keyed by the engine-issued id: unlink never re-derives anything
-* from the ref, so a torn-down ref cannot leave a stale entry behind.
+* from the ref, so a torn-down ref cannot leave a stale entry behind. Slot
+* props arrive in engine form, already through processStyleColors.
 */
 export declare function link(ref: unknown, slots: ViewSlots, scopeId?: string): LinkHandle | null;
 /**
@@ -18,7 +19,8 @@ export declare function applyViewStates(entries: ViewStateUpdate[]): void;
 /**
 * Fill lazily resolved state-table entries without switching a view to the
 * per-view runtime controller. The native engine commits an entry immediately
-* only when that state is already active for the view's scope.
+* only when that state is already active for the view's scope. Entry props
+* arrive in engine form, already through processStyleColors.
 */
 export declare function updateViewStateTables(entries: ViewStateTableUpdate[]): void;
 /**

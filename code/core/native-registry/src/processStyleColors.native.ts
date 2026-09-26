@@ -18,8 +18,15 @@
  *    Object` on anything else. A plain `[r, g, b, a]` array satisfies the C++
  *    parser but not this one, and the throw kills the mount-item dispatch and
  *    tears the whole React surface down.
+ *
+ * A background image goes through React Native's own processBackgroundImage
+ * first, as React's style diff does for a rendered view: Fabric's parser reads
+ * only its output (a `{ type, value }` direction and a `position` on every
+ * stop) and drops the angle and every stop of the unprocessed form. That
+ * processor throws on its own output, so a value crosses this boundary once.
  */
 import { processColor, type ColorValue } from 'react-native'
+import processBackgroundImage from 'react-native/Libraries/StyleSheet/processBackgroundImage'
 
 const COLOR_PROPS = new Set([
   'color',
@@ -46,7 +53,12 @@ export function processStyleColors(
 ): Record<string, unknown> {
   let out: Record<string, unknown> | null = null
   for (const key in props) {
-    const value = props[key]
+    let value = props[key]
+    if (key === 'experimental_backgroundImage' && value != null) {
+      value = processBackgroundImage(value)
+      out ??= { ...props }
+      out[key] = value
+    }
     if (
       (key === 'boxShadow' ||
         key === 'experimental_backgroundImage' ||
@@ -54,7 +66,7 @@ export function processStyleColors(
       Array.isArray(value)
     ) {
       let changed = false
-      const next = []
+      const next: Record<string, unknown>[] = []
       for (const entry of value) {
         const processed = processStyleColors(entry)
         if (processed !== entry) changed = true

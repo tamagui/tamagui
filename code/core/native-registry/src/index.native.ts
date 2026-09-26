@@ -20,7 +20,6 @@ import {
   removeMirroredScope,
   setMirroredStateName,
 } from './mirror'
-import { processStyleColors } from './processStyleColors.native'
 
 export type {
   LinkHandle,
@@ -88,7 +87,8 @@ function isNitroHybridView(ref: unknown): boolean {
 /**
  * Link a mounted view to the engine. Captures the ShadowNode once, returns
  * a handle keyed by the engine-issued id: unlink never re-derives anything
- * from the ref, so a torn-down ref cannot leave a stale entry behind.
+ * from the ref, so a torn-down ref cannot leave a stale entry behind. Slot
+ * props arrive in engine form, already through processStyleColors.
  */
 export function link(
   ref: unknown,
@@ -100,17 +100,7 @@ export function link(
   if (!node) return null
 
   const e = getEngine()
-  const prepared: Record<string, unknown> = {}
-  if (slots.base) prepared.base = processStyleColors(slots.base)
-  if (slots.state) {
-    const state: Record<string, unknown> = {}
-    for (const name in slots.state) {
-      state[name] = processStyleColors(slots.state[name])
-    }
-    prepared.state = state
-  }
-
-  const id = e.link(node, prepared, scopeId)
+  const id = e.link(node, slots, scopeId)
   let unlinked = false
   return {
     id,
@@ -135,13 +125,12 @@ export function applyViewStates(entries: ViewStateUpdate[]): void {
 /**
  * Fill lazily resolved state-table entries without switching a view to the
  * per-view runtime controller. The native engine commits an entry immediately
- * only when that state is already active for the view's scope.
+ * only when that state is already active for the view's scope. Entry props
+ * arrive in engine form, already through processStyleColors.
  */
 export function updateViewStateTables(entries: ViewStateTableUpdate[]): void {
   if (entries.length === 0) return
-  getEngine().updateViewStateTables(
-    entries.map((entry) => ({ ...entry, props: processStyleColors(entry.props) }))
-  )
+  getEngine().updateViewStateTables(entries)
 }
 
 /**
