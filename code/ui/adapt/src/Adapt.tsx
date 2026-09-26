@@ -180,6 +180,9 @@ export const AdaptContext = createStyledContext<
 const AdaptCapabilitiesContext = createContext<AdaptCapabilitiesValue>({})
 
 const LastAdaptContextScope = createContext('')
+const AdaptTargetScope = createContext<string | null>(null)
+
+export const useAdaptTargetScope = () => useContext(AdaptTargetScope)
 
 export const ProvideAdaptContext = ({
   children,
@@ -529,7 +532,11 @@ export const Adapt = withStaticProperties(
       output = children
     }
 
-    return <StackZIndexContext>{!enabled ? null : output}</StackZIndexContext>
+    return (
+      <AdaptTargetScope.Provider value={context.scopeName}>
+        <StackZIndexContext>{!enabled ? null : output}</StackZIndexContext>
+      </AdaptTargetScope.Provider>
+    )
   },
   {
     Contents: AdaptContents,
@@ -656,17 +663,19 @@ export function useAdaptTarget<State = unknown>(
   scope?: string
 ): AdaptTarget<State> | null {
   const context = useAdaptContext(scope)
+  const targetScope = useAdaptTargetScope()
+  const isTarget = scope !== undefined || targetScope === context.scopeName
 
   useIsomorphicLayoutEffect(() => {
-    if (!context.active) return
+    if (!context.active || !isTarget) return
 
     context.registerTarget()
     return () => {
       context.unregisterTarget()
     }
-  }, [context.active, context.registerTarget, context.unregisterTarget])
+  }, [context.active, context.registerTarget, context.unregisterTarget, isTarget])
 
-  if (!context.active) {
+  if (!context.active || !isTarget) {
     return null
   }
 
