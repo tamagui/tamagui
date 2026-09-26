@@ -284,7 +284,8 @@ describe('getSplitStyles', () => {
     // LinearGradient draws through this string on native: an angle in deg and
     // normalizeColor stops with percent positions.
     const { style } = getSplitStylesFor({
-      backgroundImage: 'linear-gradient(180deg, rgba(255,0,0,1) 0%, rgba(0,0,255,0.5) 100%)',
+      backgroundImage:
+        'linear-gradient(180deg, rgba(255,0,0,1) 0%, rgba(0,0,255,0.5) 100%)',
     })
     expect(style?.backgroundImage).toBe(undefined)
     expect(style?.experimental_backgroundImage).toEqual([

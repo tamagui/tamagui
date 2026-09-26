@@ -14,7 +14,10 @@ type NativeLinearGradientPoint = [x: number, y: number]
 export type LinearGradientPoint = { x: number; y: number } | NativeLinearGradientPoint
 
 // start and end are the gradient's points here, not View's logical insets.
-export type LinearGradientProps = Omit<React.ComponentProps<typeof View>, 'start' | 'end'> & {
+export type LinearGradientProps = Omit<
+  React.ComponentProps<typeof View>,
+  'start' | 'end'
+> & {
   colors: readonly string[]
   locations?: readonly number[] | null
   start?: LinearGradientPoint | null
@@ -79,9 +82,7 @@ export function LinearGradient({
 
   // if we don't need dimension-aware angles, skip the onLayout overhead
   if (!needsLayout) {
-    return (
-      <GradientView {...props} backgroundImage={linearGradientBackgroundImage} />
-    )
+    return <GradientView {...props} backgroundImage={linearGradientBackgroundImage} />
   }
 
   return (
