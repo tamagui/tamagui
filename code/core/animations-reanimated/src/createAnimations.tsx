@@ -1869,10 +1869,27 @@ export function createAnimations<A extends AnimationsConfig>(
           const mapperState = mapperStateRef.value
           const config = configRef.value
           if (config.disableAnimation || config.isHydrating) {
-            // the empty return wipes reanimated's per-key history, so ours
-            // resets with it
-            updateMapperState(mapperStateRef, {}, {})
-            return {}
+            // reanimated re-applies the last value this worklet painted over
+            // every later style prop, so a key it animated would hold that
+            // value once the transition goes. the key's static value takes
+            // over through the worklet, which owns the key from then on.
+            const handoff: Record<string, any> = {}
+            const handedOff: Record<string, boolean> = {}
+            let animatedTransform = false
+            for (const key in mapperState.emitted) {
+              if (key.startsWith('transform:')) animatedTransform = true
+            }
+            const handoffStatics = (emitterSnapshotRef.value ?? renderSnapshotRef.value)
+              .statics
+            for (const key in handoffStatics) {
+              const animatedBefore =
+                key === 'transform' ? animatedTransform : !!mapperState.emitted[key]
+              if (!animatedBefore && !mapperState.ownedStatics[key]) continue
+              handedOff[key] = true
+              handoff[key] = handoffStatics[key]
+            }
+            updateMapperState(mapperStateRef, {}, handedOff)
+            return handoff
           }
 
           const previouslyEmitted = mapperState.emitted
@@ -1904,9 +1921,11 @@ export function createAnimations<A extends AnimationsConfig>(
           const currentUpdateCycleId = updateCycleIdShared.value
 
           // Include static values from emitter (for hover/press style changes).
-          // a render snapshot only refreshes keys an emitter already wrote.
+          // a render snapshot only refreshes keys an emitter already wrote, or
+          // a key this worklet animated last run, which would otherwise keep
+          // its last painted value over the style prop.
           for (const key in staticValues) {
-            if (!emitterSnapshot && !previouslyOwned[key]) continue
+            if (!emitterSnapshot && !previouslyOwned[key] && !previouslyEmitted[key]) continue
             ownedStatics[key] = true
             result[key] = staticValues[key]
           }
