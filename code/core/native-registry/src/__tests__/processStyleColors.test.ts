@@ -123,7 +123,10 @@ describe('processStyleColors', () => {
           direction: { type: 'keyword', value: 'to bottom' },
           colorStops: [
             { color: { space: 'srgb', r: 1, g: 0, b: 0, a: 0x80 / 255 }, position: '0%' },
-            { color: { dynamic: { light: 0xffffffff, dark: 0xff000000 } }, position: null },
+            {
+              color: { dynamic: { light: 0xffffffff, dark: 0xff000000 } },
+              position: null,
+            },
           ],
         },
       ],

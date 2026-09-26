@@ -136,7 +136,9 @@ export function getConfig(tamaguiPlugin: any) {
               replacement: requireResolve('@tamagui/fake-react-native'),
             },
             {
-              find: /^react-native\//,
+              // the whole deep path: a prefix match would splice the rest of
+              // the import onto the fake module's file path.
+              find: /^react-native\/.*$/,
               replacement: requireResolve('@tamagui/fake-react-native'),
             },
           ]
