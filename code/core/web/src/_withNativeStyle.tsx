@@ -1,5 +1,5 @@
 import { setRef } from '@tamagui/compose-refs'
-import React, { useCallback, useContext, useRef } from 'react'
+import React, { useCallback, useContext, useRef, useState } from 'react'
 import { _withStableStyle } from './_withStableStyle'
 import {
   getNativeStyleEngine,
@@ -38,6 +38,9 @@ export const _withNativeStyle = (
   }) {
     const { ref, _expressions: _ignoredExpressions, ...rest } = props
     const link = useRef<NativeStyleEngineLinkHandle | null>(null)
+    // a host the engine refuses (a nitro view) never gets theme pushes, so
+    // this view renders through the theme-subscribed fallback instead
+    const [refused, setRefused] = useState(false)
     const themeState = getThemeState(_scopeId)
     const stateName = themeState?.name
     const theme = themeState?.theme
@@ -55,10 +58,12 @@ export const _withNativeStyle = (
             stateName,
             theme
           )
+          if (!link.current) setRefused(true)
         }
       },
       [ref, _scopeId, stateName, theme]
     )
+    if (refused) return <Fallback {...props} />
     const stateStyle =
       stateName && theme
         ? resolveNativeStyleMapping(themeStyleKeys, stateName, theme)

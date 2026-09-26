@@ -74,6 +74,18 @@ function getShadowNode(ref: unknown): unknown | null {
 }
 
 /**
+ * Nitro hybrid views parse props only from JSI values (their component
+ * descriptor uses the JSI RawPropsParser), so the folly props this engine
+ * commits, like React Native's own setNativeProps, abort in them. Every
+ * Nitro view declares its `hybridRef` prop; those hosts stay unlinked and
+ * re-theme through React renders.
+ */
+function isNitroHybridView(ref: unknown): boolean {
+  const config = (ref as { __viewConfig?: { validAttributes?: object } })?.__viewConfig
+  return !!config?.validAttributes && 'hybridRef' in config.validAttributes
+}
+
+/**
  * Link a mounted view to the engine. Captures the ShadowNode once, returns
  * a handle keyed by the engine-issued id: unlink never re-derives anything
  * from the ref, so a torn-down ref cannot leave a stale entry behind.
@@ -83,6 +95,7 @@ export function link(
   slots: ViewSlots,
   scopeId: string = ROOT_SCOPE
 ): LinkHandle | null {
+  if (isNitroHybridView(ref)) return null
   const node = getShadowNode(ref)
   if (!node) return null
 
