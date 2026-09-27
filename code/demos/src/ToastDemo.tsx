@@ -160,13 +160,17 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
         <Toast.Close
           testID="toast-close-button"
           position="absolute"
-          top={4}
-          right={4}
+          top={8}
+          right={8}
           zIndex={1}
           width="auto"
           height="auto"
+          p="1"
+          cursor="pointer"
+          opacity={0.6}
+          hoverStyle={{ opacity: 1 }}
         >
-          <X size={28} />
+          <X size={14} color="color" />
         </Toast.Close>
       )}
     </>
@@ -206,7 +210,7 @@ function DemoSlider({
         <Slider.Track>
           <Slider.TrackActive />
         </Slider.Track>
-        <Slider.Thumb theme="accent" size="xs" borderRadius={100} index={0} />
+        <Slider.Thumb theme="brand" size="xs" borderRadius={100} index={0} />
       </Slider>
       <SizableText userSelect="none" size="2" width={35} textAlign="right">
         {format ? format(value) : Math.round(value)}
@@ -234,7 +238,7 @@ const PositionButton = ({
     <Button
       icon={Icon}
       circular
-      theme={isActive ? 'accent' : undefined}
+      theme={isActive ? 'brand' : undefined}
       onPress={() => onPress(position)}
       testID={testID}
     />

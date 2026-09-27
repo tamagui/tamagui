@@ -20,6 +20,13 @@ const itemStyles = {
   flexDirection: 'row',
   borderRadius: 6,
   cursor: 'pointer',
+  backgroundColor: 'transparent hover:background-hover focus:background-focus',
+  hoverStyle: {
+    backgroundColor: 'background-hover',
+  },
+  focusStyle: {
+    backgroundColor: 'background-focus',
+  },
 
   variants: {
     disabled: {

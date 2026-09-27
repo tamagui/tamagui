@@ -6,6 +6,7 @@ import {
   H5,
   SizableText,
   Tabs,
+  XGroup,
   XStack,
   YStack,
   styled,
@@ -21,15 +22,30 @@ export const TabsAdvancedDemo = () => {
   const [demoIndex, setDemoIndex] = React.useState(0)
   const demo = demos[demoIndex]
   return (
-    <>
-      {demo === 'underline' ? <TabsAdvancedUnderline /> : <TabsAdvancedBackground />}
+    <YStack gap="4" items="center">
+      <XGroup>
+        <XGroup.Item>
+          <Button
+            size="sm"
+            theme={demo === 'background' ? 'brand' : undefined}
+            onPress={() => setDemoIndex(0)}
+          >
+            Background
+          </Button>
+        </XGroup.Item>
+        <XGroup.Item>
+          <Button
+            size="sm"
+            theme={demo === 'underline' ? 'brand' : undefined}
+            onPress={() => setDemoIndex(1)}
+          >
+            Underline
+          </Button>
+        </XGroup.Item>
+      </XGroup>
 
-      <XStack items="center" gap="4" position="absolute" b="3" l="4" display="xxs:none">
-        <Button size="xs" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
-          {demosTitle[demo]}
-        </Button>
-      </XStack>
-    </>
+      {demo === 'underline' ? <TabsAdvancedUnderline /> : <TabsAdvancedBackground />}
+    </YStack>
   )
 }
 

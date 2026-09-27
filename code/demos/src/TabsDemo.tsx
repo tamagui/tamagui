@@ -6,6 +6,7 @@ import {
   Separator,
   SizableText,
   Tabs,
+  XGroup,
   XStack,
   YStack,
   isWeb,
@@ -25,21 +26,29 @@ export function TabsDemo() {
   const demo = demos[demoIndex]
 
   return (
-    <YStack px="4" {...(isWeb && { position: 'unset' as any })}>
-      {demo === 'horizontal' ? <HorizontalTabs /> : <VerticalTabs />}
+    <YStack gap="4" items="center" px="4">
+      <XGroup>
+        <XGroup.Item>
+          <Button
+            size="sm"
+            theme={demo === 'horizontal' ? 'brand' : undefined}
+            onPress={() => setDemoIndex(0)}
+          >
+            Horizontal
+          </Button>
+        </XGroup.Item>
+        <XGroup.Item>
+          <Button
+            size="sm"
+            theme={demo === 'vertical' ? 'brand' : undefined}
+            onPress={() => setDemoIndex(1)}
+          >
+            Vertical
+          </Button>
+        </XGroup.Item>
+      </XGroup>
 
-      <XStack
-        items="center"
-        gap="4"
-        position="absolute"
-        b="3"
-        l="4"
-        display="max-xs:none"
-      >
-        <Button size="xs" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
-          {demosTitle[demo]}
-        </Button>
-      </XStack>
+      {demo === 'horizontal' ? <HorizontalTabs /> : <VerticalTabs />}
     </YStack>
   )
 }

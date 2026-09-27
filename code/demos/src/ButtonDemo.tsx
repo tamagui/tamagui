@@ -9,7 +9,7 @@ export function ButtonDemo() {
         Large
       </Button>
       <XStack gap="2" justify="center">
-        <Button size="sm" theme="accent">
+        <Button size="sm" theme="brand">
           Active
         </Button>
         <Button size="sm" variant="outlined">
@@ -17,7 +17,7 @@ export function ButtonDemo() {
         </Button>
       </XStack>
       <XStack gap="2" justify="center">
-        <Theme name="accent">
+        <Theme name="brand">
           <Button size="sm">
             <Button.Icon size={14}>
               <Activity />
