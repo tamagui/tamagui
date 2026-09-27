@@ -93,7 +93,6 @@
     "three": "^0.172.0",
     "unified": "^10.1.2",
     "valibot": "^1.2.0",
-    "victory": "^37.0.2",
     "vite": "^8.2.2",
     "vite-plugin-inspect": "^11.4.1",
     "zod": "^3.25.67"
