@@ -81,6 +81,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
   DOMNodeAPIs: () => require('./DOMNodeAPIs').DOMNodeAPIs,
   DialogFocusScopeCase: () => require('./DialogFocusScopeCase').DialogFocusScopeCase,
   DialogFocusScopeDebug: () => require('./DialogFocusScopeDebug').DialogFocusScopeDebug,
+  DialogForceClassNameThemeCase: () =>
+    require('./DialogForceClassNameThemeCase').DialogForceClassNameThemeCase,
   DialogNestedCase: () => require('./DialogNestedCase').DialogNestedCase,
   DismissLayerStackingCase: () =>
     require('./DismissLayerStackingCase').DismissLayerStackingCase,
