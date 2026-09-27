@@ -167,8 +167,7 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
           height="auto"
           p="1"
           cursor="pointer"
-          opacity={0.6}
-          hoverStyle={{ opacity: 1 }}
+          opacity="0.6 hover:1"
         >
           <X size={14} color="color" />
         </Toast.Close>
