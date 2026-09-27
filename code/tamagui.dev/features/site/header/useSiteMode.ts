@@ -71,8 +71,13 @@ export function useSiteMode() {
 
   const searchParams = useMemo(() => new URLSearchParams(search), [search])
 
+  const [overrideVersion, setOverrideVersion] = useState<SiteVersion | null>(null)
+  const [overrideStyling, setOverrideStyling] = useState<SiteStyling | null>(null)
+  const [overrideSyntax, setOverrideSyntax] = useState<SiteSyntax | null>(null)
+
   // 1. Version
   const version: SiteVersion = useMemo(() => {
+    if (overrideVersion) return overrideVersion
     const versionParam = searchParams.get('version')
     if (versionParam === 'v2') return 'v2'
     if (versionParam === 'v3') return 'v3'
@@ -82,11 +87,12 @@ export function useSiteMode() {
       if (saved === 'v2') return 'v2'
     }
     return 'v3'
-  }, [searchParams, pathname, mounted])
+  }, [overrideVersion, searchParams, pathname, mounted])
 
   // 2. Styling (Tamagui or Tailwind)
   const styling: SiteStyling = useMemo(() => {
     if (version === 'v2') return 'tamagui' // No v2 Tailwind
+    if (overrideStyling) return overrideStyling
     if (pathname.startsWith('/tailwind')) return 'tailwind'
     if (searchParams.get('syntax') === 'tailwind') return 'tailwind'
     if (searchParams.get('syntax') === 'tamagui' || searchParams.get('syntax') === 'styled')
@@ -94,10 +100,11 @@ export function useSiteMode() {
     if (mounted && typeof document !== 'undefined' && cookieHasTailwind(document.cookie))
       return 'tailwind'
     return 'tamagui'
-  }, [version, pathname, searchParams, mounted])
+  }, [version, overrideStyling, pathname, searchParams, mounted])
 
   // 3. Syntax (String or Object)
   const syntax: SiteSyntax = useMemo(() => {
+    if (overrideSyntax) return overrideSyntax
     const param = searchParams.get('syntax')
     if (param === 'typed' || param === 'object') return 'object'
     if (param === 'string') return 'string'
@@ -106,7 +113,7 @@ export function useSiteMode() {
       if (saved === 'object' || saved === 'typed') return 'object'
     }
     return 'string'
-  }, [searchParams, mounted])
+  }, [overrideSyntax, searchParams, mounted])
 
   // 4. Theme
   const themeId = currentThemeId || 'default'
@@ -114,6 +121,7 @@ export function useSiteMode() {
   // Setters
   const setVersion = useCallback(
     (nextVersion: SiteVersion) => {
+      setOverrideVersion(nextVersion)
       if (typeof window !== 'undefined') {
         localStorage.setItem(VERSION_PREF_KEY, nextVersion)
       }
@@ -138,6 +146,7 @@ export function useSiteMode() {
 
   const setStyling = useCallback(
     (nextStyling: SiteStyling) => {
+      setOverrideStyling(nextStyling)
       writeSyntaxCookie(nextStyling)
 
       const isDocs = pathname.startsWith('/docs') || pathname.startsWith('/ui') || pathname.startsWith('/tailwind')
@@ -156,6 +165,7 @@ export function useSiteMode() {
 
   const setSyntax = useCallback(
     (nextSyntax: SiteSyntax) => {
+      setOverrideSyntax(nextSyntax)
       if (typeof window !== 'undefined') {
         localStorage.setItem(SYNTAX_PREF_KEY, nextSyntax)
         const url = new URL(window.location.href)

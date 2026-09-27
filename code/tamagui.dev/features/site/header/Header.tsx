@@ -44,7 +44,7 @@ import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
 import { useUser } from '../../user/useUser'
 import { SearchButton } from './SearchButton'
-import { SiteModePopover } from './SiteModePopover'
+import { SiteModeSelects } from './SiteModeSelects'
 import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
 
@@ -204,7 +204,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           </XStack>
         </Link>
 
-        <SiteModePopover />
+        <SiteModeSelects />
       </XStack>
 
       <View flex={1} />
