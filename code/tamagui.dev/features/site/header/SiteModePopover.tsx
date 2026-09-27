@@ -79,7 +79,7 @@ export const SiteModePopover = (props: PopoverProps) => {
 
           <SizableText
             fontFamily="mono"
-            size="2"
+            size="1"
             color="color-12"
             letterSpacing={-0.3}
             userSelect="none"

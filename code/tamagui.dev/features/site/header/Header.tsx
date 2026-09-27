@@ -163,6 +163,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           rounded="10"
           width={32}
           height={32}
+          minH={32}
           p={0}
         />
 
@@ -173,6 +174,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           rounded="10"
           width={32}
           height={32}
+          minH={32}
           p={0}
         />
 
@@ -182,14 +184,15 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
             containerType="normal"
             items="center"
             justify="center"
+            width="32px xxl:auto"
             height={32}
-            px="1-5 max-sm:1"
-            rounded="10"
+            px="0 xxl:2"
             gap="1-5"
+            rounded="10"
             opacity="0.9 hover:1"
             transition="all 150ms ease"
           >
-            <GithubIcon width={19} height={19} />
+            <GithubIcon width={16} height={16} />
             <SizableText
               display="max-xxl:none"
               color="color-12"

@@ -139,14 +139,14 @@ export default function TamaguiHomePage() {
 
             <H1
               fontSize="22px sm:24px lg:28px"
-              lineHeight="32px sm:36px lg:40px"
+              lineHeight="28px sm:32px lg:36px"
               fontWeight="600"
               letterSpacing={-0.2}
               textWrap="balance"
             >
               Fast on web. Fast on native.
               <br />
-              Now, in Typed or Tailwind.
+              Now with style props or Tailwind.
             </H1>
 
             <YStack gap="4" mt="-4">
