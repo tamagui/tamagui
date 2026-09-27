@@ -36,3 +36,32 @@ test('slider track and active fill render with visible backgrounds', async ({ pa
 
   expect(pageErrors).toHaveLength(0)
 })
+
+test('slider thumb is centered on the track, vertical and horizontal', async ({
+  page,
+}) => {
+  const centers = await page.evaluate(() => {
+    const thumbs = Array.from(document.querySelectorAll('[role="slider"]'))
+    return thumbs.map((thumb) => {
+      const thumbEl = thumb as HTMLElement
+      const frame =
+        (thumbEl.closest('.is_Slider') as HTMLElement) ||
+        (thumbEl.parentElement?.parentElement as HTMLElement)
+      const track = frame.querySelector('[data-testid="slider-track"]') as HTMLElement
+      const rTrack = track.getBoundingClientRect()
+      const rThumb = thumbEl.getBoundingClientRect()
+      return {
+        orientation: thumbEl.getAttribute('aria-orientation'),
+        trackCenter: { x: rTrack.x + rTrack.width / 2, y: rTrack.y + rTrack.height / 2 },
+        thumbCenter: { x: rThumb.x + rThumb.width / 2, y: rThumb.y + rThumb.height / 2 },
+      }
+    })
+  })
+
+  expect(centers).toHaveLength(2)
+  for (const item of centers) {
+    // Both horizontal and vertical sliders must have their thumb center matching track center within 1px
+    expect(Math.abs(item.thumbCenter.x - item.trackCenter.x)).toBeLessThanOrEqual(1)
+    expect(Math.abs(item.thumbCenter.y - item.trackCenter.y)).toBeLessThanOrEqual(1)
+  }
+})
