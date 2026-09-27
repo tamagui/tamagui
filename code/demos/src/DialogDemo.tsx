@@ -28,7 +28,7 @@ export function DialogDemo() {
         <XGroup.Item>
           <Button
             size="sm"
-            theme={mode === 'plain' ? 'accent' : undefined}
+            theme={mode === 'plain' ? 'brand' : undefined}
             onPress={() => setMode('plain')}
           >
             Plain
@@ -37,7 +37,7 @@ export function DialogDemo() {
         <XGroup.Item>
           <Button
             size="sm"
-            theme={mode === 'adapt' ? 'accent' : undefined}
+            theme={mode === 'adapt' ? 'brand' : undefined}
             onPress={() => setMode('adapt')}
           >
             Adapt to Sheet
@@ -46,7 +46,7 @@ export function DialogDemo() {
         <XGroup.Item>
           <Button
             size="sm"
-            theme={mode === 'keepMounted' ? 'accent' : undefined}
+            theme={mode === 'keepMounted' ? 'brand' : undefined}
             onPress={() => setMode('keepMounted')}
           >
             Keep Mounted
@@ -154,7 +154,7 @@ function DialogInstance({ mode }: { mode: DialogMode }) {
 
             <XStack self="flex-end" gap="4">
               <Dialog.Close displayWhenAdapted asChild>
-                <Button theme="accent" aria-label="Close">
+                <Button theme="brand" aria-label="Close">
                   Save changes
                 </Button>
               </Dialog.Close>

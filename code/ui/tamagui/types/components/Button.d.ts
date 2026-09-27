@@ -1,5 +1,6 @@
 import { type ButtonIconProps as ButtonBehaviorIconProps } from '@tamagui/button';
 import { type ComponentSize, type GetProps, type ThemeProps } from '@tamagui/core';
+import React from 'react';
 export type ButtonSize = ComponentSize | boolean;
 export declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
     circular?: boolean | undefined;
@@ -7,10 +8,10 @@ export declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<impor
     size?: ButtonSize | undefined;
     variant?: "outlined" | "quiet" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export declare const ButtonText: import("react").FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
+export declare const ButtonText: React.FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
     size?: ButtonSize | undefined;
 }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
-    ref?: import("react").Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
+    ref?: React.Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
 }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
     size?: ButtonSize | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
@@ -18,30 +19,30 @@ export declare const ButtonText: import("react").FunctionComponent<Omit<import("
         size?: ButtonSize | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 };
-export declare const ButtonIcon: ({ size, ...props }: ButtonBehaviorIconProps) => import("react").JSX.Element;
+export declare const ButtonIcon: ({ size, ...props }: ButtonBehaviorIconProps) => React.JSX.Element;
 declare const ButtonComponent: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
     circular?: boolean | undefined;
     disabled?: boolean | undefined;
     size?: ButtonSize | undefined;
     variant?: "outlined" | "quiet" | undefined;
 }>, "maxFontSizeMultiplier" | "noTextWrap" | "size" | "textProps" | "theme" | ("color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection") | keyof {
-    children?: import("react").ReactNode;
+    children?: React.ReactNode;
     disabled?: boolean;
     render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
-    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+    icon?: React.JSX.Element | React.FunctionComponent<{
         color?: any;
         size?: any;
     }> | ((props: {
         color?: any;
         size?: any;
-    }) => import("react").ReactNode) | null;
-    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+    }) => React.ReactNode) | null;
+    iconAfter?: React.JSX.Element | React.FunctionComponent<{
         color?: any;
         size?: any;
     }> | ((props: {
         color?: any;
         size?: any;
-    }) => import("react").ReactNode) | null;
+    }) => React.ReactNode) | null;
     iconSize?: number;
     scaleIcon?: number;
 } | keyof {
@@ -59,23 +60,23 @@ declare const ButtonComponent: import("@tamagui/core").TamaguiComponent<Omit<imp
     textProps?: Partial<import("@tamagui/text").SizableTextProps>;
     noTextWrap?: boolean;
 } & {
-    children?: import("react").ReactNode;
+    children?: React.ReactNode;
     disabled?: boolean;
     render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
-    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+    icon?: React.JSX.Element | React.FunctionComponent<{
         color?: any;
         size?: any;
     }> | ((props: {
         color?: any;
         size?: any;
-    }) => import("react").ReactNode) | null;
-    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+    }) => React.ReactNode) | null;
+    iconAfter?: React.JSX.Element | React.FunctionComponent<{
         color?: any;
         size?: any;
     }> | ((props: {
         color?: any;
         size?: any;
-    }) => import("react").ReactNode) | null;
+    }) => React.ReactNode) | null;
     iconSize?: number;
     scaleIcon?: number;
 } & {
@@ -96,23 +97,23 @@ declare const ButtonComponent: import("@tamagui/core").TamaguiComponent<Omit<imp
     textProps?: Partial<import("@tamagui/text").SizableTextProps>;
     noTextWrap?: boolean;
 } & {
-    children?: import("react").ReactNode;
+    children?: React.ReactNode;
     disabled?: boolean;
     render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
-    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+    icon?: React.JSX.Element | React.FunctionComponent<{
         color?: any;
         size?: any;
     }> | ((props: {
         color?: any;
         size?: any;
-    }) => import("react").ReactNode) | null;
-    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+    }) => React.ReactNode) | null;
+    iconAfter?: React.JSX.Element | React.FunctionComponent<{
         color?: any;
         size?: any;
     }> | ((props: {
         color?: any;
         size?: any;
-    }) => import("react").ReactNode) | null;
+    }) => React.ReactNode) | null;
     iconSize?: number;
     scaleIcon?: number;
 } & {
@@ -134,29 +135,29 @@ declare const ButtonComponent: import("@tamagui/core").TamaguiComponent<Omit<imp
     size?: ButtonSize | undefined;
     variant?: "outlined" | "quiet" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export declare const Button: import("react").FunctionComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
+export declare const Button: React.FunctionComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
     circular?: boolean | undefined;
     disabled?: boolean | undefined;
     size?: ButtonSize | undefined;
     variant?: "outlined" | "quiet" | undefined;
 }>, "maxFontSizeMultiplier" | "noTextWrap" | "size" | "textProps" | "theme" | ("color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection") | keyof {
-    children?: import("react").ReactNode;
+    children?: React.ReactNode;
     disabled?: boolean;
     render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
-    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+    icon?: React.JSX.Element | React.FunctionComponent<{
         color?: any;
         size?: any;
     }> | ((props: {
         color?: any;
         size?: any;
-    }) => import("react").ReactNode) | null;
-    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+    }) => React.ReactNode) | null;
+    iconAfter?: React.JSX.Element | React.FunctionComponent<{
         color?: any;
         size?: any;
     }> | ((props: {
         color?: any;
         size?: any;
-    }) => import("react").ReactNode) | null;
+    }) => React.ReactNode) | null;
     iconSize?: number;
     scaleIcon?: number;
 } | keyof {
@@ -174,23 +175,23 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     textProps?: Partial<import("@tamagui/text").SizableTextProps>;
     noTextWrap?: boolean;
 } & {
-    children?: import("react").ReactNode;
+    children?: React.ReactNode;
     disabled?: boolean;
     render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
-    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+    icon?: React.JSX.Element | React.FunctionComponent<{
         color?: any;
         size?: any;
     }> | ((props: {
         color?: any;
         size?: any;
-    }) => import("react").ReactNode) | null;
-    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+    }) => React.ReactNode) | null;
+    iconAfter?: React.JSX.Element | React.FunctionComponent<{
         color?: any;
         size?: any;
     }> | ((props: {
         color?: any;
         size?: any;
-    }) => import("react").ReactNode) | null;
+    }) => React.ReactNode) | null;
     iconSize?: number;
     scaleIcon?: number;
 } & {
@@ -207,30 +208,30 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     size?: ButtonSize;
     theme?: ThemeProps['name'];
 } & {
-    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+    ref?: React.Ref<import("@tamagui/core").TamaguiElement> | undefined;
 }> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
     circular?: boolean | undefined;
     disabled?: boolean | undefined;
     size?: ButtonSize | undefined;
     variant?: "outlined" | "quiet" | undefined;
 }>, "maxFontSizeMultiplier" | "noTextWrap" | "size" | "textProps" | "theme" | ("color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection") | keyof {
-    children?: import("react").ReactNode;
+    children?: React.ReactNode;
     disabled?: boolean;
     render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
-    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+    icon?: React.JSX.Element | React.FunctionComponent<{
         color?: any;
         size?: any;
     }> | ((props: {
         color?: any;
         size?: any;
-    }) => import("react").ReactNode) | null;
-    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+    }) => React.ReactNode) | null;
+    iconAfter?: React.JSX.Element | React.FunctionComponent<{
         color?: any;
         size?: any;
     }> | ((props: {
         color?: any;
         size?: any;
-    }) => import("react").ReactNode) | null;
+    }) => React.ReactNode) | null;
     iconSize?: number;
     scaleIcon?: number;
 } | keyof {
@@ -248,23 +249,23 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     textProps?: Partial<import("@tamagui/text").SizableTextProps>;
     noTextWrap?: boolean;
 } & {
-    children?: import("react").ReactNode;
+    children?: React.ReactNode;
     disabled?: boolean;
     render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
-    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+    icon?: React.JSX.Element | React.FunctionComponent<{
         color?: any;
         size?: any;
     }> | ((props: {
         color?: any;
         size?: any;
-    }) => import("react").ReactNode) | null;
-    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+    }) => React.ReactNode) | null;
+    iconAfter?: React.JSX.Element | React.FunctionComponent<{
         color?: any;
         size?: any;
     }> | ((props: {
         color?: any;
         size?: any;
-    }) => import("react").ReactNode) | null;
+    }) => React.ReactNode) | null;
     iconSize?: number;
     scaleIcon?: number;
 } & {
@@ -285,23 +286,23 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     textProps?: Partial<import("@tamagui/text").SizableTextProps>;
     noTextWrap?: boolean;
 } & {
-    children?: import("react").ReactNode;
+    children?: React.ReactNode;
     disabled?: boolean;
     render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
-    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+    icon?: React.JSX.Element | React.FunctionComponent<{
         color?: any;
         size?: any;
     }> | ((props: {
         color?: any;
         size?: any;
-    }) => import("react").ReactNode) | null;
-    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+    }) => React.ReactNode) | null;
+    iconAfter?: React.JSX.Element | React.FunctionComponent<{
         color?: any;
         size?: any;
     }> | ((props: {
         color?: any;
         size?: any;
-    }) => import("react").ReactNode) | null;
+    }) => React.ReactNode) | null;
     iconSize?: number;
     scaleIcon?: number;
 } & {
@@ -329,23 +330,23 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
         size?: ButtonSize | undefined;
         variant?: "outlined" | "quiet" | undefined;
     }>, "maxFontSizeMultiplier" | "noTextWrap" | "size" | "textProps" | "theme" | ("color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection") | keyof {
-        children?: import("react").ReactNode;
+        children?: React.ReactNode;
         disabled?: boolean;
         render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
-        icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        icon?: React.JSX.Element | React.FunctionComponent<{
             color?: any;
             size?: any;
         }> | ((props: {
             color?: any;
             size?: any;
-        }) => import("react").ReactNode) | null;
-        iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        }) => React.ReactNode) | null;
+        iconAfter?: React.JSX.Element | React.FunctionComponent<{
             color?: any;
             size?: any;
         }> | ((props: {
             color?: any;
             size?: any;
-        }) => import("react").ReactNode) | null;
+        }) => React.ReactNode) | null;
         iconSize?: number;
         scaleIcon?: number;
     } | keyof {
@@ -363,23 +364,23 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
         textProps?: Partial<import("@tamagui/text").SizableTextProps>;
         noTextWrap?: boolean;
     } & {
-        children?: import("react").ReactNode;
+        children?: React.ReactNode;
         disabled?: boolean;
         render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
-        icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        icon?: React.JSX.Element | React.FunctionComponent<{
             color?: any;
             size?: any;
         }> | ((props: {
             color?: any;
             size?: any;
-        }) => import("react").ReactNode) | null;
-        iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        }) => React.ReactNode) | null;
+        iconAfter?: React.JSX.Element | React.FunctionComponent<{
             color?: any;
             size?: any;
         }> | ((props: {
             color?: any;
             size?: any;
-        }) => import("react").ReactNode) | null;
+        }) => React.ReactNode) | null;
         iconSize?: number;
         scaleIcon?: number;
     } & {
@@ -400,23 +401,23 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
         textProps?: Partial<import("@tamagui/text").SizableTextProps>;
         noTextWrap?: boolean;
     } & {
-        children?: import("react").ReactNode;
+        children?: React.ReactNode;
         disabled?: boolean;
         render?: import("@tamagui/core").TamaguiComponentPropsBaseBase['render'];
-        icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        icon?: React.JSX.Element | React.FunctionComponent<{
             color?: any;
             size?: any;
         }> | ((props: {
             color?: any;
             size?: any;
-        }) => import("react").ReactNode) | null;
-        iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        }) => React.ReactNode) | null;
+        iconAfter?: React.JSX.Element | React.FunctionComponent<{
             color?: any;
             size?: any;
         }> | ((props: {
             color?: any;
             size?: any;
-        }) => import("react").ReactNode) | null;
+        }) => React.ReactNode) | null;
         iconSize?: number;
         scaleIcon?: number;
     } & {
@@ -446,10 +447,10 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
         variant?: "outlined" | "quiet" | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Icon: typeof ButtonIcon;
-    Text: import("react").FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
+    Text: React.FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithFlatVariantValues<{
         size?: ButtonSize | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & {
-        ref?: import("react").Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
+        ref?: React.Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
     }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
         size?: ButtonSize | undefined;
     }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
