@@ -53,7 +53,7 @@ export const SiteModePopover = (props: PopoverProps) => {
           data-testid="header-site-mode-button"
           rounded="10"
           px="2-5"
-          height={30}
+          height={32}
           items="center"
           gap="1-5"
           cursor="pointer"

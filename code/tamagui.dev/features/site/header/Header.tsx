@@ -115,7 +115,7 @@ export function Header(props: HeaderProps) {
               bg="color-2"
               className={`ease-out all ms300`}
             />
-            <YStack mx="auto" px="4" width="100%">
+            <YStack mx="auto" px="4 max-sm:2" width="100%">
               <ThemeTint>
                 <HeaderContents floating {...props} />
               </ThemeTint>
@@ -155,32 +155,49 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       py={props.minimal ? '4' : props.floating ? 0 : '1-5'}
       z={50000}
     >
-      <XStack items="center" gap="4 max-sm:2">
-        <TooltipGroup delay={tooltipDelay}>
-          <XGroup bg="transparent" items="center" rounded="5">
-            <XGroup.Item>
-              <ThemeToggle borderWidth={0} variant="quiet" />
-            </XGroup.Item>
-          </XGroup>
-        </TooltipGroup>
+      <XStack items="center" gap="3 max-sm:1-5">
+        <ThemeToggle
+          size="sm"
+          borderWidth={0}
+          variant="quiet"
+          rounded="10"
+          width={32}
+          height={32}
+          p={0}
+        />
 
-        <SearchButton size="xs" variant="quiet" rounded="10" />
+        <SearchButton
+          size="sm"
+          borderWidth={0}
+          variant="quiet"
+          rounded="10"
+          width={32}
+          height={32}
+          p={0}
+        />
 
         <Link target="_blank" href="https://github.com/tamagui/tamagui">
-          <XStack group containerType="normal">
-            <XStack items="center" gap="1-5" p="1-5" opacity="0.9 hover:1">
-              <GithubIcon width={22} />
-              <>
-                <SizableText
-                  display="max-xxl:none"
-                  color="color-12"
-                  opacity="0.5 group-hover:0.8"
-                  size="3"
-                >
-                  GitHub
-                </SizableText>
-              </>
-            </XStack>
+          <XStack
+            group
+            containerType="normal"
+            items="center"
+            justify="center"
+            height={32}
+            px="1-5 max-sm:1"
+            rounded="10"
+            gap="1-5"
+            opacity="0.9 hover:1"
+            transition="all 150ms ease"
+          >
+            <GithubIcon width={19} height={19} />
+            <SizableText
+              display="max-xxl:none"
+              color="color-12"
+              opacity="0.5 group-hover:0.8"
+              size="2"
+            >
+              GitHub
+            </SizableText>
           </XStack>
         </Link>
 
@@ -260,8 +277,11 @@ const HeaderMenuButton = () => {
     <Popover.Trigger>
       <SlidingPopoverTarget id="menu">
         <Button
-          size="lg"
+          size="sm"
           circular
+          width={32}
+          height={32}
+          p={0}
           my={-1}
           bg="transparent hover:shadow-1"
           borderWidth={0}
@@ -286,8 +306,8 @@ const HeaderMenuButton = () => {
           }}
           aria-label="Open the main menu"
         >
-          <Circle size={34} items="center" justify="center">
-            {haveUser ? <UserAvatar /> : <Menu size={20} />}
+          <Circle size={32} items="center" justify="center">
+            {haveUser ? <UserAvatar /> : <Menu size={18} />}
           </Circle>
         </Button>
       </SlidingPopoverTarget>

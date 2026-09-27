@@ -1,6 +1,6 @@
 import { Search as SearchIcon } from '@tamagui/local-icons'
 import { memo, useContext, useEffect, useRef } from 'react'
-import { SizableText, TooltipSimple } from 'tamagui'
+import { TooltipSimple } from 'tamagui'
 
 import { Button, type ButtonProps } from '~/components/Button'
 import { SearchContext } from '~/features/site/search/SearchContext'
@@ -32,20 +32,7 @@ export const SearchButton = memo((props: ButtonProps) => {
         aria-label="Search docs"
         ref={ref as any}
         onPress={onOpen}
-        gap="0-5"
         icon={SearchIcon}
-        // dont hide this on touchables to avoid layout shifts...
-        iconAfter={
-          <SizableText
-            size="1"
-            mx="0-5 max-md:-1px"
-            maxW="max-md:0px"
-            overflow="max-md:hidden"
-            opacity={0.25}
-          >
-            /
-          </SizableText>
-        }
         {...props}
       />
     </TooltipSimple>
