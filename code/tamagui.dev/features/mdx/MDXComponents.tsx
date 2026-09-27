@@ -245,7 +245,7 @@ const MarkdownTable = ({ children, style, ...props }) => {
         display="none max-md:flex"
         width="100%"
         my={20}
-        borderTopWidth={1}
+        borderTopWidth={0.5}
         borderTopColor="color-5"
       >
         {rows.map((row, rowIndex) => {
@@ -259,7 +259,7 @@ const MarkdownTable = ({ children, style, ...props }) => {
               key={row.key ?? rowIndex}
               gap={10}
               py={12}
-              borderBottomWidth={1}
+              borderBottomWidth={0.5}
               borderBottomColor="color-5"
             >
               {cells.map((cell, cellIndex) => (
@@ -671,7 +671,7 @@ const componentsIn = {
     <YStack
       render="tr"
       display="table-row"
-      borderBottomWidth={1}
+      borderBottomWidth={0.5}
       borderBottomColor="color-5"
       {...props}
     />

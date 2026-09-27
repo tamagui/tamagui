@@ -37,7 +37,7 @@ export const docsRoutes = [
 
   {
     section: 'core',
-    title: 'Config v6',
+    title: 'Configuration',
     pages: [
       { title: 'Config v6', route: '/docs/core/config-v6' },
       { title: 'Colors', route: '/docs/core/config-v6-colors' },

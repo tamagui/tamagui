@@ -33,7 +33,14 @@ type ScopedProps<P> = Omit<P, 'scope'> & { scope?: TooltipScopes }
 
 export type TooltipContentProps = ScopedProps<PopoverContentProps>
 
-const TooltipContentFrame = styled(PopperContentFrame, {})
+const TooltipContentFrame = styled(PopperContentFrame, {
+  name: 'TooltipContent',
+  paddingHorizontal: '2.5',
+  paddingVertical: '1',
+  borderRadius: '2',
+})
+
+const TooltipInstantContext = React.createContext(false)
 
 // warning: setting to createStyledHOC causes issues with themes across portal roots
 
@@ -49,6 +56,7 @@ const TooltipContent = createStyledHOC(
   TooltipContentFrame,
   (props: TooltipContentProps, ref) => {
     const preventAnimation = React.useContext(PreventTooltipAnimationContext)
+    const isInstant = React.useContext(TooltipInstantContext)
     const zIndexFromContext = React.useContext(TooltipZIndexContext)
 
     return (
@@ -58,11 +66,15 @@ const TooltipContent = createStyledHOC(
         backgroundColor="background"
         alignItems="center"
         pointerEvents="none"
-        paddingHorizontal="2"
+        paddingHorizontal="2.5"
         paddingVertical="1"
+        borderRadius="2"
         {...(zIndexFromContext !== undefined && { zIndex: zIndexFromContext })}
         {...props}
-        {...(preventAnimation && { transition: null })}
+        {...((preventAnimation || isInstant) && {
+          transition: null,
+          'data-instant': '',
+        })}
         ref={ref}
       />
     )
@@ -167,7 +179,7 @@ const TooltipComponent = createRefComponent(function Tooltip(
   const triggerRef = React.useRef<HTMLButtonElement>(null)
   const closeReasonRef = React.useRef<OpenChangeReason | undefined>(undefined)
   const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
-  const { delay: delayGroup, setCurrentId } = useDelayGroupContext()
+  const { delay: delayGroup, setCurrentId, currentId } = useDelayGroupContext()
   // Use delayProp if explicitly provided, otherwise fall back to group delay or default 400
   const delay = delayProp !== undefined ? delayProp : (delayGroup ?? 400)
   const restMs = restMsProp ?? (typeof delay === 'number' ? delay : 0)
@@ -176,13 +188,29 @@ const TooltipComponent = createRefComponent(function Tooltip(
     defaultProp: false,
     onChange: onOpenChangeProp,
   })
-  const id = props.groupId
+  const autoId = React.useId()
+  const id = props.groupId ?? autoId
 
-  const onOpenChange = useEvent((open: boolean) => {
-    if (open) {
-      setCurrentId(id)
+  const [isInstant, setIsInstant] = React.useState(false)
+
+  React.useEffect(() => {
+    if (!open) {
+      setIsInstant(false)
     }
-    setOpen(open)
+  }, [open])
+
+  const onOpenChange = useEvent((openVal: boolean) => {
+    if (openVal) {
+      if (currentId != null && currentId !== id) {
+        setIsInstant(true)
+      } else {
+        setIsInstant(false)
+      }
+      setCurrentId(id)
+    } else {
+      setIsInstant(false)
+    }
+    setOpen(openVal)
   })
 
   // Auto close when document scroll
@@ -243,15 +271,21 @@ const TooltipComponent = createRefComponent(function Tooltip(
     </FloatingOverrideContext.Provider>
   )
 
+  const wrappedContent = (
+    <TooltipInstantContext.Provider value={isInstant}>
+      {content}
+    </TooltipInstantContext.Provider>
+  )
+
   if (zIndex !== undefined) {
     return (
       <TooltipZIndexContext.Provider value={zIndex}>
-        {content}
+        {wrappedContent}
       </TooltipZIndexContext.Provider>
     )
   }
 
-  return content
+  return wrappedContent
 })
 
 const TooltipTrigger = createRefComponent(function TooltipTrigger(
