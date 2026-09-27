@@ -916,3 +916,23 @@ test('non-static testID with template literal is rewritten to data-testid', asyn
   expect(output?.js?.match(/data-testid=/g)?.length).toBe(1)
   expect(output?.js?.match(/\btestID=/g) ?? []).toHaveLength(0)
 })
+
+test('onLayout keeps the runtime component, since only it measures on web', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+    export function Test(props) {
+      return <View width={10} onLayout={props.onLayout} />
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  expect(output?.js).toContain('onLayout')
+  expect(output?.js).not.toMatch(/<div[^>]*onLayout/)
+})

@@ -1863,8 +1863,12 @@ export function createTamaguiCompilerHost(
         // DOM primitives (html.*) keep their own event contract (see
         // @tamagui/dom events table) — only bail for tamagui components,
         // whose pointer handlers exist solely via usePointerEvents.
+        // onLayout on web exists only through the runtime's
+        // useElementLayout; a flattened div drops it. a flattened native
+        // view reports layout itself.
         const needsRuntimeMapping = (name: string) =>
           runtimeEventProps.has(name) ||
+          (platform === 'web' && name === 'onLayout') ||
           (platform === 'native' &&
             !component.domTag &&
             nativePointerEventProps.has(name))
