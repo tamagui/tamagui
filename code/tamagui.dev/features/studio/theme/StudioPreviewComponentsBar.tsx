@@ -22,8 +22,27 @@ import { optionValues } from './demoOptions'
 
 export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: any }) => {
   return (
-    <XStack z={1000} mt={-10} data-tauri-drag-region className="all ease-in ms300">
-      <XStack flexWrap="nowrap" flex={1} flexBasis="auto" gap="3">
+    <XStack
+      z={100}
+      my={1}
+      items="center"
+      justify="space-between"
+      flexWrap="wrap"
+      gap="3"
+      px="3-5"
+      py="2"
+      rounded="6"
+      bg="color-2"
+      borderWidth={0.5}
+      borderColor="border-color"
+    >
+      <XStack items="center" gap="2">
+        <Paragraph size="2" color="color-10" fontWeight="600" textTransform="uppercase">
+          UI Controls:
+        </Paragraph>
+      </XStack>
+
+      <XStack flexWrap="wrap" items="center" gap="3">
         <TooltipGroup delay={{ open: 0, close: 300 }}>
           <BorderRadiusInput />
 

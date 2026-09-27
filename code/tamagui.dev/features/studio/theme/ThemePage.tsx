@@ -35,6 +35,7 @@ import { useBaseThemePreview } from '~/features/studio/theme/steps/2-base/useBas
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { lastInserted } from '~/features/studio/theme/updatePreviewTheme'
 import { weakKey } from '~/helpers/weakKey'
+import { applyThemeFromUrl, parseThemeFromUrl } from './helpers/urlTheme'
 import { type ThemePageProps, themePageStore, ThemePageStore } from './themePageStore'
 import { router, useRouter } from 'one'
 
@@ -52,6 +53,21 @@ export function ThemePageUpdater(props: ThemePageProps) {
 
 export function ThemePage() {
   const { curProps: props } = useStore(ThemePageStore)
+
+  useEffect(() => {
+    const handleUrlTheme = () => {
+      const parsed = parseThemeFromUrl()
+      if (parsed?.themeData) {
+        applyThemeFromUrl(parsed.themeData)
+      }
+    }
+
+    handleUrlTheme()
+    window.addEventListener('hashchange', handleUrlTheme)
+    return () => {
+      window.removeEventListener('hashchange', handleUrlTheme)
+    }
+  }, [])
 
   return (
     <>
