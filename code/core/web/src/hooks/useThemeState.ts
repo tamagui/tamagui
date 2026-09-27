@@ -373,8 +373,10 @@ const getNextState = (
 ): [boolean, ThemeState] => {
   const parentState = states.get(parentId)
 
+  // passThrough adds no theme of its own, so it mirrors the parent's current
+  // state. preferring lastState froze it, and every descendant, on its first theme
   if (props.passThrough) {
-    return [false, lastState || parentState || ({ name: '' } as any)]
+    return [false, parentState || lastState || ({ name: '' } as any)]
   }
 
   themes ||= getConfig().themes
