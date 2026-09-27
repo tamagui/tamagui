@@ -43,7 +43,7 @@ const COMMAND_MAP = {
         }
       }
       const { checkStyleFiles, formatCheckResults, MissingConfigArtifactError } =
-        require('@tamagui/language-service/check') as typeof import('@tamagui/language-service/check')
+        require('@tamagui/language-service/check') as any
       try {
         const result = checkStyleFiles({
           root: options.paths.root,
@@ -52,7 +52,7 @@ const COMMAND_MAP = {
         })
         console.info(formatCheckResults(result))
         if (result.diagnosticCount > 0) process.exitCode = 1
-      } catch (error) {
+      } catch (error: any) {
         if (error instanceof MissingConfigArtifactError && !flags['--strict']) {
           console.warn(chalk.yellow(`skipping flat value check: ${error.message}`))
           return
@@ -349,6 +349,31 @@ $ tamagui migrate --from v1`,
       await generatePrompt({
         ...options,
         output: flags['--output'],
+      })
+    },
+  },
+
+  'preview-theme': {
+    shorthands: ['preview'],
+    description: `Preview a theme configuration in the browser on tamagui.dev/theme`,
+    usage: `$ tamagui preview-theme ./theme.json
+$ tamagui preview-theme --theme '{"palettes": ...}'
+$ tamagui preview-theme ./theme.json --print`,
+    flags: {
+      '--help': Boolean,
+      '--theme': String,
+      '--url': String,
+      '--print': Boolean,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const [_cmd, themeArg] = _
+      const { previewTheme } = require('./preview-theme')
+      await previewTheme({
+        theme: flags['--theme'],
+        themeArg,
+        url: flags['--url'],
+        print: flags['--print'],
       })
     },
   },
