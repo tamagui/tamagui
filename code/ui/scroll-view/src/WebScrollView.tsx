@@ -180,6 +180,12 @@ export const WebScrollView = React.forwardRef<ScrollViewRef, WebScrollViewProps>
       snapToOffsets,
       snapToStart,
       bounces,
+      // drag and momentum phases come from native gestures the web has no
+      // equivalent for, so they never fire here
+      onScrollBeginDrag,
+      onScrollEndDrag,
+      onMomentumScrollBegin,
+      onMomentumScrollEnd,
       ...rest
     } = props
 
