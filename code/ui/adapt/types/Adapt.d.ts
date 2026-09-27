@@ -72,6 +72,7 @@ export type AdaptProps = {
 };
 type Component = (props: any) => any;
 export declare const AdaptContext: import("@tamagui/core").StyledContext<AdaptParentContextI, "Contents" | "active" | "handoff" | "portalName" | "registerContents" | "registerRenderCallback" | "registerTarget" | "scopeName" | "setAdaptConfig" | "slot" | "targetFullyHidden" | "unregisterContents" | "unregisterRenderCallback" | "unregisterTarget">;
+export declare const useAdaptTargetScope: () => string | null;
 export declare const ProvideAdaptContext: ({ children, ...context }: AdaptParentContextI & {
     children: any;
 }) => React.JSX.Element;
