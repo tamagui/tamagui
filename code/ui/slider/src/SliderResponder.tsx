@@ -30,7 +30,13 @@ export const SliderResponder = ({
   })
 
   return (
-    <View ref={ref} position="absolute" inset={0}>
+    <View
+      ref={ref}
+      position="absolute"
+      inset={0}
+      justifyContent="center"
+      alignItems="center"
+    >
       {children}
     </View>
   )

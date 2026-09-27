@@ -17,6 +17,8 @@ import type { ScopedProps, SliderImplProps } from './types'
 // tamagui skin (code/ui/tamagui/src/components/Slider.tsx).
 const SliderFrameBase = styled(YStack, {
   position: 'relative',
+  justifyContent: 'center',
+  alignItems: 'center',
 
   variants: {
     orientation: {

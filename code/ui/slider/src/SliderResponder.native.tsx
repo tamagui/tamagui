@@ -17,7 +17,12 @@ export const SliderResponder = ({
       onResponderGrant={onResponderGrant}
       onResponderMove={onResponderMove}
       onResponderRelease={onResponderRelease}
-      style={{ inset: 0, position: 'absolute' }}
+      style={{
+        inset: 0,
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
     >
       {children}
     </View>
