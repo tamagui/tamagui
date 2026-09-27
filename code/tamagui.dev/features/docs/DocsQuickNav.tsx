@@ -5,7 +5,6 @@ import { H4, Paragraph, ScrollView, Separator, XStack, YStack } from 'tamagui'
 import { Link } from '~/components/Link'
 import { AGENT_SETUP_PROMPT } from '~/components/CopyAgentSetupButton'
 import { copyToClipboard } from '~/hooks/useClipboard'
-import { DocsThemePicker } from './DocsThemePicker'
 
 export type Heading = {
   id: string
@@ -330,9 +329,6 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
             </Paragraph>
           </YStack>
 
-          <Separator opacity={0.5} mr="8" />
-
-          <DocsThemePicker />
 
           <YStack
             render="nav"

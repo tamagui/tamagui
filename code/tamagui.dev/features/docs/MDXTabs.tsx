@@ -7,17 +7,21 @@ import {
   useState,
 } from 'react'
 import type { TabsProps, TabsTabProps } from 'tamagui'
-import { Paragraph, Tabs, XStack, style, styled, withStaticProperties } from 'tamagui'
+import { Paragraph, Tabs, XStack, style, withStaticProperties } from 'tamagui'
 import { type Href, useLocalSearchParams, usePathname, useRouter } from 'one'
 
 export const codeSyntaxChangeEvent = 'docs-code-syntax-change'
+const SYNTAX_PREF_KEY = 'tamagui_syntax_preference'
+
 const MDXTabsContext = createContext({ codeSyntax: false, isTailwind: false })
 const MDXTabsSearchContext = createContext('')
+
 const codeTabActiveStyle = style({
-  backgroundColor: 'color-1 hover:color-1 focus:color-1',
+  backgroundColor: 'color-4 hover:color-4 focus:color-4',
 })
-const tabActiveStyle = style({
-  backgroundColor: 'color-7 hover:color-7 focus:color-7',
+
+const generalTabActiveStyle = style({
+  backgroundColor: 'color-4 hover:color-4 focus:color-4',
 })
 
 export function useCodeSyntaxTabs() {
@@ -52,28 +56,45 @@ function TabsComponent({
   const id = codeSyntax ? 'syntax' : props.id || 'value'
   const isTailwind = codeSyntax && pathname.startsWith('/tailwind')
   const paramValue = params[id]
-  const codeSyntaxFromUrl = new URLSearchParams(initialSearch).get('syntax')
-  const valueFromUrl = isTailwind
-    ? 'string'
-    : codeSyntax
-      ? codeSyntaxFromUrl === 'typed'
-        ? 'typed'
-        : 'string'
-      : typeof paramValue === 'string'
-        ? paramValue
-        : (defaultValue ?? '')
-  const [value, setValue] = useState(valueFromUrl)
+
+  const getResolvedValue = () => {
+    if (isTailwind) return 'string'
+    if (codeSyntax) {
+      const codeSyntaxFromUrl = new URLSearchParams(initialSearch).get('syntax')
+      if (codeSyntaxFromUrl === 'typed' || codeSyntaxFromUrl === 'object') return 'typed'
+      if (codeSyntaxFromUrl === 'string') return 'string'
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem(SYNTAX_PREF_KEY)
+        if (saved === 'object' || saved === 'typed') return 'typed'
+      }
+      return 'string'
+    }
+    return typeof paramValue === 'string' ? paramValue : (defaultValue ?? '')
+  }
+
+  const [value, setValue] = useState(getResolvedValue)
 
   useEffect(() => {
-    setValue(valueFromUrl)
-  }, [valueFromUrl])
+    setValue(getResolvedValue())
+  }, [initialSearch, pathname])
 
   useEffect(() => {
     if (!codeSyntax || isTailwind) return
 
     const syncFromUrl = () => {
       const syntax = new URLSearchParams(location.search).get('syntax')
-      setValue(syntax === 'typed' ? 'typed' : 'string')
+      if (syntax === 'typed' || syntax === 'object') {
+        setValue('typed')
+        return
+      }
+      if (syntax === 'string') {
+        setValue('string')
+        return
+      }
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem(SYNTAX_PREF_KEY)
+        setValue(saved === 'object' || saved === 'typed' ? 'typed' : 'string')
+      }
     }
 
     syncFromUrl()
@@ -88,14 +109,26 @@ function TabsComponent({
   const updateUrl = (newValue: string) => {
     setValue(newValue)
     const url = new URL(location.href)
-    url.searchParams.set(id, newValue)
-    url.hash = '' // having this set messes with the scroll
 
     if (codeSyntax) {
-      history.replaceState(history.state, '', `${url.pathname}${url.search}`)
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(
+          SYNTAX_PREF_KEY,
+          newValue === 'typed' ? 'object' : 'string'
+        )
+      }
+      if (newValue === 'typed') {
+        url.searchParams.set('syntax', 'typed')
+      } else {
+        url.searchParams.delete('syntax')
+      }
+      history.replaceState(history.state, '', `${url.pathname}${url.search}${url.hash}`)
       dispatchEvent(new Event(codeSyntaxChangeEvent))
       return
     }
+
+    url.searchParams.set(id, newValue)
+    url.hash = '' // having this set messes with the scroll
 
     router.replace(url.toString() as Href, {
       scroll: false,
@@ -124,9 +157,9 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
   if (codeSyntax) {
     return (
       <Tabs.Tab
-        height={27}
-        minHeight={27}
-        px="2-5"
+        height={22}
+        minHeight={22}
+        px="2"
         py={0}
         pointerEvents="auto"
         cursor="pointer"
@@ -139,7 +172,7 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
         activeStyle={codeTabActiveStyle}
         ref={ref as any}
       >
-        <Paragraph size="2" color="color-11">
+        <Paragraph size="1" fontSize={11} color="color-11">
           {props.children}
         </Paragraph>
       </Tabs.Tab>
@@ -148,36 +181,26 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
 
   return (
     <Tabs.Tab
-      // disableActiveTheme
-      size="sm"
-      flex={1}
-      px="6"
+      height={28}
+      minHeight={28}
+      px="3-5"
+      py={0}
       pointerEvents="auto"
+      cursor="pointer"
+      rounded="3"
+      bg="transparent"
       {...props}
       outlineColor="focus:outline-color"
       outlineWidth="focus:2px"
       outlineStyle="focus:solid"
-      activeStyle={tabActiveStyle}
+      activeStyle={generalTabActiveStyle}
       ref={ref as any}
     >
-      <Paragraph size="3">{props.children}</Paragraph>
+      <Paragraph size="2" color="color-12" whiteSpace="nowrap">
+        {props.children}
+      </Paragraph>
     </Tabs.Tab>
   )
-})
-
-const TabsListFrame = styled(XStack, {
-  pointerEvents: 'none',
-  maxW: '50%',
-  mt: '-30px max-md:0px',
-  justify: 'flex-end',
-  self: 'flex-end max-md:stretch',
-  t: 70,
-  mr: 0,
-  mb: 0,
-  z: 10000,
-  position: 'sticky' as any,
-  r: 0,
-  minW: 'max-md:100%',
 })
 
 const TabsList = (props) => {
@@ -187,17 +210,24 @@ const TabsList = (props) => {
 
   if (codeSyntax) {
     return (
-      <XStack position="absolute" t={24} r={86} z={100}>
+      <XStack
+        justify="flex-end"
+        items="center"
+        mb="1-5"
+        self="flex-end"
+        width="100%"
+        z={10}
+      >
         <Tabs.List
           loop={false}
           aria-label="code syntax"
-          height={28}
-          p={0}
+          height={26}
+          p="2px"
           gap={0}
           rounded="4"
-          borderWidth="px"
+          borderWidth={1}
           borderColor="border-color"
-          bg="transparent"
+          bg="color-2"
           {...props}
         />
       </XStack>
@@ -205,9 +235,20 @@ const TabsList = (props) => {
   }
 
   return (
-    <TabsListFrame className="sticky">
-      <Tabs.List size="4" width="100%" {...props} />
-    </TabsListFrame>
+    <XStack my="3" self="flex-start" items="center">
+      <Tabs.List
+        loop={false}
+        aria-label="tabs"
+        height={32}
+        p="2px"
+        gap={0}
+        rounded="4"
+        borderWidth={1}
+        borderColor="border-color"
+        bg="color-1"
+        {...props}
+      />
+    </XStack>
   )
 }
 

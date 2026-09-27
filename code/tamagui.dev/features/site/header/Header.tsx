@@ -44,6 +44,7 @@ import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
 import { useUser } from '../../user/useUser'
 import { SearchButton } from './SearchButton'
+import { SiteModePopover } from './SiteModePopover'
 import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
 
@@ -154,7 +155,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       py={props.minimal ? '4' : props.floating ? 0 : '1-5'}
       z={50000}
     >
-      <XStack items="center" gap="4">
+      <XStack items="center" gap="4 max-sm:2">
         <TooltipGroup delay={tooltipDelay}>
           <XGroup bg="transparent" items="center" rounded="5">
             <XGroup.Item>
@@ -182,6 +183,8 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
             </XStack>
           </XStack>
         </Link>
+
+        <SiteModePopover />
       </XStack>
 
       <View flex={1} />
