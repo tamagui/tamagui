@@ -52,3 +52,28 @@ for (const [mode, viewport] of Object.entries(viewports)) {
     await expect.poll(() => readTheme(page)).toEqual(freshDark)
   })
 }
+
+// dialog content inside a nameless <Theme forceClassName> emits its own theme class
+// span; that span used to keep the light class after the switch
+test('dialog: nameless forceClassName Theme follows a live light -> dark switch', async ({
+  page,
+}) => {
+  await page.setViewportSize(viewports.dialog)
+
+  await setupPage(page, {
+    name: 'DialogForceClassNameThemeCase',
+    type: 'useCase',
+    theme: 'dark',
+  })
+  const freshDark = await openAndRead(page)
+  expect(freshDark.scheme).toBe('dark')
+
+  await setupPage(page, { name: 'DialogForceClassNameThemeCase', type: 'useCase' })
+  const light = await openAndRead(page)
+  expect(light.scheme).toBe('light')
+  expect(light.color).not.toBe(freshDark.color)
+
+  await page.getByText('🌗').evaluate((el: HTMLElement) => el.click())
+
+  await expect.poll(() => readTheme(page)).toEqual(freshDark)
+})

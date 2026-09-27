@@ -307,11 +307,17 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
 
   const canSkipForSchemeChange = Boolean(isSchemeOnlyChange && allKeysSchemeOptimized)
 
+  // forceClassName renders its resolved name as classes, so a nameless one that
+  // mirrors its parent still has to re-render when the parent's scheme flips
   const needsUpdate = props.passThrough
     ? false
     : optimizeForFirstRender
       ? true
-      : isRoot || props.name === 'light' || props.name === 'dark' || props.name === null
+      : isRoot ||
+          props.forceClassName ||
+          props.name === 'light' ||
+          props.name === 'dark' ||
+          props.name === null
         ? true
         : !HasRenderedOnce.get(keys)
           ? true
