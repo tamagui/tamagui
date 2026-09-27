@@ -29,6 +29,31 @@ modifiers. That is the whole grammar. The same props go on `View`, `Text`,
 every other [component](/docs/intro/components), and the second argument of
 [`styled()`](/docs/core/styled).
 
+Every style prop takes its value as a string or an object. Strings fit the
+base value and its conditions into one short read:
+
+```tsx
+<View padding="4 md:8" backgroundColor="background hover:background-hover" />
+```
+
+Objects spell the same thing with keys, and stay fully typed:
+
+```tsx
+<View
+  padding={{ default: '4', md: '8' }}
+  backgroundColor={{ default: 'background', hover: 'background-hover' }}
+/>
+```
+
+Use strings for short, mostly static values — a prop with one or two
+conditions, written inline. They exist so the common case stays terse and
+readable. Use objects when the value is a number (numbers skip token lookup,
+so `padding={16}` is always 16 pixels), when conditions stack up, or when you
+build the value in code from variables and spreads — objects are real values,
+so TypeScript checks every token and modifier as you type. Both spellings take
+the same values and modifiers and render identically, so mix them per prop as
+needed. The Conditional values section below details each spelling.
+
 ## Values
 
 A style value is one of:
