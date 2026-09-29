@@ -1070,6 +1070,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       const mountedContents = shouldMountChildren ? (
         <ContainerComponent>{contents}</ContainerComponent>
       ) : null
+      // an empty portal still mounts a full-screen wrapper in the native root host
+      if (!mountedContents) return null
       const modalContents = (
         <Portal stackZIndex={zIndex} {...portalProps}>
           {mountedContents && RNGHRoot ? (
