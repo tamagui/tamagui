@@ -1594,9 +1594,26 @@ export const getSplitStyles: StyleSplitter = (
 
     if (styleState.transformAccumulator && !styleState.flatShouldDoClasses) {
       styleState.style ||= {}
-      styleState.style.transform = finalizeTransformAccumulator(
-        styleState.transformAccumulator
-      )
+      const transform = finalizeTransformAccumulator(styleState.transformAccumulator)
+      styleState.style.transform = transform
+      // transform parts collect in the accumulator and skip mergeStyle's inline
+      // compare, so the prev-style reuse below has to learn of a changed part here
+      if (process.env.TAMAGUI_TARGET === 'native') {
+        const direct = styleState as DirectState
+        if (direct.flatPrevStyle && !direct.flatStyleChanged) {
+          const prev = direct.flatPrevStyle.transform
+          const same =
+            prev === transform ||
+            (Array.isArray(prev) &&
+              Array.isArray(transform) &&
+              prev.length === transform.length &&
+              transform.every((part, index) => {
+                const key = Object.keys(part)[0]
+                return prev[index]?.[key] === part[key]
+              }))
+          if (!same) direct.flatStyleChanged = true
+        }
+      }
     }
 
     // add in defaults if not set:
@@ -1730,8 +1747,8 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  // native style stability: the inline per-key compare during mergeStyle found
-  // no value changes. fixStyles/transforms/parent defaults are all deterministic
+  // native style stability: the inline per-key compare during mergeStyle and the
+  // transform compare found no value changes. fixStyles/parent defaults are deterministic
   // on those same values, so if key count matches the style is identical — swap
   // in the prev ref so RN skips diffNestedProperty entirely.
   if (process.env.TAMAGUI_TARGET === 'native') {

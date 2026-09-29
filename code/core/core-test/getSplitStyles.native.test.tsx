@@ -441,6 +441,20 @@ describe('getSplitStyles', () => {
     }
   })
 
+  test('a transform-only change replaces the previous render style', () => {
+    const props = { width: 100, backgroundColor: 'red' }
+    const first = getSplitStylesFor({ ...props, scale: 1 }).style!
+    const same = getSplitStylesFor({ ...props, scale: 1 }, View, { prevStyle: first }).style
+    expect(same).toBe(first)
+    const pressed = getSplitStylesFor({ ...props, scale: 0.96 }, View, { prevStyle: first })
+      .style
+    expect(pressed?.transform).toEqual([{ scale: 0.96 }])
+    const moved = getSplitStylesFor({ ...props, scale: 1, x: 4 }, View, {
+      prevStyle: first,
+    }).style
+    expect(moved?.transform).toEqual([{ scale: 1 }, { translateX: 4 }])
+  })
+
   test(`shorthand properties are expanded`, () => {
     const result = getSplitStylesFor({
       margin: 10,
@@ -617,6 +631,7 @@ function getSplitStylesFor(
     mediaState?: Record<string, any>
     groupContext?: any
     resolveValues?: 'none' | 'value' | 'web' | 'auto'
+    prevStyle?: Record<string, any> | null
   } = {}
 ) {
   return getSplitStyles(
@@ -637,6 +652,7 @@ function getSplitStylesFor(
       isAnimated: false,
       mediaState: options.mediaState,
       resolveValues: options.resolveValues,
+      prevStyle: options.prevStyle,
     },
     undefined,
     options.context as ComponentContextI | undefined,
