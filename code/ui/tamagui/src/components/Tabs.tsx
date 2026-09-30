@@ -14,11 +14,51 @@ export type TabsSize = ComponentSize | boolean
 const TabsContext = createStyledContext<{ size?: TabsSize }>({ size: 'md' })
 
 const tabsTabSize = {
-  xs: { paddingInline: '2', paddingBlock: '1', gap: '1' },
-  sm: { paddingInline: '3', paddingBlock: '1.5', gap: '1.5' },
-  md: { paddingInline: '4', paddingBlock: '2', gap: '2' },
-  lg: { paddingInline: '6', paddingBlock: '2', gap: '2' },
-  xl: { paddingInline: '8', paddingBlock: '2.5', gap: '2.5' },
+  xs: {
+    paddingInline: '2',
+    paddingBlock: '1',
+    gap: '1',
+    borderTopLeftRadius: 'sm',
+    borderTopRightRadius: 'sm',
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+  },
+  sm: {
+    paddingInline: '3',
+    paddingBlock: '1.5',
+    gap: '1.5',
+    borderTopLeftRadius: 'md',
+    borderTopRightRadius: 'md',
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+  },
+  md: {
+    paddingInline: '4',
+    paddingBlock: '2',
+    gap: '2',
+    borderTopLeftRadius: 'md',
+    borderTopRightRadius: 'md',
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+  },
+  lg: {
+    paddingInline: '6',
+    paddingBlock: '2',
+    gap: '2',
+    borderTopLeftRadius: 'md',
+    borderTopRightRadius: 'md',
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+  },
+  xl: {
+    paddingInline: '8',
+    paddingBlock: '2.5',
+    gap: '2.5',
+    borderTopLeftRadius: 'lg',
+    borderTopRightRadius: 'lg',
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+  },
 } as const
 
 const tabsTextSize = {
@@ -47,7 +87,8 @@ const TabsTabFrame = styled(TabsBehavior.Tab, {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'background hover:background-hover press:background-press',
-        borderRadius: 0,
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
         borderWidth: 0,
         cursor: 'pointer',
         flexDirection: 'row',
