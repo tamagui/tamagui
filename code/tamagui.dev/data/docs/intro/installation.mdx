@@ -112,18 +112,7 @@ Or install only the style library. The `tamagui` package is a superset of
 yarn add @tamagui/core @tamagui/config
 ```
 
-## Choose a styling frontend
-
-Tamagui has two ways to write styles. Both produce the same output, and the
-choice is per import path, so you can mix them later. Pick one to start.
-
-<MDXTabs id="frontend" defaultValue="props">
-<MDXTabs.List>
-  <MDXTabs.Tab value="props">Style props</MDXTabs.Tab>
-  <MDXTabs.Tab value="tailwind">Tailwind</MDXTabs.Tab>
-</MDXTabs.List>
-
-<MDXTabs.Content value="props">
+## Set up the provider
 
 Typed style props on semantic `html.*` elements. This is the recommended base
 for new apps. It reads like React Native, stays close to the web, and needs no
@@ -148,40 +137,6 @@ export default () => (
 
 Continue with [Components](/docs/intro/components) and
 [Styling](/docs/intro/styles).
-
-</MDXTabs.Content>
-
-<MDXTabs.Content value="tailwind">
-
-Tailwind utility classes on `className`, extracted to atomic CSS on web and
-resolved to native styles on iOS and Android.
-
-```bash
-yarn add @tamagui/tailwind
-```
-
-```tsx fileName="App.tsx"
-import { TamaguiProvider, createTamagui } from 'tamagui'
-import { html } from '@tamagui/tailwind'
-import { defaultConfig } from '@tamagui/config/v6'
-
-const config = createTamagui(defaultConfig)
-
-declare module 'tamagui' {
-  interface TamaguiCustomConfig extends typeof config {}
-}
-
-export default () => (
-  <TamaguiProvider config={config} defaultTheme="light">
-    <html.div className="w-[200px] h-[200px] bg-background" />
-  </TamaguiProvider>
-)
-```
-
-Continue with [Tailwind](/docs/core/tailwind).
-
-</MDXTabs.Content>
-</MDXTabs>
 
 You usually export the config from a `tamagui.config.ts` file. See
 [Configuration](/docs/core/configuration) for what goes in it.
@@ -222,42 +177,36 @@ Web ecosystem often does, so Tamagui ships plugins that handle it:
     img="/logos/next-js.svg"
     link="/docs/guides/next-js"
     subtitle="Full-featured React framework with great developer experience."
-    colorOffset={2}
   />
   <LogoCard
     title="Expo"
     img="/logos/expo.svg"
     link="/docs/guides/expo"
     subtitle="Platform for creating universal native apps with JavaScript and React."
-    colorOffset={6}
   />
   <LogoCard
     title="Vite"
     img="/logos/vite.svg"
     link="/docs/guides/vite"
     subtitle="Fast and modern development server and build tool."
-    colorOffset={1}
   />
   <LogoCard
     title="Webpack"
     img="/logos/webpack.svg"
     link="/docs/guides/webpack"
     subtitle="Powerful module bundler for modern JavaScript applications."
-    colorOffset={0}
   />
   <LogoCard
     title="Metro"
     img="/logos/metro.svg"
     link="/docs/guides/metro"
     subtitle="Fast, scalable, and serverless JavaScript bundler for React Native."
-    colorOffset={3}
   />
   <LogoCard
     title="One"
     img="/logos/one.svg"
     link="/docs/guides/one"
     subtitle="Universal React framework with native support."
-    colorOffset={4}
   />
 </Grid>
 

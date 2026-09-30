@@ -7,6 +7,7 @@ import {
   getAllVersionsFromPath,
   type GetMDXOptions,
 } from '@vxrn/mdx-rust'
+import { defaultConfig as docsCodeConfig } from '@tamagui/config/v6'
 import { highlightPlugin } from './highlightPlugin'
 
 export { getAllFrontmatter, getAllVersionsFromPath }
@@ -47,7 +48,21 @@ const heroTemplate = {
   },
 }
 
-function loadTransform(): (source: string) => string {
+type TailwindTransform = (
+  source: string,
+  options?: {
+    renameComponents?: boolean
+    rewriteImports?: boolean
+    retainLines?: boolean
+    tokens?: Record<string, Record<string, any>>
+    fonts?: Record<string, any>
+    themes?: Record<string, Record<string, any>>
+    media?: Record<string, any>
+    shorthands?: Record<string, string>
+  }
+) => string
+
+function loadTransform(): TailwindTransform {
   try {
     // resolve through package.json so we always load the current `main` -
     // node caches the pkg's `main` field internally and HMR rebuilds of
@@ -96,7 +111,16 @@ const tailwindTransform = {
 
       try {
         const transform = loadTransform()
-        const tailwindCode = transform(source)
+        const tailwindCode = transform(source, {
+          renameComponents: false,
+          rewriteImports: true,
+          retainLines: false,
+          tokens: docsCodeConfig.tokens,
+          fonts: docsCodeConfig.fonts,
+          themes: docsCodeConfig.themes,
+          media: docsCodeConfig.media,
+          shorthands: docsCodeConfig.shorthands,
+        })
         if (tailwindCode && tailwindCode !== source) {
           ctx.replaceNode(node, {
             ...node,

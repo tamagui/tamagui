@@ -92,7 +92,7 @@ const features: FeaturePart[][] = [
 
 export default function TamaguiHomePage() {
   return (
-    <YStack gap="100px gtMd:0">
+    <YStack gap="100px">
       <HeadInfo
         title="Tamagui"
         description="Type-safe styles for React and React Native, with an optimizing compiler and Tailwind compatibility."
@@ -127,38 +127,35 @@ export default function TamaguiHomePage() {
             <XStack items="center" gap="4" mb="-4" mt="-3">
               <TamaguiIconSvg width={24} height={24} />
               <Link asChild href="/blog/version-three">
-                <Text render="a" fontSize={13} color="color-8 hover:color-11">
+                <Text render="a" fontSize={13} color="color-12">
                   Version 3 is out ↗
                 </Text>
               </Link>
             </XStack>
 
             <H1
-              fontSize="22px gtXs:24px gtMd:28px"
-              lineHeight="32px gtXs:36px gtMd:40px"
+              fontSize="22px gtXs:24px gtMd:26px"
+              lineHeight="30px gtXs:34px gtMd:36px"
               fontWeight="600"
               letterSpacing={-0.2}
               textWrap="balance"
             >
               Fast on web. Fast on native.
               <br />
-              Now, in Typed or Tailwind.
+              Style all platforms, typed or Tailwind.
             </H1>
 
             <YStack gap="4" mt="-4">
               <Paragraph size="5" color="color-11">
-                Feels like web, runs like native, with zero-cost abstractions from
-                compiler to runtime.
+                The fastest and most feature-complete style library for both web and React
+                Native, now fully OSS across components, themes, patterns and starters. A
+                new smarter compiler and new native runtime give you ideal performance on
+                native and web.
               </Paragraph>
 
               <Paragraph size="5" color="color-11">
-                Typed inline styles, or Tailwind classes. Runtime, or build time. Add the
-                Rust compiler or native runtime for best-in-class performance everywhere.
-              </Paragraph>
-
-              <Paragraph size="5" color="color-11">
-                v3 trims down, then adds Tailwind, React Strict DOM, and simplified, more
-                web-aligned styling.
+                Version three simplifies everything, aligns to web, then adds Tailwind,
+                React Strict DOM, and some nice new components.
               </Paragraph>
             </YStack>
 

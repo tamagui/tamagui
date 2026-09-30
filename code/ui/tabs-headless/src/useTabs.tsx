@@ -163,7 +163,7 @@ export function useTab(props: UseTabProps) {
       onPress: (event?: TabPressEvent) => {
         // ignore secondary and ctrl-clicks on web; native has no such notion
         const isPrimaryPointer =
-          !isWeb || (event?.button === 0 && event?.ctrlKey === false)
+          !isWeb || ((event?.button ?? 0) === 0 && event?.ctrlKey !== true)
         if (!disabled && !isSelected && isPrimaryPointer) {
           onChange(value)
         }

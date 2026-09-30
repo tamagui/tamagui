@@ -6,7 +6,6 @@ import { Container } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { DocsQuickNav, type Heading } from './DocsQuickNav'
 import { MDXTabsSearchProvider } from './MDXTabs'
-import { DocsVersionPickerPortal } from './DocsVersionPicker'
 import type { DocsVersionFrontmatter } from './docsVersion'
 
 type DocsPageFrameProps = {
@@ -30,7 +29,6 @@ export function DocsPageFrame({
 }: DocsPageFrameProps) {
   return (
     <>
-      <DocsVersionPickerPortal frontmatter={frontmatter} initialSearch={initialSearch} />
       {/* main content */}
       <YStack flex={1} minW={0} flexBasis="auto" py="7" px="4 gtSm:6">
         <YStack render="article">
@@ -141,7 +139,7 @@ export function DocsPageFrame({
       </YStack>
 
       {/* right sidebar - sticky */}
-      <DocsQuickNav headings={headings} />
+      <DocsQuickNav headings={headings} frontmatter={frontmatter} />
     </>
   )
 }

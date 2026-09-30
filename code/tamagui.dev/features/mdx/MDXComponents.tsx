@@ -98,7 +98,7 @@ const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) =
 }
 
 const TableFrame = styled(YStack, {
-  borderWidth: 1,
+  borderWidth: 0.5,
   borderColor: 'border-color',
   rounded: '4',
   overflow: 'hidden',
@@ -157,7 +157,7 @@ const codeBlock = (props) => {
 }
 
 const TableCell = styled(Paragraph, {
-  borderBottomWidth: 1,
+  borderBottomWidth: 0.5,
   borderBottomColor: 'border-color',
   flexDirection: 'row',
   items: 'center',
@@ -187,7 +187,7 @@ const TableCell = styled(Paragraph, {
 })
 
 const TableCol = styled(YStack, {
-  borderRightWidth: 1,
+  borderRightWidth: 0.5,
   borderRightColor: 'border-color',
   flex: 1,
   flexBasis: 'auto',
@@ -236,8 +236,8 @@ const MarkdownTable = ({ children, style, ...props }) => {
         display="none sm:flex"
         width="100%"
         my={20}
-        borderTopWidth={1}
-        borderTopColor="color-5"
+        borderTopWidth={0.5}
+        borderTopColor="border-color"
       >
         {rows.map((row, rowIndex) => {
           const cells = React.Children.toArray(row.props.children).filter(
@@ -250,8 +250,8 @@ const MarkdownTable = ({ children, style, ...props }) => {
               key={row.key ?? rowIndex}
               gap={10}
               py={12}
-              borderBottomWidth={1}
-              borderBottomColor="color-5"
+              borderBottomWidth={0.5}
+              borderBottomColor="border-color"
             >
               {cells.map((cell, cellIndex) => (
                 <YStack key={cell.key ?? cellIndex} gap={2}>
@@ -469,9 +469,9 @@ const componentsIn = {
         px="6"
         py="2"
         rounded="6"
-        borderWidth={1}
-        opacity={0.8}
+        borderWidth={0.5}
         borderColor="border-color"
+        opacity={0.8}
         {...props}
       />
     )
@@ -659,8 +659,8 @@ const componentsIn = {
     <YStack
       render="tr"
       display="table-row"
-      borderBottomWidth={1}
-      borderBottomColor="color-5"
+      borderBottomWidth={0.5}
+      borderBottomColor="border-color"
       {...props}
     />
   ),
@@ -787,7 +787,7 @@ const componentsIn = {
         my="4"
         px="6"
         ml="3"
-        borderLeftWidth={1}
+        borderLeftWidth={0.5}
         borderColor="border-color"
         justify="center"
         {...props}
@@ -1044,7 +1044,7 @@ const componentsIn = {
         {...(cutoff && {
           my: '4',
           px: '5',
-          borderWidth: 1,
+          borderWidth: 0.5,
           pb: '10',
           bg: 'color-1',
           borderColor: 'border-color',
