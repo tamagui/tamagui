@@ -9,9 +9,9 @@ describe('createTamagui', () => {
   test(`z-index resolves to correct unitless values`, () => {
     const theme = createTamagui(config.getDefaultTamaguiConfig())
     expect(theme.themeConfig.cssRuleSets[0].includes('--t-zIndex-1:100;')).toBeTruthy()
-    expect(theme.tokensParsed.zIndex['1'].name).toEqual('t-zIndex-1')
-    expect(theme.tokensParsed.zIndex['1'].variable).toEqual('var(--t-zIndex-1)')
-    expect(theme.tokensParsed.zIndex['1'].val).toEqual(100)
+    expect(theme.tokensParsed['zIndex-1'].name).toEqual('t-zIndex-1')
+    expect(theme.tokensParsed['zIndex-1'].variable).toEqual('var(--t-zIndex-1)')
+    expect(theme.tokensParsed['zIndex-1'].val).toEqual(100)
   })
 
   test(`font reset uses the configured default family when another font sorts first`, () => {

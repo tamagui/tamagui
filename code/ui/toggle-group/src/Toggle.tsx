@@ -33,7 +33,7 @@ export const ToggleFrame = styled(View, {
     size: styled.dynamic<any>((val, { tokens }) => {
       if (!val) return
       const sizeToken = resolveSizeToken(val, 'size')
-      const size = typeof sizeToken === 'number' ? sizeToken : tokens.size[sizeToken]
+      const size = typeof sizeToken === 'number' ? sizeToken : tokens[`size-${sizeToken}`]
       return {
         width: size,
         height: size,

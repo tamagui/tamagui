@@ -6,7 +6,7 @@ import type {
   GenericTamaguiSettings,
   TamaguiInternalConfig,
   Token,
-  Tokens,
+  TokenCategories,
   TokensParsed,
 } from './types'
 import { formatDiagnostic } from './helpers/formatDiagnostic'
@@ -142,19 +142,24 @@ export const getTokens = (): TokensParsed => {
   return getTokensParsed()
 }
 
-export const getTokenObject = (value: Token, group?: keyof Tokens) => {
+export const getTokenObject = (value: Token, group?: TokenCategories | (string & {})) => {
   const tokens = getTokensParsed()
-  return group
-    ? tokens[group]?.[value]
-    : tokens[Object.keys(tokens).find((cat) => tokens[cat][value]) || '']?.[value]
+  return (group ? tokens[`${group}-${value}`] : undefined) ?? tokens[value]
 }
 
-export const getToken = (value: Token, group?: keyof Tokens, useVariable = isWeb) => {
+export const getToken = (
+  value: Token,
+  group?: TokenCategories | (string & {}),
+  useVariable = isWeb
+) => {
   const token = getTokenObject(value, group)
   return useVariable ? token?.variable : token?.val
 }
 
-export const getTokenValue = (value: Token | 'unset' | 'auto', group?: keyof Tokens) => {
+export const getTokenValue = (
+  value: Token | 'unset' | 'auto',
+  group?: TokenCategories | (string & {})
+) => {
   if (value === 'unset' || value === 'auto') return
   return getToken(value, group, false)
 }

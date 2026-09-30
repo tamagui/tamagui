@@ -63,7 +63,14 @@ export {
 export { createStyledHOC } from './createStyledHOC'
 export { createShorthands } from './createShorthands'
 export { createTamagui, installTamaguiConfig } from './createTamagui'
-export { createTokens } from './createTokens'
+export type { PrefixedTokens } from './createTokens'
+export {
+  createTokens,
+  createTokenVariables,
+  getTokensInCategory,
+  prefixTokens,
+  tokenVariableName,
+} from './createTokens'
 export {
   createVariable,
   createCSSVariable,

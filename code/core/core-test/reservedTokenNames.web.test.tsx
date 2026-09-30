@@ -15,7 +15,7 @@ const withToken = (category: string, name: string, value: string | number) => {
     ...base,
     tokens: {
       ...base.tokens,
-      [category]: { ...base.tokens[category], [name]: value },
+      [`${category}-${name}`]: value,
     },
   }
 }

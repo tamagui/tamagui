@@ -9,8 +9,8 @@ const source = `<View padding="4" zIndex="4" borderRadius="8" />`
 const options = {
   renameComponents: false,
   tokens: {
-    space: { 4: 20 },
-    radius: { 8: 24 },
+    'space-4': 20,
+    'radius-8': 24,
   },
 }
 

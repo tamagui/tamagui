@@ -37,11 +37,11 @@ export const listItemSizeVariant = styled.dynamic<SizeTokens | true>(
   (val, { tokens }) => {
     const sizeToken = resolveSizeToken(val, 'size')
     const spaceToken = resolveSizeToken(val, 'space')
-    const size = typeof sizeToken === 'number' ? sizeToken : tokens.size[sizeToken]
+    const size = typeof sizeToken === 'number' ? sizeToken : tokens[`size-${sizeToken}`]
     const sizeVal = getVariableValue(size) as number
     return {
       minHeight: size,
-      paddingHorizontal: tokens.space[spaceToken],
+      paddingHorizontal: tokens[`space-${spaceToken}`],
       paddingVertical: Math.max(0, Math.round(sizeVal * 0.36 - 9)),
       gap: getThemedIconSize(sizeToken, 0.4),
     }

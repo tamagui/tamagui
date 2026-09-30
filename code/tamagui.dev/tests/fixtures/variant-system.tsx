@@ -73,8 +73,8 @@ export const MyViewUsage = () => <MyView doubleMargin={8} />
 export const DynamicSquare = styled(View, {
   variants: {
     size: styled.dynamic<SizeTokens>((size: any, { tokens }) => ({
-      width: tokens.size[size] ?? size,
-      height: tokens.size[size] ?? size,
+      width: tokens[`size-${size}`] ?? size,
+      height: tokens[`size-${size}`] ?? size,
     })),
   } as const,
   defaultVariants: {

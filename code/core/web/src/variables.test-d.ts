@@ -10,11 +10,11 @@ describe('config variables inference', () => {
   test('variables keys merge into every theme type', () => {
     const config = createTamagui({
       tokens: {
-        color: { blue: 'blue' },
-        space: { 1: 4 },
-        size: { 1: 4 },
-        radius: { 1: 4 },
-        zIndex: { 1: 1 },
+        'color-blue': 'blue',
+        'space-1': 4,
+        'size-1': 4,
+        'radius-1': 4,
+        'zIndex-1': 1,
       },
       themes: {
         light: { background: '#fff', color: '#000' },

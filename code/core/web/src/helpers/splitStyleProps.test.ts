@@ -12,13 +12,7 @@ beforeAll(() => {
     themes: {
       light: {},
     },
-    tokens: {
-      color: {},
-      radius: {},
-      size: {},
-      space: {},
-      zIndex: {},
-    },
+    tokens: {},
   })
 })
 

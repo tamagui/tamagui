@@ -1,8 +1,7 @@
 export type ThemeValue = string
 
-export type ThemeTokens = {
-  color: Record<string, ThemeValue>
-}
+// tokens are flat; the theme layer only reads the color category
+export type ThemeTokens = Record<string, ThemeValue>
 
 export type ThemeRecipe = Record<string, unknown>
 
@@ -30,8 +29,11 @@ export type ThemeTree = {
 
 type ColorLiteral = `#${string}` | `rgb${string}` | `hsl${string}` | 'transparent'
 
+// a theme value names a color token without its category prefix: `blue-500`
+type StripColorPrefix<T> = T extends `color-${infer Rest}` ? Rest : never
+
 type ThemeInputValue<Tokens extends ThemeTokens> =
-  | Extract<keyof Tokens['color'], string>
+  | StripColorPrefix<Extract<keyof Tokens, `color-${string}`>>
   | ColorLiteral
 
 type ResolvedDefinition<Definition> = Definition extends (...args: any[]) => infer Result
@@ -252,7 +254,7 @@ export function createThemes(
 
     for (const key in unresolved) {
       const value = unresolved[key]
-      const token = tokens.color[value]
+      const token = tokens[`color-${value}`]
       if (token !== undefined) {
         resolved[key] = token
         continue
@@ -269,7 +271,9 @@ export function createThemes(
 
       let nearest = ''
       let nearestDistance = Number.POSITIVE_INFINITY
-      for (const tokenName in tokens.color) {
+      for (const tokenKey in tokens) {
+        if (!tokenKey.startsWith('color-')) continue
+        const tokenName = tokenKey.slice(6)
         const previous = Array.from({ length: tokenName.length + 1 }, (_, index) => index)
         for (let valueIndex = 0; valueIndex < value.length; valueIndex++) {
           let diagonal = previous[0]!

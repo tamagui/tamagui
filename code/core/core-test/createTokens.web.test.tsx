@@ -9,23 +9,25 @@ test('snapshot', () => {
 
 test('color name no dot', () => {
   expect(
-    // @ts-ignore partial
     createTokens({
-      color: {
-        'yellow.10': 'yellow',
-      },
+      'color-yellow.10': 'yellow',
     })
   ).toMatchObject({
-    color: {
-      'yellow.10': {
-        isVar: true,
-        key: 'yellow.10',
-        name: 'c-yellow--10',
-        val: 'yellow',
-        variable: 'var(--c-yellow--10)',
-      },
+    'color-yellow.10': {
+      isVar: true,
+      key: 'color-yellow.10',
+      name: 'c-yellow--10',
+      val: 'yellow',
+      variable: 'var(--c-yellow--10)',
     },
   })
+})
+
+test('a nested token group errors', () => {
+  expect(() =>
+    // @ts-expect-error tokens are flat
+    createTokens({ radius: { sm: 4 } })
+  ).toThrow(/nested group/)
 })
 
 test('true token keys error in development', () => {
@@ -35,12 +37,10 @@ test('true token keys error in development', () => {
   try {
     expect(() =>
       createTokens({
-        size: {
-          4: 44,
-          true: 44,
-        },
+        'size-4': 44,
+        'size-true': 44,
       })
-    ).toThrow(/tokens\.size\.true.*explicit token name/)
+    ).toThrow(/tokens\.size-true.*explicit token name/)
   } finally {
     process.env.NODE_ENV = originalNodeEnv
   }

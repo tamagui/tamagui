@@ -12,11 +12,13 @@ const resolveToken = (
   type: 'size' | 'space' | 'radius',
   input: GetTokenBase
 ): Variable<number> => {
-  const tokens = getTokens()[type] as Record<string, Variable>
+  const tokens = getTokens()
   const resolved = resolveSizeToken(input, type)
   if (resolved == null) return resolved as any
   if (typeof resolved === 'number') return resolved as any
-  const key = typeof resolved === 'object' ? (resolved as Variable).key : String(resolved)
+  // a Variable already carries its flat name; a bare key gets the scale's prefix
+  const key =
+    typeof resolved === 'object' ? (resolved as Variable).key : `${type}-${resolved}`
   return (tokens[key] ?? resolved) as any
 }
 

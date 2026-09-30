@@ -122,7 +122,7 @@ describe('5 — chained media and state clause → md:hover:opacity-50', () => {
 
 describe('6 — unresolved bare value: literal arbitrary class', () => {
   test('padding="custom" with a config lacking it stays literal', () => {
-    const out = convert(`<View padding="custom" />`, { tokens: { space: { 4: 20 } } })
+    const out = convert(`<View padding="custom" />`, { tokens: { 'space-4': 20 } })
     expect(out).toBe(`<View className="p-[custom]" />;`)
     expect(out).not.toContain('p-custom')
   })
@@ -188,7 +188,7 @@ describe('value domain', () => {
   })
   test('string-valued custom token emits its name, never its current value', () => {
     const cls = classOf(
-      convert(`<View padding="fluid" />`, { tokens: { space: { fluid: '10%' } } })
+      convert(`<View padding="fluid" />`, { tokens: { 'space-fluid': '10%' } })
     )
     expect(cls).toBe('p-fluid')
     expect(cls).not.toContain('10%')

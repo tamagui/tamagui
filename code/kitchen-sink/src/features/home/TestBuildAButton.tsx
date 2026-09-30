@@ -41,9 +41,9 @@ export const ButtonFrame = styled(View, {
       const sizeToken = (name === true ? '4' : name) as Exclude<SizeTokens, true>
 
       return {
-        height: tokens.size[sizeToken],
-        borderRadius: tokens.radius[sizeToken],
-        gap: tokens.space[sizeToken].val * 0.2,
+        height: tokens[`size-${sizeToken}`],
+        borderRadius: tokens[`radius-${sizeToken}`],
+        gap: tokens[`space-${sizeToken}`].val * 0.2,
         paddingHorizontal: getSpace(sizeToken).val * 0.9,
       }
     }),

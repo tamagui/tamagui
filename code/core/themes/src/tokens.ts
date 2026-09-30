@@ -1,3 +1,4 @@
+import { prefixTokens } from '@tamagui/web'
 import { tailwindColors } from './tailwind-colors'
 
 export { tailwindColors }
@@ -24,6 +25,7 @@ export const colorTokens = {
   'shadow-7': 'rgba(0, 0, 0, 0.3)',
 } as const
 
-export const tokens = { color: colorTokens } as const
+// flat tokens: `color-blue-50`, `color-brand-500`, `color-shadow-1`
+export const tokens = prefixTokens('color', colorTokens)
 
 export type ColorTokenName = keyof typeof colorTokens

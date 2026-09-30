@@ -326,13 +326,10 @@ export const animationsReanimated = createAnimationsReanimated({
 // tokens (the Tailwind palette), so these sit alongside rather than replacing it.
 const tokens = {
   ...defaultConfig.tokens,
-  color: {
-    ...defaultConfig.tokens.color,
-    testsomethingdifferent: '#ff0000',
-    customRed: '#ff0000',
-    customBlue: '#0000ff',
-    customGreen: '#00ff00',
-  },
+  'color-testsomethingdifferent': '#ff0000',
+  'color-customRed': '#ff0000',
+  'color-customBlue': '#0000ff',
+  'color-customGreen': '#00ff00',
 }
 
 // multi-driver config for testing animatedBy prop and driver selection

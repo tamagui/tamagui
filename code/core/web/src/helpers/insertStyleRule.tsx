@@ -209,10 +209,11 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
   const selectors = cssStyleRule.selectorText.split(',')
   if (!selectors.length) return
 
-  if (tokens?.color && !colorVarToVal) {
+  if (tokens && !colorVarToVal) {
     colorVarToVal = {}
-    for (const key in tokens.color) {
-      const token = tokens.color[key]
+    for (const key in tokens) {
+      if (!key.startsWith('color-')) continue
+      const token = tokens[key]
       if (token) {
         colorVarToVal[token.name] = token.val
       }

@@ -20,7 +20,7 @@ function AvatarTest(props: React.ComponentProps<typeof Avatar>) {
 
 // regression: Avatar.Image used to size itself via getShapeSize(context.size),
 // which resolves a NUMERIC size as a size-token index. in the default config
-// tokens.size[16] === 224, so <Avatar size={16}> blew the image up to 224px
+// the `size-16` token is 224, so <Avatar size={16}> blew the image up to 224px
 // inside its 16px frame and object-fit:cover showed a blurry mis-cropped
 // corner. the image must instead fill its frame (100%/100%) for any size.
 describe('Avatar.Image sizing', () => {

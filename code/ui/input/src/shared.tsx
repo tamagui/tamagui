@@ -61,7 +61,7 @@ const getInputPadding = (
   }
   const key = val === true ? '4' : val
   const index = inputSizeKeys.indexOf(key)
-  return env.tokens.space[inputSizeKeys[Math.max(0, index - steps)]]
+  return env.tokens[`space-${inputSizeKeys[Math.max(0, index - steps)]}`]
 }
 
 export const inputSizeVariant = styled.dynamic<any>((val = true, env) => {

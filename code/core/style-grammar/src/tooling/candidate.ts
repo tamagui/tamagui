@@ -35,6 +35,13 @@ export interface GrammarConfigView {
   platformNames?: Names
   tokenNames?: Partial<Record<TokenCategory, Names>>
   /**
+   * every flat token name as written in the config (`radius-sm`, `brand-card`).
+   * a property's category supplies the default prefix, so `rounded-sm` finds
+   * `radius-sm`; writing the full name reaches across categories the same way
+   * the runtime does
+   */
+  tokenFullNames?: Names
+  /**
    * the media keys that measure a size, so `@key:` is a meaningful container
    * query. derived by createGrammarConfigView when the media input carries
    * query information; absent means UNKNOWN, and the modifier registry then
@@ -250,7 +257,8 @@ export function resolveTokenName(
 ): string | null {
   if (hasName(config.tokenNames?.[category], name)) return name
   const alias = decimalHalfTokenAlias(name)
-  return alias !== null && hasName(config.tokenNames?.[category], alias) ? alias : null
+  if (alias !== null && hasName(config.tokenNames?.[category], alias)) return alias
+  return hasName(config.tokenFullNames, name) ? name : null
 }
 
 function entriesForProps(props: readonly string[]): GrammarEntry[] {

@@ -1,4 +1,5 @@
 import type { FontSizeTokens, FontTokens, Variable } from '@tamagui/core'
+import { getTokensInCategory } from '@tamagui/web'
 import { getConfig, isVariable, resolveSizeToken } from '@tamagui/core'
 
 type GetFontSizeOpts = {
@@ -44,7 +45,7 @@ export const getFontSizeToken = (
   const fontSize =
     font?.size ||
     // fallback to size tokens
-    conf.tokensParsed.size
+    getTokensInCategory(conf.tokensParsed as any, 'size')
   const size = resolveSizeToken(inSize ?? true, 'fontSize') as string
 
   const sizeTokens = Object.keys(fontSize)

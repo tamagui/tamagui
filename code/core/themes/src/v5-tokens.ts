@@ -1,3 +1,4 @@
+import { prefixTokens } from '@tamagui/web'
 import { sizeToSpace } from './utils'
 
 // the same as v3 for now, but duplicated to avoid accidental changes to both
@@ -91,11 +92,12 @@ export const radius = {
   12: 50,
 }
 
+// tokens are flat: `size-4`, `space-4`, `radius-2`, `zIndex-1`
 export const tokens = {
-  radius,
-  zIndex,
-  space,
-  size,
-} as const
+  ...prefixTokens('radius', radius),
+  ...prefixTokens('zIndex', zIndex),
+  ...prefixTokens('space', space),
+  ...prefixTokens('size', size),
+}
 
 export type V5Tokens = typeof tokens

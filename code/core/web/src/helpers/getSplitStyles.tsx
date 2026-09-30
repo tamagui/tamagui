@@ -2491,14 +2491,11 @@ function configuredValue(
       value = font?.[fontKey]?.[lookupName]
     } else {
       const category = grammar.tokenCategory(property)
-      const dot = lookupName.indexOf('.')
-      if (dot !== -1) {
-        const prefix = lookupName.slice(0, dot)
-        if (!category || prefix === category || prefix === 'color') {
-          lookupName = lookupName.slice(dot + 1)
-        }
-      }
-      value = category ? state.conf.tokensParsed[category]?.[lookupName] : undefined
+      const tokens = state.conf.tokensParsed
+      // the property's category is the default prefix, so `borderRadius="sm"`
+      // finds `radius-sm`; a fully qualified name resolves as written.
+      value = category ? tokens[`${category}-${lookupName}`] : undefined
+      value ||= tokens[lookupName]
       if (!value) {
         const first = lookupName.charCodeAt(0)
         if (
@@ -2510,9 +2507,7 @@ function configuredValue(
             state.conf.themes?.[state.flatThemeName || '']?.[lookupName]
           fromTheme = !!value
           if (!value && !category) {
-            value =
-              state.conf.tokensParsed.space?.[lookupName] ||
-              state.conf.tokensParsed.color?.[lookupName]
+            value = tokens[`space-${lookupName}`] || tokens[`color-${lookupName}`]
           }
         }
       }
@@ -2521,7 +2516,7 @@ function configuredValue(
 
   if (process.env.NODE_ENV === 'development') {
     const category = grammar.tokenCategory(property)
-    if (category && category !== 'color' && state.conf.tokensParsed.color?.[name]) {
+    if (category && category !== 'color' && state.conf.tokensParsed[`color-${name}`]) {
       warnOnce(`"${name}" contributes to "color", not "${property}"`)
     }
   }

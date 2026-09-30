@@ -14,12 +14,7 @@ export type GrammarSourceConfig = {
   shorthands?: Readonly<Record<string, string>>
   media?: Names
   themes?: Readonly<Record<string, unknown>>
-  tokensParsed?: Partial<
-    Record<
-      'space' | 'size' | 'radius' | 'zIndex' | 'color',
-      Readonly<Record<string, unknown>>
-    >
-  >
+  tokensParsed?: Readonly<Record<string, unknown>>
   fontsParsed?: Readonly<Record<string, GrammarFontConfig | undefined>>
 }
 
@@ -120,8 +115,14 @@ export function createGrammarConfigView(
     letterSpacing: new Set(),
   }
 
-  for (const category of ['space', 'size', 'radius', 'zIndex', 'color'] as const) {
-    addNames(tokenNames[category], config.tokensParsed?.[category])
+  // tokens are flat (`radius-sm`); the prefix names the category it belongs to
+  const tokenFullNames = new Set<string>()
+  for (const key in config.tokensParsed) {
+    tokenFullNames.add(key)
+    const dash = key.indexOf('-')
+    if (dash === -1) continue
+    const names = tokenNames[key.slice(0, dash) as TokenCategory]
+    if (names) names.add(key.slice(dash + 1))
   }
 
   for (const themeName in config.themes) {
@@ -165,6 +166,7 @@ export function createGrammarConfigView(
     themeNames: config.themes,
     platformNames: options.platformNames ?? grammarPlatformNames,
     tokenNames,
+    tokenFullNames,
     containerSizeNames,
   }
 }

@@ -1,4 +1,4 @@
-import { createTokens } from '@tamagui/core'
+import { createTokens, prefixTokens } from '@tamagui/core'
 
 const size = {
   0: 0,
@@ -106,9 +106,9 @@ const color = {
 }
 
 export const tokens = createTokens({
-  color,
-  space,
-  size,
-  radius,
-  zIndex,
+  ...prefixTokens('color', color),
+  ...prefixTokens('space', space),
+  ...prefixTokens('size', size),
+  ...prefixTokens('radius', radius),
+  ...prefixTokens('zIndex', zIndex),
 })

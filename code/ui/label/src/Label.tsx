@@ -33,7 +33,7 @@ const labelSizeVariant = styled.dynamic<SizeTokens | true>((val, env) => {
     fontStyle: fontStyle?.fontStyle,
     fontWeight: fontStyle?.fontWeight,
     letterSpacing: fontStyle?.letterSpacing,
-    lineHeight: typeof sizeKey === 'number' ? sizeKey : env.tokens.size[sizeKey],
+    lineHeight: typeof sizeKey === 'number' ? sizeKey : env.tokens[`size-${sizeKey}`],
     textTransform: fontStyle?.textTransform,
   }
 })

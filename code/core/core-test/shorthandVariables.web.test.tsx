@@ -50,13 +50,13 @@ describe('shorthand variables - web', () => {
     expect(value).toBe('0 0 10px nonexistent')
   })
 
-  test('boxShadow with dotted token path resolves', () => {
+  test('boxShadow with a fully qualified token name resolves', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      boxShadow: '0 0 10px color.white',
+      boxShadow: '0 0 10px color-white',
     })
     const value = getStyleValue(styles, 'boxShadow')
 
-    // dotted paths like color.white resolve to the token value
+    // tokens are flat, so the token's own name resolves it
     expect(value).toMatch(/var\(--.*white/)
   })
 

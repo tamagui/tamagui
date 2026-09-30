@@ -14,7 +14,7 @@ export const getElevation = styled.dynamic<SizeTokens | number | boolean>((size,
   // elevation={10} means 10px, not size token '10'. the size scale is keyed by
   // numeric-looking strings, so only a non-numeric token may be looked up.
   if (typeof sizeToken === 'number') return getSizedElevation(sizeToken, env)
-  const token = tokens.size[sizeToken]
+  const token = tokens[`size-${sizeToken}`]
   const sizeNum = (isVariable(token) ? +token.val : size) as number
   return getSizedElevation(sizeNum, env)
 })
@@ -26,7 +26,7 @@ export const getSizedElevation = styled.dynamic<SizeTokens | number | boolean>(
       num = val
     } else if (val) {
       const sizeToken = resolveSizeToken(val, 'size')
-      const token = typeof sizeToken === 'number' ? sizeToken : tokens.size[sizeToken]
+      const token = typeof sizeToken === 'number' ? sizeToken : tokens[`size-${sizeToken}`]
       const tokenValue = getVariableValue(token)
       if (typeof tokenValue === 'number') {
         num = tokenValue

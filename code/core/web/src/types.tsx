@@ -784,32 +784,17 @@ export type GenericVariables = {
 
 type GenericKey = string
 
-export type CreateTokens<Val extends VariableVal = VariableVal> = Record<
-  string,
-  { [key: GenericKey]: Val }
-> & {
-  color?: { [key: GenericKey]: Val }
-  space?: { [key: GenericKey]: Val }
-  size?: { [key: GenericKey]: Val }
-  radius?: { [key: GenericKey]: Val }
-  zIndex?: { [key: GenericKey]: Val }
-}
+// tokens are flat, like css custom properties: `space-1`, `radius-sm`, `color-red`.
+// the leading segment is the category a style prop looks in by default.
+export type CreateTokens<Val extends VariableVal = VariableVal> = Record<GenericKey, Val>
 
 export type TokenCategories = 'color' | 'space' | 'size' | 'radius' | 'zIndex'
 
-type Tokenify<A extends GenericTokens> = Omit<
-  {
-    [Key in keyof A]: TokenifyRecord<A[Key]>
-  },
-  TokenCategories
-> & {
-  color: TokenifyRecord<A extends { color: any } ? A['color'] : {}>
-  space: TokenifyRecord<A extends { space: any } ? A['space'] : {}>
-  size: TokenifyRecord<A extends { size: any } ? A['size'] : {}>
-  radius: TokenifyRecord<A extends { radius: any } ? A['radius'] : {}>
-  zIndex: TokenifyRecord<A extends { zIndex: any } ? A['zIndex'] : {}>
+type Tokenify<A extends GenericTokens> = {
+  [Key in keyof A]: CoerceToVariable<A[Key]>
 }
 
+// fonts keep their nested shape (font.size, font.weight, ...)
 type TokenifyRecord<A extends object> = {
   [Key in keyof A]: CoerceToVariable<A[Key]>
 }
@@ -984,13 +969,7 @@ type ThemesWithVariables<B, V> = [V] extends [undefined]
         }
       }
 
-type EmptyTokens = {
-  color: {}
-  space: {}
-  size: {}
-  radius: {}
-  zIndex: {}
-}
+type EmptyTokens = {}
 type EmptyThemes = {}
 type EmptyShorthands = {}
 type EmptyMedia = {}
@@ -1095,8 +1074,19 @@ export type ReservedThemePropName =
 export type Tokens = TamaguiConfig['tokens']
 
 export type TokensParsed = {
-  [Key in keyof Required<Tokens>]: TokenifyRecord<NonNullable<Tokens[Key]>>
+  [Key in keyof Tokens]: CoerceToVariable<Tokens[Key]>
 }
+
+// the keys of a flat token record that belong to a category, prefix stripped:
+// 'space-1' | 'radius-sm' -> for 'space', '1'
+type StripCategory<T, Category extends string> = T extends `${Category}-${infer Rest}`
+  ? Rest
+  : never
+
+export type TokensInCategory<Category extends string> = StripCategory<
+  Extract<keyof Tokens, `${Category}-${string}`>,
+  Category
+>
 
 export type Shorthands = TamaguiConfig['shorthands']
 export type Media = TamaguiConfig['media']
@@ -1796,19 +1786,19 @@ export type GetTokenString<A> = A extends string | number ? `${A}` : string
 
 export type Size =
   | ThemeValueFallbackSize
-  | GetTokenString<keyof Tokens['size']>
+  | GetTokenString<TokensInCategory<'size'>>
   | (string & {})
   | true
 
 export type SizeTokens = Size
 
-export type Space = GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace | true
+export type Space = GetTokenString<TokensInCategory<'space'>> | ThemeValueFallbackSpace | true
 
 export type SpaceTokens = Space
 
 // base color token strings (before opacity modifier)
 type ColorTokenBase =
-  | GetTokenString<keyof Tokens['color']>
+  | GetTokenString<TokensInCategory<'color'>>
   | GetTokenString<keyof ThemeParsed>
 
 // keep this non-expanded. using `${ColorTokenBase}/${number}` preserves stricter
@@ -1827,7 +1817,7 @@ export type Color =
 export type ColorTokens = Color
 
 export type ZIndex =
-  | GetTokenString<keyof Tokens['zIndex']>
+  | GetTokenString<TokensInCategory<'zIndex'>>
   | ThemeValueFallbackZIndex
   | number
   | true
@@ -1835,7 +1825,7 @@ export type ZIndex =
 export type ZIndexTokens = ZIndex
 
 export type Radius =
-  | GetTokenString<keyof Tokens['radius']>
+  | GetTokenString<TokensInCategory<'radius'>>
   | ThemeValueFallbackRadius
   | number
   | RemString
@@ -1844,11 +1834,11 @@ export type Radius =
 export type RadiusTokens = Radius
 
 export type Token =
-  | GetTokenString<keyof Tokens['radius']>
-  | GetTokenString<keyof Tokens['zIndex']>
-  | GetTokenString<keyof Tokens['color']>
-  | GetTokenString<keyof Tokens['space']>
-  | GetTokenString<keyof Tokens['size']>
+  | GetTokenString<TokensInCategory<'radius'>>
+  | GetTokenString<TokensInCategory<'zIndex'>>
+  | GetTokenString<TokensInCategory<'color'>>
+  | GetTokenString<TokensInCategory<'space'>>
+  | GetTokenString<TokensInCategory<'size'>>
 
 export type ColorStyleProp = ThemeValueFallbackColor | ColorTokens
 

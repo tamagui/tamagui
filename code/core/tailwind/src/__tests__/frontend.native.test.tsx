@@ -1,6 +1,6 @@
 import { getDefaultTamaguiConfig } from '../../../config-default/src'
 import { safeAreaVariableNames } from '@tamagui/style-grammar/runtime'
-import { View as CoreView, createTamagui, getConfig } from '@tamagui/web'
+import { View as CoreView, createTamagui, getConfig, getTokensInCategory } from '@tamagui/web'
 import { afterEach, beforeAll, describe, expect, test, vi } from 'vitest'
 
 import { getTailwindClassPlan } from '../candidate'
@@ -19,7 +19,7 @@ afterEach(() => {
 describe('claimed candidates resolve to native style values', () => {
   test('a token candidate resolves through the config', () => {
     const styles = splitTailwindStyles(View, { className: 'p-4' })
-    const expected = getConfig().tokensParsed.space['4'].val
+    const expected = getConfig().tokensParsed['space-4'].val
 
     expect(styleOf(styles).paddingTop).toBe(expected)
     expect(styleOf(styles).paddingLeft).toBe(expected)
@@ -27,7 +27,7 @@ describe('claimed candidates resolve to native style values', () => {
 
   test('tailwind half-step classes resolve the configured space token', () => {
     const styles = splitTailwindStyles(View, { className: 'p-0.5' })
-    const space = getConfig().tokensParsed.space
+    const space = getTokensInCategory(getConfig().tokensParsed, 'space')
     const expected = (space['0.5'] ?? space['0-5']).val
 
     expect(styleOf(styles).paddingTop).toBe(expected)
@@ -65,7 +65,7 @@ describe('claimed candidates resolve to native style values', () => {
       className: 'outline-2 ring-2 ring-[blue]',
     })
 
-    expect(styleOf(styles).outlineWidth).toBe(getConfig().tokensParsed.space['2'].val)
+    expect(styleOf(styles).outlineWidth).toBe(getConfig().tokensParsed['space-2'].val)
     expect(styleOf(styles).boxShadow).toEqual([
       {
         offsetX: 0,
@@ -81,7 +81,7 @@ describe('claimed candidates resolve to native style values', () => {
     const styles = splitTailwindStyles(View, {
       className: 'outline-2 outline-solid outline-[red] outline-offset-2',
     })
-    const space = getConfig().tokensParsed.space
+    const space = getTokensInCategory(getConfig().tokensParsed, 'space')
     const expectedWidth = space['2'].val
 
     expect(styleOf(styles).outlineWidth).toBe(expectedWidth)
@@ -147,7 +147,7 @@ describe('claimed candidates resolve to native style values', () => {
 
   test('size-10 sets numeric width and height', () => {
     const styles = splitTailwindStyles(View, { className: 'size-10' })
-    const expected = getConfig().tokensParsed.size['10'].val
+    const expected = getConfig().tokensParsed['size-10'].val
 
     expect(styleOf(styles).width).toBe(expected)
     expect(styleOf(styles).height).toBe(expected)
@@ -165,7 +165,7 @@ describe('claimed candidates resolve to native style values', () => {
     const styles = splitTailwindStyles(View, {
       className: 'ps-4 pe-2 pbs-4 pbe-2 -ms-1 me-4 -mbs-1 mbe-4 gap-x-2 gap-y-4',
     })
-    const space = getConfig().tokensParsed.space
+    const space = getTokensInCategory(getConfig().tokensParsed, 'space')
 
     expect(styleOf(styles)).toMatchObject({
       paddingStart: space['4'].val,
@@ -187,9 +187,9 @@ describe('claimed candidates resolve to native style values', () => {
     })
 
     expect(styleOf(styles)).toMatchObject({
-      borderStartWidth: getConfig().tokensParsed.space['2'].val,
+      borderStartWidth: getConfig().tokensParsed['space-2'].val,
       borderEndColor: '#fff',
-      borderTopWidth: getConfig().tokensParsed.space['2'].val,
+      borderTopWidth: getConfig().tokensParsed['space-2'].val,
       borderBottomColor: '#fff',
     })
   })
@@ -200,9 +200,9 @@ describe('claimed candidates resolve to native style values', () => {
     })
 
     expect(styleOf(styles)).toMatchObject({
-      borderStartStartRadius: getConfig().tokensParsed.radius['4'].val,
-      borderEndStartRadius: getConfig().tokensParsed.radius['4'].val,
-      borderStartEndRadius: getConfig().tokensParsed.radius['8'].val,
+      borderStartStartRadius: getConfig().tokensParsed['radius-4'].val,
+      borderEndStartRadius: getConfig().tokensParsed['radius-4'].val,
+      borderStartEndRadius: getConfig().tokensParsed['radius-8'].val,
       flexGrow: 1,
       flexShrink: 0,
       aspectRatio: 16 / 9,
@@ -220,7 +220,7 @@ describe('claimed candidates resolve to native style values', () => {
 // same rule as web: a restated shorthand applies at its authored position, so a
 // longhand written between the two occurrences does not survive it
 describe('authored ordering across shorthand and longhand candidates', () => {
-  const space = (name: string) => getConfig().tokensParsed.space[name].val
+  const space = (name: string) => getConfig().tokensParsed[`space-${name}`].val
 
   test('a restated shorthand overrides an earlier horizontal longhand', () => {
     const styles = splitTailwindStyles(View, { className: 'p-4 px-2 p-6' })

@@ -11,6 +11,7 @@ import { tokens, type ColorTokenName } from './tokens'
 export { createThemes } from '@tamagui/create-theme'
 export type { GetThemeContext, ThemeDefinitionContext } from '@tamagui/create-theme'
 export { colorTokens, tailwindColors, tokens } from './tokens'
+export { prefixTokens } from '@tamagui/web'
 
 export const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] as const
 

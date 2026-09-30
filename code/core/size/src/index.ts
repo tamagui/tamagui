@@ -84,11 +84,11 @@ export type ControlSizeKey = keyof typeof controlSizes
  */
 export const resolveControlSize = (
   value: TokenSize,
-  tokens: Pick<TokensParsed, 'size'>
+  tokens: TokensParsed
 ): number | Variable => {
   if (typeof value === 'number') return value
   const ramp = controlSizes[value as ControlSizeKey]
-  return ramp ?? tokens.size[value as keyof typeof tokens.size]
+  return ramp ?? tokens[`size-${value}`]
 }
 
 export const resolveSizeToken = <Value, Category extends keyof TokenSizePolicy>(
@@ -117,7 +117,7 @@ export const createSizeContext = <Value extends TokenSize = TokenSize>(
 export const SizeContext: CreatedSizeContext = createSizeContext()
 
 export type SizeResolverExtras = {
-  tokens: Pick<TokensParsed, 'size' | 'space' | 'radius'>
+  tokens: TokensParsed
   font: GenericFont
   policy?: TokenSizePolicy
 }
@@ -168,8 +168,8 @@ export const resolveTokenSize = <Value extends TokenSize>(
 
   // frame height is a control preset off the ramp, never the spacing scale
   const size = resolveControlSize(value, tokens)
-  const space = typeof spaceKey === 'number' ? spaceKey : tokens.space[spaceKey]
-  const radius = typeof radiusKey === 'number' ? radiusKey : tokens.radius[radiusKey]
+  const space = typeof spaceKey === 'number' ? spaceKey : tokens[`space-${spaceKey}`]
+  const radius = typeof radiusKey === 'number' ? radiusKey : tokens[`radius-${radiusKey}`]
   const fontSize = typeof fontKey === 'number' ? fontKey : font.size[fontKey]
   const lineHeight = typeof fontKey === 'number' ? undefined : font.lineHeight?.[fontKey]
 

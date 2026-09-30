@@ -77,7 +77,9 @@ export function getVariable(
     return variableToString(nameOrVariable)
   }
   const tokens = getConfig().tokensParsed
-  return variableToString(tokens[group]?.[nameOrVariable] ?? nameOrVariable)
+  return variableToString(
+    tokens[`${group}-${nameOrVariable}`] ?? tokens[nameOrVariable] ?? nameOrVariable
+  )
 }
 
 let accessed = false

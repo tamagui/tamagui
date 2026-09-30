@@ -26,7 +26,7 @@ const [GroupProvider, useGroupContext] = createGroupContext<GroupContextValue>(G
 const groupSizeVariant = styled.dynamic<any>((val, { tokens }) => {
   const radiusToken = resolveSizeToken(val, 'radius')
   return {
-    borderRadius: tokens.radius[radiusToken] ?? radiusToken,
+    borderRadius: tokens[`radius-${radiusToken}`] ?? radiusToken,
   }
 })
 

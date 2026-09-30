@@ -8,9 +8,18 @@ const sortedUnique = (names: Iterable<string>) => [...new Set(names)].sort()
 describe('to-tailwind bundled default names', () => {
   test('matches every default v6 config name without runtime config dependencies', () => {
     const config = defaultConfig as any
-    const actualTokenNames: Record<string, string[]> = {}
-    for (const category of ['space', 'size', 'radius', 'zIndex', 'color']) {
-      actualTokenNames[category] = namesOf(config.tokens?.[category])
+    // tokens are flat (`space-4`, `radius-lg`): the prefix names the category
+    const actualTokenNames: Record<string, string[]> = {
+      space: [],
+      size: [],
+      radius: [],
+      zIndex: [],
+      color: [],
+    }
+    for (const key in config.tokens) {
+      const dash = key.indexOf('-')
+      if (dash === -1) continue
+      actualTokenNames[key.slice(0, dash)]?.push(key.slice(dash + 1))
     }
 
     const fontFamily: string[] = []

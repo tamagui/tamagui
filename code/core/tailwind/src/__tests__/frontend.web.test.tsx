@@ -85,7 +85,7 @@ describe('tailwind components render through the shared renderer', () => {
   test('the last of two owned candidates wins with no string merging', () => {
     const styles = splitTailwindStyles(View, { className: 'p-2 p-4' })
 
-    const expected = getConfig().tokensParsed.space['4']
+    const expected = getConfig().tokensParsed['space-4']
     expect(findRule(styles.rulesToInsert, 'paddingTop')[StyleObjectValue]).toBe(
       expected.variable
     )
@@ -140,7 +140,7 @@ describe('tailwind components render through the shared renderer', () => {
 // A restated shorthand has to land at its authored position, not at the position of
 // its first occurrence, or a longhand written between the two occurrences wins.
 describe('authored ordering across shorthand and longhand candidates', () => {
-  const space = (name: string) => getConfig().tokensParsed.space[name].variable
+  const space = (name: string) => getConfig().tokensParsed[`space-${name}`].variable
 
   test('a restated shorthand overrides an earlier horizontal longhand', () => {
     const styles = splitTailwindStyles(View, { className: 'p-4 px-2 p-6' })

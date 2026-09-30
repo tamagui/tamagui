@@ -10,14 +10,14 @@ const CardContext = createStyledContext({
 const cardRadiusVariant = styled.dynamic<SizeTokens | true>((val, { tokens }) => {
   const radiusToken = resolveSizeToken(val, 'radius')
   return {
-    borderRadius: tokens.radius[radiusToken] ?? radiusToken,
+    borderRadius: tokens[`radius-${radiusToken}`] ?? radiusToken,
   }
 })
 
 const cardPaddingVariant = styled.dynamic<SizeTokens | true>((val, { tokens }) => {
   const spaceToken = resolveSizeToken(val, 'space')
   return {
-    padding: tokens.space[spaceToken] ?? spaceToken,
+    padding: tokens[`space-${spaceToken}`] ?? spaceToken,
   }
 })
 

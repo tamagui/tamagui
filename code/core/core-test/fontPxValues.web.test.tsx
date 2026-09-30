@@ -1,15 +1,16 @@
 process.env.TAMAGUI_TARGET = 'web'
 
 import { describe, expect, test } from 'vitest'
-import { createTamagui } from '../core/src'
+import { createTamagui, prefixTokens } from '../core/src'
 
 const baseConfig = (fontSize: any, fontLineHeight: any, sizeTokens: any) => ({
   tokens: {
-    color: { background: '#fff', color: '#000' },
-    size: sizeTokens,
-    space: { 4: 18 },
-    radius: { 4: 9 },
-    zIndex: { 4: 400 },
+    'color-background': '#fff',
+    'color-color': '#000',
+    ...prefixTokens('size', sizeTokens),
+    'space-4': 18,
+    'radius-4': 9,
+    'zIndex-4': 400,
   },
   fonts: {
     body: {
@@ -55,7 +56,7 @@ describe('px string font values', () => {
     const conf = createTamagui(
       baseConfig({ 4: 15 }, { 4: 23 }, { 4: '44px', 5: 52 }) as any
     )
-    expect(conf.tokensParsed.size['4'].val).toBe(44)
-    expect(conf.tokensParsed.size['4'].needsPx).toBe(true)
+    expect(conf.tokensParsed['size-4'].val).toBe(44)
+    expect(conf.tokensParsed['size-4'].needsPx).toBe(true)
   })
 })

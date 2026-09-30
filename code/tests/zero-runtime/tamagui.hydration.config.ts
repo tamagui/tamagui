@@ -23,7 +23,7 @@ export const config = createTamagui({
   ...defaultConfig,
   tokens: {
     ...defaultConfig.tokens,
-    color: { ...defaultConfig.tokens.color, pureWhite: '#ffffff' },
+    'color-pureWhite': '#ffffff',
   },
   themes: {
     light: { ...defaultConfig.themes.light, ...SPELLINGS },

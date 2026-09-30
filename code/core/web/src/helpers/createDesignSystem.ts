@@ -19,26 +19,22 @@ type ThemeConfig = {
  * Generates CSS for tokens - registers CSS variables and builds declaration strings
  */
 export function createTokenCSS(
-  tokens: Record<string, Record<string, Variable>>,
+  tokens: Record<string, Variable>,
   shouldTokenCategoryHaveUnits: (category: string) => boolean
 ): string[] {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
     const declarations: string[] = []
-    const sortedTokenKeys = Object.keys(tokens).sort()
 
-    for (const key of sortedTokenKeys) {
-      const sortedSubKeys = Object.keys(tokens[key]).sort()
-      for (const skey of sortedSubKeys) {
-        const variable = tokens[key][skey] as Variable
-
-        if (isWeb) {
-          registerCSSVariable(variable)
-          const variableNeedsPx = variable.needsPx === true
-          const categoryNeedsPx = shouldTokenCategoryHaveUnits(key)
-          const shouldBeUnitless = !(variableNeedsPx || categoryNeedsPx)
-          declarations.push(variableToCSS(variable, shouldBeUnitless))
-        }
-      }
+    for (const key of Object.keys(tokens).sort()) {
+      if (!isWeb) continue
+      const variable = tokens[key]
+      registerCSSVariable(variable)
+      const dash = key.indexOf('-')
+      const category = dash === -1 ? key : key.slice(0, dash)
+      const shouldBeUnitless = !(
+        variable.needsPx === true || shouldTokenCategoryHaveUnits(category)
+      )
+      declarations.push(variableToCSS(variable, shouldBeUnitless))
     }
 
     return declarations

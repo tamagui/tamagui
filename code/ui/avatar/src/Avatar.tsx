@@ -85,7 +85,7 @@ const AvatarImage = createRefComponent<TamaguiElement, AvatarImageProps>(
           objectFit="cover"
           // fill the frame. previously the image was sized to
           // getShapeSize(context.size) — but that resolves a numeric `size`
-          // (e.g. <Avatar size={16} />) as a size-TOKEN index (tokens.size[16]),
+          // (e.g. <Avatar size={16} />) as a size-TOKEN name (the `size-16` token),
           // so it got the token-scale value (~224px) instead of 16px, blowing
           // the image far past its frame; object-fit:cover then showed a
           // blurry mis-cropped corner. the frame already owns the size, so the

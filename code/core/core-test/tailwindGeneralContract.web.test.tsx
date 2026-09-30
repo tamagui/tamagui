@@ -29,8 +29,8 @@ describe('media default keys parity — fallback set covers the canonical config
 
 describe('converter purity / reentrancy — no module-global config leakage', () => {
   test('interleaved token-domain configs do not leak membership', () => {
-    const A = { tokens: { space: { 4: 20 } } }
-    const B = { tokens: { space: { 5: 99 } } }
+    const A = { tokens: { 'space-4': 20 } }
+    const B = { tokens: { 'space-5': 99 } }
     expect(convert(`<View padding="4" />`, A)).toBe('p-4')
     expect(convert(`<View padding="4" />`, B)).toBe('p-[4px]')
     expect(convert(`<View padding="4" />`, A)).toBe('p-4')

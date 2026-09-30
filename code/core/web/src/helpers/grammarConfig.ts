@@ -334,12 +334,7 @@ export function getConfigRevisionSnapshot(
     for (const key of Object.keys(themes[name] || {})) themeKeys.add(key)
   }
   sections.themeVariables.push(`v:${[...themeKeys].sort().join(',')}`)
-  for (const category of ['color', 'space', 'size', 'radius', 'zIndex']) {
-    const tokens = tokensParsed[category]
-    sections.tokens.push(
-      `${category}:${tokens ? Object.keys(tokens).sort().join(',') : ''}`
-    )
-  }
+  sections.tokens.push(`tokens:${Object.keys(tokensParsed).sort().join(',')}`)
   for (const family of Object.keys(fontsParsed).sort()) {
     const font = fontsParsed[family]
     sections.fonts.push(`f:${family}=${font ? Object.keys(font).sort().join(',') : ''}`)

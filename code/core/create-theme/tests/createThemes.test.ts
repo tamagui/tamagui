@@ -3,12 +3,10 @@ import { describe, expect, test } from 'bun:test'
 import { createThemes } from '../src/createThemes'
 
 const tokens = {
-  color: {
-    white: '#fff',
-    black: '#000',
-    gray: '#888',
-    red: '#f00',
-  },
+  'color-white': '#fff',
+  'color-black': '#000',
+  'color-gray': '#888',
+  'color-red': '#f00',
 } as const
 
 describe('createThemes', () => {

@@ -13,13 +13,7 @@ export default createTamagui({
       color: '#000',
     },
   },
-  tokens: {
-    color: {},
-    radius: {},
-    size: {},
-    space: {},
-    zIndex: {},
-  },
+  tokens: {},
   media: {},
   shorthands: {},
 })

@@ -67,14 +67,14 @@ describe('tailwind theme-value color classes', () => {
   })
 
   test('a configured palette token resolves to its CSS variable', () => {
-    expect(getConfig().tokensParsed.color).toHaveProperty('blue-500')
+    expect(getConfig().tokensParsed).toHaveProperty('color-blue-500')
     const rule = colorRule('bg-blue-500', 'backgroundColor')
     expect(rule).toBeTruthy()
-    expect(rule[StyleObjectValue]).toBe('var(--c-color-blue-500)')
+    expect(rule[StyleObjectValue]).toBe('var(--c-blue-500)')
   })
 
   test('an unconfigured palette name passes through', () => {
-    expect(getConfig().tokensParsed.color).not.toHaveProperty('unconfigured-500')
+    expect(getConfig().tokensParsed).not.toHaveProperty('color-unconfigured-500')
     expect(colorRule('bg-unconfigured-500', 'backgroundColor')).toBeNull()
   })
 

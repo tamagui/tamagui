@@ -175,12 +175,8 @@ describe('tooling diagnostics', () => {
         },
       },
       tokens: {
-        color: {
-          blue: '#00f',
-        },
-        space: {
-          4: 16,
-        },
+        'color-blue': '#00f',
+        'space-4': 16,
       },
       fonts: {
         body: {

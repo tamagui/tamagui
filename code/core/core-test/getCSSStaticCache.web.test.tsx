@@ -10,7 +10,7 @@
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { expect, test } from 'vitest'
 
-import { createTamagui, installTamaguiConfig } from '../web/src'
+import { createTamagui, installTamaguiConfig, prefixTokens } from '../web/src'
 import {
   getAllRules,
   updateRules,
@@ -101,7 +101,7 @@ const makeConfig = (tokenColors: Record<string, string>, themeOnly: string) => {
   const themeColors = { accent: themeOnly }
   return {
     ...base,
-    tokens: { ...base.tokens, color: { ...base.tokens.color, ...tokenColors } },
+    tokens: { ...base.tokens, ...prefixTokens('color', tokenColors) },
     themes: {
       light: { background: '#fdfdfd', color: '#020202', ...themeColors },
       dark: { background: '#020202', color: '#fdfdfd', ...themeColors },

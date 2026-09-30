@@ -2,12 +2,15 @@ import '@testing-library/jest-dom'
 
 import { defaultConfig as v6 } from '@tamagui/config/v6'
 import { Input } from '@tamagui/input'
-import { TamaguiProvider, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, createTamagui, getTokensInCategory } from '@tamagui/core'
 import { render } from '@testing-library/react'
 import { Button, H1 } from 'tamagui'
 import { describe, expect, test } from 'vitest'
 
 const config = createTamagui(v6)
+const sizeTokens = getTokensInCategory(config.tokensParsed, 'size')
+const spaceTokens = getTokensInCategory(config.tokensParsed, 'space')
+const radiusTokens = getTokensInCategory(config.tokensParsed, 'radius')
 
 function resolveRenderedValue(
   value: string,
@@ -32,8 +35,8 @@ function DefaultControls() {
 describe('v6 default component size on web', () => {
   test('keeps Tailwind numeric tokens', () => {
     expect({
-      size4: config.tokensParsed.size['4'].val,
-      space4: config.tokensParsed.space['4'].val,
+      size4: config.tokensParsed['size-4'].val,
+      space4: config.tokensParsed['space-4'].val,
     }).toEqual({
       size4: 16,
       space4: 16,
@@ -50,14 +53,14 @@ describe('v6 default component size on web', () => {
     const inputStyle = getComputedStyle(input)
 
     expect({
-      buttonHeight: resolveRenderedValue(buttonStyle.height, config.tokensParsed.size),
+      buttonHeight: resolveRenderedValue(buttonStyle.height, sizeTokens),
       buttonPadding: resolveRenderedValue(
         buttonStyle.paddingInline,
-        config.tokensParsed.space
+        spaceTokens
       ),
       buttonRadius: resolveRenderedValue(
         buttonStyle.borderRadius,
-        config.tokensParsed.radius
+        radiusTokens
       ),
       buttonFontSize: resolveRenderedValue(
         buttonTextStyle.fontSize,
@@ -67,14 +70,14 @@ describe('v6 default component size on web', () => {
         buttonTextStyle.lineHeight,
         config.fontsParsed.body.lineHeight
       ),
-      inputHeight: resolveRenderedValue(inputStyle.height, config.tokensParsed.size),
+      inputHeight: resolveRenderedValue(inputStyle.height, sizeTokens),
       inputPadding: resolveRenderedValue(
         inputStyle.paddingInline,
-        config.tokensParsed.space
+        spaceTokens
       ),
       inputRadius: resolveRenderedValue(
         inputStyle.borderRadius,
-        config.tokensParsed.radius
+        radiusTokens
       ),
       inputFontSize: resolveRenderedValue(
         inputStyle.fontSize,
@@ -112,11 +115,11 @@ describe('v6 default component size on web', () => {
     expect({
       buttonPadding: resolveRenderedValue(
         buttonStyle.paddingInline,
-        config.tokensParsed.space
+        spaceTokens
       ),
       buttonRadius: resolveRenderedValue(
         buttonStyle.borderRadius,
-        config.tokensParsed.radius
+        radiusTokens
       ),
       buttonFontSize: resolveRenderedValue(
         buttonTextStyle.fontSize,
@@ -124,17 +127,17 @@ describe('v6 default component size on web', () => {
       ),
       inputRadius: resolveRenderedValue(
         inputStyle.borderRadius,
-        config.tokensParsed.radius
+        radiusTokens
       ),
       inputFontSize: resolveRenderedValue(
         inputStyle.fontSize,
         config.fontsParsed.body.size
       ),
     }).toEqual({
-      buttonPadding: config.tokensParsed.space['11'].val,
-      buttonRadius: config.tokensParsed.radius['11'].val,
+      buttonPadding: config.tokensParsed['space-11'].val,
+      buttonRadius: config.tokensParsed['radius-11'].val,
       buttonFontSize: config.fontsParsed.body.size['11'].val,
-      inputRadius: config.tokensParsed.radius['11'].val,
+      inputRadius: config.tokensParsed['radius-11'].val,
       inputFontSize: config.fontsParsed.body.size['11'].val,
     })
   })

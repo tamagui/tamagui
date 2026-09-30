@@ -68,7 +68,7 @@ function flat(className: string): Record<string, any> {
 describe('native — px-length props resolve to EXACT NUMBERS (RN drops "Npx" strings)', () => {
   test('spacing/sizing tokens', () => {
     const p = resolved(View, `<View padding="4" />`, 'paddingTop')
-    expect((v6 as any).tokens.space['4']).toBe(16)
+    expect((v6 as any).tokens['space-4']).toBe(16)
     expect(p).toBe(nativeStyleOf(View, { padding: '4' }).paddingTop)
     expect(p).toBe(16)
     expect(typeof p).toBe('number')
@@ -194,7 +194,7 @@ describe('native — directional borders + per-edge radii (converter-driven)', (
     expect(s.borderRightColor).not.toBe('color2')
   })
   test('configured rounded-tl-lg radius token round-trips and is consumed', () => {
-    expect(CFG.tokensParsed.radius).toHaveProperty('lg')
+    expect(CFG.tokensParsed).toHaveProperty('radius-lg')
     expect(toClass(`<View borderTopLeftRadius="lg" />`)).toBe('rounded-tl-lg')
     expect(flat('rounded-tl-lg').className).toBeUndefined()
     expect(nativeStyle(View, 'rounded-tl-lg').borderTopLeftRadius).toBe(8)
@@ -203,7 +203,7 @@ describe('native — directional borders + per-edge radii (converter-driven)', (
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const nodeEnv = process.env.NODE_ENV
     process.env.NODE_ENV = 'development'
-    expect(CFG.tokensParsed.radius).not.toHaveProperty('missing-radius')
+    expect(CFG.tokensParsed).not.toHaveProperty('radius-missing-radius')
     try {
       expect(
         nativeStyle(View, 'rounded-tl-missing-radius').borderTopLeftRadius

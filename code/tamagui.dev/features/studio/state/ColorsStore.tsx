@@ -60,12 +60,9 @@ export class ColorsStore {
       return
     }
 
-    const colorTokens = rootStore.config.tokens.color
     const palettes = rootStore.themes.palettes
 
     const res: Record<string, Record<string, string[]>> = {}
-
-    if (!colorTokens) return
 
     for (const key in palettes) {
       const [scheme, ...names] = key.split('_')

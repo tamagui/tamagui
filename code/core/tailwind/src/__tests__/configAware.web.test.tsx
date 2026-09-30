@@ -20,8 +20,8 @@ import { resolvedStyle, splitTailwindStyles } from './utils'
 // custom config: overridden token scales + an extra media key
 const tokens = {
   ...(v6 as any).tokens,
-  space: { ...(v6 as any).tokens.space, 4: 20 }, // default is 16 → prove we use 20
-  zIndex: { 4: 40 },
+  'space-4': 20, // default is 16 → prove we use 20
+  'zIndex-4': 40,
 }
 const media = { ...(v6 as any).media, tablet: { minWidth: 900 } }
 const fonts = { ...(v6 as any).fonts, sans: (v6 as any).fonts.body }
@@ -59,8 +59,8 @@ describe('config-aware tokens (WEB) — class names follow runtime-owned values'
     const fromClass = styleFlat({ className: cls }).paddingTop
     const fromProp = styleFlat({ padding: '4' }).paddingTop
     expect(cls).toContain('p-4')
-    expect(tokens.space['4']).toBe(20)
-    expect(CFG.tokensParsed.space['4'].val).toBe(20)
+    expect(tokens['space-4']).toBe(20)
+    expect(CFG.tokensParsed['space-4'].val).toBe(20)
     expect(fromClass).toBe(fromProp)
     expect(typeof fromClass).toBe('string')
   })
@@ -68,8 +68,8 @@ describe('config-aware tokens (WEB) — class names follow runtime-owned values'
   test('overriding space.4 does not mutate the distinct size.4 domain', () => {
     const cls = className(`<View width="4" />`)
     expect(cls).toContain('w-4')
-    expect(tokens.size['4']).toBe(16)
-    expect(CFG.tokensParsed.size['4'].val).toBe(16)
+    expect(tokens['size-4']).toBe(16)
+    expect(CFG.tokensParsed['size-4'].val).toBe(16)
     expect(styleFlat({ className: cls }).width).toBe(styleFlat({ width: '4' }).width)
   })
 

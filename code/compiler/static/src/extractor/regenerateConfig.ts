@@ -181,14 +181,6 @@ function transformConfig(config: BundledConfig, platform: TamaguiPlatform) {
     }
   }
 
-  // flatten variables
-  for (const key in tokens) {
-    const token = { ...tokens[key] }
-    for (const tkey in token) {
-      token[tkey] = getVariableValue(token[tkey])
-    }
-  }
-
   // remove bulky stuff in components
   for (const component of components) {
     for (const _ in component.nameToInfo) {

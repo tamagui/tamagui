@@ -118,12 +118,10 @@ const ocean = [
 ] as const
 
 export const tokens = {
-  color: {
-    ...defaultTokens.color,
-    ...Object.fromEntries(
-      shades.map((shade, index) => [`ocean-${shade}`, ocean[index]])
-    ),
-  },
+  ...defaultTokens,
+  ...Object.fromEntries(
+    shades.map((shade, index) => [`color-ocean-${shade}`, ocean[index]])
+  ),
 }
 
 type Recipe = {
