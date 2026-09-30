@@ -583,7 +583,7 @@ export const createNativeMenu = (
 
   // on Android, provide NativeMenuContext so components use Gesture.Manual()
   // instead of Gesture.Tap() (which sends ACTION_CANCEL to MenuView)
-  const Menu: FC<NativeMenuProps> = ({ children, onOpenChange, onOpenWillChange }) => {
+  const Menu: FC<NativeMenuProps> = ({ children, style, onOpenChange, onOpenWillChange }) => {
     const triggerOwnerRef = React.useRef<object | null>(null)
     const claimTriggerBoundary = React.useCallback((debugName?: string | null) => {
       if (triggerOwnerRef.current) {
@@ -623,7 +623,7 @@ export const createNativeMenu = (
       [onOpenWillChange, releaseTriggerBoundary]
     )
 
-    const rootProps: Record<string, unknown> = { onOpenChange: handleOpenChange }
+    const rootProps: Record<string, unknown> = { onOpenChange: handleOpenChange, style }
     if (isContextMenu && onOpenWillChange) {
       rootProps.onOpenWillChange = handleOpenWillChange
     }

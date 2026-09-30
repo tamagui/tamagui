@@ -1,4 +1,4 @@
-import type { ImageProps } from 'react-native'
+import type { ImageProps, StyleProp, ViewStyle } from 'react-native'
 import type { SFSymbol } from 'sf-symbols-typescript'
 
 type ImageOptions = {
@@ -7,6 +7,7 @@ type ImageOptions = {
 
 export type NativeMenuProps = {
   children: React.ReactNode
+  style?: StyleProp<ViewStyle>
   native?: boolean
   onOpenChange?: (isOpen: boolean) => void
   /**
