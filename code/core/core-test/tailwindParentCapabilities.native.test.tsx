@@ -1,3 +1,4 @@
+import { pressEvent } from './pressEvent'
 process.env.TAMAGUI_TARGET = 'native'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
@@ -65,7 +66,7 @@ test('a group parent marker creates the native context its descendant consumes',
   await waitFor(() => {
     expect(host(screen, 'parent').props.onResponderGrant).toBeTypeOf('function')
   })
-  fireEvent(host(screen, 'parent'), 'responderGrant', { nativeEvent: {} })
+  fireEvent(host(screen, 'parent'), 'responderGrant', pressEvent())
   await waitFor(() => {
     expect(backgroundColor(host(screen, 'child'))).toBe('#000')
   })

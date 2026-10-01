@@ -1,3 +1,4 @@
+import { pressEvent } from './pressEvent'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { TamaguiProvider, View, createTamagui } from '@tamagui/core'
 import {
@@ -213,14 +214,14 @@ describe('responder press events pair pressIn with one pressOut', () => {
     const responder = responderNode(rendered)
 
     await act(async () => {
-      responder.props.onResponderGrant({})
+      responder.props.onResponderGrant(pressEvent())
     })
     expect(onPressIn).toHaveBeenCalledTimes(1)
 
     // a native menu boundary claims press ownership *after* this press started
     const owner = unstable_claimExternalPressOwnership('pairing-test')
     await act(async () => {
-      responder.props.onResponderRelease({})
+      responder.props.onResponderRelease(pressEvent())
       vi.runAllTimers()
     })
     unstable_releaseExternalPressOwnership(owner, 'pairing-test')
@@ -247,17 +248,17 @@ describe('responder press events pair pressIn with one pressOut', () => {
     const responder = responderNode(rendered)
 
     await act(async () => {
-      responder.props.onResponderGrant({})
+      responder.props.onResponderGrant(pressEvent())
     })
     await act(async () => {
-      responder.props.onResponderRelease({})
+      responder.props.onResponderRelease(pressEvent())
     })
     // the release is still waiting in the delayed pressOut timer here
     expect(onPressOut).not.toHaveBeenCalled()
 
     const owner = unstable_claimExternalPressOwnership('pairing-test')
     await act(async () => {
-      responder.props.onResponderGrant({})
+      responder.props.onResponderGrant(pressEvent())
     })
     unstable_releaseExternalPressOwnership(owner, 'pairing-test')
 
@@ -276,12 +277,37 @@ describe('responder press events pair pressIn with one pressOut', () => {
     const responder = responderNode(rendered)
 
     await act(async () => {
-      responder.props.onResponderGrant({})
-      responder.props.onResponderRelease({})
-      responder.props.onResponderTerminate({})
+      responder.props.onResponderGrant(pressEvent())
+      responder.props.onResponderRelease(pressEvent())
+      responder.props.onResponderTerminate(pressEvent())
       vi.runAllTimers()
     })
 
+    expect(onPressOut).toHaveBeenCalledTimes(1)
+  })
+
+  test('dragging outside cancels the action and leaves one matched press pair', async () => {
+    vi.useFakeTimers()
+    const onPress = vi.fn()
+    const onPressIn = vi.fn()
+    const onPressOut = vi.fn()
+    const rendered = await render(
+      <View
+        minPressDuration={0}
+        onPress={onPress}
+        onPressIn={onPressIn}
+        onPressOut={onPressOut}
+      />
+    )
+    const responder = responderNode(rendered)
+    await act(async () => {
+      responder.props.onResponderGrant(pressEvent())
+      responder.props.onResponderMove(pressEvent(200, 200))
+      responder.props.onResponderRelease(pressEvent(200, 200))
+      vi.runAllTimers()
+    })
+    expect(onPress).not.toHaveBeenCalled()
+    expect(onPressIn).toHaveBeenCalledTimes(1)
     expect(onPressOut).toHaveBeenCalledTimes(1)
   })
 
@@ -304,8 +330,8 @@ describe('responder press events pair pressIn with one pressOut', () => {
     const responder = responderNode(rendered)
 
     await act(async () => {
-      responder.props.onResponderGrant({})
-      responder.props.onResponderRelease({})
+      responder.props.onResponderGrant(pressEvent())
+      responder.props.onResponderRelease(pressEvent())
       vi.runAllTimers()
     })
 

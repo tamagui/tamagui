@@ -183,9 +183,9 @@ export function useEvents(
     // freezes Android — see top-of-file isAndroid comment). Hook is called
     // unconditionally here for stable hooks order; useMainThreadPressEvents
     // no-ops when enabled is false.
-    const useResponderFallback =
-      !isInsideNativeMenu &&
-      Boolean(hasRealPressEvents || (getIsAndroid() && hasPressEvents))
+    const useResponderFallback = Boolean(
+      hasRealPressEvents || (!isInsideNativeMenu && getIsAndroid() && hasPressEvents)
+    )
     useMainThreadPressEvents(events, viewProps, useResponderFallback, debugName)
 
     if (everEnabled) {
@@ -199,7 +199,7 @@ export function useEvents(
           }
         : {}
 
-      if (hasRealPressEvents && !isInsideNativeMenu) {
+      if (hasRealPressEvents) {
         // Real handlers are delivered by useMainThreadPressEvents above. Clear
         // any cached press-clause observer from an earlier render so it cannot
         // double-fire after onPress appears dynamically.

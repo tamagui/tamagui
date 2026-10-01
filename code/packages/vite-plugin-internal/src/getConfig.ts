@@ -132,6 +132,10 @@ export function getConfig(tamaguiPlugin: any) {
               replacement: requireResolve('react-native-worklets/lib/module/mock.js'),
             },
             {
+              find: /^react-native\/Libraries\/Pressability\/usePressability$/,
+              replacement: join(__dirname, 'nativePressability.cjs'),
+            },
+            {
               find: /^react-native$/,
               replacement: requireResolve('@tamagui/fake-react-native'),
             },

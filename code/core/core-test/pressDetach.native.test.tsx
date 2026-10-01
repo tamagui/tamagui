@@ -1,3 +1,4 @@
+import { pressEvent } from './pressEvent'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { TamaguiProvider, View, createTamagui } from '@tamagui/core'
 import { getGestureHandler } from '@tamagui/native'
@@ -64,8 +65,8 @@ function backgroundOf(rendered: TestRenderer.ReactTestRenderer, testID: string) 
 
 async function tap(rendered: TestRenderer.ReactTestRenderer, testID: string) {
   await act(async () => {
-    hostNode(rendered, testID).props.onResponderGrant({})
-    hostNode(rendered, testID).props.onResponderRelease({})
+    hostNode(rendered, testID).props.onResponderGrant(pressEvent())
+    hostNode(rendered, testID).props.onResponderRelease(pressEvent())
     vi.runAllTimers()
   })
 }
@@ -81,7 +82,7 @@ describe('press detach', () => {
 
     // press in: the wash shows
     await act(async () => {
-      hostNode(rendered!, 'row').props.onResponderGrant({})
+      hostNode(rendered!, 'row').props.onResponderGrant(pressEvent())
     })
     expect(backgroundOf(rendered!, 'row')).toBe('red')
 
