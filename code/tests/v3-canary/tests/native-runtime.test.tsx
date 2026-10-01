@@ -1,6 +1,7 @@
 import { createRequire } from 'node:module'
 import type { ReactElement } from 'react'
 import { describe, expect, test, vi } from 'vitest-native'
+import { pressEvent } from '../../../core/core-test/pressEvent'
 
 import { CanaryTree } from '../src/CanaryTree'
 
@@ -59,7 +60,7 @@ describe('shared v3 canary on native', () => {
       (node) =>
         node.props.testID === 'canary-button' &&
         typeof node.props.onStartShouldSetResponder === 'function' &&
-        node.props.onStartShouldSetResponder({}) === true &&
+        node.props.onStartShouldSetResponder(pressEvent()) === true &&
         typeof node.props.onResponderGrant === 'function' &&
         typeof node.props.onResponderRelease === 'function'
     )
@@ -86,8 +87,8 @@ describe('shared v3 canary on native', () => {
     expect(selectTrigger).toMatchObject({ paddingTop: 6, paddingBottom: 6 })
 
     await act(async () => {
-      buttonResponder.props.onResponderGrant({})
-      buttonResponder.props.onResponderRelease({})
+      buttonResponder.props.onResponderGrant(pressEvent())
+      buttonResponder.props.onResponderRelease(pressEvent())
       vi.runAllTimers()
     })
 

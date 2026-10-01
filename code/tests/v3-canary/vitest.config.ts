@@ -1,6 +1,5 @@
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import { defineConfig } from 'vitest-native/config'
 
 const nativeExtensions = [
@@ -24,8 +23,15 @@ const canaryRoot = dirname(fileURLToPath(import.meta.url))
 
 const nativeAliases = [
   {
+    find: /^react-native\/Libraries\/Pressability\/usePressability$/,
+    replacement: resolve(
+      canaryRoot,
+      '../../packages/vite-plugin-internal/src/nativePressability.cjs'
+    ),
+  },
+  {
     find: /^react-native(?:\/.*)?$/,
-    replacement: '@tamagui/fake-react-native',
+    replacement: resolve(canaryRoot, 'tests/native-platform.cjs'),
   },
   {
     find: /^react-native-safe-area-context(?:\/.*)?$/,
@@ -34,14 +40,6 @@ const nativeAliases = [
 ]
 
 export default defineConfig({
-  plugins: [
-    tamaguiPlugin({
-      components: ['tamagui'],
-      config: './tamagui.config.ts',
-      disableWatchTamaguiConfig: true,
-      disable: true,
-    }),
-  ],
   define: {
     'process.env.NODE_ENV': JSON.stringify('test'),
     'process.env.TAMAGUI_TARGET': JSON.stringify('native'),

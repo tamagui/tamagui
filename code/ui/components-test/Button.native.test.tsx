@@ -10,6 +10,7 @@ import {
 import type { ReactNode } from 'react'
 import TestRenderer, { act } from 'react-test-renderer'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
+import { pressEvent } from '../../core/core-test/pressEvent'
 
 import { Button as KitchenSinkButton } from '../../kitchen-sink/src/components/Button'
 
@@ -171,8 +172,8 @@ describe('Button native text', () => {
     )
 
     await act(async () => {
-      responderNode.props.onResponderGrant({})
-      responderNode.props.onResponderRelease({})
+      responderNode.props.onResponderGrant(pressEvent())
+      responderNode.props.onResponderRelease(pressEvent())
       vi.runAllTimers()
     })
 
@@ -211,14 +212,14 @@ describe('Button native text', () => {
     const owner = unstable_claimExternalPressOwnership('button-test')
     expect(unstable_hasExternalPressOwnership()).toBe(true)
     const responderNode = responderNodes.find(
-      (node) => node.props.onStartShouldSetResponder({}) === false
+      (node) => node.props.onStartShouldSetResponder(pressEvent()) === false
     )
     expect(responderNode).toBeTruthy()
 
     await act(async () => {
-      responderNode!.props.onResponderGrant({})
+      responderNode!.props.onResponderGrant(pressEvent())
       unstable_releaseExternalPressOwnership(owner, 'button-test')
-      responderNode!.props.onResponderRelease({})
+      responderNode!.props.onResponderRelease(pressEvent())
       vi.runAllTimers()
     })
 
@@ -244,14 +245,14 @@ describe('copied Button skin native behavior', () => {
     const responder = rendered.root.find(
       (node) =>
         typeof node.props.onStartShouldSetResponder === 'function' &&
-        node.props.onStartShouldSetResponder({}) === true &&
+        node.props.onStartShouldSetResponder(pressEvent()) === true &&
         typeof node.props.onResponderGrant === 'function' &&
         typeof node.props.onResponderRelease === 'function'
     )
 
     await act(async () => {
-      responder.props.onResponderGrant({})
-      responder.props.onResponderRelease({})
+      responder.props.onResponderGrant(pressEvent())
+      responder.props.onResponderRelease(pressEvent())
       vi.runAllTimers()
     })
 
@@ -270,7 +271,7 @@ describe('copied Button skin native behavior', () => {
     const activeDisabledResponders = disabled.root.findAll((node) => {
       return (
         typeof node.props.onStartShouldSetResponder === 'function' &&
-        node.props.onStartShouldSetResponder({}) === true &&
+        node.props.onStartShouldSetResponder(pressEvent()) === true &&
         typeof node.props.onResponderRelease === 'function'
       )
     })

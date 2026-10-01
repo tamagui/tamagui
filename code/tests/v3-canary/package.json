@@ -41,6 +41,7 @@
     "tailwindcss": "4.3.0",
     "typescript": "7.0.2",
     "vite": "^8.2.2",
-    "vitest-native": "npm:vitest@4.1.0"
+    "vitest-native": "npm:vitest@4.1.0",
+    "react-native-web": "~0.21.0"
   }
 }
