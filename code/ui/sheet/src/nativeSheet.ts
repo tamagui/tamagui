@@ -5,12 +5,12 @@ import type { NativeSheetRenderer, SheetNativePlatforms, SheetProps } from './ty
 
 // registration is native-only; web always uses Tamagui's own sheet.
 export function getNativeSheet(
-  _platform: SheetNativePlatforms,
+  _platform: SheetNativePlatforms
 ): ComponentType<SheetProps & { ref?: Ref<View> }> | null {
   return null
 }
 
 export function setupNativeSheet(
   _platform: SheetNativePlatforms,
-  _Renderer: NativeSheetRenderer,
+  _Renderer: NativeSheetRenderer
 ) {}

@@ -20,18 +20,19 @@ export function getNativeSheet(platform: SheetNativePlatforms) {
   const implementation = nativeSheets[platform]
   if (!implementation)
     throw new Error(
-      `Register a native ${platform} Sheet renderer with setupNativeSheet before rendering Sheet native`,
+      `Register a native ${platform} Sheet renderer with setupNativeSheet before rendering Sheet native`
     )
   return implementation
 }
 
 export function setupNativeSheet(
   platform: SheetNativePlatforms,
-  Renderer: NativeSheetRenderer,
+  Renderer: NativeSheetRenderer
 ) {
   nativeSheets[platform] = createRefComponent<View, SheetProps>(
     function NativeSheet(props, ref) {
-      const state = useSheetOpenState(props)
+      // a native request cannot replace a controlled parent's accepted value.
+      const state = useSheetOpenState(props, 'prop-wins')
       const { maxContentSize, ...sheetState } = useSheetState(props, state)
       const { open, setOpen } = state
       const openRef = useRef(open)
@@ -109,6 +110,6 @@ export function setupNativeSheet(
           </SheetProvider>
         </SheetNativeSystemContext.Provider>
       )
-    },
+    }
   )
 }

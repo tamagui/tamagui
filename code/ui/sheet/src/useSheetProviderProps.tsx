@@ -26,7 +26,7 @@ export function useSheetProviderProps(props: SheetProps, state: SheetOpenState) 
     throw new Error(
       process.env.NODE_ENV === 'production'
         ? `❌ 008`
-        : 'Must set animations in tamagui.config.ts',
+        : 'Must set animations in tamagui.config.ts'
     )
   }
 

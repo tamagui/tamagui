@@ -22,7 +22,7 @@ export function useSheetState(props: SheetProps, state: SheetOpenState) {
   const snapPoints = React.useMemo(
     () => (props.dismissOnSnapToBottom ? [...snapPointsProp, 0] : snapPointsProp),
 
-    [JSON.stringify(snapPointsProp), props.dismissOnSnapToBottom],
+    [JSON.stringify(snapPointsProp), props.dismissOnSnapToBottom]
   )
 
   // lets set -1 to be always the "open = false" position
@@ -30,7 +30,7 @@ export function useSheetState(props: SheetProps, state: SheetOpenState) {
     prop: props.position,
     defaultProp: props.defaultPosition || (state.open ? 0 : -1),
     onChange: props.onPositionChange,
-    strategy: 'most-recent-wins',
+    strategy: state.strategy,
   })
 
   const position = state.open === false ? -1 : position_
@@ -46,7 +46,7 @@ export function useSheetState(props: SheetProps, state: SheetOpenState) {
         setPositionImmediate(next)
       }
     },
-    [props.dismissOnSnapToBottom, snapPoints.length, setPositionImmediate, state.setOpen],
+    [props.dismissOnSnapToBottom, snapPoints.length, setPositionImmediate, state.setOpen]
   )
 
   if (process.env.NODE_ENV === 'development') {
@@ -67,12 +67,12 @@ export function useSheetState(props: SheetProps, state: SheetOpenState) {
       })
     ) {
       console.warn(
-        '⚠️ Invalid snapPoint given, snapPoints must be positive numeric values, string percentages between 0-100%, or "fit" when snapPointsMode is mixed',
+        '⚠️ Invalid snapPoint given, snapPoints must be positive numeric values, string percentages between 0-100%, or "fit" when snapPointsMode is mixed'
       )
     }
     if (snapPointsMode === 'mixed' && snapPoints.indexOf('fit') > 0) {
       console.warn(
-        '⚠️ Invalid snapPoint given, "fit" must be the first/largest snap point when snapPointsMode is mixed',
+        '⚠️ Invalid snapPoint given, "fit" must be the first/largest snap point when snapPointsMode is mixed'
       )
     }
     if (
@@ -81,7 +81,7 @@ export function useSheetState(props: SheetProps, state: SheetOpenState) {
         snapPoints[0] !== 'fit')
     ) {
       console.warn(
-        '⚠️ Invalid snapPoint given, there are no snap points when snapPointsMode is fit',
+        '⚠️ Invalid snapPoint given, there are no snap points when snapPointsMode is fit'
       )
     }
     if (
@@ -89,7 +89,7 @@ export function useSheetState(props: SheetProps, state: SheetOpenState) {
       snapPoints.some((p) => typeof p !== 'number' || p < 0)
     ) {
       console.warn(
-        '⚠️ Invalid snapPoint given, snapPoints must be positive numeric values when snapPointsMode is constant',
+        '⚠️ Invalid snapPoint given, snapPoints must be positive numeric values when snapPointsMode is constant'
       )
     }
     if (
@@ -97,7 +97,7 @@ export function useSheetState(props: SheetProps, state: SheetOpenState) {
       snapPoints.some((p) => typeof p !== 'number' || p < 0 || p > 100)
     ) {
       console.warn(
-        '⚠️ Invalid snapPoint given, snapPoints must be numeric values between 0 and 100 when snapPointsMode is percent',
+        '⚠️ Invalid snapPoint given, snapPoints must be numeric values between 0 and 100 when snapPointsMode is percent'
       )
     }
   }

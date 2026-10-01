@@ -6,6 +6,7 @@ import {
   createStyledHOC,
   styled,
   View,
+  type GetProps,
   type TamaguiElement,
   type ViewProps,
 } from '@tamagui/core'
@@ -47,7 +48,7 @@ type SheetStyleShorthandProps = {
 }
 
 type SheetViewProps<ExtraProps extends object = {}> = SheetScopedProps<
-  ViewProps & SheetStyleShorthandProps & ExtraProps
+  GetProps<typeof View> & SheetStyleShorthandProps & ExtraProps
 >
 
 const SheetHandleFrame = styled(XStack, {
@@ -146,7 +147,7 @@ export const SheetHandle = createStyledHOC(
         {...props}
       />
     )
-  },
+  }
 )
 
 export const SheetOverlay = createStyledHOC(
@@ -165,7 +166,7 @@ export const SheetOverlay = createStyledHOC(
       if (process.env.NODE_ENV === 'development' && !didWarn.current) {
         didWarn.current = true
         console.error(
-          'Sheet.Overlay must be a direct child of Sheet. Move it next to Sheet.Handle and Sheet.Container.',
+          'Sheet.Overlay must be a direct child of Sheet. Move it next to Sheet.Handle and Sheet.Container.'
         )
       }
 
@@ -182,11 +183,11 @@ export const SheetOverlay = createStyledHOC(
             ? () => {
                 context.setOpen(false)
               }
-            : undefined,
+            : undefined
         )}
       />
     )
-  },
+  }
 )
 
 type ExtraContainerProps = {
@@ -207,7 +208,7 @@ export const SheetContainer = createStyledHOC(
       children,
       ...props
     }: SheetViewProps<ExtraContainerProps>,
-    forwardedRef,
+    forwardedRef
   ) => {
     const context = useSheetContext(scope)
     const { hasFit, frameSize, contentRef, open } = context
@@ -286,7 +287,7 @@ export const SheetContainer = createStyledHOC(
         {sheetContents}
       </RemoveScroll>
     )
-  },
+  }
 )
 
 type ExtraBackgroundProps = {
@@ -301,7 +302,7 @@ export const SheetBackground = createStyledHOC(
   SheetBackgroundFrame,
   (
     { scope, disableHideBottomOverflow, ...props }: SheetViewProps<ExtraBackgroundProps>,
-    forwardedRef,
+    forwardedRef
   ) => {
     const context = useSheetContext(scope)
     if (context.onlyShowContainer) return null
@@ -317,7 +318,7 @@ export const SheetBackground = createStyledHOC(
         {...props}
       />
     )
-  },
+  }
 )
 
 export const SheetRoot = createRefComponent<RNView, SheetProps>(
@@ -327,7 +328,7 @@ export const SheetRoot = createRefComponent<RNView, SheetProps>(
     const adaptContext = useAdaptContext()
     const { isShowingNonSheet } = useSheetController(props.scope)
     const shouldUseAdapt = Boolean(
-      adaptContext.open !== undefined || adaptContext.onOpenChange,
+      adaptContext.open !== undefined || adaptContext.onOpenChange
     )
     const isShowingAdaptNonSheet =
       shouldUseAdapt && !adaptContext.active && adaptContext.open
@@ -352,7 +353,7 @@ export const SheetRoot = createRefComponent<RNView, SheetProps>(
     ) : (
       implementation
     )
-  },
+  }
 )
 
 const sheetParts = {
@@ -367,7 +368,7 @@ export const SheetControlled = withStaticProperties(
   SheetRoot as unknown as FunctionComponent<
     Omit<SheetProps, 'open' | 'onOpenChange'> & { ref?: Ref<RNView> }
   >,
-  sheetParts,
+  sheetParts
 )
 
 export const Sheet = withStaticProperties(SheetRoot, {

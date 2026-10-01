@@ -49,7 +49,7 @@ const SheetScrollViewCustom = createRefComponent<ScrollViewRef, SheetScrollViewP
       style,
       ...props
     }: SheetScrollViewProps,
-    ref,
+    ref
   ) => {
     const context = useSheetContext(scope)
     if (context.onlyShowContainer)
@@ -170,7 +170,7 @@ const SheetScrollViewCustom = createRefComponent<ScrollViewRef, SheetScrollViewP
           timeStamp: Date.now(),
         } as any)
       },
-      [onScroll, scrollBridge],
+      [onScroll, scrollBridge]
     )
 
     const scrollFocusedInputClearOfKeyboard = React.useCallback(() => {
@@ -216,7 +216,7 @@ const SheetScrollViewCustom = createRefComponent<ScrollViewRef, SheetScrollViewP
       focusedInputScrollFrame.current = requestAnimationFrame(() => {
         scrollFocusedInputClearOfKeyboard()
         focusedInputScrollFrame.current = requestAnimationFrame(
-          scrollFocusedInputClearOfKeyboard,
+          scrollFocusedInputClearOfKeyboard
         )
       })
     }, [hasFit, scrollFocusedInputClearOfKeyboard])
@@ -386,7 +386,7 @@ const SheetScrollViewCustom = createRefComponent<ScrollViewRef, SheetScrollViewP
         {contentWrapper}
       </ScrollView>
     )
-  },
+  }
 )
 
 export const SheetScrollView = createStyledHOC(
@@ -402,5 +402,5 @@ export const SheetScrollView = createStyledHOC(
   {
     disableTheme: true,
     displayName: SHEET_SCROLL_VIEW_NAME,
-  },
+  }
 )

@@ -6,7 +6,10 @@ import type { SheetProps } from './types'
 import type { SheetControllerContextValue } from './useSheetController'
 import { useSheetController } from './useSheetController'
 
-export const useSheetOpenState = (props: SheetProps) => {
+export const useSheetOpenState = (
+  props: SheetProps,
+  strategy: 'prop-wins' | 'most-recent-wins' = 'most-recent-wins'
+) => {
   const adaptTargetScope = useAdaptTargetScope()
   const adapt = useAdaptTarget(adaptTargetScope ?? undefined)
   const adaptContext = useAdaptContext(adaptTargetScope ?? undefined)
@@ -29,7 +32,7 @@ export const useSheetOpenState = (props: SheetProps) => {
     ? Boolean(adaptContext.open) && !adaptContext.handoff.hidden
     : legacyController?.open
   const localSkipNextAnimation = Boolean(
-    wasHiddenRef.current && !isHidden && controllerOpen,
+    wasHiddenRef.current && !isHidden && controllerOpen
   )
   const skipNextAnimation =
     (shouldUseAdapt ? adapt?.handoff.skipNextAnimation : undefined) ??
@@ -67,7 +70,7 @@ export const useSheetOpenState = (props: SheetProps) => {
     prop: propVal,
     defaultProp: props.defaultOpen ?? false,
     onChange: onOpenChangeInternal,
-    strategy: 'most-recent-wins',
+    strategy,
   })
 
   return {
@@ -75,6 +78,7 @@ export const useSheetOpenState = (props: SheetProps) => {
     setOpen,
     isHidden,
     controller,
+    strategy,
     onNativeDismiss: shouldUseAdapt
       ? () =>
           adapt?.handoff.onTransition({ phase: 'end', cause: 'close', finished: true })
