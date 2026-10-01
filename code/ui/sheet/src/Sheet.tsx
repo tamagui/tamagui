@@ -95,7 +95,6 @@ const SheetContainerFrame = styled(YStack, {
   position: 'relative',
   zIndex: 0,
   width: '100%',
-  maxHeight: '100%',
 })
 
 const SheetBackgroundFrame = styled(YStack, {
@@ -229,6 +228,7 @@ export const SheetContainer = createStyledHOC(
             ref={composedContentRef}
             flex={hasFit ? 0 : 1}
             flexBasis={hasFit ? 'auto' : undefined}
+            maxHeight={hasFit ? undefined : '100%'}
             pointerEvents={open ? 'auto' : 'none'}
             data-state={open ? 'open' : 'closed'}
             {...props}
@@ -249,6 +249,7 @@ export const SheetContainer = createStyledHOC(
           ref={composedContentRef}
           flex={hasFit && open ? 0 : 1}
           flexBasis={hasFit ? 'auto' : undefined}
+          maxHeight="100%"
           height={
             shouldUseFixedHeight
               ? stableFrameSize.current
