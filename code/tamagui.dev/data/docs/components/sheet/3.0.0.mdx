@@ -377,12 +377,15 @@ render nothing in this mode. Their styles and press handlers do not customize
 the system chrome. Use the renderer's presentation callbacks for dismissal
 policy.
 
-The registration accepts a React component. An imperative implementation may
-keep a controller ref inside that component and call its presentation methods
-in an effect when the resolved `open` value changes. Forward the controller's
-interaction requests and physical completion separately. The previous
-`setupNativeSheet('ios', modalModule)` object registration is replaced by this
-component contract; no modal dependency is built into Tamagui.
+The registration accepts a React component. An imperative implementation keeps
+a controller ref inside that component and drives its presentation methods from
+the resolved `open` value. Use a layout effect when these commands synchronize
+the host's controlled value, so its acknowledgment observes the parent's accepted
+state. Forward interaction requests and physical completion separately. Preserve
+the native library's content container and lazy mounting behavior, and check
+parent-declined close and reopen during dismissal against its actual events.
+The previous `setupNativeSheet('ios', modalModule)` object registration is
+replaced by this component contract; no modal dependency is built into Tamagui.
 
 Native renderers decide which Sheet options their platform can represent.
 Reject unsupported combinations before presenting. A native iOS system sheet
