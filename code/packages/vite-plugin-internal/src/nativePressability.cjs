@@ -48,7 +48,12 @@ function load(filename) {
       [require.resolve('@react-native/babel-preset'), { enableBabelRuntime: false }],
     ],
   })
-  compiled._compile(output.code, filename)
+  Function(
+    'require',
+    'module',
+    'exports',
+    output.code
+  )(compiled.require, compiled, compiled.exports)
   return compiled.exports
 }
 

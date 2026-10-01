@@ -49,7 +49,7 @@ Module.prototype.require = function (id) {
   }
   // handle specific react-native subpaths that need special mocking
   if (id === 'react-native/Libraries/Pressability/usePressability') {
-    return usePressability
+    return { __esModule: true, default: usePressability }
   }
   // redirect all other react-native requires to fake-react-native
   if (id === 'react-native' || id.startsWith('react-native/')) {

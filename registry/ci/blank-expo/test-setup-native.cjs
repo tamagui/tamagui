@@ -1,7 +1,10 @@
+delete process.env.IS_STATIC
+
 const Module = require('module')
 
 const originalRequire = Module.prototype.require
 const safeAreaContextMock = require('./tests/native-safe-area.cjs')
+const nativePressability = require('../../../code/packages/vite-plugin-internal/src/nativePressability.cjs')
 
 Module.prototype.require = function (id) {
   if (
@@ -14,7 +17,7 @@ Module.prototype.require = function (id) {
     return () => 'NativeComponent'
   }
   if (id === 'react-native/Libraries/Pressability/usePressability') {
-    return { default: () => ({}) }
+    return { __esModule: true, default: nativePressability }
   }
   if (id === 'react-native' || id.startsWith('react-native/')) {
     return originalRequire.call(this, '@tamagui/fake-react-native')

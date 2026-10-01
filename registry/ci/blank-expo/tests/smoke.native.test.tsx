@@ -3,6 +3,7 @@ import type { ReactElement } from 'react'
 import { describe, expect, test, vi } from 'vitest-native'
 
 import { App } from '../src/App'
+import { pressEvent } from '../../../../code/core/core-test/pressEvent'
 
 type TestNode = { props: Record<string, any> }
 type Rendered = {
@@ -52,13 +53,13 @@ describe('installed Button on native', () => {
       (n) =>
         n.props.testID === 'smoke-button' &&
         typeof n.props.onStartShouldSetResponder === 'function' &&
-        n.props.onStartShouldSetResponder({}) === true &&
+        n.props.onStartShouldSetResponder(pressEvent()) === true &&
         typeof n.props.onResponderRelease === 'function'
     )
 
     await act(async () => {
-      responder.props.onResponderGrant?.({})
-      responder.props.onResponderRelease({})
+      responder.props.onResponderGrant?.(pressEvent())
+      responder.props.onResponderRelease(pressEvent())
       vi.runAllTimers()
     })
 
