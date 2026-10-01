@@ -1,5 +1,11 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { createStyledHOC, isWeb, View, type GetProps } from '@tamagui/core'
+import {
+  createRefComponent,
+  createStyledHOC,
+  isWeb,
+  View,
+  type GetProps,
+} from '@tamagui/core'
 import type { ScrollViewRef } from '@tamagui/scroll-view'
 import { ScrollView } from '@tamagui/scroll-view'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -33,8 +39,7 @@ type SheetScrollViewProps = SheetScopedProps<
   }
 >
 
-export const SheetScrollView = createStyledHOC(
-  ScrollView,
+const SheetScrollViewCustom = createRefComponent<ScrollViewRef, SheetScrollViewProps>(
   (
     {
       scope,
@@ -44,9 +49,11 @@ export const SheetScrollView = createStyledHOC(
       style,
       ...props
     }: SheetScrollViewProps,
-    ref
+    ref,
   ) => {
     const context = useSheetContext(scope)
+    if (context.onlyShowContainer)
+      throw new Error('Custom Sheet scrolling requires a custom Sheet')
     const gestureContext = useGestureSheetContext()
     const { scrollBridge, setHasScrollView, hasFit, screenSize } = context
     const keyboardOccludedHeight = Math.max(0, context.keyboardOccludedHeight || 0)
@@ -163,7 +170,7 @@ export const SheetScrollView = createStyledHOC(
           timeStamp: Date.now(),
         } as any)
       },
-      [onScroll, scrollBridge]
+      [onScroll, scrollBridge],
     )
 
     const scrollFocusedInputClearOfKeyboard = React.useCallback(() => {
@@ -209,7 +216,7 @@ export const SheetScrollView = createStyledHOC(
       focusedInputScrollFrame.current = requestAnimationFrame(() => {
         scrollFocusedInputClearOfKeyboard()
         focusedInputScrollFrame.current = requestAnimationFrame(
-          scrollFocusedInputClearOfKeyboard
+          scrollFocusedInputClearOfKeyboard,
         )
       })
     }, [hasFit, scrollFocusedInputClearOfKeyboard])
@@ -380,8 +387,20 @@ export const SheetScrollView = createStyledHOC(
       </ScrollView>
     )
   },
+)
+
+export const SheetScrollView = createStyledHOC(
+  ScrollView,
+  ({ scope, ...props }: SheetScrollViewProps, ref) => {
+    const context = useSheetContext(scope)
+    return context.onlyShowContainer ? (
+      <ScrollView {...props} ref={ref} />
+    ) : (
+      <SheetScrollViewCustom {...props} scope={scope} ref={ref} />
+    )
+  },
   {
     disableTheme: true,
     displayName: SHEET_SCROLL_VIEW_NAME,
-  }
+  },
 )

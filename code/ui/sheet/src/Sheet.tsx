@@ -146,7 +146,7 @@ export const SheetHandle = createStyledHOC(
         {...props}
       />
     )
-  }
+  },
 )
 
 export const SheetOverlay = createStyledHOC(
@@ -165,7 +165,7 @@ export const SheetOverlay = createStyledHOC(
       if (process.env.NODE_ENV === 'development' && !didWarn.current) {
         didWarn.current = true
         console.error(
-          'Sheet.Overlay must be a direct child of Sheet. Move it next to Sheet.Handle and Sheet.Container.'
+          'Sheet.Overlay must be a direct child of Sheet. Move it next to Sheet.Handle and Sheet.Container.',
         )
       }
 
@@ -182,11 +182,11 @@ export const SheetOverlay = createStyledHOC(
             ? () => {
                 context.setOpen(false)
               }
-            : undefined
+            : undefined,
         )}
       />
     )
-  }
+  },
 )
 
 type ExtraContainerProps = {
@@ -207,10 +207,10 @@ export const SheetContainer = createStyledHOC(
       children,
       ...props
     }: SheetViewProps<ExtraContainerProps>,
-    forwardedRef
+    forwardedRef,
   ) => {
     const context = useSheetContext(scope)
-    const { hasFit, disableRemoveScroll, frameSize, contentRef, open } = context
+    const { hasFit, frameSize, contentRef, open } = context
     const composedContentRef = useComposedRefs(forwardedRef, contentRef)
     const offscreenSize = useSheetOffscreenSize(context)
     const stableFrameSize = useRef(frameSize)
@@ -222,6 +222,25 @@ export const SheetContainer = createStyledHOC(
     }, [open, frameSize])
 
     const sheetContents = useMemo(() => {
+      if (context.onlyShowContainer) {
+        return (
+          <SheetContainerFrame
+            ref={composedContentRef}
+            flex={hasFit ? 0 : 1}
+            flexBasis={hasFit ? 'auto' : undefined}
+            pointerEvents={open ? 'auto' : 'none'}
+            data-state={open ? 'open' : 'closed'}
+            {...props}
+            onLayout={composeEventHandlers(props.onLayout, (event) => {
+              context.setFrameSize(event.nativeEvent.layout.height)
+            })}
+          >
+            <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex)}>
+              {children}
+            </StackZIndexContext>
+          </SheetContainerFrame>
+        )
+      }
       const shouldUseFixedHeight = hasFit && !open && stableFrameSize.current
 
       return (
@@ -249,14 +268,25 @@ export const SheetContainer = createStyledHOC(
           )}
         </SheetContainerFrame>
       )
-    }, [open, props, frameSize, offscreenSize, adjustPaddingForOffscreenContent, hasFit])
+    }, [
+      open,
+      props,
+      frameSize,
+      offscreenSize,
+      adjustPaddingForOffscreenContent,
+      hasFit,
+      context.onlyShowContainer,
+      context.setFrameSize,
+    ])
+
+    if (context.onlyShowContainer) return sheetContents
 
     return (
-      <RemoveScroll enabled={!disableRemoveScroll && context.open}>
+      <RemoveScroll enabled={!context.disableRemoveScroll && context.open}>
         {sheetContents}
       </RemoveScroll>
     )
-  }
+  },
 )
 
 type ExtraBackgroundProps = {
@@ -271,9 +301,10 @@ export const SheetBackground = createStyledHOC(
   SheetBackgroundFrame,
   (
     { scope, disableHideBottomOverflow, ...props }: SheetViewProps<ExtraBackgroundProps>,
-    forwardedRef
+    forwardedRef,
   ) => {
     const context = useSheetContext(scope)
+    if (context.onlyShowContainer) return null
     const bottomOverflow = isWeb
       ? Math.max(context.frameSize, getMaxViewportHeight())
       : context.frameSize
@@ -286,7 +317,7 @@ export const SheetBackground = createStyledHOC(
         {...props}
       />
     )
-  }
+  },
 )
 
 export const SheetRoot = createRefComponent<RNView, SheetProps>(
@@ -296,21 +327,17 @@ export const SheetRoot = createRefComponent<RNView, SheetProps>(
     const adaptContext = useAdaptContext()
     const { isShowingNonSheet } = useSheetController(props.scope)
     const shouldUseAdapt = Boolean(
-      adaptContext.open !== undefined || adaptContext.onOpenChange
+      adaptContext.open !== undefined || adaptContext.onOpenChange,
     )
     const isShowingAdaptNonSheet =
       shouldUseAdapt && !adaptContext.active && adaptContext.open
 
-    let SheetImplementation = SheetImplementationCustom
-
-    if (props.native) {
-      // null unless this is ios and the app registered a native sheet
-      const impl = getNativeSheet('ios')
-      if (impl) {
-        // @ts-expect-error accepting external sheet implementation
-        SheetImplementation = impl
-      }
-    }
+    const nativeImplementation =
+      props.native === true ||
+      (Array.isArray(props.native) && props.native.includes('ios'))
+        ? getNativeSheet('ios')
+        : null
+    const SheetImplementation = nativeImplementation ?? SheetImplementationCustom
 
     if (isShowingAdaptNonSheet || isShowingNonSheet || !hydrated) {
       return null
@@ -325,7 +352,7 @@ export const SheetRoot = createRefComponent<RNView, SheetProps>(
     ) : (
       implementation
     )
-  }
+  },
 )
 
 const sheetParts = {
@@ -340,7 +367,7 @@ export const SheetControlled = withStaticProperties(
   SheetRoot as unknown as FunctionComponent<
     Omit<SheetProps, 'open' | 'onOpenChange'> & { ref?: Ref<RNView> }
   >,
-  sheetParts
+  sheetParts,
 )
 
 export const Sheet = withStaticProperties(SheetRoot, {

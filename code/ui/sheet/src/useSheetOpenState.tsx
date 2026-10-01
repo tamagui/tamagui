@@ -29,7 +29,7 @@ export const useSheetOpenState = (props: SheetProps) => {
     ? Boolean(adaptContext.open) && !adaptContext.handoff.hidden
     : legacyController?.open
   const localSkipNextAnimation = Boolean(
-    wasHiddenRef.current && !isHidden && controllerOpen
+    wasHiddenRef.current && !isHidden && controllerOpen,
   )
   const skipNextAnimation =
     (shouldUseAdapt ? adapt?.handoff.skipNextAnimation : undefined) ??
@@ -75,6 +75,10 @@ export const useSheetOpenState = (props: SheetProps) => {
     setOpen,
     isHidden,
     controller,
+    onNativeDismiss: shouldUseAdapt
+      ? () =>
+          adapt?.handoff.onTransition({ phase: 'end', cause: 'close', finished: true })
+      : undefined,
   }
 }
 
