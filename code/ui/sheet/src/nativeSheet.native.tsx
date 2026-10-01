@@ -41,11 +41,6 @@ export function setupNativeSheet(
         }
       }, [open])
 
-      function setOpenInternal(next: boolean) {
-        props.onOpenChange?.(open)
-        setOpen(next)
-      }
-
       return (
         <SheetNativeSystemContext.Provider value>
           <SheetProvider
@@ -56,7 +51,7 @@ export function setupNativeSheet(
             {...providerProps}
             onlyShowContainer
           >
-            <ModalSheetView ref={ref} onModalDidDismiss={() => setOpenInternal(false)}>
+            <ModalSheetView ref={ref} onModalDidDismiss={() => setOpen(false)}>
               <ModalSheetViewMainContent>
                 <View style={{ flex: 1 }}>{props.children}</View>
               </ModalSheetViewMainContent>
