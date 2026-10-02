@@ -508,6 +508,29 @@ describe('authored ordering across shorthand and longhand candidates', () => {
     expect(styleOf(styles).borderStartWidth).toBeUndefined()
     expect(styleOf(styles).borderLeftWidth).toBe(6)
   })
+
+  test('a later border-color shorthand resets an earlier logical side', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'border-s-[red] border-[blue]',
+    })
+
+    expect(styleOf(styles).borderStartColor).toBeUndefined()
+    expect(styleOf(styles).borderLeftColor).toBe('blue')
+  })
+
+  test('plain style props keep the same order without a class', () => {
+    const styles = splitTailwindStyles(View, {
+      paddingInlineStart: 4,
+      borderStartStartRadius: 2,
+      padding: 6,
+      borderRadius: 8,
+    } as any)
+
+    expect(styleOf(styles).paddingStart).toBeUndefined()
+    expect(styleOf(styles).borderStartStartRadius).toBeUndefined()
+    expect(styleOf(styles).paddingLeft).toBe(6)
+    expect(styleOf(styles).borderTopLeftRadius).toBe(8)
+  })
 })
 
 describe('web-only candidates', () => {
