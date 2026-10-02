@@ -2,7 +2,8 @@ import type { AnimatedNumberStrategy, TransitionProp } from '@tamagui/core';
 import type { PortalProps } from '@tamagui/portal';
 import type { PanResponderConfig } from '@tamagui/react-native-pan-responder';
 import type { RemoveScroll } from '@tamagui/remove-scroll';
-import type { ReactNode } from 'react';
+import type { ComponentType, ReactNode, Ref } from 'react';
+import type { View } from '@tamagui/react-native-types';
 import type React from 'react';
 export type SheetScopes = string;
 export type SheetScopedProps<P> = Omit<P, 'scope'> & {
@@ -174,9 +175,26 @@ export type SheetDragSurfaceProps = {
     children?: ReactNode;
 };
 export type SheetNativePlatforms = 'ios';
-export type SheetNativeModal = {
-    ModalSheetView: any;
-    ModalSheetViewMainContent: any;
+export type NativeSheetSnapPoint = {
+    type: 'percent';
+    value: number;
+} | {
+    type: 'height';
+    value: number;
+} | {
+    type: 'fit';
 };
+export type NativeSheetRendererProps = Omit<SheetProps, 'open' | 'defaultOpen' | 'onOpenChange' | 'snapPoints' | 'position' | 'defaultPosition' | 'onPositionChange' | 'children'> & {
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+    snapPoints: readonly NativeSheetSnapPoint[];
+    position: number;
+    onPositionChange: (position: number) => void;
+    /** report physical removal after accepted close; never report an interrupted close. */
+    onDismiss: () => void;
+    children: ReactNode;
+    ref?: Ref<View>;
+};
+export type NativeSheetRenderer = ComponentType<NativeSheetRendererProps>;
 export {};
 //# sourceMappingURL=types.d.ts.map
