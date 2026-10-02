@@ -38,6 +38,8 @@ describe('claimed candidates become flat props', () => {
     expect(tokenize('leading-96')).toEqual({ lineHeight: '384px' })
     expect(tokenize('leading-[24px]')).toEqual({ lineHeight: '24px' })
     expect(tokenize('leading-[1.25]')).toEqual({ lineHeight: '1.25' })
+    expect(tokenize('leading-tight')).toEqual({ lineHeight: 1.25 })
+    expect(tokenize('leading-none')).toEqual({ lineHeight: 1 })
     expect(tokenize('flex-2/3')).toEqual({
       flexGrow: 1,
       flexShrink: 1,

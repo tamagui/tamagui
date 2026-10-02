@@ -28,6 +28,7 @@ import {
   type GrammarConfigView,
   type ParsedCandidate,
   resolveTokenName,
+  tailwindLeadingRatios,
 } from '@tamagui/style-grammar/tooling/candidate'
 
 /**
@@ -172,6 +173,11 @@ function tailwindClassToFlatProp(
         value: parsed.negative && sized[0] !== '-' ? `-${sized}` : sized,
       }
     }
+  }
+
+  // named leading (leading-tight) is a unitless ratio, which v3 line height reads as such
+  if (parsed.convenience === 'leading-keyword') {
+    return { key: prop, value: tailwindLeadingRatios[value] }
   }
 
   // Tailwind's numbered leading scale is the spacing scale (N * 0.25rem),

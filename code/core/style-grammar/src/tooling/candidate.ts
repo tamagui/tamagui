@@ -66,6 +66,16 @@ export type CandidateClassification =
 const sizingConveniences = new Set(['full', 'auto', 'screen', 'min', 'max', 'fit'])
 const fontGenerics = new Set(['sans', 'serif', 'mono'])
 const numericPattern = /^\d+(?:\.\d+)?$/
+
+// tailwind v4's named leading scale, as unitless line-height ratios
+export const tailwindLeadingRatios: Record<string, number> = {
+  none: 1,
+  tight: 1.25,
+  snug: 1.375,
+  normal: 1.5,
+  relaxed: 1.625,
+  loose: 2,
+}
 const extraPrefixes = [
   'border-x',
   'border-y',
@@ -583,6 +593,17 @@ function chooseEntry(
     const flex = entries.find((entry) => entry.prop === 'flex')
     if (flex) {
       return { entry: flex, valueKind: 'convenience', convenience: 'flex-bundle' }
+    }
+  }
+
+  if (prefix === 'leading' && Object.hasOwn(tailwindLeadingRatios, rawValue)) {
+    const lineHeight = entries.find((entry) => entry.prop === 'lineHeight')
+    if (lineHeight) {
+      return {
+        entry: lineHeight,
+        valueKind: 'convenience',
+        convenience: 'leading-keyword',
+      }
     }
   }
 
