@@ -344,7 +344,8 @@ apply on every driver.
 
 ## Native system renderers
 
-Register a renderer at app startup before rendering `<Sheet native>`. Tamagui
+Register a renderer at app startup to use system presentation with `<Sheet native>`.
+Without a registered renderer, Sheet uses its custom implementation. Tamagui
 owns open and position state, context, Adapt, and the lifetime of one content
 tree. The renderer owns platform presentation, authored detents, gestures,
 keyboard handling, and physical dismissal.

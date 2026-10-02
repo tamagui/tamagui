@@ -17,12 +17,7 @@ type NativeSheetImplementation = ReturnType<typeof createRefComponent<View, Shee
 
 export function getNativeSheet(platform: SheetNativePlatforms) {
   if (Platform.OS !== platform) return null
-  const implementation = nativeSheets[platform]
-  if (!implementation)
-    throw new Error(
-      `Register a native ${platform} Sheet renderer with setupNativeSheet before rendering Sheet native`
-    )
-  return implementation
+  return nativeSheets[platform] ?? null
 }
 
 export function setupNativeSheet(

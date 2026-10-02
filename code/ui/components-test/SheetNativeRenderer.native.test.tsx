@@ -13,6 +13,8 @@ vi.mock('react-native', async (importOriginal) => {
   return { ...actual, Platform: { ...actual.Platform, OS: 'ios' } }
 })
 
+vi.mock('../sheet/src/nativeSheet', () => import('../sheet/src/nativeSheet.native'))
+
 const config = createTamagui(getDefaultTamaguiConfig('native'))
 const rendered: TestRenderer.ReactTestRenderer[] = []
 
@@ -20,6 +22,33 @@ afterEach(async () => {
   await act(async () => {
     for (const tree of rendered.splice(0)) tree.unmount()
   })
+})
+
+test('unregistered native sheets render with the custom implementation', async () => {
+  let context: ReturnType<typeof useSheetContext>
+  function Content() {
+    context = useSheetContext()
+    return <View testID="unregistered-sheet-content" />
+  }
+  await act(async () => {
+    const tree = TestRenderer.create(
+      <TamaguiProvider config={config} defaultTheme="light">
+        <Sheet native defaultOpen>
+          <Sheet.Container>
+            <Content />
+          </Sheet.Container>
+        </Sheet>
+      </TamaguiProvider>
+    )
+    rendered.push(tree)
+  })
+  expect(context!.open).toBe(true)
+  expect(context!.onlyShowContainer).toBe(false)
+  expect(
+    rendered[0].root
+      .findAllByProps({ testID: 'unregistered-sheet-content' })
+      .filter((node) => typeof node.type === 'string')
+  ).toHaveLength(1)
 })
 
 async function mountSheet(props: SheetProps) {
