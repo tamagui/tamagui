@@ -70,6 +70,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
           >
             {Intl.DateTimeFormat('en-US', {
               month: 'short',
+              timeZone: 'UTC',
               year: 'numeric',
               day: 'numeric',
             }).format(new Date(frontmatter.publishedAt || ''))}

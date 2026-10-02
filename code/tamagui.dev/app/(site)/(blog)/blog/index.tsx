@@ -45,6 +45,7 @@ export default function Blog() {
                   <Paragraph opacity={0.5} cursor="inherit" color="color-10" size="3">
                     {Intl.DateTimeFormat('en-US', {
                       month: 'short',
+                      timeZone: 'UTC',
                       year: 'numeric',
                       day: 'numeric',
                     }).format(new Date(frontmatter.publishedAt || ''))}{' '}
