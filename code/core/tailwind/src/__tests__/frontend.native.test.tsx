@@ -391,6 +391,15 @@ describe('claimed candidates resolve to native style values', () => {
     expect(styleOf(splitTailwindStyles(Text, { className })).lineHeight).toBe(expected)
   })
 
+  test.each([
+    ['tracking-wide', 0.4],
+    ['tracking-tighter', -0.8],
+    ['-tracking-widest', -1.6],
+  ])('%s is em of the font size', (tracking, expected) => {
+    const className = `text-[16px] ${tracking}`
+    expect(styleOf(splitTailwindStyles(Text, { className })).letterSpacing).toBe(expected)
+  })
+
   test('fractional flex shorthand resolves to native flex longhands', () => {
     expect(styleOf(splitTailwindStyles(View, { className: 'flex-1/2' }))).toMatchObject({
       flexGrow: 1,

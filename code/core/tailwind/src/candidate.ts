@@ -29,6 +29,7 @@ import {
   type ParsedCandidate,
   resolveTokenName,
   tailwindLeadingRatios,
+  tailwindTrackingEms,
 } from '@tamagui/style-grammar/tooling/candidate'
 
 /**
@@ -178,6 +179,12 @@ function tailwindClassToFlatProp(
   // named leading (leading-tight) is a unitless ratio, which v3 line height reads as such
   if (parsed.convenience === 'leading-keyword') {
     return { key: prop, value: tailwindLeadingRatios[value] }
+  }
+
+  // named tracking (tracking-wide) is em of the font size, which core lowers per host
+  if (parsed.convenience === 'tracking-keyword') {
+    const em = tailwindTrackingEms[value] * (parsed.negative ? -1 : 1)
+    return { key: prop, value: `${em}em` }
   }
 
   // Tailwind's numbered leading scale is the spacing scale (N * 0.25rem),

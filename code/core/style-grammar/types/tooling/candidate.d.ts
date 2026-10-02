@@ -38,6 +38,7 @@ export type CandidateClassification =
       reason: string
     }
 export declare const tailwindLeadingRatios: Record<string, number>
+export declare const tailwindTrackingEms: Record<string, number>
 /**
  * Split a candidate on its unbracketed colons: everything before the last one is a
  * raw modifier, the remainder is the base. `null` for unbalanced brackets or an
