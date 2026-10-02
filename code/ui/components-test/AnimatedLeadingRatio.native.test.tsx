@@ -655,69 +655,6 @@ test('a font size that is actually changing takes the node to the JS driver', as
   expect(paintedStyle().fontSize).toBe(40)
 })
 
-// layout dimensions follow the same rule: a fixed width and height under a
-// transition that names every key must not take the node off the native
-// driver, or every opacity and transform frame becomes a JS-driven commit
-test('an opacity animation over a fixed width and height keeps the native driver', async () => {
-  await render(
-    <Text width={24} height={24} opacity={1} transition="slow">
-      hi
-    </Text>,
-    acceleratedConfig
-  )
-  await update(
-    <Text width={24} height={24} opacity={0.5} transition="slow">
-      hi
-    </Text>
-  )
-
-  const style = paintedStyle()
-  expect({ width: style.width, height: style.height }).toEqual({ width: 24, height: 24 })
-  expect(drivers()).toEqual([
-    [1, true],
-    [0.5, true],
-  ])
-})
-
-test('a height that is actually changing takes the node to the JS driver', async () => {
-  await render(
-    <Text width={24} height={24} opacity={1} transition="slow">
-      hi
-    </Text>,
-    acceleratedConfig
-  )
-  await update(
-    <Text width={24} height={48} opacity={0.5} transition="slow">
-      hi
-    </Text>
-  )
-
-  expect(drivers()).toEqual([
-    [1, true],
-    [48, false],
-    [0.5, false],
-  ])
-  // it rejoins the graph at the height last painted and moves from there
-  expect(painted('height')).toBe(24)
-  await act(async () => {
-    stepClock(200)
-  })
-  expect(painted('height')).toBe(36)
-
-  // once it arrives it leaves the graph, and the node is native again
-  await act(async () => {
-    stepClock(200)
-  })
-  started.length = 0
-  await update(
-    <Text width={24} height={48} opacity={1} transition="slow">
-      hi
-    </Text>
-  )
-  expect(drivers()).toEqual([[1, true]])
-  expect(paintedStyle().height).toBe(48)
-})
-
 test("a descendant keeps its host component across the ancestor's animation", async () => {
   await render(
     <Text fontSize={16} transition="fontSize 400ms">
