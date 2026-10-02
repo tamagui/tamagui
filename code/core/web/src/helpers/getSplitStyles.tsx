@@ -3621,7 +3621,7 @@ function emitValue(
         if (!list) continue
         // only the unconditional records: a media or pseudo longhand still
         // wins while its clause is active, the same as on web
-        for (let entry = list.length; entry--;) {
+        for (let entry = list.length; entry--; ) {
           if (list[entry][3] === '') list.splice(entry, 1)
         }
         if (!list.length) clearDirectStyle(state, logicals[index])
@@ -4067,7 +4067,7 @@ function clearDirectStyle(state: GetStyleState, property: string) {
     if (slot !== atomicKey || atomicKey === 'flex') {
       const entries = direct.flatSlots.get(slot)
       if (entries) {
-        for (let index = entries.length; index--;) {
+        for (let index = entries.length; index--; ) {
           if (entries[index][0] === atomicKey) entries.splice(index, 1)
         }
         if (!entries.length) direct.flatSlots.delete(slot)

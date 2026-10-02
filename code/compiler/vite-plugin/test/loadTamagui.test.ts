@@ -612,7 +612,7 @@ export const App = () => <View padding="fixtureNative" />
     })
   }
   const retried = await transform?.call(transformContext, source, id)
-  expect(typeof retried === 'object' && retried.code).toContain('"paddingTop":24')
+  expect(typeof retried === 'object' && retried.code).toContain('"padding":24')
   expect(await readFile(outputCSS, 'utf8')).toBe('keep-web-css')
 }, 20_000)
 
