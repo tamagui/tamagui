@@ -3613,7 +3613,7 @@ function emitValue(
   }
 
   if (process.env.TAMAGUI_TARGET === 'native' && !cursor && !state.styleProps.noExpand) {
-    const logicals = nativeShorthandLogicals![property]
+    const logicals = nativeShorthandLogicals[property]
     const slots = (state as DirectState).flatSlots
     if (logicals && slots) {
       for (let index = 0; index < logicals.length; index++) {
