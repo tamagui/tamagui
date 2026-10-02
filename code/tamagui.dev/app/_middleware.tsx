@@ -96,9 +96,14 @@ export default createMiddleware(async ({ request, next }) => {
     return Response.redirect(new URL('/ui/focus-scope', url.origin), 301)
   }
 
+  if (url.pathname.startsWith('/unstyled-ui/')) {
+    url.pathname = url.pathname.replace(/^\/unstyled-ui\//, '/ui/')
+    return Response.redirect(url, 301)
+  }
+
   if (getDocsSyntaxParam(url.searchParams.get('syntax'))) {
     const href = `${url.pathname}${url.search}`
-    const canonicalHref = getDocsLinkHref(href, 'styled')
+    const canonicalHref = getDocsLinkHref(href, url.pathname)
     if (canonicalHref !== href) {
       return Response.redirect(new URL(canonicalHref, url.origin), 307)
     }

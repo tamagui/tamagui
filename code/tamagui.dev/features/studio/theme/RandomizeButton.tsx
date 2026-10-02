@@ -1,4 +1,4 @@
-import { Dices } from '@tamagui/local-icons'
+import { Dices } from '~/components/icons'
 import { TooltipSimple } from 'tamagui'
 import { Button } from '~/components/Button'
 import { themeBuilderStore } from './store/ThemeBuilderStore'

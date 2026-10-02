@@ -167,7 +167,7 @@ type AppConfig = typeof config
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends AppConfig {}
 
-  // optional: types for named group styling props such as group-card-hover
+  // optional: types for named group styling modifiers such as group-hover/card:
   interface TypeOverride {
     groupNames(): 'card' | 'header' | 'sidebar'
   }

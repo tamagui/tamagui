@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowLeftRight, ArrowRight, ArrowUpDown } from '@tamagui/local-icons'
+import { ArrowLeft, ArrowLeftRight, ArrowRight, ArrowUpDown } from '~/components/icons'
 import { getStore, Store, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
 import { memo, useState } from 'react'

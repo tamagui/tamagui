@@ -1,4 +1,4 @@
-import { Check as CheckIcon } from '@tamagui/local-icons'
+import { Check as CheckIcon } from '~/components/icons'
 import { memo, useState } from 'react'
 import {
   Button,

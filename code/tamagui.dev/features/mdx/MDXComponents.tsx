@@ -8,7 +8,7 @@ import {
   Copy,
   File,
   Link as LinkIcon,
-} from '@tamagui/local-icons'
+} from '~/components/icons'
 import type { Href } from 'one'
 import React, { isValidElement, useState } from 'react'
 import type { ImageProps, XStackProps } from 'tamagui'
@@ -1020,7 +1020,7 @@ const componentsIn = {
                 Upgrading from v1 or v2 ↗
               </Text>
             </Link>
-            <CopyAgentSetupButton variant="quiet" size="sm" px={0} bg="transparent" />
+            <CopyAgentSetupButton />
             <Link asChild href="/ui/native">
               <Text render="a" fontSize={14} color="color-11 hover:color-12">
                 Native integrations & runtime ↗

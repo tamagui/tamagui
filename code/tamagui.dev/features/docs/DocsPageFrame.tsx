@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from '@tamagui/local-icons'
+import { ChevronLeft, ChevronRight } from '~/components/icons'
 import { usePathname, type Href } from 'one'
 import type { ReactNode } from 'react'
 import { Paragraph, ScrollView, View, XStack, YStack } from 'tamagui'
@@ -7,8 +7,13 @@ import { Link } from '~/components/Link'
 import { DocsQuickNav, type Heading } from './DocsQuickNav'
 import { DocsMenuContents } from './DocsMenuContents'
 import { MDXTabsSearchProvider } from './MDXTabs'
-import { DocsSyntaxPicker, DocsVersionLinks } from './DocsVersionPicker'
-import { docsSyntaxes, getDocsSyntax, type DocsVersionFrontmatter } from './docsVersion'
+import { DocsSyntaxPicker, DocsVersionFallback } from './DocsVersionPicker'
+import {
+  docsSyntaxes,
+  getCanonicalDocsPath,
+  getDocsSyntax,
+  type DocsVersionFrontmatter,
+} from './docsVersion'
 
 type DocsPageFrameProps = {
   children: ReactNode
@@ -32,7 +37,16 @@ export function DocsPageFrame({
   // the syntax tabs switch this article's code variant, so it is their
   // tabpanel (associated via aria-controls on the tabs, labelled by the
   // selected tab). derived from the pathname: SSR-stable.
-  const syntax = getDocsSyntax(usePathname())
+  const pathname = usePathname()
+  const pathSyntax = getDocsSyntax(pathname)
+  // /ui/<name> is copy-paste only when the component has a v3 skin to copy;
+  // otherwise that path renders the styled examples
+  const syntax =
+    pathSyntax === 'unstyled' &&
+    getCanonicalDocsPath(pathname).startsWith('/ui/') &&
+    !frontmatter?.hasSourceVariant
+      ? 'styled'
+      : pathSyntax
   const syntaxes = docsSyntaxes.filter(
     (value) =>
       value === 'styled' ||
@@ -43,7 +57,7 @@ export function DocsPageFrame({
   return (
     <>
       {/* left sidebar - sticky. It lives here rather than in the route layout so
-          syntax and version controls share the loader data and render in SSR. */}
+          the menu shares the page's loader data and renders in SSR. */}
       <View
         className="is-sticky"
         display="none lg:flex"
@@ -56,14 +70,7 @@ export function DocsPageFrame({
       >
         <ScrollView showsVerticalScrollIndicator={false}>
           <YStack pt={36} pb="40" px="1-5">
-            <DocsMenuContents
-              header={
-                <DocsVersionLinks
-                  frontmatter={frontmatter}
-                  initialSearch={initialSearch}
-                />
-              }
-            />
+            <DocsMenuContents />
           </YStack>
         </ScrollView>
       </View>
@@ -94,9 +101,13 @@ export function DocsPageFrame({
                 r="lg:0px"
                 z={1}
               >
-                <DocsSyntaxPicker syntaxes={syntaxes} />
+                <DocsSyntaxPicker syntax={syntax} syntaxes={syntaxes} />
               </XStack>
             )}
+            <DocsVersionFallback
+              frontmatter={frontmatter}
+              initialSearch={initialSearch}
+            />
             <MDXTabsSearchProvider search={initialSearch}>
               {children}
             </MDXTabsSearchProvider>

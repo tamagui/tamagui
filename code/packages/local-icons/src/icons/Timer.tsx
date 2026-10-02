@@ -1,33 +1,17 @@
-// @ts-nocheck
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { NamedExoticComponent } from 'react'
-import type { IconProps } from '@tamagui/helpers-icon'
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+import { memo, type JSX } from 'react'
+import { Svg, Circle, Line, type SvgProps } from 'react-native-svg'
+import { themed, type IconProps } from '@tamagui/helpers-icon'
 
-type IconComponent = (propsIn: IconProps) => JSX.Element
-
-export const Timer: IconComponent = themed(
+export const Timer: (props: IconProps) => JSX.Element = themed(
   memo(function Timer(props: IconProps) {
-    const { color = 'black', size = 24, ...otherProps } = props
+    const {
+      color = 'black',
+      size = 24,
+      ...otherProps
+    } = props as SvgProps & {
+      color?: string
+      size?: number
+    }
     return (
       <Svg
         width={size}
@@ -42,7 +26,7 @@ export const Timer: IconComponent = themed(
       >
         <Line x1="10" x2="14" y1="2" y2="2" stroke={color} />
         <Line x1="12" x2="15" y1="14" y2="11" stroke={color} />
-        <_Circle cx="12" cy="14" r="8" stroke={color} />
+        <Circle cx="12" cy="14" r="8" stroke={color} />
       </Svg>
     )
   })

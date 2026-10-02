@@ -1,4 +1,4 @@
-import { AlertCircle, Copy, File } from '@tamagui/local-icons'
+import { AlertCircle, Copy, File } from '~/components/icons'
 import { lazy, useEffect, useMemo, useState } from 'react'
 import {
   Paragraph,

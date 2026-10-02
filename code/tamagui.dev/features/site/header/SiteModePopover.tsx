@@ -1,4 +1,4 @@
-import { ChevronDown } from '@tamagui/local-icons'
+import { ChevronDown } from '~/components/icons'
 import * as React from 'react'
 import {
   Adapt,

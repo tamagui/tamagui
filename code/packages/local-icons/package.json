@@ -39,7 +39,7 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "generate": "node ./bin/generate.mjs"
+    "generate": "tamagui icons add --out src/icons $(node -p \"require('./icons.json').join(' ')\") && tamagui icons add figma --from backwards-compat --out src/icons && oxfmt src"
   },
   "dependencies": {
     "@tamagui/core": "workspace:*",
@@ -47,9 +47,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "cheerio": "^1.0.0-rc.5",
-    "lucide-static": "^0.508.0",
-    "prop-types": "^15.7.2",
+    "@tamagui/cli": "workspace:*",
     "react": "19.2.3",
     "react-native-svg": "15.15.4"
   },

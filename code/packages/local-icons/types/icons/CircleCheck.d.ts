@@ -1,6 +1,5 @@
-import type { IconProps } from "@tamagui/helpers-icon";
-type IconComponent = (propsIn: IconProps) => JSX.Element;
-export declare const CircleCheck: IconComponent;
-export {};
+import { type JSX } from "react";
+import { type IconProps } from "@tamagui/helpers-icon";
+export declare const CircleCheck: (props: IconProps) => JSX.Element;
 
 //# sourceMappingURL=CircleCheck.d.ts.map

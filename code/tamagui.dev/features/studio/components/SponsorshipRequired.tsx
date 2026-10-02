@@ -1,6 +1,6 @@
 'use client'
 
-import { Lock } from '@tamagui/local-icons'
+import { Lock } from '~/components/icons'
 import { H2, Paragraph, YStack } from 'tamagui'
 
 export const SponsorshipRequired = () => {

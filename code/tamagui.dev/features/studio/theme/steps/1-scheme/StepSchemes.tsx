@@ -1,4 +1,4 @@
-import { Check } from '@tamagui/local-icons'
+import { Check } from '~/components/icons'
 import { Checkbox, H4, Label, Paragraph, Spacer, XStack, YStack } from 'tamagui'
 
 import { useRootStore } from '../../../state/useGlobalState'

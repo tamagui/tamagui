@@ -1,6 +1,6 @@
 import { Paragraph, XStack, YStack } from 'tamagui'
 
-import { Pencil } from '@tamagui/local-icons'
+import { Pencil } from '~/components/icons'
 import { CheckCircle } from './CheckCircle'
 import { CodeInline } from './Code'
 

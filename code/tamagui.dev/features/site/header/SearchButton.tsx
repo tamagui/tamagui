@@ -1,4 +1,4 @@
-import { Search as SearchIcon } from '@tamagui/local-icons'
+import { Search as SearchIcon } from '~/components/icons'
 import { memo, useContext, useEffect, useRef } from 'react'
 import { TooltipSimple } from 'tamagui'
 

@@ -1,17 +1,15 @@
-import { Check, ChevronDown } from '@tamagui/local-icons'
+import { Check, ChevronDown } from '~/components/icons'
 import { type Href, router, usePathname } from 'one'
 import { useEffect, useState } from 'react'
-import { Paragraph, Select, XStack, YStack } from 'tamagui'
-import { Link } from '~/components/Link'
+import { Paragraph, Select } from 'tamagui'
 import { RovingTabs } from '~/components/RovingTabs'
 import { codeSyntaxChangeEvent } from './MDXTabs'
 import {
-  docsProductVersions,
+  docsStyledLabelBesideCopyPaste,
   docsSyntaxDescriptions,
   docsSyntaxLabels,
-  getDocsSyntax,
+  getCanonicalDocsPath,
   getDocsSyntaxPath,
-  getDocsVersionHref,
   getDocsVersionState,
   type DocsSyntax,
   type DocsVersionFrontmatter,
@@ -41,13 +39,25 @@ function useDocsQuery(initialSearch = '') {
 
 // the syntax switch. renders inline (no portal) from the pathname and loader
 // data, so the server and the hydrated client output the same tabs.
-export function DocsSyntaxPicker({ syntaxes }: { syntaxes: DocsSyntax[] }) {
+export function DocsSyntaxPicker({
+  syntax,
+  syntaxes,
+}: {
+  syntax: DocsSyntax
+  syntaxes: DocsSyntax[]
+}) {
   const pathname = usePathname()
   const query = useDocsQuery()
-  const syntax = getDocsSyntax(pathname)
+  const hasCopyPaste = syntaxes.includes('unstyled')
+  // a component without a skin to copy shows its styled examples at /ui/<name>
+  const styledAtCanonical =
+    !hasCopyPaste && getCanonicalDocsPath(pathname).startsWith('/ui/')
 
   const getSyntaxHref = (nextSyntax: DocsSyntax) => {
-    const nextPath = getDocsSyntaxPath(pathname, nextSyntax)
+    const nextPath = getDocsSyntaxPath(
+      pathname,
+      nextSyntax === 'styled' && styledAtCanonical ? 'unstyled' : nextSyntax
+    )
     return query ? `${nextPath}?${query}` : nextPath
   }
 
@@ -61,22 +71,25 @@ export function DocsSyntaxPicker({ syntaxes }: { syntaxes: DocsSyntax[] }) {
       testID="docs-syntax"
       items={syntaxes.map((value) => ({
         value,
-        label: docsSyntaxLabels[value],
+        label:
+          value === 'styled' && hasCopyPaste
+            ? docsStyledLabelBesideCopyPaste
+            : docsSyntaxLabels[value],
         title: docsSyntaxDescriptions[value],
         href: getSyntaxHref(value),
       }))}
       value={syntax}
       onValueChange={setSyntax}
-      textSize="1"
       panelId="docs-syntax-panel"
     />
   )
 }
 
-// product-version links. real <a> elements (modified-clicks work, no JS
-// needed). the loader-provided search keeps the first render (server +
-// hydrating client) correct; the live query syncs after that.
-export function DocsVersionLinks({
+// the header picker switches product versions. a non-v3 docs page whose
+// archived prose was not kept falls back to the latest page and says so here.
+// the loader-provided search keeps the first render (server + hydrating
+// client) correct; the live query syncs after that.
+export function DocsVersionFallback({
   frontmatter,
   initialSearch,
 }: {
@@ -92,41 +105,13 @@ export function DocsVersionLinks({
     frontmatter,
   })
 
-  const isDocsPath =
-    state.canonicalPath.startsWith('/docs/') || state.canonicalPath.startsWith('/ui/')
-
-  if (!isDocsPath) return null
+  if (state.isComponentDoc || state.hasArchivedContent) return null
 
   return (
-    <YStack gap="1-5" width="100%">
-      <XStack gap="3" items="center">
-        {docsProductVersions.map((version) => (
-          <Link
-            asChild
-            key={version}
-            href={getDocsVersionHref({ state, productVersion: version }) as Href}
-          >
-            <Paragraph
-              render="a"
-              size="2"
-              color={version === state.productVersion ? 'color-10' : 'color-7'}
-              cursor="pointer"
-              textDecorationLine="none"
-              aria-current={version === state.productVersion ? 'page' : undefined}
-            >
-              {version}
-            </Paragraph>
-          </Link>
-        ))}
-      </XStack>
-
-      {!state.isComponentDoc && !state.hasArchivedContent && (
-        <Paragraph data-testid="docs-version-fallback" size="1" color="color-9">
-          The latest available page is shown because archived {state.productVersion} prose
-          was not preserved for this route.
-        </Paragraph>
-      )}
-    </YStack>
+    <Paragraph data-testid="docs-version-fallback" size="2" color="color-9" mb="4">
+      The latest available page is shown because archived {state.productVersion} prose was
+      not preserved for this route.
+    </Paragraph>
   )
 }
 

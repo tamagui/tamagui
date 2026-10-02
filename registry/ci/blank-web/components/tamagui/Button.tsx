@@ -26,6 +26,7 @@ import {
   withStaticProperties,
 } from '@tamagui/core'
 import { getThemedIconSize } from '@tamagui/helpers-tamagui'
+import React from 'react'
 
 export type ButtonSize = ComponentSize | boolean
 
@@ -71,7 +72,11 @@ const ButtonFrameBase = styled(ButtonBehaviorFrame, {
   displayName: 'ButtonFrame',
   className: 'tm-button',
   backgroundColor: 'background hover:background-hover press:background-press',
-  borderColor: 'border-color hover:border-color-hover',
+  // flat by default, the way current libraries draw a button (shadcn's
+  // default variant has no border): the fill carries it, and the outlined
+  // variant adds the border back. the transparent border keeps the 1px every
+  // height below accounts for, so the variants line up
+  borderColor: 'transparent',
   borderStyle: 'solid',
   borderWidth: 1,
   cursor: 'web:pointer',
@@ -155,28 +160,30 @@ const ButtonComponent = createStyledHOC(
     ref
   ) {
     const { theme, ...buttonBehaviorProps } = props
-    // ButtonFrame declares `context: ButtonContext`, so passing `size` through to
-    // it is what publishes size to ButtonText and Button.Icon. The only reason
-    // to resolve it here is the `icon` prop, which is themed before the frame
-    // renders and so cannot read the context the frame is about to provide.
-    const size = ((buttonBehaviorProps.size as ButtonSize | undefined) ??
-      ButtonContext.useStyledContext()?.size ??
-      'md') as ButtonSize
-    const { props: buttonProps } = useButton(buttonBehaviorProps, {
-      Text: ButtonText,
-      iconSize: getThemedIconSize(buttonSizing(size)?.icon),
-    })
-
-    const button = (
-      <Theme name="level2">
-        <ButtonFrame ref={ref} {...buttonProps} />
-      </Theme>
+    const content = <ButtonInner ref={ref} buttonBehaviorProps={buttonBehaviorProps} />
+    return theme ? (
+      <Theme name={theme}>{content}</Theme>
+    ) : (
+      <Theme name="level2">{content}</Theme>
     )
-
-    return theme ? <Theme name={theme}>{button}</Theme> : button
   },
   { disableTheme: true }
 )
+
+const ButtonInner = React.forwardRef<
+  any,
+  { buttonBehaviorProps: ButtonBehaviorProps & { size?: ButtonSize } }
+>(function ButtonInner({ buttonBehaviorProps }, ref) {
+  const size = ((buttonBehaviorProps.size as ButtonSize | undefined) ??
+    ButtonContext.useStyledContext()?.size ??
+    'md') as ButtonSize
+  const { props: buttonProps } = useButton(buttonBehaviorProps, {
+    Text: ButtonText,
+    iconSize: getThemedIconSize(buttonSizing(size)?.icon),
+  })
+
+  return <ButtonFrame ref={ref} {...buttonProps} />
+})
 
 export const Button = withStaticProperties(ButtonComponent, {
   Frame: ButtonFrame,

@@ -1,5 +1,5 @@
 import { H3, Paragraph, XStack, YStack, styled } from 'tamagui'
-import { AlertTriangle, Info, CheckCircle } from '@tamagui/local-icons'
+import { AlertTriangle, Info, CheckCircle } from '~/components/icons'
 
 const getIcon = (theme: string) => {
   switch (theme) {

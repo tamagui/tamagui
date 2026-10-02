@@ -435,7 +435,7 @@ export function useGroupMedia() {
           },
           {
             source: '/docs/core/variables',
-            destination: '/docs/core/theme#inline-values',
+            destination: '/docs/core/theme#custom-variables',
             permanent: true,
           },
           {

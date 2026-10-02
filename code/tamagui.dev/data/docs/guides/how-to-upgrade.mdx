@@ -549,7 +549,7 @@ the supported Config v5 entries and their retained palette names. `color-12`,
 require a v6 theme migration to complete this checkpoint.
 
 ```bash
-rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|usePropsAndStyle|useProps|useStyle|backgroundActive|@tamagui/config/v[34]|@tamagui/animations-moti|@tamagui/babel-plugin|animateOnly"
+rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\\\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|usePropsAndStyle|useProps|useStyle|backgroundActive|@tamagui/config/v[34]|@tamagui/animations-moti|@tamagui/babel-plugin|animateOnly"
 ```
 
 Use these replacements:
@@ -579,7 +579,7 @@ Use these replacements:
 | `isWindowDefined` | `isBrowser` |
 | `createMedia` from `@tamagui/react-native-media-driver` | remove the call, `createTamagui` sets the driver up |
 | `getExpandedShorthands` | `getExpandedShorthand(key, props)` when behavior code needs one authored prop and accepts configured shorthands |
-| `useProps`, `useStyle`, `usePropsAndStyle` | keep conditional values on styled Tamagui components; use `splitStyleProps` only when a wrapper must partition authored props |
+| `useProps`, `useStyle(props)`, `usePropsAndStyle` | keep conditional values on styled Tamagui components; use `splitStyleProps` only when a wrapper must partition authored props |
 | `createCheckbox` `sizeAdjust` | explicit sizing math or component styles |
 | `animateOnly` | `properties` inside the transition, see [Migrate transition values](#13-migrate-transition-values) |
 | `transition` array form, `default`, per-property `type` | the [v3 transition grammar](#13-migrate-transition-values) |
@@ -839,7 +839,7 @@ The codemod does not edit token definitions or custom variants, so search
 config files and any remaining code for the alias:
 
 ```bash
-rg "\$true|true:" tamagui.config.* src code
+rg "\\\$true|true:" tamagui.config.* src code
 ```
 
 Only replace token keys. Boolean variant values like `circular` or `unstyled={false}`
@@ -1629,7 +1629,7 @@ npx tamagui check
 rg 'Sheet\.Frame'
 
 # APIs requiring migration or review (Config v5 remains supported)
-rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|usePropsAndStyle|useProps|useStyle|backgroundActive|@tamagui/config/v[34]|@tamagui/animations-moti|@tamagui/babel-plugin|animateOnly"
+rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\\\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|usePropsAndStyle|useProps|useStyle|backgroundActive|@tamagui/config/v[34]|@tamagui/animations-moti|@tamagui/babel-plugin|animateOnly"
 ```
 
 ## v1 to v3 path

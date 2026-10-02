@@ -1,4 +1,4 @@
-import { X } from '@tamagui/local-icons'
+import { X } from '~/components/icons'
 import { memo } from 'react'
 import { useWindowDimensions } from '@tamagui/use-window-dimensions'
 import type { DialogCloseProps } from 'tamagui'

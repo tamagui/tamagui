@@ -92,6 +92,8 @@ export function HomeStyleToggle() {
             fontSize={12}
             lineHeight="18px"
             color="color-12"
+            whiteSpace="pre"
+            overflowX="auto"
           >
             {mode === 'tailwind' ? tailwind : tamagui}
           </Text>
