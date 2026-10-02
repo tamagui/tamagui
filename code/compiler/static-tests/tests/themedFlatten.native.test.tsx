@@ -168,13 +168,13 @@ test('fully-flattened theme values read the live theme and update on theme chang
   const view = () =>
     renderer.root.findAll((node) => node.props?.testID === 'themed').at(-1)!
   expect(styleValue(view(), 'backgroundColor')).toBe(lightBackground)
-  expect(styleValue(view(), 'paddingTop')).toBe(8)
+  expect(styleValue(view(), 'padding')).toBe(8)
 
   act(() => {
     renderer.update(app('dark'))
   })
   expect(styleValue(view(), 'backgroundColor')).toBe(darkBackground)
-  expect(styleValue(view(), 'paddingTop')).toBe(8)
+  expect(styleValue(view(), 'padding')).toBe(8)
 })
 
 test('flag-off native output is byte-identical to the existing compiler path', async () => {

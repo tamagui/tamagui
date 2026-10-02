@@ -63,8 +63,8 @@ test('branded dynamics and resolver chains flatten with static props', async () 
   expect(code).toContain('"height":20')
   expect(code).toContain('"backgroundColor":"red"')
   expect(code).toContain('"opacity":0.5')
-  expect(code).toContain('"paddingTop":12')
-  expect(code).not.toContain('"paddingTop":8')
+  expect(code).toContain('"padding":12')
+  expect(code).not.toContain('"padding":8')
 })
 
 test('core style pieces retain a runtime fallback on native', async () => {

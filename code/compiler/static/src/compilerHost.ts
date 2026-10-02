@@ -687,6 +687,61 @@ const nativePointerEventProps = new Set([
   'onPointerUp',
 ])
 
+// expandStyle writes every shorthand as four longhands, and fabric pays per prop
+// on mount (200 views: 8.8ms as longhands, 5.7ms as shorthands). when a hoisted
+// static style holds all four sides equal and no other key of that family, the
+// shorthand resolves identically in yoga, and any longhand in a later style
+// object still overrides it
+const nativeShorthandFamilies: [string, string[], RegExp][] = [
+  ['padding', ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft'], /^padding/],
+  ['margin', ['marginTop', 'marginRight', 'marginBottom', 'marginLeft'], /^margin/],
+  [
+    'borderWidth',
+    ['borderTopWidth', 'borderRightWidth', 'borderBottomWidth', 'borderLeftWidth'],
+    /^border.*Width$/,
+  ],
+  [
+    'borderColor',
+    ['borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor'],
+    /^border.*Color$/,
+  ],
+  [
+    'borderRadius',
+    [
+      'borderTopLeftRadius',
+      'borderTopRightRadius',
+      'borderBottomRightRadius',
+      'borderBottomLeftRadius',
+    ],
+    /^border.*Radius$/,
+  ],
+]
+
+function collapseNativeShorthands(style: unknown) {
+  if (!staticObject(style)) return style
+  const keys = Object.keys(style)
+  const collapsed = new Map<string, string>()
+  for (const [shorthand, sides, family] of nativeShorthandFamilies) {
+    const value = style[sides[0]]
+    if (
+      value !== undefined &&
+      !(shorthand in style) &&
+      sides.every((side) => style[side] === value) &&
+      keys.filter((key) => family.test(key)).length === sides.length
+    ) {
+      for (const side of sides) collapsed.set(side, shorthand)
+    }
+  }
+  if (!collapsed.size) return style
+  const out: Record<string, unknown> = {}
+  for (const key of keys) {
+    const shorthand = collapsed.get(key)
+    if (!shorthand) out[key] = style[key]
+    else if (!(shorthand in out)) out[shorthand] = style[key]
+  }
+  return out
+}
+
 function isSerializableNativeStyle(value: unknown): boolean {
   if (value == null || typeof value === 'number' || typeof value === 'boolean') {
     return true
@@ -2764,9 +2819,15 @@ export function createTamaguiCompilerHost(
           input.source,
           `__TamaguiNativeStyle${input.element.span.start}`
         )
+        // the native style engine pushes the runtime's exact keys, so its base keeps them
+        const usesNativeFastPath =
+          !!themedStyleKeys &&
+          !!options.experimentalNativeFastPath &&
+          dynamicStyleEntries.length === 0 &&
+          !input.element.entries.some((entry) => entry.kind === 'spread')
         const nativeStyleImports = [
           {
-            content: `\nfunction ${nativeStyleLocal}() { return ${nativeStyleLocal}._ ?? (${nativeStyleLocal}._ = ${JSON.stringify(nativeStyle ?? {})}); } ${nativeStyleLocal}();`,
+            content: `\nfunction ${nativeStyleLocal}() { return ${nativeStyleLocal}._ ?? (${nativeStyleLocal}._ = ${JSON.stringify((usesNativeFastPath ? nativeStyle : collapseNativeShorthands(nativeStyle)) ?? {})}); } ${nativeStyleLocal}();`,
             origin: input.element.component.span,
           },
         ]
@@ -2777,12 +2838,7 @@ export function createTamaguiCompilerHost(
               mappingLocal: string
             }
           | undefined
-        if (
-          themedStyleKeys &&
-          options.experimentalNativeFastPath &&
-          dynamicStyleEntries.length === 0 &&
-          !input.element.entries.some((entry) => entry.kind === 'spread')
-        ) {
+        if (usesNativeFastPath) {
           const mappingLocal = unusedIdentifier(
             input.source,
             `__TamaguiNativeMapping${input.element.span.start}`
