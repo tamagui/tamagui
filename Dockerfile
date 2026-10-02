@@ -3,7 +3,7 @@
 FROM node:22
 
 # install bun (pinned to avoid breaking changes from unpinned latest)
-RUN npm install -g bun@1.2.22
+RUN npm install -g bun@1.4.2
 
 ARG CF_API_KEY
 ARG CF_EMAIL
