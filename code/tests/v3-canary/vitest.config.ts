@@ -24,10 +24,7 @@ const canaryRoot = dirname(fileURLToPath(import.meta.url))
 const nativeAliases = [
   {
     find: /^react-native\/Libraries\/Pressability\/usePressability$/,
-    replacement: resolve(
-      canaryRoot,
-      '../../packages/vite-plugin-internal/src/nativePressability.cjs'
-    ),
+    replacement: resolve(canaryRoot, 'tests/native-pressability.cjs'),
   },
   {
     find: /^react-native(?:\/.*)?$/,
