@@ -5,11 +5,9 @@ description: React Strict DOM and Tailwind syntax on one compiler, plus simpler 
 by: nate
 ---
 
-<IntroParagraph large>
-  Tamagui 3 removes legacy aliases and hidden wrappers, moves the public API to
-  web-standard names, and runs Tamagui props and Tailwind utility classes
-  through one compiler.
-</IntroParagraph>
+Tamagui 3 removes legacy aliases and hidden wrappers, moves the public API to
+web-standard names, and runs Tamagui props and Tailwind utility classes through
+one compiler.
 
 Version 3 still targets one UI codebase for React Native and the web. It
 removes the compatibility layers that made the internals hard to follow, so the
@@ -17,11 +15,9 @@ public surface is smaller, tokens are more predictable, and overlays compose
 better. The Tailwind frontend runs utility classes through the same compiler,
 theme system, and native output.
 
-<Notice>
-  Give this blog post and the upgrade guide to your coding agent before migrating:
+Give this blog post and the upgrade guide to your coding agent before migrating:
 
-  <CopyAgentSetupButton type="upgrade" mt="2" />
-</Notice>
+<CopyAgentSetupButton type="upgrade" mb="4" />
 
 Version 3 has three goals:
 
@@ -703,8 +699,9 @@ const ResponsiveIcon = styled(View, {
 ```
 
 v3 also drops the bundled `@tamagui/lucide-icons-2` package entirely: most apps
-use a few dozen of its ~1700 icons. Generate only the icons you use with the
-[Lucide Icons setup](/ui/lucide-icons) script instead.
+use a few dozen of its ~1700 icons. Generate only the icons you use with
+`npx @tamagui/cli@beta icons add`, which also covers Phosphor, Heroicons, and
+your own svg files. See [Lucide Icons](/ui/lucide-icons).
 
 ## ScrollView no longer pulls in react-native on web
 

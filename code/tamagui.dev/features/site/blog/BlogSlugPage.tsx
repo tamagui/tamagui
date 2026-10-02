@@ -1,7 +1,7 @@
 import { ThemeTint } from '@tamagui/logo'
 import { ArrowLeft } from '@tamagui/local-icons'
 import type { Frontmatter } from '@vxrn/mdx-rust'
-import { H1, H2, H3, H6, Paragraph, Separator, View, XStack, YStack } from 'tamagui'
+import { H1, H3, H6, Paragraph, Separator, View, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { usePathname } from 'one'
@@ -21,7 +21,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
   const pathname = usePathname()
   const isDraft = pathname.startsWith('/draft')
   return (
-    <YStack mt="-11" pt="88px" mb="4" position="relative">
+    <YStack mt="-11" pt="88px" mb="8" position="relative">
       <Container>
         <YStack mt="1-5" items="flex-start">
           <ThemeTint>
@@ -33,66 +33,55 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
           </ThemeTint>
         </YStack>
 
-        <H1 mt="6" mb="1-5" color="color-11">
-          {frontmatter.title}
-        </H1>
+        {/* title, then one muted color and one small size for everything
+            under it, on an even rhythm */}
+        <YStack mt="6" gap="3">
+          <H1 color="color-11">{frontmatter.title}</H1>
 
-        <H2
-          opacity={0.5}
-          color="color-11"
-          fontWeight="500"
-          fontFamily="body"
-          mb="0-5"
-          size="7"
-        >
-          {frontmatter.description}
-        </H2>
-
-        <XStack items="center" my="3">
-          <Link
-            href={`https://x.com/${authors?.[frontmatter.by || '']?.twitter}`}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <Paragraph size="3" color="color-10" whiteSpace="nowrap">
-              {authors?.[frontmatter.by || '']?.name}
-            </Paragraph>
-          </Link>
-
-          <Separator vertical mx="1-5" />
-
-          <Paragraph
-            opacity={0.4}
-            color="color-10"
-            whiteSpace="nowrap"
-            render="time"
-            size="3"
-          >
-            {Intl.DateTimeFormat('en-US', {
-              month: 'short',
-              timeZone: 'UTC',
-              year: 'numeric',
-              day: 'numeric',
-            }).format(new Date(frontmatter.publishedAt || ''))}
+          <Paragraph fontSize={18} lineHeight="28px" color="color-10">
+            {frontmatter.description}
           </Paragraph>
 
-          <Separator vertical mx="1-5" />
+          <XStack items="center" gap="1-5">
+            <Link
+              href={`https://x.com/${authors?.[frontmatter.by || '']?.twitter}`}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <Paragraph size="3" color="color-10" whiteSpace="nowrap">
+                {authors?.[frontmatter.by || '']?.name}
+              </Paragraph>
+            </Link>
 
-          <YStack items="center" display="none md:flex">
-            <Paragraph opacity={0.4} color="color-10" size="3">
-              {frontmatter.readingTime?.text}
+            <Paragraph size="3" color="color-10">
+              ·
             </Paragraph>
 
-            {frontmatter.type === 'changelog' && (
-              <>
-                <Separator vertical mx="1-5" />
+            <Paragraph color="color-10" whiteSpace="nowrap" render="time" size="3">
+              {Intl.DateTimeFormat('en-US', {
+                month: 'short',
+                timeZone: 'UTC',
+                year: 'numeric',
+                day: 'numeric',
+              }).format(new Date(frontmatter.publishedAt || ''))}
+            </Paragraph>
+
+            <XStack items="center" gap="1-5" display="none md:flex">
+              <Paragraph size="3" color="color-10">
+                ·
+              </Paragraph>
+              <Paragraph color="color-10" size="3">
+                {frontmatter.readingTime?.text}
+              </Paragraph>
+
+              {frontmatter.type === 'changelog' && (
                 <Button>
                   <Button.Text>Changelog</Button.Text>
                 </Button>
-              </>
-            )}
-          </YStack>
-        </XStack>
+              )}
+            </XStack>
+          </XStack>
+        </YStack>
       </Container>
     </YStack>
   )

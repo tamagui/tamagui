@@ -1,4 +1,4 @@
-import { Bot, Check } from '@tamagui/local-icons'
+import { Check, ClipboardCopy } from '@tamagui/local-icons'
 import { TooltipSimple } from 'tamagui'
 import { Button, type ButtonProps, type ButtonSize } from '~/components/Button'
 import { useClipboard } from '~/hooks/useClipboard'
@@ -59,7 +59,7 @@ export const CopyAgentSetupButton = ({
   label,
   tooltip,
   size = 'sm',
-  variant = 'outlined',
+  variant = 'quiet',
   children,
   ...props
 }: CopyAgentSetupButtonProps) => {
@@ -89,7 +89,9 @@ export const CopyAgentSetupButton = ({
         size={size}
         variant={variant}
         self="flex-start"
-        icon={hasCopied ? Check : Bot}
+        borderless
+        px="0"
+        icon={hasCopied ? Check : ClipboardCopy}
         onPress={() => onCopy()}
         aria-label={hasCopied ? 'Copied' : defaultLabel}
         {...props}

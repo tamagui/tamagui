@@ -1,4 +1,4 @@
-import { Bot, Check, Copy } from '@tamagui/local-icons'
+import { Check, ClipboardCopy, Copy } from '@tamagui/local-icons'
 import { memo } from 'react'
 import { Paragraph, TooltipSimple, XStack } from 'tamagui'
 import { Button } from '~/components/Button'
@@ -55,7 +55,7 @@ export const InstallInput = memo(() => {
           size="md"
           variant="quiet"
           borderless
-          icon={prompt.hasCopied ? Check : Bot}
+          icon={prompt.hasCopied ? Check : ClipboardCopy}
           onPress={prompt.onCopy}
           aria-label="Copy a setup prompt for your coding agent"
           fontFamily="mono"

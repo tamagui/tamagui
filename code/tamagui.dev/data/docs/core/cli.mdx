@@ -220,6 +220,38 @@ npx tamagui generate-themes ./themes/input.ts ./themes/generated.ts
 **Use case:** If you have complex theme generation logic, this command
 pre-computes your themes at build time rather than runtime.
 
+### icons
+
+Generate typed, themed SVG icon components for only the icons you use. Each
+icon becomes one file, and `index.ts` in the output folder exports all of them.
+Running it again adds to the folder and rewrites the index.
+
+```bash
+# lucide (the default source)
+npx @tamagui/cli@beta icons add Search ChevronDown X
+
+# phosphor, with a weight: regular, bold, duotone, fill, light, thin
+npx @tamagui/cli@beta icons add Copy --from phosphor --weight bold
+
+# heroicons, with a variant: outline, solid, mini, micro
+npx @tamagui/cli@beta icons add Clipboard --from heroicons --variant solid
+
+# your own svg files, looked up as <kebab-name>.svg
+npx @tamagui/cli@beta icons add Logo --from ./assets/icons
+```
+
+**Flags:**
+
+- `--from`: `lucide` (default), `heroicons`, `phosphor`, or a folder of svg files
+- `--weight`: Phosphor weight
+- `--variant`: Heroicons variant
+- `--out`: Output folder (default: `components/icons`)
+
+Names are PascalCase (`ChevronDown`) or the source's kebab-case file name
+(`chevron-down`). Library versions are pinned per CLI release. The generated
+components need `react-native-svg` and `@tamagui/helpers-icon`. See
+[Lucide Icons](/ui/lucide-icons) for usage.
+
 ### add
 
 <Notice theme="green">
