@@ -12,6 +12,7 @@
     "test": "bun run test:native"
   },
   "devDependencies": {
+    "@tamagui/fake-react-native": "workspace:*",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "csstype": "^3.0.10",

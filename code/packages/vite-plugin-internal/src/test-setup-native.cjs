@@ -10,7 +10,7 @@ const animationsReactNativeRoot = dirname(
   require.resolve('@tamagui/animations-react-native/package.json')
 )
 
-const usePressability = require('./nativePressability.cjs')
+const usePressability = require('@tamagui/fake-react-native/pressability')
 const SafeAreaInsetsContext = React.createContext(null)
 const defaultInsets = { top: 0, right: 0, bottom: 0, left: 0 }
 const defaultFrame = { x: 0, y: 0, width: 0, height: 0 }

@@ -1,5 +1,3 @@
-// a copy of packages/vite-plugin-internal/src/nativePressability.cjs: the release
-// dry run copies this canary out of the monorepo, and that package is private
 const { readFileSync } = require('node:fs')
 const { dirname, join, resolve } = require('node:path')
 const Module = require('node:module')
@@ -7,8 +5,10 @@ const { transformSync } = require('@babel/core')
 
 // run react native's actual press state machine in native tests. only the
 // platform bindings are mocked; geometry, timers and cancellation stay real.
+// published so any native test setup, in or out of this repo, aliases
+// react-native/Libraries/Pressability/usePressability to this one file.
 const root = dirname(require.resolve('react-native/package.json'))
-const platform = require('@tamagui/fake-react-native').Platform
+const platform = require('./index.js').Platform
 const bindings = new Map([
   [join(root, 'Libraries/Utilities/Platform.js'), platform],
   [

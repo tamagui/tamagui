@@ -30,6 +30,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@playwright/test": "1.58.2",
+    "@tamagui/fake-react-native": "workspace:*",
     "@tamagui/metro-plugin": "workspace:*",
     "@tamagui/vite-plugin": "workspace:*",
     "@types/node": "^22.1.0",

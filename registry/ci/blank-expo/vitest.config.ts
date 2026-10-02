@@ -27,10 +27,7 @@ const require = createRequire(import.meta.url)
 const nativeAliases = [
   {
     find: /^react-native\/Libraries\/Pressability\/usePressability$/,
-    replacement: resolve(
-      canaryRoot,
-      '../../../code/packages/vite-plugin-internal/src/nativePressability.cjs'
-    ),
+    replacement: require.resolve('@tamagui/fake-react-native/pressability'),
   },
   {
     find: /^react-native(?:\/.*)?$/,

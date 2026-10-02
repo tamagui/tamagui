@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@tamagui/fake-react-native": "workspace:*",
     "@tamagui/metro-plugin": "workspace:*",
     "@types/node": "^22.1.0",
     "@types/react": "~19.2.0",
