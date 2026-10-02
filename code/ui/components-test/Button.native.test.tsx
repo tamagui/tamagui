@@ -10,7 +10,7 @@ import {
 import type { ReactNode } from 'react'
 import TestRenderer, { act } from 'react-test-renderer'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
-import { pressEvent } from '../../core/core-test/pressEvent'
+import { pressEvent } from '@tamagui/fake-react-native/pressEvent'
 
 import { Button as KitchenSinkButton } from '../../kitchen-sink/src/components/Button'
 

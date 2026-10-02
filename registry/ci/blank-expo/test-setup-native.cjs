@@ -4,7 +4,7 @@ const Module = require('module')
 
 const originalRequire = Module.prototype.require
 const safeAreaContextMock = require('./tests/native-safe-area.cjs')
-const nativePressability = require('../../../code/packages/vite-plugin-internal/src/nativePressability.cjs')
+const nativePressability = require('@tamagui/fake-react-native/pressability')
 
 Module.prototype.require = function (id) {
   if (

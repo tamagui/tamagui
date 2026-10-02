@@ -1,4 +1,4 @@
-import { pressEvent } from './pressEvent'
+import { pressEvent } from '@tamagui/fake-react-native/pressEvent'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { TamaguiProvider, View, createTamagui } from '@tamagui/core'
 import {

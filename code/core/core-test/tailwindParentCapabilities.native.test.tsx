@@ -1,4 +1,4 @@
-import { pressEvent } from './pressEvent'
+import { pressEvent } from '@tamagui/fake-react-native/pressEvent'
 process.env.TAMAGUI_TARGET = 'native'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'

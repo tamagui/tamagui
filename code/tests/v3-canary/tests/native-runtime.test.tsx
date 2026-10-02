@@ -1,7 +1,7 @@
 import { createRequire } from 'node:module'
 import type { ReactElement } from 'react'
 import { describe, expect, test, vi } from 'vitest-native'
-import { pressEvent } from './pressEvent'
+import { pressEvent } from '@tamagui/fake-react-native/pressEvent'
 
 import { CanaryTree } from '../src/CanaryTree'
 

@@ -3,7 +3,7 @@ import type { ReactElement } from 'react'
 import { describe, expect, test, vi } from 'vitest-native'
 
 import { App } from '../src/App'
-import { pressEvent } from '../../../../code/core/core-test/pressEvent'
+import { pressEvent } from '@tamagui/fake-react-native/pressEvent'
 
 type TestNode = { props: Record<string, any> }
 type Rendered = {

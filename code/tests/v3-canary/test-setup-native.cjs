@@ -4,7 +4,7 @@ const Module = require('module')
 
 const originalRequire = Module.prototype.require
 const safeAreaContextMock = require('./tests/native-safe-area.cjs')
-const nativePressability = require('./tests/native-pressability.cjs')
+const nativePressability = require('@tamagui/fake-react-native/pressability')
 
 const nativeBindings = require('./tests/native-platform.cjs')
 

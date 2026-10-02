@@ -1,3 +1,4 @@
+import { createRequire } from 'node:module'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitest-native/config'
@@ -24,7 +25,9 @@ const canaryRoot = dirname(fileURLToPath(import.meta.url))
 const nativeAliases = [
   {
     find: /^react-native\/Libraries\/Pressability\/usePressability$/,
-    replacement: resolve(canaryRoot, 'tests/native-pressability.cjs'),
+    replacement: createRequire(import.meta.url).resolve(
+      '@tamagui/fake-react-native/pressability'
+    ),
   },
   {
     find: /^react-native(?:\/.*)?$/,

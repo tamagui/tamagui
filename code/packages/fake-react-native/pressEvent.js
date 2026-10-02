@@ -1,10 +1,8 @@
-// a copy of code/core/core-test/pressEvent.ts: the release dry run copies this
-// canary out of the monorepo, so it cannot import across packages
 // responder fixtures include the native view measurement and touch coordinates
 // consumed by react native's press handler, including move and cancel events.
-export function pressEvent(pageX = 10, pageY = 10) {
+function pressEvent(pageX = 10, pageY = 10) {
   const target = {
-    measure(callback: (...bounds: number[]) => void) {
+    measure(callback) {
       callback(0, 0, 100, 100, 0, 0)
     },
   }
@@ -22,3 +20,5 @@ export function pressEvent(pageX = 10, pageY = 10) {
     stopPropagation() {},
   }
 }
+
+exports.pressEvent = pressEvent

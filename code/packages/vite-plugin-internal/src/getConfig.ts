@@ -133,7 +133,7 @@ export function getConfig(tamaguiPlugin: any) {
             },
             {
               find: /^react-native\/Libraries\/Pressability\/usePressability$/,
-              replacement: join(__dirname, 'nativePressability.cjs'),
+              replacement: requireResolve('@tamagui/fake-react-native/pressability'),
             },
             {
               find: /^react-native$/,
