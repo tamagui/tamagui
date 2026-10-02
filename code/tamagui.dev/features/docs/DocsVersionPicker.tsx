@@ -5,9 +5,10 @@ import { Paragraph, Select } from 'tamagui'
 import { RovingTabs } from '~/components/RovingTabs'
 import { codeSyntaxChangeEvent } from './MDXTabs'
 import {
+  docsStyledLabelBesideCopyPaste,
   docsSyntaxDescriptions,
   docsSyntaxLabels,
-  getDocsSyntax,
+  getCanonicalDocsPath,
   getDocsSyntaxPath,
   getDocsVersionState,
   type DocsSyntax,
@@ -38,13 +39,25 @@ function useDocsQuery(initialSearch = '') {
 
 // the syntax switch. renders inline (no portal) from the pathname and loader
 // data, so the server and the hydrated client output the same tabs.
-export function DocsSyntaxPicker({ syntaxes }: { syntaxes: DocsSyntax[] }) {
+export function DocsSyntaxPicker({
+  syntax,
+  syntaxes,
+}: {
+  syntax: DocsSyntax
+  syntaxes: DocsSyntax[]
+}) {
   const pathname = usePathname()
   const query = useDocsQuery()
-  const syntax = getDocsSyntax(pathname)
+  const hasCopyPaste = syntaxes.includes('unstyled')
+  // a component without a skin to copy shows its styled examples at /ui/<name>
+  const styledAtCanonical =
+    !hasCopyPaste && getCanonicalDocsPath(pathname).startsWith('/ui/')
 
   const getSyntaxHref = (nextSyntax: DocsSyntax) => {
-    const nextPath = getDocsSyntaxPath(pathname, nextSyntax)
+    const nextPath = getDocsSyntaxPath(
+      pathname,
+      nextSyntax === 'styled' && styledAtCanonical ? 'unstyled' : nextSyntax
+    )
     return query ? `${nextPath}?${query}` : nextPath
   }
 
@@ -58,7 +71,10 @@ export function DocsSyntaxPicker({ syntaxes }: { syntaxes: DocsSyntax[] }) {
       testID="docs-syntax"
       items={syntaxes.map((value) => ({
         value,
-        label: docsSyntaxLabels[value],
+        label:
+          value === 'styled' && hasCopyPaste
+            ? docsStyledLabelBesideCopyPaste
+            : docsSyntaxLabels[value],
         title: docsSyntaxDescriptions[value],
         href: getSyntaxHref(value),
       }))}

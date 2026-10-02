@@ -5,7 +5,7 @@ import {
   type Href,
   type LinkProps as OneLinkProps,
 } from 'one'
-import { getDocsLinkHref, getDocsSyntax } from '~/features/docs/docsVersion'
+import { getDocsLinkHref } from '~/features/docs/docsVersion'
 import type { ViewProps } from 'tamagui'
 import { Paragraph, Text } from 'tamagui'
 import { Button, type ButtonProps } from './Button'
@@ -18,8 +18,7 @@ export type LinkProps = ViewProps &
 
 export const Link = ({ href, replace, asChild, delayNavigate, ...props }: LinkProps) => {
   const pathname = usePathname()
-  const resolvedHref =
-    typeof href === 'string' ? getDocsLinkHref(href, getDocsSyntax(pathname)) : href
+  const resolvedHref = typeof href === 'string' ? getDocsLinkHref(href, pathname) : href
   const linkProps = useLinkTo({ href: resolvedHref as any, replace: !!replace })
 
   return (
@@ -58,8 +57,7 @@ export const ParagraphLink = ({
   ...props
 }: LinkProps) => {
   const pathname = usePathname()
-  const resolvedHref =
-    typeof href === 'string' ? getDocsLinkHref(href, getDocsSyntax(pathname)) : href
+  const resolvedHref = typeof href === 'string' ? getDocsLinkHref(href, pathname) : href
   const linkProps = useLinkTo({ href: resolvedHref as any, replace: !!replace })
 
   return (

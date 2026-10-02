@@ -8,7 +8,12 @@ import { DocsQuickNav, type Heading } from './DocsQuickNav'
 import { DocsMenuContents } from './DocsMenuContents'
 import { MDXTabsSearchProvider } from './MDXTabs'
 import { DocsSyntaxPicker, DocsVersionFallback } from './DocsVersionPicker'
-import { docsSyntaxes, getDocsSyntax, type DocsVersionFrontmatter } from './docsVersion'
+import {
+  docsSyntaxes,
+  getCanonicalDocsPath,
+  getDocsSyntax,
+  type DocsVersionFrontmatter,
+} from './docsVersion'
 
 type DocsPageFrameProps = {
   children: ReactNode
@@ -32,7 +37,16 @@ export function DocsPageFrame({
   // the syntax tabs switch this article's code variant, so it is their
   // tabpanel (associated via aria-controls on the tabs, labelled by the
   // selected tab). derived from the pathname: SSR-stable.
-  const syntax = getDocsSyntax(usePathname())
+  const pathname = usePathname()
+  const pathSyntax = getDocsSyntax(pathname)
+  // /ui/<name> is copy-paste only when the component has a v3 skin to copy;
+  // otherwise that path renders the styled examples
+  const syntax =
+    pathSyntax === 'unstyled' &&
+    getCanonicalDocsPath(pathname).startsWith('/ui/') &&
+    !frontmatter?.hasSourceVariant
+      ? 'styled'
+      : pathSyntax
   const syntaxes = docsSyntaxes.filter(
     (value) =>
       value === 'styled' ||
@@ -87,7 +101,7 @@ export function DocsPageFrame({
                 r="lg:0px"
                 z={1}
               >
-                <DocsSyntaxPicker syntaxes={syntaxes} />
+                <DocsSyntaxPicker syntax={syntax} syntaxes={syntaxes} />
               </XStack>
             )}
             <DocsVersionFallback

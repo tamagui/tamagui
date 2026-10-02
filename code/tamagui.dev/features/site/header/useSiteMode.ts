@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useMemo } from 'react'
 import { usePathname, useRouter } from 'one'
 import {
+  getCanonicalDocsPath,
   getDocsSyntax,
   getDocsSyntaxPath,
   getDocsVersionHref,
@@ -132,7 +133,12 @@ export function useSiteMode() {
           pathname,
           search: new URLSearchParams(window.location.search),
         })
-        const nextStyling = nextVersion === 'v2' ? 'styled' : (styling === 'tailwind' ? 'tailwind' : 'styled')
+        const nextStyling =
+          nextVersion !== 'v2' && styling === 'tailwind'
+            ? 'tailwind'
+            : state.isComponentDoc
+              ? 'unstyled'
+              : 'styled'
         const href = getDocsVersionHref({
           state,
           productVersion: nextVersion,
@@ -151,7 +157,12 @@ export function useSiteMode() {
 
       const isDocs = pathname.startsWith('/docs') || pathname.startsWith('/ui') || pathname.startsWith('/tailwind')
       if (isDocs) {
-        const targetSyntax: DocsSyntax = nextStyling === 'tailwind' ? 'tailwind' : 'styled'
+        const targetSyntax: DocsSyntax =
+          nextStyling === 'tailwind'
+            ? 'tailwind'
+            : getCanonicalDocsPath(pathname).startsWith('/ui/')
+              ? 'unstyled'
+              : 'styled'
         const nextPath = getDocsSyntaxPath(pathname, targetSyntax)
         const currentSearch = window.location.search
         router.push((currentSearch ? `${nextPath}${currentSearch}` : nextPath) as any)

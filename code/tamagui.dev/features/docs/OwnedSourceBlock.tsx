@@ -1,4 +1,4 @@
-// Shown on component pages in Source mode: the exact default skin source the
+// Shown on component pages in copy-paste mode: the exact default skin source the
 // registry ships for this component — copyable — plus its dependency info.
 // The payload comes from the page loader (serializable); see
 // `getOwnedSource` in ~/features/mdx/sourceMode.

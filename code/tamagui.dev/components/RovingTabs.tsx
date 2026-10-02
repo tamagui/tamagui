@@ -1,6 +1,6 @@
 // A tablist of real links with roving tabindex and manual activation.
 //
-// Used for docs syntax navigation (Tamagui / Tailwind / Copy source), where each tab
+// Used for docs syntax navigation (Copy-paste / Styled, Tamagui / Tailwind), where each tab
 // is a route, not an in-place panel swap:
 //   - every tab renders a real <a href>, so modified clicks (cmd/ctrl-click,
 //     middle-click) keep native link behavior and the control works with no JS;
@@ -92,6 +92,7 @@ export function RovingTabs({
     >
       <div
         aria-hidden
+        data-testid={`${testID}-indicator`}
         style={{
           position: 'absolute',
           top: 0,

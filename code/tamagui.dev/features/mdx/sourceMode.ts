@@ -269,8 +269,8 @@ export function sourceClosureDependencies(entries: SourceClosureEntry[]): string
 // construction (it is part of the fence the copy button reads).
 export function sourceInstallComment(entries: SourceClosureEntry[]): string {
   const lines = [
-    `// source mode — styled skins import from files you own. copy each registry`,
-    `// item below into your app, then adjust the relative import paths to fit.`,
+    `// copy-paste: these skins import from files you own. copy each registry item`,
+    `// below into your app, then adjust the relative import paths to fit.`,
   ]
   for (const { item, via } of entries) {
     lines.push(

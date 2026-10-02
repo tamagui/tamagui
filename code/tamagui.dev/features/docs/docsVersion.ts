@@ -2,14 +2,18 @@ export type DocsSyntax = 'styled' | 'unstyled' | 'tailwind'
 export type DocsProductVersion = 'v3' | 'v2' | 'v1'
 
 // picker order. each page offers only the modes that change it: tailwind where
-// the transform rewrites its code, source on component pages with a registry skin.
-export const docsSyntaxes: DocsSyntax[] = ['styled', 'tailwind', 'unstyled']
+// the transform rewrites its code, copy-paste on v3 component pages with a
+// registry skin. copy-paste leads because it is a component page's default.
+export const docsSyntaxes: DocsSyntax[] = ['unstyled', 'styled', 'tailwind']
 
+// beside Tailwind the styled mode is plain Tamagui; beside copy-paste it is the
+// packaged, styled component
 export const docsSyntaxLabels: Record<DocsSyntax, string> = {
   styled: 'Tamagui',
-  unstyled: 'Copy source',
+  unstyled: 'Copy-paste',
   tailwind: 'Tailwind',
 }
+export const docsStyledLabelBesideCopyPaste = 'Styled'
 
 export const docsSyntaxDescriptions: Record<DocsSyntax, string> = {
   styled: 'Show examples with Tamagui style props',
@@ -46,9 +50,12 @@ export type DocsVersionState = {
   hasArchivedContent: boolean
 }
 
+// component pages default to copy-paste at /ui/<name>; the packaged styled
+// examples live at /styled-ui/<name>. /unstyled-ui/<name> was the copy-paste
+// path before it became the default, and redirects to /ui/<name>.
 export function getCanonicalDocsPath(pathname: string) {
-  if (pathname.startsWith('/tailwind-ui/') || pathname.startsWith('/unstyled-ui/')) {
-    return pathname.replace(/^\/(?:tailwind|unstyled)-ui/, '/ui')
+  if (/^\/(?:tailwind|styled|unstyled)-ui\//.test(pathname)) {
+    return pathname.replace(/^\/(?:tailwind|styled|unstyled)-ui/, '/ui')
   }
 
   if (/^\/(?:tailwind|unstyled)\/(?:intro|core|guides)\//.test(pathname)) {
@@ -60,10 +67,11 @@ export function getCanonicalDocsPath(pathname: string) {
 
 export function getDocsSyntaxPath(pathname: string, syntax: DocsSyntax) {
   const canonicalPath = getCanonicalDocsPath(pathname)
-  if (syntax === 'styled') return canonicalPath
   if (canonicalPath.startsWith('/ui/')) {
+    if (syntax === 'unstyled') return canonicalPath
     return `/${syntax}-ui/${canonicalPath.slice('/ui/'.length)}`
   }
+  if (syntax === 'styled') return canonicalPath
   if (canonicalPath.startsWith('/docs/')) {
     return `/${syntax}/${canonicalPath.slice('/docs/'.length)}`
   }
@@ -74,12 +82,26 @@ export function getDocsSyntax(pathname: string, search?: URLSearchParams): DocsS
   const param = getDocsSyntaxParam(search?.get('syntax') ?? null)
   if (param) return param
   if (pathname.startsWith('/tailwind')) return 'tailwind'
-  if (pathname.startsWith('/unstyled')) return 'unstyled'
+  if (pathname.startsWith('/styled-ui/')) return 'styled'
+  if (pathname.startsWith('/unstyled') || pathname.startsWith('/ui/')) return 'unstyled'
   return 'styled'
 }
 
+// copy-paste and styled only mean something on component pages, so a link
+// carries that choice between component pages and nowhere else: arriving at
+// a component page from a guide lands on its copy-paste default, and leaving
+// one for a guide lands on the guide's styled default. tailwind, and an
+// explicit copy-paste guide route, carry within their own kind of page.
+function getLinkSyntax(currentPathname: string, targetIsComponent: boolean) {
+  const current = getDocsSyntax(currentPathname)
+  if (current === 'tailwind') return current
+  const currentIsComponent = getCanonicalDocsPath(currentPathname).startsWith('/ui/')
+  if (targetIsComponent) return currentIsComponent ? current : 'unstyled'
+  return currentIsComponent ? 'styled' : current
+}
+
 // resolve before navigation so copied links and new tabs load the same document.
-export function getDocsLinkHref(href: string, syntax: DocsSyntax) {
+export function getDocsLinkHref(href: string, currentPathname: string) {
   if (!href.startsWith('/') || href.startsWith('//')) return href
   const url = new URL(href, 'https://tamagui.dev')
   if (url.pathname.endsWith('.md')) return href
@@ -90,7 +112,9 @@ export function getDocsLinkHref(href: string, syntax: DocsSyntax) {
   const explicitSyntax = hasDocsSyntaxParam || canonical !== url.pathname
   url.pathname = getDocsSyntaxPath(
     url.pathname,
-    explicitSyntax ? (syntaxParam ?? getDocsSyntax(url.pathname)) : syntax
+    explicitSyntax
+      ? (syntaxParam ?? getDocsSyntax(url.pathname))
+      : getLinkSyntax(currentPathname, canonical.startsWith('/ui/'))
   )
   if (hasDocsSyntaxParam) {
     url.searchParams.delete('syntax')

@@ -43,25 +43,27 @@ export async function loader(props: LoaderProps) {
   const { getMDXBySlug, getAllVersionsFromPath } =
     await import('~/features/mdx/getMDXBySlug')
   const { getDocsMode } = await import('~/features/docs/isTailwindMode')
-  const mode = getDocsMode(props)
 
   const subpath = Array.isArray(props.params.subpath)
     ? props.params.subpath.join('/')
     : props.params.subpath
+  const [componentName, componentVersion] = subpath.split('/')
+  const versions = getAllVersionsFromPath(`data/docs/components/${componentName}`)
+
+  // copy-paste shows the exact skin the registry ships, which is the v3 skin:
+  // an archived version page, or a component without a skin, stays styled
+  const { getOwnedSource, loadSourceRegistry } = await import('~/features/mdx/sourceMode')
+  const isV3 = !componentVersion || componentVersion.startsWith('3.')
+  const ownedSource: OwnedSourcePayload | null = isV3
+    ? getOwnedSource(loadSourceRegistry(), componentName)
+    : null
+  const requestedMode = getDocsMode(props)
+  const mode = requestedMode === 'unstyled' && !ownedSource ? 'styled' : requestedMode
+  const source = mode === 'unstyled' ? ownedSource : null
 
   const { frontmatter, code } = await getMDXBySlug('data/docs/components', subpath, {
     mode,
   })
-  const [componentName, componentVersion] = subpath.split('/')
-  const versions = getAllVersionsFromPath(`data/docs/components/${componentName}`)
-
-  // source mode shows the exact skin the registry ships for this component
-  const { getOwnedSource, loadSourceRegistry } = await import('~/features/mdx/sourceMode')
-  const ownedSource: OwnedSourcePayload | null = getOwnedSource(
-    loadSourceRegistry(),
-    componentName
-  )
-  const source = mode === 'unstyled' ? ownedSource : null
 
   return {
     frontmatter: {
