@@ -1,4 +1,4 @@
-import { CheckCircle, Copy } from '@tamagui/local-icons'
+import { CheckCircle, Copy } from '~/components/icons'
 import useSWR from 'swr'
 import { TooltipSimple, XStack } from 'tamagui'
 import { useClipboard } from '~/hooks/useClipboard'

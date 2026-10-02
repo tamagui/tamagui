@@ -1,5 +1,5 @@
 import React, { ElementType } from 'react'
-import { Check, ChevronDown, ChevronUp } from '@tamagui/local-icons'
+import { Check, ChevronDown, ChevronUp } from '~/components/icons'
 
 import type { FontSizeTokens, SelectProps } from 'tamagui'
 import { Adapt, Label, Select, Sheet, XStack, YStack, getFontSize } from 'tamagui'

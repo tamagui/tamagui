@@ -1,4 +1,4 @@
-import { Bot, Check } from '@tamagui/local-icons'
+import { Check, ClipboardCopy } from '~/components/icons'
 import { TooltipSimple } from 'tamagui'
 import { Button, type ButtonProps, type ButtonSize } from '~/components/Button'
 import { useClipboard } from '~/hooks/useClipboard'
@@ -31,11 +31,11 @@ Tell me which of the three situations you detected before you change anything.`
 
 export const AGENT_UPGRADE_PROMPT = `Upgrade this project to Tamagui v3. Follow the v3 upgrade guide (https://tamagui.dev/docs/guides/how-to-upgrade) and the v3 blog post (https://tamagui.dev/blog/version-three).
 
-Run \`npx tamagui@beta migrate --from v2\` (or \`--from v1\`) and follow the brief it prints. Aim for the intermediate checkpoint: V3 APIs with my existing design values. Identify the package version and config version separately. If I use Config v5 or v5-subtle, keep it; do not move to Config v6, remap its colors or scales, or convert the whole app to html.* or Tailwind in this pass.
+Run \`npx @tamagui/cli@beta migrate --from v2\` (or \`--from v1\`) and follow the brief it prints. Aim for the intermediate checkpoint: V3 APIs with my existing design values. Identify the package version and config version separately. If I use Config v5 or v5-subtle, keep it; do not move to Config v6, remap its colors or scales, or convert the whole app to html.* or Tailwind in this pass.
 
 Run the flat-values codemod in dry-run first, show me the report, and wait for me to read it before you write anything. Tell me every site the codemod refused and why. After the required API changes, compare the same screens and interactions against the baseline. A working V3 app on Config v5 is a completed upgrade. List optional Config v6 or frontend changes separately; do not begin them automatically.`
 
-export const AGENT_NEW_PROMPT = `Add Tamagui v3 to this project. Run \`npx tamagui@beta setup\` and follow the brief it prints, adapting it to this project's bundler and framework. Do not skip the verification step at the end, and tell me anything you had to skip or guess at.
+export const AGENT_NEW_PROMPT = `Add Tamagui v3 to this project. Run \`npx @tamagui/cli@beta setup\` and follow the brief it prints, adapting it to this project's bundler and framework. Do not skip the verification step at the end, and tell me anything you had to skip or guess at.
 
 Docs: https://tamagui.dev/docs/intro/installation`
 
@@ -59,7 +59,7 @@ export const CopyAgentSetupButton = ({
   label,
   tooltip,
   size = 'sm',
-  variant = 'outlined',
+  variant = 'quiet',
   children,
   ...props
 }: CopyAgentSetupButtonProps) => {
@@ -89,7 +89,9 @@ export const CopyAgentSetupButton = ({
         size={size}
         variant={variant}
         self="flex-start"
-        icon={hasCopied ? Check : Bot}
+        borderless
+        px="0"
+        icon={hasCopied ? Check : ClipboardCopy}
         onPress={() => onCopy()}
         aria-label={hasCopied ? 'Copied' : defaultLabel}
         {...props}

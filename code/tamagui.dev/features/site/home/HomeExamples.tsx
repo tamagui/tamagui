@@ -1,5 +1,5 @@
 import { ThemeTint, useTint } from '@tamagui/logo'
-import { FastForward } from '@tamagui/local-icons'
+import { FastForward } from '~/components/icons'
 import { memo, useState } from 'react'
 import { Heading, Paragraph, ScrollView, XGroup, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'

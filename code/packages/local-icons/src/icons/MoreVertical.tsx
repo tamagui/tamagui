@@ -1,33 +1,17 @@
-// @ts-nocheck
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { NamedExoticComponent } from 'react'
-import type { IconProps } from '@tamagui/helpers-icon'
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+import { memo, type JSX } from 'react'
+import { Svg, Circle, type SvgProps } from 'react-native-svg'
+import { themed, type IconProps } from '@tamagui/helpers-icon'
 
-type IconComponent = (propsIn: IconProps) => JSX.Element
-
-export const MoreVertical: IconComponent = themed(
+export const MoreVertical: (props: IconProps) => JSX.Element = themed(
   memo(function MoreVertical(props: IconProps) {
-    const { color = 'black', size = 24, ...otherProps } = props
+    const {
+      color = 'black',
+      size = 24,
+      ...otherProps
+    } = props as SvgProps & {
+      color?: string
+      size?: number
+    }
     return (
       <Svg
         width={size}
@@ -40,9 +24,9 @@ export const MoreVertical: IconComponent = themed(
         strokeLinejoin="round"
         {...otherProps}
       >
-        <_Circle cx="12" cy="12" r="1" stroke={color} />
-        <_Circle cx="12" cy="5" r="1" stroke={color} />
-        <_Circle cx="12" cy="19" r="1" stroke={color} />
+        <Circle cx="12" cy="12" r="1" stroke={color} />
+        <Circle cx="12" cy="5" r="1" stroke={color} />
+        <Circle cx="12" cy="19" r="1" stroke={color} />
       </Svg>
     )
   })

@@ -1,5 +1,5 @@
 import { LogoIcon, useTint } from '@tamagui/logo'
-import { Play } from '@tamagui/local-icons'
+import { Play } from '~/components/icons'
 import React, { memo, useEffect, useRef, useState } from 'react'
 import {
   ListItem,

@@ -1,4 +1,4 @@
-import { Code, Eye, Info, Link, Minus, Plus } from '@tamagui/local-icons'
+import { Code, Eye, Info, Link, Minus, Plus } from '~/components/icons'
 import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import type { SizeTokens, ThemeName } from 'tamagui'
 

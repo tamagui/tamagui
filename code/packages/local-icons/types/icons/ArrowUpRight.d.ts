@@ -1,6 +1,5 @@
-import type { IconProps } from "@tamagui/helpers-icon";
-type IconComponent = (propsIn: IconProps) => JSX.Element;
-export declare const ArrowUpRight: IconComponent;
-export {};
+import { type JSX } from "react";
+import { type IconProps } from "@tamagui/helpers-icon";
+export declare const ArrowUpRight: (props: IconProps) => JSX.Element;
 
 //# sourceMappingURL=ArrowUpRight.d.ts.map

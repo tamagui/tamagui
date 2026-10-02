@@ -1,4 +1,4 @@
-import { Check } from '@tamagui/local-icons'
+import { Check } from '~/components/icons'
 import { YStack } from 'tamagui'
 
 export const CheckCircle = () => (

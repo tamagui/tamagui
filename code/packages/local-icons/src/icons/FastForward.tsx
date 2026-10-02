@@ -1,33 +1,17 @@
-// @ts-nocheck
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { NamedExoticComponent } from 'react'
-import type { IconProps } from '@tamagui/helpers-icon'
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+import { memo, type JSX } from 'react'
+import { Svg, Path, type SvgProps } from 'react-native-svg'
+import { themed, type IconProps } from '@tamagui/helpers-icon'
 
-type IconComponent = (propsIn: IconProps) => JSX.Element
-
-export const FastForward: IconComponent = themed(
+export const FastForward: (props: IconProps) => JSX.Element = themed(
   memo(function FastForward(props: IconProps) {
-    const { color = 'black', size = 24, ...otherProps } = props
+    const {
+      color = 'black',
+      size = 24,
+      ...otherProps
+    } = props as SvgProps & {
+      color?: string
+      size?: number
+    }
     return (
       <Svg
         width={size}
@@ -40,8 +24,14 @@ export const FastForward: IconComponent = themed(
         strokeLinejoin="round"
         {...otherProps}
       >
-        <Polygon points="13 19 22 12 13 5 13 19" stroke={color} />
-        <Polygon points="2 19 11 12 2 5 2 19" stroke={color} />
+        <Path
+          d="M12 6a2 2 0 0 1 3.414-1.414l6 6a2 2 0 0 1 0 2.828l-6 6A2 2 0 0 1 12 18z"
+          stroke={color}
+        />
+        <Path
+          d="M2 6a2 2 0 0 1 3.414-1.414l6 6a2 2 0 0 1 0 2.828l-6 6A2 2 0 0 1 2 18z"
+          stroke={color}
+        />
       </Svg>
     )
   })

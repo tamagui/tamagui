@@ -1,4 +1,4 @@
-import { Check, LogOut, Menu } from '@tamagui/local-icons'
+import { Check, LogOut, Menu } from '~/components/icons'
 import {
   Checkbox,
   H6,

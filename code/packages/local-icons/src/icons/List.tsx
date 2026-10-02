@@ -1,33 +1,17 @@
-// @ts-nocheck
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { NamedExoticComponent } from 'react'
-import type { IconProps } from '@tamagui/helpers-icon'
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+import { memo, type JSX } from 'react'
+import { Svg, Path, type SvgProps } from 'react-native-svg'
+import { themed, type IconProps } from '@tamagui/helpers-icon'
 
-type IconComponent = (propsIn: IconProps) => JSX.Element
-
-export const List: IconComponent = themed(
+export const List: (props: IconProps) => JSX.Element = themed(
   memo(function List(props: IconProps) {
-    const { color = 'black', size = 24, ...otherProps } = props
+    const {
+      color = 'black',
+      size = 24,
+      ...otherProps
+    } = props as SvgProps & {
+      color?: string
+      size?: number
+    }
     return (
       <Svg
         width={size}
@@ -40,12 +24,12 @@ export const List: IconComponent = themed(
         strokeLinejoin="round"
         {...otherProps}
       >
+        <Path d="M3 5h.01" stroke={color} />
         <Path d="M3 12h.01" stroke={color} />
-        <Path d="M3 18h.01" stroke={color} />
-        <Path d="M3 6h.01" stroke={color} />
+        <Path d="M3 19h.01" stroke={color} />
+        <Path d="M8 5h13" stroke={color} />
         <Path d="M8 12h13" stroke={color} />
-        <Path d="M8 18h13" stroke={color} />
-        <Path d="M8 6h13" stroke={color} />
+        <Path d="M8 19h13" stroke={color} />
       </Svg>
     )
   })

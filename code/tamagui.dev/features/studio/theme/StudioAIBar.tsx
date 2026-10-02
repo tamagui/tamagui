@@ -1,4 +1,4 @@
-import { Bot, Check, Copy, ExternalLink, Moon, Sun, X } from '@tamagui/local-icons'
+import { Bot, Check, Copy, ExternalLink, Moon, Sun, X } from '~/components/icons'
 import { memo, useState } from 'react'
 import {
   Button as TButton,

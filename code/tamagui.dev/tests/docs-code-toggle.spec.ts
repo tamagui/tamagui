@@ -80,32 +80,42 @@ async function selectDocsSyntax(
 }
 
 test.describe('docs code toggle', () => {
-  test('version links remain available at the medium docs layout width', async ({
-    page,
-  }) => {
-    await page.setViewportSize({ width: 1100, height: 800 })
-    await page.goto('/docs/intro/installation')
-    await expect(page.getByRole('link', { name: 'v2', exact: true })).toBeVisible()
-    await expect(page.getByRole('link', { name: 'v3', exact: true })).toBeVisible()
-  })
-
-  test('guide pages offer Tamagui and Tailwind, component pages Tamagui and Source', async ({
+  test('guide pages offer Tamagui and Tailwind, component pages Copy-paste then Styled', async ({
     page,
   }) => {
     await page.goto(PAGE)
     await expectDocsSyntax(page, 'styled')
-    await expect(page.getByTestId('docs-syntax-styled')).toContainText('Tamagui')
+    await expect(page.getByTestId('docs-syntax-styled')).toHaveText('Tamagui')
     await expect(page.getByTestId('docs-syntax-tailwind')).toBeVisible()
     await expect(page.getByTestId('docs-syntax-unstyled')).toHaveCount(0)
 
     await page.goto('/ui/button')
-    await expectDocsSyntax(page, 'styled')
-    await expect(page.getByTestId('docs-syntax-unstyled')).toContainText('Source')
+    await expectDocsSyntax(page, 'unstyled')
+    await expect(page.getByRole('tablist', { name: 'Docs syntax' })).toHaveText(
+      'Copy-pasteStyled'
+    )
     await expect(page.getByTestId('docs-syntax-unstyled')).toHaveAttribute(
       'title',
       /Copy the default skin/
     )
     await expect(page.getByTestId('docs-syntax-tailwind')).toHaveCount(0)
+  })
+
+  test('a component without a v3 skin renders styled at its canonical path', async ({
+    page,
+  }) => {
+    // archived versions predate the registry skins
+    await page.goto('/ui/button/2.0.0')
+    await expect(page.getByTestId('owned-source')).toHaveCount(0)
+    expect(await codeText(page)).toContain("'tamagui'")
+  })
+
+  test('the old copy-paste path redirects to the canonical component path', async ({
+    request,
+  }) => {
+    const response = await request.get('/unstyled-ui/button', { maxRedirects: 0 })
+    expect(response.status()).toBe(301)
+    expect(new URL(response.headers().location).pathname).toBe('/ui/button')
   })
 
   test('pages whose code has no Tailwind variant hide the toggle', async ({ page }) => {
@@ -181,14 +191,13 @@ test.describe('docs code toggle', () => {
       .toBe('/tailwind/intro/styles?syntax=typed')
   })
 
-  test('version links track the version query and syntax keeps it', async ({ page }) => {
+  test('the version query shows the fallback notice and syntax keeps it', async ({
+    page,
+  }) => {
     await page.setViewportSize({ width: 1617, height: 975 })
     await page.goto('/docs/intro/styles?version=v2')
     await expect(page.getByTestId('docs-syntax')).toBeVisible()
     // loader-provided search: correct on first paint, before the live sync
-    await expect(
-      page.locator('[aria-current="page"]').filter({ hasText: 'v2' })
-    ).toBeVisible()
     await expect(page.getByTestId('docs-version-fallback')).toBeVisible()
     await expect
       .poll(async () => page.getByTestId('docs-syntax-tailwind').getAttribute('href'))
@@ -233,24 +242,19 @@ test.describe('docs code toggle', () => {
   })
 })
 
-// component-doc smoke: source renders on real component pages, and the
-// tailwind route (no toggle there) leaves component examples unchanged.
+// component-doc smoke: copy-paste is the default on real component pages,
+// Styled has its own route, and the tailwind route (no toggle there) leaves
+// component examples unchanged.
 for (const component of ['/ui/button', '/ui/tabs']) {
   const skin = component === '/ui/button' ? 'Button' : 'Tabs'
+  const name = component.slice('/ui/'.length)
   test.describe(`docs syntax modes render on ${component}`, () => {
-    test('styled default, then source rewrites the import and shows the skin', async ({
+    test('copy-paste default shows the skin, then Styled imports from tamagui', async ({
       page,
     }) => {
       await page.goto(component)
-      await expectDocsSyntax(page, 'styled')
-      const styled = await codeText(page)
-      expect(styled).toContain("'tamagui'")
-
-      await selectDocsSyntax(page, 'unstyled')
-      await page.waitForURL(new RegExp(`/unstyled-ui/${component.slice(4)}$`))
-
+      await expectDocsSyntax(page, 'unstyled')
       const source = await codeText(page)
-      expect(source).not.toEqual(styled)
       expect(source).toContain(`../components/tamagui/${skin}`)
       expect(source).toContain('registry item')
       expect(source).not.toContain('tamagui/unstyled')
@@ -261,15 +265,22 @@ for (const component of ['/ui/button', '/ui/tabs']) {
       await expect(block).toContainText(`components/tamagui/${skin}.tsx`)
       await expect(block).toContainText('yarn add @tamagui/')
       await expect(page.getByTestId('owned-source-copy')).toBeVisible()
+
+      await selectDocsSyntax(page, 'styled')
+      await page.waitForURL(new RegExp(`/styled-ui/${name}$`))
+      await expect(page.getByTestId('owned-source')).toHaveCount(0)
+      const styled = await codeText(page)
+      expect(styled).not.toEqual(source)
+      expect(styled).toContain("'tamagui'")
     })
 
     test('tailwind keeps component-library examples on their valid frontend', async ({
       page,
     }) => {
-      await page.goto(component)
+      await page.goto(`/styled-ui/${name}`)
       const styled = await codeText(page)
 
-      await page.goto(`/tailwind-ui/${component.slice(4)}`)
+      await page.goto(`/tailwind-ui/${name}`)
       await expectDocsSyntax(page, 'tailwind')
       const tailwind = await codeText(page)
       expect(tailwind).toEqual(styled)
@@ -308,6 +319,28 @@ for (const [source, destination, syntax, needle] of [
     await expectDocsSyntax(page, syntax)
     const code = await codeText(page)
     expect(code).toContain(needle)
+  })
+}
+
+// copy-paste and styled only mean something on component pages: links carry
+// the choice between component pages and drop it on guides
+for (const [from, linkHref, expected] of [
+  ['/styled-ui/button', '/ui/tabs', '/styled-ui/tabs'],
+  ['/ui/button', '/ui/tabs', '/ui/tabs'],
+  ['/styled-ui/button', '/docs/intro/installation', '/docs/intro/installation'],
+  [
+    '/unstyled/guides/how-to-upgrade',
+    '/ui/sheet#overlay-fades',
+    '/ui/sheet#overlay-fades',
+  ],
+  ['/tailwind/intro/styles', '/ui/intro', '/tailwind-ui/intro'],
+] as const) {
+  test(`links from ${from} to ${linkHref} resolve to ${expected}`, async ({ page }) => {
+    await page.goto(from)
+    await expect(
+      page.locator(`a[href="${expected}"]`).first(),
+      `a link to ${linkHref} rendered as ${expected}`
+    ).toBeAttached()
   })
 }
 
@@ -352,10 +385,6 @@ test('docs controls render at their final positions before hydration', async ({
   const url = `${process.env.BASE_URL || 'http://localhost:8081'}/docs/intro/styles`
   const getRects = async (page: import('@playwright/test').Page) => ({
     syntax: await page.getByTestId('docs-syntax').boundingBox(),
-    version: await page
-      .locator('[aria-current="page"]')
-      .filter({ hasText: 'v3' })
-      .boundingBox(),
     theme: await page.getByTestId('docs-theme').boundingBox(),
   })
 
@@ -535,14 +564,14 @@ test('saved dark mode paints docs subthemes correctly before and after hydration
   await page.route('**/*', (route) =>
     route.request().resourceType() === 'script' ? route.abort() : route.continue()
   )
-  await page.goto('/unstyled-ui/button', { waitUntil: 'domcontentloaded' })
+  await page.goto('/ui/button', { waitUntil: 'domcontentloaded' })
   await expect(page.locator('html')).toHaveClass(/t_dark/)
-  // the selected syntax tab carries a theme-dependent fill, so it proves the
-  // saved scheme paints subthemes before hydration, across a scheme swap, and
-  // identically after hydration.
-  const button = page.getByTestId('docs-syntax-unstyled')
+  // the selected syntax indicator carries a theme-dependent fill, so it proves
+  // the saved scheme paints subthemes before hydration, across a scheme swap,
+  // and identically after hydration.
+  const button = page.getByTestId('docs-syntax-indicator')
   await expect(button).toBeVisible()
-  await expect(button).toHaveCSS('background-color', 'rgb(36, 36, 36)')
+  await expect(button).toHaveCSS('background-color', 'rgb(255, 255, 255)')
   // the search button is a quiet (transparent) button: it proves the header
   // paints and stays stable, while the tab below proves scheme reactivity.
   await expect(page.getByRole('button', { name: 'Search docs' })).toHaveCSS(
@@ -552,14 +581,14 @@ test('saved dark mode paints docs subthemes correctly before and after hydration
   await page.evaluate(() =>
     document.documentElement.classList.replace('t_dark', 't_light')
   )
-  await expect(button).toHaveCSS('background-color', 'rgb(222, 222, 222)')
+  await expect(button).toHaveCSS('background-color', 'rgb(5, 5, 5)')
   await page.evaluate(() =>
     document.documentElement.classList.replace('t_light', 't_dark')
   )
-  await expect(button).toHaveCSS('background-color', 'rgb(36, 36, 36)')
+  await expect(button).toHaveCSS('background-color', 'rgb(255, 255, 255)')
 
   await page.unroute('**/*')
   await page.reload()
   await expect(page.getByTestId('docs-syntax')).toBeVisible()
-  await expect(button).toHaveCSS('background-color', 'rgb(36, 36, 36)')
+  await expect(button).toHaveCSS('background-color', 'rgb(255, 255, 255)')
 })

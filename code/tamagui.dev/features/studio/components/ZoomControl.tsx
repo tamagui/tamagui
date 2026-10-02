@@ -1,4 +1,4 @@
-import { RefreshCw, ZoomIn, ZoomOut } from '@tamagui/local-icons'
+import { RefreshCw, ZoomIn, ZoomOut } from '~/components/icons'
 import type { Dispatch, SetStateAction } from 'react'
 import { Group, SizableText, XStack } from 'tamagui'
 import { Button } from '~/components/Button'

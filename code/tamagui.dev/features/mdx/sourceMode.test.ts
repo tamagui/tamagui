@@ -175,7 +175,9 @@ function Root() { return null }`
   test('prepends the copy list + npm deps header', () => {
     const out = rewriteSourceImports(`import { Button } from 'tamagui'`, registry)!
     const [first] = out.code.split('\n')
-    expect(first).toContain('source mode')
+    expect(first).toBe(
+      '// copy-paste: these skins import from files you own. copy each registry item'
+    )
     expect(out.code).toContain(
       `//   components/tamagui/Button.tsx (registry item "button")`
     )

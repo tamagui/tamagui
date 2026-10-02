@@ -8,7 +8,7 @@ import {
   ShoppingCart,
   Upload,
   User,
-} from '@tamagui/local-icons'
+} from '~/components/icons'
 
 import {
   Avatar,

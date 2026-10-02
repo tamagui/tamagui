@@ -1,4 +1,4 @@
-import { LogOut } from '@tamagui/local-icons'
+import { LogOut } from '~/components/icons'
 import { useRouter } from 'one'
 import { useEffect, useState } from 'react'
 import { mutate } from 'swr'

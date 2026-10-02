@@ -167,6 +167,38 @@ const COMMAND_MAP = {
     },
   },
 
+  icons: {
+    shorthands: [],
+    description: `Generate themed SVG icon components from Lucide, Heroicons, Phosphor, or a folder of svgs.`,
+    usage: `$ tamagui icons add Search ChevronDown
+$ tamagui icons add Copy --from phosphor --weight bold
+$ tamagui icons add Clipboard --from heroicons --variant solid
+$ tamagui icons add Logo --from ./assets/icons --out src/icons
+$ tamagui icons add Search=magnifying-glass --from phosphor`,
+    flags: {
+      '--help': Boolean,
+      '--from': String,
+      '--weight': String,
+      '--variant': String,
+      '--out': String,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const [_cmd, subcommand, ...names] = _
+      if (subcommand !== 'add') {
+        throw new Error('usage: tamagui icons add <Name...> [--from] [--out]')
+      }
+      const { addIcons } = require('./icons')
+      await addIcons({
+        names,
+        from: flags['--from'],
+        weight: flags['--weight'],
+        variant: flags['--variant'],
+        out: flags['--out'],
+      })
+    },
+  },
+
   build: {
     shorthands: ['b'],
     description: `Use to pre-build a Tamagui component directory. Use -- to run a command after optimization, then auto-restore files.`,

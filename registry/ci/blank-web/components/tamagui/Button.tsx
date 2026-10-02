@@ -72,7 +72,11 @@ const ButtonFrameBase = styled(ButtonBehaviorFrame, {
   displayName: 'ButtonFrame',
   className: 'tm-button',
   backgroundColor: 'background hover:background-hover press:background-press',
-  borderColor: 'border-color hover:border-color-hover',
+  // flat by default, the way current libraries draw a button (shadcn's
+  // default variant has no border): the fill carries it, and the outlined
+  // variant adds the border back. the transparent border keeps the 1px every
+  // height below accounts for, so the variants line up
+  borderColor: 'transparent',
   borderStyle: 'solid',
   borderWidth: 1,
   cursor: 'web:pointer',

@@ -1,4 +1,4 @@
-import { ChevronDown } from '@tamagui/local-icons'
+import { ChevronDown } from '~/components/icons'
 import type React from 'react'
 import { Accordion, Paragraph, XStack, YStack } from 'tamagui'
 

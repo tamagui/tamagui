@@ -1,5 +1,5 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
-import { Check, ChevronDown, ChevronUp } from '@tamagui/local-icons'
+import { Check, ChevronDown, ChevronUp } from '~/components/icons'
 import { type Href, router, useParams, usePathname } from 'one'
 import React from 'react'
 import { Adapt, Select, Sheet, YStack } from 'tamagui'

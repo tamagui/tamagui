@@ -1,4 +1,4 @@
-import { Heading } from '@tamagui/local-icons'
+import { Heading } from '~/components/icons'
 import { memo, useState } from 'react'
 import {
   Label,

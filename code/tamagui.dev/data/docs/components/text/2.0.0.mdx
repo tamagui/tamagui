@@ -80,7 +80,7 @@ export default () => (
 
 Tamagui lets you define font sizing, spacing, line height, letter spacing and other properties with `createFont`, of which you can have many different configurations. We've found a nice pattern is to "align" all your keys across these sub-objects.
 
-SizableText adds a `size` property that is defined using a [spread variant](/docs/core/styled#spread-variants) which looks for a matching key on each of these properties (using `@tamagui/get-font-sized`):
+SizableText adds a `size` property whose variant is a [`styled.dynamic`](/docs/core/variants#dynamic-variants) callback, with a [component resolver](/docs/core/styled#component-resolvers-resolve) that looks for a matching key on each of these properties (using `@tamagui/get-font-sized`):
 
 - color
 - fontStyle
