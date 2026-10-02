@@ -26,6 +26,7 @@ import {
   withStaticProperties,
 } from '@tamagui/core'
 import { getThemedIconSize } from '@tamagui/helpers-tamagui'
+import React from 'react'
 
 export type ButtonSize = ComponentSize | boolean
 
@@ -155,28 +156,30 @@ const ButtonComponent = createStyledHOC(
     ref
   ) {
     const { theme, ...buttonBehaviorProps } = props
-    // ButtonFrame declares `context: ButtonContext`, so passing `size` through to
-    // it is what publishes size to ButtonText and Button.Icon. The only reason
-    // to resolve it here is the `icon` prop, which is themed before the frame
-    // renders and so cannot read the context the frame is about to provide.
-    const size = ((buttonBehaviorProps.size as ButtonSize | undefined) ??
-      ButtonContext.useStyledContext()?.size ??
-      'md') as ButtonSize
-    const { props: buttonProps } = useButton(buttonBehaviorProps, {
-      Text: ButtonText,
-      iconSize: getThemedIconSize(buttonSizing(size)?.icon),
-    })
-
-    const button = (
+    const content = (
       <Theme name="level2">
-        <ButtonFrame ref={ref} {...buttonProps} />
+        <ButtonInner ref={ref} buttonBehaviorProps={buttonBehaviorProps} />
       </Theme>
     )
-
-    return theme ? <Theme name={theme}>{button}</Theme> : button
+    return theme ? <Theme name={theme}>{content}</Theme> : content
   },
   { disableTheme: true }
 )
+
+const ButtonInner = React.forwardRef<
+  any,
+  { buttonBehaviorProps: ButtonBehaviorProps & { size?: ButtonSize } }
+>(function ButtonInner({ buttonBehaviorProps }, ref) {
+  const size = ((buttonBehaviorProps.size as ButtonSize | undefined) ??
+    ButtonContext.useStyledContext()?.size ??
+    'md') as ButtonSize
+  const { props: buttonProps } = useButton(buttonBehaviorProps, {
+    Text: ButtonText,
+    iconSize: getThemedIconSize(buttonSizing(size)?.icon),
+  })
+
+  return <ButtonFrame ref={ref} {...buttonProps} />
+})
 
 export const Button = withStaticProperties(ButtonComponent, {
   Frame: ButtonFrame,

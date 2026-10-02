@@ -156,12 +156,12 @@ const ButtonComponent = createStyledHOC(
     ref
   ) {
     const { theme, ...buttonBehaviorProps } = props
-    const content = <ButtonInner ref={ref} buttonBehaviorProps={buttonBehaviorProps} />
-    return theme ? (
-      <Theme name={theme}>{content}</Theme>
-    ) : (
-      <Theme name="level2">{content}</Theme>
+    const content = (
+      <Theme name="level2">
+        <ButtonInner ref={ref} buttonBehaviorProps={buttonBehaviorProps} />
+      </Theme>
     )
+    return theme ? <Theme name={theme}>{content}</Theme> : content
   },
   { disableTheme: true }
 )
