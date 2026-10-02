@@ -2,7 +2,7 @@ process.env.TAMAGUI_TARGET = 'web'
 
 import { describe, expect, test } from 'vitest'
 
-import { View, createTamagui, styled } from '../web/src'
+import { Text, View, createTamagui, styled } from '../web/src'
 import { getDefaultTamaguiConfig } from '../config-default'
 import { simplifiedGetSplitStyles } from './utils'
 
@@ -52,6 +52,35 @@ const cssFor = (props: Record<string, any>) =>
 const shape = (css: string[]) => css.map((rule) => rule.replace(/_[a-z]+-\d+/g, '_class'))
 
 describe('conditional clauses on a variant prop', () => {
+  test('a later styled font weight overrides every output of a responsive size variant', () => {
+    const Weighted = styled(Text, {
+      variants: {
+        size: {
+          small: { fontSize: 12, fontWeight: '400' },
+          large: { fontSize: 30, fontWeight: '600' },
+        },
+      } as const,
+    })
+    const Static = styled(Weighted, { size: 'large', fontWeight: '300' })
+    const Responsive = styled(Weighted, {
+      size: 'small sm:large',
+      fontWeight: '300',
+    })
+
+    for (const sm of [false, true]) {
+      const options = { noClass: true, mediaState: { sm } }
+      expect(simplifiedGetSplitStyles(Static, {}, options).style?.fontWeight).toBe(300)
+      const style = simplifiedGetSplitStyles(Responsive, {}, options).style
+      expect(style?.fontSize).toBe(sm ? 30 : 12)
+      expect(style?.fontWeight).toBe(300)
+    }
+    const css = Object.values(
+      simplifiedGetSplitStyles(Responsive, {}).rulesToInsert ?? {}
+    ).flatMap((rule: any) => rule[4] ?? [])
+    expect(css.filter((rule) => rule.includes('font-weight:'))).toHaveLength(1)
+    expect(css.find((rule) => rule.includes('font-weight:'))).toContain('font-weight:300')
+  })
+
   test('a media clause picks a different variant value under that media', () => {
     const css = cssFor({ size: 'large sm:small' })
     expect(shape(css)).toEqual([

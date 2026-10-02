@@ -40,6 +40,7 @@ export type AtomicSlotEntry = [
   original?: any,
   flags?: number,
   lifecycle?: boolean,
+  baseVariant?: boolean,
 ]
 
 export type SlotIdentity = [
