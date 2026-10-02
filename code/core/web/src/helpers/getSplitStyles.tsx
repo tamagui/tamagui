@@ -2471,7 +2471,7 @@ function writeStyleRecord(
       break
     }
   }
-  list.push([
+  const entry: AtomicSlotEntry = [
     property,
     value,
     condition,
@@ -2480,7 +2480,11 @@ function writeStyleRecord(
     cursor ? cursor[conditionWrappers] : undefined,
     original,
     flags | (sourceLayer << 5),
-  ])
+  ]
+  if (sourceLayer === sourceLayerBase && direct.flatPass?.[passVariantOutput]) {
+    entry[9] = true
+  }
+  list.push(entry)
 }
 
 function streamWriteInline(
@@ -3001,6 +3005,24 @@ function ownsSourceLayer(state: GetStyleState, property: string, conditional = f
   const layer = direct.flatPass?.[passSourceLayer] || 0
   const layers = (direct.flatPropertyLayers ||= new Map())
   const previous = layers.get(property)
+  if (
+    previous === sourceLayerBase &&
+    layer === sourceLayerBase &&
+    !conditional &&
+    !direct.flatPass?.[passVariantOutput]
+  ) {
+    // a later authored base replaces the default variant's entire output for
+    // this property, including its responsive clauses. direct clauses retain
+    // their own slots, so a conditional-only override still keeps the base.
+    const entries = direct.flatSlots?.get(
+      process.env.TAMAGUI_TARGET === 'web' ? styleSlot(property) : property
+    )
+    if (entries) {
+      for (let index = entries.length; index--; ) {
+        if (entries[index][0] === property && entries[index][9]) entries.splice(index, 1)
+      }
+    }
+  }
   if (previous !== undefined) {
     if (previous > layer) return false
     if (previous < layer) {
