@@ -2,6 +2,7 @@ import type {
   BranchDecisionNode,
   CompilerLoweringHost,
   CompilerTarget,
+  DynamicEvaluation,
   LoweringCandidateInput,
   LoweringCandidateResult,
   LoweringComponent,
@@ -1395,6 +1396,21 @@ export function createTamaguiCompilerHost(
     if (dynamic?.type !== 'string' || !dynamic.values?.length) return null
     return dynamic.values.map(String)
   }
+  // an opaque native value the compiler can still lower: a finite domain
+  // (a static array member, a template over one) resolves each value like a
+  // conditional branch and selects it by the runtime value; an unbounded
+  // number passes straight into the style key once probing proves the prop
+  // maps numbers to that one key unchanged
+  const nativeDynamicShape = (
+    name: string,
+    component: LoweringComponent,
+    dynamic: DynamicEvaluation | null | undefined
+  ): 'domain' | 'number' | null => {
+    if (!dynamic || !canLowerConditionalStyleProp(name, component)) return null
+    if (dynamic.values?.length) return 'domain'
+    if (dynamic.type === 'number' && directStyleName(name, component)) return 'number'
+    return null
+  }
   type DynamicStyleEntry = Extract<
     MaterializedElement['entries'][number],
     { kind: 'prop' }
@@ -1658,7 +1674,7 @@ export function createTamaguiCompilerHost(
   return {
     resolveComponent: resolve,
     isStyleProp,
-    canLowerDynamicStyleProp(name, component, valueKind) {
+    canLowerDynamicStyleProp(name, component, valueKind, dynamic) {
       // a conditional with static branches lowers per-branch on both
       // platforms: each side resolves at compile time, only the test survives
       if (
@@ -1684,7 +1700,10 @@ export function createTamaguiCompilerHost(
       return (
         !options.disablePartialExtraction &&
         ((platform === 'web' && !!directStyleName(name, component)) ||
-          (platform === 'native' && directStyleName(name, component) === 'opacity'))
+          (platform === 'native' &&
+            (directStyleName(name, component) === 'opacity' ||
+              (valueKind === 'bailout' &&
+                nativeDynamicShape(name, component, dynamic) !== null))))
       )
     },
     developmentDebugInstrumentation,
@@ -2331,7 +2350,9 @@ export function createTamaguiCompilerHost(
             entry.kind === 'prop' &&
             (directStyleName(entry.name, component) === 'opacity' ||
               (entry.value.kind === 'conditional' &&
-                canLowerConditionalStyleProp(entry.name, component)))
+                canLowerConditionalStyleProp(entry.name, component)) ||
+              (entry.value.kind === 'bailout' &&
+                nativeDynamicShape(entry.name, component, entry.value.dynamic) !== null))
         )
       if (
         dynamicStyleEntries.length > 0 &&
@@ -3137,7 +3158,77 @@ export function createTamaguiCompilerHost(
           const baseStyleForDiff = staticObject(nativeStyleResolved)
             ? nativeStyleResolved
             : {}
+          // resolves the element with one value in place of the dynamic prop
+          // and returns what that value adds over the static style
+          const valueDiff = (
+            entry: DynamicStyleEntry,
+            value: unknown,
+            what: string
+          ): Record<string, unknown> | string => {
+            const { branchCompleteProps } = propsForConditional(entry, value)
+            const branchSplit = resolveSplitStyles(
+              branchCompleteProps,
+              component.staticConfig,
+              cssAnimationDriver,
+              component.displayName
+            )
+            const branchStyle = branchSplit?.viewProps?.style ?? {}
+            if (!staticObject(branchStyle)) {
+              return `${what} did not resolve to a static native style`
+            }
+            // a value (e.g. through a variant) may change viewProps beyond
+            // style; the style array cannot express those, so any non-style
+            // difference sends the element to the runtime path
+            for (const viewPropsKey of new Set([
+              ...Object.keys(branchSplit?.viewProps ?? {}),
+              ...Object.keys(split.viewProps ?? {}),
+            ])) {
+              if (viewPropsKey === 'style') continue
+              if (
+                JSON.stringify(branchSplit?.viewProps?.[viewPropsKey]) !==
+                JSON.stringify((split.viewProps as any)?.[viewPropsKey])
+              ) {
+                return `${what} changes ${viewPropsKey}, which the compiled style array cannot express`
+              }
+            }
+            for (const key of Object.keys(baseStyleForDiff)) {
+              if (!(key in branchStyle)) {
+                return `${what} removes ${key}, which an additive style array cannot express`
+              }
+            }
+            const diff: Record<string, unknown> = {}
+            for (const [key, value] of Object.entries(branchStyle)) {
+              if (
+                JSON.stringify((baseStyleForDiff as any)[key]) !== JSON.stringify(value)
+              ) {
+                diff[key] = value
+              }
+            }
+            if (!isSerializableNativeStyle(diff) || core.containsThemeRef(diff)) {
+              return `${what} style is not statically representable`
+            }
+            return diff
+          }
+          // each dynamic prop owns the keys it contributes; two props writing
+          // one key would need their source order resolved at runtime
+          const claimKeys = (entry: DynamicStyleEntry, keys: Iterable<string>) => {
+            for (const key of keys) {
+              if (conditionalKeys.has(key)) {
+                return bailout(
+                  input,
+                  'local/dynamic-style-value',
+                  `Multiple dynamic props contribute ${key}; their interaction cannot be resolved at compile time`,
+                  entry.value.span
+                )
+              }
+            }
+            return null
+          }
           for (const entry of dynamicStyleEntries) {
+            const shape =
+              entry.value.kind === 'bailout'
+                ? nativeDynamicShape(entry.name, component, entry.value.dynamic)
+                : null
             // opacity keeps the leaner inline-expression form even for
             // ternaries; per-branch lowering is for props that form cannot carry
             if (
@@ -3151,79 +3242,21 @@ export function createTamaguiCompilerHost(
                 Record<string, unknown>
               >()
               for (const leaf of leaves) {
-                const { branchCompleteProps } = propsForConditional(entry, leaf.value)
-                const branchSplit = resolveSplitStyles(
-                  branchCompleteProps,
-                  component.staticConfig,
-                  cssAnimationDriver,
-                  component.displayName
+                const diff = valueDiff(
+                  entry,
+                  leaf.value,
+                  `Conditional ${entry.name} branch`
                 )
-                const branchStyle = branchSplit?.viewProps?.style ?? {}
-                if (!staticObject(branchStyle)) {
+                if (typeof diff === 'string') {
                   return bailout(
                     input,
                     'local/dynamic-style-value',
-                    `Conditional ${entry.name} branch did not resolve to a static native style`,
+                    diff,
                     entry.value.span
                   )
                 }
-                // a branch (e.g. through a variant) may change viewProps
-                // beyond style; the style array cannot express those, so any
-                // non-style difference sends the element to the runtime path
-                for (const viewPropsKey of new Set([
-                  ...Object.keys(branchSplit?.viewProps ?? {}),
-                  ...Object.keys(split.viewProps ?? {}),
-                ])) {
-                  if (viewPropsKey === 'style') continue
-                  if (
-                    JSON.stringify(branchSplit?.viewProps?.[viewPropsKey]) !==
-                    JSON.stringify((split.viewProps as any)?.[viewPropsKey])
-                  ) {
-                    return bailout(
-                      input,
-                      'local/dynamic-style-value',
-                      `Conditional ${entry.name} branch changes ${viewPropsKey}, which the compiled style array cannot express`,
-                      entry.value.span
-                    )
-                  }
-                }
-                for (const key of Object.keys(baseStyleForDiff)) {
-                  if (!(key in branchStyle)) {
-                    return bailout(
-                      input,
-                      'local/dynamic-style-value',
-                      `Conditional ${entry.name} branch removes ${key}, which an additive style array cannot express`,
-                      entry.value.span
-                    )
-                  }
-                }
-                const diff: Record<string, unknown> = {}
-                for (const [key, value] of Object.entries(branchStyle)) {
-                  if (
-                    JSON.stringify((baseStyleForDiff as any)[key]) !==
-                    JSON.stringify(value)
-                  ) {
-                    diff[key] = value
-                  }
-                }
-                if (!isSerializableNativeStyle(diff) || core.containsThemeRef(diff)) {
-                  return bailout(
-                    input,
-                    'local/dynamic-style-value',
-                    `Conditional ${entry.name} branch style is not statically representable`,
-                    entry.value.span
-                  )
-                }
-                for (const key of Object.keys(diff)) {
-                  if (conditionalKeys.has(key)) {
-                    return bailout(
-                      input,
-                      'local/dynamic-style-value',
-                      `Multiple conditionals contribute ${key}; their interaction cannot be resolved per-branch`,
-                      entry.value.span
-                    )
-                  }
-                }
+                const conflict = claimKeys(entry, Object.keys(diff))
+                if (conflict) return conflict
                 leafDiffs.set(leaf, diff)
               }
               for (const diff of leafDiffs.values()) {
@@ -3241,14 +3274,70 @@ export function createTamaguiCompilerHost(
               }
 
               conditionalParts.push(serializeNativeTree(tree))
-            } else {
+            } else if (shape === 'domain' && entry.value.kind === 'bailout') {
+              // a finite domain is a lookup from each runtime value to its diff
+              const lookup: string[] = []
+              const keys = new Set<string>()
+              for (const value of entry.value.dynamic!.values!) {
+                const diff = valueDiff(
+                  entry,
+                  value,
+                  `${entry.name} value ${JSON.stringify(value)}`
+                )
+                if (typeof diff === 'string') {
+                  return bailout(
+                    input,
+                    'local/dynamic-style-value',
+                    diff,
+                    entry.value.span
+                  )
+                }
+                for (const key of Object.keys(diff)) keys.add(key)
+                lookup.push(`${JSON.stringify(String(value))}: ${JSON.stringify(diff)}`)
+              }
+              const conflict = claimKeys(entry, keys)
+              if (conflict) return conflict
+              for (const key of keys) conditionalKeys.add(key)
               const index = expressions.length
               expressions.push(
                 input.source.slice(entry.value.span.start, entry.value.span.end)
               )
-              plainDynamicParts.push(
-                `${JSON.stringify(directStyleName(entry.name, component))}: expressions[${index}]`
+              conditionalParts.push(`({ ${lookup.join(', ')} })[expressions[${index}]]`)
+            } else {
+              const key = directStyleName(entry.name, component)!
+              if (shape === 'number') {
+                // two probes prove a number lands unchanged in exactly this key
+                for (const probe of [7.25, 1031]) {
+                  const diff = valueDiff(entry, probe, `${entry.name} number`)
+                  if (
+                    typeof diff === 'string' ||
+                    JSON.stringify(diff) !== JSON.stringify({ [key]: probe })
+                  ) {
+                    return bailout(
+                      input,
+                      'local/dynamic-style-value',
+                      `Style prop ${entry.name} transforms numbers on native, so its runtime value cannot pass through`,
+                      entry.value.span
+                    )
+                  }
+                }
+                if (key in baseStyleForDiff) {
+                  return bailout(
+                    input,
+                    'local/dynamic-style-value',
+                    `Style prop ${entry.name} overlaps a static ${key}`,
+                    entry.value.span
+                  )
+                }
+                const conflict = claimKeys(entry, [key])
+                if (conflict) return conflict
+                conditionalKeys.add(key)
+              }
+              const index = expressions.length
+              expressions.push(
+                input.source.slice(entry.value.span.start, entry.value.span.end)
               )
+              plainDynamicParts.push(`${JSON.stringify(key)}: expressions[${index}]`)
             }
           }
           const dynamicStyle = plainDynamicParts.join(', ')
