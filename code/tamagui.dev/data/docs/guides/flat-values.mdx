@@ -288,9 +288,9 @@ token's resolved value per theme, and inline color swatches.
 Completing a clause replaces only that clause, so accepting `background-hover`
 in `bg="background hover:back"` keeps the `background` you already wrote.
 
-It speaks stdio LSP, so every editor needs a few lines and no plugin code. In
-VS Code, install the Tamagui extension and it spawns the binary for you. For
-Neovim:
+It speaks stdio LSP, so every editor needs a few lines and no plugin code. The
+VS Code extension, which spawns the binary for you, is not on the Marketplace
+yet. For Neovim:
 
 ```lua
 vim.lsp.config.tamagui = {

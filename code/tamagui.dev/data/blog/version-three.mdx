@@ -143,12 +143,9 @@ npm install --save-dev @tamagui/lsp
 ```
 
 <Notice theme="yellow">
-  Not published yet. The eight platform binaries cross-compile and pass a
-  handshake test on every push, but publishing them is a deliberate manual step
-  that has not been run, so `@tamagui/lsp` is not on npm and the VS Code
-  extension has not reached the Marketplace. Until then the server runs from a
-  source build via `TAMAGUI_LSP_BINARY`, and `code/lsp/editors/neovim` is the only
-  committed editor config.
+  `@tamagui/lsp` and its eight platform binaries are on npm. The VS Code
+  extension has not reached the Marketplace yet, so for now point any editor
+  with a generic LSP client at the `tamagui-lsp` binary the package installs.
 </Notice>
 
 It gives completions filtered as you type, diagnostics with a "did you mean"
@@ -171,9 +168,10 @@ Tamagui props, `style`, `className`, and Tailwind utilities all go through one
 compiler, so they resolve under one rule. Every contribution joins a single
 forward pass, and later output wins per property.
 
-Base `styled()` values come first, then variants, then call-site props, `style`,
-and `className`. Neither `style` nor `className` is a privileged tier that
-always wins.
+Base `styled()` values come first, then variants, then call-site props. With
+the Tailwind frontend, `className` utilities sit in the same tier as call-site
+props, so `className` is not a privileged tier that always wins. The `style`
+prop comes last and wins over both, as it does in React.
 
 Attribute order matters. Reordering authored props can change the result,
 including in the Tailwind class pipeline.
@@ -245,9 +243,10 @@ Within each tier, later definitions win. Resolver chains run parent-first, so a 
 
 ### Compiler path
 
-The compiler handles this model in two lanes:
-- **Lane A (available today):** The compiler evaluates `styled.dynamic` callbacks and `.resolve` chains inside its evaluation sandbox for callsites with statically-known props.
-- **Lane B (v4 zero-runtime path):** Conforming bodies with static keys and no spreads will extract to static CSS classes with CSS variables for dynamic values.
+Today the compiler evaluates `styled.dynamic` callbacks and `.resolve` chains
+in its evaluation sandbox wherever a callsite's props are statically known. A
+zero-runtime path planned for v4 will extract bodies with static keys and no
+spreads to static CSS classes, with CSS variables for dynamic values.
 
 ## Removed deprecated APIs
 
@@ -275,8 +274,8 @@ The removed set includes `focusable`, `fullscreen`, the `styleable` static,
 forwardRef component wrappers, `inlineWhenUnflattened`, deprecated UI kit
 aliases, old platform style keys, and true token keys.
 
-The runtime-flattening hooks `useProps`, `useStyle`, and `usePropsAndStyle` are
-also gone. V2 could spread one style across its base prop, pseudo-style objects,
+The runtime-flattening hooks `useProps` and `usePropsAndStyle` are also gone,
+and `useStyle` now only resolves a style piece. V2 could spread one style across its base prop, pseudo-style objects,
 media objects, and platform objects, so those hooks had to gather the pieces.
 V3 keeps the base value and every conditional clause on the style's one
 property, such as `opacity="1 hover:0.7 sm:0.8"`. Keep that property on a styled
@@ -786,9 +785,9 @@ These behave like theme keys in style props, `useTheme()`, and `<ThemeUpdate>`.
 Define your focus ring once, read `focusRingColor` in the components you own,
 and redefine it per section when a screen wants a different accent. Along with
 the component changes above, variables replace `createTamagui({ defaultProps })`,
-which is deprecated in v3.
+which is removed in v3.
 
-See the [Theme inline values documentation](/docs/core/theme#inline-values)
+See the [Theme inline values documentation](/docs/core/theme#theme-updates)
 for references, units, nesting, and platform behavior.
 
 ## Migrating
@@ -797,8 +796,8 @@ If a coding agent is doing the migration, give it the brief the CLI prints
 instead of a docs link. The CLI prints the brief for the version you installed:
 
 ```bash
-npx tamagui@beta setup              # a project that has never had Tamagui
-npx tamagui@beta migrate --from v2  # a project already on v2 (or --from v1)
+npx @tamagui/cli@beta setup              # a project that has never had Tamagui
+npx @tamagui/cli@beta migrate --from v2  # a project already on v2 (or --from v1)
 ```
 
 Copy the agent prompt to make the agent stop at the codemod report instead of
@@ -828,7 +827,7 @@ npx @tamagui/codemod-flat-values --write \
 Then search for removed APIs:
 
 ```bash
-rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|getExpandedShorthands|usePropsAndStyle|useProps|useStyle"
+rg 'focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|getExpandedShorthands|usePropsAndStyle|useProps|useStyle'
 ```
 
 ### What a clean typecheck will not tell you
