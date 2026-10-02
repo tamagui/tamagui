@@ -112,10 +112,7 @@ function TabsComponent({
 
     if (codeSyntax) {
       if (typeof window !== 'undefined') {
-        localStorage.setItem(
-          SYNTAX_PREF_KEY,
-          newValue === 'typed' ? 'object' : 'string'
-        )
+        localStorage.setItem(SYNTAX_PREF_KEY, newValue === 'typed' ? 'object' : 'string')
       }
       if (newValue === 'typed') {
         url.searchParams.set('syntax', 'typed')

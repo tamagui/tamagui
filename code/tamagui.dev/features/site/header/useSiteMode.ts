@@ -95,7 +95,10 @@ export function useSiteMode() {
     if (overrideStyling) return overrideStyling
     if (pathname.startsWith('/tailwind')) return 'tailwind'
     if (searchParams.get('syntax') === 'tailwind') return 'tailwind'
-    if (searchParams.get('syntax') === 'tamagui' || searchParams.get('syntax') === 'styled')
+    if (
+      searchParams.get('syntax') === 'tamagui' ||
+      searchParams.get('syntax') === 'styled'
+    )
       return 'tamagui'
     if (mounted && typeof document !== 'undefined' && cookieHasTailwind(document.cookie))
       return 'tailwind'
@@ -126,13 +129,17 @@ export function useSiteMode() {
         localStorage.setItem(VERSION_PREF_KEY, nextVersion)
       }
 
-      const isDocs = pathname.startsWith('/docs') || pathname.startsWith('/ui') || pathname.startsWith('/tailwind')
+      const isDocs =
+        pathname.startsWith('/docs') ||
+        pathname.startsWith('/ui') ||
+        pathname.startsWith('/tailwind')
       if (isDocs) {
         const state = getDocsVersionState({
           pathname,
           search: new URLSearchParams(window.location.search),
         })
-        const nextStyling = nextVersion === 'v2' ? 'styled' : (styling === 'tailwind' ? 'tailwind' : 'styled')
+        const nextStyling =
+          nextVersion === 'v2' ? 'styled' : styling === 'tailwind' ? 'tailwind' : 'styled'
         const href = getDocsVersionHref({
           state,
           productVersion: nextVersion,
@@ -149,9 +156,13 @@ export function useSiteMode() {
       setOverrideStyling(nextStyling)
       writeSyntaxCookie(nextStyling)
 
-      const isDocs = pathname.startsWith('/docs') || pathname.startsWith('/ui') || pathname.startsWith('/tailwind')
+      const isDocs =
+        pathname.startsWith('/docs') ||
+        pathname.startsWith('/ui') ||
+        pathname.startsWith('/tailwind')
       if (isDocs) {
-        const targetSyntax: DocsSyntax = nextStyling === 'tailwind' ? 'tailwind' : 'styled'
+        const targetSyntax: DocsSyntax =
+          nextStyling === 'tailwind' ? 'tailwind' : 'styled'
         const nextPath = getDocsSyntaxPath(pathname, targetSyntax)
         const currentSearch = window.location.search
         router.push((currentSearch ? `${nextPath}${currentSearch}` : nextPath) as any)
@@ -163,23 +174,24 @@ export function useSiteMode() {
     [pathname, router]
   )
 
-  const setSyntax = useCallback(
-    (nextSyntax: SiteSyntax) => {
-      setOverrideSyntax(nextSyntax)
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(SYNTAX_PREF_KEY, nextSyntax)
-        const url = new URL(window.location.href)
-        if (nextSyntax === 'object') {
-          url.searchParams.set('syntax', 'typed')
-        } else {
-          url.searchParams.delete('syntax')
-        }
-        window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`)
-        window.dispatchEvent(new Event(codeSyntaxChangeEvent))
+  const setSyntax = useCallback((nextSyntax: SiteSyntax) => {
+    setOverrideSyntax(nextSyntax)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(SYNTAX_PREF_KEY, nextSyntax)
+      const url = new URL(window.location.href)
+      if (nextSyntax === 'object') {
+        url.searchParams.set('syntax', 'typed')
+      } else {
+        url.searchParams.delete('syntax')
       }
-    },
-    []
-  )
+      window.history.replaceState(
+        window.history.state,
+        '',
+        `${url.pathname}${url.search}${url.hash}`
+      )
+      window.dispatchEvent(new Event(codeSyntaxChangeEvent))
+    }
+  }, [])
 
   const setTheme = useCallback((nextThemeId: string | number) => {
     const idStr = String(nextThemeId)
