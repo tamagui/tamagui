@@ -400,6 +400,20 @@ describe('claimed candidates resolve to native style values', () => {
     expect(styleOf(splitTailwindStyles(Text, { className })).letterSpacing).toBe(expected)
   })
 
+  test("bare rounded is tailwind's literal 0.25rem on every corner it names", () => {
+    expect(styleOf(splitTailwindStyles(View, { className: 'rounded' }))).toMatchObject({
+      borderTopLeftRadius: 4,
+      borderTopRightRadius: 4,
+      borderBottomLeftRadius: 4,
+      borderBottomRightRadius: 4,
+    })
+    expect(styleOf(splitTailwindStyles(View, { className: 'rounded-tl' }))).toMatchObject(
+      {
+        borderTopLeftRadius: 4,
+      }
+    )
+  })
+
   test('fractional flex shorthand resolves to native flex longhands', () => {
     expect(styleOf(splitTailwindStyles(View, { className: 'flex-1/2' }))).toMatchObject({
       flexGrow: 1,
