@@ -1,4 +1,4 @@
-import { Minus, Plus } from '@tamagui/local-icons'
+import { Minus, Plus } from '~/components/icons'
 import type { SizeTokens } from 'tamagui'
 import { Theme, YGroup, createStyledHOC } from 'tamagui'
 import { Button } from '~/components/Button'

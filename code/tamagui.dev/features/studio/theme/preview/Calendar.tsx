@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from '@tamagui/local-icons'
+import { ChevronLeft, ChevronRight } from '~/components/icons'
 import type React from 'react'
 import { H4, SizableText, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'

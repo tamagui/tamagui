@@ -5,7 +5,7 @@ import {
   FileCode2,
   Paintbrush,
   TerminalSquare,
-} from '@tamagui/local-icons'
+} from '~/components/icons'
 import { useStore } from '@tamagui/use-store'
 import { forwardRef, useId } from 'react'
 import { Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'

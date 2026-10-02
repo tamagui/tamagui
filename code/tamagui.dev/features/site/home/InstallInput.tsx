@@ -1,4 +1,4 @@
-import { Check, ClipboardCopy, Copy } from '@tamagui/local-icons'
+import { Check, ClipboardCopy, Copy } from '~/components/icons'
 import { memo } from 'react'
 import { Paragraph, TooltipSimple, XStack } from 'tamagui'
 import { Button } from '~/components/Button'

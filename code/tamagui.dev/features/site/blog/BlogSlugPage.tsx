@@ -1,5 +1,5 @@
 import { ThemeTint } from '@tamagui/logo'
-import { ArrowLeft } from '@tamagui/local-icons'
+import { ArrowLeft } from '~/components/icons'
 import type { Frontmatter } from '@vxrn/mdx-rust'
 import { H1, H3, H6, Paragraph, Separator, View, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'

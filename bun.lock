@@ -2153,7 +2153,7 @@
         "@tamagui/config": "workspace:*",
         "@tamagui/demos": "workspace:*",
         "@tamagui/get-token": "workspace:*",
-        "@tamagui/local-icons": "workspace:*",
+        "@tamagui/helpers-icon": "workspace:*",
         "@tamagui/logo": "workspace:*",
         "@tamagui/react-native-types": "workspace:*",
         "@tamagui/tamagui-dev-config": "workspace:*",

@@ -1,4 +1,4 @@
-import { Info } from '@tamagui/local-icons'
+import { Info } from '~/components/icons'
 import { useRef, useState } from 'react'
 import { Heading, Input, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'

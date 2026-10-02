@@ -17,8 +17,8 @@ demoName: LucideIcons
   <LucideIconsDemo />
 </HeroContainer>
 
-The browser above is this site's own generated set, built with the command on
-this page. v2's `@tamagui/lucide-icons-2` shipped all ~1700 Lucide icons as
+The browser above is a generated Lucide set, built with the command on this
+page. v2's `@tamagui/lucide-icons-2` shipped all ~1700 Lucide icons as
 one dependency; most apps use a few dozen, so v3 replaces it with
 generation: one tree-shakeable file per icon, typed `IconProps`, and the same
 `themed` size/color behavior through `@tamagui/helpers-icon`.
@@ -49,8 +49,9 @@ the index. `--out` picks a different folder. The same command generates
 icons, or components from your own svg files, see
 [the CLI reference](/docs/core/cli#icons).
 
-The Tamagui repo builds this site's set the same way, from
-`code/packages/local-icons/icons.json`.
+The Tamagui repo generates its Lucide set from
+`code/packages/local-icons/icons.json`, and this site's own Phosphor icons from
+`code/tamagui.dev/components/icons/icons.json`.
 
 ## Usage
 

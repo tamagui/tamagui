@@ -1,4 +1,4 @@
-import { Check, ClipboardCopy } from '@tamagui/local-icons'
+import { Check, ClipboardCopy } from '~/components/icons'
 import { TooltipSimple } from 'tamagui'
 import { Button, type ButtonProps, type ButtonSize } from '~/components/Button'
 import { useClipboard } from '~/hooks/useClipboard'

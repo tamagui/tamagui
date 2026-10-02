@@ -17,7 +17,8 @@
     "serve:railway": "one serve --host 0.0.0.0 --port ${PORT:-3000}",
     "dev-build-prod": "VXRN_DISABLE_PROD_OPTIMIZATION=1 bun run build:prod && bun run serve",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "icons": "tamagui icons add --from phosphor --out components/icons $(node -p \"require('./components/icons/icons.json').join(' ')\") && oxfmt components/icons"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.84",
@@ -45,7 +46,7 @@
     "@tamagui/config": "workspace:*",
     "@tamagui/demos": "workspace:*",
     "@tamagui/get-token": "workspace:*",
-    "@tamagui/local-icons": "workspace:*",
+    "@tamagui/helpers-icon": "workspace:*",
     "@tamagui/logo": "workspace:*",
     "@tamagui/react-native-types": "workspace:*",
     "@tamagui/tamagui-dev-config": "workspace:*",

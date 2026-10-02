@@ -1,4 +1,4 @@
-import { ArrowLeft, X } from '@tamagui/local-icons'
+import { ArrowLeft, X } from '~/components/icons'
 import { useStore } from '@tamagui/use-store'
 import type React from 'react'
 import { memo, useEffect } from 'react'

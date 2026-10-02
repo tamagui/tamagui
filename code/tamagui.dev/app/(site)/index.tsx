@@ -1,5 +1,5 @@
 import { TamaguiIconSvg } from '@tamagui/logo'
-import { Check } from '@tamagui/local-icons'
+import { Check } from '~/components/icons'
 import type { Href } from 'one'
 import { EnsureFlexed, H1, H5, Paragraph, Span, Text, XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'

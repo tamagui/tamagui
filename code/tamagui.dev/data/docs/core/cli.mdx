@@ -248,7 +248,9 @@ npx @tamagui/cli@beta icons add Logo --from ./assets/icons
 - `--out`: Output folder (default: `components/icons`)
 
 Names are PascalCase (`ChevronDown`) or the source's kebab-case file name
-(`chevron-down`). Library versions are pinned per CLI release. The generated
+(`chevron-down`). `Name=source-name` keeps your component name while drawing a
+different source icon, so a set can move between libraries without changing
+its imports: `icons add Search=magnifying-glass --from phosphor`. Library versions are pinned per CLI release. The generated
 components need `react-native-svg` and `@tamagui/helpers-icon`. See
 [Lucide Icons](/ui/lucide-icons) for usage.
 

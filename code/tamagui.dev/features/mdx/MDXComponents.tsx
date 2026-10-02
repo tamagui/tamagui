@@ -8,7 +8,7 @@ import {
   Copy,
   File,
   Link as LinkIcon,
-} from '@tamagui/local-icons'
+} from '~/components/icons'
 import type { Href } from 'one'
 import React, { isValidElement, useState } from 'react'
 import type { ImageProps, XStackProps } from 'tamagui'

@@ -1,4 +1,4 @@
-import { Check, ChevronDown } from '@tamagui/local-icons'
+import { Check, ChevronDown } from '~/components/icons'
 import { type Href, router, usePathname } from 'one'
 import { useEffect, useState } from 'react'
 import { Paragraph, Select, XStack, YStack } from 'tamagui'

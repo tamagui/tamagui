@@ -60,7 +60,7 @@
       "path": "../packages/tamagui-dev-config"
     },
     {
-      "path": "../packages/local-icons"
+      "path": "../core/helpers-icon"
     },
     {
       "path": "../packages/use-store"

@@ -21,7 +21,7 @@ import {
   Table,
   TextCursorInput,
   ToggleRight,
-} from '@tamagui/local-icons'
+} from '~/components/icons'
 import { H4, H5, Image, YStack } from 'tamagui'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { Link } from '~/components/Link'

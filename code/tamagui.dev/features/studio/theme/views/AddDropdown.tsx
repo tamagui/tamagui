@@ -1,4 +1,4 @@
-import { Plus } from '@tamagui/local-icons'
+import { Plus } from '~/components/icons'
 import type { ListItemProps, PopoverProps } from 'tamagui'
 import {
   H6,

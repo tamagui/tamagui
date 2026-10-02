@@ -1,4 +1,4 @@
-import { Minus, Plus } from '@tamagui/local-icons'
+import { Minus, Plus } from '~/components/icons'
 import { Input, type InputProps as TamaguiInputProps } from 'tamagui'
 import { Button, type ButtonSize } from '~/components/Button'
 

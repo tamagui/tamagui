@@ -1,4 +1,4 @@
-import { Paintbrush, X } from '@tamagui/local-icons'
+import { Paintbrush, X } from '~/components/icons'
 import React, { useEffect, useState } from 'react'
 import { Dialog, H2, Paragraph, ScrollView, Theme, TooltipSimple, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
