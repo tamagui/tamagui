@@ -14,11 +14,11 @@ export type TabsSize = ComponentSize | boolean
 const TabsContext = createStyledContext<{ size?: TabsSize }>({ size: 'md' })
 
 const tabsTabSize = {
-  xs: { paddingInline: '2', paddingBlock: '1', gap: '1', borderRadius: 'sm' },
-  sm: { paddingInline: '3', paddingBlock: '1.5', gap: '1.5', borderRadius: 'md' },
-  md: { paddingInline: '4', paddingBlock: '2', gap: '2', borderRadius: 'md' },
-  lg: { paddingInline: '6', paddingBlock: '2', gap: '2', borderRadius: 'md' },
-  xl: { paddingInline: '8', paddingBlock: '2.5', gap: '2.5', borderRadius: 'lg' },
+  xs: { paddingInline: '2', paddingBlock: '1', gap: '1' },
+  sm: { paddingInline: '3', paddingBlock: '1.5', gap: '1.5' },
+  md: { paddingInline: '4', paddingBlock: '2', gap: '2' },
+  lg: { paddingInline: '6', paddingBlock: '2', gap: '2' },
+  xl: { paddingInline: '8', paddingBlock: '2.5', gap: '2.5' },
 } as const
 
 const tabsTextSize = {
@@ -47,6 +47,7 @@ const TabsTabFrame = styled(TabsBehavior.Tab, {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'background hover:background-hover press:background-press',
+        borderRadius: 0,
         borderWidth: 0,
         cursor: 'pointer',
         flexDirection: 'row',
