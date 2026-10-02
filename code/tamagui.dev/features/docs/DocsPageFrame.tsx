@@ -7,7 +7,7 @@ import { Link } from '~/components/Link'
 import { DocsQuickNav, type Heading } from './DocsQuickNav'
 import { DocsMenuContents } from './DocsMenuContents'
 import { MDXTabsSearchProvider } from './MDXTabs'
-import { DocsSyntaxPicker, DocsVersionLinks } from './DocsVersionPicker'
+import { DocsSyntaxPicker, DocsVersionFallback } from './DocsVersionPicker'
 import { docsSyntaxes, getDocsSyntax, type DocsVersionFrontmatter } from './docsVersion'
 
 type DocsPageFrameProps = {
@@ -43,7 +43,7 @@ export function DocsPageFrame({
   return (
     <>
       {/* left sidebar - sticky. It lives here rather than in the route layout so
-          syntax and version controls share the loader data and render in SSR. */}
+          the menu shares the page's loader data and renders in SSR. */}
       <View
         className="is-sticky"
         display="none lg:flex"
@@ -56,14 +56,7 @@ export function DocsPageFrame({
       >
         <ScrollView showsVerticalScrollIndicator={false}>
           <YStack pt={36} pb="40" px="1-5">
-            <DocsMenuContents
-              header={
-                <DocsVersionLinks
-                  frontmatter={frontmatter}
-                  initialSearch={initialSearch}
-                />
-              }
-            />
+            <DocsMenuContents />
           </YStack>
         </ScrollView>
       </View>
@@ -97,6 +90,10 @@ export function DocsPageFrame({
                 <DocsSyntaxPicker syntaxes={syntaxes} />
               </XStack>
             )}
+            <DocsVersionFallback
+              frontmatter={frontmatter}
+              initialSearch={initialSearch}
+            />
             <MDXTabsSearchProvider search={initialSearch}>
               {children}
             </MDXTabsSearchProvider>

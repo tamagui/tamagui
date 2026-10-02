@@ -9,7 +9,7 @@ export function ButtonDemo() {
         Large
       </Button>
       <XStack gap="2" justify="center">
-        <Button size="sm" theme="brand">
+        <Button size="sm" theme="accent">
           Active
         </Button>
         <Button size="sm" variant="outlined">

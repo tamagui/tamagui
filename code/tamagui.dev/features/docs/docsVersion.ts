@@ -1,14 +1,13 @@
 export type DocsSyntax = 'styled' | 'unstyled' | 'tailwind'
 export type DocsProductVersion = 'v3' | 'v2' | 'v1'
 
-export const docsProductVersions: DocsProductVersion[] = ['v3', 'v2']
 // picker order. each page offers only the modes that change it: tailwind where
 // the transform rewrites its code, source on component pages with a registry skin.
 export const docsSyntaxes: DocsSyntax[] = ['styled', 'tailwind', 'unstyled']
 
 export const docsSyntaxLabels: Record<DocsSyntax, string> = {
   styled: 'Tamagui',
-  unstyled: 'Source',
+  unstyled: 'Copy source',
   tailwind: 'Tailwind',
 }
 

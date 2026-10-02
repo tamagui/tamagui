@@ -1,6 +1,6 @@
 // A tablist of real links with roving tabindex and manual activation.
 //
-// Used for docs syntax navigation (Styled / Source / Tailwind), where each tab
+// Used for docs syntax navigation (Tamagui / Tailwind / Copy source), where each tab
 // is a route, not an in-place panel swap:
 //   - every tab renders a real <a href>, so modified clicks (cmd/ctrl-click,
 //     middle-click) keep native link behavior and the control works with no JS;
@@ -25,7 +25,7 @@ export function RovingTabs({
   items,
   value,
   onValueChange,
-  textSize = '2',
+  tabWidth = 92,
   panelId,
 }: {
   ariaLabel: string
@@ -33,7 +33,7 @@ export function RovingTabs({
   items: RovingTabItem[]
   value: string
   onValueChange: (value: string) => void
-  textSize?: '1' | '2'
+  tabWidth?: number
   panelId?: string
 }) {
   const tabRefs = useRef<(HTMLElement | null)[]>([])
@@ -73,19 +73,38 @@ export function RovingTabs({
     }
   }
 
+  const selectedIndex = Math.max(
+    0,
+    items.findIndex((item) => item.value === value)
+  )
+
+  // the home page's style toggle: an inverse pill slides under the selected
+  // tab, every tab the same width so the pill moves in whole steps
   return (
     <XStack
       role="tablist"
       aria-label={ariaLabel}
       testID={testID}
+      position="relative"
       gap={0}
-      p="2px"
       rounded="4"
-      borderWidth={1}
-      borderColor="border-color"
-      bg="color-1"
-      width="100%"
+      self="flex-start"
     >
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          left: 0,
+          width: tabWidth,
+          backgroundColor: 'var(--color-12)',
+          borderRadius: 4,
+          transform: `translateX(${selectedIndex * tabWidth}px)`,
+          transition: 'transform 200ms cubic-bezier(0.16, 1, 0.3, 1)',
+          pointerEvents: 'none',
+        }}
+      />
       {items.map((item, index) => {
         const selected = item.value === value
         // spread: anchor-only props don't exist on the text prop type
@@ -104,18 +123,18 @@ export function RovingTabs({
             aria-controls={panelId}
             tabIndex={selected ? 0 : -1}
             testID={`${testID}-${item.value}`}
-            flex={1}
-            px="3"
-            height={28}
-            minHeight={28}
+            position="relative"
+            width={tabWidth}
+            py="0-5"
             display="flex"
             items="center"
             justify="center"
-            rounded="3"
+            rounded="4"
             cursor="pointer"
-            size={textSize}
-            color={selected ? 'color-12' : 'color-11'}
-            bg={selected ? 'color-4' : 'transparent'}
+            size="2"
+            color={selected ? 'color-1' : 'color-10'}
+            transition="quickest"
+            textDecorationLine="none"
             outlineColor="focus-visible:outline-color"
             outlineWidth="focus-visible:2px"
             outlineStyle="focus-visible:solid"

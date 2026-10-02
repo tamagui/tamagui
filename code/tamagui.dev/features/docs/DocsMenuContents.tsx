@@ -39,12 +39,9 @@ const sections = {
 export const DocsMenuContents = React.memo(function DocsMenuContents({
   section: propsSection,
   inMenu,
-  header,
 }: {
   inMenu?: boolean
   section?: keyof typeof sections
-  // shares a row with the collapse-all toggle in the sidebar
-  header?: React.ReactNode
 }) {
   const { currentPath, section: docsSection } = useDocsMenu()
   // compiler pages now show core section (merged)
@@ -124,8 +121,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
         aria-label="Docs Menu"
       >
         {!inMenu && (
-          <XStack justifyContent="space-between" items="center" px="4" mb="4">
-            {header}
+          <XStack justifyContent="flex-end" items="center" px="4" mb="4">
             <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
           </XStack>
         )}
@@ -161,8 +157,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
   return (
     <div style={{ width: '100%', paddingBottom: inMenu ? 0 : 80 }} aria-label="Docs Menu">
       {!inMenu && (
-        <XStack justifyContent="space-between" items="center" px="4" mb="4">
-          {header}
+        <XStack justifyContent="flex-end" items="center" px="4" mb="4">
           <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
         </XStack>
       )}
