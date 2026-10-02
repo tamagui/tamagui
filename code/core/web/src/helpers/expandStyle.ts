@@ -347,25 +347,29 @@ const nativeInlineExpansions: Record<string, string[]> = {
 // react native ranks an rtl-aware longhand (paddingStart, borderTopStartRadius)
 // and rowGap/columnGap above the shorthand regardless of order, so a later
 // shorthand has to retract the earlier ones it covers to keep authored order.
-// physical longhands need no entry: the shorthand expands onto them
+// physical longhands need no entry: the shorthand expands onto them. native
+// only, so web builds fold the table away
 const paddingLogicals = ['paddingStart', 'paddingEnd']
 const marginLogicals = ['marginStart', 'marginEnd']
-export const nativeShorthandLogicals: Record<string, string[]> = {
-  padding: paddingLogicals,
-  paddingHorizontal: paddingLogicals,
-  margin: marginLogicals,
-  marginHorizontal: marginLogicals,
-  borderRadius: [
-    'borderTopStartRadius',
-    'borderTopEndRadius',
-    'borderBottomStartRadius',
-    'borderBottomEndRadius',
-    'borderStartStartRadius',
-    'borderStartEndRadius',
-    'borderEndStartRadius',
-    'borderEndEndRadius',
-  ],
-  borderWidth: ['borderStartWidth', 'borderEndWidth'],
-  borderColor: ['borderStartColor', 'borderEndColor'],
-  gap: ['rowGap', 'columnGap'],
-}
+export const nativeShorthandLogicals: Record<string, string[]> | null =
+  process.env.TAMAGUI_TARGET !== 'native'
+    ? null
+    : {
+        padding: paddingLogicals,
+        paddingHorizontal: paddingLogicals,
+        margin: marginLogicals,
+        marginHorizontal: marginLogicals,
+        borderRadius: [
+          'borderTopStartRadius',
+          'borderTopEndRadius',
+          'borderBottomStartRadius',
+          'borderBottomEndRadius',
+          'borderStartStartRadius',
+          'borderStartEndRadius',
+          'borderEndStartRadius',
+          'borderEndEndRadius',
+        ],
+        borderWidth: ['borderStartWidth', 'borderEndWidth'],
+        borderColor: ['borderStartColor', 'borderEndColor'],
+        gap: ['rowGap', 'columnGap'],
+      }

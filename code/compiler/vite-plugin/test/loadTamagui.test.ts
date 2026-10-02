@@ -579,14 +579,16 @@ export const App = () => <View padding="fixtureNative" />
 `
   const id = path.join(nativeRoot, 'src/NativeConfigReload.android.tsx')
   const before = await transform?.call(transformContext, source, id)
-  expect(typeof before === 'object' && before.code).toContain('"paddingTop":12')
+  // four equal sides compile to the one native shorthand
+  expect(typeof before === 'object' && before.code).toContain('"padding":12')
 
   await writeNativeConfig(24)
   if (typeof androidPlugin!.watchChange === 'function') {
     androidPlugin!.watchChange.call(transformContext, rootConfigPath, { event: 'update' })
   }
   const after = await transform?.call(transformContext, source, id)
-  expect(typeof after === 'object' && after.code).toContain('"paddingTop":24')
+  expect(typeof after === 'object' && after.code).toContain('"padding":24')
+  expect(typeof after === 'object' && after.code).not.toContain('"padding":12')
 
   await writeFile(buildOptionsPath, `export const compilerOptions = {`)
   if (typeof androidPlugin!.watchChange === 'function') {
