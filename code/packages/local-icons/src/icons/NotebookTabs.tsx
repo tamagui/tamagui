@@ -1,10 +1,17 @@
 import { memo, type JSX } from 'react'
-import { Svg, Path, Rect } from 'react-native-svg'
+import { Svg, Path, Rect, type SvgProps } from 'react-native-svg'
 import { themed, type IconProps } from '@tamagui/helpers-icon'
 
 export const NotebookTabs: (props: IconProps) => JSX.Element = themed(
   memo(function NotebookTabs(props: IconProps) {
-    const { color = 'black', size = 24, ...otherProps } = props
+    const {
+      color = 'black',
+      size = 24,
+      ...otherProps
+    } = props as SvgProps & {
+      color?: string
+      size?: number
+    }
     return (
       <Svg
         width={size}

@@ -27,14 +27,23 @@ describe('tamagui icons add', () => {
       `<svg viewBox="0 0 256 256" fill="currentColor"><rect width="256" height="256" fill="none"/><circle cx="128" cy="128" r="40"/></svg>`
     )
 
-    const result = run(dir, ['add', 'Circle', 'dot', '--from', 'svgs', '--out', 'icons'])
+    const result = run(dir, [
+      'add',
+      'Circle',
+      'dot',
+      'Ring=circle',
+      '--from',
+      'svgs',
+      '--out',
+      'icons',
+    ])
     expect(result.stderr).toBe('')
     expect(result.status).toBe(0)
 
     const circle = readFileSync(path.join(dir, 'icons', 'Circle.tsx'), 'utf8')
     // the element import is aliased so it cannot collide with the component
     expect(circle).toContain(
-      `import { Svg, Circle as _Circle, G, Path } from 'react-native-svg'`
+      `import { Svg, Circle as _Circle, G, Path, type SvgProps } from 'react-native-svg'`
     )
     expect(circle).toContain(
       'export const Circle: (props: IconProps) => JSX.Element = themed('
@@ -51,8 +60,12 @@ describe('tamagui icons add', () => {
     expect(dot).not.toContain('defaultStrokeWidth')
 
     expect(readFileSync(path.join(dir, 'icons', 'index.ts'), 'utf8')).toBe(
-      `export { Circle } from './Circle'\nexport { Dot } from './Dot'\n`
+      `export { Circle } from './Circle'\nexport { Dot } from './Dot'\nexport { Ring } from './Ring'\n`
     )
+    // an alias keeps its own component name over the source drawing
+    const ring = readFileSync(path.join(dir, 'icons', 'Ring.tsx'), 'utf8')
+    expect(ring).toContain('export const Ring: (props: IconProps) => JSX.Element')
+    expect(ring).toContain('<Circle cx="12" cy="12" r="10" stroke={color} />')
   })
 
   it('fails on unknown icons and mismatched options without writing', () => {

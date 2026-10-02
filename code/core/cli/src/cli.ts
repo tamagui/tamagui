@@ -173,7 +173,8 @@ const COMMAND_MAP = {
     usage: `$ tamagui icons add Search ChevronDown
 $ tamagui icons add Copy --from phosphor --weight bold
 $ tamagui icons add Clipboard --from heroicons --variant solid
-$ tamagui icons add Logo --from ./assets/icons --out src/icons`,
+$ tamagui icons add Logo --from ./assets/icons --out src/icons
+$ tamagui icons add Search=magnifying-glass --from phosphor`,
     flags: {
       '--help': Boolean,
       '--from': String,

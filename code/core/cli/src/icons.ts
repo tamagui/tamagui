@@ -62,14 +62,24 @@ export async function addIcons(options: AddIconsOptions) {
     throw new Error(`--variant is one of ${Object.keys(heroiconsDirs).join(', ')}`)
   }
 
-  const icons = [...new Set(options.names)].map((name) => {
-    const isKebab = /^[a-z0-9-]+$/.test(name)
-    if (!isKebab && !/^[A-Z][A-Za-z0-9]*$/.test(name)) {
-      throw new Error(`icon names are PascalCase or kebab-case, got "${name}"`)
+  // `Search=magnifying-glass` keeps the component name while drawing another
+  // source icon, so a set can switch libraries without touching its imports
+  const icons = [...new Set(options.names)].map((arg) => {
+    const [name, source = name] = arg.split('=')
+    const isKebab = (x: string) => /^[a-z0-9-]+$/.test(x)
+    const isPascal = (x: string) => /^[A-Z][A-Za-z0-9]*$/.test(x)
+    if (
+      !(isKebab(name) || isPascal(name)) ||
+      !(isKebab(source) || isPascal(source)) ||
+      (source !== name && !isPascal(name))
+    ) {
+      throw new Error(
+        `icon names are PascalCase, kebab-case, or Name=source-name, got "${arg}"`
+      )
     }
     return {
-      componentName: isKebab ? kebabToPascal(name) : name,
-      file: isKebab ? name : pascalToKebab(stripIconSuffix(name)),
+      componentName: isKebab(name) ? kebabToPascal(name) : name,
+      file: isKebab(source) ? source : pascalToKebab(stripIconSuffix(source)),
     }
   })
 
@@ -272,14 +282,19 @@ export function svgToComponent(name: string, svg: string) {
   const themedOptions =
     strokeWidth && strokeWidth !== '2' ? `, { defaultStrokeWidth: ${strokeWidth} }` : ''
 
-  // the explicit component type lets isolatedDeclarations builds emit types
+  // the explicit component type lets isolatedDeclarations builds emit types.
+  // themed resolves theme and token values before the inner component runs, so
+  // it reads plain svg values rather than the app's token-typed IconProps
   return `${restrictedNames.includes(name) ? '/* eslint-disable no-shadow-restricted-names */\n' : ''}import { memo, type JSX } from 'react'
-import { Svg, ${imports.join(', ')} } from 'react-native-svg'
+import { Svg, ${imports.join(', ')}, type SvgProps } from 'react-native-svg'
 import { themed, type IconProps } from '@tamagui/helpers-icon'
 
 export const ${name}: (props: IconProps) => JSX.Element = themed(
   memo(function ${name}(props: IconProps) {
-    const { color = 'black', size = 24, ...otherProps } = props
+    const { color = 'black', size = 24, ...otherProps } = props as SvgProps & {
+      color?: string
+      size?: number
+    }
     return (
       <Svg
 ${svgAttrs.map((attr) => `        ${attr}`).join('\n')}
