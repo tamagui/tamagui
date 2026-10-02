@@ -6,6 +6,7 @@ import {
   createStyledHOC,
   styled,
   View,
+  type GetProps,
   type TamaguiElement,
   type ViewProps,
 } from '@tamagui/core'
@@ -47,7 +48,7 @@ type SheetStyleShorthandProps = {
 }
 
 type SheetViewProps<ExtraProps extends object = {}> = SheetScopedProps<
-  ViewProps & SheetStyleShorthandProps & ExtraProps
+  GetProps<typeof View> & SheetStyleShorthandProps & ExtraProps
 >
 
 const SheetHandleFrame = styled(XStack, {
@@ -94,7 +95,6 @@ const SheetContainerFrame = styled(YStack, {
   position: 'relative',
   zIndex: 0,
   width: '100%',
-  maxHeight: '100%',
 })
 
 const SheetBackgroundFrame = styled(YStack, {
@@ -210,7 +210,7 @@ export const SheetContainer = createStyledHOC(
     forwardedRef
   ) => {
     const context = useSheetContext(scope)
-    const { hasFit, disableRemoveScroll, frameSize, contentRef, open } = context
+    const { hasFit, frameSize, contentRef, open } = context
     const composedContentRef = useComposedRefs(forwardedRef, contentRef)
     const offscreenSize = useSheetOffscreenSize(context)
     const stableFrameSize = useRef(frameSize)
@@ -222,6 +222,26 @@ export const SheetContainer = createStyledHOC(
     }, [open, frameSize])
 
     const sheetContents = useMemo(() => {
+      if (context.onlyShowContainer) {
+        return (
+          <SheetContainerFrame
+            ref={composedContentRef}
+            flex={hasFit ? 0 : 1}
+            flexBasis={hasFit ? 'auto' : undefined}
+            maxHeight={hasFit ? undefined : '100%'}
+            pointerEvents={open ? 'auto' : 'none'}
+            data-state={open ? 'open' : 'closed'}
+            {...props}
+            onLayout={composeEventHandlers(props.onLayout, (event) => {
+              context.setFrameSize(event.nativeEvent.layout.height)
+            })}
+          >
+            <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex)}>
+              {children}
+            </StackZIndexContext>
+          </SheetContainerFrame>
+        )
+      }
       const shouldUseFixedHeight = hasFit && !open && stableFrameSize.current
 
       return (
@@ -229,6 +249,7 @@ export const SheetContainer = createStyledHOC(
           ref={composedContentRef}
           flex={hasFit && open ? 0 : 1}
           flexBasis={hasFit ? 'auto' : undefined}
+          maxHeight="100%"
           height={
             shouldUseFixedHeight
               ? stableFrameSize.current
@@ -249,10 +270,21 @@ export const SheetContainer = createStyledHOC(
           )}
         </SheetContainerFrame>
       )
-    }, [open, props, frameSize, offscreenSize, adjustPaddingForOffscreenContent, hasFit])
+    }, [
+      open,
+      props,
+      frameSize,
+      offscreenSize,
+      adjustPaddingForOffscreenContent,
+      hasFit,
+      context.onlyShowContainer,
+      context.setFrameSize,
+    ])
+
+    if (context.onlyShowContainer) return sheetContents
 
     return (
-      <RemoveScroll enabled={!disableRemoveScroll && context.open}>
+      <RemoveScroll enabled={!context.disableRemoveScroll && context.open}>
         {sheetContents}
       </RemoveScroll>
     )
@@ -274,6 +306,7 @@ export const SheetBackground = createStyledHOC(
     forwardedRef
   ) => {
     const context = useSheetContext(scope)
+    if (context.onlyShowContainer) return null
     const bottomOverflow = isWeb
       ? Math.max(context.frameSize, getMaxViewportHeight())
       : context.frameSize
@@ -301,16 +334,12 @@ export const SheetRoot = createRefComponent<RNView, SheetProps>(
     const isShowingAdaptNonSheet =
       shouldUseAdapt && !adaptContext.active && adaptContext.open
 
-    let SheetImplementation = SheetImplementationCustom
-
-    if (props.native) {
-      // null unless this is ios and the app registered a native sheet
-      const impl = getNativeSheet('ios')
-      if (impl) {
-        // @ts-expect-error accepting external sheet implementation
-        SheetImplementation = impl
-      }
-    }
+    const nativeImplementation =
+      props.native === true ||
+      (Array.isArray(props.native) && props.native.includes('ios'))
+        ? getNativeSheet('ios')
+        : null
+    const SheetImplementation = nativeImplementation ?? SheetImplementationCustom
 
     if (isShowingAdaptNonSheet || isShowingNonSheet || !hydrated) {
       return null

@@ -28,6 +28,8 @@ import {
   type GrammarConfigView,
   type ParsedCandidate,
   resolveTokenName,
+  tailwindLeadingRatios,
+  tailwindTrackingEms,
 } from '@tamagui/style-grammar/tooling/candidate'
 
 /**
@@ -172,6 +174,17 @@ function tailwindClassToFlatProp(
         value: parsed.negative && sized[0] !== '-' ? `-${sized}` : sized,
       }
     }
+  }
+
+  // named leading (leading-tight) is a unitless ratio, which v3 line height reads as such
+  if (parsed.convenience === 'leading-keyword') {
+    return { key: prop, value: tailwindLeadingRatios[value] }
+  }
+
+  // named tracking (tracking-wide) is em of the font size, which core lowers per host
+  if (parsed.convenience === 'tracking-keyword') {
+    const em = tailwindTrackingEms[value] * (parsed.negative ? -1 : 1)
+    return { key: prop, value: `${em}em` }
   }
 
   // Tailwind's numbered leading scale is the spacing scale (N * 0.25rem),
@@ -573,24 +586,6 @@ const shorthandResets: Record<string, readonly string[]> = {
   ],
 }
 
-function attachShorthandResets(
-  entries: TailwindPlanEntry[],
-  modifiers: readonly string[]
-): TailwindPlanEntry[] {
-  // web cascade already treats a later shorthand as a reset. emitting
-  // `unset` there becomes a real CSS value and fails parity.
-  if (isWeb || modifiers.length > 0) return entries
-  const unsets: TailwindPlanEntry[] = []
-  for (let i = 0; i < entries.length; i++) {
-    const resets = shorthandResets[entries[i][0]]
-    if (!resets) continue
-    for (let j = 0; j < resets.length; j++) {
-      unsets.push([resets[j], 'unset'])
-    }
-  }
-  return unsets.length === 0 ? entries : unsets.concat(entries)
-}
-
 function computeClassPlan(
   cls: string,
   grammarConfig: GrammarConfigView
@@ -647,7 +642,7 @@ function computeClassPlan(
       if (!entry) return 'raw'
       entries.push(entry)
     }
-    return attachShorthandResets(entries, parsed.modifiers)
+    return entries
   }
   // Resolve only after the registry has claimed the candidate. Multi-prop expansion
   // below consumes that parsed decision instead of re-parsing width vs color.
@@ -667,12 +662,12 @@ function computeClassPlan(
       if (!entry) return 'raw'
       entries.push(entry)
     }
-    return attachShorthandResets(entries, parsed.modifiers)
+    return entries
   }
   const flatProp = tailwindClassToFlatProp(parsed, grammarConfig)
   if (flatProp) {
     const entry = createPlanEntry(flatProp.key, flatProp.value, parsed.modifiers)
-    return entry ? attachShorthandResets([entry], parsed.modifiers) : 'raw'
+    return entry ? [entry] : 'raw'
   }
   // not claimed: caller preserves the raw class
   return 'raw'

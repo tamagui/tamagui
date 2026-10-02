@@ -9,7 +9,7 @@ test('separators expose their orientation on web', async ({ page }) => {
   await expect(horizontal).toHaveAttribute('aria-orientation', 'horizontal')
   await expect(horizontal).toHaveAttribute('data-orientation', 'horizontal')
 
-  await page.getByRole('button', { name: 'Horizontal', exact: true }).click()
+  await page.getByRole('button', { name: 'Vertical', exact: true }).click()
 
   const vertical = page.getByRole('separator')
   await expect(vertical).toHaveAttribute('aria-orientation', 'vertical')

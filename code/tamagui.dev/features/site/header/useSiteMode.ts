@@ -96,7 +96,10 @@ export function useSiteMode() {
     if (overrideStyling) return overrideStyling
     if (pathname.startsWith('/tailwind')) return 'tailwind'
     if (searchParams.get('syntax') === 'tailwind') return 'tailwind'
-    if (searchParams.get('syntax') === 'tamagui' || searchParams.get('syntax') === 'styled')
+    if (
+      searchParams.get('syntax') === 'tamagui' ||
+      searchParams.get('syntax') === 'styled'
+    )
       return 'tamagui'
     if (mounted && typeof document !== 'undefined' && cookieHasTailwind(document.cookie))
       return 'tailwind'
@@ -127,7 +130,10 @@ export function useSiteMode() {
         localStorage.setItem(VERSION_PREF_KEY, nextVersion)
       }
 
-      const isDocs = pathname.startsWith('/docs') || pathname.startsWith('/ui') || pathname.startsWith('/tailwind')
+      const isDocs =
+        pathname.startsWith('/docs') ||
+        pathname.startsWith('/ui') ||
+        pathname.startsWith('/tailwind')
       if (isDocs) {
         const state = getDocsVersionState({
           pathname,
@@ -155,7 +161,10 @@ export function useSiteMode() {
       setOverrideStyling(nextStyling)
       writeSyntaxCookie(nextStyling)
 
-      const isDocs = pathname.startsWith('/docs') || pathname.startsWith('/ui') || pathname.startsWith('/tailwind')
+      const isDocs =
+        pathname.startsWith('/docs') ||
+        pathname.startsWith('/ui') ||
+        pathname.startsWith('/tailwind')
       if (isDocs) {
         const targetSyntax: DocsSyntax =
           nextStyling === 'tailwind'
@@ -174,23 +183,24 @@ export function useSiteMode() {
     [pathname, router]
   )
 
-  const setSyntax = useCallback(
-    (nextSyntax: SiteSyntax) => {
-      setOverrideSyntax(nextSyntax)
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(SYNTAX_PREF_KEY, nextSyntax)
-        const url = new URL(window.location.href)
-        if (nextSyntax === 'object') {
-          url.searchParams.set('syntax', 'typed')
-        } else {
-          url.searchParams.delete('syntax')
-        }
-        window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`)
-        window.dispatchEvent(new Event(codeSyntaxChangeEvent))
+  const setSyntax = useCallback((nextSyntax: SiteSyntax) => {
+    setOverrideSyntax(nextSyntax)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(SYNTAX_PREF_KEY, nextSyntax)
+      const url = new URL(window.location.href)
+      if (nextSyntax === 'object') {
+        url.searchParams.set('syntax', 'typed')
+      } else {
+        url.searchParams.delete('syntax')
       }
-    },
-    []
-  )
+      window.history.replaceState(
+        window.history.state,
+        '',
+        `${url.pathname}${url.search}${url.hash}`
+      )
+      window.dispatchEvent(new Event(codeSyntaxChangeEvent))
+    }
+  }, [])
 
   const setTheme = useCallback((nextThemeId: string | number) => {
     const idStr = String(nextThemeId)

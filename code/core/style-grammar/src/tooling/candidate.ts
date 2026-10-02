@@ -66,6 +66,26 @@ export type CandidateClassification =
 const sizingConveniences = new Set(['full', 'auto', 'screen', 'min', 'max', 'fit'])
 const fontGenerics = new Set(['sans', 'serif', 'mono'])
 const numericPattern = /^\d+(?:\.\d+)?$/
+
+// tailwind v4's named leading scale, as unitless line-height ratios
+export const tailwindLeadingRatios: Record<string, number> = {
+  none: 1,
+  tight: 1.25,
+  snug: 1.375,
+  normal: 1.5,
+  relaxed: 1.625,
+  loose: 2,
+}
+
+// tailwind v4's named tracking scale, in em of the element's font size
+export const tailwindTrackingEms: Record<string, number> = {
+  tighter: -0.05,
+  tight: -0.025,
+  normal: 0,
+  wide: 0.025,
+  wider: 0.05,
+  widest: 0.1,
+}
 const extraPrefixes = [
   'border-x',
   'border-y',
@@ -586,6 +606,28 @@ function chooseEntry(
     }
   }
 
+  if (prefix === 'tracking' && Object.hasOwn(tailwindTrackingEms, rawValue)) {
+    const letterSpacing = entries.find((entry) => entry.prop === 'letterSpacing')
+    if (letterSpacing) {
+      return {
+        entry: letterSpacing,
+        valueKind: 'convenience',
+        convenience: 'tracking-keyword',
+      }
+    }
+  }
+
+  if (prefix === 'leading' && Object.hasOwn(tailwindLeadingRatios, rawValue)) {
+    const lineHeight = entries.find((entry) => entry.prop === 'lineHeight')
+    if (lineHeight) {
+      return {
+        entry: lineHeight,
+        valueKind: 'convenience',
+        convenience: 'leading-keyword',
+      }
+    }
+  }
+
   if (numericPattern.test(rawValue)) {
     const angle = entries.find((entry) => entry.conveniences?.includes('angle'))
     if (angle) {
@@ -721,6 +763,7 @@ export function parseCandidate(
       if (
         selected &&
         (!negative ||
+          selected.convenience === 'tracking-keyword' ||
           (negativeTokenProps.has(selected.entry.prop) &&
             (selected.valueKind === 'token' ||
               (selected.valueKind === 'arbitrary' && selected.entry.prop === 'order') ||

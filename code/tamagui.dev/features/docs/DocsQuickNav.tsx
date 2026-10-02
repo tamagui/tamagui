@@ -329,7 +329,6 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
             </Paragraph>
           </YStack>
 
-
           <YStack
             render="nav"
             aria-labelledby="site-quick-nav-heading"

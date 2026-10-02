@@ -87,12 +87,7 @@ export const StudioThemeAgentBar = memo((_props: StudioAIBarProps) => {
         boxShadow="0 4px 16px shadow-color"
         gap="3"
       >
-        <XStack
-          flexWrap="wrap"
-          justify="space-between"
-          items="center"
-          gap="3"
-        >
+        <XStack flexWrap="wrap" justify="space-between" items="center" gap="3">
           {/* Left: Agent Info */}
           <XStack items="center" gap="3" flex={1} minW={280}>
             <YStack
@@ -113,20 +108,15 @@ export const StudioThemeAgentBar = memo((_props: StudioAIBarProps) => {
                 <SizableText size="4" fontWeight="700" color="color-12">
                   Generate themes with your AI agent
                 </SizableText>
-                <XStack
-                  bg="color-4"
-                  px="2"
-                  py="0-5"
-                  rounded="3"
-                  items="center"
-                >
+                <XStack bg="color-4" px="2" py="0-5" rounded="3" items="center">
                   <Paragraph size="1" color="color-11" fontWeight="600">
                     v3 Skill
                   </Paragraph>
                 </XStack>
               </XStack>
               <Paragraph size="3" color="color-10">
-                Copy our recommended skill to generate themes with Claude Code, Cursor, or Codex, then preview instantly via URL.
+                Copy our recommended skill to generate themes with Claude Code, Cursor, or
+                Codex, then preview instantly via URL.
               </Paragraph>
             </YStack>
           </XStack>
@@ -171,7 +161,12 @@ export const StudioThemeAgentBar = memo((_props: StudioAIBarProps) => {
         {/* Quick Preset Selector & Status */}
         <XStack items="center" justify="space-between" flexWrap="wrap" gap="2" pt="1">
           <XStack items="center" gap="2" flexWrap="wrap">
-            <Paragraph size="2" color="color-10" fontWeight="600" textTransform="uppercase">
+            <Paragraph
+              size="2"
+              color="color-10"
+              fontWeight="600"
+              textTransform="uppercase"
+            >
               Quick Presets:
             </Paragraph>
             {THEME_PRESETS.map((p) => {
@@ -251,10 +246,18 @@ export const StudioThemeAgentBar = memo((_props: StudioAIBarProps) => {
           >
             <Dialog.Title size="6">Tamagui Theme Generator Agent Skill</Dialog.Title>
             <Dialog.Description size="3" color="color-10">
-              Pass this skill to Claude Code, Cursor, Codex, or Copilot to allow your agent to generate themes and open live previews.
+              Pass this skill to Claude Code, Cursor, Codex, or Copilot to allow your
+              agent to generate themes and open live previews.
             </Dialog.Description>
 
-            <ScrollView maxH={420} bg="color-1" p="3" rounded="4" borderWidth={0.5} borderColor="border-color">
+            <ScrollView
+              maxH={420}
+              bg="color-1"
+              p="3"
+              rounded="4"
+              borderWidth={0.5}
+              borderColor="border-color"
+            >
               <Paragraph fontFamily="mono" size="2" whiteSpace="pre-wrap">
                 {AGENT_THEME_SKILL_TEXT}
               </Paragraph>
@@ -301,7 +304,8 @@ export const StudioThemeAgentBar = memo((_props: StudioAIBarProps) => {
           >
             <Dialog.Title size="6">Preview Theme Config</Dialog.Title>
             <Dialog.Description size="3" color="color-10">
-              Paste a theme preview URL (with #theme=...), raw base64 string, or theme JSON:
+              Paste a theme preview URL (with #theme=...), raw base64 string, or theme
+              JSON:
             </Dialog.Description>
 
             <Input
@@ -324,9 +328,7 @@ export const StudioThemeAgentBar = memo((_props: StudioAIBarProps) => {
                   <Button variant="outlined">Cancel</Button>
                 </Dialog.Close>
                 <Theme name="accent">
-                  <Button onPress={handleApplyImport}>
-                    Apply Preview
-                  </Button>
+                  <Button onPress={handleApplyImport}>Apply Preview</Button>
                 </Theme>
               </XStack>
             </XStack>

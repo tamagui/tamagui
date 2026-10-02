@@ -125,7 +125,7 @@ Contains every component for the sheet.
     {
       name: 'native',
       type: 'boolean | "ios"[]',
-      description: `(iOS only) Render to the native system sheet; must install the native dependency first. UIKit does not expose continuous position, so Sheet.useAnimatedPosition() and onTransition are unavailable in this mode.`,
+      description: `(iOS only) Render with the system renderer registered through setupNativeSheet. UIKit does not expose continuous position, so Sheet.useAnimatedPosition() and onTransition are unavailable in this mode.`,
     },
     {
       name: 'disableDrag',
@@ -340,6 +340,59 @@ function DragLinkedBackdrop() {
 Keep `Sheet.Overlay` as the direct child of `Sheet`, then render the hook-driven
 backdrop inside it. The driver's animated view makes the worklet-driven style
 apply on every driver.
+
+## Native system renderers
+
+Register a renderer at app startup to use system presentation with `<Sheet native>`.
+Without a registered renderer, Sheet uses its custom implementation. Tamagui
+owns open and position state, context, Adapt, and the lifetime of one content
+tree. The renderer owns platform presentation, authored detents, gestures,
+keyboard handling, and physical dismissal.
+
+```tsx
+import { setupNativeSheet, type NativeSheetRendererProps } from '@tamagui/sheet'
+
+setupNativeSheet('ios', NativeSheetRenderer)
+```
+
+`NativeSheetRendererProps` supplies the resolved `open` value, `onOpenChange`,
+`position`, `onPositionChange`, and normalized `snapPoints`. A point is
+`{ type: 'percent', value: number }`, `{ type: 'height', value: number }`, or
+`{ type: 'fit' }`. A dismissal-only bottom point is removed before forwarding.
+The other Sheet props, content, and host ref reach the renderer unchanged.
+
+Report interaction requests through `onOpenChange` and `onPositionChange`.
+Controlled parents may decline either request; continue presenting their
+accepted values. Call `onDismiss` only after the original presentation is
+physically removed following an accepted close. A reopen interrupts that
+completion. Tamagui then releases Adapt presence and, when requested, unmounts
+hidden children. Do not mount a second copy of the content beside the native
+presentation.
+
+Render `children` once inside the platform host. `Sheet.Container` measures
+content without custom sheet positioning, `Sheet.ScrollView` forwards to the
+native React Native ScrollView, and the system supplies the background,
+overlay, and grabber. `Sheet.Background`, `Sheet.Overlay`, and `Sheet.Handle`
+render nothing in this mode. Their styles and press handlers do not customize
+the system chrome. Use the renderer's presentation callbacks for dismissal
+policy.
+
+The registration accepts a React component. An imperative implementation keeps
+a controller ref inside that component and drives its presentation methods from
+the resolved `open` value. Use a layout effect when these commands synchronize
+the host's controlled value, so its acknowledgment observes the parent's accepted
+state. Forward interaction requests and physical completion separately. Preserve
+the native library's content container and lazy mounting behavior, and check
+parent-declined close and reopen during dismissal against its actual events.
+The previous `setupNativeSheet('ios', modalModule)` object registration is
+replaced by this component contract; no modal dependency is built into Tamagui.
+
+Native renderers decide which Sheet options their platform can represent.
+Reject unsupported combinations before presenting. A native iOS system sheet
+does not expose continuous animated position or custom transition events.
+`moveOnKeyboardChange` does not install Tamagui's custom keyboard driver in a
+native renderer; its host handles the keyboard. Keep `native` off for custom
+sheet animation and gesture behavior.
 
 ## Native gesture handler integration
 

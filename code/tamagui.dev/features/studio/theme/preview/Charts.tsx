@@ -167,9 +167,21 @@ export const LineChart = memo(() => {
       >
         <defs>
           <linearGradient id="tamagui-revenue-line-grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="var(--color-11, var(--color))" stopOpacity="0.36" />
-            <stop offset="60%" stopColor="var(--color-11, var(--color))" stopOpacity="0.08" />
-            <stop offset="100%" stopColor="var(--color-11, var(--color))" stopOpacity="0.0" />
+            <stop
+              offset="0%"
+              stopColor="var(--color-11, var(--color))"
+              stopOpacity="0.36"
+            />
+            <stop
+              offset="60%"
+              stopColor="var(--color-11, var(--color))"
+              stopOpacity="0.08"
+            />
+            <stop
+              offset="100%"
+              stopColor="var(--color-11, var(--color))"
+              stopOpacity="0.0"
+            />
           </linearGradient>
         </defs>
 
@@ -312,7 +324,13 @@ export const NewMembersChart = memo(() => {
   return (
     <XStack width="100%" height={150} items="center" justify="space-between" px="2">
       {/* Donut SVG */}
-      <YStack width={134} height={136} position="relative" justify="center" items="center">
+      <YStack
+        width={134}
+        height={136}
+        position="relative"
+        justify="center"
+        items="center"
+      >
         <svg viewBox="0 0 134 136" width="134" height="136">
           {arcs.map((arc, i) => (
             <path

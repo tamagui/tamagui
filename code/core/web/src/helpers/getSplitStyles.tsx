@@ -54,7 +54,7 @@ import {
   flushDirectStyles,
   registerAtomicSlot,
 } from './getCSSStylesAtomic'
-import { expandStyle } from './expandStyle'
+import { expandStyle, nativeShorthandLogicals } from './expandStyle'
 import {
   classifyBorderComponents,
   splitComponents,
@@ -3610,6 +3610,23 @@ function emitValue(
             : value < 0
               ? value
               : `${value} 0px`
+  }
+
+  if (process.env.TAMAGUI_TARGET === 'native' && !cursor && !state.styleProps.noExpand) {
+    const logicals = nativeShorthandLogicals[property]
+    const slots = (state as DirectState).flatSlots
+    if (logicals && slots) {
+      for (let index = 0; index < logicals.length; index++) {
+        const list = slots.get(logicals[index])
+        if (!list) continue
+        // only the unconditional records: a media or pseudo longhand still
+        // wins while its clause is active, the same as on web
+        for (let entry = list.length; entry--; ) {
+          if (list[entry][3] === '') list.splice(entry, 1)
+        }
+        if (!list.length) clearDirectStyle(state, logicals[index])
+      }
+    }
   }
 
   const expanded =

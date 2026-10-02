@@ -382,6 +382,38 @@ describe('claimed candidates resolve to native style values', () => {
     expect(styleOf(splitTailwindStyles(Text, { className })).lineHeight).toBe(expected)
   })
 
+  test.each([
+    ['leading-none', 16],
+    ['leading-tight', 20],
+    ['leading-loose', 32],
+  ])('%s is a ratio of the font size', (leading, expected) => {
+    const className = `text-[16px] ${leading}`
+    expect(styleOf(splitTailwindStyles(Text, { className })).lineHeight).toBe(expected)
+  })
+
+  test.each([
+    ['tracking-wide', 0.4],
+    ['tracking-tighter', -0.8],
+    ['-tracking-widest', -1.6],
+  ])('%s is em of the font size', (tracking, expected) => {
+    const className = `text-[16px] ${tracking}`
+    expect(styleOf(splitTailwindStyles(Text, { className })).letterSpacing).toBe(expected)
+  })
+
+  test("bare rounded is tailwind's literal 0.25rem on every corner it names", () => {
+    expect(styleOf(splitTailwindStyles(View, { className: 'rounded' }))).toMatchObject({
+      borderTopLeftRadius: 4,
+      borderTopRightRadius: 4,
+      borderBottomLeftRadius: 4,
+      borderBottomRightRadius: 4,
+    })
+    expect(styleOf(splitTailwindStyles(View, { className: 'rounded-tl' }))).toMatchObject(
+      {
+        borderTopLeftRadius: 4,
+      }
+    )
+  })
+
   test('fractional flex shorthand resolves to native flex longhands', () => {
     expect(styleOf(splitTailwindStyles(View, { className: 'flex-1/2' }))).toMatchObject({
       flexGrow: 1,
@@ -475,6 +507,29 @@ describe('authored ordering across shorthand and longhand candidates', () => {
 
     expect(styleOf(styles).borderStartWidth).toBeUndefined()
     expect(styleOf(styles).borderLeftWidth).toBe(6)
+  })
+
+  test('a later border-color shorthand resets an earlier logical side', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'border-s-[red] border-[blue]',
+    })
+
+    expect(styleOf(styles).borderStartColor).toBeUndefined()
+    expect(styleOf(styles).borderLeftColor).toBe('blue')
+  })
+
+  test('plain style props keep the same order without a class', () => {
+    const styles = splitTailwindStyles(View, {
+      paddingInlineStart: 4,
+      borderStartStartRadius: 2,
+      padding: 6,
+      borderRadius: 8,
+    } as any)
+
+    expect(styleOf(styles).paddingStart).toBeUndefined()
+    expect(styleOf(styles).borderStartStartRadius).toBeUndefined()
+    expect(styleOf(styles).paddingLeft).toBe(6)
+    expect(styleOf(styles).borderTopLeftRadius).toBe(8)
   })
 })
 

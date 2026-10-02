@@ -44,7 +44,7 @@ test('native lowering applies defaults, authored styles, roles and prop mappings
   expect(output.code).toContain('"boxSizing":"content-box"')
   expect(output.code).toContain('"flexDirection":"column"')
   expect(output.code).toContain('"display":"none"')
-  expect(output.code).toContain('"paddingTop":8')
+  expect(output.code).toContain('"padding":8')
   expect(output.code).toContain('accessibilityState={{ busy: true }}')
   expect(output.code).toContain('accessibilityValue={{ now: 3 }}')
   expect(output.code).toContain('accessibilityLabel="content"')
