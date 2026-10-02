@@ -465,7 +465,9 @@ export const buildEnvironment = {
       expect(firstCode).toContain(
         "const __TamaguiNativeView = require('react-native').View"
       )
-      expect(firstCode).toContain('"paddingTop": 12')
+      // four equal sides compile to the one native shorthand
+      expect(firstCode).toContain('"padding": 12')
+      expect(firstCode).not.toContain('"paddingTop"')
       expect(firstCode).toContain('marker: 44')
       expect(firstCode).toContain('data-lowered')
       expect(firstCode).toContain('padding: dynamic')
@@ -482,7 +484,7 @@ export const buildEnvironment = {
         expect.objectContaining({
           host: 'native',
           props: expect.objectContaining({
-            style: expect.objectContaining({ paddingTop: 12 }),
+            style: expect.objectContaining({ padding: 12 }),
             marker: 44,
           }),
         }),
@@ -515,7 +517,7 @@ export const buildEnvironment = {
         applied: true,
       })
       const divergentCode = outputCode(divergentOptionsResult)
-      expect(divergentCode).toContain('"paddingTop": 12')
+      expect(divergentCode).toContain('"padding": 12')
       expect(divergentCode).toContain('marker: 33')
 
       const workerInputPath = join(fixtureRoot, 'worker-input.json')
@@ -556,7 +558,7 @@ export const buildEnvironment = {
       expect(themeUpdate.changed).toBe(true)
       expect(themeUpdate.affectedIds).toEqual([appPath, themePath, tokensPath].sort())
       const afterTheme = await firstWorker.transform(args)
-      expect(outputCode(afterTheme)).toContain('"paddingTop": 14')
+      expect(outputCode(afterTheme)).toContain('"padding": 14')
 
       await write(tokensPath, 'export const spacing = 5\n')
       const tokenUpdate = await frontend.updateFile(tokensPath)
@@ -565,7 +567,7 @@ export const buildEnvironment = {
       const detachedThemeUpdate = await frontend.updateFile(themePath)
       expect(detachedThemeUpdate.affectedIds).toEqual([themePath])
       const afterDetach = await secondWorker.transform(args)
-      expect(outputCode(afterDetach)).toContain('"paddingTop": 5')
+      expect(outputCode(afterDetach)).toContain('"padding": 5')
 
       const manifestPath = join(
         cacheRoot,
@@ -595,7 +597,7 @@ export const buildEnvironment = {
       expect(recovered.moduleIds).toContain(appPath)
       const afterRecovery = await firstWorker.transform(args)
       expect(afterRecovery.metadata?.tamagui.cacheHit).toBe(true)
-      expect(outputCode(afterRecovery)).toContain('"paddingTop": 5')
+      expect(outputCode(afterRecovery)).toContain('"padding": 5')
 
       const productionOptionsAfterEdits = {
         dev: false,
@@ -639,7 +641,7 @@ export const buildEnvironment = {
         expect(refreshed.moduleIds).toContain(appPath)
         const afterLaterBuild = await firstWorker.transform(args)
         expect(afterLaterBuild.metadata?.tamagui.cacheHit).toBe(true)
-        expect(outputCode(afterLaterBuild)).toContain('"paddingTop": 21')
+        expect(outputCode(afterLaterBuild)).toContain('"padding": 21')
 
         // and an unchanged tree keeps the published generation
         const reused = await new MetroCompilerFrontend({
