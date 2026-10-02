@@ -1167,6 +1167,8 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
     const shouldMountChildren = unmountChildrenWhenHidden ? !isFullyClosed : true
 
     if (modal) {
+      // an empty portal still mounts a full-screen wrapper in the native root host
+      if (!shouldMountChildren) return null
       // a modal sheet is teleported through <Portal> to the root portal host.
       // that host is mounted by TamaguiProvider, which may sit ABOVE the app's
       // GestureHandlerRootView - so the teleported content lands outside any
@@ -1180,14 +1182,10 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
       // collapses to 0 height while closed so it occupies no hit area - see
       // rnghRootStyleOpen/Closed above for why pointerEvents can't be used.
       const RNGHRoot = getGestureHandlerState().RootView
-      const mountedContents = shouldMountChildren ? (
-        <ContainerComponent>{contents}</ContainerComponent>
-      ) : null
-      // an empty portal still mounts a full-screen wrapper in the native root host
-      if (!mountedContents) return null
+      const mountedContents = <ContainerComponent>{contents}</ContainerComponent>
       const modalContents = (
         <Portal stackZIndex={zIndex} hidden={!isVisuallyActive} {...portalProps}>
-          {mountedContents && RNGHRoot ? (
+          {RNGHRoot ? (
             <RNGHRoot style={open ? rnghRootStyleOpen : rnghRootStyleClosed}>
               {mountedContents}
             </RNGHRoot>
