@@ -188,6 +188,7 @@
   "peerDependencies": {
     "@expo/ui": "*",
     "burnt": "*",
+    "one": "*",
     "react": "*",
     "react-native": "*",
     "react-native-gesture-handler": "*",
@@ -227,6 +228,9 @@
       "optional": true
     },
     "zeego": {
+      "optional": true
+    },
+    "one": {
       "optional": true
     }
   }
