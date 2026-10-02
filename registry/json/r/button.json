@@ -12,8 +12,15 @@
       "target": "components/tamagui/Button.tsx"
     }
   ],
-  "dependencies": ["@tamagui/button", "@tamagui/core", "@tamagui/helpers-tamagui"],
-  "categories": ["form", "buttons"],
+  "dependencies": [
+    "@tamagui/button",
+    "@tamagui/core",
+    "@tamagui/helpers-tamagui"
+  ],
+  "categories": [
+    "form",
+    "buttons"
+  ],
   "meta": {
     "tokens": [
       "background",
@@ -24,6 +31,9 @@
       "outline-color",
       "color"
     ],
-    "states": ["disabled", "pressed"]
+    "states": [
+      "disabled",
+      "pressed"
+    ]
   }
 }
