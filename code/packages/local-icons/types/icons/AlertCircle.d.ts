@@ -1,6 +1,5 @@
-import type { IconProps } from "@tamagui/helpers-icon";
-type IconComponent = (propsIn: IconProps) => JSX.Element;
-export declare const AlertCircle: IconComponent;
-export {};
+import { type JSX } from "react";
+import { type IconProps } from "@tamagui/helpers-icon";
+export declare const AlertCircle: (props: IconProps) => JSX.Element;
 
 //# sourceMappingURL=AlertCircle.d.ts.map

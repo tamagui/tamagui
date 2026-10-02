@@ -1,31 +1,8 @@
-// @ts-nocheck
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { NamedExoticComponent } from 'react'
-import type { IconProps } from '@tamagui/helpers-icon'
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+import { memo, type JSX } from 'react'
+import { Svg, Circle, Path } from 'react-native-svg'
+import { themed, type IconProps } from '@tamagui/helpers-icon'
 
-type IconComponent = (propsIn: IconProps) => JSX.Element
-
-export const Settings: IconComponent = themed(
+export const Settings: (props: IconProps) => JSX.Element = themed(
   memo(function Settings(props: IconProps) {
     const { color = 'black', size = 24, ...otherProps } = props
     return (
@@ -41,10 +18,10 @@ export const Settings: IconComponent = themed(
         {...otherProps}
       >
         <Path
-          d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
+          d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
           stroke={color}
         />
-        <_Circle cx="12" cy="12" r="3" stroke={color} />
+        <Circle cx="12" cy="12" r="3" stroke={color} />
       </Svg>
     )
   })

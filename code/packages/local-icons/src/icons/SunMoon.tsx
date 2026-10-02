@@ -1,31 +1,8 @@
-// @ts-nocheck
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { NamedExoticComponent } from 'react'
-import type { IconProps } from '@tamagui/helpers-icon'
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+import { memo, type JSX } from 'react'
+import { Svg, Path } from 'react-native-svg'
+import { themed, type IconProps } from '@tamagui/helpers-icon'
 
-type IconComponent = (propsIn: IconProps) => JSX.Element
-
-export const SunMoon: IconComponent = themed(
+export const SunMoon: (props: IconProps) => JSX.Element = themed(
   memo(function SunMoon(props: IconProps) {
     const { color = 'black', size = 24, ...otherProps } = props
     return (
@@ -40,15 +17,14 @@ export const SunMoon: IconComponent = themed(
         strokeLinejoin="round"
         {...otherProps}
       >
-        <Path d="M12 8a2.83 2.83 0 0 0 4 4 4 4 0 1 1-4-4" stroke={color} />
         <Path d="M12 2v2" stroke={color} />
-        <Path d="M12 20v2" stroke={color} />
-        <Path d="m4.9 4.9 1.4 1.4" stroke={color} />
-        <Path d="m17.7 17.7 1.4 1.4" stroke={color} />
-        <Path d="M2 12h2" stroke={color} />
+        <Path
+          d="M14.837 16.385a6 6 0 1 1-7.223-7.222c.624-.147.97.66.715 1.248a4 4 0 0 0 5.26 5.259c.589-.255 1.396.09 1.248.715"
+          stroke={color}
+        />
+        <Path d="M16 12a4 4 0 0 0-4-4" stroke={color} />
+        <Path d="m19 5-1.256 1.256" stroke={color} />
         <Path d="M20 12h2" stroke={color} />
-        <Path d="m6.3 17.7-1.4 1.4" stroke={color} />
-        <Path d="m19.1 4.9-1.4 1.4" stroke={color} />
       </Svg>
     )
   })

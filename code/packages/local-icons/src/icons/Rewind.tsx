@@ -1,31 +1,8 @@
-// @ts-nocheck
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { NamedExoticComponent } from 'react'
-import type { IconProps } from '@tamagui/helpers-icon'
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+import { memo, type JSX } from 'react'
+import { Svg, Path } from 'react-native-svg'
+import { themed, type IconProps } from '@tamagui/helpers-icon'
 
-type IconComponent = (propsIn: IconProps) => JSX.Element
-
-export const Rewind: IconComponent = themed(
+export const Rewind: (props: IconProps) => JSX.Element = themed(
   memo(function Rewind(props: IconProps) {
     const { color = 'black', size = 24, ...otherProps } = props
     return (
@@ -40,8 +17,14 @@ export const Rewind: IconComponent = themed(
         strokeLinejoin="round"
         {...otherProps}
       >
-        <Polygon points="11 19 2 12 11 5 11 19" stroke={color} />
-        <Polygon points="22 19 13 12 22 5 22 19" stroke={color} />
+        <Path
+          d="M12 6a2 2 0 0 0-3.414-1.414l-6 6a2 2 0 0 0 0 2.828l6 6A2 2 0 0 0 12 18z"
+          stroke={color}
+        />
+        <Path
+          d="M22 6a2 2 0 0 0-3.414-1.414l-6 6a2 2 0 0 0 0 2.828l6 6A2 2 0 0 0 22 18z"
+          stroke={color}
+        />
       </Svg>
     )
   })

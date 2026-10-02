@@ -1,6 +1,5 @@
-import type { IconProps } from "@tamagui/helpers-icon";
-type IconComponent = (propsIn: IconProps) => JSX.Element;
-export declare const Anchor: IconComponent;
-export {};
+import { type JSX } from "react";
+import { type IconProps } from "@tamagui/helpers-icon";
+export declare const Anchor: (props: IconProps) => JSX.Element;
 
 //# sourceMappingURL=Anchor.d.ts.map

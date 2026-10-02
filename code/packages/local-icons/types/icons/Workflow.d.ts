@@ -1,6 +1,5 @@
-import type { IconProps } from "@tamagui/helpers-icon";
-type IconComponent = (propsIn: IconProps) => JSX.Element;
-export declare const Workflow: IconComponent;
-export {};
+import { type JSX } from "react";
+import { type IconProps } from "@tamagui/helpers-icon";
+export declare const Workflow: (props: IconProps) => JSX.Element;
 
 //# sourceMappingURL=Workflow.d.ts.map

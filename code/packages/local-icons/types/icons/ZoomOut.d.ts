@@ -1,6 +1,5 @@
-import type { IconProps } from "@tamagui/helpers-icon";
-type IconComponent = (propsIn: IconProps) => JSX.Element;
-export declare const ZoomOut: IconComponent;
-export {};
+import { type JSX } from "react";
+import { type IconProps } from "@tamagui/helpers-icon";
+export declare const ZoomOut: (props: IconProps) => JSX.Element;
 
 //# sourceMappingURL=ZoomOut.d.ts.map

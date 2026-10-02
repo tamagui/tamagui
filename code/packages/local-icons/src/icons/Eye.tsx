@@ -1,31 +1,8 @@
-// @ts-nocheck
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { NamedExoticComponent } from 'react'
-import type { IconProps } from '@tamagui/helpers-icon'
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+import { memo, type JSX } from 'react'
+import { Svg, Circle, Path } from 'react-native-svg'
+import { themed, type IconProps } from '@tamagui/helpers-icon'
 
-type IconComponent = (propsIn: IconProps) => JSX.Element
-
-export const Eye: IconComponent = themed(
+export const Eye: (props: IconProps) => JSX.Element = themed(
   memo(function Eye(props: IconProps) {
     const { color = 'black', size = 24, ...otherProps } = props
     return (
@@ -44,7 +21,7 @@ export const Eye: IconComponent = themed(
           d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"
           stroke={color}
         />
-        <_Circle cx="12" cy="12" r="3" stroke={color} />
+        <Circle cx="12" cy="12" r="3" stroke={color} />
       </Svg>
     )
   })
