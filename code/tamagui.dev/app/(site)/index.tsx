@@ -45,7 +45,7 @@ const features: FeaturePart[][] = [
   [
     'An ',
     { label: 'optimizing compiler', href: '/docs/intro/compiler-install' },
-    ' in Rust, flattening your tree.',
+    ' that flattens your tree.',
   ],
   [
     'A Rust ',
@@ -157,7 +157,7 @@ export default function TamaguiHomePage() {
 
               <Paragraph size="5" color="color-11">
                 Typed inline styles, or Tailwind classes. Runtime, or build time. Add the
-                Rust compiler or native runtime for best-in-class performance everywhere.
+                compiler and your styles run as fast as plain Tailwind CSS on the web.
               </Paragraph>
 
               <Paragraph size="5" color="color-11">

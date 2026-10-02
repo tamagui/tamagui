@@ -95,9 +95,10 @@ Simple, rich, group, and heavy use Tamagui beta 901. Animated uses beta 917.
 
 On beta 901, compiled Tamagui Tailwind had lower mount means than NativeWind
 and Uniwind in simple, rich, group, and heavy. The paired 95% confidence
-intervals for all eight comparisons were below zero. Its whole-app JavaScript
-was 111,808 bytes gzipped, with 47,925 bytes attributed to the framework and
-1,093 bytes of CSS gzip. Those bundle figures also use beta 901.
+intervals for all eight comparisons were below zero. On the current v3 beta,
+the compiled Tamagui Tailwind app ships 88,928 bytes of JavaScript gzipped, of
+which 25,864 bytes are framework. The same app is 146,195 bytes with NativeWind
+and 102,000 bytes with Uniwind. React and React DOM are about 62KB of each.
 
 The animated fixture uses a CSS transition with conditional opacity and
 transform values. On beta 917 the compiler found, lowered, and flattened all 14
@@ -127,26 +128,24 @@ gesture-linked animation.
 
 ### Cross-platform coverage
 
-The beta 891 coverage harness derives all 23,286 candidates from Tailwind CSS
-4.3.0's installed utility registry instead of a hand-maintained list. It runs
-each library's parser or compiler on both targets.
+The coverage harness derives all 23,286 candidates from Tailwind CSS 4.3.0's
+installed utility registry instead of a hand-maintained list. It runs each
+library's parser or compiler on both targets, and counts composition parts
+(gradient stops, rings, shadows) that resolve beside their partner class.
 
-| Framework        | Web resolved | Native styles | Native share of registry |
-| ---------------- | -----------: | ------------: | -----------------------: |
-| Tamagui Tailwind |       23,286 |         4,522 |                   19.42% |
-| NativeWind v5    |       23,286 |        20,500 |                   88.04% |
-| Uniwind          |       23,286 |        22,352 |                   95.99% |
+| Framework        | Web resolved | Native styles | Native share of registry | Share of what RN renders |
+| ---------------- | -----------: | ------------: | -----------------------: | -----------------------: |
+| Tamagui Tailwind |       23,274 |        11,672 |                   50.12% |                   94.26% |
+| NativeWind v5    |       23,286 |        20,500 |                   88.04% |                   97.78% |
+| Uniwind          |       23,286 |        22,352 |                   95.99% |                   99.65% |
 
-Tamagui Tailwind resolves all 23,286 classes on web. Of those, 4,522 become
-Tamagui styles and 18,764 pass through to CSS. The same 4,522 return React
-Native styles on native. Beta 891 closed the named text color and size, font,
-size, corner radius, single-side border, and axis inset gaps. Its largest
-remaining native gaps are masks, gradients, shadows, rings, outlines, and
-logical-direction borders.
-
-The registry contains web-only CSS, so these percentages describe each
-compiler's accepted native surface. They do not claim that React Native can
-visually reproduce every CSS utility.
+Much of the registry is CSS that React Native cannot draw: 6,228 mask
+classes, scroll margins, scrollbars, and backdrop filters. The last column
+keeps only the 9,717 classes whose properties React Native 0.86 renders.
+Tamagui also declines the 339 filter and drop-shadow classes that iOS cannot
+render, where the other libraries accept them; leaving those out, Tamagui
+covers 97.66% and NativeWind 97.70%. The remaining Tamagui gaps are filters on
+iOS, `current` and `inherit` colors, and the `align-*` utilities.
 
 ### One component, both platforms
 
