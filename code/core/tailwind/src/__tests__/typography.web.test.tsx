@@ -84,9 +84,13 @@ describe('tailwind lineHeight (leading-*)', () => {
     expect(rule('leading-96', 'lineHeight')[StyleObjectValue]).toBe('384px')
   })
 
-  test('unregistered leading aliases pass through', () => {
-    for (const cls of ['leading-none', 'leading-tight', 'leading-loose']) {
-      expect(rule(cls, 'lineHeight')).toBeNull()
+  test('named leading resolves to tailwind ratios', () => {
+    for (const [cls, ratio] of [
+      ['leading-none', '1'],
+      ['leading-tight', '1.25'],
+      ['leading-loose', '2'],
+    ]) {
+      expect(String(rule(cls, 'lineHeight')[StyleObjectValue])).toBe(ratio)
     }
   })
 })

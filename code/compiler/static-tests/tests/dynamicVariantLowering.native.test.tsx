@@ -34,7 +34,7 @@ describe('styled definitions visible in the graph', () => {
         return <Box testID="box" backgroundColor="red" />
       }
     `)
-    expect(output.code).toContain('"paddingTop":10')
+    expect(output.code).toContain('"padding":10')
     expect(output.code).toContain('"backgroundColor":"red"')
     expect(output.code).not.toContain('"memo"')
   })

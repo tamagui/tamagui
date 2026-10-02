@@ -33,9 +33,9 @@ import {
 
 import type { CreateAnimationsOptions } from './types'
 
-// detect Fabric (New Architecture) — Paper doesn't support native driver for all style keys
-const isFabric =
-  !isWeb && typeof global !== 'undefined' && !!global.__nativeFabricUIManager
+// detect Fabric (New Architecture) — Paper doesn't support native driver for all style keys.
+// react-native's UIManagerBinding installs the global as `nativeFabricUIManager`
+const isFabric = !isWeb && !!(globalThis as any).nativeFabricUIManager
 
 // Helper to resolve dynamic theme values like {dynamic: {dark: "value", light: undefined}}
 const resolveDynamicValue = (value: any, isDark: boolean): any => {
@@ -76,7 +76,10 @@ const colorStyleKey = {
 // layout dimensions. the native animated module has no whitelist entry for any
 // of them, so a node animating one runs its whole Animated graph on the JS
 // driver (useNativeDriver:false): Fabric cannot mix native- and JS-driven
-// values on one node.
+// values on one node. like text metrics they join the graph only while moving:
+// a fixed width under `transition="bouncy"` would otherwise put every opacity
+// and transform on that node on the JS driver, where each frame of each value
+// is a setNativeProps that commits the whole shadow tree.
 const layoutStyleKey = {
   height: true,
   width: true,
@@ -97,18 +100,6 @@ const textMetricStyleKey = {
 }
 
 const jsDriverStyleKey = { ...layoutStyleKey, ...textMetricStyleKey }
-
-function hasAnimatedLayoutKey(
-  style: Record<string, any>,
-  isDark: boolean,
-  resolved: ResolvedTransition
-) {
-  for (const key in layoutStyleKey) {
-    if (!getTransitionForKey(resolved, key)) continue
-    if (typeof resolveDynamicValue(style[key], isDark) === 'number') return true
-  }
-  return false
-}
 
 // A numeric authored lineHeight is a RATIO of the resolved font size, not a
 // length. Core finalizes the destination to fontSize * ratio and reports the
@@ -412,22 +403,41 @@ export function createAnimations<A extends AnimationsConfig>(
       // Animated graph while it is moving (see textMetricStyleKey), which is
       // what keeps an ordinary opacity or transform animation over unchanged
       // text on the native driver.
-      const paintedTextRef = React.useRef<{
-        fontSize?: unknown
-        lineHeight?: unknown
-        ratio?: number
-      }>({})
+      const paintedTextRef = React.useRef<
+        Partial<Record<keyof typeof jsDriverStyleKey, unknown>> & { ratio?: number }
+      >({})
       // a value already in the graph keeps moving until it arrives, so a
       // re-render mid-flight never drops it back to a static style and snaps.
       // the first pass has painted nothing yet, so nothing is moving there
       // either: the metrics land as plain numbers and the node mounts on the
       // native driver.
-      const movesTextValue = (key: 'fontSize' | 'lineHeight', target: unknown) => {
+      const movesTextValue = (key: keyof typeof jsDriverStyleKey, target: unknown) => {
         if (typeof target !== 'number') return false
         const node = animateStyles.current[key]
         const last = node ? (node['_value'] as unknown) : paintedTextRef.current[key]
         return last !== undefined && last !== target
       }
+      // a layout dimension the transition covers and the pass actually moves
+      const movesLayoutValue = (
+        key: string,
+        style: Record<string, any>,
+        isDark: boolean,
+        resolved: ResolvedTransition
+      ) =>
+        !!layoutStyleKey[key] &&
+        !!getTransitionForKey(resolved, key) &&
+        movesTextValue(
+          key as keyof typeof layoutStyleKey,
+          resolveDynamicValue(style[key], isDark)
+        )
+      const movesLayout = (
+        style: Record<string, any>,
+        isDark: boolean,
+        resolved: ResolvedTransition
+      ) =>
+        Object.keys(layoutStyleKey).some((key) =>
+          movesLayoutValue(key, style, isDark, resolved)
+        )
       const movesLeadingRatio = (ratio: number | undefined) => {
         if (ratio === undefined) return false
         const node = leadingRatioValue.current
@@ -447,7 +457,7 @@ export function createAnimations<A extends AnimationsConfig>(
         // a metric that was at rest is out of the graph, so the value it
         // rejoins with has to start at what the last pass painted: a fresh
         // Animated.Value starts AT its target, and would snap the metric.
-        if (textMetricStyleKey[key])
+        if (jsDriverStyleKey[key] && typeof paintedTextRef.current[key] === 'number')
           return new Animated.Value(paintedTextRef.current[key] as number)
         return undefined
       }
@@ -553,6 +563,11 @@ export function createAnimations<A extends AnimationsConfig>(
         if (!isExiting && !isDisabled && !pseudoActiveRef.current) {
           if (!movesFontSize) delete animateStyles.current.fontSize
           if (!movesLeading) delete animateStyles.current.lineHeight
+          for (const key in layoutStyleKey) {
+            if (!movesLayoutValue(key, style, isDark, resolved)) {
+              delete animateStyles.current[key]
+            }
+          }
         }
 
         // a font size a transition can move is published to descendants whether
@@ -598,7 +613,7 @@ export function createAnimations<A extends AnimationsConfig>(
         // start on a driver the node no longer runs on.
         const useNativeDriverForNode =
           nativeDriver &&
-          !hasAnimatedLayoutKey(style, isDark, resolved) &&
+          !movesLayout(style, isDark, resolved) &&
           !movesFontSize &&
           !movesLeading &&
           !inheritedFontSize &&
@@ -633,6 +648,11 @@ export function createAnimations<A extends AnimationsConfig>(
             textMetricStyleKey[key] &&
             !(key === 'fontSize' ? movesFontSize : movesLeading)
           ) {
+            nonAnimatedStyle[key] = val
+            continue
+          }
+          // so does a layout dimension at rest
+          if (layoutStyleKey[key] && !movesLayoutValue(key, style, isDark, resolved)) {
             nonAnimatedStyle[key] = val
             continue
           }
@@ -798,6 +818,9 @@ export function createAnimations<A extends AnimationsConfig>(
             fontSize: style.fontSize,
             lineHeight: style.lineHeight,
             ratio: paintedRatio,
+          }
+          for (const key in layoutStyleKey) {
+            paintedTextRef.current[key] = resolveDynamicValue(style[key], isDark)
           }
         }
 
@@ -1055,7 +1078,7 @@ export function createAnimations<A extends AnimationsConfig>(
         // the structural-change commit below.
         const useNativeDriverForNode =
           nativeDriver &&
-          !hasAnimatedLayoutKey(nextStyle, isDark, emittedResolved) &&
+          !movesLayout(nextStyle, isDark, emittedResolved) &&
           !emitterMovesFontSize &&
           !emitterMovesLeading &&
           !inheritedFontSizeNode(nextStyle, emittedRatio, inheritedText) &&
@@ -1081,6 +1104,12 @@ export function createAnimations<A extends AnimationsConfig>(
           if (
             textMetricStyleKey[key] &&
             !(key === 'fontSize' ? emitterMovesFontSize : emitterMovesLeading)
+          ) {
+            continue
+          }
+          if (
+            layoutStyleKey[key] &&
+            !movesTextValue(key as keyof typeof layoutStyleKey, val)
           ) {
             continue
           }
@@ -1163,6 +1192,9 @@ export function createAnimations<A extends AnimationsConfig>(
           fontSize: nextStyle.fontSize,
           lineHeight: nextStyle.lineHeight,
           ratio: emittedRatio,
+        }
+        for (const key in layoutStyleKey) {
+          paintedTextRef.current[key] = resolveDynamicValue(nextStyle[key], isDark)
         }
 
         // run the queued animations immediately

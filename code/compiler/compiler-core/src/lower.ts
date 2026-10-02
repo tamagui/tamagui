@@ -1,4 +1,5 @@
 import type { ResolvedModuleId, SourceSpan } from './contracts'
+import type { DynamicEvaluation } from './evaluate'
 import { localBailout, type BailoutReason } from './diagnostics'
 import type {
   MaterializedElement,
@@ -73,7 +74,9 @@ export interface CompilerLoweringHost {
   canLowerDynamicStyleProp?(
     name: string,
     component: LoweringComponent,
-    valueKind?: 'bailout' | 'conditional'
+    valueKind?: 'bailout' | 'conditional',
+    /** what the evaluator proved about an opaque value: its type and finite domain */
+    dynamic?: DynamicEvaluation | null
   ): boolean
   lowerCandidate(input: LoweringCandidateInput): LoweringCandidateResult
   /** Development-only source instrumentation for an existing component debug channel. */
@@ -184,7 +187,12 @@ function unsafeEntry(
     entry.kind === 'prop' &&
     host.isStyleProp(entry.name, component) &&
     (entry.value.kind === 'bailout' || entry.value.kind === 'conditional') &&
-    !host.canLowerDynamicStyleProp?.(entry.name, component, entry.value.kind)
+    !host.canLowerDynamicStyleProp?.(
+      entry.name,
+      component,
+      entry.value.kind,
+      entry.value.kind === 'bailout' ? entry.value.dynamic : null
+    )
   ) {
     return diagnostic(
       'local/dynamic-style-value',
@@ -199,7 +207,12 @@ function unsafeEntry(
       if (member.value.kind !== 'bailout' && member.value.kind !== 'conditional') continue
       if (
         !host.isStyleProp(member.name, component) ||
-        !host.canLowerDynamicStyleProp?.(member.name, component, member.value.kind)
+        !host.canLowerDynamicStyleProp?.(
+          member.name,
+          component,
+          member.value.kind,
+          member.value.kind === 'bailout' ? member.value.dynamic : null
+        )
       ) {
         return diagnostic(
           'local/dynamic-style-value',

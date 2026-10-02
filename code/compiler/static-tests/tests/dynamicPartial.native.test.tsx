@@ -169,7 +169,7 @@ test('native opacity partial extraction preserves static and dynamic host styles
       }),
       expect.objectContaining({
         flexDirection: 'row',
-        paddingTop: 8,
+        padding: 8,
         backgroundColor: 'rgb(229,231,235)',
         opacity: 1,
       }),
