@@ -16,6 +16,7 @@ on:
       - main
       - v3
       - 'v3-*'
+      - 'v3/**'
 
 permissions:
   contents: read
