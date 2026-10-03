@@ -30,7 +30,6 @@ const HadTheme = new WeakMap<object, boolean>()
 const PendingUpdate = new Map<any, boolean | 'force'>()
 
 const states: Map<ID, ThemeState | undefined> = new Map()
-const localStates: Map<ID, ThemeState | undefined> = new Map()
 
 let shouldForce = false
 export const forceUpdateThemes = () => {
@@ -146,7 +145,7 @@ export const useThemeState = (
 
     if (r.lastSnap && !states.has(r.id)) {
       states.set(r.id, r.lastSnap)
-      localStates.set(r.id, r.lastSnap)
+      r.localState = r.lastSnap
     }
 
     if (cascadeOnChange && !themeProviderParents.has(r.id)) {
@@ -182,7 +181,7 @@ export const useThemeState = (
         r.unsubscribe = () => {
           allListeners.delete(sid)
           listenersByParent[pid]?.delete(sid)
-          localStates.delete(sid)
+          r.localState = undefined
           states.delete(sid)
           PendingUpdate.delete(sid)
           r.unsubscribe = undefined
@@ -223,6 +222,7 @@ export const useThemeState = (
 }
 
 type SnapshotRef = {
+  localState?: ThemeState
   id: string
   parentId: string
   props: UseThemeWithStateProps
@@ -258,7 +258,7 @@ function cleanupThemeState(r: ThemeStateRef) {
   if (r.unsubscribe) {
     cleanupThemeSubscription(r)
   } else {
-    localStates.delete(r.id)
+    r.localState = undefined
     states.delete(r.id)
     PendingUpdate.delete(r.id)
   }
@@ -277,7 +277,8 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
     schemeKeys,
     optimizeForFirstRender,
   } = r
-  let local = localStates.get(id)
+  // useId values repeat across server renders; each hook owns its snapshot.
+  let local = r.localState
   const parentState = states.get(parentId)
 
   if (local && !PendingUpdate.has(id)) {
@@ -351,7 +352,7 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
 
   if (!local || rerender) {
     local = { ...next }
-    localStates.set(id, local)
+    r.localState = local
   }
 
   if (next !== local) {
