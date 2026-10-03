@@ -145,14 +145,14 @@ export const useThemeState = (
 
     if (r.lastSnap && !states.has(r.id)) {
       states.set(r.id, r.lastSnap)
-      r.localState = r.lastSnap
+      r.state = r.lastSnap
     }
 
     if (cascadeOnChange && !themeProviderParents.has(r.id)) {
       registerThemeProviderChain(r.id, r.parentId, r.props)
     }
 
-    if (r.unsubscribe && r.subscribedParentId !== r.parentId) {
+    if (r.unsubscribe && r.subscribedTo !== r.parentId) {
       cleanupThemeSubscription(r)
     }
 
@@ -177,15 +177,15 @@ export const useThemeState = (
           PendingUpdate.set(sid, forced ? 'force' : true)
           cb(forced)
         })
-        r.subscribedParentId = pid
+        r.subscribedTo = pid
         r.unsubscribe = () => {
           allListeners.delete(sid)
           listenersByParent[pid]?.delete(sid)
-          r.localState = undefined
+          r.state = undefined
           states.delete(sid)
           PendingUpdate.delete(sid)
           r.unsubscribe = undefined
-          r.subscribedParentId = undefined
+          r.subscribedTo = undefined
         }
       }
     } else if (r.unsubscribe) {
@@ -222,7 +222,7 @@ export const useThemeState = (
 }
 
 type SnapshotRef = {
-  localState?: ThemeState
+  state?: ThemeState
   id: string
   parentId: string
   props: UseThemeWithStateProps
@@ -236,7 +236,7 @@ type SnapshotRef = {
 type ThemeStateRef = SnapshotRef & {
   renderVersion: number
   unsubscribe?: () => void
-  subscribedParentId?: string
+  subscribedTo?: string
   lastSnap?: ThemeState
 }
 
@@ -258,7 +258,7 @@ function cleanupThemeState(r: ThemeStateRef) {
   if (r.unsubscribe) {
     cleanupThemeSubscription(r)
   } else {
-    r.localState = undefined
+    r.state = undefined
     states.delete(r.id)
     PendingUpdate.delete(r.id)
   }
@@ -278,7 +278,7 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
     optimizeForFirstRender,
   } = r
   // useId values repeat across server renders; each hook owns its snapshot.
-  let local = r.localState
+  let local = r.state
   const parentState = states.get(parentId)
 
   if (local && !PendingUpdate.has(id)) {
@@ -352,7 +352,7 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
 
   if (!local || rerender) {
     local = { ...next }
-    r.localState = local
+    r.state = local
   }
 
   if (next !== local) {
