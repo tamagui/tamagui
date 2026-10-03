@@ -1,0 +1,257 @@
+{
+  "arm": "tamagui",
+  "excluded": [
+    "react",
+    "react-dom",
+    "scheduler"
+  ],
+  "command": "cd code/comparisons/tailwind-bundle/tamagui && BUNDLE_EXCLUDE_REACT=1 bun ../node_modules/vite/bin/vite.js build; cd .. && BUNDLE_EXCLUDE_REACT=1 bun attribute.ts tamagui",
+  "method": "RAN: gzip level 9 of each complete emitted JS file. Source-map spans cover every byte. Per-package and per-group standalone gzip compress their selected minified spans; marginal gzip subtracts gzip after deleting those spans. Both columns are non-additive because gzip shares a dictionary. Only React, React DOM, and scheduler are externalized; all other required packages remain bundled. No manual chunking.",
+  "totalJsGzipBytes": 16899,
+  "totalCssGzipBytes": 2199,
+  "versions": {
+    "@tamagui/compose-refs": [
+      "3.0.0-tip.728da51995"
+    ],
+    "@tamagui/web": [
+      "3.0.0-tip.728da51995"
+    ],
+    "@tamagui/constants": [
+      "3.0.0-tip.728da51995"
+    ],
+    "@tamagui/animation-helpers": [
+      "3.0.0-tip.728da51995"
+    ],
+    "@tamagui/simple-hash": [
+      "3.0.0-tip.728da51995"
+    ],
+    "@tamagui/helpers": [
+      "3.0.0-tip.728da51995"
+    ],
+    "@tamagui/style-grammar": [
+      "3.0.0-tip.728da51995"
+    ],
+    "@tamagui/use-did-finish-ssr": [
+      "3.0.0-tip.728da51995"
+    ],
+    "@tamagui/use-element-layout": [
+      "3.0.0-tip.728da51995"
+    ],
+    "@tamagui/core": [
+      "3.0.0-tip.728da51995"
+    ]
+  },
+  "groups": [
+    {
+      "name": "framework",
+      "minBytes": 40925,
+      "standaloneGzipBytes": 16211,
+      "marginalGzipBytes": 16078
+    },
+    {
+      "name": "app",
+      "minBytes": 532,
+      "standaloneGzipBytes": 346,
+      "marginalGzipBytes": 241
+    },
+    {
+      "name": "bundler",
+      "minBytes": 978,
+      "standaloneGzipBytes": 537,
+      "marginalGzipBytes": 447
+    }
+  ],
+  "packages": [
+    {
+      "name": "@tamagui/web",
+      "group": "framework",
+      "minBytes": 27023,
+      "standaloneGzipBytes": 11219,
+      "marginalGzipBytes": 10582,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/config.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/constants/constants.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/contexts/ComponentContext.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/createTamagui.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/createVariable.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/createVariables.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/borderComponents.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/configVariables.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/createDesignSystem.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/createStyledContext.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/defaultAnimationDriver.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/formatDiagnostic.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/grammarConfig.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/insertStyleRule.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/isObj.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/matchMedia.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/mediaObjectToString.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/mediaState.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/mergeProps.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/objectIdentityKey.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/proxyThemeToParents.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/resolveAnimationDriver.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/resolveSafeArea.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/resolveSafeAreaVariable.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/resolveSizing.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/styleStaticConfigCore.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/themes.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/tokenCategories.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/helpers/variableValue.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/hooks/getThemeProxied.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/hooks/isOptimizedForFirstRender.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/hooks/useMedia.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/hooks/useTheme.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/hooks/useThemeState.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/insertFont.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/internal-runtime.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/setupHooks.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/style.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/types.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/views/SafeAreaTracker.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/views/TamaguiProvider.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/views/TamaguiRoot.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/views/Theme.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/web/dist/esm/views/ThemeProvider.mjs"
+      ]
+    },
+    {
+      "name": "@tamagui/helpers",
+      "group": "framework",
+      "minBytes": 4742,
+      "standaloneGzipBytes": 1765,
+      "marginalGzipBytes": 1562,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/helpers/dist/esm/themeClassNames.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/helpers/dist/esm/toStylePropsObject.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/helpers/dist/esm/validStyleProps.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/helpers/dist/esm/webOnlyStyleProps.mjs"
+      ]
+    },
+    {
+      "name": "@tamagui/use-element-layout",
+      "group": "framework",
+      "minBytes": 3408,
+      "standaloneGzipBytes": 1542,
+      "marginalGzipBytes": 1298,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/use-element-layout/dist/esm/index.mjs"
+      ]
+    },
+    {
+      "name": "@tamagui/style-grammar",
+      "group": "framework",
+      "minBytes": 2940,
+      "standaloneGzipBytes": 1363,
+      "marginalGzipBytes": 1083,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/style-grammar/dist/esm/runtime/clauseIdentity.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/style-grammar/dist/esm/runtime/modifierVocabulary.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/style-grammar/dist/esm/runtime/scanFlatValue.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/style-grammar/dist/esm/runtime/stateModifiers.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/style-grammar/dist/esm/tooling/config.mjs"
+      ]
+    },
+    {
+      "name": "bundler/unmapped",
+      "group": "bundler",
+      "minBytes": 978,
+      "standaloneGzipBytes": 537,
+      "marginalGzipBytes": 447,
+      "sources": [
+        null
+      ]
+    },
+    {
+      "name": "@tamagui/core",
+      "group": "framework",
+      "minBytes": 1035,
+      "standaloneGzipBytes": 532,
+      "marginalGzipBytes": 410,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/core/dist/esm/getBaseViews.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/core/dist/esm/runtime.mjs",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/core/dist/esm/setupMedia.mjs"
+      ]
+    },
+    {
+      "name": "@tamagui/simple-hash",
+      "group": "framework",
+      "minBytes": 516,
+      "standaloneGzipBytes": 370,
+      "marginalGzipBytes": 227,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/simple-hash/dist/esm/index.mjs"
+      ]
+    },
+    {
+      "name": "app",
+      "group": "app",
+      "minBytes": 532,
+      "standaloneGzipBytes": 346,
+      "marginalGzipBytes": 241,
+      "sources": [
+        "../../src/App.tsx",
+        "../../src/main.tsx",
+        "../../src/tamagui.config.ts"
+      ]
+    },
+    {
+      "name": "@tamagui/constants",
+      "group": "framework",
+      "minBytes": 578,
+      "standaloneGzipBytes": 305,
+      "marginalGzipBytes": 209,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/constants/dist/esm/constants.mjs"
+      ]
+    },
+    {
+      "name": "@tamagui/animation-helpers",
+      "group": "framework",
+      "minBytes": 491,
+      "standaloneGzipBytes": 223,
+      "marginalGzipBytes": 131,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/animation-helpers/dist/esm/propertyNames.mjs"
+      ]
+    },
+    {
+      "name": "@tamagui/use-did-finish-ssr",
+      "group": "framework",
+      "minBytes": 102,
+      "standaloneGzipBytes": 110,
+      "marginalGzipBytes": 39,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/use-did-finish-ssr/dist/esm/ClientOnly.mjs"
+      ]
+    },
+    {
+      "name": "@tamagui/compose-refs",
+      "group": "framework",
+      "minBytes": 90,
+      "standaloneGzipBytes": 97,
+      "marginalGzipBytes": 37,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/code/comparisons/tamagui-tailwind-bench/node_modules/@tamagui/compose-refs/dist/esm/compose-refs.mjs"
+      ]
+    }
+  ],
+  "css": [
+    {
+      "file": "assets/index-mN85cbnr.css",
+      "minBytes": 6515,
+      "gzipBytes": 2199,
+      "sha256": "9d511c85a64c3ab978cab8388e44d42cda7ca82eb7fa21736d5dc1a5b681aa6f"
+    }
+  ],
+  "clientConfig": "var ci=si({themes:{},tokens:{color:{},radius:{},size:{},space:{},zIndex:{}},media:{},shorthands:{}});",
+  "chunks": [
+    {
+      "file": "assets/index-Bw9plvsI.js",
+      "minBytes": 42435,
+      "gzipBytes": 16899,
+      "sha256": "4a9bc2e4c670df534302782ab2f8978d91fad095b2154ccdd39965e20baf3734"
+    }
+  ]
+}

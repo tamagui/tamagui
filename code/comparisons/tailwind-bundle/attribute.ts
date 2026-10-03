@@ -5,6 +5,7 @@ import { join, resolve, dirname } from 'node:path'
 import { gzipSync } from 'node:zlib'
 
 const root = import.meta.dirname
+const excludeReact = process.env.BUNDLE_EXCLUDE_REACT === '1'
 const gzip = (text: string | Buffer) => gzipSync(text, { level: 9 }).length
 const hash = (text: string | Buffer) => createHash('sha256').update(text).digest('hex')
 
@@ -34,7 +35,7 @@ function group(name: string) {
 }
 
 for (const arm of process.argv.slice(2)) {
-  const dist = join(root, arm, 'dist')
+  const dist = join(root, arm, excludeReact ? 'dist-no-react' : 'dist')
   const chunks: Array<{
     file: string
     code: string
@@ -131,6 +132,11 @@ for (const arm of process.argv.slice(2)) {
     name,
     ...measure((n) => group(n) === name),
   }))
+  if (
+    excludeReact &&
+    packages.some((p) => ['React', 'React DOM + scheduler'].includes(p.group))
+  )
+    throw new Error('React or React DOM was bundled in the excluded variant')
   const clientConfig =
     arm === 'tamagui'
       ? chunks
@@ -180,9 +186,9 @@ for (const arm of process.argv.slice(2)) {
     }
   const report = {
     arm,
-    command: `cd code/comparisons/tailwind-bundle/${arm} && bun ../node_modules/vite/bin/vite.js build; cd .. && bun attribute.ts ${arm}`,
-    method:
-      'RAN: gzip level 9 of each complete emitted JS file. Source-map spans cover every byte. Per-package and per-group standalone gzip compress their selected minified spans; marginal gzip subtracts gzip after deleting those spans. Both columns are non-additive because gzip shares a dictionary. No dependencies externalized and no manual chunking.',
+    excluded: excludeReact ? ['react', 'react-dom', 'scheduler'] : [],
+    command: `cd code/comparisons/tailwind-bundle/${arm} && ${excludeReact ? 'BUNDLE_EXCLUDE_REACT=1 ' : ''}bun ../node_modules/vite/bin/vite.js build; cd .. && ${excludeReact ? 'BUNDLE_EXCLUDE_REACT=1 ' : ''}bun attribute.ts ${arm}`,
+    method: `RAN: gzip level 9 of each complete emitted JS file. Source-map spans cover every byte. Per-package and per-group standalone gzip compress their selected minified spans; marginal gzip subtracts gzip after deleting those spans. Both columns are non-additive because gzip shares a dictionary. ${excludeReact ? 'Only React, React DOM, and scheduler are externalized; all other required packages remain bundled.' : 'No dependencies externalized.'} No manual chunking.`,
     totalJsGzipBytes: total,
     totalCssGzipBytes: css.reduce((n, c) => n + c.gzipBytes, 0),
     versions,
@@ -199,7 +205,7 @@ for (const arm of process.argv.slice(2)) {
   }
   mkdirSync(join(root, 'results'), { recursive: true })
   writeFileSync(
-    join(root, 'results', `${arm}.json`),
+    join(root, 'results', `${arm}${excludeReact ? '-no-react' : ''}.json`),
     JSON.stringify(report, null, 2) + '\n'
   )
   console.log(JSON.stringify({ arm, totalJsGzipBytes: total, groups }, null, 2))

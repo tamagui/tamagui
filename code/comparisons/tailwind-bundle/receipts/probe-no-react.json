@@ -1,0 +1,51 @@
+[
+  {
+    "arm": "tamagui",
+    "status": "RAN",
+    "command": "BUNDLE_EXCLUDE_REACT=1 bun code/comparisons/tailwind-bundle/probe.ts",
+    "count": 1,
+    "styles": {
+      "fontSize": "20px",
+      "fontWeight": "700",
+      "color": "rgb(0, 0, 0)",
+      "padding": "16px",
+      "gap": "16px",
+      "borderRadius": "8px",
+      "background": "rgb(255, 255, 255)"
+    },
+    "themeCSS": "rgb(255, 255, 255)/rgb(17, 17, 17)",
+    "errors": []
+  },
+  {
+    "arm": "nativewind",
+    "status": "RAN",
+    "command": "BUNDLE_EXCLUDE_REACT=1 bun code/comparisons/tailwind-bundle/probe.ts",
+    "count": 1,
+    "styles": {
+      "fontSize": "20px",
+      "fontWeight": "700",
+      "color": "rgb(0, 0, 0)",
+      "padding": "16px",
+      "gap": "16px",
+      "borderRadius": "8px",
+      "background": "rgb(255, 255, 255)"
+    },
+    "errors": []
+  },
+  {
+    "arm": "uniwind",
+    "status": "RAN",
+    "command": "BUNDLE_EXCLUDE_REACT=1 bun code/comparisons/tailwind-bundle/probe.ts",
+    "count": 1,
+    "styles": {
+      "fontSize": "20px",
+      "fontWeight": "700",
+      "color": "rgb(0, 0, 0)",
+      "padding": "16px",
+      "gap": "16px",
+      "borderRadius": "8px",
+      "background": "rgb(255, 255, 255)"
+    },
+    "errors": []
+  }
+]

@@ -69,10 +69,11 @@ write(
   `import { tamaguiPlugin } from '@tamagui/tailwind/vite'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vite'
+import { build } from '../build-config'
 export default defineConfig({
   plugins: [tailwindcss(), tamaguiPlugin({ config: 'src/tamagui.config.ts', optimize: true,
     disableExtraction: false, outputCSS: 'src/tamagui.css' })],
-  build: { sourcemap: 'hidden', minify: true },
+  build,
 })
 `
 )
@@ -89,11 +90,12 @@ write(
   'nativewind/vite.config.ts',
   `import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vite'
+import { build } from '../build-config'
 export default defineConfig({
   plugins: [tailwindcss()],
   resolve: { alias: { 'react-native': 'react-native-web' } },
   define: { __DEV__: false, 'process.env.NODE_ENV': '"production"' },
-  build: { sourcemap: 'hidden', minify: true },
+  build,
 })
 `
 )
@@ -110,9 +112,10 @@ write(
 import { uniwind } from 'uniwind/vite'
 import { rnw } from 'vite-plugin-rnw'
 import { defineConfig } from 'vite'
+import { build } from '../build-config'
 export default defineConfig({
   plugins: [rnw(), tailwindcss(), uniwind({ cssEntryFile: './src/global.css' })],
-  build: { sourcemap: 'hidden', minify: true },
+  build,
 })
 `
 )
