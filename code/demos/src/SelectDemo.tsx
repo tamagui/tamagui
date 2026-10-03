@@ -1,22 +1,22 @@
-import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
+import { Check, ChevronDown, ChevronUp } from '@tamagui/local-icons'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import React from 'react'
 
-import type { FontSizeTokens, SelectProps } from 'tamagui'
+import type { SelectProps, SelectSize } from 'tamagui'
 import { Adapt, Label, Select, Sheet, Theme, XStack, YStack, getFontSize } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
 
 export function SelectDemo() {
   return (
-    <Theme name="surface1">
-      <YStack gap="$4">
-        <XStack width="100%" items="center" gap="$4">
+    <Theme name="level2">
+      <YStack gap="4" width={320}>
+        <XStack width="100%" items="center" gap="4">
           <Label htmlFor="select-demo-1" flex={1} minW={80}>
             Custom
           </Label>
           <SelectDemoContents id="select-demo-1" />
         </XStack>
 
-        <XStack width="100%" items="center" gap="$4">
+        <XStack width="100%" items="center" gap="4">
           <Label htmlFor="select-demo-2" flex={1} minW={80}>
             Native
           </Label>
@@ -33,6 +33,18 @@ type SelectValue = Lowercase<(typeof items)[number]['name']>
 const getItemLabel = (value: string) =>
   items.find((item) => item.name.toLowerCase() === value)?.name
 
+// the trigger chevron matches the trigger text: control size to font key
+const selectChevronFontSize = {
+  xs: '2',
+  sm: '4',
+  md: '4',
+  lg: '5',
+  xl: '6',
+} as const
+
+const resolveSelectChevronFontSize = (size: unknown) =>
+  selectChevronFontSize[size as keyof typeof selectChevronFontSize] ?? '4'
+
 export function SelectDemoContents(
   props: SelectProps<SelectValue> & { trigger?: React.ReactNode }
 ) {
@@ -43,34 +55,37 @@ export function SelectDemoContents(
       value={val}
       onValueChange={setVal}
       disablePreventBodyScroll
+      lazyMount
       {...props}
+      size={props.size as SelectSize}
       // renderValue enables SSR support by providing the label synchronously
       renderValue={getItemLabel}
     >
       {props?.trigger || (
         <Select.Trigger
+          width={220}
+          minWidth={220}
           maxWidth={220}
-          iconAfter={ChevronDown}
-          borderRadius="$4"
-          backgroundColor="$background"
+          flexShrink={0}
+          borderRadius="4"
+          backgroundColor="background"
         >
           <Select.Value placeholder="Something" />
+          <Select.Icon>
+            <ChevronDown />
+          </Select.Icon>
         </Select.Trigger>
       )}
 
-      <Adapt when="maxMd" platform="touch">
+      <Adapt when="max-md" platform="touch">
         <Sheet native={!!props.native} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay
-            bg="$shadowColor"
-            transition="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+          </Sheet.Container>
+          <Sheet.Overlay bg="shadow-color" transition="lazy" opacity="enter:0 exit:0" />
         </Sheet>
       </Adapt>
 
@@ -80,7 +95,7 @@ export function SelectDemoContents(
           justify="center"
           position="relative"
           width="100%"
-          height="$3"
+          height="3"
         >
           <YStack z={10}>
             <ChevronUp size={20} />
@@ -88,30 +103,27 @@ export function SelectDemoContents(
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
-            colors={['$background', 'transparent']}
-            rounded="$4"
+            position="absolute"
+            inset={0}
+            rounded="4"
+            colors={['background', 'transparent']}
           />
         </Select.ScrollUpButton>
         <Select.Viewport
           minW={200}
-          bg="$background"
-          rounded="$4"
+          bg="background"
+          rounded="4"
           borderWidth={1}
-          borderColor="$borderColor"
+          borderColor="border-color"
         >
-          <Select.Group>
+          <Select.Group width={220}>
             <Select.Label fontWeight="700">Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}
             {React.useMemo(
               () =>
-                items.map((item, i) => {
+                items.map((item) => {
                   return (
-                    <Select.Item
-                      index={i}
-                      key={item.name}
-                      value={item.name.toLowerCase()}
-                    >
+                    <Select.Item key={item.name} value={item.name.toLowerCase()}>
                       <Select.ItemText>{item.name}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
                         <Check size={16} />
@@ -130,12 +142,10 @@ export function SelectDemoContents(
               t={16}
               items="center"
               justify="center"
-              width={'$4'}
+              width="4"
               pointerEvents="none"
             >
-              <ChevronDown
-                size={getFontSize((props.size as FontSizeTokens) ?? '$true')}
-              />
+              <ChevronDown size={getFontSize(resolveSelectChevronFontSize(props.size))} />
             </YStack>
           )}
         </Select.Viewport>
@@ -145,7 +155,7 @@ export function SelectDemoContents(
           justify="center"
           position="relative"
           width="100%"
-          height="$3"
+          height="3"
         >
           <YStack z={10}>
             <ChevronDown size={20} />
@@ -153,9 +163,10 @@ export function SelectDemoContents(
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
-            colors={['transparent', '$background']}
-            rounded="$4"
+            position="absolute"
+            inset={0}
+            rounded="4"
+            colors={['transparent', 'background']}
           />
         </Select.ScrollDownButton>
       </Select.Content>

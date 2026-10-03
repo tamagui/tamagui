@@ -1,0 +1,63 @@
+diff --git a/dist/patches/builtInDepPatches.mjs b/dist/patches/builtInDepPatches.mjs
+index c5c581f938f110a3a958c331e0efeff2683efdfe..c7764418811f03a9bfeadbc0505007ee3401bb37 100644
+--- a/dist/patches/builtInDepPatches.mjs
++++ b/dist/patches/builtInDepPatches.mjs
+@@ -297,14 +297,6 @@ install('URLSearchParams', () => URLSearchParams);
+     "src/**/*.ts": addNoCheck,
+     "src/**/*.tsx": addNoCheck
+   }
+-}, {
+-  module: "@expo/cli",
+-  patchFiles: {
+-    version: "<=55",
+-    "build/src/export/embed/exportEmbedAsync.js": contents => {
+-      return contents?.replace("exportEmbedAsync(projectRoot, options) {", 'exportEmbedAsync(projectRoot, options) { console.warn("[one] skipping expo export:embed since it will not work properly, we just let the JS bundle build during the native build process where VxRN has control"); return;');
+-    }
+-  }
+ }, {
+   module: "expo-liquid-glass-view",
+   patchFiles: {
+diff --git a/dist/patches/builtInDepPatches.native.js b/dist/patches/builtInDepPatches.native.js
+index d7c47567ab72c3bd7f6b74fb628eaa3677cb5ab9..cd7a2bc571c017384f57390a32f93499a5ccaa13 100644
+--- a/dist/patches/builtInDepPatches.native.js
++++ b/dist/patches/builtInDepPatches.native.js
+@@ -298,14 +298,6 @@ install('URLSearchParams', () => URLSearchParams);
+     "src/**/*.ts": addNoCheck,
+     "src/**/*.tsx": addNoCheck
+   }
+-}, {
+-  module: "@expo/cli",
+-  patchFiles: {
+-    version: "<=55",
+-    "build/src/export/embed/exportEmbedAsync.js": function (contents) {
+-      return contents === null || contents === void 0 ? void 0 : contents.replace("exportEmbedAsync(projectRoot, options) {", 'exportEmbedAsync(projectRoot, options) { console.warn("[one] skipping expo export:embed since it will not work properly, we just let the JS bundle build during the native build process where VxRN has control"); return;');
+-    }
+-  }
+ }, {
+   module: "expo-liquid-glass-view",
+   patchFiles: {
+diff --git a/src/patches/builtInDepPatches.ts b/src/patches/builtInDepPatches.ts
+index 2d8aec13292d6828eb7bd08aeb439d25f68be6f6..70762cf6e1ed9662fe8164926f4b2c5792c01e94 100644
+--- a/src/patches/builtInDepPatches.ts
++++ b/src/patches/builtInDepPatches.ts
+@@ -398,20 +398,6 @@ install('URLSearchParams', () => URLSearchParams);
+     },
+   },
+ 
+-  {
+-    module: '@expo/cli',
+-    patchFiles: {
+-      version: '<=55',
+-
+-      'build/src/export/embed/exportEmbedAsync.js': (contents) => {
+-        return contents?.replace(
+-          'exportEmbedAsync(projectRoot, options) {',
+-          'exportEmbedAsync(projectRoot, options) { console.warn("[one] skipping expo export:embed since it will not work properly, we just let the JS bundle build during the native build process where VxRN has control"); return;'
+-        )
+-      },
+-    },
+-  },
+-
+   {
+     module: 'expo-liquid-glass-view',
+     patchFiles: {

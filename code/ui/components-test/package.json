@@ -12,13 +12,14 @@
     "test": "bun run test:native"
   },
   "devDependencies": {
+    "@tamagui/fake-react-native": "workspace:*",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "csstype": "^3.0.10",
     "jsdom": "^28.1.0",
     "react": "19.2.3",
-    "typescript": "~5.9.2",
-    "vitest": "4.0.4",
+    "typescript": "7.0.2",
+    "vitest": "4.1.0",
     "vitest-axe": "^0.1.0"
   },
   "peerDependencies": {

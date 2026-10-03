@@ -17,7 +17,7 @@ export function ToggleGroupActiveProps() {
   const [value, setValue] = React.useState('option1')
 
   return (
-    <YStack p="$4" gap="$4">
+    <YStack p="4" gap="4">
       <ToggleGroup
         id="toggle-group"
         type="single"

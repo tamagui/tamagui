@@ -1,6 +1,5 @@
 export * from './Input'
 export * from './TextArea'
-export { inputSizeVariant, textAreaSizeVariant } from './shared'
 export type { InputExtraProps, InputRef, InputTextContentType } from './types'
 export type {
   InputNativeProps,

@@ -23,6 +23,13 @@
 #                  driver makes `maestro test` hang with no exit, so without it
 #                  the loop never advances and the job sits idle until the
 #                  runner's 45-min cap                        (default: 360)
+#   MAESTRO_DEVICE_ID
+#                  simulator UDID to target explicitly        (default: booted)
+#   MAESTRO_APP_PATH
+#                  built app restored when clearState leaves it uninstalled
+#
+# pass one or more flow paths as arguments to run only those flows. with no
+# arguments, every yaml flow in FLOWS_DIR is discovered as before.
 #
 # NOT using `set -e`: a failing/timed-out `maestro test` is expected and handled inline.
 
@@ -31,9 +38,16 @@ set -uo pipefail
 FLOWS_DIR="${FLOWS_DIR:-./flows}"
 BUNDLE_ID="${BUNDLE_ID:-com.tamagui.tamaguikitchensink}"
 MAX_ATTEMPTS="${MAX_ATTEMPTS:-3}"
-SKIP_FLOWS="${SKIP_FLOWS:-OpenApp.yaml WarmUp.yaml}"
+SKIP_FLOWS="${SKIP_FLOWS-OpenApp.yaml WarmUp.yaml}"
 METRO_PID_FILE="${METRO_PID_FILE:-/tmp/metro-pid}"
 FLOW_TIMEOUT="${FLOW_TIMEOUT:-360}"
+MAESTRO_DEVICE_ID="${MAESTRO_DEVICE_ID:-}"
+MAESTRO_APP_PATH="${MAESTRO_APP_PATH:-}"
+
+maestro_cmd=(maestro)
+if [ -n "$MAESTRO_DEVICE_ID" ]; then
+  maestro_cmd+=(--device "$MAESTRO_DEVICE_ID")
+fi
 
 metro_alive() {
   local pid
@@ -44,7 +58,31 @@ metro_alive() {
 
 recover_sim() {
   echo "recovering simulator state (terminate app, keep Hermes bytecode cache)..."
-  xcrun simctl terminate booted "$BUNDLE_ID" 2>/dev/null || true
+  xcrun simctl terminate "${MAESTRO_DEVICE_ID:-booted}" "$BUNDLE_ID" 2>/dev/null || true
+
+  if [ -n "$MAESTRO_APP_PATH" ] && ! xcrun simctl get_app_container "${MAESTRO_DEVICE_ID:-booted}" "$BUNDLE_ID" app > /dev/null 2>&1; then
+    if [ ! -d "$MAESTRO_APP_PATH" ]; then
+      echo "::error::app is missing after the failed flow and MAESTRO_APP_PATH is invalid"
+      exit 1
+    fi
+
+    echo "restoring app removed by the interrupted clearState..."
+    xcrun simctl install "${MAESTRO_DEVICE_ID:-booted}" "$MAESTRO_APP_PATH"
+    app_ready=false
+    for attempt in $(seq 1 30); do
+      if xcrun simctl get_app_container "${MAESTRO_DEVICE_ID:-booted}" "$BUNDLE_ID" app > /dev/null 2>&1; then
+        app_ready=true
+        break
+      fi
+      echo "waiting for app registration (attempt $attempt/30)"
+      sleep 1
+    done
+    if [ "$app_ready" != "true" ]; then
+      echo "::error::restored app did not register within 30 seconds"
+      exit 1
+    fi
+  fi
+
   sleep 2
   if ! metro_alive; then
     echo "::error::Metro died during test run — aborting (every retry would fail)"
@@ -65,7 +103,7 @@ recover_sim() {
 run_flow_with_timeout() {
   local flow="$1"
   set -m
-  maestro test "$flow" --no-ansi &
+  "${maestro_cmd[@]}" test "$flow" --no-ansi &
   local pid=$!
   set +m
   local waited=0
@@ -84,9 +122,13 @@ run_flow_with_timeout() {
   wait "$pid"
 }
 
-shopt -s nullglob
-flows=("$FLOWS_DIR"/*.yaml "$FLOWS_DIR"/*.yml)
-shopt -u nullglob
+if [ "$#" -gt 0 ]; then
+  flows=("$@")
+else
+  shopt -s nullglob
+  flows=("$FLOWS_DIR"/*.yaml "$FLOWS_DIR"/*.yml)
+  shopt -u nullglob
+fi
 
 if [ "${#flows[@]}" -eq 0 ]; then
   echo "::error::no flow files found in $FLOWS_DIR"
@@ -95,6 +137,10 @@ fi
 
 failed=""
 for flow in "${flows[@]}"; do
+  if [ ! -f "$flow" ]; then
+    echo "::error::flow file not found: $flow"
+    exit 1
+  fi
   base="$(basename "$flow")"
   case " $SKIP_FLOWS " in
     *" $base "*)

@@ -11,54 +11,37 @@ import path from 'node:path'
 
 const name = 'tsconfig-paths'
 
+type Tsconfig = Pick<TsConfigJsonResolved, 'compilerOptions'>
 type TsconfigPathMatcher = (specifier: string) => string[]
 
-export function TsconfigPathsPlugin(): Plugin {
-  const matchTsconfigPath = loadTsconfigPathMatcher()
+function loadTsconfig(
+  tsconfig?: Tsconfig | string,
+  cwd = process.cwd()
+): TsConfigResult | null {
+  if (!tsconfig) {
+    return getTsconfig(cwd) || getTsconfig(cwd, 'jsconfig.json')
+  }
+
+  if (typeof tsconfig === 'string') {
+    const configPath = path.resolve(cwd, tsconfig)
+    if (!fs.existsSync(configPath)) {
+      throw new Error(`Specified tsconfig file not found: ${configPath}`)
+    }
+    return { path: configPath, config: parseTsconfig(configPath) }
+  }
 
   return {
-    name,
-    setup(build) {
-      build.onResolve({ filter: /.*/ }, async (args) => {
-        if (
-          args.pluginData &&
-          typeof args.pluginData === 'object' &&
-          args.pluginData.tamaguiTsconfigPathsResolved === true
-        ) {
-          return null
-        }
-
-        // skip @tamagui packages - they should be externalized, not resolved via tsconfig
-        if (args.path.startsWith('@tamagui/')) {
-          return null
-        }
-
-        for (const candidate of matchTsconfigPath(args.path)) {
-          const resolved = await build.resolve(candidate, {
-            importer: args.importer,
-            kind: args.kind,
-            namespace: args.namespace,
-            pluginData: {
-              ...(args.pluginData && typeof args.pluginData === 'object'
-                ? args.pluginData
-                : {}),
-              tamaguiTsconfigPathsResolved: true,
-            },
-            resolveDir: args.resolveDir,
-          })
-          if (
-            resolved.path &&
-            !resolved.path.endsWith('.d.ts') &&
-            resolved.errors.length === 0
-          ) {
-            return resolved
-          }
-        }
-
-        return null
-      })
-    },
+    path: path.join(cwd, 'tsconfig.json'),
+    config: tsconfig,
   }
+}
+
+export function createTsconfigPathsMatcher(
+  tsconfig?: Tsconfig | string,
+  cwd = process.cwd()
+): ((specifier: string) => string[]) | null {
+  const loaded = loadTsconfig(tsconfig, cwd)
+  return loaded ? createPathsMatcher(loaded) : null
 }
 
 export function loadTsconfigPathMatcher(
@@ -93,5 +76,56 @@ export function loadTsconfigPathMatcher(
       )
     })
     return matchesExplicitPath ? matchPaths(specifier) : []
+  }
+}
+
+export function TsconfigPathsPlugin(): Plugin {
+  const matchTsconfigPath = loadTsconfigPathMatcher()
+
+  return {
+    name,
+    setup(build) {
+      build.onResolve({ filter: /.*/ }, async (args) => {
+        const pluginData = args.pluginData as
+          | { tamaguiTsconfigPaths?: boolean; tamaguiTsconfigPathsResolved?: boolean }
+          | undefined
+        if (
+          pluginData?.tamaguiTsconfigPaths ||
+          pluginData?.tamaguiTsconfigPathsResolved
+        ) {
+          return null
+        }
+
+        // skip @tamagui packages - they should be externalized, not resolved via tsconfig
+        if (args.path.startsWith('@tamagui/')) {
+          return null
+        }
+
+        for (const candidate of matchTsconfigPath(args.path)) {
+          const resolved = await build.resolve(candidate, {
+            importer: args.importer,
+            kind: args.kind,
+            namespace: args.namespace,
+            pluginData: {
+              ...(args.pluginData && typeof args.pluginData === 'object'
+                ? args.pluginData
+                : {}),
+              tamaguiTsconfigPaths: true,
+              tamaguiTsconfigPathsResolved: true,
+            },
+            resolveDir: args.resolveDir,
+          })
+          if (
+            resolved.path &&
+            !resolved.path.endsWith('.d.ts') &&
+            resolved.errors.length === 0
+          ) {
+            return resolved
+          }
+        }
+
+        return null
+      })
+    },
   }
 }

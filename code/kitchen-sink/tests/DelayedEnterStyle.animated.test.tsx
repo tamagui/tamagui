@@ -22,7 +22,7 @@ test.beforeEach(async ({ page }) => {
 })
 
 test('delayed enterStyle stays at enterStyle until the delay ends', async ({ page }) => {
-  // transition={['quick', { delay: 1000 }]}, enterStyle={{ opacity: 0 }}
+  // transition={{ preset: 'quick', delay: 1000 }}, opacity="1 enter:0"
   await page.getByTestId('delayed-enter-show').click()
 
   // halfway through the delay

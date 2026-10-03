@@ -5,7 +5,6 @@ import {
   safeDecodeURIComponent,
 } from '~/features/security/navigation'
 import { useUser } from './useUser'
-import { accountModal } from '../site/purchase/accountModalStore'
 
 export function useForwardToDashboard() {
   const { data, isLoading } = useUser()
@@ -38,12 +37,9 @@ export function useForwardToDashboard() {
             await router.replace(redirectPath as Href)
             return
           }
-
-          accountModal.show = true
-        } else {
-          // No redirect_to, show the account modal
-          accountModal.show = true
         }
+
+        await router.replace('/account')
       }
     }
     main()

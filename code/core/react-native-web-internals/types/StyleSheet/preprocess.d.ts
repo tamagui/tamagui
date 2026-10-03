@@ -12,5 +12,5 @@ export declare const createTextShadowValue: (style: object) => void | string;
  * Preprocess styles
  */
 export declare const preprocess: <T extends { [K in string]: any; }>(originalStyle: T) => T;
-export declare const processStyle: <T extends { [K in string]: any; }>(originalStyle: T) => T;
+export declare const processStyle: typeof preprocess;
 //# sourceMappingURL=preprocess.d.ts.map

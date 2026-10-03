@@ -1,12 +1,47 @@
 import type { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types';
 import { type TamaguiProjectInfo } from './bundleConfig';
-export declare function loadTamagui(propsIn: Partial<TamaguiOptions>): Promise<TamaguiProjectInfo | null>;
-export declare const generateThemesAndLog: (options: TamaguiOptions, force?: boolean) => Promise<void>;
+export declare function loadTamagui(propsIn: Partial<TamaguiOptions>, rebuild?: boolean): Promise<TamaguiProjectInfo | null>;
+export type EvaluatedTamaguiModule = {
+    moduleName: string;
+    module: Record<string, unknown>;
+};
+export type EvaluatedTamaguiProject = {
+    config: Record<string, unknown>;
+    components: EvaluatedTamaguiModule[];
+    /**
+     * Every file the host's module runner evaluated to produce this config and
+     * these components, node_modules included. The compile cache stamp is hashed
+     * from their bytes, so an incomplete list is worse than none: omit it and the
+     * project simply gets no cache.
+     */
+    stampSources?: string[];
+};
 /**
- * Load tamagui.build.ts config using esbuild-wasm transform
- * Uses WASM to avoid native esbuild service lifecycle issues (EPIPE errors)
+ * Load a Tamagui project from modules evaluated by the host bundler.
+ *
+ * Bundler adapters with a module runner use this boundary so aliases, package
+ * conditions, and user plugins are identical between application and compiler
+ * evaluation. Adapters without a module runner continue to use loadTamagui().
  */
-export declare function loadTamaguiBuildConfigAsync(tamaguiOptions: Partial<TamaguiOptions> | undefined): Promise<TamaguiOptions>;
+export declare function loadTamaguiFromModules(propsIn: Partial<TamaguiOptions>, evaluated: EvaluatedTamaguiProject): Promise<TamaguiProjectInfo>;
+export declare const generateThemesAndLog: (options: TamaguiOptions, force?: boolean) => Promise<void>;
+export declare function getTamaguiBuildConfigDependencies(options: TamaguiOptions): readonly string[];
+export type EvaluatedBuildConfigModule = {
+    /** the module's exports, default included */
+    exports: Record<string, unknown>;
+    /** every file the evaluation read, absolute or relative to the project root */
+    dependencies: string[];
+};
+/**
+ * Evaluate tamagui.build.ts. A host with its own module runner passes one of
+ * these instead, so the build file goes through the same resolution as the rest
+ * of the app and no second toolchain has to be running.
+ */
+export type BuildConfigLoader = (absolutePath: string, root: string) => Promise<EvaluatedBuildConfigModule>;
+/**
+ * Load tamagui.build.ts and its relative imports as one Node module.
+ */
+export declare function loadTamaguiBuildConfigAsync(tamaguiOptions: Partial<TamaguiOptions> | undefined, loadBuildConfigModule?: BuildConfigLoader): Promise<TamaguiOptions>;
 /**
  * @deprecated Use loadTamaguiBuildConfigAsync instead to avoid EPIPE errors
  */

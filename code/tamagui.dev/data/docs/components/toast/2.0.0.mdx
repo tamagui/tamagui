@@ -4,24 +4,22 @@ description: Use to show feedback to user interactions.
 name: toast
 component: Toast
 package: toast
-demoName: ToastV1
 ---
 
-<HeroContainer showAnimationDriverControl>
-  <ToastV1Demo />
-</HeroContainer>
-
-```tsx hero template=Toast
-
-```
+<Notice theme="yellow">
+  This page documents the v2 imperative Toast API (`ToastProvider`,
+  `ToastViewport`, `useToastController`, `useToastState`), which was removed in
+  v3. Use the composable [Toast](/ui/toast) and the `toast()` function instead.
+  See the [upgrade guide](/docs/guides/how-to-upgrade) for the migration.
+</Notice>
 
 <Highlights
   features={[
-    `Automatically closes`,
-    `Pause closing on hover, focus, window blur and mobile touch`,
-    `Supports closing via swipe gesture`,
-    `Easily animatable with Tamagui's animation drivers`,
-    `Native toasts included for Android, iOS and web (notification API)`,
+    `Automatic dismissal`,
+    `Closing paused on hover, focus, window blur, and mobile touch`,
+    `Swipe gesture dismissal`,
+    `Support for Tamagui's animation drivers`,
+    `Android/iOS native toasts and web Notification API`,
   ]}
 />
 
@@ -128,7 +126,7 @@ Your toasts should be wrapped within a `ToastProvider`. This is usually done at 
 
 ### ToastViewport
 
-The portal for toasts to be directed to. Should be used inside [ToastProvider](#toastprovider). Beyond [Stack Props](/docs/components/stacks), adds:
+The portal for toasts to be directed to. Should be used inside [ToastProvider](#toastprovider). Beyond `View` props, adds:
 
 <PropsTable
   data={[
@@ -175,7 +173,7 @@ The portal for toasts to be directed to. Should be used inside [ToastProvider](#
 
 ### Toast
 
-Contains the Title, Description, Action and Close component. Should be used inside [ToastProvider](#toastprovider). Extends [Stack](/docs/components/stacks) and adds:
+Contains the Title, Description, Action and Close component. Should be used inside [ToastProvider](#toastprovider). Extends `View` and adds:
 
 <PropsTable
   data={[
@@ -305,11 +303,11 @@ Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/te
 
 ### Toast.Close
 
-Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks). You can pass `asChild` to this component and use a custom `<Button>` inside.
+Should be used inside [Toast](#toast). Extends `View`. You can pass `asChild` to this component and use a custom `<Button>` inside.
 
 ### Toast.Action
 
-Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks). You can pass `asChild` to this component and use a custom `<Button>` inside.
+Should be used inside [Toast](#toast). Extends `View`. You can pass `asChild` to this component and use a custom `<Button>` inside.
 
 ### useToastController
 
@@ -387,11 +385,9 @@ Or for bottom center:
 <ToastViewport flexDirection="column" bottom={0} left={0} right={0} />
 ```
 
-<Notice theme="blue">
-  When using multiple toasts, you can change the order of toasts by setting
-  `flexDirection` to `column` or `column-reverse`. Or even have them stack horizontally
-  using `row` or `row-reverse`.
-</Notice>
+When using multiple toasts, you can change the order of toasts by setting
+`flexDirection` to `column` or `column-reverse`. Or even have them stack horizontally
+using `row` or `row-reverse`.
 
 ### Mobile safe area
 
@@ -495,8 +491,8 @@ export default () => {
         onOpenChange={setOpen}
         open={open}
         animation="100ms"
-        enterStyle={{ x: -20, opacity: 0 }}
-        exitStyle={{ x: -20, opacity: 0 }}
+        x="enter:-20px exit:-20px"
+        opacity="enter:0 exit:0"
         opacity={1}
         x={0}
       >
@@ -532,8 +528,8 @@ export default () => {
         <Toast
           key={index}
           animation="100ms"
-          enterStyle={{ x: -20, opacity: 0 }}
-          exitStyle={{ x: -20, opacity: 0 }}
+          x="enter:-20px exit:-20px"
+          opacity="enter:0 exit:0"
           opacity={1}
           x={0}
         >

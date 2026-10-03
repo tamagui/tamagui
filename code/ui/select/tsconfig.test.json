@@ -1,0 +1,9 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": false,
+    "noEmit": true
+  },
+  "include": ["test/Select.test-d.tsx"],
+  "exclude": ["types", "dist"]
+}

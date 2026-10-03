@@ -1,56 +1,49 @@
 /**
-* Animation configuration that can include additional properties
-* like delay, duration, stiffness, damping, etc.
+* One entry in a driver's `animations` config, and the same type for all four
+* drivers: a config written once resolves to the same motion on css,
+* reanimated, motion, and react-native.
+*
+* The canonical spelling is `{ duration, bounce }`. `duration` is the spring's
+* undamped period, the "how fast does this feel" number, and `bounce` is 0 for
+* critically damped, up toward 1 for loose and oscillating, negative for
+* sluggish. A css string is a timing; `{ type: 'timing' }` is the object
+* spelling of one. `stiffness`/`damping`/`mass` stay available for a config
+* that was already tuned against them.
+*/
+export type PresetConfig = string | {
+	type?: "spring";
+	duration?: number;
+	bounce?: number;
+	stiffness?: number;
+	damping?: number;
+	mass?: number;
+	velocity?: number;
+	overshootClamping?: boolean;
+	restDisplacementThreshold?: number;
+	restSpeedThreshold?: number;
+} | {
+	type: "timing";
+	duration: number;
+	/** any css timing function */
+	easing?: string;
+};
+/** the `animations` object a driver is created with */
+export type AnimationsConfig = Record<string, PresetConfig>;
+/**
+* A resolved animation config in a driver's own terms. Drivers build these
+* from a `ResolvedEntry`; nothing parses one.
 */
 export type AnimationConfig = {
 	type?: string;
 	[key: string]: any;
 };
 /**
-* Input format for the transition prop - supports multiple syntaxes:
+* Input format for the `transition` prop: a CSS transition string, a preset
+* name, or a config object. See `@tamagui/style-grammar/transitions`.
 *
-* 1. String: "bouncy"
-* 2. Object with property mappings: { x: 'quick', y: 'bouncy', default: 'slow' }
-* 3. Array with config: ['bouncy', { delay: 100, x: 'quick' }]
-* 4. Object with enter/exit: { enter: 'bouncy', exit: 'quick', default: 'slow' }
-*
-* Note: Uses `any` to be compatible with the TransitionProp type from @tamagui/web
-* which has more complex union types.
+* Note: uses `any` to stay compatible with the `TransitionProp` type from
+* `@tamagui/web`, which carries the full style-key union.
 */
 export type TransitionPropInput = any;
-/**
-* Spring configuration parameters that can override preset defaults.
-* These are the common parameters across animation drivers.
-*/
-export type SpringConfig = {
-	stiffness?: number;
-	damping?: number;
-	mass?: number;
-	tension?: number;
-	friction?: number;
-	velocity?: number;
-	overshootClamping?: boolean;
-	duration?: number;
-	bounciness?: number;
-	speed?: number;
-};
-/**
-* Normalized output format that all animation drivers consume.
-* Provides a consistent structure regardless of input format.
-*/
-export type NormalizedTransition = {
-	/** Default animation key for properties not explicitly listed */
-	default: string | null;
-	/** Animation key to use during enter transitions (mount) */
-	enter: string | null;
-	/** Animation key to use during exit transitions (unmount) */
-	exit: string | null;
-	/** Global delay in ms */
-	delay: number | undefined;
-	/** Per-property animation configs: propertyName -> animationKey or config */
-	properties: Record<string, string | AnimationConfig>;
-	/** Global spring config overrides that merge with the preset defaults */
-	config?: SpringConfig;
-};
 
 //# sourceMappingURL=types.d.ts.map

@@ -1,5 +1,5 @@
 import { defaultOffset } from './defaultOffset'
-import { getRgba, normalizeColor } from './normalizeColor'
+import { getRgba, normalizeColor } from './normalizeColor.native'
 
 export function normalizeShadow({
   shadowColor,

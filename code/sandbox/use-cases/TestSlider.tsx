@@ -3,25 +3,25 @@ import { Slider, XStack, YStack, Label } from 'tamagui'
 
 export function SliderDemo() {
   return (
-    <YStack gap="$8" style={{ alignItems: 'center' }}>
-      <XStack height={200} style={{ alignItems: 'center' }} gap="$8">
-        <YStack style={{ alignItems: 'center' }} gap="$4">
+    <YStack gap="8" style={{ alignItems: 'center' }}>
+      <XStack height={200} gap="8" style={{ alignItems: 'center' }}>
+        <YStack style={{ alignItems: 'center' }} gap="4">
           <Label>Vertical (LTR)</Label>
           <SimpleSlider height={200} orientation="vertical" />
         </YStack>
 
-        <YStack style={{ alignItems: 'center' }} gap="$4">
+        <YStack style={{ alignItems: 'center' }} gap="4">
           <Label>Vertical (RTL)</Label>
           <SimpleSlider height={200} orientation="vertical" dir="rtl" />
         </YStack>
 
-        <YStack style={{ alignItems: 'center' }} gap="$4">
+        <YStack style={{ alignItems: 'center' }} gap="4">
           <Label>Horizontal (LTR)</Label>
           <SimpleSlider width={200} />
         </YStack>
       </XStack>
 
-      <YStack style={{ alignItems: 'center' }} gap="$4">
+      <YStack style={{ alignItems: 'center' }} gap="4">
         <Label>Horizontal (RTL)</Label>
         <SimpleSlider width={200} dir="rtl" />
       </YStack>
@@ -35,7 +35,7 @@ function SimpleSlider({ children, ...props }: SliderProps) {
       <Slider.Track>
         <Slider.TrackActive />
       </Slider.Track>
-      <Slider.Thumb size="$2" index={0} circular />
+      <Slider.Thumb size="2" index={0} circular />
       {children}
     </Slider>
   )

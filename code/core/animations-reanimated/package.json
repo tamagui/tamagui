@@ -16,6 +16,7 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
+      "tamagui-compiler": "./dist/esm/index.compiler.mjs",
       "react-native": "./dist/esm/index.native.js",
       "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
@@ -37,7 +38,8 @@
     "@react-native/normalize-colors": "0.86.2",
     "@tamagui/animation-helpers": "workspace:*",
     "@tamagui/core": "workspace:*",
-    "@tamagui/use-presence": "workspace:*"
+    "@tamagui/use-presence": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

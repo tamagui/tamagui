@@ -1,0 +1,107 @@
+---
+title: Lucide Icons
+description: Generate only the icons you use, typed and themed for Tamagui
+name: lucide-icons
+component: LucideIcons
+package: lucide-icons
+demoName: LucideIcons
+---
+
+<IntroParagraph>
+  Tamagui v3 ships no bundled icon package. Instead you generate typed SVG
+  icon components for only the icons you use, rendering consistently on web
+  and native.
+</IntroParagraph>
+
+<HeroContainer noPad>
+  <LucideIconsDemo />
+</HeroContainer>
+
+The browser above is a generated Lucide set, built with the command on this
+page. v2's `@tamagui/lucide-icons-2` shipped all ~1700 Lucide icons as
+one dependency; most apps use a few dozen, so v3 replaces it with
+generation: one tree-shakeable file per icon, typed `IconProps`, and the same
+`themed` size/color behavior through `@tamagui/helpers-icon`.
+
+## Setup
+
+Install the runtime dependencies:
+
+```bash
+npm install react-native-svg @tamagui/helpers-icon
+```
+
+<Notice>
+  If you're using icons in a monorepo, install `react-native-svg` in the parent
+  app or workspace root rather than a leaf package.
+</Notice>
+
+Then generate the icons you use. Each one becomes a file in
+`components/icons`, and `components/icons/index.ts` exports all of them:
+
+```bash
+npx @tamagui/cli@beta icons add Plus Search X
+```
+
+Run it again whenever you need another icon; it adds to the folder and rewrites
+the index. `--out` picks a different folder. The same command generates
+[Phosphor](https://phosphoricons.com/) and [Heroicons](https://heroicons.com/)
+icons, or components from your own svg files, see
+[the CLI reference](/docs/core/cli#icons).
+
+The Tamagui repo generates its Lucide set from
+`code/packages/local-icons/icons.json`, and this site's own Phosphor icons from
+`code/tamagui.dev/components/icons/icons.json`.
+
+## Usage
+
+Use them as regular React components:
+
+```tsx
+import { Button } from 'tamagui'
+import { Plus } from './components/icons'
+
+// Button will automatically pass size/theme to icon
+export default () => <Button icon={Plus}>Hello world</Button>
+
+// or you can control it
+export default () => <Button icon={<Plus size="4" />}>Hello world</Button>
+```
+
+They accept your theme keys for color and your font size tokens for size. In v3,
+`size="4"` resolves through the current font's `font.size.4` scale so icons
+line up with `4` text. Raw numeric sizes are unchanged.
+
+```tsx
+<Plus size="4" color="color" />
+<Plus size={18} color="blue-500" />
+```
+
+Themed icons no longer run full Tamagui style resolution, so media and pseudo
+props are not accepted directly on the icon. Wrap the icon when you need those
+styles:
+
+```tsx
+import { View, styled } from 'tamagui'
+
+const IconFrame = styled(View, {
+  opacity: 'sm:0.6',
+  scale: 'hover:1.05',
+})
+
+<IconFrame>
+  <Plus size="4" />
+</IconFrame>
+```
+
+## Migrating from v2
+
+Replace `@tamagui/lucide-icons-2` imports with your generated directory and
+generate every icon you use. The command stops on unknown names and lists
+them; Lucide keeps most renamed icons under their old names, but a few were
+removed (brand icons such as `Figma`), so check current names on
+[lucide.dev](https://lucide.dev/) when it does.
+
+## Credit
+
+The great [Lucide Icons](https://lucide.dev/), a superset of the wonderful [Feather Icons](https://feathericons.com/).

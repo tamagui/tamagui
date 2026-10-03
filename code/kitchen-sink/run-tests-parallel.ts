@@ -1,11 +1,10 @@
 #!/usr/bin/env bun
 import { spawn, type Subprocess } from 'bun'
 
-const DRIVERS = ['css', 'native', 'reanimated', 'motion'] as const
+const DRIVERS = ['css', 'reanimated', 'motion'] as const
 const PORT = process.env.PORT || '9000'
 const COLORS = {
   css: '\x1b[36m', // cyan
-  native: '\x1b[33m', // yellow
   reanimated: '\x1b[35m', // magenta
   motion: '\x1b[32m', // green
   reset: '\x1b[0m',

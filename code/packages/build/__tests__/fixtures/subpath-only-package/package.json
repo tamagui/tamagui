@@ -1,0 +1,24 @@
+{
+  "name": "tamagui-build-test-subpath-only-package",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    "./feature": {
+      "types": "./types/feature.d.ts",
+      "import": "./dist/esm/feature.mjs",
+      "require": "./dist/cjs/feature.cjs"
+    }
+  },
+  "tamagui-build": {
+    "outputs": [
+      "cjs",
+      "esm",
+      "types"
+    ]
+  },
+  "scripts": {
+    "build": "node ../../../tamagui-build.js"
+  }
+}

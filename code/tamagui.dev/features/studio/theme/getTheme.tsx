@@ -22,11 +22,17 @@ const ColorEntrySchema = z.object({
     sync: z.boolean().optional(),
     syncLeft: z.boolean().optional(),
   }),
+  alpha: z
+    .object({
+      light: z.number(),
+      dark: z.number(),
+    })
+    .optional(),
 })
 
 const PaletteSchema = z.object({
   name: z.string(),
-  anchors: z.array(ColorEntrySchema),
+  anchors: z.array(ColorEntrySchema).min(1),
 })
 
 export const ThemeSuiteSchema = z.object({
@@ -36,10 +42,9 @@ export const ThemeSuiteSchema = z.object({
     accent: PaletteSchema,
   }),
   schemes: z.object({
-    light: z.boolean().optional(),
-    dark: z.boolean().optional(),
+    light: z.boolean().default(true),
+    dark: z.boolean().default(true),
   }),
-  templateStrategy: z.literal('base'),
 })
 
 export const getTheme = async (id: string, _request?: Request) => {
@@ -76,10 +81,10 @@ export const getTheme = async (id: string, _request?: Request) => {
     return null
   }
 
-  const themeData = ThemeSuiteSchema.parse(currentTheme.theme_data)
+  const themeData: ThemeSuiteItemData = ThemeSuiteSchema.parse(currentTheme.theme_data)
 
   return {
-    theme: themeData as unknown as ThemeSuiteItemData,
+    theme: themeData,
     search: currentTheme.search_query,
     id: currentTheme.id,
     is_cached: currentTheme.is_cached as boolean | null,

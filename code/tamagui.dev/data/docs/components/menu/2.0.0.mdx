@@ -1,10 +1,16 @@
 ---
 title: Menu
 description: A selectable list in a popover with nested submenus
-name: dropdown menu
+name: menu
 component: Menu
 package: menu
+demoName: Menu
 ---
+
+<IntroParagraph>
+  Menu presents keyboard-navigable actions, selections, groups, and submenus in
+  a popover or platform-native menu.
+</IntroParagraph>
 
 <HeroContainer>
   <MenuDemo />
@@ -16,10 +22,10 @@ package: menu
 
 <Highlights
   features={[
-    'Full keyboard navigation.',
-    'Submenus, items, icons, images, checkboxes, groups, and more.',
-    'Modal and non-modal modes.',
-    'Native menus on native platforms.',
+    'Full keyboard navigation',
+    'Submenus, items, icons, images, checkboxes, and groups',
+    'Modal and non-modal modes',
+    'Platform-native menus on mobile',
   ]}
 />
 
@@ -30,40 +36,44 @@ Menu displays a list of actions or options in a floating panel triggered by a bu
 Menu is already installed in `tamagui`, or you can install it independently:
 
 ```bash
-yarn add @tamagui/menu
+npm install @tamagui/menu
 ```
 
-If you want to use native menus, add these dependencies:
+For Expo 57 and React Native 0.86, use the Expo UI adapter:
 
-```sh
-yarn add @react-native-menu/menu
-yarn add react-native-ios-context-menu
-yarn add react-native-ios-utilities
-yarn add zeego
-yarn add sf-symbols-typescript
+```bash
+npm install @expo/ui
 ```
 
 Then add the setup import at your app entry point:
 
 ```tsx
+import '@tamagui/native/setup-expo-ui-menu'
+```
+
+The Zeego adapter remains available for apps on compatible React Native versions:
+
+```bash
+npm install @react-native-menu/menu react-native-ios-context-menu react-native-ios-utilities zeego sf-symbols-typescript
+```
+
+```tsx
 import '@tamagui/native/setup-zeego'
 ```
 
-<Notice theme="blue">
-  On native, `Menu.Trigger` coordinates with parent Tamagui pressables
-  automatically. You should not need extra wrapper views or empty `onPress`
-  handlers just to prevent a parent `pressStyle` from activating.
-</Notice>
+On native, `Menu.Trigger` coordinates with parent Tamagui pressables
+automatically. You should not need extra wrapper views or empty `onPress`
+handlers just to prevent a parent `press:` clause from activating.
 
 <Notice theme="yellow">
-  **Expo Router users:** This import must run _before_ `expo-router/entry`. Create an `index.js` at your project root that imports the setup first, then expo-router, and update your `package.json` main field to `"index.js"`. See the [upgrade guide](/docs/guides/how-to-upgrade#expo-router-entry-point) for details.
+  **Expo Router users:** This import must run _before_ `expo-router/entry`. Create an `index.js` at your project root that imports the setup first, then expo-router, and update your `package.json` main field to `"index.js"`. See the [Expo guide](/docs/guides/expo) for details.
 </Notice>
 
 ## Anatomy
 
 Import all parts and piece them together.
 
-```jsx
+```tsx
 import { Menu } from 'tamagui' // or '@tamagui/menu'
 
 export default () => (
@@ -86,7 +96,7 @@ export default () => (
             <Text>Calendar</Text>
           </Menu.ItemTitle>
           <Menu.ItemIcon>
-            <Calendar color="gray" size="$1" />
+            <Calendar color="gray" size="1" />
           </Menu.ItemIcon>
         </Menu.Item>
         <Menu.Separator />
@@ -96,7 +106,7 @@ export default () => (
           </Menu.SubTrigger>
           <Menu.Portal zIndex={200}>
             <Menu.SubContent>
-              <Menu.Label fontSize={'$1'}>Note settings</Menu.Label>
+              <Menu.Label fontSize={'1'}>Note settings</Menu.Label>
               <Menu.Item onSelect={onSelect} key="create-note">
                 <Menu.ItemTitle>Create note</Menu.ItemTitle>
               </Menu.Item>
@@ -115,7 +125,7 @@ export default () => (
 )
 ```
 
-## API Reference
+## API reference
 
 ### Menu
 
@@ -179,6 +189,7 @@ Contains every component for the Menu.
       name: 'allowFlip',
       type: 'FlipProps | boolean',
       required: false,
+      default: '{ padding: 10 }',
       description: 'Flips the menu to the opposite side if there is insufficient space.',
     },
     {
@@ -234,8 +245,7 @@ Required for rendering the menu content.
 
 ### Menu.Trigger
 
-The menu will only be triggered when the user right-clicks or long-presses
-within the trigger area.
+Trigger element for the menu. Accepts [Tamagui Props](/docs/intro/props).
 
 <PropsTable
   data={[
@@ -243,10 +253,10 @@ within the trigger area.
       name: 'action',
       required: false,
       type: 'press|longPress',
-      default: 'longPress',
+      default: 'press',
       platform: 'android/ios',
       description:
-        "Works with the native prop and accepts 'press' or 'longPress'. The default is 'longPress' for Menu.",
+        "Works with the native prop and accepts 'press' or 'longPress'. The default is 'press' for Menu.",
     },
   ]}
 />
@@ -421,7 +431,7 @@ On iOS, it renders the native
   ]}
 />
 
-```jsx line=1
+```tsx line=1
 <Menu.ItemIcon
   ios={{
     name: '0.circle.fill', // required
@@ -567,7 +577,7 @@ A menu item with a checkbox that can be toggled on and off.
 ### Menu.RadioGroup
 
 Groups a set of `Menu.RadioItem` and manages the selected value. Works on web
-and native — on native the group is rendered as a native menu group and each
+and native. On native, the group is rendered as a native menu group and each
 `RadioItem` is mapped onto the OS checkmark state so exactly one item shows as
 selected at a time.
 
@@ -668,7 +678,7 @@ dropped automatically.
 Use inside `Menu.CheckboxItem` or `Menu.RadioItem` to indicate when an item is checked.
 This allows you to conditionally render a checkmark.
 
-```jsx line=1
+```tsx line=1
 <Menu.ItemIndicator>
   <CheckmarkIcon /> {/* This does not work with the native prop. */}
 </Menu.ItemIndicator>
@@ -768,8 +778,7 @@ A container for nested submenu components.
 
 ### Menu.SubContent
 
-Renders the content of a submenu. Same props as `Menu.Content`, excluding `side` and
-`align`.
+Renders the content of a submenu. Same props as `Menu.Content`.
 
 ### Menu.SubTrigger
 
@@ -780,7 +789,7 @@ A menu item that opens a submenu on hover or focus. Accepts the same props as
 
 A scrollable container for menu items. Use this inside `Menu.Content` when you have many items that may overflow. The menu automatically constrains to available viewport space (via `resize` prop), and ScrollView handles the overflow. Scrollbars are hidden by default.
 
-```jsx
+```tsx
 <Menu.Content>
   <Menu.ScrollView>
     {/* Many menu items */}
@@ -790,28 +799,55 @@ A scrollable container for menu items. Use this inside `Menu.Content` when you h
 
 ## Styling
 
-### Item Highlight Behavior
+### Item highlight behavior
 
-Menu items use `focusStyle` for highlighting rather than `hoverStyle`. This ensures a unified highlight experience when switching between mouse and keyboard navigation - only one item is ever highlighted at a time.
+Menu items use the `focus` condition for highlighting. Write it as a typed
+object key or a `focus:` string clause. Focusing the highlighted item keeps
+mouse and keyboard navigation in sync, with only one item highlighted at a time.
 
-When you hover over an item, it receives focus, which triggers the `focusStyle`. When you use arrow keys to navigate, focus moves to the new item, removing the highlight from the previous one.
+When you hover over an item, it receives focus, which activates the `focus:` clause. When you use arrow keys to navigate, focus moves to the new item, removing the highlight from the previous one.
 
-```jsx
-// Default behavior - uses focusStyle for highlight
+<MDXTabs codeSyntax defaultValue="string">
+<MDXTabs.List>
+  <MDXTabs.Tab value="string">String</MDXTabs.Tab>
+  <MDXTabs.Tab value="typed">Typed</MDXTabs.Tab>
+</MDXTabs.List>
+
+<MDXTabs.Content value="typed">
+
+```tsx
+// default highlight follows focus
 <Menu.Item>
   <Menu.ItemTitle>Settings</Menu.ItemTitle>
 </Menu.Item>
 
-// Custom highlight styling - use focusStyle, not hoverStyle
-<Menu.Item
-  focusStyle={{ backgroundColor: '$blue5' }}
->
+// customize the focus highlight
+<Menu.Item backgroundColor={{ focus: 'blue-5' }}>
   <Menu.ItemTitle>Custom Highlight</Menu.ItemTitle>
 </Menu.Item>
 ```
 
+</MDXTabs.Content>
+
+<MDXTabs.Content value="string">
+
+```tsx
+// default highlight follows focus
+<Menu.Item>
+  <Menu.ItemTitle>Settings</Menu.ItemTitle>
+</Menu.Item>
+
+// customize the focus highlight
+<Menu.Item backgroundColor="focus:blue-5">
+  <Menu.ItemTitle>Custom Highlight</Menu.ItemTitle>
+</Menu.Item>
+```
+
+</MDXTabs.Content>
+</MDXTabs>
+
 <Notice>
-  Avoid using `hoverStyle` for background highlights on Menu.Item. This can cause "double
-  highlighting" when switching between mouse and keyboard - where both the hovered item
+  Avoid using a `hover:` background clause on Menu.Item. This can cause "double
+  highlighting" when switching between mouse and keyboard, where both the hovered item
   and the focused item appear highlighted simultaneously.
 </Notice>

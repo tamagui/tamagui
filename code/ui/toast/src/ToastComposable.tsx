@@ -1,22 +1,15 @@
+import { createStyledHOC, createRefComponent } from '@tamagui/core'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { isWeb } from '@tamagui/constants'
 import { getGestureHandler } from '@tamagui/native'
 import type { GetProps, TamaguiElement } from '@tamagui/core'
-import {
-  createStyledContext,
-  styled,
-  Theme,
-  useConfiguration,
-  useEvent,
-  useThemeName,
-  View,
-} from '@tamagui/core'
+import { createStyledContext, styled, useEvent, View } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
 import { Portal } from '@tamagui/portal'
 import { XStack, YStack } from '@tamagui/stacks'
 import { SizableText } from '@tamagui/text'
 import * as React from 'react'
-import type { SwipeDirection } from './ToastProvider'
+import type { SwipeDirection } from './types'
 import type { ExternalToast, ToastT, ToastToDismiss, ToastType } from './ToastState'
 import { ToastState } from './ToastState'
 import type { BurntToastOptions } from './types'
@@ -85,10 +78,7 @@ interface ToastContextValue {
   icons?: ToastIcons
 }
 
-const ToastContext = createStyledContext<ToastContextValue>(
-  {} as ToastContextValue,
-  'Toast__'
-)
+const ToastContext = createStyledContext<ToastContextValue>({}, 'Toast__')
 
 const useToastContextValue = ToastContext.useStyledContext
 
@@ -152,6 +142,11 @@ export interface ToastIcons {
 export interface ToastRootProps {
   children: React.ReactNode
   /**
+   * Only render toasts sent to this toaster id. Untargeted toasts render in
+   * roots without an id.
+   */
+  toasterId?: string
+  /**
    * Position of the toasts on screen
    * @default 'bottom-right'
    */
@@ -198,10 +193,6 @@ export interface ToastRootProps {
    */
   expand?: boolean
   /**
-   * Theme for toasts
-   */
-  theme?: 'light' | 'dark' | 'system'
-  /**
    * Force reduced motion mode
    */
   reducedMotion?: boolean
@@ -244,10 +235,11 @@ function resolveSwipeDirection(
   return 'horizontal'
 }
 
-const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
+const ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(
   function ToastRoot(props, _ref) {
     const {
       children,
+      toasterId,
       position = 'bottom-right',
       duration = TOAST_LIFETIME,
       gap = TOAST_GAP,
@@ -257,7 +249,6 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       toastHeight = FIXED_TOAST_HEIGHT,
       closeButton = false,
       expand = false,
-      theme: themeProp,
       reducedMotion: reducedMotionProp,
       native = false,
       burntOptions,
@@ -352,6 +343,10 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
           return
         }
 
+        if ((toast as ToastT).toasterId !== toasterId) {
+          return
+        }
+
         // Native dispatch: intercept before entering state so no in-app toast renders.
         // On failure (e.g. permission denied), falls through to in-app.
         if (native) {
@@ -368,14 +363,16 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
           if (idx !== -1) {
             return [
               ...toasts.slice(0, idx),
-              { ...toasts[idx], ...toast },
+              // a re-created toast is shown again: drop the delete flag a
+              // previous dismiss left on it, or it would never render again.
+              { ...toasts[idx], ...toast, delete: false },
               ...toasts.slice(idx + 1),
             ]
           }
           return [toast as ToastT, ...toasts]
         })
       })
-    }, [native, duration])
+    }, [native, duration, toasterId])
 
     // collapse when 1 toast left, or when a new toast is added while expanded
     const prevToastCountRef = React.useRef(toasts.length)
@@ -401,14 +398,6 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
     }, [])
 
     const swipeDirection = resolveSwipeDirection(swipeDirectionProp, position)
-
-    const currentTheme = useThemeName()
-    const resolvedTheme =
-      themeProp === 'system' || !themeProp
-        ? currentTheme?.includes('dark')
-          ? 'dark'
-          : 'light'
-        : themeProp
 
     const contextValue: ToastContextValue = {
       toasts,
@@ -437,11 +426,7 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       icons,
     }
 
-    return (
-      <ToastContext.Provider {...contextValue}>
-        <Theme name={resolvedTheme as any}>{children}</Theme>
-      </ToastContext.Provider>
-    )
+    return <ToastContext.Provider {...contextValue}>{children}</ToastContext.Provider>
   }
 )
 
@@ -450,30 +435,24 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
  * -----------------------------------------------------------------------------------------------*/
 
 const ToastViewportFrame = styled(View, {
-  name: 'ToastViewport',
-
-  variants: {
-    unstyled: {
-      false: {
-        position: isWeb ? ('fixed' as any) : 'absolute',
-        zIndex: 100000,
-        pointerEvents: 'box-none',
-        maxWidth: '100%',
-        ...(isWeb && { width: 356 }),
-        minHeight: 1,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  displayName: 'ToastViewport',
+  position: isWeb ? ('fixed' as any) : 'absolute',
+  zIndex: 100000,
+  pointerEvents: 'box-none',
+  maxWidth: '100%',
+  ...(isWeb && { width: 356 }),
+  minHeight: 1,
 })
 
-export interface ToastViewportProps extends GetProps<typeof ToastViewportFrame> {
+export type ToastViewportProps = GetProps<typeof ToastViewportFrame> & {
   /**
-   * Offset from screen edge
-   * @default 24
+   * Offset from screen edge, kept as breathing room past the safe area: the
+   * viewport edge itself sits at the `safe` style value (setup-safe-area on
+   * native, env(safe-area-inset-*) on web), so pass a plain number here, not
+   * `insets.top + 8`. A number sets all four sides (on native left/right
+   * define the width); use the object form to move one edge without resizing
+   * the toast.
+   * @default 16
    */
   offset?: number | { top?: number; right?: number; bottom?: number; left?: number }
   /**
@@ -497,8 +476,9 @@ export interface ToastViewportProps extends GetProps<typeof ToastViewportFrame> 
   portalZIndex?: number
 }
 
-const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
-  function ToastViewport(props, ref) {
+const ToastViewport = createStyledHOC(
+  ToastViewportFrame,
+  function ToastViewport(props: ToastViewportProps, ref) {
     const {
       offset = VIEWPORT_OFFSET,
       hotkey = DEFAULT_HOTKEY,
@@ -521,52 +501,49 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
       'left' | 'center' | 'right',
     ]
 
-    // offset styles
-    // on native, get safe area insets to avoid status bar / Dynamic Island / home indicator
-    // use insets from TamaguiProvider (passed via useConfiguration)
-    // same pattern as Slider — works on native when TamaguiProvider has insets prop
-    const { insets: safeInsets } = useConfiguration()
+    // placement: the viewport edge sits at the `safe` style value
+    // (setup-safe-area on native, env(safe-area-inset-*) on web) and the
+    // offset stays breathing room past it via margin. one path for both
+    // platforms — no provider-insets plumbing here.
+    const defaultOffset = typeof offset === 'number' ? offset : VIEWPORT_OFFSET
+    const offsetObj =
+      typeof offset === 'object'
+        ? offset
+        : {
+            top: defaultOffset,
+            right: defaultOffset,
+            bottom: defaultOffset,
+            left: defaultOffset,
+          }
 
-    const offsetStyles = React.useMemo(() => {
-      const styles: any = {}
-      const defaultOffset = typeof offset === 'number' ? offset : VIEWPORT_OFFSET
-      const offsetObj =
-        typeof offset === 'object'
-          ? offset
-          : {
-              top: defaultOffset,
-              right: defaultOffset,
-              bottom: defaultOffset,
-              left: defaultOffset,
-            }
+    // a number sets all four sides — on native left/right define the width,
+    // so carrying a safe-area top in a number squeezes the toast into a
+    // narrow column; use the object form to move one edge.
+    const edgeProps =
+      yPosition === 'top'
+        ? { top: 'safe' as const, marginTop: offsetObj.top ?? defaultOffset }
+        : { bottom: 'safe' as const, marginBottom: offsetObj.bottom ?? defaultOffset }
 
-      const safeTop = safeInsets?.top ?? 0
-      const safeBottom = safeInsets?.bottom ?? 0
-
-      // if safe area already provides spacing, skip the offset to avoid double padding
-      const topOffset = safeTop > 0 ? safeTop : (offsetObj.top ?? defaultOffset)
-      const bottomOffset =
-        safeBottom > 0 ? safeBottom : (offsetObj.bottom ?? defaultOffset)
-
-      if (yPosition === 'top') styles.top = topOffset
-      else styles.bottom = bottomOffset
-
-      if (isWeb) {
-        if (xPosition === 'left') styles.left = offsetObj.left ?? defaultOffset
-        else if (xPosition === 'right') styles.right = offsetObj.right ?? defaultOffset
-        else {
-          styles.left = '50%'
-          styles.transform = 'translateX(-50%)'
-        }
-      } else {
-        // native: always set both left + right so viewport fills screen
+    const sideProps = isWeb
+      ? xPosition === 'left'
+        ? { left: 'safe' as const, marginLeft: offsetObj.left ?? defaultOffset }
+        : xPosition === 'right'
+          ? { right: 'safe' as const, marginRight: offsetObj.right ?? defaultOffset }
+          : null
+      : // native: always set both left + right so viewport fills screen
         // (no fixed width on native — left/right offsets define the width)
-        styles.left = offsetObj.left ?? defaultOffset
-        styles.right = offsetObj.right ?? defaultOffset
-      }
+        {
+          left: 'safe' as const,
+          marginLeft: offsetObj.left ?? defaultOffset,
+          right: 'safe' as const,
+          marginRight: offsetObj.right ?? defaultOffset,
+        }
 
-      return styles
-    }, [offset, yPosition, xPosition])
+    // web center keeps its 50% + translate centering (margins would uncenter it)
+    const centerStyle =
+      isWeb && xPosition === 'center'
+        ? { left: '50%', transform: 'translateX(-50%)' }
+        : null
 
     // hotkey
     React.useEffect(() => {
@@ -590,13 +567,17 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
 
     const hotkeyLabel = hotkey.join('+').replace(/Key/g, '').replace(/Digit/g, '')
 
+    // the toast has no theme of its own. the portal re-establishes the theme
+    // it was mounted in at the root, and that is the theme toasts render in.
     const content = (
       <ToastViewportFrame
         ref={listRef}
         aria-label={`${label} ${hotkeyLabel}`}
         tabIndex={-1}
         aria-live="polite"
-        style={offsetStyles}
+        {...edgeProps}
+        {...sideProps}
+        {...(centerStyle ? { style: centerStyle } : null)}
         data-y-position={yPosition}
         data-x-position={xPosition}
         {...(isWeb
@@ -774,33 +755,27 @@ function DefaultToastContent({ toast }: { toast: ToastT }) {
     typeof toast.description === 'function' ? toast.description() : toast.description
 
   return (
-    <XStack alignItems="flex-start" gap="$3">
+    <XStack alignItems="flex-start" gap="3">
       <ToastIcon />
 
-      <YStack flex={1} gap="$1">
+      <YStack flex={1} gap="1">
         {title && <ToastTitle>{title}</ToastTitle>}
         {description && <ToastDescription>{description}</ToastDescription>}
 
         {(toast.action || toast.cancel) && (
-          <XStack gap="$2" marginTop="$2">
+          <XStack gap="2" marginTop="2">
             {toast.cancel && (
               <ToastActionFrame
-                backgroundColor="transparent"
                 onPress={(e: any) => {
                   toast.cancel?.onClick?.(e)
                   handleClose()
                 }}
               >
-                <SizableText size="$2" color="$color11">
-                  {toast.cancel.label}
-                </SizableText>
+                <SizableText size="2">{toast.cancel.label}</SizableText>
               </ToastActionFrame>
             )}
             {toast.action && (
               <ToastActionFrame
-                backgroundColor="$color12"
-                hoverStyle={{ backgroundColor: '$color11' }}
-                pressStyle={{ backgroundColor: '$color10' }}
                 onPress={(e: any) => {
                   toast.action?.onClick?.(e)
                   if (!(e as any).defaultPrevented) {
@@ -808,9 +783,7 @@ function DefaultToastContent({ toast }: { toast: ToastT }) {
                   }
                 }}
               >
-                <SizableText size="$2" fontWeight="600" color="$background">
-                  {toast.action.label}
-                </SizableText>
+                <SizableText size="2">{toast.action.label}</SizableText>
               </ToastActionFrame>
             )}
           </XStack>
@@ -893,14 +866,15 @@ function DragWrapper({
  * ToastItem (the wrapper with stacking/drag)
  * -----------------------------------------------------------------------------------------------*/
 
-export interface ToastItemProps extends GetProps<typeof ToastItemFrame> {
+export type ToastItemProps = GetProps<typeof ToastItemFrame> & {
   toast: ToastT
   index: number
   children: React.ReactNode
 }
 
-const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
-  function ToastItem(props, ref) {
+const ToastItemInner = createStyledHOC(
+  ToastItemFrame,
+  function ToastItem(props: ToastItemProps, ref) {
     const { toast, index, children, ...rest } = props
     const ctx = useToastContext('Toast.Item')
 
@@ -986,15 +960,20 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       setMounted(true)
     }, [])
 
-    // handle deletion — only zero height when expanded (Sonner rebalance)
+    // handle deletion — only zero height when expanded (Sonner rebalance).
+    // a toast re-created with the same id while it is exiting comes back with
+    // delete cleared: cancel the pending unmount and show it again.
     React.useEffect(() => {
-      if (toast.delete) {
-        setRemoved(true)
-        if (isExpandedRef.current) {
-          setOffsetBeforeRemove(expandedOffsetRef.current)
-        }
-        setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
+      if (!toast.delete) {
+        setRemoved(false)
+        return
       }
+      setRemoved(true)
+      if (isExpandedRef.current) {
+        setOffsetBeforeRemove(expandedOffsetRef.current)
+      }
+      const timer = setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
+      return () => clearTimeout(timer)
     }, [toast.delete, toast, ctx.removeToast])
 
     React.useEffect(() => {
@@ -1025,12 +1004,6 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       dragRef,
     } = useToastAnimations({
       reducedMotion: ctx.reducedMotion,
-      swipeAxis:
-        ctx.swipeDirection === 'up' ||
-        ctx.swipeDirection === 'down' ||
-        ctx.swipeDirection === 'vertical'
-          ? 'vertical'
-          : 'horizontal',
     })
 
     const { isDragging, gestureHandlers, gesture } = useAnimatedDragGesture({
@@ -1067,21 +1040,21 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       },
     })
 
-    // measure height (web only — native uses fixed height)
+    // measure height. web measures every toast for the expanded offsets; native
+    // expands at the fixed toastHeight pitch, so it only measures the front toast,
+    // which the collapsed stack sizes the cards behind it to
     const handleLayout = React.useCallback(
       (event: any) => {
-        if (!isWeb) return
         if (removed) return
-        if (!ctx.expanded && index !== 0) return
+        if ((!isWeb || !ctx.expanded) && index !== 0) return
         const { height } = event.nativeEvent.layout
         ctx.setToastHeight(toast.id, height)
       },
       [toast.id, ctx.setToastHeight, index, ctx.expanded, removed]
     )
 
-    // remove height on unmount (web only)
+    // remove height on unmount
     React.useEffect(() => {
-      if (!isWeb) return
       return () => {
         ctx.removeToastHeight(toast.id)
       }
@@ -1103,15 +1076,13 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       [toast, handleClose]
     )
 
-    // front toast height for collapsed stacking (web only)
+    // front toast height for collapsed stacking
     let frontToastHeight = -1
-    if (isWeb) {
-      for (const t of ctx.toasts) {
-        const h = ctx.heights[t.id]
-        if (h != null && h > 0) {
-          frontToastHeight = h
-          break
-        }
+    for (const t of ctx.toasts) {
+      const h = ctx.heights[t.id]
+      if (h != null && h > 0) {
+        frontToastHeight = h
+        break
       }
     }
 
@@ -1133,15 +1104,16 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
 
     const computedOpacity = removed && !swipeOut ? 0 : index >= ctx.visibleToasts ? 0 : 1
     const computedZIndex = removed ? 0 : ctx.visibleToasts - index + 1
-    // web: use measured height for smooth expand/collapse transitions
-    // native: fixed height, no constraint needed
-    const computedHeight = isWeb
-      ? ctx.expanded
+    // collapsed, the cards behind the front toast take its height, so a taller
+    // toast never hangs out below the stack. web also pins the measured height
+    // while expanded for smooth expand/collapse transitions
+    const collapsedHeight =
+      !isFront && frontToastHeight > 0 ? frontToastHeight : undefined
+    const computedHeight = ctx.expanded
+      ? isWeb
         ? ctx.heights[toast.id] || undefined
-        : !isFront && frontToastHeight > 0
-          ? frontToastHeight
-          : undefined
-      : undefined
+        : undefined
+      : collapsedHeight
     const computedPointerEvents = index >= ctx.visibleToasts ? 'none' : 'auto'
 
     // gap filler for hover stability
@@ -1165,34 +1137,35 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         testID={rest.testID}
         {...dataAttributes}
         transition={
-          isDragging || ctx.reducedMotion ? undefined : removed ? '200ms' : '400ms'
+          isDragging || ctx.reducedMotion
+            ? undefined
+            : {
+                duration: removed ? 200 : 400,
+                // height only collapses the stack on web; native relayouts
+                properties: isWeb ? 'transform, opacity, height' : 'transform, opacity',
+              }
         }
-        animateOnly={
-          isWeb ? ['transform', 'opacity', 'height'] : ['transform', 'opacity']
+        y={
+          ctx.reducedMotion
+            ? stackY
+            : // every value needs an explicit `px` — a bare number inside a
+              // transition string is a string, so `-14` would resolve as the
+              // space token `-14` (= -56px) instead of -14 pixels
+              `${stackY}px enter:${isTop ? -80 : 80}px exit:${
+                swipeOut ? (swipeExitYRef.current ?? stackY) : stackY
+              }px`
         }
-        y={stackY}
         scale={stackScale}
-        opacity={computedOpacity}
+        opacity={`${computedOpacity} enter:0 exit:0`}
         zIndex={computedZIndex}
         height={computedHeight}
         overflow="visible"
         pointerEvents={computedPointerEvents as any}
         top={isTop ? 0 : undefined}
         bottom={isTop ? undefined : 0}
-        {...(isWeb &&
-          !isFront && {
-            style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
-          })}
-        enterStyle={
-          ctx.reducedMotion ? { opacity: 0 } : { opacity: 0, y: isTop ? -80 : 80 }
-        }
-        exitStyle={
-          ctx.reducedMotion
-            ? { opacity: 0 }
-            : swipeOut
-              ? { opacity: 0, y: swipeExitYRef.current ?? stackY, scale: stackScale }
-              : { opacity: 0, y: stackY, scale: stackScale }
-        }
+        {...(!isFront && {
+          style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
+        })}
       >
         <DragWrapper
           animatedStyle={animatedStyle}
@@ -1224,6 +1197,9 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
                 }
               },
             })}
+            // native stacks in a column, so a card sized to the front toast only
+            // shrinks to that height when it fills it (web stretches in its row)
+            {...(!isWeb && computedHeight != null && { flex: 1 })}
             {...rest}
           >
             {/* gap filler to prevent hover flicker */}
@@ -1251,50 +1227,26 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
  * ToastTitle
  * -----------------------------------------------------------------------------------------------*/
 
+// Structural (unstyled) — text color/weight/size live in the tamagui skin
+// (code/ui/tamagui/src/components/Toast.tsx).
 const ToastTitle = styled(SizableText, {
-  name: 'ToastTitle',
-
-  variants: {
-    unstyled: {
-      false: {
-        color: '$color',
-        fontWeight: '600',
-        size: '$4',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  displayName: 'ToastTitle',
 })
 
 /* -------------------------------------------------------------------------------------------------
  * ToastDescription
  * -----------------------------------------------------------------------------------------------*/
 
+// Structural (unstyled) — text color/size live in the tamagui skin.
 const ToastDescription = styled(SizableText, {
-  name: 'ToastDescription',
-
-  variants: {
-    unstyled: {
-      false: {
-        color: '$color11',
-        size: '$2',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  displayName: 'ToastDescription',
 })
 
 /* -------------------------------------------------------------------------------------------------
  * ToastClose - auto-wired to dismiss current toast
  * -----------------------------------------------------------------------------------------------*/
 
-const ToastClose = ToastCloseFrame.styleable(function ToastClose(props, ref) {
+const ToastClose = createStyledHOC(ToastCloseFrame, function ToastClose(props, ref) {
   // try to get handleClose from context, but allow manual override
   let handleClose: (() => void) | undefined
   try {
@@ -1317,7 +1269,7 @@ const ToastClose = ToastCloseFrame.styleable(function ToastClose(props, ref) {
  * ToastAction
  * -----------------------------------------------------------------------------------------------*/
 
-const ToastAction = ToastActionFrame.styleable(function ToastAction(props, ref) {
+const ToastAction = createStyledHOC(ToastActionFrame, function ToastAction(props, ref) {
   return <ToastActionFrame ref={ref} {...props} />
 })
 
@@ -1342,7 +1294,7 @@ function ToastIcon(props: { children?: React.ReactNode }) {
   // if custom icon provided on toast, use it
   if (toast.icon !== undefined) {
     return (
-      <View flexShrink={0} marginTop="$0.5">
+      <View flexShrink={0} marginTop="0-5">
         {toast.icon}
       </View>
     )
@@ -1355,7 +1307,7 @@ function ToastIcon(props: { children?: React.ReactNode }) {
   if (!icon) return null
 
   return (
-    <View flexShrink={0} marginTop="$0.5">
+    <View flexShrink={0} marginTop="0-5">
       {icon}
     </View>
   )
@@ -1371,6 +1323,7 @@ export function useToasts() {
     toasts: ctx.toasts,
     expanded: ctx.expanded,
     position: ctx.position,
+    closeButton: ctx.closeButton,
   }
 }
 

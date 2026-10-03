@@ -1,4 +1,5 @@
 export * from './TamaguiLogo'
+export * from './TamaguiLogoSvg'
 export * from './LogoWords'
 export * from './LogoIcon'
 export * from './tints'

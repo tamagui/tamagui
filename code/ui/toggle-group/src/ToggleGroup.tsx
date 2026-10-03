@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { registerFocusable } from '@tamagui/focusable'
 import { withStaticProperties } from '@tamagui/helpers'
@@ -5,7 +6,7 @@ import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import type { GetProps, TamaguiElement } from '@tamagui/web'
-import { createStyledContext, styled, View } from '@tamagui/web'
+import { createStyledHOC, createStyledContext, styled, View } from '@tamagui/web'
 import React from 'react'
 
 import type { ToggleProps } from './Toggle'
@@ -29,13 +30,16 @@ const { Provider: ToggleGroupContext, useStyledContext: useToggleGroupContext } 
   createStyledContext<ToggleGroupContextValue>({})
 
 type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
+  activeStyle?: ToggleProps['activeStyle']
+  activeTheme?: ToggleProps['activeTheme']
   value: string
   id?: string
   disabled?: boolean
 }
 
-const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>(
-  (props, forwardedRef) => {
+const ToggleGroupItem = createStyledHOC(
+  ToggleFrame,
+  (props: ScopedProps<ToggleGroupItemProps>, forwardedRef) => {
     const valueContext = useToggleGroupValueContext(props.__scopeToggleGroup)
     const context = useToggleGroupContext(props.__scopeToggleGroup)
     const toggleContext = ToggleContext.useStyledContext(props.__scopeToggleGroup)
@@ -46,7 +50,11 @@ const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>
     const inner = (
       <ToggleGroupItemImpl
         ref={forwardedRef}
-        tabIndex={disabled ? -1 : 0}
+        // on the roving path the group owns the tab order, so the item carries no
+        // tabIndex of its own: Slot overlays child props over the roving Item's,
+        // so a tabIndex here wins the merge and puts every toggle back in the tab
+        // order. off that path nothing else makes the toggle focusable.
+        {...(context.rovingFocus ? null : { tabIndex: disabled ? -1 : 0 })}
         {...(props as any)}
         active={active}
         disabled={disabled}
@@ -60,7 +68,7 @@ const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>
             <RovingFocusGroup.Item
               asChild="except-style"
               __scopeRovingFocusGroup={props.__scopeToggleGroup || TOGGLE_GROUP_CONTEXT}
-              focusable={!disabled}
+              tabIndex={disabled ? -1 : 0}
               active={active}
             >
               {inner}
@@ -81,7 +89,7 @@ type ToggleGroupItemImplProps = Omit<ToggleProps, 'defaultActive' | 'onActiveCha
   value: string
 }
 
-const ToggleGroupItemImpl = React.forwardRef<
+const ToggleGroupItemImpl = createRefComponent<
   TamaguiElement,
   ScopedProps<ToggleGroupItemImplProps>
 >((props, forwardedRef) => {
@@ -120,10 +128,21 @@ interface ToggleGroupMultipleProps extends ToggleGroupImplMultipleProps {
   type: 'multiple'
 }
 
-type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps
+interface ToggleGroupGeneralProps extends ToggleGroupImplProps {
+  type: 'single' | 'multiple'
+  value?: string | string[]
+  defaultValue?: string | string[]
+  onValueChange?(value: any): void
+  disableDeactivation?: boolean
+}
+
+type ToggleGroupProps =
+  | ToggleGroupSingleProps
+  | ToggleGroupMultipleProps
+  | ToggleGroupGeneralProps
 
 const ToggleGroup = withStaticProperties(
-  React.forwardRef<TamaguiElement, ScopedProps<ToggleGroupProps>>(
+  createRefComponent<TamaguiElement, ScopedProps<ToggleGroupProps>>(
     (props, forwardedRef) => {
       const { type, ...toggleGroupProps } = props
 
@@ -182,7 +201,7 @@ interface ToggleGroupImplSingleProps extends ToggleGroupImplProps {
   disableDeactivation?: boolean
 }
 
-const ToggleGroupImplSingle = React.forwardRef<
+const ToggleGroupImplSingle = createRefComponent<
   TamaguiElement,
   ScopedProps<ToggleGroupImplSingleProps>
 >((props: ScopedProps<ToggleGroupImplSingleProps>, forwardedRef) => {
@@ -227,10 +246,10 @@ interface ToggleGroupImplMultipleProps extends ToggleGroupImplProps {
   defaultValue?: string[]
   /** The callback that fires when the state of the toggle group changes. */
   onValueChange?(value: string[]): void
-  disableDeactivation?: never
+  disableDeactivation?: boolean
 }
 
-const ToggleGroupImplMultiple = React.forwardRef<
+const ToggleGroupImplMultiple = createRefComponent<
   TamaguiElement,
   ToggleGroupImplMultipleProps
 >((props: ScopedProps<ToggleGroupImplMultipleProps>, forwardedRef) => {
@@ -286,7 +305,7 @@ type ToggleGroupContextValue = {
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>
 
 const ToggleGroupFrame = styled(View, {
-  name: TOGGLE_GROUP_NAME,
+  displayName: TOGGLE_GROUP_NAME,
 })
 
 type ToggleGroupImplProps = GetProps<typeof ToggleGroupFrame> & {
@@ -297,7 +316,8 @@ type ToggleGroupImplProps = GetProps<typeof ToggleGroupFrame> & {
   color?: string
 }
 
-const ToggleGroupImpl = ToggleGroupFrame.styleable<TamaguiElement, ToggleGroupImplProps>(
+const ToggleGroupImpl = createStyledHOC(
+  ToggleGroupFrame,
   (props: ScopedProps<ToggleGroupImplProps>, forwardedRef) => {
     const {
       __scopeToggleGroup,

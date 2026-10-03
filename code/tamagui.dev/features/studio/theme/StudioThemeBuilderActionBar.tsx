@@ -8,7 +8,7 @@ export const StudioThemeBuilderActionBar = memo(function StudioThemeBuilderActio
   return (
     <XStack
       z={100000}
-      gap="$3"
+      gap="3"
       flex={1}
       flexBasis="auto"
       items="center"
@@ -28,7 +28,7 @@ export const StudioThemeBuilderActionBar = memo(function StudioThemeBuilderActio
 
 //   return (
 //     <Select
-//       size="$2"
+//       size="2"
 //       defaultValue="ok"
 //       width={140}
 //       onValueChange={(id) => {
@@ -37,7 +37,7 @@ export const StudioThemeBuilderActionBar = memo(function StudioThemeBuilderActio
 //       value={themeId}
 //     >
 //       {themeEntries.map(([id, theme], idx) => (
-//         <Select.Item key={id} value={id} index={idx}>
+//         <Select.Item key={id} value={id}>
 //           {theme.name}
 //         </Select.Item>
 //       ))}

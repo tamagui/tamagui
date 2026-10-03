@@ -11,6 +11,7 @@
   "ignorePatterns": [
     "**/build/**",
     "**/dist/**",
+    "code/tests/**/dist*/**",
     "**/*.d.ts",
     "**/ios/**",
     "**/android/**",

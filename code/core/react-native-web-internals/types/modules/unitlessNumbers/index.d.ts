@@ -24,16 +24,11 @@ export declare const unitlessNumbers: {
     flexShrink: boolean;
     flexNegative: boolean;
     fontWeight: boolean;
-    gap: boolean;
-    columnGap: boolean;
-    rowGap: boolean;
     gridRow: boolean;
     gridRowEnd: boolean;
-    gridRowGap: boolean;
     gridRowStart: boolean;
     gridColumn: boolean;
     gridColumnEnd: boolean;
-    gridColumnGap: boolean;
     gridColumnStart: boolean;
     lineClamp: boolean;
     opacity: boolean;

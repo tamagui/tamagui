@@ -22,9 +22,9 @@ demoName: Text
 
 <Highlights
   features={[
-    'Supports all react-native-web props and Tamagui styling props.',
-    'Media query styles, hoverStyle, pressStyle.',
-    'Paragraph uses themes and spread variants for a nicer default.',
+    'All react-native-web props and Tamagui styles',
+    'Flat media, hover, and press clauses',
+    'Theme and spread-variant defaults for Paragraph',
   ]}
 />
 
@@ -41,13 +41,10 @@ export default () => (
   <>
     <Text
       // can add theme values
-      color="$white"
-      fontFamily="$body"
+      color="white hover:color-2"
+      fontFamily="body"
       // or just use direct values
       fontSize={20}
-      hoverStyle={{
-        color: '$color2',
-      }}
     >
       Lorem ipsum
     </Text>
@@ -55,10 +52,8 @@ export default () => (
 )
 ```
 
-<Notice>
-  SizableText and Paragraph default to the "body" fontFamily defined in your config.
-  Headings all default to "heading".
-</Notice>
+SizableText and Paragraph default to the "body" fontFamily defined in your config.
+Headings all default to "heading".
 
 ## SizableText
 
@@ -79,9 +74,8 @@ Finally Paragraph extends `SizableText` and simply sets some default values from
 
 ```tsx
 export const Paragraph = styled(SizableText, {
-  fontFamily: '$body',
-  color: '$color',
-  // note tamagui uses a generic "true" token that your sizes should set to be the same as the default on your scale
-  size: '$true',
+  fontFamily: 'body',
+  color: 'color',
+  size: true,
 })
 ```

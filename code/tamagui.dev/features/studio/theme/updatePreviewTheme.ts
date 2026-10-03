@@ -1,7 +1,7 @@
-import { createStudioThemes } from '@tamagui/theme-builder'
-import type { BuildThemeSuiteProps } from '@tamagui/themes'
 import type { ThemeName } from 'tamagui'
 import { debounce, mutateThemes } from 'tamagui'
+import { createStudioThemes } from './palettes'
+import type { BuildThemeSuiteProps } from './types'
 
 const STUDIO_INTERNAL_THEME_NAME = 'studiodemointernal'
 
@@ -23,7 +23,6 @@ const themeCache = new Map<
   {
     palettes: any
     schemes: any
-    templateStrategy: string
     themes: any
   }
 >()
@@ -39,8 +38,7 @@ export async function updatePreviewTheme(
   if (
     cached &&
     JSON.stringify(cached.palettes) === JSON.stringify(args.palettes) &&
-    JSON.stringify(cached.schemes) === JSON.stringify(args.schemes) &&
-    cached.templateStrategy === args.templateStrategy
+    JSON.stringify(cached.schemes) === JSON.stringify(args.schemes)
   ) {
     return false
   }
@@ -50,7 +48,6 @@ export async function updatePreviewTheme(
   themeCache.set(cacheKey, {
     palettes: args.palettes,
     schemes: args.schemes,
-    templateStrategy: args.templateStrategy ?? 'base',
     themes,
   })
 

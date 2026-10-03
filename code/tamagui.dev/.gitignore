@@ -8,3 +8,6 @@ helpers/dist/
 
 # Generated bento proxies
 helpers/dist/
+
+# downloaded Inter source for scripts/subset.ts
+scripts/.fonts

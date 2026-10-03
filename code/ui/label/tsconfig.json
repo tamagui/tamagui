@@ -14,9 +14,6 @@
       "path": "../../core/create-context"
     },
     {
-      "path": "../../core/get-button-sized"
-    },
-    {
       "path": "../../core/get-font-sized"
     },
     {

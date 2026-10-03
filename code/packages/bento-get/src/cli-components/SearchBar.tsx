@@ -27,7 +27,7 @@ export const SearchBar = () => {
 
   const handleInputChange = (value: string) => {
     if (location.pathname !== '/search') return
-    if ((appContext.installState as any).installingComponent?.isOSS) return
+    if (appContext.installState.installingComponent) return
     appContext.setSearchInput(value)
     const results = performSearch(value)
     appContext.setSearchResults(results)

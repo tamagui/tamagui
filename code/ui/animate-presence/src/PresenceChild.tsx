@@ -13,9 +13,6 @@ interface PresenceChildProps {
   initial?: false | VariantLabels
   custom?: any
   presenceAffectsLayout?: boolean
-  exitVariant?: string | null
-  enterVariant?: string | null
-  enterExitVariant?: string | null
 }
 
 // this memo seems to help PopoverContent from continuously re-rendering when open
@@ -25,9 +22,6 @@ export const PresenceChild = React.memo(
     initial,
     isPresent,
     onExitComplete,
-    exitVariant,
-    enterVariant,
-    enterExitVariant,
     presenceAffectsLayout,
     custom,
   }: PresenceChildProps) => {
@@ -41,9 +35,6 @@ export const PresenceChild = React.memo(
           initial,
           isPresent,
           custom,
-          exitVariant,
-          enterVariant,
-          enterExitVariant,
           onExitComplete: () => {
             presenceChildren.set(id, true)
             for (const isComplete of presenceChildren.values()) {
@@ -66,7 +57,7 @@ export const PresenceChild = React.memo(
        */
 
       // @ts-expect-error its ok
-      presenceAffectsLayout ? undefined : [isPresent, exitVariant, enterVariant]
+      presenceAffectsLayout ? undefined : [isPresent, custom]
     )
 
     React.useMemo(() => {

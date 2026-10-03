@@ -1,21 +1,15 @@
-import { Fragment } from 'react'
 import { H3 } from 'tamagui'
 
+// keeps the last word from wrapping alone onto its own line
 export const nbspLastWord = (sentence: string) => {
   if (typeof sentence !== 'string') {
     return sentence
   }
-  const titleWords = sentence.split(' ')
-  if (titleWords.length === 1) {
+  const lastSpace = sentence.lastIndexOf(' ')
+  if (lastSpace === -1) {
     return sentence
   }
-  return titleWords.map((word, i) => {
-    return i === titleWords.length - 1 ? (
-      <Fragment key={i}>&nbsp;{word}</Fragment>
-    ) : (
-      <Fragment key={i}> {word}</Fragment>
-    )
-  })
+  return `${sentence.slice(0, lastSpace)}\u00a0${sentence.slice(lastSpace + 1)}`
 }
 
 export const SubTitle = ({ children, ...props }) => {
@@ -32,20 +26,17 @@ export const SubTitle = ({ children, ...props }) => {
     <H3
       position="relative"
       maxW="100%"
-      color="$accent7"
-      width="100%"
-      fontFamily="$mono"
-      size="$7"
-      letterSpacing={-0.25}
+      color="color-8"
+      width="100% md:max-content"
+      size="7"
+      fontSize={20}
+      lineHeight="28px"
+      fontWeight="400"
+      letterSpacing={-0.2}
+      pb="1-5"
+      mb="4"
+      textWrap="web:balance"
       render="p"
-      pb="$3"
-      mb="$3"
-      $platform-web={{
-        textWrap: 'balance',
-      }}
-      $gtSm={{
-        width: 'max-content',
-      }}
       {...props}
     >
       {nbspLastWord(childText)}

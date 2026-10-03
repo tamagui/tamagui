@@ -2,41 +2,35 @@ import { Input as TamaguiInput, styled } from 'tamagui'
 
 // Input accepts text styles at runtime via validStyles but TS doesn't know
 const TextInput2 = styled(TamaguiInput, {
-  unstyled: true,
-  name: 'bla',
-  height: '$5',
-  borderRadius: '$1',
+  displayName: 'bla',
+  height: '5',
+  borderRadius: '1',
   borderWidth: 1,
-  fontSize: '$1',
-  keyboardAppearance: 'dark',
-  paddingHorizontal: '$2',
-  placeholderTextColor: 'rgba(255,255,255,0.3)',
+  fontSize: '1',
+  paddingHorizontal: '2',
   color: 'green',
-
+  keyboardAppearance: 'dark',
+  placeholderTextColor: 'rgba(255,255,255,0.3)',
   variants: {
     gameplay: {
       true: {
         fontSize: 100,
-        lineHeight: '$5',
-        letterSpacing: '$5',
+        lineHeight: '5',
+        letterSpacing: '5',
         color: 'red',
         borderRadius: 100,
         borderWidth: 2,
-        borderColor: 'red',
+        borderColor: 'red focus:green',
         cursor: 'pointer',
-
-        focusStyle: {
-          borderColor: 'green',
-        },
       },
     },
     gameplayMobile: {
       true: {
-        fontSize: '$3',
-        letterSpacing: '$3',
+        fontSize: '3',
+        letterSpacing: '3',
         marginTop: -2.35,
         marginBottom: -5.9,
-        lineHeight: '$3',
+        lineHeight: '3',
       },
     },
   } as const,

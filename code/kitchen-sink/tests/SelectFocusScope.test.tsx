@@ -1,6 +1,27 @@
 import { expect, test } from '@playwright/test'
 import { setupPage } from './test-utils'
 
+test('Select FocusScope opens content with multiple children without crashing', async ({
+  page,
+}) => {
+  const pageErrors: string[] = []
+  page.on('pageerror', (error) => {
+    pageErrors.push(error.message)
+  })
+
+  await setupPage(page, { name: 'SelectFocusScopeCase', type: 'useCase' })
+
+  const trigger = page.getByTestId('basic-select-trigger')
+  await trigger.click()
+
+  const selectViewport = page.getByTestId('basic-select-viewport')
+  await expect(selectViewport).toBeVisible({ timeout: 5000 })
+
+  expect(pageErrors.join('\n')).not.toMatch(
+    /React\.Children\.only|single React element child/
+  )
+})
+
 test.describe('Select Focus Scope', () => {
   test.beforeEach(async ({ page }) => {
     await setupPage(page, { name: 'SelectFocusScopeCase', type: 'useCase' })

@@ -1,10 +1,13 @@
+declare const RenderChildren: (props: any) => any;
+declare const RenderNull: (props: any) => null;
 export declare const TooltipGroup: () => null;
 export declare const closeOpenTooltips: () => void;
-export declare const Tooltip: ((props: any) => any) & {
-    Anchor: (props: any) => any;
-    Arrow: (props: any) => null;
-    Close: (props: any) => null;
-    Content: (props: any) => null;
-    Trigger: (props: any) => any;
+export declare const Tooltip: typeof RenderChildren & {
+    Anchor: typeof RenderChildren;
+    Arrow: typeof RenderNull;
+    Close: typeof RenderNull;
+    Content: typeof RenderNull;
+    Trigger: typeof RenderChildren;
 };
+export {};
 //# sourceMappingURL=Tooltip.native.d.ts.map

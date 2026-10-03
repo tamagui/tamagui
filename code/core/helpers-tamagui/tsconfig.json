@@ -8,6 +8,9 @@
       "path": "../helpers"
     },
     {
+      "path": "../react-native-types"
+    },
+    {
       "path": "../web"
     }
   ],

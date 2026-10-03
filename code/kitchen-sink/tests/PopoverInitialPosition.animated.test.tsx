@@ -6,13 +6,6 @@ import { setupPage } from './test-utils'
 // but x/y retain stale values, the hide logic must still prevent the
 // content from being visible at the wrong position.
 
-// native animation driver has a pre-existing initial position bug
-const driverName = process.env.TAMAGUI_TEST_ANIMATION_DRIVER || ''
-test.skip(
-  driverName === 'native',
-  'native driver has pre-existing initial position issue'
-)
-
 test.describe('Popover initial position', () => {
   test('hoverable popover appears near trigger, not at top-left', async ({ page }) => {
     await setupPage(page, {

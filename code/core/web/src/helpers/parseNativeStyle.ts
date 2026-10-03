@@ -9,6 +9,8 @@
  * so this code is dead-code-eliminated on web builds.
  */
 
+import { normalizeColor } from './normalizeColor'
+
 type TokenMap = Map<string, any>
 
 export function parseNativeStyle(
@@ -32,11 +34,33 @@ function resolveColor(raw: string, tokenMap?: TokenMap): any {
   if (tokenMap && tokenMap.has(raw)) {
     return tokenMap.get(raw)
   }
-  return raw
+  return raw.includes('(') && !raw.includes(',') ? normalizeColor(raw) : raw
+}
+
+// the direction grammar React Native itself accepts, sourced from
+// react-native/Libraries/StyleSheet/processBackgroundImage.js — signed and
+// leading-decimal angles, case-insensitive units and keywords. what matters
+// is what React Native reads, not what the CSS spec permits
+const gradientAngle = /^([+-]?\d*\.?\d+)(deg|grad|rad|turn)$/i
+const gradientKeyword =
+  /^to\s+(?:top|bottom|left|right)(?:\s+(?:top|bottom|left|right))?$/i
+
+// RN's object path accepts a position as a NUMBER (points) or a string
+// ending in % — mirroring its own getPositionFromCSSValue: px becomes
+// parseFloat points, % stays a string, anything else is not a position
+function gradientPosition(token: string): number | string | undefined {
+  if (/px$/i.test(token)) return Number.parseFloat(token)
+  if (token.endsWith('%')) return token
+  return undefined
 }
 
 // parse "linear-gradient(direction, color1 pos1, color2 pos2, ...)"
 function parseBackgroundImage(css: string, tokenMap?: TokenMap): any[] | undefined {
+  // React Native represents `background-image: none` as an empty processed
+  // background list. Returning the list here also routes the Tailwind utility
+  // to RN's `experimental_backgroundImage` host key instead of leaking the web
+  // `backgroundImage` alias into native styles.
+  if (css.trim() === 'none') return []
   const match = css.match(/^linear-gradient\((.+)\)$/s)
   if (!match) return undefined
 
@@ -49,21 +73,44 @@ function parseBackgroundImage(css: string, tokenMap?: TokenMap): any[] | undefin
   let startIdx = 0
 
   const firstPart = parts[0].trim()
-  // check if first part is a direction (starts with "to " or ends with "deg/rad/turn/grad")
-  if (firstPart.startsWith('to ') || /^\d+(\.\d+)?(deg|rad|turn|grad)$/.test(firstPart)) {
+  if (gradientAngle.test(firstPart) || gradientKeyword.test(firstPart)) {
     direction = firstPart
     startIdx = 1
   }
 
+  // tokens classify by what they ARE, never by falling through to the color
+  // slot — the direction, position, and transition-hint misreads were all one
+  // assumption ("any unrecognized token is a color") wearing three costumes
   const colorStops: any[] = []
-  for (let i = startIdx; i < parts.length; i++) {
-    const stopParts = parts[i].trim().match(/\S+\([^)]*\)|\S+/g)
+  const stops = parts.slice(startIdx)
+  let prevWasHint = false
+  for (let i = 0; i < stops.length; i++) {
+    const stopParts = stops[i].trim().match(/\S+\([^)]*\)|\S+/g)
     if (!stopParts) continue
-    const colorRaw = stopParts[0]
-    const color = resolveColor(colorRaw, tokenMap)
-    const positions = stopParts.slice(1)
+
+    // a lone position is a transition hint (RN string parser case 4):
+    // {color:null, positions:[n]} — invalid first, last, or after another
+    // hint, which invalidates the gradient exactly as RN and the web do
+    if (stopParts.length === 1) {
+      const hint = gradientPosition(stopParts[0])
+      if (hint !== undefined) {
+        if (i === 0 || i === stops.length - 1 || prevWasHint) return undefined
+        colorStops.push({ color: null, positions: [hint] })
+        prevWasHint = true
+        continue
+      }
+    }
+    prevWasHint = false
+
+    const color = resolveColor(stopParts[0], tokenMap)
     const stop: any = { color }
-    if (positions.length > 0) {
+    if (stopParts.length > 1) {
+      const positions: (number | string)[] = []
+      for (let p = 1; p < stopParts.length; p++) {
+        const position = gradientPosition(stopParts[p])
+        if (position === undefined) return undefined
+        positions.push(position)
+      }
       stop.positions = positions
     }
     colorStops.push(stop)
@@ -168,8 +215,8 @@ function parseTextShadow(css: string, tokenMap?: TokenMap): [string, any][] | un
 }
 
 function parseDimension(s: string): number | undefined {
-  // strip px/dp suffix
-  const cleaned = s.replace(/px$|dp$/, '')
+  // strip px/dp suffix (css units are case-insensitive)
+  const cleaned = s.replace(/px$|dp$/i, '')
   const n = Number(cleaned)
   return Number.isFinite(n) ? n : undefined
 }

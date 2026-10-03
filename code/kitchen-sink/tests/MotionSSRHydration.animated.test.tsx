@@ -4,7 +4,7 @@ import { setupPage } from './test-utils'
 /**
  * Regression test for SSR hydration with inline-output animation drivers.
  *
- * An SSR-visible element with a `transition` prop (no enterStyle) must adopt
+ * An SSR-visible element with a `transition` prop (no enter clause) must adopt
  * the SSR-painted values when the animation driver takes over at hydration.
  * The motion driver used to animate every property from the stripped (zeroed)
  * computed values on the noClass handoff render — the element visibly
@@ -18,9 +18,8 @@ import { setupPage } from './test-utils'
 
 test.beforeEach(async ({ page }, testInfo) => {
   test.skip(
-    testInfo.project.name === 'animated-native' ||
-      testInfo.project.name === 'animated-reanimated',
-    'React Native web drivers hydrate through a different path (hasAnimationThatNeedsHydrate)'
+    testInfo.project.name === 'animated-reanimated',
+    'Reanimated hydrates through a different path (hasAnimationThatNeedsHydrate)'
   )
   await setupPage(page, { name: 'MotionSSRHydrationCase', type: 'useCase' })
 })

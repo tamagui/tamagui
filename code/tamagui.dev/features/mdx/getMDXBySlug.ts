@@ -8,6 +8,8 @@ import {
   type GetMDXOptions,
 } from '@vxrn/mdx-rust'
 import { highlightPlugin } from './highlightPlugin'
+import { defaultConfig as docsCodeConfig } from '@tamagui/config/v6'
+import { loadSourceRegistry, rewriteSourceImports } from './sourceMode'
 
 export { getAllFrontmatter, getAllVersionsFromPath }
 export { getCompilationExamples } from './getCompilationExamples'
@@ -47,14 +49,196 @@ const heroTemplate = {
   },
 }
 
+type TailwindTransform = (
+  source: string,
+  options?: {
+    renameComponents?: boolean
+    rewriteImports?: boolean
+    retainLines?: boolean
+    tokens?: Record<string, Record<string, any>>
+    fonts?: Record<string, any>
+    themes?: Record<string, Record<string, any>>
+    media?: Record<string, any>
+    shorthands?: Record<string, string>
+  }
+) => string
+
+function loadTransform(): TailwindTransform {
+  try {
+    // resolve through package.json so we always load the current `main` -
+    // node caches the pkg's `main` field internally and HMR rebuilds of
+    // @tamagui/to-tailwind would otherwise be invisible to the dev server.
+    const pkgJsonPath = requireFn.resolve('@tamagui/to-tailwind/package.json')
+    const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'))
+    const mainRel: string =
+      pkg.exports?.['.']?.require || pkg.main || 'dist/cjs/index.cjs'
+    const mainAbs = path.join(path.dirname(pkgJsonPath), mainRel)
+    const mod = requireFn(mainAbs)
+    if (mod?.tamaguiToTailwind) return mod.tamaguiToTailwind
+  } catch (err) {
+    console.warn(
+      '[tailwind] failed to load @tamagui/to-tailwind:',
+      (err as Error).message
+    )
+  }
+  return (s: string) => s
+}
+
+// in tailwind mode this rewrites tsx fences; in styled mode it only records
+// whether it would, so the page shows the syntax toggle only when it matters.
+const createTailwindTransform = (state: { changed: boolean }, replace: boolean) => ({
+  name: 'tamagui-tailwind-transform',
+  element: {
+    filter: ['code'],
+    visit(node: any, ctx: any) {
+      const className = node.properties?.className
+      if (!className) return
+
+      const classes =
+        typeof className === 'string'
+          ? className.split(/\s+/)
+          : Array.isArray(className)
+            ? className
+            : []
+      const isJsx = classes.some(
+        (c: string) =>
+          c === 'language-tsx' ||
+          c === 'language-jsx' ||
+          c === 'language-ts' ||
+          c === 'language-js'
+      )
+      if (!isJsx) return
+
+      const source = ctx.textContent(node)
+      if (!source || !source.includes('<') || !source.includes('>')) return
+
+      try {
+        const transform = loadTransform()
+        // cross-platform examples: keep Tamagui components (no DOM rename),
+        // move JSX-only primitive bindings to the @tamagui/tailwind frontend,
+        // and convert against the v6 default config (what the examples are
+        // written against) so token names resolve.
+        const tailwindCode = transform(source, {
+          renameComponents: false,
+          rewriteImports: true,
+          retainLines: false,
+          tokens: docsCodeConfig.tokens,
+          fonts: docsCodeConfig.fonts,
+          themes: docsCodeConfig.themes,
+          media: docsCodeConfig.media,
+          shorthands: docsCodeConfig.shorthands,
+        })
+        if (tailwindCode && tailwindCode !== source) {
+          state.changed = true
+          if (!replace) return
+          ctx.replaceNode(node, {
+            ...node,
+            children: [{ type: 'text', value: tailwindCode }],
+          })
+        }
+      } catch {
+        // transform failed, keep original
+      }
+    },
+  },
+})
+
+// source mode is shadcn-like source ownership, NOT an import rewrite to
+// `tamagui/unstyled` (raw behavior primitives stay an advanced API under that
+// subpath). recognized styled-component imports rewrite to local
+// components/tamagui/<Skin> files owned by the reader; core utilities and
+// unknown imports are preserved. the skins + dependency info come from the
+// generated registry items, consumed dependency-closed.
+const sourceTransform = {
+  name: 'tamagui-source-transform',
+  element: {
+    filter: ['code'],
+    visit(node: any, ctx: any) {
+      const className = node.properties?.className
+      if (!className) return
+
+      const classes =
+        typeof className === 'string'
+          ? className.split(/\s+/)
+          : Array.isArray(className)
+            ? className
+            : []
+      const isJsx = classes.some(
+        (c: string) =>
+          c === 'language-tsx' ||
+          c === 'language-jsx' ||
+          c === 'language-ts' ||
+          c === 'language-js'
+      )
+      if (!isJsx) return
+
+      const source = ctx.textContent(node)
+      if (!source) return
+
+      try {
+        const rewritten = rewriteSourceImports(source, loadSourceRegistry())
+        if (rewritten) {
+          ctx.replaceNode(node, {
+            ...node,
+            children: [{ type: 'text', value: rewritten.code }],
+          })
+        }
+      } catch {
+        // transform failed, keep original
+      }
+    },
+  },
+}
+
+// the docs code toggle: 'styled' (default tamagui look), 'unstyled' (source
+// mode: examples import owned local skins; the route keeps its /unstyled URL
+// for compatibility), 'tailwind' (@tamagui/tailwind primitives + utilities,
+// orthogonal to styled vs source).
+type CodeMode = 'styled' | 'unstyled' | 'tailwind'
+
+type TamaguiGetMDXOptions = GetMDXOptions & {
+  mode?: CodeMode
+}
+
 // tamagui.dev keeps its native <DocCodeBlock> (copy button, hero collapse, tabs),
 // so we compile with satteri but skip Expressive Code and feed DocCodeBlock the
 // same prism-tokenized output + meta props it got from the old rehype pipeline.
-export const getMDXBySlug: typeof getMDXBySlugBase = (basePath, slug, options) => {
-  return getMDXBySlugBase(basePath, slug, {
-    ...options,
+export const getMDXBySlug = async (
+  basePath: string,
+  slug: string,
+  options: TamaguiGetMDXOptions = {}
+) => {
+  const { mode = 'styled', mdastPlugins, hastPlugins, ...rest } = options
+  const tailwindState = { changed: false }
+  const isDocs = basePath.startsWith('data/docs')
+
+  const resolvedSlug =
+    !slug.includes('.') && basePath.includes('components')
+      ? `${slug}/${getAllVersionsFromPath(path.join(basePath, slug))[0]}`
+      : slug
+  const result = await getMDXBySlugBase(basePath, resolvedSlug, {
+    ...rest,
     expressiveCode: false,
-    mdastPlugins: [heroTemplate, ...(options?.mdastPlugins ?? [])],
-    hastPlugins: [highlightPlugin, ...(options?.hastPlugins ?? [])],
+    mdastPlugins: [heroTemplate, ...(mdastPlugins ?? [])],
+    hastPlugins: [
+      ...(mode === 'tailwind' || (mode === 'styled' && isDocs)
+        ? [createTailwindTransform(tailwindState, mode === 'tailwind')]
+        : []),
+      ...(mode === 'unstyled' ? [sourceTransform] : []),
+      highlightPlugin,
+      ...(hastPlugins ?? []),
+    ],
   } as GetMDXOptions)
+
+  // mdx-rust compiles source metadata but does not retain its filename. Docs
+  // use sourcePath for edit links; blog routes need the base-relative slug.
+  return {
+    ...result,
+    frontmatter: {
+      ...result.frontmatter,
+      slug: resolvedSlug,
+      sourcePath: path.posix.join(basePath, resolvedSlug),
+      hasTailwindVariant: tailwindState.changed,
+    },
+  }
 }

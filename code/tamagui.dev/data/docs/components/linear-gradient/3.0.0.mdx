@@ -1,0 +1,102 @@
+---
+title: Linear Gradient
+description: Linear gradients that work with Tamagui style props
+name: linear-gradient
+component: LinearGradient
+package: linear-gradient
+demoName: LinearGradient
+---
+
+<IntroParagraph>
+  LinearGradient renders theme-aware gradients with the same style props on web
+  and native.
+</IntroParagraph>
+
+<HeroContainer>
+  <LinearGradientDemo />
+</HeroContainer>
+
+```tsx hero template=LinearGradient
+
+```
+
+<Highlights
+  features={[
+    'Native and web support',
+    'Tamagui style props and theme colors',
+    'Webpack bundling support',
+  ]}
+/>
+
+## Installation
+
+LinearGradient is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/linear-gradient
+```
+
+No native package or setup is needed. On native, LinearGradient draws a
+`backgroundImage` gradient, which React Native 0.76 and later renders natively
+with the new architecture. On web it is a CSS gradient.
+
+## Usage
+
+Import it separately or using the path `/linear-gradient`:
+
+```tsx
+import { LinearGradient } from '@tamagui/linear-gradient'
+import { LinearGradient } from 'tamagui/linear-gradient'
+```
+
+LinearGradient is a YStack that accepts all Tamagui style props as well as theme colors. It draws its gradient as a `backgroundImage` on an `absoluteFill` layer behind its children.
+
+## API reference
+
+### LinearGradient
+
+#### Alternative: backgroundImage style prop
+
+For most gradients, use the [`backgroundImage` style prop](/docs/core/style-props#backgroundimage):
+
+```tsx
+<html.div backgroundImage="linear-gradient(to bottom, background, color)" />
+```
+
+Use `<LinearGradient>` for precise color stop control.
+
+---
+
+LinearGradient extends YStack, inheriting `View` props and therefore the [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'colors',
+      required: false,
+      type: 'string[]',
+      description: `Two or more colors. Falls back to black and white if omitted.`,
+    },
+    {
+      name: 'locations',
+      required: false,
+      type: 'number[] | null',
+      description: `An array that contains numbers ranging from 0 to 1, inclusive, and is the same length as the colors property. Each number indicates a color-stop location where each respective color should be located.`,
+      default: '[0.0, 1.0]',
+    },
+    {
+      name: 'start',
+      required: false,
+      type: 'LinearGradientPoint | null',
+      default: '{ x: 0.5, y: 0.0 }',
+      description: `For example, { x: 0.1, y: 0.2 } means that the gradient will start 10% from the left and 20% from the top.`,
+    },
+    {
+      name: 'end',
+      required: false,
+      type: 'LinearGradientPoint | null',
+      default: '{ x: 0.5, y: 1.0 }',
+      description: `For example, { x: 0.1, y: 0.2 } means that the gradient will end 10% from the left and 20% from the bottom.`,
+    },
+  ]}
+/>

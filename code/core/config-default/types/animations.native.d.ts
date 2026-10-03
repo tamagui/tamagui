@@ -1,40 +1,63 @@
-export declare const animations: import("@tamagui/web").AnimationDriver<{
-    '100ms': {
-        type: "timing";
-        duration: number;
+export declare const animations: import("@tamagui/web").AnimationDriverWithAnimatedNumbers<{
+    quickest: {
+        readonly duration: 120;
+        readonly bounce: 0.2;
     };
-    bouncy: {
-        damping: number;
-        mass: number;
-        stiffness: number;
+    quickestLessBouncy: {
+        readonly duration: 120;
+        readonly bounce: 0;
     };
-    lazy: {
-        damping: number;
-        stiffness: number;
+    quicker: {
+        readonly duration: 160;
+        readonly bounce: 0.25;
     };
-    medium: {
-        damping: number;
-        stiffness: number;
-        mass: number;
-    };
-    slow: {
-        damping: number;
-        stiffness: number;
+    quickerLessBouncy: {
+        readonly duration: 160;
+        readonly bounce: 0;
     };
     quick: {
-        damping: number;
-        mass: number;
-        stiffness: number;
+        readonly duration: 220;
+        readonly bounce: 0.3;
+    };
+    quickLessBouncy: {
+        readonly duration: 220;
+        readonly bounce: 0;
+    };
+    medium: {
+        readonly duration: 300;
+        readonly bounce: 0.15;
+    };
+    slow: {
+        readonly duration: 450;
+        readonly bounce: 0.1;
+    };
+    slowest: {
+        readonly duration: 700;
+        readonly bounce: 0.1;
+    };
+    lazy: {
+        readonly duration: 500;
+        readonly bounce: -0.2;
+    };
+    superLazy: {
+        readonly duration: 800;
+        readonly bounce: -0.3;
+    };
+    bouncy: {
+        readonly duration: 400;
+        readonly bounce: 0.5;
+    };
+    superBouncy: {
+        readonly duration: 400;
+        readonly bounce: 0.75;
     };
     tooltip: {
-        damping: number;
-        mass: number;
-        stiffness: number;
+        duration: number;
+        bounce: number;
     };
     select: {
-        damping: number;
-        mass: number;
-        stiffness: number;
+        duration: number;
+        bounce: number;
     };
 }>;
 //# sourceMappingURL=animations.native.d.ts.map

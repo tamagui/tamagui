@@ -1,0 +1,10 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*", "scripts/**/*"],
+  // the root config excludes **/__tests__, where the type tests live
+  "exclude": []
+}
