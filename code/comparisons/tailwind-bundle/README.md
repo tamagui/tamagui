@@ -2,8 +2,11 @@
 
 This fixture builds the same card, two text elements, and a working counter with
 Tamagui core, NativeWind v5, and Uniwind. All three use Vite production builds with
-minification, bundled React 19.2.3 and React DOM 19.2.3, and hidden source maps.
+minification and hidden source maps. The shared React/DOM baseline is 19.2.3.
 There is no router, Expo bootstrap, benchmark runner, UI kit, or animation driver.
+The headline comparison externalizes React, React DOM, and scheduler equally
+across all three. It retains React Native Web and every other required package.
+The separately recorded complete-app builds bundle React/DOM.
 The Tamagui arm compiles its View/Text elements and keeps the core provider. Its
 light/dark theme definitions are generated into CSS; its client config has
 `themes: {}` and reads those themes from the stylesheet.
@@ -30,17 +33,18 @@ From this directory in a fresh checkout on that machine:
 bun prepare.ts
 bun link-cache.ts /Users/macbookpro/Library/Caches/tamagui-v3-numbers/cmp
 cd tamagui
-bash /Users/macbookpro/contrast/scripts/heavy.sh --cores 2 -- bun ../node_modules/vite/bin/vite.js build
+BUNDLE_EXCLUDE_REACT=1 bash /Users/macbookpro/contrast/scripts/heavy.sh --cores 2 -- bun ../node_modules/vite/bin/vite.js build
 cd ../nativewind
-bash /Users/macbookpro/contrast/scripts/heavy.sh --cores 2 -- bun ../node_modules/vite/bin/vite.js build
+BUNDLE_EXCLUDE_REACT=1 bash /Users/macbookpro/contrast/scripts/heavy.sh --cores 2 -- bun ../node_modules/vite/bin/vite.js build
 cd ../uniwind
-bash /Users/macbookpro/contrast/scripts/heavy.sh --cores 2 -- bun ../node_modules/vite/bin/vite.js build
+BUNDLE_EXCLUDE_REACT=1 bash /Users/macbookpro/contrast/scripts/heavy.sh --cores 2 -- bun ../node_modules/vite/bin/vite.js build
 cd ..
-bun attribute.ts tamagui nativewind uniwind
-bun probe.ts
+BUNDLE_EXCLUDE_REACT=1 bun attribute.ts tamagui nativewind uniwind
+BUNDLE_EXCLUDE_REACT=1 bun probe.ts
 ```
 
 Run builds sequentially. `prepare.ts` generates all app bodies from one template.
+Omit `BUNDLE_EXCLUDE_REACT=1` to reproduce the separate complete-app builds.
 The generated app directories, dependencies, builds, and fresh results are
 ignored. Checked-in receipts preserve the measured output hashes and every
 source-map package/module row. On another machine, copy the retained dependency
@@ -51,7 +55,9 @@ versions changes the experiment and must be reported as a new measurement.
 
 Every measurement in the receipts is **RAN**, with its command included. Total
 JS and CSS bytes are gzip level 9 of complete emitted files, summed over files.
-No dependencies are externalized and no diagnostic chunks alter the build.
+Only React, React DOM, and scheduler are externalized in `*-no-react.json`
+receipts. No diagnostic chunks alter either build. React Native Web stays
+bundled in NativeWind and Uniwind; Tamagui core does not depend on it.
 Maps and HTML are excluded from JS/CSS totals. Source-map spans cover every byte,
 including an explicit row for unmapped bundler code.
 
@@ -69,7 +75,8 @@ explicit unmapped row, and its complete-file gzip total is unaffected.
 
 `probe.ts` serves the production artifacts, clicks the counter, checks matching
 padding, gap, radius, font size/weight, and colors, and checks both Tamagui CSS
-themes. It fails on page errors. `attribute.ts` also fails if Tamagui ships the
+themes. The React-excluded probe supplies the same React/DOM build to all arms through
+a local import map, outside the measured app outputs. It fails on page errors. `attribute.ts` also fails if Tamagui ships the
 full UI provider, portal, theme pack, CSS animation driver, or theme definitions
 in its client config.
 
@@ -105,9 +112,23 @@ The original campaign used the barrel and Expo/Metro. The new comparison uses
 the named-import output and Vite, so it should not attribute the old excess to
 the styling runtime.
 
-## Measured results
+## Headline comparison: shared React excluded
 
-**RAN:** the commands above produced 75,766 bytes of JavaScript for Tamagui core,
+**RAN:** `BUNDLE_EXCLUDE_REACT=1` with the commands above produced 16,899 bytes of
+JavaScript for Tamagui core, 40,485 for Uniwind, and 23,924 for NativeWind.
+Tamagui ships 58.3% less JavaScript than Uniwind in this fixture. React, React DOM,
+and scheduler are externalized equally. React Native Web remains bundled in
+Uniwind and NativeWind and is absent from Tamagui. Theme definitions are CSS.
+Tamagui runtime spans compress separately to 16,211 bytes.
+
+The React-excluded builds passed the same browser probe with a shared local
+React/DOM baseline, including counter clicks, matching computed styles, and
+both Tamagui CSS themes. See [those browser receipts](./receipts/probe-no-react.json).
+
+## Separate complete-app results
+
+**RAN:** omitting `BUNDLE_EXCLUDE_REACT=1` from the commands above produced
+75,766 bytes of JavaScript for Tamagui core,
 99,067 for Uniwind, and 82,560 for NativeWind. Tamagui core ships about 23.5% less
 JavaScript than Uniwind in this fixture. Its separately compressed runtime spans
 are 16,342 bytes; React and React DOM are included in each app total.
