@@ -203,3 +203,11 @@ const response = await authFetch('/api/some-endpoint', {
 ```
 
 **Why this matters:** Cookies alone are not reliable for auth in production due to cross-origin/SameSite issues. The `authFetch` helper automatically includes the Authorization header with the user's access token. All payment/subscription endpoints require this.
+
+## Fast upstream releases
+
+- Run `bun release --into ~/<downstream>` in an isolated worktree to build the installed package family and replace downstream `node_modules` immediately. No commit, push, publish, CI, or tests are required. Use `--skip-build` only for outputs already built from your current source.
+- Push `v3-beta` to publish a canary independently of full CI. Canaries build and publish without test gates; normal beta and stable releases keep their existing gates.
+- Use any canary, including your own, without waiting for an official beta. Pin the printed version because the shared `canary` tag moves. Record the source branch.
+- Verify content by packing the exact npm version and inspecting changed dist or source files and `releaseSourceCommit` in its manifest. A matching version string alone proves nothing.
+- State the validation actually performed in each commit message body. Write `Validation: none` when no checks were run. Do not imply a canary has passed tests.

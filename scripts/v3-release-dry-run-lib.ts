@@ -58,7 +58,7 @@ export function npmPackFilename(stdout: string): string | undefined {
 export interface ReleasePreviewReport {
   createdAt: string
   repoRoot: string
-  canarySource: string
+  canarySource?: string
   consumerDir: string
   packer: 'npm' | 'bun'
   previewVersion?: string
