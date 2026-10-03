@@ -60,6 +60,7 @@ interface CliOptions {
   planOnly: boolean
   releasePreview: boolean
   skipBuild: boolean
+  packOnly: boolean
 }
 
 const help = `
@@ -81,6 +82,7 @@ Execution:
   --native-command <cmd>    G0 native command; defaults to canary script g0:native
   --packer npm|bun          Tarball producer (default: npm)
   --out-dir </tmp/path>     New output directory; must be under the OS temp root
+  --pack-only               Pack artifacts without consumer installs or runtime probes
   --skip-build              Reuse existing package outputs (not recommended for final G1)
   --plan-only               Resolve package closure and commands; no writes/build/pack/install
   --release-preview         Verify everything, write publish commands, and STOP before publish
@@ -100,6 +102,7 @@ function parseArgs(argv: readonly string[]): CliOptions {
     planOnly: false,
     releasePreview: false,
     skipBuild: false,
+    packOnly: false,
   }
   const value = (index: number, flag: string): string => {
     const next = argv[index + 1]
@@ -144,6 +147,8 @@ function parseArgs(argv: readonly string[]): CliOptions {
       options.planOnly = true
     } else if (flag === '--release-preview') {
       options.releasePreview = true
+    } else if (flag === '--pack-only') {
+      options.packOnly = true
     } else if (flag === '--skip-build') {
       options.skipBuild = true
     } else {
@@ -292,15 +297,7 @@ async function packOne(
   if (packer === 'bun') {
     await runCommand(
       'bun',
-      [
-        'pm',
-        'pack',
-        '--destination',
-        artifactDir,
-        '--filename',
-        filename,
-        '--ignore-scripts',
-      ],
+      ['pm', 'pack', '--filename', finalTarball, '--ignore-scripts'],
       { cwd: stagingDir }
     )
   } else {
@@ -554,9 +551,10 @@ async function main(): Promise<void> {
       throw new Error(`Requested publish package cannot use a registry override: ${name}`)
     }
   }
-  const canarySourceManifest = options.canary
-    ? await readJson<PackageManifest>(join(options.canary, 'package.json'))
-    : undefined
+  const canarySourceManifest =
+    options.canary && !options.packOnly
+      ? await readJson<PackageManifest>(join(options.canary, 'package.json'))
+      : undefined
   const selected = expandInternalPackageClosure(
     packages,
     [...requested],
@@ -585,7 +583,7 @@ async function main(): Promise<void> {
     )
     return
   }
-  if (!options.canary || !canarySourceManifest)
+  if (!options.packOnly && (!options.canary || !canarySourceManifest))
     throw new Error('--canary is required outside --plan-only')
 
   const output = options.outDir
@@ -658,74 +656,76 @@ async function main(): Promise<void> {
     artifacts.push(artifact)
   }
 
-  await cp(options.canary, consumerDir, {
-    recursive: true,
-    filter: (source) => canaryCopyFilter(options.canary!, source),
-  })
-  const isolatedManifest = createIsolatedCanaryManifest(
-    canarySourceManifest,
-    artifacts,
-    new Set(packages.map((pkg) => pkg.name))
-  )
-  assertInternalDependenciesArePacked(isolatedManifest, packedNames)
-  await writeFile(join(consumerDir, 'package.json'), stableJson(isolatedManifest))
-  await runCommand('bun', ['install', '--no-save'], {
-    cwd: consumerDir,
-    env: isolatedEnvironment(),
-  })
-  const installed = await installedPackageRealPaths(
-    consumerDir,
-    artifacts.map((artifact) => artifact.name)
-  )
-  assertInstalledPackagesAreIsolated(consumerDir, installed, options.repoRoot)
-  const installedManifests = new Map<string, PackageManifest>()
-  for (const artifact of artifacts) {
-    const installedManifest = await readJson<PackageManifest>(
-      join(installed.get(artifact.name)!, 'package.json')
-    )
-    installedManifests.set(artifact.name, installedManifest)
-    if (installedManifest.version !== artifact.version) {
-      throw new Error(
-        `${artifact.name} installed ${installedManifest.version}, expected ${artifact.version}`
-      )
-    }
-    assertInternalDependenciesArePacked(installedManifest, packedNames)
-  }
-
   const probes: ReleasePreviewReport['probes'] = []
-  for (const pkg of ordered) {
-    const manifest = installedManifests.get(pkg.name)!
-    if (!hasRuntimeExport(manifest)) continue
-    const specifiers = exportSpecifiers(manifest)
-    for (const specifier of specifiers) {
-      await runProbe(consumerDir, 'esm', specifier)
-      probes.push({ package: pkg.name, condition: 'esm', specifier })
-      const exportKey =
-        specifier === pkg.name ? '.' : `.${specifier.slice(pkg.name.length)}`
-      const exports = manifest.exports
-      const exportValue =
-        exports && typeof exports === 'object' && !Array.isArray(exports)
-          ? Object.keys(exports).some((key) => key.startsWith('.'))
-            ? (exports as Record<string, unknown>)[exportKey]
-            : exports
-          : exports
-      if (manifest.main || hasExportCondition(exportValue, 'require')) {
-        await runProbe(consumerDir, 'cjs', specifier)
-        probes.push({ package: pkg.name, condition: 'cjs', specifier })
-      }
-      for (const condition of ['browser', 'react-native'] as const) {
-        await runProbe(consumerDir, condition, specifier)
-        probes.push({ package: pkg.name, condition, specifier })
-      }
-    }
-  }
-
-  for (const { label, command } of commands) {
-    console.info(`\n[G0 ${label} from tarballs] ${command}`)
-    await runCommand('/bin/sh', ['-lc', command], {
+  if (!options.packOnly) {
+    await cp(options.canary!, consumerDir, {
+      recursive: true,
+      filter: (source) => canaryCopyFilter(options.canary!, source),
+    })
+    const isolatedManifest = createIsolatedCanaryManifest(
+      canarySourceManifest!,
+      artifacts,
+      new Set(packages.map((pkg) => pkg.name))
+    )
+    assertInternalDependenciesArePacked(isolatedManifest, packedNames)
+    await writeFile(join(consumerDir, 'package.json'), stableJson(isolatedManifest))
+    await runCommand('bun', ['install', '--no-save'], {
       cwd: consumerDir,
       env: isolatedEnvironment(),
     })
+    const installed = await installedPackageRealPaths(
+      consumerDir,
+      artifacts.map((artifact) => artifact.name)
+    )
+    assertInstalledPackagesAreIsolated(consumerDir, installed, options.repoRoot)
+    const installedManifests = new Map<string, PackageManifest>()
+    for (const artifact of artifacts) {
+      const installedManifest = await readJson<PackageManifest>(
+        join(installed.get(artifact.name)!, 'package.json')
+      )
+      installedManifests.set(artifact.name, installedManifest)
+      if (installedManifest.version !== artifact.version) {
+        throw new Error(
+          `${artifact.name} installed ${installedManifest.version}, expected ${artifact.version}`
+        )
+      }
+      assertInternalDependenciesArePacked(installedManifest, packedNames)
+    }
+
+    for (const pkg of ordered) {
+      const manifest = installedManifests.get(pkg.name)!
+      if (!hasRuntimeExport(manifest)) continue
+      const specifiers = exportSpecifiers(manifest)
+      for (const specifier of specifiers) {
+        await runProbe(consumerDir, 'esm', specifier)
+        probes.push({ package: pkg.name, condition: 'esm', specifier })
+        const exportKey =
+          specifier === pkg.name ? '.' : `.${specifier.slice(pkg.name.length)}`
+        const exports = manifest.exports
+        const exportValue =
+          exports && typeof exports === 'object' && !Array.isArray(exports)
+            ? Object.keys(exports).some((key) => key.startsWith('.'))
+              ? (exports as Record<string, unknown>)[exportKey]
+              : exports
+            : exports
+        if (manifest.main || hasExportCondition(exportValue, 'require')) {
+          await runProbe(consumerDir, 'cjs', specifier)
+          probes.push({ package: pkg.name, condition: 'cjs', specifier })
+        }
+        for (const condition of ['browser', 'react-native'] as const) {
+          await runProbe(consumerDir, condition, specifier)
+          probes.push({ package: pkg.name, condition, specifier })
+        }
+      }
+    }
+
+    for (const { label, command } of commands) {
+      console.info(`\n[G0 ${label} from tarballs] ${command}`)
+      await runCommand('/bin/sh', ['-lc', command], {
+        cwd: consumerDir,
+        env: isolatedEnvironment(),
+      })
+    }
   }
 
   for (const [name, expected] of originalManifestHashes) {

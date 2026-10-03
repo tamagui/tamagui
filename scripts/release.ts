@@ -25,6 +25,7 @@ process.stderr.setMaxListeners(50)
 // --resume would be cool here where it stores the last failed step somewhere and tries resuming
 
 const exec = promisify(proc.exec)
+const execFile = promisify(proc.execFile)
 export const spawn = proc.spawn
 
 // for failed publishes that need to re-run
@@ -69,6 +70,7 @@ const dirty =
   shouldFinish || rePublish || undocumented || process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
 const skipTest =
+  canary ||
   shouldFinish ||
   rePublish ||
   skipAll ||
@@ -77,15 +79,16 @@ const skipTest =
 const skipNativeTests =
   process.argv.includes('--skip-native-test') ||
   process.argv.includes('--skip-native-tests')
-const skipChecks = rePublish || skipAll || process.argv.includes('--skip-checks')
+const skipChecks =
+  canary || rePublish || skipAll || process.argv.includes('--skip-checks')
 const skipBuild =
   shouldFinish || rePublish || skipAll || process.argv.includes('--skip-build')
-const buildFast = process.argv.includes('--build-fast')
+const buildFast = canary || process.argv.includes('--build-fast')
 const dryRun = process.argv.includes('--dry-run')
 const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
 const isCI = shouldFinish || rePublish || undocumented || process.argv.includes('--ci')
 const skipFinish =
-  rePublish || skipAll || undocumented || process.argv.includes('--skip-finish')
+  canary || rePublish || skipAll || undocumented || process.argv.includes('--skip-finish')
 const skipPush = process.argv.includes('--skip-push')
 const forcePublishAll = process.argv.includes('--force-publish-all')
 
@@ -476,7 +479,7 @@ async function run() {
       console.info('install and build')
     }
 
-    if (!rePublish && !shouldFinish && !dryRun) {
+    if (!rePublish && !shouldFinish && !dryRun && !canary) {
       await spawnify(process.env.CI ? `bun install --frozen-lockfile` : `bun install`)
     }
 
@@ -484,7 +487,10 @@ async function run() {
     if (!skipBuild && !shouldFinish && !dryRun) {
       // lets do a full clean and build:force, to ensure we dont have weird cached or leftover files
       if (buildFast) {
-        await spawnify(`bun run build`)
+        const filters = canary
+          ? packageJsons.map(({ name }) => `--filter='${name}'`).join(' ')
+          : ''
+        await spawnify(`bun run build ${filters}`)
       } else {
         await spawnify(`bun run build:force`)
       }
@@ -528,6 +534,9 @@ async function run() {
         allPackageJsons.map(async ({ json, path }) => {
           const next = { ...json }
           next.version = version
+          next.releaseSourceCommit = (
+            await execFile('git', ['rev-parse', 'HEAD'])
+          ).stdout.trim()
           await writeJSON(path, next, { spaces: 2 })
         })
       )
@@ -659,7 +668,7 @@ async function run() {
       })
 
       await spawnify(
-        `bun scripts/v3-release-dry-run.ts --package-list ${packageList} --canary code/tests/v3-canary --packer npm --out-dir ${g1Output} --release-preview --version ${version} --version-overrides ${versionOverrides} --tag ${publishTag} --skip-build`
+        `bun scripts/v3-release-dry-run.ts --package-list ${packageList} --canary code/tests/v3-canary --packer ${canary ? 'bun' : 'npm'} --out-dir ${g1Output} --release-preview --version ${version} --version-overrides ${versionOverrides} --tag ${publishTag} --skip-build${canary ? ' --pack-only' : ''}`
       )
 
       const reportPath = join(g1Output, 'release-preview.json')
@@ -708,7 +717,7 @@ async function run() {
           `G1 publish command mismatch:\nexpected ${expectedPublishCommands.join('\n')}\nreceived ${reportPublishCommands.join('\n')}`
         )
       }
-      console.info(`G1 certified publish bytes: ${reportPath}`)
+      console.info(`Packed publish bytes: ${reportPath}`)
     }
 
     if (!shouldFinish && !rePublish) {
@@ -1023,7 +1032,7 @@ async function run() {
 const intoIdx = process.argv.indexOf('--into')
 if (intoIdx !== -1) {
   const targetArg = process.argv[intoIdx + 1]
-  if (!targetArg) {
+  if (!targetArg || targetArg.startsWith('--')) {
     console.error('Missing directory argument for --into')
     process.exit(1)
   }
@@ -1031,83 +1040,190 @@ if (intoIdx !== -1) {
 
   ;(async () => {
     const packages = await getWorkspacePackages()
-    const tmpDir = `/tmp/tamagui-release-into`
-    await ensureDir(tmpDir)
+    const targetPackages: Array<{
+      name: string
+      location: string
+      destDirs: string[]
+    }> = []
 
     const byName = new Map(packages.map((pkg) => [pkg.name, pkg]))
-    const targetModules = join(targetDir, 'node_modules')
-
-    // start from what the target already has, then add the workspace packages
-    // those depend on. a major upgrade introduces new packages, and the target
-    // cannot install them from npm while the release is unpublished, so
-    // replacing only what is already present leaves its tree unresolvable.
     const selected = new Set<string>()
     const queue: string[] = []
-    for (const pkg of packages) {
-      if (await fs.pathExists(join(targetModules, pkg.name))) {
-        selected.add(pkg.name)
-        queue.push(pkg.name)
+    const copies = new Map<string, string[]>()
+    const visit = async (modulesDir: string): Promise<void> => {
+      if (!(await fs.pathExists(modulesDir))) return
+      for (const { name } of packages) {
+        const dir = join(modulesDir, name)
+        if (!(await fs.pathExists(join(dir, 'package.json')))) continue
+        const found = copies.get(name) ?? []
+        found.push(dir)
+        copies.set(name, found)
       }
-    }
-    while (queue.length > 0) {
-      const current = byName.get(queue.pop()!)
-      if (!current) continue
-      const manifest = await fs.readJson(
-        join(path.resolve(current.location), 'package.json')
-      )
-      for (const dep of Object.keys(manifest.dependencies ?? {})) {
-        if (!byName.has(dep) || selected.has(dep)) continue
-        selected.add(dep)
-        queue.push(dep)
-      }
-    }
-
-    let released = 0
-
-    await pMap(
-      [...selected].map((name) => byName.get(name)!),
-      async ({ name, location }) => {
-        const destDir = join(targetModules, name)
-        await ensureDir(destDir)
-
-        const cwd = path.resolve(location)
-
-        try {
-          await spawnify(`npm pack --pack-destination ${tmpDir}`, {
-            cwd,
-            avoidLog: true,
-          })
-
-          // npm pack names files based on version in package.json, find the actual file
-          const files = await fs.readdir(tmpDir)
-          const prefix = name.replace('@', '').replace('/', '-')
-          const packed = files.find((f) => f.startsWith(prefix) && f.endsWith('.tgz'))
-
-          if (!packed) {
-            console.warn(`  skip ${name}: pack produced no tgz`)
-            return
+      for (const entry of await fs.readdir(modulesDir, { withFileTypes: true })) {
+        if (!entry.isDirectory()) continue
+        const dir = join(modulesDir, entry.name)
+        if (entry.name === '.bun') {
+          for (const stored of await fs.readdir(dir, { withFileTypes: true })) {
+            if (stored.isDirectory()) await visit(join(dir, stored.name, 'node_modules'))
           }
-
-          const actualTgz = join(tmpDir, packed)
-
-          // clear destination and extract
-          await spawnify(`tar -xzf ${actualTgz} -C ${destDir} --strip-components=1`, {
-            avoidLog: true,
-          })
-
-          await fs.remove(actualTgz)
-          released++
-          console.info(`  ✓ ${name}`)
-        } catch (err) {
-          console.warn(`  ✗ ${name}: ${err}`)
+        } else if (entry.name.startsWith('.')) {
+          continue
+        } else if (entry.name.startsWith('@')) {
+          for (const scoped of await fs.readdir(dir, { withFileTypes: true })) {
+            if (scoped.isDirectory()) await visit(join(dir, scoped.name, 'node_modules'))
+          }
+        } else {
+          await visit(join(dir, 'node_modules'))
         }
-      },
-      { concurrency: 10 }
+      }
+    }
+    await visit(join(targetDir, 'node_modules'))
+    for (const name of copies.keys()) {
+      selected.add(name)
+      queue.push(name)
+    }
+
+    while (queue.length > 0) {
+      const pkg = byName.get(queue.pop()!)!
+      const manifest = await fs.readJSON(join(pkg.location, 'package.json'))
+      for (const name of Object.keys({
+        ...manifest.dependencies,
+        ...manifest.optionalDependencies,
+      })) {
+        if (!byName.has(name) || selected.has(name)) continue
+        selected.add(name)
+        queue.push(name)
+      }
+    }
+    for (const name of selected) {
+      const pkg = byName.get(name)!
+      targetPackages.push({
+        ...pkg,
+        destDirs: copies.get(name) ?? [join(targetDir, 'node_modules', name)],
+      })
+    }
+    if (targetPackages.length === 0) {
+      throw new Error('No upstream packages are installed in the target')
+    }
+
+    console.info(
+      `Installing ${targetPackages.length} local packages:\n${targetPackages
+        .map((pkg) => `  ${pkg.name}`)
+        .join('\n')}`
     )
 
-    console.info(`\n✅ Released ${released} packages into ${targetDir}`)
-    process.exit(0)
+    const tmpDir = await fs.mkdtemp(join(tmpdir(), 'tamagui-release-into-'))
+
+    try {
+      if (!skipBuild) {
+        await execFile(
+          'bun',
+          [
+            'x',
+            'turbo',
+            'run',
+            'build',
+            ...targetPackages.map(({ name }) => `--filter=${name}`),
+          ],
+          { maxBuffer: 50 * 1024 * 1024 }
+        )
+      }
+
+      let released = 0
+      const failures: string[] = []
+
+      await pMap(
+        targetPackages,
+        async ({ name, location, destDirs }, index) => {
+          const cwd = path.resolve(location)
+
+          try {
+            const packageTmpDir = join(tmpDir, `package-${index}`)
+            await ensureDir(packageTmpDir)
+            await execFile(
+              'bun',
+              ['pm', 'pack', '--ignore-scripts', '--destination', packageTmpDir],
+              { cwd }
+            )
+            const packedFiles = await fs.readdir(packageTmpDir)
+
+            if (packedFiles.length !== 1 || !packedFiles[0].endsWith('.tgz')) {
+              throw new Error(`npm pack produced ${packedFiles.length} files`)
+            }
+
+            const actualTgz = join(packageTmpDir, packedFiles[0])
+            const stagedDir = join(tmpDir, `staged-${index}`)
+            await ensureDir(stagedDir)
+
+            await execFile('tar', [
+              '-xzf',
+              actualTgz,
+              '-C',
+              stagedDir,
+              '--strip-components=1',
+            ])
+
+            const manifestPath = join(stagedDir, 'package.json')
+            const manifest = await fs.readJSON(manifestPath)
+            for (const field of [
+              'dependencies',
+              'optionalDependencies',
+              'peerDependencies',
+            ]) {
+              for (const name of Object.keys(manifest[field] ?? {})) {
+                if (!manifest[field][name].startsWith('workspace:')) continue
+                const dependency = byName.get(name)
+                if (!dependency) throw new Error(`Unknown workspace dependency ${name}`)
+                const dependencyManifest = await fs.readJSON(
+                  join(dependency.location, 'package.json')
+                )
+                manifest[field][name] = dependencyManifest.version
+              }
+            }
+            await writeJSON(manifestPath, manifest, { spaces: 2 })
+            for (const [copyIndex, destDir] of destDirs.entries()) {
+              const copyDir = join(tmpDir, `copy-${index}-${copyIndex}`)
+              await fs.copy(stagedDir, copyDir)
+              // preserve unrelated nested dependencies; external symlinks are replaced
+              if (
+                (await fs.pathExists(destDir)) &&
+                !(await fs.lstat(destDir)).isSymbolicLink()
+              ) {
+                const nestedModules = join(destDir, 'node_modules')
+                if (await fs.pathExists(nestedModules)) {
+                  await fs.move(nestedModules, join(copyDir, 'node_modules'))
+                }
+              }
+              await fs.remove(destDir)
+              await fs.move(copyDir, destDir)
+            }
+            released++
+            console.info(`  ✓ ${name}`)
+          } catch (err) {
+            const message = err instanceof Error ? err.message : String(err)
+            failures.push(`${name}: ${message}`)
+            console.warn(`  ✗ ${name}: ${message}`)
+          }
+        },
+        { concurrency: 1 }
+      )
+
+      if (failures.length > 0 || released !== targetPackages.length) {
+        throw new Error(
+          `Local install failed for ${failures.length} of ${targetPackages.length} packages:\n${failures.join('\n')}`
+        )
+      }
+
+      console.info(`\n✅ Released ${released} packages into ${targetDir}`)
+    } finally {
+      await fs.remove(tmpDir)
+    }
   })()
+    .then(() => process.exit(0))
+    .catch((err) => {
+      console.error(err)
+      process.exit(1)
+    })
 } else {
   run()
 }
