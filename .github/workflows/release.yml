@@ -7,7 +7,9 @@ name: Release
 # to land on main to take effect. that cost three full CI cycles on 2026-08-21,
 # where two consecutive "fixes" to the beta job appeared to do nothing at all.
 #
-# what has to match across the two branches is the `on:` block and the `beta`
+# push canaries use this branch's workflow; the extra v3-beta push trigger is
+# intentional. workflow_run and the beta job still need to match main.
+# what has to match across the two branches is the workflow_run block and the `beta`
 # job. the jobs after them are expected to differ: main cuts stable releases
 # through a merge queue and calls scripts/release-github.ts, a file that exists
 # only on main, so copying main's whole file onto v3-beta fails `bun run check`
@@ -443,7 +445,6 @@ jobs:
         with:
           path: |
             ~/.bun/install/cache
-            .turbo
           key: tamagui-canary-${{ runner.os }}-${{ hashFiles('bun.lock') }}-${{ github.sha }}
           restore-keys: |
             tamagui-canary-${{ runner.os }}-${{ hashFiles('bun.lock') }}-

@@ -154,7 +154,7 @@ const nextVersion = (() => {
   }
 
   if (canary) {
-    return `${curVersion.replace(/(-\d+)+$/, '')}-${Date.now()}`
+    return `3.0.0-canary.${Date.now()}`
   }
 
   // prerelease channel mode (--rc / --beta): bump within the channel or start it
@@ -529,14 +529,11 @@ async function run() {
     }
 
     // update version (never write files during a dry run - it's a read-only preview)
-    if (!skipVersion && !shouldFinish && !dryRun) {
+    if (!skipVersion && !shouldFinish && !dryRun && !canary) {
       await Promise.all(
         allPackageJsons.map(async ({ json, path }) => {
           const next = { ...json }
           next.version = version
-          next.releaseSourceCommit = (
-            await execFile('git', ['rev-parse', 'HEAD'])
-          ).stdout.trim()
           await writeJSON(path, next, { spaces: 2 })
         })
       )
