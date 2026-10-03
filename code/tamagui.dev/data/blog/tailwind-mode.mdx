@@ -95,10 +95,19 @@ Simple, rich, group, and heavy use Tamagui beta 901. Animated uses beta 917.
 
 On beta 901, compiled Tamagui Tailwind had lower mount means than NativeWind
 and Uniwind in simple, rich, group, and heavy. The paired 95% confidence
-intervals for all eight comparisons were below zero. On the current v3 beta,
-the compiled Tamagui Tailwind app ships 88,928 bytes of JavaScript gzipped, of
-which 25,864 bytes are framework. The same app is 146,195 bytes with NativeWind
-and 102,000 bytes with Uniwind. React and React DOM are about 62KB of each.
+intervals for all eight comparisons were below zero.
+
+In a separate small-app production web build, compiled Tamagui Tailwind using
+only `@tamagui/core` ships 75,766 bytes of JavaScript at gzip level 9. The same
+card and counter ship 99,067 bytes with Uniwind and 82,560 bytes with
+NativeWind v5, all built with Vite and including React and React DOM. That is
+about 23.5% less JavaScript than Uniwind in this fixture. React and React DOM
+measure roughly 60KB when compressed separately. Tamagui's runtime measures
+16,342 bytes when compressed separately, with theme definitions extracted to
+CSS. These package measurements do not add up to the app total because gzip
+shares a dictionary across packages. The [measurement fixture and package
+breakdown](https://github.com/tamagui/tamagui/tree/tm/site-claims/code/comparisons/tailwind-bundle)
+include the build commands and exact dependency versions.
 
 The animated fixture uses a CSS transition with conditional opacity and
 transform values. On beta 917 the compiler found, lowered, and flattened all 14

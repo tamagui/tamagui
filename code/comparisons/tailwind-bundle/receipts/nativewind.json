@@ -1,0 +1,319 @@
+{
+  "arm": "nativewind",
+  "command": "cd code/comparisons/tailwind-bundle/nativewind && bun ../node_modules/vite/bin/vite.js build; cd .. && bun attribute.ts nativewind",
+  "method": "RAN: gzip level 9 of each complete emitted JS file. Source-map spans cover every byte. Per-package and per-group standalone gzip compress their selected minified spans; marginal gzip subtracts gzip after deleting those spans. Both columns are non-additive because gzip shares a dictionary. No dependencies externalized and no manual chunking.",
+  "totalJsGzipBytes": 82560,
+  "totalCssGzipBytes": 1814,
+  "versions": {
+    "scheduler": [
+      "0.27.0"
+    ],
+    "react": [
+      "19.2.3"
+    ],
+    "react-dom": [
+      "19.2.3"
+    ],
+    "react-native-web": [
+      "0.21.2"
+    ],
+    "@babel/runtime": [
+      "7.29.7"
+    ],
+    "@react-native/normalize-colors": [
+      "0.74.89"
+    ],
+    "inline-style-prefixer": [
+      "7.0.1"
+    ],
+    "css-in-js-utils": [
+      "3.1.0"
+    ],
+    "hyphenate-style-name": [
+      "1.1.0"
+    ],
+    "styleq": [
+      "0.1.3"
+    ],
+    "react-native-css": [
+      "3.0.7"
+    ]
+  },
+  "groups": [
+    {
+      "name": "platform + other dependencies",
+      "minBytes": 69905,
+      "standaloneGzipBytes": 22785,
+      "marginalGzipBytes": 22378
+    },
+    {
+      "name": "app",
+      "minBytes": 425,
+      "standaloneGzipBytes": 282,
+      "marginalGzipBytes": 189
+    },
+    {
+      "name": "bundler",
+      "minBytes": 1541,
+      "standaloneGzipBytes": 818,
+      "marginalGzipBytes": 623
+    },
+    {
+      "name": "React",
+      "minBytes": 7808,
+      "standaloneGzipBytes": 2958,
+      "marginalGzipBytes": 2454
+    },
+    {
+      "name": "React DOM + scheduler",
+      "minBytes": 181740,
+      "standaloneGzipBytes": 56645,
+      "marginalGzipBytes": 55859
+    },
+    {
+      "name": "framework",
+      "minBytes": 681,
+      "standaloneGzipBytes": 407,
+      "marginalGzipBytes": 273
+    }
+  ],
+  "packages": [
+    {
+      "name": "react-dom",
+      "group": "React DOM + scheduler",
+      "minBytes": 178229,
+      "standaloneGzipBytes": 55359,
+      "marginalGzipBytes": 54539,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-dom/cjs/react-dom-client.production.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-dom/cjs/react-dom.production.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-dom/client.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-dom/index.js"
+      ]
+    },
+    {
+      "name": "react-native-web",
+      "group": "platform + other dependencies",
+      "minBytes": 50179,
+      "standaloneGzipBytes": 16422,
+      "marginalGzipBytes": 15888,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/compiler/createReactDOMStyle.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/compiler/hash.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/compiler/hyphenateStyleName.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/compiler/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/compiler/normalizeColor.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/compiler/normalizeValueWithProperty.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/compiler/unitlessNumbers.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/dom/createCSSStyleSheet.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/dom/createOrderedCSSStyleSheet.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/dom/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/preprocess.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/Text/TextAncestorContext.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/Text/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/UIManager/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/View/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/createElement/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/processColor/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/AccessibilityUtil/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/AccessibilityUtil/isDisabled.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/AccessibilityUtil/propsToAccessibilityComponent.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/AccessibilityUtil/propsToAriaRole.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/canUseDom/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/createDOMProps/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/forwardedProps/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/getBoundingClientRect/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/isSelectionValid/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/isWebColor/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/mergeRefs/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/pick/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/prefixStyles/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/prefixStyles/static.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/setValueForStyles/dangerousStyleValue.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/setValueForStyles/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/unitlessNumbers/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useElementLayout/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useLayoutEffect/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useLocale/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useLocale/isLocaleRTL.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useMergeRefs/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/usePlatformMethods/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useResponderEvents/ResponderEventTypes.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useResponderEvents/ResponderSystem.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useResponderEvents/ResponderTouchHistoryStore.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useResponderEvents/createResponderEvent.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useResponderEvents/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useResponderEvents/utils.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useStable/index.js"
+      ]
+    },
+    {
+      "name": "react",
+      "group": "React",
+      "minBytes": 7808,
+      "standaloneGzipBytes": 2958,
+      "marginalGzipBytes": 2454,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react/cjs/react-jsx-runtime.production.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react/cjs/react.production.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react/jsx-runtime.js"
+      ]
+    },
+    {
+      "name": "@react-native/normalize-colors",
+      "group": "platform + other dependencies",
+      "minBytes": 7319,
+      "standaloneGzipBytes": 2525,
+      "marginalGzipBytes": 2703,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-web/node_modules/@react-native/normalize-colors/index.js"
+      ]
+    },
+    {
+      "name": "css-in-js-utils",
+      "group": "platform + other dependencies",
+      "minBytes": 4067,
+      "standaloneGzipBytes": 1729,
+      "marginalGzipBytes": 1117,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/assignStyle.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/camelCaseProperty.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/cssifyDeclaration.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/cssifyObject.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/hyphenateProperty.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/index.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/isPrefixedProperty.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/isPrefixedValue.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/isUnitlessProperty.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/normalizeProperty.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/resolveArrayValue.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/unprefixProperty.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/unprefixValue.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/lib/hyphenateProperty.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/lib/isPrefixedValue.js"
+      ]
+    },
+    {
+      "name": "inline-style-prefixer",
+      "group": "platform + other dependencies",
+      "minBytes": 5174,
+      "standaloneGzipBytes": 1568,
+      "marginalGzipBytes": 1239,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/createPrefixer.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/plugins/crossFade.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/plugins/imageSet.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/plugins/logical.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/plugins/position.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/plugins/sizing.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/plugins/transition.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/utils/addNewValuesOnly.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/utils/capitalizeString.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/utils/isObject.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/utils/prefixProperty.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/utils/prefixValue.js"
+      ]
+    },
+    {
+      "name": "scheduler",
+      "group": "React DOM + scheduler",
+      "minBytes": 3511,
+      "standaloneGzipBytes": 1516,
+      "marginalGzipBytes": 1234,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/scheduler/cjs/scheduler.production.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/scheduler/index.js"
+      ]
+    },
+    {
+      "name": "styleq",
+      "group": "platform + other dependencies",
+      "minBytes": 1547,
+      "standaloneGzipBytes": 821,
+      "marginalGzipBytes": 578,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/styleq/dist/styleq.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/styleq/dist/transform-localize-style.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/styleq/transform-localize-style.js"
+      ]
+    },
+    {
+      "name": "bundler/unmapped",
+      "group": "bundler",
+      "minBytes": 1541,
+      "standaloneGzipBytes": 818,
+      "marginalGzipBytes": 623,
+      "sources": [
+        null
+      ]
+    },
+    {
+      "name": "@babel/runtime",
+      "group": "platform + other dependencies",
+      "minBytes": 1416,
+      "standaloneGzipBytes": 630,
+      "marginalGzipBytes": 363,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/@babel/runtime/helpers/esm/defineProperty.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/@babel/runtime/helpers/esm/objectSpread2.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/@babel/runtime/helpers/esm/toPrimitive.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/@babel/runtime/helpers/esm/toPropertyKey.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/@babel/runtime/helpers/esm/typeof.js"
+      ]
+    },
+    {
+      "name": "react-native-css",
+      "group": "framework",
+      "minBytes": 681,
+      "standaloneGzipBytes": 407,
+      "marginalGzipBytes": 273,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-css/dist/module/components/Text.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-css/dist/module/components/View.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-css/dist/module/components/copyComponentProperties.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-css/dist/module/web/api.js",
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/react-native-css/dist/module/web/assign-style.js"
+      ]
+    },
+    {
+      "name": "app",
+      "group": "app",
+      "minBytes": 425,
+      "standaloneGzipBytes": 282,
+      "marginalGzipBytes": 189,
+      "sources": [
+        "../../src/App.tsx",
+        "../../src/main.tsx"
+      ]
+    },
+    {
+      "name": "hyphenate-style-name",
+      "group": "platform + other dependencies",
+      "minBytes": 203,
+      "standaloneGzipBytes": 176,
+      "marginalGzipBytes": 51,
+      "sources": [
+        "../../../../../../../../Library/Caches/tamagui-v3-numbers/cmp/node_modules/hyphenate-style-name/index.js"
+      ]
+    }
+  ],
+  "css": [
+    {
+      "file": "assets/index-BxamiRsG.css",
+      "minBytes": 5395,
+      "gzipBytes": 1814,
+      "sha256": "a3cfed44520620fab426cf96ea86a0f8554a4adf535d70d868269e5c49592944"
+    }
+  ],
+  "chunks": [
+    {
+      "file": "assets/index-BVknEGUv.js",
+      "minBytes": 262100,
+      "gzipBytes": 82560,
+      "sha256": "f138f78bf54dcecdfcf978f06f3ef9e9b364b4a117d85eae1ded1968feea6133"
+    }
+  ]
+}

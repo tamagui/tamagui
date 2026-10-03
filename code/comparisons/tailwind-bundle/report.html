@@ -1,0 +1,94 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Tailwind web bundle audit</title>
+<style>body{font:16px/1.5 system-ui,sans-serif;max-width:1050px;padding:24px;margin:auto;color:#202124;background:#fff}h1{font-size:28px}h2{font-size:22px}table{border-collapse:collapse;width:100%;margin:16px 0;font-variant-numeric:tabular-nums}th,td{text-align:left;border-bottom:1px solid #ddd;padding:8px}th{background:#f3f4f5}section{border-top:1px solid #ddd;margin-top:28px}pre{overflow:auto;background:#f3f4f5;padding:16px;font-size:12px}summary{cursor:pointer;padding:8px 0}p{max-width:85ch}</style>
+<h1>Tailwind web bundle audit</h1><p>Tamagui core ships 75,766 bytes of gzipped JavaScript versus Uniwind's 99,067 in the same small app, about 23.5% less. Both include React and React DOM. Tamagui's own runtime spans compress to about 16 KB. Themes are in CSS. All three apps have the same card, two text elements, and a working counter.</p>
+<p>These are separate small-app production builds, using Vite 8.2.2 and React 19.2.3. They replace the blog's comparison with a uniform bundler and minimal imports. The earlier figures described a larger speed-benchmark app, with a full UI provider and animations for Tamagui, and Expo/Metro plus a component barrel for NativeWind.</p>
+<table><thead><tr><th>Evidence</th><th>App</th><th>Total JS gzip bytes</th><th>Total CSS gzip bytes</th></tr></thead><tbody><tr><td>RAN</td><td>tamagui</td><td>75,766</td><td>2,204</td></tr><tr><td>RAN</td><td>uniwind</td><td>99,067</td><td>1,719</td></tr><tr><td>RAN</td><td>nativewind</td><td>82,560</td><td>1,814</td></tr></tbody></table>
+<p>All table measurements are RAN with the commands below. File totals are exact. Package/group standalone gzip compresses its minified source-map spans alone; marginal gzip deletes those spans and measures the difference. Both columns are non-additive because gzip shares a dictionary. No dependencies are externalized and no manual chunks alter the build. Uniwind injects a config initialization without a source map, so its package attribution is approximate; complete-file totals remain exact.</p>
+<section><h2>tamagui</h2>
+<p>RAN: 75,766 bytes of JavaScript, 2,204 bytes of CSS, gzip level 9.</p>
+<table><thead><tr><th>Group</th><th>Standalone gzip</th><th>Marginal gzip</th></tr></thead><tbody>
+<tr><td>framework</td><td>16,342</td><td>15,866</td></tr><tr><td>app</td><td>381</td><td>256</td></tr><tr><td>bundler</td><td>687</td><td>513</td></tr><tr><td>React</td><td>2,980</td><td>2,465</td></tr><tr><td>React DOM + scheduler</td><td>56,632</td><td>55,893</td></tr></tbody></table>
+<details><summary>Every package and version</summary><table><thead><tr><th>Package</th><th>Version</th><th>Standalone gzip</th><th>Marginal gzip</th></tr></thead><tbody>
+<tr><td>react-dom</td><td>19.2.3</td><td>55,345</td><td>54,556</td></tr><tr><td>@tamagui/web</td><td>3.0.0-tip.728da51995</td><td>11,296</td><td>10,571</td></tr><tr><td>react</td><td>19.2.3</td><td>2,980</td><td>2,465</td></tr><tr><td>@tamagui/helpers</td><td>3.0.0-tip.728da51995</td><td>1,767</td><td>1,579</td></tr><tr><td>@tamagui/use-element-layout</td><td>3.0.0-tip.728da51995</td><td>1,551</td><td>1,292</td></tr><tr><td>scheduler</td><td>0.27.0</td><td>1,517</td><td>1,250</td></tr><tr><td>@tamagui/style-grammar</td><td>3.0.0-tip.728da51995</td><td>1,359</td><td>1,086</td></tr><tr><td>bundler/unmapped</td><td>generated</td><td>687</td><td>513</td></tr><tr><td>@tamagui/core</td><td>3.0.0-tip.728da51995</td><td>543</td><td>413</td></tr><tr><td>app</td><td>generated</td><td>381</td><td>256</td></tr><tr><td>@tamagui/simple-hash</td><td>3.0.0-tip.728da51995</td><td>371</td><td>238</td></tr><tr><td>@tamagui/constants</td><td>3.0.0-tip.728da51995</td><td>319</td><td>224</td></tr><tr><td>@tamagui/animation-helpers</td><td>3.0.0-tip.728da51995</td><td>224</td><td>130</td></tr><tr><td>@tamagui/use-did-finish-ssr</td><td>3.0.0-tip.728da51995</td><td>131</td><td>42</td></tr><tr><td>@tamagui/compose-refs</td><td>3.0.0-tip.728da51995</td><td>96</td><td>35</td></tr></tbody></table></details>
+<details><summary>Exact emitted files</summary><pre>{
+  "js": [
+    {
+      "file": "assets/index-Aop_Qa7B.js",
+      "minBytes": 232999,
+      "gzipBytes": 75766,
+      "sha256": "d51b243b62688f440df607fdf0dc89518eb59032abebafcc70cf2e89204f664d"
+    }
+  ],
+  "css": [
+    {
+      "file": "assets/index-yxMu3Syt.css",
+      "minBytes": 6536,
+      "gzipBytes": 2204,
+      "sha256": "772fe3c6b2335967c16d4a15f7f59e2873ecad76ffc898be1bab680d8dda8e19"
+    }
+  ]
+}</pre></details>
+<details><summary>Client config: themes removed from JS</summary><pre>var Li=Ii({themes:{},tokens:{color:{},radius:{},size:{},space:{},zIndex:{}},media:{},shorthands:{}});(</pre></details>
+</section><section><h2>uniwind</h2>
+<p>RAN: 99,067 bytes of JavaScript, 1,719 bytes of CSS, gzip level 9.</p>
+<table><thead><tr><th>Group</th><th>Standalone gzip</th><th>Marginal gzip</th></tr></thead><tbody>
+<tr><td>platform + other dependencies</td><td>37,341</td><td>37,083</td></tr><tr><td>app</td><td>280</td><td>215</td></tr><tr><td>bundler</td><td>818</td><td>609</td></tr><tr><td>React</td><td>2,953</td><td>2,395</td></tr><tr><td>React DOM + scheduler</td><td>56,673</td><td>55,945</td></tr><tr><td>framework</td><td>2,298</td><td>2,188</td></tr></tbody></table>
+<details><summary>Every package and version</summary><table><thead><tr><th>Package</th><th>Version</th><th>Standalone gzip</th><th>Marginal gzip</th></tr></thead><tbody>
+<tr><td>react-dom</td><td>19.2.3</td><td>55,386</td><td>54,604</td></tr><tr><td>react-native-web</td><td>0.21.2</td><td>16,664</td><td>16,246</td></tr><tr><td>culori</td><td>4.0.2</td><td>14,490</td><td>14,531</td></tr><tr><td>react</td><td>19.2.3</td><td>2,953</td><td>2,395</td></tr><tr><td>@react-native/normalize-colors</td><td>0.74.89</td><td>2,525</td><td>2,647</td></tr><tr><td>uniwind</td><td>1.11.0</td><td>2,298</td><td>2,188</td></tr><tr><td>css-in-js-utils</td><td>3.1.0</td><td>1,735</td><td>1,093</td></tr><tr><td>inline-style-prefixer</td><td>7.0.1</td><td>1,570</td><td>1,208</td></tr><tr><td>scheduler</td><td>0.27.0</td><td>1,515</td><td>1,211</td></tr><tr><td>styleq</td><td>0.1.3</td><td>820</td><td>562</td></tr><tr><td>bundler/unmapped</td><td>generated</td><td>818</td><td>609</td></tr><tr><td>@babel/runtime</td><td>7.29.7</td><td>630</td><td>361</td></tr><tr><td>app</td><td>generated</td><td>280</td><td>215</td></tr><tr><td>hyphenate-style-name</td><td>1.1.0</td><td>174</td><td>48</td></tr></tbody></table></details>
+<details><summary>Exact emitted files</summary><pre>{
+  "js": [
+    {
+      "file": "assets/index-BW8gERxJ.js",
+      "minBytes": 309621,
+      "gzipBytes": 99067,
+      "sha256": "a3fae1765b1889911f9e146f9517bc7666b5eb69e305c7cd367f884e7c96636b"
+    }
+  ],
+  "css": [
+    {
+      "file": "assets/index-C2zIEvSR.css",
+      "minBytes": 5067,
+      "gzipBytes": 1719,
+      "sha256": "34f71e5c905b4f889297f8b7b2f64aeb448b920aed2ce48290268508c64cc4e7"
+    }
+  ]
+}</pre></details>
+
+</section><section><h2>nativewind</h2>
+<p>RAN: 82,560 bytes of JavaScript, 1,814 bytes of CSS, gzip level 9.</p>
+<table><thead><tr><th>Group</th><th>Standalone gzip</th><th>Marginal gzip</th></tr></thead><tbody>
+<tr><td>platform + other dependencies</td><td>22,785</td><td>22,378</td></tr><tr><td>app</td><td>282</td><td>189</td></tr><tr><td>bundler</td><td>818</td><td>623</td></tr><tr><td>React</td><td>2,958</td><td>2,454</td></tr><tr><td>React DOM + scheduler</td><td>56,645</td><td>55,859</td></tr><tr><td>framework</td><td>407</td><td>273</td></tr></tbody></table>
+<details><summary>Every package and version</summary><table><thead><tr><th>Package</th><th>Version</th><th>Standalone gzip</th><th>Marginal gzip</th></tr></thead><tbody>
+<tr><td>react-dom</td><td>19.2.3</td><td>55,359</td><td>54,539</td></tr><tr><td>react-native-web</td><td>0.21.2</td><td>16,422</td><td>15,888</td></tr><tr><td>react</td><td>19.2.3</td><td>2,958</td><td>2,454</td></tr><tr><td>@react-native/normalize-colors</td><td>0.74.89</td><td>2,525</td><td>2,703</td></tr><tr><td>css-in-js-utils</td><td>3.1.0</td><td>1,729</td><td>1,117</td></tr><tr><td>inline-style-prefixer</td><td>7.0.1</td><td>1,568</td><td>1,239</td></tr><tr><td>scheduler</td><td>0.27.0</td><td>1,516</td><td>1,234</td></tr><tr><td>styleq</td><td>0.1.3</td><td>821</td><td>578</td></tr><tr><td>bundler/unmapped</td><td>generated</td><td>818</td><td>623</td></tr><tr><td>@babel/runtime</td><td>7.29.7</td><td>630</td><td>363</td></tr><tr><td>react-native-css</td><td>3.0.7</td><td>407</td><td>273</td></tr><tr><td>app</td><td>generated</td><td>282</td><td>189</td></tr><tr><td>hyphenate-style-name</td><td>1.1.0</td><td>176</td><td>51</td></tr></tbody></table></details>
+<details><summary>Exact emitted files</summary><pre>{
+  "js": [
+    {
+      "file": "assets/index-BVknEGUv.js",
+      "minBytes": 262100,
+      "gzipBytes": 82560,
+      "sha256": "f138f78bf54dcecdfcf978f06f3ef9e9b364b4a117d85eae1ded1968feea6133"
+    }
+  ],
+  "css": [
+    {
+      "file": "assets/index-BxamiRsG.css",
+      "minBytes": 5395,
+      "gzipBytes": 1814,
+      "sha256": "a3cfed44520620fab426cf96ea86a0f8554a4adf535d70d868269e5c49592944"
+    }
+  ]
+}</pre></details>
+
+</section><section><h2>Reproduce</h2><p>Run these commands sequentially in a fresh checkout on ci-64. The retained comparison cache contains locally packed Tamagui 3.0.0-tip.728da51995, NativeWind 5.0.0-preview.4 with react-native-css 3.0.7, Uniwind 1.11.0, and React Native Web 0.21.2. Installing current npm versions changes the experiment.</p><pre>cd code/comparisons/tailwind-bundle
+bun prepare.ts
+bun link-cache.ts /Users/macbookpro/Library/Caches/tamagui-v3-numbers/cmp
+cd tamagui
+bash /Users/macbookpro/contrast/scripts/heavy.sh --cores 2 -- bun ../node_modules/vite/bin/vite.js build
+cd ../nativewind
+bash /Users/macbookpro/contrast/scripts/heavy.sh --cores 2 -- bun ../node_modules/vite/bin/vite.js build
+cd ../uniwind
+bash /Users/macbookpro/contrast/scripts/heavy.sh --cores 2 -- bun ../node_modules/vite/bin/vite.js build
+cd ..
+bun attribute.ts tamagui nativewind uniwind
+bun probe.ts</pre>
+<p>The JSON receipts list every mapped module, actual package versions, and output SHA-256 hashes. The production browser probe checks the counter, matched computed styles, light/dark theme CSS, and page errors. The Tamagui attribution check rejects full UI, theme packs, animation drivers, and theme definitions in client JS.</p></section></html>
