@@ -1,0 +1,77 @@
+[
+  {
+    "path": "code/core/core/src/dom.native.ts",
+    "match": true,
+    "sha256": "534c5f71070b2807f3c72f32f6ae3d902eb4cb8298a048531b4e665defd81c55"
+  },
+  {
+    "path": "code/core/core/src/dom.ts",
+    "match": true,
+    "sha256": "b62c1dedc092ad2f216a1910cf02571e99eceb1a80aa597350d6d754280277fa"
+  },
+  {
+    "path": "code/core/core/src/getBaseViews.native.ts",
+    "match": true,
+    "sha256": "c8c853b849c4596e8b63d2798477fa25c43d2f0a6622c4fc4d2d669e7c69dc5f"
+  },
+  {
+    "path": "code/core/core/src/getBaseViews.ts",
+    "match": true,
+    "sha256": "5e614c45e37f4a8ebd63b9a277ffd06019b37f2ad3e49c471bd7bd4594a990e9"
+  },
+  {
+    "path": "code/core/core/src/inject-styles.ts",
+    "match": true,
+    "sha256": "43d62f19f41076be7d82089b4eda670ad48a479cf9f067dcfbc14444d3a5e0b2"
+  },
+  {
+    "path": "code/core/core/src/reactNativeTypes.ts",
+    "match": true,
+    "sha256": "b59b8f3a5802e93fe31062fc32d7b050bbec71549a61df0e17edd5bd4374c2bb"
+  },
+  {
+    "path": "code/core/core/src/setupMedia.native.ts",
+    "match": true,
+    "sha256": "f6c0f1aacff7951dc58c3dd8aeda76829a729a3bd8898b57f554968fc5fbe1a2"
+  },
+  {
+    "path": "code/core/core/src/setupMedia.ts",
+    "match": true,
+    "sha256": "b634953fdc55553b988d19c4d2cfba35b785ff8d51dc9ce885a7c83ab25b860b"
+  },
+  {
+    "path": "code/core/core/src/static-resolve.ts",
+    "match": true,
+    "sha256": "492cb081c128587161fba926e2a91ae2cdd2315f4f0c9a70b674bd615ba4b373"
+  },
+  {
+    "path": "code/core/core/src/theme-update.ts",
+    "match": true,
+    "sha256": "b620ad527dc41d8ecae496d908657047d076231d0b0565264226da145f577586"
+  },
+  {
+    "path": "code/core/core/src/createOptimizedView.native.tsx",
+    "match": true,
+    "sha256": "22aeb5575a10d89d70226cc2847170b43b4844048af7a6d79b80057e8b83a205"
+  },
+  {
+    "path": "code/core/core/src/createOptimizedView.tsx",
+    "match": true,
+    "sha256": "5e638f2a11ea5597c4f290c5543ddc5f5e75d7bd2d1e0c188f7f83292b95086c"
+  },
+  {
+    "path": "code/core/core/src/index.tsx",
+    "match": true,
+    "sha256": "d5b869422026c4e88a958b15acc408e41b40d3470cf9336d1a6796dd059d7241"
+  },
+  {
+    "path": "code/core/core/src/internal-runtime.tsx",
+    "match": true,
+    "sha256": "407c207bb27cfa717677d6dff5bc575bd1c0d74d4dd961adbf5586939232414e"
+  },
+  {
+    "path": "code/core/core/src/runtime.tsx",
+    "match": true,
+    "sha256": "104cab64e9a86ed2bc5b7d184d7885c1eb6a97c25ee55cdfbde13f2d3ae6c37e"
+  }
+]

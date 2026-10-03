@@ -1,0 +1,311 @@
+{
+  "arm": "tamagui",
+  "excluded": [],
+  "command": "cd code/comparisons/tailwind-bundle/tamagui && bun ../node_modules/vite/bin/vite.js build; cd .. && bun attribute.ts tamagui",
+  "method": "RAN: gzip level 9 of each complete emitted JS file. Source-map spans cover every byte. Per-package and per-group standalone gzip compress their selected minified spans; marginal gzip subtracts gzip after deleting those spans. Both columns are non-additive because gzip shares a dictionary. No dependencies externalized. No manual chunking.",
+  "totalJsGzipBytes": 75766,
+  "totalCssGzipBytes": 3207,
+  "versions": {
+    "scheduler": [
+      "0.27.0"
+    ],
+    "react": [
+      "19.2.3"
+    ],
+    "react-dom": [
+      "19.2.3"
+    ],
+    "@tamagui/compose-refs": [
+      "3.0.0-beta.1564.1"
+    ],
+    "@tamagui/web": [
+      "3.0.0-beta.1564.1"
+    ],
+    "@tamagui/constants": [
+      "3.0.0-beta.1564.1"
+    ],
+    "@tamagui/animation-helpers": [
+      "3.0.0-beta.1564.1"
+    ],
+    "@tamagui/simple-hash": [
+      "3.0.0-beta.1564.1"
+    ],
+    "@tamagui/helpers": [
+      "3.0.0-beta.1564.1"
+    ],
+    "@tamagui/style-grammar": [
+      "3.0.0-beta.1564.1"
+    ],
+    "@tamagui/use-did-finish-ssr": [
+      "3.0.0-beta.1564.1"
+    ],
+    "@tamagui/use-element-layout": [
+      "3.0.0-beta.1564.1"
+    ],
+    "@tamagui/core": [
+      "3.0.0-beta.1564.1"
+    ]
+  },
+  "groups": [
+    {
+      "name": "framework",
+      "minBytes": 41587,
+      "standaloneGzipBytes": 16342,
+      "marginalGzipBytes": 15866
+    },
+    {
+      "name": "app",
+      "minBytes": 611,
+      "standaloneGzipBytes": 381,
+      "marginalGzipBytes": 256
+    },
+    {
+      "name": "bundler",
+      "minBytes": 1250,
+      "standaloneGzipBytes": 687,
+      "marginalGzipBytes": 513
+    },
+    {
+      "name": "React",
+      "minBytes": 7886,
+      "standaloneGzipBytes": 2980,
+      "marginalGzipBytes": 2465
+    },
+    {
+      "name": "React DOM + scheduler",
+      "minBytes": 181665,
+      "standaloneGzipBytes": 56632,
+      "marginalGzipBytes": 55893
+    }
+  ],
+  "packages": [
+    {
+      "name": "react-dom",
+      "group": "React DOM + scheduler",
+      "minBytes": 178130,
+      "standaloneGzipBytes": 55345,
+      "marginalGzipBytes": 54556,
+      "sources": [
+        "../../node_modules/react-dom/cjs/react-dom-client.production.js",
+        "../../node_modules/react-dom/cjs/react-dom.production.js",
+        "../../node_modules/react-dom/client.js",
+        "../../node_modules/react-dom/index.js"
+      ]
+    },
+    {
+      "name": "@tamagui/web",
+      "group": "framework",
+      "minBytes": 27518,
+      "standaloneGzipBytes": 11296,
+      "marginalGzipBytes": 10571,
+      "sources": [
+        "../../node_modules/@tamagui/web/dist/esm/config.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/constants/constants.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/contexts/ComponentContext.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/createTamagui.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/createVariable.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/createVariables.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/borderComponents.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/configVariables.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/createDesignSystem.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/createStyledContext.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/defaultAnimationDriver.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/formatDiagnostic.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/grammarConfig.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/insertStyleRule.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/isObj.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/matchMedia.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/mediaObjectToString.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/mediaState.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/mergeProps.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/objectIdentityKey.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/proxyThemeToParents.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/resolveAnimationDriver.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/resolveSafeArea.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/resolveSafeAreaVariable.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/resolveSizing.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/styleStaticConfigCore.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/themes.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/tokenCategories.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/helpers/variableValue.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/hooks/getThemeProxied.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/hooks/isOptimizedForFirstRender.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/hooks/useMedia.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/hooks/useTheme.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/hooks/useThemeState.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/insertFont.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/internal-runtime.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/setupHooks.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/style.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/types.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/views/SafeAreaTracker.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/views/TamaguiProvider.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/views/TamaguiRoot.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/views/Theme.mjs",
+        "../../node_modules/@tamagui/web/dist/esm/views/ThemeProvider.mjs"
+      ]
+    },
+    {
+      "name": "react",
+      "group": "React",
+      "minBytes": 7886,
+      "standaloneGzipBytes": 2980,
+      "marginalGzipBytes": 2465,
+      "sources": [
+        "../../node_modules/react/cjs/react-jsx-runtime.production.js",
+        "../../node_modules/react/cjs/react.production.js",
+        "../../node_modules/react/index.js",
+        "../../node_modules/react/jsx-runtime.js"
+      ]
+    },
+    {
+      "name": "@tamagui/helpers",
+      "group": "framework",
+      "minBytes": 4744,
+      "standaloneGzipBytes": 1767,
+      "marginalGzipBytes": 1579,
+      "sources": [
+        "../../node_modules/@tamagui/helpers/dist/esm/themeClassNames.mjs",
+        "../../node_modules/@tamagui/helpers/dist/esm/toStylePropsObject.mjs",
+        "../../node_modules/@tamagui/helpers/dist/esm/validStyleProps.mjs",
+        "../../node_modules/@tamagui/helpers/dist/esm/webOnlyStyleProps.mjs"
+      ]
+    },
+    {
+      "name": "@tamagui/use-element-layout",
+      "group": "framework",
+      "minBytes": 3483,
+      "standaloneGzipBytes": 1551,
+      "marginalGzipBytes": 1292,
+      "sources": [
+        "../../node_modules/@tamagui/use-element-layout/dist/esm/index.mjs"
+      ]
+    },
+    {
+      "name": "scheduler",
+      "group": "React DOM + scheduler",
+      "minBytes": 3535,
+      "standaloneGzipBytes": 1517,
+      "marginalGzipBytes": 1250,
+      "sources": [
+        "../../node_modules/scheduler/cjs/scheduler.production.js",
+        "../../node_modules/scheduler/index.js"
+      ]
+    },
+    {
+      "name": "@tamagui/style-grammar",
+      "group": "framework",
+      "minBytes": 2949,
+      "standaloneGzipBytes": 1359,
+      "marginalGzipBytes": 1086,
+      "sources": [
+        "../../node_modules/@tamagui/style-grammar/dist/esm/runtime/clauseIdentity.mjs",
+        "../../node_modules/@tamagui/style-grammar/dist/esm/runtime/modifierVocabulary.mjs",
+        "../../node_modules/@tamagui/style-grammar/dist/esm/runtime/scanFlatValue.mjs",
+        "../../node_modules/@tamagui/style-grammar/dist/esm/runtime/stateModifiers.mjs",
+        "../../node_modules/@tamagui/style-grammar/dist/esm/tooling/config.mjs"
+      ]
+    },
+    {
+      "name": "bundler/unmapped",
+      "group": "bundler",
+      "minBytes": 1250,
+      "standaloneGzipBytes": 687,
+      "marginalGzipBytes": 513,
+      "sources": [
+        null
+      ]
+    },
+    {
+      "name": "@tamagui/core",
+      "group": "framework",
+      "minBytes": 1053,
+      "standaloneGzipBytes": 543,
+      "marginalGzipBytes": 413,
+      "sources": [
+        "../../node_modules/@tamagui/core/dist/esm/getBaseViews.mjs",
+        "../../node_modules/@tamagui/core/dist/esm/runtime.mjs",
+        "../../node_modules/@tamagui/core/dist/esm/setupMedia.mjs"
+      ]
+    },
+    {
+      "name": "app",
+      "group": "app",
+      "minBytes": 611,
+      "standaloneGzipBytes": 381,
+      "marginalGzipBytes": 256,
+      "sources": [
+        "../../src/App.tsx",
+        "../../src/main.tsx",
+        "../../src/tamagui.config.ts"
+      ]
+    },
+    {
+      "name": "@tamagui/simple-hash",
+      "group": "framework",
+      "minBytes": 516,
+      "standaloneGzipBytes": 371,
+      "marginalGzipBytes": 238,
+      "sources": [
+        "../../node_modules/@tamagui/simple-hash/dist/esm/index.mjs"
+      ]
+    },
+    {
+      "name": "@tamagui/constants",
+      "group": "framework",
+      "minBytes": 601,
+      "standaloneGzipBytes": 319,
+      "marginalGzipBytes": 224,
+      "sources": [
+        "../../node_modules/@tamagui/constants/dist/esm/constants.mjs"
+      ]
+    },
+    {
+      "name": "@tamagui/animation-helpers",
+      "group": "framework",
+      "minBytes": 490,
+      "standaloneGzipBytes": 224,
+      "marginalGzipBytes": 130,
+      "sources": [
+        "../../node_modules/@tamagui/animation-helpers/dist/esm/propertyNames.mjs"
+      ]
+    },
+    {
+      "name": "@tamagui/use-did-finish-ssr",
+      "group": "framework",
+      "minBytes": 142,
+      "standaloneGzipBytes": 131,
+      "marginalGzipBytes": 42,
+      "sources": [
+        "../../node_modules/@tamagui/use-did-finish-ssr/dist/esm/ClientOnly.mjs"
+      ]
+    },
+    {
+      "name": "@tamagui/compose-refs",
+      "group": "framework",
+      "minBytes": 91,
+      "standaloneGzipBytes": 96,
+      "marginalGzipBytes": 35,
+      "sources": [
+        "../../node_modules/@tamagui/compose-refs/dist/esm/compose-refs.mjs"
+      ]
+    }
+  ],
+  "css": [
+    {
+      "file": "assets/index-Cxyp9LJ2.css",
+      "minBytes": 11977,
+      "gzipBytes": 3207,
+      "sha256": "e6a8468566fc01bd7cd262595584bf8f60cb7e45514916c27d95f0b9c6e2ebbf"
+    }
+  ],
+  "clientConfig": "var Li=Ii({themes:{},tokens:{color:{},radius:{},size:{},space:{},zIndex:{}},media:{},shorthands:{}});(",
+  "chunks": [
+    {
+      "file": "assets/index-kwWQYXTz.js",
+      "minBytes": 232999,
+      "gzipBytes": 75766,
+      "sha256": "d51b243b62688f440df607fdf0dc89518eb59032abebafcc70cf2e89204f664d"
+    }
+  ]
+}

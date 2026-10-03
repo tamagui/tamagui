@@ -1,0 +1,474 @@
+{
+  "arm": "uniwind",
+  "excluded": [],
+  "command": "cd code/comparisons/tailwind-bundle/uniwind && bun ../node_modules/vite/bin/vite.js build; cd .. && bun attribute.ts uniwind",
+  "method": "RAN: gzip level 9 of each complete emitted JS file. Source-map spans cover every byte. Per-package and per-group standalone gzip compress their selected minified spans; marginal gzip subtracts gzip after deleting those spans. Both columns are non-additive because gzip shares a dictionary. No dependencies externalized. No manual chunking.",
+  "totalJsGzipBytes": 99067,
+  "totalCssGzipBytes": 2550,
+  "versions": {
+    "scheduler": [
+      "0.27.0"
+    ],
+    "react": [
+      "19.2.3"
+    ],
+    "react-dom": [
+      "19.2.3"
+    ],
+    "react-native-web": [
+      "0.21.2"
+    ],
+    "@babel/runtime": [
+      "7.29.7"
+    ],
+    "@react-native/normalize-colors": [
+      "0.74.89"
+    ],
+    "inline-style-prefixer": [
+      "7.0.1"
+    ],
+    "css-in-js-utils": [
+      "3.1.0"
+    ],
+    "hyphenate-style-name": [
+      "1.1.0"
+    ],
+    "uniwind": [
+      "1.11.0"
+    ],
+    "styleq": [
+      "0.1.3"
+    ],
+    "culori": [
+      "4.0.2"
+    ]
+  },
+  "groups": [
+    {
+      "name": "platform + other dependencies",
+      "minBytes": 112514,
+      "standaloneGzipBytes": 37341,
+      "marginalGzipBytes": 37083
+    },
+    {
+      "name": "app",
+      "minBytes": 425,
+      "standaloneGzipBytes": 280,
+      "marginalGzipBytes": 215
+    },
+    {
+      "name": "bundler",
+      "minBytes": 1541,
+      "standaloneGzipBytes": 818,
+      "marginalGzipBytes": 609
+    },
+    {
+      "name": "React",
+      "minBytes": 7801,
+      "standaloneGzipBytes": 2953,
+      "marginalGzipBytes": 2395
+    },
+    {
+      "name": "React DOM + scheduler",
+      "minBytes": 181789,
+      "standaloneGzipBytes": 56673,
+      "marginalGzipBytes": 55945
+    },
+    {
+      "name": "framework",
+      "minBytes": 5551,
+      "standaloneGzipBytes": 2298,
+      "marginalGzipBytes": 2188
+    }
+  ],
+  "packages": [
+    {
+      "name": "react-dom",
+      "group": "React DOM + scheduler",
+      "minBytes": 178274,
+      "standaloneGzipBytes": 55386,
+      "marginalGzipBytes": 54604,
+      "sources": [
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-dom/cjs/react-dom-client.production.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-dom/cjs/react-dom.production.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-dom/client.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-dom/index.js"
+      ]
+    },
+    {
+      "name": "react-native-web",
+      "group": "platform + other dependencies",
+      "minBytes": 50711,
+      "standaloneGzipBytes": 16664,
+      "marginalGzipBytes": 16246,
+      "sources": [
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/Appearance/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/Platform/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/compiler/createReactDOMStyle.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/compiler/hash.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/compiler/hyphenateStyleName.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/compiler/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/compiler/normalizeColor.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/compiler/normalizeValueWithProperty.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/compiler/unitlessNumbers.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/dom/createCSSStyleSheet.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/dom/createOrderedCSSStyleSheet.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/dom/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/StyleSheet/preprocess.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/Text/TextAncestorContext.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/Text/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/UIManager/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/View/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/createElement/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/exports/processColor/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/AccessibilityUtil/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/AccessibilityUtil/isDisabled.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/AccessibilityUtil/propsToAccessibilityComponent.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/AccessibilityUtil/propsToAriaRole.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/canUseDom/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/createDOMProps/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/forwardedProps/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/getBoundingClientRect/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/isSelectionValid/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/isWebColor/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/mergeRefs/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/pick/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/prefixStyles/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/prefixStyles/static.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/setValueForStyles/dangerousStyleValue.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/setValueForStyles/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/unitlessNumbers/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useElementLayout/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useLayoutEffect/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useLocale/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useLocale/isLocaleRTL.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useMergeRefs/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/usePlatformMethods/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useResponderEvents/ResponderEventTypes.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useResponderEvents/ResponderSystem.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useResponderEvents/ResponderTouchHistoryStore.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useResponderEvents/createResponderEvent.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useResponderEvents/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useResponderEvents/utils.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/dist/modules/useStable/index.js"
+      ]
+    },
+    {
+      "name": "culori",
+      "group": "platform + other dependencies",
+      "minBytes": 42072,
+      "standaloneGzipBytes": 14490,
+      "marginalGzipBytes": 14531,
+      "sources": [
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/_prepare.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/a98/convertA98ToXyz65.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/a98/convertXyz65ToA98.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/a98/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/average.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/colors/named.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/constants.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/converter.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/cubehelix/constants.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/cubehelix/convertCubehelixToRgb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/cubehelix/convertRgbToCubehelix.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/cubehelix/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/difference.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/dlab/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/dlch/constants.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/dlch/convertDlchToLab65.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/dlch/convertLab65ToDlch.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/dlch/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/fixup/alpha.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/fixup/hue.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/formatter.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/hdr/transfer.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/hsi/convertHsiToRgb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/hsi/convertRgbToHsi.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/hsi/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/hsl/convertHslToRgb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/hsl/convertRgbToHsl.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/hsl/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/hsl/parseHsl.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/hsl/parseHslLegacy.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/hsv/convertHsvToRgb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/hsv/convertRgbToHsv.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/hsv/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/hwb/convertHwbToRgb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/hwb/convertRgbToHwb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/hwb/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/hwb/parseHwb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/interpolate/lerp.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/interpolate/linear.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/interpolate/piecewise.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/itp/convertItpToXyz65.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/itp/convertXyz65ToItp.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/itp/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/jab/convertJabToRgb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/jab/convertJabToXyz65.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/jab/convertRgbToJab.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/jab/convertXyz65ToJab.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/jab/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/jch/convertJabToJch.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/jch/convertJchToJab.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/jch/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lab/convertLabToRgb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lab/convertLabToXyz50.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lab/convertRgbToLab.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lab/convertXyz50ToLab.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lab/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lab/parseLab.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lab65/convertLab65ToRgb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lab65/convertLab65ToXyz65.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lab65/convertRgbToLab65.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lab65/convertXyz65ToLab65.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lab65/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lch/convertLabToLch.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lch/convertLchToLab.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lch/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lch/parseLch.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lch65/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lchuv/convertLchuvToLuv.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lchuv/convertLuvToLchuv.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lchuv/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lrgb/convertLrgbToRgb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lrgb/convertRgbToLrgb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/lrgb/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/luv/convertLuvToXyz50.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/luv/convertXyz50ToLuv.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/luv/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/modes.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/okhsl/convertOkhslToOklab.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/okhsl/convertOklabToOkhsl.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/okhsl/helpers.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/okhsl/modeOkhsl.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/okhsv/convertOkhsvToOklab.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/okhsv/convertOklabToOkhsv.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/okhsv/modeOkhsv.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/oklab/convertLrgbToOklab.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/oklab/convertOklabToLrgb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/oklab/convertOklabToRgb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/oklab/convertRgbToOklab.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/oklab/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/oklab/parseOklab.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/oklch/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/oklch/parseOklch.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/p3/convertP3ToXyz65.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/p3/convertXyz65ToP3.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/p3/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/parse.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/prophoto/convertProphotoToXyz50.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/prophoto/convertXyz50ToProphoto.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/prophoto/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/rec2020/convertRec2020ToXyz65.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/rec2020/convertXyz65ToRec2020.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/rec2020/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/rgb/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/rgb/parseHex.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/rgb/parseNamed.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/rgb/parseNumber.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/rgb/parseRgb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/rgb/parseRgbLegacy.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/rgb/parseTransparent.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/round.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/util/hue.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/util/normalizeHue.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/util/regex.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/xyb/constants.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/xyb/convertRgbToXyb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/xyb/convertXybToRgb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/xyb/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/xyz50/constants.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/xyz50/convertRgbToXyz50.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/xyz50/convertXyz50ToRgb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/xyz50/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/xyz65/constants.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/xyz65/convertRgbToXyz65.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/xyz65/convertXyz50ToXyz65.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/xyz65/convertXyz65ToRgb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/xyz65/convertXyz65ToXyz50.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/xyz65/definition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/yiq/convertRgbToYiq.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/yiq/convertYiqToRgb.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/culori/src/yiq/definition.js"
+      ]
+    },
+    {
+      "name": "react",
+      "group": "React",
+      "minBytes": 7801,
+      "standaloneGzipBytes": 2953,
+      "marginalGzipBytes": 2395,
+      "sources": [
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react/cjs/react-jsx-runtime.production.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react/cjs/react.production.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react/jsx-runtime.js"
+      ]
+    },
+    {
+      "name": "@react-native/normalize-colors",
+      "group": "platform + other dependencies",
+      "minBytes": 7319,
+      "standaloneGzipBytes": 2525,
+      "marginalGzipBytes": 2647,
+      "sources": [
+        "../../../../tamagui-v3-numbers/cmp/node_modules/react-native-web/node_modules/@react-native/normalize-colors/index.js"
+      ]
+    },
+    {
+      "name": "uniwind",
+      "group": "framework",
+      "minBytes": 5551,
+      "standaloneGzipBytes": 2298,
+      "marginalGzipBytes": 2188,
+      "sources": [
+        "../../../../tamagui-v3-numbers/cmp/node_modules/uniwind/dist/module/common/consts.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/uniwind/dist/module/common/utils.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/uniwind/dist/module/components/utils.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/uniwind/dist/module/components/web/Text.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/uniwind/dist/module/components/web/View.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/uniwind/dist/module/components/web/createOrderedCSSStyleSheet.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/uniwind/dist/module/components/web/generateDataSet.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/uniwind/dist/module/components/web/rnw.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/uniwind/dist/module/core/config/config.common.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/uniwind/dist/module/core/listener.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/uniwind/dist/module/core/web/getWebStyles.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/uniwind/dist/module/core/web/webUtils.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/uniwind/dist/module/hooks/useCSSVariable/getVariableValue.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/uniwind/dist/module/hooks/useCSSVariable/useCSSVariable.js"
+      ]
+    },
+    {
+      "name": "css-in-js-utils",
+      "group": "platform + other dependencies",
+      "minBytes": 4076,
+      "standaloneGzipBytes": 1735,
+      "marginalGzipBytes": 1093,
+      "sources": [
+        "../../../../tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/assignStyle.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/camelCaseProperty.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/cssifyDeclaration.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/cssifyObject.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/hyphenateProperty.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/index.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/isPrefixedProperty.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/isPrefixedValue.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/isUnitlessProperty.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/normalizeProperty.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/resolveArrayValue.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/unprefixProperty.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/es/unprefixValue.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/lib/hyphenateProperty.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/css-in-js-utils/lib/isPrefixedValue.js"
+      ]
+    },
+    {
+      "name": "inline-style-prefixer",
+      "group": "platform + other dependencies",
+      "minBytes": 5174,
+      "standaloneGzipBytes": 1570,
+      "marginalGzipBytes": 1208,
+      "sources": [
+        "../../../../tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/createPrefixer.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/plugins/crossFade.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/plugins/imageSet.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/plugins/logical.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/plugins/position.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/plugins/sizing.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/plugins/transition.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/utils/addNewValuesOnly.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/utils/capitalizeString.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/utils/isObject.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/utils/prefixProperty.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/inline-style-prefixer/lib/utils/prefixValue.js"
+      ]
+    },
+    {
+      "name": "scheduler",
+      "group": "React DOM + scheduler",
+      "minBytes": 3515,
+      "standaloneGzipBytes": 1515,
+      "marginalGzipBytes": 1211,
+      "sources": [
+        "../../../../tamagui-v3-numbers/cmp/node_modules/scheduler/cjs/scheduler.production.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/scheduler/index.js"
+      ]
+    },
+    {
+      "name": "styleq",
+      "group": "platform + other dependencies",
+      "minBytes": 1547,
+      "standaloneGzipBytes": 820,
+      "marginalGzipBytes": 562,
+      "sources": [
+        "../../../../tamagui-v3-numbers/cmp/node_modules/styleq/dist/styleq.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/styleq/dist/transform-localize-style.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/styleq/transform-localize-style.js"
+      ]
+    },
+    {
+      "name": "bundler/unmapped",
+      "group": "bundler",
+      "minBytes": 1541,
+      "standaloneGzipBytes": 818,
+      "marginalGzipBytes": 609,
+      "sources": [
+        null
+      ]
+    },
+    {
+      "name": "@babel/runtime",
+      "group": "platform + other dependencies",
+      "minBytes": 1412,
+      "standaloneGzipBytes": 630,
+      "marginalGzipBytes": 361,
+      "sources": [
+        "../../../../tamagui-v3-numbers/cmp/node_modules/@babel/runtime/helpers/esm/defineProperty.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/@babel/runtime/helpers/esm/objectSpread2.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/@babel/runtime/helpers/esm/toPrimitive.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/@babel/runtime/helpers/esm/toPropertyKey.js",
+        "../../../../tamagui-v3-numbers/cmp/node_modules/@babel/runtime/helpers/esm/typeof.js"
+      ]
+    },
+    {
+      "name": "app",
+      "group": "app",
+      "minBytes": 425,
+      "standaloneGzipBytes": 280,
+      "marginalGzipBytes": 215,
+      "sources": [
+        "../../src/App.tsx",
+        "../../src/main.tsx"
+      ]
+    },
+    {
+      "name": "hyphenate-style-name",
+      "group": "platform + other dependencies",
+      "minBytes": 203,
+      "standaloneGzipBytes": 174,
+      "marginalGzipBytes": 48,
+      "sources": [
+        "../../../../tamagui-v3-numbers/cmp/node_modules/hyphenate-style-name/index.js"
+      ]
+    }
+  ],
+  "css": [
+    {
+      "file": "assets/index-MyqcHTuf.css",
+      "minBytes": 9550,
+      "gzipBytes": 2550,
+      "sha256": "aca542d5a0dfeea0542cb8fb9320e90aa635f7268b491f99b1e60f9f79757825"
+    }
+  ],
+  "chunks": [
+    {
+      "file": "assets/index-DPh0BWfN.js",
+      "minBytes": 309621,
+      "gzipBytes": 99067,
+      "sha256": "a3fae1765b1889911f9e146f9517bc7666b5eb69e305c7cd367f884e7c96636b"
+    }
+  ]
+}

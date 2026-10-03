@@ -1,19 +1,19 @@
 # Tamagui v3 beta launch lane
 
-State: inventory, hero fix, and docs/skills pass complete on `v3/site-docs-pass`.
-The production site build and root typecheck pass. Gemini's assembled review passed;
-Nate approved the shared hero comparison. No deploy or publication ran.
-Next: Nate decides site deployment and the automatic beta-publication gate before
-v3-beta integration. Then exercise and integrate the existing downstream migrations.
-Worktree: `~/.worktrees/tamagui-v3-beta-site-docs`, branch
-`v3/site-docs-pass`, owner `lane-tamagui-v3 (r51009)`.
+State: the approved hero containment fix and docs pass are merged into `v3-beta`.
+Nate decided automatic beta publication stays enabled. Published beta 1564.1
+corresponds to source `564ffb4364`. Production still renders the v2 homepage;
+the existing v3 PR preview serves older copy and its latest deployment failed.
+Current reconciliation, measurements, source provenance, and deployment blockers:
+[launch-site-2026-10-03.md](./launch-site-2026-10-03.md).
+The historical validation and delivery sections below describe their original run.
 
 ## Acceptance inventory
 
 | Item | State | Evidence | Next |
 | --- | --- | --- | --- |
-| Site published | pending owner approval | `plans/v3-beta-site-readiness.md` records an earlier 784-route build; this run has not deployed anything | present the validated hero comparison and build result to Nate for a deploy decision |
-| Hero fixed | validated and reviewed; Nate approved the comparison | at 320px code grew to 432px in the fixed 430px panel; preserving code lines with horizontal scrolling holds it to 378px; 10 runtime states pass across five widths | deploy on Nate's approval |
+| Site published | v3 production publication pending | production renders v2; existing v3 preview is healthy but its latest deployment failed and Railway CLI is unauthorized | obtain the failed build log through an already authorized owner; verify the exact deployed commit after publication |
+| Hero fixed | approved source merged into v3-beta | `4f07152c69`; original 10 runtime states pass across five widths | publish approved source through the authorized site deployment path |
 | Docs and skills pass | complete for active v3 core, intro, guides, 24 versioned component pages, and reusable skills | 94 files audited, 675 code blocks parsed, 255 literal JSX style values checked with the grammar; four stale prose references repaired; production build and typecheck pass | deploy with the site; preserve intentional v2 migration comparisons and historical docs |
 | Chat upgraded | migration exists off main; main still pins `2.7.7` | `plans/v3-beta/chat-migration-receipt.md`; `origin/v3` exists; `finish-line.md` records `531ecfdc0` on beta 917.1 and a later clean native launch after the outline-style fix | preserve existing migration, inspect its current tip, exercise refreshed local packages, then identify integration ownership |
 | Takeout upgraded | migration exists off main; main still pins `2.7.7` | `plans/v3-beta/takeout-migration-receipt.md`; `origin/v3` and additional beta migration branches exist; `finish-line.md` records `649b2a0e` on beta 917.1 | compare existing migration branches before selecting work; validate refreshed local packages with `bun release --into <isolated-consumer>` |
@@ -29,12 +29,13 @@ Worktree: `~/.worktrees/tamagui-v3-beta-site-docs`, branch
 - RAN: fetched `origin/v3-beta` and read its recent commits and existing plans.
   `plans/v3-beta/` already contains migration and validation receipts. This README
   adds the launch inventory without restarting their completed work.
-- Tamagui main is Nate-only. No main push, publish, release, release tag, or deploy
-  is authorized by this assignment.
+- Tamagui main is Nate-only. No main push or stable release is authorized. Approved existing site work may
+  deploy only through an already authorized path; new visuals stay on a review branch.
 - TESTED: both branch copies of `.github/workflows/release.yml` define automatic beta
   publication after a successful push check on `v3-beta`, and
   `gh api repos/tamagui/tamagui/actions/workflows/release.yml` returns `state: active`.
-  Push only `v3/site-docs-pass` under this assignment's no-release boundary.
+  The historical run pushed only `v3/site-docs-pass`; the current reconciliation
+  preserves automatic beta publication and holds claim copy on its review branch.
 
 ## Validation and close-out
 
@@ -100,8 +101,9 @@ Inventory commit: `e5c9a93761`, pushed to `origin/v3/site-docs-pass`.
 The validated implementation commit follows that inventory on the same branch.
 Its parent is the inventory commit; its complete diff is the five site/docs files
 and this updated README. Tamagui main remains untouched. The release workflow is
-active, so integrating into v3-beta would trigger an npm beta cut. That is the
-remaining integration blocker under this assignment's no-publication instruction.
+active, so integrating into v3-beta would trigger an npm beta cut. That was the original
+integration gate. Nate has since retained automatic beta publication and the
+approved hero/docs source is integrated into v3-beta; site deployment remains open.
 The lane manager owns any CI monitoring of this branch's Checks run.
 
 Historical receipts describe their own source versions and are not fresh validation.

@@ -1,0 +1,330 @@
+{
+  "hero": [
+    {
+      "width": 320,
+      "mode": "Tamagui",
+      "contained": false,
+      "height": 432,
+      "panelHeight": 430,
+      "bottom": 1387,
+      "panelBottom": 1360,
+      "whiteSpace": "pre-wrap",
+      "overflowX": "visible",
+      "scrollWidth": 238,
+      "clientWidth": 238,
+      "documentWidth": 320,
+      "viewport": 320,
+      "text": "import { html, styled } from 'tamagui'\n\n<html.button\n  px=\"4\"\n  py=\"2\"\n  rounded=\"4\"\n  bg=\"blue-9 hover:blue-10\"\n>\n  <html.span color=\"white\">Ship it</html.span>\n</html.button>\n\n// or lift it into a component\nconst Button = styled(html.button, {\n  px: '4',\n  py: '2',\n  rounded: '4',\n  bg: {\n    default: 'blue-9',\n    hover: 'blue-10',\n  },\n})",
+      "errors": []
+    },
+    {
+      "width": 320,
+      "mode": "Tailwind",
+      "contained": false,
+      "height": 432,
+      "panelHeight": 430,
+      "bottom": 1387,
+      "panelBottom": 1360,
+      "whiteSpace": "pre-wrap",
+      "overflowX": "visible",
+      "scrollWidth": 238,
+      "clientWidth": 238,
+      "documentWidth": 320,
+      "viewport": 320,
+      "text": "import { html, styled } from '@tamagui/tailwind'\n\n<html.button\n  className=\"px-4 py-2 rounded-lg\n             bg-blue-500 hover:bg-blue-600\"\n>\n  <html.span className=\"text-white\">Ship it</html.span>\n</html.button>\n\n// or lift it into a component\nconst Button = styled(html.button, 'px-4 py-2 rounded-lg', {\n  variants: {\n    tone: {\n      solid: 'bg-blue-500 hover:bg-blue-600',\n      ghost: 'hover:bg-blue-50',\n    },\n  },\n})",
+      "errors": []
+    },
+    {
+      "width": 390,
+      "mode": "Tamagui",
+      "contained": false,
+      "height": 396,
+      "panelHeight": 430,
+      "bottom": 1245,
+      "panelBottom": 1254,
+      "whiteSpace": "pre-wrap",
+      "overflowX": "visible",
+      "scrollWidth": 308,
+      "clientWidth": 308,
+      "documentWidth": 390,
+      "viewport": 390,
+      "text": "import { html, styled } from 'tamagui'\n\n<html.button\n  px=\"4\"\n  py=\"2\"\n  rounded=\"4\"\n  bg=\"blue-9 hover:blue-10\"\n>\n  <html.span color=\"white\">Ship it</html.span>\n</html.button>\n\n// or lift it into a component\nconst Button = styled(html.button, {\n  px: '4',\n  py: '2',\n  rounded: '4',\n  bg: {\n    default: 'blue-9',\n    hover: 'blue-10',\n  },\n})",
+      "errors": []
+    },
+    {
+      "width": 390,
+      "mode": "Tailwind",
+      "contained": false,
+      "height": 414,
+      "panelHeight": 430,
+      "bottom": 1263,
+      "panelBottom": 1254,
+      "whiteSpace": "pre-wrap",
+      "overflowX": "visible",
+      "scrollWidth": 308,
+      "clientWidth": 308,
+      "documentWidth": 390,
+      "viewport": 390,
+      "text": "import { html, styled } from '@tamagui/tailwind'\n\n<html.button\n  className=\"px-4 py-2 rounded-lg\n             bg-blue-500 hover:bg-blue-600\"\n>\n  <html.span className=\"text-white\">Ship it</html.span>\n</html.button>\n\n// or lift it into a component\nconst Button = styled(html.button, 'px-4 py-2 rounded-lg', {\n  variants: {\n    tone: {\n      solid: 'bg-blue-500 hover:bg-blue-600',\n      ghost: 'hover:bg-blue-50',\n    },\n  },\n})",
+      "errors": []
+    },
+    {
+      "width": 768,
+      "mode": "Tamagui",
+      "contained": false,
+      "height": 378,
+      "panelHeight": 430,
+      "bottom": 1007,
+      "panelBottom": 1034,
+      "whiteSpace": "pre-wrap",
+      "overflowX": "visible",
+      "scrollWidth": 686,
+      "clientWidth": 686,
+      "documentWidth": 768,
+      "viewport": 768,
+      "text": "import { html, styled } from 'tamagui'\n\n<html.button\n  px=\"4\"\n  py=\"2\"\n  rounded=\"4\"\n  bg=\"blue-9 hover:blue-10\"\n>\n  <html.span color=\"white\">Ship it</html.span>\n</html.button>\n\n// or lift it into a component\nconst Button = styled(html.button, {\n  px: '4',\n  py: '2',\n  rounded: '4',\n  bg: {\n    default: 'blue-9',\n    hover: 'blue-10',\n  },\n})",
+      "errors": []
+    },
+    {
+      "width": 768,
+      "mode": "Tailwind",
+      "contained": false,
+      "height": 324,
+      "panelHeight": 430,
+      "bottom": 953,
+      "panelBottom": 1034,
+      "whiteSpace": "pre-wrap",
+      "overflowX": "visible",
+      "scrollWidth": 686,
+      "clientWidth": 686,
+      "documentWidth": 768,
+      "viewport": 768,
+      "text": "import { html, styled } from '@tamagui/tailwind'\n\n<html.button\n  className=\"px-4 py-2 rounded-lg\n             bg-blue-500 hover:bg-blue-600\"\n>\n  <html.span className=\"text-white\">Ship it</html.span>\n</html.button>\n\n// or lift it into a component\nconst Button = styled(html.button, 'px-4 py-2 rounded-lg', {\n  variants: {\n    tone: {\n      solid: 'bg-blue-500 hover:bg-blue-600',\n      ghost: 'hover:bg-blue-50',\n    },\n  },\n})",
+      "errors": []
+    },
+    {
+      "width": 1024,
+      "mode": "Tamagui",
+      "contained": false,
+      "height": 378,
+      "panelHeight": 430,
+      "bottom": 642.5,
+      "panelBottom": 669.5,
+      "whiteSpace": "pre-wrap",
+      "overflowX": "visible",
+      "scrollWidth": 424,
+      "clientWidth": 424,
+      "documentWidth": 1024,
+      "viewport": 1024,
+      "text": "import { html, styled } from 'tamagui'\n\n<html.button\n  px=\"4\"\n  py=\"2\"\n  rounded=\"4\"\n  bg=\"blue-9 hover:blue-10\"\n>\n  <html.span color=\"white\">Ship it</html.span>\n</html.button>\n\n// or lift it into a component\nconst Button = styled(html.button, {\n  px: '4',\n  py: '2',\n  rounded: '4',\n  bg: {\n    default: 'blue-9',\n    hover: 'blue-10',\n  },\n})",
+      "errors": []
+    },
+    {
+      "width": 1024,
+      "mode": "Tailwind",
+      "contained": false,
+      "height": 342,
+      "panelHeight": 430,
+      "bottom": 606.5,
+      "panelBottom": 669.5,
+      "whiteSpace": "pre-wrap",
+      "overflowX": "visible",
+      "scrollWidth": 424,
+      "clientWidth": 424,
+      "documentWidth": 1024,
+      "viewport": 1024,
+      "text": "import { html, styled } from '@tamagui/tailwind'\n\n<html.button\n  className=\"px-4 py-2 rounded-lg\n             bg-blue-500 hover:bg-blue-600\"\n>\n  <html.span className=\"text-white\">Ship it</html.span>\n</html.button>\n\n// or lift it into a component\nconst Button = styled(html.button, 'px-4 py-2 rounded-lg', {\n  variants: {\n    tone: {\n      solid: 'bg-blue-500 hover:bg-blue-600',\n      ghost: 'hover:bg-blue-50',\n    },\n  },\n})",
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "mode": "Tamagui",
+      "contained": false,
+      "height": 378,
+      "panelHeight": 430,
+      "bottom": 642.5,
+      "panelBottom": 669.5,
+      "whiteSpace": "pre-wrap",
+      "overflowX": "visible",
+      "scrollWidth": 448,
+      "clientWidth": 448,
+      "documentWidth": 1440,
+      "viewport": 1440,
+      "text": "import { html, styled } from 'tamagui'\n\n<html.button\n  px=\"4\"\n  py=\"2\"\n  rounded=\"4\"\n  bg=\"blue-9 hover:blue-10\"\n>\n  <html.span color=\"white\">Ship it</html.span>\n</html.button>\n\n// or lift it into a component\nconst Button = styled(html.button, {\n  px: '4',\n  py: '2',\n  rounded: '4',\n  bg: {\n    default: 'blue-9',\n    hover: 'blue-10',\n  },\n})",
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "mode": "Tailwind",
+      "contained": false,
+      "height": 324,
+      "panelHeight": 430,
+      "bottom": 588.5,
+      "panelBottom": 669.5,
+      "whiteSpace": "pre-wrap",
+      "overflowX": "visible",
+      "scrollWidth": 448,
+      "clientWidth": 448,
+      "documentWidth": 1440,
+      "viewport": 1440,
+      "text": "import { html, styled } from '@tamagui/tailwind'\n\n<html.button\n  className=\"px-4 py-2 rounded-lg\n             bg-blue-500 hover:bg-blue-600\"\n>\n  <html.span className=\"text-white\">Ship it</html.span>\n</html.button>\n\n// or lift it into a component\nconst Button = styled(html.button, 'px-4 py-2 rounded-lg', {\n  variants: {\n    tone: {\n      solid: 'bg-blue-500 hover:bg-blue-600',\n      ghost: 'hover:bg-blue-50',\n    },\n  },\n})",
+      "errors": []
+    }
+  ],
+  "docs": [
+    {
+      "path": "/docs/core/native",
+      "status": 200,
+      "headings": [
+        "Native"
+      ],
+      "codeBlocks": 26,
+      "hasOnePortal": false,
+      "hasNativeSheetRenderer": false,
+      "errors": []
+    },
+    {
+      "path": "/docs/core/tokens",
+      "status": 200,
+      "headings": [
+        "Tokens"
+      ],
+      "codeBlocks": 10,
+      "hasOnePortal": false,
+      "hasNativeSheetRenderer": false,
+      "errors": []
+    },
+    {
+      "path": "/docs/core/cli",
+      "status": 200,
+      "headings": [
+        "Tamagui CLI"
+      ],
+      "codeBlocks": 22,
+      "hasOnePortal": false,
+      "hasNativeSheetRenderer": false,
+      "errors": []
+    },
+    {
+      "path": "/docs/core/tailwind",
+      "status": 200,
+      "headings": [
+        "Tamagui Tailwind"
+      ],
+      "codeBlocks": 13,
+      "hasOnePortal": false,
+      "hasNativeSheetRenderer": false,
+      "errors": []
+    },
+    {
+      "path": "/docs/guides/flat-values",
+      "status": 200,
+      "headings": [
+        "Flat Conditional Values"
+      ],
+      "codeBlocks": 17,
+      "hasOnePortal": false,
+      "hasNativeSheetRenderer": false,
+      "errors": []
+    },
+    {
+      "path": "/docs/guides/vite",
+      "status": 200,
+      "headings": [
+        "Vite Guide"
+      ],
+      "codeBlocks": 6,
+      "hasOnePortal": false,
+      "hasNativeSheetRenderer": false,
+      "errors": []
+    },
+    {
+      "path": "/docs/guides/how-to-upgrade",
+      "status": 200,
+      "headings": [
+        "Upgrading to v3"
+      ],
+      "codeBlocks": 73,
+      "hasOnePortal": false,
+      "hasNativeSheetRenderer": false,
+      "errors": []
+    },
+    {
+      "path": "/docs/guides/create-tamagui-app",
+      "status": 200,
+      "headings": [
+        "Bootstrapping"
+      ],
+      "codeBlocks": 4,
+      "hasOnePortal": false,
+      "hasNativeSheetRenderer": false,
+      "errors": []
+    },
+    {
+      "path": "/docs/guides/how-to-build-a-button",
+      "status": 200,
+      "headings": [
+        "How to Build a Button"
+      ],
+      "codeBlocks": 22,
+      "hasOnePortal": false,
+      "hasNativeSheetRenderer": false,
+      "errors": []
+    },
+    {
+      "path": "/ui/sheet",
+      "status": 200,
+      "headings": [
+        "Sheet"
+      ],
+      "codeBlocks": 8,
+      "hasOnePortal": false,
+      "hasNativeSheetRenderer": false,
+      "errors": []
+    },
+    {
+      "path": "/ui/select",
+      "status": 200,
+      "headings": [
+        "Select"
+      ],
+      "codeBlocks": 7,
+      "hasOnePortal": false,
+      "hasNativeSheetRenderer": false,
+      "errors": []
+    },
+    {
+      "path": "/ui/popover",
+      "status": 200,
+      "headings": [
+        "Popover"
+      ],
+      "codeBlocks": 8,
+      "hasOnePortal": false,
+      "hasNativeSheetRenderer": false,
+      "errors": []
+    },
+    {
+      "path": "/ui/tabs",
+      "status": 200,
+      "headings": [
+        "Tabs"
+      ],
+      "codeBlocks": 6,
+      "hasOnePortal": false,
+      "hasNativeSheetRenderer": false,
+      "errors": []
+    },
+    {
+      "path": "/ui/lucide-icons",
+      "status": 200,
+      "headings": [
+        "Lucide Icons"
+      ],
+      "codeBlocks": 5,
+      "hasOnePortal": false,
+      "hasNativeSheetRenderer": false,
+      "errors": []
+    }
+  ]
+}

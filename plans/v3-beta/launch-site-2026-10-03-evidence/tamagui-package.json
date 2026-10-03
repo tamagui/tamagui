@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@tamagui/core": "3.0.0-beta.1564.1",
+    "@tamagui/tailwind": "3.0.0-beta.1564.1",
+    "@tamagui/web": "3.0.0-beta.1564.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  }
+}

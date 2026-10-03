@@ -136,3 +136,15 @@ are 16,342 bytes; React and React DOM are included in each app total.
 Open [the report](./report.html) for every package, source module, output hash,
 and command. [Browser receipts](./receipts/probe.json) record the matching styles,
 working counters, and both CSS theme checks.
+
+## Verification on the published launch beta
+
+**TESTED, 2026-10-03:** the same generated fixture on published
+`3.0.0-beta.1564.1`, source `564ffb43648b08adc091e17b6587fdbd66556796`,
+produced the same headline totals: 16,899 / 23,924 / 40,485 bytes for
+Tamagui / NativeWind / Uniwind. The original checked-in receipts above remain
+the historical local-tip experiment. Fresh package rows, CSS bytes, browser
+results, and reproduction commands are in the
+[launch receipt](../../../plans/v3-beta/launch-site-2026-10-03.md).
+React, React DOM, and scheduler are excluded equally; required React Native Web
+stays bundled. This is a fixture measurement, not an under-30KB application guarantee.

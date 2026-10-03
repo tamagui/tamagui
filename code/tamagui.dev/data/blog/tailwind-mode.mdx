@@ -97,17 +97,17 @@ On beta 901, compiled Tamagui Tailwind had lower mount means than NativeWind
 and Uniwind in simple, rich, group, and heavy. The paired 95% confidence
 intervals for all eight comparisons were below zero.
 
-In a separate small-app production web build, compiled Tamagui Tailwind using
-only `@tamagui/core` ships 16,899 bytes of JavaScript at gzip level 9, versus
-40,485 bytes for Uniwind and 23,924 for NativeWind v5. All three exclude React
-and React DOM. React Native Web and every other required dependency stay
+In a separate small-app production web build on beta 1564.1, compiled Tamagui
+Tailwind using only `@tamagui/core` ships 16,899 bytes of JavaScript at gzip level 9, versus
+40,485 bytes for Uniwind and 23,924 for NativeWind v5. All three exclude React,
+React DOM, and scheduler. React Native Web and every other required dependency stay
 bundled in Uniwind and NativeWind; Tamagui core does not use React Native Web.
 That is about 58.3% less JavaScript than Uniwind in this fixture. Tamagui's theme
 definitions are extracted to CSS, with no theme definitions in the client
 config. Tamagui's runtime spans measure 16,211 bytes when compressed separately.
 Package measurements do not add up to the app total because gzip shares a
 dictionary across packages. The [measurement fixture and package
-breakdown](https://github.com/tamagui/tamagui/tree/tm/site-claims/code/comparisons/tailwind-bundle)
+breakdown](https://github.com/tamagui/tamagui/blob/tm/launch-site-2026-10-03/plans/v3-beta/launch-site-2026-10-03.md)
 include the build commands, exact dependency versions, and separate complete-app
 builds with React and React DOM bundled.
 

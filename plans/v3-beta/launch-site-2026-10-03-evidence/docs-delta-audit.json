@@ -1,0 +1,188 @@
+{
+  "expectedHistorical": [
+    {
+      "file": "code/tamagui.dev/data/docs/guides/flat-values.mdx",
+      "block": 14,
+      "prop": "bg",
+      "value": "$background",
+      "diagnostics": [
+        {
+          "index": 0,
+          "code": "v2-dollar-prefix",
+          "start": 0,
+          "end": 11,
+          "property": "bg",
+          "replacement": "background",
+          "message": "v3 tokens have no \"$\" prefix, write \"background\" not \"$background\""
+        }
+      ]
+    },
+    {
+      "file": "code/tamagui.dev/data/docs/guides/flat-values.mdx",
+      "block": 14,
+      "prop": "p",
+      "value": "$4",
+      "diagnostics": [
+        {
+          "index": 0,
+          "code": "v2-dollar-prefix",
+          "start": 0,
+          "end": 2,
+          "property": "p",
+          "replacement": "4",
+          "message": "v3 tokens have no \"$\" prefix, write \"4\" not \"$4\""
+        }
+      ]
+    }
+  ],
+  "source": "564ffb43648b08adc091e17b6587fdbd66556796",
+  "negative": [
+    {
+      "code": "empty-modifier",
+      "index": 6,
+      "start": 6,
+      "end": 7,
+      "message": "a modifier chain has an empty segment"
+    }
+  ],
+  "rows": [
+    {
+      "file": "code/tamagui.dev/data/docs/components/lucide-icons/3.0.0.mdx",
+      "parsed": 1,
+      "fragments": [
+        {
+          "block": 2,
+          "reason": "Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (2:0)"
+        },
+        {
+          "block": 3,
+          "reason": "Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (10:0)"
+        }
+      ],
+      "checked": 0,
+      "historical": false
+    },
+    {
+      "file": "code/tamagui.dev/data/docs/components/popover/3.0.0.mdx",
+      "parsed": 5,
+      "fragments": [],
+      "checked": 0,
+      "historical": false
+    },
+    {
+      "file": "code/tamagui.dev/data/docs/components/select/3.0.0.mdx",
+      "parsed": 4,
+      "fragments": [
+        {
+          "block": 2,
+          "reason": "Missing semicolon. (3:7)"
+        },
+        {
+          "block": 5,
+          "reason": "Unexpected token (9:15)"
+        }
+      ],
+      "checked": 1,
+      "historical": false
+    },
+    {
+      "file": "code/tamagui.dev/data/docs/components/sheet/3.0.0.mdx",
+      "parsed": 7,
+      "fragments": [],
+      "checked": 4,
+      "historical": false
+    },
+    {
+      "file": "code/tamagui.dev/data/docs/components/tabs/3.0.0.mdx",
+      "parsed": 4,
+      "fragments": [],
+      "checked": 0,
+      "historical": false
+    },
+    {
+      "file": "code/tamagui.dev/data/docs/components/text/2.0.0.mdx",
+      "parsed": 0,
+      "fragments": [],
+      "checked": 0,
+      "historical": true
+    },
+    {
+      "file": "code/tamagui.dev/data/docs/core/cli.mdx",
+      "parsed": 2,
+      "fragments": [],
+      "checked": 0,
+      "historical": false
+    },
+    {
+      "file": "code/tamagui.dev/data/docs/core/native.mdx",
+      "parsed": 17,
+      "fragments": [],
+      "checked": 0,
+      "historical": false
+    },
+    {
+      "file": "code/tamagui.dev/data/docs/core/tokens.mdx",
+      "parsed": 0,
+      "fragments": [],
+      "checked": 0,
+      "historical": true
+    },
+    {
+      "file": "code/tamagui.dev/data/docs/guides/create-tamagui-app.mdx",
+      "parsed": 0,
+      "fragments": [],
+      "checked": 0,
+      "historical": false
+    },
+    {
+      "file": "code/tamagui.dev/data/docs/guides/flat-values.mdx",
+      "parsed": 10,
+      "fragments": [
+        {
+          "block": 9,
+          "reason": "Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (2:0)"
+        },
+        {
+          "block": 10,
+          "reason": "Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (4:0)"
+        },
+        {
+          "block": 11,
+          "reason": "Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (4:0)"
+        },
+        {
+          "block": 12,
+          "reason": "Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (5:0)"
+        },
+        {
+          "block": 13,
+          "reason": "Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (5:0)"
+        }
+      ],
+      "checked": 18,
+      "historical": false
+    },
+    {
+      "file": "code/tamagui.dev/data/docs/guides/how-to-build-a-button.mdx",
+      "parsed": 24,
+      "fragments": [],
+      "checked": 3,
+      "historical": false
+    },
+    {
+      "file": "code/tamagui.dev/data/docs/guides/how-to-upgrade.mdx",
+      "parsed": 0,
+      "fragments": [],
+      "checked": 0,
+      "historical": true
+    },
+    {
+      "file": "code/tamagui.dev/data/docs/guides/vite.mdx",
+      "parsed": 0,
+      "fragments": [],
+      "checked": 0,
+      "historical": false
+    }
+  ],
+  "findings": []
+}
