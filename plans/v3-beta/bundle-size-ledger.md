@@ -493,3 +493,21 @@ to relative on web).
   pinned Node 24.16.0 and zlib 1.3.1-e00f703, which is what `--update-baseline`
   records there.
 - Baseline re-recorded at 29,776, ceiling 29,926.
+
+## Baseline update, 2026-10-03: touch tap presses once
+
+`58abc5c586` makes a touch tap press once and opens an adapted Select on
+release; the press pairing it adds to `code/core/web/src/eventHandling.ts` is
+runtime code every styled component carries. `2947e13a6d` on top of it only
+adds `@tamagui/native/setup-one-portal`, which no web graph imports.
+
+- **RAN** `checks` on `2947e13a6d`: styled-view gzip 29,939, raw 79,664, +163
+  over the 29,776 baseline and 13 past its ceiling. `e2fba9852d`, the last green
+  run before the touch fix, sat under the 29,926 ceiling, so the earlier commits
+  since the 2026-09-22 re-record account for up to 150 of those bytes.
+- **RAN** the `v3-zero-runtime (starter)` job on `2947e13a6d`: island JavaScript
+  grew 73312 -> 73360 (vite), 73334 -> 73385 (next-webpack), 124041 -> 124095
+  (metro-web); every other number held.
+- Accepted as the cost of the touch fix. The numbers are CI's measurement on
+  the pinned Node 24.16.0 and zlib 1.3.1-e00f703.
+- Baselines re-recorded at those values; styled-view ceiling 30,089.
