@@ -512,7 +512,8 @@ adds `@tamagui/native/setup-one-portal`, which no web graph imports.
   the pinned Node 24.16.0 and zlib 1.3.1-e00f703.
 - Baselines re-recorded at those values; styled-view ceiling 30,089.
 - The press pairing was then folded into one wrapper. **RAN** on the pinned
-  Node: styled-view gzip 29,919 (raw 79,676), 20 bytes back; island JavaScript
-  73335 (vite), 73354 (next-webpack), 124073 (metro-web), with every unchanged
-  JavaScript count matching the linux baseline byte for byte. Baselines
-  lowered to those values; styled-view ceiling 30,069.
+  Node: styled-view gzip 29,919 (raw 79,676), 20 bytes back, ceiling 30,069.
+  Island JavaScript is CI's linux measurement: 73341 (vite), 73359
+  (next-webpack), 124079 (metro-web). Darwin builds those island graphs 5 to 6
+  bytes smaller, so island counts are never copied from a Mac run, even when
+  its unchanged counts match linux.
