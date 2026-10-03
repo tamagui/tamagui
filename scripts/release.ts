@@ -739,6 +739,20 @@ async function run() {
       await ensureDir(tmpDir)
 
       const isPublished = async ({ name }: { name: string }) => {
+        if (canary) {
+          const url = new URL(
+            `https://registry.npmjs.org/${encodeURIComponent(name)}/${version}`
+          )
+          url.searchParams.set('verify', String(Date.now()))
+          const response = await fetch(url, { headers: { 'cache-control': 'no-cache' } })
+          if (response.status === 404) return false
+          if (!response.ok)
+            throw new Error(
+              `Could not verify ${name}@${version}: HTTP ${response.status}`
+            )
+          const metadata = (await response.json()) as { version?: string }
+          return metadata.version === version
+        }
         try {
           const { stdout } = await exec(
             `npm view ${name}@${version} version --json --prefer-online`
@@ -764,11 +778,14 @@ async function run() {
       }
 
       console.info(`Checking ${packagesToPublish.length} package versions on npm...`)
-      const publishedChecks = await pMap(
-        packagesToPublish,
-        async (pkg) => ({ pkg, published: await isPublished(pkg) }),
-        { concurrency: 8 }
-      )
+      const publishedChecks =
+        canary && !rePublish
+          ? packagesToPublish.map((pkg) => ({ pkg, published: false }))
+          : await pMap(
+              packagesToPublish,
+              async (pkg) => ({ pkg, published: await isPublished(pkg) }),
+              { concurrency: 8 }
+            )
       const pendingPackages = publishedChecks
         .filter(({ pkg, published }) => {
           if (published) {
