@@ -34,6 +34,8 @@ export const SelectTrigger = createStyledHOC(
       forwardedRef,
       context.floatingContext?.refs.setReference as any
     )
+    // whether the press in flight began as a touch, so its click opens
+    const pressIsTouch = React.useRef(false)
 
     if (itemParentContext.shouldRenderWebNative) {
       return null
@@ -66,10 +68,25 @@ export const SelectTrigger = createStyledHOC(
             ...triggerProps,
             ...(isWeb
               ? {
+                  // a mouse opens on press so a press, drag and release picks
+                  // in one gesture. a touch opens on release, as a native
+                  // select does: opening on touchstart mounts the sheet
+                  // overlay under the finger, and the same tap's click then
+                  // lands on it and closes the sheet again.
                   onMouseDown: composeEventHandlers(
                     triggerProps.onMouseDown as any,
                     (event: any) => {
+                      pressIsTouch.current = event.type === 'touchstart'
+                      if (pressIsTouch.current) return
                       event.preventDefault()
+                      toggleOpen(event)
+                    }
+                  ),
+                  onPress: composeEventHandlers(
+                    triggerProps.onPress as any,
+                    (event: any) => {
+                      if (!pressIsTouch.current) return
+                      pressIsTouch.current = false
                       toggleOpen(event)
                     }
                   ),
