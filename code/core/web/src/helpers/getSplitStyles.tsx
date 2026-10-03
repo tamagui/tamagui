@@ -1730,10 +1730,8 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  // native style stability: the inline per-key compare during mergeStyle found
-  // no value changes. fixStyles/transforms/parent defaults are all deterministic
-  // on those same values, so if key count matches the style is identical — swap
-  // in the prev ref so RN skips diffNestedProperty entirely.
+  // native style stability: mergeStyle compares scalar values inline, but
+  // transforms finalize later and need their own value comparison.
   if (process.env.TAMAGUI_TARGET === 'native') {
     const direct = styleState as DirectState
     const prevStyle = direct.flatPrevStyle
@@ -1743,7 +1741,56 @@ export const getSplitStyles: StyleSplitter = (
       !direct.flatStyleChanged &&
       Object.keys(prevStyle).length === Object.keys(styleState.style).length
     ) {
-      styleState.style = prevStyle as any
+      const previousTransform = prevStyle.transform
+      const nextTransform = styleState.style.transform
+      let transformMatches = previousTransform === nextTransform
+      if (
+        !transformMatches &&
+        Array.isArray(previousTransform) &&
+        Array.isArray(nextTransform) &&
+        previousTransform.length === nextTransform.length
+      ) {
+        transformMatches = true
+        for (let index = 0; index < nextTransform.length; index++) {
+          const previousPart = previousTransform[index]
+          const nextPart = nextTransform[index]
+          if (previousPart === nextPart) continue
+          if (
+            !previousPart ||
+            !nextPart ||
+            typeof previousPart !== 'object' ||
+            typeof nextPart !== 'object'
+          ) {
+            transformMatches = false
+            break
+          }
+          const keys = Object.keys(nextPart)
+          if (keys.length !== Object.keys(previousPart).length) {
+            transformMatches = false
+            break
+          }
+          for (const key of keys) {
+            const previousValue = previousPart[key]
+            const nextValue = nextPart[key]
+            if (
+              previousValue !== nextValue &&
+              !(
+                Array.isArray(previousValue) &&
+                Array.isArray(nextValue) &&
+                previousValue.length === nextValue.length &&
+                nextValue.every(
+                  (value, valueIndex) => value === previousValue[valueIndex]
+                )
+              )
+            ) {
+              transformMatches = false
+              break
+            }
+          }
+          if (!transformMatches) break
+        }
+      }
+      if (transformMatches) styleState.style = prevStyle as any
     }
   }
 

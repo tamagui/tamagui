@@ -409,6 +409,46 @@ describe('getSplitStyles', () => {
     expect(groupMedia.mediaGroups?.has('sm')).toBe(true)
   })
 
+  test.each([
+    [{ x: 0 }, { x: 64 }],
+    [{ y: 0 }, { y: 32 }],
+    [{ scale: 1 }, { scale: 2 }],
+    [{ rotate: '0deg' }, { rotate: '45deg' }],
+    [{ x: 1 }, { scale: 1 }],
+    [
+      { transform: [{ translateX: 0 }, { scale: 1 }] },
+      { transform: [{ translateX: 64 }, { scale: 1 }] },
+    ],
+    [
+      { transform: [{ translateX: 1 }, { scale: 2 }] },
+      { transform: [{ scale: 2 }, { translateX: 1 }] },
+    ],
+    [
+      { transform: [{ matrix: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1] }] },
+      { transform: [{ matrix: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 64, 0, 0, 1] }] },
+    ],
+  ])('native cached styles retain transform-only changes %#', (initial, changed) => {
+    const previous = getSplitStylesFor(initial).style
+    const uncached = getSplitStylesFor(changed).style
+    expect(previous).toBeDefined()
+    expect(Object.keys(previous!)).toEqual(Object.keys(uncached!))
+    expect(previous?.transform).not.toEqual(uncached?.transform)
+    const next = getSplitStylesFor(changed, View, { prevStyle: previous }).style
+    expect(next).toEqual(uncached)
+    expect(next).not.toBe(previous)
+  })
+
+  test.each([
+    { x: 64, y: 32, scale: 2, rotate: '45deg' },
+    { transform: [{ translateX: 64 }, { scale: 2 }] },
+    { transform: [{ matrix: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 64, 0, 0, 1] }] },
+    { opacity: 0.5 },
+  ])('native cached styles reuse unchanged resolved values %#', (props) => {
+    const previous = getSplitStylesFor(props).style
+    const next = getSplitStylesFor(props, View, { prevStyle: previous }).style
+    expect(next).toBe(previous)
+  })
+
   test(`transform properties are correctly applied`, () => {
     const { style } = getSplitStylesFor({
       scale: 1.5,
@@ -617,6 +657,7 @@ function getSplitStylesFor(
     mediaState?: Record<string, any>
     groupContext?: any
     resolveValues?: 'none' | 'value' | 'web' | 'auto'
+    prevStyle?: Record<string, unknown> | null
   } = {}
 ) {
   return getSplitStyles(
@@ -637,6 +678,7 @@ function getSplitStylesFor(
       isAnimated: false,
       mediaState: options.mediaState,
       resolveValues: options.resolveValues,
+      prevStyle: options.prevStyle,
     },
     undefined,
     options.context as ComponentContextI | undefined,
