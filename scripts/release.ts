@@ -154,7 +154,7 @@ const nextVersion = (() => {
   }
 
   if (canary) {
-    return `3.0.0-canary.${Date.now()}`
+    return `3.0.0-0.canary.${Date.now()}`
   }
 
   // prerelease channel mode (--rc / --beta): bump within the channel or start it
