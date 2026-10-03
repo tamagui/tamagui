@@ -724,7 +724,7 @@ function contributeProp(
                 ? contributeValue(styleState, property, value, entry[6], false, entry[3])
                 : emitValue(styleState, property, value, null, entry[6], false)
             } else {
-              writeCapturedStyleRecord(slots, slot, entry, pass[passSourceLayer])
+              writeStyleSlot(slots, slot, [...entry], pass[passSourceLayer])
             }
           }
         }
@@ -1998,7 +1998,7 @@ function applyStylePieceClasses(
         const property = entry[0]
         const conditional = !!entry[2]
         if (!ownsSourceLayer(styleState, property, conditional)) continue
-        writeCapturedStyleRecord(slots, slot, entry, sourceLayer)
+        writeStyleSlot(slots, slot, [...entry], sourceLayer)
       }
     }
     if (compiled.programStates) {
@@ -2052,7 +2052,7 @@ function applyStylePieceClasses(
   return applied
 }
 
-function writeCapturedStyleRecord(
+function writeStyleSlot(
   slots: Map<string, AtomicSlotEntry[]>,
   slot: string,
   source: AtomicSlotEntry,
@@ -2094,9 +2094,8 @@ function writeCapturedStyleRecord(
       break
     }
   }
-  const next = [...source] as AtomicSlotEntry
-  next[7] = flags | (sourceLayer << 5)
-  list.push(next)
+  source[7] = flags | (sourceLayer << 5)
+  list.push(source)
 }
 
 function mergeStyle(
@@ -2450,41 +2449,23 @@ function writeStyleRecord(
       }
     }
   }
-  for (let index = 0; index < list.length; index++) {
-    const entry = list[index]
-    const entryFlags = entry[7]!
-    if (
-      (entryFlags & (recordInline | recordCSS)) !==
-      (flags & (recordInline | recordCSS))
-    ) {
-      continue
-    }
-    if (entry[0] !== property) continue
-    if (flags & recordDefault) {
-      if (!(entryFlags & recordDefault) && (!entry[2] || entry[3] === identity)) return
-    } else if (entryFlags & recordDefault && (!condition || entry[3] === identity)) {
-      list.splice(index--, 1)
-      continue
-    }
-    if (entry[3] === identity) {
-      list.splice(index, 1)
-      break
-    }
-  }
-  const entry: AtomicSlotEntry = [
-    property,
-    value,
-    condition,
-    identity,
-    cursor ? cursor[conditionSelector] : '',
-    cursor ? cursor[conditionWrappers] : undefined,
-    original,
-    flags | (sourceLayer << 5),
-  ]
-  if (sourceLayer === sourceLayerBase && direct.flatPass?.[passVariantOutput]) {
-    entry[9] = true
-  }
-  list.push(entry)
+  writeStyleSlot(
+    slots,
+    slot,
+    [
+      property,
+      value,
+      condition,
+      identity,
+      cursor ? cursor[conditionSelector] : '',
+      cursor ? cursor[conditionWrappers] : undefined,
+      original,
+      flags,
+      undefined,
+      !sourceLayer && direct.flatPass?.[passVariantOutput],
+    ],
+    sourceLayer
+  )
 }
 
 function streamWriteInline(
@@ -3005,12 +2986,7 @@ function ownsSourceLayer(state: GetStyleState, property: string, conditional = f
   const layer = direct.flatPass?.[passSourceLayer] || 0
   const layers = (direct.flatPropertyLayers ||= new Map())
   const previous = layers.get(property)
-  if (
-    previous === sourceLayerBase &&
-    layer === sourceLayerBase &&
-    !conditional &&
-    !direct.flatPass?.[passVariantOutput]
-  ) {
+  if (!layer && !conditional && !direct.flatPass?.[passVariantOutput]) {
     // a later authored base replaces the default variant's entire output for
     // this property, including its responsive clauses. direct clauses retain
     // their own slots, so a conditional-only override still keeps the base.
@@ -3023,20 +2999,11 @@ function ownsSourceLayer(state: GetStyleState, property: string, conditional = f
       }
     }
   }
-  if (previous !== undefined) {
-    if (previous > layer) return false
-    if (previous < layer) {
-      // a conditional contribution layers over a lower tier instead of
-      // replacing it: flexDirection="sm:column" on a styled row keeps the
-      // base row while the condition is inactive. only a program's
-      // unconditional base transfers ownership and clears what it replaces.
-      if (conditional) return true
-      clearDirectStyle(state, property)
-    }
-  } else if (conditional) {
-    // don't claim the slot either, so a later lower-tier base can still join
-    return true
-  }
+  if (previous! > layer) return false
+  // a conditional contribution retains the lower tier's base and ownership.
+  // comparisons with an absent previous layer are false.
+  if (conditional && previous !== layer) return true
+  if (previous! < layer) clearDirectStyle(state, property)
   layers.set(property, layer)
   return true
 }
