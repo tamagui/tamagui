@@ -511,3 +511,8 @@ adds `@tamagui/native/setup-one-portal`, which no web graph imports.
 - Accepted as the cost of the touch fix. The numbers are CI's measurement on
   the pinned Node 24.16.0 and zlib 1.3.1-e00f703.
 - Baselines re-recorded at those values; styled-view ceiling 30,089.
+- The press pairing was then folded into one wrapper. **RAN** on the pinned
+  Node: styled-view gzip 29,919 (raw 79,676), 20 bytes back; island JavaScript
+  73335 (vite), 73354 (next-webpack), 124073 (metro-web), with every unchanged
+  JavaScript count matching the linux baseline byte for byte. Baselines
+  lowered to those values; styled-view ceiling 30,069.
