@@ -640,6 +640,14 @@ async function main(): Promise<void> {
         options.repoRoot,
         relative(options.repoRoot, pkg.dir)
       )
+      if (options.releasePreview) {
+        temporaryManifest.releaseSourceCommit = (
+          await runCommand('git', ['rev-parse', 'HEAD'], {
+            cwd: options.repoRoot,
+            quiet: true,
+          })
+        ).stdout.trim()
+      }
       assertInternalDependenciesArePacked(temporaryManifest, packedNames)
       const stagingDir = join(stagingRoot, safeName(pkg.name))
       await copyPackageToStage(pkg, stagingDir, temporaryManifest)
