@@ -24,6 +24,8 @@
     "setup-keyboard-controller.cjs",
     "setup-safe-area",
     "setup-safe-area.cjs",
+    "setup-one-portal",
+    "setup-one-portal.cjs",
     "setup-teleport",
     "setup-teleport.cjs",
     "setup-worklets",
@@ -36,6 +38,9 @@
   "types": "./types/index.d.ts",
   "typesVersions": {
     "*": {
+      "setup-one-portal": [
+        "./types/setup-one-portal.d.ts"
+      ],
       "setup-teleport": [
         "./types/setup-teleport.d.ts"
       ],
@@ -75,6 +80,15 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
+    },
+    "./setup-one-portal": {
+      "types": "./types/setup-one-portal.d.ts",
+      "react-native": "./dist/esm/setup-one-portal.native.js",
+      "browser": "./dist/esm/setup-one-portal.mjs",
+      "module": "./dist/esm/setup-one-portal.mjs",
+      "import": "./dist/esm/setup-one-portal.mjs",
+      "require": "./dist/cjs/setup-one-portal.cjs",
+      "default": "./dist/esm/setup-one-portal.mjs"
     },
     "./setup-teleport": {
       "types": "./types/setup-teleport.d.ts",
