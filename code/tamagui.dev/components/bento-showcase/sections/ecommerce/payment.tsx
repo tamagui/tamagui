@@ -1,6 +1,6 @@
 import { YStack } from 'tamagui'
 
-import * as Payment from '@tamagui/bento/component/ecommerce/payment'
+import * as Payment from '@tamagui/bento/ecommerce/payment'
 import { Showcase } from '~/components/bento-showcase/_Showcase'
 
 export function payment() {

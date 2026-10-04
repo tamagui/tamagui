@@ -1,6 +1,6 @@
 import { YStack } from 'tamagui'
 
-import * as Preferences from '@tamagui/bento/component/user/preferences'
+import * as Preferences from '@tamagui/bento/user/preferences'
 import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,

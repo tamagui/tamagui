@@ -1,6 +1,6 @@
 import { YStack } from 'tamagui'
 
-import * as Walkthrough from '@tamagui/bento/component/panels/walkthrough'
+import * as Walkthrough from '@tamagui/bento/panels/walkthrough'
 import { Showcase } from '~/components/bento-showcase/_Showcase'
 
 type Props = ReturnType<typeof walkthroughGetComponentCodes>

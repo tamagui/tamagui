@@ -1,6 +1,6 @@
 import { YStack } from 'tamagui'
 
-import * as Dialogs from '@tamagui/bento/component/elements/dialogs'
+import * as Dialogs from '@tamagui/bento/elements/dialogs'
 import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,

@@ -1,6 +1,6 @@
 import { View, YStack } from 'tamagui'
 
-import * as Inputs from '@tamagui/bento/component/forms/inputs'
+import * as Inputs from '@tamagui/bento/forms/inputs'
 import { Showcase, WithSize } from '~/components/bento-showcase/_Showcase'
 
 export function inputs() {

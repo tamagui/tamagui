@@ -1,6 +1,6 @@
 import { YStack } from 'tamagui'
 
-import * as Checkboxes from '@tamagui/bento/component/forms/checkboxes'
+import * as Checkboxes from '@tamagui/bento/forms/checkboxes'
 import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,

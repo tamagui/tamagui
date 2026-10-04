@@ -1,7 +1,7 @@
 import { YStack } from 'tamagui'
 
 import { Showcase } from '~/components/bento-showcase/_Showcase'
-import * as Navbars from '@tamagui/bento/component/shells/navbars'
+import * as Navbars from '@tamagui/bento/shells/navbars'
 
 type Props = ReturnType<typeof navbarsGetComponentCodes>
 

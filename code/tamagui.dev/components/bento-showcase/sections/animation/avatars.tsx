@@ -1,6 +1,6 @@
 import { YStack } from 'tamagui'
 
-import * as AnAvatars from '@tamagui/bento/component/animation/avatars'
+import * as AnAvatars from '@tamagui/bento/animation/avatars'
 import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,

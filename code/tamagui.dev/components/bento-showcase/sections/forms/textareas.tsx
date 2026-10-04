@@ -1,6 +1,6 @@
 import { YStack } from 'tamagui'
 
-import * as TextAreas from '@tamagui/bento/component/forms/textareas'
+import * as TextAreas from '@tamagui/bento/forms/textareas'
 import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,

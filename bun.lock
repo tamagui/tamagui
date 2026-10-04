@@ -28,6 +28,39 @@
         "typescript": "7.0.2",
       },
     },
+    "code/bento": {
+      "name": "@tamagui/bento",
+      "version": "2.7.7",
+      "dependencies": {
+        "@hookform/resolvers": "^3.3.4",
+        "@ngneat/falso": "^7.3.0",
+        "@rehookify/datepicker": "^6.6.8",
+        "@tamagui/core": "workspace:*",
+        "@tamagui/get-font-sized": "workspace:*",
+        "@tamagui/get-token": "workspace:*",
+        "@tamagui/helpers-icon": "workspace:*",
+        "@tamagui/linear-gradient": "workspace:*",
+        "@tamagui/roving-focus": "workspace:*",
+        "@tamagui/web": "workspace:*",
+        "@tanstack/react-table": "^8.11.2",
+        "@vxrn/color-scheme": "^1.27.1",
+        "expo-document-picker": "~57.0.1",
+        "expo-image-picker": "~57.0.7",
+        "react-dropzone": "^14.2.3",
+        "react-hook-form": "^7.51.0",
+        "react-native-gesture-handler": "~2.32.0",
+        "react-native-reanimated": "4.5.1",
+        "react-native-safe-area-context": "~5.7.0",
+        "react-native-svg": "15.15.4",
+        "tamagui": "workspace:*",
+        "zod": "^3.25.67",
+      },
+      "devDependencies": {
+        "@tamagui/cli": "workspace:*",
+        "react": "19.2.3",
+        "react-native": "0.86.2",
+      },
+    },
     "code/comparisons/conformance/native": {
       "name": "@tamagui/comparison-conformance-native",
       "version": "0.0.0",
@@ -959,6 +992,7 @@
       "peerDependencies": {
         "@expo/ui": "*",
         "burnt": "*",
+        "one": "*",
         "react": "*",
         "react-native": "*",
         "react-native-gesture-handler": "*",
@@ -972,6 +1006,7 @@
       "optionalPeers": [
         "@expo/ui",
         "burnt",
+        "one",
         "react-native",
         "react-native-gesture-handler",
         "react-native-keyboard-controller",
@@ -2161,6 +2196,7 @@
         "@supabase/ssr": "^0.5.2",
         "@supabase/supabase-js": "^2.48.1",
         "@tamagui/assert": "workspace:*",
+        "@tamagui/bento": "workspace:*",
         "@tamagui/config": "workspace:*",
         "@tamagui/demos": "workspace:*",
         "@tamagui/get-token": "workspace:*",
@@ -5517,6 +5553,8 @@
     "@tamagui/avatar": ["@tamagui/avatar@workspace:code/ui/avatar"],
 
     "@tamagui/babel-plugin-fully-specified": ["@tamagui/babel-plugin-fully-specified@workspace:code/packages/babel-plugin-fully-specified"],
+
+    "@tamagui/bento": ["@tamagui/bento@workspace:code/bento"],
 
     "@tamagui/build": ["@tamagui/build@workspace:code/packages/build"],
 

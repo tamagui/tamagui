@@ -37,10 +37,7 @@ const showcaseCompactContentStyle = style({
   width: '100%',
   height: '100%',
 })
-// @ts-ignore - bento component wildcard import
-import { useCurrentRouteParams } from '@tamagui/bento'
-// @ts-ignore - bento component wildcard import
-import { useGroupMedia } from '@tamagui/bento/component/hooks/useGroupMedia'
+import { useCurrentRouteParams, useGroupMedia } from '@tamagui/bento'
 import { CodeWindow } from './CodeWindow'
 // import { ThemeButton } from './ThemeButton'
 import { type ShowcaseTheme, ShowcaseProvider } from './ShowcaseProvider'

@@ -1,6 +1,6 @@
 import { YStack } from 'tamagui'
 
-import * as Chips from '@tamagui/bento/component/elements/chips'
+import * as Chips from '@tamagui/bento/elements/chips'
 import {
   Showcase,
   WithSize,

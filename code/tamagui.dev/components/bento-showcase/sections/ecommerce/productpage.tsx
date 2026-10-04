@@ -1,6 +1,6 @@
 import { YStack } from 'tamagui'
 
-import * as ProductPage from '@tamagui/bento/component/ecommerce/productpage'
+import * as ProductPage from '@tamagui/bento/ecommerce/productpage'
 import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,

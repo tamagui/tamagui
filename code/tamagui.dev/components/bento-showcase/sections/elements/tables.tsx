@@ -1,6 +1,6 @@
 import { YStack } from 'tamagui'
 
-import * as Tables from '@tamagui/bento/component/elements/tables'
+import * as Tables from '@tamagui/bento/elements/tables'
 import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,

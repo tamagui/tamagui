@@ -33,7 +33,7 @@
     "lib": ["dom", "esnext"]
   },
   "include": ["**/*", "types/**/*"],
-  "exclude": ["**/test", "**/dist", "**/__tests__", "**/bento-output"],
+  "exclude": ["**/test", "**/dist", "**/__tests__"],
   "typeAcquisition": {
     "enable": true
   },

@@ -1,6 +1,6 @@
 import { XStack, YStack, styled } from 'tamagui'
 
-import * as Pickers from '@tamagui/bento/component/elements/pickers'
+import * as Pickers from '@tamagui/bento/elements/pickers'
 import { Showcase } from '~/components/bento-showcase/_Showcase'
 
 const Wrapper = styled(XStack, {

@@ -1,6 +1,6 @@
 import { YStack } from 'tamagui'
 
-import * as MicroInter from '@tamagui/bento/component/animation/microinteractions'
+import * as MicroInter from '@tamagui/bento/animation/microinteractions'
 import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,

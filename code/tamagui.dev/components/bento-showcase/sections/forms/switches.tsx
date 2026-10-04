@@ -1,6 +1,6 @@
 import { YStack } from 'tamagui'
 
-import * as Switches from '@tamagui/bento/component/forms/switches'
+import * as Switches from '@tamagui/bento/forms/switches'
 import {
   Showcase,
   WithSize,

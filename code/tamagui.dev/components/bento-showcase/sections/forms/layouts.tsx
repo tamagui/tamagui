@@ -1,6 +1,6 @@
 import { YStack } from 'tamagui'
 
-import * as Layouts from '@tamagui/bento/component/forms/layouts'
+import * as Layouts from '@tamagui/bento/forms/layouts'
 
 import {
   Showcase,
