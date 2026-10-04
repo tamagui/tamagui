@@ -1,10 +1,9 @@
-import type { ComponentSize } from '@tamagui/core'
+import { type ComponentSize, resolveSizing } from '@tamagui/core'
 import { MoonStar, Sun } from '../../icons'
 import { useEffect, useId, useState } from 'react'
-import { AnimatePresence, getVariableValue, View, YStack } from 'tamagui'
+import { AnimatePresence, View, YStack } from 'tamagui'
 import { Switch } from './common/switchParts'
 
-import { getSize } from '@tamagui/get-token'
 import { useUserScheme } from '@vxrn/color-scheme'
 
 export function ThemeSwitch({ size = 'md' }: { size?: ComponentSize }) {
@@ -18,7 +17,7 @@ export function ThemeSwitch({ size = 'md' }: { size?: ComponentSize }) {
     setChecked(userScheme.value === 'dark')
   }, [userScheme.value])
 
-  const thumbSize = getVariableValue(getSize(size))
+  const thumbSize = resolveSizing(size).square - 4
 
   const larger = thumbSize >= 64
 

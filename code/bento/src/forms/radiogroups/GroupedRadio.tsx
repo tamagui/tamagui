@@ -1,12 +1,5 @@
 import { useState } from 'react'
-import {
-  Label,
-  Text,
-  View,
-  useEvent,
-  Avatar,
-  YGroup,
-} from 'tamagui'
+import { Label, Text, View, useEvent, Avatar, YGroup } from 'tamagui'
 import { Card, RadioGroup } from './components/radioParts'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
 

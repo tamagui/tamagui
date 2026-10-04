@@ -43,7 +43,6 @@ export const PaginationControl = () => {
             rounded="5"
             bg={`${activeIndex === index ? 'color-11' : 'color-9'}`}
             style={{ transition: 'background-color 200ms ease' }}
-            animateOnly={['width', 'backgroundColor']}
           />
         ))}
       </View>

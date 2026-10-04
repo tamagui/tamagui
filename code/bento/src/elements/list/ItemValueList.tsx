@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { H1, Separator, Text, View, styled } from 'tamagui'
+import { H1, Separator, SizableText, View } from 'tamagui'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
 
 const data = [
@@ -59,27 +59,12 @@ const Row = ({ item }: { item: (typeof data)[0] }) => {
       items="center @max-sm/window:flex-start"
       flexDirection="row @max-sm/window:column"
     >
-      <SizeableText size="4" color="@max-sm/window:color-10">
+      <SizableText size="base" color="@max-sm/window:color-10">
         {item.title}
-      </SizeableText>
-      <SizeableText size="4" color="color-10 @max-sm/window:color">
+      </SizableText>
+      <SizableText size="base" color="color-10 @max-sm/window:color">
         {item.value}
-      </SizeableText>
+      </SizableText>
     </View>
   )
 }
-
-const SizeableText = styled(Text, {
-  variants: {
-    size: {
-      FontSize: (val, { font }) => {
-        if (!font) return {}
-        return {
-          fontSize: font.size[val],
-          lineHeight: font.lineHeight[val],
-          fontWeight: font.weight[val],
-        }
-      },
-    },
-  },
-})

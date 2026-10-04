@@ -4,11 +4,7 @@ import { Input } from './components/inputsParts'
 import { View } from 'tamagui'
 
 /** ------ EXAMPLE ------ */
-export function InputWithLabelAndMessageDemo({
-  size = 'md',
-}: {
-  size?: ComponentSize
-}) {
+export function InputWithLabelAndMessageDemo({ size = 'md' }: { size?: ComponentSize }) {
   const uniqueId = useId()
 
   return (

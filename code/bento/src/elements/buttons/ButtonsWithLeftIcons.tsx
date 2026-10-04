@@ -1,12 +1,6 @@
 import { Plug, Home, Settings, Heart } from '../../icons'
 import React from 'react'
-import {
-  YStack,
-  Button,
-  View,
-  Theme,
-  XGroup,
-} from 'tamagui'
+import { YStack, Button, View, Theme, XGroup } from 'tamagui'
 
 /** ------ EXAMPLE ------ */
 export function ButtonsWithLeftIcons() {

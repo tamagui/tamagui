@@ -14,7 +14,7 @@ type AlertParam = {
   message: string
   buttons: AlertButton[]
   theme?: ThemeName
-  icon?: React.ReactElement | React.ElementType
+  icon?: React.ReactElement | React.ComponentType
 }
 
 interface AlertDialogContextProps {

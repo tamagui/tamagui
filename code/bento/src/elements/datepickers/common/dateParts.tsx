@@ -112,7 +112,7 @@ const DatePickerImpl = (props: DatePickerProps) => {
 
   return (
     <DatePickerProvider config={config}>
-      <Popover ref={popoverRef} keepChildrenMounted size="4" allowFlip {...rest}>
+      <Popover ref={popoverRef} keepChildrenMounted allowFlip {...rest}>
         <Adapt when="max-md">
           <Sheet modal dismissOnSnapToBottom snapPointsMode="fit">
             <Sheet.Container p="4" width="100%" items="center">
@@ -433,4 +433,3 @@ export const WeekView = ({
     </View>
   )
 }
-

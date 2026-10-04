@@ -134,7 +134,6 @@ function WalkThroughComp({
             stayInFrame
             allowFlip
             placement="bottom"
-            size="1"
             ref={popoverRef}
             open={activeStep <= numberOfSteps - 1 && itemsDim.length === numberOfSteps}
           >
@@ -148,7 +147,7 @@ function WalkThroughComp({
               position="absolute"
               inset={0}
             >
-              <Popover.Arrow size="4" borderColor="border-color" />
+              <Popover.Arrow borderColor="border-color" />
               <PortalHost name={PORTAL_WALKTHROUGH_DIALOG_HOST_NAME} />
             </Popover.Content>
           </Popover>

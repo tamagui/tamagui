@@ -1,8 +1,7 @@
 import { FocusScope } from '@tamagui/focus-scope'
 import type { Dispatch, SetStateAction } from 'react'
 import React, { forwardRef, useRef, useState } from 'react'
-import type { Animated } from 'react-native'
-import { PanResponder } from 'react-native'
+import { Animated, PanResponder } from 'react-native'
 import type { ViewProps, TamaguiElement } from 'tamagui'
 import {
   createStyledHOC,
@@ -11,9 +10,7 @@ import {
   YStack,
   createStyledContext,
   styled,
-  useConfiguration,
   useControllableState,
-  usePropsAndStyle,
   withStaticProperties,
 } from 'tamagui'
 
@@ -29,16 +26,7 @@ const SwipeDismissableComponent = React.forwardRef<
   TamaguiElement,
   ViewProps & { onDismiss: () => void; children: any; dismissAfter?: number }
 >(({ onDismiss, children, dismissAfter = 80, ...rest }, ref) => {
-  const { animationDriver } = useConfiguration()
-
-  if (!animationDriver) {
-    throw new Error(`Must use animation driver`)
-  }
-
-  const { useAnimatedNumber, useAnimatedNumberStyle } = animationDriver
-  const AnimatedView = (animationDriver.View ?? View) as typeof Animated.View
-  const pan = useAnimatedNumber(0)
-  const [props, style] = usePropsAndStyle(rest)
+  const pan = useRef(new Animated.Value(0)).current
   const [dragStarted, setDragStarted] = useState(false)
   const dismissAfterRef = useRef(dismissAfter)
 
@@ -51,52 +39,33 @@ const SwipeDismissableComponent = React.forwardRef<
         const { dx } = gestureState
         if (dx < 0) {
           setDragStarted(true)
-          pan.setValue(dx, {
-            type: 'direct',
-          })
+          pan.setValue(dx)
         }
       },
-      onPanResponderRelease: (e, gestureState) => {
+      onPanResponderRelease: (_, gestureState) => {
         setDragStarted(false)
         if (gestureState.dx < -dismissAfterRef.current) {
-          if (onDismiss) {
-            onDismiss()
-          }
+          onDismiss()
         } else {
-          pan.setValue(0, {
-            type: 'spring',
+          Animated.spring(pan, {
+            toValue: 0,
             overshootClamping: true,
-          })
+            useNativeDriver: false,
+          }).start()
         }
       },
     })
   ).current
 
-  const panStyle = useAnimatedNumberStyle(pan, (val) => {
-    'worklet'
-    return {
-      transform: [{ translateX: val }],
-    }
-  })
-
   return (
-    <AnimatedView
-      ref={ref}
-      style={[
-        panStyle,
-        {
-          height: '100%',
-          ...(style as any),
-          ...(dragStarted && {
-            pointerEvents: 'none',
-          }),
-        },
-      ]}
-      {...panResponder.panHandlers}
-      {...(props as any)}
-    >
-      {children}
-    </AnimatedView>
+    <View ref={ref} height="100%" pointerEvents={dragStarted ? 'none' : 'auto'} {...rest}>
+      <Animated.View
+        style={{ height: '100%', transform: [{ translateX: pan }] }}
+        {...panResponder.panHandlers}
+      >
+        {children}
+      </Animated.View>
+    </View>
   )
 })
 

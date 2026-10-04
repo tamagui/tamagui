@@ -94,7 +94,6 @@ const HListFrame = styled(View, {
   bg: 'background',
   scale: '1 hover:1.05',
   boxShadow: '(0 0 3px shadow-color) hover:(0 0 20px shadow-color)',
-  animateOnly: ['borderRadius', 'transform'],
 })
 
 const HListInner = styled(View, {

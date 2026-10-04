@@ -46,7 +46,7 @@ export function UploadFile() {
           <Button.Icon>
             <Upload y={-1} />
           </Button.Icon>
-          <Button.Text size="2">Choose File here</Button.Text>
+          <Button.Text size="xs">Choose File here</Button.Text>
         </Button>
         {!file && (
           <View

@@ -87,7 +87,7 @@ const FooterContainer = ({
   Footer,
 }: {
   children: React.ReactNode
-  Footer: React.ElementType
+  Footer: React.ComponentType
 }) => {
   if (!isWeb) {
     return (
@@ -280,7 +280,7 @@ export function SortableTable() {
             alignCells={{ x: 'center', y: 'center' }}
             alignHeaderCells={{ y: 'center', x: 'center' }}
             cellWidth={CELL_WIDTH}
-            cellHeight="5"
+            cellHeight={52}
             borderWidth={0.5}
             maxW={TABLE_WIDTH}
             borderTopRightRadius="4"
@@ -289,7 +289,7 @@ export function SortableTable() {
             borderBottomRightRadius="2"
             mb="10 @sm/window:inherit"
           >
-            <Table.Head position="absolute" z="1" maxW={TABLE_WIDTH}>
+            <Table.Head position="absolute" z={1} maxW={TABLE_WIDTH}>
               {headerGroups.map((headerGroup) => {
                 rowCounter.current++
                 return (

@@ -81,7 +81,6 @@ const CustomButton = styled(Button, {
         scale: '1 press:0.95',
       },
       bouncy: {
-        theme: 'level2',
         boxShadow: '(0 12px 28px shadow-color) press:(0 6px 14px shadow-color)',
         scale: '1 press:0.9',
       },
@@ -90,7 +89,6 @@ const CustomButton = styled(Button, {
         scale: '1 press:0.9',
       },
       bump: {
-        theme: 'level2',
         boxShadow: '(0 12px 28px shadow-color) press:(0 6px 14px shadow-color)',
         scale: '1 press:1.2',
       },

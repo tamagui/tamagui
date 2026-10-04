@@ -39,7 +39,7 @@ const ProductItem: FC<{ item: Product }> = ({ item }) => {
           position="absolute"
           rounded="8"
           backdropFilter="hover:blur(15px) press:blur(15px)"
-          bg="hover:background04 press:background04"
+          bg="hover:background-hover press:background-press"
           style={{
             transition: 'background-color 250ms ease, backdrop-filter 250ms ease',
           }}
@@ -85,7 +85,7 @@ const ProductItem: FC<{ item: Product }> = ({ item }) => {
             width="auto"
             maxW="50%"
             bg="color-4"
-            size="2"
+            size="xs"
             theme={`${colors[Math.floor(Math.random() * colors.length)]}` as ThemeName}
           >
             <Chip.Icon color="color-8">
@@ -110,12 +110,7 @@ export const MasonryListExample = () => {
   const { width: deviceWidth } = useContainerDim('window')
   const numberOfColumns = Math.max(Math.round(deviceWidth / 300), 2)
 
-  const renderItem = ({
-    item,
-  }: {
-    item: (typeof data)[0]
-    i: number
-  }): ReactElement => {
+  const renderItem = ({ item }: { item: (typeof data)[0]; i: number }): ReactElement => {
     return <ProductItem item={item} />
   }
 

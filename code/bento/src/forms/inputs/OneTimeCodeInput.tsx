@@ -349,7 +349,7 @@ export function OneTimeCodeInputExample({
   const handleResendClick = useCallback(() => {}, [])
 
   useEffect(() => {
-    let timer: NodeJS.Timeout
+    let timer: ReturnType<typeof setTimeout>
     if (code !== undefined) {
       timer = setTimeout(() => {
         setCodeEntered(true)
@@ -361,7 +361,7 @@ export function OneTimeCodeInputExample({
 
   //NOTE: for testing purposes
   useEffect(() => {
-    let timer: NodeJS.Timeout
+    let timer: ReturnType<typeof setTimeout>
 
     if (codeEntered === true) {
       timer = setTimeout(() => {
@@ -636,7 +636,6 @@ const EmailInput = ({
           <Label>Email Address</Label>
           <XStack width="100%" gap="4" justify="flex-start" items="flex-end">
             <Input
-             
               inputMode="email"
               placeholder="Enter your email"
               autoComplete="email"

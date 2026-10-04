@@ -4,11 +4,7 @@ import { View } from 'tamagui'
 import { Input } from './components/inputsParts'
 
 /** ------ EXAMPLE ------ */
-export function InputWithRightAddOnDemo({
-  size = 'md',
-}: {
-  size?: ComponentSize
-}) {
+export function InputWithRightAddOnDemo({ size = 'md' }: { size?: ComponentSize }) {
   return (
     <View flexDirection="column" justify="center" items="center" height={100}>
       <Input size={size} minW="100%">

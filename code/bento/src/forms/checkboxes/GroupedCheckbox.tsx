@@ -1,12 +1,6 @@
 import { Check } from '../../icons'
 import { useState } from 'react'
-import {
-  Text,
-  View,
-  debounce,
-  Avatar,
-  YGroup,
-} from 'tamagui'
+import { Text, View, debounce, Avatar, YGroup } from 'tamagui'
 import { Checkboxes } from './common/checkboxParts'
 
 /** ------ EXAMPLE ------ */

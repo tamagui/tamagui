@@ -138,11 +138,7 @@ function DayPicker() {
   )
 }
 
-function DatePickerBody({
-  config,
-}: {
-  config: DatePickerProviderProps['config']
-}) {
+function DatePickerBody({ config }: { config: DatePickerProviderProps['config'] }) {
   const [header, setHeader] = useState<HeaderType>('day')
 
   return (

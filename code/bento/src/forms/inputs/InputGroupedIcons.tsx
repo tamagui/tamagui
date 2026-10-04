@@ -1,19 +1,10 @@
 import type { ComponentSize } from '@tamagui/core'
-import {
-  ChevronFirst,
-  ChevronLast,
-  ChevronLeft,
-  ChevronRight,
-} from '../../icons'
+import { ChevronFirst, ChevronLast, ChevronLeft, ChevronRight } from '../../icons'
 import { View } from 'tamagui'
 import { Input } from './components/inputsParts'
 
 /** ------ EXAMPLE ------ */
-export function InputGroupedIconsExample({
-  size = 'md',
-}: {
-  size?: ComponentSize
-}) {
+export function InputGroupedIconsExample({ size = 'md' }: { size?: ComponentSize }) {
   return (
     <View flexDirection="column" justify="center" items="center">
       <Input size={size} minW="100%">

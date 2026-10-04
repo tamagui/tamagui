@@ -4,7 +4,11 @@ import { themed, type IconProps } from '@tamagui/helpers-icon'
 
 export const BellRing: (props: IconProps) => JSX.Element = themed(
   memo(function BellRing(props: IconProps) {
-    const { color = 'black', size = 24, ...otherProps } = props as SvgProps & {
+    const {
+      color = 'black',
+      size = 24,
+      ...otherProps
+    } = props as SvgProps & {
       color?: string
       size?: number
     }
@@ -22,7 +26,10 @@ export const BellRing: (props: IconProps) => JSX.Element = themed(
       >
         <Path d="M10.268 21a2 2 0 0 0 3.464 0" stroke={color} />
         <Path d="M22 8c0-2.3-.8-4.3-2-6" stroke={color} />
-        <Path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" stroke={color} />
+        <Path
+          d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"
+          stroke={color}
+        />
         <Path d="M4 2C2.8 3.7 2 5.7 2 8" stroke={color} />
       </Svg>
     )

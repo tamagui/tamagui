@@ -153,7 +153,7 @@ const SlidingPopoverContent = () => {
       opacity="enter:0 exit:0"
       boxShadow="0 16px 32px shadow-color"
     >
-      <Popover.Arrow size="4" />
+      <Popover.Arrow />
       <YStack
         position="absolute"
         inset={0}

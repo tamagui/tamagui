@@ -70,7 +70,7 @@ const SafeAreaSpacer = () => (isWeb ? <View /> : <SafeAreaView />)
 
 const Label = styled(Text, {
   fontWeight: '500',
-  fontFamily: 'silkscreen',
+  fontFamily: 'mono',
   textTransform: 'uppercase',
   fontSize: '2',
   color: 'color-9',
@@ -358,8 +358,8 @@ const MenuView = ({ offset }: { offset: SharedValue<number> }) => {
               <Text text="center" fontSize="8" fontWeight="bold">
                 Jony Ive
               </Text>
-              <Chip circular theme="accent" size="2">
-                <Chip.Text fontFamily="silkscreen">@jony_ive</Chip.Text>
+              <Chip circular theme="accent" size="xs">
+                <Chip.Text fontFamily="mono">@jony_ive</Chip.Text>
               </Chip>
             </View>
           </View>

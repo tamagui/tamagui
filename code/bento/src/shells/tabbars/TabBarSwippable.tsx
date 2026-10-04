@@ -89,7 +89,6 @@ export const TabbarSwippable = () => {
         borderRadius: 1000_000,
         transform: [{ translateX: boxHPosition }],
         boxShadow: `0 1px 2.22px ${theme['shadow-color']?.val}`,
-        boxShadow: '0 1px 9px shadow-color',
       }) as ViewStyle,
     [theme['color-1']?.val, theme['shadow-color']?.val, pointerWidth]
   )

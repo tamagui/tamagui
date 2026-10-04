@@ -6,13 +6,7 @@ import { Chip } from './components/chipsParts'
 
 const colors = ['red', 'green', 'blue', 'purple', 'pink', 'orange']
 
-function ChipsItem({
-  color,
-  size = 'md',
-}: {
-  color: string
-  size: ComponentSize
-}) {
+function ChipsItem({ color, size = 'md' }: { color: string; size: ComponentSize }) {
   return (
     <Chip bg="color-4" circular theme={color as ThemeName} size={size}>
       <Chip.Icon y={-1} color="color-8" scaleIcon={1.1}>

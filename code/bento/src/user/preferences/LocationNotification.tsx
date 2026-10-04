@@ -1,8 +1,6 @@
-import type { ComponentSize } from '@tamagui/core'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { Check, ChevronDown, ChevronUp, Info, Mail } from '../../icons'
 import { useMemo, useState } from 'react'
-import type { SelectProps } from 'tamagui'
 import {
   Adapt,
   Button,
@@ -13,7 +11,6 @@ import {
   Sheet,
   Theme,
   View,
-  getTokenValue,
   styled,
   Text,
   SizableText,
@@ -65,7 +62,10 @@ type DataItem = {
   flag: string
 }
 
-function GeneralSelect({ data, ...rest }: SelectProps & { data: DataItem[] }) {
+function GeneralSelect({
+  data,
+  ...rest
+}: React.ComponentProps<typeof Select> & { data: DataItem[] }) {
   const [val, setVal] = useState('0')
 
   const selectedItem = data[Number(val)]
@@ -98,7 +98,7 @@ function GeneralSelect({ data, ...rest }: SelectProps & { data: DataItem[] }) {
     <Select
       id="food"
       value={val}
-      onValueChange={setVal}
+      onValueChange={(value) => setVal(String(value))}
       disablePreventBodyScroll
       zIndex={200000}
       {...rest}
@@ -151,7 +151,6 @@ function GeneralSelect({ data, ...rest }: SelectProps & { data: DataItem[] }) {
         <Select.Viewport
           // to do animations:
           // transition="quick"
-          // animateOnly={['transform', 'opacity']}
           minW={200}
           borderWidth={1}
           borderColor="border-color"
@@ -254,17 +253,11 @@ export function LocationNotification() {
 
 LocationNotification.fileName = 'LocationNotification'
 
-const Banner = ({
-  size = 'sm',
-  children,
-}: {
-  size?: ComponentSize
-  children?: React.ReactNode
-}) => {
+const Banner = ({ children }: { children?: React.ReactNode }) => {
   return (
-    <View flexDirection="row" items="center" bg="color-6" p={size} gap={size} rounded="4">
-      <Info size={getTokenValue(size as any, 'size') * 0.5} />
-      <SizableText size={size}>{children}</SizableText>
+    <View flexDirection="row" items="center" bg="color-6" p="3" gap="2" rounded="4">
+      <Info size={16} />
+      <SizableText size="sm">{children}</SizableText>
     </View>
   )
 }

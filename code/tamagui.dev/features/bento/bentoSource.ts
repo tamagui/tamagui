@@ -13,17 +13,22 @@ const files = new Map(
 
 // rewrites site-only helpers into what a consuming app already has
 function toAppSource(text: string) {
-  return text
-    .replace(/import {.*useGroupMedia.*} from.*/g, `import { useMedia } from 'tamagui'`)
-    .replace(/useGroupMedia\(.*\)/g, `useMedia()`)
-    .replace(
-      /import {.*useContainerDim.*} from.*/g,
-      `import { useWindowDimensions } from 'tamagui'`
-    )
-    .replace(/useContainerDim\(.*\)/g, `useWindowDimensions()`)
-    .replace(/from '(\.\.\/)+icons'/g, `from '~/components/icons'`)
-    .replaceAll(/\$group-window-(\w+)/g, (_, group) => `$${group}`)
-    .replaceAll(/([a-zA-Z0-9_]+\.fileName\s*=\s*)'([^']*)'/g, '')
+  return (
+    text
+      .replace(/import {.*useGroupMedia.*} from.*/g, `import { useMedia } from 'tamagui'`)
+      .replace(/useGroupMedia\(.*\)/g, `useMedia()`)
+      .replace(
+        /import {.*useContainerDim.*} from.*/g,
+        `import { useWindowDimensions } from 'tamagui'`
+      )
+      .replace(/useContainerDim\(.*\)/g, `useWindowDimensions()`)
+      .replace(/from '(\.\.\/)+icons'/g, `from '~/components/icons'`)
+      // demo images are served by the site
+      .replaceAll(/(['"])\/bento\/images\//g, '$1https://tamagui.dev/bento/images/')
+      // window container clauses become plain media clauses
+      .replaceAll(/@([\w-]+)\/window:/g, '$1:')
+      .replaceAll(/([a-zA-Z0-9_]+\.fileName\s*=\s*)'([^']*)'/g, '')
+  )
 }
 
 function join(dir: string, rel: string) {
@@ -43,8 +48,9 @@ function dirname(path: string) {
 function merge(path: string, seen: Set<string>): string {
   if (seen.has(path)) return ''
   seen.add(path)
-  const text = files.get(path)!
-  let out = `/** START of the file ${path.split('/').pop()} */\n${toAppSource(text)}`
+  const text = toAppSource(files.get(path)!)
+  let out = `/** START of the file ${path.split('/').pop()} */\n${text}`
+  // follow the rewritten imports, so the replaced site-only helpers stay out
   for (const [, spec] of text.matchAll(/from\s+['"](\.[^'"]+)['"]/g)) {
     const base = join(dirname(path), spec)
     for (const ext of ['.native.tsx', '.tsx', '.ts']) {

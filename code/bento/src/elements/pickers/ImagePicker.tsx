@@ -40,7 +40,7 @@ export function ImagePicker() {
       borderWidth={isDragActive ? 2 : 1}
       borderColor={`${isDragActive ? 'color-10' : 'color-8'}`}
       gap="2"
-      rounded="true"
+      rounded="4"
     >
       {/* need an empty input div just have image drop feature in the web */}
       {/* @ts-ignore */}

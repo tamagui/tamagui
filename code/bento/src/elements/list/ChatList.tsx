@@ -2,15 +2,7 @@ import { randRecentDate, randSentence } from '@ngneat/falso'
 import { Check } from '../../icons'
 import { useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
-import {
-  AnimatePresence,
-  Button,
-  Text,
-  Theme,
-  View,
-  styled,
-  Avatar,
-} from 'tamagui'
+import { AnimatePresence, Button, Text, Theme, View, styled, Avatar } from 'tamagui'
 
 const List = styled(FlatList<Message>, {
   bg: 'background',
@@ -34,13 +26,7 @@ const getMessages = () =>
 
 type Message = ReturnType<typeof getMessages>[0]
 
-const renderItem = ({
-  item: message,
-  index,
-}: {
-  item: Message
-  index: number
-}) => {
+const renderItem = ({ item: message, index }: { item: Message; index: number }) => {
   return <ChatItem index={index + 1} key={message.time} item={message} />
 }
 
@@ -137,7 +123,13 @@ function ChatItem({ item, index }: { item: Message; index: number }) {
                 rounded="6"
                 shrink={1}
               >
-                <Text fontSize="3" fontWeight="400" lineHeight="3" shrink={1} select="text">
+                <Text
+                  fontSize="3"
+                  fontWeight="400"
+                  lineHeight="3"
+                  shrink={1}
+                  select="text"
+                >
                   {message}
                 </Text>
               </View>

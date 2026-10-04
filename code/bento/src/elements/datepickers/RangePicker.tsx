@@ -234,11 +234,7 @@ function Calendar({
   )
 }
 
-function DatePickerBody({
-  config,
-}: {
-  config: DatePickerProviderProps['config']
-}) {
+function DatePickerBody({ config }: { config: DatePickerProviderProps['config'] }) {
   const [header, setHeader] = useState<'month' | 'year' | 'day'>('day')
   const { md: fullWidthMode } = useMedia()
 

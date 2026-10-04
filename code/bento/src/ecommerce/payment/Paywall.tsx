@@ -484,7 +484,7 @@ const PlanView = ({
 
                     {annual && (
                       <Chip
-                        size="3"
+                        size="sm"
                         circular
                         position="absolute"
                         r="-6"

@@ -3,15 +3,7 @@ import { Phone } from '../../icons'
 import { useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
 import type { ColorTokens } from 'tamagui'
-import {
-  Button,
-  Circle,
-  H5,
-  Separator,
-  Text,
-  View,
-  Avatar,
-} from 'tamagui'
+import { Button, Circle, H5, Separator, Text, View, Avatar } from 'tamagui'
 
 // Define more descriptive status options
 const statusOptions = [

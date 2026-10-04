@@ -1,12 +1,4 @@
-import type { ComponentSize } from '@tamagui/core'
-import {
-  Paragraph,
-  Tooltip,
-  View,
-  styled,
-  withStaticProperties,
-  Avatar,
-} from 'tamagui'
+import { Paragraph, Tooltip, View, styled, withStaticProperties, Avatar } from 'tamagui'
 
 const items = ['Developer', 'User', 'Athlete', 'User', 'Designer']
 
@@ -26,9 +18,15 @@ export function AvatarsTooltip() {
           >
             <AvatarTip offset={5} placement="bottom" restMs={0} delay={0}>
               <AvatarTip.Trigger>
-                <Item size="sm" imageUrl={`https://i.pravatar.cc/150?img=${index + 10}`} />
+                <Item
+                  size={36}
+                  imageUrl={`https://i.pravatar.cc/150?img=${index + 10}`}
+                />
               </AvatarTip.Trigger>
-              <AvatarTip.Content boxShadow="0 1px 6px shadow-color" transformOrigin="center top">
+              <AvatarTip.Content
+                boxShadow="0 1px 6px shadow-color"
+                transformOrigin="center top"
+              >
                 <AvatarTip.Arrow />
                 <Paragraph size="2" lineHeight="1">
                   {item}
@@ -50,9 +48,15 @@ export function AvatarsTooltip() {
           >
             <AvatarTip offset={5} placement="bottom" delay={0}>
               <AvatarTip.Trigger>
-                <Item size="lg" imageUrl={`https://i.pravatar.cc/150?img=${index + 10}`} />
+                <Item
+                  size={56}
+                  imageUrl={`https://i.pravatar.cc/150?img=${index + 10}`}
+                />
               </AvatarTip.Trigger>
-              <AvatarTip.Content boxShadow="0 1px 6px shadow-color" transformOrigin="center top">
+              <AvatarTip.Content
+                boxShadow="0 1px 6px shadow-color"
+                transformOrigin="center top"
+              >
                 <AvatarTip.Arrow />
                 <Paragraph size="2" lineHeight="1">
                   {item}
@@ -68,7 +72,7 @@ export function AvatarsTooltip() {
 
 AvatarsTooltip.fileName = 'AvatarsTooltip'
 
-function Item({ imageUrl, size }: { imageUrl: string; size: ComponentSize }) {
+function Item({ imageUrl, size }: { imageUrl: string; size: number }) {
   return (
     <Avatar borderWidth="1" borderColor="color-1" circular size={size}>
       <Avatar.Image src={imageUrl} />

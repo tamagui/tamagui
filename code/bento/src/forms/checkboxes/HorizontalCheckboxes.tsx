@@ -74,15 +74,7 @@ export function HorizontalCheckboxes() {
 
 HorizontalCheckboxes.fileName = 'HorizontalCheckboxes'
 
-function Item({
-  id,
-  label,
-  checked,
-}: {
-  id: string
-  label: string
-  checked: boolean
-}) {
+function Item({ id, label, checked }: { id: string; label: string; checked: boolean }) {
   return (
     <View width="100%" items="center">
       <Checkboxes.Card

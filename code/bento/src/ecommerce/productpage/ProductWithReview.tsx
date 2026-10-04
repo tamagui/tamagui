@@ -34,25 +34,25 @@ const product = {
     'Making fresh tracks this cold-weather jacket will keep you comfortable with warm Thermarator insulation, a thermal-reflective lining that holds in heat, and a durable water-resistant shell.',
   pictures: [
     {
-      picture: '/images/jacket1.webp',
+      picture: '/bento/images/jacket1.webp',
       meta: {
         colorName: 'Cyron',
       },
     },
     {
-      picture: '/images/jacket2.webp',
+      picture: '/bento/images/jacket2.webp',
       meta: {
         colorName: 'Light Green',
       },
     },
     {
-      picture: '/images/jacket3.webp',
+      picture: '/bento/images/jacket3.webp',
       meta: {
         colorName: 'White',
       },
     },
     {
-      picture: '/images/jacket4.webp',
+      picture: '/bento/images/jacket4.webp',
       meta: {
         colorName: 'Dark Green',
       },
@@ -71,7 +71,6 @@ const product = {
     'Elastic cuffs',
   ],
 }
-
 
 /** ------ EXAMPLE ------ */
 export function ProductWithReview() {
@@ -379,7 +378,7 @@ function SizeSelector() {
           items="center"
           key={size}
         >
-          <SizableText size="3" color={`${selectedSize === size ? 'text' : 'color-8'}`}>
+          <SizableText size="3" color={`${selectedSize === size ? 'color' : 'color-8'}`}>
             {size}
           </SizableText>
         </View>

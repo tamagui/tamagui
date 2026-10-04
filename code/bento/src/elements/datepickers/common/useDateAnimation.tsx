@@ -1,11 +1,7 @@
 import { useDatePickerContext } from '@rehookify/datepicker'
 import { useEffect, useState } from 'react'
 
-export function useDateAnimation({
-  listenTo,
-}: {
-  listenTo: 'year' | 'month' | 'years'
-}) {
+export function useDateAnimation({ listenTo }: { listenTo: 'year' | 'month' | 'years' }) {
   const {
     data: { years, calendars },
   } = useDatePickerContext()
@@ -40,46 +36,37 @@ export function useDateAnimation({
     }
   }, [calendars[0][listenTo], currentYear])
 
+  // fade in from, and out toward, the side the calendar moved
+  const slide = (x: number) => ({
+    opacity: 'enter:0 exit:0',
+    x: `enter:${x}px exit:${x}px`,
+  }) as const
+
   const prevNextAnimation = () => {
     if (listenTo === 'years') {
-      if (currentYearsSum === null) return { enterStyle: { opacity: 0 } }
+      if (currentYearsSum === null) return slide(0)
 
-      return {
-        enterStyle: { opacity: 0, x: sumYears() < currentYearsSum ? -15 : 15 },
-        exitStyle: { opacity: 0, x: sumYears() < currentYearsSum ? -15 : 15 },
-      }
+      return slide(sumYears() < currentYearsSum ? -15 : 15)
     }
     if (listenTo === 'month') {
-      if (currentMonth === null) return { enterStyle: { opacity: 0 } }
+      if (currentMonth === null) return slide(0)
       const newDate = new Date(`${calendars[0][listenTo]} 1, ${calendars[0].year}`)
       const currentDate = new Date(`${currentMonth} 1, ${calendars[0].year}`)
 
       if (currentMonth === 'December' && calendars[0].month === 'January') {
-        return {
-          enterStyle: { opacity: 0, x: 15 },
-          exitStyle: { opacity: 0, x: 15 },
-        }
+        return slide(15)
       }
       if (currentMonth === 'January' && calendars[0].month === 'December') {
-        return {
-          enterStyle: { opacity: 0, x: -15 },
-          exitStyle: { opacity: 0, x: -15 },
-        }
+        return slide(-15)
       }
-      return {
-        enterStyle: { opacity: 0, x: newDate < currentDate ? -15 : 15 },
-        exitStyle: { opacity: 0, x: newDate < currentDate ? -15 : 15 },
-      }
+      return slide(newDate < currentDate ? -15 : 15)
     }
     if (listenTo === 'year') {
-      if (currentYear === null) return { enterStyle: { opacity: 0 } }
+      if (currentYear === null) return slide(0)
       const newDate = new Date(`${calendars[0].month} 1, ${calendars[0].year}`)
       const currentDate = new Date(`${calendars[0].month} 1, ${currentYear}`)
 
-      return {
-        enterStyle: { opacity: 0, x: newDate < currentDate ? -15 : 15 },
-        exitStyle: { opacity: 0, x: newDate < currentDate ? -15 : 15 },
-      }
+      return slide(newDate < currentDate ? -15 : 15)
     }
   }
   return {

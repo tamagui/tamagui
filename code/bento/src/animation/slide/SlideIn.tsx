@@ -18,11 +18,7 @@ const axises = {
   bottom: { axis: 'y', value: 100 },
 }
 
-function SlideIn({
-  direction,
-}: {
-  direction: 'left' | 'right' | 'top' | 'bottom'
-}) {
+function SlideIn({ direction }: { direction: 'left' | 'right' | 'top' | 'bottom' }) {
   const axis = axises[direction]
 
   return (
@@ -40,14 +36,19 @@ function SlideIn({
       role="banner"
       style={{ transition: 'transform 250ms ease, opacity 250ms ease' }}
     >
-      <View width="312px @max-md/window:100%" maxW="100%" minW="@max-md/window:260px" gap="6">
+      <View
+        width="312px @max-md/window:100%"
+        maxW="100%"
+        minW="@max-md/window:260px"
+        gap="6"
+      >
         <View p="4" position="relative">
           <XStack items="center" justify="space-between">
             <Text fontWeight="500" fontSize="3" fontFamily="mono" color="color-9">
               Tamagui Debit
             </Text>
 
-            <Image src="/images/bentologo.png" width={32} height={32} />
+            <Image src="/bento/images/bentologo.png" width={32} height={32} />
           </XStack>
 
           <Text pt="4" fontWeight="600" fontSize="8" fontFamily="mono" color="color">

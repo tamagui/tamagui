@@ -83,7 +83,6 @@ const AvatarIconFrame = styled(View, {
   }
 })
 
-
 export const AvatarIcon = createStyledHOC(
   AvatarIconFrame,
   (props: React.PropsWithChildren<{ scaleIcon?: number }>, ref) => {
@@ -131,7 +130,12 @@ const AvatarContent = forwardRef<any, GetProps<typeof TAvatar>>((props, ref) => 
   const { size } = AvatarContext.useStyledContext()
   return (
     <View borderWidth="1" borderColor="color-1" rounded={1_000_000_000}>
-      <TAvatar boxShadow="0 2px 15px shadow-color" size={avatarPx(size)} ref={ref} {...props} />
+      <TAvatar
+        boxShadow="0 2px 15px shadow-color"
+        size={avatarPx(size)}
+        ref={ref}
+        {...props}
+      />
     </View>
   )
 })

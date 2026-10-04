@@ -37,7 +37,7 @@ const themes: Theme[] = [
   },
   {
     emoji: '🌋',
-    theme: 'green',
+    theme: 'red',
   },
 ]
 

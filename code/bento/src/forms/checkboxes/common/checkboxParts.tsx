@@ -1,13 +1,11 @@
-import { getSize } from '@tamagui/get-token'
+import { type ComponentSize, resolveSizing } from '@tamagui/core'
 import type { RovingFocusGroupProps, RovingFocusItemProps } from '@tamagui/roving-focus'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import type { KeyboardEvent, PropsWithChildren } from 'react'
-import { forwardRef } from 'react'
+import { createContext, forwardRef, useContext } from 'react'
 import type { CheckedState, YStackProps } from 'tamagui'
 import {
-  CheckboxStyledContext,
   createStyledHOC,
-  getVariableValue,
   H2,
   Checkbox as TCheckbox,
   styled,
@@ -54,7 +52,7 @@ const FocusGroupItem = forwardRef<any, RovingFocusItemProps & { value: string }>
       tabIndex: 0,
       outlineOffset: 1,
       flexShrink: 1,
-      z: 'focus:1',
+      z: 'focus:1' as const,
       ...(isWeb && {
         onKeyDown: (e: KeyboardEvent) => {
           if (e.key === 'Enter' || e.code === 'Space') {
@@ -82,7 +80,8 @@ const RadiusGroup = styled(Group, {
 })
 
 const Title = styled(H2, {
-  size: '8',
+  fontSize: '2xl',
+  lineHeight: '2xl',
 })
 
 type CheckboxesProps<K extends string> = {
@@ -102,55 +101,30 @@ const CheckboxesImp = <K extends string>(
   )
 }
 
-// v3 ships Checkbox unstyled, so bento carries the skin. Reproduces the v2
-// createCheckbox frame: a square at 45% of the size token, radius at an eighth
-// of it, themed background, 1px border and the hover/press/focus states.
-//
-// Deliberately a plain wrapper, not styled(TCheckbox, ...). See
-// forms/switches/common/switchParts.tsx for why styled() over a tamagui
-// primitive that owns a styled context silently breaks it.
+// tamagui's styled Checkbox sizes the box from the size ladder; its Indicator
+// does not size the glyph, so a bare <Check /> would render at lucide's 24px
+const CheckboxSizeContext = createContext<ComponentSize>('md')
+
 type CheckboxSkinProps = React.ComponentProps<typeof TCheckbox>
 
-const checkboxSizeToken = (size: CheckboxSkinProps['size']) =>
-  getVariableValue(getSize(size ?? true)) as number
-
-const checkboxBox = (size: CheckboxSkinProps['size']) =>
-  Math.round(checkboxSizeToken(size) * 0.45)
-
 function CheckboxSkinFrame(props: CheckboxSkinProps) {
-  const box = checkboxBox(props.size)
   return (
-    <TCheckbox
-      width={box}
-      height={box}
-      borderRadius={checkboxSizeToken(props.size) / 8}
-      backgroundColor="background press:background-press"
-      items="center"
-      justify="center"
-      borderWidth={1}
-      borderColor="border-color hover:border-color-hover press:border-color-press focus:border-color-focus"
-      outlineStyle="focus-visible:solid"
-      outlineWidth="focus-visible:2px"
-      outlineColor="focus-visible:outline-color"
-      {...props}
-      activeStyle={{ bg: 'background-press' }}
-    />
+    <CheckboxSizeContext.Provider value={(props.size as ComponentSize) || 'md'}>
+      <TCheckbox {...props} />
+    </CheckboxSizeContext.Provider>
   )
 }
 
-// v2's createCheckbox sized and themed the indicator's icon off the checkbox
-// size; v3's unstyled Indicator does not, so a bare <Check /> renders at
-// lucide's 24px default and overflows the box.
 const BaseCheckboxIndicator = TCheckbox.Indicator
 
 function CheckboxIndicator({
   children,
   ...props
 }: React.ComponentProps<typeof BaseCheckboxIndicator>) {
-  const { size } = CheckboxStyledContext.useStyledContext()
+  const size = useContext(CheckboxSizeContext)
   const theme = useTheme()
   const getThemedIcon = useGetThemedIcon({
-    size: Math.round(checkboxBox(size) * 0.75),
+    size: resolveSizing(size).icon,
     color: theme.color,
   })
   return (

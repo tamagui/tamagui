@@ -38,7 +38,13 @@ export function RadioCards() {
   const [value, setValue] = useState<string>()
 
   return (
-    <View flexDirection="column" gap="4" width="100%" px="@max-md/window:4" py="@max-md/window:6">
+    <View
+      flexDirection="column"
+      gap="4"
+      width="100%"
+      px="@max-md/window:4"
+      py="@max-md/window:6"
+    >
       <H2>Select your gift</H2>
       <RadioGroup
         value={value}

@@ -50,7 +50,6 @@ const data = {
   ],
 }
 
-
 /** ------ EXAMPLE ------ */
 export function StatusTracker() {
   return (

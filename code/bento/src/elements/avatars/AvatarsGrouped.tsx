@@ -33,13 +33,7 @@ export function AvatarsGrouped() {
   )
 }
 
-function AvatarGroup({
-  size,
-  items,
-}: {
-  size: ComponentSize
-  items: React.ReactNode[]
-}) {
+function AvatarGroup({ size, items }: { size: ComponentSize; items: React.ReactNode[] }) {
   const [hovered, setHovered] = useState(false)
 
   return (

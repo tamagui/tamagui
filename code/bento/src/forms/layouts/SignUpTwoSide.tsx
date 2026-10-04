@@ -305,7 +305,6 @@ function CountrySelect({ data, id }: { data: typeof countries; id: string }) {
         <Select.Viewport
           // to do animations:
           // transition="quick"
-          // animateOnly={['transform', 'opacity']}
           minW={200}
           borderWidth={1}
           borderColor="border-color"

@@ -1,32 +1,33 @@
 import type { SizeTokens } from 'tamagui'
 import { YStack, createStyledContext, styled, withStaticProperties } from 'tamagui'
 
-type AlignCells = {
-  y: 'center' | 'start' | 'end'
-  x: 'center' | 'start' | 'end'
-}
+type Align = 'center' | 'start' | 'end'
 
-type AlignHeaderCells = AlignCells
+type AlignCells = {
+  y: Align
+  x: Align
+}
 
 const TableContext = createStyledContext<{
   cellWidth: SizeTokens | number
   cellHeight: SizeTokens | number
-  alignHeaderCells: {
-    y: 'center' | 'start' | 'end'
-    x: 'center' | 'start' | 'end'
-  }
-  alignCells: {
-    y: 'center' | 'start' | 'end'
-    x: 'center' | 'start' | 'end'
-  }
+  alignHeaderCells: AlignCells
+  alignCells: AlignCells
   borderColor: string
 }>({
-  cellWidth: '8',
-  cellHeight: '8',
+  cellWidth: 128,
+  cellHeight: 32,
   alignHeaderCells: { x: 'start', y: 'center' },
   alignCells: { x: 'center', y: 'center' },
   borderColor: 'border-color',
 })
+
+const flexAlign = (val: Align) => (val === 'center' ? 'center' : (`flex-${val}` as const))
+
+const alignStyle = styled.dynamic<AlignCells>((val) => ({
+  alignItems: flexAlign(val.y),
+  justifyContent: flexAlign(val.x),
+}))
 
 /** Table Components */
 const Row = styled(YStack, {
@@ -35,23 +36,11 @@ const Row = styled(YStack, {
   context: TableContext,
   variants: {
     rowLocation: {
-      first: () => {
-        return {
-          borderBottomWidth: 0.5,
-        }
-      },
-      last: () => {
-        return {
-          borderBottomWidth: 0,
-        }
-      },
-      middle: () => {
-        return {
-          borderBottomWidth: 0.5,
-        }
-      },
+      first: { borderBottomWidth: 0.5 },
+      middle: { borderBottomWidth: 0.5 },
+      last: { borderBottomWidth: 0 },
     },
-  },
+  } as const,
 })
 
 const Cell = styled(YStack, {
@@ -61,40 +50,13 @@ const Cell = styled(YStack, {
   grow: 0,
   shrink: 1,
   variants: {
-    cellWidth: {
-      Size: (name, { tokens }) => {
-        return {
-          width: tokens.size[name],
-        }
-      },
-    },
-    cellHeight: {
-      Size: (name, { tokens }) => {
-        return {
-          minHeight: tokens.size[name],
-        }
-      },
-    },
-    alignCells: (val: AlignCells) => {
-      return {
-        alignItems: val.y === 'center' ? 'center' : `flex-${val.y}`,
-        justifyContent: val.x === 'center' ? 'center' : `flex-${val.x}`,
-      }
-    },
+    cellWidth: styled.dynamic<SizeTokens | number>((val) => ({ width: val })),
+    cellHeight: styled.dynamic<SizeTokens | number>((val) => ({ minHeight: val })),
+    alignCells: alignStyle,
     cellLocation: {
-      first: () => {
-        return {}
-      },
-      last: () => {
-        return {
-          borderLeftWidth: 0.5,
-        }
-      },
-      middle: () => {
-        return {
-          borderLeftWidth: 0.5,
-        }
-      },
+      first: {},
+      middle: { borderLeftWidth: 0.5 },
+      last: { borderLeftWidth: 0.5 },
     },
   } as const,
 })
@@ -107,35 +69,12 @@ const HeaderCell = styled(YStack, {
   py: '3',
   context: TableContext,
   variants: {
-    cellWidth: {
-      Size: (name, { tokens }) => {
-        return {
-          width: tokens.size[name],
-        }
-      },
-    },
-
-    alignHeaderCells: (val: AlignHeaderCells) => {
-      return {
-        alignItems: val.y === 'center' ? 'center' : `flex-${val.y}`,
-        justifyContent: val.x === 'center' ? 'center' : `flex-${val.x}`,
-      }
-    },
-
+    cellWidth: styled.dynamic<SizeTokens | number>((val) => ({ width: val })),
+    alignHeaderCells: alignStyle,
     cellLocation: {
-      first: () => {
-        return {}
-      },
-      last: () => {
-        return {
-          borderLeftWidth: 1,
-        }
-      },
-      middle: () => {
-        return {
-          borderLeftWidth: 1,
-        }
-      },
+      first: {},
+      middle: { borderLeftWidth: 1 },
+      last: { borderLeftWidth: 1 },
     },
   } as const,
 })
@@ -166,21 +105,13 @@ const TableComp = styled(YStack, {
   context: TableContext,
   borderWidth: 1,
   bg: 'background',
+  // the table only provides these to its cells through context
   variants: {
-    /** just added these empty variants to avoid ts erros on Table */
-    cellWidth: {
-      Size: () => {
-        return {}
-      },
-    },
-    cellHeight: {
-      Size: () => {
-        return {}
-      },
-    },
-    alignHeaderCells: (val) => ({}),
-    alignCells: (val) => ({}),
-  },
+    cellWidth: styled.dynamic<SizeTokens | number>(),
+    cellHeight: styled.dynamic<SizeTokens | number>(),
+    alignHeaderCells: styled.dynamic<AlignCells>(),
+    alignCells: styled.dynamic<AlignCells>(),
+  } as const,
 })
 
 export const Table = withStaticProperties(TableComp, {

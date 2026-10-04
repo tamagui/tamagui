@@ -39,7 +39,7 @@ export function switches() {
       </Showcase>
 
       <Showcase
-        defaultSize="7"
+        defaultSize="xl"
         fileName={Switches.ThemeSwitch.fileName}
         title={Switches.ThemeSwitch.title}
       >

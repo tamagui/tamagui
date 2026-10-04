@@ -5,14 +5,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import * as React from 'react'
-import {
-  Separator,
-  Text,
-  View,
-  XStack,
-  YStack,
-  Avatar,
-} from 'tamagui'
+import { Separator, Text, View, XStack, YStack, Avatar } from 'tamagui'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
 import { Table } from './common/tableParts'
 import { ProgressCell, StatusBadge } from './common/cells'
@@ -104,7 +97,7 @@ const columns = [
   }),
 ]
 
-const CELL_WIDTH = '12'
+const CELL_WIDTH = 144
 
 // per-column widths: identity columns wide, numerics narrow, rich cells wider
 const COLUMN_WIDTHS: Record<string, number> = {
@@ -180,7 +173,7 @@ export function BasicTable() {
       alignCells={{ x: 'center', y: 'center' }}
       alignHeaderCells={{ y: 'center', x: 'center' }}
       cellWidth={CELL_WIDTH}
-      cellHeight="5"
+      cellHeight={52}
       borderWidth={0.5}
       maxW={TABLE_WIDTH}
       my="4"

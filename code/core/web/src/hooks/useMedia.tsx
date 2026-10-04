@@ -247,7 +247,7 @@ type MediaRef = {
   // by mutating `proxyTarget` and re-reading it in the get trap.
   proxyTarget: MediaQueryState
   proxy: UseMediaState
-  getSnapshot: () => MediaQueryState
+  getSnapshot: (inRender?: boolean) => MediaQueryState
   componentContext?: ComponentContextI
   uid?: object
   debug?: DebugProp
@@ -362,7 +362,15 @@ export function useMedia(
       } as MediaRefSlot
       r.proxy = tracker as UseMediaState
     }
-    r.getSnapshot = () => {
+    // the emitter updates sibling components through setState, which React
+    // rejects while this component renders, so a render-time emit waits for
+    // the render to finish
+    const emit = (ms: MediaQueryState, inRender?: boolean) => {
+      const mediaEmit = r.componentContext!.mediaEmit!
+      if (inRender) queueMicrotask(() => mediaEmit(ms))
+      else mediaEmit(ms)
+    }
+    r.getSnapshot = (inRender) => {
       if (r.optimizeForFirstRender) {
         const ms = getMedia()
         if (ms === r.lastState) {
@@ -370,7 +378,7 @@ export function useMedia(
         }
 
         if (r.componentContext?.mediaEmit) {
-          r.componentContext.mediaEmit(ms)
+          emit(ms, inRender)
           r.pendingState = ms
           return r.lastState
         }
@@ -395,7 +403,7 @@ export function useMedia(
 
           // in emitter mode (no-rerender) avoid changing state, instead emit
           if (r.componentContext?.mediaEmit) {
-            r.componentContext.mediaEmit(ms)
+            emit(ms, inRender)
             r.pendingState = ms
             return lastState
           }
@@ -440,7 +448,7 @@ export function useMedia(
     ? initState
     : ref.optimizeForFirstRender && ref.renderVersion === 1
       ? ref.lastState
-      : ref.getSnapshot()
+      : ref.getSnapshot(true)
   ref.proxyTarget = state
   if (!ref.optimizeForFirstRender) {
     ;(ref.proxy as any)[refSlot].proxyTarget = state

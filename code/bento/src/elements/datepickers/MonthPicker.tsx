@@ -24,11 +24,7 @@ function CalendarHeader() {
   return <YearSlider />
 }
 
-function DatePickerBody({
-  config,
-}: {
-  config: DatePickerProviderProps['config']
-}) {
+function DatePickerBody({ config }: { config: DatePickerProviderProps['config'] }) {
   const [header, setHeader] = useState<HeaderType>('month')
 
   return (

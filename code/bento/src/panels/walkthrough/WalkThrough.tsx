@@ -70,7 +70,7 @@ function Tour({
       </View>
       {dim && (
         <PortalItem hostName="walkthrough">
-          <Popover stayInFrame allowFlip placement="bottom" size="1" open={showTour}>
+          <Popover stayInFrame allowFlip placement="bottom" open={showTour}>
             <Popover.Trigger asChild>
               <View
                 key={stepNumber}
@@ -92,7 +92,7 @@ function Tour({
               position="absolute"
               inset={0}
             >
-              <Popover.Arrow size="4" borderColor="border-color" />
+              <Popover.Arrow borderColor="border-color" />
               {renderDialog({ nextStep, prevStep, numberOfSteps, activeStep })}
             </Popover.Content>
           </Popover>

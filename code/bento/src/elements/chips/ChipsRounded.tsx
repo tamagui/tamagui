@@ -11,12 +11,7 @@ export function ChipsRounded({ size = 'md' }: { size?: ComponentSize }) {
     <View flexDirection="column" justify="center" items="center" width="100%">
       <View flexDirection="row" flexWrap="wrap" shrink={1} gap="2" p="4">
         {colors.map((color) => (
-          <Chip
-            circular
-            theme={color as ThemeName}
-            size={size}
-            key={color}
-          >
+          <Chip circular theme={color as ThemeName} size={size} key={color}>
             <Chip.Text>Input</Chip.Text>
           </Chip>
         ))}

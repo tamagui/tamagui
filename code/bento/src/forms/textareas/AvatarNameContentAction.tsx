@@ -1,12 +1,5 @@
 import { File, Share } from '../../icons'
-import {
-  Button,
-  Separator,
-  Text,
-  TextArea,
-  View,
-  Avatar,
-} from 'tamagui'
+import { Button, Separator, Text, TextArea, View, Avatar } from 'tamagui'
 
 /** ------ EXAMPLE ------ */
 export function AvatarNameContentAction() {
@@ -14,9 +7,9 @@ export function AvatarNameContentAction() {
     <View
       borderWidth={1}
       borderColor="color-6"
-      rounded="true"
+      rounded="4"
       background="background"
-      p="true"
+      p="4"
       width={500}
       maxW="100%"
       gap="4"

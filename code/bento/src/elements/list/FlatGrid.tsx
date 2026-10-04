@@ -1,14 +1,5 @@
 import { FlatList } from 'react-native'
-import {
-  Button,
-  Image,
-  Paragraph,
-  Separator,
-  Text,
-  View,
-  styled,
-  Avatar,
-} from 'tamagui'
+import { Button, Image, Paragraph, Separator, Text, View, styled, Avatar } from 'tamagui'
 import { useContainerDim } from '../../hooks/useContainerDim'
 
 const items = Array.from({ length: 100 }).map((_, index) => index)

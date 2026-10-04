@@ -1,13 +1,6 @@
 import { useState } from 'react'
 import { Card, RadioGroup } from './components/radioParts'
-import {
-  H3,
-  Label,
-  Separator,
-  Text,
-  View,
-  Avatar,
-} from 'tamagui'
+import { H3, Label, Separator, Text, View, Avatar } from 'tamagui'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
 
 const data = {

@@ -137,13 +137,7 @@ export function SignInScreen() {
 SignInScreen.fileName = 'SignInScreen'
 
 // Swap for your own Link
-const Link = ({
-  href,
-  children,
-}: {
-  href: string
-  children: React.ReactNode
-}) => {
+const Link = ({ href, children }: { href: string; children: React.ReactNode }) => {
   return <Anchor href={href}>{children}</Anchor>
 }
 

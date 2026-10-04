@@ -1,12 +1,5 @@
 import { useState } from 'react'
-import {
-  AnimatePresence,
-  Button,
-  Text,
-  View,
-  styled,
-  XGroup,
-} from 'tamagui'
+import { AnimatePresence, Button, Text, View, styled, XGroup } from 'tamagui'
 import { useContainerDim } from '../../hooks/useContainerDim'
 
 /** ------ EXAMPLE ------ */
@@ -71,7 +64,6 @@ export const AnimatedNumbers = () => {
                 style={{
                   transition: 'transform 200ms ease, opacity 100ms ease',
                 }}
-                animateOnly={['transform', 'opacity']}
                 y="enter:-50px exit:50px"
                 opacity="enter:0 exit:0"
                 x={x}
@@ -89,7 +81,7 @@ export const AnimatedNumbers = () => {
 AnimatedNumbers.fileName = 'NumberSlider'
 
 const AnimatedNumber = styled(Text, {
-  fontFamily: 'silkscreen',
+  fontFamily: 'mono',
   fontSize: '12 @max-sm/window:8',
   lineHeight: '12',
   color: 'color',

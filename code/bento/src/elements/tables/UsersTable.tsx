@@ -6,13 +6,7 @@ import {
 } from '@tanstack/react-table'
 import * as React from 'react'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
-import {
-  Separator,
-  Text,
-  View,
-  XStack,
-  Avatar,
-} from 'tamagui'
+import { Separator, Text, View, XStack, Avatar } from 'tamagui'
 import { Table } from './common/tableParts'
 import { Circle } from 'tamagui'
 
@@ -293,8 +287,8 @@ export function UsersTable() {
     <Table
       alignCells={{ x: 'center', y: 'center' }}
       alignHeaderCells={{ y: 'center', x: 'center' }}
-      cellWidth="18"
-      cellHeight="7"
+      cellWidth={180}
+      cellHeight={72}
       borderWidth={0}
       p="4"
       maxW="100%"

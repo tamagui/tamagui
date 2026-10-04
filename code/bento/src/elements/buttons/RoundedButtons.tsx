@@ -22,9 +22,9 @@ export function RoundedButtons() {
   ] as const
 
   const sizeButtons = [
-    { size: '3' },
+    { size: 'sm' },
     {}, // default size
-    { size: '6' },
+    { size: 'xl' },
   ] as const
 
   return (

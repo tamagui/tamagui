@@ -1,9 +1,4 @@
-import {
-  Button,
-  TextArea,
-  View,
-  Avatar,
-} from 'tamagui'
+import { Button, TextArea, View, Avatar } from 'tamagui'
 
 /** ------ EXAMPLE ------ */
 export function AvatarOutContentAction() {

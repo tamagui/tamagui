@@ -4,7 +4,11 @@ import { themed, type IconProps } from '@tamagui/helpers-icon'
 
 export const ShoppingBag: (props: IconProps) => JSX.Element = themed(
   memo(function ShoppingBag(props: IconProps) {
-    const { color = 'black', size = 24, ...otherProps } = props as SvgProps & {
+    const {
+      color = 'black',
+      size = 24,
+      ...otherProps
+    } = props as SvgProps & {
       color?: string
       size?: number
     }
@@ -22,7 +26,10 @@ export const ShoppingBag: (props: IconProps) => JSX.Element = themed(
       >
         <Path d="M16 10a4 4 0 0 1-8 0" stroke={color} />
         <Path d="M3.103 6.034h17.794" stroke={color} />
-        <Path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z" stroke={color} />
+        <Path
+          d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"
+          stroke={color}
+        />
       </Svg>
     )
   })

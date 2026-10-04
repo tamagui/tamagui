@@ -22,7 +22,6 @@ import {
   Separator,
   Sheet,
   Text,
-  Unspaced,
   View,
   styled,
   XGroup,
@@ -313,12 +312,9 @@ export function Fullpage() {
                 </Dialog.Title>
 
                 <CartTotal items={items} />
-
-                <Unspaced>
-                  <Dialog.Close asChild>
-                    <Button position="absolute" t="3" r="3" size="xs" circular icon={X} />
-                  </Dialog.Close>
-                </Unspaced>
+                <Dialog.Close asChild>
+                  <Button position="absolute" t="3" r="3" size="xs" circular icon={X} />
+                </Dialog.Close>
               </Dialog.Content>
             </Dialog.Portal>
           </Dialog>

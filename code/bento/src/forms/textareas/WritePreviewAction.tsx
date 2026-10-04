@@ -1,14 +1,6 @@
 import { Paperclip, Send } from '../../icons'
 import { useState } from 'react'
-import {
-  Button,
-  Separator,
-  Text,
-  TextArea,
-  View,
-  styled,
-  Tabs,
-} from 'tamagui'
+import { Button, Separator, Text, TextArea, View, styled, Tabs } from 'tamagui'
 
 /** ------ EXAMPLE ------ */
 export function WritePreviewAction() {
@@ -107,11 +99,11 @@ export function WritePreviewAction() {
 WritePreviewAction.fileName = 'WritePreviewAction'
 
 const StyledTab = styled(Tabs.Tab, {
-  variant: 'plain',
+  unstyled: true,
   borderColor: 'transparent',
   padding: '2-5',
   paddingHorizontal: 21,
-  backgroundColor: 'hover:background04',
+  backgroundColor: 'hover:background-hover',
   variants: {
     tabSelected: {
       true: {

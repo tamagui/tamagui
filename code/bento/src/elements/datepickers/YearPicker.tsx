@@ -13,11 +13,7 @@ function CalendarHeader() {
   return <YearRangeSlider />
 }
 
-function DatePickerBody({
-  config,
-}: {
-  config: DatePickerProviderProps['config']
-}) {
+function DatePickerBody({ config }: { config: DatePickerProviderProps['config'] }) {
   return (
     <DatePickerProvider config={config}>
       <View flexDirection="column" items="center" gap="4" p="4 lg:0">

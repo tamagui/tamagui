@@ -50,7 +50,6 @@ export function FullSideBar() {
           flex={1}
           height="5"
           render="nav"
-          elevationAndroid={1}
         >
           {compact && (
             <View

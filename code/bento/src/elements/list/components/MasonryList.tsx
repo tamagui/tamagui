@@ -156,8 +156,4 @@ const MasonryListImpl = forwardRef<ScrollView, Props<any>>((props, ref) => {
   )
 })
 
-export const MasonryList = memo(
-  styled(MasonryListImpl, {
-    name: 'MasonryList',
-  })
-)
+export const MasonryList = memo(styled(MasonryListImpl))

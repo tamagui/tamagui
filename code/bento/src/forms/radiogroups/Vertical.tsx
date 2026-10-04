@@ -1,11 +1,5 @@
 import { useId, useState } from 'react'
-import {
-  H2,
-  Label,
-  Text,
-  View,
-  Avatar,
-} from 'tamagui'
+import { H2, Label, Text, View, Avatar } from 'tamagui'
 import { Card, RadioGroup } from './components/radioParts'
 
 const data = [

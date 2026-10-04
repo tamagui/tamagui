@@ -91,7 +91,6 @@ export function SignupValidatedHookForm() {
                 flexBasis="@md/window:150px"
                 onBlur={onBlur}
                 style={{ transition: 'border-color 100ms ease' }}
-               
               >
                 <Input.Label>First Name</Input.Label>
                 <Input.Box>
@@ -137,7 +136,6 @@ export function SignupValidatedHookForm() {
                 flexBasis="@md/window:150px"
                 onBlur={onBlur}
                 style={{ transition: 'border-color 100ms ease' }}
-               
               >
                 <Input.Label>Last Name</Input.Label>
                 <Input.Box>
@@ -180,7 +178,6 @@ export function SignupValidatedHookForm() {
                 theme: 'red',
               })}
               onBlur={onBlur}
-             
             >
               <Input.Label>Email</Input.Label>
               <Input.Box>
@@ -223,7 +220,6 @@ export function SignupValidatedHookForm() {
                 theme: 'red',
               })}
               onBlur={onBlur}
-             
             >
               <Input.Label htmlFor={'password-t1'}>Password</Input.Label>
               <Input.Box>
@@ -274,7 +270,6 @@ export function SignupValidatedHookForm() {
                 theme: 'red',
               })}
               onBlur={onBlur}
-             
             >
               <Input.Label htmlFor={'confirmed password'}>Confirm Password</Input.Label>
               <Input.Box>
@@ -369,7 +364,6 @@ export function SignupValidatedHookForm() {
                 theme: 'red',
               })}
               onBlur={onBlur}
-             
             >
               <Input.Label>Postal code</Input.Label>
               <Input.Box>

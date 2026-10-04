@@ -1,13 +1,6 @@
 import { Check } from '../../icons'
 import { useEffect, useId, useState } from 'react'
-import {
-  Text,
-  View,
-  debounce,
-  Label,
-  Separator,
-  Avatar,
-} from 'tamagui'
+import { Text, View, debounce, Label, Separator, Avatar } from 'tamagui'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
 import { Checkboxes } from './common/checkboxParts'
 
