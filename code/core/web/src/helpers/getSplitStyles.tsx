@@ -768,9 +768,13 @@ function contributeProp(
       const styleOriginals = shouldTrackStyleTokenProvenance
         ? styleOriginalValues.get(style)
         : undefined
-      for (const key in style) {
-        const value = style[key]
+      for (const authoredKey in style) {
+        const value = style[authoredKey]
         if (value == null) continue
+        // style objects and pieces take the same shorthands as props
+        const key = disableExpandShorthands
+          ? authoredKey
+          : shorthands[authoredKey] || authoredKey
         // the style prop is the inline style attribute, as in react: a plain
         // value never becomes an atomic class, so element.style reads it back
         // and it can change every frame without inserting a rule. a value that
@@ -805,7 +809,7 @@ function contributeProp(
           }
         }
         ;(styleState as DirectState).flatInlineStyleProp = inline
-        contributeValue(styleState, key, value, styleOriginals?.[key])
+        contributeValue(styleState, key, value, styleOriginals?.[authoredKey])
         ;(styleState as DirectState).flatInlineStyleProp = false
       }
     }

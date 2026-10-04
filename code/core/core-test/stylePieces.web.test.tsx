@@ -60,6 +60,19 @@ describe('style() pieces on web', () => {
     expect(pieceLast.style?.width).toBeUndefined()
   })
 
+  test('expands shorthands like the equivalent longhand piece', () => {
+    const short = style({ py: 24, jc: 'center', ai: 'center' })
+    const long = style({
+      paddingVertical: 24,
+      justifyContent: 'center',
+      alignItems: 'center',
+    })
+    simplifiedGetSplitStyles(View, { style: short })
+    simplifiedGetSplitStyles(View, { style: long })
+    expect(short[stylePieceSymbol].byKey).toEqual(long[stylePieceSymbol].byKey)
+    expect(short.className).toBe(long.className)
+  })
+
   test('resolves its authored object for inline JS style paths', () => {
     const result = simplifiedGetSplitStyles(View, { style: card }, { noClass: true })
     expect(result.style).toMatchObject({
