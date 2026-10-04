@@ -110,7 +110,8 @@ type CheckboxSkinProps = React.ComponentProps<typeof TCheckbox>
 function CheckboxSkinFrame(props: CheckboxSkinProps) {
   return (
     <CheckboxSizeContext.Provider value={(props.size as ComponentSize) || 'md'}>
-      <TCheckbox {...props} />
+      {/* an empty box needs more contrast than a card edge to read as a control */}
+      <TCheckbox borderColor="color-8 hover:color-9" {...props} />
     </CheckboxSizeContext.Provider>
   )
 }

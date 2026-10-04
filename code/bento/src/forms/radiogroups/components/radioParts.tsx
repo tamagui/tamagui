@@ -1,7 +1,12 @@
-import { styled, View } from 'tamagui'
+import { RadioGroup as TRadioGroup, styled, View, withStaticProperties } from 'tamagui'
 
-// tamagui's styled RadioGroup carries the skin and the size ladder
-export { RadioGroup } from 'tamagui'
+// tamagui's styled RadioGroup carries the skin and the size ladder; an empty
+// ring needs more contrast than a card edge to read as a control
+const RadioGroupItem = styled(TRadioGroup.Item, {
+  borderColor: 'color-8 hover:color-9',
+})
+
+export const RadioGroup = withStaticProperties(TRadioGroup, { Item: RadioGroupItem })
 
 export const Card = styled(View, {
   cursor: 'pointer',

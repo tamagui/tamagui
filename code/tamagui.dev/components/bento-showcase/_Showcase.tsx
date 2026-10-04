@@ -1,13 +1,11 @@
-import { Code, Eye, Info, Link, Minus, Plus } from '~/components/icons'
-import React, { forwardRef, useEffect, useRef, useState } from 'react'
+import { Code, Eye, Link, Minus, Plus } from '~/components/icons'
+import React, { forwardRef, useEffect, useState } from 'react'
 import type { ComponentSize } from '@tamagui/core'
 import type { ThemeName } from 'tamagui'
 
 import useSWR from 'swr'
 import {
   H2,
-  ScrollView,
-  SizableText,
   Spinner,
   Text,
   toast,
@@ -18,27 +16,11 @@ import {
   YStack,
   createStyledContext,
   createStyledHOC,
-  style,
-  useEvent,
-  useIsomorphicLayoutEffect,
+  styled,
 } from 'tamagui'
 import { Button } from '~/components/Button'
 
-const showcaseContentStyle = style({
-  py: 24,
-  justify: 'center',
-  items: 'center',
-  width: '100%',
-  height: '100%',
-})
-const showcaseCompactContentStyle = style({
-  py: 0,
-  justify: 'center',
-  items: 'center',
-  width: '100%',
-  height: '100%',
-})
-import { useCurrentRouteParams, useGroupMedia } from '@tamagui/bento'
+import { useCurrentRouteParams } from '@tamagui/bento'
 import { CodeWindow } from './CodeWindow'
 // import { ThemeButton } from './ThemeButton'
 import { type ShowcaseTheme, ShowcaseProvider } from './ShowcaseProvider'
@@ -100,14 +82,15 @@ const ShowcaseView = forwardRef<any, Props>(
           {...rest}
           ref={ref}
         >
-          <XStack items="center" justify="space-between">
-            <XStack items="center" flex={1} gap="3">
-              <H2 size="7" fontWeight="600" bg="background" t="0" l="1-5">
+          <XStack items="center" justify="space-between" flexWrap="wrap" rowGap="2">
+            <XStack items="center" flex={1} gap="3" minW="max-sm:100%">
+              <H2 size="7" fontWeight="600">
                 {title}
               </H2>
             </XStack>
 
             <XStack self="flex-end" justify="space-between" gap="3">
+              {view === 'preview' ? <SizeController /> : null}
               <Button
                 //@ts-ignore
                 title="copy link"
@@ -158,32 +141,24 @@ const ShowcaseView = forwardRef<any, Props>(
             </XStack>
           </XStack>
 
-          <MessagesFrame title={title} minHeight={minHeight} hideDragHandle>
+          <ShowcaseFrame minHeight={minHeight}>
             {view === 'preview' ? (
-              <>
-                <View
-                  width="100%"
-                  bg="background"
-                  borderWidth={0.5}
-                  borderColor="color-3"
+              <View
+                width="100%"
+                justify="center"
+                items="center"
+                minH={minHeight}
+                overflow="hidden"
+              >
+                <YStack
                   justify="center"
-                  items="center"
-                  minH={minHeight}
-                  overflow="hidden"
+                  height="100%"
+                  width="100%"
+                  maxW={short ? 400 : '100%'}
                 >
-                  <YStack
-                    justify="center"
-                    height="100%"
-                    width="100%"
-                    maxW={short ? 300 : '100%'}
-                  >
-                    {children}
-                  </YStack>
-                </View>
-                <XStack gap="1-5" position="absolute" m="4" b={0} r={0} items="flex-end">
-                  <SizeController />
-                </XStack>
-              </>
+                  {children}
+                </YStack>
+              </View>
             ) : isLoading ? (
               <View width="100%" justify="center" items="center">
                 <Spinner color="color" size="large" />
@@ -195,249 +170,52 @@ const ShowcaseView = forwardRef<any, Props>(
             ) : data ? (
               <CodeWindow code={data} />
             ) : null}
-          </MessagesFrame>
+          </ShowcaseFrame>
         </YStack>
       </SizeProvider>
     )
   }
 )
 
-const MessagesFrame = (props: {
-  title: string
-  minHeight: number
-  hideDragHandle?: boolean
-  children: React.ReactNode
-}) => {
+// a hairline box and nothing else, so the component is the only thing on show
+const ShowcaseFrame = (props: { minHeight: number; children: React.ReactNode }) => {
   const { minHeight, children } = props
   return (
     <YStack
       width="100%"
       position="relative"
       minH={minHeight}
-      bg="color-1"
-      rounded="4"
+      rounded="3"
       overflow="hidden"
       borderWidth={1}
       borderColor="border-color"
     >
-      <XStack
-        bg="color-1"
-        borderBottomWidth={1}
-        borderColor="border-color light:gray-6"
-        p="1-5"
-        gap="1-5"
-      >
-        {['red-10', 'yellow-10', 'green-10'].map((color, index) => (
-          <View
-            bg={color as any}
-            height={10}
-            width={10}
-            rounded={1_000_000_000}
-            key={index}
-          />
-        ))}
-      </XStack>
-
-      <ResizableBox hideDragHandle={props.hideDragHandle}>
-        <YStack
-          bg="color-1"
-          borderColor="border-color"
-          width="100%"
-          height="100%"
-          overflow="hidden"
-          justify="center"
-          items="center"
-        >
-          {children}
-        </YStack>
-      </ResizableBox>
-    </YStack>
-  )
-}
-
-const PHONE_SCALE = 0.75
-
-const PhoneFrame = (props: any) => {
-  return (
-    <YStack
-      group="window"
-      container
-      containerName="window"
-      borderRadius={43}
-      height={600}
-      width={292}
-      backgroundColor="color-1"
-      overflow="hidden"
-      position="absolute"
-      right={100}
-      scale="0.8 hover:0.83 focus:0.85"
-      boxShadow="hover:0 12px 28px shadow-color"
-      top={0}
-      zIndex={0}
-      tabIndex={0}
-      className="ms300 all ease-out"
-      pointerEvents="auto"
-      onPress={() => {
-        if (!props.phoneFocused) {
-          props.setPhoneFocused(true)
-        }
-      }}
-      onBlur={() => {
-        props.setPhoneFocused(false)
-      }}
-    >
-      <YStack position="absolute" inset={0}>
-        <PhoneSVG />
-      </YStack>
+      {/* demos read their own width through the window container group */}
       <YStack
-        pb={20}
-        pt={50}
-        px="8"
+        flexGrow={1}
+        width="100%"
         overflow="hidden"
-        width="133.3335%"
-        height={800}
-        scale={PHONE_SCALE}
-        transformOrigin="left top"
+        justify="center"
+        items="center"
+        group="window"
+        container
+        containerName="window"
       >
-        <PhoneScaleProvider scale={0.53}>
-          <YStack width="100%" height="100%" rounded="8" overflow="hidden">
-            {props.children}
-          </YStack>
-        </PhoneScaleProvider>
+        {children}
       </YStack>
     </YStack>
   )
 }
 
-export const { Provider: PhoneScaleProvider, useStyledContext: usePhoneScale } =
-  createStyledContext({
-    scale: 1,
-    invertScale: 1.464,
-  })
-
-export const ShowcaseChildWrapper: React.ComponentType<
-  React.ComponentProps<typeof ScrollView>
-> = createStyledHOC(ScrollView, (props, ref) => {
-  const { 'max-md': compact } = useGroupMedia('window')
-
-  return (
-    <ScrollView
-      ref={ref}
-      contentContainerStyle={compact ? showcaseCompactContentStyle : showcaseContentStyle}
-      px={compact ? 5 : 24}
-      width="100%"
-      {...props}
-    />
-  )
+// centers a demo with room around it, and grows with it so nothing clips
+export const ShowcaseChildWrapper = styled(View, {
+  width: '100%',
+  flexGrow: 1,
+  items: 'center',
+  justify: 'center',
+  px: '24px @max-md/window:5px',
+  py: '24px @max-md/window:0px',
 })
-
-type ResizableBoxExtraProps = {
-  hideDragHandle?: boolean
-}
-const ResizableBox = createStyledHOC(
-  XStack,
-  (
-    {
-      children,
-      hideDragHandle,
-      ...rest
-    }: ResizableBoxExtraProps & {
-      children?: React.ReactNode
-    },
-    ref
-  ) => {
-    const [width, setWidth] = useState<number | string>('100%')
-    const startX = useRef(null)
-    const initialWidth = useRef<number>(null)
-    const containerRef = useRef<HTMLDivElement>(null)
-
-    useIsomorphicLayoutEffect(() => {
-      initialWidth.current = containerRef.current?.getBoundingClientRect().width as number
-    }, [containerRef.current])
-
-    const handleMouseMove = useEvent((e) => {
-      if (startX.current !== null) {
-        let finalWidth = width
-        if (typeof finalWidth === 'string') {
-          finalWidth = containerRef.current?.getBoundingClientRect().width as number
-          initialWidth.current = finalWidth
-        }
-        if (finalWidth) {
-          const newWidth = finalWidth + e.clientX - startX.current
-          if (newWidth > initialWidth.current! + 10) {
-            handleMouseUp()
-            return
-          }
-          setWidth(Math.min(Math.max(newWidth, 320), initialWidth.current!))
-          startX.current = e.clientX
-        }
-      }
-    })
-
-    const handleMouseUp = useEvent(() => {
-      startX.current = null
-      document.removeEventListener('mousemove', handleMouseMove)
-      document.removeEventListener('mouseup', handleMouseUp)
-    })
-
-    const handleDragStart = useEvent((e) => {
-      startX.current = e.clientX
-      document.addEventListener('mousemove', handleMouseMove)
-      document.addEventListener('mouseup', handleMouseUp)
-    })
-
-    return (
-      <XStack
-        flex={1}
-        flexBasis="auto"
-        items="stretch"
-        select="none"
-        gap="1-5"
-        {...rest}
-        ref={ref}
-      >
-        <XStack
-          items="center"
-          group="window"
-          container
-          containerName="window"
-          ref={containerRef as any}
-          width={width as any}
-        >
-          {children}
-          <YStack
-            display={hideDragHandle ? 'none' : 'flex'}
-            mr={-16}
-            width={20}
-            cursor="col-resize"
-            onMouseDown={handleDragStart}
-            height="100%"
-            items="center"
-            justify="center"
-            group
-          >
-            <View
-              maxH="50%"
-              width={8}
-              bg="background-04 hover:background-06 press:background-06"
-              self="center"
-              rounded={1000_000}
-            />
-            <View
-              height="9 group-hover:11"
-              width={8}
-              l={-2}
-              bg="background-04"
-              rounded="5"
-            />
-          </YStack>
-        </XStack>
-      </XStack>
-    )
-  }
-)
-
-export default ResizableBox
 
 /** ---------- SIZE CONTROLLER ----------- */
 
@@ -499,8 +277,6 @@ export const SizeController = createStyledHOC(XGroup, (props, ref) => {
       justify="center"
       items="center"
       bg="background-press"
-      r={0}
-      b={0}
       gap="0-5"
       overflow="hidden"
       rounded={1_000_000_000}
@@ -540,50 +316,3 @@ export const SizeController = createStyledHOC(XGroup, (props, ref) => {
     </XGroup>
   )
 })
-
-const PhoneSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 715 1467">
-    <path
-      d="M0 166.4C0 108.155 0 79.0318 11.3353 56.785C21.3062 37.2161 37.2161 21.3062 56.785 11.3353C79.0318 0 108.155 0 166.4 0H548.6C606.845 0 635.968 0 658.215 11.3353C677.784 21.3062 693.694 37.2161 703.665 56.785C715 79.0318 715 108.155 715 166.4V1300.6C715 1358.85 715 1387.97 703.665 1410.21C693.694 1429.78 677.784 1445.69 658.215 1455.66C635.968 1467 606.845 1467 548.6 1467H166.4C108.155 1467 79.0318 1467 56.785 1455.66C37.2161 1445.69 21.3062 1429.78 11.3353 1410.21C0 1387.97 0 1358.85 0 1300.6V166.4Z"
-      fill="var(--color-2)"
-      style={{
-        outline: `0 0 10px #000`,
-      }}
-    />
-    <mask
-      id="mask0_2_131"
-      style={{ maskType: 'alpha' }}
-      maskUnits="userSpaceOnUse"
-      x="35"
-      y="36"
-      width="645"
-      height="1395"
-    >
-      <path
-        d="M42.4116 73.1286C35 87.6746 35 106.716 35 144.8V1322.2C35 1360.28 35 1379.33 42.4116 1393.87C48.9309 1406.67 59.3336 1417.07 72.1286 1423.59C86.6746 1431 105.716 1431 143.8 1431H571.2C609.284 1431 628.325 1431 642.871 1423.59C655.666 1417.07 666.069 1406.67 672.588 1393.87C680 1379.33 680 1360.28 680 1322.2V144.8C680 106.716 680 87.6746 672.588 73.1286C666.069 60.3336 655.666 49.9309 642.871 43.4116C628.325 36 609.284 36 571.2 36H537.778C536.122 36 535.295 36 534.632 36.2412C533.521 36.6456 532.646 37.5209 532.241 38.6319C532 39.2947 532 40.1224 532 41.7778C532 55.0209 532 61.6425 530.07 66.9446C526.835 75.8332 519.833 82.835 510.945 86.0702C505.642 88 499.021 88 485.778 88H229.222C215.979 88 209.358 88 204.055 86.0702C195.167 82.835 188.165 75.8332 184.93 66.9446C183 61.6425 183 55.0209 183 41.7778C183 40.1224 183 39.2947 182.759 38.6319C182.354 37.5209 181.479 36.6456 180.368 36.2412C179.705 36 178.878 36 177.222 36H143.8C105.716 36 86.6746 36 72.1286 43.4116C59.3336 49.9309 48.9309 60.3336 42.4116 73.1286Z"
-        fill="var(--color)"
-      />
-    </mask>
-    <g mask="url(#mask0_2_131)">
-      <path d="M25 22H702V1489H25V22Z" fill="var(--background)" />
-    </g>
-    <path
-      d="M319 55C319 51.134 322.134 48 326 48H390C393.866 48 397 51.134 397 55C397 58.866 393.866 62 390 62H326C322.134 62 319 58.866 319 55Z"
-      fill="var(--color-6)"
-    />
-    <path
-      d="M413 55C413 47.268 419.268 41 427 41C434.732 41 441 47.268 441 55C441 62.732 434.732 69 427 69C419.268 69 413 62.732 413 55Z"
-      fill="var(--color-6)"
-    />
-    <defs>
-      <clipPath id="clip0_2_131">
-        <rect
-          width="133.664"
-          height="124.999"
-          fill="var(--color)"
-          transform="translate(297.536 709.493)"
-        />
-      </clipPath>
-    </defs>
-  </svg>
-)

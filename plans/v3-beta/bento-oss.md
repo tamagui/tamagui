@@ -116,6 +116,12 @@ table, upload file). What remains is in `code/bento/src/registry.ts`.
 `bento-get` (`code/packages/bento-get`) still lists the old component names;
 it is left alone until Nate answers the install path question below.
 
+## Owner decisions
+
+- 2026-10-04: Nate: cut hard; the shopping cart was too basic, the paywall can stay.
+- 2026-10-04: Nate: no gray fill behind demos and no fake browser window; each
+  demo sits in a hairline border with a small radius.
+
 ## Quality bar (per component)
 
 Measured against shadcn/ui and HeroUI: theme tokens only, state ramps (hover,

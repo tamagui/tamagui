@@ -31,7 +31,7 @@ const avatarSizes = {
   xl: { px: 80, fontSize: 'xl' },
 } as const
 
-const avatarPx = (size: ComponentSize) => (avatarSizes[size] ?? avatarSizes.md).px
+export const avatarPx = (size: ComponentSize) => (avatarSizes[size] ?? avatarSizes.md).px
 
 const AvatarIconFrame = styled(View, {
   context: AvatarContext,
