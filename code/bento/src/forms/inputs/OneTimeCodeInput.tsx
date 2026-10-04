@@ -25,6 +25,7 @@ import {
   RefreshCcw,
   Smartphone,
 } from '../../icons'
+import { tone } from '../../tone'
 
 interface CodeConfirmationInputProps {
   id: number
@@ -64,8 +65,14 @@ function CodeConfirmationInput({
           width="100%"
           height="100%"
           flex={1}
-          bg={`${invalid ? 'red-8' : value ? 'color-1' : 'color-5'} focus:${invalid ? 'red-9' : 'color-1'}`}
-          outlineWidth="hover:0px focus:0px"
+          fontSize="xl"
+          fontWeight="600"
+          bg={tone.field}
+          borderWidth={1}
+          borderColor={invalid ? 'red-8' : `${tone.border} hover:color-6 focus:color-8`}
+          outlineColor="outline-color"
+          outlineStyle="focus:solid"
+          outlineWidth="0px focus:2px"
           value={value}
           maxLength={codeSize}
           onChange={(e: any) => {
@@ -385,9 +392,9 @@ export function OneTimeCodeInputExample({
         overflow="hidden"
         p="5"
         borderWidth={1}
-        borderColor="border-color"
-        bg="background"
-        boxShadow="md:(0 12px 32px shadow-color)"
+        borderColor={tone.border}
+        bg={tone.surface}
+        boxShadow="0 1px 3px shadow-color"
       >
         <View position="absolute" t="4" r="4">
           {codeEntered ? (
@@ -528,7 +535,7 @@ export function OneTimeCodeInputExample({
               height="100%"
               items="center"
               justify="center"
-              bg="background"
+              bg={tone.surface}
             >
               <Spinner color="color-9" />
             </View>
@@ -539,7 +546,7 @@ export function OneTimeCodeInputExample({
           position="absolute"
           x="enter:350px exit:0"
           opacity={`${!showCode ? 0 : 1} enter:0 exit:0`}
-          bg="background"
+          bg={tone.surface}
           items="center"
           justify="center"
           width="100% lg:100%"

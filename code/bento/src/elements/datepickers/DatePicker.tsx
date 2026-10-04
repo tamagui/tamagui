@@ -7,6 +7,7 @@ import {
 import { ChevronLeft, ChevronRight } from '../../icons'
 import { useEffect, useMemo, useState } from 'react'
 import { AnimatePresence, Button, H3, View } from 'tamagui'
+import { tone } from '../../tone'
 
 import {
   CalendarHeader,
@@ -116,14 +117,19 @@ function DayPicker() {
                     circular
                     p={0}
                     {...swapOnClick(dayButton(d))}
-                    bg={`${d.selected ? 'background' : 'transparent'}`}
-                    theme={d.selected ? 'accent' : undefined}
+                    bg={d.selected ? tone.selected : 'transparent'}
                     disabled={!d.inCurrentMonth}
                   >
                     <Button.Text
                       fontWeight="500"
                       fontSize="4"
-                      color={`${d.selected ? 'color-11' : d.inCurrentMonth ? 'color-10' : 'color-6'}`}
+                      color={
+                        d.selected
+                          ? tone.onSelected
+                          : d.inCurrentMonth
+                            ? 'color-11'
+                            : 'color-6'
+                      }
                     >
                       {d.day}
                     </Button.Text>

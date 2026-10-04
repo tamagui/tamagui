@@ -4,6 +4,7 @@ import { DatePickerProvider, useDatePickerContext } from '@rehookify/datepicker'
 import { Calendar, ChevronLeft, ChevronRight, X } from '../../../icons'
 import type { GestureReponderEvent, ViewProps } from '@tamagui/web'
 import type { PopoverProps } from 'tamagui'
+import { tone } from '../../../tone'
 import {
   createStyledHOC,
   Adapt,
@@ -134,7 +135,10 @@ const DatePickerImpl = (props: DatePickerProps) => {
 const DatePickerContent = styled(Popover.Content, {
   padding: 12,
   borderWidth: 1,
-  borderColor: 'border-color',
+  borderColor: tone.border,
+  backgroundColor: tone.surface,
+  rounded: '6',
+  boxShadow: '0 8px 24px shadow-color',
   y: 'enter:-10px exit:-10px',
   opacity: 'enter:0 exit:0',
 })
@@ -144,7 +148,8 @@ export const DatePicker = withStaticProperties(DatePickerImpl, {
   Content: withStaticProperties(DatePickerContent, {
     Arrow: styled(Popover.Arrow, {
       borderWidth: 1,
-      borderColor: 'border-color',
+      borderColor: tone.border,
+      backgroundColor: tone.surface,
     }),
   }),
 })
@@ -235,7 +240,7 @@ export function MonthPicker({
             rounded="4"
             shrink={0}
             flexBasis={90}
-            bg={`${month.active ? 'background' : 'transparent'}`}
+            bg={month.active ? tone.fill : 'transparent'}
             p={0}
             {...swapOnClick(
               monthButton(month, {
@@ -287,7 +292,7 @@ export function YearPicker({
             rounded="4"
             flexBasis="30%"
             grow={1}
-            bg={`${year.year === Number(selectedYear) ? 'background' : 'transparent'}`}
+            bg={year.year === Number(selectedYear) ? tone.fill : 'transparent'}
             p={0}
             {...swapOnClick(
               yearButton(year, {

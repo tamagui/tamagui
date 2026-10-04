@@ -121,6 +121,10 @@ it is left alone until Nate answers the install path question below.
 - 2026-10-04: Nate: cut hard; the shopping cart was too basic, the paywall can stay.
 - 2026-10-04: Nate: no gray fill behind demos and no fake browser window; each
   demo sits in a hairline border with a small radius.
+- 2026-10-04: Nate: share less often. Study what HeroUI does best, bring those
+  pieces over, clean up what we keep, and cut ugly or low-value demos. Styling
+  must follow one system: no input darker than its surface, no light mode
+  that reads backwards, nothing styled at random.
 
 ## Quality bar (per component)
 

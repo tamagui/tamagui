@@ -1,86 +1,101 @@
-import { useEffect, useState } from 'react'
-import { randNumber, randProduct, randCity } from '@ngneat/falso'
+// a fixed catalog so the grid renders the same on every load
+export const products = [
+  {
+    id: '1',
+    name: 'Leather Tote',
+    city: 'Lisbon',
+    price: 189,
+    image: '/bento/images/bag/bag1.webp',
+    tall: true,
+  },
+  {
+    id: '2',
+    name: 'Pilot Watch',
+    city: 'Zurich',
+    price: 420,
+    image: '/bento/images/watches/watch8.webp',
+    tall: false,
+  },
+  {
+    id: '3',
+    name: 'Canvas Sneaker',
+    city: 'Portland',
+    price: 95,
+    image: '/bento/images/shoes/shoe10.webp',
+    tall: false,
+  },
+  {
+    id: '4',
+    name: 'Bomber Jacket',
+    city: 'Seoul',
+    price: 240,
+    image: '/bento/images/jacket/jacket1.jpg',
+    tall: true,
+  },
+  {
+    id: '5',
+    name: 'Duffle Bag',
+    city: 'Austin',
+    price: 160,
+    image: '/bento/images/bag/bag2.webp',
+    tall: false,
+  },
+  {
+    id: '6',
+    name: 'Dive Watch',
+    city: 'Osaka',
+    price: 310,
+    image: '/bento/images/watches/watch4.jpg',
+    tall: true,
+  },
+  {
+    id: '7',
+    name: 'Suede Loafer',
+    city: 'Milan',
+    price: 175,
+    image: '/bento/images/shoes/shoe5.jpg',
+    tall: true,
+  },
+  {
+    id: '8',
+    name: 'Denim Jacket',
+    city: 'Berlin',
+    price: 130,
+    image: '/bento/images/jacket/jacket2.webp',
+    tall: false,
+  },
+  {
+    id: '9',
+    name: 'Messenger Bag',
+    city: 'Toronto',
+    price: 145,
+    image: '/bento/images/bag/bag4.webp',
+    tall: false,
+  },
+  {
+    id: '10',
+    name: 'Field Watch',
+    city: 'Denver',
+    price: 260,
+    image: '/bento/images/watches/watch6.jpeg',
+    tall: true,
+  },
+  {
+    id: '11',
+    name: 'Rain Jacket',
+    city: 'Bergen',
+    price: 210,
+    image: '/bento/images/jacket/jacket7.webp',
+    tall: false,
+  },
+  {
+    id: '12',
+    name: 'Leather Boot',
+    city: 'Dublin',
+    price: 220,
+    image: '/bento/images/shoes/shoe2.webp',
+    tall: true,
+  },
+]
 
-const bags = {
-  Clutch: 'https://tamagui.dev/bento/images/bag/bag1.webp',
-  'Duffle Bag': 'https://tamagui.dev/bento/images/bag/bag2.webp',
-  'Fanny Pack': 'https://tamagui.dev/bento/images/bag/bag3.webp',
-  'Messenger Bag': 'https://tamagui.dev/bento/images/bag/bag4.webp',
-  Satchel: 'https://tamagui.dev/bento/images/bag/bag2.webp',
-  'Shoulder Bag': 'https://tamagui.dev/bento/images/bag/bag3.webp',
-  Tote: 'https://tamagui.dev/bento/images/bag/bag1.webp',
-  Weekender: 'https://tamagui.dev/bento/images/bag/bag4.webp',
-  Wristlet: 'https://tamagui.dev/bento/images/bag/bag2.webp',
-}
-
-const watchNames = {
-  'Analog Watch': 'https://tamagui.dev/bento/images/watches/watch1.webp',
-  'Chronograph Watch': 'https://tamagui.dev/bento/images/watches/watch2.jpg',
-  'Digital Watch': 'https://tamagui.dev/bento/images/watches/watch3.jpg',
-  'Dive Watch': 'https://tamagui.dev/bento/images/watches/watch4.jpg',
-  'Dress Watch': 'https://tamagui.dev/bento/images/watches/watch5.jpeg',
-  'Field Watch': 'https://tamagui.dev/bento/images/watches/watch6.jpeg',
-  'Mechanical Watch': 'https://tamagui.dev/bento/images/watches/watch7.webp',
-  'Pilot Watch': 'https://tamagui.dev/bento/images/watches/watch8.webp',
-  Smartwatch: 'https://tamagui.dev/bento/images/watches/watch9.webp',
-  'Sports Watch': 'https://tamagui.dev/bento/images/watches/watch10.webp',
-}
-
-const shoeNames = {
-  'Ballet Flat': 'https://tamagui.dev/bento/images/shoes/shoe2.webp',
-  Boot: 'https://tamagui.dev/bento/images/shoes/shoe2.webp',
-  Clog: 'https://tamagui.dev/bento/images/shoes/shoe3.webp',
-  Espadrille: 'https://tamagui.dev/bento/images/shoes/shoe4.avif',
-  Loafer: 'https://tamagui.dev/bento/images/shoes/shoe5.jpg',
-  Mule: 'https://tamagui.dev/bento/images/shoes/shoe6.webp',
-  Oxford: 'https://tamagui.dev/bento/images/shoes/shoe7.jpg',
-  Pump: 'https://tamagui.dev/bento/images/shoes/shoe8.png',
-  Sandal: 'https://tamagui.dev/bento/images/shoes/shoe9.jpg',
-  Sneaker: 'https://tamagui.dev/bento/images/shoes/shoe10.webp',
-}
-
-const jacketNames = {
-  'Bomber Jacket': 'https://tamagui.dev/bento/images/jacket/jacket1.jpg',
-  'Denim Jacket': 'https://tamagui.dev/bento/images/jacket/jacket2.webp',
-  'Leather Jacket': 'https://tamagui.dev/bento/images/jacket/jacket3.jpg',
-  Parka: 'https://tamagui.dev/bento/images/jacket/jacket4.jpg',
-  Peacoat: 'https://tamagui.dev/bento/images/jacket/jacket5.jpg',
-  'Puffer Jacket': 'https://tamagui.dev/bento/images/jacket/jacket5.jpg',
-  'Rain Jacket': 'https://tamagui.dev/bento/images/jacket/jacket7.webp',
-  'Trench Coat': 'https://tamagui.dev/bento/images/jacket/jacket8.jpg',
-  Windbreaker: 'https://tamagui.dev/bento/images/jacket/jacket9.jpg',
-  Overcoat: 'https://tamagui.dev/bento/images/jacket/jacket10.jpg',
-}
-
-export const getProducts = () => {
-  const allImages = [bags, watchNames, shoeNames, jacketNames]
-  return Array.from({ length: 20 })
-    .fill(0)
-    .map((_, i) => {
-      const category = allImages[i % allImages.length]
-      const name = Object.keys(category)[i % 10]
-      const image = category[name]
-      const product = randProduct()
-      const city = randCity()
-      return {
-        id: i,
-        name,
-        category: product.category,
-        price: product.price,
-        discount: randNumber({ min: 10, max: 50 }),
-        image: image,
-        desc: product.description,
-        city: city,
-      }
-    })
-}
-
-export type Product = ReturnType<typeof getProducts>[0]
-
-export function useData() {
-  const [data, setData] = useState<Product[]>([])
-  useEffect(() => {
-    setData(getProducts())
-  }, [])
-  return { data }
-}
+export type Product = (typeof products)[number]

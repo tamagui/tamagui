@@ -601,55 +601,6 @@ const ComponentPreview: Record<string, () => React.ReactNode> = {
     )
   },
 
-  'animation/slide': () => {
-    return (
-      <XStack width="100%" height="100%">
-        <View
-          mt="10%"
-          width={100}
-          height={100}
-          rotate={'-16deg'}
-          borderWidth={2}
-          borderColor="color-6"
-          bg="background"
-          rounded="4"
-          opacity={0.6}
-          scale={0.78}
-        />
-        <View
-          width={100}
-          height={100}
-          rotate={'-7deg'}
-          ml="-30%"
-          mb="10%"
-          borderWidth={2}
-          aspectRatio={1}
-          rounded="4"
-          bg="background"
-          borderColor="color-6"
-          opacity={0.7}
-          scale={0.8}
-        />
-        <View
-          rotate={'4deg'}
-          width={100}
-          height={100}
-          ml="-30%"
-          mb="10%"
-          borderWidth={2}
-          aspectRatio={1}
-          rounded="4"
-          bg="background"
-          justify="center"
-          borderColor="color-6"
-          items="center"
-        >
-          <BentoIcon />
-        </View>
-      </XStack>
-    )
-  },
-
   'ecommerce/productpage': () => {
     return (
       <WindowLayout>
@@ -726,6 +677,5 @@ const ComponentPreview: Record<string, () => React.ReactNode> = {
   },
 }
 
-ComponentPreview['animation/avatars'] = ComponentPreview['elements/avatars']
 
 export default ComponentPreview

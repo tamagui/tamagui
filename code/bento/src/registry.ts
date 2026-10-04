@@ -157,11 +157,6 @@ export const bentoSections: BentoSection[] = [
           file: 'WritePreviewAction',
           component: 'WritePreviewAction',
         },
-        {
-          title: 'Comment Box',
-          file: 'AvatarNameContentAction',
-          component: 'AvatarNameContentAction',
-        },
       ],
     },
   ]),
@@ -177,18 +172,6 @@ export const bentoSections: BentoSection[] = [
       name: 'Lists',
       demos: [
         { title: 'Chat', file: 'Chat', component: 'Chat', frame: 'bleed' },
-        {
-          title: 'Wheel List',
-          file: 'WheelList',
-          component: 'WheelList',
-          frame: 'bleed',
-        },
-        {
-          title: 'Reading Progress',
-          file: 'ScrollProgress',
-          component: 'ScrollProgress',
-          frame: 'bleed',
-        },
         {
           title: 'Masonry',
           file: 'MasonryListExample',
@@ -234,14 +217,7 @@ export const bentoSections: BentoSection[] = [
     {
       group: 'tables',
       name: 'Tables',
-      demos: [
-        {
-          title: 'Sortable Table',
-          file: 'SortableTable',
-          component: 'SortableTable',
-        },
-        { title: 'Status Table', file: 'Basic', component: 'BasicTable' },
-      ],
+      demos: [{ title: 'Status Table', file: 'Basic', component: 'BasicTable' }],
     },
     {
       group: 'chips',
@@ -251,12 +227,6 @@ export const bentoSections: BentoSection[] = [
           title: 'Removable Chips',
           file: 'ChipsWithCloseIcon',
           component: 'ChipsWithCloseIcon',
-          sizable: true,
-        },
-        {
-          title: 'Chips with Icon',
-          file: 'ChipsWithIcon',
-          component: 'ChipsWithIcon',
           sizable: true,
         },
       ],
@@ -269,11 +239,6 @@ export const bentoSections: BentoSection[] = [
           title: 'Sliding Popover',
           file: 'SlidingPopover',
           component: 'SlidingPopoverDemo',
-        },
-        {
-          title: 'Alert with the React Native API',
-          file: 'AlertWithIcon',
-          component: 'AlertWithIcon',
         },
         {
           title: 'iOS Style Alert',
@@ -313,12 +278,6 @@ export const bentoSections: BentoSection[] = [
           component: 'TabbarSwippable',
           frame: 'bleed',
         },
-        {
-          title: 'React Navigation Tab Bar',
-          file: 'TabBar',
-          component: 'Tabbar',
-          frame: 'bleed',
-        },
       ],
     },
   ]),
@@ -349,28 +308,7 @@ export const bentoSections: BentoSection[] = [
           file: 'ButtonLoading',
           component: 'ButtonLoading',
         },
-        {
-          title: 'Icon Reveal Button',
-          file: 'IconCenterButton',
-          component: 'IconCenterButton',
-        },
       ],
-    },
-    {
-      group: 'avatars',
-      name: 'Avatars',
-      demos: [
-        {
-          title: 'Hover Avatars',
-          file: 'AvatarsTooltip',
-          component: 'AvatarsTooltip',
-        },
-      ],
-    },
-    {
-      group: 'slide',
-      name: 'Slide',
-      demos: [{ title: 'Directional Slide', file: 'SlideIn', component: 'SlideInDemo' }],
     },
   ]),
 

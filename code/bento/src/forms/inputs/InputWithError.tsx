@@ -20,28 +20,26 @@ export function InputWithErrorDemo({ size = 'md' }: { size?: ComponentSize }) {
 
   return (
     <View flexDirection="column" justify="center" items="center">
-      <Input
-        {...(error && {
-          theme: 'red',
-        })}
-        size={size}
-        minW="100%"
-      >
-        <Input.Label htmlFor={uniqueId + 'email'}>Label</Input.Label>
-        <Input.Box>
+      <Input size={size} minW="100%">
+        <Input.Label htmlFor={uniqueId + 'email'}>Email</Input.Label>
+        <Input.Box {...(error && { borderColor: 'red-9' })}>
           {error && (
-            <Input.Icon {...focusTrigger}>
+            <Input.Icon color="red-10" {...focusTrigger}>
               <AlertCircle />
             </Input.Icon>
           )}
           <Input.Area
             ref={inputRef}
-            pl={0}
+            pl={error ? 0 : undefined}
             id={uniqueId + 'email'}
-            placeholder="example@something"
+            aria-invalid={error}
+            defaultValue="ada@lovelace"
+            onChangeText={(text) => setError(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(text))}
           />
         </Input.Box>
-        <Input.Info>Your email is invalid.</Input.Info>
+        <Input.Info {...(error && { color: 'red-10' })}>
+          {error ? 'Enter an email like name@example.com.' : 'We never share your email.'}
+        </Input.Info>
       </Input>
     </View>
   )

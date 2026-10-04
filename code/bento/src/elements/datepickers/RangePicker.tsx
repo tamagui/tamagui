@@ -3,6 +3,7 @@ import { useDatePickerContext } from '@rehookify/datepicker'
 import { ChevronLeft, ChevronRight } from '../../icons'
 import { useEffect, useMemo, useState } from 'react'
 import type { GetProps } from 'tamagui'
+import { tone } from '../../tone'
 import { AnimatePresence, Button, H3, Separator, View, isWeb, useMedia } from 'tamagui'
 
 import {
@@ -146,20 +147,20 @@ function Calendar({
                       [key: string]: GetProps<typeof View>
                     } = {
                       'in-range': {
-                        bg: dayIsFirstOrLastOfMonth ? 'transparent' : 'color-5',
+                        bg: dayIsFirstOrLastOfMonth ? 'transparent' : tone.fill,
                       },
                       'range-start': {
-                        bg: 'color-5',
+                        bg: tone.fill,
                         width: '50%',
                         r: 0,
                       },
                       'range-end': {
-                        bg: 'color-5',
+                        bg: tone.fill,
                         width: '50%',
                         l: 0,
                       },
                       'will-be-in-range': {
-                        bg: 'color-2',
+                        bg: tone.fill,
                       },
                       '': {},
                     }
@@ -171,18 +172,19 @@ function Calendar({
                         circular
                         {...swapOnClick(dayButton(day))}
                         borderWidth={1}
-                        borderColor={`${day.selected ? 'color-1' : 'transparent'}`}
-                        {...(day.selected
-                          ? {
-                              bg: 'color-5',
-                            }
-                          : {})}
-                        theme={day.selected ? 'accent' : undefined}
+                        borderColor="transparent"
+                        {...(day.selected && { bg: tone.selected })}
                         data-range={day.range}
                         disabled={!day.inCurrentMonth}
                       >
                         <Button.Text
-                          color={`${day.selected ? 'color-11' : day.inCurrentMonth ? 'color-10' : 'color-6'}`}
+                          color={
+                            day.selected
+                              ? tone.onSelected
+                              : day.inCurrentMonth
+                                ? 'color-11'
+                                : 'color-6'
+                          }
                         >
                           {day.day}
                         </Button.Text>

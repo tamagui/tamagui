@@ -4,6 +4,7 @@ import { RovingFocusGroup } from '@tamagui/roving-focus'
 import type { KeyboardEvent, PropsWithChildren } from 'react'
 import { createContext, forwardRef, useContext } from 'react'
 import type { CheckedState, YStackProps } from 'tamagui'
+import { tone } from '../../../tone'
 import {
   createStyledHOC,
   H2,
@@ -111,7 +112,7 @@ function CheckboxSkinFrame(props: CheckboxSkinProps) {
   return (
     <CheckboxSizeContext.Provider value={(props.size as ComponentSize) || 'md'}>
       {/* an empty box needs more contrast than a card edge to read as a control */}
-      <TCheckbox borderColor="color-8 hover:color-9" {...props} />
+      <TCheckbox borderColor={`${tone.control} hover:color-9`} {...props} />
     </CheckboxSizeContext.Provider>
   )
 }
@@ -164,15 +165,13 @@ const CardFrame = styled(View, {
   width: '100%',
   rounded: '4',
   p: '3',
-  bg: 'background hover:background-hover focus:background-focus press:background-press',
-  borderColor:
-    'border-color hover:border-color-hover focus:border-color-focus press:border-color-press',
+  bg: tone.surface,
+  borderColor: `${tone.border} hover:color-6`,
   borderWidth: 1,
   variants: {
     active: {
       true: {
-        backgroundColor: 'background-focus',
-        borderColor: 'border-color-focus',
+        borderColor: 'color-9',
       },
     },
   } as const,

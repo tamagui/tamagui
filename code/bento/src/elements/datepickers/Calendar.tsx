@@ -3,6 +3,7 @@ import { useDatePickerContext } from '@rehookify/datepicker'
 import { ChevronLeft, ChevronRight } from '../../icons'
 import { Fragment, useMemo, useState } from 'react'
 import type { GetProps } from 'tamagui'
+import { tone } from '../../tone'
 import {
   AnimatePresence,
   Button,
@@ -152,20 +153,20 @@ function CalendarView({
                       [key: string]: GetProps<typeof View>
                     } = {
                       'in-range': {
-                        background: dayIsFirstOrLastOfMonth ? 'transparent' : 'color-5',
+                        background: dayIsFirstOrLastOfMonth ? 'transparent' : tone.fill,
                       },
                       'range-start': {
-                        bg: 'color-5',
+                        bg: tone.fill,
                         width: '50%',
                         r: 0,
                       },
                       'range-end': {
-                        bg: 'color-5',
+                        bg: tone.fill,
                         width: '50%',
                         l: 0,
                       },
                       'will-be-in-range': {
-                        bg: 'color-2',
+                        bg: tone.fill,
                       },
                       'will-be-range-start': {
                         bg: 'color-1',
@@ -179,17 +180,12 @@ function CalendarView({
                     const buttonElement = (
                       <Button
                         key={day.$date.toString()}
-                        theme={day.selected ? 'accent' : undefined}
                         variant="quiet"
                         circular
                         {...swapOnClick(dayButton(day))}
                         borderWidth={1}
-                        borderColor={`${day.selected ? 'color-1' : 'transparent'}`}
-                        {...(day.selected
-                          ? {
-                              bg: 'color-5',
-                            }
-                          : {})}
+                        borderColor="transparent"
+                        {...(day.selected && { bg: tone.selected })}
                         data-range={day.range}
                         disabled={!day.inCurrentMonth}
                       >
@@ -202,6 +198,7 @@ function CalendarView({
                             y="enter:20px exit:20px"
                             opacity="1 enter:0 exit:0"
                             fontWeight="bold"
+                            color={tone.onSelected}
                           >
                             {day.day}
                           </Button.Text>
@@ -298,8 +295,8 @@ export function Calendar({ showTabs = true }: { showTabs?: boolean }) {
           self="center"
           items="lg:center"
           justify="lg:center"
-          bg="color-1"
-          borderColor="border-color"
+          bg={tone.fill}
+          borderColor="transparent"
           orientation="horizontal"
           onValueChange={(value) => {
             setMode(value as DPDatesMode)
@@ -325,14 +322,14 @@ export function Calendar({ showTabs = true }: { showTabs?: boolean }) {
 
       <HeaderTypeProvider config={config} type={header} setHeader={setHeader}>
         <View
-          bg="background"
+          bg={tone.surface}
           flexDirection="row"
           gap="4"
           p="4"
           borderWidth={1}
-          borderColor="border-color"
-          rounded="8"
-          boxShadow="0 32px 32px color-9"
+          borderColor={tone.border}
+          rounded="6"
+          boxShadow="0 1px 3px shadow-color"
         >
           {header === 'day' && !fullWidthMode && (
             <CalendarView order="either" calendarIndex={0} />

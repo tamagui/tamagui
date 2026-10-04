@@ -1,9 +1,7 @@
 import type { ComponentType } from 'react'
 
-import * as AnimatedAvatars from './animation/avatars'
 import * as AnimatedButtons from './animation/buttons'
 import * as Microinteractions from './animation/microinteractions'
-import * as Slide from './animation/slide'
 import * as Payment from './ecommerce/payment'
 import * as ProductPage from './ecommerce/productpage'
 import * as Avatars from './elements/avatars'
@@ -26,10 +24,8 @@ import * as Preferences from './user/preferences'
 // each registry group's module, keyed `<section>/<group>`. demos read their
 // export by the registry's `component` name; sizable ones take `size`.
 export const bentoDemos: Record<string, Record<string, ComponentType<any>>> = {
-  'animation/avatars': AnimatedAvatars,
   'animation/buttons': AnimatedButtons,
   'animation/microinteractions': Microinteractions,
-  'animation/slide': Slide,
   'ecommerce/payment': Payment,
   'ecommerce/productpage': ProductPage,
   'elements/avatars': Avatars,

@@ -17,6 +17,7 @@ import {
   withStaticProperties,
 } from 'tamagui'
 import { Input as TInput } from 'tamagui/unstyled'
+import { tone } from '../../../tone'
 
 export const InputContext = createStyledContext<{
   size: ComponentSize
@@ -39,8 +40,8 @@ const InputGroupFrame = styled(XGroup, {
   context: InputContext,
   borderWidth: 1,
   tabIndex: 0,
-  borderColor: 'border-color hover:border-color-hover focus:border-color-focus',
-  backgroundColor: 'color-2',
+  borderColor: `${tone.border} hover:color-6 focus:color-8`,
+  backgroundColor: tone.field,
   // this fixes a flex bug where it overflows container
   minWidth: 0,
   outlineColor: 'focus:outline-color',
@@ -53,7 +54,7 @@ const InputGroupFrame = styled(XGroup, {
         outlineColor: 'outline-color',
         outlineWidth: 2,
         outlineStyle: 'solid',
-        borderColor: 'border-color-focus',
+        borderColor: 'color-8',
       },
     },
     size: radiusForSize,
@@ -81,6 +82,7 @@ const InputBox = createStyledHOC(InputGroupFrame, (props, forwardedRef) => {
 const InputFrame = styled(TInput, {
   context: InputContext,
   color: 'color',
+  placeholderTextColor: tone.muted,
   fontFamily: 'body',
   variants: {
     scaleIcon: styled.dynamic<number>(),
@@ -280,7 +282,7 @@ const infoFontSize = { xs: 'xs', sm: 'xs', md: 'xs', lg: 'sm', xl: 'base' } as c
 
 export const InputInfo = styled(Text, {
   context: InputContext,
-  color: 'color-9',
+  color: tone.muted,
   fontFamily: 'body',
   variants: {
     scaleIcon: styled.dynamic<number>(),

@@ -2,6 +2,7 @@ import type { ComponentSize } from '@tamagui/core'
 import { Globe2, Search, X } from '../../icons'
 import { Adapt, Popover, ScrollView, Sheet, Spinner, Text, View, isWeb } from 'tamagui'
 import { Input } from './components/inputsParts'
+import { tone } from '../../tone'
 import type React from 'react'
 import { useState, useMemo, useEffect } from 'react'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
@@ -75,7 +76,7 @@ function RegionFilterInput(props: RegionFilterInputProps) {
       pt="4"
       height="100%"
       width="100%"
-      bg="color-1"
+      bg={tone.surface}
     >
       <Input mx="3" size="xs">
         <Input.Box>
@@ -131,16 +132,16 @@ function RegionFilterInput(props: RegionFilterInputProps) {
                       py="2"
                       borderWidth={0}
                       borderBottomWidth={1}
-                      borderColor="border-color"
+                      borderColor={tone.border}
                       cursor="pointer"
-                      bg="hover:color-2 focus:color-2"
+                      bg="hover:color-3 focus:color-3"
                       onPress={() => {
                         setRegionCode(item.name)
                         setOpen(false)
                       }}
                     >
                       <Text fontSize="5">{item.flag}</Text>
-                      <Text color="color-9 group-hover/item:color-11" mr="auto">
+                      <Text color={`${tone.muted} group-hover/item:color-11`} mr="auto">
                         {item.name}
                       </Text>
                     </View>
@@ -216,7 +217,11 @@ function RegionSelectBox(props: RegionSelectBoxProps) {
         width={containerWidth}
         borderWidth={1}
         height={300}
-        borderColor="border-color"
+        rounded="4"
+        overflow="hidden"
+        bg={tone.surface}
+        borderColor={tone.border}
+        boxShadow="0 8px 24px shadow-color"
         y="enter:-10px exit:-10px"
         opacity="enter:0 exit:0"
         p={0}

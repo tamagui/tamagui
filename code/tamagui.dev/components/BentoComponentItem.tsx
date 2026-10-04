@@ -1,6 +1,5 @@
 import {
   BadgeAlert,
-  Banana,
   BellDot,
   Calendar,
   CheckCircle,
@@ -126,9 +125,7 @@ export const BENTO_COMPONENT_ICONS = {
   'shells/navbars': PanelTop,
   'shells/tabbars': NotebookTabs,
   'animation/microinteractions': MousePointerClick,
-  'animation/slide': Banana,
   'ecommerce/productpage': ShoppingBag,
   'user/preferences': Cog,
-  'animation/avatars': CircleUserRound,
   'ecommerce/payment': ShoppingCart,
 }
