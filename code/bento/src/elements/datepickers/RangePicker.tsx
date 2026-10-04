@@ -333,5 +333,3 @@ export function RangePicker() {
     </DatePicker>
   )
 }
-
-RangePicker.fileName = 'RangePicker'

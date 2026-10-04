@@ -108,5 +108,3 @@ export function CheckboxCards() {
     </View>
   )
 }
-
-CheckboxCards.fileName = 'CheckboxCards'

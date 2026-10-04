@@ -147,5 +147,3 @@ function Item({
     </Card>
   )
 }
-
-RadioList.fileName = 'RadioList'

@@ -63,5 +63,3 @@ export function AvatarNameContentAction() {
     </View>
   )
 }
-
-AvatarNameContentAction.fileName = 'AvatarNameContentAction'

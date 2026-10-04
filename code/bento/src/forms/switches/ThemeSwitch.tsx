@@ -1,170 +1,84 @@
 import { type ComponentSize, resolveSizing } from '@tamagui/core'
+import { useUserScheme } from '@vxrn/color-scheme'
+import { useId } from 'react'
+import { View } from 'tamagui'
 import { MoonStar, Sun } from '../../icons'
-import { useEffect, useId, useState } from 'react'
-import { AnimatePresence, View, YStack } from 'tamagui'
 import { Switch } from './common/switchParts'
 
-import { useUserScheme } from '@vxrn/color-scheme'
+const DAY = '#7cc6f2'
+const NIGHT = '#1b2340'
 
+// a day and night toggle for the color scheme. it stands alone in a header,
+// so it runs half again larger than a plain switch at the same size
 export function ThemeSwitch({ size = 'md' }: { size?: ComponentSize }) {
-  const uniqueId = useId()
-  const [checked, setChecked] = useState(false)
-
-  // do not use this code. only use in showcase
+  const id = useId()
   const userScheme = useUserScheme()
+  const dark = userScheme.value === 'dark'
 
-  useEffect(() => {
-    setChecked(userScheme.value === 'dark')
-  }, [userScheme.value])
-
-  const thumbSize = resolveSizing(size).square - 4
-
-  const larger = thumbSize >= 64
-
-  const iconSize = thumbSize * 0.4
+  const height = Math.round(resolveSizing(size).square * 1.5)
+  const inset = Math.max(3, Math.round(height / 12))
+  const knob = height - inset * 2
 
   return (
     <Switch
-      id={uniqueId + 'switch'}
-      checked={checked}
-      onCheckedChange={(checked) => {
-        userScheme.set(checked ? 'dark' : 'light')
-      }}
+      id={id}
+      aria-label="Dark mode"
       size={size}
-      backgroundColor="background"
-      justify="center"
-      items="center"
-      cursor="pointer"
-      borderWidth={2}
-      borderColor="transparent"
-      position="relative"
+      checked={dark}
+      onCheckedChange={(next) => userScheme.set(next ? 'dark' : 'light')}
+      width={height * 2}
+      height={height}
+      minHeight={height}
+      padding={inset}
+      overflow="hidden"
+      backgroundColor={DAY}
+      activeStyle={{ backgroundColor: NIGHT }}
+      transition="200ms"
     >
-      {/* switch background */}
-      {larger ? <SwitchBackground checked={checked} /> : null}
-      <Switch.Thumb transition="medium" bg="transparent">
-        <View
-          boxShadow="18px 0 18px shadow-color"
-          m="1"
-          flex={1}
-          overflow="hidden"
-          rounded="10"
-          items="center"
-          justify="center"
-          bg="color-4"
-          transition="200ms"
-        >
-          <AnimatePresence mode="wait" custom={{ direction: -1 }}>
-            <YStack
-              position="absolute"
-              key="Sun"
-              transition="medium"
-              inset={0}
-              items="center"
-              justify="center"
-              opacity={checked ? 0 : 1}
-              transform={[
-                { scale: !checked ? 1 : 0 },
-                { translateY: !checked ? 0 : thumbSize },
-              ]}
-            >
-              <Sun size={iconSize} fill={'white'} color="white" />
-            </YStack>
-
-            <YStack
-              position="absolute"
-              transition="medium"
-              key="moon"
-              inset={0}
-              items="center"
-              justify="center"
-              transform={[
-                { scale: checked ? 1 : 0 },
-                { translateY: checked ? 0 : -thumbSize },
-                { rotate: checked ? '0deg' : '-90deg' },
-              ]}
-            >
-              <MoonStar color={'white'} fill={'white'} size={iconSize} />
-            </YStack>
-          </AnimatePresence>
-        </View>
+      <Stars visible={dark} />
+      <Switch.Thumb
+        width={knob}
+        height={knob}
+        items="center"
+        justify="center"
+        transition="medium"
+        backgroundColor="#ffd84d"
+        activeStyle={{ backgroundColor: '#e9ebf5' }}
+      >
+        {dark ? (
+          <MoonStar size={knob * 0.55} color={NIGHT} />
+        ) : (
+          <Sun size={knob * 0.55} color="#b06f00" />
+        )}
       </Switch.Thumb>
     </Switch>
   )
 }
 
-const SwitchBackground = ({ checked }: { checked: boolean }) => {
-  return (
-    <View
-      key="background"
-      width="50%"
-      r={checked ? '50%' : 0}
-      height="100%"
-      justify="center"
-      items="center"
-      transition="200ms"
-      position="absolute"
-      t={0}
-      b={0}
-    >
-      <View
-        t={'20%'}
-        transition="200ms"
-        l={checked ? '55%' : 0}
-        position="absolute"
-        bg="color-6"
-        width={checked ? 4 : 30}
-        height={checked ? 4 : 5}
-        rounded="10"
-      />
-      <View
-        t={checked ? '33%' : '45%'}
-        l="28%"
-        transition="200ms"
-        position="absolute"
-        bg="color-6"
-        width={checked ? 3 : 22}
-        height={checked ? 3 : 5}
-        rounded="10"
-      />
-      <View
-        t={'70%'}
-        l={checked ? '30%' : 0}
-        transition="200ms"
-        position="absolute"
-        bg="color-6"
-        width={checked ? 4 : 15}
-        height={checked ? 4 : 5}
-        rounded="10"
-      />
+const stars = [
+  { left: '18%', top: '28%', side: 3 },
+  { left: '32%', top: '58%', side: 2 },
+  { left: '12%', top: '66%', side: 2 },
+  { left: '40%', top: '24%', side: 2 },
+]
 
-      {checked ? (
-        <>
-          <View
-            b={'35%'}
-            r="35%"
-            position="absolute"
-            bg="color-6"
-            width={4}
-            height={4}
-            rounded="10"
-            transition="200ms"
-          />
-          <View
-            t={'50%'}
-            r="10%"
-            position="absolute"
-            bg="color-6"
-            width={3}
-            height={3}
-            rounded="10"
-            transition="200ms"
-          />
-        </>
-      ) : null}
-    </View>
+function Stars({ visible }: { visible: boolean }) {
+  return (
+    <>
+      {stars.map((star, index) => (
+        <View
+          key={index}
+          position="absolute"
+          l={star.left as any}
+          t={star.top as any}
+          width={star.side}
+          height={star.side}
+          rounded="full"
+          bg="white"
+          opacity={visible ? 0.9 : 0}
+          transition="200ms"
+        />
+      ))}
+    </>
   )
 }
-
-ThemeSwitch.fileName = 'ThemeSwitch'
-
-ThemeSwitch.title = 'Theme Switch'

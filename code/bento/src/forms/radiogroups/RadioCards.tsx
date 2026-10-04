@@ -67,8 +67,6 @@ export function RadioCards() {
   )
 }
 
-RadioCards.fileName = 'RadioCards'
-
 function Item({
   selected,
   setValue,

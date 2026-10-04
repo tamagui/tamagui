@@ -65,5 +65,3 @@ function ButtonLoadingExample() {
     </Button>
   )
 }
-
-ButtonLoading.fileName = 'ButtonLoading'

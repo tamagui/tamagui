@@ -237,5 +237,3 @@ export function InteractiveCard() {
     </Card>
   )
 }
-
-InteractiveCard.fileName = 'InteractiveCard'

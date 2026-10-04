@@ -171,5 +171,3 @@ export const AlertWithIcon = () => {
     </Alert>
   )
 }
-
-AlertWithIcon.fileName = 'AlertWithIcon'

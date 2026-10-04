@@ -505,7 +505,6 @@ const SPACE = 16
 const HEADER_HEIGHT = 48 + SPACE * 2
 
 Chat.displayName = 'Chat'
-Chat.fileName = 'Chat'
 
 const GestureView = ({ offset }: { offset: SharedValue<number> }) => {
   const isDragging = useRef(false)

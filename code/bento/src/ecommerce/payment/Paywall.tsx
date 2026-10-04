@@ -818,6 +818,3 @@ const SIZE_RANGE = PLAN_ITEM_WIDTH + SPACING
 
 const REVIEW_WIDTH = isWeb ? 400 : width * 0.7
 const REVIEW_RANGE = REVIEW_WIDTH * (reviewers.length - 2)
-
-Paywall.fileName = 'Paywall'
-Paywall.title = 'Paywall #1'

@@ -178,8 +178,6 @@ export function Tabbar() {
   )
 }
 
-Tabbar.fileName = 'TabBar'
-
 /**
  * on native we need to use it with react-navigation
  * to use with react-navigation use the following code

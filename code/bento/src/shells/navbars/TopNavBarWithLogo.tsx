@@ -249,8 +249,6 @@ export function TopNavBarWithLogo() {
   )
 }
 
-TopNavBarWithLogo.fileName = 'TopNavBarWithLogo'
-
 function ProfileDropdown({
   triggerOpen,
   setTriggerOpen,

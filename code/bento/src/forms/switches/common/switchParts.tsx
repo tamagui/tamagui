@@ -2,10 +2,12 @@ import { type ComponentSize, resolveSizing } from '@tamagui/core'
 import {
   type ColorTokens,
   createStyledHOC,
+  createSwitch,
   getVariable,
   styled,
-  Switch as TamaguiSwitch,
+  SwitchFrame,
   SwitchStyledContext,
+  SwitchThumbFrame,
   type SwitchProps,
   useGetThemedIcon,
   useTheme,
@@ -64,9 +66,18 @@ export const SwitchIcon = createStyledHOC(
   }
 )
 
-export const Switch = withStaticProperties(TamaguiSwitch, {
-  Thumb: TamaguiSwitch.Thumb,
-  Icon: SwitchIcon,
+// the icons are absolute, so the track has to be their containing block
+const BentoSwitchFrame = styled(SwitchFrame, {
+  position: 'relative',
 })
+
+export const Switch = withStaticProperties(
+  createSwitch({
+    Frame: BentoSwitchFrame,
+    Thumb: SwitchThumbFrame,
+    activeTheme: 'brand',
+  }),
+  { Icon: SwitchIcon }
+)
 
 export type { SwitchProps }

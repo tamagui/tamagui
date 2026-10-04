@@ -103,5 +103,3 @@ export function ImagePicker() {
     </View>
   )
 }
-
-ImagePicker.fileName = 'ImagePicker'

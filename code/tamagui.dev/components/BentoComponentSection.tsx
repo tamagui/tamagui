@@ -1,11 +1,12 @@
-import { listingData } from './bento-showcase/data'
+import { bentoSections } from '@tamagui/bento/registry'
 import { useStore } from '@tamagui/use-store'
 import { useMemo, useRef, useState } from 'react'
 import { H3, ScrollView, Spacer, XStack, YStack, style } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { ComponentItem } from './BentoComponentItem'
 
-const scrollContentStyle = style({ minW: '100%' })
+// a definite width at lg lets the cards' percentage widths resolve when a section is short
+const scrollContentStyle = style({ minW: '100%', width: 'lg:100%' })
 
 export class BentoStore {
   heroVisible = true
@@ -18,20 +19,13 @@ export const ComponentSection = () => {
   const store = useStore(BentoStore)
 
   const filteredSections = useMemo(() => {
-    if (!filter) return listingData.sections
-    return listingData.sections
-      .map(({ sectionName, parts }) => {
-        const filteredParts = parts.filter((part) => {
-          return part.name.toLowerCase().includes(filter.toLowerCase())
-        })
-        return filteredParts.length
-          ? {
-              sectionName,
-              parts: filteredParts,
-            }
-          : (undefined as never)
-      })
-      .filter(Boolean)
+    const query = filter.toLowerCase()
+    return bentoSections
+      .map(({ section, groups }) => ({
+        section,
+        groups: groups.filter((group) => group.name.toLowerCase().includes(query)),
+      }))
+      .filter(({ groups }) => groups.length)
   }, [filter])
 
   return (
@@ -61,7 +55,7 @@ export const ComponentSection = () => {
     >
       <YStack>
         <YStack gap="4">
-          {filteredSections.map(({ sectionName, parts }, index) => {
+          {filteredSections.map(({ section: sectionName, groups }) => {
             return (
               <YStack py="4" justify="space-between" id={sectionName} key={sectionName}>
                 <YStack position="relative">
@@ -88,22 +82,21 @@ export const ComponentSection = () => {
                   <ContainerLarge>
                     <XStack
                       columnGap="4"
-                      rowGap="4 lg:48"
+                      rowGap="4 lg:8"
                       flex={1}
                       flexBasis="auto"
                       shrink={1}
                       maxW="lg:100%"
                       flexWrap={`lg:${store.heroVisible ? 'wrap' : 'nowrap'}`}
                     >
-                      {parts.map((props) => {
-                        const { route, name, numberOfComponents } = props
-                        return (
-                          <ComponentItem
-                            key={route + name + numberOfComponents.toString()}
-                            {...props}
-                          />
-                        )
-                      })}
+                      {groups.map(({ section, group, name, demos }) => (
+                        <ComponentItem
+                          key={`${section}/${group}`}
+                          name={name}
+                          route={`/${section}/${group}`}
+                          numberOfComponents={demos.length}
+                        />
+                      ))}
 
                       <Spacer width="calc(50vw - 300px)" display="lg:none" />
                     </XStack>

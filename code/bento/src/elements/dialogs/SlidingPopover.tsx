@@ -277,5 +277,3 @@ export const SlidingPopoverDemo = () => {
     </SlidingPopover>
   )
 }
-
-SlidingPopoverDemo.fileName = 'SlidingPopover'

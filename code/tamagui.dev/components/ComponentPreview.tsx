@@ -101,8 +101,8 @@ const CardItem = ({ title, children }) => {
   )
 }
 
-const ComponentPreview = {
-  Inputs: () => (
+const ComponentPreview: Record<string, () => React.ReactNode> = {
+  'forms/inputs': () => (
     <YStack minW="100%">
       <Label mt={0} mb={0}>
         Full Name
@@ -121,7 +121,7 @@ const ComponentPreview = {
     </YStack>
   ),
 
-  Layouts: () => {
+  'forms/layouts': () => {
     return (
       <WindowLayout>
         <YStack gap="4" overflow="hidden" width="100%" p="4">
@@ -139,7 +139,7 @@ const ComponentPreview = {
     )
   },
 
-  Checkboxes: () => {
+  'forms/checkboxes': () => {
     return (
       <YStack width="100%" gap="3">
         <CardItem title="PayPal">
@@ -160,7 +160,7 @@ const ComponentPreview = {
     )
   },
 
-  RadioGroups: () => {
+  'forms/radiogroups': () => {
     return (
       <YStack width="100%">
         <RadioGroup defaultValue="2" gap="3">
@@ -179,7 +179,7 @@ const ComponentPreview = {
     )
   },
 
-  Switches: () => {
+  'forms/switches': () => {
     return (
       <YStack
         flexDirection="row"
@@ -216,7 +216,7 @@ const ComponentPreview = {
     )
   },
 
-  TextAreas: () => {
+  'forms/textareas': () => {
     return (
       <View
         width="100%"
@@ -245,7 +245,7 @@ const ComponentPreview = {
     )
   },
 
-  'Image Pickers': () => {
+  'elements/pickers': () => {
     return (
       <View
         width="100%"
@@ -262,7 +262,7 @@ const ComponentPreview = {
     )
   },
 
-  List: () => {
+  'elements/list': () => {
     return (
       <WindowLayout>
         <YStack overflow="hidden" p="4" width="100%" mb="-11" gap="4">
@@ -284,7 +284,7 @@ const ComponentPreview = {
     )
   },
 
-  Avatars: () => {
+  'elements/avatars': () => {
     return (
       <View flexDirection="row">
         {[
@@ -310,7 +310,7 @@ const ComponentPreview = {
     )
   },
 
-  Buttons: () => {
+  'animation/buttons': () => {
     return (
       <ZStack>
         <Button mb="-8" mr="-8" self="center" icon={User} size="md" theme="accent">
@@ -323,7 +323,7 @@ const ComponentPreview = {
     )
   },
 
-  DatePickers: () => {
+  'elements/datepickers': () => {
     return (
       <YStack height="100%" width="100%" justify="flex-start" items="center">
         <YStack
@@ -396,7 +396,7 @@ const ComponentPreview = {
     )
   },
 
-  Tables: () => {
+  'elements/tables': () => {
     return (
       <WindowLayout>
         <XStack
@@ -440,7 +440,7 @@ const ComponentPreview = {
     )
   },
 
-  Chips: () => {
+  'elements/chips': () => {
     return (
       <YStack gap="1-5" justify="center" items="center">
         <Chip rotate="5deg" mr="-8" self="center" bg="green-10">
@@ -465,7 +465,7 @@ const ComponentPreview = {
     )
   },
 
-  Dialogs: () => {
+  'elements/dialogs': () => {
     return (
       <YStack
         width="100%"
@@ -509,7 +509,7 @@ const ComponentPreview = {
     )
   },
 
-  Navbar: () => {
+  'shells/navbars': () => {
     return (
       <WindowLayout>
         <XStack
@@ -531,33 +531,7 @@ const ComponentPreview = {
     )
   },
 
-  Sidebar: () => {
-    return (
-      <WindowLayout>
-        <YStack
-          items="flex-start"
-          bg="background-press"
-          width="33%"
-          height="100%"
-          borderBottomWidth={1}
-          borderColor="border-color light:color-6"
-          justify="flex-start"
-          p="1-5"
-          gap="4"
-        >
-          <BentoIcon />
-          <YStack height="100%" width="100%" gap="3" flex={1}>
-            <View width="90%" bg="color-8" height={6} />
-            <View width="70%" bg="color-8" height={6} />
-            <View width="50%" bg="color-8" height={6} />
-            <View width="90%" bg="color-8" height={6} />
-          </YStack>
-        </YStack>
-      </WindowLayout>
-    )
-  },
-
-  Tabbar: () => {
+  'shells/tabbars': () => {
     return (
       <WindowLayout>
         <XStack
@@ -597,7 +571,7 @@ const ComponentPreview = {
       </WindowLayout>
     )
   },
-  Microinteractions: () => {
+  'animation/microinteractions': () => {
     return (
       <YStack>
         <View flex={1} flexDirection="row" items="center" justify="center" gap="1-5">
@@ -627,7 +601,7 @@ const ComponentPreview = {
     )
   },
 
-  Slide: () => {
+  'animation/slide': () => {
     return (
       <XStack width="100%" height="100%">
         <View
@@ -676,30 +650,7 @@ const ComponentPreview = {
     )
   },
 
-  Cart: () => {
-    return (
-      <WindowLayout>
-        <YStack gap="4" p="4">
-          <ShoppingCart rotate={'-16deg'} />
-          <YStack gap="4">
-            {Array.from({ length: 3 }).map((_, index) => (
-              <XStack gap="1-5" key={index}>
-                <View aspectRatio={1} bg="color-8" height="6" rounded="2" />
-                <YStack flex={1} gap="1-5">
-                  <View bg="color-8" height={6} width="70%" />
-                  <View bg="color-8" height={6} width="20%" />
-                </YStack>
-
-                <View bg="color-8" height={6} width="10%" />
-              </XStack>
-            ))}
-          </YStack>
-        </YStack>
-      </WindowLayout>
-    )
-  },
-
-  'Product Page': () => {
+  'ecommerce/productpage': () => {
     return (
       <WindowLayout>
         <XStack gap="4" justify="flex-start" p="4">
@@ -734,7 +685,7 @@ const ComponentPreview = {
     )
   },
 
-  Preferences: () => {
+  'user/preferences': () => {
     return (
       <WindowLayout>
         <YStack
@@ -754,43 +705,7 @@ const ComponentPreview = {
     )
   },
 
-  'Event Reminders': () => {
-    return (
-      <YStack
-        width="100%"
-        bg="background"
-        borderWidth={1}
-        borderColor="border-color"
-        overflow="hidden"
-        rounded="4"
-      >
-        <XStack
-          items="center"
-          p="1-5"
-          gap="1-5"
-          borderBottomWidth={1}
-          borderColor="border-color"
-          bg="background-press"
-        >
-          <Laptop2 size={16} />
-          <Text fontSize={10}>Status Tracker</Text>
-        </XStack>
-        <YStack p="1-5" gap="1-5">
-          {[1, 2].map((_, i) => (
-            <XStack key={i} items="center" gap="1-5">
-              <View bg="color-8" height="7" aspectRatio={1} rounded={1_000_000_000} />
-              <View flex={1} gap="1-5">
-                <View bg="color-8" height={6} width="80%" />
-                <View bg="color-8" height={6} width="20%" />
-              </View>
-            </XStack>
-          ))}
-        </YStack>
-      </YStack>
-    )
-  },
-
-  Payment: () => {
+  'ecommerce/payment': () => {
     return (
       <WindowLayout>
         <YStack
@@ -810,5 +725,7 @@ const ComponentPreview = {
     )
   },
 }
+
+ComponentPreview['animation/avatars'] = ComponentPreview['elements/avatars']
 
 export default ComponentPreview

@@ -224,8 +224,6 @@ export function SignUpTwoSideScreen() {
   )
 }
 
-SignUpTwoSideScreen.fileName = 'SignUpTwoSide'
-
 const countries = [
   { name: 'Spain', flag: 'ES' },
   { name: 'Japan', flag: 'JP' },

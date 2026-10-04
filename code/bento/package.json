@@ -7,8 +7,9 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    "./package.json": "./package.json",
     ".": "./src/index.ts",
+    "./registry": "./src/registry.ts",
+    "./demos": "./src/demos.ts",
     "./*": "./src/*/index.tsx"
   },
   "scripts": {

@@ -251,8 +251,6 @@ export function LocationNotification() {
   )
 }
 
-LocationNotification.fileName = 'LocationNotification'
-
 const Banner = ({ children }: { children?: React.ReactNode }) => {
   return (
     <View flexDirection="row" items="center" bg="color-6" p="3" gap="2" rounded="4">

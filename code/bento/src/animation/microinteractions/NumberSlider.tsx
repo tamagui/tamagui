@@ -78,8 +78,6 @@ export const AnimatedNumbers = () => {
   )
 }
 
-AnimatedNumbers.fileName = 'NumberSlider'
-
 const AnimatedNumber = styled(Text, {
   fontFamily: 'mono',
   fontSize: '12 @max-sm/window:8',

@@ -412,5 +412,3 @@ export function SortableTable() {
     </FooterContainer>
   )
 }
-
-SortableTable.fileName = 'SortableTable'

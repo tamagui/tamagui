@@ -366,5 +366,3 @@ const getInputRange = (index: number) => [
   Math.round((index + 2) * SIZE_RANGE),
   Math.round((index + 3) * SIZE_RANGE),
 ]
-
-WheelList.fileName = 'WheelList'

@@ -50,5 +50,3 @@ export function IconCenterButton() {
     </View>
   )
 }
-
-IconCenterButton.fileName = 'IconCenterButton'

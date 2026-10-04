@@ -323,8 +323,6 @@ export function ProductWithReview() {
   )
 }
 
-ProductWithReview.fileName = 'ProductWithReview'
-
 const colors = [
   {
     name: 'red',

@@ -269,5 +269,3 @@ export function PhoneInputExample({ size = 'md' }: { size?: ComponentSize }) {
     </View>
   )
 }
-
-PhoneInputExample.fileName = 'PhoneInput'

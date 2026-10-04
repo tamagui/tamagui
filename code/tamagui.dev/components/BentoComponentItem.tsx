@@ -36,8 +36,8 @@ export function ComponentItem({
   numberOfComponents: number
   route: string
 }) {
-  const Icon = BENTO_COMPONENT_ICONS[name] ?? Null
-  const Preview = ComponentPreview[name] ?? Null
+  const Icon = BENTO_COMPONENT_ICONS[route.slice(1)] ?? Null
+  const Preview = ComponentPreview[route.slice(1)] ?? Null
 
   const href = BASE_PATH + route
 
@@ -109,27 +109,26 @@ const Null = () => null
 const BASE_PATH = '/bento'
 
 export const BENTO_COMPONENT_ICONS = {
-  Inputs: TextCursorInput,
-  Checkboxes: CheckSquare,
-  Layouts: Layout,
-  RadioGroups: CheckCircle,
-  Switches: ToggleRight,
-  Textareas: FormInput,
-  'Image Pickers': Image,
-  List: List,
-  Avatars: CircleUserRound,
-  Buttons: RectangleHorizontal,
-  DatePickers: Calendar,
-  Tables: Table,
-  Chips: BadgeAlert,
-  Dialogs: MessageSquareShare,
-  Navbar: PanelTop,
-  Sidebar: PanelLeft,
-  Tabbar: NotebookTabs,
-  Microinteractions: MousePointerClick,
-  Slide: Banana,
-  Cart: ShoppingCart,
-  'Product Page': ShoppingBag,
-  Preferences: Cog,
-  'Event Reminders': BellDot,
+  'forms/inputs': TextCursorInput,
+  'forms/checkboxes': CheckSquare,
+  'forms/layouts': Layout,
+  'forms/radiogroups': CheckCircle,
+  'forms/switches': ToggleRight,
+  'forms/textareas': FormInput,
+  'elements/pickers': Image,
+  'elements/list': List,
+  'elements/avatars': CircleUserRound,
+  'animation/buttons': RectangleHorizontal,
+  'elements/datepickers': Calendar,
+  'elements/tables': Table,
+  'elements/chips': BadgeAlert,
+  'elements/dialogs': MessageSquareShare,
+  'shells/navbars': PanelTop,
+  'shells/tabbars': NotebookTabs,
+  'animation/microinteractions': MousePointerClick,
+  'animation/slide': Banana,
+  'ecommerce/productpage': ShoppingBag,
+  'user/preferences': Cog,
+  'animation/avatars': CircleUserRound,
+  'ecommerce/payment': ShoppingCart,
 }

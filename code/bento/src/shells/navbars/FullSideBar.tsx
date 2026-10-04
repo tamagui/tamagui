@@ -88,8 +88,6 @@ export function FullSideBar() {
   )
 }
 
-FullSideBar.fileName = 'FullSideBar'
-
 function ProfileDropdown({
   triggerOpen,
   setTriggerOpen,

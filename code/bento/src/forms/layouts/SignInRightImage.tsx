@@ -152,8 +152,6 @@ export function SignInRightImage() {
   )
 }
 
-SignInRightImage.fileName = 'SignInRightImage'
-
 const SignUpLink = () => {
   return (
     <Anchor self="center" href={`#`}>

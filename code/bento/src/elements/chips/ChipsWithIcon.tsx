@@ -27,5 +27,3 @@ export function ChipsWithIcon({ size = 'md' }: { size?: ComponentSize }) {
     </View>
   )
 }
-
-ChipsWithIcon.fileName = 'ChipsWithIcon'

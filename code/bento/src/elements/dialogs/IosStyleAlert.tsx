@@ -262,5 +262,3 @@ export const IosStyleAlert = () => {
     </Alert>
   )
 }
-
-IosStyleAlert.fileName = 'IosStyleAlert'

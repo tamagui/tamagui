@@ -96,8 +96,6 @@ export function WritePreviewAction() {
   )
 }
 
-WritePreviewAction.fileName = 'WritePreviewAction'
-
 const StyledTab = styled(Tabs.Tab, {
   unstyled: true,
   borderColor: 'transparent',

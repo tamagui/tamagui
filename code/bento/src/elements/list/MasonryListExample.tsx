@@ -131,5 +131,3 @@ export const MasonryListExample = () => {
     </View>
   )
 }
-
-MasonryListExample.fileName = 'MasonryListExample'

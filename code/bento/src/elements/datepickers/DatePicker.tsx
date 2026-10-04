@@ -188,5 +188,3 @@ export function DatePickerExample() {
     </DatePicker>
   )
 }
-
-DatePickerExample.fileName = 'DatePicker'

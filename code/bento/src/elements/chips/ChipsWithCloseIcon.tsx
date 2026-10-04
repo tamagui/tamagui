@@ -24,5 +24,3 @@ export function ChipsWithCloseIcon({ size = 'md' }: { size?: ComponentSize }) {
     </View>
   )
 }
-
-ChipsWithCloseIcon.fileName = 'ChipsWithCloseIcon'

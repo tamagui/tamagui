@@ -49,5 +49,3 @@ export function InputGroupedIconsExample({ size = 'md' }: { size?: ComponentSize
     </View>
   )
 }
-
-InputGroupedIconsExample.fileName = 'InputGroupedIcons'

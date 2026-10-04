@@ -1,9 +1,9 @@
 # Bento open source in the Tamagui repo
 
-State: plan written; import of wave 1 starting on `tm/bento-oss`
-(`~/.worktrees/tamagui-bento-oss`), landing on `v3-beta`.
-Owner: lane `bento-oss`. Source of truth until wave 1 lands: `~/bento` at
-`origin/v3-beta` `50432b8` (read-only).
+State: wave 1 landed on `v3-beta` and curated to 22 groups and 47 demos;
+visual pass and wave 2 next. Worktree `~/.worktrees/tamagui-bento-oss`.
+Owner: lane `bento-oss`. `code/bento` is now the source of truth; `~/bento`
+is read-only history.
 
 ## Why
 
@@ -28,12 +28,16 @@ code/bento/                      private workspace package "@tamagui/bento" (nev
   package.json                   "private": true; deps resolve from the monorepo
   src/<section>/<group>/*.tsx    one file per component, self-contained, own mock data
   src/<section>/<group>/index.ts barrel for the group
-  src/registry.ts                the only list of sections, groups, titles, files
+  src/registry.ts                the only list of sections, groups, titles, files (metadata only)
+  src/demos.ts                   export names to components, keyed "section/group"
   src/shared/                    the few hooks and helpers components truly share
 ```
 
 - The directory path is the URL: `src/forms/inputs` is `/bento/forms/inputs`.
   No rename tables, no `product_list` versus `product-list`.
+- `registry.ts` holds no component imports, so the SSR'd `/bento` home can read
+  it without pulling client-only demo deps; the group page looks components up
+  in `demos.ts`.
 - `registry.ts` replaces the site's `bento-showcase/sections/*` wrappers and
   their `data.tsx` path lists, and Bento's own `Data`, `Sections` and
   `example/registry.ts`. Each entry names the component, its title, its source
@@ -97,6 +101,21 @@ Held back pending review: notifications, onboarding, profile, color-picker,
 banners. Cut candidates: anything that only demos an animation trick with no
 app use; decided per component when reviewed.
 
+## Curation (applied)
+
+Nate on wave 1: cut hard, keep only what is worth having (the shopping cart
+was too basic). Cut 48 demos plus whole groups `elements/buttons`,
+`ecommerce/product-list` and `panels/walkthrough`. Rules used: one demo per
+idea (input label, left icon, right icon and addon variants fold into "Label,
+Help and Error" and "Grouped with Buttons"); no plain layout variations of a
+list or checkbox; no demos that only restyle a stock component (plain chips,
+plain alert, rounded avatars); no gimmicks without an app use (pulse button,
+fancy tooltip, slide out); no thin screens (cart, status tracker, users
+table, upload file). What remains is in `code/bento/src/registry.ts`.
+
+`bento-get` (`code/packages/bento-get`) still lists the old component names;
+it is left alone until Nate answers the install path question below.
+
 ## Quality bar (per component)
 
 Measured against shadcn/ui and HeroUI: theme tokens only, state ramps (hover,
@@ -134,5 +153,9 @@ unstyled parts) over hand-rolled ones.
 
 ## Log
 
+- 2026-10-04: wave 1 landed (`5d22564c09`, `e4e3d2c91b`); curated to 47 demos
+  with a metadata registry and one generic group page; fixed `style()` pieces
+  dropping shorthands (`py`, `justify`, `items` compiled to empty rules), which
+  had uncentered every showcase frame.
 - 2026-10-04: plan written; worktree `~/.worktrees/tamagui-bento-oss` off
   `origin/v3-beta` `980b3a3803`.

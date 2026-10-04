@@ -174,8 +174,6 @@ export const TabbarSwippable = () => {
   )
 }
 
-TabbarSwippable.fileName = 'TabBarSwippable'
-
 const TabsContent = (props: TabsContentProps) => {
   return (
     <Tabs.Content

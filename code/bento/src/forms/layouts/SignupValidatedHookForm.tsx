@@ -432,5 +432,3 @@ export function SignupValidatedHookForm() {
     </FormCard>
   )
 }
-
-SignupValidatedHookForm.fileName = 'SignupValidatedHookForm'

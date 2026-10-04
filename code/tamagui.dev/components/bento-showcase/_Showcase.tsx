@@ -48,7 +48,6 @@ type Props = {
   title: string
   fileName: string
   short?: boolean
-  isInput?: boolean
   theme?: ShowcaseTheme
   defaultSize?: ComponentSize
 }
@@ -64,10 +63,7 @@ export const Showcase = (props: Props) => {
 }
 
 const ShowcaseView = forwardRef<any, Props>(
-  (
-    { children, title, short, isInput, fileName, theme, defaultSize = 'md', ...rest },
-    ref
-  ) => {
+  ({ children, title, short, fileName, theme, defaultSize = 'md', ...rest }, ref) => {
     const [view, setView] = useState<'code' | 'preview'>('preview')
 
     const { section, part } = useCurrentRouteParams()
@@ -179,7 +175,7 @@ const ShowcaseView = forwardRef<any, Props>(
                     justify="center"
                     height="100%"
                     width="100%"
-                    maxW={isInput ? 300 : '100%'}
+                    maxW={short ? 300 : '100%'}
                   >
                     {children}
                   </YStack>
@@ -193,7 +189,7 @@ const ShowcaseView = forwardRef<any, Props>(
                 <Spinner color="color" size="large" />
               </View>
             ) : error ? (
-              <Text text="center" color="red-10" fontSize="@sm/window:2">
+              <Text text="center" color="red-10" fontSize="@max-md/window:2">
                 Source unavailable. Please try again later.
               </Text>
             ) : data ? (
@@ -322,13 +318,13 @@ export const { Provider: PhoneScaleProvider, useStyledContext: usePhoneScale } =
 export const ShowcaseChildWrapper: React.ComponentType<
   React.ComponentProps<typeof ScrollView>
 > = createStyledHOC(ScrollView, (props, ref) => {
-  const { sm } = useGroupMedia('window')
+  const { 'max-md': compact } = useGroupMedia('window')
 
   return (
     <ScrollView
       ref={ref}
-      contentContainerStyle={sm ? showcaseCompactContentStyle : showcaseContentStyle}
-      px={sm ? 5 : 24}
+      contentContainerStyle={compact ? showcaseCompactContentStyle : showcaseContentStyle}
+      px={compact ? 5 : 24}
       width="100%"
       {...props}
     />
@@ -440,32 +436,6 @@ const ResizableBox = createStyledHOC(
     )
   }
 )
-
-export function Hint({ children }: { children: React.ReactNode }) {
-  return (
-    <View
-      position="absolute"
-      b={12}
-      l={12}
-      borderWidth={1}
-      borderColor="border-color"
-      bg="color-1"
-      paddingTop="1-5"
-      paddingBottom="1-5"
-      px="3"
-      gap="3"
-      z={100000}
-      rounded="4"
-      flexDirection="row"
-      justify="center"
-      items="center"
-      theme="green"
-    >
-      <Info color="color" size={18} />
-      <SizableText size="4">{children}</SizableText>
-    </View>
-  )
-}
 
 export default ResizableBox
 

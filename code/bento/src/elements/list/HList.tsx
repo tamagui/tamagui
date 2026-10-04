@@ -31,8 +31,6 @@ export function HList() {
   )
 }
 
-HList.fileName = 'HList'
-
 function HListItem({ uri, title }: { uri: string; title: string }) {
   return (
     <HListFrame style={{ transition: 'transform 150ms ease' }} scale="press:0.98">

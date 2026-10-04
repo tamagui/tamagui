@@ -56,8 +56,6 @@ export function CircularAvatarsWithCustomIcons() {
   )
 }
 
-CircularAvatarsWithCustomIcons.fileName = 'CircularAvatarsWithCustomIcons'
-
 function Item({ size, Icon }: { size: ComponentSize; Icon: ReactElement }) {
   return (
     <Avatar size={size} position="relative">

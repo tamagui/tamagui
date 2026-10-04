@@ -240,5 +240,3 @@ export function BasicTable() {
     </Table>
   )
 }
-
-BasicTable.fileName = 'Basic'

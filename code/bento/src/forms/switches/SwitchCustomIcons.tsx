@@ -29,5 +29,3 @@ export function SwitchCustomIcons({ size }: { size?: ComponentSize }) {
     </View>
   )
 }
-
-SwitchCustomIcons.fileName = 'SwitchCustomIcons'

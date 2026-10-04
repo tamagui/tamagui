@@ -1,6 +1,16 @@
 import { CurrentRouteProvider } from '@tamagui/bento'
-import { listingData, paths } from '~/components/bento-showcase/data'
-import * as Sections from '~/components/bento-showcase/sections'
+import { bentoDemos } from '@tamagui/bento/demos'
+import {
+  type BentoDemo,
+  bentoGroups,
+  bentoSections,
+  getBentoGroup,
+} from '@tamagui/bento/registry'
+import {
+  Showcase,
+  ShowcaseChildWrapper,
+  WithSize,
+} from '~/components/bento-showcase/_Showcase'
 import { CircleDashed, Paintbrush } from '~/components/icons'
 import type { Href } from 'one'
 import { Link, useParams } from 'one'
@@ -26,8 +36,8 @@ import { useBentoStore } from '~/features/bento/BentoStore'
 import { DropTamaguiConfig } from '~/features/bento/DropTamaguiConfig'
 
 export const generateStaticParams = async () => {
-  return paths.map((x) => ({
-    parts: `${x.params.section}/${x.params.part}`,
+  return bentoGroups.map(({ section, group }) => ({
+    parts: `${section}/${group}`,
   }))
 }
 
@@ -39,9 +49,9 @@ function useParts() {
 
 export default function BentoPage() {
   const { section, part } = useParts()
-  const Comp = Sections[section]?.[part]
+  const group = getBentoGroup(section, part)
 
-  if (!Comp) {
+  if (!group) {
     return null
   }
 
@@ -71,85 +81,128 @@ export default function BentoPage() {
             <XStack position="relative" t={0}>
               <View className="sticky">
                 <SideBar items="flex-end">
-                  {listingData.sections.map(({ parts, sectionName }, index) => (
-                    <YStack key={`${sectionName}-${name}`} items="flex-end" gap="4">
-                      <XStack
-                        onPress={() => {
-                          navigator?.clipboard?.writeText?.(
-                            `${window.location.hostname}/bento#${sectionName}`
-                          )
+                  {bentoSections.map(
+                    ({ section: sectionName, name: sectionTitle, groups }) => (
+                      <YStack key={sectionName} items="flex-end" gap="4">
+                        <XStack
+                          onPress={() => {
+                            navigator?.clipboard?.writeText?.(
+                              `${window.location.hostname}/bento#${sectionName}`
+                            )
 
-                          toast('Link copied to clipboard')
-                        }}
-                        gap="1-5"
-                        items="center"
-                      >
-                        <Text color="color-12" text="right" px="1-5">
-                          {sectionName[0].toUpperCase()}
-                          {sectionName.slice(1)}
-                        </Text>
-                      </XStack>
+                            toast('Link copied to clipboard')
+                          }}
+                          gap="1-5"
+                          items="center"
+                        >
+                          <Text color="color-12" text="right" px="1-5">
+                            {sectionTitle}
+                          </Text>
+                        </XStack>
 
-                      <YStack items="flex-end" gap="1-5">
-                        {parts.map((partItem, index) => {
-                          const { route, name } = partItem
-                          const active = route === `/${section}/${part}`
+                        <YStack items="flex-end" gap="1-5">
+                          {groups.map(({ group: groupName, name }) => {
+                            const route = `/${sectionName}/${groupName}`
+                            const active = route === `/${section}/${part}`
 
-                          return (
-                            <Link
-                              key={`${sectionName}-${name}`}
-                              href={`/bento${route}` as Href}
-                            >
-                              <View
-                                position="relative"
-                                py="1-5"
-                                items="center"
-                                justify="center"
-                                gap="1-5"
-                                flex={1}
+                            return (
+                              <Link
+                                key={`${sectionName}-${name}`}
+                                href={`/bento${route}` as Href}
                               >
-                                <Paragraph
-                                  fontWeight="500"
-                                  text="right"
-                                  color={`${active ? 'accent-color' : 'color-10'}`}
-                                  px="1-5"
-                                >
-                                  {name}
-                                </Paragraph>
                                 <View
-                                  position="absolute"
-                                  inset={0}
-                                  opacity={`${active ? 1 : 0} hover:1`}
-                                  borderRightColor="hover:accent-color"
+                                  position="relative"
+                                  py="1-5"
+                                  items="center"
                                   justify="center"
-                                  items="flex-end"
+                                  gap="1-5"
+                                  flex={1}
                                 >
+                                  <Paragraph
+                                    fontWeight="500"
+                                    text="right"
+                                    color={`${active ? 'accent-color' : 'color-10'}`}
+                                    px="1-5"
+                                  >
+                                    {name}
+                                  </Paragraph>
                                   <View
-                                    height="70%"
-                                    width={2}
-                                    rounded="10"
-                                    bg="accent-color"
-                                    x={5}
-                                  />
+                                    position="absolute"
+                                    inset={0}
+                                    opacity={`${active ? 1 : 0} hover:1`}
+                                    borderRightColor="hover:accent-color"
+                                    justify="center"
+                                    items="flex-end"
+                                  >
+                                    <View
+                                      height="70%"
+                                      width={2}
+                                      rounded="10"
+                                      bg="accent-color"
+                                      x={5}
+                                    />
+                                  </View>
                                 </View>
-                              </View>
-                            </Link>
-                          )
-                        })}
+                              </Link>
+                            )
+                          })}
+                        </YStack>
                       </YStack>
-                    </YStack>
-                  ))}
+                    )
+                  )}
                 </SideBar>
               </View>
 
               <View flex={1} maxW="100%" width="100%">
-                <Comp />
+                <YStack gap="88px" px="1-5 xl:0" py="1-5 xl:0">
+                  {group.demos.map((demo) => (
+                    <BentoDemoShowcase
+                      key={demo.file}
+                      demo={demo}
+                      Demo={bentoDemos[`${section}/${part}`][demo.component]}
+                    />
+                  ))}
+                </YStack>
               </View>
             </XStack>
           </ContainerBento>
         </YStack>
       </BentoPageFrame>
     </CurrentRouteProvider>
+  )
+}
+
+function BentoDemoShowcase({
+  demo,
+  Demo,
+}: {
+  demo: BentoDemo
+  Demo: React.ComponentType<any>
+}) {
+  const { frame = 'center' } = demo
+  const preview = demo.sizable ? (
+    <WithSize>
+      <Demo />
+    </WithSize>
+  ) : (
+    <Demo />
+  )
+
+  return (
+    <Showcase
+      fileName={demo.file}
+      title={demo.title}
+      short={demo.short}
+      defaultSize={demo.defaultSize}
+    >
+      {frame === 'bleed' ? (
+        preview
+      ) : (
+        <ShowcaseChildWrapper {...(frame === 'flush' && { p: 0 })}>
+          {preview}
+        </ShowcaseChildWrapper>
+      )}
+    </Showcase>
   )
 }
 

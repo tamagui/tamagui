@@ -36,8 +36,6 @@ export function Meeting() {
   )
 }
 
-Meeting.fileName = 'Meeting'
-
 function MeetingItem({ item }: { item: (typeof data)[0] }) {
   return (
     <View

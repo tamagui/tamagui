@@ -99,8 +99,6 @@ export function CheckboxList() {
   )
 }
 
-CheckboxList.fileName = 'CheckboxList'
-
 function CheckboxItem({
   item,
   isLastItem,

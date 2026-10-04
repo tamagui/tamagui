@@ -654,5 +654,3 @@ const EmailInput = ({
     </View>
   )
 }
-
-OneTimeCodeInputExample.fileName = 'OneTimeCodeInput'

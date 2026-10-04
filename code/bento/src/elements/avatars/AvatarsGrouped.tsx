@@ -62,8 +62,6 @@ function AvatarGroup({ size, items }: { size: ComponentSize; items: React.ReactN
   )
 }
 
-AvatarsGrouped.fileName = 'AvatarsGrouped'
-
 function Item({ imageUrl, size }: { imageUrl: string; size: ComponentSize }) {
   return (
     <Avatar size={size}>

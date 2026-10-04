@@ -70,8 +70,6 @@ export function AvatarsTooltip() {
   )
 }
 
-AvatarsTooltip.fileName = 'AvatarsTooltip'
-
 function Item({ imageUrl, size }: { imageUrl: string; size: number }) {
   return (
     <Avatar borderWidth="1" borderColor="color-1" circular size={size}>

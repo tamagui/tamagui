@@ -46,5 +46,3 @@ export function InputWithErrorDemo({ size = 'md' }: { size?: ComponentSize }) {
     </View>
   )
 }
-
-InputWithErrorDemo.fileName = 'InputWithError'

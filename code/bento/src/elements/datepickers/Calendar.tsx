@@ -367,5 +367,3 @@ export function Calendar({ showTabs = true }: { showTabs?: boolean }) {
     </YStack>
   )
 }
-
-Calendar.fileName = 'Calendar'

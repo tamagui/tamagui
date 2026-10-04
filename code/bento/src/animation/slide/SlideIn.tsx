@@ -85,5 +85,3 @@ export function SlideInDemo() {
     </View>
   )
 }
-
-SlideInDemo.fileName = 'SlideIn'

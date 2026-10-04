@@ -27,7 +27,6 @@ function toAppSource(text: string) {
       .replaceAll(/(['"])\/bento\/images\//g, '$1https://tamagui.dev/bento/images/')
       // window container clauses become plain media clauses
       .replaceAll(/@([\w-]+)\/window:/g, '$1:')
-      .replaceAll(/([a-zA-Z0-9_]+\.fileName\s*=\s*)'([^']*)'/g, '')
   )
 }
 

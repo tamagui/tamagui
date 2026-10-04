@@ -37,10 +37,11 @@ export function useDateAnimation({ listenTo }: { listenTo: 'year' | 'month' | 'y
   }, [calendars[0][listenTo], currentYear])
 
   // fade in from, and out toward, the side the calendar moved
-  const slide = (x: number) => ({
-    opacity: 'enter:0 exit:0',
-    x: `enter:${x}px exit:${x}px`,
-  }) as const
+  const slide = (x: number) =>
+    ({
+      opacity: 'enter:0 exit:0',
+      x: `enter:${x}px exit:${x}px`,
+    }) as const
 
   const prevNextAnimation = () => {
     if (listenTo === 'years') {
