@@ -111,9 +111,16 @@ function cloneDeepSafe(x: any, excludeKeys = {}) {
   if (typeof x === 'function') return `Function`
   if (typeof x !== 'object') return x
   if ('$$typeof' in x) return 'Component'
-  return Object.fromEntries(
-    Object.entries(x).flatMap(([k, v]) => (excludeKeys[k] ? [] : [[k, cloneDeepSafe(v)]]))
-  )
+  // reuse the entry pairs while preserving the snapshot of getter values.
+  const entries = Object.entries(x)
+  let kept = 0
+  for (const entry of entries) {
+    if (excludeKeys[entry[0]]) continue
+    entry[1] = cloneDeepSafe(entry[1])
+    entries[kept++] = entry
+  }
+  entries.length = kept
+  return Object.fromEntries(entries)
 }
 
 /**
