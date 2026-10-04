@@ -41,7 +41,3 @@ export const listingData = {
     ...userListingData,
   ],
 } as const
-
-// kind of cheating exporting this just so bento landing page avoids importing all of bento
-// @ts-expect-error - bento component wildcard import
-export { Calendar } from '@tamagui/bento/component/elements/datepickers'

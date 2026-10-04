@@ -1,6 +1,6 @@
 import { YStack } from 'tamagui'
 
-import * as RadioGroups from '@tamagui/bento/component/forms/radiogroups'
+import * as RadioGroups from '@tamagui/bento/forms/radiogroups'
 import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,

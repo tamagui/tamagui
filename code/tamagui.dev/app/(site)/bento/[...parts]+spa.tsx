@@ -1,5 +1,6 @@
-import { CurrentRouteProvider, Data, Sections } from '@tamagui/bento'
-import { listingData } from '~/components/bento-showcase/data'
+import { CurrentRouteProvider } from '@tamagui/bento'
+import { listingData, paths } from '~/components/bento-showcase/data'
+import * as Sections from '~/components/bento-showcase/sections'
 import { CircleDashed, Paintbrush } from '~/components/icons'
 import type { Href } from 'one'
 import { Link, useParams } from 'one'
@@ -25,7 +26,7 @@ import { useBentoStore } from '~/features/bento/BentoStore'
 import { DropTamaguiConfig } from '~/features/bento/DropTamaguiConfig'
 
 export const generateStaticParams = async () => {
-  return Data.paths.map((x) => ({
+  return paths.map((x) => ({
     parts: `${x.params.section}/${x.params.part}`,
   }))
 }
@@ -38,7 +39,7 @@ function useParts() {
 
 export default function BentoPage() {
   const { section, part } = useParts()
-  const Comp = Sections?.[section]?.[part]
+  const Comp = Sections[section]?.[part]
 
   if (!Comp) {
     return null

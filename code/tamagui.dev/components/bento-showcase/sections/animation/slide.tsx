@@ -1,6 +1,6 @@
 import { YStack } from 'tamagui'
 
-import * as Slide from '@tamagui/bento/component/animation/slide'
+import * as Slide from '@tamagui/bento/animation/slide'
 import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,

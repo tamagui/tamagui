@@ -1,6 +1,6 @@
 import { YStack } from 'tamagui'
 
-import * as DatePickers from '@tamagui/bento/component/elements/datepickers'
+import * as DatePickers from '@tamagui/bento/elements/datepickers'
 import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,

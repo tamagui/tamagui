@@ -1,6 +1,6 @@
 import { YStack } from 'tamagui'
 
-import * as Lists from '@tamagui/bento/component/elements/list'
+import * as Lists from '@tamagui/bento/elements/list'
 import {
   Hint,
   Showcase,

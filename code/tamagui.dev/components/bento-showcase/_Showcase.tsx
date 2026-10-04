@@ -1,6 +1,7 @@
 import { Code, Eye, Info, Link, Minus, Plus } from '~/components/icons'
 import React, { forwardRef, useEffect, useRef, useState } from 'react'
-import type { SizeTokens, ThemeName } from 'tamagui'
+import type { ComponentSize } from '@tamagui/core'
+import type { ThemeName } from 'tamagui'
 
 import useSWR from 'swr'
 import {
@@ -37,10 +38,7 @@ const showcaseCompactContentStyle = style({
   width: '100%',
   height: '100%',
 })
-// @ts-ignore - bento component wildcard import
-import { useCurrentRouteParams } from '@tamagui/bento'
-// @ts-ignore - bento component wildcard import
-import { useGroupMedia } from '@tamagui/bento/component/hooks/useGroupMedia'
+import { useCurrentRouteParams, useGroupMedia } from '@tamagui/bento'
 import { CodeWindow } from './CodeWindow'
 // import { ThemeButton } from './ThemeButton'
 import { type ShowcaseTheme, ShowcaseProvider } from './ShowcaseProvider'
@@ -52,7 +50,7 @@ type Props = {
   short?: boolean
   isInput?: boolean
   theme?: ShowcaseTheme
-  defaultSize?: SizeTokens
+  defaultSize?: ComponentSize
 }
 
 export const Showcase = (props: Props) => {
@@ -67,14 +65,13 @@ export const Showcase = (props: Props) => {
 
 const ShowcaseView = forwardRef<any, Props>(
   (
-    { children, title, short, isInput, fileName, theme, defaultSize = '3', ...rest },
+    { children, title, short, isInput, fileName, theme, defaultSize = 'md', ...rest },
     ref
   ) => {
     const [view, setView] = useState<'code' | 'preview'>('preview')
 
     const { section, part } = useCurrentRouteParams()
 
-    // @ts-expect-error - URLSearchParams type mismatch with object
     const codePath = `/api/bento/code?${new URLSearchParams({
       section,
       part,
@@ -476,23 +473,23 @@ export default ResizableBox
 
 export const { Provider: RawSizeProvider, useStyledContext: useSize } =
   createStyledContext({
-    sizes: [] as SizeTokens[],
-    setSizes: (sizes: SizeTokens[]) => {},
-    size: true as SizeTokens | true,
-    setSize: (size: SizeTokens | true) => {},
+    sizes: [] as ComponentSize[],
+    setSizes: (sizes: ComponentSize[]) => {},
+    size: 'md' as ComponentSize,
+    setSize: (size: ComponentSize) => {},
     showController: false,
     setShowController: (val: boolean) => {},
   })
 
 const SizeProvider = ({
   children,
-  defaultSize = '3',
+  defaultSize = 'md',
 }: {
   children: any
-  defaultSize?: SizeTokens
+  defaultSize?: ComponentSize
 }) => {
-  const [sizes, setSizes] = useState<SizeTokens[]>(['3', '4', '5', '6', '7'])
-  const [size, setSize] = useState<SizeTokens>(defaultSize)
+  const [sizes, setSizes] = useState<ComponentSize[]>(['xs', 'sm', 'md', 'lg', 'xl'])
+  const [size, setSize] = useState<ComponentSize>(defaultSize)
   const [showController, setShowController] = useState(false)
 
   return (
@@ -546,7 +543,7 @@ export const SizeController = createStyledHOC(XGroup, (props, ref) => {
           py="1-5"
           onPress={() => {
             const index = sizes.indexOf(size)
-            setSize(sizes[index - 1 < 0 ? 0 : index - 1])
+            setSize(sizes[Math.max(index - 1, 0)])
           }}
         >
           <Button.Icon>
@@ -562,7 +559,7 @@ export const SizeController = createStyledHOC(XGroup, (props, ref) => {
           py="1-5"
           onPress={() => {
             const index = sizes.indexOf(size)
-            setSize(sizes[index + 1 >= sizes.length ? 4 : index + 1])
+            setSize(sizes[Math.min(index + 1, sizes.length - 1)])
           }}
         >
           <Button.Icon>

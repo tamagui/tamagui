@@ -1,6 +1,6 @@
 import { YStack } from 'tamagui'
 
-import * as Buttons from '@tamagui/bento/component/elements/buttons'
+import * as Buttons from '@tamagui/bento/elements/buttons'
 import {
   Showcase,
   ShowcaseChildWrapper as Wrapper,

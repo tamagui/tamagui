@@ -8,6 +8,7 @@
   "workspaces": [
     "./code/compiler/**/*",
     "./code/comparisons/conformance/native",
+    "./code/bento",
     "./code/core/**/*",
     "./code/demos",
     "./code/kitchen-sink",
