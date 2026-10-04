@@ -1,19 +1,15 @@
-import { XGroup } from '../../../BentoSkins'
-import { getFontSized } from '@tamagui/get-font-sized'
-import { getSpace } from '@tamagui/get-token'
-import type { SizeVariantSpreadFunction } from '@tamagui/web'
 import { forwardRef, useState } from 'react'
-import type { ColorTokens, FontSizeTokens, TamaguiElement, YStackProps } from 'tamagui'
+import { type ComponentSize, resolveSizing } from '@tamagui/core'
+import type { ColorTokens, TamaguiElement, YStackProps } from 'tamagui'
 import {
-  createStyledHOC,
   Label,
   Button as TButton,
   Text,
   View,
+  XGroup,
   createStyledContext,
-  getFontSize,
+  createStyledHOC,
   getVariable,
-  getVariableValue,
   isWeb,
   styled,
   useGetThemedIcon,
@@ -22,70 +18,46 @@ import {
 } from 'tamagui'
 import { Input as TInput } from 'tamagui/unstyled'
 
-const defaultContextValues = {
-  size: '4',
-  scaleIcon: 1.2,
-  color: undefined,
-} as const
-
 export const InputContext = createStyledContext<{
-  size: FontSizeTokens
+  size: ComponentSize
   scaleIcon: number
   color?: ColorTokens | string
-}>(defaultContextValues)
+}>({
+  size: 'md',
+  scaleIcon: 1,
+  color: undefined,
+})
 
-export const defaultInputGroupStyles = {
-  size: '4',
-  fontFamily: 'body',
-  borderWidth: 1,
-  color: 'color',
-
-  tabIndex: 0,
-
-  borderColor: 'border-color hover:border-color-hover focus:border-color-focus',
-  backgroundColor: 'color-2',
-
-  // this fixes a flex bug where it overflows container
-  minWidth: 0,
-
-  outlineColor: 'focus:outline-color',
-  outlineWidth: '0 focus:2px',
-  outlineStyle: 'focus:solid',
-} as const
+const radiusForSize = styled.dynamic<ComponentSize>((val, env) => {
+  const sizing = resolveSizing(val, env)
+  if (!sizing) return
+  return { borderRadius: sizing.radius }
+})
 
 const InputGroupFrame = styled(XGroup, {
   justify: 'space-between',
   context: InputContext,
+  borderWidth: 1,
+  tabIndex: 0,
+  borderColor: 'border-color hover:border-color-hover focus:border-color-focus',
+  backgroundColor: 'color-2',
+  // this fixes a flex bug where it overflows container
+  minWidth: 0,
+  outlineColor: 'focus:outline-color',
+  outlineWidth: '0 focus:2px',
+  outlineStyle: 'focus:solid',
   variants: {
-    framed: {
-      true: defaultInputGroupStyles,
-    },
-    scaleIcon: {
-      number: () => ({}),
-    },
+    scaleIcon: styled.dynamic<number>(),
     applyFocusStyle: {
-      boolean: (val) => {
-        if (val) {
-          return {
-            outlineColor: 'outline-color',
-            outlineWidth: 2,
-            outlineStyle: 'solid',
-            borderColor: 'border-color-focus',
-          }
-        }
+      true: {
+        outlineColor: 'outline-color',
+        outlineWidth: 2,
+        outlineStyle: 'solid',
+        borderColor: 'border-color-focus',
       },
     },
-    size: {
-      Size: (val, { tokens }) => {
-        return {
-          borderRadius: tokens.radius[val],
-        }
-      },
-    },
+    size: radiusForSize,
   } as const,
-  defaultVariants: {
-    framed: true,
-  },
 })
 
 const FocusContext = createStyledContext({
@@ -106,29 +78,23 @@ const InputBox = createStyledHOC(InputGroupFrame, (props, forwardedRef) => {
   )
 })
 
-export const inputSizeVariant: SizeVariantSpreadFunction<any> = (val = '4', extras) => {
-  const size = val === true ? '4' : val
-  const radiusToken = extras.tokens.radius[size] ?? extras.tokens.radius['4']
-  const paddingHorizontal = getVariableValue(getSpace(size)) * 0.6
-  const fontStyle = getFontSized(size as any, extras)
-  // lineHeight messes up input on native
-  if (!isWeb && fontStyle) {
-    delete fontStyle['lineHeight']
-  }
-  return {
-    ...fontStyle,
-    height: size,
-    borderRadius: extras.props.circular ? 100_000 : radiusToken,
-    paddingHorizontal,
-  }
-}
-
 const InputFrame = styled(TInput, {
   context: InputContext,
+  color: 'color',
+  fontFamily: 'body',
   variants: {
-    scaleIcon: {
-      number: () => ({}),
-    },
+    scaleIcon: styled.dynamic<number>(),
+    size: styled.dynamic<ComponentSize>((val, env) => {
+      const sizing = resolveSizing(val, env)
+      if (!sizing) return
+      return {
+        height: sizing.height,
+        fontSize: sizing.fontSize,
+        // lineHeight messes up input on native
+        ...(isWeb && { lineHeight: sizing.lineHeight }),
+        paddingInline: sizing.paddingInline,
+      }
+    }),
   } as const,
 })
 
@@ -145,7 +111,6 @@ const InputArea = createStyledHOC(
     ref
   ) => {
     const { setFocused } = FocusContext.useStyledContext()
-    const { size } = InputContext.useStyledContext()
     const {
       secureTextEntry,
       keyboardType,
@@ -158,11 +123,8 @@ const InputArea = createStyledHOC(
       <View flex={1} onLayout={onLayout}>
         <InputFrame
           ref={ref}
-          onFocus={() => {
-            setFocused(true)
-          }}
+          onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          size={size}
           type={secureTextEntry ? 'password' : rest.type}
           inputMode={
             keyboardType === 'numeric'
@@ -195,9 +157,7 @@ const InputSection = styled(XGroup.Item, {
   items: 'center',
   context: InputContext,
   variants: {
-    scaleIcon: {
-      number: () => ({}),
-    },
+    scaleIcon: styled.dynamic<number>(),
   } as const,
 })
 
@@ -205,56 +165,33 @@ const Button = styled(TButton, {
   context: InputContext,
   justify: 'center',
   items: 'center',
-
   variants: {
-    scaleIcon: {
-      number: () => ({}),
-    },
-    size: {
-      Size: (val = '4', { tokens }) => {
-        if (typeof val === 'number') {
-          return {
-            paddingHorizontal: 0,
-            height: val,
-            borderRadius: val * 0.2,
-          }
-        }
-        return {
-          paddingHorizontal: 0,
-          height: val,
-          borderRadius: tokens.radius[val],
-        }
-      },
-    },
+    scaleIcon: styled.dynamic<number>(),
+    size: styled.dynamic<ComponentSize>((val, env) => {
+      const sizing = resolveSizing(val, env)
+      if (!sizing) return
+      return {
+        paddingInline: 0,
+        height: sizing.height,
+        borderRadius: sizing.radius,
+      }
+    }),
   } as const,
 })
-
-// Icon starts
 
 export const InputIconFrame = styled(View, {
   justify: 'center',
   items: 'center',
   context: InputContext,
-
   variants: {
-    scaleIcon: {
-      number: () => ({}),
-    },
-    size: {
-      Size: (val, { tokens }) => {
-        return {
-          paddingHorizontal: tokens.space[val],
-        }
-      },
-    },
+    scaleIcon: styled.dynamic<number>(),
+    size: styled.dynamic<ComponentSize>((val, env) => {
+      const sizing = resolveSizing(val, env)
+      if (!sizing) return
+      return { paddingInline: sizing.paddingBlock }
+    }),
   } as const,
 })
-
-const getIconSize = (size: FontSizeTokens, scale: number) => {
-  return (
-    (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) * scale
-  )
-}
 
 const InputIcon = createStyledHOC(
   InputIconFrame,
@@ -266,17 +203,16 @@ const InputIcon = createStyledHOC(
     ref
   ) => {
     const { children, color: colorProp, ...rest } = props
-    const inputContext = InputContext.useStyledContext()
-    const { size = '4', color: contextColor, scaleIcon = 1 } = inputContext
-
+    const { size, color: contextColor, scaleIcon } = InputContext.useStyledContext()
     const theme = useTheme()
     const color = getVariable(
-      contextColor || theme[contextColor as any]?.get('web') || theme['color-9']?.get('web')
+      colorProp ||
+        contextColor ||
+        theme[contextColor as any]?.get('web') ||
+        theme['color-9']?.get('web')
     )
-    const iconSize = getIconSize(size as FontSizeTokens, scaleIcon)
-
     const getThemedIcon = useGetThemedIcon({
-      size: iconSize,
+      size: resolveSizing(size).icon * scaleIcon,
       color: color as any,
     })
     return (
@@ -302,21 +238,27 @@ type InputContainerProps = React.PropsWithChildren<
   > & {
     color?: ColorTokens | string
     scaleIcon?: number
-    size?: FontSizeTokens
+    size?: ComponentSize
   }
 >
 
+const InputContainerFrame = styled(View, {
+  flexDirection: 'column',
+  variants: {
+    size: styled.dynamic<ComponentSize>((val, env) => {
+      const sizing = resolveSizing(val, env)
+      if (!sizing) return
+      return { gap: sizing.gap }
+    }),
+  } as const,
+})
+
 const InputContainer = forwardRef<TamaguiElement, InputContainerProps>(
-  ({ children, color, scaleIcon = 1.2, size = '4', ...props }, ref) => (
+  ({ children, color, scaleIcon = 1, size = 'md', ...props }, ref) => (
     <InputContext.Provider color={color} scaleIcon={scaleIcon} size={size}>
-      <View
-        ref={ref}
-        flexDirection="column"
-        gap={getVariableValue(getSpace(size)) * 0.3}
-        {...props}
-      >
+      <InputContainerFrame ref={ref} size={size} {...props}>
         {children}
-      </View>
+      </InputContainerFrame>
     </InputContext.Provider>
   )
 )
@@ -324,61 +266,36 @@ const InputContainer = forwardRef<TamaguiElement, InputContainerProps>(
 export const InputLabel = styled(Label, {
   context: InputContext,
   variants: {
-    scaleIcon: {
-      number: () => ({}),
-    },
-    size: {
-      FontSize: (val, extras) =>
-        // getFontSized keeps an invariant TextProps generic despite this Label-compatible context.
-        getFontSized(val, extras as Parameters<typeof getFontSized>[1]),
-    },
+    scaleIcon: styled.dynamic<number>(),
+    size: styled.dynamic<ComponentSize>((val, env) => {
+      const sizing = resolveSizing(val, env)
+      if (!sizing) return
+      return { fontSize: sizing.fontSize, lineHeight: sizing.lineHeight }
+    }),
   } as const,
 })
+
+// help and error text sit one step below the field's text
+const infoFontSize = { xs: 'xs', sm: 'xs', md: 'xs', lg: 'sm', xl: 'base' } as const
 
 export const InputInfo = styled(Text, {
   context: InputContext,
   color: 'color-9',
+  fontFamily: 'body',
   variants: {
-    scaleIcon: {
-      number: () => ({}),
-    },
-    size: {
-      FontSize: (val, { font }) => {
-        if (!font) return
-        const fontSize = font.size[val].val * 0.8
-        const lineHeight = font.lineHeight?.[val].val * 0.8
-        const fontWeight = font.weight?.['2']
-        const letterSpacing = font.letterSpacing?.[val]
-        const textTransform = font.transform?.[val]
-        const fontStyle = font.style?.[val]
-        return {
-          fontSize,
-          lineHeight,
-          fontWeight,
-          letterSpacing,
-          textTransform,
-          fontStyle,
-        }
-      },
-    },
+    scaleIcon: styled.dynamic<number>(),
+    size: styled.dynamic<ComponentSize>((val) => {
+      const fontSize = infoFontSize[val as keyof typeof infoFontSize] ?? 'xs'
+      return { fontSize, lineHeight: fontSize }
+    }),
   } as const,
 })
 
 const InputXGroup = styled(XGroup, {
   context: InputContext,
-
   variants: {
-    scaleIcon: {
-      number: () => ({}),
-    },
-    size: {
-      Size: (val, { tokens }) => {
-        const radiusToken = tokens.radius[val] ?? tokens.radius['4']
-        return {
-          borderRadius: radiusToken,
-        }
-      },
-    },
+    scaleIcon: styled.dynamic<number>(),
+    size: radiusForSize,
   } as const,
 })
 

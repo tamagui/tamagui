@@ -1,7 +1,13 @@
-import { Avatar } from '../../BentoSkins'
 import { Check } from '../../icons'
 import { useEffect, useId, useState } from 'react'
-import { Text, View, debounce, Label, Separator } from 'tamagui'
+import {
+  Text,
+  View,
+  debounce,
+  Label,
+  Separator,
+  Avatar,
+} from 'tamagui'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
 import { Checkboxes } from './common/checkboxParts'
 
@@ -47,7 +53,7 @@ const items = [
 export function CheckboxList() {
   const [values, setValues] = useState<Record<string, boolean>>([] as any)
   const uniqueId = useId()
-  const { gtXs, xxs } = useGroupMedia('window')
+  const { sm: wide, 'max-xs': tiny } = useGroupMedia('window')
 
   useEffect(() => {
     setValues(Object.fromEntries(items.map((item) => [item.key, false])))
@@ -65,18 +71,18 @@ export function CheckboxList() {
         borderStyle="solid"
         maxW="100%"
         overflow="hidden"
-        width={gtXs ? 400 : undefined}
-        elevation={gtXs ? '3' : undefined}
-        borderWidth={gtXs ? 1 : undefined}
-        rounded={gtXs ? 20 : undefined}
-        bg={gtXs ? 'color-2' : undefined}
-        borderColor={gtXs ? 'border-color' : undefined}
-        p={gtXs ? '4' : undefined}
+        width={wide ? 400 : undefined}
+        boxShadow={wide ? '0 1px 9px shadow-color' : undefined}
+        borderWidth={wide ? 1 : undefined}
+        rounded={wide ? 20 : undefined}
+        bg={wide ? 'color-2' : undefined}
+        borderColor={wide ? 'border-color' : undefined}
+        p={wide ? '4' : undefined}
       >
         <Checkboxes.FocusGroup gap="4">
           <View flexDirection="column" self="center" items="center" gap="2">
             <Checkboxes.Title self="center">Coffee</Checkboxes.Title>
-            <Text fontWeight="3" theme="level2">
+            <Text fontWeight="400" theme="level2">
               Make your choice.
             </Text>
           </View>
@@ -89,7 +95,7 @@ export function CheckboxList() {
                   item={value}
                   key={value.key}
                   uniqueId={uniqueId}
-                  xxs={xxs}
+                  xxs={tiny}
                 />
               </Checkboxes.FocusGroup.Item>
             ))}
@@ -119,15 +125,15 @@ function CheckboxItem({
     <Checkboxes.Card
       flexDirection="row"
       bg="transparent"
-      px="4 @xxs/window:3"
+      px="4 @max-xs/window:3"
       rounded={0}
       cursor="pointer"
-      gap="4 @xxs/window:3"
+      gap="4 @max-xs/window:3"
       py="3"
       borderWidth={0}
       items="center"
-      borderLeftWidth="@xxs/window:0px"
-      borderRightWidth="@xxs/window:0px"
+      borderLeftWidth="@max-xs/window:0px"
+      borderRightWidth="@max-xs/window:0px"
     >
       <Avatar circular size={xxs ? '3' : '4'}>
         <Avatar.Image src={item.avatar} />
@@ -139,7 +145,7 @@ function CheckboxItem({
             <Checkboxes.Checkbox.Label size="4" lineHeight="2" htmlFor={key + uniqueId}>
               {title}
             </Checkboxes.Checkbox.Label>
-            <Text fontWeight="2" fontSize={10} theme="level3">
+            <Text fontWeight="400" fontSize={10} theme="level3">
               {desc}
             </Text>
           </View>

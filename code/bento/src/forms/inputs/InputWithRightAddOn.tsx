@@ -1,13 +1,13 @@
+import type { ComponentSize } from '@tamagui/core'
 import { Copy } from '../../icons'
-import type { FontSizeTokens } from 'tamagui'
 import { View } from 'tamagui'
 import { Input } from './components/inputsParts'
 
 /** ------ EXAMPLE ------ */
 export function InputWithRightAddOnDemo({
-  size = '4',
+  size = 'md',
 }: {
-  size?: FontSizeTokens
+  size?: ComponentSize
 }) {
   return (
     <View flexDirection="column" justify="center" items="center" height={100}>

@@ -1,3 +1,4 @@
+import type { ComponentSize } from '@tamagui/core'
 import type { ColorTokens, FontSizeTokens, SizeTokens } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
 import {
@@ -80,9 +81,9 @@ const SwitchIconFrame = styled(View, {
   },
 })
 
-const getIconSize = (size: FontSizeTokens, scale: number) => {
+const getIconSize = (size: ComponentSize, scale: number) => {
   return (
-    (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) * scale
+    (typeof size === 'number' ? size * 0.5 : getFontSize(size)) * scale
   )
 }
 
@@ -102,7 +103,7 @@ export const SwitchIcon = createStyledHOC(
     const color = getVariable(
       colorProp || theme[colorProp as any]?.get('web') || theme['color-9']?.get('web')
     )
-    const iconSize = getIconSize(size as FontSizeTokens, scaleIcon)
+    const iconSize = getIconSize(size, scaleIcon)
 
     const getThemedIcon = useGetThemedIcon({
       size: iconSize,

@@ -127,10 +127,9 @@ type MyRadioProps = {
 }
 const MyRadio = (props: MyRadioProps) => {
   const { id, title, values, value, onChange } = props
-  const { size } = InputContext.useStyledContext()
   return (
     <View gap="2">
-      <H2 size={size} fontFamily="body">
+      <H2 size="4" fontFamily="body">
         {title}
       </H2>
       <RadioGroup
@@ -203,8 +202,8 @@ const TwoInput = (props: TwoInputProps) => {
           theme: 'red',
         })}
         flex={1}
-        minW="100% @gtSm/window:inherit"
-        flexBasis="@gtSm/window:150px"
+        minW="100% @md/window:inherit"
+        flexBasis="@md/window:150px"
         onBlur={onBlur}
         style={{ transition: 'border-color 100ms ease' }}
         size={size}
@@ -327,7 +326,7 @@ const schema = z
 type FormValues = z.infer<typeof schema>
 
 export function SignupValidatedTsForm() {
-  const { xs } = useGroupMedia('window')
+  const { 'max-sm': narrow } = useGroupMedia('window')
   const [loading, setLoading] = useState(false)
 
   const { control, handleSubmit } = useForm<FormValues>({
@@ -350,16 +349,16 @@ export function SignupValidatedTsForm() {
   }
 
   return (
-    <InputContext.Provider size="4">
+    <InputContext.Provider size="md">
       <Form asChild onSubmit={() => handleSubmit(onSubmit)()}>
         <FormCard
           flexDirection="column"
           gap="5"
-          px="@sm/window:4"
-          py="@sm/window:6"
+          px="@max-md/window:4"
+          py="@max-md/window:6"
           render="form"
         >
-          <H1 self="center" size={xs ? '7' : '8'}>
+          <H1 self="center" size={narrow ? '7' : '8'}>
             Create an account
           </H1>
 

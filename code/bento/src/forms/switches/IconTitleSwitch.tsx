@@ -15,8 +15,8 @@ export function IconTitleSwitch() {
       borderWidth={1}
       px="4"
       py="3"
-      mt="@sm/window:6"
-      mx="@sm/window:5"
+      mt="@max-md/window:6"
+      mx="@max-md/window:5"
       rounded="3"
       width={400}
       height="auto"

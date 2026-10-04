@@ -31,10 +31,10 @@ const data = [
 
 /** ---- EXAMPLE ------ */
 export function ItemValueList() {
-  const { xxs } = useGroupMedia('window')
+  const { 'max-xs': tiny } = useGroupMedia('window')
   return (
     <View gap="4">
-      <H1 size={xxs ? '7' : '9'}>Payment Checkout</H1>
+      <H1 size={tiny ? '7' : '9'}>Payment Checkout</H1>
       <View gap="4" width="100%">
         {data.map((item, index) => {
           const isLastItem = index === data.length - 1
@@ -56,13 +56,13 @@ const Row = ({ item }: { item: (typeof data)[0] }) => {
   return (
     <View
       justify="space-between"
-      items="center @xs/window:flex-start"
-      flexDirection="row @xs/window:column"
+      items="center @max-sm/window:flex-start"
+      flexDirection="row @max-sm/window:column"
     >
-      <SizeableText size="4" color="@xs/window:color-10">
+      <SizeableText size="4" color="@max-sm/window:color-10">
         {item.title}
       </SizeableText>
-      <SizeableText size="4" color="color-10 @xs/window:color">
+      <SizeableText size="4" color="color-10 @max-sm/window:color">
         {item.value}
       </SizeableText>
     </View>

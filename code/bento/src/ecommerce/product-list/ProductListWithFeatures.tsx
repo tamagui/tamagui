@@ -31,11 +31,11 @@ function Item({ item }: { item: Product }) {
         <YStack self="flex-start" gap="2" theme="level2">
           <StyledText>XS | L | XL</StyledText>
           <XStack gap="1">
-            <Circle bg="green-500" size={20} />
-            <Circle bg="red-500" size={20} />
-            <Circle bg="yellow-500" size={20} />
+            <Circle bg="green-9" size={20} />
+            <Circle bg="red-9" size={20} />
+            <Circle bg="yellow-9" size={20} />
             <Circle bg="violet" size={20} />
-            <View rounded={1000_000_000} bg="yellow-500" width={20} height={20} />
+            <View rounded={1000_000_000} bg="yellow-9" width={20} height={20} />
           </XStack>
         </YStack>
       </YStack>
@@ -62,7 +62,7 @@ export function ProductListWithFeatures() {
       columnGap="5"
       paddingTop="3"
       paddingBottom="3"
-      px="6 @xs/window:3"
+      px="6 @max-sm/window:3"
       maxH={700}
     >
       {products.map((item) => (

@@ -1,18 +1,18 @@
+import type { ComponentSize } from '@tamagui/core'
 import {
   ChevronFirst,
   ChevronLast,
   ChevronLeft,
   ChevronRight,
 } from '../../icons'
-import type { FontSizeTokens } from 'tamagui'
 import { View } from 'tamagui'
 import { Input } from './components/inputsParts'
 
 /** ------ EXAMPLE ------ */
 export function InputGroupedIconsExample({
-  size = '4',
+  size = 'md',
 }: {
-  size?: FontSizeTokens
+  size?: ComponentSize
 }) {
   return (
     <View flexDirection="column" justify="center" items="center">

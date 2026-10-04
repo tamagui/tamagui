@@ -1,7 +1,15 @@
-import { Avatar } from '../../BentoSkins'
-import { getFontSized } from '@tamagui/get-font-sized'
 import { Clock4, Laptop2, MinusCircle } from '../../icons'
-import { Button, Circle, Separator, Text, Theme, View, styled } from 'tamagui'
+import {
+  Button,
+  Circle,
+  Separator,
+  Text,
+  Theme,
+  View,
+  styled,
+  Avatar,
+  SizableText,
+} from 'tamagui'
 
 const data = {
   absent: [
@@ -42,18 +50,6 @@ const data = {
   ],
 }
 
-const SizableText = styled(Text, {
-  name: 'SizableText',
-  fontFamily: 'body',
-  variants: {
-    size: {
-      FontSize: getFontSized as any,
-    },
-  } as const,
-  defaultVariants: {
-    size: '4',
-  },
-})
 
 /** ------ EXAMPLE ------ */
 export function StatusTracker() {
@@ -62,9 +58,9 @@ export function StatusTracker() {
       flexDirection="column"
       rounded={20}
       p="3"
-      px="@sm/window:4"
-      my="@sm/window:6"
-      minW="@gtSm/window:400px"
+      px="@max-md/window:4"
+      my="@max-md/window:6"
+      minW="@md/window:400px"
       maxW="100%"
       gap="3"
       borderColor="color-5"
@@ -129,7 +125,7 @@ function User({
           borderWidth="1"
           borderColor="color-1"
           z={10}
-          bg="orange-500"
+          bg="orange-9"
         />
       </View>
       <View flexDirection="column">

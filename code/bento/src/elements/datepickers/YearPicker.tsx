@@ -20,7 +20,7 @@ function DatePickerBody({
 }) {
   return (
     <DatePickerProvider config={config}>
-      <View flexDirection="column" items="center" gap="4" p="4 gtMd:0">
+      <View flexDirection="column" items="center" gap="4" p="4 lg:0">
         <CalendarHeader />
         <YearPicker />
       </View>

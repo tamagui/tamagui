@@ -165,7 +165,7 @@ function DatePickerBody({
   config: DatePickerProviderProps['config']
 }) {
   const [header, setHeader] = useState<'month' | 'year' | 'day'>('day')
-  const { gtSm: fullWidthMode } = useMedia()
+  const { md: fullWidthMode } = useMedia()
 
   const renderView = () => {
     switch (header) {
@@ -197,7 +197,7 @@ function DatePickerBody({
 
   return (
     <HeaderTypeProvider config={config} type={header} setHeader={setHeader}>
-      <View p="4 gtMd:0">{renderView()}</View>
+      <View p="4 lg:0">{renderView()}</View>
     </HeaderTypeProvider>
   )
 }

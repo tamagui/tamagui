@@ -3,7 +3,7 @@ import { Button, Spinner, View, YStack } from 'tamagui'
 /** ------ EXAMPLE ------ */
 export function ButtonsWithLoaders() {
   return (
-    <YStack gap="4" flexDirection="@gtSm/window:row">
+    <YStack gap="4" flexDirection="@md/window:row">
       <View gap="2">
         <Button theme="blue" gap="2">
           <Spinner transition="bouncy" scale="1 enter:0 exit:0" />

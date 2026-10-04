@@ -1,6 +1,12 @@
-import { Avatar, YGroup } from '../../BentoSkins'
 import { useState } from 'react'
-import { Label, Text, View, useEvent } from 'tamagui'
+import {
+  Label,
+  Text,
+  View,
+  useEvent,
+  Avatar,
+  YGroup,
+} from 'tamagui'
 import { Card, RadioGroup } from './components/radioParts'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
 
@@ -36,8 +42,8 @@ export function GroupedRadio() {
       items="center"
       justify="center"
       minW={'100%'}
-      px="@sm/window:4"
-      py="@sm/window:6"
+      px="@max-md/window:4"
+      py="@max-md/window:6"
     >
       <RadioGroup value={value} onValueChange={setValue} minWidth="100%">
         <YGroup rounded="6" data-hover>
@@ -66,7 +72,7 @@ function Item({
   setValue: (value: string) => void
   item: Item
 }) {
-  const { xs } = useGroupMedia('window')
+  const { 'max-sm': narrow } = useGroupMedia('window')
   const { description, id, image, title } = item
   const onPress = useEvent(() => setValue(id))
   return (
@@ -77,12 +83,12 @@ function Item({
         gap="4"
         borderBottomWidth={1}
         mb={-1}
-        height="@sm/window:110px"
-        items="@sm/window:flex-start"
+        height="@max-md/window:110px"
+        items="@max-md/window:flex-start"
         active={selected}
         onPress={onPress}
       >
-        <Avatar circular size={xs ? '4' : '5'}>
+        <Avatar circular size={narrow ? '4' : '5'}>
           <Avatar.Image aria-label={`${title} logo`} src={image} />
           <Avatar.Fallback bg="background" />
         </Avatar>

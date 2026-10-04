@@ -3,12 +3,12 @@ import { Text, View, XStack } from 'tamagui'
 export type RowStatus = 'active' | 'paused' | 'vacation' | string
 
 const statusTheme: Record<string, { bg: string; color: string; label: string }> = {
-  active: { bg: 'green-200', color: 'green-700', label: 'Active' },
-  paused: { bg: 'yellow-200', color: 'yellow-700', label: 'Paused' },
-  vacation: { bg: 'blue-200', color: 'blue-700', label: 'Vacation' },
-  single: { bg: 'blue-200', color: 'blue-700', label: 'Single' },
-  complicated: { bg: 'yellow-200', color: 'yellow-700', label: 'Complicated' },
-  relationship: { bg: 'green-200', color: 'green-700', label: 'Relationship' },
+  active: { bg: 'green-4', color: 'green-11', label: 'Active' },
+  paused: { bg: 'yellow-4', color: 'yellow-11', label: 'Paused' },
+  vacation: { bg: 'blue-4', color: 'blue-11', label: 'Vacation' },
+  single: { bg: 'blue-4', color: 'blue-11', label: 'Single' },
+  complicated: { bg: 'yellow-4', color: 'yellow-11', label: 'Complicated' },
+  relationship: { bg: 'green-4', color: 'green-11', label: 'Relationship' },
 }
 
 export function StatusBadge({ status }: { status: RowStatus }) {
@@ -34,7 +34,7 @@ export function ProgressCell({ value }: { value: number }) {
           width={`${value}%`}
           height="100%"
           rounded="10"
-          bg={`${value > 66 ? 'green-500' : value > 33 ? 'yellow-500' : 'red-500'}`}
+          bg={`${value > 66 ? 'green-9' : value > 33 ? 'yellow-9' : 'red-9'}`}
         />
       </View>
       <Text fontSize="2" color="color-9" width={30} text="right">

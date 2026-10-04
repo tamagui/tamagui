@@ -75,7 +75,7 @@ const Alert = ({ children, ...rest }: AlertProps) => {
             bg="color-1"
             rounded="8"
             gap="3"
-            transition={['quick', { opacity: { overshootClamping: true } }]}
+            transition="quick"
             x="enter:0 exit:0"
             y="enter:-10px exit:10px"
             opacity="enter:0 exit:0"

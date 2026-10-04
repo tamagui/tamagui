@@ -58,7 +58,7 @@ export function ProductList() {
       columnGap="3"
       paddingTop="3"
       paddingBottom="3"
-      px="6 @xs/window:3"
+      px="6 @max-sm/window:3"
       maxH={900}
     >
       {products.map((item) => (

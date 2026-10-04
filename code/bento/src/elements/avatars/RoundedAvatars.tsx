@@ -1,4 +1,4 @@
-import type { SizeTokens } from 'tamagui'
+import type { ComponentSize } from '@tamagui/core'
 import { View } from 'tamagui'
 import { Avatar } from './components/Avatar'
 
@@ -10,21 +10,21 @@ export function RoundedAvatars() {
       items="center"
       flexDirection="row"
       width="100%"
-      maxW="@gtXs/window:400px"
+      maxW="@sm/window:400px"
       justify="center"
       gap="4"
     >
-      <Item size="4" />
-      <Item size="5" />
-      <Item size="6" />
-      <Item size="7" />
+      <Item size="sm" />
+      <Item size="md" />
+      <Item size="lg" />
+      <Item size="xl" />
     </View>
   )
 }
 
 RoundedAvatars.fileName = 'RoundedAvatars'
 
-function Item({ size }: { size: SizeTokens }) {
+function Item({ size }: { size: ComponentSize }) {
   return (
     <Avatar size={size}>
       <Avatar.Content rounded="3">

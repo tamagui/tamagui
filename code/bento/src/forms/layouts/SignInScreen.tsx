@@ -33,7 +33,7 @@ function useSignIn() {
 /** ------ EXAMPLE ------ */
 export function SignInScreen() {
   const { signIn, status } = useSignIn()
-  const { xs } = useGroupMedia('window')
+  const { 'max-sm': narrow } = useGroupMedia('window')
   return (
     <FormCard>
       <View
@@ -42,15 +42,15 @@ export function SignInScreen() {
         minW="100%"
         maxW="100%"
         gap="4"
-        py="@gtSm/window:4"
-        width="@gtSm/window:400px"
+        py="@md/window:4"
+        width="@md/window:400px"
       >
-        <H1 self="center" size={xs ? '7' : '8'}>
+        <H1 self="center" size={narrow ? '7' : '8'}>
           Sign in to your account
         </H1>
         <View flexDirection="column" gap="3">
           <View flexDirection="column" gap="1">
-            <Input size="4">
+            <Input>
               <Input.Label htmlFor="email">Email</Input.Label>
               <Input.Box>
                 <Input.Area id="email" placeholder="email@example.com" />
@@ -58,7 +58,7 @@ export function SignInScreen() {
             </Input>
           </View>
           <View flexDirection="column" gap="1">
-            <Input size="4">
+            <Input>
               <View flexDirection="row" items="center" justify="space-between">
                 <Input.Label htmlFor={'password'}>Password</Input.Label>
               </View>
@@ -120,7 +120,7 @@ export function SignInScreen() {
                 </Button>
                 <Button flex={1}>
                   <Button.Icon>
-                    <Facebook color="blue-600" size="1" />
+                    <Facebook color="blue-10" size="1" />
                   </Button.Icon>
                   <Button.Text>Continue with Facebook</Button.Text>
                 </Button>

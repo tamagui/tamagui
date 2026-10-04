@@ -1,4 +1,3 @@
-import { Avatar } from '../../BentoSkins'
 import { Bell, Menu } from '../../icons'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { useState } from 'react'
@@ -14,6 +13,7 @@ import {
   isWeb,
   styled,
   useEvent,
+  Avatar,
 } from 'tamagui'
 import { useContainerDim } from '../../hooks/useContainerDim'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
@@ -24,7 +24,7 @@ const Link = styled(Anchor, {
   display: 'flex',
   textDecorationLine: 'none',
   items: 'center',
-  py: '3 @xs/window:2-5',
+  py: '3 @max-sm/window:2-5',
   bg: 'hover:background-hover press:background-press focus:background-press',
 })
 
@@ -35,14 +35,14 @@ export function FullSideBar() {
     setTriggerOpen(false)
   })
   const [openDrawer, setOpenDrawer] = useState(false)
-  const { sm } = useGroupMedia('window')
+  const { 'max-md': compact } = useGroupMedia('window')
   return (
     <View position="relative" flexDirection="column" height={610} width="100%" mt="2">
       <View flexDirection="row" height="100%" width="100%">
-        {!sm && <Sidebar />}
+        {!compact && <Sidebar />}
         <View
           flexDirection="row"
-          px="12px @sm/window:8px"
+          px="12px @max-md/window:8px"
           py="2"
           items="center"
           bg="background"
@@ -52,7 +52,7 @@ export function FullSideBar() {
           render="nav"
           elevationAndroid={1}
         >
-          {sm && (
+          {compact && (
             <View
               flexDirection="row"
               {...(isWeb && {
@@ -84,7 +84,7 @@ export function FullSideBar() {
           </View>
         </View>
       </View>
-      {sm && <FloatingSideBar open={openDrawer} setOpen={setOpenDrawer} />}
+      {compact && <FloatingSideBar open={openDrawer} setOpen={setOpenDrawer} />}
     </View>
   )
 }
@@ -129,7 +129,7 @@ function ProfileDropdown({
         px="4"
         y="enter:-10px exit:-10px"
         opacity="enter:0 exit:0"
-        transition={['quick', { opacity: { overshootClamping: true } }]}
+        transition="quick"
         overflow="hidden"
         boxShadow="0 10px 20px shadow-color"
       >
@@ -151,16 +151,16 @@ const DropDownItem = styled(View, {
   bg: 'background hover:background-hover press:background-press',
   width: '100%',
   cursor: 'pointer',
-  px: '4 @xs/window:2',
-  py: '2 @xs/window:1',
+  px: '4 @max-sm/window:2',
+  py: '2 @max-sm/window:1',
   items: 'flex-start',
   justify: 'center',
 })
 
 const DropDownText = styled(Text, {
-  fontWeight: '2 @xs/window:1',
-  lineHeight: '2 @xs/window:1',
-  fontSize: '2 @xs/window:1',
+  fontWeight: '2 @max-sm/window:1',
+  lineHeight: '2 @max-sm/window:1',
+  fontSize: '2 @max-sm/window:1',
 })
 
 /** SIDEBAR AND DRAWER */
@@ -237,7 +237,7 @@ const SideBarContent = createStyledHOC(View, (props, ref) => {
       <View
         flexDirection="column"
         pl="4"
-        py="1 @sm/window:4"
+        py="1 @max-md/window:4"
         justify="center"
         width="100%"
       >
@@ -346,9 +346,9 @@ const NavLink = createStyledHOC(
         {...rest}
       >
         <Text
-          fontSize="5 @xs/window:3"
-          fontWeight="5 @xs/window:3"
-          lineHeight="5 @xs/window:3"
+          fontSize="5 @max-sm/window:3"
+          fontWeight="5 @max-sm/window:3"
+          lineHeight="5 @max-sm/window:3"
           color="color-10"
           opacity="0.7 group-hover/navLink:1 group-focus/navLink:1"
         >

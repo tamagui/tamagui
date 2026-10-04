@@ -1,7 +1,14 @@
-import { Tabs } from '../../BentoSkins'
 import { Paperclip, Send } from '../../icons'
 import { useState } from 'react'
-import { Button, Separator, Text, TextArea, View, styled } from 'tamagui'
+import {
+  Button,
+  Separator,
+  Text,
+  TextArea,
+  View,
+  styled,
+  Tabs,
+} from 'tamagui'
 
 /** ------ EXAMPLE ------ */
 export function WritePreviewAction() {
@@ -12,7 +19,7 @@ export function WritePreviewAction() {
     <Tabs
       width={500}
       maxW="100%"
-      py="@sm/window:6"
+      py="@max-md/window:6"
       value={activeTab}
       onValueChange={setActiveTab}
     >
@@ -32,7 +39,7 @@ export function WritePreviewAction() {
               value="write"
               tabSelected={activeTab === 'write'}
             >
-              <Text fontSize="3" lineHeight="3" fontWeight="3">
+              <Text fontSize="3" lineHeight="3" fontWeight="400">
                 Write
               </Text>
             </StyledTab>
@@ -43,7 +50,7 @@ export function WritePreviewAction() {
               value="preview"
               tabSelected={activeTab === 'preview'}
             >
-              <Text fontSize="3" lineHeight="3" fontWeight="3">
+              <Text fontSize="3" lineHeight="3" fontWeight="400">
                 Preview
               </Text>
             </StyledTab>
@@ -51,7 +58,7 @@ export function WritePreviewAction() {
         </View>
         <Tabs.Content value="write" bg="color-1" minH={200}>
           <StyledTextArea
-            size="4"
+            size="md"
             p="4"
             flex={1}
             fontWeight="300"

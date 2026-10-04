@@ -1,12 +1,11 @@
-import { getFontSized } from '@tamagui/get-font-sized'
+import type { ComponentSize } from '@tamagui/core'
 import { forwardRef } from 'react'
-import type { ColorTokens, FontSizeTokens, GetProps, SizeTokens } from 'tamagui'
+import type { ColorTokens, GetProps } from 'tamagui'
 import {
   createStyledHOC,
   View,
   Avatar as TAvatar,
   createStyledContext,
-  getFontSize,
   getVariable,
   styled,
   Text,
@@ -16,12 +15,23 @@ import {
 } from 'tamagui'
 
 const AvatarContext = createStyledContext<{
-  size: SizeTokens
+  size: ComponentSize
   color?: ColorTokens | string
 }>({
-  size: '4',
+  size: 'md',
   color: undefined,
 })
+
+// avatars sit a step above controls: px for the image, text and badge per size
+const avatarSizes = {
+  xs: { px: 32, fontSize: 'xs' },
+  sm: { px: 40, fontSize: 'sm' },
+  md: { px: 48, fontSize: 'base' },
+  lg: { px: 64, fontSize: 'lg' },
+  xl: { px: 80, fontSize: 'xl' },
+} as const
+
+const avatarPx = (size: ComponentSize) => (avatarSizes[size] ?? avatarSizes.md).px
 
 const AvatarIconFrame = styled(View, {
   context: AvatarContext,
@@ -52,38 +62,27 @@ const AvatarIconFrame = styled(View, {
         left: 0,
       },
     },
-    offset: {
-      number: (val, { props }) => {
-        const placement = (props as any).placement
-        const yDir = placement.includes('top') ? -1 : 1
-        const xDir = placement.includes('left') ? -1 : 1
-        return {
-          x: val * xDir,
-          y: val * yDir,
-        }
-      },
-    },
-    size: {
-      Size: (val, { props, tokens }) => {
-        return {
-          width: tokens.size[val].val * 0.33,
-          height: tokens.size[val].val * 0.33,
-        }
-      },
-    },
+    offset: styled.dynamic<number>(),
+    size: styled.dynamic<ComponentSize>((val) => {
+      const badge = Math.round(avatarPx(val) * 0.33)
+      return { width: badge, height: badge }
+    }),
   } as const,
   defaultVariants: {
     placement: 'top-right',
   },
+}).resolve((props) => {
+  const { placement = 'top-right', offset } = props as {
+    placement?: string
+    offset?: number
+  }
+  if (!offset) return
+  return {
+    x: offset * (placement.includes('left') ? -1 : 1),
+    y: offset * (placement.includes('top') ? -1 : 1),
+  }
 })
 
-// aligns icons to natural font size
-const getIconSize = (size: FontSizeTokens, scale: number) => {
-  return (
-    (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens) * 0.75) *
-    scale
-  )
-}
 
 export const AvatarIcon = createStyledHOC(
   AvatarIconFrame,
@@ -95,7 +94,7 @@ export const AvatarIcon = createStyledHOC(
     const color = getVariable(
       colorProp || theme[colorProp as any]?.get('web') || theme['color-9']?.get('web')
     )
-    const iconSize = getIconSize(size as FontSizeTokens, scaleIcon)
+    const iconSize = Math.round(avatarPx(size) * 0.33 * 0.6 * scaleIcon)
 
     const getThemedIcon = useGetThemedIcon({
       size: iconSize,
@@ -113,9 +112,7 @@ const AvatarWrapper = styled(View, {
   context: AvatarContext,
 
   variants: {
-    size: {
-      Size: {} as any,
-    },
+    size: styled.dynamic<ComponentSize>(),
   } as const,
 })
 
@@ -123,20 +120,18 @@ const AvatarText = styled(Text, {
   context: AvatarContext,
   fontFamily: 'body',
   variants: {
-    size: {
-      FontSize: getFontSized as any,
-    },
+    size: styled.dynamic<ComponentSize>((val) => {
+      const { fontSize } = avatarSizes[val] ?? avatarSizes.md
+      return { fontSize, lineHeight: fontSize }
+    }),
   } as const,
-  defaultVariants: {
-    size: '4',
-  },
 })
 
 const AvatarContent = forwardRef<any, GetProps<typeof TAvatar>>((props, ref) => {
   const { size } = AvatarContext.useStyledContext()
   return (
     <View borderWidth="1" borderColor="color-1" rounded={1_000_000_000}>
-      <TAvatar elevation={5} size={size} ref={ref} {...props} />
+      <TAvatar boxShadow="0 2px 15px shadow-color" size={avatarPx(size)} ref={ref} {...props} />
     </View>
   )
 })

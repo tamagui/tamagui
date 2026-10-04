@@ -1,6 +1,6 @@
+import type { ComponentSize } from '@tamagui/core'
 import { AlarmClock } from '../../icons'
 import { useRef } from 'react'
-import type { FontSizeTokens } from 'tamagui'
 import { View } from 'tamagui'
 import { Input } from './components/inputsParts'
 import type { TextInput } from 'react-native'
@@ -11,7 +11,7 @@ import { useForwardFocus } from './hooks/useForwardFocus'
  */
 
 /** ------ EXAMPLE ------ */
-export function InputWithRightIconDemo({ size = '4' }: { size?: FontSizeTokens }) {
+export function InputWithRightIconDemo({ size = 'md' }: { size?: ComponentSize }) {
   const inputRef = useRef<TextInput>(null)
   const focusTrigger = useForwardFocus(inputRef)
   return (

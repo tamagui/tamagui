@@ -1,9 +1,16 @@
-import { Avatar } from '../../BentoSkins'
 import { randRecentDate, randSentence } from '@ngneat/falso'
 import { Check } from '../../icons'
 import { useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
-import { AnimatePresence, Button, Text, Theme, View, styled } from 'tamagui'
+import {
+  AnimatePresence,
+  Button,
+  Text,
+  Theme,
+  View,
+  styled,
+  Avatar,
+} from 'tamagui'
 
 const List = styled(FlatList<Message>, {
   bg: 'background',
@@ -46,7 +53,7 @@ export function ChatList() {
 
   return (
     <List
-      p="@gtXs/window:8 @sm/window:4"
+      p="@sm/window:8 @max-md/window:4"
       flexDirection="column"
       height="100%"
       flex={1}
@@ -130,13 +137,13 @@ function ChatItem({ item, index }: { item: Message; index: number }) {
                 rounded="6"
                 shrink={1}
               >
-                <Text fontSize="3" fontWeight="3" lineHeight="3" shrink={1} select="text">
+                <Text fontSize="3" fontWeight="400" lineHeight="3" shrink={1} select="text">
                   {message}
                 </Text>
               </View>
             </Theme>
             <View flexDirection={itsMe ? 'row' : 'row-reverse'} gap="2">
-              <Text color="color-6" fontSize="3" fontWeight="3" lineHeight="3">
+              <Text color="color-6" fontSize="3" fontWeight="400" lineHeight="3">
                 {time}
               </Text>
               <Check size={16} color="green" />

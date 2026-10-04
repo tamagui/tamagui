@@ -1,7 +1,13 @@
-import { Avatar } from '../../BentoSkins'
 import { useState } from 'react'
 import { Card, RadioGroup } from './components/radioParts'
-import { H3, Label, Separator, Text, View } from 'tamagui'
+import {
+  H3,
+  Label,
+  Separator,
+  Text,
+  View,
+  Avatar,
+} from 'tamagui'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
 
 const data = {
@@ -52,7 +58,7 @@ type Item = {
 
 /** ------ EXAMPLE ------ */
 export function RadioList() {
-  const { sm } = useGroupMedia('window')
+  const { 'max-md': compact } = useGroupMedia('window')
 
   const [selected, setSelected] = useState<string>()
 
@@ -68,7 +74,7 @@ export function RadioList() {
           </Text>
         </View>
 
-        {sm && (
+        {compact && (
           <View width="100%" px="2">
             <Separator width="100%" borderColor="color-5" />
           </View>
@@ -101,19 +107,19 @@ function Item({
   const { desc, title, key } = item
   return (
     <Card
-      rounded="4 @sm/window:0px"
+      rounded="4 @max-md/window:0px"
       p="4"
       flexDirection="row"
       width="100%"
       gap="3"
       items="stretch"
       justify="space-between"
-      borderTopWidth="1px @sm/window:0px"
-      borderRightWidth="1px @sm/window:0px"
-      borderLeftWidth="1px @sm/window:0px"
-      borderBottomWidth="1px @sm/window:1px"
+      borderTopWidth="1px @max-md/window:0px"
+      borderRightWidth="1px @max-md/window:0px"
+      borderLeftWidth="1px @max-md/window:0px"
+      borderBottomWidth="1px @max-md/window:1px"
       borderColor="color-5"
-      py="@sm/window:4"
+      py="@max-md/window:4"
       active={selected}
       onPress={() => {
         setSelected(key)

@@ -57,7 +57,7 @@ const ProductItem: FC<{ item: Product }> = ({ item }) => {
       </View>
 
       <View flexDirection="column" gap="2">
-        <Text color="color-11" fontSize="4 gtMd:8" fontWeight="600" lineHeight="gtMd:6">
+        <Text color="color-11" fontSize="4 lg:8" fontWeight="600" lineHeight="lg:6">
           {item.name}
         </Text>
 
@@ -68,7 +68,7 @@ const ProductItem: FC<{ item: Product }> = ({ item }) => {
               {item.city}
             </Text>
           </View>
-          <Text color="color-10" fontSize="gtMd:6" fontWeight="gtMd:600" theme="green">
+          <Text color="color-10" fontSize="lg:6" fontWeight="lg:600" theme="green">
             ${Math.floor(Number(item.price) / 10)}
           </Text>
         </View>
@@ -120,12 +120,12 @@ export const MasonryListExample = () => {
   }
 
   return (
-    <View flex={1} maxH="gtMd:800px">
+    <View flex={1} maxH="lg:800px">
       <MasonryList
         flex={1}
         keyExtractor={(item): string => item.id}
         ListHeaderComponent={<View />}
-        p="gtMd:4"
+        p="lg:4"
         gap="4"
         key={numberOfColumns}
         numColumns={numberOfColumns}

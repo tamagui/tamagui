@@ -27,8 +27,8 @@ export function VerticalWithDescription() {
     <View width="100%" items="center">
       <View
         flexDirection="column"
-        minW="100% @gtSm/window:400px"
-        maxW="@gtSm/window:400px"
+        minW="100% @md/window:400px"
+        maxW="@md/window:400px"
         gap="4"
       >
         <View flexDirection="column" gap="2">

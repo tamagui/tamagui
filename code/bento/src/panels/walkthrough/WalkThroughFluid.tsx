@@ -293,7 +293,7 @@ function DialogContent({
       flexDirection="column"
       p="4"
       borderColor="black"
-      elevation="4"
+      boxShadow="0 2px 12px shadow-color"
     >
       <Paragraph>{title}</Paragraph>
       <XStack gap="2">

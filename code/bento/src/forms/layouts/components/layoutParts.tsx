@@ -6,18 +6,18 @@ export const FormCard = styled(View, {
   render: 'form',
   flexDirection: 'row',
   maxW: '100%',
-  rounded: '30px xs:0px',
+  rounded: '30px max-sm:0px',
   bg: 'color-1',
-  borderWidth: '1px xs:0px',
+  borderWidth: '1px max-sm:0px',
   borderColor: 'color-4',
-  p: 'gtSm:6',
-  boxShadow: 'gtSm:(0 9px 12.35px shadow-color)',
-  px: 'xs:1',
+  p: 'md:6',
+  boxShadow: 'md:(0 9px 12.35px shadow-color)',
+  px: 'max-sm:1',
 })
 
 export const Hide = ({
   children,
-  when = 'sm',
+  when = 'max-md',
 }: {
   children: React.ReactNode
   when: MediaQueryKey

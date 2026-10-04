@@ -4,14 +4,14 @@ import { Button, Label, Text, TextArea, View } from 'tamagui'
 /** ------ EXAMPLE ------ */
 export function TitleContentMessage() {
   return (
-    <View flexDirection="column" width={400} maxW="100%" gap="1" py="@sm/window:6">
+    <View flexDirection="column" width={400} maxW="100%" gap="1" py="@max-md/window:6">
       <Label htmlFor="title-content" size="3">
         Title of Text Area
       </Label>
       <TextArea
         placeholderTextColor="color-8"
         id="title-content"
-        size="3"
+        size="sm"
         fontWeight="300"
         height={180}
         placeholder="Your text here"

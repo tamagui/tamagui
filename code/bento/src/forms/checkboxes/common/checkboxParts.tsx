@@ -1,4 +1,3 @@
-import { Group } from '../../../BentoSkins'
 import { getSize } from '@tamagui/get-token'
 import type { RovingFocusGroupProps, RovingFocusItemProps } from '@tamagui/roving-focus'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
@@ -19,6 +18,7 @@ import {
   createStyledContext,
   Label,
   View,
+  Group,
 } from 'tamagui'
 
 const CheckboxesContext = createStyledContext<{

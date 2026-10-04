@@ -1,12 +1,17 @@
-import { XGroup } from '../../BentoSkins'
 import { Plug, Home, Settings, Heart } from '../../icons'
 import React from 'react'
-import { YStack, Button, View, Theme } from 'tamagui'
+import {
+  YStack,
+  Button,
+  View,
+  Theme,
+  XGroup,
+} from 'tamagui'
 
 /** ------ EXAMPLE ------ */
 export function ButtonsWithLeftIcons() {
   return (
-    <YStack gap="4" flexDirection="@gtSm/window:row">
+    <YStack gap="4" flexDirection="@md/window:row">
       <View gap="2">
         <Button theme="blue">
           <Button.Icon>
@@ -125,7 +130,7 @@ export function ButtonsWithLeftIcons() {
         </Button>
       </View>
 
-      <View gap="2" display="@sm/window:none">
+      <View gap="2" display="@max-md/window:none">
         <XGroup>
           <XGroup.Item>
             <Button>

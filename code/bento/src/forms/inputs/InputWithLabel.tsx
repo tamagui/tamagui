@@ -1,15 +1,15 @@
-import type { FontSizeTokens } from 'tamagui'
+import type { ComponentSize } from '@tamagui/core'
 import { View } from 'tamagui'
 import { Input } from './components/inputsParts'
 
 /** ------ EXAMPLE ------ */
 export function InputWithLabelDemo({
   labelText = 'Label',
-  size = '4',
+  size = 'md',
   focusOnMount = false,
   onChangeText,
 }: {
-  size?: FontSizeTokens
+  size?: ComponentSize
   focusOnMount?: boolean
   labelText?: string
   onChangeText?: (text: string) => void

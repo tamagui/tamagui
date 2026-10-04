@@ -51,7 +51,7 @@ export function CheckboxCards() {
       <Checkboxes
         minW="100%"
         gap="4"
-        py="@sm/window:6"
+        py="@max-md/window:6"
         values={values}
         onValuesChange={(values) => toggleValues(values)}
       >
@@ -60,8 +60,8 @@ export function CheckboxCards() {
             <Checkboxes.FocusGroup.Item
               value={item.title}
               key={item.title}
-              maxW="100% @gtSm/window:49%"
-              minW="100% @gtSm/window:49%"
+              maxW="100% @md/window:49%"
+              minW="100% @md/window:49%"
             >
               <Checkboxes.Card flex={1} flexBasis="auto" minW="100%" gap="6">
                 <View flex={1} flexBasis="auto" flexDirection="column" gap="3">

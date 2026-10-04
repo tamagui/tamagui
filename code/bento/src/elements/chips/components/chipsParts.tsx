@@ -1,9 +1,8 @@
-import { getFontSized } from '@tamagui/get-font-sized'
-import type { ColorTokens, FontSizeTokens, SizeTokens } from 'tamagui'
+import { type ComponentSize, resolveSizing } from '@tamagui/core'
+import type { ColorTokens } from 'tamagui'
 import {
-  createStyledHOC,
   createStyledContext,
-  getFontSize,
+  createStyledHOC,
   styled,
   Text,
   useGetThemedIcon,
@@ -12,103 +11,92 @@ import {
 } from 'tamagui'
 
 const ChipContext = createStyledContext({
-  size: '4' as SizeTokens,
+  size: 'md' as ComponentSize,
 })
 
-const CHIP_NAME = 'ChipName'
+const chipFrameSize = {
+  xs: { paddingInline: '1.5', paddingBlock: '0.5', gap: '1' },
+  sm: { paddingInline: '2', paddingBlock: '0.5', gap: '1' },
+  md: { paddingInline: '2.5', paddingBlock: '1', gap: '1.5' },
+  lg: { paddingInline: '3', paddingBlock: '1', gap: '1.5' },
+  xl: { paddingInline: '4', paddingBlock: '1.5', gap: '2' },
+} as const
+
+const chipTextSize = {
+  xs: { fontSize: 'xs', lineHeight: 'xs' },
+  sm: { fontSize: 'xs', lineHeight: 'xs' },
+  md: { fontSize: 'sm', lineHeight: 'sm' },
+  lg: { fontSize: 'sm', lineHeight: 'sm' },
+  xl: { fontSize: 'base', lineHeight: 'base' },
+} as const
 
 const ChipImpl = styled(View, {
-  name: CHIP_NAME,
+  name: 'Chip',
   flexDirection: 'row',
   context: ChipContext,
-  borderRadius: 5,
-  paddingHorizontal: '3',
-  backgroundColor: 'color-6 hover:color-6',
+  borderRadius: 'md',
+  backgroundColor: 'color-6',
   justifyContent: 'center',
   alignItems: 'center',
   variants: {
     circular: {
       true: {
-        borderRadius: 1000_000_000,
+        borderRadius: 'full',
       },
     },
     size: {
-      Size: (val, { tokens }) => {
-        return {
-          paddingHorizontal: tokens.space[val].val,
-          paddingVertical: tokens.space[val].val * 0.2,
-        }
-      },
+      ...chipFrameSize,
+      true: chipFrameSize.md,
     },
     pressable: {
       true: {
-        tabIndex: 0,
-        role: 'button',
+        cursor: 'pointer',
+        backgroundColor: 'color-6 hover:color-7 press:color-8',
         outlineColor: 'focus-visible:outline-color',
         outlineStyle: 'focus-visible:solid',
         outlineWidth: 'focus-visible:2px',
       },
     },
   } as const,
+  defaultVariants: {
+    size: 'md',
+  },
 })
 
-const CHIP_TEXT_NAME = 'ChipText'
-
 const ChipText = styled(Text, {
-  name: CHIP_TEXT_NAME,
+  name: 'ChipText',
   context: ChipContext,
   fontFamily: 'body',
+  fontWeight: '500',
   color: 'color',
-  size: '4',
   variants: {
     size: {
-      FontSize: getFontSized as any,
+      ...chipTextSize,
+      true: chipTextSize.md,
     },
   } as const,
+  defaultVariants: {
+    size: 'md',
+  },
 })
 
 type ChipIconProps = {
   color?: ColorTokens | string
   scaleIcon?: number
-  size?: SizeTokens
+  size?: ComponentSize
   children: React.ReactNode
 }
 
-const CHIP_ICON = 'ChipIcon'
-
 const ChipIconFrame = styled(View, {
-  name: CHIP_ICON,
+  name: 'ChipIcon',
   context: ChipContext,
-  variants: {
-    size: {
-      Size: (val, { tokens }) => {
-        if (typeof val === 'number') {
-          return {
-            paddingHorizontal: val * 0.25,
-            paddingVertical: val * 0.25,
-          }
-        }
-        return {
-          paddingHorizontal: tokens.space[val].val * 0.25,
-          paddingVertical: tokens.space[val].val * 0.25,
-        }
-      },
-    },
-  },
 })
 
 const ChipIcon = createStyledHOC(ChipIconFrame, (props: ChipIconProps, ref) => {
-  const { children, scaleIcon = 0.7, size, color, ...rest } = props
+  const { children, scaleIcon = 0.85, size, color, ...rest } = props
   const chipContext = ChipContext.useStyledContext()
-  const finalSize = size || chipContext.size
-
-  const iconSize =
-    (typeof finalSize === 'number'
-      ? finalSize * 0.5
-      : getFontSize(finalSize as FontSizeTokens)) * scaleIcon
-
   const getThemedIcon = useGetThemedIcon({
-    size: iconSize,
+    size: resolveSizing(size || chipContext.size).icon * scaleIcon,
     color: color as any,
   })
   return (
@@ -118,53 +106,28 @@ const ChipIcon = createStyledHOC(ChipIconFrame, (props: ChipIconProps, ref) => {
   )
 })
 
-const CHIP_BUTTON = 'Button'
-
-const ButtonComp = styled(View, {
-  name: CHIP_BUTTON,
+const ChipButton = styled(View, {
+  name: 'ChipButton',
   context: ChipContext,
   tabIndex: 0,
   role: 'button',
-  borderRadius: 1000_000_000,
+  cursor: 'pointer',
+  borderRadius: 'full',
+  padding: '0.5',
   backgroundColor:
-    'background hover:background-hover press:background-press focus:background-focus',
+    'transparent hover:background-hover press:background-press focus:background-focus',
   justifyContent: 'center',
   alignItems: 'center',
+  outlineColor: 'focus-visible:outline-color',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
   variants: {
-    size: {} as any,
+    size: styled.dynamic<ComponentSize>(),
     alignRight: {
-      boolean: (val, { props, tokens }) => {
-        if (val) {
-          const size = (
-            (props as any).size === true ? '4' : (props as any).size
-          ) as Exclude<SizeTokens, true>
-          if (typeof size === 'number') {
-            return {
-              x: size * 0.55,
-            }
-          }
-          return {
-            x: tokens.space[size].val * 0.55,
-          }
-        }
-      },
+      true: { marginRight: '-1' },
     },
     alignLeft: {
-      boolean: (val, { props, tokens }) => {
-        if (val) {
-          const size = (
-            (props as any).size === true ? '4' : (props as any).size
-          ) as Exclude<SizeTokens, true>
-          if (typeof size === 'number') {
-            return {
-              x: size * -0.55,
-            }
-          }
-          return {
-            x: tokens.space[size].val * -0.55,
-          }
-        }
-      },
+      true: { marginLeft: '-1' },
     },
   } as const,
 })
@@ -172,5 +135,5 @@ const ButtonComp = styled(View, {
 export const Chip = withStaticProperties(ChipImpl, {
   Text: ChipText,
   Icon: ChipIcon,
-  Button: ButtonComp,
+  Button: ChipButton,
 })

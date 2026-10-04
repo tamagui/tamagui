@@ -1,6 +1,12 @@
-import { Avatar } from '../../BentoSkins'
-import type { SizeTokens } from 'tamagui'
-import { Paragraph, Tooltip, View, styled, withStaticProperties } from 'tamagui'
+import type { ComponentSize } from '@tamagui/core'
+import {
+  Paragraph,
+  Tooltip,
+  View,
+  styled,
+  withStaticProperties,
+  Avatar,
+} from 'tamagui'
 
 const items = ['Developer', 'User', 'Athlete', 'User', 'Designer']
 
@@ -20,9 +26,9 @@ export function AvatarsTooltip() {
           >
             <AvatarTip offset={5} placement="bottom" restMs={0} delay={0}>
               <AvatarTip.Trigger>
-                <Item size="4" imageUrl={`https://i.pravatar.cc/150?img=${index + 10}`} />
+                <Item size="sm" imageUrl={`https://i.pravatar.cc/150?img=${index + 10}`} />
               </AvatarTip.Trigger>
-              <AvatarTip.Content elevation={2} transformOrigin="center top">
+              <AvatarTip.Content boxShadow="0 1px 6px shadow-color" transformOrigin="center top">
                 <AvatarTip.Arrow />
                 <Paragraph size="2" lineHeight="1">
                   {item}
@@ -44,9 +50,9 @@ export function AvatarsTooltip() {
           >
             <AvatarTip offset={5} placement="bottom" delay={0}>
               <AvatarTip.Trigger>
-                <Item size="6" imageUrl={`https://i.pravatar.cc/150?img=${index + 10}`} />
+                <Item size="lg" imageUrl={`https://i.pravatar.cc/150?img=${index + 10}`} />
               </AvatarTip.Trigger>
-              <AvatarTip.Content elevation={2} transformOrigin="center top">
+              <AvatarTip.Content boxShadow="0 1px 6px shadow-color" transformOrigin="center top">
                 <AvatarTip.Arrow />
                 <Paragraph size="2" lineHeight="1">
                   {item}
@@ -62,7 +68,7 @@ export function AvatarsTooltip() {
 
 AvatarsTooltip.fileName = 'AvatarsTooltip'
 
-function Item({ imageUrl, size }: { imageUrl: string; size: SizeTokens }) {
+function Item({ imageUrl, size }: { imageUrl: string; size: ComponentSize }) {
   return (
     <Avatar borderWidth="1" borderColor="color-1" circular size={size}>
       <Avatar.Image src={imageUrl} />
@@ -76,14 +82,7 @@ const AvatarTooltipContent = styled(Tooltip.Content, {
   x: '0 enter:0 exit:0',
   y: '0 enter:-5px exit:-5px',
   opacity: '1 enter:0 exit:0',
-  transition: [
-    '100ms',
-    {
-      y: {
-        overshootClamping: true,
-      },
-    },
-  ],
+  transition: '100ms',
 })
 
 const AvatarTip = withStaticProperties(Tooltip, {

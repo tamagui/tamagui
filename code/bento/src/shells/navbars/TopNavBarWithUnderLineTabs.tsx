@@ -1,4 +1,3 @@
-import { Avatar, Tabs } from '../../BentoSkins'
 import { Bell, Menu } from '../../icons'
 import type { TabLayout, TabsTabProps, ViewProps } from 'tamagui'
 
@@ -18,6 +17,8 @@ import {
   isWeb,
   styled,
   useEvent,
+  Avatar,
+  Tabs,
 } from 'tamagui'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
 
@@ -129,7 +130,7 @@ export function TopNavBarWithUnderLineTabs() {
   const closeTrigger = useEvent(() => {
     setTriggerOpen(false)
   })
-  const { sm } = useGroupMedia('window')
+  const { 'max-md': compact } = useGroupMedia('window')
   return (
     <View flexDirection="column" height={610} width="100%" position="relative">
       <View
@@ -143,20 +144,20 @@ export function TopNavBarWithUnderLineTabs() {
         theme="accent"
         render="nav"
       >
-        {sm ? (
+        {compact ? (
           <SideBar />
         ) : (
           <View flexDirection="row" p="2" items="center" bg="#FFFF00" rounded={1000_000}>
             <Image
               objectFit="contain"
-              width="25px @sm/window:15px"
-              height="25px @sm/window:15px"
+              width="25px @max-md/window:15px"
+              height="25px @max-md/window:15px"
               src="/tamagui-icon.svg"
               alt="Bento logo"
             />
           </View>
         )}
-        {!sm && (
+        {!compact && (
           <Tabs value={currentTab} onValueChange={setCurrentTab} orientation="horizontal">
             <View position="relative" flexDirection="column">
               <AnimatePresence>
@@ -189,7 +190,7 @@ export function TopNavBarWithUnderLineTabs() {
                 {links.map((link, index) => (
                   <Tabs.Tab
                     key={`Tabs-${index}`}
-                    variant="plain"
+                    unstyled
                     value={link.slug}
                     onInteraction={handleOnInteraction}
                     paddingHorizontal="4"
@@ -264,7 +265,7 @@ function ProfileDropdown({
         p={0}
         y="enter:-10px exit:-10px"
         opacity="enter:0 exit:0"
-        transition={['quick', { opacity: { overshootClamping: true } }]}
+        transition="quick"
         overflow="hidden"
         boxShadow="0 10px 20px shadow-color"
       >
@@ -286,16 +287,16 @@ const DropDownItem = styled(View, {
   bg: 'background hover:background-hover press:background-press',
   width: '100%',
   cursor: 'pointer',
-  px: '4 @xs/window:2',
-  py: '2 @xs/window:1',
+  px: '4 @max-sm/window:2',
+  py: '2 @max-sm/window:1',
   items: 'center',
   justify: 'center',
 })
 
 const DropDownText = styled(Text, {
-  fontWeight: '2 @xs/window:1',
-  lineHeight: '2 @xs/window:1',
-  fontSize: '2 @xs/window:1',
+  fontWeight: '2 @max-sm/window:1',
+  lineHeight: '2 @max-sm/window:1',
+  fontSize: '2 @max-sm/window:1',
 })
 
 const NavLink = createStyledHOC(
@@ -316,7 +317,7 @@ const NavLink = createStyledHOC(
           <Text
             opacity="0.9 hover:1"
             fontSize="5"
-            fontWeight="5"
+            fontWeight="500"
             lineHeight="5"
             color="color-11"
           >
@@ -404,8 +405,8 @@ function SideBarContent({
               >
                 <Image
                   objectFit="contain"
-                  width="30px @sm/window:15px"
-                  height="30px @sm/window:15px"
+                  width="30px @max-md/window:15px"
+                  height="30px @max-md/window:15px"
                   src="/tamagui-icon.svg"
                   alt="Bento logo"
                 />
@@ -449,7 +450,7 @@ function SideBarContent({
                       {links.map((link, index) => (
                         <Tabs.Tab
                           key={`Tabs-${index}`}
-                          variant="plain"
+                          unstyled
                           width="100%"
                           value={link.slug}
                           onInteraction={handleOnInteraction}

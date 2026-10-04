@@ -10,13 +10,13 @@ export function ShortEmailPassword() {
       rounded={20}
       borderColor="border-color"
       self="center"
-      minW="@sm/window:100%"
-      px="@sm/window:5"
-      py="@sm/window:6"
+      minW="@max-md/window:100%"
+      px="@max-md/window:5"
+      py="@max-md/window:6"
     >
       <View flexDirection="column" gap="5" items="center" minW={'100%'}>
         <View flexDirection="column" gap="3" minW={'100%'}>
-          <Input size="4" minW="100%">
+          <Input minW="100%">
             <Input.Box>
               <Input.Icon>
                 <Mail />
@@ -24,7 +24,7 @@ export function ShortEmailPassword() {
               <Input.Area pl={0} placeholder="Your Email" />
             </Input.Box>
           </Input>
-          <Input size="4" minW="100%">
+          <Input minW="100%">
             <Input.Box>
               <Input.Icon>
                 <Lock />

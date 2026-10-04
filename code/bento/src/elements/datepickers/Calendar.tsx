@@ -1,4 +1,3 @@
-import { Tabs } from '../../BentoSkins'
 import type { DPDatesMode, DPDay, DatePickerProviderProps } from '@rehookify/datepicker'
 import { useDatePickerContext } from '@rehookify/datepicker'
 import { ChevronLeft, ChevronRight } from '../../icons'
@@ -14,6 +13,7 @@ import {
   YStack,
   isWeb,
   useMedia,
+  Tabs,
 } from 'tamagui'
 import {
   CalendarHeader,
@@ -284,7 +284,7 @@ export function Calendar({ showTabs = true }: { showTabs?: boolean }) {
   }
 
   const [header, setHeader] = useState<'month' | 'year' | 'day'>('day')
-  const { gtSm: fullWidthMode } = useMedia()
+  const { md: fullWidthMode } = useMedia()
 
   return (
     <YStack gap="4">
@@ -296,8 +296,8 @@ export function Calendar({ showTabs = true }: { showTabs?: boolean }) {
           borderWidth="px"
           overflow="hidden"
           self="center"
-          items="gtMd:center"
-          justify="gtMd:center"
+          items="lg:center"
+          justify="lg:center"
           bg="color-1"
           borderColor="border-color"
           orientation="horizontal"

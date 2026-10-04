@@ -33,7 +33,7 @@ function DatePickerBody({
 
   return (
     <HeaderTypeProvider config={config} type={header} setHeader={setHeader}>
-      <View flexDirection="column" p="4 gtMd:0" items="center" gap="4">
+      <View flexDirection="column" p="4 lg:0" items="center" gap="4">
         <CalendarHeader />
         {header === 'month' && <MonthPicker />}
         {header === 'year' && <YearPicker onChange={() => setHeader('month')} />}

@@ -44,16 +44,16 @@ export function SignUpScreen() {
         items="stretch"
         maxW="100%"
         width={450}
-        gap="4 @xs/window:3"
-        py="@xs/window:6 xs:4"
-        px="@xs/window:5"
+        gap="4 @max-sm/window:3"
+        py="@max-sm/window:6 max-sm:4"
+        px="@max-sm/window:5"
       >
         <H1 size="9" fontWeight="bold">
           Sign Up
         </H1>
         <View flexDirection="row" flexWrap="wrap" width="100%" gap="4">
-          <View flexDirection="column" flex={1} gap="1" minW="100% @gtXs/window:inherit">
-            <Input size="4">
+          <View flexDirection="column" flex={1} gap="1" minW="100% @sm/window:inherit">
+            <Input>
               <Input.Label htmlFor={uniqueId + 'first-name'}>First Name</Input.Label>
               <Input.Box minW="100%">
                 <Input.Area id={uniqueId + 'first-name'} placeholder="First name" />
@@ -61,7 +61,7 @@ export function SignUpScreen() {
             </Input>
           </View>
           <View flexDirection="column" flex={1} gap="1">
-            <Input size="4">
+            <Input>
               <Input.Label htmlFor={uniqueId + 'last-name'}>Last Name</Input.Label>
               <Input.Box>
                 <Input.Area id={uniqueId + 'last-name'} placeholder="Last name" />
@@ -69,7 +69,7 @@ export function SignUpScreen() {
             </Input>
           </View>
         </View>
-        <Input size="4">
+        <Input>
           <Input.Label htmlFor={uniqueId + 'password'}>Password</Input.Label>
           <Input.Box>
             <Input.Area
@@ -82,7 +82,7 @@ export function SignUpScreen() {
             </Input.Icon>
           </Input.Box>
         </Input>
-        <Input size="4">
+        <Input>
           <Input.Label htmlFor={uniqueId + 'repeat-password'}>
             Repeat the password
           </Input.Label>
@@ -95,13 +95,13 @@ export function SignUpScreen() {
           </Input.Box>
         </Input>
         <View flexDirection="row" flexWrap="wrap" gap="4">
-          <Input flex={1} size="4">
+          <Input flex={1}>
             <Input.Label htmlFor={uniqueId + 'city'}>City</Input.Label>
             <Input.Box>
               <Input.Area id={uniqueId + 'city'} placeholder="City" />
             </Input.Box>
           </Input>
-          <Input flex={1} size="4">
+          <Input flex={1}>
             <Input.Label htmlFor={uniqueId + 'postal'}>Postal code / ZIP</Input.Label>
             <Input.Box>
               <Input.Area
@@ -113,7 +113,7 @@ export function SignUpScreen() {
           </Input>
         </View>
         <View flexDirection="column" gap="1">
-          <Input size="4">
+          <Input>
             <Input.Label htmlFor={uniqueId + 'street'}>Street Name</Input.Label>
             <Input.Box>
               <Input.Area id={uniqueId + 'street'} placeholder="Street name" />
@@ -182,8 +182,8 @@ export function SignUpScreen() {
           onPress={signUp}
           cursor={status === 'loading' ? 'progress' : 'pointer'}
           self="flex-end"
-          minW="100% gtSm:12"
-          maxW="gtSm:12"
+          minW="100% md:12"
+          maxW="md:12"
           iconAfter={
             <AnimatePresence>
               {status === 'loading' && (

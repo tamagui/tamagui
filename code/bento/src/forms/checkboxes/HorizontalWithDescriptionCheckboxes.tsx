@@ -45,7 +45,7 @@ export function HorizontalWithDescriptionCheckboxes() {
         maxW="100%"
         minW="100%"
         gap="4"
-        px="@gtXs/window:8"
+        px="@sm/window:8"
       >
         <YStack gap="1">
           <Checkboxes.Title>Payment</Checkboxes.Title>
@@ -103,7 +103,7 @@ function Item({
       flexDirection="row"
       items="flex-start"
       gap="3"
-      height="@gtXs/window:100%"
+      height="@sm/window:100%"
       p="3"
       px="4"
       cursor="pointer"

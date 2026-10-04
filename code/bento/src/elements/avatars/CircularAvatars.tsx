@@ -1,4 +1,4 @@
-import type { SizeTokens } from 'tamagui'
+import type { ComponentSize } from '@tamagui/core'
 import { View } from 'tamagui'
 import { Avatar } from './components/Avatar'
 
@@ -6,15 +6,15 @@ import { Avatar } from './components/Avatar'
 export function CircularAvatars() {
   return (
     <View flexDirection="row" maxW="100%" flexWrap="wrap" gap="10">
-      <Item size="4" />
-      <Item size="5" />
-      <Item size="6" />
-      <Item size="7" />
+      <Item size="sm" />
+      <Item size="md" />
+      <Item size="lg" />
+      <Item size="xl" />
     </View>
   )
 }
 
-function Item({ size }: { size: SizeTokens }) {
+function Item({ size }: { size: ComponentSize }) {
   return (
     <Avatar size={size}>
       <Avatar.Content circular>

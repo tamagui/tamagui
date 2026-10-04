@@ -1,9 +1,9 @@
+import type { ComponentSize } from '@tamagui/core'
 import type { DatePickerProviderProps } from '@rehookify/datepicker'
 import { DatePickerProvider, useDatePickerContext } from '@rehookify/datepicker'
-import { getFontSized } from '@tamagui/get-font-sized'
 import { Calendar, ChevronLeft, ChevronRight, X } from '../../../icons'
 import type { GestureReponderEvent, ViewProps } from '@tamagui/web'
-import type { FontSizeTokens, PopoverProps } from 'tamagui'
+import type { PopoverProps } from 'tamagui'
 import {
   createStyledHOC,
   Adapt,
@@ -17,6 +17,7 @@ import {
   isWeb,
   styled,
   withStaticProperties,
+  SizableText,
 } from 'tamagui'
 
 import { type ReactNode, useEffect, useRef } from 'react'
@@ -112,7 +113,7 @@ const DatePickerImpl = (props: DatePickerProps) => {
   return (
     <DatePickerProvider config={config}>
       <Popover ref={popoverRef} keepChildrenMounted size="4" allowFlip {...rest}>
-        <Adapt when="maxMd">
+        <Adapt when="max-md">
           <Sheet modal dismissOnSnapToBottom snapPointsMode="fit">
             <Sheet.Container p="4" width="100%" items="center">
               <Sheet.Background />
@@ -151,13 +152,13 @@ export const DatePicker = withStaticProperties(DatePickerImpl, {
 type DatePickerInputProps = Omit<React.ComponentProps<typeof Input.Area>, 'size'> & {
   onReset: () => void
   onButtonPress?: (e: GestureReponderEvent) => void
-  size?: FontSizeTokens
+  size?: ComponentSize
 }
 
 export const DatePickerInput = createStyledHOC(
   Input.Area,
   (props: DatePickerInputProps, ref) => {
-    const { value, onButtonPress, size = '3', onReset, onLayout, ...rest } = props
+    const { value, onButtonPress, size = 'sm', onReset, onLayout, ...rest } = props
     return (
       <View onLayout={isWeb ? undefined : onLayout} minW="native:100%">
         <Input cursor="pointer" onPress={onButtonPress} size={size}>
@@ -225,7 +226,7 @@ export function MonthPicker({
         gap="2"
         grow={0}
         justify="native:space-between"
-        width="native:100% gtMd:285px"
+        width="native:100% lg:285px"
         style={{ transition: 'transform 100ms ease, opacity 100ms ease' }}
       >
         {months.map((month) => (
@@ -277,7 +278,7 @@ export function YearPicker({
         flexWrap="wrap"
         gap="2"
         width="100%"
-        maxW="gtMd:280px"
+        maxW="lg:280px"
         style={{ transition: 'transform 150ms ease, opacity 150ms ease' }}
       >
         {years.map((year) => (
@@ -433,15 +434,3 @@ export const WeekView = ({
   )
 }
 
-export const SizableText = styled(Text, {
-  name: 'SizableText',
-  fontFamily: 'body',
-  variants: {
-    size: {
-      FontSize: getFontSized as any,
-    },
-  } as const,
-  defaultVariants: {
-    size: '4',
-  },
-})

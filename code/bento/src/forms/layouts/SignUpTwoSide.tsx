@@ -52,7 +52,7 @@ export function SignUpTwoSideScreen() {
 
   return (
     <View flexDirection="row" width="100%" minH="100%">
-      <View flexDirection="column" shrink={1} grow={3} gap="4" px="@gtXs/window:8">
+      <View flexDirection="column" shrink={1} grow={3} gap="4" px="@sm/window:8">
         <H1 size="9" fontWeight="bold">
           Basic Details
         </H1>
@@ -61,17 +61,17 @@ export function SignUpTwoSideScreen() {
           flexDirection="row"
           justify="space-between"
           flexWrap="wrap"
-          gap="4 @gtXs/window:8"
+          gap="4 @sm/window:8"
         >
           <View
             flexDirection="column"
             gap="4"
             flex={1}
-            minW="100% @gtSm/window:inherit"
-            flexBasis="@gtSm/window:200px"
+            minW="100% @md/window:inherit"
+            flexBasis="@md/window:200px"
           >
             <View flexDirection="column" gap="1">
-              <Input size="4">
+              <Input>
                 <Input.Label htmlFor={uniqueId + '1-first-name'}>First Name</Input.Label>
                 <Input.Box>
                   <Input.Area id={uniqueId + '1-first-name'} placeholder="First name" />
@@ -79,7 +79,7 @@ export function SignUpTwoSideScreen() {
               </Input>
             </View>
             <View flexDirection="column" gap="1">
-              <Input size="4">
+              <Input>
                 <Input.Label htmlFor={uniqueId + '1-last-name'}>Last Name</Input.Label>
                 <Input.Box>
                   <Input.Area id={uniqueId + '1-last-name'} placeholder="Last name" />
@@ -127,7 +127,7 @@ export function SignUpTwoSideScreen() {
               <Input.Label htmlFor={uniqueId + 'country'}>Country</Input.Label>
               <CountrySelect data={countries} id={uniqueId + 'country'} />
             </View>
-            <Input size="4">
+            <Input>
               <Input.Label htmlFor={uniqueId + '1-city'}>City</Input.Label>
               <Input.Box>
                 <Input.Area id={uniqueId + '1-city'} placeholder="City" />
@@ -135,14 +135,14 @@ export function SignUpTwoSideScreen() {
             </Input>
           </View>
           <View flexDirection="column" gap="4" flex={1} flexBasis={200}>
-            <Input size="4">
+            <Input>
               <Input.Label htmlFor={uniqueId + '1-depart'}>Department</Input.Label>
               <Input.Box>
                 <Input.Area id={uniqueId + '1-depart'} placeholder="Department" />
               </Input.Box>
             </Input>
             <View flexDirection="column" gap="1">
-              <Input size="4">
+              <Input>
                 <Input.Label htmlFor={uniqueId + '1-email'}>Email</Input.Label>
                 <Input.Box>
                   <Input.Area
@@ -211,9 +211,9 @@ export function SignUpTwoSideScreen() {
             <Button
               theme="accent"
               self="flex-end"
-              width="12 sm:100%"
-              mt="2-5 sm:4"
-              mb="2 sm:6"
+              width="12 max-md:100%"
+              mt="2-5 max-md:4"
+              mb="2 max-md:6"
             >
               <Button.Text>Save</Button.Text>
             </Button>
@@ -269,7 +269,7 @@ function CountrySelect({ data, id }: { data: typeof countries; id: string }) {
         </Select.Icon>
       </Select.Trigger>
 
-      <Adapt when="maxMd" platform="touch">
+      <Adapt when="max-md" platform="touch">
         <Sheet dismissOnSnapToBottom>
           <Sheet.Container>
             <Sheet.Background />

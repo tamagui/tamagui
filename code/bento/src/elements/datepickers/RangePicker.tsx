@@ -240,11 +240,11 @@ function DatePickerBody({
   config: DatePickerProviderProps['config']
 }) {
   const [header, setHeader] = useState<'month' | 'year' | 'day'>('day')
-  const { gtSm: fullWidthMode } = useMedia()
+  const { md: fullWidthMode } = useMedia()
 
   return (
     <HeaderTypeProvider config={config} type={header} setHeader={setHeader}>
-      <View flexDirection="row" gap="4" p="4 gtMd:0">
+      <View flexDirection="row" gap="4" p="4 lg:0">
         {header === 'day' && !fullWidthMode && (
           <Calendar order="either" calendarIndex={0} />
         )}

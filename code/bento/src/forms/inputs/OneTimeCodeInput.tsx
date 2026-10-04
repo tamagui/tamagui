@@ -1,7 +1,7 @@
+import type { ComponentSize } from '@tamagui/core'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Control, UseFormRegister, UseFormSetValue } from 'react-hook-form'
 import { Controller, useForm } from 'react-hook-form'
-import type { SizeTokens } from 'tamagui'
 import {
   AnimatePresence,
   Button,
@@ -28,7 +28,7 @@ import {
 
 interface CodeConfirmationInputProps {
   id: number
-  size?: SizeTokens
+  size?: ComponentSize
   codeSize: number
   secureTextEntry?: boolean
   control: Control<FormFields, any>
@@ -64,7 +64,7 @@ function CodeConfirmationInput({
           width="100%"
           height="100%"
           flex={1}
-          bg={`${invalid ? 'red-400' : value ? 'color-1' : 'color-5'} focus:${invalid ? 'red-500' : 'color-1'}`}
+          bg={`${invalid ? 'red-8' : value ? 'color-1' : 'color-5'} focus:${invalid ? 'red-9' : 'color-1'}`}
           outlineWidth="hover:0px focus:0px"
           value={value}
           maxLength={codeSize}
@@ -116,7 +116,7 @@ function CodeConfirmationInput({
           autoComplete="one-time-code"
           type={secureTextEntry ? 'password' : 'text'}
           enterKeyHint={id === codeSize - 1 ? 'done' : 'next'}
-          size="8"
+          size="xl"
         />
       )}
     />
@@ -124,7 +124,7 @@ function CodeConfirmationInput({
 }
 
 interface CodeConfirmationProps {
-  size?: SizeTokens
+  size?: ComponentSize
   codeSize: number
   secureText?: boolean
   onEnter: (code: number) => void
@@ -296,8 +296,8 @@ const ResendTimer = ({
         className="flex"
         onPress={handleResendClick}
       >
-        <RefreshCcw size={12} color="blue-600" />
-        <Paragraph color="blue-600" text="right" fontSize="1">
+        <RefreshCcw size={12} color="blue-10" />
+        <Paragraph color="blue-10" text="right" fontSize="1">
           Resend OTP
         </Paragraph>
       </XStack>
@@ -323,11 +323,11 @@ const ResendTimer = ({
 
 /** ------ EXAMPLE ------ */
 export function OneTimeCodeInputExample({
-  size = '5',
+  size = 'lg',
   codeSize = 4,
   secureText = false,
 }: {
-  size?: SizeTokens
+  size?: ComponentSize
   codeSize?: number
   secureText?: boolean
 }) {
@@ -387,7 +387,7 @@ export function OneTimeCodeInputExample({
         borderWidth={1}
         borderColor="border-color"
         bg="background"
-        boxShadow="gtSm:(0 12px 32px shadow-color)"
+        boxShadow="md:(0 12px 32px shadow-color)"
       >
         <View position="absolute" t="4" r="4">
           {codeEntered ? (
@@ -401,7 +401,7 @@ export function OneTimeCodeInputExample({
                 {verified && (
                   <Paragraph
                     key="success"
-                    color="green-600"
+                    color="green-10"
                     opacity="enter:0 exit:0"
                     x="enter:15px exit:15px"
                     scale="exit:0.5"
@@ -420,7 +420,7 @@ export function OneTimeCodeInputExample({
                   transition: 'transform 250ms ease, opacity 250ms ease',
                 }}
               >
-                <CheckCircle2 color="green-600" />
+                <CheckCircle2 color="green-10" />
               </View>
             </View>
           ) : (
@@ -457,7 +457,7 @@ export function OneTimeCodeInputExample({
             height="auto"
           >
             <View items="center" gap="2">
-              <Text fontWeight="700" fontSize="6 gtMd:8" color="color-11">
+              <Text fontWeight="700" fontSize="6 lg:8" color="color-11">
                 Code
               </Text>
 
@@ -490,7 +490,7 @@ export function OneTimeCodeInputExample({
               )}
             </View>
 
-            <View px="4 gtMd:0px">
+            <View px="4 lg:0px">
               <YStack gap="2">
                 <CodeConfirmation
                   size={size}
@@ -542,9 +542,9 @@ export function OneTimeCodeInputExample({
           bg="background"
           items="center"
           justify="center"
-          width="100% gtMd:100%"
+          width="100% lg:100%"
           height="100%"
-          p="gtMd:5"
+          p="lg:5"
           pointerEvents={!showCode ? 'none' : 'auto'}
           transform={[{ translateX: !showCode ? 150 : 0 }]}
           style={{ transition: 'transform 200ms ease, opacity 200ms ease' }}
@@ -636,7 +636,7 @@ const EmailInput = ({
           <Label>Email Address</Label>
           <XStack width="100%" gap="4" justify="flex-start" items="flex-end">
             <Input
-              size="4"
+             
               inputMode="email"
               placeholder="Enter your email"
               autoComplete="email"

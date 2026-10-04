@@ -1,7 +1,14 @@
-import { Avatar } from '../../BentoSkins'
 import { useEffect, useState } from 'react'
 import type { TamaguiElement } from 'tamagui'
-import { Paragraph, Tooltip, View, isWeb, styled, withStaticProperties } from 'tamagui'
+import {
+  Paragraph,
+  Tooltip,
+  View,
+  isWeb,
+  styled,
+  withStaticProperties,
+  Avatar,
+} from 'tamagui'
 
 const items = ['Developer', 'User', 'Athlete', 'User', 'Designer']
 
@@ -47,7 +54,7 @@ function Item(props: { item: string; index: number }) {
         </AvatarTip.Trigger>
         <AvatarTip.Content
           ref={setOuterRef}
-          elevation={8}
+          boxShadow="0 4px 24px shadow-color"
           x={position.x / 2}
           rotate={position.degree}
           transformOrigin="center bottom"
@@ -66,14 +73,7 @@ const AvatarTooltipContent = styled(Tooltip.Content, {
   x: '0 enter:0 exit:0',
   y: '0 enter:15px exit:15px',
   opacity: '1 enter:0 exit:0',
-  transition: [
-    'bouncy',
-    {
-      opacity: {
-        overshootClamping: true,
-      },
-    },
-  ],
+  transition: 'bouncy',
 })
 
 const AvatarTip = withStaticProperties(Tooltip, {

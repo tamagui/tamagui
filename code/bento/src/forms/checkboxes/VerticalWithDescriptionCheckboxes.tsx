@@ -43,9 +43,9 @@ export function VerticalWithDescriptionCheckboxes() {
         values={values}
         onValuesChange={onValuesChange}
         maxW="100%"
-        px="@sm/window:4"
-        py="@sm/window:6"
-        width="@gtXs/window:400px"
+        px="@max-md/window:4"
+        py="@max-md/window:6"
+        width="@sm/window:400px"
         gap="4"
       >
         <YStack gap="1">

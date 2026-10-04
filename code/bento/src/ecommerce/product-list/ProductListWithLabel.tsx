@@ -59,7 +59,7 @@ function Item({ item, index }: { item: Product; index: number }) {
             px="3"
             z={2}
             theme={isBestSeller ? 'purple' : 'orange'}
-            elevation={10}
+            boxShadow="0 5px 30px shadow-color"
           >
             <SizableText color="#fff">{labelText}</SizableText>
           </YStack>
@@ -96,7 +96,7 @@ export function ProductListWithLabel() {
       columnGap="5"
       paddingTop="3"
       paddingBottom="3"
-      px="6 @xs/window:3"
+      px="6 @max-sm/window:3"
       maxW="100%"
       maxH={700}
     >

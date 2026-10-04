@@ -28,8 +28,8 @@ export function RoundedButtons() {
   ] as const
 
   return (
-    <YStack gap="4" flexDirection="@gtSm/window:row">
-      <View flexWrap="wrap" flexDirection="xs:row" gap="4">
+    <YStack gap="4" flexDirection="@md/window:row">
+      <View flexWrap="wrap" flexDirection="max-sm:row" gap="4">
         {colorThemes.map((theme) => (
           <Button key={theme} theme={theme} circular>
             <Button.Icon>
@@ -39,7 +39,7 @@ export function RoundedButtons() {
         ))}
       </View>
 
-      <View flexWrap="wrap" flexDirection="xs:row" gap="4">
+      <View flexWrap="wrap" flexDirection="max-sm:row" gap="4">
         {variantButtons.map(({ inverse, ...props }, index) => (
           <Button key={index} theme={inverse ? 'accent' : undefined} {...props} circular>
             <Button.Icon>
@@ -49,7 +49,7 @@ export function RoundedButtons() {
         ))}
       </View>
 
-      <View flexWrap="wrap" flexDirection="xs:row" gap="4">
+      <View flexWrap="wrap" flexDirection="max-sm:row" gap="4">
         {sizeButtons.map((props, index) => (
           <Button key={index} {...props} circular>
             <Button.Icon>

@@ -1,6 +1,4 @@
-import { Avatar, XGroup } from '../../BentoSkins'
 import { randAvatar, randFloat, randFullName, randUuid, randWord } from '@ngneat/falso'
-import { getFontSized } from '@tamagui/get-font-sized'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { Dot, Minus, Plus, Star } from '../../icons'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
@@ -22,6 +20,9 @@ import {
   debounce,
   styled,
   useMedia,
+  Avatar,
+  XGroup,
+  SizableText,
 } from 'tamagui'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
 
@@ -71,38 +72,26 @@ const product = {
   ],
 }
 
-export const SizableText = styled(Text, {
-  name: 'SizableText',
-  fontFamily: 'body',
-  variants: {
-    size: {
-      FontSize: getFontSized as any,
-    },
-  } as const,
-  defaultVariants: {
-    size: '4' as any,
-  },
-})
 
 /** ------ EXAMPLE ------ */
 export function ProductWithReview() {
   const [selectedPicture, setSelectedPicture] = useState(product.pictures[0].picture)
   const [tempPicture, setTempPicture] = useState<string | null>(null)
   const setDebounceTempPicture = debounce(setTempPicture, 100)
-  const { xs } = useGroupMedia('window')
+  const { 'max-sm': narrow } = useGroupMedia('window')
   const media = useMedia()
   return (
     <ScrollView width="100%">
-      <View width="100%" bg="background" p="8 xs:4" gap="8 xs:4">
+      <View width="100%" bg="background" p="8 max-sm:4" gap="8 max-sm:4">
         <View
           flexDirection="row"
           bg="background"
           width="100%"
           flexWrap="wrap"
-          gap="10 @xs/window:6"
+          gap="10 @max-sm/window:6"
           items="stretch"
         >
-          <View width="100%" flexBasis="@sm/window:100%">
+          <View width="100%" flexBasis="@max-md/window:100%">
             <View flexDirection="column" width="100%">
               <View flexDirection="row" flex={1} flexBasis="auto" overflow="hidden">
                 <View
@@ -119,12 +108,12 @@ export function ProductWithReview() {
                     aspectRatio={1 / 1}
                     objectFit="cover"
                     bg="color-2"
-                    height="@sm/window:300px"
+                    height="@max-md/window:300px"
                     src={tempPicture || selectedPicture}
                   />
                 </View>
               </View>
-              <View flexDirection="row" width="100%" px="@xs/window:3">
+              <View flexDirection="row" width="100%" px="@max-sm/window:3">
                 <RovingFocusGroup
                   width="100%"
                   flexDirection="row"
@@ -159,7 +148,7 @@ export function ProductWithReview() {
                           outlineWidth={2}
                           outlineColor={`${picture === selectedPicture ? 'color-9' : 'transparent'} hover:color-8`}
                           overflow="hidden"
-                          height="173px @sm/window:160px @xs/window:140px @xxs/window:100px"
+                          height="173px @max-md/window:160px @max-sm/window:140px @max-xs/window:100px"
                           onFocus={() => setDebounceTempPicture(picture)}
                           onMouseEnter={() => setDebounceTempPicture(picture)}
                           onMouseLeave={() => setDebounceTempPicture(null)}
@@ -183,7 +172,7 @@ export function ProductWithReview() {
                               rounded="2"
                             />
                           </View>
-                          {!xs && (
+                          {!narrow && (
                             <View
                               width="100%"
                               position="absolute"
@@ -224,7 +213,7 @@ export function ProductWithReview() {
             maxW="100%"
             gap="5"
             items="flex-start"
-            px="@xs/window:3"
+            px="@max-sm/window:3"
           >
             <View flexDirection="column" width="100%" items="flex-start">
               <View
@@ -233,10 +222,10 @@ export function ProductWithReview() {
                 items="center"
                 width="100%"
                 justify="space-between"
-                gap="@xs/window:3"
+                gap="@max-sm/window:3"
               >
                 <View gap="3" items="flex-start" flexDirection="column">
-                  <H1 size={media.xs ? '8' : '9'}>{product.title}</H1>
+                  <H1 size={media['max-sm'] ? '8' : '9'}>{product.title}</H1>
                   <XStack flexDirection="row" gap="2" justify="center" items="center">
                     <View flexDirection="row" gap="1">
                       {Array.from({ length: 5 })
@@ -245,7 +234,7 @@ export function ProductWithReview() {
                           <Star
                             key={index}
                             size={16}
-                            color={`${index < Math.floor(product.stars.rate) ? 'orange-500' : 'color-8'}`}
+                            color={`${index < Math.floor(product.stars.rate) ? 'orange-9' : 'color-8'}`}
                           />
                         ))}
                     </View>
@@ -256,11 +245,11 @@ export function ProductWithReview() {
                 </View>
 
                 <View gap="1" items="flex-end">
-                  <Text fontSize="9 xs:6" fontWeight="600" x={2}>
+                  <Text fontSize="9 max-sm:6" fontWeight="600" x={2}>
                     ${599}
                   </Text>
                   <Text
-                    fontSize="6 xs:4"
+                    fontSize="6 max-sm:4"
                     textDecorationLine="line-through"
                     color="color-9"
                   >
@@ -289,7 +278,7 @@ export function ProductWithReview() {
                 <ItemCounter />
                 <Spacer />
 
-                <Button theme="accent" flex="xs:1">
+                <Button theme="accent" flex="max-sm:1">
                   <Button.Text>Add to Cart</Button.Text>
                 </Button>
               </XStack>
@@ -325,7 +314,7 @@ export function ProductWithReview() {
         </View>
         <Separator />
         <View flexDirection="column" gap="3">
-          <H2 ml="-1" mx="@sm/window:px" px="@xs/window:4">
+          <H2 ml="-1" mx="@max-md/window:px" px="@max-sm/window:4">
             Reviews
           </H2>
           <Reviews />
@@ -340,10 +329,10 @@ ProductWithReview.fileName = 'ProductWithReview'
 const colors = [
   {
     name: 'red',
-    code: 'red-500',
+    code: 'red-9',
   },
-  { name: 'blue', code: 'blue-500' },
-  { name: 'green', code: 'green-500' },
+  { name: 'blue', code: 'blue-9' },
+  { name: 'green', code: 'green-9' },
 ]
 function ColorSelector() {
   const [selectedColor, setSelectedColor] = useState(colors[0])
@@ -457,7 +446,7 @@ type ReviewsArray = ReturnType<typeof getReview>
 
 function Reviews() {
   const [reviews, setReviews] = useState<ReviewsArray>([])
-  const { sm } = useGroupMedia('window')
+  const { 'max-md': compact } = useGroupMedia('window')
 
   useEffect(() => {
     setReviews(getReview())
@@ -467,7 +456,7 @@ function Reviews() {
     <View flexDirection="row">
       <ScrollView
         width="100%"
-        horizontal={!sm}
+        horizontal={!compact}
         contentContainerStyle={{
           gap: 8,
         }}
@@ -476,8 +465,8 @@ function Reviews() {
         {reviews.map((review, index) => (
           <Fragment key={index}>
             <Review
-              width={sm ? '100%' : undefined}
-              maxW={sm ? '100%' : 400}
+              width={compact ? '100%' : undefined}
+              maxW={compact ? '100%' : 400}
               bg="background-focus"
               key={review.id}
               review={review}
@@ -485,7 +474,7 @@ function Reviews() {
           </Fragment>
         ))}
       </ScrollView>
-      {!sm && (
+      {!compact && (
         <LinearGradient
           start={[1, 0]}
           end={[1, 0]}
@@ -531,7 +520,7 @@ const Review = createStyledHOC(View, ({ review, ...rest }: ReviewProps, forwardR
                 <Star
                   key={index}
                   size={12}
-                  color={`${index < Math.floor(review.rate) ? 'orange-500' : 'color-8'}`}
+                  color={`${index < Math.floor(review.rate) ? 'orange-9' : 'color-8'}`}
                 />
               ))}
           </View>

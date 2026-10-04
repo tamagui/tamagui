@@ -1,3 +1,4 @@
+import type { ComponentSize } from '@tamagui/core'
 import { Check, X } from '../../icons'
 import { useState } from 'react'
 import { View, type SizeTokens } from 'tamagui'
@@ -5,7 +6,7 @@ import { Switch } from './common/switchParts'
 
 /** ------ EXAMPLE ------ */
 
-export function SwitchCustomIcons({ size }: { size?: SizeTokens }) {
+export function SwitchCustomIcons({ size }: { size?: ComponentSize }) {
   const [checked, setChecked] = useState(true)
 
   return (
@@ -14,8 +15,8 @@ export function SwitchCustomIcons({ size }: { size?: SizeTokens }) {
         size={size}
         checked={checked}
         onCheckedChange={setChecked}
-        backgroundColor="red-600"
-        activeStyle={{ backgroundColor: 'green-600' }}
+        backgroundColor="red-10"
+        activeStyle={{ backgroundColor: 'green-10' }}
       >
         <Switch.Icon placement="left">
           <Check color="#fff" />

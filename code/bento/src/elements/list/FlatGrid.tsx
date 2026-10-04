@@ -1,6 +1,14 @@
-import { Avatar } from '../../BentoSkins'
 import { FlatList } from 'react-native'
-import { Button, Image, Paragraph, Separator, Text, View, styled } from 'tamagui'
+import {
+  Button,
+  Image,
+  Paragraph,
+  Separator,
+  Text,
+  View,
+  styled,
+  Avatar,
+} from 'tamagui'
 import { useContainerDim } from '../../hooks/useContainerDim'
 
 const items = Array.from({ length: 100 }).map((_, index) => index)
@@ -25,8 +33,8 @@ export function FlatGrid() {
           gap: 22,
         },
       })}
-      p={`@gtXs/window:${padding}px`}
-      height="@gtXs/window:500px"
+      p={`@sm/window:${padding}px`}
+      height="@sm/window:500px"
       contentContainerStyle={{
         gap: 16,
       }}
@@ -81,11 +89,11 @@ function Item({ data }: { data: { index: number } }) {
               src="https://images.unsplash.com/photo-1588798204072-e5f8e649d269?&w=100"
               objectFit="cover"
             />
-            <Avatar.Fallback bg="blue-600" />
+            <Avatar.Fallback bg="blue-10" />
           </Avatar>
         </Button>
         <View gap="1" flexDirection="column">
-          <Text fontSize="3" fontWeight="8">
+          <Text fontSize="3" fontWeight="800">
             Photo posted by
           </Text>
           <Text color="color-8" fontSize="3">

@@ -1,52 +1,59 @@
-import { Avatar } from '../../BentoSkins'
 import { randAvatar, randFullName, randUuid } from '@ngneat/falso'
 import { Phone } from '../../icons'
 import { useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
 import type { ColorTokens } from 'tamagui'
-import { Button, Circle, H5, Separator, Text, View } from 'tamagui'
+import {
+  Button,
+  Circle,
+  H5,
+  Separator,
+  Text,
+  View,
+  Avatar,
+} from 'tamagui'
 
 // Define more descriptive status options
 const statusOptions = [
   {
     status: 'Available',
-    color: 'green-600',
+    color: 'green-10',
   },
   {
     status: 'Offline',
-    color: 'gray-600',
+    color: 'gray-10',
   },
   {
     status: 'In a Meeting',
-    color: 'orange-600',
+    color: 'orange-10',
   },
   {
     status: 'On Vacation',
-    color: 'pink-600',
+    color: 'pink-10',
   },
   {
     status: 'Do Not Disturb',
-    color: 'red-600',
+    color: 'red-10',
   },
   {
     status: 'Working Remotely',
-    color: 'purple-600',
+    color: 'purple-10',
   },
   {
     status: 'Out for Lunch',
-    color: 'blue-600',
+    color: 'blue-10',
   },
   {
     status: 'Away from Desk',
-    color: 'gray-600',
+    color: 'gray-10',
   },
   {
     status: 'On a Call',
-    color: 'blue-600',
+    color: 'blue-10',
   },
   {
     status: 'Taking a Break',
-    color: 'yellow-600',
+    color: 'yellow-10',
   },
 ] satisfies { status: string; color: ColorTokens }[]
 
@@ -75,7 +82,7 @@ export function List() {
   )
 
   return (
-    <View width="100%" flex={1} maxH="gtMd:800px" px="gtMd:4">
+    <View width="100%" flex={1} maxH="lg:800px" px="lg:4">
       <FlatList
         data={personsList}
         renderItem={renderItem}
@@ -96,8 +103,8 @@ function Item({ person }: { person: PersonList[number] }) {
     <View
       flexDirection="row"
       py="2"
-      gap="4 @gtXs/window:4"
-      p="@gtXs/window:4"
+      gap="4 @sm/window:4"
+      p="@sm/window:4"
       bg="color-1"
       items="center"
     >
@@ -119,13 +126,13 @@ function Item({ person }: { person: PersonList[number] }) {
       </View>
       <View flex={1} flexDirection="column" shrink={1} justify="center">
         <H5>{person.name}</H5>
-        <Text fontWeight="2" theme="level2">
+        <Text fontWeight="400" theme="level2">
           {person.status.status}
         </Text>
       </View>
       <Button circular size="md" scaleIcon={1.5}>
         <Button.Icon>
-          <Phone color="green-600" />
+          <Phone color="green-10" />
         </Button.Icon>
       </Button>
     </View>

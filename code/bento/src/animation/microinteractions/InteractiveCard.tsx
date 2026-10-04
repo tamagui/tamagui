@@ -214,7 +214,7 @@ export function InteractiveCard() {
           </View>
         </Card.Item>
         <Card.Item translateZ={25}>
-          <View px="3" py="2" rounded="5" bg="green-300" self="flex-start">
+          <View px="3" py="2" rounded="5" bg="green-6" self="flex-start">
             <Text fontSize="3">Label</Text>
           </View>
         </Card.Item>

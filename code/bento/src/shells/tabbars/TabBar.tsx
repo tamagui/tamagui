@@ -152,7 +152,7 @@ export function Tabbar() {
   return (
     <View flexDirection="column" width="100%" minH={610} height="100%" maxH="100%">
       <View flexDirection="column" width="100%" flex={9} items="center" justify="center">
-        <Text fontSize="8" fontWeight="8" lineHeight="8">
+        <Text fontSize="8" fontWeight="800" lineHeight="8">
           {state.routes[state.index].key}
         </Text>
       </View>

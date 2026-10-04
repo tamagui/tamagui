@@ -1,8 +1,8 @@
-import { getFontSized } from '@tamagui/get-font-sized'
+import type { ComponentSize } from '@tamagui/core'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { Check, ChevronDown, ChevronUp, Info, Mail } from '../../icons'
 import { useMemo, useState } from 'react'
-import type { FontSizeTokens, SelectProps } from 'tamagui'
+import type { SelectProps } from 'tamagui'
 import {
   Adapt,
   Button,
@@ -16,6 +16,7 @@ import {
   getTokenValue,
   styled,
   Text,
+  SizableText,
 } from 'tamagui'
 import { RadioGroup } from '../../forms/radiogroups/components/radioParts'
 
@@ -114,7 +115,7 @@ function GeneralSelect({ data, ...rest }: SelectProps & { data: DataItem[] }) {
         </Select.Icon>
       </Select.Trigger>
 
-      <Adapt when="maxMd" platform="touch">
+      <Adapt when="max-md" platform="touch">
         <Sheet dismissOnSnapToBottom>
           <Sheet.Container>
             <Sheet.Background />
@@ -194,11 +195,11 @@ export function LocationNotification() {
       bg="background"
       width={520}
       maxW="100%"
-      borderWidth="1.5px @xs/window:0px"
+      borderWidth="1.5px @max-sm/window:0px"
       borderColor="border-color"
-      boxShadow="(0 0 18px shadow-color) @xs/window:none"
+      boxShadow="(0 0 18px shadow-color) @max-sm/window:none"
     >
-      <View flexDirection="row" gap="4 @xs/window:3" width="100%">
+      <View flexDirection="row" gap="4 @max-sm/window:3" width="100%">
         <Button icon={Mail} circular variant="outlined" />
         <View flexDirection="column" shrink={1}>
           <SizableText size="5">Update your Email Preferences</SizableText>
@@ -254,10 +255,10 @@ export function LocationNotification() {
 LocationNotification.fileName = 'LocationNotification'
 
 const Banner = ({
-  size = '3',
+  size = 'sm',
   children,
 }: {
-  size?: FontSizeTokens
+  size?: ComponentSize
   children?: React.ReactNode
 }) => {
   return (
@@ -268,18 +269,6 @@ const Banner = ({
   )
 }
 
-export const SizableText = styled(Text, {
-  name: 'SizableText',
-  fontFamily: 'body',
-  variants: {
-    size: {
-      FontSize: getFontSized as any,
-    },
-  } as const,
-  defaultVariants: {
-    size: '4',
-  },
-})
 const radioData = [
   {
     title: 'Promotions',

@@ -1,9 +1,18 @@
-import { Tabs } from '../../BentoSkins'
 import React, { useEffect, useMemo, useRef } from 'react'
 import type { ViewStyle } from 'react-native'
 import { Animated, PanResponder } from 'react-native'
 import type { TabsContentProps } from 'tamagui'
-import { H5, Separator, Text, View, debounce, isWeb, useEvent, useTheme } from 'tamagui'
+import {
+  H5,
+  Separator,
+  Text,
+  View,
+  debounce,
+  isWeb,
+  useEvent,
+  useTheme,
+  Tabs,
+} from 'tamagui'
 
 const tabs = ['Tab 1', 'Tab 2', 'Tab 3']
 
@@ -80,7 +89,7 @@ export const TabbarSwippable = () => {
         borderRadius: 1000_000,
         transform: [{ translateX: boxHPosition }],
         boxShadow: `0 1px 2.22px ${theme['shadow-color']?.val}`,
-        elevation: 3,
+        boxShadow: '0 1px 9px shadow-color',
       }) as ViewStyle,
     [theme['color-1']?.val, theme['shadow-color']?.val, pointerWidth]
   )
@@ -125,7 +134,7 @@ export const TabbarSwippable = () => {
           <Animated.View style={animatedStyle} {...panResponder.panHandlers} />
           {tabs.map((tab, index) => (
             <Tabs.Tab
-              variant="plain"
+              unstyled
               key={index}
               value={tab}
               alignItems="center"

@@ -297,7 +297,7 @@ const PlanView = ({
   return (
     <AnimatedView
       style={style}
-      width={isWeb ? '100% gtMd:500px' : PLAN_ITEM_WIDTH}
+      width={isWeb ? '100% lg:500px' : PLAN_ITEM_WIDTH}
       layout={CurvedTransition.duration(325).reduceMotion(ReduceMotion.System).build()}
       bg="background"
       borderWidth={1}

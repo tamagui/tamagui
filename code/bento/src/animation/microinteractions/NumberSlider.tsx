@@ -1,6 +1,12 @@
-import { XGroup } from '../../BentoSkins'
 import { useState } from 'react'
-import { AnimatePresence, Button, Text, View, styled } from 'tamagui'
+import {
+  AnimatePresence,
+  Button,
+  Text,
+  View,
+  styled,
+  XGroup,
+} from 'tamagui'
 import { useContainerDim } from '../../hooks/useContainerDim'
 
 /** ------ EXAMPLE ------ */
@@ -84,7 +90,7 @@ AnimatedNumbers.fileName = 'NumberSlider'
 
 const AnimatedNumber = styled(Text, {
   fontFamily: 'silkscreen',
-  fontSize: '12 @xs/window:8',
+  fontSize: '12 @max-sm/window:8',
   lineHeight: '12',
   color: 'color',
   position: 'absolute',

@@ -1,4 +1,3 @@
-import { Avatar } from '../../BentoSkins'
 import {
   createColumnHelper,
   flexRender,
@@ -6,7 +5,14 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import * as React from 'react'
-import { Separator, Text, View, XStack, YStack } from 'tamagui'
+import {
+  Separator,
+  Text,
+  View,
+  XStack,
+  YStack,
+  Avatar,
+} from 'tamagui'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
 import { Table } from './common/tableParts'
 import { ProgressCell, StatusBadge } from './common/cells'
@@ -122,12 +128,12 @@ export function BasicTable() {
     getCoreRowModel: getCoreRowModel(),
   })
 
-  const { sm } = useGroupMedia('window')
+  const { 'max-md': compact } = useGroupMedia('window')
 
   const headerGroups = table.getHeaderGroups()
   const tableRows = table.getRowModel().rows
 
-  if (sm) {
+  if (compact) {
     return (
       <YStack gap="4" width="100%" py="4">
         {defaultData.map((row, i) => {

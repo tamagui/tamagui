@@ -20,8 +20,8 @@ export function Horizontal() {
         width="100%"
         maxW={600}
         gap="4"
-        px="@sm/window:4"
-        py="@sm/window:6"
+        px="@max-md/window:4"
+        py="@max-md/window:6"
       >
         <View flexDirection="column" gap="2">
           <H2>Payment</H2>
@@ -46,7 +46,7 @@ export function Horizontal() {
               items="center"
               gap="3"
               p={0}
-              minW="100% @gtXs/window:auto"
+              minW="100% @sm/window:auto"
               px="2-5"
               cursor="pointer"
               active={value === label}

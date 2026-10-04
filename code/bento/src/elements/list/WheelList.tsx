@@ -47,7 +47,7 @@ export function WheelList({
       flexBasis="auto"
       position="relative"
       height={isWeb ? '80vh' : '100%'}
-      maxH="gtLg:600px"
+      maxH="xl:600px"
       width="100%"
       justify="center"
       theme={data[index]?.theme}
@@ -136,7 +136,7 @@ const CardItem = ({
   return (
     <AnimatedView
       theme={cardItem.theme}
-      width="95% gtSm:300px"
+      width="95% md:300px"
       height={ITEM_SIZE}
       bg={cardItem.backgroundColor as ColorTokens}
       p="2"

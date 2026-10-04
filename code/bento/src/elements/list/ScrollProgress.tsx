@@ -107,7 +107,7 @@ export function ScrollProgress() {
         flexBasis="auto"
         position="relative"
         height={isWeb ? '80vh' : '100%'}
-        maxH="gtLg:600px"
+        maxH="xl:600px"
         maxW={600}
         width="100%"
         justify="flex-end"
@@ -383,7 +383,7 @@ const CircleProgress = ({
         items="center"
         style={nextAnimated}
         rounded="10"
-        bg="green-700"
+        bg="green-11"
         position="absolute"
       >
         <ArrowRight color="background" />
@@ -397,7 +397,7 @@ const CircleProgress = ({
             justify="center"
             items="center"
             rounded="10"
-            bg="green-500"
+            bg="green-9"
             position="absolute"
             style={{ transition: 'transform 100ms ease, opacity 100ms ease' }}
             scale="1 enter:0 exit:0"
@@ -409,7 +409,7 @@ const CircleProgress = ({
               rounded="10"
               position="absolute"
               color="color"
-              fill={color?.val}
+              fill={theme.color?.val}
             />
           </AnimatedView>
         )}

@@ -1,6 +1,12 @@
-import { Avatar } from '../../BentoSkins'
 import { File, Share } from '../../icons'
-import { Button, Separator, Text, TextArea, View } from 'tamagui'
+import {
+  Button,
+  Separator,
+  Text,
+  TextArea,
+  View,
+  Avatar,
+} from 'tamagui'
 
 /** ------ EXAMPLE ------ */
 export function AvatarNameContentAction() {
@@ -14,7 +20,7 @@ export function AvatarNameContentAction() {
       width={500}
       maxW="100%"
       gap="4"
-      my="@sm/window:6"
+      my="@max-md/window:6"
     >
       <View flexDirection="row" items="center" justify="flex-start" gap="2">
         <Button variant="quiet" circular>
@@ -24,7 +30,7 @@ export function AvatarNameContentAction() {
           </Avatar>
         </Button>
         <View flexDirection="column">
-          <Text fontSize="4" fontWeight="2">
+          <Text fontSize="4" fontWeight="400">
             Kimberly Doe
           </Text>
           <Text fontSize="3" fontWeight="1" theme="level2">
@@ -36,7 +42,7 @@ export function AvatarNameContentAction() {
         placeholderTextColor="color-8"
         bg="transparent"
         borderWidth={0}
-        size="4"
+        size="md"
         fontWeight="300"
         px={0}
         height={100}

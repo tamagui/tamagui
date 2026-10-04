@@ -1,4 +1,3 @@
-import { Avatar, XGroup } from '../../BentoSkins'
 import {
   ChevronDown,
   ChevronFirst,
@@ -27,6 +26,8 @@ import {
   View,
   isWeb,
   useWindowDimensions,
+  Avatar,
+  XGroup,
 } from 'tamagui'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
 
@@ -112,10 +113,10 @@ const Footer = ({
   return (
     <View
       b="3"
-      flexDirection="column-reverse @gtXs/window:row"
+      flexDirection="column-reverse @sm/window:row"
       items="center"
-      position="@gtXs/window:relative"
-      maxW={`@gtXs/window:${TABLE_WIDTH}px`}
+      position="@sm/window:relative"
+      maxW={`@sm/window:${TABLE_WIDTH}px`}
       px="4"
       justify="space-between"
     >
@@ -177,10 +178,10 @@ const Footer = ({
         display="native:none"
         theme="accent"
       >
-        <Text fontWeight="5" lineHeight="5" fontSize="5">
+        <Text fontWeight="500" lineHeight="5" fontSize="5">
           Page
         </Text>
-        <Text fontWeight="5" lineHeight="5" fontSize="5">
+        <Text fontWeight="500" lineHeight="5" fontSize="5">
           {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
         </Text>
       </View>
@@ -192,7 +193,7 @@ const Footer = ({
         items="center"
         className="flex items-center gap-1"
       >
-        <Text fontSize="5" fontWeight="5" lineHeight="5">
+        <Text fontSize="5" fontWeight="500" lineHeight="5">
           Go to page
         </Text>
         <Input
@@ -255,7 +256,7 @@ export function SortableTable() {
   const CELL_WIDTH = 204
   const TABLE_WIDTH = CELL_WIDTH * columns.length
 
-  const { sm } = isWeb ? useGroupMedia('window') : { sm: true }
+  const { 'max-md': compact } = isWeb ? useGroupMedia('window') : { 'max-md': true }
 
   const screenWidth = windowWidth - 15
 
@@ -286,7 +287,7 @@ export function SortableTable() {
             borderTopLeftRadius="4"
             borderBottomLeftRadius="2"
             borderBottomRightRadius="2"
-            mb="10 @gtXs/window:inherit"
+            mb="10 @sm/window:inherit"
           >
             <Table.Head position="absolute" z="1" maxW={TABLE_WIDTH}>
               {headerGroups.map((headerGroup) => {
@@ -403,7 +404,7 @@ export function SortableTable() {
               })}
             </Table.Body>
           </Table>
-          {!sm && (
+          {!compact && (
             <Footer screenWidth={screenWidth} tableWidth={TABLE_WIDTH} table={table} />
           )}
         </View>

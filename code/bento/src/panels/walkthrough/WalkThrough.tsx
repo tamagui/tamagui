@@ -88,7 +88,7 @@ function Tour({
               opacity="1 enter:0 exit:0"
               x={0}
               y={0}
-              transition={['quick', { opacity: { overshootClamping: true } }]}
+              transition="quick"
               position="absolute"
               inset={0}
             >
@@ -176,7 +176,7 @@ function Dialog({
       gap="4"
       flexDirection="column"
       borderColor="black"
-      elevation="4"
+      boxShadow="0 2px 12px shadow-color"
     >
       <Paragraph>{title}</Paragraph>
       <XStack gap="2">

@@ -1,6 +1,6 @@
+import type { ComponentSize } from '@tamagui/core'
 import { Ban, Moon } from '../../icons'
 import type { ReactElement } from 'react'
-import type { SizeTokens } from 'tamagui'
 import { Circle, View } from 'tamagui'
 import { Avatar } from './components/Avatar'
 
@@ -13,7 +13,7 @@ export function RoundedAvatarsWithCustomIcons() {
       items="center"
       flexDirection="row"
       width="100%"
-      maxW="@gtXs/window:400px"
+      maxW="@sm/window:400px"
       justify="center"
       gap="4"
     >
@@ -23,7 +23,7 @@ export function RoundedAvatarsWithCustomIcons() {
             <Ban color="color-10" />
           </Avatar.Icon>
         }
-        size="4"
+        size="sm"
       />
       <Item
         Icon={
@@ -31,27 +31,27 @@ export function RoundedAvatarsWithCustomIcons() {
             <Moon color="color-10" />
           </Avatar.Icon>
         }
-        size="5"
+        size="md"
       />
       <Item
         Icon={
-          <Avatar.Icon bg="yellow-500" placement="bottom-right" offset={5}>
+          <Avatar.Icon bg="yellow-9" placement="bottom-right" offset={5}>
             <Circle />
           </Avatar.Icon>
         }
-        size="6"
+        size="lg"
       />
       <Item
         Icon={
-          <Avatar.Icon bg="green-500" placement="bottom-right" offset={5}>
+          <Avatar.Icon bg="green-9" placement="bottom-right" offset={5}>
             <Circle>
-              <Avatar.Text color="#fff" size="2">
+              <Avatar.Text color="#fff" size="xs">
                 7
               </Avatar.Text>
             </Circle>
           </Avatar.Icon>
         }
-        size="7"
+        size="xl"
       />
     </View>
   )
@@ -59,7 +59,7 @@ export function RoundedAvatarsWithCustomIcons() {
 
 RoundedAvatarsWithCustomIcons.fileName = 'RoundedAvatarsWithCustomIcons'
 
-function Item({ size, Icon }: { size: SizeTokens; Icon: ReactElement }) {
+function Item({ size, Icon }: { size: ComponentSize; Icon: ReactElement }) {
   return (
     <Avatar size={size} position="relative">
       {Icon}

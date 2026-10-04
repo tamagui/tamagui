@@ -48,7 +48,7 @@ export function ButtonPulse() {
       items="center"
       justify="center"
       maxW={850}
-      p="@sm/window:6"
+      p="@max-md/window:6"
     >
       {variants.map((v) => (
         <React.Fragment key={v.variant}>

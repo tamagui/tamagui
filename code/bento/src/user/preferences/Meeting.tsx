@@ -1,22 +1,17 @@
-import { Avatar } from '../../BentoSkins'
+import type { ComponentSize } from '@tamagui/core'
 import { LinearGradient } from '@tamagui/linear-gradient'
-import type { SizeTokens, ThemeName } from 'tamagui'
-import { Button, View, styled, Text, Circle } from 'tamagui'
+import type { ThemeName } from 'tamagui'
+import {
+  Button,
+  View,
+  styled,
+  Text,
+  Circle,
+  Avatar,
+  SizableText,
+} from 'tamagui'
 import { ChevronDown, MapPin, User2 } from '../../icons'
-import { getFontSized } from '@tamagui/get-font-sized'
 
-const SizableText = styled(Text, {
-  name: 'SizableText',
-  fontFamily: 'body',
-  variants: {
-    size: {
-      FontSize: getFontSized as any,
-    },
-  } as const,
-  defaultVariants: {
-    size: '4',
-  },
-})
 
 const data = [
   {
@@ -147,7 +142,7 @@ export function Users() {
     >
       {users.map((item, index) => (
         <View z={index} ml={index !== 0 ? '-2' : undefined} key={item}>
-          <User size="2" imageUrl="https://i.pravatar.cc/150?img=1" />
+          <User size="xs" imageUrl="https://i.pravatar.cc/150?img=1" />
         </View>
       ))}
       <SizableText size="2" fontWeight="200" mx="1" mr="2-5">
@@ -157,7 +152,7 @@ export function Users() {
   )
 }
 
-function User({ size, imageUrl }: { size: SizeTokens; imageUrl?: string }) {
+function User({ size, imageUrl }: { size: ComponentSize; imageUrl?: string }) {
   return (
     <Avatar borderWidth="1" borderColor="color-1" circular size={size}>
       <Avatar.Image aria-label="Attendee avatar" src={imageUrl} />

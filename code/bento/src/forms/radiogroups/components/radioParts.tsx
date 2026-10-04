@@ -1,3 +1,4 @@
+import type { ComponentSize } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
 import {
   getVariableValue,
@@ -21,7 +22,7 @@ const BaseRadioGroupIndicator = TRadioGroup.Indicator
 
 type RadioItemProps = React.ComponentProps<typeof BaseRadioGroupItem> & {
   scaleSize?: number
-  size?: SizeTokens
+  size?: ComponentSize
 }
 
 function RadioGroupItem({ scaleSize = 0.5, ...props }: RadioItemProps) {

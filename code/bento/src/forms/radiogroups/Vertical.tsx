@@ -1,6 +1,11 @@
-import { Avatar } from '../../BentoSkins'
 import { useId, useState } from 'react'
-import { H2, Label, Text, View } from 'tamagui'
+import {
+  H2,
+  Label,
+  Text,
+  View,
+  Avatar,
+} from 'tamagui'
 import { Card, RadioGroup } from './components/radioParts'
 
 const data = [
@@ -28,8 +33,8 @@ export function Vertical() {
     <View width="100%" items="center">
       <View
         flexDirection="column"
-        minW="100% @gtSm/window:400px"
-        maxW="@gtSm/window:400px"
+        minW="100% @md/window:400px"
+        maxW="@md/window:400px"
         gap="4"
       >
         <View flexDirection="column" gap="2">
@@ -39,7 +44,7 @@ export function Vertical() {
           </Text>
         </View>
         <RadioGroup
-          maxW="@gtSm/window:400px"
+          maxW="@md/window:400px"
           flexWrap="wrap"
           gap="2"
           flexDirection="column"

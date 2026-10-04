@@ -1,5 +1,5 @@
+import type { ComponentSize } from '@tamagui/core'
 import { Globe2, Search, X } from '../../icons'
-import type { FontSizeTokens } from 'tamagui'
 import { Adapt, Popover, ScrollView, Sheet, Spinner, Text, View, isWeb } from 'tamagui'
 import { Input } from './components/inputsParts'
 import type React from 'react'
@@ -77,7 +77,7 @@ function RegionFilterInput(props: RegionFilterInputProps) {
       width="100%"
       bg="color-1"
     >
-      <Input mx="3" size="2">
+      <Input mx="3" size="xs">
         <Input.Box>
           <Input.Area
             // Note: when key changes, the input remounts and the value will be reset
@@ -199,7 +199,7 @@ function RegionSelectBox(props: RegionSelectBoxProps) {
         </Input.XGroup.Item>
       </Popover.Trigger>
 
-      <Adapt when="maxMd" platform="touch">
+      <Adapt when="max-md" platform="touch">
         <Sheet modal dismissOnSnapToBottom>
           <Sheet.Container p="4">
             <Sheet.Background />
@@ -229,7 +229,7 @@ function RegionSelectBox(props: RegionSelectBoxProps) {
 }
 
 /** ------ EXAMPLE ------ **/
-export function PhoneInputExample({ size = '4' }: { size?: FontSizeTokens }) {
+export function PhoneInputExample({ size = 'md' }: { size?: ComponentSize }) {
   const [regionCode, setRegionCode] = useState('US')
   const [phoneNumber, setPhoneNumber] = useState('+1 ')
   const [containerWidth, setContainerWidth] = useState<number>()

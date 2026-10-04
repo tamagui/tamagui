@@ -33,7 +33,7 @@ export function SignupValidatedHookForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const { xs } = useGroupMedia('window')
+  const { 'max-sm': narrow } = useGroupMedia('window')
 
   const {
     control,
@@ -62,11 +62,11 @@ export function SignupValidatedHookForm() {
     <FormCard
       flexDirection="column"
       gap="5"
-      px="@sm/window:4"
-      py="@sm/window:6"
+      px="@max-md/window:4"
+      py="@max-md/window:6"
       render="form"
     >
-      <H1 self="center" size={xs ? '7' : '8'}>
+      <H1 self="center" size={narrow ? '7' : '8'}>
         Create an account
       </H1>
 
@@ -87,11 +87,11 @@ export function SignupValidatedHookForm() {
                   theme: 'red',
                 })}
                 flex={1}
-                minW="100% @gtSm/window:inherit"
-                flexBasis="@gtSm/window:150px"
+                minW="100% @md/window:inherit"
+                flexBasis="@md/window:150px"
                 onBlur={onBlur}
                 style={{ transition: 'border-color 100ms ease' }}
-                size="4"
+               
               >
                 <Input.Label>First Name</Input.Label>
                 <Input.Box>
@@ -133,11 +133,11 @@ export function SignupValidatedHookForm() {
                   theme: 'red',
                 })}
                 flex={1}
-                minW="100% @gtSm/window:inherit"
-                flexBasis="@gtSm/window:150px"
+                minW="100% @md/window:inherit"
+                flexBasis="@md/window:150px"
                 onBlur={onBlur}
                 style={{ transition: 'border-color 100ms ease' }}
-                size="4"
+               
               >
                 <Input.Label>Last Name</Input.Label>
                 <Input.Box>
@@ -180,7 +180,7 @@ export function SignupValidatedHookForm() {
                 theme: 'red',
               })}
               onBlur={onBlur}
-              size="4"
+             
             >
               <Input.Label>Email</Input.Label>
               <Input.Box>
@@ -223,7 +223,7 @@ export function SignupValidatedHookForm() {
                 theme: 'red',
               })}
               onBlur={onBlur}
-              size="4"
+             
             >
               <Input.Label htmlFor={'password-t1'}>Password</Input.Label>
               <Input.Box>
@@ -274,7 +274,7 @@ export function SignupValidatedHookForm() {
                 theme: 'red',
               })}
               onBlur={onBlur}
-              size="4"
+             
             >
               <Input.Label htmlFor={'confirmed password'}>Confirm Password</Input.Label>
               <Input.Box>
@@ -369,7 +369,7 @@ export function SignupValidatedHookForm() {
                 theme: 'red',
               })}
               onBlur={onBlur}
-              size="4"
+             
             >
               <Input.Label>Postal code</Input.Label>
               <Input.Box>

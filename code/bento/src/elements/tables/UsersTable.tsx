@@ -1,4 +1,3 @@
-import { Avatar } from '../../BentoSkins'
 import {
   createColumnHelper,
   flexRender,
@@ -7,7 +6,13 @@ import {
 } from '@tanstack/react-table'
 import * as React from 'react'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
-import { Separator, Text, View, XStack } from 'tamagui'
+import {
+  Separator,
+  Text,
+  View,
+  XStack,
+  Avatar,
+} from 'tamagui'
 import { Table } from './common/tableParts'
 import { Circle } from 'tamagui'
 
@@ -154,7 +159,7 @@ const columns = [
             </Avatar>
             <View flexDirection="column">
               <Text>{fullName}</Text>
-              <Text fontSize="2" lineHeight="2" fontWeight="2" theme="level3">
+              <Text fontSize="2" lineHeight="2" fontWeight="400" theme="level3">
                 {userName}
               </Text>
             </View>
@@ -194,7 +199,7 @@ const StatusButton = ({ status }: { status: string }) => {
       theme={status?.toLocaleLowerCase() === 'active' ? 'green' : 'orange'}
     >
       <Circle size={10} bg="color-9" />
-      <Text color="color-9" fontWeight="2">
+      <Text color="color-9" fontWeight="400">
         {status}
       </Text>
     </View>
@@ -218,9 +223,9 @@ export function UsersTable() {
   const allRowsLenght = tableRows.length + headerGroups.length + footerGroups.length
   const rowCounter = React.useRef(-1)
   rowCounter.current = -1
-  const { sm, xs } = useGroupMedia('window')
+  const { 'max-md': compact, 'max-sm': narrow } = useGroupMedia('window')
 
-  if (sm) {
+  if (compact) {
     return (
       <View width="100%" flexDirection="column" justify="center" gap="5" py="6">
         {defaultData.map((row, i) => {

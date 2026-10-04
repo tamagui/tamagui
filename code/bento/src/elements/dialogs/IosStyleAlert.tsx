@@ -80,7 +80,7 @@ const Alert = ({ children, ...rest }: AlertProps) => {
             bg="color-1"
             overflow="hidden"
             gap="3"
-            transition={['quick', { opacity: { overshootClamping: true } }]}
+            transition="quick"
             x="enter:0 exit:0"
             y="enter:-10px exit:10px"
             opacity="enter:0 exit:0"
@@ -114,7 +114,7 @@ const Alert = ({ children, ...rest }: AlertProps) => {
                 const makeItVertical = buttons.length > 2
                 const Base =
                   button.style === 'cancel' ? AlertDialog.Cancel : AlertDialog.Action
-                const color = button.style === 'destructive' ? 'red-600' : 'green-600'
+                const color = button.style === 'destructive' ? 'red-10' : 'green-10'
                 return (
                   <View
                     flex={1}

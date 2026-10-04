@@ -1,7 +1,12 @@
-import { Avatar, YGroup } from '../../BentoSkins'
 import { Check } from '../../icons'
 import { useState } from 'react'
-import { Text, View, debounce } from 'tamagui'
+import {
+  Text,
+  View,
+  debounce,
+  Avatar,
+  YGroup,
+} from 'tamagui'
 import { Checkboxes } from './common/checkboxParts'
 
 /** ------ EXAMPLE ------ */
@@ -49,9 +54,9 @@ export function GroupedCheckbox() {
     <View width="100%" items="center">
       <Checkboxes values={values} onValuesChange={onValuesChange}>
         <Checkboxes.FocusGroup
-          minW="100% @gtXs/window:unset"
-          self="@gtXs/window:center"
-          maxW="@gtXs/window:400px"
+          minW="100% @sm/window:unset"
+          self="@sm/window:center"
+          maxW="@sm/window:400px"
           loop
         >
           <Checkboxes.Group orientation="vertical" shrink={1} minW="100%">
@@ -80,7 +85,7 @@ function Item({ item, checked }: { item: Item; checked: boolean }) {
         borderColor={`${checked ? 'border-color-press' : 'border-color'}`}
         borderWidth={1}
         items="center"
-        gap="3 @sm/window:2"
+        gap="3 @max-md/window:2"
         width="100%"
         p="4"
         minH={90}

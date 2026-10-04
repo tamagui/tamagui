@@ -72,7 +72,7 @@ const Alert = ({ children, ...rest }: AlertProps) => {
             bg="color-2"
             rounded="6"
             gap="4"
-            transition={['quick', { opacity: { overshootClamping: true } }]}
+            transition="quick"
             x="enter:0 exit:0"
             y="enter:-10px exit:10px"
             opacity="enter:0 exit:0"
@@ -95,7 +95,7 @@ const Alert = ({ children, ...rest }: AlertProps) => {
               {buttons.map((button, index) => {
                 const Base =
                   button.style === 'cancel' ? AlertDialog.Cancel : AlertDialog.Action
-                const color = button.style === 'destructive' ? 'red-600' : 'color-11'
+                const color = button.style === 'destructive' ? 'red-10' : 'color-11'
                 return (
                   <Base key={index} asChild>
                     <Button

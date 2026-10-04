@@ -1,6 +1,6 @@
+import type { ComponentSize } from '@tamagui/core'
 import { Ban, SunDim } from '../../icons'
 import type { ReactElement } from 'react'
-import type { SizeTokens } from 'tamagui'
 import { View } from 'tamagui'
 import { Avatar } from './components/Avatar'
 
@@ -13,7 +13,7 @@ export function CircularAvatarsWithCustomIcons() {
       justify="center"
       flexDirection="row"
       width="100%"
-      maxW="@gtXs/window:400px"
+      maxW="@sm/window:400px"
       gap="4"
     >
       <Item
@@ -22,7 +22,7 @@ export function CircularAvatarsWithCustomIcons() {
             <Ban color="color-10" size="1" />
           </Avatar.Icon>
         }
-        size="4"
+        size="sm"
       />
       <Item
         Icon={
@@ -30,27 +30,27 @@ export function CircularAvatarsWithCustomIcons() {
             <SunDim color="color-10" />
           </Avatar.Icon>
         }
-        size="5"
+        size="md"
       />
       <Item
         Icon={
-          <Avatar.Icon bg="red-500">
-            <Avatar.Text color="#fff" size="2">
+          <Avatar.Icon bg="red-9">
+            <Avatar.Text color="#fff" size="xs">
               9
             </Avatar.Text>
           </Avatar.Icon>
         }
-        size="7"
+        size="xl"
       />
       <Item
         Icon={
-          <Avatar.Icon bg="green-500">
-            <Avatar.Text color="#fff" size="3">
+          <Avatar.Icon bg="green-9">
+            <Avatar.Text color="#fff" size="xs">
               3
             </Avatar.Text>
           </Avatar.Icon>
         }
-        size="8"
+        size="xl"
       />
     </View>
   )
@@ -58,7 +58,7 @@ export function CircularAvatarsWithCustomIcons() {
 
 CircularAvatarsWithCustomIcons.fileName = 'CircularAvatarsWithCustomIcons'
 
-function Item({ size, Icon }: { size: SizeTokens; Icon: ReactElement }) {
+function Item({ size, Icon }: { size: ComponentSize; Icon: ReactElement }) {
   return (
     <Avatar size={size} position="relative">
       {Icon}

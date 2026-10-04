@@ -1,13 +1,13 @@
+import type { ComponentSize } from '@tamagui/core'
 import { MoonStar, Sun } from '../../icons'
 import { useEffect, useId, useState } from 'react'
-import type { SizeTokens } from 'tamagui'
 import { AnimatePresence, getVariableValue, View, YStack } from 'tamagui'
 import { Switch } from './common/switchParts'
 
 import { getSize } from '@tamagui/get-token'
 import { useUserScheme } from '@vxrn/color-scheme'
 
-export function ThemeSwitch({ size = '8' }: { size?: SizeTokens }) {
+export function ThemeSwitch({ size = 'md' }: { size?: ComponentSize }) {
   const uniqueId = useId()
   const [checked, setChecked] = useState(false)
 

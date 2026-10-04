@@ -1,4 +1,3 @@
-import { XGroup } from '../../BentoSkins'
 import { randFloat, randNumber, randProduct, randProductMaterial } from '@ngneat/falso'
 import {
   Coins,
@@ -26,6 +25,7 @@ import {
   Unspaced,
   View,
   styled,
+  XGroup,
 } from 'tamagui'
 import { IconCenterButton } from '../../animation/buttons/IconCenterButton'
 import { Input } from '../../forms/inputs/components/inputsParts'
@@ -84,9 +84,9 @@ const tax = 0.15
 const getStockStateColor = (stockState: string) => {
   switch (stockState) {
     case 'In stock':
-      return 'green-600'
+      return 'green-10'
     case 'Out of stock':
-      return 'red-600'
+      return 'red-10'
     default:
       return 'color-9'
   }
@@ -142,15 +142,15 @@ const CartTotal = ({ items }: { items: Items }) => {
       rounded={5}
       width="100%"
       bg="color-1"
-      px="gtSm:7"
-      pb="gtSm:7"
+      px="md:7"
+      pb="md:7"
       gap="4"
     >
       <Separator borderStyle="dashed" />
 
       <View flexDirection="column" gap="4">
         <View flexDirection="column" gap="4">
-          <Input size="4" minW="100%">
+          <Input size="md" minW="100%">
             <Input.Box>
               <Input.Section>
                 <Input.Icon>
@@ -248,14 +248,14 @@ const CartTotal = ({ items }: { items: Items }) => {
 export function Fullpage() {
   const [items, setItems] = useState<Items>([])
 
-  const { sm } = useGroupMedia('window')
+  const { 'max-md': compact } = useGroupMedia('window')
 
   useEffect(() => {
     setItems(getItems())
   }, [])
 
   return (
-    <View p="gtMd:6" flexDirection="column" maxH={910} height="100%" width="100%">
+    <View p="lg:6" flexDirection="column" maxH={910} height="100%" width="100%">
       <View flexDirection="column" gap="3">
         <View flexDirection="row" justify="space-between">
           <H3>Cart</H3>
@@ -267,7 +267,7 @@ export function Fullpage() {
               </Button>
             </Dialog.Trigger>
 
-            <Dialog.Adapt when="maxMd">
+            <Dialog.Adapt when="max-md">
               <Sheet transition="medium" zIndex={200000} modal dismissOnSnapToBottom>
                 <Sheet.Overlay transition="quick" opacity="enter:0 exit:0" />
                 <Sheet.Handle />
@@ -297,7 +297,7 @@ export function Fullpage() {
               >
                 <Dialog.Title>
                   <View
-                    px="gtMd:7"
+                    px="lg:7"
                     pt="7"
                     gap="4"
                     flexDirection="row"
@@ -331,18 +331,18 @@ export function Fullpage() {
         contentContainerStyle={{
           minW: '100%',
           flexDirection: 'column',
-          gap: sm ? '4' : '0',
-          pb: sm ? 300 : 48,
+          gap: compact ? '4' : '0',
+          pb: compact ? 300 : 48,
           pt: '4',
           flexBasis: 'auto',
         }}
-        flex="@gtSm/window:3"
-        flexBasis="@gtSm/window:auto"
+        flex="@md/window:3"
+        flexBasis="@md/window:auto"
       >
         {items.map((item, index) => (
           <View key={item.id} mb="2">
             <Item item={item} />
-            {!sm && index !== items.length - 1 && <Separator my="4" />}
+            {!compact && index !== items.length - 1 && <Separator my="4" />}
           </View>
         ))}
       </ScrollView>
@@ -353,7 +353,7 @@ export function Fullpage() {
 Fullpage.fileName = 'Fullpage'
 
 const Item = ({ item }: { item: Items[number] }) => {
-  const { sm, xs, gtSm, gtXs } = useGroupMedia('window')
+  const { 'max-md': compact, 'max-sm': narrow } = useGroupMedia('window')
   const [layoutWidth, setLayoutWidth] = useState(0)
 
   const [count, setCount] = useState(item.count)
@@ -368,15 +368,15 @@ const Item = ({ item }: { item: Items[number] }) => {
     <View
       flexDirection="row"
       flexWrap="wrap"
-      gap="6 @sm/window:3"
-      pb="@sm/window:4"
-      borderWidth="@sm/window:1px"
-      borderColor="@sm/window:border-color"
-      rounded="@sm/window:15px"
+      gap="6 @max-md/window:3"
+      pb="@max-md/window:4"
+      borderWidth="@max-md/window:1px"
+      borderColor="@max-md/window:border-color"
+      rounded="@max-md/window:15px"
       onLayout={onLayout}
     >
       <View
-        grow={sm ? 1 : 0}
+        grow={compact ? 1 : 0}
         flexBasis={125}
         gap="4"
         flexDirection="column"
@@ -387,18 +387,18 @@ const Item = ({ item }: { item: Items[number] }) => {
           <Button
             id="add-wishlist"
             circular
-            size={sm ? 'sm' : 'xs'}
-            icon={<Heart color={wishlist ? 'red-600' : undefined} />}
+            size={compact ? 'sm' : 'xs'}
+            icon={<Heart color={wishlist ? 'red-10' : undefined} />}
             theme={wishlist ? 'red' : 'red_level2'}
             onPress={() => setWishlist(!wishlist)}
           />
 
-          {xs && (
+          {narrow && (
             <Button
               id={'remove-product' + item.id}
               circular
               size="sm"
-              icon={<Trash color="red-600" />}
+              icon={<Trash color="red-10" />}
               scaleIcon={1.1}
               theme="red_level2"
             />
@@ -411,7 +411,7 @@ const Item = ({ item }: { item: Items[number] }) => {
           bg="color-1"
           objectFit="cover"
           height={150}
-          minW={`${`native:${layoutWidth}px`} @gtMd/window:inherit`}
+          minW={`${`native:${layoutWidth}px`} @lg/window:inherit`}
         />
       </View>
 
@@ -420,33 +420,33 @@ const Item = ({ item }: { item: Items[number] }) => {
         flexBasis={250}
         items="flex-start"
         justify="center"
-        gap="2 @sm/window:4 @xs/window:2"
-        px="@sm/window:4 @xs/window:4"
+        gap="2 @max-md/window:4 @max-sm/window:2"
+        px="@max-md/window:4 @max-sm/window:4"
       >
         <View
           flexDirection="row"
           items="center"
           gap="2"
-          justify="@xs/window:space-between"
-          width="@xs/window:100%"
+          justify="@max-sm/window:space-between"
+          width="@max-sm/window:100%"
         >
-          <Text fontSize="5 gtMd:7" fontWeight="600">
+          <Text fontSize="5 lg:7" fontWeight="600">
             {item.name}
           </Text>
-          {xs && (
+          {narrow && (
             <Text color={getStockStateColor(item.stockState)} fontSize="3">
               {item.stockState}
             </Text>
           )}
         </View>
 
-        {gtXs && (
+        {!narrow && (
           <View flexDirection="row" gap="2">
             <Text color={getStockStateColor(item.stockState)} fontSize="3">
               {item.stockState}
             </Text>
             <Separator vertical my="2" borderColor="color-9" />
-            <Text color="red-600" fontSize="3" lineHeight="3">
+            <Text color="red-10" fontSize="3" lineHeight="3">
               Saving {Math.round(item.discount * 100)}%
             </Text>
           </View>
@@ -456,8 +456,8 @@ const Item = ({ item }: { item: Items[number] }) => {
           flexDirection="row"
           items="center"
           gap="2"
-          justify="@xs/window:space-between"
-          width="@xs/window:100%"
+          justify="@max-sm/window:space-between"
+          width="@max-sm/window:100%"
         >
           <View flexDirection="row" gap="2">
             <Text fontSize="5" lineHeight="5">
@@ -472,15 +472,15 @@ const Item = ({ item }: { item: Items[number] }) => {
               ${Math.round(Number(item.price))}
             </Text>
           </View>
-          {xs && (
-            <Text color="red-600" fontSize="3" lineHeight="3">
+          {narrow && (
+            <Text color="red-10" fontSize="3" lineHeight="3">
               Saving {Math.round(item.discount * 100)}%
             </Text>
           )}
         </View>
       </View>
 
-      {sm && gtXs && (
+      {compact && !narrow && (
         <Button
           id={'remove-product' + item.id}
           size="sm"
@@ -495,14 +495,14 @@ const Item = ({ item }: { item: Items[number] }) => {
 
       <View
         flexDirection="column"
-        items={sm ? 'center' : 'flex-end'}
+        items={compact ? 'center' : 'flex-end'}
         justify="center"
         gap="5"
-        width="@sm/window:100%"
-        paddingLeft="@sm/window:4"
-        pr="@sm/window:4 @gtSm/window:4"
+        width="@max-md/window:100%"
+        paddingLeft="@max-md/window:4"
+        pr="@max-md/window:4 @md/window:4"
       >
-        {gtSm && (
+        {!compact && (
           <View flexDirection="column" items="flex-end">
             <Text
               textDecorationLine="line-through"
@@ -524,11 +524,11 @@ const Item = ({ item }: { item: Items[number] }) => {
           items="center"
           justify="space-between"
           gap="4"
-          width="@sm/window:100%"
+          width="@max-md/window:100%"
         >
           <ItemCounter count={count} setCount={setCount} />
 
-          {sm && (
+          {compact && (
             <View flexDirection="row" gap="2">
               <Text fontSize="4" fontWeight="bold">
                 $
@@ -543,7 +543,7 @@ const Item = ({ item }: { item: Items[number] }) => {
             </View>
           )}
 
-          {gtSm && (
+          {!compact && (
             <Button
               id={'remove-product' + item.id}
               size="sm"
@@ -552,7 +552,7 @@ const Item = ({ item }: { item: Items[number] }) => {
               scaleIcon={1.2}
               theme="red"
               bg="transparent"
-              borderColor="@sm/window:color-9"
+              borderColor="@max-md/window:color-9"
             />
           )}
         </View>

@@ -1,19 +1,19 @@
+import type { ComponentSize } from '@tamagui/core'
 import { useId } from 'react'
 import { Input } from './components/inputsParts'
-import type { FontSizeTokens } from 'tamagui'
 import { View } from 'tamagui'
 
 /** ------ EXAMPLE ------ */
 export function InputWithLabelAndMessageDemo({
-  size = '4',
+  size = 'md',
 }: {
-  size?: FontSizeTokens
+  size?: ComponentSize
 }) {
   const uniqueId = useId()
 
   return (
     <View flexDirection="column" justify="center" items="center" gap="6">
-      <Input size={size} minW="100% @gtXs/window:150px">
+      <Input size={size} minW="100% @sm/window:150px">
         <Input.Label htmlFor={uniqueId + 'email'}>Email Address</Input.Label>
         <Input.Box>
           <Input.Area

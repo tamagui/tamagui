@@ -1,4 +1,3 @@
-import { Avatar, Group } from '../../BentoSkins'
 import {
   Ban,
   BellRing,
@@ -46,6 +45,8 @@ import {
   View,
   XStack,
   type ThemeName,
+  Avatar,
+  Group,
 } from 'tamagui'
 import { Chip } from '../chips/components/chipsParts'
 import { BubbleChat, type MessageItem } from './components/Chat/BubbleChat'

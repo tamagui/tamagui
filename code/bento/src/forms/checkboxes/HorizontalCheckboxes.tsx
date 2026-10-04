@@ -40,8 +40,8 @@ export function HorizontalCheckboxes() {
         width={600}
         maxW="100%"
         gap="4"
-        px="@sm/window:4"
-        py="@sm/window:6"
+        px="@max-md/window:4"
+        py="@max-md/window:6"
       >
         <YStack gap="1">
           <Checkboxes.Title>Payment</Checkboxes.Title>
@@ -59,7 +59,7 @@ export function HorizontalCheckboxes() {
           {items.map(({ id, label, checked }) => (
             <Checkboxes.FocusGroup.Item
               flex={1}
-              flexBasis="100% @gtXs/window:150px"
+              flexBasis="100% @sm/window:150px"
               value={id}
               key={id}
             >
