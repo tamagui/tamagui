@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-table'
 import * as React from 'react'
 import { Separator, Text, View, XStack, YStack, Avatar } from 'tamagui'
+import { tone } from '../../tone'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
 import { Table } from './common/tableParts'
 import { ProgressCell, StatusBadge } from './common/cells'
@@ -66,7 +67,7 @@ const columns = [
     cell: (info) => (
       <Avatar circular size="3">
         <Avatar.Image aria-label="Profile image" src={info.getValue()} />
-        <Avatar.Fallback bg="color-6" />
+        <Avatar.Fallback bg={tone.fill} />
       </Avatar>
     ),
     header: () => 'Avatar',
@@ -135,8 +136,8 @@ export function BasicTable() {
               key={i}
               rounded="5"
               borderWidth={1}
-              borderColor="border-color"
-              bg="color-1"
+              borderColor={tone.border}
+              bg={tone.surface}
               self="stretch"
               p="4"
               gap="3"
@@ -147,13 +148,13 @@ export function BasicTable() {
                     aria-label={`${row.firstName} ${row.lastName}`}
                     src={row.avatar}
                   />
-                  <Avatar.Fallback bg="color-6" />
+                  <Avatar.Fallback bg={tone.fill} />
                 </Avatar>
                 <YStack flex={1}>
                   <Text fontWeight="700" color="color-11">
                     {row.firstName} {row.lastName}
                   </Text>
-                  <Text fontSize="2" color="color-9">
+                  <Text fontSize="xs" color={tone.muted}>
                     {row.age} yrs · {row.visits} visits
                   </Text>
                 </YStack>
@@ -174,26 +175,15 @@ export function BasicTable() {
       alignHeaderCells={{ y: 'center', x: 'center' }}
       cellWidth={CELL_WIDTH}
       cellHeight={52}
-      borderWidth={0.5}
       maxW={TABLE_WIDTH}
       my="4"
     >
       <Table.Head>
         {headerGroups.map((headerGroup) => (
-          <Table.Row bg="color-2" rowLocation="first" key={headerGroup.id}>
+          <Table.Row bg={tone.fill} rowLocation="first" key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
-              <Table.HeaderCell
-                width={COLUMN_WIDTHS[header.id]}
-                cellLocation={
-                  header.id === 'avatar'
-                    ? 'first'
-                    : header.id === 'progress'
-                      ? 'last'
-                      : 'middle'
-                }
-                key={header.id}
-              >
-                <Text fontSize="3" fontWeight="600" color="color-11">
+              <Table.HeaderCell width={COLUMN_WIDTHS[header.id]} key={header.id}>
+                <Text fontFamily="body" fontSize="xs" fontWeight="500" color={tone.muted}>
                   {header.isPlaceholder
                     ? null
                     : flexRender(header.column.columnDef.header, header.getContext())}
@@ -206,29 +196,18 @@ export function BasicTable() {
       <Table.Body>
         {tableRows.map((row, rowIndex) => (
           <Table.Row
-            bg={`${rowIndex % 2 === 1 ? 'color-1' : 'transparent'} hover:color-3`}
+            bg={`transparent ${tone.rowHover}`}
             rowLocation={rowIndex === tableRows.length - 1 ? 'last' : 'middle'}
             key={row.id}
           >
             {row.getVisibleCells().map((cell) => (
-              <Table.Cell
-                width={COLUMN_WIDTHS[cell.column.id]}
-                px="3"
-                cellLocation={
-                  cell.column.id === 'avatar'
-                    ? 'first'
-                    : cell.column.id === 'progress'
-                      ? 'last'
-                      : 'middle'
-                }
-                key={cell.id}
-              >
+              <Table.Cell width={COLUMN_WIDTHS[cell.column.id]} px="3" key={cell.id}>
                 {cell.column.id === 'avatar' ||
                 cell.column.id === 'status' ||
                 cell.column.id === 'progress' ? (
                   <>{flexRender(cell.column.columnDef.cell, cell.getContext())}</>
                 ) : (
-                  <Text fontSize="4" color="color-10">
+                  <Text fontFamily="body" fontSize="sm" color="color-12">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </Text>
                 )}

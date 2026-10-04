@@ -224,7 +224,7 @@ export const bentoSections: BentoSection[] = [
       name: 'Chips',
       demos: [
         {
-          title: 'Removable Chips',
+          title: 'Chips',
           file: 'ChipsWithCloseIcon',
           component: 'ChipsWithCloseIcon',
           sizable: true,

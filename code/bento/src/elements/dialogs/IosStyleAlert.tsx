@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { AlertDialogContentProps } from 'tamagui'
 import { AlertDialog, Button, Input, View, createContext, useEvent } from 'tamagui'
+import { tone } from '../../tone'
 
 type AlertButton = {
   title: string
@@ -77,7 +78,7 @@ const Alert = ({ children, ...rest }: AlertProps) => {
             pt="3"
             pb={0}
             rounded="6"
-            bg="color-1"
+            bg={tone.surface}
             overflow="hidden"
             gap="3"
             transition="quick"
@@ -85,8 +86,9 @@ const Alert = ({ children, ...rest }: AlertProps) => {
             y="enter:-10px exit:10px"
             opacity="enter:0 exit:0"
             scale="enter:0.95 exit:0.95"
-            borderColor="dark:color-6"
-            borderWidth="dark:1px"
+            borderColor={tone.border}
+            borderWidth={1}
+            boxShadow="0 16px 40px shadow-color"
             {...rest}
             key="content"
             style={{ left: 0, right: 0, marginHorizontal: 'auto' }}
@@ -105,7 +107,7 @@ const Alert = ({ children, ...rest }: AlertProps) => {
             {content}
             <View
               borderTopWidth={1}
-              borderTopColor="border-color"
+              borderTopColor={tone.border}
               flexDirection={buttons.length === 2 ? 'row' : 'column'}
               mx="-6"
               justify="flex-start"
@@ -114,14 +116,14 @@ const Alert = ({ children, ...rest }: AlertProps) => {
                 const makeItVertical = buttons.length > 2
                 const Base =
                   button.style === 'cancel' ? AlertDialog.Cancel : AlertDialog.Action
-                const color = button.style === 'destructive' ? 'red-10' : 'green-10'
+                const color = button.style === 'destructive' ? 'red-10' : 'blue-10'
                 return (
                   <View
                     flex={1}
                     flexBasis="auto"
                     borderRightWidth={index === 0 && !makeItVertical ? 1 : 0}
                     borderBottomWidth={makeItVertical && index < buttons.length ? 1 : 0}
-                    borderColor="border-color"
+                    borderColor={tone.border}
                     key={index}
                   >
                     <Base asChild>
@@ -131,13 +133,13 @@ const Alert = ({ children, ...rest }: AlertProps) => {
                         items="center"
                         p="3"
                         opacity="0.9 hover:1 focus:1"
-                        bg="hover:color-3 focus:color-4"
+                        bg={`transparent ${tone.rowHover}`}
                         onPress={button.action}
                       >
                         <Button.Text
                           fontSize={16}
                           color={color}
-                          fontWeight={button.style === 'default' ? '500' : '400'}
+                          fontWeight={button.style === 'cancel' ? '400' : '600'}
                         >
                           {button.title}
                         </Button.Text>
@@ -158,97 +160,51 @@ const Alert = ({ children, ...rest }: AlertProps) => {
 const AlertDialogTest = () => {
   const { alert } = useAlert('AlertTest')
 
-  const buttons: AlertButton[] = [
-    {
-      title: 'Cancel',
-      style: 'cancel',
-      action: () => {
-        // do some
-      },
-    },
-    {
-      title: 'Reply',
-      style: 'default',
-      action: () => {
-        // do some
-      },
-    },
-  ]
-
-  const buttons2: AlertButton[] = [
-    {
-      title: 'Ask me later',
-      style: 'cancel',
-      action: () => {},
-    },
-    {
-      title: 'Reply',
-      style: 'default',
-      action: () => {},
-    },
-    {
-      title: 'Cancel',
-      style: 'cancel',
-      action: () => {},
-    },
-    {
-      title: 'OK',
-      style: 'destructive',
-      action: () => {},
-    },
-  ]
-
   return (
-    <View flexDirection="row" gap="5">
+    <View flexDirection="row" flexWrap="wrap" justify="center" gap="3">
       <Button
-        onPress={() => {
+        onPress={() =>
           alert({
-            title: 'My Mom',
-            message: 'Hey honey, are you back home?',
-            buttons,
-            content: (
-              <Input
-                height="3"
-                placeholder="Your message here"
-                ref={(input) => {
-                  if (input instanceof HTMLElement) {
-                    input.focus()
-                  }
-                }}
-                onKeyPress={(e) => {
-                  if (e.nativeEvent.key === 'Escape') e.currentTarget.blur()
-                }}
-              />
-            ),
+            title: 'Reply to Sam',
+            message: 'Your reply goes straight to the thread.',
+            buttons: [
+              { title: 'Cancel', style: 'cancel', action: () => {} },
+              { title: 'Send', style: 'default', action: () => {} },
+            ],
+            content: <Input size="sm" placeholder="Message" autoFocus />,
           })
-        }}
+        }
       >
-        Open Alert
+        Reply
       </Button>
       <Button
-        onPress={() => {
+        onPress={() =>
           alert({
-            title: 'A Message',
-            message: 'Hey, please let me know if you are back home?',
-            buttons: buttons2,
-            content: (
-              <Input
-                height="3"
-                placeholder="Your message here"
-                ref={(input) => {
-                  if (input instanceof HTMLElement) {
-                    input.focus()
-                  }
-                }}
-                onKeyPress={(e) => {
-                  if (e.nativeEvent.key === 'Escape') e.currentTarget.blur()
-                }}
-              />
-            ),
+            title: 'Delete this photo?',
+            message: 'It will be removed from all your devices.',
+            buttons: [
+              { title: 'Cancel', style: 'cancel', action: () => {} },
+              { title: 'Delete', style: 'destructive', action: () => {} },
+            ],
           })
-        }}
+        }
       >
-        Open Alert 2
+        Delete photo
+      </Button>
+      <Button
+        onPress={() =>
+          alert({
+            title: 'Save changes?',
+            message: 'You have edits that are not saved yet.',
+            buttons: [
+              { title: 'Save', style: 'default', action: () => {} },
+              { title: "Don't save", style: 'destructive', action: () => {} },
+              { title: 'Cancel', style: 'cancel', action: () => {} },
+            ],
+          })
+        }
+      >
+        Close document
       </Button>
     </View>
   )

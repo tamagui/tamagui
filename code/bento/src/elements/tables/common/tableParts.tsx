@@ -1,5 +1,6 @@
 import type { SizeTokens } from 'tamagui'
 import { YStack, createStyledContext, styled, withStaticProperties } from 'tamagui'
+import { tone } from '../../../tone'
 
 type Align = 'center' | 'start' | 'end'
 
@@ -13,13 +14,11 @@ const TableContext = createStyledContext<{
   cellHeight: SizeTokens | number
   alignHeaderCells: AlignCells
   alignCells: AlignCells
-  borderColor: string
 }>({
   cellWidth: 128,
   cellHeight: 32,
   alignHeaderCells: { x: 'start', y: 'center' },
   alignCells: { x: 'center', y: 'center' },
-  borderColor: 'border-color',
 })
 
 const flexAlign = (val: Align) => (val === 'center' ? 'center' : (`flex-${val}` as const))
@@ -34,10 +33,11 @@ const Row = styled(YStack, {
   render: 'tr',
   flexDirection: 'row',
   context: TableContext,
+  borderColor: tone.border,
   variants: {
     rowLocation: {
-      first: { borderBottomWidth: 0.5 },
-      middle: { borderBottomWidth: 0.5 },
+      first: { borderBottomWidth: 1 },
+      middle: { borderBottomWidth: 1 },
       last: { borderBottomWidth: 0 },
     },
   } as const,
@@ -53,11 +53,6 @@ const Cell = styled(YStack, {
     cellWidth: styled.dynamic<SizeTokens | number>((val) => ({ width: val })),
     cellHeight: styled.dynamic<SizeTokens | number>((val) => ({ minHeight: val })),
     alignCells: alignStyle,
-    cellLocation: {
-      first: {},
-      middle: { borderLeftWidth: 0.5 },
-      last: { borderLeftWidth: 0.5 },
-    },
   } as const,
 })
 
@@ -71,11 +66,6 @@ const HeaderCell = styled(YStack, {
   variants: {
     cellWidth: styled.dynamic<SizeTokens | number>((val) => ({ width: val })),
     alignHeaderCells: alignStyle,
-    cellLocation: {
-      first: {},
-      middle: { borderLeftWidth: 1 },
-      last: { borderLeftWidth: 1 },
-    },
   } as const,
 })
 
@@ -104,7 +94,10 @@ const TableComp = styled(YStack, {
   render: 'table',
   context: TableContext,
   borderWidth: 1,
-  bg: 'background',
+  borderColor: tone.border,
+  rounded: '6',
+  overflow: 'hidden',
+  bg: tone.surface,
   // the table only provides these to its cells through context
   variants: {
     cellWidth: styled.dynamic<SizeTokens | number>(),

@@ -1,5 +1,6 @@
 import { type ComponentSize, resolveSizing } from '@tamagui/core'
 import type { ColorTokens } from 'tamagui'
+import { tone } from '../../../tone'
 import {
   createStyledContext,
   createStyledHOC,
@@ -35,7 +36,7 @@ const ChipImpl = styled(View, {
   flexDirection: 'row',
   context: ChipContext,
   borderRadius: 'md',
-  backgroundColor: 'color-6',
+  backgroundColor: tone.fill,
   justifyContent: 'center',
   alignItems: 'center',
   variants: {
@@ -51,7 +52,7 @@ const ChipImpl = styled(View, {
     pressable: {
       true: {
         cursor: 'pointer',
-        backgroundColor: 'color-6 hover:color-7 press:color-8',
+        backgroundColor: `${tone.fill} hover:color-4 press:color-5`,
         outlineColor: 'focus-visible:outline-color',
         outlineStyle: 'focus-visible:solid',
         outlineWidth: 'focus-visible:2px',
@@ -114,8 +115,7 @@ const ChipButton = styled(View, {
   cursor: 'pointer',
   borderRadius: 'full',
   padding: '0.5',
-  backgroundColor:
-    'transparent hover:background-hover press:background-press focus:background-focus',
+  backgroundColor: 'transparent hover:color-5 press:color-6 focus:color-5',
   justifyContent: 'center',
   alignItems: 'center',
   outlineColor: 'focus-visible:outline-color',

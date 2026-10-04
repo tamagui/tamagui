@@ -1,102 +1,68 @@
-import { Image, ScrollView, Text, View, isWeb, styled } from 'tamagui'
+import { Image, ScrollView, Text, View } from 'tamagui'
+import { tone } from '../../tone'
 
-const data = [
-  { uri: 'HLIST_1.jpg', title: 'Jakarta' },
-  { uri: 'HLIST_2.jpg', title: 'Bandung' },
-  { uri: 'HLIST_3.jpg', title: 'SaiGon' },
-  { uri: 'HLIST_4.jpg', title: 'Tokyo' },
-  { uri: 'HLIST_5.jpg', title: 'Semarang' },
-  { uri: 'HLIST_6.jpg', title: 'Malang' },
+const cities = [
+  { image: 'HLIST_1.jpg', title: 'Jakarta', places: 128 },
+  { image: 'HLIST_2.jpg', title: 'Bandung', places: 74 },
+  { image: 'HLIST_3.jpg', title: 'Saigon', places: 96 },
+  { image: 'HLIST_4.jpg', title: 'Tokyo', places: 212 },
+  { image: 'HLIST_5.jpg', title: 'Semarang', places: 41 },
+  { image: 'HLIST_6.jpg', title: 'Malang', places: 38 },
 ]
 
+/** ------ EXAMPLE ------ */
 export function HList() {
   return (
-    <View flex={1} width="100%" height="100%">
-      <ScrollView
-        {...(isWeb && {
-          items: 'center',
-        })}
-        pl="50%"
-        pr="6"
-        showsHorizontalScrollIndicator={false}
-        horizontal
+    <ScrollView
+      horizontal
+      width="100%"
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={{ padding: 24, gap: 16 }}
+    >
+      {cities.map((city) => (
+        <CityCard key={city.title} {...city} />
+      ))}
+    </ScrollView>
+  )
+}
+
+function CityCard({ image, title, places }: (typeof cities)[number]) {
+  return (
+    <View
+      tabIndex={0}
+      width={200}
+      height={260}
+      rounded="6"
+      overflow="hidden"
+      position="relative"
+      bg={tone.fill}
+      cursor="pointer"
+      y="0 hover:-4px"
+      boxShadow="(0 1px 3px shadow-color) hover:(0 12px 24px shadow-color)"
+      transition="200ms"
+    >
+      <Image
+        src={`/bento/images/hlist/${image}`}
+        width="100%"
+        height="100%"
+        objectFit="cover"
+        alt=""
+      />
+      <View
+        position="absolute"
+        inset={0}
+        justify="flex-end"
+        p="4"
+        gap="0.5"
+        bg="linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0) 55%)"
       >
-        <View flexDirection="row" gap="6" height="100%">
-          {data.map(({ uri, title }) => (
-            <HListItem key={uri} uri={uri} title={title} />
-          ))}
-        </View>
-      </ScrollView>
+        <Text fontFamily="body" fontSize="lg" fontWeight="600" color="white">
+          {title}
+        </Text>
+        <Text fontFamily="body" fontSize="xs" color="rgba(255,255,255,0.8)">
+          {places} places
+        </Text>
+      </View>
     </View>
   )
 }
-
-function HListItem({ uri, title }: { uri: string; title: string }) {
-  return (
-    <HListFrame style={{ transition: 'transform 150ms ease' }} scale="press:0.98">
-      <HListInner
-        containerType="normal"
-        group="item"
-        style={{ transition: 'transform 150ms ease' }}
-        position="relative"
-      >
-        <View
-          flexDirection="column"
-          flex={1}
-          scale="1.2 group-hover/item:1.2"
-          style={{ transition: 'transform 250ms ease' }}
-        >
-          <Image
-            width="100%"
-            height={200}
-            objectFit="cover"
-            src={`https://tamagui.dev/bento/images/hlist/${uri}`}
-            scale={1}
-          />
-        </View>
-        <View
-          position="absolute"
-          b={0}
-          l={0}
-          r={0}
-          py="4"
-          bg="rgba(0,0,0,0.25) group-hover/item:rgba(0,0,0,0.5)"
-          style={{ transition: 'background-color 250ms ease' }}
-        >
-          <Text
-            style={{
-              transition: 'transform 300ms ease, text-shadow 300ms ease',
-            }}
-            color="#fff"
-            my="auto"
-            self="center"
-            fontWeight={600}
-            y="0 group-hover/item:-4px"
-            scale="1 group-hover/item:1.075"
-            textShadow="(0 1px 0 shadow-color) group-hover/item:(0 2px 10px shadow-color)"
-          >
-            {title}
-          </Text>
-        </View>
-      </HListInner>
-    </HListFrame>
-  )
-}
-
-const HListFrame = styled(View, {
-  width: 200,
-  height: 200,
-  borderWidth: 1,
-  borderColor: 'color-3',
-  rounded: '10 hover:11',
-  bg: 'background',
-  scale: '1 hover:1.05',
-  boxShadow: '(0 0 3px shadow-color) hover:(0 0 20px shadow-color)',
-})
-
-const HListInner = styled(View, {
-  width: 200,
-  height: 200,
-  overflow: 'hidden',
-  rounded: '10 hover:11',
-})

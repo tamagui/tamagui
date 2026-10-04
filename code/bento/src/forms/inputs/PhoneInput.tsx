@@ -134,7 +134,7 @@ function RegionFilterInput(props: RegionFilterInputProps) {
                       borderBottomWidth={1}
                       borderColor={tone.border}
                       cursor="pointer"
-                      bg="hover:color-3 focus:color-3"
+                      bg={`transparent ${tone.rowHover}`}
                       onPress={() => {
                         setRegionCode(item.name)
                         setOpen(false)

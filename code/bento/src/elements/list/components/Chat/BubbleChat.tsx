@@ -1,5 +1,6 @@
 import { Pressable } from 'react-native'
 import { Image, Text, useThemeName, View } from 'tamagui'
+import { tone } from '../../../../tone'
 
 type User = {
   id: string
@@ -37,11 +38,7 @@ export const BubbleChat = (props: BubbleProps) => {
             : theme
         }
         self={received ? 'flex-start' : 'flex-end'}
-        backgroundColor="color-9"
-        {...(!received && {
-          backgroundColor: 'color-3',
-          self: 'flex-end',
-        })}
+        backgroundColor={received ? tone.fill : 'color-9'}
         rounded="7"
         borderCurve="continuous"
         p="3"
@@ -50,7 +47,9 @@ export const BubbleChat = (props: BubbleProps) => {
         {item.sticker ? (
           <Image src={item.sticker} />
         ) : (
-          <Text theme={received ? 'accent' : null}>{item.message}</Text>
+          <Text fontFamily="body" fontSize="sm" color={received ? 'color-12' : 'white'}>
+            {item.message}
+          </Text>
         )}
       </View>
     </Pressable>

@@ -12,6 +12,8 @@ export const tone = {
   fill: 'color-3 dark:color-5',
   /** the fill under a pointer */
   fillHover: 'color-4 dark:color-6',
+  /** append to a transparent row or menu item so it fills under a pointer */
+  rowHover: 'hover:color-3 dark:hover:color-5',
   /** hairlines around surfaces and fields */
   border: 'color-4 dark:color-5',
   /** a field's border under a pointer or while focused */

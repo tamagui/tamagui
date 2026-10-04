@@ -48,6 +48,7 @@ import {
   Avatar,
   Group,
 } from 'tamagui'
+import { tone } from '../../tone'
 import { Chip } from '../chips/components/chipsParts'
 import { BubbleChat, type MessageItem } from './components/Chat/BubbleChat'
 import { ChatContext } from './components/Chat/ChatContext'
@@ -79,7 +80,6 @@ const Label = styled(Text, {
 export const Chat = () => {
   const offset = useSharedValue(0)
   const [list, setList] = useState<MessageItem[]>(data)
-  const themeName = useThemeName()
   const [theme, setTheme] = useState<ThemeName>()
   const listRef = useRef<FlatList>(null)
 
@@ -110,13 +110,7 @@ export const Chat = () => {
   return (
     <ChatContext.Provider value={{ theme, setTheme }}>
       <View theme={theme} height="100%" flex={1} flexBasis="auto">
-        <View
-          theme="accent"
-          bg={themeName.includes('dark') ? 'white' : 'black'}
-          flex={1}
-          position="absolute"
-          inset={0}
-        />
+        <View bg={tone.fill} flex={1} position="absolute" inset={0} />
         <KeyboardAvoidingView
           style={{ flex: 1, flexBasis: 'auto' }}
           behavior="padding"
@@ -127,7 +121,7 @@ export const Chat = () => {
           <GestureView offset={offset} />
 
           <AnimatedView
-            bg="background"
+            bg={tone.surface}
             overflow="hidden"
             borderTopLeftRadius="8"
             borderTopRightRadius="8"
@@ -267,7 +261,7 @@ const Header = ({ offset }: { offset: SharedValue<number> }) => {
       borderBottomLeftRadius="8"
       borderBottomRightRadius="8"
       borderCurve="circular"
-      bg="background"
+      bg={tone.surface}
       justify="center"
     >
       <SafeAreaSpacer />
@@ -567,7 +561,14 @@ const GestureView = ({ offset }: { offset: SharedValue<number> }) => {
 
   const Handler = () => (
     <View>
-      <View self="center" m="2" height={6} width="4" rounded="4" bg="background" />
+      <View
+        self="center"
+        m="2"
+        height={5}
+        width="10"
+        rounded="4"
+        bg={tone.borderStrong}
+      />
     </View>
   )
 

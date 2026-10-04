@@ -2,6 +2,7 @@ import type { ComponentSize } from '@tamagui/core'
 import { Ban, SunDim } from '../../icons'
 import type { ReactElement } from 'react'
 import { View } from 'tamagui'
+import { tone } from '../../tone'
 import { Avatar } from './components/Avatar'
 
 /** ------ EXAMPLE ------ */
@@ -62,7 +63,7 @@ function Item({ size, Icon }: { size: ComponentSize; Icon: ReactElement }) {
       {Icon}
       <Avatar.Content circular>
         <Avatar.Image src="https://images.unsplash.com/photo-1548142813-c348350df52b?&width=150&height=150&dpr=2&q=80" />
-        <Avatar.Fallback bg="background" />
+        <Avatar.Fallback bg={tone.fill} />
       </Avatar.Content>
     </Avatar>
   )

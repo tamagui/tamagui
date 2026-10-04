@@ -1,4 +1,5 @@
 import { Text, View, XStack } from 'tamagui'
+import { tone } from '../../../tone'
 
 export type RowStatus = 'active' | 'paused' | 'vacation' | string
 
@@ -13,7 +14,7 @@ const statusTheme: Record<string, { bg: string; color: string; label: string }> 
 
 export function StatusBadge({ status }: { status: RowStatus }) {
   const t = statusTheme[status] ?? {
-    bg: 'color-4',
+    bg: tone.fill,
     color: 'color-10',
     label: status.charAt(0).toUpperCase() + status.slice(1),
   }
@@ -29,7 +30,7 @@ export function StatusBadge({ status }: { status: RowStatus }) {
 export function ProgressCell({ value }: { value: number }) {
   return (
     <XStack items="center" gap="2" minW={90}>
-      <View flex={1} height={6} rounded="10" bg="color-4" overflow="hidden">
+      <View flex={1} height={6} rounded="10" bg={tone.fill} overflow="hidden">
         <View
           width={`${value}%`}
           height="100%"

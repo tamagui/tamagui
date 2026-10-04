@@ -1,6 +1,7 @@
 import type { ComponentSize } from '@tamagui/core'
 import { useState } from 'react'
 import { Text, View } from 'tamagui'
+import { tone } from '../../tone'
 import { Avatar, avatarPx } from './components/Avatar'
 
 const people = [
@@ -57,7 +58,7 @@ function AvatarGroup({
           <Avatar size={size}>
             <Avatar.Content circular>
               <Avatar.Image objectFit="cover" src={src} />
-              <Avatar.Fallback bg="color-4" />
+              <Avatar.Fallback bg={tone.fill} />
             </Avatar.Content>
           </Avatar>
         </View>
@@ -73,7 +74,7 @@ function AvatarGroup({
           rounded="full"
           borderWidth={2}
           borderColor="background"
-          bg="color-4"
+          bg={tone.fill}
           items="center"
           justify="center"
         >

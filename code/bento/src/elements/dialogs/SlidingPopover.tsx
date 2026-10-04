@@ -3,11 +3,9 @@ import type { PopoverProps } from 'tamagui'
 import {
   createStyledHOC,
   AnimatePresence,
-  H2,
-  Paragraph,
   Popover,
+  Text,
   View,
-  XStack,
   YStack,
   isWeb,
   styled,
@@ -15,10 +13,21 @@ import {
   useGet,
 } from 'tamagui'
 
-import { Crown, Moon, Waves } from '../../icons'
+import {
+  BellRing,
+  ChartLine,
+  Globe2,
+  Handshake,
+  HelpCircle,
+  Mail,
+  Rocket,
+  ShieldCheck,
+  Smile,
+} from '../../icons'
+import { tone } from '../../tone'
 import type { LayoutRectangle } from 'react-native'
 
-const order = ['', 'takeout', 'bento', 'studio']
+const order = ['', 'products', 'resources', 'company']
 
 const SlidingPopoverContext = React.createContext({
   id: '',
@@ -131,6 +140,32 @@ const SlidingPopoverTrigger = createStyledHOC(
   }
 )
 
+const menus = {
+  products: [
+    { icon: ChartLine, title: 'Analytics', description: 'See how people use your app' },
+    { icon: BellRing, title: 'Alerts', description: 'Hear about problems first' },
+    {
+      icon: ShieldCheck,
+      title: 'Security',
+      description: 'Audit logs and single sign-on',
+    },
+  ],
+  resources: [
+    { icon: Rocket, title: 'Guides', description: 'Ship your first project in a day' },
+    {
+      icon: HelpCircle,
+      title: 'Help center',
+      description: 'Answers to common questions',
+    },
+    { icon: Globe2, title: 'Community', description: 'Meet other builders' },
+  ],
+  company: [
+    { icon: Smile, title: 'About', description: 'Who we are and how we work' },
+    { icon: Handshake, title: 'Partners', description: 'Build and sell with us' },
+    { icon: Mail, title: 'Contact', description: 'Talk to a person' },
+  ],
+}
+
 const SlidingPopoverContent = () => {
   const context = React.useContext(SlidingPopoverContext)
   const last = React.useRef(context.id)
@@ -145,53 +180,25 @@ const SlidingPopoverContent = () => {
 
   return (
     <Popover.Content
-      theme="level4"
       transition="200ms"
-      bg="background"
+      bg={tone.surface}
+      borderWidth={1}
+      borderColor={tone.border}
+      rounded="6"
       p={0}
       y="enter:-10px exit:-10px"
       opacity="enter:0 exit:0"
-      boxShadow="0 16px 32px shadow-color"
+      boxShadow="0 12px 32px shadow-color"
     >
-      <Popover.Arrow />
-      <YStack
-        position="absolute"
-        inset={0}
-        rounded="4"
-        style={{
-          background: `linear-gradient(transparent, rgba(255,255,255,0.15))`,
-          mixBlendMode: 'color-dodge',
-        }}
-      />
-      <YStack width={280} height={240} rounded="4" overflow="hidden">
+      <YStack width={300} height={220} overflow="hidden">
         <AnimatePresence custom={{ going }} initial={false}>
-          {context.id === 'takeout' && (
-            <Frame key="takeout">
-              <TooltipLabelLarge
-                icon={<Crown color="color-9" />}
-                title="Takeout"
-                subtitle="A paid starter kit with Supabase, user and auth, icons, fonts, and&nbsp;more."
-              />
+          {context.id ? (
+            <Frame key={context.id}>
+              {menus[context.id as keyof typeof menus].map((item) => (
+                <MenuItem key={item.title} {...item} />
+              ))}
             </Frame>
-          )}
-          {context.id === 'bento' && (
-            <Frame key="bento">
-              <TooltipLabelLarge
-                icon={<Waves color="color-9" />}
-                title="Bento"
-                subtitle="A suite of nicely designed copy-paste components and screens."
-              />
-            </Frame>
-          )}
-          {context.id === 'studio' && (
-            <Frame key="takeout">
-              <TooltipLabelLarge
-                icon={<Moon color="color-9" />}
-                title="Studio"
-                subtitle="Create complete theme suites with a visual step-by-step studio."
-              />
-            </Frame>
-          )}
+          ) : null}
         </AnimatePresence>
       </YStack>
     </Popover.Content>
@@ -205,6 +212,8 @@ const Frame = styled(YStack, {
   z: 1,
   x: 0,
   opacity: 1,
+  p: '2',
+  gap: '1',
 
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
@@ -218,41 +227,51 @@ const Frame = styled(YStack, {
   } as const,
 })
 
-const TooltipLabelLarge = ({
+function MenuItem({
+  icon: Icon,
   title,
-  subtitle,
-  icon,
-}: {
-  icon: any
-  title: string
-  subtitle: string
-}) => {
+  description,
+}: (typeof menus)['products'][number]) {
   return (
-    <YStack
-      flex={1}
+    <View
+      flexDirection="row"
       items="center"
-      p="7"
+      gap="3"
+      p="2"
       rounded="4"
-      overflow="hidden"
-      position="relative"
+      cursor="pointer"
+      tabIndex={0}
+      bg={`transparent ${tone.rowHover}`}
     >
-      <H2 flex={1} fontWeight="600" size="8">
-        {title}
-      </H2>
-
-      <Paragraph theme="level2" flex={1} fontSize="5">
-        {subtitle}
-      </Paragraph>
-
-      <YStack position="absolute" b={15} r={17} scale={2.25} rotate="-10deg">
-        {icon}
-      </YStack>
-    </YStack>
+      <View
+        width={36}
+        height={36}
+        rounded="3"
+        items="center"
+        justify="center"
+        borderWidth={1}
+        borderColor={tone.border}
+      >
+        <Icon size={18} color="color-11" />
+      </View>
+      <View flex={1} gap="0.5">
+        <Text fontFamily="body" fontSize="sm" fontWeight="500" color="color-12">
+          {title}
+        </Text>
+        <Text fontFamily="body" fontSize="xs" color={tone.muted}>
+          {description}
+        </Text>
+      </View>
+    </View>
   )
 }
 
-const TouchableArea = styled(View, {
-  p: '3',
+const MenuTrigger = styled(SlidingPopoverTrigger, {
+  px: '3',
+  py: '2',
+  rounded: '4',
+  cursor: 'pointer',
+  bg: `transparent ${tone.rowHover}`,
 })
 
 /** ---------- EXAMPLE --------- */
@@ -262,16 +281,14 @@ export const SlidingPopoverDemo = () => {
       <SlidingPopoverContent />
 
       <Popover.Trigger asChild>
-        <View flexDirection="row">
-          <SlidingPopoverTrigger id="takeout" px="4" py="3">
-            <Crown />
-          </SlidingPopoverTrigger>
-          <SlidingPopoverTrigger id="bento" px="4" py="3" mx="-2">
-            <Waves />
-          </SlidingPopoverTrigger>
-          <SlidingPopoverTrigger id="studio" px="4" py="3" mx="-2">
-            <Moon />
-          </SlidingPopoverTrigger>
+        <View flexDirection="row" gap="1">
+          {(['products', 'resources', 'company'] as const).map((id) => (
+            <MenuTrigger key={id} id={id}>
+              <Text fontFamily="body" fontSize="sm" fontWeight="500" color="color-11">
+                {id[0].toUpperCase() + id.slice(1)}
+              </Text>
+            </MenuTrigger>
+          ))}
         </View>
       </Popover.Trigger>
     </SlidingPopover>
