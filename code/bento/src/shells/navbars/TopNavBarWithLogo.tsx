@@ -13,12 +13,10 @@ import {
   PopoverTrigger,
   Separator,
   Text,
-  Theme,
   View,
   isWeb,
   styled,
   useEvent,
-  useThemeName,
   Avatar,
   Tabs,
 } from 'tamagui'
@@ -26,6 +24,7 @@ import { useGroupMedia } from '../../hooks/useGroupMedia'
 
 import { useContainerDim } from '../../hooks/useContainerDim'
 import { Drawer } from '../common/Drawer'
+import { tone } from '../../tone'
 
 // how to use with URL params:
 // import { createParam } from 'solito'
@@ -132,119 +131,111 @@ export function TopNavBarWithLogo() {
     setTriggerOpen(false)
   })
   const { 'max-md': compact } = useGroupMedia('window')
-  const themeName = useThemeName()
-  const inverseThemeName = themeName.startsWith('dark') ? 'light' : 'dark'
 
   return (
     <View
       flexDirection="column"
       width="100%"
-      height="610px @sm/window:800px"
+      height="420px @sm/window:520px"
+      bg="background"
       position="relative"
     >
-      <Theme name={inverseThemeName}>
-        <View
-          flexDirection="row"
-          p="2"
-          minW="100%"
-          items="center"
-          justify="space-between"
-          bg="background"
-          render="nav"
-        >
-          {compact ? (
-            <SideBar />
-          ) : (
-            <View
-              flexDirection="row"
-              p="2"
-              items="center"
-              bg="color-2"
-              borderWidth={1}
-              borderColor="border-color"
-              rounded={1000_000}
-            >
-              <Image
-                objectFit="contain"
-                width="25px @max-md/window:15px"
-                height="25px @max-md/window:15px"
-                src="/bento/tamagui-icon.png"
-                alt="Bento logo"
-              />
-            </View>
-          )}
-          {!compact && (
-            <Tabs
-              value={currentTab}
-              onValueChange={setCurrentTab}
-              orientation="horizontal"
-            >
-              <View flexDirection="column" position="relative">
-                <AnimatePresence>
-                  {intentAt && (
-                    <TabsRovingIndicator
-                      rounded="4"
-                      width={intentAt.width}
-                      height={intentAt.height}
-                      x={intentAt.x}
-                      y={intentAt.y}
-                    />
-                  )}
-                </AnimatePresence>
-                <AnimatePresence>
-                  {activeAt && (
-                    <TabsRovingIndicator
-                      rounded="4"
-                      theme="accent"
-                      width={activeAt.width}
-                      height={activeAt.height}
-                      x={activeAt.x}
-                      y={activeAt.y}
-                    />
-                  )}
-                </AnimatePresence>
-                <Tabs.List
-                  loop={false}
-                  aria-label="Manage your account"
-                  gap="3"
-                  backgroundColor="transparent"
-                >
-                  {links.map((link, index) => (
-                    <Tabs.Tab
-                      key={link.title}
-                      unstyled
-                      value={link.slug}
-                      onInteraction={handleOnInteraction}
-                      paddingHorizontal="4"
-                    >
-                      <NavLink
-                        key={index}
-                        // Note: replace href with /bento/shells/navbars/${link.slug}
-                        href={`/bento/shells/navbars/#`}
-                      >
-                        {link.title}
-                      </NavLink>
-                    </Tabs.Tab>
-                  ))}
-                </Tabs.List>
-              </View>
-            </Tabs>
-          )}
-          <View flexDirection="row" items="center" gap="3">
-            <Button theme="accent" circular variant="quiet" p={0} size="sm">
-              <Button.Icon>
-                <Bell size="1" />
-              </Button.Icon>
-            </Button>
-            <ProfileDropdown
-              triggerOpen={triggerOpen}
-              setTriggerOpen={setTriggerOpen}
-              closeTrigger={closeTrigger}
+      <View
+        flexDirection="row"
+        p="2"
+        minW="100%"
+        items="center"
+        justify="space-between"
+        bg={tone.surface}
+        borderBottomWidth={1}
+        borderColor={tone.border}
+        render="nav"
+      >
+        {compact ? (
+          <SideBar />
+        ) : (
+          <View
+            flexDirection="row"
+            p="2"
+            items="center"
+            bg={tone.fill}
+            rounded={1000_000}
+          >
+            <Image
+              objectFit="contain"
+              width="25px @max-md/window:15px"
+              height="25px @max-md/window:15px"
+              src="/bento/tamagui-icon.png"
+              alt="Bento logo"
             />
           </View>
+        )}
+        {!compact && (
+          <Tabs value={currentTab} onValueChange={setCurrentTab} orientation="horizontal">
+            <View flexDirection="column" position="relative">
+              <AnimatePresence>
+                {intentAt && (
+                  <TabsRovingIndicator
+                    rounded="4"
+                    width={intentAt.width}
+                    height={intentAt.height}
+                    x={intentAt.x}
+                    y={intentAt.y}
+                  />
+                )}
+              </AnimatePresence>
+              <AnimatePresence>
+                {activeAt && (
+                  <TabsRovingIndicator
+                    active
+                    rounded="4"
+                    width={activeAt.width}
+                    height={activeAt.height}
+                    x={activeAt.x}
+                    y={activeAt.y}
+                  />
+                )}
+              </AnimatePresence>
+              <Tabs.List
+                loop={false}
+                aria-label="Manage your account"
+                gap="3"
+                backgroundColor="transparent"
+              >
+                {links.map((link, index) => (
+                  <Tabs.Tab
+                    key={link.title}
+                    unstyled
+                    value={link.slug}
+                    onInteraction={handleOnInteraction}
+                    paddingHorizontal="4"
+                  >
+                    <NavLink
+                      key={index}
+                      // Note: replace href with /bento/shells/navbars/${link.slug}
+                      href={`/bento/shells/navbars/#`}
+                    >
+                      {link.title}
+                    </NavLink>
+                  </Tabs.Tab>
+                ))}
+              </Tabs.List>
+            </View>
+          </Tabs>
+        )}
+        <View flexDirection="row" items="center" gap="3">
+          <Button theme="accent" circular variant="quiet" p={0} size="sm">
+            <Button.Icon>
+              <Bell size="1" />
+            </Button.Icon>
+          </Button>
+          <ProfileDropdown
+            triggerOpen={triggerOpen}
+            setTriggerOpen={setTriggerOpen}
+            closeTrigger={closeTrigger}
+          />
         </View>
-      </Theme>
-      {!compact && <View flexDirection="row" bg="background" height="100%" />}
+      </View>
     </View>
   )
 }
@@ -281,14 +272,15 @@ function ProfileDropdown({
       </PopoverTrigger>
       <Popover.Content
         borderWidth={1}
-        borderColor="border-color"
-        bg="color-1"
+        borderColor={tone.border}
+        bg={tone.surface}
+        rounded="6"
         p={0}
         y="enter:-10px exit:-10px"
         opacity="enter:0 exit:0"
         transition="quick"
         overflow="hidden"
-        boxShadow="0 10px 20px shadow-color"
+        boxShadow="0 8px 24px shadow-color"
       >
         <DropDownItem onPress={closeTrigger}>
           <DropDownText>Accounts</DropDownText>
@@ -305,7 +297,7 @@ function ProfileDropdown({
 }
 
 const DropDownItem = styled(View, {
-  bg: 'background hover:background-hover press:background-press',
+  bg: `transparent ${tone.rowHover}`,
   width: '100%',
   cursor: 'pointer',
   px: '4 @max-sm/window:2',
@@ -315,9 +307,9 @@ const DropDownItem = styled(View, {
 })
 
 const DropDownText = styled(Text, {
-  fontWeight: '2 @max-sm/window:1',
-  lineHeight: '2 @max-sm/window:1',
-  fontSize: '2 @max-sm/window:1',
+  fontFamily: 'body',
+  fontSize: 'sm',
+  color: 'color-12',
 })
 
 const NavLink = createStyledHOC(
@@ -402,7 +394,7 @@ function SideBarContent({
               width={240}
               items="flex-start"
               justify="flex-start"
-              bg="background"
+              bg={tone.surface}
               x="-30px enter:-240px exit:-260px"
               pl={30}
               gap="4"
@@ -412,7 +404,7 @@ function SideBarContent({
                 p="2"
                 mt="2"
                 items="center"
-                bg="#fff"
+                bg={tone.fill}
                 rounded={1000_000}
                 ml="5"
               >
@@ -498,14 +490,10 @@ const TabsRovingIndicator = ({ active, ...props }: { active?: boolean } & ViewPr
     <View
       flexDirection="column"
       position="absolute"
-      backgroundColor="color-7"
-      opacity="0.7 enter:0 exit:0"
+      backgroundColor={active ? tone.fillHover : tone.fill}
+      opacity="1 enter:0 exit:0"
       transition="100ms"
       pointerEvents="none"
-      {...(active && {
-        backgroundColor: 'color-7',
-        opacity: 0.6,
-      })}
       {...props}
     />
   )

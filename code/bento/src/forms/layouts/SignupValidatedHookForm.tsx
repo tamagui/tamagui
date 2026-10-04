@@ -66,7 +66,7 @@ export function SignupValidatedHookForm() {
       py="@max-md/window:6"
       render="form"
     >
-      <H1 self="center" size={narrow ? '7' : '8'}>
+      <H1 self="center" size={narrow ? '6' : '7'}>
         Create an account
       </H1>
 

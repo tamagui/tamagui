@@ -17,6 +17,7 @@ import {
 import { Input } from '../inputs/components/inputsParts'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
 import { Hide } from './components/layoutParts'
+import { tone } from '../../tone'
 
 /** simulate signin */
 function useSignIn() {
@@ -52,7 +53,7 @@ export function SignInRightImage() {
         maxW="@sm/window:600px"
         py="@sm/window:8"
       >
-        <H1 self="center" size={narrow ? '7' : '8'}>
+        <H1 self="center" size={narrow ? '6' : '7'}>
           Sign in to your account
         </H1>
         <View flexDirection="column" gap="3" minW="100%">
@@ -107,20 +108,32 @@ export function SignInRightImage() {
 
           <View flexDirection="column" gap="3" width="100%" self="center" items="center">
             <View flexDirection="row" width="100%" items="center" gap="4">
-              <Separator />
-              <Paragraph>Or</Paragraph>
-              <Separator />
+              <Separator flex={1} borderColor={tone.border} />
+              <Text fontFamily="body" fontSize="xs" color={tone.muted}>
+                or
+              </Text>
+              <Separator flex={1} borderColor={tone.border} />
             </View>
             <View flexDirection="row" flexWrap="wrap" gap="3">
-              <Button theme="accent" minW="100%">
+              <Button
+                minW="100%"
+                bg={tone.surface}
+                borderWidth={1}
+                borderColor={tone.border}
+              >
                 <Button.Icon>
-                  <Github color="color-9" size="1" />
+                  <Github size="1" />
                 </Button.Icon>
                 <Button.Text>Continue with Github</Button.Text>
               </Button>
-              <Button theme="accent" minW="100%">
+              <Button
+                minW="100%"
+                bg={tone.surface}
+                borderWidth={1}
+                borderColor={tone.border}
+              >
                 <Button.Icon>
-                  <Facebook color="blue-10" size="1" />
+                  <Facebook size="1" />
                 </Button.Icon>
                 <Button.Text>Continue with Facebook</Button.Text>
               </Button>

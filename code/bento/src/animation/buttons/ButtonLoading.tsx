@@ -1,67 +1,86 @@
 import { useEffect, useState } from 'react'
-import { Button, Spinner, Theme, View } from 'tamagui'
+import { AnimatePresence, Button, Spinner, View } from 'tamagui'
+import { Check, Send } from '../../icons'
+import { tone } from '../../tone'
+
+type Status = 'idle' | 'busy' | 'done'
 
 /** ------ EXAMPLE ------ */
 export function ButtonLoading() {
   return (
-    <View
-      flexDirection="row"
-      gap="4"
-      flexWrap="wrap"
-      items="center"
-      justify="center"
-      maxW={400}
-    >
-      <ButtonLoadingExample />
-      <Theme name="blue">
-        <ButtonLoadingExample />
-      </Theme>
-      <Theme name="purple">
-        <ButtonLoadingExample />
-      </Theme>
-      <Theme name="pink">
-        <ButtonLoadingExample />
-      </Theme>
-      <Theme name="red">
-        <ButtonLoadingExample />
-      </Theme>
-      <Theme name="orange">
-        <ButtonLoadingExample />
-      </Theme>
-      <Theme name="yellow">
-        <ButtonLoadingExample />
-      </Theme>
-      <Theme name="green">
-        <ButtonLoadingExample />
-      </Theme>
+    <View flexDirection="row" flexWrap="wrap" gap="3" items="center" justify="center">
+      <LoadingButton theme="accent" label="Save changes" busy="Saving" done="Saved" />
+      <LoadingButton
+        label="Send invite"
+        busy="Sending"
+        done="Invite sent"
+        icon={<Send size={16} />}
+      />
     </View>
   )
 }
 
-function ButtonLoadingExample() {
-  const [loading, setLoading] = useState(true)
+// the label crossfades between states and the button holds its width,
+// so nothing around it shifts while it works
+function LoadingButton({
+  label,
+  busy,
+  done,
+  icon,
+  theme,
+}: {
+  label: string
+  busy: string
+  done: string
+  icon?: React.ReactNode
+  theme?: 'accent'
+}) {
+  const [status, setStatus] = useState<Status>('idle')
+
   useEffect(() => {
-    // toggle loading state after every 1 second
-    const interval = setInterval(() => {
-      setLoading(!loading)
-    }, 3000)
-    return () => clearInterval(interval)
-  })
+    if (status === 'idle') return
+    const timer = setTimeout(
+      () => setStatus(status === 'busy' ? 'done' : 'idle'),
+      status === 'busy' ? 1600 : 1400
+    )
+    return () => clearTimeout(timer)
+  }, [status])
+
+  const text = status === 'idle' ? label : status === 'busy' ? busy : done
+
   return (
-    <Button onPress={() => setLoading(!loading)} size="lg">
-      <View
-        transition="bouncy"
-        flexDirection="row"
-        x={loading ? 0 : -15}
-        gap="3"
-        items="center"
-        justify="center"
-      >
-        <Button.Icon>
-          <Spinner transition="slow" scale="enter:0 exit:0" opacity={loading ? 1 : 0} />
-        </Button.Icon>
-        <Button.Text>Click</Button.Text>
-      </View>
+    <Button
+      theme={theme}
+      size="lg"
+      minW={168}
+      aria-busy={status === 'busy'}
+      disabled={status !== 'idle'}
+      opacity={1}
+      onPress={() => setStatus('busy')}
+      {...(!theme && { bg: tone.surface, borderColor: tone.border, borderWidth: 1 })}
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        <View
+          key={status}
+          flexDirection="row"
+          items="center"
+          gap="2"
+          transition="quick"
+          opacity="enter:0 exit:0"
+          y="enter:6px exit:-6px"
+        >
+          <Button.Icon>
+            {status === 'busy' ? (
+              <Spinner size="small" />
+            ) : status === 'done' ? (
+              <Check size={16} />
+            ) : (
+              icon
+            )}
+          </Button.Icon>
+          <Button.Text>{text}</Button.Text>
+        </View>
+      </AnimatePresence>
     </Button>
   )
 }

@@ -276,7 +276,6 @@ export const bentoSections: BentoSection[] = [
           title: 'Swipeable Tabs',
           file: 'TabBarSwippable',
           component: 'TabbarSwippable',
-          frame: 'bleed',
         },
       ],
     },

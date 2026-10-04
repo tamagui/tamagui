@@ -18,14 +18,18 @@ import {
 import { useContainerDim } from '../../hooks/useContainerDim'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
 import { Drawer } from '../common/Drawer'
+import { tone } from '../../tone'
 
 const Link = styled(Anchor, {
   textTransform: 'none',
   display: 'flex',
   textDecorationLine: 'none',
   items: 'center',
-  py: '3 @max-sm/window:2-5',
-  bg: 'hover:background-hover press:background-press focus:background-press',
+  mx: '2',
+  px: '3',
+  py: '2',
+  rounded: '3',
+  bg: `transparent ${tone.rowHover}`,
 })
 
 /** ------ EXAMPLE ------ */
@@ -37,7 +41,13 @@ export function FullSideBar() {
   const [openDrawer, setOpenDrawer] = useState(false)
   const { 'max-md': compact } = useGroupMedia('window')
   return (
-    <View position="relative" flexDirection="column" height={610} width="100%" mt="2">
+    <View
+      position="relative"
+      flexDirection="column"
+      height={480}
+      width="100%"
+      bg="background"
+    >
       <View flexDirection="row" height="100%" width="100%">
         {!compact && <Sidebar />}
         <View
@@ -45,10 +55,11 @@ export function FullSideBar() {
           px="12px @max-md/window:8px"
           py="2"
           items="center"
-          bg="background"
-          boxShadow="0 1px 1px color-5"
+          bg={tone.surface}
+          borderBottomWidth={1}
+          borderColor={tone.border}
           flex={1}
-          height="5"
+          self="flex-start"
           render="nav"
         >
           {compact && (
@@ -120,23 +131,23 @@ function ProfileDropdown({
       </PopoverTrigger>
       <Popover.Content
         borderWidth={1}
-        borderColor="border-color"
-        bg="color-1"
-        py="1"
-        px="4"
+        borderColor={tone.border}
+        bg={tone.surface}
+        rounded="6"
+        p="1"
         y="enter:-10px exit:-10px"
         opacity="enter:0 exit:0"
         transition="quick"
         overflow="hidden"
-        boxShadow="0 10px 20px shadow-color"
+        boxShadow="0 8px 24px shadow-color"
       >
-        <DropDownItem bg="hover:background-focus" onPress={closeTrigger}>
+        <DropDownItem onPress={closeTrigger}>
           <DropDownText>Accounts</DropDownText>
         </DropDownItem>
-        <DropDownItem bg="hover:background-focus" onPress={closeTrigger}>
+        <DropDownItem onPress={closeTrigger}>
           <DropDownText>Settings</DropDownText>
         </DropDownItem>
-        <DropDownItem bg="hover:background-focus" onPress={closeTrigger}>
+        <DropDownItem onPress={closeTrigger}>
           <DropDownText>Sign Out</DropDownText>
         </DropDownItem>
       </Popover.Content>
@@ -145,8 +156,9 @@ function ProfileDropdown({
 }
 
 const DropDownItem = styled(View, {
-  bg: 'background hover:background-hover press:background-press',
-  width: '100%',
+  bg: `transparent ${tone.rowHover}`,
+  rounded: '3',
+  minW: 140,
   cursor: 'pointer',
   px: '4 @max-sm/window:2',
   py: '2 @max-sm/window:1',
@@ -155,9 +167,9 @@ const DropDownItem = styled(View, {
 })
 
 const DropDownText = styled(Text, {
-  fontWeight: '2 @max-sm/window:1',
-  lineHeight: '2 @max-sm/window:1',
-  fontSize: '2 @max-sm/window:1',
+  fontFamily: 'body',
+  fontSize: 'sm',
+  color: 'color-12',
 })
 
 /** SIDEBAR AND DRAWER */
@@ -166,9 +178,9 @@ function Sidebar() {
     <View
       flexDirection="column"
       height="100%"
-      width={300}
+      width={240}
       borderRightWidth={1}
-      borderRightColor="color-5"
+      borderRightColor={tone.border}
     >
       <SideBarContent />
     </View>
@@ -225,7 +237,7 @@ const SideBarContent = createStyledHOC(View, (props, ref) => {
   return (
     <View
       flexDirection="column"
-      bg="background"
+      bg={tone.surface}
       height="100%"
       width="100%"
       {...props}
@@ -246,19 +258,18 @@ const SideBarContent = createStyledHOC(View, (props, ref) => {
             />
             <Avatar.Fallback bg="color-6" />
           </Avatar>
-          <H4 fontSize="6" color="color-11">
+          <H4 fontSize="base" fontWeight="600" color="color-12">
             Hi User!
           </H4>
         </View>
       </View>
-      <View flexDirection="column" grow={1} bg="background">
-        <View p="2-5" pl="5" pt="4">
+      <View flexDirection="column" grow={1}>
+        <View px="5" pt="4" pb="1">
           <Text
-            fontSize="2"
-            lineHeight="2"
-            fontWeight="700"
-            color="color-9"
-            letterSpacing={1}
+            fontSize="xs"
+            fontWeight="600"
+            color={tone.muted}
+            letterSpacing={0.5}
             textTransform="uppercase"
           >
             Auth
@@ -270,7 +281,6 @@ const SideBarContent = createStyledHOC(View, (props, ref) => {
               (item, index) => (
                 <RovingFocusGroup.Item key={index} tabIndex={0}>
                   <NavLink
-                    pl="5"
                     href="#"
                     active={selected === item}
                     onPress={() => setSelected(item)}
@@ -282,13 +292,12 @@ const SideBarContent = createStyledHOC(View, (props, ref) => {
             )}
           </RovingFocusGroup>
         </View>
-        <View p="2-5" pl="5" pt="4">
+        <View px="5" pt="4" pb="1">
           <Text
-            fontSize="2"
-            lineHeight="2"
-            fontWeight="700"
-            color="color-9"
-            letterSpacing={1}
+            fontSize="xs"
+            fontWeight="600"
+            color={tone.muted}
+            letterSpacing={0.5}
             textTransform="uppercase"
           >
             User
@@ -298,7 +307,7 @@ const SideBarContent = createStyledHOC(View, (props, ref) => {
           <RovingFocusGroup loop>
             {['Profile', 'Settings', 'Feed'].map((item, index) => (
               <RovingFocusGroup.Item key={index} tabIndex={0}>
-                <NavLink select="none" pl="5" href="#">
+                <NavLink select="none" href="#">
                   {item}
                 </NavLink>
               </RovingFocusGroup.Item>
@@ -335,19 +344,14 @@ const NavLink = createStyledHOC(
           onPress?.(event)
         }}
         href={href}
-        bg={active ? 'color-3' : undefined}
-        borderLeftWidth={active ? 3 : 0}
-        borderLeftColor={`${active ? 'color-8' : 'transparent'}`}
-        rounded={5}
-        group="navLink"
+        {...(active && { bg: tone.fill })}
         {...rest}
       >
         <Text
-          fontSize="5 @max-sm/window:3"
-          fontWeight="5 @max-sm/window:3"
-          lineHeight="5 @max-sm/window:3"
-          color="color-10"
-          opacity="0.7 group-hover/navLink:1 group-focus/navLink:1"
+          fontFamily="body"
+          fontSize="sm"
+          fontWeight="500"
+          color={active ? 'color-12' : 'color-11'}
         >
           {children}
         </Text>

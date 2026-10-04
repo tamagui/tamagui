@@ -51,11 +51,9 @@ export function SignUpTwoSideScreen() {
   }, 10)
 
   return (
-    <View flexDirection="row" width="100%" minH="100%">
+    <View flexDirection="row" width="100%" minH="100%" py="6">
       <View flexDirection="column" shrink={1} grow={3} gap="4" px="@sm/window:8">
-        <H1 size="9" fontWeight="bold">
-          Basic Details
-        </H1>
+        <H1 size="7">Basic Details</H1>
         <Separator mx="-4" />
         <View
           flexDirection="row"
