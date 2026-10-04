@@ -320,15 +320,14 @@ export const bentoSections: BentoSection[] = [
           title: 'Product with Reviews',
           file: 'ProductWithReview',
           component: 'ProductWithReview',
-          frame: 'flush',
         },
       ],
     },
     {
       group: 'payment',
-      name: 'Paywall',
+      name: 'Pricing',
       demos: [
-        { title: 'Paywall', file: 'Paywall', component: 'Paywall', frame: 'bleed' },
+        { title: 'Pricing', file: 'Paywall', component: 'Paywall' },
       ],
     },
   ]),
