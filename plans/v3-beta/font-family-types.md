@@ -26,3 +26,13 @@ TESTED: the rebuilt public types passed the isolated fixture and Contrast's
 probe using Contrast's actual config returned seven suggestions: `body`,
 `departure`, `display`, `heading`, `mono`, `system`, and `unset`. Configuring a
 font with a CSS generic name still permits that name.
+
+RAN: CI's full typecheck exposed kitchen-sink cases using an unconfigured
+`monospace` family. Its config now registers that fixture font explicitly with
+the existing body scales. Contrast's own font suggestions stay unchanged.
+
+TESTED: full `bun run typecheck`, root `bun run lint`, and root `bun run check`
+pass. The existing UseTheme and DOMNodeAPIs browser suites passed all 24 cases.
+A browser comparison of UseTheme before and after font registration matched
+the four rows' font families, sizes, line heights, letter spacing, width,
+height, and content exactly.

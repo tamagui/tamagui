@@ -374,6 +374,13 @@ const bodyJa = {
   lineHeight: { ...defaultConfig.fonts.body.lineHeight, 3: 30 },
 }
 
+// fixture families are explicit so strict font names match the cases' runtime faces.
+const fonts = {
+  ...defaultConfig.fonts,
+  body_ja: bodyJa,
+  monospace: { ...defaultConfig.fonts.body, family: 'monospace' },
+}
+
 type Merge<Left, Right> = Omit<Left, keyof Right> & Right
 
 // deliberately partial theme the case asserts against. themeDev does not define
@@ -406,7 +413,7 @@ type KitchenConfigInput = Omit<
   'fonts' | 'media' | 'settings' | 'themes' | 'tokens'
 > & {
   animations: typeof animations
-  fonts: Merge<typeof defaultConfig.fonts, { body_ja: typeof bodyJa }>
+  fonts: typeof fonts
   media: typeof media
   settings: Merge<
     typeof defaultConfig.settings,
@@ -425,10 +432,7 @@ type KitchenConfigInput = Omit<
 const tamaConf: InferTamaguiConfig<KitchenConfigInput> =
   createTamagui<KitchenConfigInput>({
     ...defaultConfig,
-    fonts: {
-      ...defaultConfig.fonts,
-      body_ja: bodyJa,
-    },
+    fonts,
     themes,
     settings: {
       ...defaultConfig.settings,
