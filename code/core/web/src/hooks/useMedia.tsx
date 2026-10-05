@@ -362,59 +362,37 @@ export function useMedia(
       } as MediaRefSlot
       r.proxy = tracker as UseMediaState
     }
-    // the emitter updates sibling components through setState, which React
-    // rejects while this component renders, so a render-time emit waits for
-    // the render to finish
-    const emit = (ms: MediaQueryState, inRender?: boolean) => {
-      const mediaEmit = r.componentContext!.mediaEmit!
-      if (inRender) queueMicrotask(() => mediaEmit(ms))
-      else mediaEmit(ms)
-    }
     r.getSnapshot = (inRender) => {
-      if (r.optimizeForFirstRender) {
-        const ms = getMedia()
-        if (ms === r.lastState) {
-          return r.lastState
+      const { lastState } = r
+      const curKeys = mediaListenKeys(r)
+      const ms = getMedia()
+      if (curKeys) {
+        let changed = false
+        for (const key of curKeys) {
+          if (ms[key] !== (r.pendingState || lastState)[key]) {
+            if (process.env.NODE_ENV === 'development' && r.debug) {
+              console.warn(`useMedia() ✍️`, key, lastState[key], '=>', ms[key])
+            }
+            changed = true
+            break
+          }
         }
-
-        if (r.componentContext?.mediaEmit) {
-          emit(ms, inRender)
-          r.pendingState = ms
-          return r.lastState
-        }
-
-        r.lastState = ms
-        return ms
-      }
-
-      const curKeys = mediaListenKeys(r)!
-      const { lastState, pendingState } = r
-
-      if (!curKeys.size) {
+        if (!changed) return lastState
+      } else if (ms === lastState) {
         return lastState
       }
 
-      const ms = getMedia()
-      for (const key of curKeys) {
-        if (ms[key] !== (pendingState || lastState)[key]) {
-          if (process.env.NODE_ENV === 'development' && r.debug) {
-            console.warn(`useMedia() ✍️`, key, lastState[key], '=>', ms[key])
-          }
-
-          // in emitter mode (no-rerender) avoid changing state, instead emit
-          if (r.componentContext?.mediaEmit) {
-            emit(ms, inRender)
-            r.pendingState = ms
-            return lastState
-          }
-
-          r.lastState = ms
-
-          return ms
-        }
+      // render-time emits update siblings through setState, so defer those
+      // until render finishes; effect and subscription emits stay synchronous.
+      const mediaEmit = r.componentContext?.mediaEmit
+      if (mediaEmit) {
+        if (inRender) queueMicrotask(() => mediaEmit(ms))
+        else mediaEmit(ms)
+        r.pendingState = ms
+        return lastState
       }
-
-      return lastState
+      r.lastState = ms
+      return ms
     }
     internalRef.current = r
   } else {
