@@ -1999,20 +1999,6 @@ export type GetTokenFontKeysFor<
 > = keyof TamaguiConfig['fonts']['body'][A]
 
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>
-/** generic css families, valid as a single-token fontFamily without a config font */
-export type GenericFontFamily =
-  | 'serif'
-  | 'sans-serif'
-  | 'monospace'
-  | 'cursive'
-  | 'fantasy'
-  | 'system-ui'
-  | 'ui-serif'
-  | 'ui-sans-serif'
-  | 'ui-monospace'
-  | 'ui-rounded'
-  | 'math'
-  | 'inherit'
 export type FontFamilyTokens = FontTokens
 export type FontSize =
   | GetTokenString<GetTokenFontKeysFor<'size'>>
@@ -2115,7 +2101,7 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
   : K extends SizeKeys
     ? SizeTokens
     : K extends FontKeys
-      ? FontTokens | GenericFontFamily
+      ? FontTokens
       : K extends FontSizeKeys
         ? FontSizeTokens | FontStyleValueFallback
         : K extends `${`border${string | ''}Radius`}`

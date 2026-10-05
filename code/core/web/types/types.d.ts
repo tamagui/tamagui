@@ -1173,8 +1173,6 @@ export type Fonts = DefaultFont extends string ? TamaguiConfig['fonts'][DefaultF
 export type Font = ParseFont<Fonts>;
 export type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts']['body'][A];
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>;
-/** generic css families, valid as a single-token fontFamily without a config font */
-export type GenericFontFamily = 'serif' | 'sans-serif' | 'monospace' | 'cursive' | 'fantasy' | 'system-ui' | 'ui-serif' | 'ui-sans-serif' | 'ui-monospace' | 'ui-rounded' | 'math' | 'inherit';
 export type FontFamilyTokens = FontTokens;
 export type FontSize = GetTokenString<GetTokenFontKeysFor<'size'>> | number | RemString | true;
 export type FontSizeTokens = FontSize;
@@ -1207,7 +1205,7 @@ export type LineHeightKeys = 'lineHeight';
 export type ZIndexKeys = 'zIndex';
 export type OpacityKeys = 'opacity';
 type FontStyleValueFallback = GetThemeValueFallbackFor<AllowedValueSettingSize, never, never, never, WebStyleValueUniversal | `${number}%`>;
-export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends SizeKeys ? SizeTokens : K extends FontKeys ? FontTokens | GenericFontFamily : K extends FontSizeKeys ? FontSizeTokens | FontStyleValueFallback : K extends `${`border${string | ''}Radius`}` ? RadiusTokens : K extends SpaceKeys ? K extends 'shadowOffset' ? {
+export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends SizeKeys ? SizeTokens : K extends FontKeys ? FontTokens : K extends FontSizeKeys ? FontSizeTokens | FontStyleValueFallback : K extends `${`border${string | ''}Radius`}` ? RadiusTokens : K extends SpaceKeys ? K extends 'shadowOffset' ? {
     width: SpaceTokens;
     height: SpaceTokens;
 } : SpaceTokens : K extends ColorKeys ? ColorTokens | ThemeValueFallbackColor : K extends ZIndexKeys ? ZIndexTokens : K extends LineHeightKeys ? FontLineHeightTokens | FontStyleValueFallback : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : K extends OpacityKeys ? ThemeValueFallback : never;
