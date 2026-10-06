@@ -27,6 +27,7 @@ export declare const getThemeCSSRules: (props: {
 export declare const normalizeValueWithProperty: (value: any, property?: string) => any;
 export declare const proxyThemeToParents: (themeName: string, theme: any) => any;
 export declare const ensureThemeVariable: (theme: any, key: string) => void;
+export declare const copyAuthoredThemeScheme: <T>(target: T, source: any) => T;
 export declare const transformsToString: (transforms: object[]) => string;
 export declare const styleToCSS: (style: Record<string, any>) => void;
 export declare const useThemeWithState: (props: any, isRoot?: boolean, forThemeView?: boolean) => [any, any];

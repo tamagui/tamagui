@@ -595,3 +595,41 @@ into Contrast pass. A control using the skin's parent variants fails both
 context and nested-skin tests; final source is restored byte-for-byte.
 Receipts live with the earlier evidence; the delivery handoff records the
 final CI and canary verdicts.
+
+## Authored theme metadata and the narrowed starter config (2026-10-06)
+
+RAN: `99061fe323` adds scheme metadata and grows the islands to 73,494 /
+73,468 / 124,262 gzip bytes. Its direct parent retains the earlier repair's
+passing counts. Styled-view stays under its ceiling at 29,943 bytes.
+
+READ: the starter supplies its own two themes but imports its factory from
+the default-pack `v6` entry. `v6-base` already exports the same factory without
+the default themes, as documented for custom packs. RAN: changing only that
+import leaves Vite/Next unchanged but reduces Metro to 118,200 bytes. This
+would not recover those bytes if the default pack were absent from its graph.
+The shared scheme validator/copier now serves parsing, inheritance and scale
+merging through the existing private runtime boundary. Scheme metadata stays
+validated and nonenumerable. Parsing also uses one variable construction path
+and one map lookup, with the existing token context passed directly.
+
+RAN: native scheme-key tracking and reads remained in the web state path even
+though its native scheme-change condition is false. Conditioning that work on
+the native target removes it from web output. The ref initializes its stable
+fields once and assigns current fields through their existing update path.
+Two unnecessary local forwarding helpers are removed. Native skip conditions,
+subscription cleanup and theme intent are preserved.
+
+| Source | Styled-view | Vite island | Next island | Metro island |
+| --- | ---: | ---: | ---: | ---: |
+| `99061fe323` | 29,943 | 73,494 | 73,468 | 124,262 |
+| Shared metadata and dead work removal | 29,877 | 73,328 | 73,339 | 118,139 |
+| Existing ceiling | 30,069 | 73,341 | 73,359 | 124,079 |
+
+RAN: both unchanged size scripts and all six starter builds pass on pinned
+Node 24.16.0. TESTED: 694 core web tests, 13 iOS theme tests, eight v6 config
+tests and all 12 starter browser tests pass. Existing skips are unchanged.
+Web/config builds, formatting and the 132-package local release into Contrast
+pass. Disabling metadata copying fails the authored-scheme parsing test;
+restoring the final source is verified byte-for-byte. New assertions cover
+invalid scheme rejection and scheme preservation through color-scale merging.
+Receipts and rejected candidates remain in the external evidence directory.

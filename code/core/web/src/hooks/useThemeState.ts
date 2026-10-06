@@ -18,6 +18,7 @@ import type {
   UseThemeWithStateProps,
 } from '../types'
 import type { ThemeUpdateState } from '../helpers/themeUpdateState'
+import { getAuthoredThemeScheme } from '../helpers/themes'
 
 type ID = string
 
@@ -110,7 +111,7 @@ export const useThemeState = (
   }
 
   const id = useId()
-  const propsKey = getPropsKey(props)
+  const propsKey = `${props.name || ''}${props.forceClassName || ''}${props._themeUpdate?.key || ''}`
 
   if (cascadeOnChange) {
     registerThemeProviderChain(id, parentId, props)
@@ -119,20 +120,14 @@ export const useThemeState = (
   const ref = useRef<ThemeStateRef>(null as any)
   const r = (ref.current ||= {
     id,
-    parentId,
-    props,
-    propsKey,
-    isRoot,
-    keys,
-    schemeKeys,
     optimizeForFirstRender,
     renderVersion: 0,
-  })
+  } as ThemeStateRef)
   r.props = props
   r.propsKey = propsKey
   r.isRoot = isRoot
   r.keys = keys
-  r.schemeKeys = schemeKeys
+  if (process.env.TAMAGUI_TARGET === 'native') r.schemeKeys = schemeKeys
   r.parentId = parentId
   r.renderVersion++
 
@@ -153,7 +148,7 @@ export const useThemeState = (
     }
 
     if (r.unsubscribe && r.subscribedTo !== r.parentId) {
-      cleanupThemeSubscription(r)
+      r.unsubscribe?.()
     }
 
     if (shouldSubscribeToTheme(r, cascadeOnChange)) {
@@ -189,7 +184,7 @@ export const useThemeState = (
         }
       }
     } else if (r.unsubscribe) {
-      cleanupThemeSubscription(r)
+      r.unsubscribe?.()
     }
 
     return () => {
@@ -250,13 +245,9 @@ const shouldSubscribeToTheme = (r: ThemeStateRef, cascadeOnChange: boolean): boo
     r.props.needsUpdate?.()
   )
 
-function cleanupThemeSubscription(r: ThemeStateRef) {
-  r.unsubscribe?.()
-}
-
 function cleanupThemeState(r: ThemeStateRef) {
   if (r.unsubscribe) {
-    cleanupThemeSubscription(r)
+    r.unsubscribe()
   } else {
     r.state = undefined
     states.delete(r.id)
@@ -267,16 +258,8 @@ function cleanupThemeState(r: ThemeStateRef) {
 }
 
 const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
-  const {
-    id,
-    parentId,
-    props,
-    propsKey,
-    isRoot,
-    keys,
-    schemeKeys,
-    optimizeForFirstRender,
-  } = r
+  const { id, parentId, props, propsKey, isRoot, keys, optimizeForFirstRender } = r
+  const schemeKeys = process.env.TAMAGUI_TARGET === 'native' ? r.schemeKeys : undefined
   // useId values repeat across server renders; each hook owns its snapshot.
   let local = r.state
   const parentState = states.get(parentId)
@@ -302,11 +285,11 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
     local.scheme !== parentState.scheme &&
     getThemeBaseName(local.name) === getThemeBaseName(parentState.name)
 
-  const allKeysSchemeOptimized =
-    !optimizeForFirstRender &&
-    Boolean(keys.current?.size && schemeKeys?.current?.size === keys.current.size)
-
-  const canSkipForSchemeChange = Boolean(isSchemeOnlyChange && allKeysSchemeOptimized)
+  const canSkipForSchemeChange = Boolean(
+    isSchemeOnlyChange &&
+    keys.current?.size &&
+    schemeKeys?.current?.size === keys.current.size
+  )
 
   // forceClassName renders its resolved name as classes, so a nameless one that
   // mirrors its parent still has to re-render when the parent's scheme flips
@@ -445,14 +428,7 @@ const getNextState = (
   }
 
   // a same-name pin still introduces its own scope.
-  const authoredScheme = Reflect.get(
-    themes[resolvedName],
-    Symbol.for('tamagui.theme.scheme')
-  )
-  const scheme =
-    authoredScheme === 'light' || authoredScheme === 'dark'
-      ? authoredScheme
-      : getScheme(resolvedName)
+  const scheme = getAuthoredThemeScheme(themes[resolvedName]) || getScheme(resolvedName)
   const parentInverses = parentState?.inverses ?? 0
   const isInverse = Boolean(parentState && scheme !== parentState.scheme)
   const inverses = parentInverses + (isInverse ? 1 : 0)
@@ -562,9 +538,6 @@ export function resolveThemeName(
 
   return found
 }
-
-const getPropsKey = ({ name, forceClassName, _themeUpdate }: UseThemeWithStateProps) =>
-  `${name || ''}${forceClassName || ''}${_themeUpdate?.key || ''}`
 
 export const hasThemeUpdatingProps = (props: UseThemeWithStateProps) =>
   'name' in props || 'forceClassName' in props || '_themeUpdate' in props

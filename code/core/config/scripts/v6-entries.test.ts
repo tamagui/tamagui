@@ -88,6 +88,12 @@ describe('v6 config', () => {
     expect(config.themes.light_level2).not.toHaveProperty('brand-1')
 
     const created = createTamagui(config)
+    const schemeKey = Symbol.for('tamagui.theme.scheme')
+    expect(Reflect.get(created.themes.light, schemeKey)).toBe('light')
+    expect(Reflect.get(created.themes.dark, schemeKey)).toBe('dark')
+    expect(
+      Object.getOwnPropertyDescriptor(created.themes.light, schemeKey)?.enumerable
+    ).toBe(false)
     expect(created.themes.light['brand-10']).toBeTruthy()
     // `--brand-10` alone also matches the `--brand-100` token alias, so pin the
     // declaration end and the step-11 neighbour that only the scale can emit

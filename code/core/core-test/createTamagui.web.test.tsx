@@ -7,6 +7,18 @@ import { createThemes } from '../create-theme/src/createThemes'
 import { createTamagui } from '../web/src'
 
 describe('createTamagui', () => {
+  test('ignores invalid authored scheme metadata without changing theme values', () => {
+    const light = { background: '#fff' }
+    const key = Symbol.for('tamagui.theme.scheme')
+    Object.defineProperty(light, key, { value: 'invalid' })
+    const parsed = createTamagui({
+      ...config.getDefaultTamaguiConfig(),
+      themes: { light },
+    })
+    expect(Reflect.get(parsed.themes.light, key)).toBeUndefined()
+    expect(parsed.themes.light.background.val).toBe('#fff')
+  })
+
   test('keeps authored theme scheme through config parsing without CSS tokens', () => {
     const themes = createThemes(
       { color: { gray: '#888' } },

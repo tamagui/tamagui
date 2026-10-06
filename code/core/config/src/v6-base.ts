@@ -2,6 +2,7 @@
 // colors and themes are deliberately separate so createV6Config can accept any pack.
 import { shorthands } from '@tamagui/shorthands/v6'
 import { defaultSizing } from '@tamagui/web'
+import { copyAuthoredThemeScheme } from '@tamagui/web/internal-runtime'
 import type { CreateTamaguiProps } from '@tamagui/web'
 import { fonts as systemFonts } from './fonts'
 import { media } from './media'
@@ -223,20 +224,11 @@ function themesWithColorScales<
       dark[`${name}-${index + 1}`] = value
     })
   }
-  const result = {
+  return {
     ...themes,
-    light: { ...themes.light, ...light },
-    dark: { ...themes.dark, ...dark },
-  }
-  for (const name of ['light', 'dark'] as const) {
-    const scheme = Reflect.get(themes[name], Symbol.for('tamagui.theme.scheme'))
-    if (scheme === 'light' || scheme === 'dark') {
-      Object.defineProperty(result[name], Symbol.for('tamagui.theme.scheme'), {
-        value: scheme,
-      })
-    }
-  }
-  return result as WithColorScales<Themes, Scales>
+    light: copyAuthoredThemeScheme({ ...themes.light, ...light }, themes.light),
+    dark: copyAuthoredThemeScheme({ ...themes.dark, ...dark }, themes.dark),
+  } as WithColorScales<Themes, Scales>
 }
 
 const alignedConfig = {

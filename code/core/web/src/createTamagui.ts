@@ -14,7 +14,11 @@ import {
 } from './helpers/createDesignSystem'
 import { scanAllSheets } from './helpers/insertStyleRule'
 import { proxyThemesToParents } from './helpers/proxyThemeToParents'
-import { ensureThemeVariable } from './helpers/themes'
+import {
+  copyAuthoredThemeScheme,
+  ensureThemeVariable,
+  getAuthoredThemeScheme,
+} from './helpers/themes'
 import { mergeConfigVariablesIntoTheme } from './helpers/configVariables'
 import { configureMedia } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
@@ -232,10 +236,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
     const themesIn = configIn.themes as ThemesLikeObject
     const dedupedThemes =
-      foundThemes ??
-      getThemesDeduped(themesIn, tokens.color, configIn.variables, {
-        tokensParsed,
-      })
+      foundThemes ?? getThemesDeduped(themesIn, tokensParsed, configIn.variables)
     const themes = proxyThemesToParents(dedupedThemes, Object.keys(themesIn))
 
     return {
@@ -330,11 +331,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 // dedupes the themes if given them via JS config
 function getThemesDeduped(
   themes: ThemesLikeObject,
-  colorTokens?: Record<string, any>,
-  variables?: CreateTamaguiProps['variables'],
-  variablesCtx?: {
-    tokensParsed: TokensParsed
-  }
+  tokensParsed: TokensParsed,
+  variables?: CreateTamaguiProps['variables']
 ): DedupedThemes {
   const dedupedThemes: DedupedThemes = []
   const existing = new Map<string, DedupedTheme>()
@@ -351,12 +349,12 @@ function getThemesDeduped(
     const rawTheme = themes[themeName]
 
     // dont force referential equality but may need something more consistent than JSON.stringify
-    const scheme = Reflect.get(rawTheme, Symbol.for('tamagui.theme.scheme'))
-    const key = JSON.stringify([rawTheme, scheme])
+    const scheme = getAuthoredThemeScheme(rawTheme)
+    const key = JSON.stringify(rawTheme) + scheme
 
     // if existing, avoid
-    if (existing.has(key)) {
-      const e = existing.get(key)!
+    const e = existing.get(key)
+    if (e) {
       e.names.push(themeName)
       continue
     }
@@ -364,7 +362,7 @@ function getThemesDeduped(
     // ensure each theme object unique for dedupe
     // is ThemeParsed because we call ensureThemeVariable
     // color tokens are spread first as fallbacks, theme values take precedence
-    const theme = { ...colorTokens, ...rawTheme } as any as ThemeParsed
+    const theme = { ...tokensParsed.color, ...rawTheme } as any as ThemeParsed
 
     // parse into variables
     for (const key in theme) {
@@ -372,20 +370,13 @@ function getThemesDeduped(
       ensureThemeVariable(theme, key)
     }
 
-    if (scheme === 'light' || scheme === 'dark') {
-      Object.defineProperty(theme, Symbol.for('tamagui.theme.scheme'), { value: scheme })
-    }
+    copyAuthoredThemeScheme(theme, rawTheme)
 
     // custom variables merge into base themes only; sub-themes inherit them
     // via proxyThemesToParents (native) and the CSS cascade (web), so a
     // a ThemeUpdate patch survives sub-theme switches below it
-    if (variables && variablesCtx && !themeName.includes('_')) {
-      mergeConfigVariablesIntoTheme(
-        theme as any,
-        themeName,
-        variables,
-        variablesCtx.tokensParsed
-      )
+    if (variables && !themeName.includes('_')) {
+      mergeConfigVariablesIntoTheme(theme as any, themeName, variables, tokensParsed)
     }
 
     // set deduped

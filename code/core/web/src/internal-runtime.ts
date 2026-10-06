@@ -19,7 +19,10 @@ import { getThemeCSSRules as getThemeCSSRulesImpl } from './helpers/getThemeCSSR
 import { normalizeValueWithProperty as normalizeValueWithPropertyImpl } from './helpers/normalizeValueWithProperty'
 import { proxyThemeToParents as proxyThemeToParentsImpl } from './helpers/proxyThemeToParents'
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend'
-import { ensureThemeVariable as ensureThemeVariableImpl } from './helpers/themes'
+import {
+  copyAuthoredThemeScheme as copyAuthoredThemeSchemeImpl,
+  ensureThemeVariable as ensureThemeVariableImpl,
+} from './helpers/themes'
 import { transformsToString as transformsToStringImpl } from './helpers/transformsToString'
 import {
   parseFont as parseFontImpl,
@@ -59,6 +62,8 @@ export const proxyThemeToParents: (themeName: string, theme: any) => any =
   proxyThemeToParentsImpl
 export const ensureThemeVariable: (theme: any, key: string) => void =
   ensureThemeVariableImpl
+export const copyAuthoredThemeScheme: <T>(target: T, source: any) => T =
+  copyAuthoredThemeSchemeImpl
 export const transformsToString: (transforms: object[]) => string = transformsToStringImpl
 export const styleToCSS: (style: Record<string, any>) => void = styleToCSSImpl
 export const useThemeWithState: (

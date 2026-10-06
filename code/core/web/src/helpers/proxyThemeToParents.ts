@@ -1,4 +1,5 @@
 import type { DedupedThemes, ThemeParsed } from '../types'
+import { copyAuthoredThemeScheme } from './themes'
 
 const themesRaw: Record<string, ThemeParsed> = {}
 
@@ -58,9 +59,5 @@ export function proxyThemeToParents(themeName: string, theme: ThemeParsed) {
     Object.assign(out, themesRaw[parent])
   }
   Object.assign(out, theme)
-  const scheme = Reflect.get(theme, Symbol.for('tamagui.theme.scheme'))
-  if (scheme === 'light' || scheme === 'dark') {
-    Object.defineProperty(out, Symbol.for('tamagui.theme.scheme'), { value: scheme })
-  }
-  return out
+  return copyAuthoredThemeScheme(out, theme)
 }
