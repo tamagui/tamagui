@@ -269,6 +269,17 @@ describe('getSplitStyles', () => {
     })
 
     for (const background of [
+      'rgba(255,255,255,0.55)',
+      'rgb(255, 255, 255)',
+      'hsl(0, 0%, 100%)',
+      '#FFFFFF8C',
+    ]) {
+      expect(getSplitStylesFor({ background }).style).toEqual(
+        getSplitStylesFor({ backgroundColor: background }).style
+      )
+    }
+
+    for (const background of [
       '#fff url(x.png) no-repeat',
       'url(x.png)',
       'linear-gradient(to right, red, blue)',

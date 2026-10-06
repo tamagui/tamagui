@@ -3480,7 +3480,10 @@ function emitValue(
   }
   if (typeof raw === 'string' && property === 'background') {
     const parts = splitComponents(raw)
-    if (parts.length === 1 && !startsValueFunction(parts[0])) {
+    if (
+      parts.length === 1 &&
+      (!startsValueFunction(parts[0]) || classifyBorderComponents(parts[0]).color)
+    ) {
       emitResolved(state, 'backgroundColor', parts[0], cursor, originalValue, contextOnly)
       return
     }
