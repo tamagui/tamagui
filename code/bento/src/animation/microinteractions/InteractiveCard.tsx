@@ -11,6 +11,12 @@ import {
   View,
   withStaticProperties,
 } from 'tamagui'
+import { tone } from '../../tone'
+
+const prefersReducedMotion = () =>
+  isWeb &&
+  typeof window !== 'undefined' &&
+  !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
 const MouseEnterContext = createContext<
   [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
@@ -47,7 +53,7 @@ const Container = ({ children, ...rest }: ViewProps) => {
 
   if (isWeb) {
     handleMouseMove = (e) => {
-      if (!containerRef) return
+      if (!containerRef || prefersReducedMotion()) return
       const { left, top, width, height } = containerRef.getBoundingClientRect()
       const x = (e.clientX - left - width / 2) / 25
       const y = (e.clientY - top - height / 2) / 25
@@ -155,7 +161,7 @@ const Item = createStyledHOC(
     }, [element])
 
     const handleAnimations = () => {
-      if (!element) return
+      if (!element || prefersReducedMotion()) return
       if (isMouseEntered) {
         element.style.transform = `translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`
       } else {
@@ -195,7 +201,7 @@ export function InteractiveCard() {
         width={400}
         maxW="100%"
         borderWidth={1}
-        borderColor="color-6"
+        borderColor={tone.border}
         p="3"
         rounded="4"
         gap="4"
@@ -215,14 +221,14 @@ export function InteractiveCard() {
         </Card.Item>
         <Card.Item translateZ={25}>
           <View px="3" py="2" rounded="5" bg="green-6" self="flex-start">
-            <Text fontSize="3">Label</Text>
+            <Text fontSize="3">New arrival</Text>
           </View>
         </Card.Item>
         <Card.Item translateZ={15}>
-          <H3 size="7">Heading level 3</H3>
+          <H3 size="7">Field Hoodie</H3>
         </Card.Item>
         <Card.Item translateZ={10}>
-          <Text fontSize="4">This is a brief description about card</Text>
+          <Text fontSize="4">Heavyweight brushed fleece, hand painted in Portugal.</Text>
         </Card.Item>
         <Card.Item translateZ={50} translateY={5}>
           <Button
@@ -230,7 +236,7 @@ export function InteractiveCard() {
             style={{ transition: 'transform 150ms ease, opacity 150ms ease' }}
             scale="press:0.98"
           >
-            <Button.Text>Buy</Button.Text>
+            <Button.Text>Buy · $189</Button.Text>
           </Button>
         </Card.Item>
       </Card.Body>

@@ -4,7 +4,6 @@ import { useMemo, useState } from 'react'
 import {
   Adapt,
   Button,
-  Image,
   Label,
   Select,
   Separator,
@@ -45,15 +44,24 @@ const countries = [
   { name: 'Russia', flag: 'RU' },
 ]
 
-const languagesArray = Array.from({ length: 10 }, (_, i) => ({
-  name: languages[i].name,
-  shortcut: languages[i].shortcut,
-  flag: `https://flagsapi.com/${languages[i].flag}/flat/64.png`,
+// convert country code to flag emoji (e.g., "US" -> "🇺🇸")
+function countryCodeToFlag(countryCode: string): string {
+  const codePoints = countryCode
+    .toUpperCase()
+    .split('')
+    .map((char) => 127397 + char.charCodeAt(0))
+  return String.fromCodePoint(...codePoints)
+}
+
+const languagesArray = languages.map((item) => ({
+  name: item.name,
+  shortcut: item.shortcut,
+  flag: countryCodeToFlag(item.flag),
 }))
 
-const locationsArray = Array.from({ length: 10 }, (_, i) => ({
-  name: countries[i].name,
-  flag: `https://flagsapi.com/${countries[i].flag}/flat/64.png`,
+const locationsArray = countries.map((item) => ({
+  name: item.name,
+  flag: countryCodeToFlag(item.flag),
 }))
 
 type DataItem = {
@@ -81,7 +89,7 @@ function GeneralSelect({
             items="center"
             value={`${i}`}
           >
-            <Image src={item.flag} width={20} height={20} />
+            <Text fontSize="5">{item.flag}</Text>
             <SizableText mr="auto">{`${item.name} ${
               item.shortcut ? `(${item.shortcut})` : ''
             }`}</SizableText>
@@ -96,7 +104,6 @@ function GeneralSelect({
 
   return (
     <Select
-      id="food"
       value={val}
       onValueChange={(value) => setVal(String(value))}
       disablePreventBodyScroll
@@ -105,7 +112,7 @@ function GeneralSelect({
     >
       <Select.Trigger width="100%" rounded="4">
         <View flexDirection="row" gap="3" justify="center" items="center">
-          <Image src={selectedItem.flag} width={20} height={20} />
+          <Text fontSize="5">{selectedItem.flag}</Text>
           <SizableText mr="auto">{`${selectedItem.name} ${
             selectedItem.shortcut ? `(${selectedItem.shortcut})` : ''
           }`}</SizableText>
@@ -283,7 +290,7 @@ function RadioList() {
         {radioData.map(({ title, desc }) => (
           <View
             flexDirection="column"
-            borderWidth="px"
+            borderWidth={1}
             borderColor={`${title === value ? 'color-6' : 'color-4'}`}
             cursor="pointer"
             rounded="7"
