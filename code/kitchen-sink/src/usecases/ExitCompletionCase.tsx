@@ -751,7 +751,7 @@ function Scenario56_KeywordWidthExit() {
           <View
             key="keyword-width"
             transition="quick"
-            width="max-content"
+            width={'max-content' as any}
             height={40}
             bg="green-600"
             opacity="exit:0"
