@@ -223,11 +223,20 @@ function themesWithColorScales<
       dark[`${name}-${index + 1}`] = value
     })
   }
-  return {
+  const result = {
     ...themes,
     light: { ...themes.light, ...light },
     dark: { ...themes.dark, ...dark },
-  } as WithColorScales<Themes, Scales>
+  }
+  for (const name of ['light', 'dark'] as const) {
+    const scheme = Reflect.get(themes[name], Symbol.for('tamagui.theme.scheme'))
+    if (scheme === 'light' || scheme === 'dark') {
+      Object.defineProperty(result[name], Symbol.for('tamagui.theme.scheme'), {
+        value: scheme,
+      })
+    }
+  }
+  return result as WithColorScales<Themes, Scales>
 }
 
 const alignedConfig = {

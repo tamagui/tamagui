@@ -445,7 +445,14 @@ const getNextState = (
   }
 
   // a same-name pin still introduces its own scope.
-  const scheme = getScheme(resolvedName)
+  const authoredScheme = Reflect.get(
+    themes[resolvedName],
+    Symbol.for('tamagui.theme.scheme')
+  )
+  const scheme =
+    authoredScheme === 'light' || authoredScheme === 'dark'
+      ? authoredScheme
+      : getScheme(resolvedName)
   const parentInverses = parentState?.inverses ?? 0
   const isInverse = Boolean(parentState && scheme !== parentState.scheme)
   const inverses = parentInverses + (isInverse ? 1 : 0)

@@ -351,7 +351,8 @@ function getThemesDeduped(
     const rawTheme = themes[themeName]
 
     // dont force referential equality but may need something more consistent than JSON.stringify
-    const key = JSON.stringify(rawTheme)
+    const scheme = Reflect.get(rawTheme, Symbol.for('tamagui.theme.scheme'))
+    const key = JSON.stringify([rawTheme, scheme])
 
     // if existing, avoid
     if (existing.has(key)) {
@@ -369,6 +370,10 @@ function getThemesDeduped(
     for (const key in theme) {
       // make sure properly names theme variables
       ensureThemeVariable(theme, key)
+    }
+
+    if (scheme === 'light' || scheme === 'dark') {
+      Object.defineProperty(theme, Symbol.for('tamagui.theme.scheme'), { value: scheme })
     }
 
     // custom variables merge into base themes only; sub-themes inherit them

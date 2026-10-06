@@ -65,6 +65,12 @@ export async function generateThemes(inputFile: string) {
   }
 }
 
+const themeSchemeKey = Symbol.for('tamagui.theme.scheme')
+
+function themeIdentity(theme: Record<string, any>) {
+  return JSON.stringify([theme, Reflect.get(theme, themeSchemeKey)])
+}
+
 function generatedThemesToTypescript(themes: Record<string, any>) {
   // value -> name of variable. per invocation: a process-wide map would emit
   // the previous run's colors into this run's `colors` array.
@@ -88,7 +94,7 @@ function generatedThemesToTypescript(themes: Record<string, any>) {
       }
     }
 
-    const key = JSON.stringify(theme)
+    const key = themeIdentity(theme)
     if (dedupedThemes.has(key)) {
       dedupedThemeToNames.set(key, [...dedupedThemeToNames.get(key)!, name])
     } else {
@@ -118,11 +124,12 @@ ${baseKeys
 
   // add in the helper function to generate a theme:
   out += `
-function t(a: [number, number][]) {
+function t(a: [number, number][], scheme?: 'light' | 'dark') {
   let res: Record<string,string> = {}
   for (const [ki, vi] of a) {
     res[ks[ki] as string] = colors[vi] as string
   }
+  if (scheme) Object.defineProperty(res, Symbol.for('tamagui.theme.scheme'), { value: scheme })
   return res as Theme
 }
 `
@@ -152,7 +159,7 @@ function t(a: [number, number][]) {
 
   dedupedThemes.forEach((theme) => {
     nameI++
-    const key = JSON.stringify(theme)
+    const key = themeIdentity(theme)
     const names = dedupedThemeToNames.get(key)!
     const name = `n${nameI}`
     const baseTheme = `const ${name} = ${objectToJsString(theme, keys, valueToIndex)}`
@@ -182,7 +189,8 @@ function objectToJsString(
     const vi = valueToIndex[obj[key]]
     arrItems.push(`[${ki}, ${vi}]`)
   }
-  return `t([${arrItems.join(',')}])`
+  const scheme = Reflect.get(obj, themeSchemeKey)
+  return `t([${arrItems.join(',')}]${scheme === 'light' || scheme === 'dark' ? `, ${JSON.stringify(scheme)}` : ''})`
 }
 
 /**
