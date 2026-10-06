@@ -340,17 +340,22 @@ const buildSnapshot = (
   for (const key of keys) gatedKeys[key] = true
 
   const removedKeys = getRemovedAnimatedKeys(keys, previousKeys)
+  // what React writes to the DOM: statics win, since an animated key's static
+  // slot holds its carried first value and that is what stays on screen until
+  // the mapper emits the key. several renders can commit before the mapper's
+  // first run (a popover's first open), and seeding from a previous target
+  // would start the animation at its end
   const painted: Record<string, unknown> = {
-    ...snapshotStatics,
     ...snapshotAnimated,
+    ...snapshotStatics,
   }
   const staticTransforms = getAnimatedTransforms(snapshotStatics.transform)
   delete painted.transform
-  for (const transform of staticTransforms) {
+  for (const transform of snapshotTransforms) {
     const key = Object.keys(transform)[0]
     if (key) painted[`transform:${key}`] = transform[key]
   }
-  for (const transform of snapshotTransforms) {
+  for (const transform of staticTransforms) {
     const key = Object.keys(transform)[0]
     if (key) painted[`transform:${key}`] = transform[key]
   }
