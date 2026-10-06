@@ -1,2 +1,61 @@
-import{existsSync as e,lstatSync as j}from"node:fs";import{dirname as p,extname as y,resolve as a}from"node:path";function b(r,d){return r.assertVersion(7),{name:"babel-plugin-fully-specified-cjs",visitor:{CallExpression(l,m){if(l.get("callee").isIdentifier({name:"require"})&&l.node.arguments.length===1){let o=l.node.arguments[0];if(o.type==="StringLiteral"){let n=o.value;if(n.startsWith(".")||n.startsWith("/")){let f=m.file.opts.filename;if(!f)return;let x=p(f),s=d.esExtensionDefault||".cjs",c=".js";if(!y(n)){let i=a(x,n),t=n;if(s.startsWith(".native")&&(e(`${i}.ios.js`)||e(`${i}.android.js`)))return;if(v(i)){let u=a(i,"index");if(s.startsWith(".native")&&(e(`${u}.ios.js`)||e(`${u}.android.js`)))return;let g=a(i,"index"+c);if(e(g)){t.endsWith("/")||(t+="/"),t+="index"+s,o.value=t;return}}if(e(i+c)||e(i+s)){t+=s,o.value=t;return}}}}}}}}}function v(r){return e(r)&&j(r).isDirectory()}export{b as default};
+import { existsSync as e, lstatSync as j } from 'node:fs'
+import { dirname as p, extname as y, resolve as a } from 'node:path'
+function b(r, d) {
+  return (
+    r.assertVersion(7),
+    {
+      name: 'babel-plugin-fully-specified-cjs',
+      visitor: {
+        CallExpression(l, m) {
+          if (
+            l.get('callee').isIdentifier({ name: 'require' }) &&
+            l.node.arguments.length === 1
+          ) {
+            let o = l.node.arguments[0]
+            if (o.type === 'StringLiteral') {
+              let n = o.value
+              if (n.startsWith('.') || n.startsWith('/')) {
+                let f = m.file.opts.filename
+                if (!f) return
+                let x = p(f),
+                  s = d.esExtensionDefault || '.cjs',
+                  c = '.js'
+                if (!y(n)) {
+                  let i = a(x, n),
+                    t = n
+                  if (
+                    s.startsWith('.native') &&
+                    (e(`${i}.ios.js`) || e(`${i}.android.js`))
+                  )
+                    return
+                  if (v(i)) {
+                    let u = a(i, 'index')
+                    if (
+                      s.startsWith('.native') &&
+                      (e(`${u}.ios.js`) || e(`${u}.android.js`))
+                    )
+                      return
+                    let g = a(i, 'index' + c)
+                    if (e(g)) {
+                      ;(t.endsWith('/') || (t += '/'), (t += 'index' + s), (o.value = t))
+                      return
+                    }
+                  }
+                  if (e(i + c) || e(i + s)) {
+                    ;((t += s), (o.value = t))
+                    return
+                  }
+                }
+              }
+            }
+          }
+        },
+      },
+    }
+  )
+}
+function v(r) {
+  return e(r) && j(r).isDirectory()
+}
+export { b as default }
 //# sourceMappingURL=commonjs.js.map

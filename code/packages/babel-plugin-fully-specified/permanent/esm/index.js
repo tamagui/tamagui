@@ -1,2 +1,138 @@
-import{existsSync as x,lstatSync as D}from"node:fs";import{dirname as S,extname as P,resolve as g}from"node:path";import*as f from"@babel/types";var y={ensureFileExists:!0,esExtensionDefault:".mjs",tryExtensions:[".js"],esExtensions:[".mjs"],convertProcessEnvToImportMetaEnv:!1};function I(e,s={}){e.assertVersion(7);let l=j(s),p=(i,t)=>{let o=t.file.opts.filename;if(!o)return;let{node:r}=i;if(r.importKind==="type")return;let n=r.source.value,a=E(n,{filePath:o,options:l});a&&(r.source.value=a)},c=(i,t)=>{let o=t.file.opts.filename;if(!o)return;let{node:r}=i;if(r.exportKind==="type")return;let n=r.source;if(!n)return;let a=n.value,d=E(a,{filePath:o,options:l});d&&(n.value=d)};return{name:"babel-plugin-fully-specified",visitor:{ImportDeclaration:p,ExportNamedDeclaration:c,ExportAllDeclaration:c,Import:(i,t)=>{let o=t.file.opts.filename;if(!o)return;let r=i.parent;if(r.type!=="CallExpression")return;let n=r.arguments[0];if(n.type!=="StringLiteral")return;let a=n.value,d=E(a,{filePath:o,options:l});d&&(n.value=d)},MemberExpression:i=>{if(!l.convertProcessEnvToImportMetaEnv)return;let{node:t}=i;if(t.object.type==="MemberExpression"&&t.object.object.type==="Identifier"&&t.object.object.name==="process"&&t.object.property.type==="Identifier"&&t.object.property.name==="env"){if(t.property.type==="Identifier"&&t.property.name==="NODE_ENV")return;t.object=f.memberExpression(f.metaProperty(f.identifier("import"),f.identifier("meta")),f.identifier("env"))}}}}}function j(e){let s={...y,...e};return e.esExtensionDefault&&!e.tryExtensions&&e.esExtensionDefault!==y.esExtensionDefault&&(s.tryExtensions=[e.esExtensionDefault,...y.tryExtensions.filter(l=>l!==e.esExtensionDefault)]),s}function E(e,{filePath:s,options:l}){let p=P(s),c=S(s),u=M(g(c,e)),m=P(e),{tryExtensions:i,esExtensions:t,esExtensionDefault:o,ensureFileExists:r}=l,n=F({moduleSpecifier:e,filenameDirectory:c,filenameExtension:p,currentModuleExtension:m,isDirectory:u,tryExtensions:i,esExtensions:t,esExtensionDefault:o,ensureFileExists:r});return n===!1?null:n}function M(e){return x(e)&&D(e).isDirectory()}function b(e){return e.startsWith(".native")}function v(e){return x(`${e}.ios.js`)||x(`${e}.android.js`)}function F({moduleSpecifier:e,currentModuleExtension:s,isDirectory:l,filenameDirectory:p,filenameExtension:c,tryExtensions:u,esExtensions:m,esExtensionDefault:i,ensureFileExists:t}){let o=g(p,e);if(t){if(b(i)&&v(o))return!1;for(let r of u)if(x(o+r))return e+i;if(s&&!m.includes(s))return!1;if(l){let r=`${e.replace(/\/$/,"")}/index`,n=g(p,r);if(b(i)&&v(n))return!1;for(let a of u)if(x(n+a))return r+i}}else return m.includes(c),e+i;return!1}export{I as default};
+import { existsSync as x, lstatSync as D } from 'node:fs'
+import { dirname as S, extname as P, resolve as g } from 'node:path'
+import * as f from '@babel/types'
+var y = {
+  ensureFileExists: !0,
+  esExtensionDefault: '.mjs',
+  tryExtensions: ['.js'],
+  esExtensions: ['.mjs'],
+  convertProcessEnvToImportMetaEnv: !1,
+}
+function I(e, s = {}) {
+  e.assertVersion(7)
+  let l = j(s),
+    p = (i, t) => {
+      let o = t.file.opts.filename
+      if (!o) return
+      let { node: r } = i
+      if (r.importKind === 'type') return
+      let n = r.source.value,
+        a = E(n, { filePath: o, options: l })
+      a && (r.source.value = a)
+    },
+    c = (i, t) => {
+      let o = t.file.opts.filename
+      if (!o) return
+      let { node: r } = i
+      if (r.exportKind === 'type') return
+      let n = r.source
+      if (!n) return
+      let a = n.value,
+        d = E(a, { filePath: o, options: l })
+      d && (n.value = d)
+    }
+  return {
+    name: 'babel-plugin-fully-specified',
+    visitor: {
+      ImportDeclaration: p,
+      ExportNamedDeclaration: c,
+      ExportAllDeclaration: c,
+      Import: (i, t) => {
+        let o = t.file.opts.filename
+        if (!o) return
+        let r = i.parent
+        if (r.type !== 'CallExpression') return
+        let n = r.arguments[0]
+        if (n.type !== 'StringLiteral') return
+        let a = n.value,
+          d = E(a, { filePath: o, options: l })
+        d && (n.value = d)
+      },
+      MemberExpression: (i) => {
+        if (!l.convertProcessEnvToImportMetaEnv) return
+        let { node: t } = i
+        if (
+          t.object.type === 'MemberExpression' &&
+          t.object.object.type === 'Identifier' &&
+          t.object.object.name === 'process' &&
+          t.object.property.type === 'Identifier' &&
+          t.object.property.name === 'env'
+        ) {
+          if (t.property.type === 'Identifier' && t.property.name === 'NODE_ENV') return
+          t.object = f.memberExpression(
+            f.metaProperty(f.identifier('import'), f.identifier('meta')),
+            f.identifier('env')
+          )
+        }
+      },
+    },
+  }
+}
+function j(e) {
+  let s = { ...y, ...e }
+  return (
+    e.esExtensionDefault &&
+      !e.tryExtensions &&
+      e.esExtensionDefault !== y.esExtensionDefault &&
+      (s.tryExtensions = [
+        e.esExtensionDefault,
+        ...y.tryExtensions.filter((l) => l !== e.esExtensionDefault),
+      ]),
+    s
+  )
+}
+function E(e, { filePath: s, options: l }) {
+  let p = P(s),
+    c = S(s),
+    u = M(g(c, e)),
+    m = P(e),
+    { tryExtensions: i, esExtensions: t, esExtensionDefault: o, ensureFileExists: r } = l,
+    n = F({
+      moduleSpecifier: e,
+      filenameDirectory: c,
+      filenameExtension: p,
+      currentModuleExtension: m,
+      isDirectory: u,
+      tryExtensions: i,
+      esExtensions: t,
+      esExtensionDefault: o,
+      ensureFileExists: r,
+    })
+  return n === !1 ? null : n
+}
+function M(e) {
+  return x(e) && D(e).isDirectory()
+}
+function b(e) {
+  return e.startsWith('.native')
+}
+function v(e) {
+  return x(`${e}.ios.js`) || x(`${e}.android.js`)
+}
+function F({
+  moduleSpecifier: e,
+  currentModuleExtension: s,
+  isDirectory: l,
+  filenameDirectory: p,
+  filenameExtension: c,
+  tryExtensions: u,
+  esExtensions: m,
+  esExtensionDefault: i,
+  ensureFileExists: t,
+}) {
+  let o = g(p, e)
+  if (t) {
+    if (b(i) && v(o)) return !1
+    for (let r of u) if (x(o + r)) return e + i
+    if (s && !m.includes(s)) return !1
+    if (l) {
+      let r = `${e.replace(/\/$/, '')}/index`,
+        n = g(p, r)
+      if (b(i) && v(n)) return !1
+      for (let a of u) if (x(n + a)) return r + i
+    }
+  } else return (m.includes(c), e + i)
+  return !1
+}
+export { I as default }
 //# sourceMappingURL=index.js.map
