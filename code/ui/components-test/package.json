@@ -9,7 +9,8 @@
   "scripts": {
     "test:web": "DISABLE_REACT_NATIVE=1 TEST_ENVIRONMENT=jsdom TAMAGUI_TARGET=web vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.web.test.tsx",
     "test:native": "TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.native.test.tsx",
-    "test": "bun run test:native"
+    "test:android": "TEST_NATIVE_PLATFORM=android TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.android.test.tsx",
+    "test": "bun run test:native && bun run test:android"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
