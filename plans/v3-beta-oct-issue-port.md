@@ -39,7 +39,7 @@ ContextMenuTriggerStyle and MenuNoAdapter suites 2/2 pass. Android validation is
 a mocked native runtime test, with no device run.
 
 Final validation (RAN): ExitCompletion, AnimatePresenceEnterExit and
-PopoverFirstOpenEnter finish with 72 passed and 6 existing Motion skips across
+PopoverFirstOpenEnter finish with 72 passed and 6 existing driver-specific skips across
 CSS, Reanimated and Motion, with one
 worker and retries disabled. Root `bun run lint` passes with two existing
 warnings; root `bun run check` passes. Fresh installation initially lacked the
@@ -50,3 +50,8 @@ unused-dependency, reference, path, published web type and LSP pin checks pass.
 Rebuilt changed targets: sheet, native, web, core (including native-test bundle),
 animations-reanimated and context-menu. No beta runtime changes are needed for
 #4233, #4240 or #4244. No changes target main.
+
+Exact web totals: CSS 26 passed; Reanimated 24 passed and 2 skipped; Motion
+22 passed and 4 skipped. Existing scenarios 51 and 53 skip non-CSS drivers;
+Motion also skips scenarios 10 and 11. These totals supersede the scheduled
+counts in the earlier validation commit bodies. No skip was added by the port.
