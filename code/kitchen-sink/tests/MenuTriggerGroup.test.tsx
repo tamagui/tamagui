@@ -186,7 +186,7 @@ test('ungrouped menu in a mixed root keeps its checkbox under the physical point
     )
   })
   const position = await content.boundingBox()
-  const check = await checkbox.boundingBox()
+  const check = await checkbox.getByText('First check', { exact: true }).boundingBox()
   const x = check!.x + check!.width / 2
   const y = check!.y + check!.height / 2
   await page.mouse.move(x, y)

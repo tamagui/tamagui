@@ -98,12 +98,28 @@ function SharedMenu({ isolation = false }: { isolation?: boolean }) {
 
 function MixedMenu() {
   const [label, setLabel] = useState('First')
+  const [open, setOpen] = useState(false)
   const [checked, setChecked] = useState(false)
   return (
-    <Menu placement="bottom-start" offset={0}>
+    <Menu open={open} onOpenChange={setOpen} placement="bottom-start" offset={0}>
       <YStack gap={24} alignItems="flex-start">
         {['First', 'Second'].map((name) => (
-          <Menu.Trigger key={name} asChild onMouseEnter={() => setLabel(name)}>
+          <Menu.Trigger
+            key={name}
+            onMouseEnter={(event) => {
+              if (open) {
+                event.preventDefault()
+                return
+              }
+              setLabel(name)
+            }}
+            onFocus={() => {
+              if (!open) setLabel(name)
+            }}
+            onPress={() => {
+              if (!open) setLabel(name)
+            }}
+          >
             <Button data-testid={`mixed-${name}`}>{name} menu</Button>
           </Menu.Trigger>
         ))}
@@ -119,18 +135,25 @@ function MixedMenu() {
         </Menu.TriggerGroup>
       </YStack>
       <Menu.Portal>
-        <Menu.Content data-testid="mixed-content" width={195} p={0}>
+        <Menu.Content
+          data-testid="mixed-content"
+          width={195}
+          p={4}
+          transition={{ duration: 75 }}
+          opacity="enter:0 exit:0"
+        >
           <Menu.CheckboxItem
             data-testid="mixed-check"
             checked={checked}
             onCheckedChange={setChecked}
-            height={36}
+            height={32}
+            py={6}
             textValue={`${label} check`}
             onSelect={(event) => event.preventDefault()}
           >
-            <Menu.ItemTitle>{label} check</Menu.ItemTitle>
+            <Menu.ItemTitle lineHeight="30px">{label} check</Menu.ItemTitle>
           </Menu.CheckboxItem>
-          <Menu.Item height={36} textValue={`${label} action`}>
+          <Menu.Item height={32} py={6} textValue={`${label} action`}>
             <Menu.ItemTitle>{label} action</Menu.ItemTitle>
           </Menu.Item>
         </Menu.Content>
@@ -142,6 +165,7 @@ function MixedMenu() {
 export function MenuTriggerGroupCase() {
   return (
     <YStack p="4" gap="4">
+      <MixedMenu />
       <Text>Grouped menu triggers</Text>
       <Menu.TriggerGroup gap="2" data-testid="group-primary">
         <ExampleMenu name="File" />
@@ -155,7 +179,6 @@ export function MenuTriggerGroupCase() {
       <ExampleMenu name="Ungrouped" />
       <SharedMenu />
       <SharedMenu isolation />
-      <MixedMenu />
       <Menu.TriggerGroup dir="rtl" gap="2" data-testid="group-rtl">
         <ExampleMenu name="First" />
         <ExampleMenu name="Second" />
