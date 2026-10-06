@@ -92,6 +92,30 @@ describe('createThemes', () => {
     })
   })
 
+  test('retains authored scheme without adding tokens or deduplicating opposite schemes', () => {
+    const themes = createThemes(tokens, {
+      light: { scheme: 'light', values: { background: 'gray' } },
+      dark: { scheme: 'dark', values: { background: 'gray' } },
+      children: {
+        inverse: ({ parent }) => ({
+          scheme: parent.scheme === 'light' ? 'dark' : 'light',
+          values: { background: 'gray' },
+        }),
+      },
+    })
+    const key = Symbol.for('tamagui.theme.scheme')
+    expect(Reflect.get(themes.light_inverse, key)).toBe('dark')
+    expect(Reflect.get(themes.dark_inverse, key)).toBe('light')
+    expect(Object.keys(themes.light_inverse)).toEqual(['background'])
+    expect(themes.light_inverse).toBe(themes.dark)
+    expect(themes.light).not.toBe(themes.dark)
+    const unspecified = createThemes(tokens, {
+      light: { values: { background: 'white' } },
+      dark: { values: { background: 'black' } },
+    })
+    expect(Reflect.get(unspecified.light, key)).toBeUndefined()
+  })
+
   test('reports invalid values with the nearest token', () => {
     expect(() =>
       createThemes(tokens, {
