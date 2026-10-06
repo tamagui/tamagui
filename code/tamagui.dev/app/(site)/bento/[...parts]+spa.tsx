@@ -247,7 +247,13 @@ export const DetailHeader = (props: { children: string }) => {
           </YStack>
         </XStack>
 
-        <XStack p={0.5} items="center" gap="1-5">
+        <XStack
+          p={0.5}
+          items="center"
+          gap="1-5"
+          role="navigation"
+          aria-label="Breadcrumb"
+        >
           <Link href="/bento/">
             <Anchor textTransform="capitalize" color="color-9" render="span">
               Bento
@@ -270,7 +276,8 @@ export const DetailHeader = (props: { children: string }) => {
 
           <Link href={`/bento/${category}/${subCategory}`}>
             <Anchor textTransform="capitalize" color="color-9" render="span">
-              {subCategory.replace('_', ' ').replace('#', '')}
+              {getBentoGroup(category, subCategory)?.name ??
+                subCategory.replace('_', ' ').replace('#', '')}
             </Anchor>
           </Link>
         </XStack>

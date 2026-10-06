@@ -2,8 +2,8 @@
 
 State: wave 1 landed on `v3-beta` and curated to 22 groups and 47 demos;
 visual pass and wave 2 next. Worktree `~/.worktrees/tamagui-bento-oss`.
-Owner: lane `bento-oss`. `code/bento` is now the source of truth; `~/bento`
-is read-only history.
+Owner: p64457 / tamagui-bento-oss (hands-on, 2026-10-06, task t-muw50oji-1a6f0).
+`code/bento` is now the source of truth; `~/bento` is read-only history.
 
 ## Why
 

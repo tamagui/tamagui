@@ -78,6 +78,7 @@ const ShowcaseView = forwardRef<any, Props>(
           {...(theme !== 'default' && {
             theme: theme as ThemeName,
           })}
+          data-bento-demo={fileName}
           gap="3"
           {...rest}
           ref={ref}
