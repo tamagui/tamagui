@@ -1775,14 +1775,6 @@
         "typescript": "7.0.2",
       },
     },
-    "code/packages/build/__tests__/fixtures/platform-package": {
-      "name": "tamagui-build-test-platform-package",
-      "version": "1.0.0",
-      "devDependencies": {
-        "@tamagui/build": "workspace:*",
-        "typescript": "~5.9.2",
-      },
-    },
     "code/packages/build/__tests__/fixtures/simple-package": {
       "name": "tamagui-build-test-simple-tpackage",
       "version": "2.0.0-rc.0-1769885482630",
@@ -3941,15 +3933,17 @@
     "next": "16.3.6",
     "node-forge": "1.4.0",
     "picomatch": "4.0.4",
+    "piscina": "4.9.4",
     "postcss": "8.5.15",
     "protobufjs": "7.6.4",
+    "proxy-addr": "2.0.8",
     "qs": "6.15.2",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.86.2",
     "react-native-worklets": "0.10.1",
     "rolldown": "1.2.4",
-    "shell-quote": "1.8.4",
+    "shell-quote": "1.12.0",
     "smol-toml": "1.6.1",
     "tailwindcss": "4.3.0",
     "tmp": "0.2.7",
@@ -8620,7 +8614,7 @@
 
     "shebang-regex": ["shebang-regex@3.0.0", "", {}, "sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A=="],
 
-    "shell-quote": ["shell-quote@1.8.4", "", {}, "sha512-VsC6n6vz1ihYYyZZwX7YZSF5l5x36ca17OC+a69h94YqB7X6XLwf+5MOgynYir2SLFUbl8gIYvBo8K8RoNQ6bQ=="],
+    "shell-quote": ["shell-quote@1.12.0", "", {}, "sha512-PcByqNyT/38F2kDNi006HAMRJaULuBzq/FOsw3qdZvX/GA9W/jamDaRskgHjubHiftXK5sIFxLNkvrXUwcof6Q=="],
 
     "shiki": ["shiki@4.4.3", "", { "dependencies": { "@shikijs/core": "4.4.3", "@shikijs/engine-javascript": "4.4.3", "@shikijs/engine-oniguruma": "4.4.3", "@shikijs/langs": "4.4.3", "@shikijs/themes": "4.4.3", "@shikijs/types": "4.4.3", "@shikijs/vscode-textmate": "^10.0.2", "@types/hast": "^3.0.5" } }, "sha512-Mb/GvXPHBAXdgGIcnfU5L3ldpn1XcxrGkPHwqgRx17/I2XRfqlFKk2vGkHWINn1kdXvzJZeuO3is6I9KLPFm0g=="],
 

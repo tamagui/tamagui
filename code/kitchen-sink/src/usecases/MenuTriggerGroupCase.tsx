@@ -19,7 +19,7 @@ function ExampleMenu({ name, disabled = false }: { name: string; disabled?: bool
           borderColor="border-color"
           borderWidth={1}
           borderRadius="3"
-          elevation="3"
+          boxShadow="0 4px 12px shadow-color"
         >
           <Menu.Group>
             <Menu.Item data-testid={`item-${name}`} p="2" textValue={`${name} action`}>
