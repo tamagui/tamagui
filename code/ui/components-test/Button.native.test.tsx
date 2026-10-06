@@ -264,4 +264,54 @@ describe('Button native text props', () => {
     expect(onPress).not.toHaveBeenCalled()
     expect(onPressOut).not.toHaveBeenCalled()
   })
+
+  test('delayed press callbacks receive the grant event with its nativeEvent', async () => {
+    vi.useFakeTimers()
+
+    // react native pools responder events: after dispatch nativeEvent is nulled
+    // unless the handler persisted the event (#4244)
+    function pooledEvent() {
+      const event: any = { nativeEvent: { locationX: 4, locationY: 6 }, persisted: false }
+      event.persist = () => {
+        event.persisted = true
+      }
+      return event
+    }
+    function release(event: any) {
+      if (!event.persisted) event.nativeEvent = null
+    }
+
+    const onLongPress = vi.fn((e) => e.nativeEvent)
+    const onPressOut = vi.fn((e) => e.nativeEvent)
+
+    const rendered = await renderButton(
+      <View width={10} height={10} onLongPress={onLongPress} onPressOut={onPressOut} />
+    )
+    const responderNode = rendered.root.find(
+      (node) =>
+        typeof node.props.onResponderGrant === 'function' &&
+        typeof node.props.onResponderRelease === 'function'
+    )
+
+    const grant = pooledEvent()
+    await act(async () => {
+      responderNode.props.onResponderGrant(grant)
+      release(grant)
+      vi.advanceTimersByTime(600)
+    })
+    expect(onLongPress).toHaveBeenCalledTimes(1)
+    expect(onLongPress.mock.results[0].value).toEqual({ locationX: 4, locationY: 6 })
+
+    await act(async () => {
+      responderNode.props.onResponderGrant(pooledEvent())
+    })
+    const releaseEvent = pooledEvent()
+    await act(async () => {
+      // released before minPressDuration, so onPressOut is delivered from a timer
+      responderNode.props.onResponderRelease(releaseEvent)
+      release(releaseEvent)
+      vi.advanceTimersByTime(200)
+    })
+    expect(onPressOut.mock.results.at(-1)?.value).toEqual({ locationX: 4, locationY: 6 })
+  })
 })

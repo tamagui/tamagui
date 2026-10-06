@@ -66,6 +66,7 @@ export function useMainThreadPressEvents(
     const remaining = Math.max(minPressDuration - pressDuration, delayPressOut)
 
     if (remaining > 0) {
+      e.persist?.()
       ref.current.pressOutTimer = setTimeout(() => {
         events.onPressOut?.(e)
       }, remaining)
@@ -110,6 +111,10 @@ export function useMainThreadPressEvents(
     }
 
     userGrant?.(e)
+    // the grant event is delivered later from the pressIn and longPress timers;
+    // RN pools responder events and nulls nativeEvent after dispatch unless
+    // persisted (same as Pressability)
+    e.persist?.()
     ref.current.blockedByExternalOwnership = false
     ref.current.state = 'pressing'
 
