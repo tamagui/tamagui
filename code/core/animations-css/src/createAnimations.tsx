@@ -291,7 +291,9 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
 
       useIsomorphicLayoutEffect(() => {
         const host = stateRef.current.host
-        if (isExiting || !host) return
+        // while entering (and on the render that starts the enter transition)
+        // the computed opacity is the enter value, not the resting one
+        if (isExiting || isEntering || justFinishedEntering || !host) return
         const computedStyle = getComputedStyle(host as HTMLElement)
         lastNonExitingStyleRef.current = {
           opacity: computedStyle.opacity,
