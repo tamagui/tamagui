@@ -31,6 +31,11 @@ import Animated_, {
   type WithTimingConfig,
 } from 'react-native-reanimated'
 
+// sizing keywords and calc() have no numeric endpoint, so the worklet never
+// settles them and an exit gated on them would never complete
+const NON_ANIMATABLE_VALUE =
+  /^(auto|min-content|max-content|fit-content|stretch|inherit|initial|unset)\b|^calc\(/
+
 // =============================================================================
 // ESM/CJS compatibility
 // =============================================================================
@@ -326,9 +331,7 @@ const buildSnapshot = (
   for (const key of keys) {
     let value = lastPainted[key]
     if (typeof value !== 'number' && typeof value !== 'string') continue
-    if (value === 'auto' || (typeof value === 'string' && value.startsWith('calc'))) {
-      continue
-    }
+    if (typeof value === 'string' && NON_ANIMATABLE_VALUE.test(value)) continue
     if (COLOR_STYLE_KEYS[key]) value = normalizeAnimationColor(value)
     if (value !== undefined) seeds[key] = value
   }
@@ -596,8 +599,7 @@ const canAnimateProperty = (
   animateOnly?: string[]
 ): boolean => {
   if (!ANIMATABLE_PROPERTIES[key]) return false
-  if (value === 'auto') return false
-  if (typeof value === 'string' && value.startsWith('calc')) return false
+  if (typeof value === 'string' && NON_ANIMATABLE_VALUE.test(value)) return false
   if (animateOnly && !animateOnly.includes(key)) return false
   return true
 }
