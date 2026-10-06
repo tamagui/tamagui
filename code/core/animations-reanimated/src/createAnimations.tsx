@@ -45,6 +45,10 @@ import Animated_, {
   type WithTimingConfig,
 } from 'react-native-reanimated'
 
+// sizing keywords and calc() have no numeric endpoint and cannot gate exits
+const NON_ANIMATABLE_VALUE =
+  /^(auto|min-content|max-content|fit-content|stretch|inherit|initial|unset)\b|^calc\(/
+
 // =============================================================================
 // ESM/CJS compatibility
 // =============================================================================
@@ -420,7 +424,7 @@ const buildSnapshot = (
       delete seeds[key]
       continue
     }
-    if (value === 'auto' || (typeof value === 'string' && value.startsWith('calc'))) {
+    if (typeof value === 'string' && NON_ANIMATABLE_VALUE.test(value)) {
       delete seeds[key]
       continue
     }
@@ -749,8 +753,7 @@ const ANIMATABLE_PROPERTIES: Record<string, boolean> = {
  */
 const canAnimateProperty = (key: string, value: unknown): boolean => {
   if (!ANIMATABLE_PROPERTIES[key]) return false
-  if (value === 'auto') return false
-  if (typeof value === 'string' && value.startsWith('calc')) return false
+  if (typeof value === 'string' && NON_ANIMATABLE_VALUE.test(value)) return false
   return true
 }
 

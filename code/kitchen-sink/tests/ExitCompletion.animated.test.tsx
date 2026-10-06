@@ -418,4 +418,13 @@ test.describe('Property Lists & Transform Sub-Keys', () => {
       false
     )
   })
+
+  test('scenario 56: keyword width does not hold the exit open', async ({ page }) => {
+    await page.getByTestId('exit-56-trigger').click()
+    expect(await waitForExitComplete(page, '56-keyword-width', 1500)).toBe(1)
+    await expectStableCompletionCount(page, '56-keyword-width', 1, 200)
+    expect(await elementExists(page, 'exit-56-target'), 'Element should be gone').toBe(
+      false
+    )
+  })
 })

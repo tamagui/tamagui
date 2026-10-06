@@ -99,6 +99,7 @@ export function ExitCompletionCase() {
       <Scenario51_AnimateOnlyExclusion />
       <Scenario53_TransformSubKeySplitDurations />
       <Scenario55_ZeroAnimatableExitProps />
+      <Scenario56_KeywordWidthExit />
     </YStack>
   )
 }
@@ -718,6 +719,48 @@ function Scenario55_ZeroAnimatableExitProps() {
             testID="exit-55-target"
             data-testid="exit-55-target"
           />
+        )}
+      </AnimatePresence>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// scenario 56: a keyword width (max-content) has no numeric endpoint, so it
+// must not hold the exit open
+function Scenario56_KeywordWidthExit() {
+  const [visible, setVisible] = useState(true)
+  const { startExit, onExitComplete } = useExitTracker('56-keyword-width')
+
+  return (
+    <XStack gap="2" alignItems="center" minHeight={50}>
+      <Button
+        size="sm"
+        onPress={() => {
+          if (visible) startExit()
+          setVisible(!visible)
+        }}
+        testID="exit-56-trigger"
+        data-testid="exit-56-trigger"
+      >
+        56: Keyword Width
+      </Button>
+      <AnimatePresence onExitComplete={onExitComplete}>
+        {visible && (
+          <View
+            key="keyword-width"
+            transition="quick"
+            width="max-content"
+            height={40}
+            bg="green-600"
+            opacity="exit:0"
+            y="exit:-10"
+            testID="exit-56-target"
+            data-testid="exit-56-target"
+          >
+            <Paragraph size="1">max-content</Paragraph>
+          </View>
         )}
       </AnimatePresence>
       <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
