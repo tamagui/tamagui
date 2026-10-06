@@ -596,6 +596,9 @@ export const PopperAnchor = createStyledHOC(
           // flushSync forces synchronous commit so update() below reads
           // the correct reference element immediately.
           onMouseEnter: (e) => {
+            refProps?.onPointerEnter?.(e)
+            if (e.defaultPrevented || ('isCanceled' in e && e.isCanceled)) return
+
             const el = (e.currentTarget ?? ref.current) as HTMLElement | null
             if (el instanceof HTMLElement) {
               flushSync(() => refs.setReference(el))
@@ -603,7 +606,6 @@ export const PopperAnchor = createStyledHOC(
 
               if (!refProps) return
 
-              refProps.onPointerEnter?.(e)
               context.onHoverReference?.(e.nativeEvent)
             }
           },
