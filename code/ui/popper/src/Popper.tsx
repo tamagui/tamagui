@@ -596,6 +596,16 @@ export const PopperAnchor = createStyledHOC(
           // flushSync forces synchronous commit so update() below reads
           // the correct reference element immediately.
           onMouseEnter: (e) => {
+            const anchorProps = rest as ViewProps
+            // asChild consumers (including Menu.Trigger) put their guard on
+            // the child rather than on the anchor's interaction props.
+            if (
+              anchorProps.asChild &&
+              React.isValidElement<ViewProps>(anchorProps.children)
+            ) {
+              anchorProps.children.props.onPointerEnter?.(e as any)
+              if (e.defaultPrevented || ('isCanceled' in e && e.isCanceled)) return
+            }
             const hoverProps = refProps ?? rest
             hoverProps.onPointerEnter?.(e)
             if (e.defaultPrevented || ('isCanceled' in e && e.isCanceled)) return

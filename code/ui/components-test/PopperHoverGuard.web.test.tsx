@@ -100,4 +100,29 @@ describe('scoped Popper hover guard', () => {
       )
     }
   )
+
+  test('an asChild consumer can reject a sibling hover', () => {
+    const setReference = vi.fn()
+    const update = vi.fn()
+    const guard = vi.fn((event) => event.preventDefault())
+    const { getByTestId } = render(
+      <TamaguiProvider config={config} defaultTheme="light">
+        <PopperProviderSlow
+          scope="grouped-menu"
+          refs={{ setReference } as any}
+          update={update}
+        >
+          <PopperAnchor scope="grouped-menu" asChild>
+            <div data-testid="child-trigger" onPointerEnter={guard} />
+          </PopperAnchor>
+        </PopperProviderSlow>
+      </TamaguiProvider>
+    )
+
+    fireEvent.mouseEnter(getByTestId('child-trigger'))
+
+    expect(guard).toHaveBeenCalledOnce()
+    expect(setReference).not.toHaveBeenCalled()
+    expect(update).not.toHaveBeenCalled()
+  })
 })
