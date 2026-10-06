@@ -161,8 +161,10 @@ const Item = createStyledHOC(
     }, [element])
 
     const handleAnimations = () => {
-      if (!element || prefersReducedMotion()) return
-      if (isMouseEntered) {
+      if (!element) return
+      // reduced motion suppresses the raise but never the reset, so layers
+      // always go flat when the pointer leaves or the preference turns on
+      if (isMouseEntered && !prefersReducedMotion()) {
         element.style.transform = `translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`
       } else {
         element.style.transform = `translateX(0px) translateY(0px) translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)`

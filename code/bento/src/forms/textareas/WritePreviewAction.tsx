@@ -79,7 +79,7 @@ function renderInline(line: string, keyPrefix: string) {
     .filter(Boolean)
     .map((part, i) => {
       const key = `${keyPrefix}${i}`
-      if (part.startsWith('**') && part.endsWith('**')) {
+      if (part.length > 4 && part.startsWith('**') && part.endsWith('**')) {
         return (
           <Text key={key} fontWeight="700">
             {part.slice(2, -2)}
