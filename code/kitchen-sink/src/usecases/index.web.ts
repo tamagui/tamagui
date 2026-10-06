@@ -114,6 +114,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./AdaptNestedBoundaryCase').AdaptNestedBoundaryCase,
   Example: () => require('./Example').Example,
   ExitCompletionCase: () => require('./ExitCompletionCase').ExitCompletionCase,
+  PopoverFirstOpenEnterCase: () =>
+    require('./PopoverFirstOpenEnterCase').PopoverFirstOpenEnterCase,
   OnTransitionCase: () => require('./OnTransitionCase').OnTransitionCase,
   StyleValidation: () => require('./StyleValidation').StyleValidation,
   FocusScopeNoFocusCase: () => require('./FocusScopeNoFocusCase').FocusScopeNoFocusCase,
