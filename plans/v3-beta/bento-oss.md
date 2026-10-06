@@ -169,3 +169,11 @@ unstyled parts) over hand-rolled ones.
   had uncentered every showcase frame.
 - 2026-10-04: plan written; worktree `~/.worktrees/tamagui-bento-oss` off
   `origin/v3-beta` `980b3a3803`.
+- 2026-10-06: p64457 closed the commerce WIP (breadcrumb shows the
+  registry group name; the thumbnail ring was verified visible in both
+  themes) and cleaned the remaining 9 groups: inputs, checkboxes,
+  radiogroups, switches, textareas, pickers, datepickers (reviewed, no
+  change), preferences, 3D card. `tests/bento-groups.spec.ts` sweeps all
+  20 groups in both themes at 1280 and 360. Commits `d8be37b457`,
+  `e93787e438`, `a6e44ad76a` on `tm/bento-land`; still unmerged, Bento
+  visibility still Nate's call.
