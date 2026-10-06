@@ -505,6 +505,12 @@ export function createNonNativeMenu() {
         else activateSelf()
       }
 
+      const shouldRejectHover = () =>
+        disabled ||
+        (context.openRef.current &&
+          Boolean(group || context.activeGroupRef.current) &&
+          !group?.isActive(context.openRef))
+
       // Use onClick for touch devices to avoid race condition with Dismissable
       // Use onPointerDown for mouse for faster feedback
       const pressEvent = isWeb ? (isTouchDevice ? 'onClick' : 'onPointerDown') : 'onPress'
@@ -539,13 +545,17 @@ export function createNonNativeMenu() {
             onFocus={composeEventHandlers(props.onFocus, () => {
               if (!disabled) group?.onFocus(triggerId)
             })}
+            onPointerEnter={(event) => {
+              // popper checks this child handler before changing its reference.
+              if (shouldRejectHover()) {
+                event.preventDefault()
+                return
+              }
+              props.onPointerEnter?.(event)
+            }}
             onMouseEnter={(event) => {
-              // reject disabled and cross-group anchors before caller and popper handlers
-              if (
-                group &&
-                (disabled ||
-                  (context.openRef.current && !group.isActive(context.openRef)))
-              ) {
+              // reject before caller handlers can change the shared descriptor.
+              if (shouldRejectHover()) {
                 event.preventDefault()
                 return
               }

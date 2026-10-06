@@ -92,6 +92,43 @@ test('shared controlled content switches descriptors and rejects another group',
   await expect(page.getByTestId('shared-Gamma')).toBeFocused()
 })
 
+test('shared root keeps its grouped anchor when other or disabled triggers are hovered', async ({
+  page,
+}) => {
+  await page.getByTestId('isolation-Alpha').click()
+  await expect(page.getByTestId('isolation-content')).toBeVisible()
+  const sibling = await page.getByTestId('isolation-Beta').boundingBox()
+  await page.mouse.move(sibling!.x + sibling!.width / 2, sibling!.y + sibling!.height / 2)
+  await expect(page.getByTestId('isolation-item')).toHaveText('Beta')
+  await expect
+    .poll(async () => {
+      const content = await page.getByTestId('isolation-content').boundingBox()
+      return content ? Math.abs(content.x - sibling!.x) : Infinity
+    })
+    .toBeLessThan(2)
+  const activePosition = await page.getByTestId('isolation-content').boundingBox()
+  // physical hover must preserve both the descriptor and the active anchor.
+  for (const name of ['Separate', 'Ungrouped', 'Disabled', 'UngroupedDisabled']) {
+    const target = await page.getByTestId(`isolation-${name}`).boundingBox()
+    await page.mouse.move(target!.x + target!.width / 2, target!.y + target!.height / 2)
+    await expect(page.getByTestId('isolation-item')).toHaveText('Beta')
+    await expect(page.getByTestId(`isolation-${name}`)).toHaveAttribute(
+      'aria-expanded',
+      'false'
+    )
+    // let floating-ui process the pointer before checking its settled position.
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) => {
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+        })
+    )
+    const content = await page.getByTestId('isolation-content').boundingBox()
+    expect(Math.abs(content!.x - activePosition!.x)).toBeLessThan(2)
+    expect(Math.abs(content!.y - activePosition!.y)).toBeLessThan(2)
+  }
+})
+
 test('closed group uses one tab stop and arrows move focus without opening', async ({
   page,
 }) => {

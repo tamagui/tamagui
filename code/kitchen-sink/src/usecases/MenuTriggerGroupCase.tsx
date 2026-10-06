@@ -44,20 +44,25 @@ function ExampleMenu({ name, disabled = false }: { name: string; disabled?: bool
   )
 }
 
-function SharedMenu() {
+function SharedMenu({ isolation = false }: { isolation?: boolean }) {
+  const prefix = isolation ? 'isolation' : 'shared'
   const [open, setOpen] = useState(false)
   const [label, setLabel] = useState('Alpha')
   return (
     <Menu open={open} onOpenChange={setOpen} placement="bottom-start">
       <Menu.TriggerGroup data-testid="group-shared" gap="2">
-        {['Alpha', 'Beta', 'Gamma'].map((name) => (
+        {(isolation
+          ? ['Alpha', 'Beta', 'Disabled', 'Gamma']
+          : ['Alpha', 'Beta', 'Gamma']
+        ).map((name) => (
           <Menu.Trigger
             key={name}
+            disabled={name === 'Disabled'}
             asChild
             onMouseEnter={() => setLabel(name)}
             onFocus={() => setLabel(name)}
           >
-            <Button data-testid={`shared-${name}`}>{name}</Button>
+            <Button data-testid={`${prefix}-${name}`}>{name}</Button>
           </Menu.Trigger>
         ))}
       </Menu.TriggerGroup>
@@ -67,12 +72,22 @@ function SharedMenu() {
           onMouseEnter={() => setLabel('Separate')}
           onFocus={() => setLabel('Separate')}
         >
-          <Button data-testid="shared-Separate">Separate</Button>
+          <Button data-testid={`${prefix}-Separate`}>Separate</Button>
         </Menu.Trigger>
       </Menu.TriggerGroup>
+      {isolation && (
+        <>
+          <Menu.Trigger asChild>
+            <Button data-testid="isolation-Ungrouped">Ungrouped</Button>
+          </Menu.Trigger>
+          <Menu.Trigger asChild disabled>
+            <Button data-testid="isolation-UngroupedDisabled">Ungrouped disabled</Button>
+          </Menu.Trigger>
+        </>
+      )}
       <Menu.Portal>
-        <Menu.Content data-testid="shared-content" minWidth={180}>
-          <Menu.Item data-testid="shared-item" textValue={label}>
+        <Menu.Content data-testid={`${prefix}-content`} minWidth={180}>
+          <Menu.Item data-testid={`${prefix}-item`} textValue={label}>
             <Menu.ItemTitle>{label}</Menu.ItemTitle>
           </Menu.Item>
         </Menu.Content>
@@ -96,6 +111,7 @@ export function MenuTriggerGroupCase() {
       </Menu.TriggerGroup>
       <ExampleMenu name="Ungrouped" />
       <SharedMenu />
+      <SharedMenu isolation />
       <Menu.TriggerGroup dir="rtl" gap="2" data-testid="group-rtl">
         <ExampleMenu name="First" />
         <ExampleMenu name="Second" />
