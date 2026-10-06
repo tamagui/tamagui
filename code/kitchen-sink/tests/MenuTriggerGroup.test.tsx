@@ -166,3 +166,51 @@ test('outside dismissal ends hover switching', async ({ page }) => {
   await page.getByTestId('trigger-Edit').hover()
   await expect(page.getByTestId('trigger-Edit')).toHaveAttribute('aria-expanded', 'false')
 })
+
+test('ungrouped menu in a mixed root keeps its checkbox under the physical pointer', async ({
+  page,
+}) => {
+  await page.getByTestId('mixed-Second').hover()
+  await page.getByTestId('mixed-First').click()
+  const content = page.getByTestId('mixed-content')
+  const checkbox = page.getByTestId('mixed-check')
+  await expect(checkbox).toHaveText('First check')
+  // match the downstream probe: entry has mounted and all animations have finished.
+  await page.waitForFunction(() => {
+    const menu = document.querySelector('[data-testid="mixed-content"]')
+    return (
+      menu &&
+      !menu.closest('.t_unmounted') &&
+      document.getAnimations().every((animation) => animation.playState !== 'running') &&
+      menu.getBoundingClientRect().width === 195
+    )
+  })
+  const position = await content.boundingBox()
+  const check = await checkbox.boundingBox()
+  const x = check!.x + check!.width / 2
+  const y = check!.y + check!.height / 2
+  await page.mouse.move(x, y)
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+      })
+  )
+  const after = await content.boundingBox()
+  expect(Math.abs(after!.y - position!.y)).toBeLessThan(2)
+  expect(Math.abs(after!.x - position!.x)).toBeLessThan(2)
+  await expect(checkbox).toHaveText('First check')
+  expect(
+    await page.evaluate(
+      ({ x, y }) =>
+        document
+          .elementFromPoint(x, y)
+          ?.closest('[role="menuitemcheckbox"]')
+          ?.getAttribute('data-testid'),
+      { x, y }
+    )
+  ).toBe('mixed-check')
+  await page.mouse.click(x, y)
+  await expect(checkbox).toHaveAttribute('aria-checked', 'true')
+  await expect(content).toBeVisible()
+})
