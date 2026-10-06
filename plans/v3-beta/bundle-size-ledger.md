@@ -517,3 +517,44 @@ adds `@tamagui/native/setup-one-portal`, which no web graph imports.
   (next-webpack), 124079 (metro-web). Darwin builds those island graphs 5 to 6
   bytes smaller, so island counts are never copied from a Mac run, even when
   its unchanged counts match linux.
+
+## Native background lowering leaked into web bundles (2026-10-06)
+
+RAN: local history measurements on pinned Node 24.16.0 / zlib
+1.3.1-e00f703 narrowed the styled-view growth to `e74729b13e`. The earlier
+`9acbfd7147`, `0f45a93b6b`, and `cb51d68712` checkpoints measure 29,919,
+29,955, and 29,922 gzip bytes. The direct parent of `e74729b13e` also measures
+29,922; current `6098c91666` measures 30,122, exceeding the unchanged 30,069
+ceiling. Only `e74729b13e` changes executable core code across that interval.
+
+RAN: the unchanged six-build starter script passes at that direct parent and
+fails at current source. The island counts reproduce the inherited CI failure:
+
+| Source | Styled-view | Vite island | Next island | Metro island |
+| --- | ---: | ---: | ---: | ---: |
+| Existing ceiling | 30,069 | 73,341 | 73,359 | 124,079 |
+| `e74729b13e` parent | 29,922 | 73,340 | 73,352 | 124,062 |
+| Current source | 30,122 | 73,344 | 73,367 | 124,088 |
+| Native-target guard | 29,922 | 73,340 | 73,352 | 124,062 |
+
+INFERRED: the native background repair added a full border-classifier call to
+web background dispatch. A native-target guard removes that call from web
+bundles while retaining the native color lowering. This attribution would be
+refuted if guarding only that call failed to recover the direct parent's
+artifacts. RAN: that bounded guard recovers all four parent measurements.
+Web continues to emit CSS background functions through its background
+shorthand; native still lowers functional colors to backgroundColor.
+
+TESTED: 64 focused web and 49 native tests pass, including functional colors,
+image backgrounds, border grammar and style pieces. Removing only the guard
+fails all three new web functional-color cases; the final source is restored
+byte-for-byte afterward. All 12 starter browser
+contract tests pass across Vite, Next and Metro. The package build passes and
+the rebuilt package family installs into Contrast with `bun release --into`.
+Both size scripts pass with their existing ceilings and zero-byte island
+thresholds. No baseline or gate changes are included.
+
+Local logs and intermediate measurements are retained in
+`~/contrast/updates/tamagui-v3-size-evidence/`. Linux CI and exact published
+tarball verification are recorded in `~/contrast/updates/tamagui-v3-size.md`;
+the local results above do not assert those delivery results.

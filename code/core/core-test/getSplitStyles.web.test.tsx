@@ -22,6 +22,27 @@ beforeAll(() => {
 })
 
 describe('getSplitStyles', () => {
+  test.each(['rgba(255,255,255,0.55)', 'rgb(255, 255, 255)', 'hsl(0, 0%, 100%)'])(
+    'background color function %s retains the CSS background shorthand',
+    (background) => {
+      for (const noClass of [false, true]) {
+        const result = simplifiedGetSplitStyles(View, { background }, { noClass })
+        expect(getStyleValue(result, 'background')).toBe(background)
+        expect(getStyleValue(result, 'backgroundColor')).toBeUndefined()
+      }
+    }
+  )
+
+  test('background image functions retain the background shorthand', () => {
+    for (const background of ['url(x.png)', 'linear-gradient(to right, red, blue)']) {
+      for (const noClass of [false, true]) {
+        const result = simplifiedGetSplitStyles(View, { background }, { noClass })
+        expect(getStyleValue(result, 'background')).toBe(background)
+        expect(getStyleValue(result, 'backgroundColor')).toBeUndefined()
+      }
+    }
+  })
+
   test.each([1.5, 24, 0])(
     'numeric lineHeight %s is unitless in classes and inline',
     (lineHeight) => {
