@@ -20,3 +20,9 @@ TESTED: 36 Playwright tests passed with one worker and zero retries: MenuTrigger
 RAN: `bun run build` in code/ui/menu emitted web/native JS and declarations successfully. Focused oxlint and oxfmt checks passed. Cost: one group context, refs and registry per group, plus a group lookup at each trigger; no global toolbar subscription or additional positioning layer.
 
 RAN: frame probe across six sibling transitions sampled 961 visible frames; maximum horizontal error against each active trigger was 0.40625 CSS pixels. Frame samples and recording sources are retained in `~/.team-machine/evidence/menu-trigger-group/`. The seven group cases also passed through a browser on pro-64 against this worktree's server after the fixture frame styling and incoming v3-beta web fix were built.
+
+## Delivery
+
+Published from v3-beta SHA `39f4c06c6b2dad1fa18278f0e965e6e571e3d342` as `3.0.0-0.canary.1791300370752`. RAN: npm tarball source files, emitted Menu ESM and exported declarations match the validated local bytes exactly; `releaseSourceCommit` matches the landed SHA. Consumer owner s13101 was sent the verified version. Gemini reviewer r62295 approved after a mounted browser probe covering hover, group isolation, arrows, submenus, RTL and Escape.
+
+Release run 37485064844 succeeded. Checks run 37485065043 failed on the new fixture's legacy token syntax, an unrelated shell-quote advisory, and starter size baselines. The fixture is corrected to V3 flat tokens without changing the corpus assertion. The coordinator owns routing the dependency advisory, and tamagui-v3-size owns the size gate. Native jobs were cancelled; Registry and LSP passed. Evidence and recording are retained in `~/.team-machine/evidence/menu-trigger-group/`.

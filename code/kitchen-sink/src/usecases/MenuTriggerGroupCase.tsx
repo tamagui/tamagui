@@ -14,20 +14,20 @@ function ExampleMenu({ name, disabled = false }: { name: string; disabled?: bool
         <Menu.Content
           data-testid={`content-${name}`}
           minWidth={180}
-          p="$2"
-          bg="$background"
-          borderColor="$borderColor"
+          p="2"
+          bg="background"
+          borderColor="border-color"
           borderWidth={1}
-          borderRadius="$3"
-          elevation="$3"
+          borderRadius="3"
+          elevation="3"
         >
           <Menu.Group>
-            <Menu.Item data-testid={`item-${name}`} p="$2" textValue={`${name} action`}>
+            <Menu.Item data-testid={`item-${name}`} p="2" textValue={`${name} action`}>
               <Menu.ItemTitle>{name} action</Menu.ItemTitle>
             </Menu.Item>
           </Menu.Group>
           <Menu.Sub>
-            <Menu.SubTrigger data-testid={`sub-${name}`} p="$2" textValue="More">
+            <Menu.SubTrigger data-testid={`sub-${name}`} p="2" textValue="More">
               <Menu.ItemTitle>More</Menu.ItemTitle>
             </Menu.SubTrigger>
             <Menu.Portal>
@@ -49,7 +49,7 @@ function SharedMenu() {
   const [label, setLabel] = useState('Alpha')
   return (
     <Menu open={open} onOpenChange={setOpen} placement="bottom-start">
-      <Menu.TriggerGroup data-testid="group-shared" gap="$2">
+      <Menu.TriggerGroup data-testid="group-shared" gap="2">
         {['Alpha', 'Beta', 'Gamma'].map((name) => (
           <Menu.Trigger
             key={name}
@@ -61,7 +61,7 @@ function SharedMenu() {
           </Menu.Trigger>
         ))}
       </Menu.TriggerGroup>
-      <Menu.TriggerGroup data-testid="group-shared-other" gap="$2">
+      <Menu.TriggerGroup data-testid="group-shared-other" gap="2">
         <Menu.Trigger
           asChild
           onMouseEnter={() => setLabel('Separate')}
@@ -83,20 +83,20 @@ function SharedMenu() {
 
 export function MenuTriggerGroupCase() {
   return (
-    <YStack p="$4" gap="$4">
+    <YStack p="4" gap="4">
       <Text>Grouped menu triggers</Text>
-      <Menu.TriggerGroup gap="$2" data-testid="group-primary">
+      <Menu.TriggerGroup gap="2" data-testid="group-primary">
         <ExampleMenu name="File" />
         <ExampleMenu name="Disabled" disabled />
         <ExampleMenu name="Edit" />
         <ExampleMenu name="View" />
       </Menu.TriggerGroup>
-      <Menu.TriggerGroup gap="$2" data-testid="group-other">
+      <Menu.TriggerGroup gap="2" data-testid="group-other">
         <ExampleMenu name="Other" />
       </Menu.TriggerGroup>
       <ExampleMenu name="Ungrouped" />
       <SharedMenu />
-      <Menu.TriggerGroup dir="rtl" gap="$2" data-testid="group-rtl">
+      <Menu.TriggerGroup dir="rtl" gap="2" data-testid="group-rtl">
         <ExampleMenu name="First" />
         <ExampleMenu name="Second" />
       </Menu.TriggerGroup>
