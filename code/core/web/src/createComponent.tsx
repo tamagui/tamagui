@@ -1663,7 +1663,9 @@ export function createComponent<
         stateRef,
         isHOC,
         isCompositeComponent,
-        hasRealPressEvents
+        // the native menu observer must leave the touch to the menu adapter's
+        // own pressable, so it never claims the responder
+        hasRealPressEvents && !isInsideNativeMenu
       )
     }
 

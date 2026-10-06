@@ -177,6 +177,7 @@ export function useEvents(
             onPressOut: events.onPressOut,
             onPress: events.onPress,
             onLongPress: events.onLongPress,
+            delayLongPress: events.delayLongPress,
           }
         : {}
 
@@ -195,18 +196,38 @@ export function useEvents(
         if (isInsideNativeMenu) {
           // Inside native menus on Android: use Manual gesture with manualActivation
           // so it never goes ACTIVE (which would send ACTION_CANCEL to MenuView).
-          // Press callbacks fire via onTouchesDown/Up instead.
+          // Press callbacks fire via onTouchesDown/Up instead, with a timer for
+          // onLongPress that swallows the release's onPress like RN does.
+          let longPressTimer: ReturnType<typeof setTimeout> | null = null
+          let longPressed = false
+          const clearLongPress = () => {
+            if (longPressTimer) clearTimeout(longPressTimer)
+            longPressTimer = null
+          }
           const manual = Gesture.Manual()
             .runOnJS(true)
             .manualActivation(true)
             .onTouchesDown(() => {
+              longPressed = false
+              clearLongPress()
               callbacksRef.current.onPressIn?.({})
+              if (callbacksRef.current.onLongPress) {
+                longPressTimer = setTimeout(() => {
+                  longPressTimer = null
+                  longPressed = true
+                  callbacksRef.current.onLongPress?.({})
+                }, callbacksRef.current.delayLongPress ?? 500)
+              }
             })
             .onTouchesUp(() => {
-              callbacksRef.current.onPress?.({})
+              clearLongPress()
+              if (!longPressed) {
+                callbacksRef.current.onPress?.({})
+              }
               callbacksRef.current.onPressOut?.({})
             })
             .onTouchesCancelled(() => {
+              clearLongPress()
               callbacksRef.current.onPressOut?.({})
             })
           gestureRef.current = manual
