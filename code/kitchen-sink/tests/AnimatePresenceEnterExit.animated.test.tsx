@@ -68,6 +68,18 @@ test('scenario 01: exit animation should animate opacity from 1 to 0', async ({
   const enterOpacity = await waitForOpacity(page, 'enter-exit-01-target', 1)
   expect(enterOpacity).toBeGreaterThan(0.98)
 
+  // the square declares no base opacity and does not re-render after entering,
+  // so the exit must still start from the resting opacity and fade (#4233)
+  await page.evaluate(() => {
+    ;(window as any).__exitFrames01 = []
+    const track = () => {
+      const el = document.querySelector('[data-testid="enter-exit-01-target"]')
+      if (!el) return
+      ;(window as any).__exitFrames01.push(parseFloat(getComputedStyle(el).opacity))
+      requestAnimationFrame(track)
+    }
+    requestAnimationFrame(track)
+  })
   await page.getByTestId('enter-exit-01-trigger').click()
 
   // during exit, element should still exist but opacity should be less than 1
@@ -79,6 +91,12 @@ test('scenario 01: exit animation should animate opacity from 1 to 0', async ({
 
   // wait for exit to complete - element should be removed
   expect(await waitForRemoval(page, 'enter-exit-01-target')).toBe(true)
+
+  const exitFrames: number[] = await page.evaluate(() => (window as any).__exitFrames01)
+  expect(
+    exitFrames.filter((f) => f > 0.05 && f < 0.95).length,
+    `expected the exit to fade, got: ${JSON.stringify(exitFrames.slice(0, 20))}`
+  ).toBeGreaterThan(0)
 })
 
 test('scenario 02: circle badge enter animation', async ({ page }) => {
