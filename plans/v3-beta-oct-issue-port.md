@@ -39,7 +39,8 @@ ContextMenuTriggerStyle and MenuNoAdapter suites 2/2 pass. Android validation is
 a mocked native runtime test, with no device run.
 
 Final validation (RAN): ExitCompletion, AnimatePresenceEnterExit and
-PopoverFirstOpenEnter pass 78/78 across CSS, Reanimated and Motion, with one
+PopoverFirstOpenEnter finish with 72 passed and 6 existing Motion skips across
+CSS, Reanimated and Motion, with one
 worker and retries disabled. Root `bun run lint` passes with two existing
 warnings; root `bun run check` passes. Fresh installation initially lacked the
 CLI bin link; reinstalling after the workspace build repaired it. The root CLI
