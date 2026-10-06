@@ -229,7 +229,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
             data-disabled={disabled ? '' : undefined}
             {...triggerProps}
             ref={composeRefs(forwardedRef, context.triggerRef)}
-            style={isWeb ? { WebkitTouchCallout: 'none', ...(style as object) } : null}
+            style={isWeb ? { WebkitTouchCallout: 'none', ...(style as object) } : style}
             {...(isWeb && {
               onContextMenu: disabled
                 ? props.onContextMenu
