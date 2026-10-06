@@ -573,7 +573,6 @@ export function OneTimeCodeInputExample({
                     items="center"
                     gap="4"
                     pt="6"
-                    bg="red"
                   >
                     <YStack flex={1} justify="center" items="center" width="100%" gap="2">
                       <Text fontWeight="bold" fontSize="6">
@@ -581,7 +580,7 @@ export function OneTimeCodeInputExample({
                       </Text>
 
                       <Paragraph color="color-9" text="center">
-                        Congratulations, successful confirmation
+                        Your number is confirmed
                       </Paragraph>
                     </YStack>
 
@@ -650,6 +649,12 @@ const EmailInput = ({
                 setEmail(e.target?.value ?? e.nativeEvent?.text ?? '')
               }
               width="100%"
+              bg={tone.field}
+              borderWidth={1}
+              borderColor={`${tone.border} hover:color-6 focus:color-8`}
+              outlineColor="outline-color"
+              outlineStyle="focus:solid"
+              outlineWidth="0px focus:2px"
             />
           </XStack>
         </YStack>

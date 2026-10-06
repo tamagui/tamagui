@@ -39,6 +39,7 @@ export function CheckboxCards() {
     Toys: false,
     Books: false,
     Clothes: false,
+    Games: false,
   })
 
   // Note: debounce is used to prevent multiple state updates that could toggle previous values
@@ -78,7 +79,7 @@ export function CheckboxCards() {
                       theme={item.color}
                     >
                       <View width={10} height={10} bg="color-9" rounded={100} />
-                      <Text fontSize="3" color="color-10">
+                      <Text fontSize="3" color="color-11">
                         {item.title}
                       </Text>
                     </View>

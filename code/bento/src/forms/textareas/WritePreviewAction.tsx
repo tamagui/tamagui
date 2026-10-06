@@ -39,9 +39,19 @@ export function WritePreviewAction() {
           />
         </Tabs.Content>
         <Tabs.Content value="preview" minH={160} p="4">
-          <Text fontFamily="body" fontSize="sm" color={comment ? 'color-12' : tone.muted}>
-            {comment || 'Nothing to preview yet.'}
-          </Text>
+          {comment ? (
+            <View gap="1">
+              {comment.split('\n').map((line, i) => (
+                <Text key={i} fontFamily="body" fontSize="sm" color="color-12">
+                  {line ? renderInline(line, `${i}-`) : ' '}
+                </Text>
+              ))}
+            </View>
+          ) : (
+            <Text fontFamily="body" fontSize="sm" color={tone.muted}>
+              Nothing to preview yet.
+            </Text>
+          )}
         </Tabs.Content>
 
         <Separator borderColor={tone.border} />
@@ -60,6 +70,45 @@ export function WritePreviewAction() {
       </View>
     </Tabs>
   )
+}
+
+// just enough markdown for a comment preview: **bold**, *italic*, `code`
+function renderInline(line: string, keyPrefix: string) {
+  return line
+    .split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g)
+    .filter(Boolean)
+    .map((part, i) => {
+      const key = `${keyPrefix}${i}`
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return (
+          <Text key={key} fontWeight="700">
+            {part.slice(2, -2)}
+          </Text>
+        )
+      }
+      if (part.length > 2 && part.startsWith('*') && part.endsWith('*')) {
+        return (
+          <Text key={key} fontStyle="italic">
+            {part.slice(1, -1)}
+          </Text>
+        )
+      }
+      if (part.length > 2 && part.startsWith('`') && part.endsWith('`')) {
+        return (
+          <Text
+            key={key}
+            fontFamily="mono"
+            fontSize="xs"
+            bg={tone.fill}
+            px="1"
+            rounded="2"
+          >
+            {part.slice(1, -1)}
+          </Text>
+        )
+      }
+      return <Text key={key}>{part}</Text>
+    })
 }
 
 const Segment = styled(Tabs.Tab, {

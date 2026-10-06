@@ -1,6 +1,6 @@
 import { Check } from '../../icons'
-import { useEffect, useId, useState } from 'react'
-import { Text, View, debounce, Label, Separator, Avatar } from 'tamagui'
+import { useId, useState } from 'react'
+import { Text, View, debounce, Avatar } from 'tamagui'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
 import { Checkboxes } from './common/checkboxParts'
 
@@ -10,47 +10,45 @@ const items = [
     title: 'Americano',
     desc: 'Espresso with hot water',
     key: 'americano',
-    avatar: 'https://tamagui.dev/bento/images/coffee1.jpg',
+    avatar: '/bento/images/coffee1.jpg',
   },
   {
     checked: false,
     title: 'Cappuccino',
     desc: 'Espresso with steamed milk foam',
     key: 'cappucino',
-    avatar: 'https://tamagui.dev/bento/images/coffee2.jpg',
+    avatar: '/bento/images/coffee2.jpg',
   },
   {
     checked: false,
     title: 'Espresso',
     desc: 'A concentrated form of coffee served in shots',
     key: 'espresso',
-    avatar: 'https://tamagui.dev/bento/images/coffee3.jpg',
+    avatar: '/bento/images/coffee3.jpg',
   },
   {
     checked: false,
     title: 'Flat White',
     desc: 'Espresso with steamed milk',
     key: 'flatWhite',
-    avatar: 'https://tamagui.dev/bento/images/coffee4.jpg',
+    avatar: '/bento/images/coffee4.jpg',
   },
   {
     title: 'Latte',
     checked: false,
     desc: 'Espresso with steamed milk',
     key: 'latte',
-    avatar: 'https://tamagui.dev/bento/images/coffee5.jpg',
+    avatar: '/bento/images/coffee5.jpg',
   },
 ]
 
 /** ------ EXAMPLE ------ */
 export function CheckboxList() {
-  const [values, setValues] = useState<Record<string, boolean>>([] as any)
+  const [values, setValues] = useState<Record<string, boolean>>(() =>
+    Object.fromEntries(items.map((item) => [item.key, false]))
+  )
   const uniqueId = useId()
   const { sm: wide, 'max-xs': tiny } = useGroupMedia('window')
-
-  useEffect(() => {
-    setValues(Object.fromEntries(items.map((item) => [item.key, false])))
-  }, [])
 
   const onValuesChange = debounce((values: any) => {
     setValues(values)
@@ -84,7 +82,6 @@ export function CheckboxList() {
             {items?.map((value, i) => (
               <Checkboxes.FocusGroup.Item key={i} value={value.key}>
                 <CheckboxItem
-                  isLastItem={i === items.length - 1}
                   item={value}
                   key={value.key}
                   uniqueId={uniqueId}
@@ -101,12 +98,10 @@ export function CheckboxList() {
 
 function CheckboxItem({
   item,
-  isLastItem,
   uniqueId,
   xxs,
 }: {
   item: (typeof items)[number]
-  isLastItem: boolean
   uniqueId: string
   xxs: boolean
 }) {

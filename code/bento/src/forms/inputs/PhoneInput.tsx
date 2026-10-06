@@ -8,6 +8,8 @@ import { useState, useMemo, useEffect } from 'react'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { DIAL_CODES, REGION_CODES } from './dialCodes'
 
+const dialOf = (regionCode: string) => `+${DIAL_CODES[regionCode]}`
+
 /**
  * for phone number validation, we recommend using libphonenumber-js:
  *
@@ -64,8 +66,12 @@ function RegionFilterInput(props: RegionFilterInputProps) {
   }, [open])
 
   const phoneCodesFiltered = useMemo(() => {
+    const query = filter.toLowerCase().replace(/^\+/, '')
     return phoneCodes.filter((item) => {
-      return item.name.toLowerCase().includes(filter.toLowerCase())
+      return (
+        item.name.toLowerCase().includes(query) ||
+        String(DIAL_CODES[item.name]).includes(query)
+      )
     })
   }, [filter])
 
@@ -143,6 +149,9 @@ function RegionFilterInput(props: RegionFilterInputProps) {
                       <Text fontSize="5">{item.flag}</Text>
                       <Text color={`${tone.muted} group-hover/item:color-11`} mr="auto">
                         {item.name}
+                      </Text>
+                      <Text color={tone.muted} fontSize="3">
+                        {dialOf(item.name)}
                       </Text>
                     </View>
                   </RovingFocusGroup.Item>

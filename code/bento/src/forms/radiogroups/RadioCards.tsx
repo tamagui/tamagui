@@ -15,7 +15,7 @@ const packages = [
     title: 'Books',
     description: 'A package of books',
     itemsCounts: 621,
-    color: 'teal',
+    color: 'red',
   },
   {
     title: 'Clothes',
@@ -104,7 +104,7 @@ function Item({
             theme={color as ThemeName}
           >
             <View width={10} height={10} bg="color-9" rounded={100} />
-            <Text fontSize="3" color="color-10">
+            <Text fontSize="3" color="color-11">
               {title}
             </Text>
           </View>
