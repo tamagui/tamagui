@@ -296,11 +296,20 @@ export function createThemes(
       )
     }
 
-    const identity = JSON.stringify(
+    const scheme = recipe.scheme
+    if (scheme === 'light' || scheme === 'dark') {
+      // metadata stays out of theme tokens and survives the generated theme boundary.
+      Object.defineProperty(resolved, Symbol.for('tamagui.theme.scheme'), {
+        value: scheme,
+      })
+    }
+
+    const identity = JSON.stringify([
+      scheme === 'light' || scheme === 'dark' ? scheme : undefined,
       Object.keys(resolved)
         .sort()
-        .map((key) => [key, resolved[key]])
-    )
+        .map((key) => [key, resolved[key]]),
+    ])
     themes[name] = deduped.get(identity) || resolved
     deduped.set(identity, themes[name]!)
 

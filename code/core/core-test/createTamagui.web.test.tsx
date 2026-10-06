@@ -3,9 +3,34 @@ process.env.TAMAGUI_TARGET = 'web'
 import { describe, expect, test } from 'vitest'
 
 import config from '../config-default'
+import { createThemes } from '../create-theme/src/createThemes'
 import { createTamagui } from '../web/src'
 
 describe('createTamagui', () => {
+  test('keeps authored theme scheme through config parsing without CSS tokens', () => {
+    const themes = createThemes(
+      { color: { gray: '#888' } },
+      {
+        light: { scheme: 'light', values: { background: 'gray' } },
+        dark: { scheme: 'dark', values: { background: 'gray' } },
+        children: {
+          inverse: ({ parent }) => ({
+            scheme: parent.scheme === 'light' ? 'dark' : 'light',
+            values: { background: 'gray' },
+          }),
+        },
+      }
+    )
+    const parsed = createTamagui({ ...config.getDefaultTamaguiConfig(), themes })
+    const key = Symbol.for('tamagui.theme.scheme')
+    expect(Reflect.get(parsed.themes.light_inverse, key)).toBe('dark')
+    expect(Reflect.get(parsed.themes.dark_inverse, key)).toBe('light')
+    expect(Reflect.get(parsed.themes.light, key)).toBe('light')
+    expect(Reflect.get(parsed.themes.dark, key)).toBe('dark')
+    expect(Object.keys(parsed.themes.light_inverse)).not.toContain(key)
+    expect(parsed.getCSS()).not.toContain('tamagui.theme.scheme')
+  })
+
   test(`z-index resolves to correct unitless values`, () => {
     const theme = createTamagui(config.getDefaultTamaguiConfig())
     expect(theme.themeConfig.cssRuleSets[0].includes('--t-zIndex-1:100;')).toBeTruthy()
