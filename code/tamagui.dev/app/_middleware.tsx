@@ -2,29 +2,18 @@ import { createMiddleware } from 'one'
 import { getDocsLinkHref, getDocsSyntaxParam } from '~/features/docs/docsVersion'
 import fs from 'node:fs'
 import path from 'node:path'
+import {
+  buildLlmsTxt,
+  getComponentVersions,
+} from '~/features/docs/docsSourceFiles'
 
-// cache for component versions to avoid filesystem operations on every request
-const componentVersionCache = new Map<string, string[]>()
+// read once at server start to avoid filesystem operations on every request
+const componentVersionCache = getComponentVersions()
 
 // cache for llms.txt (full docs)
 const llmsTxtCache = {
   content: '',
   lastUpdated: 0,
-}
-
-function getAllMdxFiles(dir: string): string[] {
-  const files: string[] = []
-  const items = fs.readdirSync(dir)
-
-  for (const item of items) {
-    const fullPath = path.join(dir, item)
-    if (fs.statSync(fullPath).isDirectory()) {
-      files.push(...getAllMdxFiles(fullPath))
-    } else if (item.endsWith('.mdx')) {
-      files.push(fullPath)
-    }
-  }
-  return files
 }
 
 function getLlmsTxt() {
@@ -33,18 +22,7 @@ function getLlmsTxt() {
     return llmsTxtCache.content
   }
 
-  const docsDir = path.join(process.cwd(), 'data/docs')
-  let combined = '# Tamagui Complete Documentation\n\n'
-  combined +=
-    '> Tamagui is a complete UI solution for React Native and Web, with a fully-featured UI kit, styling engine, and optimizing compiler.\n\n'
-
-  const allFiles = getAllMdxFiles(docsDir)
-
-  for (const file of allFiles) {
-    const content = fs.readFileSync(file, 'utf-8')
-    const relativePath = path.relative(docsDir, file).replace('.mdx', '')
-    combined += `\n\n## ${relativePath}\n\n${content}`
-  }
+  const combined = buildLlmsTxt()
 
   llmsTxtCache.content = combined
   llmsTxtCache.lastUpdated = Date.now()
@@ -52,54 +30,8 @@ function getLlmsTxt() {
   return combined
 }
 
-function initializeVersionCache() {
-  const componentsDir = path.join(process.cwd(), 'data/docs/components')
-
-  try {
-    const components = fs.readdirSync(componentsDir)
-
-    for (const component of components) {
-      const componentDir = path.join(componentsDir, component)
-      if (fs.statSync(componentDir).isDirectory()) {
-        const versions = fs
-          .readdirSync(componentDir)
-          .filter((file) => file.endsWith('.mdx'))
-          .map((file) => file.replace('.mdx', ''))
-          .sort()
-          .reverse()
-
-        componentVersionCache.set(component, versions)
-      }
-    }
-  } catch (error) {
-    console.error('Error initializing component version cache:', error)
-  }
-}
-
-// initialize the cache when the server starts
-initializeVersionCache()
-
 export default createMiddleware(async ({ request, next }) => {
   const url = new URL(request.url)
-
-  if (/^\/(docs|unstyled|tailwind)\/guides\/cli$/.test(url.pathname)) {
-    url.pathname = url.pathname.replace('/guides/', '/core/')
-    return Response.redirect(url, 301)
-  }
-
-  if (
-    url.pathname === '/ui/roving-focus' ||
-    url.pathname.startsWith('/ui/roving-focus/') ||
-    url.pathname === '/docs/components/roving-focus' ||
-    url.pathname.startsWith('/docs/components/roving-focus/')
-  ) {
-    return Response.redirect(new URL('/ui/focus-scope', url.origin), 301)
-  }
-
-  if (url.pathname.startsWith('/unstyled-ui/')) {
-    url.pathname = url.pathname.replace(/^\/unstyled-ui\//, '/ui/')
-    return Response.redirect(url, 301)
-  }
 
   if (getDocsSyntaxParam(url.searchParams.get('syntax'))) {
     const href = `${url.pathname}${url.search}`

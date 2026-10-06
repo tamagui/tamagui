@@ -6,6 +6,7 @@ import { tamaguiPlugin, tamaguiAliases } from '@tamagui/vite-plugin'
 import { one } from 'one/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
 import type { UserConfig } from 'vite'
+import { redirects } from './redirects'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
@@ -281,66 +282,7 @@ export default {
       web: {
         skewProtection: 'proactive',
         experimental_scriptLoading: 'after-lcp-aggressive',
-        redirects: [
-          // llms.txt, llms-full.txt, docs.txt are handled by middleware directly
-          {
-            source: '/account/subscriptions',
-            destination: '/account',
-            permanent: false,
-          },
-          {
-            source: '/docs',
-            destination: '/docs/intro/introduction',
-            permanent: true,
-          },
-          {
-            source: '/docs/intro/why-a-compiler',
-            destination: '/docs/intro/introduction#why-a-compiler',
-            permanent: true,
-          },
-          {
-            source: '/docs/intro/agents',
-            destination: '/docs/intro/installation#set-up-with-an-agent',
-            permanent: true,
-          },
-          {
-            source: '/docs/core/font-language',
-            destination: '/docs/core/fonts#per-language-fonts',
-            permanent: true,
-          },
-          {
-            source: '/docs/intro/props',
-            destination: '/docs/core/view-and-text',
-            permanent: true,
-          },
-          {
-            source: '/docs/core/variables',
-            destination: '/docs/core/theme#custom-variables',
-            permanent: true,
-          },
-          {
-            source: '/vite',
-            destination: 'https://vxrn.dev',
-            permanent: true,
-          },
-          // the v3 composable toast replaced the old imperative one, so the
-          // temporary "toast-2" page folded back into /ui/toast
-          {
-            source: '/ui/toast-2',
-            destination: '/ui/toast',
-            permanent: true,
-          },
-          {
-            source: '/docs/components/:slug/:version',
-            destination: '/ui/:slug/:version',
-            permanent: true,
-          },
-          {
-            source: '/docs/components/:slug',
-            destination: '/ui/:slug',
-            permanent: true,
-          },
-        ],
+        redirects,
       },
     }),
 

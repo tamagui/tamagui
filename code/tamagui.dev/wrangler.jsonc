@@ -1,0 +1,11 @@
+// static site on cloudflare: `bun run build:static`, then `wrangler deploy`
+{
+  "name": "tamagui-dev",
+  "compatibility_date": "2026-06-01",
+  "assets": {
+    "directory": "./dist/client",
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  "routes": [{ "pattern": "v3.tamagui.dev", "custom_domain": true }]
+}
