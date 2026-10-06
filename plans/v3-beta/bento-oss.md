@@ -125,6 +125,12 @@ it is left alone until Nate answers the install path question below.
   pieces over, clean up what we keep, and cut ugly or low-value demos. Styling
   must follow one system: no input darker than its surface, no light mode
   that reads backwards, nothing styled at random.
+- 2026-10-06: Nate: "all these gray buttons everywhere looks so bad on the
+  light mode... change our button to be in light mode just white on white
+  with an outline... look all over the site... make sure it looks good in
+  dark mode. It's OK to use the background and have no outline" in dark;
+  site-only styling is fine ("it's fine if it's just our own style for the
+  site even if it's only that").
 
 ## Quality bar (per component)
 
@@ -177,3 +183,8 @@ unstyled parts) over hand-rolled ones.
   20 groups in both themes at 1280 and 360. Commits `d8be37b457`,
   `e93787e438`, `a6e44ad76a` on `tm/bento-land`; still unmerged, Bento
   visibility still Nate's call.
+- 2026-10-06: p64457 fixed the two r61029 review findings with
+  regression tests, then restyled buttons per Nate: site default is
+  white with a hairline in light and filled with no outline in dark
+  (themed buttons keep their fill); bento secondaries move to
+  `outlined`. Site-wide audit of key pages in both themes, all clean.

@@ -65,8 +65,10 @@ const resolveButtonSize = (size: ButtonSize | undefined): keyof typeof buttonHei
 const ButtonFrameBase = styled(ButtonBehaviorFrame, {
   context: ButtonContext,
   displayName: 'SiteButtonFrame',
-  backgroundColor: 'background hover:background-hover press:background-press',
-  borderColor: 'transparent hover:border-color-hover',
+  // flat white with a hairline in light mode, filled with no outline in dark
+  backgroundColor:
+    'transparent hover:background-hover press:background-press dark:background',
+  borderColor: 'border-color hover:border-color-hover dark:transparent',
   borderStyle: 'solid',
   borderWidth: 1,
   cursor: 'web:pointer',
@@ -179,7 +181,19 @@ const ButtonComponent = createStyledHOC(
     ref
   ) {
     const { theme, ...buttonBehaviorProps } = props
-    const content = <ButtonInner ref={ref} buttonBehaviorProps={buttonBehaviorProps} />
+    const { variant } = buttonBehaviorProps as { variant?: string }
+    const content = (
+      <ButtonInner
+        ref={ref}
+        buttonBehaviorProps={buttonBehaviorProps}
+        // a themed button keeps its theme fill; only the default goes flat white
+        frameProps={
+          theme && variant !== 'outlined' && variant !== 'quiet'
+            ? { backgroundColor: 'background' }
+            : undefined
+        }
+      />
+    )
     return theme ? (
       <Theme name={theme}>{content}</Theme>
     ) : (
@@ -193,8 +207,11 @@ const ButtonComponent = createStyledHOC(
 
 const ButtonInner = React.forwardRef<
   any,
-  { buttonBehaviorProps: ButtonBehaviorProps & { size?: ButtonSize } }
->(function ButtonInner({ buttonBehaviorProps }, ref) {
+  {
+    buttonBehaviorProps: ButtonBehaviorProps & { size?: ButtonSize }
+    frameProps?: Partial<React.ComponentProps<typeof ButtonFrame>>
+  }
+>(function ButtonInner({ buttonBehaviorProps, frameProps }, ref) {
   const size = ((buttonBehaviorProps.size as ButtonSize | undefined) ??
     ButtonContext.useStyledContext()?.size ??
     'md') as ButtonSize
@@ -205,7 +222,7 @@ const ButtonInner = React.forwardRef<
     ),
   })
 
-  return <ButtonFrame ref={ref} {...buttonProps} />
+  return <ButtonFrame ref={ref} {...buttonProps} {...frameProps} />
 })
 
 export const Button = withStaticProperties(ButtonComponent, {

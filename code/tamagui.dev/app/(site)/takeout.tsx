@@ -74,7 +74,7 @@ export default function TakeoutPage() {
           </Link>
 
           <Link href="https://github.com/tamagui/takeout" target="_blank">
-            <Button size="lg">
+            <Button size="lg" variant="outlined">
               <Button.Text>Repo</Button.Text>
             </Button>
           </Link>
