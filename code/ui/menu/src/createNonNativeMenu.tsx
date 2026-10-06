@@ -189,7 +189,9 @@ function useMenuTriggerSetup(open: boolean) {
     new Map<string, TriggerGroupContextValue | null>()
   )
   const activeGroupRef = React.useRef<TriggerGroupContextValue | null>(null)
-  const [hasGroupedTriggers, setHasGroupedTriggers] = React.useState(false)
+  const [activeGroup, setActiveGroup] = React.useState<TriggerGroupContextValue | null>(
+    null
+  )
 
   const setActiveTrigger = useEvent((id: string | null) => {
     const prevId = activeTriggerIdRef.current
@@ -199,6 +201,7 @@ function useMenuTriggerSetup(open: boolean) {
     }
     activeTriggerIdRef.current = id
     activeGroupRef.current = id ? (triggerGroupsRef.current.get(id) ?? null) : null
+    setActiveGroup(activeGroupRef.current)
     if (id && open) {
       triggerStateSettersRef.current.get(id)?.(true)
     }
@@ -211,7 +214,6 @@ function useMenuTriggerSetup(open: boolean) {
       group: TriggerGroupContextValue | null
     ) => {
       triggerGroupsRef.current.set(id, group)
-      setHasGroupedTriggers([...triggerGroupsRef.current.values()].some(Boolean))
       triggerStateSettersRef.current.set(id, setOpenState)
       setOpenState(activeTriggerIdRef.current === id && open)
     }
@@ -220,9 +222,10 @@ function useMenuTriggerSetup(open: boolean) {
   const unregisterTrigger = useEvent((id: string) => {
     triggerStateSettersRef.current.delete(id)
     triggerGroupsRef.current.delete(id)
-    setHasGroupedTriggers([...triggerGroupsRef.current.values()].some(Boolean))
     if (activeTriggerIdRef.current === id) {
       activeTriggerIdRef.current = null
+      activeGroupRef.current = null
+      setActiveGroup(null)
     }
   })
 
@@ -243,7 +246,7 @@ function useMenuTriggerSetup(open: boolean) {
     unregisterTrigger,
     activeTriggerIdRef,
     activeGroupRef,
-    hasGroupedTriggers,
+    activeGroup,
   }
 }
 
@@ -383,9 +386,9 @@ export function createNonNativeMenu() {
       unregisterTrigger,
       activeTriggerIdRef,
       activeGroupRef,
-      hasGroupedTriggers,
+      activeGroup,
     } = useMenuTriggerSetup(open)
-    const effectiveModal = outerGroup || hasGroupedTriggers ? false : modal
+    const effectiveModal = outerGroup || activeGroup ? false : modal
 
     return (
       <MenuProvider
@@ -508,7 +511,7 @@ export function createNonNativeMenu() {
       const shouldRejectHover = () =>
         disabled ||
         (context.openRef.current &&
-          Boolean(group || context.activeGroupRef.current) &&
+          context.activeTriggerIdRef.current !== triggerId &&
           !group?.isActive(context.openRef))
 
       // Use onClick for touch devices to avoid race condition with Dismissable

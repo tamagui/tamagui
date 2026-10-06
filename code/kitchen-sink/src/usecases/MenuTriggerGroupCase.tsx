@@ -96,9 +96,76 @@ function SharedMenu({ isolation = false }: { isolation?: boolean }) {
   )
 }
 
+function MixedMenu() {
+  const [label, setLabel] = useState('First')
+  const [open, setOpen] = useState(false)
+  const [checked, setChecked] = useState(false)
+  return (
+    <Menu open={open} onOpenChange={setOpen} placement="bottom-start" offset={0}>
+      <YStack gap={24} alignItems="flex-start">
+        {['First', 'Second'].map((name) => (
+          <Menu.Trigger
+            key={name}
+            onMouseEnter={(event) => {
+              if (open) {
+                event.preventDefault()
+                return
+              }
+              setLabel(name)
+            }}
+            onFocus={() => {
+              if (!open) setLabel(name)
+            }}
+            onPress={() => {
+              if (!open) setLabel(name)
+            }}
+          >
+            <Button data-testid={`mixed-${name}`}>{name} menu</Button>
+          </Menu.Trigger>
+        ))}
+        <Menu.TriggerGroup>
+          <Menu.Trigger asChild>
+            <Button>Grouped one</Button>
+          </Menu.Trigger>
+        </Menu.TriggerGroup>
+        <Menu.TriggerGroup>
+          <Menu.Trigger asChild>
+            <Button>Grouped two</Button>
+          </Menu.Trigger>
+        </Menu.TriggerGroup>
+      </YStack>
+      <Menu.Portal>
+        <Menu.Content
+          data-testid="mixed-content"
+          width={195}
+          p={4}
+          transition={{ duration: 75 }}
+          opacity="enter:0 exit:0"
+        >
+          <Menu.CheckboxItem
+            data-testid="mixed-check"
+            checked={checked}
+            onCheckedChange={setChecked}
+            height={32}
+            py={6}
+            textValue={`${label} check`}
+            onSelect={(event) => event.preventDefault()}
+          >
+            <Menu.ItemTitle lineHeight="30px">{label} check</Menu.ItemTitle>
+          </Menu.CheckboxItem>
+          <Menu.Item height={32} py={6} textValue={`${label} action`}>
+            <Menu.ItemTitle>{label} action</Menu.ItemTitle>
+          </Menu.Item>
+        </Menu.Content>
+      </Menu.Portal>
+    </Menu>
+  )
+}
+
 export function MenuTriggerGroupCase() {
   return (
     <YStack p="4" gap="4">
+      <MixedMenu />
       <Text>Grouped menu triggers</Text>
       <Menu.TriggerGroup gap="2" data-testid="group-primary">
         <ExampleMenu name="File" />
