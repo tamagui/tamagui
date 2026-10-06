@@ -596,7 +596,8 @@ export const PopperAnchor = createStyledHOC(
           // flushSync forces synchronous commit so update() below reads
           // the correct reference element immediately.
           onMouseEnter: (e) => {
-            refProps?.onPointerEnter?.(e)
+            const hoverProps = refProps ?? rest
+            hoverProps.onPointerEnter?.(e)
             if (e.defaultPrevented || ('isCanceled' in e && e.isCanceled)) return
 
             const el = (e.currentTarget ?? ref.current) as HTMLElement | null

@@ -10,9 +10,14 @@ const config = createTamagui(getDefaultTamaguiConfig('web') as any)
 afterEach(cleanup)
 
 describe('scoped Popper hover guard', () => {
-  test.each(['defaultPrevented', 'isCanceled'] as const)(
-    '%s keeps the accepted reference and skips repositioning',
-    (signal) => {
+  test.each([
+    ['defaultPrevented', true],
+    ['isCanceled', true],
+    ['defaultPrevented', false],
+    ['isCanceled', false],
+  ] as const)(
+    '%s keeps the accepted reference and skips repositioning (interaction props: %s)',
+    (signal, hasInteractionProps) => {
       const accepted = document.createElement('div')
       const reference = { current: accepted }
       const setReference = vi.fn((node) => {
@@ -30,10 +35,14 @@ describe('scoped Popper hover guard', () => {
             scope="grouped-menu"
             refs={{ setReference } as any}
             update={update}
-            getReferenceProps={(props) => ({ ...props, onPointerEnter: guard })}
+            getReferenceProps={hasInteractionProps ? (props) => props : undefined}
             onHoverReference={onHoverReference}
           >
-            <PopperAnchor scope="grouped-menu" data-testid="rejected-trigger" />
+            <PopperAnchor
+              scope="grouped-menu"
+              data-testid="rejected-trigger"
+              onPointerEnter={guard}
+            />
           </PopperProviderSlow>
         </TamaguiProvider>
       )
