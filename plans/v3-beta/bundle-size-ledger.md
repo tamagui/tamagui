@@ -558,3 +558,40 @@ Local logs and intermediate measurements are retained in
 `~/contrast/updates/tamagui-v3-size-evidence/`. Linux CI and exact published
 tarball verification are recorded in `~/contrast/updates/tamagui-v3-size.md`;
 the local results above do not assert those delivery results.
+
+## Rendered HOC variant ownership without a parent walk (2026-10-06)
+
+RAN: `64c9ea7904` superseded the native-background repair's Checks run and
+introduced fresh island growth. On the same pinned toolchain, its styled-view
+bundle is 29,950 gzip bytes and its islands are 73,370 / 73,380 / 124,091.
+The direct parent, `8764bf3916`, passes all four unchanged ceilings.
+
+READ: `styled()` already stores the actual behavior renderer in
+`staticConfig.Component`; `createStyledHOC()` attaches that renderer's static
+configuration. Parent variants are used for name membership when forwarding
+props, while their style values resolve in the rendered component. The
+Tailwind normalizer preserves those names while parsing the values. A second
+parent-variant value lookup also repeated the membership decision already in
+`shouldPassProp`.
+
+The repair reads the rendered component's declared variant names directly,
+removes that duplicate value lookup, and carries the original parent config
+only in development diagnostics. It removes the per-render ancestry walk and
+parent normalization lookup without adding a cache, helper, prop or API.
+Skin variants still resolve in the skin; frame variants still reach the frame.
+
+| Source | Styled-view | Vite island | Next island | Metro island |
+| --- | ---: | ---: | ---: | ---: |
+| `64c9ea7904` | 29,950 | 73,370 | 73,380 | 124,091 |
+| Renderer names and shared forwarding check | 29,911 | 73,321 | 73,325 | 124,039 |
+| Existing ceiling | 30,069 | 73,341 | 73,359 | 124,079 |
+
+RAN: both unchanged size scripts pass, including all six starter builds.
+TESTED: all 692 core web tests and 49 focused native tests pass. The HOC tests
+cover skin context variants, frame variant forwarding, and another nested
+skin with its own default variant. Existing skips are unchanged. Build,
+formatting, all 12 starter browser tests, and the 132-package local release
+into Contrast pass. A control using the skin's parent variants fails both
+context and nested-skin tests; final source is restored byte-for-byte.
+Receipts live with the earlier evidence; the delivery handoff records the
+final CI and canary verdicts.

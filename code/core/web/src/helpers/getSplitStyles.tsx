@@ -534,7 +534,6 @@ function contributeProp(
   const shouldCheckSkipProps = !noSkip
   const asChildExceptStyleLike = Boolean(flags & passAsChildStyleFlag)
   const isTextOrInput = isText || isInput
-  const hocParentVariants = isHOC ? parentVariants : undefined
   let keyInit = keyOg
   let valInit = valOg
 
@@ -1008,11 +1007,10 @@ function contributeProp(
   const shouldPassProp =
     (!isStyleProp && isHOC) ||
     // is in parent variants
-    (hocParentVariants && keyInit in hocParentVariants) ||
+    (parentVariants && keyInit in parentVariants) ||
     inlineProps?.has(keyInit)
 
-  const parentVariant = parentVariants?.[keyInit]
-  const isHOCShouldPassThrough = Boolean(isHOC && (parentVariant || keyInit in skipProps))
+  const isHOCShouldPassThrough = isHOC && keyInit in skipProps
 
   const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
@@ -1342,18 +1340,10 @@ export const getSplitStyles: StyleSplitter = (
   let frontendContainer: boolean | string | undefined
   let frontendContainerType: string | undefined
   const processedProps = props
-  // styled() over a styled HOC renders the HOC directly and merges that
-  // layer's variants into this one, so they resolve here. an HOC passes through
-  // only the variants of the layer it actually renders, or a resolved variant
-  // (a skin's `size`) reaches the wrapped host element as an attribute.
-  let renderedParentStaticConfig = parentStaticConfig as StaticConfig | undefined
-  if (isHOC) {
-    while (renderedParentStaticConfig?.isStyledHOC) {
-      renderedParentStaticConfig = renderedParentStaticConfig.parentStaticConfig
-    }
-  }
-  const parentVariants = renderedParentStaticConfig
-    ? getStyleStaticConfig(renderedParentStaticConfig, conf).variants
+  // only variant names determine HOC forwarding; their style values resolve
+  // in the renderer, so this needs no normalized style snapshot.
+  const parentVariants = isHOC
+    ? staticConfig.Component?.staticConfig?.variants
     : undefined
   const defaultProps = asChild ? styleStaticConfig.defaultProps : undefined
   const asChildExceptStyleLike =
@@ -1392,7 +1382,7 @@ export const getSplitStyles: StyleSplitter = (
     styledContextKeys,
     stylePassFlags,
     debug,
-    parentStaticConfig,
+    process.env.NODE_ENV === 'development' ? parentStaticConfig : undefined,
     defaultProps,
     driverAnimations,
     driverOutputStyle,

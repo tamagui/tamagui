@@ -81,3 +81,23 @@ test('a restyled skin still passes the frame variant through the behavior', () =
 
   expect(received.some((props) => props.tone === 'loud')).toBe(true)
 })
+
+test('nested restyled skins resolve both layers while passing the frame variant', () => {
+  const NestedSkin = styled(Restyled, {
+    variants: {
+      density: {
+        compact: { padding: 2 },
+      },
+    } as const,
+    defaultVariants: { density: 'compact' },
+  })
+  const NestedRestyled = styled(NestedSkin, { margin: 1 })
+  const node = renderInSkin(<NestedRestyled testID="probe" tone="loud" />)
+
+  expect(node).toBeTruthy()
+  expect(received.length).toBeGreaterThan(0)
+  expect(received.every((props) => !('size' in props) && !('density' in props))).toBe(
+    true
+  )
+  expect(received.some((props) => props.tone === 'loud')).toBe(true)
+})
