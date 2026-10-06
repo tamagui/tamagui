@@ -127,6 +127,7 @@ export function createMenu() {
 
   const Menu = withStaticProperties(MenuComp, {
     Trigger,
+    TriggerGroup: NonNativeMenu.TriggerGroup,
     Portal,
     Content,
     Group,

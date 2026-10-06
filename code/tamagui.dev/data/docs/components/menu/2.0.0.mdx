@@ -243,6 +243,46 @@ Required for rendering the menu content.
   ]}
 />
 
+### Menu.TriggerGroup
+
+Wrap related menu triggers in `Menu.TriggerGroup` to make a web menubar. Hovering
+an enabled sibling switches menus once a menu in that group is open. Hovering
+an idle group does not open a menu. Each panel opens at its own trigger.
+
+```tsx
+<Menu.TriggerGroup gap="$2" aria-label="Application">
+  <Menu placement="bottom-start">
+    <Menu.Trigger asChild><Button>File</Button></Menu.Trigger>
+    <Menu.Portal>
+      <Menu.Content>
+        <Menu.Item textValue="New"><Menu.ItemTitle>New</Menu.ItemTitle></Menu.Item>
+      </Menu.Content>
+    </Menu.Portal>
+  </Menu>
+  <Menu placement="bottom-start">
+    <Menu.Trigger asChild><Button>Edit</Button></Menu.Trigger>
+    <Menu.Portal>
+      <Menu.Content>
+        <Menu.Item textValue="Undo"><Menu.ItemTitle>Undo</Menu.ItemTitle></Menu.Item>
+      </Menu.Content>
+    </Menu.Portal>
+  </Menu>
+</Menu.TriggerGroup>
+```
+
+The container accepts [Tamagui Props](/docs/intro/props) and `dir="ltr" | "rtl"`.
+It lays out triggers in a row. Left and right arrow keys move between enabled
+triggers and wrap at either end. While a menu is open, they switch to the next
+menu and focus its first item. Submenu opening and closing keys keep their
+usual behavior. Escape closes the menu and returns focus to its active trigger.
+
+You can also place a trigger group inside one `Menu` whose triggers share a
+single content panel. Use trigger `onMouseEnter` and `onFocus` handlers to
+prepare the corresponding contents. Groups are independent, and grouped web
+menus are non-modal so sibling triggers remain reachable. Native platform
+menus keep their platform interactions. `Menu.Group` continues to group items
+inside a menu panel.
+
 ### Menu.Trigger
 
 Trigger element for the menu. Accepts [Tamagui Props](/docs/intro/props).

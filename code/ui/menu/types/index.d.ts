@@ -7,6 +7,11 @@ export declare const Menu: import("react").FC<import("./createNonNativeMenu").Me
     } & {
         ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
     } & Partial<Omit<import("@tamagui/create-menu").MenuTriggerProps, "ref" | "scope" | keyof import("./createNonNativeMenu").MenuTriggerProps>>>;
+    readonly TriggerGroup: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").ViewProps, "dir" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+        dir?: "ltr" | "rtl";
+    }, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+        dir?: "ltr" | "rtl";
+    }, import("@tamagui/web").StackStyleBase, {}, {}>;
     readonly Portal: import("react").FC<import("@tamagui/create-menu").MenuPortalProps & {
         scope?: string;
     } & Partial<Omit<import("react").FragmentProps, "scope" | keyof import("@tamagui/create-menu").MenuPortalProps>>>;
@@ -144,4 +149,5 @@ export declare const Menu: import("react").FC<import("./createNonNativeMenu").Me
         } & import("@tamagui/web").StaticConfigPublic];
     });
 };
+export type { MenuTriggerGroupProps } from './createNonNativeMenu';
 //# sourceMappingURL=index.d.ts.map

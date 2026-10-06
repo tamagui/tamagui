@@ -8,6 +8,9 @@ export declare const DROPDOWN_MENU_CONTEXT = "MenuContext";
 type ScopedProps<P> = P & {
     scope?: string;
 };
+type MenuTriggerGroupProps = ViewProps & {
+    dir?: Direction;
+};
 interface MenuProps extends BaseMenuTypes.MenuProps {
     children?: React.ReactNode;
     dir?: Direction;
@@ -52,6 +55,11 @@ export declare function createNonNativeMenu(): {
         scope?: string;
     }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & MenuTriggerProps & {
         scope?: string;
+    }, import("@tamagui/web").StackStyleBase, {}, {}>;
+    TriggerGroup: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, "dir" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+        dir?: Direction;
+    }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+        dir?: Direction;
     }, import("@tamagui/web").StackStyleBase, {}, {}>;
     Portal: {
         (props: ScopedProps<MenuPortalProps>): React.JSX.Element;
@@ -130,5 +138,5 @@ export declare function createNonNativeMenu(): {
         } & import("@tamagui/web").StaticConfigPublic];
     };
 };
-export type { MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemIndicatorProps, MenuItemProps, MenuLabelProps, MenuPortalProps, MenuProps, MenuRadioGroupProps, MenuRadioItemProps, MenuScrollViewProps, MenuSubContentProps, MenuSubProps, MenuSubTriggerProps, MenuTriggerProps, };
+export type { MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemIndicatorProps, MenuItemProps, MenuLabelProps, MenuPortalProps, MenuProps, MenuRadioGroupProps, MenuRadioItemProps, MenuScrollViewProps, MenuSubContentProps, MenuSubProps, MenuSubTriggerProps, MenuTriggerProps, MenuTriggerGroupProps, };
 //# sourceMappingURL=createNonNativeMenu.d.ts.map
