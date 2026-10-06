@@ -1342,8 +1342,18 @@ export const getSplitStyles: StyleSplitter = (
   let frontendContainer: boolean | string | undefined
   let frontendContainerType: string | undefined
   const processedProps = props
-  const parentVariants = parentStaticConfig
-    ? getStyleStaticConfig(parentStaticConfig as StaticConfig, conf).variants
+  // styled() over a styled HOC renders the HOC directly and merges that
+  // layer's variants into this one, so they resolve here. an HOC passes through
+  // only the variants of the layer it actually renders, or a resolved variant
+  // (a skin's `size`) reaches the wrapped host element as an attribute.
+  let renderedParentStaticConfig = parentStaticConfig as StaticConfig | undefined
+  if (isHOC) {
+    while (renderedParentStaticConfig?.isStyledHOC) {
+      renderedParentStaticConfig = renderedParentStaticConfig.parentStaticConfig
+    }
+  }
+  const parentVariants = renderedParentStaticConfig
+    ? getStyleStaticConfig(renderedParentStaticConfig, conf).variants
     : undefined
   const defaultProps = asChild ? styleStaticConfig.defaultProps : undefined
   const asChildExceptStyleLike =
