@@ -1775,6 +1775,14 @@
         "typescript": "7.0.2",
       },
     },
+    "code/packages/build/__tests__/fixtures/platform-package": {
+      "name": "tamagui-build-test-platform-package",
+      "version": "1.0.0",
+      "devDependencies": {
+        "@tamagui/build": "workspace:*",
+        "typescript": "~5.9.2",
+      },
+    },
     "code/packages/build/__tests__/fixtures/simple-package": {
       "name": "tamagui-build-test-simple-tpackage",
       "version": "2.0.0-rc.0-1769885482630",
