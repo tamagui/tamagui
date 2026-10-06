@@ -589,20 +589,15 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
 
       if (hasntMeasured && screenSize && frameSize) {
         at.current = screenSize
-        animatedNumber.setValue(
-          screenSize,
-          {
-            type: 'timing',
-            duration: 0,
-          },
-          () => {
-            syncAnimatedPosition(screenSize)
-            // imperfect but struggling to render properly here
-            setTimeout(() => {
-              setDisableAnimation(false)
-            }, 10)
-          }
-        )
+        // jump without waiting on a driver completion callback: drivers can drop
+        // onFinish (lost UI/JS hop under load) and the sheet would stay parked
+        // offscreen behind its overlay forever
+        animatedNumber.setValue(screenSize, { type: 'direct' })
+        syncAnimatedPosition(screenSize)
+        // imperfect but struggling to render properly here
+        setTimeout(() => {
+          setDisableAnimation(false)
+        }, 10)
         return
       }
 
