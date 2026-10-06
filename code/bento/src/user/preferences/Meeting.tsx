@@ -67,6 +67,7 @@ function MeetingItem({ item }: { item: (typeof data)[0] }) {
           <Button
             circular
             size="xs"
+            variant="outlined"
             onPress={() => setExpanded(!expanded)}
             aria-expanded={expanded}
             aria-label={expanded ? 'Collapse details' : 'Expand details'}

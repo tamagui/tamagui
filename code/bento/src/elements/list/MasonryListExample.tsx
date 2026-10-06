@@ -1,5 +1,6 @@
 import { Button, Image, Text, View } from 'tamagui'
 import { useContainerDim } from '../../hooks/useContainerDim'
+import { tone } from '../../tone'
 import { MapPin, ShoppingBag } from '../../icons'
 import { MasonryList } from './components/MasonryList'
 import { type Product, products } from './data/products'
@@ -43,6 +44,8 @@ function ProductCard({ item }: { item: Product }) {
           r="2"
           size="sm"
           circular
+          bg={tone.surface}
+          boxShadow="0 1px 8px rgba(0,0,0,0.18)"
           aria-label={`Add ${item.name} to bag`}
           icon={ShoppingBag}
         />

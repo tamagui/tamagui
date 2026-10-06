@@ -63,7 +63,12 @@ function Calendar({
         justify="space-between"
       >
         {order === 'first' || order === 'either' ? (
-          <Button circular size="md" {...swapOnClick(subtractOffset({ months: 1 }))}>
+          <Button
+            circular
+            size="md"
+            variant="outlined"
+            {...swapOnClick(subtractOffset({ months: 1 }))}
+          >
             <Button.Icon scaleIcon={1.5}>
               <ChevronLeft />
             </Button.Icon>
@@ -76,7 +81,12 @@ function Calendar({
 
         {isWeb &&
           (order === 'last' || order === 'either' ? (
-            <Button circular size="md" {...swapOnClick(subtractOffset({ months: -1 }))}>
+            <Button
+              circular
+              size="md"
+              variant="outlined"
+              {...swapOnClick(subtractOffset({ months: -1 }))}
+            >
               <Button.Icon scaleIcon={1.5}>
                 <ChevronRight />
               </Button.Icon>
@@ -86,7 +96,12 @@ function Calendar({
           ))}
 
         {!isWeb && (
-          <Button circular size="md" {...swapOnClick(subtractOffset({ months: -1 }))}>
+          <Button
+            circular
+            size="md"
+            variant="outlined"
+            {...swapOnClick(subtractOffset({ months: -1 }))}
+          >
             <Button.Icon scaleIcon={1.5}>
               <ChevronRight />
             </Button.Icon>

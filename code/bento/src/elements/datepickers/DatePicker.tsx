@@ -45,7 +45,12 @@ function DateHeader() {
   }
   return (
     <View flexDirection="row" width="100%" items="center" justify="space-between">
-      <Button circular size="md" {...swapOnClick(subtractOffset({ months: 1 }))}>
+      <Button
+        circular
+        size="md"
+        variant="outlined"
+        {...swapOnClick(subtractOffset({ months: 1 }))}
+      >
         <Button.Icon scaleIcon={1.5}>
           <ChevronLeft />
         </Button.Icon>
@@ -53,7 +58,12 @@ function DateHeader() {
 
       <CalendarHeader year={year} month={month} setHeader={setHeader} />
 
-      <Button circular size="md" {...swapOnClick(subtractOffset({ months: -1 }))}>
+      <Button
+        circular
+        size="md"
+        variant="outlined"
+        {...swapOnClick(subtractOffset({ months: -1 }))}
+      >
         <Button.Icon scaleIcon={1.5}>
           <ChevronRight />
         </Button.Icon>

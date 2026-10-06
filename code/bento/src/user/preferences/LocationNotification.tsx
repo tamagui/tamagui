@@ -246,7 +246,7 @@ export function LocationNotification() {
       </View>
       <Separator mx="-4" />
       <View flexDirection="row" gap="3">
-        <Button flex={1}>
+        <Button flex={1} variant="outlined">
           <Button.Text>Cancel</Button.Text>
         </Button>
 

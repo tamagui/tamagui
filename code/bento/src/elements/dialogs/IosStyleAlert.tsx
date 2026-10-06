@@ -163,6 +163,7 @@ const AlertDialogTest = () => {
   return (
     <View flexDirection="row" flexWrap="wrap" justify="center" gap="3">
       <Button
+        variant="outlined"
         onPress={() =>
           alert({
             title: 'Reply to Sam',
@@ -178,6 +179,7 @@ const AlertDialogTest = () => {
         Reply
       </Button>
       <Button
+        variant="outlined"
         onPress={() =>
           alert({
             title: 'Delete this photo?',
@@ -192,6 +194,7 @@ const AlertDialogTest = () => {
         Delete photo
       </Button>
       <Button
+        variant="outlined"
         onPress={() =>
           alert({
             title: 'Save changes?',

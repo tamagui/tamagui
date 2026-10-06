@@ -183,7 +183,7 @@ const BottomBar = ({
 
             return (
               <XStack items="center" gap="3" px="4" py="4">
-                <Button size="sm" circular>
+                <Button size="sm" circular variant="outlined">
                   <Plus />
                 </Button>
                 <Input
@@ -212,6 +212,7 @@ const BottomBar = ({
                     scale="1 enter:0.2 exit:0.2"
                     size="sm"
                     circular
+                    variant="outlined"
                   >
                     <Smile />
                   </Button>
@@ -282,7 +283,7 @@ const Header = ({ offset }: { offset: SharedValue<number> }) => {
           </View>
 
           <View position="relative">
-            <Button size="sm" circular>
+            <Button size="sm" circular variant="outlined">
               <PhoneCall size={'1'} />
             </Button>
             <Circle

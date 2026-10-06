@@ -321,7 +321,12 @@ export function YearRangeSlider() {
 
   return (
     <View flexDirection="row" width="100%" items="center" justify="space-between">
-      <Button circular size="md" {...swapOnClick(previousYearsButton())}>
+      <Button
+        circular
+        size="md"
+        variant="outlined"
+        {...swapOnClick(previousYearsButton())}
+      >
         <Button.Icon scaleIcon={1.5}>
           <ChevronLeft />
         </Button.Icon>
@@ -331,7 +336,7 @@ export function YearRangeSlider() {
           {`${years[0].year} - ${years[years.length - 1].year}`}
         </SizableText>
       </View>
-      <Button circular size="md" {...swapOnClick(nextYearsButton())}>
+      <Button circular size="md" variant="outlined" {...swapOnClick(nextYearsButton())}>
         <Button.Icon scaleIcon={1.5}>
           <ChevronRight />
         </Button.Icon>
@@ -355,7 +360,12 @@ export function YearSlider() {
       items="center"
       justify="space-between"
     >
-      <Button circular size="sm" {...swapOnClick(subtractOffset({ months: 12 }))}>
+      <Button
+        circular
+        size="sm"
+        variant="outlined"
+        {...swapOnClick(subtractOffset({ months: 12 }))}
+      >
         <Button.Icon scaleIcon={1.5}>
           <ChevronLeft />
         </Button.Icon>
@@ -370,7 +380,12 @@ export function YearSlider() {
       >
         {year}
       </SizableText>
-      <Button circular size="sm" {...swapOnClick(subtractOffset({ months: -12 }))}>
+      <Button
+        circular
+        size="sm"
+        variant="outlined"
+        {...swapOnClick(subtractOffset({ months: -12 }))}
+      >
         <Button.Icon scaleIcon={1.5}>
           <ChevronRight />
         </Button.Icon>

@@ -184,7 +184,7 @@ function PlanCard({ plan, annual }: { plan: Plan; annual: boolean }) {
 
       <Button
         theme={plan.popular ? 'accent' : undefined}
-        {...(!plan.popular && { bg: tone.fill })}
+        {...(!plan.popular && { variant: 'outlined' as const })}
       >
         {plan.monthly ? `Get ${plan.title}` : 'Start free'}
       </Button>

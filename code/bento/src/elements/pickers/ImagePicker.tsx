@@ -71,7 +71,7 @@ export function ImagePicker() {
         </View>
       )}
 
-      <Button size="sm" onPress={open}>
+      <Button size="sm" variant="outlined" onPress={open}>
         {filled ? 'Add more' : 'Pick images'}
       </Button>
 
