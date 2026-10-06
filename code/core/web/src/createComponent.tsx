@@ -2097,7 +2097,7 @@ export function createComponent<
         stateRef,
         isHOC,
         isCompositeComponent,
-        hasRealPressEvents
+        hasRealPressEvents && !isInsideNativeMenu
       )
     }
 

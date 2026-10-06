@@ -159,19 +159,39 @@ export function useEvents(
     // the component's own state a dropped release latches the press look with no
     // event left to clear it. Guarding here means a stray duplicate release is a
     // no-op while a missing one is caught by onFinalize / the detach clear below.
+    const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+    const longPressedRef = useRef(false)
+    const clearLongPress = () => {
+      if (longPressTimerRef.current) clearTimeout(longPressTimerRef.current)
+      longPressTimerRef.current = null
+    }
+    React.useEffect(() => clearLongPress, [])
     const pressActiveRef = useRef(false)
     const beginPress = (e?: any) => {
       if (pressActiveRef.current) return
       pressActiveRef.current = true
+      if (isInsideNativeMenu) {
+        clearLongPress()
+        longPressedRef.current = false
+        if (callbacksRef.current.onLongPress) {
+          longPressTimerRef.current = setTimeout(() => {
+            longPressTimerRef.current = null
+            longPressedRef.current = true
+            callbacksRef.current.onLongPress?.(e ?? {})
+          }, callbacksRef.current.delayLongPress ?? 500)
+        }
+      }
       callbacksRef.current.onPressIn?.(e ?? {})
     }
     const endPress = (e?: any, firePress = false) => {
+      clearLongPress()
       if (!pressActiveRef.current) return
       pressActiveRef.current = false
-      if (firePress) callbacksRef.current.onPress?.(e ?? {})
+      if (firePress && !longPressedRef.current) callbacksRef.current.onPress?.(e ?? {})
       callbacksRef.current.onPressOut?.(e ?? {})
     }
 
+    // native menu triggers leave responder ownership to the adapter.
     // Real press handlers use the responder system for delivery even when RNGH
     // is configured. RNGH Tap begin/end ordering is not stable enough for
     // nested Tamagui press arbitration, and Fabric can mount a stale Tap that
@@ -184,7 +204,7 @@ export function useEvents(
     // unconditionally here for stable hooks order; useMainThreadPressEvents
     // no-ops when enabled is false.
     const useResponderFallback = Boolean(
-      hasRealPressEvents || (!isInsideNativeMenu && getIsAndroid() && hasPressEvents)
+      !isInsideNativeMenu && (hasRealPressEvents || (getIsAndroid() && hasPressEvents))
     )
     useMainThreadPressEvents(events, viewProps, useResponderFallback, debugName)
 
@@ -196,10 +216,11 @@ export function useEvents(
             onPressOut: events.onPressOut,
             onPress: events.onPress,
             onLongPress: events.onLongPress,
+            delayLongPress: events.delayLongPress,
           }
         : {}
 
-      if (hasRealPressEvents) {
+      if (hasRealPressEvents && !isInsideNativeMenu) {
         // Real handlers are delivered by useMainThreadPressEvents above. Clear
         // any cached press-clause observer from an earlier render so it cannot
         // double-fire after onPress appears dynamically.
