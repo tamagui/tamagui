@@ -83,6 +83,12 @@ export function useSheetScrollViewGestures({
     return false
   }
 
+  // RN ScrollView overrides onStartShouldSetResponder but forwards onTouchStart,
+  // so this is where each touch gets a fresh baseline for the move threshold
+  const onTouchStart = (e: GestureResponderEvent) => {
+    state.current.lastPageY = e.nativeEvent.pageY
+  }
+
   const onMoveShouldSetResponder = (e: GestureResponderEvent) => {
     if (!scrollEnabled) return false
     const s = state.current
@@ -164,6 +170,7 @@ export function useSheetScrollViewGestures({
   return {
     onResponderRelease: release,
     onStartShouldSetResponder,
+    onTouchStart,
     onMoveShouldSetResponder,
     onResponderMove,
   }
