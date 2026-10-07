@@ -4016,6 +4016,15 @@ function contributeValue(
   contextOnly = false,
   condition?: Condition | string
 ) {
+  // every style source shares this path, including style objects and resolvers.
+  if (
+    process.env.TAMAGUI_TARGET === 'native' &&
+    !contextOnly &&
+    !(property in stylePropsInput) &&
+    property in stylePropsAll
+  ) {
+    return
+  }
   if (condition !== undefined) {
     const directState = state as DirectState
     const parent = (directState.flatPass?.[passParentCursor] as Condition) || null

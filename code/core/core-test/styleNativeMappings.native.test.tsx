@@ -1,4 +1,13 @@
-import { Text, View, createTamagui, getSplitStyles, styled } from '@tamagui/core'
+import {
+  Text,
+  View,
+  createStyledHOC,
+  createStyledContext,
+  createTamagui,
+  getSplitStyles,
+  styled,
+  type StaticConfig,
+} from '@tamagui/core'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
@@ -7,10 +16,13 @@ beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig('native'))
 })
 
-function getResultFor(props: Record<string, any>, Component = View) {
+function getResultFor(
+  props: Record<string, unknown>,
+  Component: { staticConfig: StaticConfig } = View
+) {
   const result = getSplitStyles(
     props,
-    (Component as any).staticConfig,
+    Component.staticConfig,
     {} as any,
     '',
     {
@@ -40,7 +52,10 @@ function getResultFor(props: Record<string, any>, Component = View) {
   return result
 }
 
-function getStyleFor(props: Record<string, any>, Component = View) {
+function getStyleFor(
+  props: Record<string, unknown>,
+  Component: Parameters<typeof getResultFor>[1] = View
+) {
   return getResultFor(props, Component)?.style
 }
 
@@ -55,7 +70,12 @@ describe('plain css properties are consumed without leaking into native hosts', 
     ['fontSizeAdjust', 0.5],
   ])('unsupported css %s is dropped from props and style objects', (key, value) => {
     for (const Component of [View, Text]) {
-      for (const props of [{ [key]: value }, { style: { [key]: value } }]) {
+      for (const props of [
+        { [key]: value },
+        { style: { [key]: value } },
+        { style: [{ width: 123 }, { [key]: value }] },
+        { style: { [key]: { default: value, native: value } } },
+      ]) {
         const result = getResultFor(props, Component)
         expect(result?.style?.[key]).toBeUndefined()
         expect(result?.viewProps[key]).toBeUndefined()
@@ -63,11 +83,46 @@ describe('plain css properties are consumed without leaking into native hosts', 
     }
   })
 
-  test('css-named custom component props still reach their native receiver', () => {
-    const CustomReceiver = styled((_props: { fillOpacity?: number }) => null)
+  test('css-named custom HOC props still reach their native receiver', () => {
+    const CustomReceiver = createStyledHOC(
+      View,
+      (_props: { fillOpacity?: number }) => null
+    )
+    expect(CustomReceiver.staticConfig.isHOC).toBe(true)
     const result = getResultFor({ fillOpacity: 0.5 }, CustomReceiver)
     expect(result?.viewProps.fillOpacity).toBe(0.5)
     expect(result?.style?.fillOpacity).toBeUndefined()
+  })
+
+  test('explicit inline props retain their native component owner', () => {
+    const CustomReceiver = styled(
+      (_props: { fillOpacity?: number }) => null,
+      {},
+      {
+        inlineProps: new Set(['fillOpacity']),
+      }
+    )
+    expect(CustomReceiver.staticConfig.inlineProps?.has('fillOpacity')).toBe(true)
+    const result = getResultFor({ fillOpacity: 0.5 }, CustomReceiver)
+    expect(result?.viewProps.fillOpacity).toBe(0.5)
+    expect(result?.style?.fillOpacity).toBeUndefined()
+  })
+
+  test('css-named context props retain their native context owner', () => {
+    const StyleContext = createStyledContext({ fillOpacity: 0.25 })
+    const ContextView = styled(View, { context: StyleContext })
+    const result = getResultFor({ fillOpacity: 0.5 }, ContextView)
+    expect(result?.overriddenContextProps?.fillOpacity).toBe(0.5)
+    expect(result?.style?.fillOpacity).toBeUndefined()
+  })
+
+  test('a css-named variant still drives native styles', () => {
+    const VariantView = styled(View, {
+      variants: { accentColor: { true: { opacity: 0.4 } } },
+    })
+    const result = getResultFor({ accentColor: true }, VariantView)
+    expect(result?.style?.opacity).toBe(0.4)
+    expect(result?.viewProps.accentColor).toBeUndefined()
   })
 
   test('native styles and text mappings survive beside unsupported css', () => {

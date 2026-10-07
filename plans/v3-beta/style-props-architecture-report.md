@@ -51,6 +51,19 @@ RAN the repaired source probe: both boolean container assignments and prop
 forwarding compile, all857 names remain public, and there are zero diagnostics.
 Built-artifact and downstream runtime
 validation are still pending.
+RAN the next build: the complete family and browser regression suite pass.
+The native suite fails eight assertions. A separate probe of the exact built
+native bundle isolates the gap: direct CSS props drop, while `style` object
+values bypass host-property validation. The shared value contribution path now
+drops unsupported CSS across style objects, arrays, pieces and resolvers while
+preserving context-only values. RAN existing HOC and `inlineProps` receiver
+controls: both forward their owned `fillOpacity` prop. The original custom
+receiver assertion used a bare `styled()` callback, which native treats as a
+native host; the regression now asserts the actual ownership precondition.
+RAN a source probe: widening CSS made a boolean `accentColor` variant fail with
+TS2322. The public type composition now lets declared variant values own the
+name; the repaired source probe has zero diagnostics. Native and browser runtime
+variant guards are included. Built checks for these repairs are pending.
 The earlier CSSOM and conditional-export design below remains a proposal.
 Owner: p65570 / qa-taste, branch `tm/qa-taste-style-props`; Contrast acceptance
 and receipts are in `plans/contrast/qa/taste-qa.md` and its production evidence.

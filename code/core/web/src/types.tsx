@@ -2290,10 +2290,10 @@ export type WithThemeAndShorthands<
   A extends object,
   Variants = {},
 > = OnlyAllowShorthands extends true
-  ? WithThemeValues<MaybeOmitLonghands<Omit<A, Longhands>>> &
+  ? WithThemeValues<MaybeOmitLonghands<Omit<A, Longhands | keyof Variants>>> &
       WithFlatVariantValues<Variants> &
       WithShorthands<WithThemeValues<A>>
-  : WithThemeValues<MaybeOmitLonghands<A>> &
+  : WithThemeValues<MaybeOmitLonghands<Omit<A, keyof Variants>>> &
       WithFlatVariantValues<Variants> &
       WithShorthands<WithThemeValues<A>>
 

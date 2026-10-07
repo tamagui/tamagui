@@ -8,6 +8,7 @@ import { describe, expect, expectTypeOf, test } from 'vitest'
 import { cssStyleProps } from '../../helpers/src/cssStyleProps'
 import type {
   GetFinalProps,
+  FlatStyleValue,
   StackNonStyleProps,
   StackStyleBase,
   TamaguiComponentPropsBase,
@@ -76,6 +77,17 @@ describe('grammar-era style keys: runtime tables and public types agree', () => 
     >()
     expectTypeOf<Extract<keyof StackStyleBase, 'container'>>().toEqualTypeOf<never>()
     expectTypeOf<Extract<keyof TextStylePropsBase, 'container'>>().toEqualTypeOf<never>()
+  })
+
+  test('an explicit css-named variant owns its public value type', () => {
+    type VariantProps = GetFinalProps<
+      StackNonStyleProps,
+      StackStyleBase,
+      { accentColor: boolean }
+    >
+    expectTypeOf<VariantProps['accentColor']>().toEqualTypeOf<
+      FlatStyleValue<boolean> | undefined
+    >()
   })
 
   test('canonical css properties are recognized instead of forwarded as attributes', () => {

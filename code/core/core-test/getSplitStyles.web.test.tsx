@@ -38,6 +38,15 @@ describe('getSplitStyles', () => {
     }
   })
 
+  test('a css-named variant keeps its declared behavior', () => {
+    const VariantView = styled(View, {
+      variants: { accentColor: { true: { opacity: 0.4 } } },
+    })
+    const result = simplifiedGetSplitStyles(VariantView, { accentColor: true })
+    expect(getStyleValue(result, 'opacity')).toBe('0.4')
+    expect(result.viewProps.accentColor).toBeUndefined()
+  })
+
   test.each(['rgba(255,255,255,0.55)', 'rgb(255, 255, 255)', 'hsl(0, 0%, 100%)'])(
     'background color function %s retains the CSS background shorthand',
     (background) => {
