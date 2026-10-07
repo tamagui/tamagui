@@ -132,6 +132,11 @@ Nate's latest direction stops further shares. The bounded acceptance plan is
 recorded in Contrast at `plans/contrast/qa/v3-style-props.md`: public types,
 browser declarations, whole native output, approved appearance, measured cost
 and verified V3 beta artifact delivery. No beta has been published.
+RAN React's direct style renderer emits `-ms-user-select:none`, while the atomic
+emitter omits the leading dash. Its serializer now preserves the Microsoft CSS
+prefix. The test declaration reader uses the canonical prefix too; two guards
+then fail before the emitter repair, and all74 browser source tests pass after
+repair. The fresh built family and downstream browser controls remain next.
 The earlier CSSOM and conditional-export design below remains a proposal.
 Owner: p65570 / qa-taste, branch `tm/qa-taste-style-props`; Contrast acceptance
 and receipts are in `plans/contrast/qa/taste-qa.md` and its production evidence.

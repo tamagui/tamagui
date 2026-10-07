@@ -58,6 +58,7 @@ describe('getSplitStyles', () => {
     ['counterReset', 'section'],
     ['textWrapStyle', 'balance'],
     ['WebkitTextStrokeColor', 'red'],
+    ['msUserSelect', 'none'],
     ['borderBlockStyle', 'dashed'],
     ['borderBlockEndStyle', 'dashed'],
     ['borderBlockStartStyle', 'dashed'],
