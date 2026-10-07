@@ -866,7 +866,11 @@ function contributeProp(
   let isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles)
 
   if (process.env.NODE_ENV === 'development') {
-    if (!isValidStyleKeyInit && (!variants || !(keyInit in variants))) {
+    if (
+      !isValidStyleKeyInit &&
+      !(keyInit in stylePropsAll) &&
+      (!variants || !(keyInit in variants))
+    ) {
       let replacement: string | undefined
       if (keyInit === 'animation') replacement = 'transition='
       else if (keyInit === 'hoverStyle') replacement = 'hover: clause'
@@ -1155,7 +1159,8 @@ function contributeProp(
   }
 
   if (keyInit in stylePropsAll) {
-    if (process.env.NODE_ENV === 'development') {
+    // shared css authoring intentionally drops unsupported keys on native.
+    if (process.env.NODE_ENV === 'development' && process.env.TAMAGUI_TARGET === 'web') {
       console.warn(
         `[tamagui] "${keyInit}" is a text style prop and this component is not text — it would render on neither platform. Use a Text-based component, or html.* for raw web elements.`
       )

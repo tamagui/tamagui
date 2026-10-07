@@ -1,4 +1,4 @@
-import { Text, View, createTamagui, getSplitStyles } from '@tamagui/core'
+import { Text, View, createTamagui, getSplitStyles, styled } from '@tamagui/core'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
@@ -7,7 +7,7 @@ beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig('native'))
 })
 
-function getStyleFor(props: Record<string, any>, Component = View) {
+function getResultFor(props: Record<string, any>, Component = View) {
   const result = getSplitStyles(
     props,
     (Component as any).staticConfig,
@@ -37,8 +37,60 @@ function getStyleFor(props: Record<string, any>, Component = View) {
     undefined,
     true
   )
-  return (result as any)?.style
+  return result
 }
+
+function getStyleFor(props: Record<string, any>, Component = View) {
+  return getResultFor(props, Component)?.style
+}
+
+describe('plain css properties are consumed without leaking into native hosts', () => {
+  test.each([
+    ['accentColor', 'red'],
+    ['animationDelay', '100ms'],
+    ['counterReset', 'section'],
+    ['textWrapStyle', 'balance'],
+    ['WebkitTextStrokeColor', 'red'],
+    ['fillOpacity', 0.5],
+    ['fontSizeAdjust', 0.5],
+  ])('unsupported css %s is dropped from props and style objects', (key, value) => {
+    for (const Component of [View, Text]) {
+      for (const props of [{ [key]: value }, { style: { [key]: value } }]) {
+        const result = getResultFor(props, Component)
+        expect(result?.style?.[key]).toBeUndefined()
+        expect(result?.viewProps[key]).toBeUndefined()
+      }
+    }
+  })
+
+  test('css-named custom component props still reach their native receiver', () => {
+    const CustomReceiver = styled((_props: { fillOpacity?: number }) => null)
+    const result = getResultFor({ fillOpacity: 0.5 }, CustomReceiver)
+    expect(result?.viewProps.fillOpacity).toBe(0.5)
+    expect(result?.style?.fillOpacity).toBeUndefined()
+  })
+
+  test('native styles and text mappings survive beside unsupported css', () => {
+    const result = getResultFor(
+      {
+        accentColor: 'red',
+        width: 123,
+        fontSize: 24,
+        opacity: 0.4,
+        userSelect: 'none',
+        textOverflow: 'ellipsis',
+      },
+      Text
+    )
+    expect(result?.style).toMatchObject({ width: 123, fontSize: 24, opacity: 0.4 })
+    expect(result?.viewProps).toMatchObject({
+      selectable: false,
+      numberOfLines: 1,
+      ellipsizeMode: 'tail',
+    })
+    expect(result?.viewProps.accentColor).toBeUndefined()
+  })
+})
 
 describe('direction keeps Yoga layout direction and maps writingDirection on native', () => {
   test('direction rtl on View keeps direction and sets writingDirection', () => {

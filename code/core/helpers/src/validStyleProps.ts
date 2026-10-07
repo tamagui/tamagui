@@ -1,4 +1,5 @@
 import { isAndroid } from '@tamagui/constants'
+import { cssStyleProps, cssStylePropsUnitless } from './cssStyleProps'
 import {
   nonAnimatableWebTextProps,
   nonAnimatableWebViewProps,
@@ -55,6 +56,7 @@ export const nonAnimatableStyleProps = toObj(
 )
 
 export const stylePropsUnitless = toObj(
+  process.env.TAMAGUI_TARGET === 'web' ? cssStylePropsUnitless : undefined,
   nonAnimatableUnitlessProps,
   enableCSSGrid ? cssGridProps : undefined,
   'animationIterationCount aspectRatio borderImageOutset borderImageSlice borderImageWidth columnCount flex flexGrow flexOrder flexPositive flexShrink flexNegative fontWeight opacity order orphans tabSize widows zIndex zoom scale scaleX scaleY scaleZ shadowOpacity'
@@ -73,7 +75,8 @@ export const stylePropsView = toObj(
   stylePropsUnitless,
   isAndroid ? { elevationAndroid: true } : undefined,
   'boxShadow border borderBlock borderInline filter background backgroundImage experimental_backgroundImage outline outlineOffset outlineWidth',
-  process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsView : undefined
+  process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsView : undefined,
+  process.env.TAMAGUI_TARGET === 'web' ? cssStyleProps : undefined
 )
 
 const stylePropsFont = toObj(
@@ -93,6 +96,7 @@ export const stylePropsText = toObj(stylePropsView, stylePropsTextOnly)
 
 export const stylePropsInput = toObj(stylePropsText, inputColors)
 
-export const stylePropsAll = stylePropsInput
+// native recognizes css names so unsupported styles cannot become host props.
+export const stylePropsAll = toObj(stylePropsInput, cssStyleProps)
 
 export const validStyles = stylePropsView

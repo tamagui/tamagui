@@ -2857,7 +2857,10 @@ interface ExtendedBaseProps
 }
 
 export interface StackStyleBase
-  extends Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>, ExtendedBaseProps {}
+  extends
+    Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>,
+    ExtendedBaseProps,
+    Omit<Properties<string | number>, keyof ViewStyle | keyof ExtendedBaseProps> {}
 
 export interface TextStylePropsBase
   extends
@@ -2865,7 +2868,15 @@ export interface TextStylePropsBase
       RNTextStyle,
       keyof ExtendedBaseProps | 'fontVariant' | 'lineHeight' | 'includeFontPadding'
     >,
-    ExtendedBaseProps {
+    ExtendedBaseProps,
+    Omit<
+      Properties<string | number>,
+      | keyof RNTextStyle
+      | keyof ExtendedBaseProps
+      | 'textShadow'
+      | 'textDecoration'
+      | 'font'
+    > {
   lineHeight?: number | Px | `${number}`
   /**
    * react-native types this as a mutable `FontVariant[]`, which an `as const` variant

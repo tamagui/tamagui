@@ -2,6 +2,42 @@
 
 Authored 2026-09-14 for Nate.
 
+## current property coverage audit, 2026-10-06
+
+Nate: "We should make sure that V3 doesn't require this web prefix";
+"We're trying to widen the support for props to basically most of them and we
+just drop it on native". He requested an audit and improvement "in general
+across every property that you can see style property".
+
+RAN installed canary1791311846573: plain `textWrap="balance"` emits browser CSS
+and drops from native style and host props. Width123, fontSize24 and opacity0.4
+remain on native; `userSelect` and `textOverflow` retain their host mappings.
+RAN all857 keys in csstype3.2.3 through the installed Text style pipeline:
+619 forward as raw browser props and629 as raw native props, with no pipeline
+exceptions. Explicit `accentColor="red"`, `animationDelay="100ms"`,
+`counterReset="section"` and `textWrapStyle="balance"` reproduce both gaps.
+RAN public source types at29333576d6:295 of497 standard CSS keys are absent
+from both style bases. The source inventory has0 semantic diagnostics with
+the fresh native type exports and installed consumer dependency types.
+
+The repair expands the existing static recognition path using metadata
+generated from the same csstype interface used by the public types. Browser
+View and Text accept CSS properties directly; native retains its host-valid
+style tables and consumes unsupported CSS names without forwarding them.
+Native text mappings, variants, custom props and existing shorthands keep
+their owners. The v6 `content` shorthand maps to `alignContent`, so that
+name remains an authoring collision to judge separately. `transition` is
+also owned by the animation interface. These exceptions are recorded rather
+than claimed as ordinary CSS emission.
+
+The generated registry also records numeric CSS properties that need no
+length unit. Metadata adds bundle bytes and startup dictionary entries;
+measure the compiled size and prop-splitting cost before closing the repair.
+Source, built-artifact and downstream runtime validation are still pending.
+The earlier CSSOM and conditional-export design below remains a proposal.
+Owner: p65570 / qa-taste, branch `tm/qa-taste-style-props`; Contrast acceptance
+and receipts are in `plans/contrast/qa/taste-qa.md` and its production evidence.
+
 ---
 
 ## 1. Executive Summary & Verdict

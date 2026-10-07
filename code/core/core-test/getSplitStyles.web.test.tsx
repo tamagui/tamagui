@@ -22,6 +22,22 @@ beforeAll(() => {
 })
 
 describe('getSplitStyles', () => {
+  test.each([
+    ['accentColor', 'red'],
+    ['animationDelay', '100ms'],
+    ['counterReset', 'section'],
+    ['textWrapStyle', 'balance'],
+    ['WebkitTextStrokeColor', 'red'],
+  ])('plain css %s emits styles instead of host attributes', (key, value) => {
+    for (const Component of [View, Text]) {
+      for (const props of [{ [key]: value }, { style: { [key]: value } }]) {
+        const result = simplifiedGetSplitStyles(Component, props)
+        expect(getStyleValue(result, key)).toBe(value)
+        expect(result.viewProps[key]).toBeUndefined()
+      }
+    }
+  })
+
   test.each(['rgba(255,255,255,0.55)', 'rgb(255, 255, 255)', 'hsl(0, 0%, 100%)'])(
     'background color function %s retains the CSS background shorthand',
     (background) => {
