@@ -1932,7 +1932,7 @@ export const getSplitStyles: StyleSplitter = (
 const stylePieceStaticConfig = {
   acceptsClassName: true,
   isText: true,
-  validStyles: stylePropsAll,
+  validStyles: stylePropsInput,
 } as StaticConfig
 
 type CompiledStylePiece = {
@@ -3623,6 +3623,8 @@ function emitValue(
       }
       return
     }
+    // unmapped css names cannot become native host styles.
+    if (property === 'backgroundImage' || property === 'textShadow') return
   }
 
   if (
@@ -4021,6 +4023,7 @@ function contributeValue(
     process.env.TAMAGUI_TARGET === 'native' &&
     !contextOnly &&
     !(property in stylePropsInput) &&
+    !(state.staticConfig.validStyles && property in state.staticConfig.validStyles) &&
     property in stylePropsAll
   ) {
     return

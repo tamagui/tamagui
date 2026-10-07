@@ -47,6 +47,20 @@ describe('getSplitStyles', () => {
     expect(result.viewProps.accentColor).toBeUndefined()
   })
 
+  test.each(['fontSizeAdjust', 'strokeMiterlimit'])(
+    'numeric css %s keeps its unitless value in classes and inline styles',
+    (key) => {
+      for (const Component of [View, Text]) {
+        const direct = simplifiedGetSplitStyles(Component, { [key]: 0.5 })
+        expect(getStyleValue(direct, key)).toBe('0.5')
+        expect(direct.viewProps[key]).toBeUndefined()
+        const inline = simplifiedGetSplitStyles(Component, { style: { [key]: 0.5 } })
+        expect(getStyleValue(inline, key)).toBe(0.5)
+        expect(inline.viewProps[key]).toBeUndefined()
+      }
+    }
+  )
+
   test.each(['rgba(255,255,255,0.55)', 'rgb(255, 255, 255)', 'hsl(0, 0%, 100%)'])(
     'background color function %s retains the CSS background shorthand',
     (background) => {

@@ -2464,7 +2464,8 @@ interface ExtraStyleProps {
     | `${string}(${string})`
     | OpenStyleString
   /**
-   * Web-only style property. Will be omitted on native.
+   * css background image. native maps supported linear gradients to
+   * experimental_backgroundImage and drops values it cannot represent.
    */
   backgroundImage?: Properties['backgroundImage']
   /**
@@ -2906,8 +2907,7 @@ export interface TextStylePropsBase
    */
   textDecoration?: string
   /**
-   * CSS font shorthand string ("italic bold 16px/1.5 Inter").
-   * Splits by the CSS micro-syntax; ambiguous forms stay unparsed.
+   * css font shorthand string, browser-only and dropped on native.
    */
   font?: string
 }

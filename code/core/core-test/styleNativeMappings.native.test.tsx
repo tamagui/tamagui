@@ -68,6 +68,25 @@ describe('plain css properties are consumed without leaking into native hosts', 
     ['WebkitTextStrokeColor', 'red'],
     ['fillOpacity', 0.5],
     ['fontSizeAdjust', 0.5],
+    ['animationIterationCount', 2],
+    ['borderImageOutset', 2],
+    ['borderImageSlice', 2],
+    ['borderImageWidth', 2],
+    ['columnCount', 2],
+    ['order', 2],
+    ['orphans', 2],
+    ['tabSize', 2],
+    ['widows', 2],
+    ['zoom', 2],
+    ['lineClamp', 2],
+    ['WebkitLineClamp', 2],
+    ['flexOrder', 2],
+    ['flexPositive', 2],
+    ['flexNegative', 2],
+    ['scaleZ', 2],
+    ['font', 'italic bold 16px/20px System'],
+    ['textShadow', 'initial'],
+    ['backgroundImage', 'initial'],
   ])('unsupported css %s is dropped from props and style objects', (key, value) => {
     for (const Component of [View, Text]) {
       for (const props of [
@@ -108,6 +127,18 @@ describe('plain css properties are consumed without leaking into native hosts', 
     expect(result?.style?.fillOpacity).toBeUndefined()
   })
 
+  test('explicit native style declarations retain their component owner', () => {
+    const CustomReceiver = styled(
+      (_props: { style?: { accentColor?: string } }) => null,
+      {},
+      { validStyles: { accentColor: true } }
+    )
+    expect(CustomReceiver.staticConfig.validStyles?.accentColor).toBe(true)
+    const result = getResultFor({ accentColor: 'red' }, CustomReceiver)
+    expect(result?.style?.accentColor).toBe('red')
+    expect(result?.viewProps.accentColor).toBeUndefined()
+  })
+
   test('css-named context props retain their native context owner', () => {
     const StyleContext = createStyledContext({ fillOpacity: 0.25 })
     const ContextView = styled(View, { context: StyleContext })
@@ -144,6 +175,30 @@ describe('plain css properties are consumed without leaking into native hosts', 
       ellipsizeMode: 'tail',
     })
     expect(result?.viewProps.accentColor).toBeUndefined()
+  })
+
+  test('supported native shadow and gradient mappings still lower to native fields', () => {
+    const result = getResultFor(
+      {
+        textShadow: '1px 2px 3px black',
+        backgroundImage: 'linear-gradient(90deg, red, blue)',
+      },
+      Text
+    )
+    expect(result?.style).toMatchObject({
+      textShadowOffset: { width: 1, height: 2 },
+      textShadowRadius: 3,
+      textShadowColor: '#000000',
+      experimental_backgroundImage: [
+        {
+          type: 'linear-gradient',
+          direction: '90deg',
+          colorStops: [{ color: 'red' }, { color: 'blue' }],
+        },
+      ],
+    })
+    expect(result?.style?.textShadow).toBeUndefined()
+    expect(result?.style?.backgroundImage).toBeUndefined()
   })
 })
 

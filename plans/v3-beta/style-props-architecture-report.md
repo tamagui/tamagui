@@ -64,6 +64,32 @@ RAN a source probe: widening CSS made a boolean `accentColor` variant fail with
 TS2322. The public type composition now lets declared variant values own the
 name; the repaired source probe has zero diagnostics. Native and browser runtime
 variant guards are included. Built checks for these repairs are pending.
+RAN f66c2de6af: the family rebuild,59 browser regressions,29 native regressions
+and six public style-parity checks pass. Vitest also checks adjacent source;
+the standalone DOM style contract still lacks the added CSS names, failing its
+exact-key and value-coverage guards. Its native-free type now extends the same
+canonical CSS properties around its existing overrides. The original exact-key
+and value guards remain intact, with direct CSS authoring examples added.
+This repair's standalone type checks and required root checks are pending.
+RAN the standalone source type guard after repair: zero diagnostics, preserving
+its exact-key, accepted-value and native-only-key rejection assertions.
+RAN the exact f66c2de6af native bundle through all857 names on View and Text,
+both direct and in style objects:3,428 cases, zero pipeline exceptions.
+Fifteen CSS names without native style declarations still reach the style
+output. The older unitless tables admitted browser-only names, and failed
+shorthand parsing retained raw `backgroundImage`, `textShadow` and `font`.
+RAN valid-value controls: single text shadows lower to native shadow fields and
+linear gradients lower to `experimental_backgroundImage`; CSS `font` remains
+unparsed even for a valid browser shorthand. Native now excludes browser-only
+unitless names and the font shorthand, consumes known legacy aliases, and drops
+unrepresentable shadow/image values after trying their existing parser. Valid
+native shadow and gradient controls are guarded alongside the drop assertions.
+Built suites and root checks for this repair remain pending.
+RAN an explicit native `validStyles` receiver control on f66c2de6af: the new
+generic value filter dropped its declared `accentColor` style. The filter now
+respects explicit component style declarations. Generic style pieces use the
+platform-supported input table so they cannot confer support on every CSS name.
+The explicit declaration's precondition and resulting native style are guarded.
 The earlier CSSOM and conditional-export design below remains a proposal.
 Owner: p65570 / qa-taste, branch `tm/qa-taste-style-props`; Contrast acceptance
 and receipts are in `plans/contrast/qa/taste-qa.md` and its production evidence.

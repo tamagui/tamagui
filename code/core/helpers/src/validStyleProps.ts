@@ -31,6 +31,10 @@ const nonAnimatableTextOnlyProps = toObj(
 
 const nonAnimatableUnitlessProps = toObj('WebkitLineClamp lineClamp')
 
+const webOnlyUnitlessProps = toObj(
+  'animationIterationCount borderImageOutset borderImageSlice borderImageWidth columnCount flexOrder flexPositive flexNegative order orphans tabSize widows zoom scaleZ'
+)
+
 /**
  * CSS Grid layout props. Web-only by default — Yoga (React Native's layout
  * engine) has no stable CSS Grid support (see facebook/yoga#1865).
@@ -49,7 +53,7 @@ export const nonAnimatableStyleProps = toObj(
   nonAnimatableViewProps,
   nonAnimatableFontProps,
   nonAnimatableTextOnlyProps,
-  nonAnimatableUnitlessProps,
+  process.env.TAMAGUI_TARGET === 'web' ? nonAnimatableUnitlessProps : undefined,
   enableCSSGrid ? cssGridProps : undefined,
   process.env.TAMAGUI_TARGET === 'web' ? nonAnimatableWebViewProps : undefined,
   process.env.TAMAGUI_TARGET === 'web' ? nonAnimatableWebTextProps : undefined
@@ -57,9 +61,10 @@ export const nonAnimatableStyleProps = toObj(
 
 export const stylePropsUnitless = toObj(
   process.env.TAMAGUI_TARGET === 'web' ? cssStylePropsUnitless : undefined,
-  nonAnimatableUnitlessProps,
+  process.env.TAMAGUI_TARGET === 'web' ? nonAnimatableUnitlessProps : undefined,
+  process.env.TAMAGUI_TARGET === 'web' ? webOnlyUnitlessProps : undefined,
   enableCSSGrid ? cssGridProps : undefined,
-  'animationIterationCount aspectRatio borderImageOutset borderImageSlice borderImageWidth columnCount flex flexGrow flexOrder flexPositive flexShrink flexNegative fontWeight opacity order orphans tabSize widows zIndex zoom scale scaleX scaleY scaleZ shadowOpacity'
+  'aspectRatio flex flexGrow flexShrink fontWeight opacity zIndex scale scaleX scaleY shadowOpacity'
 )
 
 export const stylePropsTransform = toObj(
@@ -88,7 +93,8 @@ export const stylePropsTextOnly = toObj(
   stylePropsFont,
   nonAnimatableTextOnlyProps,
   textColors,
-  'textShadow textShadowOffset textShadowRadius textDecoration font verticalAlign',
+  'textShadow textShadowOffset textShadowRadius textDecoration verticalAlign',
+  process.env.TAMAGUI_TARGET === 'web' ? 'font' : undefined,
   process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsText : undefined
 )
 
@@ -97,6 +103,11 @@ export const stylePropsText = toObj(stylePropsView, stylePropsTextOnly)
 export const stylePropsInput = toObj(stylePropsText, inputColors)
 
 // native recognizes css names so unsupported styles cannot become host props.
-export const stylePropsAll = toObj(stylePropsInput, cssStyleProps)
+export const stylePropsAll = toObj(
+  stylePropsInput,
+  cssStyleProps,
+  nonAnimatableUnitlessProps,
+  webOnlyUnitlessProps
+)
 
 export const validStyles = stylePropsView
