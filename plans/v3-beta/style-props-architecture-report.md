@@ -44,20 +44,31 @@ host fields. Fresh public inventory covers all857 names with zero diagnostics.
 Six actual Chrome computed-value controls and eight accepted heading/outline
 fixtures pass at1280x960 and390x844, DPR3. WebP90 evidence remains private.
 
-The new generated registry costs22641 raw/4241 gzip bytes in its ESM module.
-The supported-workload cost probe checks equal baseline/draft outputs before
-measuring. Timing, validation of the coherent current-beta integration, and
-published-artifact delivery are pending. Owner: p65570 / qa-taste. Integration:
-tm/qa-taste-v3-beta on current origin/v3-beta b74c35eaa1. Its core source equals
-the validated draft; current website changes are preserved.
+RAN coherent beta integration f0c7d1c115, built from identical package source
+at99e031b61d:136-package build,78 browser regressions,106 native regressions,
+30 style/HOC/styled type checks and lint pass. A fresh root dependency check
+failed because its CLI executable was undeclared. Declaring the workspace CLI
+creates the executable through a frozen install; the complete root check and
+lint pass. The single semantic context/default declaration matches the built
+archive. Five formatting-only declaration changes remain excluded.
 
-RAN final owner controls on installed 87f1894631: boolean context props,
-context defaults and variant defaults each fail with TS2322. The web runtime
-also emits `fill-opacity:true` for that boolean context. The draft repair keeps
-incompatible declared context types over inherited style keys, compatible
-inherited style grammar, and declared context/variant default types. Boolean
-context values stay in context-only emission. Focused integrated checks remain
-pending; source87's earlier passing checks do not establish these repairs.
+RAN installed source f0c7d1c115: all857 names remain in public types with zero
+diagnostics. Both3428-case browser/native output matrices pass. The repaired
+boolean context/default type and runtime controls pass, with width123 as the
+positive supported-style control. Before repair those type controls failed
+with TS2322 and web emitted the invalid fill-opacity:true rule.
+
+RAN cost against content-verified installed canary1791311846573: three unchanged
+supported workloads have identical style/host outputs. Sixteen alternating
+rounds of5000 calls after10000 warmup calls yield baseline/draft medians in
+microseconds: View direct7.177/7.102, Text direct3.631/3.595, View style-object
+6.655/6.693. Changes are-1.05%,-0.99%,+0.57%; overlapping samples do not establish
+a speedup. This is Bun getSplitStyles with fake native hosts, with no device
+paint or speed claim. The self-contained native test bundle grows from544145
+to564930 raw bytes and118769 to122955 gzip bytes:20785 raw/4186 gzip bytes
+added (3.82%/3.52%). The registry's ESM module is22641 raw/4241 gzip bytes.
+Published canary verification and downstream npm-family delivery remain pending.
+Owner:p65570 / qa-taste; CI:ci-fleet r62735; review:none.
 
 Nate's latest direction stops shares. The five-row acceptance plan and receipts
 are in Contrast's plans/contrast/qa/v3-style-props.md and its private evidence.
