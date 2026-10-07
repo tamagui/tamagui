@@ -60,7 +60,13 @@ type GetStyledOptionsAcceptedProps<
   Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
   Context,
   ContextPropKeys extends string,
-> = Partial<InferStyledProps<ParentComponent, StyledConfig>> &
+> = Omit<
+  Partial<InferStyledProps<ParentComponent, StyledConfig>>,
+  | keyof GetStyledContextVariantProps<ParentComponent, Context, ContextPropKeys>
+  | (AreVariantsUndefined<Variants> extends true
+      ? never
+      : keyof GetVariantAcceptedValues<Variants>)
+> &
   (AreVariantsUndefined<Variants> extends true
     ? {}
     : Partial<GetVariantAcceptedValues<Variants>>) &
@@ -126,7 +132,19 @@ type GetStyledContextVariantProps<
   ParentComponent extends StylableComponent,
   Context,
   Keys extends string,
-> = Omit<GetStyledContextProps<Context, Keys>, keyof GetProps<ParentComponent>>
+  ContextProps = GetStyledContextProps<Context, Keys>,
+  ParentProps = GetProps<ParentComponent>,
+> = {
+  // compatible style context keeps its inherited token and conditional grammar.
+  // a declared incompatible context value owns its name when css gains that key.
+  [Key in keyof ContextProps as Key extends keyof ParentProps
+    ? Key extends keyof GetBaseStyles<ParentComponent, {}>
+      ? ContextProps[Key] extends ParentProps[Key]
+        ? never
+        : Key
+      : never
+    : Key]: ContextProps[Key]
+}
 
 type StyledMergedVariants<
   ParentComponent extends StylableComponent,

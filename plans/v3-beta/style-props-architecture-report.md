@@ -51,6 +51,14 @@ published-artifact delivery are pending. Owner: p65570 / qa-taste. Integration:
 tm/qa-taste-v3-beta on current origin/v3-beta b74c35eaa1. Its core source equals
 the validated draft; current website changes are preserved.
 
+RAN final owner controls on installed 87f1894631: boolean context props,
+context defaults and variant defaults each fail with TS2322. The web runtime
+also emits `fill-opacity:true` for that boolean context. The draft repair keeps
+incompatible declared context types over inherited style keys, compatible
+inherited style grammar, and declared context/variant default types. Boolean
+context values stay in context-only emission. Focused integrated checks remain
+pending; source87's earlier passing checks do not establish these repairs.
+
 Nate's latest direction stops shares. The five-row acceptance plan and receipts
 are in Contrast's plans/contrast/qa/v3-style-props.md and its private evidence.
 The earlier CSSOM and conditional-export design below remains a proposal from

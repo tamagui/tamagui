@@ -159,10 +159,10 @@ describe('plain css properties are consumed without leaking into native hosts', 
   })
 
   test('css-named context props retain their native context owner', () => {
-    const StyleContext = createStyledContext({ fillOpacity: 0.25 })
+    const StyleContext = createStyledContext({ fillOpacity: false })
     const ContextView = styled(View, { context: StyleContext })
-    const result = getResultFor({ fillOpacity: 0.5 }, ContextView)
-    expect(result?.overriddenContextProps?.fillOpacity).toBe(0.5)
+    const result = getResultFor({ fillOpacity: true }, ContextView)
+    expect(result?.overriddenContextProps?.fillOpacity).toBe(true)
     expect(result?.style?.fillOpacity).toBeUndefined()
   })
 

@@ -7,6 +7,7 @@ import type { Properties } from 'csstype'
 import { describe, expect, expectTypeOf, test } from 'vitest'
 import { cssStyleProps } from '../../helpers/src/cssStyleProps'
 import { createStyledHOC } from './createStyledHOC'
+import { createStyledContext } from './helpers/createStyledContext'
 import { styled } from './styled'
 import { View } from './views/View'
 import type {
@@ -89,8 +90,26 @@ describe('grammar-era style keys: runtime tables and public types agree', () => 
       StackStyleBase,
       { accentColor: boolean }
     >
+    const VariantView = styled(View, {
+      variants: { accentColor: { true: { opacity: 0.4 } } },
+      accentColor: true,
+    })
+    expectTypeOf<GetProps<typeof VariantView>['accentColor']>().toEqualTypeOf<
+      FlatStyleValue<boolean> | undefined
+    >()
     expectTypeOf<VariantProps['accentColor']>().toEqualTypeOf<
       FlatStyleValue<boolean> | undefined
+    >()
+  })
+
+  test('css-named context values retain their type without narrowing inherited styles', () => {
+    const Context = createStyledContext({ fillOpacity: false, width: 0 })
+    const ContextView = styled(View, { context: Context, fillOpacity: true })
+    expectTypeOf<GetProps<typeof ContextView>['fillOpacity']>().toEqualTypeOf<
+      FlatStyleValue<boolean> | undefined
+    >()
+    expectTypeOf<GetProps<typeof ContextView>['width']>().toEqualTypeOf<
+      GetProps<typeof View>['width']
     >()
   })
 

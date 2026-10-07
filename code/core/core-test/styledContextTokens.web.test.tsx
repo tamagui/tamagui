@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
 import { View, Text, createStyledContext, createTamagui, styled } from '../core/src'
-import { simplifiedGetSplitStyles } from './utils'
+import { getStyleValue, rulesForProperty, simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig())
@@ -28,6 +28,21 @@ beforeAll(() => {
  *   }
  */
 describe('styled context token preservation', () => {
+  test('a boolean css-named context value does not emit an invalid css declaration', () => {
+    const Context = createStyledContext({ fillOpacity: false, width: 0 })
+    const ContextView = styled(View, { context: Context, fillOpacity: true })
+    const result = simplifiedGetSplitStyles(ContextView, {
+      fillOpacity: true,
+      width: 123,
+    })
+    expect(result.overriddenContextProps?.fillOpacity).toBe(true)
+    expect(result.overriddenContextProps?.width).toBe(123)
+    expect(result.viewProps.fillOpacity).toBeUndefined()
+    expect(getStyleValue(result, 'fillOpacity')).toBeUndefined()
+    expect(rulesForProperty(result, 'fillOpacity')).toEqual([])
+    expect(getStyleValue(result, 'width')).toBe('123px')
+  })
+
   test('overriddenContextProps should contain original token values not CSS variables', () => {
     const GridContext = createStyledContext({
       gap: '4',

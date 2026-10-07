@@ -1128,7 +1128,13 @@ function contributeProp(
         }
       }
     } else {
-      contributeValue(styleState, keyInit, valInit, originalOg, !isHostStyleKey)
+      contributeValue(
+        styleState,
+        keyInit,
+        valInit,
+        originalOg,
+        !isHostStyleKey || (isStyledContextProp && typeof valInit === 'boolean')
+      )
     }
     return
   }
