@@ -164,9 +164,7 @@ const tailwind = (
     {'\n\n'}
     <Text color={tag}>{'<html.button'}</Text>
     {'\n  className='}
-    <Text color={str}>
-      {'"px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600"'}
-    </Text>
+    <Text color={str}>{'"px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600"'}</Text>
     {'\n'}
     <Text color={tag}>{'>'}</Text>
     {'\n  '}

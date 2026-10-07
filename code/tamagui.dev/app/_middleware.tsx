@@ -2,10 +2,7 @@ import { createMiddleware } from 'one'
 import { getDocsLinkHref, getDocsSyntaxParam } from '~/features/docs/docsVersion'
 import fs from 'node:fs'
 import path from 'node:path'
-import {
-  buildLlmsTxt,
-  getComponentVersions,
-} from '~/features/docs/docsSourceFiles'
+import { buildLlmsTxt, getComponentVersions } from '~/features/docs/docsSourceFiles'
 
 // read once at server start to avoid filesystem operations on every request
 const componentVersionCache = getComponentVersions()

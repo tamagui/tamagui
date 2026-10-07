@@ -37,7 +37,10 @@ for (const [component, versions] of getComponentVersions()) {
   if (!versions[0]) continue
   write(
     `ui/${component}.md`,
-    fs.readFileSync(path.join(docsDir, 'components', component, `${versions[0]}.mdx`), 'utf-8')
+    fs.readFileSync(
+      path.join(docsDir, 'components', component, `${versions[0]}.mdx`),
+      'utf-8'
+    )
   )
 }
 

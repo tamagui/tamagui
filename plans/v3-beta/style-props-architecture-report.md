@@ -102,6 +102,12 @@ pipeline exceptions and zero retained CSS names absent from the native style
 type union, both direct and in style objects. This classifies property names;
 it does not claim every CSS value has a native representation or device paint.
 The next built run and required type, lint and workspace checks remain pending.
+RAN 60be82bee7:61 browser tests,97 native tests and all six public type-parity
+checks pass, including the named and literal shadow-color controls. Typechecking
+reports no errors, including the standalone DOM guards. Root lint stops on
+four pre-existing website formatting differences; those four paths now use the
+configured formatter, with their complete diffs checked as layout-only edits.
+Root lint and the workspace check remain pending.
 The earlier CSSOM and conditional-export design below remains a proposal.
 Owner: p65570 / qa-taste, branch `tm/qa-taste-style-props`; Contrast acceptance
 and receipts are in `plans/contrast/qa/taste-qa.md` and its production evidence.

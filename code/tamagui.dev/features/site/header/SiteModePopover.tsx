@@ -13,15 +13,8 @@ import { useSiteMode } from './useSiteMode'
 
 export const SiteModePopover = (props: PopoverProps) => {
   const [open, setOpen] = React.useState(false)
-  const {
-    version,
-    styling,
-    syntax,
-    shortForm,
-    setVersion,
-    setStyling,
-    setSyntax,
-  } = useSiteMode()
+  const { version, styling, syntax, shortForm, setVersion, setStyling, setSyntax } =
+    useSiteMode()
 
   return (
     <Popover
