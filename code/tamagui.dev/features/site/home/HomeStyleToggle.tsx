@@ -81,7 +81,7 @@ export function HomeStyleToggle() {
           height={430}
           p="6"
           rounded="4"
-          bg="color-2"
+          bg="transparent"
           borderWidth={0.5}
           borderColor="color-4"
         >

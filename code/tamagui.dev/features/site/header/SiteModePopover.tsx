@@ -1,41 +1,74 @@
-import { ChevronDown } from '~/components/icons'
+import { Check, ChevronDown, ChevronRight } from '~/components/icons'
 import * as React from 'react'
 import {
-  Adapt,
-  Popover,
-  type PopoverProps,
-  Sheet,
+  Menu,
   SizableText,
+  styled,
   View,
   XStack,
 } from 'tamagui'
-import { useSiteMode } from './useSiteMode'
+import {
+  useSiteMode,
+  type SiteVersion,
+  type SiteStyling,
+  type SiteSyntax,
+} from './useSiteMode'
 
-export const SiteModePopover = (props: PopoverProps) => {
-  const [open, setOpen] = React.useState(false)
+const MenuItemTitle = styled(Menu.ItemTitle, {
+  fontSize: 13,
+  color: 'color-12',
+  flex: 1,
+  textAlign: 'left',
+  userSelect: 'none',
+})
+
+const itemProps = {
+  flexDirection: 'row',
+  items: 'center',
+  justifyContent: 'space-between',
+  width: '100%',
+  minHeight: 32,
+  px: '2-5',
+  py: '1-5',
+  rounded: '3',
+  cursor: 'pointer',
+  bg: 'transparent hover:color-2 focus:color-3',
+  gap: '3',
+} as const
+
+const contentProps = {
+  minWidth: 175,
+  bg: 'background',
+  borderColor: 'border-color',
+  borderWidth: 1,
+  boxShadow: '0 16px 36px rgba(0, 0, 0, 0.22)',
+  p: '1-5',
+  rounded: '4',
+  gap: '0-5',
+  transition: '100ms',
+  scale: 'enter:0.96 exit:0.96',
+  opacity: 'enter:0 exit:0',
+} as const
+
+export const SiteModePopover = () => {
   const {
     version,
     styling,
     syntax,
+    themeId,
     shortForm,
     setVersion,
     setStyling,
     setSyntax,
+    setTheme,
+    freeThemes,
   } = useSiteMode()
 
+  const activeTheme = freeThemes.find((t) => String(t.id) === String(themeId))
+
   return (
-    <Popover
-      disableRTL
-      offset={12}
-      open={open}
-      onOpenChange={setOpen}
-      hoverable={{
-        delay: { open: 200, close: 150 },
-        restMs: 150,
-      }}
-      {...props}
-    >
-      <Popover.Anchor asChild="except-style">
+    <Menu offset={10}>
+      <Menu.Trigger asChild>
         <XStack
           role="button"
           tabIndex={0}
@@ -51,13 +84,6 @@ export const SiteModePopover = (props: PopoverProps) => {
           borderColor="border-color"
           bg="color-1 hover:color-2 press:color-3"
           transition="all 150ms ease"
-          onPress={() => setOpen(!open)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault()
-              setOpen(!open)
-            }
-          }}
         >
           <SizableText
             fontFamily="mono"
@@ -71,135 +97,184 @@ export const SiteModePopover = (props: PopoverProps) => {
 
           <ChevronDown size={11} color="color-9" />
         </XStack>
-      </Popover.Anchor>
+      </Menu.Trigger>
 
-      <Adapt platform="touch" when="sm">
-        <Sheet zIndex={100000000} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Container>
-            <Sheet.Background bg="background" />
-            <Sheet.ScrollView showsVerticalScrollIndicator={false} p="4">
-              <Adapt.Contents />
-            </Sheet.ScrollView>
-          </Sheet.Container>
-          <Sheet.Overlay zIndex={100} bg="shadow-4" />
-        </Sheet>
-      </Adapt>
+      <Menu.Portal zIndex={100000}>
+        <Menu.Content {...contentProps}>
+          {/* Version Submenu */}
+          <Menu.Sub>
+            <Menu.SubTrigger {...itemProps}>
+              <MenuItemTitle>Version</MenuItemTitle>
+              <XStack items="center" gap="1-5">
+                <SizableText size="1" color="color-10">
+                  {version}
+                </SizableText>
+                <ChevronRight size={12} color="color-9" />
+              </XStack>
+            </Menu.SubTrigger>
+            <Menu.Portal zIndex={100001}>
+              <Menu.SubContent {...contentProps} minWidth={140}>
+                <Menu.RadioGroup
+                  value={version}
+                  onValueChange={(val) => setVersion(val as SiteVersion)}
+                >
+                  <Menu.RadioItem value="v3" {...itemProps}>
+                    <MenuItemTitle>v3</MenuItemTitle>
+                    <Menu.ItemIndicator>
+                      <Check size={12} color="color-11" />
+                    </Menu.ItemIndicator>
+                  </Menu.RadioItem>
+                  <Menu.RadioItem value="v2" {...itemProps}>
+                    <MenuItemTitle>v2</MenuItemTitle>
+                    <Menu.ItemIndicator>
+                      <Check size={12} color="color-11" />
+                    </Menu.ItemIndicator>
+                  </Menu.RadioItem>
+                </Menu.RadioGroup>
+              </Menu.SubContent>
+            </Menu.Portal>
+          </Menu.Sub>
 
-      <Popover.Content
-        animatePosition
-        transition="quick"
-        bg="background"
-        borderColor="border-color"
-        borderWidth={1}
-        boxShadow="0 16px 36px rgba(0, 0, 0, 0.22)"
-        p={0}
-        rounded="5"
-        opacity="1 enter:0 exit:0"
-        y="0 enter:-4px exit:-4px"
-      >
-        <Popover.Arrow
-          size={10}
-          borderWidth={1}
-          borderColor="border-color"
-          bg="background"
-        />
+          {/* Styling Submenu */}
+          <Menu.Sub>
+            <Menu.SubTrigger
+              {...itemProps}
+              disabled={version === 'v2'}
+              opacity={version === 'v2' ? 0.4 : 1}
+            >
+              <MenuItemTitle>Styling</MenuItemTitle>
+              <XStack items="center" gap="1-5">
+                <SizableText size="1" color="color-10">
+                  {styling === 'tailwind' ? 'Tailwind' : 'Tamagui'}
+                </SizableText>
+                <ChevronRight size={12} color="color-9" />
+              </XStack>
+            </Menu.SubTrigger>
+            <Menu.Portal zIndex={100001}>
+              <Menu.SubContent {...contentProps} minWidth={150}>
+                <Menu.RadioGroup
+                  value={styling}
+                  onValueChange={(val) => setStyling(val as SiteStyling)}
+                >
+                  <Menu.RadioItem value="tamagui" {...itemProps}>
+                    <MenuItemTitle>Tamagui</MenuItemTitle>
+                    <Menu.ItemIndicator>
+                      <Check size={12} color="color-11" />
+                    </Menu.ItemIndicator>
+                  </Menu.RadioItem>
+                  <Menu.RadioItem value="tailwind" {...itemProps}>
+                    <MenuItemTitle>Tailwind</MenuItemTitle>
+                    <Menu.ItemIndicator>
+                      <Check size={12} color="color-11" />
+                    </Menu.ItemIndicator>
+                  </Menu.RadioItem>
+                </Menu.RadioGroup>
+              </Menu.SubContent>
+            </Menu.Portal>
+          </Menu.Sub>
 
-        <XStack p="2" gap="1-5" items="center">
-          <ModeSelect
-            value={version}
-            onValueChange={setVersion}
-            options={[
-              { value: 'v3', label: 'v3' },
-              { value: 'v2', label: 'v2' },
-            ]}
-            aria-label="Version"
-          />
-          <ModeSelect
-            value={styling}
-            onValueChange={setStyling}
-            options={[
-              { value: 'tamagui', label: 'Tamagui' },
-              { value: 'tailwind', label: 'Tailwind' },
-            ]}
-            disabled={version === 'v2'}
-            aria-label="Styling"
-          />
+          {/* Syntax Submenu (only for Tamagui) */}
           {styling === 'tamagui' && (
-            <ModeSelect
-              value={syntax}
-              onValueChange={setSyntax}
-              options={[
-                { value: 'string', label: 'String' },
-                { value: 'object', label: 'Object' },
-              ]}
-              aria-label="Syntax"
-            />
+            <Menu.Sub>
+              <Menu.SubTrigger {...itemProps}>
+                <MenuItemTitle>Syntax</MenuItemTitle>
+                <XStack items="center" gap="1-5">
+                  <SizableText size="1" color="color-10">
+                    {syntax === 'object' ? 'Object' : 'String'}
+                  </SizableText>
+                  <ChevronRight size={12} color="color-9" />
+                </XStack>
+              </Menu.SubTrigger>
+              <Menu.Portal zIndex={100001}>
+                <Menu.SubContent {...contentProps} minWidth={140}>
+                  <Menu.RadioGroup
+                    value={syntax}
+                    onValueChange={(val) => setSyntax(val as SiteSyntax)}
+                  >
+                    <Menu.RadioItem value="string" {...itemProps}>
+                      <MenuItemTitle>String</MenuItemTitle>
+                      <Menu.ItemIndicator>
+                        <Check size={12} color="color-11" />
+                      </Menu.ItemIndicator>
+                    </Menu.RadioItem>
+                    <Menu.RadioItem value="object" {...itemProps}>
+                      <MenuItemTitle>Object</MenuItemTitle>
+                      <Menu.ItemIndicator>
+                        <Check size={12} color="color-11" />
+                      </Menu.ItemIndicator>
+                    </Menu.RadioItem>
+                  </Menu.RadioGroup>
+                </Menu.SubContent>
+              </Menu.Portal>
+            </Menu.Sub>
           )}
-        </XStack>
-      </Popover.Content>
-    </Popover>
-  )
-}
 
-// the selected option is the label; a transparent native select on top does the picking
-function ModeSelect<T extends string>({
-  value,
-  onValueChange,
-  options,
-  dotColor,
-  disabled,
-  'aria-label': ariaLabel,
-}: {
-  value: T
-  onValueChange: (val: T) => void
-  options: { value: T; label: string }[]
-  dotColor?: string
-  disabled?: boolean
-  'aria-label': string
-}) {
-  const label = options.find((o) => o.value === value)?.label ?? value
+          {/* Separator before Theme */}
+          <Menu.Separator height={1} my="1" bg="border-color" opacity={0.5} />
 
-  return (
-    <XStack
-      position="relative"
-      items="center"
-      height={28}
-      px="2"
-      gap="1-5"
-      rounded="4"
-      bg="color-2 hover:color-3"
-      opacity={disabled ? 0.35 : 1}
-      pointerEvents={disabled ? 'none' : 'auto'}
-      transition="all 120ms ease"
-    >
-      {dotColor && (
-        <View width={7} height={7} rounded="10" backgroundColor={dotColor as any} />
-      )}
-      <SizableText size="1" color="color-12" userSelect="none" whiteSpace="nowrap">
-        {label}
-      </SizableText>
-      <ChevronDown size={10} color="color-9" />
-      <select
-        value={value}
-        disabled={disabled}
-        aria-label={ariaLabel}
-        onChange={(e) => onValueChange(e.target.value as T)}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          opacity: 0,
-          cursor: 'pointer',
-          appearance: 'none',
-        }}
-      >
-        {options.map((o) => (
-          <option key={o.value} value={o.value}>
-            {o.label}
-          </option>
-        ))}
-      </select>
-    </XStack>
+          {/* Theme Submenu */}
+          <Menu.Sub>
+            <Menu.SubTrigger {...itemProps}>
+              <XStack items="center" gap="2" flex={1}>
+                {activeTheme?.accentColor ? (
+                  <View
+                    width={7}
+                    height={7}
+                    rounded="10"
+                    backgroundColor={activeTheme.accentColor as any}
+                  />
+                ) : null}
+                <MenuItemTitle>Theme</MenuItemTitle>
+              </XStack>
+              <XStack items="center" gap="1-5">
+                <SizableText size="1" color="color-10">
+                  {activeTheme?.label ?? 'Default'}
+                </SizableText>
+                <ChevronRight size={12} color="color-9" />
+              </XStack>
+            </Menu.SubTrigger>
+            <Menu.Portal zIndex={100001}>
+              <Menu.SubContent {...contentProps} minWidth={170}>
+                <Menu.RadioGroup
+                  value={String(themeId)}
+                  onValueChange={(val) => setTheme(val)}
+                >
+                  <Menu.RadioItem value="default" {...itemProps}>
+                    <XStack items="center" gap="2" flex={1}>
+                      <View width={7} height={7} />
+                      <MenuItemTitle>Default</MenuItemTitle>
+                    </XStack>
+                    <Menu.ItemIndicator>
+                      <Check size={12} color="color-11" />
+                    </Menu.ItemIndicator>
+                  </Menu.RadioItem>
+
+                  {freeThemes.map((t) => (
+                    <Menu.RadioItem
+                      key={t.id}
+                      value={String(t.id)}
+                      {...itemProps}
+                    >
+                      <XStack items="center" gap="2" flex={1}>
+                        <View
+                          width={7}
+                          height={7}
+                          rounded="10"
+                          backgroundColor={t.accentColor as any}
+                        />
+                        <MenuItemTitle>{t.label}</MenuItemTitle>
+                      </XStack>
+                      <Menu.ItemIndicator>
+                        <Check size={12} color="color-11" />
+                      </Menu.ItemIndicator>
+                    </Menu.RadioItem>
+                  ))}
+                </Menu.RadioGroup>
+              </Menu.SubContent>
+            </Menu.Portal>
+          </Menu.Sub>
+        </Menu.Content>
+      </Menu.Portal>
+    </Menu>
   )
 }

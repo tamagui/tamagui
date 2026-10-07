@@ -19,10 +19,12 @@ export const useUser = () => {
 
       // Get access token from localStorage-based auth
       const accessToken = await getAccessToken()
+      if (!accessToken) {
+        return null
+      }
 
-      const headers: HeadersInit = {}
-      if (accessToken) {
-        headers['Authorization'] = `Bearer ${accessToken}`
+      const headers: HeadersInit = {
+        Authorization: `Bearer ${accessToken}`,
       }
 
       const res = await fetch('/api/user', { headers })

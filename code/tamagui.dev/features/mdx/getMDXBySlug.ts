@@ -49,6 +49,28 @@ const heroTemplate = {
   },
 }
 
+function ensureSpaceAfterImports(code: string): string {
+  const regex = /(?:^|\n)(import(?:\s+[\s\S]*?from\s+)?['"][^'"]+['"];?)/g
+  let match: RegExpExecArray | null
+  let lastEnd = -1
+  while ((match = regex.exec(code)) !== null) {
+    lastEnd = match.index + match[0].length
+  }
+  if (lastEnd === -1) return code
+
+  const before = code.slice(0, lastEnd)
+  const after = code.slice(lastEnd)
+  if (!after.trim()) return code
+
+  if (!after.startsWith('\n\n')) {
+    if (after.startsWith('\n')) {
+      return before + '\n' + after
+    }
+    return before + '\n\n' + after
+  }
+  return code
+}
+
 type TailwindTransform = (
   source: string,
   options?: {
@@ -144,6 +166,7 @@ const createTailwindTransform = (state: { changed: boolean }, replace: boolean) 
           } catch {
             // keep tailwindCode if prettier format fails
           }
+          formattedCode = ensureSpaceAfterImports(formattedCode)
           ctx.replaceNode(node, {
             ...node,
             children: [{ type: 'text', value: formattedCode }],
@@ -193,7 +216,7 @@ const sourceTransform = {
         if (rewritten) {
           ctx.replaceNode(node, {
             ...node,
-            children: [{ type: 'text', value: rewritten.code }],
+            children: [{ type: 'text', value: ensureSpaceAfterImports(rewritten.code) }],
           })
         }
       } catch {

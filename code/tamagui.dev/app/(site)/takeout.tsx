@@ -36,6 +36,7 @@ export default function TakeoutPage() {
         maxW={850}
         self="center"
         position="relative"
+        overflow="hidden"
       >
         <YStack
           position="absolute"

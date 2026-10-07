@@ -45,7 +45,6 @@ import { TakeoutIcon } from '../../icons/TakeoutIcon'
 import { useUser } from '../../user/useUser'
 import { SearchButton } from './SearchButton'
 import { SiteModePopover } from './SiteModePopover'
-import { ThemeSelectPopover } from './ThemeSelectPopover'
 import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
 
@@ -168,8 +167,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           p={0}
         />
 
-        <ThemeSelectPopover />
-
         <SearchButton
           size="sm"
           borderWidth={0}
@@ -280,7 +277,7 @@ const HeaderMenuButton = () => {
   const haveUser = !!userSwr.data?.user
 
   return (
-    <Popover.Trigger>
+    <Popover.Trigger justify="center" items="center">
       <SlidingPopoverTarget id="menu">
         <Button
           size="sm"
@@ -988,8 +985,6 @@ const HeadAnchor = styled(Paragraph, {
 
     grid: {
       true: {
-        fontWeight: '200',
-        letterSpacing: 1,
         width: '100%',
         flex: 1,
         flexBasis: 'auto',
@@ -1004,6 +999,7 @@ const HeadAnchor = styled(Paragraph, {
       true: {
         maxWidth: '48.5%',
         overflow: 'hidden',
+        whiteSpace: 'nowrap',
       },
     },
   } as const,
