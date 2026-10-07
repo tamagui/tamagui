@@ -5,6 +5,7 @@ import { variableToString } from '../createVariable'
 import type { CreateTamaguiProps, ThemeParsed, Variable } from '../types'
 import { getOrCreateVariable, getOrCreateMutatedVariable } from './registerCSSVariable'
 import { sortString } from './sortString'
+import { getAuthoredThemeScheme, themeSchemeSelectorPrefix } from './themes'
 
 const darkLight = ['dark', 'light']
 const lightDark = ['light', 'dark']
@@ -140,6 +141,7 @@ export function getThemeCSSRules(props: {
     }
 
     const selectors = [...selectorsSet].sort(sortString)
+    const authoredScheme = getAuthoredThemeScheme(theme)
 
     // only do our :root attach if it's not light/dark - not support sub themes on root saves a lot of effort/size
     const selectorsString =
@@ -150,7 +152,9 @@ export function getThemeCSSRules(props: {
           if (!isOnRoot) return `:root ${x}`
           return `${addTo === 'body' ? 'body' : ':root'}${x}`
         })
-        .join(', ') + `, .tm_xxt`
+        .join(', ') +
+      `, .tm_xxt` +
+      (authoredScheme ? `, ${themeSchemeSelectorPrefix}${authoredScheme}` : '')
 
     const css = `${selectorsString}${whitespace}{${vars}}`
     cssRuleSets.push(css)

@@ -1,6 +1,7 @@
 import { StyleObjectIdentifier, StyleObjectRules } from '@tamagui/helpers'
 import { createVariable } from '../createVariable'
 import { formatDiagnostic } from './formatDiagnostic'
+import { setAuthoredThemeScheme, themeSchemeSelectorPrefix } from './themes'
 import type {
   DedupedTheme,
   DedupedThemes,
@@ -266,6 +267,12 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
 
   // loop selectors and build deduped
   for (const selector of selectors) {
+    const marker = selector.trim()
+    if (marker.startsWith(themeSchemeSelectorPrefix)) {
+      const scheme = marker.slice(themeSchemeSelectorPrefix.length)
+      if (scheme === 'light' || scheme === 'dark') setAuthoredThemeScheme(values, scheme)
+      continue
+    }
     const themeName = getThemeNameFromSelector(selector)
     if (themeName) names.add(themeName)
   }
