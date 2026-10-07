@@ -228,6 +228,14 @@ describe('styled v3 overloads', () => {
     expectTypeOf(invalid).toEqualTypeOf<any>()
   })
 
+  test('a parent typed as a union of components keeps each member option', () => {
+    // a platform-selected export: the web view or a native passthrough
+    const Passthrough = ({ children }: { children: React.ReactNode }) => children
+    const Parent = View as typeof View | typeof Passthrough
+    const Frame = styled(Parent, { name: 'UnionFrame', padding: 4 })
+    expectTypeOf(Frame).not.toBeAny()
+  })
+
   test('third advanced static config is preserved', () => {
     const Advanced = styled(
       View,

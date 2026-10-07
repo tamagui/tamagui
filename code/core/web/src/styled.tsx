@@ -52,6 +52,9 @@ type GetVariantAcceptedValues<V> = V extends object
 type GetVariantAcceptedValue<Key> = Key extends 'true' | 'false' ? boolean : Key
 
 type NoInferLocal<T> = [T][T extends any ? 0 : never]
+// Omit keeps only the keys every member of a union shares, so a parent typed
+// as a union of components would lose each member's own props, `name` included
+type DistributiveOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never
 type IsAny<T> = 0 extends 1 & T ? true : false
 
 type GetStyledOptionsAcceptedProps<
@@ -60,7 +63,7 @@ type GetStyledOptionsAcceptedProps<
   Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
   Context,
   ContextPropKeys extends string,
-> = Omit<
+> = DistributiveOmit<
   Partial<InferStyledProps<ParentComponent, StyledConfig>>,
   | keyof GetStyledContextVariantProps<ParentComponent, Context, ContextPropKeys>
   | (AreVariantsUndefined<Variants> extends true
