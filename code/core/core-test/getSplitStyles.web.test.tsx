@@ -23,11 +23,47 @@ beforeAll(() => {
 
 describe('getSplitStyles', () => {
   test.each([
+    ['glyphOrientationVertical', '0deg', 'glyphOrientationBlock'],
+    ['msTextCombineHorizontal', 'all', 'msTextCombineInline'],
+  ])('css axis suffix in %s retains its canonical property', (key, value, renamed) => {
+    for (const Component of [View, Text]) {
+      for (const props of [{ [key]: value }, { style: { [key]: value } }]) {
+        const result = simplifiedGetSplitStyles(Component, props)
+        expect(getStyleValue(result, key)).toBe(value)
+        expect(getStyleValue(result, renamed)).toBeUndefined()
+        expect(result.viewProps[key]).toBeUndefined()
+      }
+    }
+  })
+
+  test.each([
+    ['marginHorizontal', 'marginInline'],
+    ['marginVertical', 'marginBlock'],
+    ['paddingHorizontal', 'paddingInline'],
+    ['paddingVertical', 'paddingBlock'],
+  ])('native box-axis aliases %s retain their web mapping', (key, webKey) => {
+    for (const Component of [View, Text]) {
+      const direct = simplifiedGetSplitStyles(Component, { [key]: 12 })
+      expect(getStyleValue(direct, webKey)).toBe('12px')
+      expect(direct.viewProps[key]).toBeUndefined()
+      const inline = simplifiedGetSplitStyles(Component, { style: { [key]: 12 } })
+      expect(getStyleValue(inline, webKey)).toBe(12)
+      expect(inline.viewProps[key]).toBeUndefined()
+    }
+  })
+
+  test.each([
     ['accentColor', 'red'],
     ['animationDelay', '100ms'],
     ['counterReset', 'section'],
     ['textWrapStyle', 'balance'],
     ['WebkitTextStrokeColor', 'red'],
+    ['borderBlockStyle', 'dashed'],
+    ['borderBlockEndStyle', 'dashed'],
+    ['borderBlockStartStyle', 'dashed'],
+    ['borderInlineStyle', 'dashed'],
+    ['borderInlineEndStyle', 'dashed'],
+    ['borderInlineStartStyle', 'dashed'],
   ])('plain css %s emits styles instead of host attributes', (key, value) => {
     for (const Component of [View, Text]) {
       for (const props of [{ [key]: value }, { style: { [key]: value } }]) {

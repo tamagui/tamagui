@@ -2370,6 +2370,11 @@ const recordCSS = 16
 // props did nothing on web. rename them onto the CSS logical properties that
 // are RTL-aware in exactly the same way (#3099)
 const webRTLRenames: Record<string, string> = {
+  marginHorizontal: 'marginInline',
+  marginVertical: 'marginBlock',
+  paddingHorizontal: 'paddingInline',
+  paddingVertical: 'paddingBlock',
+  writingDirection: 'direction',
   paddingStart: 'paddingInlineStart',
   paddingEnd: 'paddingInlineEnd',
   marginStart: 'marginInlineStart',
@@ -2396,15 +2401,7 @@ const webStyleProperties = new Map<string, string>()
 function webStyleProperty(property: string) {
   let web = webStyleProperties.get(property)
   if (web === undefined) {
-    web =
-      webRTLRenames[property] ||
-      (property === 'writingDirection'
-        ? 'direction'
-        : property.endsWith('Horizontal')
-          ? `${property.slice(0, -10)}Inline`
-          : property.endsWith('Vertical')
-            ? `${property.slice(0, -8)}Block`
-            : property)
+    web = webRTLRenames[property] || property
     webStyleProperties.set(property, web)
   }
   return web

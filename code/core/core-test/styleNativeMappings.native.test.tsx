@@ -80,6 +80,12 @@ describe('plain css properties are consumed without leaking into native hosts', 
     ['zoom', 2],
     ['lineClamp', 2],
     ['WebkitLineClamp', 2],
+    ['borderBlockStyle', 'dashed'],
+    ['borderBlockEndStyle', 'dashed'],
+    ['borderBlockStartStyle', 'dashed'],
+    ['borderInlineStyle', 'dashed'],
+    ['borderInlineEndStyle', 'dashed'],
+    ['borderInlineStartStyle', 'dashed'],
     ['flexOrder', 2],
     ['flexPositive', 2],
     ['flexNegative', 2],
@@ -95,9 +101,22 @@ describe('plain css properties are consumed without leaking into native hosts', 
         { style: [{ width: 123 }, { [key]: value }] },
         { style: { [key]: { default: value, native: value } } },
       ]) {
-        const result = getResultFor(props, Component)
+        const result = getResultFor({ width: 123, ...props }, Component)
+        expect(result?.style).toEqual({ width: 123 })
         expect(result?.style?.[key]).toBeUndefined()
         expect(result?.viewProps[key]).toBeUndefined()
+      }
+    }
+  })
+
+  test('the native global border style survives beside unsupported side styles', () => {
+    for (const Component of [View, Text]) {
+      for (const props of [
+        { borderStyle: 'dashed', borderBlockEndStyle: 'dotted' },
+        { style: { borderStyle: 'dashed', borderBlockEndStyle: 'dotted' } },
+      ]) {
+        const result = getResultFor({ width: 123, ...props }, Component)
+        expect(result?.style).toEqual({ width: 123, borderStyle: 'dashed' })
       }
     }
   })

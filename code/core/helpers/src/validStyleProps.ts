@@ -20,7 +20,7 @@ const inputColors = toObj(
 )
 
 const nonAnimatableViewProps = toObj(
-  'alignContent alignItems alignSelf backfaceVisibility borderCurve borderStyle borderBlockStyle borderBlockEndStyle borderBlockStartStyle borderInlineStyle borderInlineEndStyle borderInlineStartStyle boxSizing cursor direction display flexDirection flexWrap isolation justifyContent mixBlendMode outlineStyle overflow pointerEvents position visibility'
+  'alignContent alignItems alignSelf backfaceVisibility borderCurve borderStyle boxSizing cursor direction display flexDirection flexWrap isolation justifyContent mixBlendMode outlineStyle overflow pointerEvents position visibility'
 )
 
 const nonAnimatableFontProps = toObj('fontFamily fontStyle fontVariant textTransform')

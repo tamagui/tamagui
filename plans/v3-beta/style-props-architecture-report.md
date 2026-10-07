@@ -108,6 +108,30 @@ reports no errors, including the standalone DOM guards. Root lint stops on
 four pre-existing website formatting differences; those four paths now use the
 configured formatter, with their complete diffs checked as layout-only edits.
 Root lint and the workspace check remain pending.
+RAN 064d0835b6: root lint and workspace checks also pass, and the exact built
+family is installed into the isolated Contrast tree. On both platforms,857 names
+through View/Text and direct/style forms give3428 cases with no pipeline errors
+or unexpected authored-name host props. Whole-output native classification is
+stricter: six logical border-style inputs produce32 per-edge style fields absent
+from the native style type union. React Native's installed style-attribute table
+accepts global `borderStyle` and has no per-edge style attributes. Six new native
+guards fail before repair with those exact derived fields; every unsupported-CSS
+guard now asserts the whole output alongside a retained width123 control. The
+six logical styles move to the existing web-only table; global native border
+style and browser logical-style outputs have positive controls. Their rebuilt
+native run is pending.
+RAN browser emission additionally changes `glyphOrientationVertical` to
+`glyphOrientationBlock` and `msTextCombineHorizontal` to `msTextCombineInline`.
+Two canonical-property guards fail while all four existing margin/padding-axis
+controls pass. Web renaming now uses the explicit native alias table, preserving
+CSS names. RAN the repaired source suite:73 browser tests pass, including those
+names, native-axis aliases and the six logical border styles. Existing v6
+`r`/`x`/`y` and transform meanings remain owned exceptions; grouped atomic
+class slots are classified by their declarations rather than their slot names.
+Nate's latest direction stops further shares. The bounded acceptance plan is
+recorded in Contrast at `plans/contrast/qa/v3-style-props.md`: public types,
+browser declarations, whole native output, approved appearance, measured cost
+and verified V3 beta artifact delivery. No beta has been published.
 The earlier CSSOM and conditional-export design below remains a proposal.
 Owner: p65570 / qa-taste, branch `tm/qa-taste-style-props`; Contrast acceptance
 and receipts are in `plans/contrast/qa/taste-qa.md` and its production evidence.
