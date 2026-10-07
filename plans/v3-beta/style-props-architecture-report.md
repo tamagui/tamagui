@@ -33,7 +33,13 @@ than claimed as ordinary CSS emission.
 The generated registry also records numeric CSS properties that need no
 length unit. Metadata adds bundle bytes and startup dictionary entries;
 measure the compiled size and prop-splitting cost before closing the repair.
-Source, built-artifact and downstream runtime validation are still pending.
+RAN source coverage on the draft: all857 CSS names are present in both public
+style bases with zero semantic diagnostics. The first family build exposed
+TS2430 in `IconStyleProps`: its existing size-token `strokeWidth` is wider than
+the newly inherited CSS property. The icon interface now explicitly owns that
+override. The direct style-base extenders were searched; no other source
+interface extends either base directly. Built-artifact and downstream runtime
+validation are still pending.
 The earlier CSSOM and conditional-export design below remains a proposal.
 Owner: p65570 / qa-taste, branch `tm/qa-taste-style-props`; Contrast acceptance
 and receipts are in `plans/contrast/qa/taste-qa.md` and its production evidence.
