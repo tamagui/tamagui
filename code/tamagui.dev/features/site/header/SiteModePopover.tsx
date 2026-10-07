@@ -1,12 +1,6 @@
 import { Check, ChevronDown, ChevronRight } from '~/components/icons'
 import * as React from 'react'
-import {
-  Menu,
-  SizableText,
-  styled,
-  View,
-  XStack,
-} from 'tamagui'
+import { Menu, SizableText, styled, View, XStack } from 'tamagui'
 import {
   useSiteMode,
   type SiteVersion,
@@ -250,11 +244,7 @@ export const SiteModePopover = () => {
                   </Menu.RadioItem>
 
                   {freeThemes.map((t) => (
-                    <Menu.RadioItem
-                      key={t.id}
-                      value={String(t.id)}
-                      {...itemProps}
-                    >
+                    <Menu.RadioItem key={t.id} value={String(t.id)} {...itemProps}>
                       <XStack items="center" gap="2" flex={1}>
                         <View
                           width={7}
