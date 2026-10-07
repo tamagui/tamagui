@@ -6,9 +6,13 @@ import { stylePropsAll, stylePropsText, stylePropsView } from '@tamagui/helpers'
 import type { Properties } from 'csstype'
 import { describe, expect, expectTypeOf, test } from 'vitest'
 import { cssStyleProps } from '../../helpers/src/cssStyleProps'
+import { createStyledHOC } from './createStyledHOC'
+import { styled } from './styled'
+import { View } from './views/View'
 import type {
   GetFinalProps,
   FlatStyleValue,
+  GetProps,
   StackNonStyleProps,
   StackStyleBase,
   TamaguiComponentPropsBase,
@@ -87,6 +91,30 @@ describe('grammar-era style keys: runtime tables and public types agree', () => 
     >
     expectTypeOf<VariantProps['accentColor']>().toEqualTypeOf<
       FlatStyleValue<boolean> | undefined
+    >()
+  })
+
+  test('an explicit css-named HOC prop retains its type when restyled', () => {
+    const Receiver = createStyledHOC(View, (_props: { fillOpacity?: boolean }) => null)
+    const Restyled = styled(Receiver, {})
+    expectTypeOf<GetProps<typeof Receiver>['fillOpacity']>().toEqualTypeOf<
+      boolean | undefined
+    >()
+    expectTypeOf<GetProps<typeof Restyled>['fillOpacity']>().toEqualTypeOf<
+      boolean | undefined
+    >()
+  })
+
+  test('an explicit css-named inline prop retains its receiver type', () => {
+    const Receiver = styled(
+      (_props: { fillOpacity?: boolean }) => null,
+      {},
+      {
+        inlineProps: new Set(['fillOpacity']),
+      }
+    )
+    expectTypeOf<GetProps<typeof Receiver>['fillOpacity']>().toEqualTypeOf<
+      boolean | undefined
     >()
   })
 

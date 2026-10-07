@@ -902,14 +902,10 @@ function contributeProp(
   }
 
   if (process.env.TAMAGUI_TARGET === 'native') {
-    // userSelect is the one authoring name for Text's selectable prop (see
-    // types.tsx) and it has no style meaning on native. it is also a valid text
-    // style key, so handling it inside the !isValidStyleKey branch below left it
-    // unreachable, and webOnlyStylePropsView put it in the skip list, which
-    // returned even earlier. set the host prop and consume the key, the way
-    // textOverflow does.
+    // only text has the native selectable prop. consume the authoring name on
+    // either host so a view never receives a text-only host attribute.
     if (keyInit === 'userSelect') {
-      viewProps.selectable = valInit !== 'none'
+      if (isText) viewProps.selectable = valInit !== 'none'
       return
     }
     if (!isValidStyleKeyInit) {

@@ -3009,11 +3009,18 @@ export type StyledHOCMergedProps<Props, CustomProps> = keyof CustomProps extends
   ? Props
   : Omit<Props, keyof CustomProps> & CustomProps
 
+// declared receiver props keep their type when a new css name joins the style
+// surface. variants remain the explicit owner over either source.
 export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<
   NonStyleProps,
-  keyof StylePropsBase | keyof Variants
+  keyof Variants
 > &
-  (StylePropsBase extends object ? WithThemeAndShorthands<StylePropsBase, Variants> : {})
+  (StylePropsBase extends object
+    ? Omit<
+        WithThemeAndShorthands<StylePropsBase, Variants>,
+        Exclude<keyof NonStyleProps, keyof Variants>
+      >
+    : {})
 
 export type TamaguiComponent<
   Props = any,

@@ -137,6 +137,23 @@ emitter omits the leading dash. Its serializer now preserves the Microsoft CSS
 prefix. The test declaration reader uses the canonical prefix too; two guards
 then fail before the emitter repair, and all74 browser source tests pass after
 repair. The fresh built family and downstream browser controls remain next.
+RAN817176e46b: the rebuilt family,74 browser tests,104 native tests, six
+style type checks, root lint and root checks pass. Its downstream matrices each
+have3428 cases with no exceptions or unexpected authored CSS host props. The
+whole-output native guard now finds zero invalid style fields, confirming the
+logical-border repair, and one invalid host field: direct `userSelect` on View
+creates Text's `selectable` prop. Installed React Native declares `selectable`
+only for Text; two receiver guards fail before repair with `false` and `true`
+on View. The mapping now checks its Text owner before setting that host field.
+Native style-object values retain React Native's existing style handling.
+RAN two new public type guards: a CSS-named boolean HOC prop retains its type
+on the original wrapper, but re-styling it and declaring it through inlineProps
+replace it with the new CSS type. Final prop composition now preserves declared
+non-style receiver types; explicit variants retain precedence over them. After
+repair, all13 style-parity and existing HOC type tests pass with no type errors.
+Native custom-receiver controls now also use a boolean so a compatible numeric
+CSS value cannot hide loss of that explicit owner. The rebuilt family, complete
+native-output guard and approved downstream captures remain pending.
 The earlier CSSOM and conditional-export design below remains a proposal.
 Owner: p65570 / qa-taste, branch `tm/qa-taste-style-props`; Contrast acceptance
 and receipts are in `plans/contrast/qa/taste-qa.md` and its production evidence.

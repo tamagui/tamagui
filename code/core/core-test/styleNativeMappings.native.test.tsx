@@ -124,25 +124,25 @@ describe('plain css properties are consumed without leaking into native hosts', 
   test('css-named custom HOC props still reach their native receiver', () => {
     const CustomReceiver = createStyledHOC(
       View,
-      (_props: { fillOpacity?: number }) => null
+      (_props: { fillOpacity?: boolean }) => null
     )
     expect(CustomReceiver.staticConfig.isHOC).toBe(true)
-    const result = getResultFor({ fillOpacity: 0.5 }, CustomReceiver)
-    expect(result?.viewProps.fillOpacity).toBe(0.5)
+    const result = getResultFor({ fillOpacity: true }, CustomReceiver)
+    expect(result?.viewProps.fillOpacity).toBe(true)
     expect(result?.style?.fillOpacity).toBeUndefined()
   })
 
   test('explicit inline props retain their native component owner', () => {
     const CustomReceiver = styled(
-      (_props: { fillOpacity?: number }) => null,
+      (_props: { fillOpacity?: boolean }) => null,
       {},
       {
         inlineProps: new Set(['fillOpacity']),
       }
     )
     expect(CustomReceiver.staticConfig.inlineProps?.has('fillOpacity')).toBe(true)
-    const result = getResultFor({ fillOpacity: 0.5 }, CustomReceiver)
-    expect(result?.viewProps.fillOpacity).toBe(0.5)
+    const result = getResultFor({ fillOpacity: true }, CustomReceiver)
+    expect(result?.viewProps.fillOpacity).toBe(true)
     expect(result?.style?.fillOpacity).toBeUndefined()
   })
 
@@ -195,6 +195,20 @@ describe('plain css properties are consumed without leaking into native hosts', 
     })
     expect(result?.viewProps.accentColor).toBeUndefined()
   })
+
+  test.each(['none', 'text'] as const)(
+    'userSelect %s maps only to the native Text receiver',
+    (value) => {
+      const view = getResultFor({ width: 123, userSelect: value }, View)
+      expect(view?.style).toEqual({ width: 123 })
+      expect(view?.viewProps.selectable).toBeUndefined()
+      expect(view?.viewProps.userSelect).toBeUndefined()
+      const text = getResultFor({ width: 123, userSelect: value }, Text)
+      expect(text?.style).toEqual({ width: 123 })
+      expect(text?.viewProps.selectable).toBe(value !== 'none')
+      expect(text?.viewProps.userSelect).toBeUndefined()
+    }
+  )
 
   test.each([
     ['black', '#000'],
