@@ -620,7 +620,7 @@ Sub-themes can be subsets of parent themes likewise as their values will fall
 back to the parent theme. They can also be nested as deeply as you like - so
 even `light_alert_subtle` is possible.
 
-For more on themes, see the [themes docs](/docs/core/themes), and more
+For more on themes, see the [themes docs](/docs/intro/themes), and more
 [advanced theme building library](/docs/guides/theme-builder).
 
 ### Media
@@ -710,7 +710,7 @@ You can pass a `settings` object to `createTamagui`:
     {
       name: `disableSSR`,
       type: `boolean`,
-      description: `For SSR compatibility on the web, Tamagui will render once with the settings from mediaQueryDefaultActive set for all media queries. Then, it will render again after the initial render using the proper media query values. This is so that the hydrating components will match the server. Setting disableSSR to true will avoid this and instead immediately render using the up to date media state, which is the preferrable behavior for client-side only (SPA) style apps. See the [Server Rendering](/docs/core/server-rendering) docs for more details on SSR, the ClientOnly component, and related hooks.`,
+      description: `For SSR compatibility on the web, Tamagui will render once with the settings from mediaQueryDefaultActive set for all media queries. Then, it will render again after the initial render using the proper media query values. This is so that the hydrating components will match the server. Setting disableSSR to true will avoid this and instead immediately render using the up to date media state, which is the preferable behavior for client-side only (SPA) style apps. See the [Server Rendering](/docs/core/server-rendering) docs for more details on SSR, the ClientOnly component, and related hooks.`,
     },
     {
       name: `defaultFont`,
