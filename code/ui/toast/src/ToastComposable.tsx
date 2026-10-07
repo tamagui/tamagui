@@ -444,7 +444,7 @@ const ToastViewportFrame = styled(View, {
   minHeight: 1,
 })
 
-export type ToastViewportProps = GetProps<typeof ToastViewportFrame> & {
+export type ToastViewportProps = Omit<GetProps<typeof ToastViewportFrame>, 'offset'> & {
   /**
    * Offset from screen edge, kept as breathing room past the safe area: the
    * viewport edge itself sits at the `safe` style value (setup-safe-area on
