@@ -22,6 +22,82 @@ beforeAll(() => {
 })
 
 describe('getSplitStyles', () => {
+  test.each([
+    ['glyphOrientationVertical', '0deg', 'glyphOrientationBlock'],
+    ['msTextCombineHorizontal', 'all', 'msTextCombineInline'],
+  ])('css axis suffix in %s retains its canonical property', (key, value, renamed) => {
+    for (const Component of [View, Text]) {
+      for (const props of [{ [key]: value }, { style: { [key]: value } }]) {
+        const result = simplifiedGetSplitStyles(Component, props)
+        expect(getStyleValue(result, key)).toBe(value)
+        expect(getStyleValue(result, renamed)).toBeUndefined()
+        expect(result.viewProps[key]).toBeUndefined()
+      }
+    }
+  })
+
+  test.each([
+    ['marginHorizontal', 'marginInline'],
+    ['marginVertical', 'marginBlock'],
+    ['paddingHorizontal', 'paddingInline'],
+    ['paddingVertical', 'paddingBlock'],
+  ])('native box-axis aliases %s retain their web mapping', (key, webKey) => {
+    for (const Component of [View, Text]) {
+      const direct = simplifiedGetSplitStyles(Component, { [key]: 12 })
+      expect(getStyleValue(direct, webKey)).toBe('12px')
+      expect(direct.viewProps[key]).toBeUndefined()
+      const inline = simplifiedGetSplitStyles(Component, { style: { [key]: 12 } })
+      expect(getStyleValue(inline, webKey)).toBe(12)
+      expect(inline.viewProps[key]).toBeUndefined()
+    }
+  })
+
+  test.each([
+    ['accentColor', 'red'],
+    ['animationDelay', '100ms'],
+    ['counterReset', 'section'],
+    ['textWrapStyle', 'balance'],
+    ['WebkitTextStrokeColor', 'red'],
+    ['msUserSelect', 'none'],
+    ['borderBlockStyle', 'dashed'],
+    ['borderBlockEndStyle', 'dashed'],
+    ['borderBlockStartStyle', 'dashed'],
+    ['borderInlineStyle', 'dashed'],
+    ['borderInlineEndStyle', 'dashed'],
+    ['borderInlineStartStyle', 'dashed'],
+  ])('plain css %s emits styles instead of host attributes', (key, value) => {
+    for (const Component of [View, Text]) {
+      for (const props of [{ [key]: value }, { style: { [key]: value } }]) {
+        const result = simplifiedGetSplitStyles(Component, props)
+        expect(getStyleValue(result, key)).toBe(value)
+        expect(result.viewProps[key]).toBeUndefined()
+      }
+    }
+  })
+
+  test('a css-named variant keeps its declared behavior', () => {
+    const VariantView = styled(View, {
+      variants: { accentColor: { true: { opacity: 0.4 } } },
+    })
+    const result = simplifiedGetSplitStyles(VariantView, { accentColor: true })
+    expect(getStyleValue(result, 'opacity')).toBe('0.4')
+    expect(result.viewProps.accentColor).toBeUndefined()
+  })
+
+  test.each(['fontSizeAdjust', 'strokeMiterlimit'])(
+    'numeric css %s keeps its unitless value in classes and inline styles',
+    (key) => {
+      for (const Component of [View, Text]) {
+        const direct = simplifiedGetSplitStyles(Component, { [key]: 0.5 })
+        expect(getStyleValue(direct, key)).toBe('0.5')
+        expect(direct.viewProps[key]).toBeUndefined()
+        const inline = simplifiedGetSplitStyles(Component, { style: { [key]: 0.5 } })
+        expect(getStyleValue(inline, key)).toBe(0.5)
+        expect(inline.viewProps[key]).toBeUndefined()
+      }
+    }
+  )
+
   test.each(['rgba(255,255,255,0.55)', 'rgb(255, 255, 255)', 'hsl(0, 0%, 100%)'])(
     'background color function %s retains the CSS background shorthand',
     (background) => {

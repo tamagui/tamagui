@@ -310,7 +310,7 @@ const hcache = {}
 const toHyphenLower = (match: string) => `-${match.toLowerCase()}`
 const hyphenateStyleName = (key: string) => {
   if (key in hcache) return hcache[key]
-  const val = key.replace(/[A-Z]/g, toHyphenLower)
+  const val = key.replace(/[A-Z]/g, toHyphenLower).replace(/^ms-/, '-ms-')
   hcache[key] = val
   return val
 }

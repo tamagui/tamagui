@@ -1,4 +1,5 @@
 import { isAndroid } from '@tamagui/constants'
+import { cssStyleProps, cssStylePropsUnitless } from './cssStyleProps'
 import {
   nonAnimatableWebTextProps,
   nonAnimatableWebViewProps,
@@ -19,7 +20,7 @@ const inputColors = toObj(
 )
 
 const nonAnimatableViewProps = toObj(
-  'alignContent alignItems alignSelf backfaceVisibility borderCurve borderStyle borderBlockStyle borderBlockEndStyle borderBlockStartStyle borderInlineStyle borderInlineEndStyle borderInlineStartStyle boxSizing cursor direction display flexDirection flexWrap isolation justifyContent mixBlendMode outlineStyle overflow pointerEvents position visibility'
+  'alignContent alignItems alignSelf backfaceVisibility borderCurve borderStyle boxSizing cursor direction display flexDirection flexWrap isolation justifyContent mixBlendMode outlineStyle overflow pointerEvents position visibility'
 )
 
 const nonAnimatableFontProps = toObj('fontFamily fontStyle fontVariant textTransform')
@@ -29,6 +30,10 @@ const nonAnimatableTextOnlyProps = toObj(
 )
 
 const nonAnimatableUnitlessProps = toObj('WebkitLineClamp lineClamp')
+
+const webOnlyUnitlessProps = toObj(
+  'animationIterationCount borderImageOutset borderImageSlice borderImageWidth columnCount flexOrder flexPositive flexNegative order orphans tabSize widows zoom scaleZ'
+)
 
 /**
  * CSS Grid layout props. Web-only by default — Yoga (React Native's layout
@@ -48,16 +53,18 @@ export const nonAnimatableStyleProps = toObj(
   nonAnimatableViewProps,
   nonAnimatableFontProps,
   nonAnimatableTextOnlyProps,
-  nonAnimatableUnitlessProps,
+  process.env.TAMAGUI_TARGET === 'web' ? nonAnimatableUnitlessProps : undefined,
   enableCSSGrid ? cssGridProps : undefined,
   process.env.TAMAGUI_TARGET === 'web' ? nonAnimatableWebViewProps : undefined,
   process.env.TAMAGUI_TARGET === 'web' ? nonAnimatableWebTextProps : undefined
 )
 
 export const stylePropsUnitless = toObj(
-  nonAnimatableUnitlessProps,
+  process.env.TAMAGUI_TARGET === 'web' ? cssStylePropsUnitless : undefined,
+  process.env.TAMAGUI_TARGET === 'web' ? nonAnimatableUnitlessProps : undefined,
+  process.env.TAMAGUI_TARGET === 'web' ? webOnlyUnitlessProps : undefined,
   enableCSSGrid ? cssGridProps : undefined,
-  'animationIterationCount aspectRatio borderImageOutset borderImageSlice borderImageWidth columnCount flex flexGrow flexOrder flexPositive flexShrink flexNegative fontWeight opacity order orphans tabSize widows zIndex zoom scale scaleX scaleY scaleZ shadowOpacity'
+  'aspectRatio flex flexGrow flexShrink fontWeight opacity zIndex scale scaleX scaleY shadowOpacity'
 )
 
 export const stylePropsTransform = toObj(
@@ -73,7 +80,8 @@ export const stylePropsView = toObj(
   stylePropsUnitless,
   isAndroid ? { elevationAndroid: true } : undefined,
   'boxShadow border borderBlock borderInline filter background backgroundImage experimental_backgroundImage outline outlineOffset outlineWidth',
-  process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsView : undefined
+  process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsView : undefined,
+  process.env.TAMAGUI_TARGET === 'web' ? cssStyleProps : undefined
 )
 
 const stylePropsFont = toObj(
@@ -85,7 +93,8 @@ export const stylePropsTextOnly = toObj(
   stylePropsFont,
   nonAnimatableTextOnlyProps,
   textColors,
-  'textShadow textShadowOffset textShadowRadius textDecoration font verticalAlign',
+  'textShadow textShadowOffset textShadowRadius textDecoration verticalAlign',
+  process.env.TAMAGUI_TARGET === 'web' ? 'font' : undefined,
   process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsText : undefined
 )
 
@@ -93,6 +102,12 @@ export const stylePropsText = toObj(stylePropsView, stylePropsTextOnly)
 
 export const stylePropsInput = toObj(stylePropsText, inputColors)
 
-export const stylePropsAll = stylePropsInput
+// native recognizes css names so unsupported styles cannot become host props.
+export const stylePropsAll = toObj(
+  stylePropsInput,
+  cssStyleProps,
+  nonAnimatableUnitlessProps,
+  webOnlyUnitlessProps
+)
 
 export const validStyles = stylePropsView

@@ -3,7 +3,7 @@
 import { toStylePropsObject as toObj } from './toStylePropsObject'
 
 export const nonAnimatableWebViewProps = toObj(
-  'backgroundAttachment backgroundBlendMode backgroundClip backgroundOrigin backgroundRepeat borderBottomStyle borderLeftStyle borderRightStyle borderTopStyle contain containerType containerName content float maskBorderMode maskBorderRepeat maskClip maskComposite maskMode maskOrigin maskRepeat maskType objectFit overflowBlock overflowInline overflowX overflowY scrollbarWidth textWrap touchAction transformStyle willChange'
+  'backgroundAttachment backgroundBlendMode backgroundClip backgroundOrigin backgroundRepeat borderBlockStyle borderBlockEndStyle borderBlockStartStyle borderInlineStyle borderInlineEndStyle borderInlineStartStyle borderBottomStyle borderLeftStyle borderRightStyle borderTopStyle contain containerType containerName content float maskBorderMode maskBorderRepeat maskClip maskComposite maskMode maskOrigin maskRepeat maskType objectFit overflowBlock overflowInline overflowX overflowY scrollbarWidth textWrap touchAction transformStyle willChange'
 )
 
 export const nonAnimatableWebTextProps = toObj(

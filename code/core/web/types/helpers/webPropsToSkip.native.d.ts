@@ -11,9 +11,15 @@ export declare const webPropsToSkip: {
     backgroundPosition: true;
     backgroundRepeat: true;
     backgroundSize: true;
+    borderBlockEndStyle: true;
+    borderBlockStartStyle: true;
+    borderBlockStyle: true;
     borderBottom: true;
     borderBottomStyle: true;
     borderImage: true;
+    borderInlineEndStyle: true;
+    borderInlineStartStyle: true;
+    borderInlineStyle: true;
     borderLeft: true;
     borderLeftStyle: true;
     borderRight: true;

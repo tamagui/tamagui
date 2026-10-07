@@ -6,9 +6,9 @@ import type { Properties } from 'csstype';
  *
  * `@tamagui/core/dom` is the one entry that must typecheck in a project with no
  * react-native installed, so nothing here may reference it. The regular
- * `View`/`Text` props stay on react-native's `ViewStyle`/`TextStyle` (see
- * `StackStyleBase` / `TextStylePropsBase` in `../types`); this is the web-first
- * property set, not a parallel definition of those.
+ * `View`/`Text` props combine react-native's style types with the canonical CSS
+ * properties (see `StackStyleBase` / `TextStylePropsBase` in `../types`). This
+ * entry uses the same CSS properties with its own native-free overrides.
  *
  * The react-native-only keys (`elevation`, `marginHorizontal`,
  * `marginVertical`, `paddingHorizontal`, `paddingVertical`, the `shadow*`
@@ -468,9 +468,12 @@ interface AnimationStyle {
     passThrough?: boolean;
 }
 /**
- * The whole style grammar `style()` accepts.
+ * the owned overrides in the web style grammar.
  */
-export interface TamaguiStyleProps extends LayoutStyle, LogicalStyle, BorderStyle, PaintStyle, MaskStyle, GridStyle, TextStyle, TransformStyle, WebStyle, AnimationStyle {
+interface TamaguiStylePropsBase extends LayoutStyle, LogicalStyle, BorderStyle, PaintStyle, MaskStyle, GridStyle, TextStyle, TransformStyle, WebStyle, AnimationStyle {
+}
+/** the whole style grammar; container remains a component query prop. */
+export interface TamaguiStyleProps extends TamaguiStylePropsBase, Omit<Properties<string | number>, keyof TamaguiStylePropsBase | 'container'> {
 }
 export {};
 //# sourceMappingURL=styleTypes.d.ts.map

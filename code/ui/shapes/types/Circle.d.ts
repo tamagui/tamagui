@@ -1,9 +1,9 @@
 import type { GetProps } from '@tamagui/web';
-export declare const Circle: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "circular" | "size" | "transparent" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+export declare const Circle: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "circular" | "size" | "transparent"> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, "circular" | "size" | "transparent">> & import("@tamagui/web").WithFlatVariantValues<{
     circular?: boolean | undefined;
     size?: number | import("@tamagui/web").Size | undefined;
     transparent?: boolean | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
     ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     circular?: boolean | undefined;

@@ -1,23 +1,27 @@
-/**
- * Runtime-table / public-type parity for the grammar-era style key additions.
- *
- * The class this pins (host spot-check, 2026-07-31): a key the runtime tables
- * accept and evaluate but the public type omits reads as "rejected" to any
- * type-keyed consumer — the host resolver classified a working
- * `textDecoration` site needs-relocation because `TextStylePropsBase` never
- * gained the key when the runtime did. A stale type that CONTRADICTS errors
- * loudly; one that merely OMITS says nothing, which is why this list is
- * pinned in both directions: each key must be in the runtime table (runtime
- * half) and accepted by the public style type (type half, enforced because
- * this suite runs under vitest --typecheck).
- *
- * When a grammar tranche adds a style key, it gets added HERE with its table
- * and its type in the same commit, or this file fails.
- */
+// css property recognition and public types must agree. omitted type keys do
+// not produce diagnostics until a caller uses them, so this suite checks every
+// canonical key and the additional tamagui style keys under vitest --typecheck.
 
 import { stylePropsAll, stylePropsText, stylePropsView } from '@tamagui/helpers'
+import type { Properties } from 'csstype'
 import { describe, expect, expectTypeOf, test } from 'vitest'
-import type { StackStyleBase, TextStylePropsBase } from './types'
+import { cssStyleProps } from '../../helpers/src/cssStyleProps'
+import { createStyledHOC } from './createStyledHOC'
+import { styled } from './styled'
+import { View } from './views/View'
+import type {
+  GetFinalProps,
+  FlatStyleValue,
+  GetProps,
+  StackNonStyleProps,
+  StackStyleBase,
+  TamaguiComponentPropsBase,
+  TextNonStyleProps,
+  TextStylePropsBase,
+} from './types'
+
+type PublicStackProps = GetFinalProps<StackNonStyleProps, StackStyleBase, {}>
+type PublicTextProps = GetFinalProps<TextNonStyleProps, TextStylePropsBase, {}>
 
 // keys valid on every host (ExtraStyleProps -> both bases)
 const sharedAdditions = [
@@ -32,7 +36,7 @@ const sharedAdditions = [
   'pointerEvents',
 ] as const
 
-// text-only composites (TextStylePropsBase)
+// css text composites also support inheritance on browser views.
 const textAdditions = ['textDecoration', 'font', 'textShadow'] as const
 
 describe('grammar-era style keys: runtime tables and public types agree', () => {
@@ -43,25 +47,82 @@ describe('grammar-era style keys: runtime tables and public types agree', () => 
     }
   })
 
-  test('every text addition is in the text table and not the view table', () => {
+  test('every css text addition is also valid for browser inheritance on views', () => {
     for (const key of textAdditions) {
       expect(key in stylePropsText, key).toBe(true)
       expect(key in stylePropsAll, key).toBe(true)
-      expect(key in stylePropsView, key).toBe(false)
+      expect(key in stylePropsView, key).toBe(true)
     }
   })
 
   test('the public types carry the same keys', () => {
-    // Pick fails to COMPILE when a key is absent from the type — a mapped
-    // type with optional keys would be satisfied by absence, which is
-    // exactly the omission this file exists to catch
+    // pick fails to compile when a required key is absent from the style type.
     type _stackPin = Pick<StackStyleBase, (typeof sharedAdditions)[number]>
     type _textPin = Pick<
       TextStylePropsBase,
       (typeof sharedAdditions)[number] | (typeof textAdditions)[number]
     >
-    // and the text-only composites stay OFF the view type
-    expectTypeOf<StackStyleBase>().not.toHaveProperty('textDecoration')
-    expectTypeOf<StackStyleBase>().not.toHaveProperty('font')
+    type _allStackCss = Pick<PublicStackProps, keyof Properties>
+    type _allTextCss = Pick<PublicTextProps, keyof Properties>
+    expectTypeOf<
+      Exclude<keyof Properties, keyof typeof cssStyleProps>
+    >().toEqualTypeOf<never>()
+    expectTypeOf<
+      Exclude<keyof typeof cssStyleProps, keyof Properties>
+    >().toEqualTypeOf<never>()
+  })
+
+  test('the container query prop retains its boolean and named container API', () => {
+    expectTypeOf<PublicStackProps['container']>().toEqualTypeOf<
+      TamaguiComponentPropsBase['container']
+    >()
+    expectTypeOf<PublicTextProps['container']>().toEqualTypeOf<
+      TamaguiComponentPropsBase['container']
+    >()
+    expectTypeOf<Extract<keyof StackStyleBase, 'container'>>().toEqualTypeOf<never>()
+    expectTypeOf<Extract<keyof TextStylePropsBase, 'container'>>().toEqualTypeOf<never>()
+  })
+
+  test('an explicit css-named variant owns its public value type', () => {
+    type VariantProps = GetFinalProps<
+      StackNonStyleProps,
+      StackStyleBase,
+      { accentColor: boolean }
+    >
+    expectTypeOf<VariantProps['accentColor']>().toEqualTypeOf<
+      FlatStyleValue<boolean> | undefined
+    >()
+  })
+
+  test('an explicit css-named HOC prop retains its type when restyled', () => {
+    const Receiver = createStyledHOC(View, (_props: { fillOpacity?: boolean }) => null)
+    const Restyled = styled(Receiver, {})
+    expectTypeOf<GetProps<typeof Receiver>['fillOpacity']>().toEqualTypeOf<
+      boolean | undefined
+    >()
+    expectTypeOf<GetProps<typeof Restyled>['fillOpacity']>().toEqualTypeOf<
+      boolean | undefined
+    >()
+  })
+
+  test('an explicit css-named inline prop retains its receiver type', () => {
+    const Receiver = styled(
+      (_props: { fillOpacity?: boolean }) => null,
+      {},
+      {
+        inlineProps: new Set(['fillOpacity']),
+      }
+    )
+    expectTypeOf<GetProps<typeof Receiver>['fillOpacity']>().toEqualTypeOf<
+      boolean | undefined
+    >()
+  })
+
+  test('canonical css properties are recognized instead of forwarded as attributes', () => {
+    for (const key of Object.keys(cssStyleProps)) {
+      expect(key in stylePropsAll, key).toBe(true)
+      expect(key in stylePropsView, key).toBe(true)
+      expect(key in stylePropsText, key).toBe(true)
+    }
   })
 })

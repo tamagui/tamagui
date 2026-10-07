@@ -34,10 +34,10 @@ declare const ToggleGroup: ((props: ScopedProps<ToggleGroupProps> & import("@tam
     Item: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
-    }>, "__scopeToggleGroup" | "active" | "activeStyle" | "activeTheme" | "defaultActiveStyle" | "value" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & Omit<import("@tamagui/web").StackNonStyleProps, "active" | "defaultActiveStyle" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+    }>, "__scopeToggleGroup" | "active" | "activeStyle" | "activeTheme" | "defaultActiveStyle" | "value" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & Omit<import("@tamagui/web").StackNonStyleProps, "active" | "defaultActiveStyle"> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, "active" | "defaultActiveStyle">> & import("@tamagui/web").WithFlatVariantValues<{
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, keyof import("@tamagui/web").StackNonStyleProps> & {
         activeStyle?: ToggleProps['activeStyle'];
         activeTheme?: ToggleProps['activeTheme'];
         value: string;
@@ -45,10 +45,10 @@ declare const ToggleGroup: ((props: ScopedProps<ToggleGroupProps> & import("@tam
         disabled?: boolean;
     } & {
         __scopeToggleGroup?: string;
-    }, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").StackNonStyleProps & Omit<import("@tamagui/web").StackNonStyleProps, "active" | "defaultActiveStyle" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{
+    }, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").StackNonStyleProps & Omit<import("@tamagui/web").StackNonStyleProps, "active" | "defaultActiveStyle"> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, "active" | "defaultActiveStyle">> & import("@tamagui/web").WithFlatVariantValues<{
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, keyof import("@tamagui/web").StackNonStyleProps> & {
         activeStyle?: ToggleProps['activeStyle'];
         activeTheme?: ToggleProps['activeTheme'];
         value: string;
@@ -81,7 +81,7 @@ interface ToggleGroupImplMultipleProps extends ToggleGroupImplProps {
     disableDeactivation?: boolean;
 }
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>;
-declare const ToggleGroupFrame: React.FunctionComponent<Omit<import("@tamagui/web").StackNonStyleProps, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
+declare const ToggleGroupFrame: React.FunctionComponent<Omit<import("@tamagui/web").StackNonStyleProps, never> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, keyof import("@tamagui/web").StackNonStyleProps> & {
     ref?: React.Ref<TamaguiElement> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic];

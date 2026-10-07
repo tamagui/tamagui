@@ -105,7 +105,9 @@ export function exposeClassProperties<T extends any>(result: T): T {
 }
 
 const toCSSProperty = (property: string) =>
-  property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)
+  property
+    .replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)
+    .replace(/^ms-/, '-ms-')
 
 function declarationValue(rule: string, property: string) {
   const name = `${toCSSProperty(property)}:`

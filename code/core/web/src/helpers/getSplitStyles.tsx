@@ -866,7 +866,11 @@ function contributeProp(
   let isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles)
 
   if (process.env.NODE_ENV === 'development') {
-    if (!isValidStyleKeyInit && (!variants || !(keyInit in variants))) {
+    if (
+      !isValidStyleKeyInit &&
+      !(keyInit in stylePropsAll) &&
+      (!variants || !(keyInit in variants))
+    ) {
       let replacement: string | undefined
       if (keyInit === 'animation') replacement = 'transition='
       else if (keyInit === 'hoverStyle') replacement = 'hover: clause'
@@ -898,14 +902,10 @@ function contributeProp(
   }
 
   if (process.env.TAMAGUI_TARGET === 'native') {
-    // userSelect is the one authoring name for Text's selectable prop (see
-    // types.tsx) and it has no style meaning on native. it is also a valid text
-    // style key, so handling it inside the !isValidStyleKey branch below left it
-    // unreachable, and webOnlyStylePropsView put it in the skip list, which
-    // returned even earlier. set the host prop and consume the key, the way
-    // textOverflow does.
+    // only text has the native selectable prop. consume the authoring name on
+    // either host so a view never receives a text-only host attribute.
     if (keyInit === 'userSelect') {
-      viewProps.selectable = valInit !== 'none'
+      if (isText) viewProps.selectable = valInit !== 'none'
       return
     }
     if (!isValidStyleKeyInit) {
@@ -1155,7 +1155,8 @@ function contributeProp(
   }
 
   if (keyInit in stylePropsAll) {
-    if (process.env.NODE_ENV === 'development') {
+    // shared css authoring intentionally drops unsupported keys on native.
+    if (process.env.NODE_ENV === 'development' && process.env.TAMAGUI_TARGET === 'web') {
       console.warn(
         `[tamagui] "${keyInit}" is a text style prop and this component is not text — it would render on neither platform. Use a Text-based component, or html.* for raw web elements.`
       )
@@ -1927,7 +1928,7 @@ export const getSplitStyles: StyleSplitter = (
 const stylePieceStaticConfig = {
   acceptsClassName: true,
   isText: true,
-  validStyles: stylePropsAll,
+  validStyles: stylePropsInput,
 } as StaticConfig
 
 type CompiledStylePiece = {
@@ -2365,6 +2366,11 @@ const recordCSS = 16
 // props did nothing on web. rename them onto the CSS logical properties that
 // are RTL-aware in exactly the same way (#3099)
 const webRTLRenames: Record<string, string> = {
+  marginHorizontal: 'marginInline',
+  marginVertical: 'marginBlock',
+  paddingHorizontal: 'paddingInline',
+  paddingVertical: 'paddingBlock',
+  writingDirection: 'direction',
   paddingStart: 'paddingInlineStart',
   paddingEnd: 'paddingInlineEnd',
   marginStart: 'marginInlineStart',
@@ -2391,15 +2397,7 @@ const webStyleProperties = new Map<string, string>()
 function webStyleProperty(property: string) {
   let web = webStyleProperties.get(property)
   if (web === undefined) {
-    web =
-      webRTLRenames[property] ||
-      (property === 'writingDirection'
-        ? 'direction'
-        : property.endsWith('Horizontal')
-          ? `${property.slice(0, -10)}Inline`
-          : property.endsWith('Vertical')
-            ? `${property.slice(0, -8)}Block`
-            : property)
+    web = webRTLRenames[property] || property
     webStyleProperties.set(property, web)
   }
   return web
@@ -3618,6 +3616,8 @@ function emitValue(
       }
       return
     }
+    // unmapped css names cannot become native host styles.
+    if (property === 'backgroundImage' || property === 'textShadow') return
   }
 
   if (
@@ -4011,6 +4011,16 @@ function contributeValue(
   contextOnly = false,
   condition?: Condition | string
 ) {
+  // every style source shares this path, including style objects and resolvers.
+  if (
+    process.env.TAMAGUI_TARGET === 'native' &&
+    !contextOnly &&
+    !(property in stylePropsInput) &&
+    !(state.staticConfig.validStyles && property in state.staticConfig.validStyles) &&
+    property in stylePropsAll
+  ) {
+    return
+  }
   if (condition !== undefined) {
     const directState = state as DirectState
     const parent = (directState.flatPass?.[passParentCursor] as Condition) || null

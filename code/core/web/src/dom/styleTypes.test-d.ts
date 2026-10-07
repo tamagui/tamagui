@@ -131,6 +131,12 @@ check({ position: 'fixed', overflowX: 'auto', gridTemplateColumns: '1fr 1fr' })
 check({ fontSize: 20, lineHeight: 1.5 })
 check({ lineHeight: '24px' })
 check({ lineHeight: '1.5' })
+check({
+  accentColor: 'red',
+  animationDelay: '100ms',
+  counterReset: 'section',
+  textWrapStyle: 'balance',
+})
 
 // @ts-expect-error not a style property
 check({ notAStyleProperty: 1 })

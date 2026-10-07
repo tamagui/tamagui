@@ -95,7 +95,7 @@ export declare const AdaptParent: ({ children, adaptChildren, Contents, scope, o
  */
 export declare const AdaptContents: ({ scope, ...rest }: {
     scope?: string;
-}) => React.FunctionComponentElement<any>;
+}) => React.JSX.Element;
 export declare const Adapt: ((props: AdaptProps) => React.JSX.Element) & {
     Contents: typeof AdaptContents;
 };

@@ -2290,10 +2290,10 @@ export type WithThemeAndShorthands<
   A extends object,
   Variants = {},
 > = OnlyAllowShorthands extends true
-  ? WithThemeValues<MaybeOmitLonghands<Omit<A, Longhands>>> &
+  ? WithThemeValues<MaybeOmitLonghands<Omit<A, Longhands | keyof Variants>>> &
       WithFlatVariantValues<Variants> &
       WithShorthands<WithThemeValues<A>>
-  : WithThemeValues<MaybeOmitLonghands<A>> &
+  : WithThemeValues<MaybeOmitLonghands<Omit<A, keyof Variants>>> &
       WithFlatVariantValues<Variants> &
       WithShorthands<WithThemeValues<A>>
 
@@ -2464,7 +2464,8 @@ interface ExtraStyleProps {
     | `${string}(${string})`
     | OpenStyleString
   /**
-   * Web-only style property. Will be omitted on native.
+   * css background image. native maps supported linear gradients to
+   * experimental_backgroundImage and drops values it cannot represent.
    */
   backgroundImage?: Properties['backgroundImage']
   /**
@@ -2857,7 +2858,13 @@ interface ExtendedBaseProps
 }
 
 export interface StackStyleBase
-  extends Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>, ExtendedBaseProps {}
+  extends
+    Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>,
+    ExtendedBaseProps,
+    Omit<
+      Properties<string | number>,
+      keyof ViewStyle | keyof ExtendedBaseProps | keyof TamaguiComponentPropsBaseBase
+    > {}
 
 export interface TextStylePropsBase
   extends
@@ -2865,7 +2872,16 @@ export interface TextStylePropsBase
       RNTextStyle,
       keyof ExtendedBaseProps | 'fontVariant' | 'lineHeight' | 'includeFontPadding'
     >,
-    ExtendedBaseProps {
+    ExtendedBaseProps,
+    Omit<
+      Properties<string | number>,
+      | keyof RNTextStyle
+      | keyof ExtendedBaseProps
+      | keyof TamaguiComponentPropsBaseBase
+      | 'textShadow'
+      | 'textDecoration'
+      | 'font'
+    > {
   lineHeight?: number | Px | `${number}`
   /**
    * react-native types this as a mutable `FontVariant[]`, which an `as const` variant
@@ -2891,8 +2907,7 @@ export interface TextStylePropsBase
    */
   textDecoration?: string
   /**
-   * CSS font shorthand string ("italic bold 16px/1.5 Inter").
-   * Splits by the CSS micro-syntax; ambiguous forms stay unparsed.
+   * css font shorthand string, browser-only and dropped on native.
    */
   font?: string
 }
@@ -2994,11 +3009,18 @@ export type StyledHOCMergedProps<Props, CustomProps> = keyof CustomProps extends
   ? Props
   : Omit<Props, keyof CustomProps> & CustomProps
 
+// declared receiver props keep their type when a new css name joins the style
+// surface. variants remain the explicit owner over either source.
 export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<
   NonStyleProps,
-  keyof StylePropsBase | keyof Variants
+  keyof Variants
 > &
-  (StylePropsBase extends object ? WithThemeAndShorthands<StylePropsBase, Variants> : {})
+  (StylePropsBase extends object
+    ? Omit<
+        WithThemeAndShorthands<StylePropsBase, Variants>,
+        Exclude<keyof NonStyleProps, keyof Variants>
+      >
+    : {})
 
 export type TamaguiComponent<
   Props = any,

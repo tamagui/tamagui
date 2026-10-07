@@ -1265,7 +1265,7 @@ type MaybeOmitLonghands<A> = OnlyShorthandStyleProps extends true ? Omit<A, Shor
 export type WithFlatVariantValues<Variants> = {
     [Key in keyof Variants]?: FlatStyleValue<NonNullable<Variants[Key]>>;
 };
-export type WithThemeAndShorthands<A extends object, Variants = {}> = OnlyAllowShorthands extends true ? WithThemeValues<MaybeOmitLonghands<Omit<A, Longhands>>> & WithFlatVariantValues<Variants> & WithShorthands<WithThemeValues<A>> : WithThemeValues<MaybeOmitLonghands<A>> & WithFlatVariantValues<Variants> & WithShorthands<WithThemeValues<A>>;
+export type WithThemeAndShorthands<A extends object, Variants = {}> = OnlyAllowShorthands extends true ? WithThemeValues<MaybeOmitLonghands<Omit<A, Longhands | keyof Variants>>> & WithFlatVariantValues<Variants> & WithShorthands<WithThemeValues<A>> : WithThemeValues<MaybeOmitLonghands<Omit<A, keyof Variants>>> & WithFlatVariantValues<Variants> & WithShorthands<WithThemeValues<A>>;
 /**
  * Base style-only props (no media, pseudo):
  */
@@ -1367,7 +1367,8 @@ interface ExtraStyleProps {
      */
     background?: ColorTokens | Exclude<ThemeValueFallbackColor, number> | 'none' | 'inherit' | 'initial' | 'unset' | 'revert' | `${string}(${string})` | OpenStyleString;
     /**
-     * Web-only style property. Will be omitted on native.
+     * css background image. native maps supported linear gradients to
+     * experimental_backgroundImage and drops values it cannot represent.
      */
     backgroundImage?: Properties['backgroundImage'];
     /**
@@ -1720,9 +1721,9 @@ interface ExtendedBaseProps extends TransformStyleProps, ExtendBaseTextProps, Ex
     display?: 'inherit' | 'none' | 'inline' | 'block' | 'inline-block' | 'contents' | 'flex' | 'inline-flex' | 'grid' | 'inline-grid';
     position?: 'absolute' | 'relative' | 'fixed' | 'static' | 'sticky';
 }
-export interface StackStyleBase extends Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>, ExtendedBaseProps {
+export interface StackStyleBase extends Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>, ExtendedBaseProps, Omit<Properties<string | number>, keyof ViewStyle | keyof ExtendedBaseProps | keyof TamaguiComponentPropsBaseBase> {
 }
-export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBaseProps | 'fontVariant' | 'lineHeight' | 'includeFontPadding'>, ExtendedBaseProps {
+export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBaseProps | 'fontVariant' | 'lineHeight' | 'includeFontPadding'>, ExtendedBaseProps, Omit<Properties<string | number>, keyof RNTextStyle | keyof ExtendedBaseProps | keyof TamaguiComponentPropsBaseBase | 'textShadow' | 'textDecoration' | 'font'> {
     lineHeight?: number | Px | `${number}`;
     /**
      * react-native types this as a mutable `FontVariant[]`, which an `as const` variant
@@ -1748,8 +1749,7 @@ export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBase
      */
     textDecoration?: string;
     /**
-     * CSS font shorthand string ("italic bold 16px/1.5 Inter").
-     * Splits by the CSS micro-syntax; ambiguous forms stay unparsed.
+     * css font shorthand string, browser-only and dropped on native.
      */
     font?: string;
 }
@@ -1773,7 +1773,7 @@ export type StyledHOCOptions = {
     staticConfig?: Partial<StaticConfig>;
 };
 export type StyledHOCMergedProps<Props, CustomProps> = keyof CustomProps extends never ? Props : Omit<Props, keyof CustomProps> & CustomProps;
-export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends object ? WithThemeAndShorthands<StylePropsBase, Variants> : {});
+export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof Variants> & (StylePropsBase extends object ? Omit<WithThemeAndShorthands<StylePropsBase, Variants>, Exclude<keyof NonStyleProps, keyof Variants>> : {});
 export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseStyles extends object = {}, Variants = {}, ParentStaticProperties = {}> = FunctionComponent<(Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, Variants> : Props) & {
     ref?: ReactRef<Ref>;
 }> & StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties> & Omit<ParentStaticProperties, 'staticConfig'> & {

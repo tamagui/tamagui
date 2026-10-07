@@ -2,6 +2,60 @@
 
 Authored 2026-09-14 for Nate.
 
+## current property coverage audit, 2026-10-06
+
+Nate: "We should make sure that V3 doesn't require this web prefix";
+"We're trying to widen the support for props to basically most of them and we
+just drop it on native". He requested improvement "in general across every
+property that you can see style property".
+
+The repair extends the existing recognition tables with857 CSS names and93
+unitless-number entries generated from csstype3.2.3. Public View/Text props and
+the native-free DOM contract use that canonical CSS interface around their
+existing overrides. Native recognizes unsupported names to consume them while
+retaining its supported style table and existing mappings. The value path covers
+style objects, arrays, pieces and resolvers. Explicit variants, HOC/inline props,
+context values and component validStyles keep their declared owners.
+
+Existing authoring owners need separate classification: container's boolean/
+string query API, transition's animation interface, v6 content as alignContent,
+r/x/y and transform vocabulary. This repair preserves those meanings. Browser
+support for obsolete/vendor properties and CSS value parsing are separate from
+emitting a canonical declaration. These probes make no native-device paint claim.
+
+RAN installed baseline canary1791311846573: plain textWrap already emits CSS
+and drops on native. Across857 Text inputs,619 browser and629 native inputs
+forward as raw props. At29333576d6,295 of497 standard CSS keys are absent from
+both source style bases. Width123, fontSize24 and opacity0.4 are positive native
+controls. Runtime and type failures reproduced before each repair include
+nested unsupported CSS, logical border-side outputs, CSS axis-name renaming,
+Microsoft atomic prefixes, View's Text-only selectable mapping, and boolean
+receiver props overwritten by newly widened CSS types.
+
+RAN87f1894631: the complete136-package family build,74 browser regressions,
+106 native regressions,13 style-parity and HOC type checks, root lint and root
+checks pass. Exact archive SHA256:
+1f1f1d6140f4a430d2d7845cb0cc48d2a8e8fc27ea13f46ba045f02b43d15252.
+After local installation in isolated Contrast,3428 cases per platform
+(View/Text, direct/style) have zero pipeline exceptions and unexpected authored
+CSS host props. Browser output has zero unrepresented non-owner names. Native
+output has zero unsupported authored styles, invalid style fields or invalid
+host fields. Fresh public inventory covers all857 names with zero diagnostics.
+Six actual Chrome computed-value controls and eight accepted heading/outline
+fixtures pass at1280x960 and390x844, DPR3. WebP90 evidence remains private.
+
+The new generated registry costs22641 raw/4241 gzip bytes in its ESM module.
+The supported-workload cost probe checks equal baseline/draft outputs before
+measuring. Timing, validation of the coherent current-beta integration, and
+published-artifact delivery are pending. Owner: p65570 / qa-taste. Integration:
+tm/qa-taste-v3-beta on current origin/v3-beta b74c35eaa1. Its core source equals
+the validated draft; current website changes are preserved.
+
+Nate's latest direction stops shares. The five-row acceptance plan and receipts
+are in Contrast's plans/contrast/qa/v3-style-props.md and its private evidence.
+The earlier CSSOM and conditional-export design below remains a proposal from
+its original author; it is not implemented or remeasured by this repair.
+
 ---
 
 ## 1. Executive Summary & Verdict

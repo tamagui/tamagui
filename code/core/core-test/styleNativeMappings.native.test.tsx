@@ -1,4 +1,13 @@
-import { Text, View, createTamagui, getSplitStyles } from '@tamagui/core'
+import {
+  Text,
+  View,
+  createStyledHOC,
+  createStyledContext,
+  createTamagui,
+  getSplitStyles,
+  styled,
+  type StaticConfig,
+} from '@tamagui/core'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
@@ -7,10 +16,13 @@ beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig('native'))
 })
 
-function getStyleFor(props: Record<string, any>, Component = View) {
+function getResultFor(
+  props: Record<string, unknown>,
+  Component: { staticConfig: StaticConfig } = View
+) {
   const result = getSplitStyles(
     props,
-    (Component as any).staticConfig,
+    Component.staticConfig,
     {} as any,
     '',
     {
@@ -37,8 +49,200 @@ function getStyleFor(props: Record<string, any>, Component = View) {
     undefined,
     true
   )
-  return (result as any)?.style
+  return result
 }
+
+function getStyleFor(
+  props: Record<string, unknown>,
+  Component: Parameters<typeof getResultFor>[1] = View
+) {
+  return getResultFor(props, Component)?.style
+}
+
+describe('plain css properties are consumed without leaking into native hosts', () => {
+  test.each([
+    ['accentColor', 'red'],
+    ['animationDelay', '100ms'],
+    ['counterReset', 'section'],
+    ['textWrapStyle', 'balance'],
+    ['WebkitTextStrokeColor', 'red'],
+    ['fillOpacity', 0.5],
+    ['fontSizeAdjust', 0.5],
+    ['animationIterationCount', 2],
+    ['borderImageOutset', 2],
+    ['borderImageSlice', 2],
+    ['borderImageWidth', 2],
+    ['columnCount', 2],
+    ['order', 2],
+    ['orphans', 2],
+    ['tabSize', 2],
+    ['widows', 2],
+    ['zoom', 2],
+    ['lineClamp', 2],
+    ['WebkitLineClamp', 2],
+    ['borderBlockStyle', 'dashed'],
+    ['borderBlockEndStyle', 'dashed'],
+    ['borderBlockStartStyle', 'dashed'],
+    ['borderInlineStyle', 'dashed'],
+    ['borderInlineEndStyle', 'dashed'],
+    ['borderInlineStartStyle', 'dashed'],
+    ['flexOrder', 2],
+    ['flexPositive', 2],
+    ['flexNegative', 2],
+    ['scaleZ', 2],
+    ['font', 'italic bold 16px/20px System'],
+    ['textShadow', 'initial'],
+    ['backgroundImage', 'initial'],
+  ])('unsupported css %s is dropped from props and style objects', (key, value) => {
+    for (const Component of [View, Text]) {
+      for (const props of [
+        { [key]: value },
+        { style: { [key]: value } },
+        { style: [{ width: 123 }, { [key]: value }] },
+        { style: { [key]: { default: value, native: value } } },
+      ]) {
+        const result = getResultFor({ width: 123, ...props }, Component)
+        expect(result?.style).toEqual({ width: 123 })
+        expect(result?.style?.[key]).toBeUndefined()
+        expect(result?.viewProps[key]).toBeUndefined()
+      }
+    }
+  })
+
+  test('the native global border style survives beside unsupported side styles', () => {
+    for (const Component of [View, Text]) {
+      for (const props of [
+        { borderStyle: 'dashed', borderBlockEndStyle: 'dotted' },
+        { style: { borderStyle: 'dashed', borderBlockEndStyle: 'dotted' } },
+      ]) {
+        const result = getResultFor({ width: 123, ...props }, Component)
+        expect(result?.style).toEqual({ width: 123, borderStyle: 'dashed' })
+      }
+    }
+  })
+
+  test('css-named custom HOC props still reach their native receiver', () => {
+    const CustomReceiver = createStyledHOC(
+      View,
+      (_props: { fillOpacity?: boolean }) => null
+    )
+    expect(CustomReceiver.staticConfig.isHOC).toBe(true)
+    const result = getResultFor({ fillOpacity: true }, CustomReceiver)
+    expect(result?.viewProps.fillOpacity).toBe(true)
+    expect(result?.style?.fillOpacity).toBeUndefined()
+  })
+
+  test('explicit inline props retain their native component owner', () => {
+    const CustomReceiver = styled(
+      (_props: { fillOpacity?: boolean }) => null,
+      {},
+      {
+        inlineProps: new Set(['fillOpacity']),
+      }
+    )
+    expect(CustomReceiver.staticConfig.inlineProps?.has('fillOpacity')).toBe(true)
+    const result = getResultFor({ fillOpacity: true }, CustomReceiver)
+    expect(result?.viewProps.fillOpacity).toBe(true)
+    expect(result?.style?.fillOpacity).toBeUndefined()
+  })
+
+  test('explicit native style declarations retain their component owner', () => {
+    const CustomReceiver = styled(
+      (_props: { style?: { accentColor?: string } }) => null,
+      {},
+      { validStyles: { accentColor: true } }
+    )
+    expect(CustomReceiver.staticConfig.validStyles?.accentColor).toBe(true)
+    const result = getResultFor({ accentColor: 'red' }, CustomReceiver)
+    expect(result?.style?.accentColor).toBe('red')
+    expect(result?.viewProps.accentColor).toBeUndefined()
+  })
+
+  test('css-named context props retain their native context owner', () => {
+    const StyleContext = createStyledContext({ fillOpacity: 0.25 })
+    const ContextView = styled(View, { context: StyleContext })
+    const result = getResultFor({ fillOpacity: 0.5 }, ContextView)
+    expect(result?.overriddenContextProps?.fillOpacity).toBe(0.5)
+    expect(result?.style?.fillOpacity).toBeUndefined()
+  })
+
+  test('a css-named variant still drives native styles', () => {
+    const VariantView = styled(View, {
+      variants: { accentColor: { true: { opacity: 0.4 } } },
+    })
+    const result = getResultFor({ accentColor: true }, VariantView)
+    expect(result?.style?.opacity).toBe(0.4)
+    expect(result?.viewProps.accentColor).toBeUndefined()
+  })
+
+  test('native styles and text mappings survive beside unsupported css', () => {
+    const result = getResultFor(
+      {
+        accentColor: 'red',
+        width: 123,
+        fontSize: 24,
+        opacity: 0.4,
+        userSelect: 'none',
+        textOverflow: 'ellipsis',
+      },
+      Text
+    )
+    expect(result?.style).toMatchObject({ width: 123, fontSize: 24, opacity: 0.4 })
+    expect(result?.viewProps).toMatchObject({
+      selectable: false,
+      numberOfLines: 1,
+      ellipsizeMode: 'tail',
+    })
+    expect(result?.viewProps.accentColor).toBeUndefined()
+  })
+
+  test.each(['none', 'text'] as const)(
+    'userSelect %s maps only to the native Text receiver',
+    (value) => {
+      const view = getResultFor({ width: 123, userSelect: value }, View)
+      expect(view?.style).toEqual({ width: 123 })
+      expect(view?.viewProps.selectable).toBeUndefined()
+      expect(view?.viewProps.userSelect).toBeUndefined()
+      const text = getResultFor({ width: 123, userSelect: value }, Text)
+      expect(text?.style).toEqual({ width: 123 })
+      expect(text?.viewProps.selectable).toBe(value !== 'none')
+      expect(text?.viewProps.userSelect).toBeUndefined()
+    }
+  )
+
+  test.each([
+    ['black', '#000'],
+    ['#123456', '#123456'],
+  ])(
+    'native shadow color %s and gradients still lower to native fields',
+    (color, nativeColor) => {
+      expect(getStyleFor({ color }, Text)?.color).toBe(nativeColor)
+      const result = getResultFor(
+        {
+          textShadow: `1px 2px 3px ${color}`,
+          backgroundImage: 'linear-gradient(90deg, red, blue)',
+        },
+        Text
+      )
+      expect(result?.style).toMatchObject({
+        textShadowOffset: { width: 1, height: 2 },
+        textShadowRadius: 3,
+        textShadowColor: nativeColor,
+        experimental_backgroundImage: [
+          {
+            type: 'linear-gradient',
+            direction: '90deg',
+            colorStops: [{ color: 'red' }, { color: 'blue' }],
+          },
+        ],
+      })
+      expect(result?.style?.textShadow).toBeUndefined()
+      expect(result?.style?.backgroundImage).toBeUndefined()
+      expect(result?.viewProps.textShadow).toBeUndefined()
+      expect(result?.viewProps.backgroundImage).toBeUndefined()
+    }
+  )
+})
 
 describe('direction keeps Yoga layout direction and maps writingDirection on native', () => {
   test('direction rtl on View keeps direction and sets writingDirection', () => {

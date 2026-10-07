@@ -1,8 +1,8 @@
 import type { GetProps } from '@tamagui/web';
 import * as React from 'react';
-export declare const LabelFrame: React.FunctionComponent<Omit<import("@tamagui/web").TextNonStyleProps, "size" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithFlatVariantValues<{
+export declare const LabelFrame: React.FunctionComponent<Omit<import("@tamagui/web").TextNonStyleProps, "size"> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").TextStylePropsBase, "size">> & import("@tamagui/web").WithFlatVariantValues<{
     size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & {
+}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>>, keyof import("@tamagui/web").TextNonStyleProps> & {
     ref?: React.Ref<import("@tamagui/web").TamaguiTextElement> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
