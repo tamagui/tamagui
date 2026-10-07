@@ -90,6 +90,18 @@ generic value filter dropped its declared `accentColor` style. The filter now
 respects explicit component style declarations. Generic style pieces use the
 platform-supported input table so they cannot confer support on every CSS name.
 The explicit declaration's precondition and resulting native style are guarded.
+RAN 40c1899bde: the complete family build and browser regressions pass;95 of96
+native tests pass, including unsupported CSS dropping and every explicit owner
+control. The sole failure expects `#000000` for a named black text shadow, but
+the suite's own `config-default` black token is `#000` and the output is `#000`.
+The guard now requires the direct native color control to match that exact token
+and also checks a literal `#123456` shadow. Shadow dimensions, gradient fields,
+and absence of raw shorthand styles and host props remain exact assertions.
+RAN exact built 40c1899bde through the same3,428 native property cases: zero
+pipeline exceptions and zero retained CSS names absent from the native style
+type union, both direct and in style objects. This classifies property names;
+it does not claim every CSS value has a native representation or device paint.
+The next built run and required type, lint and workspace checks remain pending.
 The earlier CSSOM and conditional-export design below remains a proposal.
 Owner: p65570 / qa-taste, branch `tm/qa-taste-style-props`; Contrast acceptance
 and receipts are in `plans/contrast/qa/taste-qa.md` and its production evidence.

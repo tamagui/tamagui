@@ -177,29 +177,38 @@ describe('plain css properties are consumed without leaking into native hosts', 
     expect(result?.viewProps.accentColor).toBeUndefined()
   })
 
-  test('supported native shadow and gradient mappings still lower to native fields', () => {
-    const result = getResultFor(
-      {
-        textShadow: '1px 2px 3px black',
-        backgroundImage: 'linear-gradient(90deg, red, blue)',
-      },
-      Text
-    )
-    expect(result?.style).toMatchObject({
-      textShadowOffset: { width: 1, height: 2 },
-      textShadowRadius: 3,
-      textShadowColor: '#000000',
-      experimental_backgroundImage: [
+  test.each([
+    ['black', '#000'],
+    ['#123456', '#123456'],
+  ])(
+    'native shadow color %s and gradients still lower to native fields',
+    (color, nativeColor) => {
+      expect(getStyleFor({ color }, Text)?.color).toBe(nativeColor)
+      const result = getResultFor(
         {
-          type: 'linear-gradient',
-          direction: '90deg',
-          colorStops: [{ color: 'red' }, { color: 'blue' }],
+          textShadow: `1px 2px 3px ${color}`,
+          backgroundImage: 'linear-gradient(90deg, red, blue)',
         },
-      ],
-    })
-    expect(result?.style?.textShadow).toBeUndefined()
-    expect(result?.style?.backgroundImage).toBeUndefined()
-  })
+        Text
+      )
+      expect(result?.style).toMatchObject({
+        textShadowOffset: { width: 1, height: 2 },
+        textShadowRadius: 3,
+        textShadowColor: nativeColor,
+        experimental_backgroundImage: [
+          {
+            type: 'linear-gradient',
+            direction: '90deg',
+            colorStops: [{ color: 'red' }, { color: 'blue' }],
+          },
+        ],
+      })
+      expect(result?.style?.textShadow).toBeUndefined()
+      expect(result?.style?.backgroundImage).toBeUndefined()
+      expect(result?.viewProps.textShadow).toBeUndefined()
+      expect(result?.viewProps.backgroundImage).toBeUndefined()
+    }
+  )
 })
 
 describe('direction keeps Yoga layout direction and maps writingDirection on native', () => {
