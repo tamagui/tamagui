@@ -101,3 +101,19 @@ test('nested restyled skins resolve both layers while passing the frame variant'
   )
   expect(received.some((props) => props.tone === 'loud')).toBe(true)
 })
+
+test('a restyled HOC forwards disabled behavior without a disabled skin variant', () => {
+  const WrappedControl = styled(Behavior, { opacity: 'disabled:0.4' })
+  const rendered = render(
+    <TamaguiProvider config={config} defaultTheme="light">
+      <WrappedControl testID="disabled-control" disabled />
+    </TamaguiProvider>
+  )
+  expect(received.at(-1)?.disabled).toBe(true)
+  rendered.rerender(
+    <TamaguiProvider config={config} defaultTheme="light">
+      <WrappedControl testID="disabled-control" disabled={false} />
+    </TamaguiProvider>
+  )
+  expect(received.at(-1)?.disabled).toBe(false)
+})

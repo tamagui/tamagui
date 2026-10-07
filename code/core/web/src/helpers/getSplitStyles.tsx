@@ -966,7 +966,7 @@ function contributeProp(
         ) {
           viewProps.disabled = true
         }
-        if (!variants?.disabled) {
+        if (!variants?.disabled && !isHOC) {
           return
         }
       }
@@ -1006,6 +1006,8 @@ function contributeProp(
 
   const shouldPassProp =
     (!isStyleProp && isHOC) ||
+    // disabled also controls the inner component's behavior, beyond its skin.
+    (isHOC && keyInit === 'disabled') ||
     // is in parent variants
     (parentVariants && keyInit in parentVariants) ||
     inlineProps?.has(keyInit)
