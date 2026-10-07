@@ -90,7 +90,7 @@ const createTailwindTransform = (state: { changed: boolean }, replace: boolean) 
   name: 'tamagui-tailwind-transform',
   element: {
     filter: ['code'],
-    visit(node: any, ctx: any) {
+    async visit(node: any, ctx: any) {
       const className = node.properties?.className
       if (!className) return
 
@@ -131,9 +131,22 @@ const createTailwindTransform = (state: { changed: boolean }, replace: boolean) 
         if (tailwindCode && tailwindCode !== source) {
           state.changed = true
           if (!replace) return
+          let formattedCode = tailwindCode
+          try {
+            const prettier = requireFn('prettier')
+            formattedCode = (
+              await prettier.format(tailwindCode, {
+                parser: 'babel-ts',
+                semi: false,
+                singleQuote: true,
+              })
+            ).trimEnd()
+          } catch {
+            // keep tailwindCode if prettier format fails
+          }
           ctx.replaceNode(node, {
             ...node,
-            children: [{ type: 'text', value: tailwindCode }],
+            children: [{ type: 'text', value: formattedCode }],
           })
         }
       } catch {

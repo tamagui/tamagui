@@ -140,6 +140,17 @@ export function RovingTabs({
             outlineWidth="focus-visible:2px"
             outlineStyle="focus-visible:solid"
             onKeyDown={(event) => onKeyDown(event, index)}
+            onMouseEnter={() => {
+              if (typeof document !== 'undefined' && item.href && !selected) {
+                const selector = `link[rel="prefetch"][href="${item.href}"]`
+                if (!document.querySelector(selector)) {
+                  const link = document.createElement('link')
+                  link.rel = 'prefetch'
+                  link.href = item.href
+                  document.head.appendChild(link)
+                }
+              }
+            }}
             onPress={(event: any) => {
               // modified clicks + non-left buttons keep native link behavior
               // (new tab, new window, context menu); only plain left-clicks

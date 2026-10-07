@@ -69,6 +69,45 @@ export async function updatePreviewTheme(
 
   lastInserted = themes
 
+  if (typeof document !== 'undefined') {
+    const internalId = getStudioInternalThemeName(args.id)
+    const rules: string[] = []
+
+    for (const themeName in themes) {
+      const theme = themes[themeName]
+      const [scheme, ...rest] = themeName.split('_')
+      const subTheme = rest.length ? `_${rest.join('_')}` : ''
+      const targetClass = `t_${internalId}${subTheme}`
+
+      const decls: string[] = []
+      for (const key in theme) {
+        const val = theme[key]
+        if (val !== undefined && val !== null) {
+          decls.push(`--${key}: ${val}`)
+        }
+      }
+
+      const selectors = [
+        `:root.t_${scheme} .${targetClass}`,
+        `:root.t_${scheme} .${targetClass}:not(#t_theme_full_name)`,
+        `:root .t_${scheme}.${targetClass}`,
+        `.t_${scheme}.${targetClass}`,
+        `.t_${scheme} .${targetClass}`,
+        `.t_${targetClass}`,
+      ]
+
+      rules.push(`${selectors.join(',\n')} {\n  ${decls.join(';\n  ')};\n}`)
+    }
+
+    let style = document.getElementById('t_theme_style_themes') as HTMLStyleElement | null
+    if (!style) {
+      style = document.createElement('style')
+      style.id = 't_theme_style_themes'
+      document.head.appendChild(style)
+    }
+    style.textContent = rules.join('\n\n')
+  }
+
   mutateThemes({
     themes: insertThemes,
     batch: 'themes',

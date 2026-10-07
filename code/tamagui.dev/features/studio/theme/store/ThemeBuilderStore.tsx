@@ -123,6 +123,12 @@ export class ThemeBuilderStore {
     bentoStore.themeSuiteVersion = 0
     this.currentThemeId = ''
     this.currentQuery = ''
+    if (typeof document !== 'undefined') {
+      const style = document.getElementById('t_theme_style_themes')
+      if (style) {
+        style.textContent = ''
+      }
+    }
     this.save()
   }
 

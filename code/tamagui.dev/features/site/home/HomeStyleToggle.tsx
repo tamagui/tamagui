@@ -106,7 +106,7 @@ export function HomeStyleToggle() {
 const keyword = 'purple-10'
 const str = 'green-10'
 const tag = 'blue-10'
-const dim = 'color-10'
+const dim = 'color-6'
 
 const tamagui = (
   <>
@@ -165,7 +165,7 @@ const tailwind = (
     <Text color={tag}>{'<html.button'}</Text>
     {'\n  className='}
     <Text color={str}>
-      {'"px-4 py-2 rounded-lg\n             bg-blue-500 hover:bg-blue-600"'}
+      {'"px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600"'}
     </Text>
     {'\n'}
     <Text color={tag}>{'>'}</Text>

@@ -45,6 +45,7 @@ import { TakeoutIcon } from '../../icons/TakeoutIcon'
 import { useUser } from '../../user/useUser'
 import { SearchButton } from './SearchButton'
 import { SiteModePopover } from './SiteModePopover'
+import { ThemeSelectPopover } from './ThemeSelectPopover'
 import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
 
@@ -166,6 +167,8 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           minH={32}
           p={0}
         />
+
+        <ThemeSelectPopover />
 
         <SearchButton
           size="sm"

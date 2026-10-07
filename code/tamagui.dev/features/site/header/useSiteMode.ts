@@ -222,12 +222,12 @@ export function useSiteMode() {
   }, [])
 
   // Short form text for the header badge
-  // 'v3.tamagui.string', 'v3.tamagui.object', 'v3.tailwind'
+  // 'v3-tamagui-string', 'v3-tamagui-object', 'v3-tailwind'
   const shortForm = useMemo(() => {
     if (styling === 'tailwind') {
-      return `${version}.tailwind`
+      return `${version}-tailwind`
     }
-    return `${version}.tamagui.${syntax}`
+    return `${version}-tamagui-${syntax}`
   }, [version, styling, syntax])
 
   return {

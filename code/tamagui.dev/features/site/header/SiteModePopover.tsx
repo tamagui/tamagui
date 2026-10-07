@@ -17,16 +17,11 @@ export const SiteModePopover = (props: PopoverProps) => {
     version,
     styling,
     syntax,
-    themeId,
     shortForm,
     setVersion,
     setStyling,
     setSyntax,
-    setTheme,
-    freeThemes,
   } = useSiteMode()
-
-  const activeTheme = freeThemes.find((t) => String(t.id) === String(themeId))
 
   return (
     <Popover
@@ -64,17 +59,6 @@ export const SiteModePopover = (props: PopoverProps) => {
             }
           }}
         >
-          {/* Active theme swatch dot if custom theme */}
-          {activeTheme && (
-            <XStack
-              width={7}
-              height={7}
-              rounded="10"
-              backgroundColor={activeTheme.accentColor as any}
-              boxShadow={`0 0 4px ${activeTheme.accentColor}`}
-            />
-          )}
-
           <SizableText
             fontFamily="mono"
             size="1"
@@ -151,16 +135,6 @@ export const SiteModePopover = (props: PopoverProps) => {
               aria-label="Syntax"
             />
           )}
-          <ModeSelect
-            value={activeTheme ? String(activeTheme.id) : 'default'}
-            onValueChange={setTheme}
-            options={[
-              { value: 'default', label: 'Default' },
-              ...freeThemes.map((t) => ({ value: String(t.id), label: t.label })),
-            ]}
-            dotColor={activeTheme?.accentColor}
-            aria-label="Theme"
-          />
         </XStack>
       </Popover.Content>
     </Popover>
