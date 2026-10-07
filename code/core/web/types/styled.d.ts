@@ -11,7 +11,7 @@ type GetVariantAcceptedValues<V> = V extends object ? {
 type GetVariantAcceptedValue<Key> = Key extends 'true' | 'false' ? boolean : Key;
 type NoInferLocal<T> = [T][T extends any ? 0 : never];
 type IsAny<T> = 0 extends 1 & T ? true : false;
-type GetStyledOptionsAcceptedProps<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, Context, ContextPropKeys extends string> = Partial<InferStyledProps<ParentComponent, StyledConfig>> & (AreVariantsUndefined<Variants> extends true ? {} : Partial<GetVariantAcceptedValues<Variants>>) & GetStyledContextProps<Context, ContextPropKeys>;
+type GetStyledOptionsAcceptedProps<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, Context, ContextPropKeys extends string> = Omit<Partial<InferStyledProps<ParentComponent, StyledConfig>>, keyof GetStyledContextVariantProps<ParentComponent, Context, ContextPropKeys> | (AreVariantsUndefined<Variants> extends true ? never : keyof GetVariantAcceptedValues<Variants>)> & (AreVariantsUndefined<Variants> extends true ? {} : Partial<GetVariantAcceptedValues<Variants>>) & GetStyledContextProps<Context, ContextPropKeys>;
 export type StyledOptions<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, Context extends StyledContext<any> | undefined = undefined, ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>> = GetStyledOptionsAcceptedProps<ParentComponent, StyledConfig, Variants, Context, ContextPropKeys> & {
     displayName?: string;
     variants?: (Variants & NoInferLocal<StyleOnlyVariants<Variants, keyof VariantStyleProps<ParentComponent, StyledConfig>>>) | undefined;
@@ -23,7 +23,9 @@ export type StyledOptions<ParentComponent extends StylableComponent, StyledConfi
 type GetStyledContextAllProps<Context> = Context extends StyledContext<infer Props> ? IsAny<Props> extends true ? {} : Partial<Props> : {};
 type GetStyledContextDefaultKeys<Context> = Context extends StyledContext<infer Props, infer Keys> ? IsAny<Props> extends true ? never : Extract<Keys, keyof Props & string> : never;
 type GetStyledContextProps<Context, Keys extends string = GetStyledContextDefaultKeys<Context>> = Context extends StyledContext<infer Props> ? IsAny<Props> extends true ? {} : Partial<Pick<Props, Extract<Keys, keyof Props & string>>> : {};
-type GetStyledContextVariantProps<ParentComponent extends StylableComponent, Context, Keys extends string> = Omit<GetStyledContextProps<Context, Keys>, keyof GetProps<ParentComponent>>;
+type GetStyledContextVariantProps<ParentComponent extends StylableComponent, Context, Keys extends string, ContextProps = GetStyledContextProps<Context, Keys>, ParentProps = GetProps<ParentComponent>> = {
+    [Key in keyof ContextProps as Key extends keyof ParentProps ? Key extends keyof GetBaseStyles<ParentComponent, {}> ? ContextProps[Key] extends ParentProps[Key] ? never : Key : never : Key]: ContextProps[Key];
+};
 type StyledMergedVariants<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, ParentVariants = GetStyledVariants<ParentComponent>, OurVariantProps = GetVariantAcceptedValues<Variants>> = AreVariantsUndefined<Variants> extends true ? ParentVariants : AreVariantsUndefined<ParentVariants> extends true ? Omit<OurVariantProps, '_isEmpty'> : {
     [Key in Exclude<keyof ParentVariants | keyof OurVariantProps, '_isEmpty'>]?: (Key extends keyof ParentVariants ? ParentVariants[Key] : undefined) | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined);
 };
