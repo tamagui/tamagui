@@ -2860,7 +2860,10 @@ export interface StackStyleBase
   extends
     Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>,
     ExtendedBaseProps,
-    Omit<Properties<string | number>, keyof ViewStyle | keyof ExtendedBaseProps> {}
+    Omit<
+      Properties<string | number>,
+      keyof ViewStyle | keyof ExtendedBaseProps | keyof TamaguiComponentPropsBaseBase
+    > {}
 
 export interface TextStylePropsBase
   extends
@@ -2873,6 +2876,7 @@ export interface TextStylePropsBase
       Properties<string | number>,
       | keyof RNTextStyle
       | keyof ExtendedBaseProps
+      | keyof TamaguiComponentPropsBaseBase
       | 'textShadow'
       | 'textDecoration'
       | 'font'

@@ -27,7 +27,9 @@ style tables and consumes unsupported CSS names without forwarding them.
 Native text mappings, variants, custom props and existing shorthands keep
 their owners. The v6 `content` shorthand maps to `alignContent`, so that
 name remains an authoring collision to judge separately. `transition` is
-also owned by the animation interface. These exceptions are recorded rather
+also owned by the animation interface. The `container` prop keeps its existing
+boolean/string container-query API, including its native layout context;
+its CSS longhands retain their existing style owner. These exceptions are recorded rather
 than claimed as ordinary CSS emission.
 
 The generated registry also records numeric CSS properties that need no
@@ -38,7 +40,16 @@ style bases with zero semantic diagnostics. The first family build exposed
 TS2430 in `IconStyleProps`: its existing size-token `strokeWidth` is wider than
 the newly inherited CSS property. The icon interface now explicitly owns that
 override. The direct style-base extenders were searched; no other source
-interface extends either base directly. Built-artifact and downstream runtime
+interface extends either base directly. The next family build reached119 tasks
+and exposed TS2322 in TooltipSimple because CSS `container` had overwritten the
+public container-query prop. RAN a source probe: `container={true}` fails on
+both View and Text. The CSS extensions now exclude shared non-style prop owners,
+and the public type guard requires all857 CSS names through the final prop
+surface while separately preserving the boolean/string `container` contract.
+The intersection audit found `container` as the only shared non-style collision.
+RAN the repaired source probe: both boolean container assignments and prop
+forwarding compile, all857 names remain public, and there are zero diagnostics.
+Built-artifact and downstream runtime
 validation are still pending.
 The earlier CSSOM and conditional-export design below remains a proposal.
 Owner: p65570 / qa-taste, branch `tm/qa-taste-style-props`; Contrast acceptance

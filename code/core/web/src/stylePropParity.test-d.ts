@@ -6,7 +6,17 @@ import { stylePropsAll, stylePropsText, stylePropsView } from '@tamagui/helpers'
 import type { Properties } from 'csstype'
 import { describe, expect, expectTypeOf, test } from 'vitest'
 import { cssStyleProps } from '../../helpers/src/cssStyleProps'
-import type { StackStyleBase, TextStylePropsBase } from './types'
+import type {
+  GetFinalProps,
+  StackNonStyleProps,
+  StackStyleBase,
+  TamaguiComponentPropsBase,
+  TextNonStyleProps,
+  TextStylePropsBase,
+} from './types'
+
+type PublicStackProps = GetFinalProps<StackNonStyleProps, StackStyleBase, {}>
+type PublicTextProps = GetFinalProps<TextNonStyleProps, TextStylePropsBase, {}>
 
 // keys valid on every host (ExtraStyleProps -> both bases)
 const sharedAdditions = [
@@ -47,14 +57,25 @@ describe('grammar-era style keys: runtime tables and public types agree', () => 
       TextStylePropsBase,
       (typeof sharedAdditions)[number] | (typeof textAdditions)[number]
     >
-    type _allStackCss = Pick<StackStyleBase, keyof Properties>
-    type _allTextCss = Pick<TextStylePropsBase, keyof Properties>
+    type _allStackCss = Pick<PublicStackProps, keyof Properties>
+    type _allTextCss = Pick<PublicTextProps, keyof Properties>
     expectTypeOf<
       Exclude<keyof Properties, keyof typeof cssStyleProps>
     >().toEqualTypeOf<never>()
     expectTypeOf<
       Exclude<keyof typeof cssStyleProps, keyof Properties>
     >().toEqualTypeOf<never>()
+  })
+
+  test('the container query prop retains its boolean and named container API', () => {
+    expectTypeOf<PublicStackProps['container']>().toEqualTypeOf<
+      TamaguiComponentPropsBase['container']
+    >()
+    expectTypeOf<PublicTextProps['container']>().toEqualTypeOf<
+      TamaguiComponentPropsBase['container']
+    >()
+    expectTypeOf<Extract<keyof StackStyleBase, 'container'>>().toEqualTypeOf<never>()
+    expectTypeOf<Extract<keyof TextStylePropsBase, 'container'>>().toEqualTypeOf<never>()
   })
 
   test('canonical css properties are recognized instead of forwarded as attributes', () => {
