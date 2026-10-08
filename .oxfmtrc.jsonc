@@ -12,6 +12,7 @@
     "**/build/**",
     "**/dist/**",
     "code/tests/**/dist*/**",
+    "code/packages/babel-plugin-fully-specified/permanent/**",
     "**/*.d.ts",
     "**/ios/**",
     "**/android/**",

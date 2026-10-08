@@ -45,3 +45,24 @@ TESTED by the assigned color helper: the unchanged StyledIconColor and StyledCon
 The HOC signature infers stored component metadata and replaces colliding receiver props before comparing them, preserving deferred parent props when their receiver keys are finite. A generic component receiver retains explicit prop types. Site Link now declares TextProps for its Text receiver.
 
 RAN on the current v3 implementation: Reanimated first-open, keyword-width and exit-completion probes pass 15 cases, with two existing skips and retries disabled. Evidence: /tmp/tamagui-v3-main-animation-before.log. This supports treating the corresponding main fixes as already ported; record all twelve dispositions before readiness.
+
+## Main-only commit provenance
+
+The draft starts from v3-beta e1886583a15d37fa9a054916580bdb009b4a786f. Most main fixes already have v3 implementations. Preserve the v3 implementations and record each original commit here rather than replace them with older v2 code. No merge or rebase of beta was performed.
+
+| Main source commit | Draft disposition and evidence |
+| --- | --- |
+| b177f5493d8c06f6508f5d6bb726f2088fccdd77 | Pending Next override and lockfile upgrade from 16.3.6 to 16.3.8. Piscina 4.9.4, proxy-addr 2.0.8 and shell-quote 1.12.0 are already pinned in v3. Upgrade after the bundle measurement worker finishes to preserve its dependency baseline. |
+| 100fa9db2e046079c58bafd33c53d6ca21632e4d | Ported formatter exclusion for committed babel-plugin-fully-specified permanent outputs. |
+| caa181eb1b14bbfe850d482a371bc2821f589ae4 | Existing v3 skips unmounted modal children while preserving first-open measurement content. RAN SheetPortal.native.test.tsx, including open/close portal cleanup; retain its nonempty initial measurement assertion. |
+| 5545174f9de3cb7182ca1c25daeb363122caa8e9 | Existing v3 starts the shared, intersection-aware slider measurement interval lazily. RAN Slider.web.test.tsx: two passing cases. |
+| 2277848cec1fd3f627279f29f0fd61b14b746f59 | Existing v3 initializes sheet position with a direct setValue before driver completion. RAN SheetFirstOpen.native.test.tsx. |
+| a147895a4c6972d903b5c3bafa04162e07a1ded8 | Existing v3 excludes CSS keyword sizes from Reanimated values. RAN ExitCompletion.animated.test.tsx, including scenario 56, with retries disabled. |
+| f4eb0943bec3a870bdfaeac125e0dc893d0a66ba | Existing v3 captures resting exit styles after enter settles, including undeclared opacity. RAN unchanged AnimatePresenceEnterExit.animated.test.tsx under CSS: nine passing cases, retries disabled. |
+| 12d03baa8d7811159f646d142570c443440c1fcb | V3 uses React Native Pressability in place of v2 custom press timers. RAN Button.native.test.tsx pooled-event regression, retaining touch coordinates in long press and press out callbacks. |
+| 18f55b8c05fccf9d5e95df7603202059b05a229c | Existing v3 supplies the cross-platform menu when no native adapter exists. RAN MenuNoAdapter.native.test.tsx. |
+| 03de486db442460599fc18865efc84a73afd1b96 | Existing v3 leaves native-menu touch ownership to the adapter and implements long press through a shared native context. RAN NativeMenuTriggerPress.android.test.tsx: one passing case. |
+| 3afc96324ae66aab824d24feef0ea18bbc72d6e5 | Existing v3 seeds new Reanimated keys from the painted snapshot. RAN PopoverFirstOpenEnter.animated.test.tsx, including first-open frames. |
+| 5918dae34703cac917078c9e0d73c58782ec9ab8 | Existing v3 already casts max-content in exit scenario 56. RAN root typecheck and the Reanimated exit-completion case. |
+
+Native evidence: /tmp/tamagui-v3-main-native.log (four files, ten passing cases), /tmp/tamagui-v3-main-android.log (one passing case), /tmp/tamagui-v3-main-slider.log (two passing cases). CSS evidence: /tmp/tamagui-v3-main-css.log (nine passing cases). These unchanged behavioral probes would expose a missing port through failed touch, portal, timer, enter-frame or exit-completion assertions.
