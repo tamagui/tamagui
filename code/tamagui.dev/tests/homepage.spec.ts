@@ -70,7 +70,7 @@ test('install command copies from the keyboard and shows one notification', asyn
   await expect(page.getByText('Copied to clipboard', { exact: true })).toHaveCount(1)
 })
 
-test('homepage reaches HTML primitives through the docs navigation', async ({ page }) => {
+test('homepage reaches HTML elements through the docs navigation', async ({ page }) => {
   await hydratedHome(page)
   await page.evaluate(() => {
     ;(window as any).__launchNavigationMarker = true
@@ -79,13 +79,21 @@ test('homepage reaches HTML primitives through the docs navigation', async ({ pa
   await expect(
     page.getByRole('heading', { name: 'Introduction', exact: true }).first()
   ).toBeVisible()
-  await page.getByRole('button', { name: 'Components', exact: true }).click()
-  const link = page.getByRole('link', { name: 'HTML primitives', exact: true })
+  const section = page.getByRole('button', { name: 'Components', exact: true })
+  const link = page.getByRole('link', { name: 'HTML elements', exact: true })
+  await expect(section).toHaveAttribute('aria-expanded', 'true')
+  await expect(link).toBeVisible()
+  await section.click()
+  await expect(section).toHaveAttribute('aria-expanded', 'false')
+  await expect(link).toBeHidden()
+  await section.click()
+  await expect(section).toHaveAttribute('aria-expanded', 'true')
+  await expect(link).toBeVisible()
   await expect(link).toHaveAttribute('href', '/docs/core/html-primitives')
   await link.click()
   await expect(page).toHaveURL(/\/docs\/core\/html-primitives$/)
   await expect(
-    page.getByRole('heading', { name: 'HTML primitives', exact: true }).first()
+    page.getByRole('heading', { name: 'HTML elements', exact: true }).first()
   ).toBeVisible()
   await expect(
     page.getByRole('link', { name: 'Edit this page on GitHub.' })

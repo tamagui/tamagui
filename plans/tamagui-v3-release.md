@@ -66,3 +66,13 @@ The draft starts from v3-beta e1886583a15d37fa9a054916580bdb009b4a786f. Most mai
 | 5918dae34703cac917078c9e0d73c58782ec9ab8 | Existing v3 already casts max-content in exit scenario 56. RAN root typecheck and the Reanimated exit-completion case. |
 
 Native evidence: /tmp/tamagui-v3-main-native.log (four files, ten passing cases), /tmp/tamagui-v3-main-android.log (one passing case), /tmp/tamagui-v3-main-slider.log (two passing cases). CSS evidence: /tmp/tamagui-v3-main-css.log (nine passing cases). These unchanged behavioral probes would expose a missing port through failed touch, portal, timer, enter-frame or exit-completion assertions.
+
+## Draft site and registry
+
+RAN: Registry unit tests pass 21 cases, generated artifacts and skin exports are current, 22 items pass schema validation, all 44 authorized consumer copies match, and the native blank-app interaction smoke passes. Evidence: /tmp/tamagui-v3-registry-{test,check,validate,drift,native-smoke}.log.
+
+RAN: the production site builds locally with build:static. Its homepage navigation test exposed outdated expectations: the docs sidebar now opens every section initially and labels the html-primitives route "HTML elements". The draft test explicitly checks initial visibility, closing, reopening and document-preserving navigation with the current label. Build evidence: /tmp/tamagui-v3-site-build.log. No site deployment was performed.
+
+RAN: all seven homepage browser cases pass with one worker and retries disabled against the local production build. Evidence: /tmp/tamagui-v3-site-homepage-fixed.log.
+
+Review captures are /tmp/tamagui-v3-home.webp (1170x2532, 114350 bytes) and /tmp/tamagui-v3-launch.webp (1170x2532, 172586 bytes), captured at 3x density, encoded at WebP quality 90 without resizing, and inspected at original resolution. These show the draft site; the launch article still has its July date and beta install examples. Those publication-dependent edits remain held.
