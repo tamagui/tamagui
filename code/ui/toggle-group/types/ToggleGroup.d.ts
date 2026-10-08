@@ -31,10 +31,7 @@ declare const ToggleGroup: ((props: ScopedProps<ToggleGroupProps> & import("@tam
     displayName?: string;
     propTypes?: any;
 } & {
-    Item: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        active?: boolean | undefined;
-        defaultActiveStyle?: boolean | undefined;
-    }>, "__scopeToggleGroup" | "active" | "activeStyle" | "activeTheme" | "defaultActiveStyle" | "value" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & Omit<import("@tamagui/web").StackNonStyleProps, "active" | "defaultActiveStyle"> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, "active" | "defaultActiveStyle">> & import("@tamagui/web").WithFlatVariantValues<{
+    Item: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, Omit<import("@tamagui/web").StackNonStyleProps, "__scopeToggleGroup" | "active" | "activeStyle" | "activeTheme" | "defaultActiveStyle" | "value" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & Omit<import("@tamagui/web").StackNonStyleProps, "active" | "defaultActiveStyle"> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, "active" | "defaultActiveStyle">> & import("@tamagui/web").WithFlatVariantValues<{
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
     }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, keyof import("@tamagui/web").StackNonStyleProps> & {
@@ -45,21 +42,10 @@ declare const ToggleGroup: ((props: ScopedProps<ToggleGroupProps> & import("@tam
         disabled?: boolean;
     } & {
         __scopeToggleGroup?: string;
-    }, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").StackNonStyleProps & Omit<import("@tamagui/web").StackNonStyleProps, "active" | "defaultActiveStyle"> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, "active" | "defaultActiveStyle">> & import("@tamagui/web").WithFlatVariantValues<{
+    }, import("@tamagui/web").StackStyleBase, Omit<{
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
-    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, keyof import("@tamagui/web").StackNonStyleProps> & {
-        activeStyle?: ToggleProps['activeStyle'];
-        activeTheme?: ToggleProps['activeTheme'];
-        value: string;
-        id?: string;
-        disabled?: boolean;
-    } & {
-        __scopeToggleGroup?: string;
-    }, import("@tamagui/web").StackStyleBase, {
-        active?: boolean | undefined;
-        defaultActiveStyle?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
+    }, "__scopeToggleGroup" | "active" | "activeStyle" | "activeTheme" | "defaultActiveStyle" | "value" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase>, import("@tamagui/web").StaticConfigPublic>;
 };
 interface ToggleGroupImplSingleProps extends ToggleGroupImplProps {
     /** The controlled stateful value of the item that is pressed. */
