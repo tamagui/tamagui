@@ -4023,8 +4023,15 @@ function contributeValue(
   if (
     process.env.TAMAGUI_TARGET === 'native' &&
     !contextOnly &&
-    !(property in stylePropsInput) &&
-    !(state.staticConfig.validStyles && property in state.staticConfig.validStyles) &&
+    !(
+      property in
+      (state.staticConfig.validStyles ||
+        (state.staticConfig.isInput
+          ? stylePropsInput
+          : state.staticConfig.isText
+            ? stylePropsText
+            : validStylesView))
+    ) &&
     property in stylePropsAll
   ) {
     return

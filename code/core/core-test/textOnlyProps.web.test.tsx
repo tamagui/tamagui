@@ -1,18 +1,9 @@
-// review P1: the View-color ruling (text-only style props on a non-text host
-// are a dev diagnostic + drop, never a leaked DOM attribute) landed with only
-// positive rebaselines, so nothing pinned the negative case — and the guard
-// never actually ran for a plain View. these are the negative pins.
-
-import { afterEach, beforeAll, expect, test, vi } from 'vitest'
+import { beforeAll, describe, expect, test } from 'vitest'
 import config from '../config-default'
 import { Text, View, createTamagui, getSplitStyles } from '../web/src'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig() as any)
-})
-
-afterEach(() => {
-  vi.restoreAllMocks()
 })
 
 const opts = { isAnimated: false, noClass: false, resolveValues: 'auto' } as any
@@ -27,27 +18,43 @@ const split = (props: Record<string, any>, staticConfig: any) =>
     opts
   )
 
-test('color on a plain View is dropped, never leaked to the DOM', () => {
-  // the diagnostic half is dev-only and NODE_ENV=test compiles it out; the
-  // behavioral pin is the drop itself
-  const result = split({ color: 'red' }, View.staticConfig)
-  expect(result.viewProps.color).toBeUndefined()
-  expect(result.style?.color).toBeUndefined()
-  expect(result.classNames?.color).toBeUndefined()
+describe.each([
+  ['View', View],
+  ['Text', Text],
+])('%s color authoring', (_name, Component) => {
+  test('a direct color emits atomic CSS without a host attribute', () => {
+    const result = split({ color: 'red' }, Component.staticConfig)
+    const className = result.classNames?.color
+    expect(className).toMatch(/^_c-/)
+    expect(result.rulesToInsert[className!]?.[4]).toEqual([`.${className}{color:red}`])
+    expect(result.viewProps.color).toBeUndefined()
+    expect(result.style?.color).toBeUndefined()
+  })
+
+  test('a style object retains inline color without a host attribute', () => {
+    const result = split({ style: { color: 'red' } }, Component.staticConfig)
+    expect(result.style).toEqual({ color: 'red' })
+    expect(result.classNames?.color).toBeUndefined()
+    expect(result.viewProps.color).toBeUndefined()
+  })
 })
 
-test('textDecorationColor and textShadowColor on a View are dropped too', () => {
-  vi.spyOn(console, 'warn').mockImplementation(() => {})
+test('View text decoration and CSS shadow emit rules without host attributes', () => {
   const result = split(
-    { textDecorationColor: 'red', textShadowColor: 'blue' },
+    { textDecorationColor: 'red', textShadow: '1px 2px 3px blue' },
     View.staticConfig
   )
   expect(result.viewProps.textDecorationColor).toBeUndefined()
-  expect(result.viewProps.textShadowColor).toBeUndefined()
-})
-
-test('color on Text still works', () => {
-  const result = split({ color: 'red' }, Text.staticConfig)
-  const className = result.classNames?.color
-  expect(className).toBeTruthy()
+  for (const [property, declaration] of [
+    ['textDecorationColor', 'text-decoration-color:red'],
+    ['textShadow', 'text-shadow:1px 2px 3px blue'],
+  ]) {
+    const rule = Object.entries(result.rulesToInsert).find(([identifier, style]) =>
+      style[4].includes(`.${identifier}{${declaration}}`)
+    )
+    expect(rule, JSON.stringify(result)).toBeDefined()
+    expect(Object.values(result.classNames)).toContain(rule![0])
+    expect(result.viewProps[property]).toBeUndefined()
+    expect(result.style?.[property]).toBeUndefined()
+  }
 })

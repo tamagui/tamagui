@@ -167,5 +167,151 @@
       "ed7950c326d885c8fead4000dfac8b1b1ae3d034",
       "d33d3b43c45f26b6a4ed59011ad81af530eea13a"
     ]
+  },
+  "linux_ci_confirmation": {
+    "sha": "321ddd4c0b4663b33572a6ad4ec6608da398ca25",
+    "run_url": "https://github.com/tamagui/tamagui/actions/runs/37735129959",
+    "artifact_id": 11531915792,
+    "artifact_name": "v3-zero-runtime-starter",
+    "receipts": {
+      "vite": {
+        "base": {
+          "built": true,
+          "compilerViolations": 0,
+          "forbiddenModules": 0,
+          "jsGzip": 59835,
+          "cssGzip": 4197,
+          "islandJsGzip": null,
+          "artifactFamilies": {
+            "page": {
+              "atomicCSSGeneration": false,
+              "cssInsertion": false,
+              "runtimeThemeCSS": false,
+              "parseValue": false
+            },
+            "island": null
+          }
+        },
+        "islands": {
+          "built": true,
+          "compilerViolations": 0,
+          "forbiddenModules": 0,
+          "jsGzip": 60776,
+          "cssGzip": 4201,
+          "islandJsGzip": 76797,
+          "artifactFamilies": {
+            "page": {
+              "atomicCSSGeneration": false,
+              "cssInsertion": false,
+              "runtimeThemeCSS": false,
+              "parseValue": false
+            },
+            "island": {
+              "atomicCSSGeneration": false,
+              "cssInsertion": false,
+              "runtimeThemeCSS": false,
+              "parseValue": false
+            }
+          }
+        }
+      },
+      "next-webpack": {
+        "base": {
+          "built": true,
+          "compilerViolations": 0,
+          "forbiddenModules": 0,
+          "jsGzip": 141407,
+          "cssGzip": 4197,
+          "islandJsGzip": null,
+          "artifactFamilies": {
+            "page": {
+              "atomicCSSGeneration": false,
+              "cssInsertion": false,
+              "runtimeThemeCSS": false,
+              "parseValue": false
+            },
+            "island": null
+          }
+        },
+        "islands": {
+          "built": true,
+          "compilerViolations": 0,
+          "forbiddenModules": 0,
+          "jsGzip": 142426,
+          "cssGzip": 4201,
+          "islandJsGzip": 76884,
+          "artifactFamilies": {
+            "page": {
+              "atomicCSSGeneration": false,
+              "cssInsertion": false,
+              "runtimeThemeCSS": false,
+              "parseValue": false
+            },
+            "island": {
+              "atomicCSSGeneration": false,
+              "cssInsertion": false,
+              "runtimeThemeCSS": false,
+              "parseValue": false
+            }
+          }
+        }
+      },
+      "metro-web": {
+        "base": {
+          "built": true,
+          "compilerViolations": 0,
+          "forbiddenModules": 0,
+          "jsGzip": 61844,
+          "cssGzip": 4197,
+          "islandJsGzip": null,
+          "artifactFamilies": {
+            "page": {
+              "atomicCSSGeneration": false,
+              "cssInsertion": false,
+              "runtimeThemeCSS": false,
+              "parseValue": false
+            },
+            "island": null
+          }
+        },
+        "islands": {
+          "built": true,
+          "compilerViolations": 0,
+          "forbiddenModules": 0,
+          "jsGzip": 62614,
+          "cssGzip": 4846,
+          "islandJsGzip": 122009,
+          "artifactFamilies": {
+            "page": {
+              "atomicCSSGeneration": false,
+              "cssInsertion": false,
+              "runtimeThemeCSS": false,
+              "parseValue": false
+            },
+            "island": {
+              "atomicCSSGeneration": false,
+              "cssInsertion": false,
+              "runtimeThemeCSS": false,
+              "parseValue": false
+            }
+          }
+        }
+      }
+    },
+    "result": "All six builds qualify. Existing size limits remain unchanged; Vite and Next island size checks fail."
+  },
+  "host_style_regression_validation": {
+    "base_sha": "321ddd4c0b4663b33572a6ad4ec6608da398ca25",
+    "built_packages": [
+      "@tamagui/web",
+      "@tamagui/core including native-test bundle"
+    ],
+    "web_cases_passed": 5,
+    "native_cases_passed": 133,
+    "native_existing_expected_failures": 7,
+    "compiler_cases_passed": 55,
+    "retries": 0,
+    "behavior": "Browser View and Text colors emit atomic or inline CSS without host attributes. Compiler View colors lower to CSS and div classes. Native View text colors are consumed through direct props and style objects, while Text retains them.",
+    "generated_declarations": "Four rebuild changes were confirmed equivalent by normalized TypeScript declaration AST, then their original formatting was retained."
   }
 }

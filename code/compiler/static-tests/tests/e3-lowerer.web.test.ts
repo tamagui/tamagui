@@ -676,56 +676,45 @@ export const Card = ({ width }) => <View width={width} padding={12} />
     expect(output.map?.sourcesContent).toEqual([source])
   })
 
-  test('keeps a text-only style prop on the runtime path', () => {
+  test.each([
+    ['direct props', 'backgroundColor="white" color="blue"'],
+    ['a static spread', "{...{ backgroundColor: 'white', color: 'blue' }}"],
+  ])('lowers View color from %s to CSS without host attributes', (_name, props) => {
     const source = `
 import { View } from '@tamagui/core'
 export const Card = () => (
-  <View backgroundColor="white" color="blue" data-invalid-host-style="yes" />
+  <View ${props} data-css-color="compiled" />
 )
 `
     const { plan, output } = compile(source)
 
+    expect(codes(plan)).toEqual([])
     expect(plan.stats).toEqual({
       found: 1,
-      lowered: 0,
-      flattened: 0,
+      lowered: 1,
+      flattened: 1,
       styled: 0,
-      bailed: 1,
+      bailed: 0,
     })
-    expect(plan.diagnostics).toMatchObject([
-      {
-        code: 'local/unsupported-target',
-        kind: 'local',
-        message:
-          '"color" is a text style prop and this component is not text. Use a Text-based component, or html.* for raw web elements.',
-        component: 'View',
-        blocking: true,
-      },
-    ])
-    expect(output.changed).toBe(false)
-    expect(output.code).toBe(source)
-  })
-
-  test('keeps a text-only style prop in a static spread on the runtime path', () => {
-    const source = `
-import { View } from '@tamagui/core'
-export const Card = () => (
-  <View {...{ backgroundColor: 'white', color: 'blue' }} data-invalid-host-style="spread" />
-)
-`
-    const { plan, output } = compile(source)
-
-    expect(plan.stats).toMatchObject({ lowered: 0, flattened: 0, bailed: 1 })
-    expect(plan.diagnostics).toMatchObject([
-      {
-        code: 'local/unsupported-target',
-        message:
-          '"color" is a text style prop and this component is not text. Use a Text-based component, or html.* for raw web elements.',
-        blocking: true,
-      },
-    ])
-    expect(output.changed).toBe(false)
-    expect(output.code).toBe(source)
+    expect(output.changed).toBe(true)
+    const program = parseModuleAst(output.code)
+    const opening = findAstNode(program, (node) => node.type === 'JSXOpeningElement')!
+    expect(identifierName(childNode(opening, 'name'))).toBe('div')
+    const attributes = childNodes(opening, 'attributes')
+    expect(
+      attributes.map((attribute) => identifierName(childNode(attribute, 'name'))).sort()
+    ).toEqual(['className', 'data-css-color'])
+    const classAttribute = attributes.find(
+      (attribute) => identifierName(childNode(attribute, 'name')) === 'className'
+    )!
+    const classNames = String(literalValue(childNode(classAttribute, 'value'))).split(' ')
+    for (const declaration of ['color:blue', 'background-color:white']) {
+      const className = compactCss(plan.css).match(
+        new RegExp(`\\.([\\w-]+)\\{${declaration}\\}`)
+      )?.[1]
+      expect(className).toBeTruthy()
+      expect(classNames).toContain(className)
+    }
   })
 
   test('keeps an opaque dynamic style object byte-identical', () => {

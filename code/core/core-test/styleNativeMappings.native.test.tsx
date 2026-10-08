@@ -60,6 +60,21 @@ function getStyleFor(
 }
 
 describe('plain css properties are consumed without leaking into native hosts', () => {
+  test.each(['color', 'textDecorationColor', 'textShadowColor'])(
+    'text style %s is dropped on View and retained on Text',
+    (key) => {
+      for (const props of [{ [key]: 'red' }, { style: { [key]: 'red' } }]) {
+        const view = getResultFor({ width: 123, ...props }, View)
+        expect(view?.style).toEqual({ width: 123 })
+        expect(view?.viewProps[key]).toBeUndefined()
+
+        const text = getResultFor({ width: 123, ...props }, Text)
+        expect(text?.style).toMatchObject({ width: 123, [key]: 'red' })
+        expect(text?.viewProps[key]).toBeUndefined()
+      }
+    }
+  )
+
   test.each([
     ['accentColor', 'red'],
     ['animationDelay', '100ms'],
