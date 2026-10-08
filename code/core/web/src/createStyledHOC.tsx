@@ -20,19 +20,20 @@ export function createStyledHOC<
   ParentStaticProperties,
   CustomProps extends object = {},
 >(
-  component: TamaguiComponent<
-    Props,
-    Ref,
-    NonStyledProps,
-    BaseStyles,
-    VariantProps,
-    ParentStaticProperties
-  >,
+  // infer from the stored tuple instead of comparing the expanded call signature.
+  // intersecting hundreds of conditional style props can exceed the union limit.
+  component: {
+    __tama: [Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties]
+    staticConfig: StaticConfig
+  },
   render: (
-    props: NoInfer<
-      Props extends TamaDefer
-        ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
-        : Props
+    props: Omit<
+      NoInfer<
+        Props extends TamaDefer
+          ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
+          : Props
+      >,
+      keyof CustomProps
     > &
       CustomProps,
     // always a ref value (null when the caller passed none), so a render
@@ -41,22 +42,20 @@ export function createStyledHOC<
   ) => ReactNode,
   options?: StyledHOCOptions
 ): TamaguiComponent<
-  // with no custom props the wrapper adds nothing to the prop surface, so keep
-  // the base component's deferred props: styled() then composes it through the
-  // same lazy path as any styled component instead of re-expanding a fully
-  // computed prop type (which hits TS2590 "union too complex" downstream)
-  keyof CustomProps extends never
-    ? Props
-    : StyledHOCMergedProps<
-        Props extends TamaDefer
-          ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
-          : Props,
-        CustomProps
-      >,
+  // keep deferred parents deferred even when the receiver adds custom props.
+  // their declared owners live in the tuple until a caller needs the props.
+  Props extends TamaDefer
+    ? string extends keyof NonStyledProps
+      ? StyledHOCMergedProps<
+          GetFinalProps<NonStyledProps, BaseStyles, VariantProps>,
+          CustomProps
+        >
+      : TamaDefer
+    : StyledHOCMergedProps<Props, CustomProps>,
   Ref,
-  NonStyledProps & CustomProps,
+  StyledHOCMergedProps<NonStyledProps, CustomProps>,
   BaseStyles,
-  VariantProps,
+  keyof CustomProps extends never ? VariantProps : Omit<VariantProps, keyof CustomProps>,
   ParentStaticProperties
 > {
   const staticConfig = component.staticConfig

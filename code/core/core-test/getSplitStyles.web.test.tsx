@@ -22,6 +22,24 @@ beforeAll(() => {
 })
 
 describe('getSplitStyles', () => {
+  test('styled base paint props reach an inline HOC receiver', () => {
+    const Icon = styled(
+      () => null,
+      { color: 'red', fill: 'blue', stroke: 'green' },
+      {
+        isHOC: true,
+        acceptsClassName: true,
+        inlineProps: new Set(['color', 'fill', 'stroke']),
+      }
+    )
+    const base = simplifiedGetSplitStyles(Icon, {})
+    expect(base.viewProps.color).toBe('red')
+    expect(base.viewProps.fill).toBe('blue')
+    expect(base.viewProps.stroke).toBe('green')
+    const override = simplifiedGetSplitStyles(Icon, { color: 'purple' })
+    expect(override.viewProps.color).toBe('purple')
+  })
+
   test.each([
     ['glyphOrientationVertical', '0deg', 'glyphOrientationBlock'],
     ['msTextCombineHorizontal', 'all', 'msTextCombineInline'],

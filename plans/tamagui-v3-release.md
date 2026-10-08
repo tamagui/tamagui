@@ -1,0 +1,47 @@
+# Tamagui v3 stable release
+
+Owner direction, 2026-10-08, quoted by the coordinator: "All right, let's release Tamagui V3. I think the only thing is just to merge it cut the actual right version and I guess I should look over the website ... I think honestly at this point it's good enough we have to make sure Takeout is released and all that".
+
+Owner correction, 2026-10-08, directly to this session: "By the way, yeah don't release it until I say so don't merge it to main do not release it until I say so".
+
+The correction revokes release authorization. Continue preparation and validation on a draft branch. Do not merge main, dispatch releases or publish packages. Do not push v3-beta because that branch automatically publishes canaries and betas. Stable publication and the dependent Takeout upgrade wait for the owner's new explicit word.
+
+## Scope
+
+- Repair v3-beta Checks and beta publication at their causes.
+- Carry the twelve main-only v2 fixes into v3 without rewriting shared history.
+- Validate Checks, Release, Site, Registry, Detox and Maestro on one beta tip.
+- Confirm the stable workflow computes 3.0.0, and record release notes.
+- Share the site for owner review once the beta is green.
+- Main merge and publication are held for new explicit owner approval, including the coordinator's final steps.
+- Verify the published npm tarball's releaseSourceCommit and content, then pin Takeout to exactly 3.0.0, validate and push its branch for coordinator landing.
+
+CI owner: tamagui-v3-release until handoff. REVIEW: none.
+
+## Initial evidence
+
+RAN: origin/v3-beta e1886583a15d37fa9a054916580bdb009b4a786f has 2719 beta-only commits and twelve main-only commits versus origin/main 5918dae347. Checks 37613039998 failed in typechecking, web unit tests, two integration color tests and the zero-runtime starter size baseline. Release 37613040043 was a canary, with beta skipped, and failed because npm accepted but never exposed @tamagui/react-native-use-pressable at the candidate version.
+
+The coordinator confirmed porting the twelve main-only commits with provenance, without a merge or rebase of beta.
+
+## Release path audit
+
+RAN: the failed canary package is now visible at npm with releaseSourceCommit e1886583a15d37fa9a054916580bdb009b4a786f. Its initial upload returned HTTP 202 and retries returned a staged-version conflict. The failure was an availability timeout; the registry eventually exposed the version. The next beta publication remains required.
+
+INFERRED from the release script and current 2.7.7 package manifests: main dispatch with release=major prepares 3.0.0, which publishes to latest. Confirm the merged manifest immediately before dispatch. Stable language-server packages need the separate lsp-build.yml publication path; release.yml only dispatches that path for beta.
+
+RAN source audit: Site builds and deploys v3-beta to the Cloudflare Worker serving v3.tamagui.dev. This source path does not use Railway. It does not deploy on main push, and merging does not move the primary domain. The coordinator owns any primary-domain rollout. The existing launch article is code/tamagui.dev/data/blog/version-three.mdx; preserve its product direction and update stable install examples when publication is real.
+
+The read-only helper audit is /tmp/tamagui-v3-release-audit.md. Its stale claim that current npm availability is unknown is superseded by the exact-version registry read above.
+
+Logs: /tmp/tamagui-v3-checks-37613039998.log and /tmp/tamagui-v3-release-37613040043.log on pro-128. Task: t-muyyq3a3-13ly0.
+
+## Validated receiver fixes
+
+RAN: root typecheck and lint pass. The full core web unit/type suite passes 126 tests. Root checks pass after installing again with built CLI outputs present. Release tag/registry/retry tests pass 18 cases.
+
+TESTED by the assigned color helper: the unchanged StyledIconColor and StyledContextColor browser files pass eight cases with retries disabled. Focused unit regressions pass 88 cases. Undefined context defaults leave styled base values intact; precompiled icon color/fill/stroke props retain their wrapper's declared inline ownership. Evidence: /tmp/tamagui-v3-colors.md and its listed logs.
+
+The HOC signature infers stored component metadata and replaces colliding receiver props before comparing them, preserving deferred parent props when their receiver keys are finite. A generic component receiver retains explicit prop types. Site Link now declares TextProps for its Text receiver.
+
+RAN on the current v3 implementation: Reanimated first-open, keyword-width and exit-completion probes pass 15 cases, with two existing skips and retries disabled. Evidence: /tmp/tamagui-v3-main-animation-before.log. This supports treating the corresponding main fixes as already ported; record all twelve dispositions before readiness.

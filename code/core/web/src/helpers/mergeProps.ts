@@ -36,7 +36,13 @@ export const mergeComponentProps = (
 
   const out: GenericProps = {}
   if (defaultProps) mergeLayer(out, defaultProps)
-  if (contextProps) mergeLayer(out, contextProps)
+  if (contextProps) {
+    // undefined context defaults declare a key without overriding styled values.
+    for (const key in contextProps) {
+      const value = contextProps[key]
+      if (value !== undefined) out[key] = value
+    }
+  }
 
   for (const key in props) {
     const value = props[key]

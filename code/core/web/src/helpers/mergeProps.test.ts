@@ -21,6 +21,13 @@ describe('mergeProps', () => {
 })
 
 describe('mergeComponentProps', () => {
+  test('undefined context defaults leave styled values available', () => {
+    expect(mergeComponentProps(null, { color: undefined }, {})[0]).toEqual({})
+    expect(mergeComponentProps({ color: 'green' }, { color: undefined }, {})[0]).toEqual({
+      color: 'green',
+    })
+  })
+
   test('explicit undefined does not clobber a default', () => {
     expect(
       mergeComponentProps({ size: 'md' }, undefined, { size: undefined })[0]

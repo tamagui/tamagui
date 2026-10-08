@@ -6,11 +6,11 @@ import {
   type LinkProps as OneLinkProps,
 } from 'one'
 import { getDocsLinkHref } from '~/features/docs/docsVersion'
-import type { ViewProps } from 'tamagui'
+import type { TextProps } from 'tamagui'
 import { Paragraph, Text } from 'tamagui'
 import { Button, type ButtonProps } from './Button'
 
-export type LinkProps = ViewProps &
+export type LinkProps = TextProps &
   OneLinkProps<any> & {
     // for animating/doing something right before nav
     delayNavigate?: boolean

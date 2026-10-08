@@ -19,6 +19,8 @@ type Options = {
   resolveValues?: ResolveVariableAs
 }
 
+const inlinePaintProps = new Set(['color', 'fill', 'stroke'])
+
 export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
   const opts: Options = {
     defaultThemeColor: process.env.DEFAULT_ICON_THEME_COLOR || 'color',
@@ -102,6 +104,8 @@ export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
   wrapped['staticConfig'] = {
     isHOC: true,
     acceptsClassName: true,
+    // svg paint props are resolved by the icon wrapper, not an inner styled frame.
+    inlineProps: inlinePaintProps,
   }
 
   return wrapped

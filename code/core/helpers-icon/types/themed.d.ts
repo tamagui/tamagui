@@ -13,6 +13,7 @@ export declare function themed(Component: FC<IconProps>, optsIn?: Options): {
     staticConfig: {
         isHOC: boolean;
         acceptsClassName: boolean;
+        inlineProps: Set<string>;
     };
 };
 export {};

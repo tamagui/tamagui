@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { validStyles } from '@tamagui/helpers'
 import { createTamagui } from '../createTamagui'
 import { getSplitStyles } from './getSplitStyles'
 import { resetWarned } from './warnOnce'
@@ -323,7 +324,6 @@ describe('v3 flat-value typo warnings', () => {
 
   describe('4. removed v2 prop names', () => {
     const removedProps = [
-      ['animation', 'transition='],
       ['hoverStyle', 'hover: clause'],
       ['pressStyle', 'press: clause'],
       ['focusStyle', 'focus: clause'],
@@ -331,6 +331,23 @@ describe('v3 flat-value typo warnings', () => {
       ['exitStyle', 'exit: clause'],
       ['$sm', 'sm: clause'],
     ] as const
+
+    it('consumes the CSS animation shorthand without a removed-prop warning', () => {
+      process.env.NODE_ENV = 'development'
+      const result = getSplitStyles(
+        { animation: 'spin 1s linear' },
+        { validStyles },
+        conf.themes.light,
+        'light',
+        {} as any,
+        { noClass: true, isAnimated: false }
+      )
+
+      if (!result) throw new Error('expected the CSS animation style to be resolved')
+      expect(result.style).toMatchObject({ animation: 'spin 1s linear' })
+      expect(result.viewProps).not.toHaveProperty('animation')
+      expect(warnSpy).not.toHaveBeenCalled()
+    })
 
     it.each(removedProps)(
       'warns once in development for %s naming replacement %s',

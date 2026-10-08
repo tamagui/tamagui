@@ -47,7 +47,9 @@ test('themes rebuilt from the generated css keep the scheme each theme was autho
     Object.fromEntries(
       Object.keys(themes).map((name) => [
         name,
-        parsed.themes[name] ? (getAuthoredThemeScheme(parsed.themes[name]) ?? null) : 'missing',
+        parsed.themes[name]
+          ? (getAuthoredThemeScheme(parsed.themes[name]) ?? null)
+          : 'missing',
       ])
     )
   expect(schemes(server)).toEqual({

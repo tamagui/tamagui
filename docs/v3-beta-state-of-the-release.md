@@ -1,5 +1,17 @@
 # Tamagui v3 beta — state of the release
 
+## 3.0.0 release notes, 2026-10-08
+
+Release candidate; stable npm publication is pending.
+
+- Styled components come from `tamagui`; behavior hooks and unstyled parts come from the individual packages or `@tamagui/ui`.
+- Conditional styles use flat strings or objects, and token names no longer need the `$` prefix. Animation presets use `transition`.
+- React Strict DOM and the Tailwind frontend share the compiler, tokens, themes and native style output.
+- The compiler supports an explicit zero-runtime mode with declared interactive islands.
+- This release carries the v2 Sheet, Slider, native menu and animation fixes into v3.
+
+Read the [launch article](../code/tamagui.dev/data/blog/version-three.mdx) and [migration guide](../code/tamagui.dev/data/docs/guides/how-to-upgrade.mdx) before upgrading. The campaign record below describes the July beta and is historical evidence.
+
 Written 2026-07-19 against branch `v3-beta`. This is the top-to-bottom picture:
 what changed, what was decided and why, what you should check yourself, what the
 performance numbers actually say, and what is still open.

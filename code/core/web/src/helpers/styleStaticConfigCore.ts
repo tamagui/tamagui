@@ -74,7 +74,12 @@ export function resolveStyleStaticConfig(
     }
     for (const key in resolvedBaseStyle) {
       const expanded = conf.shorthands[key] || key
-      if (key !== 'transition' && !variants?.[key] && expanded in validStyles) {
+      if (
+        key !== 'transition' &&
+        !variants?.[key] &&
+        !staticConfig.inlineProps?.has(expanded) &&
+        expanded in validStyles
+      ) {
         ;(directBaseStyle ||= {})[key] = resolvedBaseStyle[key]
         ;(directBaseKeys ||= []).push(key)
       } else {
