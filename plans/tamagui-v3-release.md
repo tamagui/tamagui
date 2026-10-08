@@ -52,7 +52,7 @@ The draft starts from v3-beta e1886583a15d37fa9a054916580bdb009b4a786f. Most mai
 
 | Main source commit | Draft disposition and evidence |
 | --- | --- |
-| b177f5493d8c06f6508f5d6bb726f2088fccdd77 | Pending Next override and lockfile upgrade from 16.3.6 to 16.3.8. Piscina 4.9.4, proxy-addr 2.0.8 and shell-quote 1.12.0 are already pinned in v3. Upgrade after the bundle measurement worker finishes to preserve its dependency baseline. |
+| b177f5493d8c06f6508f5d6bb726f2088fccdd77 | Ported Next override and lockfile upgrade from 16.3.6 to 16.3.8 after the bundle worker finished. Piscina 4.9.4, proxy-addr 2.0.8 and shell-quote 1.12.0 were already pinned in v3. RAN check:advisories: no critical advisories. |
 | 100fa9db2e046079c58bafd33c53d6ca21632e4d | Ported formatter exclusion for committed babel-plugin-fully-specified permanent outputs. |
 | caa181eb1b14bbfe850d482a371bc2821f589ae4 | Existing v3 skips unmounted modal children while preserving first-open measurement content. RAN SheetPortal.native.test.tsx, including open/close portal cleanup; retain its nonempty initial measurement assertion. |
 | 5545174f9de3cb7182ca1c25daeb363122caa8e9 | Existing v3 starts the shared, intersection-aware slider measurement interval lazily. RAN Slider.web.test.tsx: two passing cases. |
@@ -76,3 +76,13 @@ RAN: the production site builds locally with build:static. Its homepage navigati
 RAN: all seven homepage browser cases pass with one worker and retries disabled against the local production build. Evidence: /tmp/tamagui-v3-site-homepage-fixed.log.
 
 Review captures are /tmp/tamagui-v3-home.webp (1170x2532, 114350 bytes) and /tmp/tamagui-v3-launch.webp (1170x2532, 172586 bytes), captured at 3x density, encoded at WebP quality 90 without resizing, and inspected at original resolution. These show the draft site; the launch article still has its July date and beta install examples. Those publication-dependent edits remain held.
+
+## Bundle-size repair remains open
+
+RAN by the assigned size worker: the canonical CSS metadata now uses the existing toStylePropsObject parser in bounded 128-key chunks. All 857 property keys and 93 unitless keys, their true values and insertion order match the original tables; nine property type/parity cases pass. Module initialization adds a split/insert pass, with no new per-component lookup path. Generated declarations for HOC consumers are rebuilt with the receiver typing repair.
+
+RAN: the final pre-Next-upgrade starter measurement built all six integrations with no forbidden modules, compiler violations or forbidden artifact-family signatures. It still fails the unchanged ceilings: Vite island 77144 versus 73341 gzip bytes; Next island 77265 versus 73359. Metro island 122273 remains below 124079. Page JavaScript matches every ceiling and CSS remains below all ceilings. The observed integrated Vite reduction is 427 gzip bytes; it is not exclusive attribution because parent fixes ran concurrently. Evidence: /tmp/tamagui-v3-size.md, /tmp/tamagui-v3-size-measure-final.log, /tmp/tamagui-v3-size-final-receipts.json.
+
+RAN parent artifact probe under a directly invoked Node 24.16.0: removing the canonical table from a diagnostic copy still leaves 73821 gzip bytes, above the Vite ceiling. Front-coded diagnostic encodings produce 77314 or 77391 bytes, larger than the current encoding. None of these destructive diagnostic transformations was applied to source. This rules out treating table encoding alone as the complete repair. The unchanged measure.mjs must pass before claiming size readiness; it currently does not.
+
+No ceiling, assertion, retry or skip was changed. Source publication and main merge remain held. Checks, Registry, Detox and Maestro can validate a v3-prefixed draft; Release only publishes on a v3-beta push or an explicitly authorized dispatch. Site deployment and npm tarball verification remain pending.
