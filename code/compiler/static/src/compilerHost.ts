@@ -1487,8 +1487,8 @@ export function createTamaguiCompilerHost(
     component: LoweringComponent
   ): boolean => {
     const staticConfig = component.staticConfig as StaticConfig
-    // props explicitly declared in inlineProps are not style props, they're passthrough receiver props
-    if (staticConfig.inlineProps?.has(name)) return false
+    // explicit variants and inline props retain their component owners.
+    if (staticConfig.inlineProps?.has(name) || staticConfig.variants?.[name]) return false
     const validStyles =
       staticConfig.validStyles ||
       (staticConfig.isInput
@@ -1496,7 +1496,8 @@ export function createTamaguiCompilerHost(
         : staticConfig.isText
           ? stylePropsText
           : validStylesView)
-    return name in stylePropsAll && !isValidStyleKey(name, validStyles)
+    const expanded = options.tamaguiConfig.shorthands?.[name] ?? name
+    return expanded in stylePropsAll && !isValidStyleKey(expanded, validStyles)
   }
 
   const directStyleName = (name: string, component: LoweringComponent): string | null => {

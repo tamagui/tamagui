@@ -129,138 +129,160 @@ function executeNativeOutput(code: string): unknown {
 }
 
 describe('E4 Metro compiler frontend', () => {
-  test('publishes and applies native dynamic opacity plans against raw source', async () => {
-    const fixtureRoot = await mkdtemp(join(packageRoot, 'test/.e4-native-partial-'))
-    temporaryRoots.push(fixtureRoot)
-    const projectRoot = join(fixtureRoot, 'app')
-    const appPath = join(projectRoot, 'src/App.tsx')
-    const uiPath = join(fixtureRoot, 'packages/ui/index.ts')
-    const cacheRoot = join(fixtureRoot, 'cache')
-    const appSource = `
+  test.each([
+    ['direct', 'r={0}'],
+    ['spread', '{...{ r: 0 }}'],
+  ])(
+    'publishes and applies native dynamic opacity plans with %s shorthands',
+    async (_name, edges) => {
+      const fixtureRoot = await mkdtemp(join(packageRoot, 'test/.e4-native-partial-'))
+      temporaryRoots.push(fixtureRoot)
+      const projectRoot = join(fixtureRoot, 'app')
+      const appPath = join(projectRoot, 'src/App.tsx')
+      const uiPath = join(fixtureRoot, 'packages/ui/index.ts')
+      const cacheRoot = join(fixtureRoot, 'cache')
+      const appSource = `
 import { View } from '@fixture/ui'
 export const App = ({ dynamic }) => (
-  <View width={20} height={10} opacity={dynamic} marker="kept" />
+  <View width={20} height={10} ${edges} color={true} opacity={dynamic} marker="kept" />
 )
 `
-    await write(join(projectRoot, 'package.json'), '{"name":"e4-native-partial"}\n')
-    await write(appPath, appSource)
-    await write(uiPath, 'export const View = (_props) => null\n')
+      await write(join(projectRoot, 'package.json'), '{"name":"e4-native-partial"}\n')
+      await write(appPath, appSource)
+      await write(uiPath, 'export const View = (_props) => null\n')
 
-    const loadedProject = loadTamaguiSync({
-      platform: 'native',
-      config: tamaguiConfigPath,
-      components: ['@tamagui/core'],
-    })
-    const viewInfo = loadedProject.components?.find(
-      ({ moduleName }) => moduleName === '@tamagui/core'
-    )?.nameToInfo.View
-    expect(viewInfo).toBeTruthy()
-    // create a fixture view with marker declared as an inline prop (passthrough receiver prop)
-    const fixtureViewInfo = viewInfo && {
-      ...viewInfo,
-      staticConfig: {
-        ...viewInfo.staticConfig,
-        inlineProps: new Set([...(viewInfo.staticConfig.inlineProps || []), 'marker']),
-      },
-    }
-    const frontend = new MetroCompilerFrontend({
-      projectRoot,
-      cacheRoot,
-      watch: false,
-      originalBabelTransformerPath: transformerPath,
-      loadCompilerProject: async () => ({
-        projectInfo: {
-          ...loadedProject,
-          components: [
-            { moduleName: '@fixture/ui', nameToInfo: { View: fixtureViewInfo! } },
-          ],
+      const loadedProject = loadTamaguiSync({
+        platform: 'native',
+        config: tamaguiConfigPath,
+        components: ['@tamagui/core'],
+      })
+      const viewInfo = loadedProject.components?.find(
+        ({ moduleName }) => moduleName === '@tamagui/core'
+      )?.nameToInfo.View
+      expect(viewInfo).toBeTruthy()
+      expect(loadedProject.tamaguiConfig?.shorthands.r).toBe('right')
+      expect(viewInfo?.staticConfig.validStyles?.r).toBeUndefined()
+      const nativeCore = requireFromTest('@tamagui/core/native')
+      const VariantView = nativeCore.styled(nativeCore.View, {
+        variants: {
+          color: { true: { marginLeft: 7 } },
         },
-        componentModules: [{ moduleName: '@fixture/ui', id: uiPath }],
-        generation: 'e4-native-partial-v1',
-      }),
-      resolver: {
-        resolveRequest: (context: any, specifier: string, platform: string) => {
-          if (specifier === '@fixture/ui') {
-            return { type: 'sourceFile', filePath: uiPath }
-          }
-          return context.resolveRequest(context, specifier, platform)
+      })
+      // create a fixture view with marker declared as an inline prop (passthrough receiver prop)
+      const fixtureViewInfo = viewInfo && {
+        ...viewInfo,
+        staticConfig: {
+          ...VariantView.staticConfig,
+          inlineProps: new Set([...(viewInfo.staticConfig.inlineProps || []), 'marker']),
         },
-        sourceExts: ['js', 'jsx', 'ts', 'tsx'],
-        unstable_enablePackageExports: true,
-      },
-    })
+      }
+      const frontend = new MetroCompilerFrontend({
+        projectRoot,
+        cacheRoot,
+        watch: false,
+        originalBabelTransformerPath: transformerPath,
+        loadCompilerProject: async () => ({
+          projectInfo: {
+            ...loadedProject,
+            components: [
+              { moduleName: '@fixture/ui', nameToInfo: { View: fixtureViewInfo! } },
+            ],
+          },
+          componentModules: [{ moduleName: '@fixture/ui', id: uiPath }],
+          generation: 'e4-native-partial-v1',
+        }),
+        resolver: {
+          resolveRequest: (context: any, specifier: string, platform: string) => {
+            if (specifier === '@fixture/ui') {
+              return { type: 'sourceFile', filePath: uiPath }
+            }
+            return context.resolveRequest(context, specifier, platform)
+          },
+          sourceExts: ['js', 'jsx', 'ts', 'tsx'],
+          unstable_enablePackageExports: true,
+        },
+      })
 
-    const options = {
-      dev: false,
-      entryFiles: [appPath],
-      hot: false,
-      platform: 'ios',
-      transform: { experimentalImportSupport: true },
-    }
-    const args = {
-      filename: appPath,
-      src: appSource,
-      plugins: [],
-      options: {
+      const options = {
         dev: false,
+        entryFiles: [appPath],
         hot: false,
         platform: 'ios',
-        projectRoot,
-        experimentalImportSupport: true,
-      },
-    }
-
-    try {
-      await frontend.ensureValidCache(options)
-      const entry = await new MetroCompilerCache(frontend.cacheRootFor('ios')).read(
-        appPath,
-        appSource
-      )
-      expect(entry?.diagnostics).toEqual([])
-      expect(entry?.plan.stats).toEqual({
-        found: 1,
-        lowered: 1,
-        flattened: 1,
-        styled: 0,
-        bailed: 0,
-      })
-
-      const worker = createMetroCompilerTransformer({
-        cacheBaseRoot: cacheRoot,
-        originalBabelTransformerPath: transformerPath,
-        projectRoot,
-      })
-      const transformed = await worker.transform(args)
-      expect(transformed.metadata?.tamagui).toMatchObject({
-        cacheHit: true,
-        lowering: {
-          applied: true,
-          sourceMapComposed: true,
-          stats: { found: 1, lowered: 1, flattened: 1, styled: 0, bailed: 0 },
+        transform: { experimentalImportSupport: true },
+      }
+      const args = {
+        filename: appPath,
+        src: appSource,
+        plugins: [],
+        options: {
+          dev: false,
+          hot: false,
+          platform: 'ios',
+          projectRoot,
+          experimentalImportSupport: true,
         },
-      })
-      const code = outputCode(transformed)
-      expect(code).toContain("require('@tamagui/core')._withStableStyle")
-      expect(code).toContain('_expressions: [dynamic]')
-      expect(code).toContain('"width": 20')
-      expect(code).toContain('"height": 10')
-      expect(code).toContain('marker: "kept"')
-      expect(executeNativeOutput(code)).toEqual(
-        expect.objectContaining({
-          host: 'native',
-          props: expect.objectContaining({
-            marker: 'kept',
-            style: [
-              expect.objectContaining({ width: 20, height: 10 }),
-              expect.objectContaining({ opacity: 9 }),
-            ],
-          }),
+      }
+
+      try {
+        await frontend.ensureValidCache(options)
+        const entry = await new MetroCompilerCache(frontend.cacheRootFor('ios')).read(
+          appPath,
+          appSource
+        )
+        expect(entry?.diagnostics).toEqual([])
+        expect(entry?.plan.stats).toEqual({
+          found: 1,
+          lowered: 1,
+          flattened: 1,
+          styled: 0,
+          bailed: 0,
         })
-      )
-    } finally {
-      await frontend.close()
+
+        const worker = createMetroCompilerTransformer({
+          cacheBaseRoot: cacheRoot,
+          originalBabelTransformerPath: transformerPath,
+          projectRoot,
+        })
+        const transformed = await worker.transform(args)
+        expect(transformed.metadata?.tamagui).toMatchObject({
+          cacheHit: true,
+          lowering: {
+            applied: true,
+            sourceMapComposed: true,
+            stats: { found: 1, lowered: 1, flattened: 1, styled: 0, bailed: 0 },
+          },
+        })
+        const code = outputCode(transformed)
+        expect(code).toContain("require('@tamagui/core')._withStableStyle")
+        expect(code).toContain('_expressions: [dynamic]')
+        expect(code).toContain('"width": 20')
+        expect(code).toContain('"height": 10')
+        expect(code).toContain('marker: "kept"')
+        const rendered = executeNativeOutput(code) as { props: Record<string, unknown> }
+        expect(rendered).toEqual(
+          expect.objectContaining({
+            host: 'native',
+            props: expect.objectContaining({
+              marker: 'kept',
+              style: [
+                expect.objectContaining({
+                  width: 20,
+                  height: 10,
+                  right: 0,
+                  marginLeft: 7,
+                }),
+                expect.objectContaining({ opacity: 9 }),
+              ],
+            }),
+          })
+        )
+        expect(rendered.props.r).toBeUndefined()
+        expect(rendered.props.color).toBeUndefined()
+      } finally {
+        await frontend.close()
+      }
     }
-  })
+  )
 
   test('publishes raw-source lowering plans for isolated workers and invalidates exact edges', async () => {
     const fixtureRoot = await mkdtemp(join(packageRoot, 'test/.e4-fixture-'))

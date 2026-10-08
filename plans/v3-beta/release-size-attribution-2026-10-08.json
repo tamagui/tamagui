@@ -313,5 +313,23 @@
     "retries": 0,
     "behavior": "Browser View and Text colors emit atomic or inline CSS without host attributes. Compiler View colors lower to CSS and div classes. Native View text colors are consumed through direct props and style objects, while Text retains them.",
     "generated_declarations": "Four rebuild changes were confirmed equivalent by normalized TypeScript declaration AST, then their original formatting was retained."
+  },
+  "linux_ci_reconfirmation": {
+    "sha": "648ae6c1003c9a8d6d6ab1b4398a7d341c17e5bf",
+    "run_url": "https://github.com/tamagui/tamagui/actions/runs/37740276698",
+    "artifact_id": 11533483062,
+    "artifact_name": "v3-zero-runtime-starter",
+    "result": "All six JS, CSS and island size metrics exactly match the previous Linux receipt; all builds succeed with zero forbidden modules and compiler violations. Existing limits remain unchanged and exceeded by Vite/Next islands. Registry and all four browser integration jobs passed; native CLI snapshot failures are under repair."
+  },
+  "compiler_owner_regression_validation": {
+    "baseline_native_fixture_failures": 2,
+    "metro_cases_passed": 7,
+    "e3_cases_passed": 55,
+    "original_cli_snapshots_matched": 5,
+    "snapshots_added_or_updated": 0,
+    "retries": 0,
+    "built_package": "@tamagui/static",
+    "behavior": "Native direct and spread shorthands expand before host-style validation. Explicit styled variants and inline receiver props retain ownership. Executed native output contains right:0 and the styled variant marginLeft:7, retains dynamic opacity and marker, and omits raw r/color host props.",
+    "cli_validation": "Built both original feature-directory and single-screen CLI inputs; compared all five original snapshots through SnapshotClient with updateSnapshot:none; preserved fixture source and outputs."
   }
 }
