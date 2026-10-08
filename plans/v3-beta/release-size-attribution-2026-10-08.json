@@ -356,5 +356,23 @@
       "validation": "All six downloaded Linux receipts qualify against the updated baselines; existing CSS and Metro bounds retained."
     },
     "required_ci": "Pending on the final candidate; package publication remains held."
+  },
+  "post_budget_ci_validation": {
+    "sha": "8bb35b510c9577f4c550c701f6fef4c719eabaad",
+    "run_url": "https://github.com/tamagui/tamagui/actions/runs/37745263854",
+    "passed_jobs": [
+      "checks",
+      "grammar-conformance",
+      "v3-zero-runtime fixture",
+      "v3-zero-runtime starter"
+    ],
+    "failure": "Webpack styleExpansions snapshot retained obsolete View color output. All other 19 webpack cases passed.",
+    "repair_sha": "6ad51b53bd133c14cc3a2ba7c00549153b8c3bdc",
+    "webpack_cases_passed": 20,
+    "snapshot_file_entries": 22,
+    "retries": 0,
+    "validation": "Rebuilt webpack fixture. Before updating its sole changed snapshot, exact computed white/blue nested colors, red parent, inset and position plus absent style attributes all passed. With the verified snapshot updated, all 20 webpack cases pass.",
+    "record_correction": "The repair commit body mistakenly stated 27 snapshots. The snapshot file contains 22 entries; the test run reports 20 passing cases.",
+    "required_ci": "Open on the newest draft; main and publication remain held."
   }
 }
