@@ -1,0 +1,171 @@
+{
+  "node": "24.16.0",
+  "platform": "darwin-arm64",
+  "gzip_level": 9,
+  "source": "RAN measurements captured by session p68360 before the 2026-10-08 pro-128 reboot; recorded from observed results",
+  "original_raw_artifacts": "Lost when reboot erased /tmp; numeric observations preserved in the release plan and session tool outputs",
+  "revisions": [
+    {
+      "sha": "b74c35eaa1ed4af8bb7c92fc36aad6fc27c0fee0",
+      "subject": "site: replace mode popover with menu, format tailwind imports, transparent hero code, and fix mobile typography",
+      "vite_island_gzip": 73326,
+      "vite_delta": 0,
+      "styled_view_gzip": 29877,
+      "styled_view_delta": 0
+    },
+    {
+      "sha": "2d09ec00d147ccb4bd9c177b8cc72163e72696ec",
+      "subject": "fix(core): accept plain CSS props while preserving native and component owners",
+      "vite_island_gzip": 77483,
+      "vite_delta": 4157,
+      "styled_view_gzip": 33859,
+      "styled_view_delta": 3982
+    },
+    {
+      "sha": "3b0141f9b5929cea0829e83da7fbd08cd88152bb",
+      "subject": "fix(core): retain declared context and variant defaults across CSS widening",
+      "vite_island_gzip": 77489,
+      "vite_delta": 6,
+      "styled_view_gzip": 33868,
+      "styled_view_delta": 9
+    },
+    {
+      "sha": "99e031b61dcc0fddd0d63b86941cf412b4ec9696",
+      "subject": "site: format current beta sources for the required workspace lint",
+      "vite_island_gzip": 77489,
+      "vite_delta": 0,
+      "styled_view_gzip": 33868,
+      "styled_view_delta": 0
+    },
+    {
+      "sha": "2d28db9d69fbe4cf8433bb50b0ebe5c6d828e345",
+      "subject": "fix(workspace): declare the CLI used by the root dependency check",
+      "vite_island_gzip": 77489,
+      "vite_delta": 0,
+      "styled_view_gzip": 33868,
+      "styled_view_delta": 0
+    },
+    {
+      "sha": "f0c7d1c1157ee871c568a6a6b1bd48090997152f",
+      "subject": "fix(types): publish the generated context and variant default declarations",
+      "vite_island_gzip": 77489,
+      "vite_delta": 0,
+      "styled_view_gzip": 33868,
+      "styled_view_delta": 0
+    },
+    {
+      "sha": "dc19406c693d7ba0be6da8962c6e8126bd23d27e",
+      "subject": "docs(core): record the integrated property checks and measured pipeline cost",
+      "vite_island_gzip": 77489,
+      "vite_delta": 0,
+      "styled_view_gzip": 33868,
+      "styled_view_delta": 0
+    },
+    {
+      "sha": "36a555c18e82ca23d782f1e456081c6417f9b2c2",
+      "subject": "fix(core): preserve disabled behavior through styled wrappers",
+      "vite_island_gzip": 77495,
+      "vite_delta": 6,
+      "styled_view_gzip": 33878,
+      "styled_view_delta": 10
+    },
+    {
+      "sha": "a4cedac75cca59d1d4b56c0c30741165975d37c6",
+      "subject": "fix(toast): preserve viewport edge offset object types",
+      "vite_island_gzip": 77495,
+      "vite_delta": 0,
+      "styled_view_gzip": 33878,
+      "styled_view_delta": 0
+    },
+    {
+      "sha": "edafb16783bd2f8915b43cc983e37fdbd1bef36d",
+      "subject": "fix(core): styled options keep each member's props for a union parent",
+      "vite_island_gzip": 77495,
+      "vite_delta": 0,
+      "styled_view_gzip": 33878,
+      "styled_view_delta": 0
+    },
+    {
+      "sha": "e1886583a15d37fa9a054916580bdb009b4a786f",
+      "subject": "fix(core): themes rebuilt from css keep their authored scheme",
+      "vite_island_gzip": 77545,
+      "vite_delta": 50,
+      "styled_view_gzip": 33878,
+      "styled_view_delta": 0
+    },
+    {
+      "sha": "f5d0ef922f3a204d9e7664ff7e0ba1457a2f69b9",
+      "subject": "fix(core): preserve receiver props through styles and HOC composition",
+      "vite_island_gzip": 77571,
+      "vite_delta": 26,
+      "styled_view_gzip": 33887,
+      "styled_view_delta": 9
+    },
+    {
+      "sha": "6137851605469d888725bc2d56f05ec181b0fdee",
+      "subject": "chore: port formatter exclusion and record v3 fix provenance",
+      "vite_island_gzip": 77571,
+      "vite_delta": 0,
+      "styled_view_gzip": 33887,
+      "styled_view_delta": 0
+    },
+    {
+      "sha": "b2f160f5e39504cd180d0f687c9550953765f074",
+      "subject": "site: verify current docs label and expanded navigation",
+      "vite_island_gzip": 77571,
+      "vite_delta": 0,
+      "styled_view_gzip": 33887,
+      "styled_view_delta": 0
+    },
+    {
+      "sha": "3e6909e14cbf5a034ca9ed5cf1a030c753937f71",
+      "subject": "chore: port Next security pin to v3",
+      "vite_island_gzip": 77571,
+      "vite_delta": 0,
+      "styled_view_gzip": 33887,
+      "styled_view_delta": 0
+    },
+    {
+      "sha": "41dc7a1326c2525002b6e4faac90121f0f246c60",
+      "subject": "perf(helpers): encode canonical CSS keys with the shared parser",
+      "vite_island_gzip": 77144,
+      "vite_delta": -427,
+      "styled_view_gzip": 33500,
+      "styled_view_delta": -387
+    },
+    {
+      "sha": "8036c809ecbd047d3c183ff1301163f8f270e922",
+      "subject": "fix(types): rebuild HOC consumer declarations",
+      "vite_island_gzip": 77144,
+      "vite_delta": 0,
+      "styled_view_gzip": 33500,
+      "styled_view_delta": 0
+    },
+    {
+      "sha": "4694f7d7e54c6a8603505913815109f0857f0829",
+      "subject": "docs: record draft CI scope and publication hold",
+      "vite_island_gzip": 77144,
+      "vite_delta": 0,
+      "styled_view_gzip": 33500,
+      "styled_view_delta": 0
+    }
+  ],
+  "final_local_source": {
+    "metadata_commit": "af5a99045e27128e18973e8fd726c43429faeb34",
+    "compiler_commit": "2d877ea04af93ab04c8e2bbcf892ba0309ea3c8a",
+    "vite_island_gzip": 76797,
+    "next_island_gzip": 76884,
+    "metro_island_gzip": 122009,
+    "styled_view_gzip": 33220,
+    "next_page_gzip": {
+      "base": 141407,
+      "islands": 142426
+    },
+    "validation": "All six builds; zero forbidden modules, compiler violations and forbidden artifact families; 126 web cases and six Metro frontend cases pass; existing size gates remain red and unchanged",
+    "fresh_receipts": "/Users/n8/Library/Logs/tamagui-v3-release/recovery-starter-receipts.json",
+    "original_validated_commits": [
+      "ed7950c326d885c8fead4000dfac8b1b1ae3d034",
+      "d33d3b43c45f26b6a4ed59011ad81af530eea13a"
+    ]
+  }
+}
