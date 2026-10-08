@@ -18,6 +18,8 @@ The correction revokes release authorization. Continue preparation and validatio
 
 CI owner: tamagui-v3-release until handoff. REVIEW: none.
 
+Draft delivery branch: v3-release-readiness. The earlier tm/v3-release-readiness save point remains on origin. This v3-prefixed branch exercises Checks, Registry, Detox and Maestro without pushing the release-producing v3-beta branch. No main pull request or release dispatch was created.
+
 ## Initial evidence
 
 RAN: origin/v3-beta e1886583a15d37fa9a054916580bdb009b4a786f has 2719 beta-only commits and twelve main-only commits versus origin/main 5918dae347. Checks 37613039998 failed in typechecking, web unit tests, two integration color tests and the zero-runtime starter size baseline. Release 37613040043 was a canary, with beta skipped, and failed because npm accepted but never exposed @tamagui/react-native-use-pressable at the candidate version.
@@ -86,3 +88,5 @@ RAN: the final pre-Next-upgrade starter measurement built all six integrations w
 RAN parent artifact probe under a directly invoked Node 24.16.0: removing the canonical table from a diagnostic copy still leaves 73821 gzip bytes, above the Vite ceiling. Front-coded diagnostic encodings produce 77314 or 77391 bytes, larger than the current encoding. None of these destructive diagnostic transformations was applied to source. This rules out treating table encoding alone as the complete repair. The unchanged measure.mjs must pass before claiming size readiness; it currently does not.
 
 No ceiling, assertion, retry or skip was changed. Source publication and main merge remain held. Checks, Registry, Detox and Maestro can validate a v3-prefixed draft; Release only publishes on a v3-beta push or an explicitly authorized dispatch. Site deployment and npm tarball verification remain pending.
+
+RAN after the Next pin and regenerated HOC consumer declarations: root typecheck, lint and checks pass; the critical-advisory gate reports no critical advisories and the CSS generator is current. Evidence: /tmp/tamagui-v3-{types,lint,check}-next.log, /tmp/tamagui-v3-advisories.log, /tmp/tamagui-v3-css-current.log. The coordinator has a request for a dedicated bundle optimization lane. This session retains draft CI ownership while that assignment is pending.
