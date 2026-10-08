@@ -126,6 +126,22 @@ mode first, then use `--write` for conversions it can prove safe. The
 [v3 upgrade guide](/docs/guides/how-to-upgrade) lists the commands, the full
 rename table, and the cases that still need manual review.
 
+## Optional native and zero-runtime paths
+
+The new native style runtime can apply theme and style updates directly to
+eligible Fabric views without re-rendering their React components. It is opt-in
+and in beta: install `@tamagui/native-registry` with Nitro Modules, enable
+`experimental.nativeFastPath` in the compiler, register the engine, and rebuild
+your app. It requires React Native 0.82 or newer with the New Architecture.
+The [native runtime guide](/docs/core/native#native-runtime) covers setup.
+
+On web, the experimental [zero-runtime mode](/docs/guides/zero-runtime) compiles
+eligible entries to React host elements and generated CSS without the Tamagui
+component runtime. React and React DOM remain. Start with
+`experimental.zeroRuntime: 'report'` to see what can lower; enforcing the mode
+rejects runtime-dependent sites, which can live in separately built islands.
+Ordinary compiled apps still keep the runtime for components that need it.
+
 ## A language server, for every editor
 
 Moving conditions into the value means TypeScript cannot describe the whole
@@ -158,21 +174,21 @@ restart. It also keeps working while you type. A file mid-edit is usually
 syntactically invalid, so it parses with tree-sitter, which keeps the sites you
 already wrote instead of discarding the whole file on the first error.
 
-## Style precedence is authored order
+## Style precedence has explicit tiers
 
-Tamagui props, `style`, `className`, and Tailwind utilities all go through one
-compiler, so they resolve under one rule. Every contribution joins a single
-forward pass, and later output wins per property.
-
-Base `styled()` values come first, then variants, then call-site props. With
-the Tailwind frontend, `className` utilities sit in the same tier as call-site
+Styles resolve in tiers: base `styled()` values, variants, component resolvers,
+call-site style props, then `style`. A higher tier wins for the same property,
+regardless of where a variant prop appears in JSX. Within one tier, later
+contributions win. With the Tailwind frontend, `className` utilities sit in the same tier as call-site
 props, so `className` is not a privileged tier that always wins. The `style`
 prop comes last and wins over both, as it does in React.
 
-Attribute order matters. Reordering authored props can change the result,
-including in the Tailwind class pipeline.
+For conflicts within the call-site tier, attribute order still matters. This
+example imports the Tailwind frontend so `className` resolves utility classes:
 
 ```tsx
+import { View } from '@tamagui/tailwind'
+
 // bg-blue-500 wins: it is authored after backgroundColor
 <View backgroundColor="red-9" className="bg-blue-500" />
 
@@ -323,8 +339,9 @@ const MyInput = createStyledHOC(StyledInput, (props: Props, ref) => ...)
 
 ## True tokens are gone
 
-The old `$true` token aliases have been removed from v3 configs. Component
-defaults still resolve to the default size, which is `4`.
+The old `$true` token aliases have been removed from v3 configs. Use an explicit
+space token for layout. Styled controls now use named sizes (`xs`, `sm`, `md`,
+`lg`, `xl`), with `md` as the default, instead of numeric token keys.
 
 ```tsx
 // before
@@ -334,12 +351,14 @@ defaults still resolve to the default size, which is `4`.
 
 ```tsx
 // after
-<Button size="4" />
+<Button size="md" />
 <YStack gap="4" />
 ```
 
-Boolean size shorthands in component variants still resolve through the default
-size path, but authored token keys should use real token names.
+`size={true}` selects the default control size. Each named size sets padding,
+radius, gap, text, and icon sizing together. Text uses its own scale, such as
+`<Paragraph size="base" />`; shape geometry and spacing still accept tokens.
+See [Sizing](/docs/core/sizing) for the shared ladder and custom rungs.
 
 ## Token stepping is removed
 
@@ -758,12 +777,11 @@ applies under `dark_blue` too), as do platform modifiers like `ios:`. Modifiers
 that describe an element instead of a subtree, such as `hover:` and `sm:`, warn
 and drop.
 
-Changing values leaves unrelated descendants alone. Tamagui tracks which theme
-keys each component reads, so on both platforms only the components that read
-a changed key do any work. On web, styled components skip even that. The values
-compile to CSS custom properties on the node the update owns, so they restyle
-through the cascade with no JavaScript. `useTheme()` and the animation drivers
-still see the patched values.
+On web, styled components can restyle through CSS custom properties on the
+update node without re-rendering. `useTheme()` and the animation drivers still
+see the patched values. With `optimizeFor: 'updates'`, theme reads are tracked
+per key; `first-render`, the native default, trades that granularity for a faster
+initial render and may re-render more of the subtree when values change.
 
 You can also declare your own variables in config:
 
@@ -868,11 +886,11 @@ rg '\b(size|fontSize)="\$'
 change with no visual effect. Teaching the codemod this moved one app from 1007
 clean sites to 1212 and dropped its flagged sites from 279 to 72.
 
-**`SafeAreaProvider` has to wrap `TamaguiProvider`.** The v3 provider mounts a
-tracker that reads safe-area context to publish the inset tokens, so the old
-nesting throws `NO_INSETS_ERROR` and the whole app renders an error screen at
-startup. The message names `SafeAreaProvider`, which sends you looking in the
-wrong place.
+**Provider order when using native safe areas.** If your native entry imports
+`@tamagui/native/setup-safe-area`, put `SafeAreaProvider` outside
+`TamaguiProvider`. The registered tracker reads that context, so the reverse
+order throws `NO_INSETS_ERROR` at startup. Web safe-area styles use CSS
+`env()` values and do not require this native setup.
 
 Validate at the layer you changed. Typecheck, build, run the web app, and
 exercise Dialog, Popover, Select, and Sheet on the breakpoints where you use
