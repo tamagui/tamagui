@@ -78,9 +78,20 @@ if (
 ) {
   throw new Error('canonical css key or unitless controls failed')
 }
-const object = (name, names) =>
-  `export const ${name} = {\n${names.map((key) => `  ${key}: true,`).join('\n')}\n} as const\n`
-const output = `// generated from csstype ${version}; run node scripts/generate-css-style-props.mjs.\n\n${object('cssStyleProps', keys)}\n${object('cssStylePropsUnitless', unitless)}`
+const object = (name, names) => {
+  const chunks = []
+  // bound the shared key parser's template-literal recursion.
+  for (let index = 0; index < names.length; index += 128) {
+    chunks.push(`  '${names.slice(index, index + 128).join(' ')}'`)
+  }
+  const declaration = `export const ${name}: Readonly<typeof ${name}Values> =`
+  const assignment =
+    `${declaration} ${name}Values`.length > 90
+      ? `${declaration}\n  ${name}Values`
+      : `${declaration} ${name}Values`
+  return `const ${name}Values = /* @__PURE__ */ toObj(\n${chunks.join(',\n')}\n)\n\n${assignment}\n`
+}
+const output = `// generated from csstype ${version}; run node scripts/generate-css-style-props.mjs.\n\nimport { toStylePropsObject as toObj } from './toStylePropsObject'\n\n${object('cssStyleProps', keys)}\n${object('cssStylePropsUnitless', unitless)}`
 const destination = resolve(root, 'code/core/helpers/src/cssStyleProps.ts')
 if (process.argv.includes('--check')) {
   if ((await readFile(destination, 'utf8')) !== output)
