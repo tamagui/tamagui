@@ -4,11 +4,11 @@ Date: 2026-08-27
 
 Consolidates four reviews of
 [`v3-web-style-engine-one-pass.md`](../v3-web-style-engine-one-pass.md) plus
-Nate's direction, into one document. Supersedes
+the owner's direction, into one document. Supersedes
 [`opus-feedback.md`](./opus-feedback.md),
 [`grok-feedback.md`](./grok-feedback.md),
 [`gemini-feedback.md`](./gemini-feedback.md), and
-[`nate-grok-opus-review.md`](./nate-grok-opus-review.md). Everything is checked
+[`grok-opus-review.md`](./grok-opus-review.md). Everything is checked
 against the source on `v3-beta` or a checked-in receipt. Claim labels follow the
 agent contract.
 
@@ -109,11 +109,10 @@ Recorded so implementation does not reopen them.
 
 ---
 
-## Nate's cross-cutting critique: stop over-narrowing at runtime
+## Cross-cutting critique: stop over-narrowing at runtime
 
-> "we are over-careful on things doing like `Object.is` this and that and
-> `typeof` and all these checks to narrow at runtime. the truth is we don't need
-> to safeguard everything crazy. let our users decide."
+> Owner direction: stop over-narrowing at runtime with `Object.is`,
+> `typeof`, and similar checks. Do not safeguard everything; let users decide.
 
 This is correct and it is measurable. **RAN**, counts across the four hot files
 (`getSplitStyles.tsx`, `directStyle.ts`, `propMapper.ts`, `createComponent.tsx`):
@@ -160,8 +159,8 @@ Ban the pin, not just the check. Otherwise the next rebuild reintroduces
 
 ## The prop loop re-evaluates per-render constants on every prop
 
-Nate, on the `data-*` shim: "not sure what this is but on every prop can
-definitely be removed, it doesn't change in a single render call."
+Owner note on the `data-*` shim: the on-every-prop work can definitely be
+removed; it does not change in a single render call.
 
 That is right, and it is not one site. **READ** the forward pass
 `contributeProp` (`getSplitStyles.tsx:645-1250`). Every one of these is
@@ -170,7 +169,7 @@ invariant for the whole render and is re-evaluated per prop:
 | line | expression | note |
 | --- | --- | --- |
 | 744 | `getDefaultProps(staticConfig)` | a **function call per prop**. The helper is `(staticConfig) => staticConfig.defaultProps`, used once. |
-| 830-833 | `staticConfig.isReactNative \|\| (styleProps.isAnimated && driver?.isReactNative && !driver.View?.acceptRenderProp)` | Nate's catch. Every operand invariant. |
+| 830-833 | `staticConfig.isReactNative \|\| (styleProps.isAnimated && driver?.isReactNative && !driver.View?.acceptRenderProp)` | Owner's catch. Every operand invariant. |
 | 913 | `(styleProps.isAnimated \|\| staticConfig.isHOC) && driver?.isReactNative` | |
 | 931 | `asChild === 'except-style' \|\| asChild === 'except-style-web'` | two string compares per prop |
 | 936-943 | `isHOC`, `parentVariants`, `disablePropMap` combinations | |
@@ -202,7 +201,7 @@ reviewer can check it by reading the loop body for reads of `staticConfig`,
 
 ## Transform order is a bug, not a decision
 
-Nate: "I thought we do it the order we're given it, that's how we do everything."
+Owner direction: process transforms in the order given, as everything else does.
 
 That is the right model and **neither path does it**:
 
@@ -289,8 +288,8 @@ below rather than here.
 
 ## New workstream: web API alignment
 
-Nate: "I don't need us to be a superset of React Native anymore or want that. I
-want us to be more like React Strict DOM aligned, even React is going this way."
+Owner direction: stop being a superset of React Native; align with React Strict
+DOM instead, following where React itself is going.
 
 Most of this is already built. The audit's job is to finish it and to fix the
 types, which are the part that actually still costs.
@@ -461,7 +460,7 @@ Consequences today:
 - Therefore the `overriddenContextProps` sniff at `:1579-1601` is
   **native-and-inline only**, while every platform pays four `staticConfig`
   re-derivations and two `Array.prototype.includes` linear scans per winning
-  style write. This is the mechanism Nate decided to drop, and the fact that it
+  style write. This is the mechanism the owner decided to drop, and the fact that it
   already does nothing on web is the argument for dropping it.
 - Same for `recordStyleTokenProvenance`, which is dev-only anyway.
 

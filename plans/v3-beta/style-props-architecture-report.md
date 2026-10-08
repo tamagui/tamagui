@@ -1,13 +1,12 @@
 # Tamagui V3: Style Props Architecture, Dynamic CSSOM Discovery, and Bundle Optimization
 
-Authored 2026-09-14 for Nate.
+Authored 2026-09-14 for owner review.
 
 ## current property coverage audit, 2026-10-06
 
-Nate: "We should make sure that V3 doesn't require this web prefix";
-"We're trying to widen the support for props to basically most of them and we
-just drop it on native". He requested improvement "in general across every
-property that you can see style property".
+Owner direction: V3 must not require the web prefix; widen prop support to
+basically most of them and just drop unsupported ones on native, with
+improvement in general across every visible style property.
 
 The repair extends the existing recognition tables with857 CSS names and93
 unitless-number entries generated from csstype3.2.3. Public View/Text props and
@@ -70,7 +69,7 @@ added (3.82%/3.52%). The registry's ESM module is22641 raw/4241 gzip bytes.
 Published canary verification and downstream npm-family delivery remain pending.
 Owner:p65570 / qa-taste; CI:ci-fleet r62735; review:none.
 
-Nate's latest direction stops shares. The five-row acceptance plan and receipts
+The owner's latest direction stops shares. The five-row acceptance plan and receipts
 are in Contrast's plans/contrast/qa/v3-style-props.md and its private evidence.
 The earlier CSSOM and conditional-export design below remains a proposal from
 its original author; it is not implemented or remeasured by this repair.
@@ -79,7 +78,7 @@ its original author; it is not implemented or remeasured by this repair.
 
 ## 1. Executive Summary & Verdict
 
-Nate asked whether Tamagui can eliminate the static `validStyleProps` table to shave client bundle size while simultaneously achieving 100% Web CSS alignment, and how `styled()` can cleanly route props between styles, components, and host DOM/Native attributes.
+Owner question: whether Tamagui can eliminate the static `validStyleProps` table to shave client bundle size while simultaneously achieving 100% Web CSS alignment, and how `styled()` can cleanly route props between styles, components, and host DOM/Native attributes.
 
 ### Key Findings & Benchmarks:
 1. **Dynamic Client Discovery works and is 2.2× faster than the current static dictionary**:
@@ -190,7 +189,7 @@ Modern bundlers (Vite, One, Next.js, Webpack 5) resolve conditional exports:
 
 ## 5. Strategy 3: Web vs Native Divergence
 
-Nate noted: *"I mean this is another one where I guess the HTML and the native could diverge right"*
+Owner note: the HTML and native implementations could diverge here.
 
 Yes, they **must** diverge here, and diverging is a huge win for both sides:
 
@@ -206,7 +205,7 @@ Previously, Tamagui forced one compromised table onto all platforms: Native was 
 
 ## 6. Strategy 4: Strict `styled()` & DOM Attribute Whitelisting
 
-Nate asked: *"we could make styled more strict in a sense that's an option. We could say you have to whitelist props that are not the ones that we have take."*
+Owner question: make styled more strict by requiring a whitelist for props outside the ones it already takes.
 
 ### Why Props Leak to DOM Elements:
 When an author writes:

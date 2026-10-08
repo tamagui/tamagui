@@ -1,6 +1,6 @@
 # Streaming writes: deleting the neutral frame
 
-Owner mandate (Nate via r4674, 2026-08-28): the neutral frame / deferred
+Owner mandate (via r4674, 2026-08-28): the neutral frame / deferred
 completion is on trial. Null hypothesis is V2's shape: stream every
 contribution at write time, keep one winner integer per property, emit CSS
 immediately, replace in place. Every piece of retained machinery must name the

@@ -1,6 +1,6 @@
 # CSS Grid on the Tamagui native runtime, and runtime shorthand cost
 
-Researched 2026-09-14. Question from Nate: grid is "already up as a PR" to React Native, but Tamagui already runs its own style runtime on native, so why not make grid work whenever you use that runtime? Would it add real overhead? And the same question for multi-value shorthands like `margin: "10px 20px"`.
+Researched 2026-09-14. Owner question: grid is "already up as a PR" to React Native, but Tamagui already runs its own style runtime on native, so why not make grid work whenever you use that runtime? Would it add real overhead? And the same question for multi-value shorthands like `margin: "10px 20px"`.
 
 Claim labels: **RAN** (I ran it, output quoted), **TESTED** (several ways, named), **INFERRED** (from named things I read or ran), **GUESSED** (fits, unverified).
 
@@ -36,7 +36,7 @@ Takeaway: the Yoga work is active and staffed at Meta, but only the type/API lay
 - `display` accepts `grid`/`inline-grid` in v3 types (commit fffcaafe2a). On native, `display: "grid"` is **not** filtered: probe output `{"display":"grid","gridTemplateColumns":"repeat(3, 1fr)","gridColumn":"span 2","gap":8} => {"display":"grid","gap":8}` (RAN). RN then parses it as Flex. The user gets a column stack with no Tamagui warning (INFERRED from the RN parser code).
 - Downstream workaround: `~/chat/src/interface/grid/Grid.native.tsx` ignores `columns` and `minItemWidth` and renders `<XStack flexWrap="wrap" gap>` (READ). That is the de facto native grid today, and it loses the column count.
 
-Real grid usage in Nate's repos (rg over soot, chat, tamagui.dev, READ):
+Real grid usage in downstream repos (rg over soot, chat, tamagui.dev, READ):
 
 | Pattern | Examples | Emulation tier |
 | --- | --- | --- |

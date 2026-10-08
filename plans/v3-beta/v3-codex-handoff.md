@@ -1,6 +1,6 @@
 # V3 style engine: handoff to the Codex-led fleet
 
-Date: 2026-08-28. Written by the outgoing Fable owner session at Nate's
+Date: 2026-08-28. Written by the outgoing Fable owner session at the owner's
 direction. Audience: a Codex Sol xhigh lead with zero prior context. The
 source of truth for the design is `v3-style-engine-plan.md` in this directory;
 this document is the execution state on top of it.
@@ -85,7 +85,7 @@ per owner rulings (commits stay separately green for bisect).
 3. Clause-heavy corpus timing, paired same-run (benchmark-get-split-styles /
    profile-hotpath scenarios; never compare to quoted numbers).
 
-### The standing size-gate ruling (owner-set, Nate-visible)
+### The standing size-gate ruling (owner-set, owner-visible)
 
 The plan's directional gate said the processor artifact falls; it grows.
 Ruling: **if the paired clause-heavy timing shows a real win, the gate bends**

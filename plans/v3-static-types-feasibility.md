@@ -1,6 +1,6 @@
 # V3 static types: what can be typed, what it costs, what it must not be
 
-Lane O1, 2026-07-31. Question from Nate: can at least some v3 types work
+Lane O1, 2026-07-31. Owner question: can at least some v3 types work
 statically, for the statically-known subset of tailwind class strings and/or
 Tamagui-mode flat value strings, with working autocomplete?
 
@@ -582,12 +582,12 @@ is affordable and it is a real gain over today.
 
 Two concrete follow-ups, in priority order:
 
-1. **Approved (Nate, 2026-08-01).** Give `background` a color-aware value type
+1. **Approved (owner, 2026-08-01).** Give `background` a color-aware value type
    so `bg` regains theme tokens (`ColorTokens | Properties['background']`,
    prototyped above). Users get less autocomplete for using the shorthand the
    docs recommend. It is worth more than anything else in this document and it
    measures free. The earlier veto covered clause subsets only, never this.
-2. **Revised ruling (Nate, 2026-08-01): one modifier level was approved only if
+2. **Revised ruling (owner, 2026-08-01): one modifier level was approved only if
    it covered every fixed prefix family at once.** The original color/space-only
    `` `${StateModifier}:${Token}` `` proposal was vetoed because it offered
    `hover:` and nothing else, which is not worth a compile cost. The shape that

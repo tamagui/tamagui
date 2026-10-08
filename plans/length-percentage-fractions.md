@@ -4,7 +4,7 @@ Proposal. Engine-level value, not a Tailwind class special case.
 
 Today `w-1/2` and `inset-1/2` become `50%` in `@tamagui/tailwind` (`tailwindSizingValue`). The style engine never sees `1/2`. `resolvePayload` treats `4/8` as literal text on purpose, so `width="1/2"` does not work as a Tamagui prop.
 
-Nate's bar: a real engine feature, usable on any matching property, not a hardcoded Tailwind cheat sheet. AGY critiques this before we implement.
+Acceptance bar: a real engine feature, usable on any matching property, not a hardcoded Tailwind cheat sheet. AGY critiques this before we implement.
 
 ## Rule
 

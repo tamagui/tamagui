@@ -1,6 +1,6 @@
 # is_X non-engine sweep (Codex worker spec)
 
-Owner decision (Nate, relayed 2026-08-28): fully kill displayName-derived
+Owner decision (relayed 2026-08-28): fully kill displayName-derived
 `is_X` className generation. The ENGINE-side removal (getSplitStyles /
 createComponent emission) belongs to r6416 and lands inside the size-delete
 slices on `cp3-engine`. This spec covers the NON-ENGINE surfaces a worker can
@@ -23,7 +23,7 @@ attribute the component already renders, or gains one:
   `is_SheetContainer` (~12 uses), `is_SliderTrack`, `is_ToggleGroupItem`.
 - replacement policy: prefer an existing `data-testid`; else add a
   `testID` to the component instance in the fixture; for ui-package
-  INTERNAL selectors (css that targets is_X), replace per Nate's design with
+  INTERNAL selectors (css that targets is_X), replace per the owner design with
   ordinary className defaults declared in `styled()` — e.g.
   `styled(View, { name: 'SheetContainer', className: 'tm-sheet-container' })`
   style opt-in classes, NOT generated names.
@@ -45,7 +45,7 @@ resolve with the engine-side removal, leave them red.
 
 ## 3. core View/Text literal defaults (decide + report)
 
-Nate allowed `is_View` / `is_Text` to survive as LITERAL defaults if truly
+The owner allowed `is_View` / `is_Text` to survive as LITERAL defaults if truly
 required. Find what actually depends on them (`grep -rn "is_View\|is_Text"`
 outside engine + snapshots), report the dependents, and recommend keep-or-drop
 per dependent. Make no change without reporting first.

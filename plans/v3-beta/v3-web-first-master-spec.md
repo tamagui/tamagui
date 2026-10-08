@@ -77,7 +77,7 @@ This enables zero-friction, 100% universal interop with any native library in th
 
 ### C. The CSS Reset Mystery: JavaScript vs CSS
 
-Nate requested clarity on how Tamagui resets element styles compared to React Strict DOM, and whether resets belong in JavaScript or CSS.
+Owner question: how Tamagui resets element styles compared to React Strict DOM, and whether resets belong in JavaScript or CSS.
 
 #### 1. How Tamagui Works Today:
 Tamagui currently handles resets in three distinct places:
