@@ -1487,6 +1487,8 @@ export function createTamaguiCompilerHost(
     component: LoweringComponent
   ): boolean => {
     const staticConfig = component.staticConfig as StaticConfig
+    // props explicitly declared in inlineProps are not style props, they're passthrough receiver props
+    if (staticConfig.inlineProps?.has(name)) return false
     const validStyles =
       staticConfig.validStyles ||
       (staticConfig.isInput

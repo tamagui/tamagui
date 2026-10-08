@@ -155,6 +155,14 @@ export const App = ({ dynamic }) => (
       ({ moduleName }) => moduleName === '@tamagui/core'
     )?.nameToInfo.View
     expect(viewInfo).toBeTruthy()
+    // create a fixture view with marker declared as an inline prop (passthrough receiver prop)
+    const fixtureViewInfo = viewInfo && {
+      ...viewInfo,
+      staticConfig: {
+        ...viewInfo.staticConfig,
+        inlineProps: new Set([...(viewInfo.staticConfig.inlineProps || []), 'marker']),
+      },
+    }
     const frontend = new MetroCompilerFrontend({
       projectRoot,
       cacheRoot,
@@ -163,7 +171,9 @@ export const App = ({ dynamic }) => (
       loadCompilerProject: async () => ({
         projectInfo: {
           ...loadedProject,
-          components: [{ moduleName: '@fixture/ui', nameToInfo: { View: viewInfo! } }],
+          components: [
+            { moduleName: '@fixture/ui', nameToInfo: { View: fixtureViewInfo! } },
+          ],
         },
         componentModules: [{ moduleName: '@fixture/ui', id: uiPath }],
         generation: 'e4-native-partial-v1',
@@ -288,13 +298,21 @@ export const buildEnvironment = {
       ({ moduleName }) => moduleName === '@tamagui/core'
     )?.nameToInfo.View
     expect(viewInfo).toBeTruthy()
+    // create a fixture view with marker declared as an inline prop (passthrough receiver prop)
+    const fixtureViewInfo = viewInfo && {
+      ...viewInfo,
+      staticConfig: {
+        ...viewInfo.staticConfig,
+        inlineProps: new Set([...(viewInfo.staticConfig.inlineProps || []), 'marker']),
+      },
+    }
     const compilerProject = {
       projectInfo: {
         ...loadedProject,
         components: [
           {
             moduleName: '@fixture/ui',
-            nameToInfo: { View: viewInfo! },
+            nameToInfo: { View: fixtureViewInfo! },
           },
         ],
       },
