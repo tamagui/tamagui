@@ -97,6 +97,19 @@ describe('webpack-tests', () => {
   test('8. styleExpansions', () => {
     const { renderTrue } = getTest('Test8')
     const { container } = renderTrue()
+    const nested = container.querySelector('span > div > div > div')!
+    expect(nested).toBeTruthy()
+    const style = window.getComputedStyle(nested)
+    expect(style.backgroundColor).toBe('rgb(255, 255, 255)')
+    expect(style.color).toBe('rgb(0, 0, 255)')
+    expect(style.inset).toBe('0px')
+    expect(style.position).toBe('relative')
+    expect(window.getComputedStyle(nested.parentElement!).backgroundColor).toBe(
+      'rgb(255, 0, 0)'
+    )
+    for (const prop of ['backgroundColor', 'color', 'inset', 'position']) {
+      expect(nested.hasAttribute(prop)).toBe(false)
+    }
     expect(snapshotOf(container)).toMatchSnapshot()
   })
 
