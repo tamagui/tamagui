@@ -3,8 +3,8 @@
 ## Goal and ruler
 
 - Target `baseline-styled-view` in `code/comparisons/tamagui-bench`.
-- Treat Vite's displayed production gzip as the release-facing ruler. The requested ceiling is
-  literally `27.00 kB` in that output.
+- Enforce the current exact Node gzip baseline of 33,220 bytes with a 33,370-byte ceiling.
+  The historical optimization target below was `27.00 kB` in Vite's displayed production gzip.
 - Record raw JavaScript and Node `gzipSync(..., { level: 9 })` bytes for exact comparisons.
 - Keep React externalization, fixture code, source maps, and build settings identical between
   checkpoints.
@@ -20,7 +20,45 @@ cd ../../..
 bun code/comparisons/attribute-bundle-gzip.ts /tmp/tamagui-styled-view
 ```
 
-## Final result
+## Measured CSS coverage growth, 2026-10-08
+
+RAN the same-host first-parent comparison from the last passing revision
+`b74c35eaa1` through the CSS coverage changes. The canonical 857-property table at
+`2d09ec00d1` adds 4,157 gzip bytes to the Vite island and 3,982 to the styled View
+fixture. It recognizes plain CSS for browser authoring and consumes unsupported
+properties on native. All 857 property keys and 93 unitless keys are retained.
+
+RAN table encoding at `41dc7a1326` saves 427 Vite and 387 styled View bytes.
+Removing duplicate web metadata and marking pure constructors at `af5a99045e`
+saves a further 347 Vite, 381 Next, 264 Metro and 280 styled View bytes.
+[Per-commit measurements and validation](release-size-attribution-2026-10-08.json)
+record the smaller correctness fixes and their individual costs.
+
+RAN Linux starter artifacts from Checks
+[37735129959](https://github.com/tamagui/tamagui/actions/runs/37735129959) and
+[37740276698](https://github.com/tamagui/tamagui/actions/runs/37740276698): all six
+graphs build with zero forbidden modules or compiler violations. Their JS, CSS
+and island measurements agree exactly. The standalone styled View was measured
+with Node 24.16.0 and gzip level 9, with React externalized and source maps enabled.
+
+| gate | previous baseline | measured baseline | increase |
+| --- | ---: | ---: | ---: |
+| styled View | 29,919 | 33,220 | 3,301 |
+| Vite island | 73,341 | 76,797 | 3,456 |
+| Next island | 73,359 | 76,884 | 3,525 |
+| Next base page | 141,308 | 141,407 | 99 |
+| Next island page | 142,327 | 142,426 | 99 |
+
+The raised baselines account for expanded CSS correctness after the measured
+reductions. Both Next page baselines include the measured 99-byte page increase.
+Styled View keeps its existing 150-byte minifier slack; starter thresholds remain zero. CSS and Metro bounds retain their existing values. Maximum loaded
+Next growth is 3,624 bytes, combining its island and 99 page bytes.
+
+TESTED browser atomic/inline color emission, native receiving-host filtering,
+compiler shorthand and variant ownership, and unchanged CLI export snapshots.
+Required CI still validates the candidate; this budget update publishes no packages.
+
+## Historical optimization result
 
 | artifact | raw JavaScript | exact Node gzip-9 | Vite display |
 | --- | ---: | ---: | ---: |

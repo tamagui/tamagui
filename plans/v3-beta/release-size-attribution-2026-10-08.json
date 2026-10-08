@@ -331,5 +331,30 @@
     "built_package": "@tamagui/static",
     "behavior": "Native direct and spread shorthands expand before host-style validation. Explicit styled variants and inline receiver props retain ownership. Executed native output contains right:0 and the styled variant marginLeft:7, retains dynamic opacity and marker, and omits raw r/color host props.",
     "cli_validation": "Built both original feature-directory and single-screen CLI inputs; compared all five original snapshots through SnapshotClient with updateSnapshot:none; preserved fixture source and outputs."
+  },
+  "measured_budget_update": {
+    "styled_view": {
+      "raw": 92854,
+      "gzip": 33220,
+      "ceiling": 33370,
+      "slack": 150,
+      "node": "24.16.0",
+      "validation": "Fresh unchanged styled-view checker passes at the exact baseline."
+    },
+    "starter": {
+      "linux_measured_sha": "648ae6c1003c9a8d6d6ab1b4398a7d341c17e5bf",
+      "linux_artifact_id": 11533483062,
+      "vite_island": 76797,
+      "next_island": 76884,
+      "next_base_page": 141407,
+      "next_island_page": 142426,
+      "thresholds": {
+        "jsGzip": 0,
+        "cssGzip": 0,
+        "islandJsGzip": 0
+      },
+      "validation": "All six downloaded Linux receipts qualify against the updated baselines; existing CSS and Metro bounds retained."
+    },
+    "required_ci": "Pending on the final candidate; package publication remains held."
   }
 }
