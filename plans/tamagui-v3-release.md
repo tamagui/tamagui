@@ -90,3 +90,52 @@ RAN parent artifact probe under a directly invoked Node 24.16.0: removing the ca
 No ceiling, assertion, retry or skip was changed. Source publication and main merge remain held. Checks, Registry, Detox and Maestro can validate a v3-prefixed draft; Release only publishes on a v3-beta push or an explicitly authorized dispatch. Site deployment and npm tarball verification remain pending.
 
 RAN after the Next pin and regenerated HOC consumer declarations: root typecheck, lint and checks pass; the critical-advisory gate reports no critical advisories and the CSS generator is current. Evidence: /tmp/tamagui-v3-{types,lint,check}-next.log, /tmp/tamagui-v3-advisories.log, /tmp/tamagui-v3-css-current.log. The coordinator has a request for a dedicated bundle optimization lane. This session retains draft CI ownership while that assignment is pending.
+
+## Owner-directed size attribution, 2026-10-08
+
+Nate, relayed by the coordinator: "it must have grown 4 kB, that is quite a lot. Lets look at what changed since it passed. I could go up potentially one or two [KB] cause we have added and fixed some correctness but I dont know about the whole four."
+
+Trace the growth from the last passing measurement, report each contributing commit and measured bytes, remove avoidable overhead while preserving correctness, and propose any remaining budget increase of at most 2 KB. Keep the current ceilings unchanged until approval. The direct main merge and release hold remains in force.
+
+RAN: GitHub job 112597094542 in Checks 37560688968 passed the starter size gate at b74c35eaa1ed4af8bb7c92fc36aad6fc27c0fee0, immediately before plain CSS support commit 2d09ec00d1. Saved job conclusions: /tmp/tamagui-v3-last-size-jobs.json. Reproduce that revision and successors on this host with Node 24.16.0 before assigning byte costs. The historical worktree /Users/n8/.worktrees/tamagui-v3-release-v3-size-bisect is retained under this session for measurements.
+
+### Same-host commit measurements
+
+RAN: rebuilt every first-parent revision from the last passing starter job to the current draft with frozen dependencies, Node 24.16.0, production Vite 8.2.2 and gzip level 9 on darwin-arm64. Changed helper/web/icon packages were rebuilt between revisions. Each measurement uses the actual DetailsIsland.js emitted by the unchanged starter build. Full receipts and artifacts: /tmp/tamagui-v3-bisect/results.json and /tmp/tamagui-v3-bisect/<sha>-island.js. Repeating those exact builds must reproduce the deltas to support the attribution. These are cumulative commit deltas; gzip contributions are not independent/additive estimates from removed fragments.
+
+| Commit | Vite island gzip bytes | Change from preceding revision |
+| --- | ---: | ---: |
+| b74c35eaa1 (site: replace mode popover with menu, format tailwind imports, transparent hero code, and fix mobile typography) | 73326 | +0 |
+| 2d09ec00d1 (fix(core): accept plain CSS props while preserving native and component owners) | 77483 | +4157 |
+| 3b0141f9b5 (fix(core): retain declared context and variant defaults across CSS widening) | 77489 | +6 |
+| 99e031b61d (site: format current beta sources for the required workspace lint) | 77489 | +0 |
+| 2d28db9d69 (fix(workspace): declare the CLI used by the root dependency check) | 77489 | +0 |
+| f0c7d1c115 (fix(types): publish the generated context and variant default declarations) | 77489 | +0 |
+| dc19406c69 (docs(core): record the integrated property checks and measured pipeline cost) | 77489 | +0 |
+| 36a555c18e (fix(core): preserve disabled behavior through styled wrappers) | 77495 | +6 |
+| a4cedac75c (fix(toast): preserve viewport edge offset object types) | 77495 | +0 |
+| edafb16783 (fix(core): styled options keep each member's props for a union parent) | 77495 | +0 |
+| e1886583a1 (fix(core): themes rebuilt from css keep their authored scheme) | 77545 | +50 |
+| f5d0ef922f (fix(core): preserve receiver props through styles and HOC composition) | 77571 | +26 |
+| 6137851605 (chore: port formatter exclusion and record v3 fix provenance) | 77571 | +0 |
+| b2f160f5e3 (site: verify current docs label and expanded navigation) | 77571 | +0 |
+| 3e6909e14c (chore: port Next security pin to v3) | 77571 | +0 |
+| 41dc7a1326 (perf(helpers): encode canonical CSS keys with the shared parser) | 77144 | -427 |
+| 8036c809ec (fix(types): rebuild HOC consumer declarations) | 77144 | +0 |
+| 4694f7d7e5 (docs: record draft CI scope and publication hold) | 77144 | +0 |
+
+RAN: plain CSS support contributes 4157 bytes at 2d09ec00d1. Context, disabled, scheme hydration and receiver/color repairs together contribute 88 bytes. The committed encoding removes 427 bytes. Net growth since the passing revision is 3818 bytes; the current gate excess is 3803 because that revision had 15 bytes of headroom. The Next security pin contributes zero Vite island bytes.
+
+The architecture report's earlier CSSOM design explicitly remains an unimplemented proposal. It is not authorization to replace canonical classification with engine-dependent support. Its asserted performance/size estimates are not established by this session. Unknown vendor/obsolete properties and SSR/client classification require behavioral proof before using that design; native must still recognize unsupported CSS names so they are consumed instead of forwarded.
+
+### Budget proposal, held for approval
+
+Propose at most 2000 additional gzip bytes per loaded integration: Vite island 73341 to 75341; Next island 73359 to 75259 (+1900), reserving 100 bytes for the observed 99-byte framework/page growth. Next base page 141308 to 141407 and island page 142327 to 142426 would be the exact page counts if the historical comparison confirms the security pin caused them. Metro and CSS ceilings would stay as recorded. This proposal is not sufficient to pass the current source: Vite still needs 1803 bytes removed and Next needs 2006 island bytes removed. Do not update the baselines or claim readiness until those cuts are proven and Nate approves the concrete remainder.
+
+RAN diagnostic copies only: vendor grouping produces a 76541-byte Vite island; a combined prefix grammar and vendor mask produces 76468. Both reproduce all 857 keys, their insertion order and true values under Node 24.16.0, but add decoding and sorting work and have not passed the full gate. Character/word DAG encodings, token substitution and alternate ordering do worse. No such decoder was applied to source. Removing vendor entries produces 75723 while dropping 326 recognized names, still above the proposed Vite ceiling; this is a destructive diagnostic, not a valid repair.
+
+RAN Team Machine historical prompt lookup for v3-web-align (r31705): the direction explicitly says to drop CSSOM discovery because it was rejected in opus-web-first-review.md. Saved record: /tmp/tamagui-v3-cssom-rejection-prompts.txt. Keep deterministic property recognition across platforms.
+
+RAN on the full current draft with Next 16.3.8: all six starter builds complete; Vite island remains 77144, Next island 77265 and Metro island 122273. Next page JS is 141407 base and 142426 with island, 99 bytes above each unchanged ceiling. Forbidden module, compiler and artifact-family checks pass. Evidence: /tmp/tamagui-v3-size-current-full.log. Historical full measurement and dead-construction annotation measurement remain pending through resource admission.
+
+Draft CI observation: GitHub has only Maestro push run 37725207891 for 4694f7d7e5, with its iOS build successful and tests running. Checks and Registry workflows are active but their push runs are absent. Dispatched the nonpublishing Checks workflow explicitly at this draft SHA, run 37728908553. This dispatch does not publish or deploy. Manual Checks skips the push/PR-only starter/hydration jobs; local starter evidence above remains red. No release workflow, Site workflow or main mutation was requested.
