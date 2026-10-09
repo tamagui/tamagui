@@ -938,7 +938,8 @@ function sameTransitionConfig(a: TransitionConfig, b: TransitionConfig) {
   const aKeys = Object.keys(a)
   if (aKeys.length !== Object.keys(b).length) return false
   for (const key of aKeys) {
-    if (a[key as keyof TransitionConfig] !== b[key as keyof TransitionConfig]) return false
+    if (a[key as keyof TransitionConfig] !== b[key as keyof TransitionConfig])
+      return false
   }
   return true
 }
