@@ -503,7 +503,7 @@ function collectFiles(inputs: readonly string[]): {
       jsx: 4,
       target: ScriptTarget.ES2020,
       module: ModuleKind.ESNext,
-      moduleResolution: ModuleResolutionKind.NodeJs,
+      moduleResolution: ModuleResolutionKind.Bundler,
       skipLibCheck: true,
       strictNullChecks: true,
       baseUrl: projectRoot,
