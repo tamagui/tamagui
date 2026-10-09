@@ -79,6 +79,17 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   existing native component tests pass with unchanged assertions. A cold
   kitchen-sink typecheck also passes.
 
+- RAN: the native iOS build removes RN's legacy architecture headers.
+  Gesture Handler 2.32 unconditionally imports `RCTRootContentView.h`, which
+  is absent in that build. The raw CI artifact and focused local pod-scheme
+  compile show the same missing header. Gesture Handler 3.3 removes that
+  import and supports the current One peer requirement; its upstream detector
+  retains support for the existing Gesture builder API. The focused pod-scheme
+  build passes with `RCT_REMOVE_LEGACY_ARCH=1`, alongside pod installation,
+  cold kitchen-sink and full repo typechecks, all 73 native component tests,
+  frozen installation, and workspace dependency checks. Full native
+  interactions remain CI gates.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The

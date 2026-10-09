@@ -87,7 +87,7 @@
     "react-hook-form": "^7.51.0",
     "react-native": "0.87.1",
     "react-native-actions-sheet": "^10.1.2",
-    "react-native-gesture-handler": "~2.32.0",
+    "react-native-gesture-handler": "3.3.0",
     "react-native-keyboard-controller": "1.21.11",
     "react-native-launch-arguments": "^4.1.1",
     "react-native-nitro-modules": "^0.36.5",
