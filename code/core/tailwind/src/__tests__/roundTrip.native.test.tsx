@@ -11,6 +11,7 @@
 process.env.TAMAGUI_TARGET = 'native'
 
 import { beforeAll, describe, expect, test, vi } from 'vitest'
+import { Dimensions } from 'react-native'
 import { defaultConfig as v6 } from '@tamagui/config/v6'
 import { tamaguiToTailwind } from '@tamagui/to-tailwind'
 
@@ -302,6 +303,14 @@ describe('native — tailwind values through the v6 config', () => {
     expect(nativeStyle(Text, 'text-xs leading-8').lineHeight).toBe(32)
     expect(nativeStyle(Text, 'leading-8 text-xs').lineHeight).toBe(32)
     expect(nativeStyle(Text, 'text-lg leading-none').lineHeight).toBe(18)
+  })
+
+  test('screen and dynamic viewport sizes are the window', () => {
+    const { width, height } = Dimensions.get('window')
+    expect(nativeStyle(View, 'h-screen').height).toBe(height)
+    expect(nativeStyle(View, 'min-h-dvh').minHeight).toBe(height)
+    expect(nativeStyle(View, 'w-svw').width).toBe(width)
+    expect(nativeStyle(View, 'size-lvh')).toMatchObject({ width: height, height })
   })
 
   test('ring and shadow colors resolve color tokens', () => {

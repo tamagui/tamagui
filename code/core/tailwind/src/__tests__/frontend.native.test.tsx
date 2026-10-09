@@ -548,7 +548,6 @@ describe('web-only candidates', () => {
     'truncate',
     'text-clip',
     'object-cover',
-    'w-screen',
     'h-fit',
     'block',
     'inline-flex',
