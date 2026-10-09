@@ -131,6 +131,17 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   independently confirms the label and Xcode path. Full app compilation and
   native interactions remain acceptance gates.
 
+- RAN: the full SDK 27 kitchen app build reaches Expo 57.0.24 and fails on
+  removed RN 0.87 factory delegate declarations. Expo 57.0.27 has identical
+  source. The published Expo 58.0.7 factory configuration enables the new
+  architecture directly and removes the obsolete bridge hooks. That exact
+  configuration block is backported into Expo 57.0.24 through the repository's
+  package patch mechanism. All six direct Expo consumers pin the patched
+  version. Runtime configuration and root-view customization are retained.
+  Frozen installation and workspace dependency checks pass. The Expo native
+  target compiles in 52.6 seconds with the config preservation repair also
+  applied. Full app compilation and interactions remain acceptance gates.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The
