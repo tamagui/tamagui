@@ -114,6 +114,23 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   tasks and assertions. The init script is already part of the native
   fingerprint, so the packaging change invalidates cached builds.
 
+- RAN: the shared iOS builder uses Xcode 26.4.1, while the installed One
+  canary's source commit `3c811296a` already builds and generates its native
+  bindings with Xcode 27. SDK 26 fails on the registered factory types in
+  OneNativeStyle and the generated C++ vector bridge. The original published
+  One pod-scheme build passes locally on SDK 27 without source changes.
+  The shared builder now declares Xcode 27.0 and exports that version to both
+  native test workflows. All three use GitHub's documented `xcode-27` image.
+  Native app, Pods, and intermediate build caches include the Xcode version,
+  and the pre-fingerprint includes the builder configuration. CI creates the
+  existing requested device types on iOS 27 so the matrix also works when a
+  device is absent from the image's default simulator list. Boot errors fail
+  the job. YAML parsing, shell syntax, and the existing five-shard coverage
+  check pass. Installed actionlint adds only its outdated runner-label
+  diagnostics to existing baseline findings; GitHub's runner inventory
+  independently confirms the label and Xcode path. Full app compilation and
+  native interactions remain acceptance gates.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The

@@ -113,7 +113,7 @@ jobs:
       - build-ios
       - validate-ios-detox-shards
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: macos-26
+    runs-on: xcode-27
     timeout-minutes: 90
     strategy:
       fail-fast: false
@@ -133,7 +133,7 @@ jobs:
           fetch-depth: 1
 
       - name: Set Xcode version
-        run: sudo xcode-select -s /Applications/Xcode_26.5.app
+        run: sudo xcode-select -s "/Applications/Xcode_${{ needs.build-ios.outputs.xcode-version }}.app"
 
       - name: Restore Built App from Cache
         id: restore-ios-cache
@@ -156,23 +156,13 @@ jobs:
           xcrun simctl shutdown all 2>/dev/null || true
           sleep 1
 
-          # find requested simulator
+          # create the requested hardware on the build's simulator runtime.
           DEVICE_NAME="${{ matrix.ios_device.name }}"
-          DEVICE_ID=$(xcrun simctl list devices available -j | jq -r --arg name "$DEVICE_NAME" '
-            .devices | to_entries[]
-            | select(.key | contains("iOS"))
-            | .value[]
-            | select(.name == $name)
-            | .udid' | head -1)
-
-          if [ -z "$DEVICE_ID" ]; then
-            echo "::error::$DEVICE_NAME simulator not found"
-            xcrun simctl list devices available
-            exit 1
-          fi
+          DEVICE_TYPE="com.apple.CoreSimulator.SimDeviceType.${DEVICE_NAME// /-}"
+          DEVICE_ID=$(xcrun simctl create "$DEVICE_NAME CI" "$DEVICE_TYPE" com.apple.CoreSimulator.SimRuntime.iOS-27-0)
 
           echo "Booting simulator: $DEVICE_NAME ($DEVICE_ID)"
-          xcrun simctl boot "$DEVICE_ID" || true
+          xcrun simctl boot "$DEVICE_ID"
           echo "SIM_DEVICE_ID=$DEVICE_ID" >> $GITHUB_ENV
           echo "DETOX_DEVICE=$DEVICE_NAME" >> "$GITHUB_ENV"
           echo "DETOX_DEVICE_UDID=$DEVICE_ID" >> "$GITHUB_ENV"
