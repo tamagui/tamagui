@@ -22,9 +22,18 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   native CSS events. The native unit harness selects the JS initializer for
   that mock. The existing components native suite passes all 73 tests across
   22 files with unchanged assertions.
-- RAN: Android fails applying AGP because it requires Gradle 9.4.1 while Expo
-  57 generates 9.3.1. A prebuild plugin sets the supported wrapper version in
-  the generated app. Regeneration produces 9.4.1.
+- RAN: RN 0.87 pulls AGP 9.2.1 into the app build, but Expo 57 compiles
+  against the AGP 8 library DSL. Raising Gradle only uncovers incompatible
+  Kotlin initialization and the removed `LibraryDefaultConfig.setTargetSdk`
+  API. The shared Android init script pins AGP 8.12.0, the version used by
+  Expo 57's supported React Native toolchain, for app build scripts and the
+  RN plugin compiler. Expo plugins retain their authored AGP 8.5 compile
+  dependencies, whose DSL type bounds their Kotlin source requires. It retains the existing Detox JNI packaging rule and is used
+  by CI and local Detox. Expo libraries declaring custom BuildConfig fields
+  also require BuildConfig enabled under this AGP version. `gradlew help`
+  with the shared init script completes with `BUILD SUCCESSFUL` after all
+  package plugins configure. Expo fingerprint includes the script so
+  compiler configuration changes invalidate native artifact caches.
 - RAN: the installed fast-flow-transform 0.0.3 rejects Flow `readonly` fields
   in RN 0.87 `Event.js`, reproducing the native production bundle CI error.
   An upstream One repair and published artifact are needed; this is routed to
@@ -33,10 +42,21 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The
-Gradle plugin reads and writes one small generated file during prebuild. The
-initializer selection runs only in the native JavaScript unit harness.
+Android init script configures build dependency resolution and packaging once
+per Gradle project. The initializer selection runs only in the native
+JavaScript unit harness. Pod installation completes with 119 pods after the
+animation dependency alignment. Full app compilation and interactions remain
+CI acceptance gates.
 
 Focused validation precedes each commit. CI owns complete native compilation,
 the native interaction suites, and the full Checks matrix. Logs and temporary
 probes stay outside tracked source. Future optimization worth evaluating:
 validate native dependency compatibility before paying for prebuild and builds.
+
+The CI watcher accepts repeated `--workflow <name>` arguments to watch only the
+required workflows. It requires every selected workflow to appear before it
+can report a verdict. Run it detached through Team Machine, for example:
+
+```sh
+tm wait --exec "bun scripts/watch-ci.ts --sha <commit> --workflow Checks --workflow 'Native Tests (Detox)' --workflow 'Test iOS Native (Maestro)'" --timeout 50m
+```

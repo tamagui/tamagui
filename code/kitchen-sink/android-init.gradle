@@ -1,0 +1,33 @@
+// expo 57 uses the agp 8 library dsl. pin the app plugin classpath so react
+// native's transitive agp 9 cannot replace that api at runtime.
+allprojects {
+    buildscript.configurations.configureEach {
+        resolutionStrategy.force('com.android.tools.build:gradle:8.12.0')
+    }
+    configurations.configureEach {
+        resolutionStrategy.eachDependency {
+            if (requested.group == 'com.android.tools.build' &&
+                requested.name == 'gradle' && requested.version == '9.2.1') {
+                useVersion('8.12.0')
+            }
+        }
+    }
+
+    // expo libraries declare custom buildconfig fields.
+    plugins.withId('com.android.library') {
+        android.buildFeatures.buildConfig = true
+    }
+
+    // detox and react native both package this jni library.
+    afterEvaluate {
+        if (it.hasProperty('android')) {
+            android {
+                packagingOptions {
+                    jniLibs {
+                        pickFirsts += ['**/libfbjni.so']
+                    }
+                }
+            }
+        }
+    }
+}
