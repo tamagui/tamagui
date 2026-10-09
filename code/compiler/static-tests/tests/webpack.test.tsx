@@ -97,6 +97,18 @@ describe('webpack-tests', () => {
   test('8. styleExpansions', () => {
     const { renderTrue } = getTest('Test8')
     const { container } = renderTrue()
+
+    const views = container.querySelectorAll<HTMLElement>('.is_View')
+    expect(views).toHaveLength(3)
+    expect(window.getComputedStyle(views[1]!).backgroundColor).toBe('rgb(255, 0, 0)')
+
+    const nestedView = views[2]!
+    const nestedStyle = window.getComputedStyle(nestedView)
+    expect(nestedStyle.backgroundColor).toBe('rgb(255, 255, 255)')
+    expect(nestedStyle.color).toBe('rgb(0, 0, 255)')
+    expect(nestedView.hasAttribute('color')).toBe(false)
+    expect(nestedView.style.color).toBe('')
+
     expect(snapshotOf(container)).toMatchSnapshot()
   })
 
