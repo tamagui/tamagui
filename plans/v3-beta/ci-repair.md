@@ -36,8 +36,13 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   compiler configuration changes invalidate native artifact caches.
 - RAN: the installed fast-flow-transform 0.0.3 rejects Flow `readonly` fields
   in RN 0.87 `Event.js`, reproducing the native production bundle CI error.
-  An upstream One repair and published artifact are needed; this is routed to
-  the assignment's coordinator.
+  The One v2-beta family is pinned to `2.0.0-0.canary.1791569029449`,
+  whose published manifests identify source `3c811296a6dc1b419cd120adbf98d6388a099dd1`.
+  Its shipped vite-flow delegates to the Hermes-backed compiler. Transforming
+  the actual Event.js with that artifact produces JavaScript with zero oxc
+  parser errors. The obsolete vxrn 1.21 patch is removed. Frozen installation
+  and workspace dependency checks pass. The full iOS bundle now reaches
+  resolution and exposes a separate navigation override conflict.
 
 ## cost and validation
 

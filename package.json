@@ -167,7 +167,7 @@
     "@react-navigation/native-stack": "7.14.10",
     "@react-navigation/routers": "7.5.3",
     "@swc/core": "1.14.0",
-    "@vxrn/mdx-rust": "1.20.4",
+    "@vxrn/mdx-rust": "2.0.0-0.canary.1791569029449",
     "@xmldom/xmldom": "0.8.13",
     "axios": "0.32.0",
     "basic-ftp": "5.3.1",
@@ -255,7 +255,6 @@
     "gray-matter@4.0.3": "patches/gray-matter@4.0.3.patch",
     "brace-expansion@5.0.6": "patches/brace-expansion@5.0.6.patch",
     "detox@20.47.0": "patches/detox@20.47.0.patch",
-    "vxrn@1.21.13": "patches/vxrn@1.21.13.patch",
     "react-native-ios-utilities@5.2.0": "patches/react-native-ios-utilities@5.2.0.patch",
     "react-native-worklets@0.12.2": "patches/react-native-worklets@0.12.2.patch"
   }
