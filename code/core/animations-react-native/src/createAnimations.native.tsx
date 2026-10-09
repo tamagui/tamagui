@@ -21,15 +21,7 @@ import type {
 import { useEvent } from '@tamagui/web'
 import { useThemeWithState } from '@tamagui/web/internal-runtime'
 import React from 'react'
-import {
-  Animated,
-  Easing,
-  processColor,
-  TextInput,
-  type ColorValue,
-  type Text,
-  type View,
-} from 'react-native'
+import { Animated, Easing, processColor, TextInput, type ColorValue } from 'react-native'
 
 import type { CreateAnimationsOptions } from './types'
 
@@ -170,13 +162,15 @@ const costlyToAnimateStyleKey = {
   ...colorStyleKey,
 }
 
-export const AnimatedView: Animated.AnimatedComponent<typeof View> = Animated.View
-export const AnimatedText: Animated.AnimatedComponent<typeof Text> = Animated.Text
+export const AnimatedView: typeof Animated.View = Animated.View
+export const AnimatedText: typeof Animated.Text = Animated.Text
 // a TextInput never inherits font size from an ancestor Text on native, so the
 // binding hook has to hand it a host that accepts animated nodes of its own.
 // built on first use: the compiler evaluates tamagui.config.ts against a
 // react-native stub whose Animated cannot make one, and never binds any text.
-let animatedTextInput: Animated.AnimatedComponent<typeof TextInput> | undefined
+let animatedTextInput:
+  | ReturnType<typeof Animated.createAnimatedComponent<typeof TextInput>>
+  | undefined
 
 export function useAnimatedNumber(
   initial: number

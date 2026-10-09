@@ -1007,6 +1007,21 @@ export function createTamaguiPlugins({
     name: 'tamagui',
     enforce: 'pre',
 
+    resolveId(source) {
+      if (
+        disableResolveConfig ||
+        tamaguiOptionsIn.platform === 'native' ||
+        isNative(this.environment)
+      ) {
+        return
+      }
+      // a framework can enable native environments alongside client and ssr.
+      // web svg resolution must still use the DOM entry in those environments.
+      if (source === 'react-native-svg' || source === '@tamagui/react-native-svg') {
+        return svgWebEntry()
+      }
+    },
+
     configureServer(_server) {
       server = _server
       // a new server owns a new watcher, so what the last one knew about is gone
@@ -1117,8 +1132,6 @@ export function createTamaguiPlugins({
                       resolve('@tamagui/proxy-worm'),
                     'react-native/Libraries/Utilities/codegenNativeComponent':
                       resolve('@tamagui/proxy-worm'),
-                    'react-native-svg': svgWebEntry(),
-                    '@tamagui/react-native-svg': svgWebEntry(),
                     ...(!useReactNativeWebLite && {
                       'react-native': resolve('react-native-web'),
                     }),

@@ -1,5 +1,6 @@
 import type { ViewProps } from '@tamagui/web';
 import type { ReactElement } from 'react';
+import type { PressableProps } from '@tamagui/react-native-types';
 interface UseRadioGroupParams {
     value?: string;
     defaultValue?: string;
@@ -52,6 +53,7 @@ export type RadioGroupContextValue = {
     native?: boolean;
     accentColor?: string;
 };
+type RadioEvent<K extends 'onKeyDown' | 'onFocus'> = Parameters<NonNullable<ViewProps[K]>>[0] | Parameters<NonNullable<PressableProps[K]>>[0];
 export declare const useRadioGroupItem: (params: UseRadioItemParams) => {
     providerValue: {
         checked: boolean;
@@ -121,8 +123,8 @@ export declare const useRadioGroupItem: (params: UseRadioItemParams) => {
                 }>>;
             }>;
         }>> | undefined;
-        onKeyDown?: import("@tamagui/helpers").EventHandler<import("react").KeyboardEvent<HTMLDivElement>> | undefined;
-        onFocus?: import("@tamagui/helpers").EventHandler<import("react").FocusEvent<HTMLDivElement, Element>> | undefined;
+        onKeyDown?: import("@tamagui/helpers").EventHandler<RadioEvent<"onKeyDown">> | undefined;
+        onFocus?: import("@tamagui/helpers").EventHandler<RadioEvent<"onFocus">> | undefined;
     };
     rovingFocusGroupAttrs: {
         asChild: 'except-style';
