@@ -1,12 +1,8 @@
 # Tamagui v3 stable release
 
-Owner direction, 2026-10-08, quoted by the coordinator: "All right, let's release Tamagui V3. I think the only thing is just to merge it cut the actual right version and I guess I should look over the website ... I think honestly at this point it's good enough we have to make sure Takeout is released and all that".
-
-Owner correction, 2026-10-08, directly to this session: "By the way, yeah don't release it until I say so don't merge it to main do not release it until I say so".
-
 The release is one line: v3-beta merged with the release draft, validated on one tip. The film and site present it as Tamagui 3, without beta wording. The release session also owns moving the primary domain to the v3 site.
 
-The correction revokes release authorization. Continue preparation and validation on a draft branch. Do not merge main, dispatch releases or publish packages. Do not push v3-beta because that branch automatically publishes canaries and betas. Stable publication and the dependent Takeout upgrade wait for the owner's new explicit word.
+Main merge and stable publication need the owner's direct word to the release session. Continue preparation and validation on a draft branch. Do not merge main, dispatch releases or publish packages. Do not push v3-beta because that branch automatically publishes canaries and betas. Stable publication and the dependent Takeout upgrade wait for the owner's new explicit word.
 
 ## Scope
 
