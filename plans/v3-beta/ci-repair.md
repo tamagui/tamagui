@@ -142,6 +142,18 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   target compiles in 52.6 seconds with the config preservation repair also
   applied. Full app compilation and interactions remain acceptance gates.
 
+- TESTED: Expo macro integration writes stale CocoaPods settings over the
+  `.xcconfig` files modified by RN's post-install hook, losing its modular
+  prebuilt header paths and module-map flags. The published Expo 58 integrator
+  reads the current file instead. Backport that disk read into the installed
+  `expo-modules-autolinking` 57.0.13 and pin the transitive version. The runtime
+  probe fails before repair, then preserves RN flags, inserts macro flags, and
+  leaves a repeated integration unchanged. Pod installation retains both flag
+  sets and the Expo target compiles on SDK 27 in 52.6 seconds. Frozen install,
+  workspace dependency checks, Ruby syntax, and diff checks pass. This avoids
+  disabling modular-header diagnostics. Full app and CI interaction gates
+  remain pending.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The

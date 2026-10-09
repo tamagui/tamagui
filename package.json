@@ -151,6 +151,7 @@
     "typescript": "7.0.2"
   },
   "overrides": {
+    "expo-modules-autolinking": "57.0.13",
     "@babel/core": "7.29.7",
     "@discordjs/rest": "2.6.1",
     "@grpc/grpc-js": "1.14.4",
@@ -252,6 +253,7 @@
     "detox@20.47.0": "patches/detox@20.47.0.patch",
     "react-native-ios-utilities@5.2.0": "patches/react-native-ios-utilities@5.2.0.patch",
     "react-native-worklets@0.12.2": "patches/react-native-worklets@0.12.2.patch",
-    "expo@57.0.24": "patches/expo@57.0.24.patch"
+    "expo@57.0.24": "patches/expo@57.0.24.patch",
+    "expo-modules-autolinking@57.0.13": "patches/expo-modules-autolinking@57.0.13.patch"
   }
 }
