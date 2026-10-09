@@ -1,13 +1,27 @@
-const shaFlag = Bun.argv.indexOf('--sha')
-const sha = shaFlag === -1 ? undefined : Bun.argv[shaFlag + 1]
+import { spawnSync } from 'node:child_process'
+import { setTimeout } from 'node:timers/promises'
+
+const shaFlag = process.argv.indexOf('--sha')
+const sha = shaFlag === -1 ? undefined : process.argv[shaFlag + 1]
+
+const workflows = new Set<string>()
+for (let index = 2; index < process.argv.length; index++) {
+  if (process.argv[index] === '--workflow') {
+    const name = process.argv[++index]
+    if (!name || name.startsWith('--')) {
+      console.error('--workflow requires a workflow name')
+      process.exit(2)
+    }
+    workflows.add(name)
+  }
+}
 
 if (!sha) {
-  console.error('usage: bun scripts/watch-ci.ts --sha <commit>')
+  console.error('usage: bun scripts/watch-ci.ts --sha <commit> [--workflow <name>]')
   process.exit(2)
 }
 
-const repositoryResult = Bun.spawnSync([
-  'gh',
+const repositoryResult = spawnSync('gh', [
   'repo',
   'view',
   '--json',
@@ -16,17 +30,17 @@ const repositoryResult = Bun.spawnSync([
   '.nameWithOwner',
 ])
 
-if (!repositoryResult.success) {
+if (repositoryResult.status !== 0) {
   console.error(repositoryResult.stderr.toString())
-  process.exit(repositoryResult.exitCode)
+  process.exit(repositoryResult.status ?? 1)
 }
 
 const repository = repositoryResult.stdout.toString().trim()
-const commitResult = Bun.spawnSync(['git', 'rev-parse', '--verify', `${sha}^{commit}`])
+const commitResult = spawnSync('git', ['rev-parse', '--verify', `${sha}^{commit}`])
 
-if (!commitResult.success) {
+if (commitResult.status !== 0) {
   console.error(commitResult.stderr.toString())
-  process.exit(commitResult.exitCode)
+  process.exit(commitResult.status ?? 1)
 }
 
 const commit = commitResult.stdout.toString().trim()
@@ -34,8 +48,7 @@ let terminalSince = 0
 let terminalRunIds = ''
 
 while (true) {
-  const result = Bun.spawnSync([
-    'gh',
+  const result = spawnSync('gh', [
     'run',
     'list',
     '--repo',
@@ -48,20 +61,40 @@ while (true) {
     'databaseId,status,conclusion,workflowName,url',
   ])
 
-  if (!result.success) {
+  if (result.status !== 0) {
     console.error(result.stderr.toString())
-    process.exit(result.exitCode)
+    process.exit(result.status ?? 1)
   }
 
-  const runs = JSON.parse(result.stdout.toString()) as Array<{
-    databaseId: number
-    status: string
-    conclusion: string
-    workflowName: string
-    url: string
-  }>
+  const allRuns = JSON.parse(result.stdout.toString())
+  if (
+    !Array.isArray(allRuns) ||
+    allRuns.some(
+      (run) =>
+        !run ||
+        typeof run.databaseId !== 'number' ||
+        typeof run.status !== 'string' ||
+        typeof run.conclusion !== 'string' ||
+        typeof run.workflowName !== 'string' ||
+        typeof run.url !== 'string'
+    )
+  ) {
+    console.error('github returned an invalid workflow run list')
+    process.exit(2)
+  }
 
-  if (runs.length > 0 && runs.every((run) => run.status === 'completed')) {
+  const runs = allRuns.filter(
+    (run) => workflows.size === 0 || workflows.has(run.workflowName)
+  )
+  const allWorkflowsPresent = [...workflows].every((name) =>
+    runs.some((run) => run.workflowName === name)
+  )
+
+  if (
+    allWorkflowsPresent &&
+    runs.length > 0 &&
+    runs.every((run) => run.status === 'completed')
+  ) {
     const runIds = runs
       .map((run) => run.databaseId)
       .sort((a, b) => a - b)
@@ -83,5 +116,5 @@ while (true) {
     terminalRunIds = ''
   }
 
-  await Bun.sleep(15_000)
+  await setTimeout(120_000)
 }
