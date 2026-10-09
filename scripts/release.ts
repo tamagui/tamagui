@@ -1060,6 +1060,7 @@ if (intoIdx !== -1) {
       destDirs: string[]
     }> = []
 
+    const targetModulesDir = await fs.realpath(join(targetDir, 'node_modules'))
     const byName = new Map(packages.map((pkg) => [pkg.name, pkg]))
     const selected = new Set<string>()
     const queue: string[] = []
@@ -1069,14 +1070,23 @@ if (intoIdx !== -1) {
       for (const { name } of packages) {
         const dir = join(modulesDir, name)
         if (!(await fs.pathExists(join(dir, 'package.json')))) continue
+        const resolvedDir = await fs.realpath(dir)
+        const relativeDir = path.relative(targetModulesDir, resolvedDir)
+        // retain package-manager links inside the consumer; never overwrite an external checkout.
+        const destDir =
+          relativeDir !== '..' &&
+          !relativeDir.startsWith(`..${path.sep}`) &&
+          !path.isAbsolute(relativeDir)
+            ? resolvedDir
+            : dir
         const found = copies.get(name) ?? []
-        found.push(dir)
+        if (!found.includes(destDir)) found.push(destDir)
         copies.set(name, found)
       }
       for (const entry of await fs.readdir(modulesDir, { withFileTypes: true })) {
         if (!entry.isDirectory()) continue
         const dir = join(modulesDir, entry.name)
-        if (entry.name === '.bun') {
+        if (entry.name === '.bun' || entry.name === '.pnpm') {
           for (const stored of await fs.readdir(dir, { withFileTypes: true })) {
             if (stored.isDirectory()) await visit(join(dir, stored.name, 'node_modules'))
           }

@@ -42,16 +42,16 @@ export type UnprefixedCSSProperties<Length = string | number> = Omit<
  */
 
 /** a length, a percentage, or `auto` — react-native's `DimensionValue` */
-type DimensionValue = number | 'auto' | `${number}%` | null
+type DimensionValue = number | string | null
 
 /** a color: a theme or token name, a CSS color, or a clause like `'a hover:b'` */
-type ColorValue = string
+type ColorValue = string | number | null
 
 /**
  * `color` and `outlineColor` also take the theme-value fallbacks, which include
  * a bare number.
  */
-type ThemeColorValue = string | number
+type ThemeColorValue = ColorValue
 
 /** a size token name, a CSS length, or `true` for the token named `true` */
 type SizeValue = number | string | true
@@ -151,15 +151,16 @@ interface TransformFunctions {
   scale: number
   scaleX: number
   scaleY: number
-  translateX: number | `${number}%`
-  translateY: number | `${number}%`
+  translate: readonly [number | string, number | string]
+  translateX: number | string
+  translateY: number | string
   skewX: string
   skewY: string
-  matrix: number[]
+  matrix: readonly number[]
 }
 
 type TransformFunction = {
-  [K in keyof TransformFunctions]: Pick<TransformFunctions, K> &
+  [K in keyof TransformFunctions]: Partial<Pick<TransformFunctions, K>> &
     Partial<Record<Exclude<keyof TransformFunctions, K>, undefined>>
 }[keyof TransformFunctions]
 
@@ -479,12 +480,12 @@ interface TextStyle {
   letterSpacing?: number
   lineHeight?: number | Px | `${number}`
   numberOfLines?: number
-  textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify'
+  textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify' | 'start' | 'end'
   textDecoration?: ShorthandString
   textDecorationColor?: ColorValue
   textDecorationDistance?: number
   textDecorationLine?: 'none' | 'underline' | 'line-through' | 'underline line-through'
-  textDecorationStyle?: 'solid' | 'double' | 'dotted' | 'dashed'
+  textDecorationStyle?: 'solid' | 'double' | 'dotted' | 'dashed' | 'wavy'
   textEmphasis?: Properties['textEmphasis']
   textOverflow?: Properties['textOverflow']
   textShadow?: ShorthandString
@@ -514,7 +515,7 @@ interface TransformStyle {
   scaleY?: number
   skewX?: string
   skewY?: string
-  transform?: string | readonly TransformFunction[]
+  transform?: string | readonly (TransformFunction | undefined)[]
   transformOrigin?:
     | PxOrPct
     | 'left'
@@ -529,14 +530,6 @@ interface TransformStyle {
   x?: number | `${number}%`
   /** maps to `translateY`; a percent string is relative to the element's own height */
   y?: number | `${number}%`
-  /** @deprecated use `matrix` in `transform` */
-  transformMatrix?: number[]
-  /** @deprecated use `rotate` */
-  rotation?: number
-  /** @deprecated use `x` */
-  translateX?: number | `${number}%`
-  /** @deprecated use `y` */
-  translateY?: number | `${number}%`
 }
 
 /**

@@ -1,5 +1,8 @@
 import { useRef } from 'react'
-import type { GestureResponderEvent, ScrollView as RNScrollView } from 'react-native'
+import type {
+  GestureResponderEvent,
+  ScrollViewInstance as RNScrollView,
+} from 'react-native'
 import type { ScrollBridge } from './types'
 
 interface ResponderState {

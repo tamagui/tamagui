@@ -18,11 +18,9 @@ type AvatarFallbackExtraProps = {
     delay?: number;
 };
 type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & AvatarFallbackExtraProps;
-declare const AvatarFallback: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "__scopeAvatar" | "delay"> & AvatarFallbackExtraProps & {
+declare const AvatarFallback: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "__scopeAvatar" | "delay"> & AvatarFallbackExtraProps & {
     __scopeAvatar?: Scope;
-}, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & AvatarFallbackExtraProps & {
-    __scopeAvatar?: Scope;
-}, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StackStyleBase, Omit<{}, "__scopeAvatar" | "delay">, import("@tamagui/core").StaticConfigPublic>;
 export declare const AvatarFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "circular" | "size" | "transparent"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "circular" | "size" | "transparent">> & import("@tamagui/core").WithFlatVariantValues<{
     circular?: boolean | undefined;
     size?: number | import("@tamagui/core").Size | undefined;
@@ -71,11 +69,9 @@ declare const Avatar: ((props: Omit<import("@tamagui/core").RNTamaguiViewNonStyl
     propTypes?: any;
 } & {
     Image: import("@tamagui/core").RefComponent<TamaguiElement, AvatarImageProps>;
-    Fallback: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "__scopeAvatar" | "delay"> & AvatarFallbackExtraProps & {
+    Fallback: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "__scopeAvatar" | "delay"> & AvatarFallbackExtraProps & {
         __scopeAvatar?: Scope;
-    }, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & AvatarFallbackExtraProps & {
-        __scopeAvatar?: Scope;
-    }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
+    }, import("@tamagui/core").StackStyleBase, Omit<{}, "__scopeAvatar" | "delay">, import("@tamagui/core").StaticConfigPublic>;
 };
 export { createAvatarScope, Avatar, AvatarImage, AvatarFallback };
 export type { AvatarProps, AvatarImageProps, AvatarFallbackProps };

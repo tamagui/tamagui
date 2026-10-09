@@ -21,10 +21,10 @@ import type {
 import type {
   FontVariant,
   PressableProps,
-  Text as RNText,
+  TextInstance as RNText,
   TextStyle as RNTextStyle,
   TextProps as ReactTextProps,
-  View,
+  ViewInstance as View,
   ViewProps,
   ViewStyle,
 } from '@tamagui/react-native-types'
@@ -2224,7 +2224,7 @@ export type FlatStyleValue<T> =
   | OpenStyleString
 
 export type WithThemeValues<T extends object> = {
-  [K in keyof T]:
+  -readonly [K in keyof T]:
     | (ThemeValueGet<K> extends never
         ? K extends keyof ExtraBaseProps
           ? T[K]
@@ -2939,7 +2939,7 @@ export interface StackNonStyleProps
       | 'pointerEvents'
       | 'display'
       | 'children'
-      | keyof TamaguiComponentPropsBaseBase
+      | keyof TamaguiComponentPropsBase
       // these are added back in by core
       | RNOnlyProps
       | keyof ExtendBaseStackProps
@@ -2969,7 +2969,7 @@ export interface TextNonStyleProps
     Omit<
       ReactTextProps,
       | 'children'
-      | keyof WebOnlyPressEvents
+      | keyof TamaguiComponentPropsBase
       // these are added back in by core
       | RNOnlyProps
       | keyof ExtendBaseTextProps
@@ -3744,17 +3744,20 @@ export type UseAnimationHook = (props: {
 }
 
 export type GestureReponderEvent =
-  Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void
+  Exclude<ViewProps['onResponderMove'], void> extends (event: infer Event) => void
     ? Event
     : never
 
 export type RulesToInsert = Record<string, StyleObject>
 
 export type GetStyleResult = {
-  style: ViewStyle | null
+  style: { -readonly [K in keyof ViewStyle]: ViewStyle[K] } | null
   classNames: ClassNamesObject
   rulesToInsert: RulesToInsert
-  viewProps: (StackNonStyleProps & StackStyle) & Record<string, any>
+  viewProps: {
+    -readonly [K in keyof (StackNonStyleProps & StackStyle)]: (StackNonStyleProps &
+      StackStyle)[K]
+  } & Record<string, any>
   fontFamily: string | undefined
   nativeTextMetrics?: NativeTextMetrics
   space?: any // SpaceTokens?
@@ -3835,8 +3838,9 @@ export type StyleProp<T> =
   | T
   | StylePiece
   | RegisteredStyle<T>
-  | RecursiveArray<T | StylePiece | RegisteredStyle<T> | Falsy>
+  | ReadonlyArray<StyleProp<T>>
   | Falsy
+  | void
 
 export type FillInFont<A extends GenericFont, DefaultKeys extends string | number> = {
   family: string

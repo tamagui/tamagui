@@ -3,7 +3,7 @@ import type { PortalProps } from '@tamagui/portal'
 import type { PanResponderConfig } from '@tamagui/react-native-pan-responder'
 import type { RemoveScroll } from '@tamagui/remove-scroll'
 import type { ComponentType, ReactNode, Ref } from 'react'
-import type { View } from '@tamagui/react-native-types'
+import type { ViewInstance as View } from '@tamagui/react-native-types'
 import type React from 'react'
 
 export type SheetScopes = string

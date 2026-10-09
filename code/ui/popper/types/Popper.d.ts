@@ -114,7 +114,7 @@ export type PopperAnchorExtraProps = {
     scope?: string;
 };
 export type PopperAnchorProps = ViewProps;
-export declare const PopperAnchor: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, keyof PopperAnchorExtraProps> & PopperAnchorExtraProps, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperAnchorExtraProps, import("@tamagui/core").StackStyleBase, {}, {}>;
+export declare const PopperAnchor: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof PopperAnchorExtraProps> & PopperAnchorExtraProps, import("@tamagui/core").StackStyleBase, Omit<{}, keyof PopperAnchorExtraProps>, {}>;
 export type PopperContentProps = ViewProps & {
     scope?: string;
     /**

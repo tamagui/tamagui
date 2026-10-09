@@ -3,6 +3,7 @@ import type {
   ImageResizeMode,
   ImageSourcePropType,
   Image as RNImage,
+  ImageAndroid as RNImageAndroid,
   ImageProps as RNImageProps,
 } from '@tamagui/react-native-types'
 
@@ -49,6 +50,6 @@ export type ImageType = React.FC<Partial<ImageProps>> & {
   getSizeWithHeaders: RNImageType['getSizeWithHeaders']
   prefetch: RNImageType['prefetch']
   prefetchWithMetadata: RNImageType['prefetchWithMetadata']
-  abortPrefetch: RNImageType['abortPrefetch']
+  abortPrefetch: RNImageAndroid['abortPrefetch']
   queryCache: RNImageType['queryCache']
 }

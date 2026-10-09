@@ -1,12 +1,17 @@
 import React from 'react'
 import { TextInput, type TextInputProps as RNTextInputProps } from 'react-native'
+import type { TextInputInstance } from '@tamagui/react-native-types'
 import { createStyledHOC, type GetProps, styled } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
 import { useNativeInputRef } from '@tamagui/element'
 import { resolveMultilineInputSize, styledBody } from './shared'
 import type { InputExtraProps } from './types'
 
-const StyledInput = styled(TextInput, styledBody[0], styledBody[1]).resolve(
+const NativeTextInput: React.ComponentType<
+  RNTextInputProps & React.RefAttributes<TextInputInstance>
+> = TextInput
+
+const StyledInput = styled(NativeTextInput, styledBody[0], styledBody[1]).resolve(
   resolveMultilineInputSize
 )
 

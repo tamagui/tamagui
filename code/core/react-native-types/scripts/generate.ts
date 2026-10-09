@@ -46,6 +46,7 @@ const ROOTS = [
   'ImageProps',
   'ImageResizeMode',
   'ImageSourcePropType',
+  'ImageStyle',
   'LayoutChangeEvent',
   'LayoutRectangle',
   'NativeSyntheticEvent',
@@ -54,12 +55,12 @@ const ROOTS = [
   'ScaledSize',
   'StyleProp',
   'SwitchProps',
-  'Text',
-  'TextInput',
-  'TextLayoutEventData',
+  'TextInstance',
+  'TextInputInstance',
+  'TextLayoutEvent',
   'TextProps',
   'TextStyle',
-  'View',
+  'ViewInstance',
   'ViewProps',
   'ViewStyle',
 ]
@@ -129,50 +130,6 @@ const AMBIENT = new Set([
   'cancelAnimationFrame',
 ])
 
-/**
- * Declarations written here instead of copied, cutting an edge that would
- * otherwise drag in a runtime-only object graph.
- *
- * `AnimatableNumericValue` is `number | Animated.AnimatedNode`, and that one
- * reference reaches the entire `Animated` namespace, which re-exports
- * `Animated.FlatList` and `Animated.SectionList` and so pulls VirtualizedList
- * and `@react-native/virtualized-lists` in behind it. The three style aliases
- * below are the only edges into it, and all three want the same thing from it:
- * `AnimatedNode`, which is four methods that reference nothing else. So the
- * class is copied by hand into PREAMBLE and the namespace is cut.
- *
- * A substitute is emitted verbatim and its references are NOT walked, so keep
- * it self-contained or referring to PREAMBLE.
- */
-const PREAMBLE = `/**
- * \`Animated.AnimatedNode\`, the handle \`new Animated.Value()\` returns, lifted
- * out of the \`Animated\` namespace it is declared in.
- *
- * Copied member for member rather than replaced with an opaque brand, because
- * a brand is only assignable to itself: a \`.native\` file that builds a style
- * with these types and hands it to a real react-native component has to
- * typecheck, and classes with no private members are structural, so this one
- * and react-native's are interchangeable. \`parity.test-d.ts\` is what keeps
- * the copy honest.
- */
-export declare class AnimatedNode {
-  addListener(callback: (value: any) => any): string
-  removeListener(id: string): void
-  removeAllListeners(): void
-  hasListeners(): boolean
-}`
-
-const SUBSTITUTIONS: Record<string, string> = {
-  AnimatableNumericValue: `export type AnimatableNumericValue = number | AnimatedNode`,
-  AnimatableStringValue: `export type AnimatableStringValue = string | AnimatedNode`,
-  DimensionValue: `export type DimensionValue =
-  | number
-  | 'auto'
-  | \`\${number}%\`
-  | AnimatedNode
-  | null`,
-}
-
 function collectDtsFiles(dir: string, out: string[] = []) {
   if (!existsSync(dir)) return out
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
@@ -206,6 +163,7 @@ type Parsed = {
   aliases: Map<string, Alias>
   /** `export * from './x'` targets, searched in order when a name is not local */
   starExports: string[]
+  defaultName?: string
 }
 
 /**
@@ -220,6 +178,7 @@ function parseFile(file: string): Parsed {
   const decls = new Map<string, Decl>()
   const aliases = new Map<string, Alias>()
   const starExports: string[] = []
+  let defaultName: string | undefined
   const add = (name: string, node: ts.Node, text: string, ambient: boolean) => {
     if (name && !decls.has(name)) decls.set(name, { name, node, file, text, ambient })
   }
@@ -233,6 +192,10 @@ function parseFile(file: string): Parsed {
       ts.isModuleDeclaration(stmt)
     ) {
       add((stmt as any).name?.text, stmt, stmt.getText(src), true)
+    } else if (ts.isFunctionDeclaration(stmt) && stmt.name) {
+      add(stmt.name.text, stmt, stmt.getText(src), true)
+    } else if (ts.isExportAssignment(stmt) && ts.isIdentifier(stmt.expression)) {
+      defaultName = stmt.expression.text
     } else if (ts.isVariableStatement(stmt)) {
       // the `declare const XBase: Constructor<HostInstance> & typeof X` mixin
       // bases that react-native's component classes extend
@@ -270,7 +233,7 @@ function parseFile(file: string): Parsed {
       }
     }
   }
-  return { file, decls, aliases, starExports }
+  return { file, decls, aliases, starExports, defaultName }
 }
 
 const leftMost = (name: ts.EntityName): string => {
@@ -322,8 +285,10 @@ function referencedNames(node: ts.Node): string[] {
   return [...found].filter((n) => !locals.has(n) && !AMBIENT.has(n))
 }
 
+const rnManifest = JSON.parse(readFileSync(join(RN, 'package.json'), 'utf8'))
+const ENTRY = resolve(RN, rnManifest.exports['.'].types)
 const files = collectDtsFiles(join(RN, 'Libraries')).concat(
-  collectDtsFiles(join(RN, 'types'))
+  collectDtsFiles(dirname(ENTRY))
 )
 if (!files.length) {
   console.error(
@@ -382,11 +347,10 @@ function lookup(name: string, file: string, seen = new Set<string>()): Decl | un
     // a bare specifier (`react`, `@react-native/virtualized-lists`) is outside
     // what we copy; the caller reports it as unresolved with its provenance
     if (!target) return undefined
-    if (alias.imported === '*' || alias.imported === 'default') {
-      // a namespace or default import of a module whose declaration carries the
-      // same name, which is how react-native exports its vendored classes
-      return target.decls.get(name) ?? [...target.decls.values()][0]
+    if (alias.imported === 'default') {
+      return lookup(target.defaultName ?? name, target.file, seen)
     }
+    if (alias.imported === '*') return target.decls.get(name)
     return lookup(alias.imported, target.file, seen)
   }
 
@@ -400,26 +364,23 @@ function lookup(name: string, file: string, seen = new Set<string>()): Decl | un
 }
 
 /** the roots come in by name alone, so they resolve through the entry point */
-const ENTRY = join(RN, 'types/index.d.ts')
 
 const collected = new Map<string, Decl>()
+const exportAliases = new Map<string, string>()
 const missing = new Map<string, string>()
 /** what first pulled each name in, so a failure names the path to it */
 const via = new Map<string, string>()
-const queue: { name: string; from: string }[] = ROOTS.map((name) => ({
-  name,
-  from: ENTRY,
-}))
-
-const substituted = new Set<string>()
+const queue: { name: string; from: string }[] = [
+  ...ROOTS.map((name) => ({ name, from: ENTRY })),
+  {
+    name: 'AnimatedNode',
+    from: resolve(dirname(ENTRY), 'Libraries/Animated/nodes/AnimatedNode.d.ts'),
+  },
+]
 
 while (queue.length) {
   const { name, from } = queue.shift()!
-  if (substituted.has(name) || missing.has(name)) continue
-  if (SUBSTITUTIONS[name]) {
-    substituted.add(name)
-    continue
-  }
+  if (missing.has(name)) continue
   const decl = lookup(name, from)
   if (!decl) {
     missing.set(name, via.get(name) ?? '(root)')
@@ -439,22 +400,13 @@ while (queue.length) {
     process.exit(1)
   }
   collected.set(name, decl)
+  if (name !== decl.name) exportAliases.set(name, decl.name)
   for (const ref of referencedNames(decl.node)) {
     if (collected.has(ref)) continue
     if (!via.has(ref)) via.set(ref, name)
     // resolved from the file that referenced it, not from the entry point
     queue.push({ name: ref, from: decl.file })
   }
-}
-
-const unusedSubs = Object.keys(SUBSTITUTIONS).filter((n) => !substituted.has(n))
-if (unusedSubs.length) {
-  console.error(
-    `\n${unusedSubs.length} substitution(s) no longer reachable: ${unusedSubs.join(', ')}` +
-      `\nreact-native probably renamed or dropped them. Remove them from` +
-      `\nSUBSTITUTIONS, or fix the name, so this does not silently rot.\n`
-  )
-  process.exit(1)
 }
 
 if (missing.size) {
@@ -490,16 +442,17 @@ function emit(d: Decl) {
 
 const version = JSON.parse(readFileSync(join(RN, 'package.json'), 'utf8')).version
 const body = [
-  PREAMBLE,
-  ...[...substituted].sort().map((n) => SUBSTITUTIONS[n]),
-  ...[...collected.values()].sort((a, b) => a.name.localeCompare(b.name)).map(emit),
+  ...[...new Map([...collected.values()].map((decl) => [decl.name, decl])).values()]
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map(emit),
+  ...[...exportAliases].map(([alias, name]) => `export { ${name} as ${alias} }`),
 ].join('\n\n')
 
 const header = `/**
  * GENERATED by \`bun run generate\` from react-native ${version}. Do not edit.
  *
  * ${collected.size} declarations reached from ${ROOTS.length} roots, plus
- * ${substituted.size} written by hand (see SUBSTITUTIONS in the generator).
+ * the AnimatedNode handle from its declaring module.
  * Everything Tamagui uses from react-native's types on web lives here, so no
  * non-\`.native\` file needs react-native installed. To refresh, bump the repo
  * root's react-native override and re-run \`bun run generate\` in this package.

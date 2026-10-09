@@ -30,7 +30,11 @@ import {
 // only field this reads off it is `touchHistory`.
 type Handler = (event: ResponderEvent) => any
 
-function initializeGestureState(gestureState: PanResponderGestureState) {
+type InternalGestureState = PanResponderGestureState & {
+  _accountsForMovesUpTo: number
+}
+
+function initializeGestureState(gestureState: InternalGestureState) {
   gestureState.moveX = 0
   gestureState.moveY = 0
   gestureState.x0 = 0
@@ -44,7 +48,7 @@ function initializeGestureState(gestureState: PanResponderGestureState) {
 }
 
 function updateGestureStateOnMove(
-  gestureState: PanResponderGestureState,
+  gestureState: InternalGestureState,
   touchHistory: TouchHistory
 ) {
   gestureState.numberActiveTouches = touchHistory.numberActiveTouches
@@ -92,7 +96,7 @@ export const PanResponder = {
       timeout: undefined as ReturnType<typeof setTimeout> | undefined,
     }
 
-    const gestureState: PanResponderGestureState = {
+    const gestureState: InternalGestureState = {
       stateID: Math.random(),
       moveX: 0,
       moveY: 0,
