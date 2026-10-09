@@ -18,7 +18,7 @@
     "burnt": "^0.13.0",
     "expo-constants": "~57.0.9",
     "expo-linking": "~57.0.7",
-    "react-native-safe-area-context": "~5.7.0",
+    "react-native-safe-area-context": "5.10.1",
     "solito": "^4.3.0"
   },
   "devDependencies": {

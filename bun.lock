@@ -51,7 +51,7 @@
         "react-hook-form": "^7.51.0",
         "react-native-gesture-handler": "~2.32.0",
         "react-native-reanimated": "4.6.0",
-        "react-native-safe-area-context": "~5.7.0",
+        "react-native-safe-area-context": "5.10.1",
         "react-native-svg": "15.15.4",
         "tamagui": "workspace:*",
         "zod": "^3.25.67",
@@ -984,7 +984,7 @@
         "react-native": "0.87.1",
         "react-native-gesture-handler": "~2.32.0",
         "react-native-keyboard-controller": "1.21.11",
-        "react-native-safe-area-context": "~5.7.0",
+        "react-native-safe-area-context": "5.10.1",
         "react-native-teleport": "^1.0.0",
         "react-native-web": "~0.21.0",
         "react-native-worklets-core": "^1.0.0",
@@ -1597,7 +1597,7 @@
         "react-native-launch-arguments": "^4.1.1",
         "react-native-nitro-modules": "^0.36.5",
         "react-native-reanimated": "4.6.0",
-        "react-native-safe-area-context": "~5.7.0",
+        "react-native-safe-area-context": "5.10.1",
         "react-native-screens": "~4.26.0",
         "react-native-svg": "15.15.4",
         "react-native-teleport": "^1.0.0",
@@ -2107,7 +2107,7 @@
         "react-dom": "19.2.3",
         "react-native": "0.87.1",
         "react-native-reanimated": "4.6.0",
-        "react-native-safe-area-context": "~5.7.0",
+        "react-native-safe-area-context": "5.10.1",
         "react-native-screens": "~4.26.0",
         "react-native-svg": "15.15.4",
         "react-native-web": "~0.21.0",
@@ -2241,7 +2241,7 @@
         "react-native": "0.87.1",
         "react-native-gesture-handler": "~2.32.0",
         "react-native-reanimated": "4.6.0",
-        "react-native-safe-area-context": "~5.7.0",
+        "react-native-safe-area-context": "5.10.1",
         "react-native-svg": "15.15.4",
         "react-native-web": "~0.21.0",
         "react-native-worklets": "0.12.2",
@@ -2374,7 +2374,7 @@
         "burnt": "^0.13.0",
         "expo-constants": "~57.0.9",
         "expo-linking": "~57.0.7",
-        "react-native-safe-area-context": "~5.7.0",
+        "react-native-safe-area-context": "5.10.1",
         "solito": "^4.3.0",
       },
       "devDependencies": {
@@ -2427,7 +2427,7 @@
         "react": "19.2.3",
         "react-dom": "19.2.3",
         "react-native": "0.87.1",
-        "react-native-safe-area-context": "~5.7.0",
+        "react-native-safe-area-context": "5.10.1",
         "tamagui": "workspace:*",
       },
       "devDependencies": {
@@ -3388,7 +3388,7 @@
         "react": "19.2.3",
         "react-native": "0.87.1",
         "react-native-gesture-handler": "~2.32.0",
-        "react-native-safe-area-context": "~5.7.0",
+        "react-native-safe-area-context": "5.10.1",
       },
       "peerDependencies": {
         "react": ">=19",
@@ -3852,7 +3852,7 @@
         "react": "19.2.3",
         "react-dom": "19.2.3",
         "react-native": "0.87.1",
-        "react-native-safe-area-context": "~5.7.0",
+        "react-native-safe-area-context": "5.10.1",
         "tamagui": "workspace:*",
       },
       "devDependencies": {
@@ -8372,7 +8372,7 @@
 
     "react-native-reanimated": ["react-native-reanimated@4.6.0", "", { "dependencies": { "react-native-is-edge-to-edge": "^1.3.1", "semver": "^7.7.3" }, "peerDependencies": { "react": "*", "react-native": "0.83 - 0.87", "react-native-worklets": "0.12.x" } }, "sha512-9vbQmok5BPX2J3RLPFt2UnwmK2QQoMDPDi0VB4a9JWIiEc55pdzvwEsdH91V/JXKNErqM6a9fElTBMc/1cbtBA=="],
 
-    "react-native-safe-area-context": ["react-native-safe-area-context@5.7.0", "", { "peerDependencies": { "react": "*", "react-native": "*" } }, "sha512-/9/MtQz8ODphjsLdZ+GZAIcC/RtoqW9EeShf7Uvnfgm/pzYrJ75y3PV/J1wuAV1T5Dye5ygq4EAW20RoBq0ABQ=="],
+    "react-native-safe-area-context": ["react-native-safe-area-context@5.10.1", "", { "peerDependencies": { "react": "*", "react-native": "*" } }, "sha512-ax0T3cAHQIhuAjDQpJ9C1Le96aRiM9PF+Kmgg7Y8+mD7QJMEIx04cG0eG3EGUTdvymgOkCrkakgZFwuOIuNQGw=="],
 
     "react-native-screens": ["react-native-screens@4.26.2", "", { "dependencies": { "react-freeze": "^1.0.0", "warn-once": "^0.1.0" }, "peerDependencies": { "react": "*", "react-native": "*" } }, "sha512-2XnWsZToKj76trGtEZzx5ELD/qOICFEprEeUntImmitQFVUkea27fiWdUSITArI356Y1qynpXZINW+Unbhky/A=="],
 

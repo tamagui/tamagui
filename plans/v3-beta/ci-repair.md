@@ -69,6 +69,16 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   installation and workspace dependency checks pass. Full compilation remains
   a CI gate.
 
+- RAN: safe-area-context 5.7 references `UIManagerModule.uiImplementation`,
+  which RN 0.87 removes. The focused Android Kotlin compile reproduces that
+  unresolved reference. The published 5.10.1 tarball removes the obsolete
+  legacy layout dispatch; all workspace declarations now pin that version
+  while public peer ranges stay unchanged. Frozen installation and dependency
+  consistency pass, and every affected workspace resolves the actual 5.10.1
+  artifact. The focused Kotlin compile passes in 24 seconds, and all 73
+  existing native component tests pass with unchanged assertions. A cold
+  kitchen-sink typecheck also passes.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The
