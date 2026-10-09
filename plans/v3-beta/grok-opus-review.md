@@ -2,7 +2,7 @@
 
 Date: 2026-08-27
 
-Merges Nate's notes, the Grok review
+Merges the owner's notes, the Grok review
 ([`grok-feedback.md`](./grok-feedback.md)), and the Opus pass
 ([`opus-feedback.md`](./opus-feedback.md)) into one document. Everything below
 was checked against the source on `v3-beta` or against a checked-in receipt.
@@ -174,12 +174,12 @@ authored key alphabetically (`rotate, scale, x, y`). System 2 uses a fixed head
 (`x, y, rotate, scale`) then alphabetical. Transform composition is not
 commutative, so web-class output and native/inline output already render
 differently for the same input. "Fixed canonical order" picks one and changes
-the other. That is a visible breaking change and needs Nate's call plus a
+the other. That is a visible breaking change and needs the owner's call plus a
 rendered pin, not a snapshot.
 
 ### 4. `getSubStyle` is a v2 leftover
 
-Nate is right, and the code confirms it. **READ**: `pressStyle`, `hoverStyle`,
+The review note is confirmed by the code. **READ**: `pressStyle`, `hoverStyle`,
 and `pseudoDescriptors` appear **zero** times in `getSplitStyles.tsx`. V3 fully
 removed the nested pseudo-object path. `getSubStyle` survives for exactly one
 case: `accept: 'style' | 'textStyle'` sub-styles, reached only at
@@ -225,7 +225,7 @@ every prop.
 
 And `code/core/helpers/src/validStyleProps.ts` contains **no transition keys at
 all**, while already exporting `webOnlyStylePropsView` and
-`webOnlyStylePropsText`. Nate's instinct is exactly right: the pattern already
+`webOnlyStylePropsText`. The review instinct is confirmed: the pattern already
 exists. One table entry replaces three hand lists, `isValidStyleKey` collapses
 to `key in validStyles || (accept && key in accept)`, and the native skip
 becomes a lookup. Small, safe, and it removes the class of bug where the three
@@ -246,8 +246,8 @@ readable.
 
 **Its only consumer in the entire repo is its own test**
 (`core-test/getSplitStyles.tokenProvenance.native.test.tsx`). No LSP, no
-devtools package, no site code reads `getStyleTokenProvenance`. Answering Nate's
-question directly: it is a devtools side channel that records which token
+devtools package, no site code reads `getStyleTokenProvenance`. Answering the
+owner question directly: it is a devtools side channel that records which token
 produced each winning style value, and nothing currently reads it.
 
 Recommendation: delete it, or move it behind the internal-runtime entry with its
@@ -315,11 +315,11 @@ Three options, increasing boldness:
 
 (c) is defensible as a product rule precisely because the current behavior is
 already platform-inconsistent: the same code works on native and silently does
-nothing on the web class path. That is Nate's call, not the plan author's.
+nothing on the web class path. That is the owner's call, not the plan author's.
 
 ### 9. `compoundScanHandler` and the loops inside it
 
-Nate asked how many loops are hidden here. Counting one compound variant key at
+Review question: how many loops are hidden here. Counting one compound variant key at
 `getSplitStyles.tsx:220-240`:
 
 ```
@@ -560,7 +560,7 @@ measurable time win before any risky restructuring:
 - the double `resolveClauseChain` on a conditional object's first key
   (`directStyle.ts:2090` then `:2177`);
 - `joinChains` without `split`/`join`;
-- token provenance, pending Nate's call.
+- token provenance, pending the owner's call.
 
 **3. One scanner, one sink.**
 Collapse scanners 2, 3, 4 into 5. Delete discriminator copies 2 and 3. Route
@@ -606,7 +606,7 @@ provider win hide an engine miss, which the plan itself warns against on line 42
 
 ---
 
-## Decisions that are Nate's, not the plan author's
+## Decisions that are the owner's, not the plan author's
 
 1. **Transform order.** Web-class and native/inline currently disagree. Picking
    one canonical order changes rendering on the other. Which one wins?

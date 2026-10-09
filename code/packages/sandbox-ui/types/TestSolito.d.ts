@@ -2,7 +2,7 @@ import React from 'react';
 import type { LinkProps } from 'solito/link';
 import type { AnchorProps } from 'tamagui';
 export type TextLinkProps = Pick<LinkProps, 'href' | 'target'> & AnchorProps;
-export declare const TextLink: React.ForwardRefExoticComponent<Pick<LinkProps, "href" | "target"> & Omit<import("tamagui").TextNonStyleProps, "size" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithFlatVariantValues<{
+export declare const TextLink: React.ForwardRefExoticComponent<Pick<LinkProps, "href" | "target"> & Omit<import("tamagui").TextNonStyleProps, "size"> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").TextStylePropsBase, "size">> & import("@tamagui/web").WithFlatVariantValues<{
     size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & import("tamagui").AnchorExtraProps & React.RefAttributes<HTMLAnchorElement>>;
+}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>>, keyof import("tamagui").TextNonStyleProps> & import("tamagui").AnchorExtraProps & React.RefAttributes<HTMLAnchorElement>>;
 //# sourceMappingURL=TestSolito.d.ts.map

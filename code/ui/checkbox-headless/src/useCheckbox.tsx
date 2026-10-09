@@ -118,6 +118,7 @@ export function useCheckbox<R, P extends CheckboxBehaviorProps>(
         onKeyDown: disabled ? undefined : handleKeyDown,
       }),
       onPress: disabled ? undefined : handlePress,
-    } satisfies PressableProps,
+    } satisfies Omit<PressableProps, 'onKeyDown'> &
+      Pick<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onKeyDown'>,
   }
 }

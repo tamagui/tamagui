@@ -1,5 +1,5 @@
 import { createRefComponent } from '@tamagui/core'
-import type { View } from '@tamagui/react-native-types'
+import type { ViewInstance as View } from '@tamagui/react-native-types'
 import { useMemo, useRef, useState } from 'react'
 import { Platform } from 'react-native'
 import { SheetNativeSystemContext, SheetProvider } from './SheetContext'

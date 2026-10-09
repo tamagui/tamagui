@@ -1,6 +1,6 @@
 # Tamagui V3: Web-First Architecture, React Strict DOM Comparison, and Component Kit Separation
 
-Authored 2026-09-14 for Nate.
+Authored 2026-09-14 for owner review.
 
 ---
 
@@ -45,7 +45,7 @@ Tamagui already maintains an exhaustive conformance suite in `code/core/dom` pin
 
 ## 3. Style Props Contract: React Native Base vs Web-First HTML
 
-Nate's intuition is spot-on:
+Confirmed split:
 - **`View` and `Text`**: Keep aligned with React Native base props (`ViewStyle`, `TextStyle`). This preserves 100% drop-in compatibility for existing React Native and Tamagui V1/V2 apps.
 - **`html.*` Primitives (`html.div`, `html.span`, `html.article`, etc.)**: 100% web-aligned contract.
 

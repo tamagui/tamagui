@@ -58,7 +58,7 @@ asserting web display values; kitchen-sink html cases visually unchanged.
 
 FLAG(decision): the zero-specificity reset means page CSS like `p { margin: 1em }`
 reaches html.* on web and not on native. Opus recommends accepting and
-documenting it. Lane B proceeds on that assumption unless Nate says otherwise.
+documenting it. Lane B proceeds on that assumption unless the owner says otherwise.
 
 ### C. Web alignment leftovers and docs
 

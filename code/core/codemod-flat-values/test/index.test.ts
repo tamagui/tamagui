@@ -389,6 +389,11 @@ export const Fixture = () => (
     expect(
       found.filter((code) => code === 'ambiguous-shared-line-height-style')
     ).toHaveLength(3)
+    expect(
+      sites(result)
+        .filter((site) => site.before.includes('style={nativeStyles.label}'))
+        .flatMap(codes)
+    ).toContain('ambiguous-shared-line-height-style')
     expect(found).toContain('ambiguous-line-height-token-value')
     expect(found).toContain('ambiguous-line-height-expression')
   })

@@ -73,7 +73,7 @@ Web result:
 
 iOS result:
 
-- Local Detox was not run. Per the PR-A gate update from Nate/CTO, native
+- Local Detox was not run. Per the PR-A gate update from the owner, native
   conformance is handled by the extended Tamagui CI gate across the v2 -> v3
   branches. If the extended CI gate is not live when the core PR is ready, this
   is HOLD-for-infra for core landing, not N/A.

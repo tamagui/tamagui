@@ -101,7 +101,7 @@ bounded task for one Opus agent. Even then it only covers the single-token
 case; clause payloads stay open, so the runtime warning and the checker
 allowlist below are what actually protect the factory.
 
-Related from Nate: add a setting that picks the string form, the object form,
+Related owner direction: add a setting that picks the string form, the object form,
 or both, have the types and checker reject the other form, and have
 `generate-prompt` emit examples only in the chosen form (and ask during
 `tamagui setup` when both are on). Today there is no such setting; both forms
@@ -185,7 +185,7 @@ types, warns at runtime, and drives `generate-prompt` and the skill.
    `v3-ssr-hydration` are gated on `ref_name` starting with `v3`
    (`checks.yaml:391-396, 455-461`). Cheap to fix before the main merge.
 
-Two decisions that are Nate's, not mine:
+Two decisions that are the owner's, not mine:
 
 - **Bundler.** Metro does not tree-shake and the per-component subpaths do
   not help (`tamagui/button` imports the 54-`export *` `@tamagui/ui` barrel).

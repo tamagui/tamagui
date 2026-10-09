@@ -23,7 +23,7 @@ import type {
   GestureResponderEvent,
   LayoutChangeEvent,
   PanResponderGestureState,
-  View,
+  ViewInstance as View,
 } from '@tamagui/react-native-types'
 import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
 import { SHEET_OVERLAY_MARKER } from './constants'

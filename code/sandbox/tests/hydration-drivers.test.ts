@@ -50,8 +50,11 @@ for (const driver of drivers) {
       const scriptsHeld = new Promise<void>((resolve) => {
         releaseScripts = resolve
       })
-      await page.route('**/*.js', async (route) => {
-        await scriptsHeld
+      await page.route('**/*', async (route) => {
+        // one dev serves executable modules from paths that do not end in .js.
+        if (route.request().resourceType() === 'script') {
+          await scriptsHeld
+        }
         await route.continue()
       })
       await page.goto(`/hydration-${driver}`, { waitUntil: 'commit' })

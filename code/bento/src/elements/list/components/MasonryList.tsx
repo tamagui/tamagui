@@ -8,11 +8,11 @@ import type {
   StyleProp,
   ViewStyle,
 } from 'react-native'
-import { RefreshControl, ScrollView, View } from 'react-native'
+import { RefreshControl, ScrollView, View, type ScrollViewInstance } from 'react-native'
 import { YStack, styled } from 'tamagui'
 
 interface Props<T> extends Omit<ScrollViewProps, 'refreshControl'> {
-  innerRef?: React.RefObject<ScrollView | undefined>
+  innerRef?: React.RefObject<ScrollViewInstance | undefined>
   loading?: boolean
   refreshing?: RefreshControlProps['refreshing']
   onRefresh?: RefreshControlProps['onRefresh']
@@ -46,7 +46,7 @@ const isCloseToBottom = (
   )
 }
 
-const MasonryListImpl = forwardRef<ScrollView, Props<any>>((props, ref) => {
+const MasonryListImpl = forwardRef<ScrollViewInstance, Props<any>>((props, ref) => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
 
   const {

@@ -1,6 +1,6 @@
 # Remove the size concept from core; each styled component owns a plain size variant
 
-Decided by Nate 2026-09-14. Replaces the rejected `plans/typed-user-sizes.md`.
+Decided by the owner 2026-09-14. Replaces the rejected `plans/typed-user-sizes.md`.
 
 Landed 2026-09-15 on `v3-beta`: lane A tip `27b7fb391a` with review fixes
 `f5725d8b5d` and `b0faaf0731`, merged as `f950341de8`, and the integration

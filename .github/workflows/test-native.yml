@@ -339,7 +339,7 @@ jobs:
         id: calculate-pre-fingerprint
         env:
           # Include cache version to allow manual cache busting
-          PRE_FINGERPRINT_HASH: ${{ hashFiles('bun.lock', 'code/kitchen-sink/app.json', 'code/kitchen-sink/plugins/**', 'packages/vxrn/expo-plugin.cjs') }}-${{ env.android_cache_version }}
+          PRE_FINGERPRINT_HASH: ${{ hashFiles('bun.lock', 'code/kitchen-sink/app.json', 'code/kitchen-sink/plugins/**', 'code/kitchen-sink/android-init.gradle', 'code/kitchen-sink/fingerprint.config.js', 'packages/vxrn/expo-plugin.cjs') }}-${{ env.android_cache_version }}
         run: |
           echo "Pre-fingerprint hash: $PRE_FINGERPRINT_HASH"
           echo "pre_fingerprint_hash=$PRE_FINGERPRINT_HASH" >> $GITHUB_OUTPUT
@@ -402,26 +402,6 @@ jobs:
         if: ${{ !steps.android-cache-check.outputs.cache-hit }}
         working-directory: code/kitchen-sink
         run: |
-          # Create Gradle init script for JNI library conflicts
-          cat > android/init.gradle << 'INITGRADLE'
-          // Gradle init script to fix JNI library conflicts for Detox tests
-          allprojects {
-              afterEvaluate {
-                  if (it.hasProperty('android')) {
-                      android {
-                          packagingOptions {
-                              jniLibs {
-                                  pickFirsts += ['**/libfbjni.so']
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-          INITGRADLE
-          # Remove leading whitespace from heredoc
-          sed -i 's/^          //' android/init.gradle
-
           # Add Detox repository to build.gradle (using node for reliable file editing)
           node -e "
             const fs = require('fs');
@@ -562,7 +542,7 @@ jobs:
           # Limit Gradle memory to avoid OOM on free runners
           GRADLE_OPTS: '-Dorg.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError'
         run: |
-          cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --init-script init.gradle --no-daemon --max-workers=2
+          cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --init-script ../android-init.gradle --no-daemon --max-workers=2
 
       - name: Cache Android Folder
         if: ${{ !steps.android-cache-check.outputs.cache-hit && !steps.android-cache-check-new.outputs.cache-hit }}

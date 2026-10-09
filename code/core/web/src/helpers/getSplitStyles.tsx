@@ -471,6 +471,10 @@ const passTextFlag = 32
 const passInputFlag = 64
 const passAsChildStyleFlag = 128
 
+function isRemovedVendorStyleProp(property: string) {
+  return /^(Webkit|Moz|ms)[A-Z]/.test(property) && !(property in stylePropsAll)
+}
+
 // exported so the compiler applies the SAME host-validity decision when it
 // flattens: a style-shaped key that fails this check must be dropped with a
 // diagnostic, never kept as a DOM attribute (one predicate, two hosts)
@@ -825,6 +829,31 @@ function contributeProp(
     }
   }
 
+  if (process.env.NODE_ENV === 'development') {
+    if (
+      !isValidStyleKey(keyInit, validStyles) &&
+      (keyInit === 'animation' || !(keyInit in stylePropsAll)) &&
+      (!variants || !(keyInit in variants))
+    ) {
+      let replacement: string | undefined
+      if (keyInit === 'animation') replacement = 'transition='
+      else if (keyInit === 'hoverStyle') replacement = 'hover: clause'
+      else if (keyInit === 'pressStyle') replacement = 'press: clause'
+      else if (keyInit === 'focusStyle') replacement = 'focus: clause'
+      else if (keyInit === 'enterStyle') replacement = 'enter: clause'
+      else if (keyInit === 'exitStyle') replacement = 'exit: clause'
+      else if (keyInit.charCodeAt(0) === 36 && keyInit.length > 1) {
+        replacement = `${keyInit.slice(1)}: clause`
+      }
+      if (replacement) {
+        warnOnce(
+          `v2-prop:${keyInit}`,
+          `prop "${keyInit}" was removed in v3; use ${replacement}`
+        )
+      }
+    }
+  }
+
   const isNativeInputColor =
     process.env.TAMAGUI_TARGET === 'native' &&
     isInput &&
@@ -864,31 +893,6 @@ function contributeProp(
   }
 
   let isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles)
-
-  if (process.env.NODE_ENV === 'development') {
-    if (
-      !isValidStyleKeyInit &&
-      !(keyInit in stylePropsAll) &&
-      (!variants || !(keyInit in variants))
-    ) {
-      let replacement: string | undefined
-      if (keyInit === 'animation') replacement = 'transition='
-      else if (keyInit === 'hoverStyle') replacement = 'hover: clause'
-      else if (keyInit === 'pressStyle') replacement = 'press: clause'
-      else if (keyInit === 'focusStyle') replacement = 'focus: clause'
-      else if (keyInit === 'enterStyle') replacement = 'enter: clause'
-      else if (keyInit === 'exitStyle') replacement = 'exit: clause'
-      else if (keyInit.charCodeAt(0) === 36 && keyInit.length > 1) {
-        replacement = `${keyInit.slice(1)}: clause`
-      }
-      if (replacement) {
-        warnOnce(
-          `v2-prop:${keyInit}`,
-          `prop "${keyInit}" was removed in v3; use ${replacement}`
-        )
-      }
-    }
-  }
 
   // this is all for partially optimized (not flattened)... maybe worth removing?
   if (process.env.TAMAGUI_TARGET === 'web') {
@@ -1162,7 +1166,7 @@ function contributeProp(
     return
   }
 
-  if (keyInit in stylePropsAll) {
+  if (keyInit in stylePropsAll || isRemovedVendorStyleProp(keyInit)) {
     // shared css authoring intentionally drops unsupported keys on native.
     if (process.env.NODE_ENV === 'development' && process.env.TAMAGUI_TARGET === 'web') {
       console.warn(
@@ -4020,6 +4024,13 @@ function contributeValue(
   condition?: Condition | string
 ) {
   // every style source shares this path, including style objects and resolvers.
+  if (
+    !contextOnly &&
+    isRemovedVendorStyleProp(property) &&
+    !(state.staticConfig.validStyles && property in state.staticConfig.validStyles)
+  ) {
+    return
+  }
   if (
     process.env.TAMAGUI_TARGET === 'native' &&
     !contextOnly &&

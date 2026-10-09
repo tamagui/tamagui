@@ -758,7 +758,7 @@ export function createComponent<
 
     // stateRef.current is this instance's key into useMedia's per-component
     // States map (setMediaShouldUpdate below writes under the same key)
-    const mediaState = useMedia(componentContext, debugProp, stateRef.current)
+    const mediaState = useMedia(stateRef.current, debugProp, stateRef.current)
 
     setDidGetVariableValue(false)
 
@@ -1189,31 +1189,22 @@ export function createComponent<
         }
       }
 
-      // don't change this ever or else you break ComponentContext and cause re-rendering
-      // use a Set of listeners so multiple components can register
-      componentContext.mediaEmitListeners =
-        componentContext.mediaEmitListeners || new Set()
-
-      // only register once per component instance
-      if (!stateRef.current.mediaEmitCleanup) {
-        const updateListener = (next: Record<string, boolean>) => {
-          stateRef.current.nextMedia = next
-          stateRef.current.updateStyleListener?.()
-        }
-        componentContext.mediaEmitListeners.add(updateListener)
-        stateRef.current.mediaEmitCleanup = () => {
-          componentContext.mediaEmitListeners?.delete(updateListener)
-        }
-      }
-
-      componentContext.mediaEmit =
-        componentContext.mediaEmit ||
-        ((next) => {
-          // notify all registered components
-          for (const listener of componentContext.mediaEmitListeners!) {
-            listener(next)
-          }
+      // a media change restyles only this instance: its useMedia emits through
+      // this state ref. a context-wide emitter made every component in the
+      // provider restyle on every other component's media change (quadratic).
+      // one dimension change fires one update per changed media key, so like
+      // nativeMediaUpdate this coalesces to a single restyle per event turn,
+      // against the media state every key has settled to by then
+      stateRef.current.mediaEmit ||= (next) => {
+        const sr = stateRef.current
+        sr.nextMedia = next
+        if (sr.mediaEmitQueued) return
+        sr.mediaEmitQueued = true
+        queueMicrotask(() => {
+          sr.mediaEmitQueued = false
+          sr.updateStyleListener?.()
         })
+      }
 
       stateRef.current.setStateShallow = (nextOrGetNext) => {
         const prev = stateRef.current.nextState || state
@@ -1648,16 +1639,10 @@ export function createComponent<
 
     // unmount-only cleanup. this must NOT live on the enter effect above: that
     // effect re-runs on every unmounted transition (true -> 'should-enter' ->
-    // false), and a cleanup returned there ran mid-lifecycle — dropping the
-    // mediaEmit listener right after mount for value-input avoidReRenders
-    // drivers, with no re-registration (render only registers while
-    // mediaEmitCleanup is unset), so media styles silently stopped applying
+    // false), and a cleanup there would run mid-lifecycle
     useIsomorphicLayoutEffect(() => {
       return () => {
         componentSetStates.delete(setState)
-        stateRef.current.mediaEmitCleanup?.()
-        // clear so a render after a simulated unmount (StrictMode dev) can re-register
-        stateRef.current.mediaEmitCleanup = undefined
       }
     }, [])
 

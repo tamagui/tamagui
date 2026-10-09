@@ -402,7 +402,10 @@ export function SignupValidatedHookForm() {
         <Button
           theme="accent"
           disabled={loading}
-          onPress={handleSubmit(onSubmit)}
+          onPress={(event) => {
+            event.preventDefault()
+            return handleSubmit(onSubmit)()
+          }}
           cursor={loading ? 'progress' : 'pointer'}
           self="flex-end"
           width="100%"

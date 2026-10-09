@@ -27,7 +27,7 @@ export interface UseAnimatedDragGestureOptions {
  */
 export declare function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions): {
     isDragging: boolean;
-    gestureHandlers: import("react-native").GestureResponderHandlers;
+    gestureHandlers: {};
     gesture: any;
 };
 //# sourceMappingURL=useAnimatedDragGesture.native.d.ts.map

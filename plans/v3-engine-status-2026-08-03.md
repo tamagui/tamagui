@@ -23,12 +23,12 @@ pushed, both merge conflict-free into current v3-beta (verified via merge-tree):
 - Validated: next-webpack 8/8 (was 3 failed), core-test full chain green,
   static-tests native 7/7 + web green, contract tests added in
   getSplitStyles.native/web.test.tsx.
-- Scope decision (Nate): no native image/gradient support for now. Design
+- Scope decision (owner): no native image/gradient support for now. Design
   ladder if picked up later: gradients can be style-only via RN 0.76+
   `experimental_backgroundImage` (RN 0.83 parses linear+radial only, no url() -
   READ from BackgroundImagePropsConversions.cpp); url() needs an injected
   absolute-fill image child which forces position:relative on the host - a
-  web-divergence Nate flagged; the clean end state is upstreaming a url() kind
+  web-divergence the owner flagged; the clean end state is upstreaming a url() kind
   into RN's backgroundImage style. Repo RN 0.83.2 Yoga engine default is still
   PositionType::Relative (Style.h:734).
 

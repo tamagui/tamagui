@@ -1,46 +1,35 @@
 /**
  * Web event handling - maps RN-style events to DOM events
  */
-import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
-type EventKeys = keyof TamaguiComponentEvents
+import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents';
+type EventKeys = keyof TamaguiComponentEvents;
 type EventLikeObject = {
-  [key in EventKeys]?: any
-}
-export declare function getWebEvents<E extends EventLikeObject>(
-  events: E,
-  webStyle?: boolean
-): {
-  [x: string]: any
-  onMouseEnter: any
-  onMouseLeave: any
-  onMouseDown: ((e: { timeStamp: number }) => void) | undefined
-  onMouseUp: ((e: { timeStamp: number }) => void) | undefined
-  onTouchStart: ((e: { timeStamp: number }) => void) | undefined
-  onTouchEnd: ((e: { timeStamp: number }) => void) | undefined
-  onFocus: any
-  onBlur: any
-}
-export declare function wrapWithGestureDetector(
-  content: any,
-  _gesture: any,
-  _stateRef: {
-    current: any
-  },
-  _isHOC?: boolean,
-  _isCompositeComponent?: boolean,
-  _hasRealPressEvents?: boolean
-): any
-export declare function useEvents(
-  _events: any,
-  _viewProps: any,
-  _stateRef: {
-    current: any
-  },
-  _staticConfig: any,
-  _isHOC?: boolean,
-  _isInsideNativeMenu?: boolean,
-  _debugName?: string | null,
-  _hasRealPressEvents?: boolean
-): null
-export {}
+    [key in EventKeys]?: any;
+};
+export declare function getWebEvents<E extends EventLikeObject>(events: E, webStyle?: boolean): {
+    [x: string]: any;
+    onMouseEnter: any;
+    onMouseLeave: any;
+    onMouseDown: ((e: {
+        timeStamp: number;
+    }) => void) | undefined;
+    onMouseUp: ((e: {
+        timeStamp: number;
+    }) => void) | undefined;
+    onTouchStart: ((e: {
+        timeStamp: number;
+    }) => void) | undefined;
+    onTouchEnd: ((e: {
+        timeStamp: number;
+    }) => void) | undefined;
+    onFocus: any;
+    onBlur: any;
+};
+export declare function wrapWithGestureDetector(content: any, _gesture: any, _stateRef: {
+    current: any;
+}, _isHOC?: boolean, _isCompositeComponent?: boolean, _hasRealPressEvents?: boolean): any;
+export declare function useEvents(_events: any, _viewProps: any, _stateRef: {
+    current: any;
+}, _staticConfig: any, _isHOC?: boolean, _isInsideNativeMenu?: boolean, _debugName?: string | null, _hasRealPressEvents?: boolean): null;
+export {};
 //# sourceMappingURL=eventHandling.d.ts.map

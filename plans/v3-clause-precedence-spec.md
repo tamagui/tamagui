@@ -1,6 +1,6 @@
 # v3 clause merge + precedence spec
 
-Status: decided design, ready to implement. Decisions were made by Nate on
+Status: decided design, ready to implement. Decisions were made by the owner on
 2026-08-08 after an empirical Tailwind 4.3.3 probe. Measured evidence lives in
 `plans/v3-precedence-tailwind-probe.md` (repro scripts `plans/probe.mjs`,
 `plans/twmerge.mjs`). Where this spec deviates from measured Tailwind it says
@@ -47,8 +47,8 @@ The sort key, compared in order (later-sorting clause wins):
 1. **platformRank** (outermost, dominates everything): 0 = no platform
    condition; otherwise the existing `grammarPlatformRank` over the clause's
    platform conditions: `native`/`web` = 1, `ios`/`android`/`tv` = 2,
-   `tvos`/`androidtv` = 3. Rationale (Nate): "if you're saying native you're
-   almost always gonna want to override anything that's not native". So
+   `tvos`/`androidtv` = 3. Rationale: saying native almost always means
+   overriding anything that is not native. So
    `native:x` beats `sm:hover:y` on native, and `ios:x` beats `native:y` on
    iOS. Platform conditions are mutually exclusive at runtime (you are exactly
    one platform), so platform clauses never conflict with each other except
@@ -183,7 +183,7 @@ Required named cells:
 | 16 | every cell above with program token order reversed | identical winners |
 
 Cells 8, 12, 14 are decisions, not Tailwind mirrors; if implementation
-finds a real problem with one, raise it to Nate instead of silently changing
+finds a real problem with one, raise it to the owner instead of silently changing
 the expectation.
 
 ## Validation gates before calling it done

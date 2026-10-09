@@ -15,10 +15,10 @@ import type {
 import type {
   PressableProps,
   StyleProp,
-  Text as ReactNativeText,
+  TextInstance as ReactNativeText,
   TextProps as ReactNativeTextProps,
   TextStyle,
-  View as ReactNativeView,
+  ViewInstance as ReactNativeView,
   ViewProps as ReactNativeViewProps,
   ViewStyle,
 } from '@tamagui/react-native-types'

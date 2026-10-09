@@ -70,7 +70,6 @@ function RadioGroupItem(props: { value: string; id: string; label: string }) {
                   : { backgroundColor: theme.background?.get() }),
               }}
               {...frameAttrs}
-              onFocus={frameAttrs.onFocus as any}
             >
               <RadioGroupItemIndicator />
             </Pressable>

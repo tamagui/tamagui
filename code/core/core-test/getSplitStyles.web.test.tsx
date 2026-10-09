@@ -40,19 +40,19 @@ describe('getSplitStyles', () => {
     expect(override.viewProps.color).toBe('purple')
   })
 
-  test.each([
-    ['glyphOrientationVertical', '0deg', 'glyphOrientationBlock'],
-    ['msTextCombineHorizontal', 'all', 'msTextCombineInline'],
-  ])('css axis suffix in %s retains its canonical property', (key, value, renamed) => {
-    for (const Component of [View, Text]) {
-      for (const props of [{ [key]: value }, { style: { [key]: value } }]) {
-        const result = simplifiedGetSplitStyles(Component, props)
-        expect(getStyleValue(result, key)).toBe(value)
-        expect(getStyleValue(result, renamed)).toBeUndefined()
-        expect(result.viewProps[key]).toBeUndefined()
+  test.each([['glyphOrientationVertical', '0deg', 'glyphOrientationBlock']])(
+    'css axis suffix in %s retains its canonical property',
+    (key, value, renamed) => {
+      for (const Component of [View, Text]) {
+        for (const props of [{ [key]: value }, { style: { [key]: value } }]) {
+          const result = simplifiedGetSplitStyles(Component, props)
+          expect(getStyleValue(result, key)).toBe(value)
+          expect(getStyleValue(result, renamed)).toBeUndefined()
+          expect(result.viewProps[key]).toBeUndefined()
+        }
       }
     }
-  })
+  )
 
   test.each([
     ['marginHorizontal', 'marginInline'],
@@ -75,8 +75,6 @@ describe('getSplitStyles', () => {
     ['animationDelay', '100ms'],
     ['counterReset', 'section'],
     ['textWrapStyle', 'balance'],
-    ['WebkitTextStrokeColor', 'red'],
-    ['msUserSelect', 'none'],
     ['borderBlockStyle', 'dashed'],
     ['borderBlockEndStyle', 'dashed'],
     ['borderBlockStartStyle', 'dashed'],
@@ -88,6 +86,20 @@ describe('getSplitStyles', () => {
       for (const props of [{ [key]: value }, { style: { [key]: value } }]) {
         const result = simplifiedGetSplitStyles(Component, props)
         expect(getStyleValue(result, key)).toBe(value)
+        expect(result.viewProps[key]).toBeUndefined()
+      }
+    }
+  })
+
+  test.each([
+    ['WebkitTextStrokeColor', 'red'],
+    ['msUserSelect', 'none'],
+    ['msTextCombineHorizontal', 'all'],
+  ])('removed vendor CSS %s is consumed without CSS or host leakage', (key, value) => {
+    for (const Component of [View, Text]) {
+      for (const props of [{ [key]: value }, { style: { [key]: value } }]) {
+        const result = simplifiedGetSplitStyles(Component, props)
+        expect(getStyleValue(result, key)).toBeUndefined()
         expect(result.viewProps[key]).toBeUndefined()
       }
     }

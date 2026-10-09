@@ -4,35 +4,37 @@ import {
   nonAnimatableWebTextProps,
   nonAnimatableWebViewProps,
   webOnlyStylePropsText,
+  webOnlyStylePropsView,
 } from './webOnlyStyleProps'
 import { toStylePropsObject as toObj } from './toStylePropsObject'
 export { tokenCategories } from './tokenCategories'
 
-export const cssShorthandLonghands = /* @__PURE__ */ toObj(
+export const cssShorthandLonghands = toObj(
   'borderWidth borderStyle borderColor borderTopWidth borderTopStyle borderTopColor borderRightWidth borderRightStyle borderRightColor borderBottomWidth borderBottomStyle borderBottomColor borderLeftWidth borderLeftStyle borderLeftColor outlineWidth outlineStyle outlineColor outlineOffset'
 )
 
-const textColors = /* @__PURE__ */ toObj('color textDecorationColor textShadowColor')
+const cssTextColors = toObj('color textDecorationColor')
+const textColors = toObj(cssTextColors, 'textShadowColor')
 
-const inputColors = /* @__PURE__ */ toObj(
+const inputColors = toObj(
   'placeholderTextColor selectionColor cursorColor selectionHandleColor'
 )
 
-const nonAnimatableViewProps = /* @__PURE__ */ toObj(
+const nonAnimatableViewProps = toObj(
   'alignContent alignItems alignSelf backfaceVisibility borderCurve borderStyle boxSizing cursor direction display flexDirection flexWrap isolation justifyContent mixBlendMode outlineStyle overflow pointerEvents position visibility'
 )
 
-const nonAnimatableFontProps = /* @__PURE__ */ toObj(
-  'fontFamily fontStyle fontVariant textTransform'
+const nonAnimatableFontProps = toObj('fontFamily fontStyle fontVariant textTransform')
+
+const cssTextAlignmentProps = toObj(
+  'textAlign textDecorationLine textDecorationStyle userSelect'
 )
 
-const nonAnimatableTextOnlyProps = /* @__PURE__ */ toObj(
-  'textAlign textDecorationLine textDecorationStyle userSelect writingDirection'
-)
+const nonAnimatableTextOnlyProps = toObj(cssTextAlignmentProps, 'writingDirection')
 
-const nonAnimatableUnitlessProps = /* @__PURE__ */ toObj('WebkitLineClamp lineClamp')
+const nonAnimatableUnitlessProps = toObj('WebkitLineClamp lineClamp')
 
-const webOnlyUnitlessProps = /* @__PURE__ */ toObj(
+const webOnlyUnitlessProps = toObj(
   'animationIterationCount borderImageOutset borderImageSlice borderImageWidth columnCount flexOrder flexPositive flexNegative order orphans tabSize widows zoom scaleZ'
 )
 
@@ -43,14 +45,14 @@ const webOnlyUnitlessProps = /* @__PURE__ */ toObj(
  * To enable on native with an experimental Yoga build, set the
  * `TAMAGUI_CSS_GRID` environment variable to `"1"`.
  */
-const cssGridProps = /* @__PURE__ */ toObj(
+const cssGridProps = toObj(
   'gridTemplateColumns gridTemplateAreas gridRow gridRowEnd gridRowGap gridRowStart gridColumn gridColumnEnd gridColumnGap gridColumnStart'
 )
 
 const enableCSSGrid =
   process.env.TAMAGUI_TARGET === 'web' || process.env.TAMAGUI_CSS_GRID === '1'
 
-export const nonAnimatableStyleProps = /* @__PURE__ */ toObj(
+export const nonAnimatableStyleProps = toObj(
   nonAnimatableViewProps,
   nonAnimatableFontProps,
   nonAnimatableTextOnlyProps,
@@ -60,7 +62,7 @@ export const nonAnimatableStyleProps = /* @__PURE__ */ toObj(
   process.env.TAMAGUI_TARGET === 'web' ? nonAnimatableWebTextProps : undefined
 )
 
-export const stylePropsUnitless = /* @__PURE__ */ toObj(
+export const stylePropsUnitless = toObj(
   process.env.TAMAGUI_TARGET === 'web' ? cssStylePropsUnitless : undefined,
   process.env.TAMAGUI_TARGET === 'web' ? nonAnimatableUnitlessProps : undefined,
   process.env.TAMAGUI_TARGET === 'web' ? webOnlyUnitlessProps : undefined,
@@ -68,32 +70,16 @@ export const stylePropsUnitless = /* @__PURE__ */ toObj(
   'aspectRatio flex flexGrow flexShrink fontWeight opacity zIndex scale scaleX scaleY shadowOpacity'
 )
 
-export const stylePropsTransform = /* @__PURE__ */ toObj(
+export const stylePropsTransform = toObj(
   'x y scale perspective scaleX scaleY skewX skewY matrix rotate rotateY rotateX rotateZ'
 )
 
-export const stylePropsView = /* @__PURE__ */ toObj(
-  nonAnimatableViewProps,
-  process.env.TAMAGUI_TARGET === 'web'
-    ? 'borderEndWidth borderStartWidth end marginEnd marginHorizontal marginStart marginVertical paddingEnd paddingHorizontal paddingStart paddingVertical start shadowOffset borderEndColor borderStartColor shadowColor'
-    : 'borderBottomWidth borderLeftWidth borderRightWidth borderBlockWidth borderBlockEndWidth borderBlockStartWidth borderInlineWidth borderInlineEndWidth borderInlineStartWidth borderTopWidth borderWidth transform transformOrigin borderEndWidth borderStartWidth bottom end flexBasis gap columnGap rowGap left margin marginBlock marginBlockEnd marginBlockStart marginInline marginInlineStart marginInlineEnd marginBottom marginEnd marginHorizontal marginLeft marginRight marginStart marginTop marginVertical padding paddingBottom paddingInline paddingBlock paddingBlockEnd paddingBlockStart paddingInlineEnd paddingInlineStart paddingEnd paddingHorizontal paddingLeft paddingRight paddingStart paddingTop paddingVertical right start top inset insetBlock insetBlockEnd insetBlockStart insetInline insetInlineEnd insetInlineStart shadowOffset backgroundColor borderColor borderBlockStartColor borderBlockEndColor borderBlockColor borderBottomColor borderInlineColor borderInlineStartColor borderInlineEndColor borderTopColor borderLeftColor borderRightColor borderEndColor borderStartColor shadowColor outlineColor',
-  process.env.TAMAGUI_TARGET === 'web' ? 'caretColor' : undefined,
-  process.env.TAMAGUI_TARGET === 'web'
-    ? 'borderTopStartRadius borderTopEndRadius borderBottomStartRadius borderBottomEndRadius shadowRadius'
-    : 'borderRadius borderTopLeftRadius borderTopRightRadius borderBottomLeftRadius borderBottomRightRadius borderTopStartRadius borderTopEndRadius borderBottomStartRadius borderBottomEndRadius borderStartStartRadius borderStartEndRadius borderEndStartRadius borderEndEndRadius width height minWidth minHeight maxWidth maxHeight blockSize minBlockSize maxBlockSize inlineSize minInlineSize maxInlineSize shadowRadius',
-  stylePropsTransform,
-  stylePropsUnitless,
-  isAndroid ? { elevationAndroid: true } : undefined,
-  'boxShadow border borderBlock borderInline filter background backgroundImage experimental_backgroundImage outline outlineOffset outlineWidth',
-  process.env.TAMAGUI_TARGET === 'web' ? cssStyleProps : undefined
-)
-
-const stylePropsFont = /* @__PURE__ */ toObj(
+const stylePropsFont = toObj(
   nonAnimatableFontProps,
   'fontSize fontWeight letterSpacing lineHeight'
 )
 
-export const stylePropsTextOnly = /* @__PURE__ */ toObj(
+export const stylePropsTextOnly = toObj(
   stylePropsFont,
   nonAnimatableTextOnlyProps,
   textColors,
@@ -102,14 +88,40 @@ export const stylePropsTextOnly = /* @__PURE__ */ toObj(
   process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsText : undefined
 )
 
-export const stylePropsText = /* @__PURE__ */ toObj(stylePropsView, stylePropsTextOnly)
+export const stylePropsView = toObj(
+  nonAnimatableViewProps,
+  'borderBottomWidth borderLeftWidth borderRightWidth borderBlockWidth borderBlockEndWidth borderBlockStartWidth borderInlineWidth borderInlineEndWidth borderInlineStartWidth borderTopWidth borderWidth transform transformOrigin borderEndWidth borderStartWidth bottom end flexBasis gap columnGap rowGap left margin marginBlock marginBlockEnd marginBlockStart marginInline marginInlineStart marginInlineEnd marginBottom marginEnd marginHorizontal marginLeft marginRight marginStart marginTop marginVertical padding paddingBottom paddingInline paddingBlock paddingBlockEnd paddingBlockStart paddingInlineEnd paddingInlineStart paddingEnd paddingHorizontal paddingLeft paddingRight paddingStart paddingTop paddingVertical right start top inset insetBlock insetBlockEnd insetBlockStart insetInline insetInlineEnd insetInlineStart shadowOffset backgroundColor borderColor borderBlockStartColor borderBlockEndColor borderBlockColor borderBottomColor borderInlineColor borderInlineStartColor borderInlineEndColor borderTopColor borderLeftColor borderRightColor borderEndColor borderStartColor shadowColor outlineColor',
+  process.env.TAMAGUI_TARGET === 'web' ? 'caretColor' : undefined,
+  'borderRadius borderTopLeftRadius borderTopRightRadius borderBottomLeftRadius borderBottomRightRadius borderTopStartRadius borderTopEndRadius borderBottomStartRadius borderBottomEndRadius borderStartStartRadius borderStartEndRadius borderEndStartRadius borderEndEndRadius width height minWidth minHeight maxWidth maxHeight blockSize minBlockSize maxBlockSize inlineSize minInlineSize maxInlineSize shadowRadius',
+  stylePropsTransform,
+  stylePropsUnitless,
+  isAndroid ? { elevationAndroid: true } : undefined,
+  'boxShadow border borderBlock borderInline filter background backgroundImage experimental_backgroundImage outline outlineOffset outlineWidth',
+  process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsView : undefined,
+  process.env.TAMAGUI_TARGET === 'web' ? cssStyleProps : undefined,
+  process.env.TAMAGUI_TARGET === 'web'
+    ? toObj(
+        stylePropsFont,
+        cssTextColors,
+        cssTextAlignmentProps,
+        nonAnimatableWebTextProps,
+        'textShadow textDecoration verticalAlign font'
+      )
+    : undefined
+)
 
-export const stylePropsInput = /* @__PURE__ */ toObj(stylePropsText, inputColors)
+export const stylePropsText = toObj(stylePropsView, stylePropsTextOnly)
+
+export const stylePropsInput = toObj(stylePropsText, inputColors)
 
 // native recognizes css names so unsupported styles cannot become host props.
-export const stylePropsAll = /* @__PURE__ */ toObj(
+export const stylePropsAll = toObj(
   stylePropsInput,
   cssStyleProps,
+  cssGridProps,
+  webOnlyStylePropsView,
+  nonAnimatableWebTextProps,
+  'font',
   nonAnimatableUnitlessProps,
   webOnlyUnitlessProps
 )

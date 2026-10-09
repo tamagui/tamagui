@@ -26,10 +26,10 @@ type SameKeys<Ours_, Theirs> = [keyof Ours_] extends [keyof Theirs]
   : { staleInOurs: Exclude<keyof Ours_, keyof Theirs> }
 
 /**
- * `AnimatedNode` is the one shape hand-copied rather than generated, so the two
- * declarations are distinct symbols even though they are structurally the same.
+ * `AnimatedNode` is generated from the native declaration. The extracted and
+ * native declarations are distinct symbols with the same structure.
  * Collapsing both to one marker keeps that out of every other comparison;
- * `_animatedNode` below is where the copy itself is checked.
+ * `_animatedNode` below checks the extracted declaration.
  *
  * The substitution sits at the leaves, inside `transform`'s entries and inside
  * `style`'s payload, so this rewrites the whole type rather than just its top
@@ -131,16 +131,11 @@ export type _panResponderGestureState = Assert<
   SameValues<Ours.PanResponderGestureState, RN.PanResponderGestureState>
 >
 export type _textLayoutEventData = Assert<
-  SameKeys<Ours.TextLayoutEventData, RN.TextLayoutEventData>
+  SameValues<Ours.TextLayoutEventData, RN.TextLayoutEvent['nativeEvent']>
 >
 export type _scaledSize = Assert<SameKeys<Ours.ScaledSize, RN.ScaledSize>>
 
-/**
- * `AnimatedNode` is copied by hand rather than generated, and everything above
- * leans on the copy being interchangeable with react-native's: without this,
- * a `.native` file could not pass a style built from these types to a real
- * react-native component.
- */
+/** the extracted AnimatedNode must remain interchangeable with the native handle */
 export type _animatedNode = Assert<
   Ours.AnimatedNode extends RN.Animated.AnimatedNode
     ? RN.Animated.AnimatedNode extends Ours.AnimatedNode
@@ -190,4 +185,27 @@ export type _erasureIsNotVacuous = Assert<
   }>
     ? false
     : true
+>
+
+// refs must expose the same native instance contracts in both directions.
+export type _viewInstance = Assert<
+  Ours.ViewInstance extends RN.ViewInstance
+    ? RN.ViewInstance extends Ours.ViewInstance
+      ? true
+      : false
+    : false
+>
+export type _textInstance = Assert<
+  Ours.TextInstance extends RN.TextInstance
+    ? RN.TextInstance extends Ours.TextInstance
+      ? true
+      : false
+    : false
+>
+export type _textInputInstance = Assert<
+  Ours.TextInputInstance extends RN.TextInputInstance
+    ? RN.TextInputInstance extends Ours.TextInputInstance
+      ? true
+      : false
+    : false
 >

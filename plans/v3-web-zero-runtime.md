@@ -12,7 +12,7 @@ artifact becomes a real transferred cost. Theme CSS weight (§3) is worth 17KB
 and belongs only to Goal B and to app authoring; it moves Goal A by zero and is
 deliberately kept out of that arithmetic.
 
-**Scope, decided by Nate and not open (§11):** the mode targets greenfield apps
+**Scope, decided by the owner and not open (§11):** the mode targets greenfield apps
 written under stricter authoring rules, not migrations of existing large apps.
 Coverage failures are a hard build error with a per-site list, never a
 per-component fallback. Every component that needs real runtime (sheet, dialog,
@@ -266,8 +266,8 @@ narrower pack is a **documented v6 capability** with a worked example at
 `code/tamagui.dev/data/docs/core/config-v6-colors.mdx:52`.
 
 So the 128 themes and 306 color tokens in the starter are the default config
-being generous, not `@tamagui/web` growing. Nate's read, and he is right:
-theme narrowing already worked in v2 and an app author opts into it. **This
+being generous, not `@tamagui/web` growing. Confirmed: theme narrowing
+already worked in v2 and an app author opts into it. **This
 contributes zero to "did core grow from v2 to v3", which is the question the
 rest of this plan is about.** It is a defaults, docs and starter-template
 question on a different axis.
@@ -349,7 +349,7 @@ resolved id contains `/tamagui/` or `/@tamagui/` appears in the client bundle.
 Output is `jsx('div' | 'span' | 'input' | …, { className, …passthrough })` plus
 one static CSS file. `react` and `react-dom` remain.
 
-**Given constraints** (from Nate): CSS animation driver only. Web only.
+**Given constraints** (from the owner): CSS animation driver only. Web only.
 
 **Audience: greenfield apps written under a stricter contract.** This is the
 decision that shapes everything else. The mode is not a migration path for an
@@ -436,10 +436,10 @@ helpers.
 
 ## 6. Which components are in the mode
 
-**DECIDED by Nate: the mode covers the components that already lower to
+**DECIDED by the owner: the mode covers the components that already lower to
 `div` + class. Every component that pulls real runtime is an island and is out
 of the mode.** No intermediate runtime, no scheme to bring the runtime-dependent
-set in. His words on the split: "kk thats a fine tradeoff still".
+set in. The split stands as a fine tradeoff.
 
 The audit below is **p22394's READ** of runtime (non-type) imports from
 `@tamagui/web` and `@tamagui/core` across `code/ui/*/src`. I spot-checked five
@@ -532,7 +532,7 @@ Gate 2 will report success on a bundle that still ships 40KB of runtime.
 
 ### Failure policy: decided
 
-**DECIDED by Nate: hard build failure listing every offending site. No
+**DECIDED by the owner: hard build failure listing every offending site. No
 per-component fallback. The escape hatch is declared async islands.** The
 reasoning is kept below because it is what the error message and the docs have
 to explain.
@@ -562,7 +562,7 @@ So:
 zero-runtime root, or whether each island mounts its own provider. Sharing means
 the provider is in the main chunk and the guarantee is gone. Per-island
 providers mean per-island config parsing cost and possible duplicate theme
-class emission. I do not have a confident answer and it needs Nate's call.
+class emission. I do not have a confident answer and it needs the owner's call.
 
 ---
 
@@ -752,7 +752,7 @@ block the mode and the mode should not block them.
 
 ## 11. Settled, and still open
 
-**Settled by Nate, do not reopen:**
+**Settled by the owner, do not reopen:**
 
 - Failure policy: hard build failure with a full site list, no per-component
   fallback, islands as the escape hatch (§7).

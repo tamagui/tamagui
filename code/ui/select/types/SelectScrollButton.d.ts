@@ -6,14 +6,10 @@ export declare const SelectScrollButtonFrame: React.FunctionComponent<Omit<impor
 }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
 };
-export declare const SelectScrollUpButton: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, keyof SelectScrollButtonProps> & SelectScrollButtonProps & {
+export declare const SelectScrollUpButton: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof SelectScrollButtonProps> & SelectScrollButtonProps & {
     scope?: import("./types").SelectScopes;
-}, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & SelectScrollButtonProps & {
+}, import("@tamagui/core").StackStyleBase, Omit<{}, keyof SelectScrollButtonProps>, import("@tamagui/core").StaticConfigPublic>;
+export declare const SelectScrollDownButton: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof SelectScrollButtonProps> & SelectScrollButtonProps & {
     scope?: import("./types").SelectScopes;
-}, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
-export declare const SelectScrollDownButton: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, keyof SelectScrollButtonProps> & SelectScrollButtonProps & {
-    scope?: import("./types").SelectScopes;
-}, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & SelectScrollButtonProps & {
-    scope?: import("./types").SelectScopes;
-}, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StackStyleBase, Omit<{}, keyof SelectScrollButtonProps>, import("@tamagui/core").StaticConfigPublic>;
 //# sourceMappingURL=SelectScrollButton.d.ts.map

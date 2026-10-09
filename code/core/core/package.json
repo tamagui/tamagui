@@ -153,7 +153,7 @@
     "@testing-library/react": "^16.1.0",
     "csstype": "^3.0.10",
     "react": "19.2.3",
-    "react-native": "0.86.2",
+    "react-native": "0.87.1",
     "typescript": "7.0.2",
     "vitest": "4.1.0"
   },

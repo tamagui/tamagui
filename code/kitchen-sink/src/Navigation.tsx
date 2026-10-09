@@ -8,7 +8,7 @@ import { TestCasesScreen } from './features/testcases/screen'
 import { TestScreen } from './features/testcases/test-screen'
 import { useThemeControl } from './useKitchenSinkTheme'
 
-const Stack = createNativeStackNavigator<{
+export type KitchenSinkParamList = {
   home: undefined
   demo: {
     id: string
@@ -18,7 +18,9 @@ const Stack = createNativeStackNavigator<{
     id: string
   }
   sandbox: undefined
-}>()
+}
+
+const Stack = createNativeStackNavigator<KitchenSinkParamList>()
 
 const linking = {
   prefixes: [],

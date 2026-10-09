@@ -2,7 +2,7 @@
 
 ## Owner direction
 
-2026-10-04 Honolulu, 2026-10-05 UTC: Nate said, "for tamagui its for v3 beta ofc and one for v2 beta ofc" (original human turn in `tm show prompts m20266`). The replacement assignment authorizes a detached Sol medium manager with Muse Max Spark contributor assistance for existing essentials/native work and CI. Integration targets `v3-beta`. Main and stable releases retain their owner gates. No new look or public API belongs to this lane.
+2026-10-04 Honolulu, 2026-10-05 UTC: owner direction is Tamagui v3 beta and One v2 beta (original human turn in `tm show prompts m20266`). The replacement assignment authorizes a detached Sol medium manager with Muse Max Spark contributor assistance for existing essentials/native work and CI. Integration targets `v3-beta`. Main and stable releases retain their owner gates. No new look or public API belongs to this lane.
 
 ## Ownership and boundaries
 

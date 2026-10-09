@@ -61,10 +61,8 @@ export default function App() {
 
   const systemColorScheme = useColorScheme()
 
-  // Resolved theme based on mode
-  // useColorScheme can return null (RN 0.83+) or 'unspecified' (after setColorScheme('unspecified'))
   const scheme = mode === 'system' ? systemColorScheme : mode
-  const resolvedTheme = (scheme && scheme !== 'unspecified' ? scheme : null) || 'light'
+  const resolvedTheme = scheme || 'light'
 
   // Update Appearance when mode changes (for native components)
   React.useEffect(() => {
@@ -72,19 +70,9 @@ export default function App() {
       Appearance.setColorScheme(mode)
       return
     }
-    // 'system' means stop overriding. on ios that is already the window default,
-    // so the call has nothing to do there and is actively harmful: RN's
-    // Appearance.setColorScheme writes its JS cache to the string it was given
-    // while leaving RCTAppearance's own _currentColorScheme untouched, so
-    // passing 'unspecified' makes useColorScheme() report the literal
-    // 'unspecified' (which is not a ColorSchemeName) until a later native
-    // appearanceChanged event happens to re-sync the two. that renders light on
-    // a dark device and keeps the DynamicColorIOS gate shut for the whole app.
-    // android does need the explicit reset: RN 0.83's kotlin conversion made
-    // setColorScheme non-null there, and 'unspecified' is how it follows the
-    // system again.
+    // android needs an explicit reset to follow the system appearance.
     if (Platform.OS === 'android') {
-      Appearance.setColorScheme('unspecified' as any)
+      Appearance.setColorScheme('auto')
     }
   }, [mode])
 

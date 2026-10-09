@@ -1,8 +1,9 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { CoreStateModifierName, TransformAccumulator } from '@tamagui/style-grammar/runtime';
 import type { Properties } from 'csstype';
+import type { UnprefixedCSSProperties } from './dom/styleTypes';
 import type { CSSProperties, ComponentType, Context, Dispatch, FunctionComponent, HTMLAttributes, ProviderExoticComponent, Ref as ReactRef, ReactNode, RefObject, SetStateAction } from 'react';
-import type { FontVariant, PressableProps, Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from '@tamagui/react-native-types';
+import type { FontVariant, PressableProps, TextInstance as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, ViewInstance as View, ViewProps, ViewStyle } from '@tamagui/react-native-types';
 import type { NativeStyleEngineLinkHandle } from './helpers/nativeStyleEngine';
 import type { AnimatedTextChannel, NativeTextContext, NativeTextMetrics } from './helpers/nativeTextMetrics';
 export type { AnimatedTextChannel, NativeTextMetrics } from './helpers/nativeTextMetrics';
@@ -307,8 +308,6 @@ export type ComponentContextI = NativeTextContext & {
     language: LanguageContextType | null;
     animationDriver: AnimationDriver | null;
     setParentFocusState: ComponentSetStateShallow | null;
-    mediaEmit?: (state: UseMediaState) => void;
-    mediaEmitListeners?: Set<(state: UseMediaState) => void>;
     insets?: {
         top: number;
         right: number;
@@ -347,7 +346,8 @@ export type TamaguiComponentStateRef = {
     nextState?: TamaguiComponentState;
     nextMedia?: UseMediaState;
     avoidReRenders?: boolean;
-    mediaEmitCleanup?: () => void;
+    mediaEmit?: (state: UseMediaState) => void;
+    mediaEmitQueued?: boolean;
     prevPseudoState?: {
         hover?: boolean;
         press?: boolean;
@@ -1250,7 +1250,7 @@ export type FlatStyleObject<T> = {
  */
 export type FlatStyleValue<T> = T | (StyleValueSyntaxSetting extends 'string' ? never : FlatStyleObject<T>) | OpenStyleString;
 export type WithThemeValues<T extends object> = {
-    [K in keyof T]: (ThemeValueGet<K> extends never ? K extends keyof ExtraBaseProps ? T[K] : FlatStyleValue<T[K] | 'unset'> : FlatStyleValue<GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset'>) | (K extends SafeAreaValueKeys ? 'safe' : never);
+    -readonly [K in keyof T]: (ThemeValueGet<K> extends never ? K extends keyof ExtraBaseProps ? T[K] : FlatStyleValue<T[K] | 'unset'> : FlatStyleValue<GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset'>) | (K extends SafeAreaValueKeys ? 'safe' : never);
 };
 export type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];
@@ -1721,9 +1721,9 @@ interface ExtendedBaseProps extends TransformStyleProps, ExtendBaseTextProps, Ex
     display?: 'inherit' | 'none' | 'inline' | 'block' | 'inline-block' | 'contents' | 'flex' | 'inline-flex' | 'grid' | 'inline-grid';
     position?: 'absolute' | 'relative' | 'fixed' | 'static' | 'sticky';
 }
-export interface StackStyleBase extends Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>, ExtendedBaseProps, Omit<Properties<string | number>, keyof ViewStyle | keyof ExtendedBaseProps | keyof TamaguiComponentPropsBaseBase> {
+export interface StackStyleBase extends Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>, ExtendedBaseProps, Omit<UnprefixedCSSProperties, keyof ViewStyle | keyof ExtendedBaseProps | keyof TamaguiComponentPropsBaseBase> {
 }
-export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBaseProps | 'fontVariant' | 'lineHeight' | 'includeFontPadding'>, ExtendedBaseProps, Omit<Properties<string | number>, keyof RNTextStyle | keyof ExtendedBaseProps | keyof TamaguiComponentPropsBaseBase | 'textShadow' | 'textDecoration' | 'font'> {
+export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBaseProps | 'fontVariant' | 'lineHeight' | 'includeFontPadding'>, ExtendedBaseProps, Omit<UnprefixedCSSProperties, keyof RNTextStyle | keyof ExtendedBaseProps | keyof TamaguiComponentPropsBaseBase | 'textShadow' | 'textDecoration' | 'font'> {
     lineHeight?: number | Px | `${number}`;
     /**
      * react-native types this as a mutable `FontVariant[]`, which an `as const` variant
@@ -1754,11 +1754,11 @@ export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBase
     font?: string;
 }
 type LooseCombinedObjects<A extends object, B extends object> = A | B | (A & B);
-export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | keyof TamaguiComponentPropsBaseBase | RNOnlyProps | keyof ExtendBaseStackProps | 'style' | 'onFocus' | 'onBlur' | 'onPointerCancel' | 'onPointerDown' | 'onPointerMove' | 'onPointerUp'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
+export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | keyof TamaguiComponentPropsBase | RNOnlyProps | keyof ExtendBaseStackProps | 'style' | 'onFocus' | 'onBlur' | 'onPointerCancel' | 'onPointerDown' | 'onPointerMove' | 'onPointerUp'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
 export type StackStyle = WithThemeAndShorthands<StackStyleBase>;
-export interface TextNonStyleProps extends Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style' | 'selectable' | 'numberOfLines' | 'pointerEvents'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
+export interface TextNonStyleProps extends Omit<ReactTextProps, 'children' | keyof TamaguiComponentPropsBase | RNOnlyProps | keyof ExtendBaseTextProps | 'style' | 'selectable' | 'numberOfLines' | 'pointerEvents'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>;
 }
 export type TextStyle = WithThemeAndShorthands<TextStylePropsBase>;
@@ -2219,13 +2219,17 @@ export type UseAnimationHook = (props: {
     className?: string;
     ref?: any;
 };
-export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void ? Event : never;
+export type GestureReponderEvent = Exclude<ViewProps['onResponderMove'], void> extends (event: infer Event) => void ? Event : never;
 export type RulesToInsert = Record<string, StyleObject>;
 export type GetStyleResult = {
-    style: ViewStyle | null;
+    style: {
+        -readonly [K in keyof ViewStyle]: ViewStyle[K];
+    } | null;
     classNames: ClassNamesObject;
     rulesToInsert: RulesToInsert;
-    viewProps: (StackNonStyleProps & StackStyle) & Record<string, any>;
+    viewProps: {
+        -readonly [K in keyof (StackNonStyleProps & StackStyle)]: (StackNonStyleProps & StackStyle)[K];
+    } & Record<string, any>;
     fontFamily: string | undefined;
     nativeTextMetrics?: NativeTextMetrics;
     space?: any;
@@ -2270,7 +2274,7 @@ export interface RecursiveArray<T> extends Array<T | ReadonlyArray<T> | Recursiv
 export type RegisteredStyle<T> = number & {
     __registeredStyleBrand: T;
 };
-export type StyleProp<T> = T | StylePiece | RegisteredStyle<T> | RecursiveArray<T | StylePiece | RegisteredStyle<T> | Falsy> | Falsy;
+export type StyleProp<T> = T | StylePiece | RegisteredStyle<T> | ReadonlyArray<StyleProp<T>> | Falsy | void;
 export type FillInFont<A extends GenericFont, DefaultKeys extends string | number> = {
     family: string;
     lineHeight: FillInFontValues<A, 'lineHeight', DefaultKeys>;

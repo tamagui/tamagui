@@ -1,6 +1,6 @@
 # Design: v3 variants, component resolvers, and style pieces
 
-Status: agreed direction (Nate + Fable review session, 2026-08-31). Phase 1
+Status: agreed direction (owner + Fable review session, 2026-08-31). Phase 1
 (engine core: layer renumbering, styled.dynamic carriers, .resolve chain,
 types, tests) landed in @tamagui/web; the phase 2 list below is handed to a
 Sol xhigh worker. This resolves the "single-function variants" bullet left
@@ -166,7 +166,7 @@ Four call sites, two patterns:
 
 ## No v2 compat
 
-Decided (Nate, 2026-08-31): no compat resolver package. Rewrite every in-repo
+Decided (owner, 2026-08-31): no compat resolver package. Rewrite every in-repo
 usage of legacy functional variants (spread keys, VariantSpreadFunction
 bodies, getVariantExtras consumers) to styled.dynamic/.resolve directly, then
 delete the legacy variant-function machinery from the engine. The

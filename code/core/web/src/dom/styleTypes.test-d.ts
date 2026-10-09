@@ -1,4 +1,9 @@
-import type { Animated, TextStyle as RNTextStyle, ViewStyle } from 'react-native'
+import type {
+  Animated,
+  ColorValue,
+  TextStyle as RNTextStyle,
+  ViewStyle,
+} from 'react-native'
 
 import type { StackStyleBase, TextStylePropsBase, Variable } from '../types'
 import type { TamaguiStyleProps } from './styleTypes'
@@ -73,7 +78,7 @@ type WebReferenceStyle = Omit<ReferenceStyle, RemovedWebKeys>
  */
 type RuntimeOnlyValue =
   | Animated.AnimatedNode
-  | (symbol & { __TYPE__: 'Color' })
+  | Extract<ColorValue, symbol>
   | Variable<any>
 
 type StaticValue<T> = T extends RuntimeOnlyValue
@@ -168,3 +173,12 @@ check({ textAlignVertical: 'center' })
 check({ includeFontPadding: false })
 // @ts-expect-error writingDirection is direction on web
 check({ writingDirection: 'ltr' })
+
+// @ts-expect-error use x for the top-level translateX authoring prop
+check({ translateX: 4 })
+// @ts-expect-error use y for the top-level translateY authoring prop
+check({ translateY: 4 })
+// @ts-expect-error use rotate for the top-level rotation authoring prop
+check({ rotation: 45 })
+// @ts-expect-error matrix belongs in transform
+check({ transformMatrix: [1, 0, 0, 1, 0, 0] })

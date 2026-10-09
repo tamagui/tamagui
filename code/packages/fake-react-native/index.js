@@ -131,3 +131,5 @@ module.exports.Keyboard = Keyboard
 module.exports.Appearance = proxy.Appearance
 module.exports.codegenNativeCommands = codegenNativeCommands
 module.exports.codegenNativeComponent = codegenNativeComponent
+// load the RN hook only when native code calls it; RN is an optional peer.
+module.exports.usePressability = (...args) => require('./pressability')(...args)

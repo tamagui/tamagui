@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { TextInput } from 'react-native'
+import type { TextInputInstance as TextInput } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import {
   Button,
