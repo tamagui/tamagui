@@ -312,8 +312,8 @@ for (const [source, destination, syntax, needle] of [
 ] as const) {
   test(`syntax query resolves before rendering: ${syntax}`, async ({ page, request }) => {
     const response = await request.get(source, { maxRedirects: 0 })
-    expect(response.status()).toBe(307)
-    expect(new URL(response.headers().location).pathname).toBe(destination)
+    expect(response.status()).toBe(200)
+    expect(response.headers().location).toBeUndefined()
     await page.goto(source)
     await expect(page).toHaveURL(new RegExp(`${destination}$`))
     await expectDocsSyntax(page, syntax)
@@ -411,17 +411,17 @@ test('docs controls render at their final positions before hydration', async ({
   await clientContext.close()
 })
 
-test('the docs theme picker applies a selected theme', async ({ page, request }) => {
-  // selecting a theme loads its suite from the theme backend; without it the
-  // picker has nothing to apply, so the backend is an explicit precondition.
-  const probe = await request.get('/api/theme/free')
-  test.skip(!probe.ok(), 'needs the theme backend (Supabase theme_histories)')
+test('the docs theme picker applies a bundled theme without API requests', async ({
+  page,
+}) => {
+  const apiRequests: string[] = []
+  page.on('request', (request) => {
+    if (new URL(request.url()).pathname.startsWith('/api/')) {
+      apiRequests.push(request.url())
+    }
+  })
   await page.setViewportSize({ width: 1617, height: 975 })
-  const themesLoaded = page.waitForResponse(
-    (response) => response.url().includes('/api/theme/free') && response.ok()
-  )
   await page.goto('/docs/intro/styles')
-  await themesLoaded
 
   const trigger = page.getByTestId('docs-theme')
   await waitForHydration(trigger)
@@ -430,6 +430,7 @@ test('the docs theme picker applies a selected theme', async ({ page, request })
 
   await expect(trigger).toContainText('Theme: B/W')
   await expect(page.locator('.docs-theme-accents')).toHaveCount(1)
+  expect(apiRequests).toEqual([])
 })
 
 test('installation code controls share one row and copy the selected command', async ({

@@ -1,10 +1,11 @@
-import { href, usePathname } from 'one'
+import { usePathname } from 'one'
 import { useEffect, useRef, useState } from 'react'
 import { H4, Paragraph, ScrollView, Separator, XStack, YStack } from 'tamagui'
 
 import { Link } from '~/components/Link'
 import { AGENT_SETUP_PROMPT } from '~/components/CopyAgentSetupButton'
 import { copyToClipboard } from '~/hooks/useClipboard'
+import { DocsThemePicker } from './DocsThemePicker'
 
 export type Heading = {
   id: string
@@ -289,6 +290,8 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
     >
       <ScrollView showsVerticalScrollIndicator={false}>
         <YStack gap="6" pt={68} pb="14">
+          <DocsThemePicker />
+
           <YStack gap="1-5">
             <Paragraph
               render="span"
@@ -300,14 +303,7 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
               {copiedMd ? 'Copied markdown' : 'Copy markdown'}
             </Paragraph>
 
-            <Link
-              target="_blank"
-              href={href(
-                (process.env.ONE_SERVER_URL
-                  ? `${process.env.ONE_SERVER_URL}/llms.txt`
-                  : '/llms.txt') as any
-              )}
-            >
+            <Link target="_blank" href={'/llms.txt' as any}>
               <Paragraph
                 render="span"
                 size="2"

@@ -1,5 +1,4 @@
 import { CheckCircle, Copy } from '~/components/icons'
-import useSWR from 'swr'
 import { TooltipSimple, XStack } from 'tamagui'
 import { useClipboard } from '~/hooks/useClipboard'
 import { generateThemeBuilderCode } from '../studio/api/generateThemeBuilderCode'
@@ -9,18 +8,11 @@ import {
   useThemeBuilderStore,
 } from '../studio/theme/store/ThemeBuilderStore'
 import { PickerSelect } from './DocsVersionPicker'
-import { freeThemes, type FreeTheme } from './freeThemes'
+import { freeThemes } from './freeThemes'
 
 export function DocsThemePicker() {
   const { currentThemeId } = useThemeBuilderStore()
   const { hasCopied, onCopy } = useClipboard()
-  const { data } = useSWR<{ themes: FreeTheme[] }>('/api/theme/free', async (url) => {
-    const response = await fetch(url)
-    if (!response.ok) {
-      throw new Error(`Failed to load free themes: ${response.status}`)
-    }
-    return response.json()
-  })
 
   return (
     <XStack width="100%" pr="8" items="center" gap="1-5">
@@ -42,7 +34,7 @@ export function DocsThemePicker() {
             return
           }
 
-          const theme = data?.themes.find((option) => String(option.id) === value)
+          const theme = freeThemes.find((option) => String(option.id) === value)
           if (theme) {
             themeBuilderStore.updateGenerate(theme.themeData, theme.searchQuery, theme.id)
           }

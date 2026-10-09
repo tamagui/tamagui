@@ -52,9 +52,6 @@ const include = [
   'react-dom',
   'react/jsx-runtime',
   'react/jsx-dev-runtime',
-  'zod',
-  '@stripe/react-stripe-js',
-  '@stripe/stripe-js',
   'swr/mutation',
   '@vxrn/mdx-rust/client',
   // core tamagui packages must be pre-bundled together to avoid duplicate instances
@@ -63,14 +60,10 @@ const include = [
   '@tamagui/web',
   // existing
   'secure-json-parse',
-  '@supabase/postgres-js',
-  'ai',
   '@docsearch/react',
   '@leeoniya/ufuzzy',
-  'react-hook-form',
   '@github/mini-throttle',
   'swr',
-  '@supabase/ssr',
   'is-buffer',
   'extend',
   'minimatch',
@@ -89,7 +82,6 @@ const include = [
   '@tamagui/get-token',
   '@tamagui/roving-focus',
   'react-native-safe-area-context',
-  '@hookform/resolvers/zod',
   'react-native-reanimated',
   'react-native-gesture-handler',
   '@tanstack/react-table',
@@ -98,8 +90,6 @@ const include = [
 ]
 
 export default {
-  envPrefix: 'NEXT_PUBLIC_',
-
   server: {
     fs: {
       allow: ['..'],
@@ -157,14 +147,7 @@ export default {
         : []),
     ],
 
-    dedupe: [
-      'react',
-      'react-dom',
-      'react-hook-form',
-      'react-native',
-      'react-native-web',
-      ...include,
-    ],
+    dedupe: ['react', 'react-dom', 'react-native', 'react-native-web', ...include],
   },
 
   optimizeDeps: {
@@ -174,14 +157,7 @@ export default {
   },
 
   ssr: {
-    external: [
-      '@vxrn/mdx-rust',
-      'satteri',
-      'satteri-expressive-code',
-      'ws',
-      'postmark',
-      'stripe',
-    ],
+    external: ['@vxrn/mdx-rust', 'satteri', 'satteri-expressive-code', 'ws'],
     noExternal: true,
   },
 
@@ -215,20 +191,6 @@ export default {
         tsConfigPaths: false,
       },
 
-      setupFile: {
-        server: './setup.server.ts',
-      },
-
-      server: {
-        cacheControl: {
-          'fonts/**': 'public, max-age=604800, stale-while-revalidate=86400',
-          '*.svg': 'public, max-age=86400',
-          '*.png': 'public, max-age=86400',
-          '*.jpg': 'public, max-age=86400',
-          '*.woff2': 'public, max-age=604800',
-        },
-      },
-
       react: {
         compiler: process.env.NODE_ENV === 'production',
       },
@@ -257,24 +219,6 @@ export default {
               `return this._componentDOMRef.getBoundingClientRect();`,
               'return null;'
             )
-          },
-        },
-      },
-
-      build: {
-        api: {
-          config: {
-            build: {
-              rollupOptions: {
-                external: [
-                  '@discordjs/rest',
-                  '@discordjs/ws',
-                  '@vercel/og',
-                  'stripe',
-                  'zlib-sync',
-                ],
-              },
-            },
           },
         },
       },

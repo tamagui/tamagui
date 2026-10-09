@@ -8,7 +8,6 @@ import { DocsTitle } from '~/components/DocsTitle'
 import { DocsPageFrame } from '~/features/docs/DocsPageFrame'
 import { useDocsMenu } from '~/features/docs/useDocsMenu'
 import { components } from '~/features/mdx/MDXComponents'
-import { getOgUrl } from '~/features/site/getOgUrl'
 
 export async function generateStaticParams() {
   const { getAllFrontmatter } = await import('~/features/mdx/getMDXBySlug')
@@ -53,21 +52,7 @@ export function DocCorePage() {
       frontmatter={frontmatter}
       initialSearch={search}
     >
-      <HeadInfo
-        title={frontmatter.title}
-        description={frontmatter.description ?? ''}
-        openGraph={{
-          images: [
-            {
-              url: getOgUrl({
-                title: frontmatter.title,
-                description: frontmatter.description ?? '',
-                category: 'intro',
-              }),
-            },
-          ],
-        }}
-      />
+      <HeadInfo title={frontmatter.title} description={frontmatter.description ?? ''} />
       <DocsTitle>{frontmatter.title}</DocsTitle>
       <SubTitle>{frontmatter.description || ''}</SubTitle>
       <ThemeTint>

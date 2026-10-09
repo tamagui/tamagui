@@ -9,7 +9,6 @@ import { TamaguiExamples } from '~/components/TamaguiExamples'
 import { DocsPageFrame } from '~/features/docs/DocsPageFrame'
 import { useDocsMenu } from '~/features/docs/useDocsMenu'
 import { components } from '~/features/mdx/MDXComponents'
-import { getOgUrl } from '~/features/site/getOgUrl'
 
 export async function generateStaticParams() {
   const { getAllFrontmatter } = await import('~/features/mdx/getMDXBySlug')
@@ -64,17 +63,6 @@ export function DocIntroPage() {
       <HeadInfo
         title={`${frontmatter.title} — Tamagui`}
         description={frontmatter.description ?? ''}
-        openGraph={{
-          images: [
-            {
-              url: getOgUrl({
-                title: frontmatter.title,
-                description: frontmatter.description ?? '',
-                category: 'intro',
-              }),
-            },
-          ],
-        }}
       />
       <DocsTitle>{frontmatter.title}</DocsTitle>
       <SubTitle>{frontmatter.description || ''}</SubTitle>

@@ -20,15 +20,11 @@ declare module 'one' {
         | `/(site)/(docs)`
         | `/(site)/(tailwind)`
         | `/(site)/(unstyled)`
-        | `/(site)/account`
         | `/(site)/bento`
         | `/(site)/bento/(home)`
         | `/(site)/blog`
         | `/(site)/dpa`
         | `/(site)/draft`
-        | `/(site)/login`
-        | `/(site)/pop`
-        | `/(site)/pop/accept-invite`
         | `/(site)/privacy`
         | `/(site)/tailwind`
         | `/(site)/takeout`
@@ -37,16 +33,11 @@ declare module 'one' {
         | `/(tailwind)`
         | `/(unstyled)`
         | `/_sitemap`
-        | `/account`
-        | `/auth`
         | `/bento`
         | `/bento/(home)`
         | `/blog`
         | `/dpa`
         | `/draft`
-        | `/login`
-        | `/pop`
-        | `/pop/accept-invite`
         | `/privacy`
         | `/tailwind`
         | `/takeout`
@@ -237,5 +228,11 @@ declare module 'one' {
  */
 type RouteInfo<Params = Record<string, never>> = {
   Params: Params
-  LoaderProps: { path: string; search?: string; subdomain?: string; params: Params; request?: Request }
+  LoaderProps: {
+    path: string
+    search?: string
+    subdomain?: string
+    params: Params
+    request?: Request
+  }
 }
