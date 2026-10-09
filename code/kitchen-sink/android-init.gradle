@@ -18,13 +18,19 @@ allprojects {
         android.buildFeatures.buildConfig = true
     }
 
-    // detox and react native both package this jni library.
+    // detox and native dependencies package shared jni libraries. apply the
+    // react native app's prefab packaging rules to library test apk variants too.
     afterEvaluate {
         if (it.hasProperty('android')) {
             android {
                 packagingOptions {
                     jniLibs {
-                        pickFirsts += ['**/libfbjni.so']
+                        pickFirsts += [
+                            '**/libfbjni.so',
+                            '**/libreactnative.so',
+                            '**/libjsi.so',
+                            '**/libc++_shared.so',
+                        ]
                     }
                 }
             }

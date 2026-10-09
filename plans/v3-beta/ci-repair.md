@@ -103,6 +103,17 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   registry cold typecheck passes, and production bundles build for iOS and
   Android. Full app interactions remain CI gates.
 
+- RAN: One's library test APK packages native prefab libraries from both its
+  CMake output and React Native's AAR. The focused
+  `:one:mergeDebugAndroidTestNativeLibs` task reproduces the duplicate
+  `libc++_shared.so`; selecting that library then exposes duplicate
+  `libjsi.so` from the same inputs. React Native's app plugin already selects
+  one copy of fbjni, reactnative, jsi, and the shared C++ runtime. The shared
+  init script applies those same four rules to library test variants. The
+  failing arm64 merge task then passes in 20 seconds with unchanged test
+  tasks and assertions. The init script is already part of the native
+  fingerprint, so the packaging change invalidates cached builds.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The
