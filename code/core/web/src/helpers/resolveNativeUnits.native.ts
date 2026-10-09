@@ -11,7 +11,8 @@ export interface UnitContext {
   isFontSizeProp: boolean
 }
 
-const UNIT_RE = /^([+-]?\s*\d*\.?\d+)(px|rem|em|[dls]?vw|[dls]?vh|vmin|vmax|cqi|cqw|cqh|cqb)?$/i
+const UNIT_RE =
+  /^([+-]?\s*\d*\.?\d+)(px|rem|em|[dls]?vw|[dls]?vh|vmin|vmax|cqi|cqw|cqh|cqb)?$/i
 
 export function isDynamicUnitValue(value: unknown): boolean {
   if (typeof value !== 'string') return false

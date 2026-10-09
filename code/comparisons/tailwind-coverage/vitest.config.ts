@@ -7,5 +7,7 @@ const config = mergeConfig(native, {
   root: fileURLToPath(new URL('../../core/tailwind', import.meta.url)),
 })
 // mergeConfig concatenates arrays, and only the dump should run
-config.test.include = [fileURLToPath(new URL('./tamagui.native.test.tsx', import.meta.url))]
+config.test.include = [
+  fileURLToPath(new URL('./tamagui.native.test.tsx', import.meta.url)),
+]
 export default config

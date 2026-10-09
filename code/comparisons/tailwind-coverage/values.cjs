@@ -8,14 +8,19 @@ const vars = {}
 for (const m of theme.matchAll(/(--[\w-]+)\s*:\s*([^;]+);/g)) vars[m[1]] ||= m[2].trim()
 const sub = (v, depth = 0) => {
   if (depth > 8) return v
-  return v.replace(/var\((--[\w-]+)(?:,\s*([^()]*(?:\([^()]*\))?[^()]*))?\)/g, (_, n, fb) =>
-    vars[n] != null ? sub(vars[n], depth + 1) : fb != null ? sub(fb, depth + 1) : `?`)
+  return v.replace(
+    /var\((--[\w-]+)(?:,\s*([^()]*(?:\([^()]*\))?[^()]*))?\)/g,
+    (_, n, fb) =>
+      vars[n] != null ? sub(vars[n], depth + 1) : fb != null ? sub(fb, depth + 1) : `?`
+  )
 }
 const num = (raw) => {
   let v = sub(raw).trim()
   let m
-  if ((m = v.match(/^calc\(\s*(-?[\d.]+)(rem|px)?\s*\*\s*(-?[\d.]+)\s*\)$/))) return +m[1] * (m[2] === 'rem' ? 16 : 1) * +m[3]
-  if ((m = v.match(/^calc\(\s*(-?[\d.]+)(rem|px)\s*\*\s*-1\s*\)$/))) return -+m[1] * (m[2] === 'rem' ? 16 : 1)
+  if ((m = v.match(/^calc\(\s*(-?[\d.]+)(rem|px)?\s*\*\s*(-?[\d.]+)\s*\)$/)))
+    return +m[1] * (m[2] === 'rem' ? 16 : 1) * +m[3]
+  if ((m = v.match(/^calc\(\s*(-?[\d.]+)(rem|px)\s*\*\s*-1\s*\)$/)))
+    return -+m[1] * (m[2] === 'rem' ? 16 : 1)
   if ((m = v.match(/^(-?[\d.]+)(rem|px)$/))) return +m[1] * (m[2] === 'rem' ? 16 : 1)
   if ((m = v.match(/^-?[\d.]+$/))) return +v
   return null
@@ -27,14 +32,32 @@ const targets = (prop) => {
   if (prop === 'border-width') return (k) => /^border\w*Width$/.test(k)
   if (prop === 'border-radius') return (k) => /^border\w*Radius$/.test(k)
   if (prop === 'inset') return (k) => ['top', 'right', 'bottom', 'left'].includes(k)
-  if (/^inset-/.test(prop)) return (k) => ['top', 'right', 'bottom', 'left'].includes(k)
-  if (/^(margin|padding)-(inline|block)/.test(prop)) { const b = prop.split('-')[0]; return (k) => k.startsWith(b) }
-  const logical = { 'inline-size': 'width', 'block-size': 'height', 'min-inline-size': 'minWidth', 'max-inline-size': 'maxWidth', 'min-block-size': 'minHeight', 'max-block-size': 'maxHeight' }
+  if (prop.startsWith('inset-')) return (k) => ['top', 'right', 'bottom', 'left'].includes(k)
+  if (/^(margin|padding)-(inline|block)/.test(prop)) {
+    const b = prop.split('-')[0]
+    return (k) => k.startsWith(b)
+  }
+  const logical = {
+    'inline-size': 'width',
+    'block-size': 'height',
+    'min-inline-size': 'minWidth',
+    'max-inline-size': 'maxWidth',
+    'min-block-size': 'minHeight',
+    'max-block-size': 'maxHeight',
+  }
   if (logical[prop]) return (k) => k === logical[prop] || k === camel(prop)
-  if (/^border-(inline|block)?-?(start|end)?-?width$|^border-(inline|block)-width$/.test(prop)) return (k) => /^border\w*Width$/.test(k)
+  if (
+    /^border-(inline|block)?-?(start|end)?-?width$|^border-(inline|block)-width$/.test(
+      prop
+    )
+  )
+    return (k) => /^border\w*Width$/.test(k)
   if (/^border-.*radius$/.test(prop)) return (k) => /^border\w*Radius$/.test(k)
   if (prop === 'gap') return (k) => k === 'gap' || k === 'rowGap' || k === 'columnGap'
-  return (k) => k === c || (k.startsWith(c) && /^(Top|Right|Bottom|Left|Start|End|Horizontal|Vertical)$/.test(k.slice(c.length)))
+  return (k) =>
+    k === c ||
+    (k.startsWith(c) &&
+      /^(Top|Right|Bottom|Left|Start|End|Horizontal|Vertical)$/.test(k.slice(c.length)))
 }
 const out = []
 let checked = 0
