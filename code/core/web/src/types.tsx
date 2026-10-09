@@ -633,8 +633,6 @@ export type ComponentContextI = NativeTextContext & {
   language: LanguageContextType | null
   animationDriver: AnimationDriver | null
   setParentFocusState: ComponentSetStateShallow | null
-  mediaEmit?: (state: UseMediaState) => void
-  mediaEmitListeners?: Set<(state: UseMediaState) => void>
   insets?: { top: number; right: number; bottom: number; left: number } | null
 }
 
@@ -688,8 +686,9 @@ export type TamaguiComponentStateRef = {
   // per-render animatedBy prop; hooks gated on it must keep a stable count)
   avoidReRenders?: boolean
 
-  // cleanup function for media emit listener
-  mediaEmitCleanup?: () => void
+  // avoidReRenders: this instance's useMedia emits media changes here instead
+  // of re-rendering
+  mediaEmit?: (state: UseMediaState) => void
 
   // previous pseudo state for detecting enter vs exit transitions
   prevPseudoState?: {

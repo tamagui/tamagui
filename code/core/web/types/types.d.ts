@@ -308,8 +308,6 @@ export type ComponentContextI = NativeTextContext & {
     language: LanguageContextType | null;
     animationDriver: AnimationDriver | null;
     setParentFocusState: ComponentSetStateShallow | null;
-    mediaEmit?: (state: UseMediaState) => void;
-    mediaEmitListeners?: Set<(state: UseMediaState) => void>;
     insets?: {
         top: number;
         right: number;
@@ -348,7 +346,7 @@ export type TamaguiComponentStateRef = {
     nextState?: TamaguiComponentState;
     nextMedia?: UseMediaState;
     avoidReRenders?: boolean;
-    mediaEmitCleanup?: () => void;
+    mediaEmit?: (state: UseMediaState) => void;
     prevPseudoState?: {
         hover?: boolean;
         press?: boolean;

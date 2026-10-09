@@ -1,5 +1,5 @@
 // avoidReRenders drivers (reanimated / react-native, inputStyle 'value') get
-// media updates through the componentContext.mediaEmit emitter instead of
+// media updates through their own state ref's mediaEmit instead of
 // re-rendering. the emit listener is registered once per component instance in
 // render and must survive the enter state machine (unmounted true ->
 // 'should-enter' -> false): the enter layout effect re-runs on each transition
@@ -57,5 +57,29 @@ describe('avoidReRenders media emitter lifecycle', () => {
     const last = emissions.at(-1)
     expect(last, 'driver must receive a style emit for the media change').toBeDefined()
     expect(last!.style.backgroundColor).toBe('red')
+  })
+
+  test('a media change emits once per subscribed sibling, never per sibling pair', () => {
+    setMediaState({ sm: false, md: false, lg: false, xl: false, xxl: false } as any)
+    const count = 6
+
+    render(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        {Array.from({ length: count }, (_, index) => (
+          <View key={index} transition="100ms" backgroundColor="blue sm:red" />
+        ))}
+      </TamaguiProvider>
+    )
+    emissions.length = 0
+
+    act(() => {
+      setMediaState({ sm: true, md: false, lg: false, xl: false, xxl: false } as any)
+      updateMediaListeners()
+    })
+
+    expect(emissions).toHaveLength(count)
+    expect(emissions.every((emission) => emission.style.backgroundColor === 'red')).toBe(
+      true
+    )
   })
 })
