@@ -1,6 +1,6 @@
 ---
 title: Tamagui 3
-publishedAt: '2026-07-10'
+publishedAt: '2026-10-09'
 description: React Strict DOM and Tailwind syntax on one compiler, plus simpler APIs, a web-first core, and stronger composition.
 by: nate
 ---
@@ -638,7 +638,7 @@ state. Select does not inject a completion row.
 `Select.Value` uses registered item labels and separates them with `, ` by
 default. `renderValue` remains the escape hatch for SSR, lazy mounting, chips,
 localized separators, or count summaries. `Select.Item` no longer needs an
-`index`. The old prop is accepted and ignored during the v3 beta.
+`index`. The old prop is accepted and ignored in v3.
 
 ## Field and Form handle validation together
 
@@ -719,7 +719,7 @@ const ResponsiveIcon = styled(View, {
 
 v3 also drops the bundled `@tamagui/lucide-icons-2` package entirely: most apps
 use a few dozen of its ~1700 icons. Generate only the icons you use with
-`npx @tamagui/cli@beta icons add`, which also covers Phosphor, Heroicons, and
+`npx @tamagui/cli icons add`, which also covers Phosphor, Heroicons, and
 your own svg files. See [Lucide Icons](/ui/lucide-icons).
 
 ## ScrollView no longer pulls in react-native on web
@@ -811,8 +811,8 @@ If a coding agent is doing the migration, give it the brief the CLI prints
 instead of a docs link. The CLI prints the brief for the version you installed:
 
 ```bash
-npx @tamagui/cli@beta setup              # a project that has never had Tamagui
-npx @tamagui/cli@beta migrate --from v2  # a project already on v2 (or --from v1)
+npx @tamagui/cli setup              # a project that has never had Tamagui
+npx @tamagui/cli migrate --from v2  # a project already on v2 (or --from v1)
 ```
 
 Copy the agent prompt to make the agent stop at the codemod report instead of

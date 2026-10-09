@@ -277,7 +277,7 @@ config = withTamagui(config, tamaguiOptions)
 
 ### Clear Metro after config changes
 
-The beta Metro plugin does not yet invalidate Metro's transform cache when a
+The Metro plugin does not yet invalidate Metro's transform cache when a
 Tamagui lowering plan changes but the app source does not. After editing
 `tamagui.config.ts` or another compiler input, stop the live Metro process and
 restart it with a cleared cache:
