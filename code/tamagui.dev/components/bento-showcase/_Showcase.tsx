@@ -50,11 +50,9 @@ const ShowcaseView = forwardRef<any, Props>(
 
     const { section, part } = useCurrentRouteParams()
 
-    const codePath = `/api/bento/code?${new URLSearchParams({
-      section,
-      part,
-      fileName,
-    })}`
+    const codePath = `/bento-code/${[section, part, `${fileName}.tsx`]
+      .map((part) => encodeURIComponent(part))
+      .join('/')}`
 
     const fetcher = async (url: string) => {
       const res = await fetch(url)

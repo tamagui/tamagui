@@ -7,8 +7,6 @@ import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export default function SiteLayout() {
   const path = usePathname()
-  const isAuthPage = path.startsWith('/login') || path.startsWith('/pop')
-  const isAccountPage = path.startsWith('/account')
   const isStudio = path.startsWith('/studio')
   const isTakeout = path.startsWith('/takeout')
   const isProductLandingPage = isTakeout || isStudio
@@ -17,10 +15,8 @@ export default function SiteLayout() {
     path.startsWith('/docs') || path.startsWith('/ui') || path.startsWith('/demo')
   const isBento = path.startsWith('/bento')
 
-  const disableNew = isBlog || isAuthPage || isProductLandingPage || isAccountPage
-  const showAuth = isAuthPage || isProductLandingPage || isAccountPage
-  const hideFooter = isDocs || isTakeout || isBento || isAuthPage
-  const hideHeader = isAuthPage
+  const disableNew = isBlog || isProductLandingPage
+  const hideFooter = isDocs || isTakeout || isBento
 
   const { themeName, enabled } = useSiteTheme()
 
@@ -34,7 +30,7 @@ export default function SiteLayout() {
       {/* stats */}
       <script defer src="https://assets.onedollarstats.com/stonks.js" />
 
-      {!hideHeader && <Header showAuth={showAuth} disableNew={disableNew} />}
+      <Header disableNew={disableNew} />
       <Theme name={customThemeName}>
         <YStack inset={0} position="absolute" bg="color-1" z={-1} pointerEvents="none" />
         <ThemeNameEffect colorKey="color-1" disableTint={customThemeActive} />

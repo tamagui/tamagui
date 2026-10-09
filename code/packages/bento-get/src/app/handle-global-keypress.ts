@@ -1,11 +1,7 @@
 // Handle keypress events for the CLI
-import open from 'open'
 import { debugLog } from '../commands/index.js'
 
 import type { AppContextType } from '../data/AppContext.js'
-
-const apiBase = process.env.API_BASE || 'https://tamagui.dev'
-const ACCESS_TOKEN_URL = `${apiBase}/account`
 
 export const handleGlobalKeyPress = (
   key: string,
@@ -27,14 +23,6 @@ export const handleGlobalKeyPress = (
     modifier,
     key,
   })
-
-  if (modifier.ctrl && key === 'd') {
-    appContext.tokenStore.clear()
-    appContext.setAccessToken(null)
-    appContext.setIsLoggedIn(false)
-    console.warn('Cleared Auth Token')
-    return navigate('/')
-  }
 
   if (key === 'c' && appContext.installState.shouldOpenBrowser) {
     setCopyingToClipboard(true)
@@ -59,20 +47,6 @@ export const handleGlobalKeyPress = (
       return
     }
     return
-  }
-
-  if (modifier.escape && location.pathname.includes('/auth')) {
-    return navigate('/search')
-  }
-
-  // After token addition, go back to the previous screen on pressing ESC
-  if (modifier.escape && appContext.installState.isTokenInstalled) {
-    appContext.setInstallState((prev) => ({
-      ...prev,
-      installingComponent: null,
-      isTokenInstalled: false,
-    }))
-    return navigate('/search')
   }
 
   if (modifier.escape) {

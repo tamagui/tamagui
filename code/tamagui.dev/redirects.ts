@@ -4,8 +4,7 @@ type Redirect = NonNullable<
   NonNullable<NonNullable<Parameters<typeof one>[0]>['web']>['redirects']
 >[number]
 
-// shared by the one dev and node servers (vite.config.ts) and by the static
-// cloudflare build, which writes them as dist/client/_redirects
+// shared by the one dev server and the static Cloudflare build
 export const redirects: Redirect[] = [
   // moved pages; listed before /docs/components/:slug so they win
   ...['/docs', '/unstyled', '/tailwind'].map((section) => ({
@@ -25,13 +24,7 @@ export const redirects: Redirect[] = [
     destination: '/ui/:slug/:version',
     permanent: true,
   },
-  // llms.txt, llms-full.txt, docs.txt are served by app/_middleware.tsx in dev
-  // and written as files by scripts/build-static.ts
-  {
-    source: '/account/subscriptions',
-    destination: '/account',
-    permanent: false,
-  },
+  // llms.txt, llms-full.txt, docs.txt are written by scripts/build-static.ts
   {
     source: '/docs',
     destination: '/docs/intro/introduction',

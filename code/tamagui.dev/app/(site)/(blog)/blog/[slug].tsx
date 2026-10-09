@@ -5,7 +5,6 @@ import { useLoader } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
 import { TamaguiExamples } from '~/components/TamaguiExamples'
 import { BlogSlugPage } from '~/features/site/blog/BlogSlugPage'
-import { getOgUrl } from '~/features/site/getOgUrl'
 
 export async function generateStaticParams() {
   const { getAllFrontmatter } = await import('~/features/mdx/getMDXBySlug')
@@ -60,21 +59,19 @@ export default function BlogSlug() {
           .trim()
           .replace(/^./, (c) => c.toLowerCase())}`}
         description={data.frontmatter.description ?? ''}
-        openGraph={{
-          images: [
-            {
-              url:
-                data.frontmatter.image ||
-                getOgUrl({
-                  title: data.frontmatter.title,
-                  description: data.frontmatter.description ?? '',
-                  category: 'Blog',
-                }),
-              width: 1200,
-              height: 630,
-            },
-          ],
-        }}
+        openGraph={
+          data.frontmatter.image
+            ? {
+                images: [
+                  {
+                    url: data.frontmatter.image,
+                    width: 1200,
+                    height: 630,
+                  },
+                ],
+              }
+            : undefined
+        }
       />
 
       <TamaguiExamples.Provider value={data.examples}>

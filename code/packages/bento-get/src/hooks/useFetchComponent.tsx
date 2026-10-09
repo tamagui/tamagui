@@ -1,32 +1,22 @@
 import fetch from 'node-fetch'
-import querystring from 'node:querystring'
 import React from 'react'
 import useSWR from 'swr'
 import { AppContext } from '../data/AppContext.js'
-import { debugLog, redact } from '../commands/index.js'
+import { debugLog } from '../commands/index.js'
 
 export const useFetchComponent = () => {
-  const { installState, accessToken, tokenStore, setIsLoggedIn, setAccessToken } =
-    React.useContext(AppContext)
+  const { installState } = React.useContext(AppContext)
 
   const fetcher = async (url: string) => {
     debugLog('fetcher', url)
-    debugLog({ accessToken: redact(accessToken) })
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    }
-    // Only send Authorization header if we have a token
-    if (accessToken) {
-      headers['Authorization'] = `Bearer ${accessToken}`
-    }
-    const res = await fetch(url, { headers })
+    const res = await fetch(url)
 
     if (!res.ok) {
       const error = new Error('An error occurred while fetching the data.') as Error & {
         info?: any
         status?: number
       }
-      error.info = await res.json()
+      error.info = await res.text()
       error.status = res.status
       throw error
     }
@@ -34,20 +24,20 @@ export const useFetchComponent = () => {
     return await res.text()
   }
 
-  const query =
-    installState.installingComponent?.category &&
-    installState.installingComponent?.categorySection &&
-    querystring.stringify({
-      section: installState.installingComponent?.category,
-      part: installState.installingComponent?.categorySection,
-      fileName: installState.installingComponent?.fileName,
-    })
-
-  const apiBase = process.env.API_BASE || 'https://tamagui.dev'
-  const codePath = query ? `${apiBase}/api/bento/cli/v2/code-download?${query}` : apiBase
+  const apiBase = process.env.API_BASE || 'https://v3.tamagui.dev'
+  const component = installState.installingComponent
+  const codePath = component
+    ? `${apiBase}/bento-manifests/${[
+        component.category,
+        component.categorySection,
+        `${component.fileName}.json`,
+      ]
+        .map((part) => encodeURIComponent(part))
+        .join('/')}`
+    : null
 
   const { data, error, isLoading } = useSWR(
-    installState.installingComponent ? codePath : null,
+    codePath,
     async (url) => {
       const response = await fetcher(url)
       const filesData: Record<
@@ -65,7 +55,9 @@ export const useFetchComponent = () => {
       for (const [category, files] of Object.entries(filesData)) {
         downloadedFiles[category] = await Promise.all(
           files.map(async (file: { path: string; downloadUrl: string }) => {
-            const fileContent = await fetcher(file.downloadUrl)
+            const fileContent = await fetcher(
+              new URL(file.downloadUrl, apiBase).toString()
+            )
             return {
               path: file.path,
               filePlainText: fileContent,
@@ -88,16 +80,6 @@ export const useFetchComponent = () => {
       loadingTimeout: 3000,
     }
   )
-
-  React.useEffect(() => {
-    if (error?.info?.error?.includes('user is not authenticated')) {
-      // Delete the access token from the token store
-      tokenStore.clear()
-      // Update the context
-      setAccessToken(null)
-      setIsLoggedIn(false)
-    }
-  }, [error, tokenStore, setAccessToken])
 
   return { data, error, isLoading }
 }

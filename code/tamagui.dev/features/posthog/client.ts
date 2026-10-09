@@ -1,5 +1,3 @@
-import type { PostHogInstance } from './types'
-
 const POSTHOG_KEY = 'phc_vy6MdaPFUllGBQLrBNWs4RJ8tbGuHyFF0nY6lncB1Ol'
 const POSTHOG_HOST = 'https://us.i.posthog.com'
 
@@ -37,7 +35,7 @@ function send(events: Array<Record<string, any>>): void {
   }
 }
 
-class ClientPostHog implements PostHogInstance {
+class ClientPostHog {
   private isInitialized = false
 
   initialize(): void {
@@ -67,34 +65,6 @@ class ClientPostHog implements PostHogInstance {
         timestamp: new Date().toISOString(),
       },
     ])
-  }
-
-  identify(userId: string, properties?: Record<string, any>): void {
-    if (!this.isInitialized) return
-    const anonId = getDistinctId()
-    distinctId = userId
-    try {
-      localStorage.setItem('ph_distinct_id', userId)
-    } catch {}
-    send([
-      {
-        event: '$identify',
-        distinct_id: userId,
-        properties: {
-          $anon_distinct_id: anonId,
-          $set: properties,
-        },
-        timestamp: new Date().toISOString(),
-      },
-    ])
-  }
-
-  reset(): void {
-    if (!this.isInitialized) return
-    distinctId = ''
-    try {
-      localStorage.removeItem('ph_distinct_id')
-    } catch {}
   }
 
   captureException(error: Error, properties?: Record<string, any>): void {

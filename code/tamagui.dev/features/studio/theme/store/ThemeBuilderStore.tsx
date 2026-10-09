@@ -1,5 +1,4 @@
 import { createStore, createUseStore } from '@tamagui/use-store'
-import { getAccessToken } from '~/features/auth/useSupabaseClient'
 import { bentoStore } from '~/features/bento/BentoStore'
 import { toastController } from '~/features/studio/ToastProvider'
 import { demoOptions, optionValues } from '~/features/studio/theme/demoOptions'
@@ -147,29 +146,6 @@ export class ThemeBuilderStore {
 
   async setAccentSetting(next: AccentSetting) {
     this.accentSetting = next
-    await this.refreshThemeSuite()
-  }
-
-  async load(themeId?: string) {
-    if (themeId) {
-      try {
-        const accessToken = await getAccessToken()
-        const res = await fetch(`/api/theme/histories?id=${themeId}`, {
-          headers: {
-            ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
-          },
-        })
-        const data = await res.json()
-
-        if (data?.theme_data) {
-          this.currentThemeId = themeId
-          this.currentQuery = data.search_query
-          await this.updateGenerate(data.theme_data, data.search_query, themeId)
-        }
-      } catch (err) {
-        console.error('Failed to load theme:', err)
-      }
-    }
     await this.refreshThemeSuite()
   }
 
