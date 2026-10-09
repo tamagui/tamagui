@@ -202,7 +202,7 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.87.1",
-    "react-native-worklets": "0.10.1",
+    "react-native-worklets": "0.12.2",
     "rolldown": "1.2.4",
     "shell-quote": "1.12.0",
     "smol-toml": "1.6.1",
@@ -256,8 +256,7 @@
     "brace-expansion@5.0.6": "patches/brace-expansion@5.0.6.patch",
     "detox@20.47.0": "patches/detox@20.47.0.patch",
     "vxrn@1.21.13": "patches/vxrn@1.21.13.patch",
-    "react-native-worklets@0.10.1": "patches/react-native-worklets@0.10.1.patch",
-    "react-native-reanimated@4.5.1": "patches/react-native-reanimated@4.5.1.patch",
-    "react-native-ios-utilities@5.2.0": "patches/react-native-ios-utilities@5.2.0.patch"
+    "react-native-ios-utilities@5.2.0": "patches/react-native-ios-utilities@5.2.0.patch",
+    "react-native-worklets@0.12.2": "patches/react-native-worklets@0.12.2.patch"
   }
 }
