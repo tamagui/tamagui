@@ -2,9 +2,9 @@ import { describe, expectTypeOf, test } from 'vitest'
 
 import { createStyledHOC } from './createStyledHOC'
 import { styled } from './styled'
-import type { Ref } from 'react'
+import type { ComponentProps, ComponentType, Ref } from 'react'
 
-import type { GetProps, TamaguiElement } from './types'
+import type { GetProps, TamaguiElement, TextStyle } from './types'
 import { View } from './views/View'
 
 const Frame = styled(View, {
@@ -59,6 +59,34 @@ describe('createStyledHOC', () => {
 
     type Props = GetProps<typeof Restyled>
     expectTypeOf<'safe'>().toMatchTypeOf<Props['intent']>()
+  })
+
+  test('a receiver with conditional text styles keeps its props when wrapped', () => {
+    type TextReceiverProps = TextStyle & { controlSize?: 'sm' | 'md' }
+    const Hoc = createStyledHOC(Frame, (_props: TextReceiverProps) => null)
+    const Restyled = styled(Hoc, {})
+
+    expectTypeOf<GetProps<typeof Hoc>['fontStyle']>().toEqualTypeOf<
+      TextStyle['fontStyle']
+    >()
+    expectTypeOf<GetProps<typeof Restyled>['controlSize']>().toEqualTypeOf<
+      'sm' | 'md' | undefined
+    >()
+    expectTypeOf<true>().toMatchTypeOf<GetProps<typeof Restyled>['pinned']>()
+  })
+
+  test('a generic receiver retains its own component props', () => {
+    function wrap<C extends ComponentType<any>>(Component: C) {
+      const Styled = styled(Component as ComponentType<any>, {})
+      type ReceiverProps = { src?: string } & Omit<ComponentProps<C>, 'src'>
+      return createStyledHOC(Styled, (_props: ReceiverProps) => null)
+    }
+
+    const Receiver = wrap((_props: { src?: number; cache?: 'memory' }) => null)
+    expectTypeOf<GetProps<typeof Receiver>['src']>().toEqualTypeOf<string | undefined>()
+    expectTypeOf<GetProps<typeof Receiver>['cache']>().toEqualTypeOf<
+      'memory' | undefined
+    >()
   })
 
   test('options are the third argument', () => {
