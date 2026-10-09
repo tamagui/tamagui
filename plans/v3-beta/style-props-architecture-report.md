@@ -13,10 +13,16 @@ owners. Deduplication preserves every unprefixed table membership on both target
 
 RAN the reduced generator: 331 additional names and 35 additional unitless names.
 RAN pinned Node 24.16.0 styled-view: 86,412 raw / 31,733 gzip-9, versus the
-unchanged 29,919 baseline and 30,069 ceiling. The remaining 1,664-byte ceiling
-overage exceeds a strict 1,500-byte allowance; no budget has been changed.
+previous 29,919 baseline and 30,069 ceiling. RAN Linux CI at 008b8760b4:
+Vite island 75,325 gzip bytes and Next island 75,372, increases of 1,984 and
+2,013 bytes. The accepted remaining cost is about 2 KB per fixture. The
+styled-view baseline is now 31,733 with its existing 150-byte minifier slack;
+the two web starter island baselines use their measured values. Other starter
+baselines and every zero-byte growth threshold remain unchanged.
 RAN 78 browser and 60 native mapping tests, plus public/DOM type parity checks.
-Starter remeasurement and final canary content verification remain pending.
+RAN canary 3.0.0-0.canary.1791540374990 tarball source matches 008b8760b4 for
+web, helpers, Button, static compiler and Vite plugin; Button and HOC declaration
+bytes also match. Required CI on the baseline update remains pending.
 
 ## current property coverage audit, 2026-10-06
 

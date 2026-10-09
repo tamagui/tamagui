@@ -633,3 +633,24 @@ pass. Disabling metadata copying fails the authored-scheme parsing test;
 restoring the final source is verified byte-for-byte. New assertions cover
 invalid scheme rejection and scheme preservation through color-scale merging.
 Receipts and rejected candidates remain in the external evidence directory.
+
+## Vendor-free CSS property registry budget (2026-10-09)
+
+RAN: after removing 325 generated vendor names and deduplicating names owned
+by existing tables, Linux Checks 37915344853 on 008b8760b4 measured the
+following with Node 24.16.0. The accepted remaining cost is about 2 KB per
+fixture. This records the runtime cost of the additional unprefixed CSS names.
+
+| Fixture | Previous baseline | Measured gzip-9 | Increase |
+| --- | ---: | ---: | ---: |
+| Styled View | 29,919 | 31,733 | 1,814 |
+| Vite island | 73,341 | 75,325 | 1,984 |
+| Next Webpack island | 73,359 | 75,372 | 2,013 |
+
+The styled-view ceiling retains its existing 150-byte minifier slack, now
+31,883. Starter island thresholds remain zero; only the two web island
+baselines change. Page JavaScript, CSS and Metro budgets retain their existing
+values. No behavior assertion, compiler violation gate or forbidden-module
+gate changes. Source attribution and preserved membership checks are recorded
+in style-props-architecture-report.md. Required CI validates these recorded
+values on the next beta push.
