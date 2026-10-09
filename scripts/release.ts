@@ -1060,6 +1060,7 @@ if (intoIdx !== -1) {
       destDirs: string[]
     }> = []
 
+    const targetModulesDir = await fs.realpath(join(targetDir, 'node_modules'))
     const byName = new Map(packages.map((pkg) => [pkg.name, pkg]))
     const selected = new Set<string>()
     const queue: string[] = []
@@ -1070,7 +1071,7 @@ if (intoIdx !== -1) {
         const dir = join(modulesDir, name)
         if (!(await fs.pathExists(join(dir, 'package.json')))) continue
         const resolvedDir = await fs.realpath(dir)
-        const relativeDir = path.relative(join(targetDir, 'node_modules'), resolvedDir)
+        const relativeDir = path.relative(targetModulesDir, resolvedDir)
         // retain package-manager links inside the consumer; never overwrite an external checkout.
         const destDir =
           relativeDir !== '..' &&

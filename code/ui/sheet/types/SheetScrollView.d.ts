@@ -9,13 +9,13 @@ export declare const SheetScrollView: import("@tamagui/core").TamaguiComponent<O
     pos?: SheetScrollViewBaseProps['position'];
 }, "scope"> & {
     scope?: import("./types").SheetScopes;
-}, ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & React.RefAttributes<ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & React.RefAttributes<ScrollViewRef>, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, string | number> & {
+}, ScrollViewRef, Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & React.RefAttributes<ScrollViewRef>, string | number> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & React.RefAttributes<ScrollViewRef>, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, string | number> & {
     h?: SheetScrollViewBaseProps['height'];
     o?: SheetScrollViewBaseProps['opacity'];
     pos?: SheetScrollViewBaseProps['position'];
 }, "scope"> & {
     scope?: import("./types").SheetScopes;
-}, import("@tamagui/core").StackStyleBase, {}, {
+}, import("@tamagui/core").StackStyleBase, Omit<{}, string | number>, {
     acceptsClassName: true;
     neverFlatten: true;
 }>;

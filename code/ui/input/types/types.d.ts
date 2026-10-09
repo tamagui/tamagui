@@ -1,6 +1,6 @@
-import type { ColorTokens, TextStyle, TamaguiElementMethods } from '@tamagui/web'
-import type { TextInputInstance as TextInput } from '@tamagui/react-native-types'
-import type { InputNativeProps } from './InputNativeProps'
+import type { ColorTokens, TextStyle, TamaguiElementMethods } from '@tamagui/web';
+import type { TextInputInstance as TextInput } from '@tamagui/react-native-types';
+import type { InputNativeProps } from './InputNativeProps';
 /**
  * Extra props that Input adds on top of the base styled component.
  * Annotated on the createStyledHOC render fn - the StyledHOCMergedProps merge
@@ -8,31 +8,10 @@ import type { InputNativeProps } from './InputNativeProps'
  * base event handlers (HTMLDivElement) with these (HTMLInputElement).
  * Consumer-facing InputProps is derived via GetProps<typeof Input>.
  */
-type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>
-type InputTextStyleProps = Pick<
-  TextStyle,
-  | 'color'
-  | 'fontFamily'
-  | 'fontSize'
-  | 'fontStyle'
-  | 'fontWeight'
-  | 'letterSpacing'
-  | 'textAlign'
-  | 'textTransform'
->
-type OverlappingNativeProps = 'autoCorrect' | 'autoCapitalize' | 'spellCheck'
-export type InputExtraProps = Omit<
-  HTMLInputProps,
-  | 'size'
-  | 'color'
-  | 'style'
-  | 'children'
-  | 'className'
-  | keyof InputTextStyleProps
-  | OverlappingNativeProps
-> &
-  InputTextStyleProps &
-  Omit<InputNativeProps, OverlappingNativeProps> & {
+type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>;
+type InputTextStyleProps = Pick<TextStyle, 'color' | 'fontFamily' | 'fontSize' | 'fontStyle' | 'fontWeight' | 'letterSpacing' | 'textAlign' | 'textTransform'>;
+type OverlappingNativeProps = 'autoCorrect' | 'autoCapitalize' | 'spellCheck';
+export type InputExtraProps = Omit<HTMLInputProps, 'size' | 'color' | 'style' | 'children' | 'className' | keyof InputTextStyleProps | OverlappingNativeProps> & InputTextStyleProps & Omit<InputNativeProps, OverlappingNativeProps> & {
     /**
      * Controls automatic spelling correction.
      *
@@ -46,7 +25,7 @@ export type InputExtraProps = Omit<
      * <Input autoCorrect="off" />
      * ```
      */
-    autoCorrect?: boolean | 'on' | 'off'
+    autoCorrect?: boolean | 'on' | 'off';
     /**
      * Controls automatic text capitalization.
      *
@@ -66,116 +45,70 @@ export type InputExtraProps = Omit<
      * <Input autoCapitalize="words" />
      * ```
      */
-    autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'off' | 'on'
+    autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'off' | 'on';
     /**
      * Controls spell checking.
      */
-    spellCheck?: boolean
+    spellCheck?: boolean;
     /**
      * Rows for textarea (when render="textarea")
      */
-    rows?: number
+    rows?: number;
     /**
      * Placeholder text color - accepts Tamagui color tokens
      */
-    placeholderTextColor?: ColorTokens
+    placeholderTextColor?: ColorTokens;
     /**
      * Text selection color - accepts Tamagui color tokens
      */
-    selectionColor?: ColorTokens
+    selectionColor?: ColorTokens;
     /**
      * Callback when text changes - provides just the string value
      * @deprecated Use onChange instead for web alignment
      */
-    onChangeText?: (text: string) => void
+    onChangeText?: (text: string) => void;
     /**
      * Callback when Enter/Return is pressed
      */
     onSubmitEditing?: (e: {
-      nativeEvent: {
-        text: string
-      }
-    }) => void
+        nativeEvent: {
+            text: string;
+        };
+    }) => void;
     /**
      * Selection range
      */
     selection?: {
-      start: number
-      end?: number
-    }
+        start: number;
+        end?: number;
+    };
     /**
      * Callback when selection changes
      */
     onSelectionChange?: (e: {
-      nativeEvent: {
-        selection: {
-          start: number
-          end: number
-        }
-      }
-    }) => void
+        nativeEvent: {
+            selection: {
+                start: number;
+                end: number;
+            };
+        };
+    }) => void;
     /**
      * Text content type for iOS autofill.
      * Use `autoComplete` for web compatibility.
      * @platform ios
      */
-    textContentType?: InputTextContentType
-  }
+    textContentType?: InputTextContentType;
+};
 /**
  * Cross-platform ref type for Input.
  * On web: HTMLInputElement with Tamagui methods (measure, focus, blur).
  * On native: TextInput.
  */
-export type InputRef = (HTMLInputElement & TamaguiElementMethods) | TextInput
+export type InputRef = (HTMLInputElement & TamaguiElementMethods) | TextInput;
 /**
  * iOS text content types for autofill
  */
-export type InputTextContentType =
-  | 'none'
-  | 'URL'
-  | 'addressCity'
-  | 'addressCityAndState'
-  | 'addressState'
-  | 'countryName'
-  | 'creditCardNumber'
-  | 'creditCardExpiration'
-  | 'creditCardExpirationMonth'
-  | 'creditCardExpirationYear'
-  | 'creditCardSecurityCode'
-  | 'creditCardType'
-  | 'creditCardName'
-  | 'creditCardGivenName'
-  | 'creditCardMiddleName'
-  | 'creditCardFamilyName'
-  | 'emailAddress'
-  | 'familyName'
-  | 'fullStreetAddress'
-  | 'givenName'
-  | 'jobTitle'
-  | 'location'
-  | 'middleName'
-  | 'name'
-  | 'namePrefix'
-  | 'nameSuffix'
-  | 'nickname'
-  | 'organizationName'
-  | 'postalCode'
-  | 'streetAddressLine1'
-  | 'streetAddressLine2'
-  | 'sublocality'
-  | 'telephoneNumber'
-  | 'username'
-  | 'password'
-  | 'newPassword'
-  | 'oneTimeCode'
-  | 'birthdate'
-  | 'birthdateDay'
-  | 'birthdateMonth'
-  | 'birthdateYear'
-  | 'cellularEID'
-  | 'cellularIMEI'
-  | 'dateTime'
-  | 'flightNumber'
-  | 'shipmentTrackingNumber'
-export {}
+export type InputTextContentType = 'none' | 'URL' | 'addressCity' | 'addressCityAndState' | 'addressState' | 'countryName' | 'creditCardNumber' | 'creditCardExpiration' | 'creditCardExpirationMonth' | 'creditCardExpirationYear' | 'creditCardSecurityCode' | 'creditCardType' | 'creditCardName' | 'creditCardGivenName' | 'creditCardMiddleName' | 'creditCardFamilyName' | 'emailAddress' | 'familyName' | 'fullStreetAddress' | 'givenName' | 'jobTitle' | 'location' | 'middleName' | 'name' | 'namePrefix' | 'nameSuffix' | 'nickname' | 'organizationName' | 'postalCode' | 'streetAddressLine1' | 'streetAddressLine2' | 'sublocality' | 'telephoneNumber' | 'username' | 'password' | 'newPassword' | 'oneTimeCode' | 'birthdate' | 'birthdateDay' | 'birthdateMonth' | 'birthdateYear' | 'cellularEID' | 'cellularIMEI' | 'dateTime' | 'flightNumber' | 'shipmentTrackingNumber';
+export {};
 //# sourceMappingURL=types.d.ts.map

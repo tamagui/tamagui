@@ -1,1122 +1,170 @@
-import type { GetProps, TamaguiElement } from '@tamagui/core'
-import * as React from 'react'
-import type { SwipeDirection } from './types'
-import type { ExternalToast, ToastT } from './ToastState'
-import type { BurntToastOptions } from './types'
-import { ToastItemFrame } from './ToastItemFrame'
-export type ToastPosition =
-  | 'top-left'
-  | 'top-center'
-  | 'top-right'
-  | 'bottom-left'
-  | 'bottom-center'
-  | 'bottom-right'
+import type { GetProps, TamaguiElement } from '@tamagui/core';
+import * as React from 'react';
+import type { SwipeDirection } from './types';
+import type { ExternalToast, ToastT } from './ToastState';
+import type { BurntToastOptions } from './types';
+import { ToastItemFrame } from './ToastItemFrame';
+export type ToastPosition = 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
 interface ToastItemContextValue {
-  toast: ToastT
-  handleClose: () => void
+    toast: ToastT;
+    handleClose: () => void;
 }
 export interface ToastIcons {
-  success?: React.ReactNode
-  error?: React.ReactNode
-  warning?: React.ReactNode
-  info?: React.ReactNode
-  loading?: React.ReactNode
-  close?: React.ReactNode
+    success?: React.ReactNode;
+    error?: React.ReactNode;
+    warning?: React.ReactNode;
+    info?: React.ReactNode;
+    loading?: React.ReactNode;
+    close?: React.ReactNode;
 }
 export interface ToastRootProps {
-  children: React.ReactNode
-  /**
-   * Only render toasts sent to this toaster id. Untargeted toasts render in
-   * roots without an id.
-   */
-  toasterId?: string
-  /**
-   * Position of the toasts on screen
-   * @default 'bottom-right'
-   */
-  position?: ToastPosition
-  /**
-   * Default duration for toasts in ms
-   * @default 4000
-   */
-  duration?: number
-  /**
-   * Gap between toasts in pixels
-   * @default 14
-   */
-  gap?: number
-  /**
-   * Number of toasts visible at once
-   * @default 4
-   */
-  visibleToasts?: number
-  /**
-   * Direction toasts can be swiped to dismiss
-   * @default 'auto'
-   */
-  swipeDirection?: SwipeDirection
-  /**
-   * Distance in pixels swipe must pass to dismiss
-   * @default 50
-   */
-  swipeThreshold?: number
-  /**
-   * Fixed toast height in pixels for native stacking calculations.
-   * On web, heights are measured dynamically.
-   * @default 56
-   */
-  toastHeight?: number
-  /**
-   * Show close button on toasts
-   * @default false
-   */
-  closeButton?: boolean
-  /**
-   * When true, toasts are always expanded (fanned out) instead of stacked.
-   * @default false
-   */
-  expand?: boolean
-  /**
-   * Force reduced motion mode
-   */
-  reducedMotion?: boolean
-  /**
-   * When true, uses burnt native OS toasts on mobile instead of RN views.
-   * @default false
-   */
-  native?: boolean
-  /**
-   * Options for burnt native toasts on mobile
-   */
-  burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>
-  /**
-   * Options for web Notification API when native is true on web
-   */
-  notificationOptions?: NotificationOptions
-  /**
-   * Custom icons for toast types
-   */
-  icons?: ToastIcons
+    children: React.ReactNode;
+    /**
+     * Only render toasts sent to this toaster id. Untargeted toasts render in
+     * roots without an id.
+     */
+    toasterId?: string;
+    /**
+     * Position of the toasts on screen
+     * @default 'bottom-right'
+     */
+    position?: ToastPosition;
+    /**
+     * Default duration for toasts in ms
+     * @default 4000
+     */
+    duration?: number;
+    /**
+     * Gap between toasts in pixels
+     * @default 14
+     */
+    gap?: number;
+    /**
+     * Number of toasts visible at once
+     * @default 4
+     */
+    visibleToasts?: number;
+    /**
+     * Direction toasts can be swiped to dismiss
+     * @default 'auto'
+     */
+    swipeDirection?: SwipeDirection;
+    /**
+     * Distance in pixels swipe must pass to dismiss
+     * @default 50
+     */
+    swipeThreshold?: number;
+    /**
+     * Fixed toast height in pixels for native stacking calculations.
+     * On web, heights are measured dynamically.
+     * @default 56
+     */
+    toastHeight?: number;
+    /**
+     * Show close button on toasts
+     * @default false
+     */
+    closeButton?: boolean;
+    /**
+     * When true, toasts are always expanded (fanned out) instead of stacked.
+     * @default false
+     */
+    expand?: boolean;
+    /**
+     * Force reduced motion mode
+     */
+    reducedMotion?: boolean;
+    /**
+     * When true, uses burnt native OS toasts on mobile instead of RN views.
+     * @default false
+     */
+    native?: boolean;
+    /**
+     * Options for burnt native toasts on mobile
+     */
+    burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>;
+    /**
+     * Options for web Notification API when native is true on web
+     */
+    notificationOptions?: NotificationOptions;
+    /**
+     * Custom icons for toast types
+     */
+    icons?: ToastIcons;
 }
-declare const ToastViewportFrame: React.FunctionComponent<
-  Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, never> &
-    Omit<
-      import('@tamagui/core').WithThemeValues<
-        Omit<import('@tamagui/core').StackStyleBase, never>
-      > &
-        import('@tamagui/core').WithFlatVariantValues<{}> &
-        import('@tamagui/core').WithShorthands<
-          import('@tamagui/core').WithThemeValues<import('@tamagui/core').StackStyleBase>
-        >,
-      keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
-    > & {
-      ref?: React.Ref<TamaguiElement> | undefined
-    }
-> &
-  import('@tamagui/core').StaticComponentObject<
-    import('@tamagui/core').TamaDefer,
-    TamaguiElement,
-    import('@tamagui/core').RNTamaguiViewNonStyleProps,
-    import('@tamagui/core').StackStyleBase,
-    {},
-    import('@tamagui/core').StaticConfigPublic
-  > &
-  Omit<import('@tamagui/core').StaticConfigPublic, 'staticConfig'> & {
-    __tama: [
-      import('@tamagui/core').TamaDefer,
-      TamaguiElement,
-      import('@tamagui/core').RNTamaguiViewNonStyleProps,
-      import('@tamagui/core').StackStyleBase,
-      {},
-      import('@tamagui/core').StaticConfigPublic,
-    ]
-  }
+declare const ToastViewportFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
+    ref?: React.Ref<TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
+};
 export type ToastViewportProps = Omit<GetProps<typeof ToastViewportFrame>, 'offset'> & {
-  /**
-   * Offset from screen edge, kept as breathing room past the safe area: the
-   * viewport edge itself sits at the `safe` style value (setup-safe-area on
-   * native, env(safe-area-inset-*) on web), so pass a plain number here, not
-   * `insets.top + 8`. A number sets all four sides (on native left/right
-   * define the width); use the object form to move one edge without resizing
-   * the toast.
-   * @default 16
-   */
-  offset?:
-    | number
-    | {
-        top?: number
-        right?: number
-        bottom?: number
-        left?: number
-      }
-  /**
-   * Hotkey to focus viewport
-   */
-  hotkey?: string[]
-  /**
-   * Aria label
-   * @default 'Notifications'
-   */
-  label?: string
-  /**
-   * Portal to root
-   * @default true
-   */
-  portalToRoot?: boolean
-  /**
-   * z-index for the portal container when portalToRoot is true
-   * @default Number.MAX_SAFE_INTEGER
-   */
-  portalZIndex?: number
-}
+    /**
+     * Offset from screen edge, kept as breathing room past the safe area: the
+     * viewport edge itself sits at the `safe` style value (setup-safe-area on
+     * native, env(safe-area-inset-*) on web), so pass a plain number here, not
+     * `insets.top + 8`. A number sets all four sides (on native left/right
+     * define the width); use the object form to move one edge without resizing
+     * the toast.
+     * @default 16
+     */
+    offset?: number | {
+        top?: number;
+        right?: number;
+        bottom?: number;
+        left?: number;
+    };
+    /**
+     * Hotkey to focus viewport
+     */
+    hotkey?: string[];
+    /**
+     * Aria label
+     * @default 'Notifications'
+     */
+    label?: string;
+    /**
+     * Portal to root
+     * @default true
+     */
+    portalToRoot?: boolean;
+    /**
+     * z-index for the portal container when portalToRoot is true
+     * @default Number.MAX_SAFE_INTEGER
+     */
+    portalZIndex?: number;
+};
 export interface ToastItemRenderProps {
-  toast: ToastT
-  index: number
-  handleClose: () => void
+    toast: ToastT;
+    index: number;
+    handleClose: () => void;
 }
 export interface ToastListProps {
-  /**
-   * Custom render function for each toast item
-   */
-  renderItem?: (props: ToastItemRenderProps) => React.ReactNode
+    /**
+     * Custom render function for each toast item
+     */
+    renderItem?: (props: ToastItemRenderProps) => React.ReactNode;
 }
-declare function ToastList({ renderItem }: ToastListProps): React.JSX.Element
+declare function ToastList({ renderItem }: ToastListProps): React.JSX.Element;
 export type ToastItemProps = GetProps<typeof ToastItemFrame> & {
-  toast: ToastT
-  index: number
-  children: React.ReactNode
-}
+    toast: ToastT;
+    index: number;
+    children: React.ReactNode;
+};
 declare function ToastIcon(props: {
-  children?: React.ReactNode
-}): React.JSX.Element | null
+    children?: React.ReactNode;
+}): React.JSX.Element | null;
 export declare function useToasts(): {
-  toasts: ToastT[]
-  expanded: boolean
-  position: ToastPosition
-  closeButton: boolean
-}
-export declare function useToastItem(): ToastItemContextValue
-export declare const Toast: ((
-  props: ToastRootProps & import('@tamagui/core').RefProp<TamaguiElement>
-) => React.ReactNode) & {
-  displayName?: string
-  propTypes?: any
+    toasts: ToastT[];
+    expanded: boolean;
+    position: ToastPosition;
+    closeButton: boolean;
+};
+export declare function useToastItem(): ToastItemContextValue;
+export declare const Toast: ((props: ToastRootProps & import("@tamagui/core").RefProp<TamaguiElement>) => React.ReactNode) & {
+    displayName?: string;
+    propTypes?: any;
 } & {
-  Viewport: import('@tamagui/core').TamaguiComponent<
-    Omit<
-      import('@tamagui/core').GetFinalProps<
-        import('@tamagui/core').RNTamaguiViewNonStyleProps,
-        import('@tamagui/core').StackStyleBase,
-        {}
-      >,
-      | 'KhtmlBoxAlign'
-      | 'KhtmlBoxDirection'
-      | 'KhtmlBoxFlex'
-      | 'KhtmlBoxFlexGroup'
-      | 'KhtmlBoxLines'
-      | 'KhtmlBoxOrdinalGroup'
-      | 'KhtmlBoxOrient'
-      | 'KhtmlBoxPack'
-      | 'KhtmlLineBreak'
-      | 'KhtmlOpacity'
-      | 'KhtmlUserSelect'
-      | 'MozAnimation'
-      | 'MozAnimationDelay'
-      | 'MozAnimationDirection'
-      | 'MozAnimationDuration'
-      | 'MozAnimationFillMode'
-      | 'MozAnimationIterationCount'
-      | 'MozAnimationName'
-      | 'MozAnimationPlayState'
-      | 'MozAnimationTimingFunction'
-      | 'MozAppearance'
-      | 'MozBackfaceVisibility'
-      | 'MozBackgroundClip'
-      | 'MozBackgroundOrigin'
-      | 'MozBackgroundSize'
-      | 'MozBinding'
-      | 'MozBorderBottomColors'
-      | 'MozBorderEndColor'
-      | 'MozBorderEndStyle'
-      | 'MozBorderEndWidth'
-      | 'MozBorderImage'
-      | 'MozBorderLeftColors'
-      | 'MozBorderRadius'
-      | 'MozBorderRadiusBottomleft'
-      | 'MozBorderRadiusBottomright'
-      | 'MozBorderRadiusTopleft'
-      | 'MozBorderRadiusTopright'
-      | 'MozBorderRightColors'
-      | 'MozBorderStartColor'
-      | 'MozBorderStartStyle'
-      | 'MozBorderTopColors'
-      | 'MozBoxAlign'
-      | 'MozBoxDirection'
-      | 'MozBoxFlex'
-      | 'MozBoxOrdinalGroup'
-      | 'MozBoxOrient'
-      | 'MozBoxPack'
-      | 'MozBoxShadow'
-      | 'MozBoxSizing'
-      | 'MozColumnCount'
-      | 'MozColumnFill'
-      | 'MozColumnRule'
-      | 'MozColumnRuleColor'
-      | 'MozColumnRuleStyle'
-      | 'MozColumnRuleWidth'
-      | 'MozColumnWidth'
-      | 'MozColumns'
-      | 'MozContextProperties'
-      | 'MozFloatEdge'
-      | 'MozFontFeatureSettings'
-      | 'MozFontLanguageOverride'
-      | 'MozForceBrokenImageIcon'
-      | 'MozHyphens'
-      | 'MozMarginEnd'
-      | 'MozMarginStart'
-      | 'MozOpacity'
-      | 'MozOrient'
-      | 'MozOsxFontSmoothing'
-      | 'MozOutline'
-      | 'MozOutlineColor'
-      | 'MozOutlineRadius'
-      | 'MozOutlineRadiusBottomleft'
-      | 'MozOutlineRadiusBottomright'
-      | 'MozOutlineRadiusTopleft'
-      | 'MozOutlineRadiusTopright'
-      | 'MozOutlineStyle'
-      | 'MozOutlineWidth'
-      | 'MozPaddingEnd'
-      | 'MozPaddingStart'
-      | 'MozPerspective'
-      | 'MozPerspectiveOrigin'
-      | 'MozStackSizing'
-      | 'MozTabSize'
-      | 'MozTextAlignLast'
-      | 'MozTextBlink'
-      | 'MozTextDecorationColor'
-      | 'MozTextDecorationLine'
-      | 'MozTextDecorationStyle'
-      | 'MozTextSizeAdjust'
-      | 'MozTransform'
-      | 'MozTransformOrigin'
-      | 'MozTransformStyle'
-      | 'MozTransition'
-      | 'MozTransitionDelay'
-      | 'MozTransitionDuration'
-      | 'MozTransitionProperty'
-      | 'MozTransitionTimingFunction'
-      | 'MozUserFocus'
-      | 'MozUserInput'
-      | 'MozUserModify'
-      | 'MozUserSelect'
-      | 'MozWindowDragging'
-      | 'MozWindowShadow'
-      | 'OAnimation'
-      | 'OAnimationDelay'
-      | 'OAnimationDirection'
-      | 'OAnimationDuration'
-      | 'OAnimationFillMode'
-      | 'OAnimationIterationCount'
-      | 'OAnimationName'
-      | 'OAnimationPlayState'
-      | 'OAnimationTimingFunction'
-      | 'OBackgroundSize'
-      | 'OBorderImage'
-      | 'OObjectFit'
-      | 'OObjectPosition'
-      | 'OTabSize'
-      | 'OTextOverflow'
-      | 'OTransform'
-      | 'OTransformOrigin'
-      | 'OTransition'
-      | 'OTransitionDelay'
-      | 'OTransitionDuration'
-      | 'OTransitionProperty'
-      | 'OTransitionTimingFunction'
-      | 'WebkitAlignContent'
-      | 'WebkitAlignItems'
-      | 'WebkitAlignSelf'
-      | 'WebkitAnimation'
-      | 'WebkitAnimationDelay'
-      | 'WebkitAnimationDirection'
-      | 'WebkitAnimationDuration'
-      | 'WebkitAnimationFillMode'
-      | 'WebkitAnimationIterationCount'
-      | 'WebkitAnimationName'
-      | 'WebkitAnimationPlayState'
-      | 'WebkitAnimationTimingFunction'
-      | 'WebkitAppearance'
-      | 'WebkitBackdropFilter'
-      | 'WebkitBackfaceVisibility'
-      | 'WebkitBackgroundClip'
-      | 'WebkitBackgroundOrigin'
-      | 'WebkitBackgroundSize'
-      | 'WebkitBorderBefore'
-      | 'WebkitBorderBeforeColor'
-      | 'WebkitBorderBeforeStyle'
-      | 'WebkitBorderBeforeWidth'
-      | 'WebkitBorderBottomLeftRadius'
-      | 'WebkitBorderBottomRightRadius'
-      | 'WebkitBorderImage'
-      | 'WebkitBorderImageSlice'
-      | 'WebkitBorderRadius'
-      | 'WebkitBorderTopLeftRadius'
-      | 'WebkitBorderTopRightRadius'
-      | 'WebkitBoxAlign'
-      | 'WebkitBoxDecorationBreak'
-      | 'WebkitBoxDirection'
-      | 'WebkitBoxFlex'
-      | 'WebkitBoxFlexGroup'
-      | 'WebkitBoxLines'
-      | 'WebkitBoxOrdinalGroup'
-      | 'WebkitBoxOrient'
-      | 'WebkitBoxPack'
-      | 'WebkitBoxReflect'
-      | 'WebkitBoxShadow'
-      | 'WebkitBoxSizing'
-      | 'WebkitClipPath'
-      | 'WebkitColumnCount'
-      | 'WebkitColumnFill'
-      | 'WebkitColumnRule'
-      | 'WebkitColumnRuleColor'
-      | 'WebkitColumnRuleStyle'
-      | 'WebkitColumnRuleWidth'
-      | 'WebkitColumnSpan'
-      | 'WebkitColumnWidth'
-      | 'WebkitColumns'
-      | 'WebkitFilter'
-      | 'WebkitFlex'
-      | 'WebkitFlexBasis'
-      | 'WebkitFlexDirection'
-      | 'WebkitFlexFlow'
-      | 'WebkitFlexGrow'
-      | 'WebkitFlexShrink'
-      | 'WebkitFlexWrap'
-      | 'WebkitFontFeatureSettings'
-      | 'WebkitFontKerning'
-      | 'WebkitFontSmoothing'
-      | 'WebkitFontVariantLigatures'
-      | 'WebkitHyphenateCharacter'
-      | 'WebkitHyphens'
-      | 'WebkitInitialLetter'
-      | 'WebkitJustifyContent'
-      | 'WebkitLineBreak'
-      | 'WebkitLineClamp'
-      | 'WebkitLogicalHeight'
-      | 'WebkitLogicalWidth'
-      | 'WebkitMarginEnd'
-      | 'WebkitMarginStart'
-      | 'WebkitMask'
-      | 'WebkitMaskAttachment'
-      | 'WebkitMaskBoxImage'
-      | 'WebkitMaskBoxImageOutset'
-      | 'WebkitMaskBoxImageRepeat'
-      | 'WebkitMaskBoxImageSlice'
-      | 'WebkitMaskBoxImageSource'
-      | 'WebkitMaskBoxImageWidth'
-      | 'WebkitMaskClip'
-      | 'WebkitMaskComposite'
-      | 'WebkitMaskImage'
-      | 'WebkitMaskOrigin'
-      | 'WebkitMaskPosition'
-      | 'WebkitMaskPositionX'
-      | 'WebkitMaskPositionY'
-      | 'WebkitMaskRepeat'
-      | 'WebkitMaskRepeatX'
-      | 'WebkitMaskRepeatY'
-      | 'WebkitMaskSize'
-      | 'WebkitMaxInlineSize'
-      | 'WebkitOrder'
-      | 'WebkitOverflowScrolling'
-      | 'WebkitPaddingEnd'
-      | 'WebkitPaddingStart'
-      | 'WebkitPerspective'
-      | 'WebkitPerspectiveOrigin'
-      | 'WebkitPrintColorAdjust'
-      | 'WebkitRubyPosition'
-      | 'WebkitScrollSnapType'
-      | 'WebkitShapeMargin'
-      | 'WebkitTapHighlightColor'
-      | 'WebkitTextCombine'
-      | 'WebkitTextDecorationColor'
-      | 'WebkitTextDecorationLine'
-      | 'WebkitTextDecorationSkip'
-      | 'WebkitTextDecorationStyle'
-      | 'WebkitTextEmphasis'
-      | 'WebkitTextEmphasisColor'
-      | 'WebkitTextEmphasisPosition'
-      | 'WebkitTextEmphasisStyle'
-      | 'WebkitTextFillColor'
-      | 'WebkitTextOrientation'
-      | 'WebkitTextSizeAdjust'
-      | 'WebkitTextStroke'
-      | 'WebkitTextStrokeColor'
-      | 'WebkitTextStrokeWidth'
-      | 'WebkitTextUnderlinePosition'
-      | 'WebkitTouchCallout'
-      | 'WebkitTransform'
-      | 'WebkitTransformOrigin'
-      | 'WebkitTransformStyle'
-      | 'WebkitTransition'
-      | 'WebkitTransitionDelay'
-      | 'WebkitTransitionDuration'
-      | 'WebkitTransitionProperty'
-      | 'WebkitTransitionTimingFunction'
-      | 'WebkitUserModify'
-      | 'WebkitUserSelect'
-      | 'WebkitWritingMode'
-      | 'accentColor'
-      | 'alignContent'
-      | 'alignItems'
-      | 'alignSelf'
-      | 'alignTracks'
-      | 'alignmentBaseline'
-      | 'all'
-      | 'anchorName'
-      | 'anchorScope'
-      | 'animatePresence'
-      | 'animation'
-      | 'animationComposition'
-      | 'animationDelay'
-      | 'animationDirection'
-      | 'animationDuration'
-      | 'animationFillMode'
-      | 'animationIterationCount'
-      | 'animationName'
-      | 'animationPlayState'
-      | 'animationRange'
-      | 'animationRangeEnd'
-      | 'animationRangeStart'
-      | 'animationTimeline'
-      | 'animationTimingFunction'
-      | 'appearance'
-      | 'aspectRatio'
-      | 'backdropFilter'
-      | 'backfaceVisibility'
-      | 'background'
-      | 'backgroundAttachment'
-      | 'backgroundBlendMode'
-      | 'backgroundClip'
-      | 'backgroundColor'
-      | 'backgroundImage'
-      | 'backgroundOrigin'
-      | 'backgroundPosition'
-      | 'backgroundPositionX'
-      | 'backgroundPositionY'
-      | 'backgroundRepeat'
-      | 'backgroundSize'
-      | 'baselineShift'
-      | 'blockSize'
-      | 'border'
-      | 'borderBlock'
-      | 'borderBlockColor'
-      | 'borderBlockEnd'
-      | 'borderBlockEndColor'
-      | 'borderBlockEndStyle'
-      | 'borderBlockEndWidth'
-      | 'borderBlockStart'
-      | 'borderBlockStartColor'
-      | 'borderBlockStartStyle'
-      | 'borderBlockStartWidth'
-      | 'borderBlockStyle'
-      | 'borderBlockWidth'
-      | 'borderBottom'
-      | 'borderBottomColor'
-      | 'borderBottomEndRadius'
-      | 'borderBottomLeftRadius'
-      | 'borderBottomRightRadius'
-      | 'borderBottomStartRadius'
-      | 'borderBottomStyle'
-      | 'borderBottomWidth'
-      | 'borderCollapse'
-      | 'borderColor'
-      | 'borderCurve'
-      | 'borderEndColor'
-      | 'borderEndEndRadius'
-      | 'borderEndStartRadius'
-      | 'borderEndWidth'
-      | 'borderImage'
-      | 'borderImageOutset'
-      | 'borderImageRepeat'
-      | 'borderImageSlice'
-      | 'borderImageSource'
-      | 'borderImageWidth'
-      | 'borderInline'
-      | 'borderInlineColor'
-      | 'borderInlineEnd'
-      | 'borderInlineEndColor'
-      | 'borderInlineEndStyle'
-      | 'borderInlineEndWidth'
-      | 'borderInlineStart'
-      | 'borderInlineStartColor'
-      | 'borderInlineStartStyle'
-      | 'borderInlineStartWidth'
-      | 'borderInlineStyle'
-      | 'borderInlineWidth'
-      | 'borderLeft'
-      | 'borderLeftColor'
-      | 'borderLeftStyle'
-      | 'borderLeftWidth'
-      | 'borderRadius'
-      | 'borderRight'
-      | 'borderRightColor'
-      | 'borderRightStyle'
-      | 'borderRightWidth'
-      | 'borderSpacing'
-      | 'borderStartColor'
-      | 'borderStartEndRadius'
-      | 'borderStartStartRadius'
-      | 'borderStartWidth'
-      | 'borderStyle'
-      | 'borderTop'
-      | 'borderTopColor'
-      | 'borderTopEndRadius'
-      | 'borderTopLeftRadius'
-      | 'borderTopRightRadius'
-      | 'borderTopStartRadius'
-      | 'borderTopStyle'
-      | 'borderTopWidth'
-      | 'borderWidth'
-      | 'bottom'
-      | 'boxAlign'
-      | 'boxDecorationBreak'
-      | 'boxDirection'
-      | 'boxFlex'
-      | 'boxFlexGroup'
-      | 'boxLines'
-      | 'boxOrdinalGroup'
-      | 'boxOrient'
-      | 'boxPack'
-      | 'boxShadow'
-      | 'boxSizing'
-      | 'breakAfter'
-      | 'breakBefore'
-      | 'breakInside'
-      | 'captionSide'
-      | 'caret'
-      | 'caretColor'
-      | 'caretShape'
-      | 'clear'
-      | 'clip'
-      | 'clipPath'
-      | 'clipRule'
-      | 'color'
-      | 'colorAdjust'
-      | 'colorInterpolation'
-      | 'colorInterpolationFilters'
-      | 'colorRendering'
-      | 'colorScheme'
-      | 'columnCount'
-      | 'columnFill'
-      | 'columnGap'
-      | 'columnRule'
-      | 'columnRuleColor'
-      | 'columnRuleStyle'
-      | 'columnRuleWidth'
-      | 'columnSpan'
-      | 'columnWidth'
-      | 'columns'
-      | 'contain'
-      | 'containIntrinsicBlockSize'
-      | 'containIntrinsicHeight'
-      | 'containIntrinsicInlineSize'
-      | 'containIntrinsicSize'
-      | 'containIntrinsicWidth'
-      | 'containerName'
-      | 'containerType'
-      | 'content'
-      | 'contentVisibility'
-      | 'counterIncrement'
-      | 'counterReset'
-      | 'counterSet'
-      | 'cursor'
-      | 'cx'
-      | 'cy'
-      | 'd'
-      | 'direction'
-      | 'display'
-      | 'dominantBaseline'
-      | 'emptyCells'
-      | 'end'
-      | 'experimental_backgroundImage'
-      | 'experimental_backgroundPosition'
-      | 'experimental_backgroundRepeat'
-      | 'experimental_backgroundSize'
-      | 'fieldSizing'
-      | 'fill'
-      | 'fillOpacity'
-      | 'fillRule'
-      | 'filter'
-      | 'flex'
-      | 'flexBasis'
-      | 'flexDirection'
-      | 'flexFlow'
-      | 'flexGrow'
-      | 'flexShrink'
-      | 'flexWrap'
-      | 'float'
-      | 'floodColor'
-      | 'floodOpacity'
-      | 'font'
-      | 'fontFamily'
-      | 'fontFeatureSettings'
-      | 'fontKerning'
-      | 'fontLanguageOverride'
-      | 'fontOpticalSizing'
-      | 'fontPalette'
-      | 'fontSize'
-      | 'fontSizeAdjust'
-      | 'fontSmooth'
-      | 'fontStretch'
-      | 'fontStyle'
-      | 'fontSynthesis'
-      | 'fontSynthesisPosition'
-      | 'fontSynthesisSmallCaps'
-      | 'fontSynthesisStyle'
-      | 'fontSynthesisWeight'
-      | 'fontVariant'
-      | 'fontVariantAlternates'
-      | 'fontVariantCaps'
-      | 'fontVariantEastAsian'
-      | 'fontVariantEmoji'
-      | 'fontVariantLigatures'
-      | 'fontVariantNumeric'
-      | 'fontVariantPosition'
-      | 'fontVariationSettings'
-      | 'fontWeight'
-      | 'fontWidth'
-      | 'forcedColorAdjust'
-      | 'gap'
-      | 'glyphOrientationVertical'
-      | 'grid'
-      | 'gridArea'
-      | 'gridAutoColumns'
-      | 'gridAutoFlow'
-      | 'gridAutoRows'
-      | 'gridColumn'
-      | 'gridColumnEnd'
-      | 'gridColumnGap'
-      | 'gridColumnStart'
-      | 'gridGap'
-      | 'gridRow'
-      | 'gridRowEnd'
-      | 'gridRowGap'
-      | 'gridRowStart'
-      | 'gridTemplate'
-      | 'gridTemplateAreas'
-      | 'gridTemplateColumns'
-      | 'gridTemplateRows'
-      | 'hangingPunctuation'
-      | 'height'
-      | 'hotkey'
-      | 'hyphenateCharacter'
-      | 'hyphenateLimitChars'
-      | 'hyphens'
-      | 'imageOrientation'
-      | 'imageRendering'
-      | 'imageResolution'
-      | 'imeMode'
-      | 'initialLetter'
-      | 'initialLetterAlign'
-      | 'inlineSize'
-      | 'inset'
-      | 'insetArea'
-      | 'insetBlock'
-      | 'insetBlockEnd'
-      | 'insetBlockStart'
-      | 'insetInline'
-      | 'insetInlineEnd'
-      | 'insetInlineStart'
-      | 'interpolateSize'
-      | 'isolation'
-      | 'justifyContent'
-      | 'justifyItems'
-      | 'justifySelf'
-      | 'justifyTracks'
-      | 'label'
-      | 'left'
-      | 'letterSpacing'
-      | 'lightingColor'
-      | 'lineBreak'
-      | 'lineClamp'
-      | 'lineHeight'
-      | 'lineHeightStep'
-      | 'listStyle'
-      | 'listStyleImage'
-      | 'listStylePosition'
-      | 'listStyleType'
-      | 'margin'
-      | 'marginBlock'
-      | 'marginBlockEnd'
-      | 'marginBlockStart'
-      | 'marginBottom'
-      | 'marginEnd'
-      | 'marginHorizontal'
-      | 'marginInline'
-      | 'marginInlineEnd'
-      | 'marginInlineStart'
-      | 'marginLeft'
-      | 'marginRight'
-      | 'marginStart'
-      | 'marginTop'
-      | 'marginTrim'
-      | 'marginVertical'
-      | 'marker'
-      | 'markerEnd'
-      | 'markerMid'
-      | 'markerStart'
-      | 'mask'
-      | 'maskBorder'
-      | 'maskBorderMode'
-      | 'maskBorderOutset'
-      | 'maskBorderRepeat'
-      | 'maskBorderSlice'
-      | 'maskBorderSource'
-      | 'maskBorderWidth'
-      | 'maskClip'
-      | 'maskComposite'
-      | 'maskImage'
-      | 'maskMode'
-      | 'maskOrigin'
-      | 'maskPosition'
-      | 'maskRepeat'
-      | 'maskSize'
-      | 'maskType'
-      | 'masonryAutoFlow'
-      | 'mathDepth'
-      | 'mathShift'
-      | 'mathStyle'
-      | 'matrix'
-      | 'maxBlockSize'
-      | 'maxHeight'
-      | 'maxInlineSize'
-      | 'maxLines'
-      | 'maxWidth'
-      | 'minBlockSize'
-      | 'minHeight'
-      | 'minInlineSize'
-      | 'minWidth'
-      | 'mixBlendMode'
-      | 'motion'
-      | 'motionDistance'
-      | 'motionPath'
-      | 'motionRotation'
-      | 'msAccelerator'
-      | 'msBlockProgression'
-      | 'msContentZoomChaining'
-      | 'msContentZoomLimit'
-      | 'msContentZoomLimitMax'
-      | 'msContentZoomLimitMin'
-      | 'msContentZoomSnap'
-      | 'msContentZoomSnapPoints'
-      | 'msContentZoomSnapType'
-      | 'msContentZooming'
-      | 'msFilter'
-      | 'msFlex'
-      | 'msFlexDirection'
-      | 'msFlexPositive'
-      | 'msFlowFrom'
-      | 'msFlowInto'
-      | 'msGridColumns'
-      | 'msGridRows'
-      | 'msHighContrastAdjust'
-      | 'msHyphenateLimitChars'
-      | 'msHyphenateLimitLines'
-      | 'msHyphenateLimitZone'
-      | 'msHyphens'
-      | 'msImeAlign'
-      | 'msImeMode'
-      | 'msLineBreak'
-      | 'msOrder'
-      | 'msOverflowStyle'
-      | 'msOverflowX'
-      | 'msOverflowY'
-      | 'msScrollChaining'
-      | 'msScrollLimit'
-      | 'msScrollLimitXMax'
-      | 'msScrollLimitXMin'
-      | 'msScrollLimitYMax'
-      | 'msScrollLimitYMin'
-      | 'msScrollRails'
-      | 'msScrollSnapPointsX'
-      | 'msScrollSnapPointsY'
-      | 'msScrollSnapType'
-      | 'msScrollSnapX'
-      | 'msScrollSnapY'
-      | 'msScrollTranslation'
-      | 'msScrollbar3dlightColor'
-      | 'msScrollbarArrowColor'
-      | 'msScrollbarBaseColor'
-      | 'msScrollbarDarkshadowColor'
-      | 'msScrollbarFaceColor'
-      | 'msScrollbarHighlightColor'
-      | 'msScrollbarShadowColor'
-      | 'msScrollbarTrackColor'
-      | 'msTextAutospace'
-      | 'msTextCombineHorizontal'
-      | 'msTextOverflow'
-      | 'msTouchAction'
-      | 'msTouchSelect'
-      | 'msTransform'
-      | 'msTransformOrigin'
-      | 'msTransition'
-      | 'msTransitionDelay'
-      | 'msTransitionDuration'
-      | 'msTransitionProperty'
-      | 'msTransitionTimingFunction'
-      | 'msUserSelect'
-      | 'msWordBreak'
-      | 'msWrapFlow'
-      | 'msWrapMargin'
-      | 'msWrapThrough'
-      | 'msWritingMode'
-      | 'objectFit'
-      | 'objectPosition'
-      | 'objectViewBox'
-      | 'offset'
-      | 'offsetAnchor'
-      | 'offsetBlock'
-      | 'offsetBlockEnd'
-      | 'offsetBlockStart'
-      | 'offsetDistance'
-      | 'offsetInline'
-      | 'offsetInlineEnd'
-      | 'offsetInlineStart'
-      | 'offsetPath'
-      | 'offsetPosition'
-      | 'offsetRotate'
-      | 'offsetRotation'
-      | 'onTransition'
-      | 'opacity'
-      | 'order'
-      | 'orphans'
-      | 'outline'
-      | 'outlineColor'
-      | 'outlineOffset'
-      | 'outlineStyle'
-      | 'outlineWidth'
-      | 'overflow'
-      | 'overflowAnchor'
-      | 'overflowBlock'
-      | 'overflowClipBox'
-      | 'overflowClipMargin'
-      | 'overflowInline'
-      | 'overflowWrap'
-      | 'overflowX'
-      | 'overflowY'
-      | 'overlay'
-      | 'overscrollBehavior'
-      | 'overscrollBehaviorBlock'
-      | 'overscrollBehaviorInline'
-      | 'overscrollBehaviorX'
-      | 'overscrollBehaviorY'
-      | 'padding'
-      | 'paddingBlock'
-      | 'paddingBlockEnd'
-      | 'paddingBlockStart'
-      | 'paddingBottom'
-      | 'paddingEnd'
-      | 'paddingHorizontal'
-      | 'paddingInline'
-      | 'paddingInlineEnd'
-      | 'paddingInlineStart'
-      | 'paddingLeft'
-      | 'paddingRight'
-      | 'paddingStart'
-      | 'paddingTop'
-      | 'paddingVertical'
-      | 'page'
-      | 'pageBreakAfter'
-      | 'pageBreakBefore'
-      | 'pageBreakInside'
-      | 'paintOrder'
-      | 'passThrough'
-      | 'perspective'
-      | 'perspectiveOrigin'
-      | 'placeContent'
-      | 'placeItems'
-      | 'placeSelf'
-      | 'pointerEvents'
-      | 'portalToRoot'
-      | 'portalZIndex'
-      | 'position'
-      | 'positionAnchor'
-      | 'positionArea'
-      | 'positionTry'
-      | 'positionTryFallbacks'
-      | 'positionTryOptions'
-      | 'positionTryOrder'
-      | 'positionVisibility'
-      | 'printColorAdjust'
-      | 'quotes'
-      | 'r'
-      | 'resize'
-      | 'right'
-      | 'rotate'
-      | 'rotateX'
-      | 'rotateY'
-      | 'rotateZ'
-      | 'rowGap'
-      | 'rubyAlign'
-      | 'rubyMerge'
-      | 'rubyOverhang'
-      | 'rubyPosition'
-      | 'rx'
-      | 'ry'
-      | 'scale'
-      | 'scaleX'
-      | 'scaleY'
-      | 'scrollBehavior'
-      | 'scrollInitialTarget'
-      | 'scrollMargin'
-      | 'scrollMarginBlock'
-      | 'scrollMarginBlockEnd'
-      | 'scrollMarginBlockStart'
-      | 'scrollMarginBottom'
-      | 'scrollMarginInline'
-      | 'scrollMarginInlineEnd'
-      | 'scrollMarginInlineStart'
-      | 'scrollMarginLeft'
-      | 'scrollMarginRight'
-      | 'scrollMarginTop'
-      | 'scrollPadding'
-      | 'scrollPaddingBlock'
-      | 'scrollPaddingBlockEnd'
-      | 'scrollPaddingBlockStart'
-      | 'scrollPaddingBottom'
-      | 'scrollPaddingInline'
-      | 'scrollPaddingInlineEnd'
-      | 'scrollPaddingInlineStart'
-      | 'scrollPaddingLeft'
-      | 'scrollPaddingRight'
-      | 'scrollPaddingTop'
-      | 'scrollSnapAlign'
-      | 'scrollSnapCoordinate'
-      | 'scrollSnapDestination'
-      | 'scrollSnapMargin'
-      | 'scrollSnapMarginBottom'
-      | 'scrollSnapMarginLeft'
-      | 'scrollSnapMarginRight'
-      | 'scrollSnapMarginTop'
-      | 'scrollSnapPointsX'
-      | 'scrollSnapPointsY'
-      | 'scrollSnapStop'
-      | 'scrollSnapType'
-      | 'scrollSnapTypeX'
-      | 'scrollSnapTypeY'
-      | 'scrollTimeline'
-      | 'scrollTimelineAxis'
-      | 'scrollTimelineName'
-      | 'scrollbarColor'
-      | 'scrollbarGutter'
-      | 'scrollbarWidth'
-      | 'shadowColor'
-      | 'shadowOffset'
-      | 'shadowOpacity'
-      | 'shadowRadius'
-      | 'shapeImageThreshold'
-      | 'shapeMargin'
-      | 'shapeOutside'
-      | 'shapeRendering'
-      | 'skewX'
-      | 'skewY'
-      | 'speakAs'
-      | 'start'
-      | 'stopColor'
-      | 'stopOpacity'
-      | 'stroke'
-      | 'strokeColor'
-      | 'strokeDasharray'
-      | 'strokeDashoffset'
-      | 'strokeLinecap'
-      | 'strokeLinejoin'
-      | 'strokeMiterlimit'
-      | 'strokeOpacity'
-      | 'strokeWidth'
-      | 'tabSize'
-      | 'tableLayout'
-      | 'textAlign'
-      | 'textAlignLast'
-      | 'textAnchor'
-      | 'textAutospace'
-      | 'textBox'
-      | 'textBoxEdge'
-      | 'textBoxTrim'
-      | 'textCombineUpright'
-      | 'textDecoration'
-      | 'textDecorationColor'
-      | 'textDecorationLine'
-      | 'textDecorationSkip'
-      | 'textDecorationSkipInk'
-      | 'textDecorationStyle'
-      | 'textDecorationThickness'
-      | 'textEmphasis'
-      | 'textEmphasisColor'
-      | 'textEmphasisPosition'
-      | 'textEmphasisStyle'
-      | 'textIndent'
-      | 'textJustify'
-      | 'textOrientation'
-      | 'textOverflow'
-      | 'textRendering'
-      | 'textShadow'
-      | 'textSizeAdjust'
-      | 'textSpacingTrim'
-      | 'textTransform'
-      | 'textUnderlineOffset'
-      | 'textUnderlinePosition'
-      | 'textWrap'
-      | 'textWrapMode'
-      | 'textWrapStyle'
-      | 'timelineScope'
-      | 'top'
-      | 'touchAction'
-      | 'transform'
-      | 'transformBox'
-      | 'transformOrigin'
-      | 'transformStyle'
-      | 'transition'
-      | 'transitionBehavior'
-      | 'transitionDelay'
-      | 'transitionDuration'
-      | 'transitionProperty'
-      | 'transitionTimingFunction'
-      | 'translate'
-      | 'unicodeBidi'
-      | 'userSelect'
-      | 'vectorEffect'
-      | 'verticalAlign'
-      | 'viewTimeline'
-      | 'viewTimelineAxis'
-      | 'viewTimelineInset'
-      | 'viewTimelineName'
-      | 'viewTransitionClass'
-      | 'viewTransitionName'
-      | 'visibility'
-      | 'whiteSpace'
-      | 'whiteSpaceCollapse'
-      | 'widows'
-      | 'width'
-      | 'willChange'
-      | 'wordBreak'
-      | 'wordSpacing'
-      | 'wordWrap'
-      | 'writingMode'
-      | 'x'
-      | 'y'
-      | 'zIndex'
-      | 'zoom'
-      | keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
-    > &
-      Omit<
-        import('@tamagui/core').GetFinalProps<
-          import('@tamagui/core').RNTamaguiViewNonStyleProps,
-          import('@tamagui/core').StackStyleBase,
-          {}
-        >,
-        'offset'
-      > & {
+    Viewport: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "KhtmlBoxAlign" | "KhtmlBoxDirection" | "KhtmlBoxFlex" | "KhtmlBoxFlexGroup" | "KhtmlBoxLines" | "KhtmlBoxOrdinalGroup" | "KhtmlBoxOrient" | "KhtmlBoxPack" | "KhtmlLineBreak" | "KhtmlOpacity" | "KhtmlUserSelect" | "MozAnimation" | "MozAnimationDelay" | "MozAnimationDirection" | "MozAnimationDuration" | "MozAnimationFillMode" | "MozAnimationIterationCount" | "MozAnimationName" | "MozAnimationPlayState" | "MozAnimationTimingFunction" | "MozAppearance" | "MozBackfaceVisibility" | "MozBackgroundClip" | "MozBackgroundOrigin" | "MozBackgroundSize" | "MozBinding" | "MozBorderBottomColors" | "MozBorderEndColor" | "MozBorderEndStyle" | "MozBorderEndWidth" | "MozBorderImage" | "MozBorderLeftColors" | "MozBorderRadius" | "MozBorderRadiusBottomleft" | "MozBorderRadiusBottomright" | "MozBorderRadiusTopleft" | "MozBorderRadiusTopright" | "MozBorderRightColors" | "MozBorderStartColor" | "MozBorderStartStyle" | "MozBorderTopColors" | "MozBoxAlign" | "MozBoxDirection" | "MozBoxFlex" | "MozBoxOrdinalGroup" | "MozBoxOrient" | "MozBoxPack" | "MozBoxShadow" | "MozBoxSizing" | "MozColumnCount" | "MozColumnFill" | "MozColumnRule" | "MozColumnRuleColor" | "MozColumnRuleStyle" | "MozColumnRuleWidth" | "MozColumnWidth" | "MozColumns" | "MozContextProperties" | "MozFloatEdge" | "MozFontFeatureSettings" | "MozFontLanguageOverride" | "MozForceBrokenImageIcon" | "MozHyphens" | "MozMarginEnd" | "MozMarginStart" | "MozOpacity" | "MozOrient" | "MozOsxFontSmoothing" | "MozOutline" | "MozOutlineColor" | "MozOutlineRadius" | "MozOutlineRadiusBottomleft" | "MozOutlineRadiusBottomright" | "MozOutlineRadiusTopleft" | "MozOutlineRadiusTopright" | "MozOutlineStyle" | "MozOutlineWidth" | "MozPaddingEnd" | "MozPaddingStart" | "MozPerspective" | "MozPerspectiveOrigin" | "MozStackSizing" | "MozTabSize" | "MozTextAlignLast" | "MozTextBlink" | "MozTextDecorationColor" | "MozTextDecorationLine" | "MozTextDecorationStyle" | "MozTextSizeAdjust" | "MozTransform" | "MozTransformOrigin" | "MozTransformStyle" | "MozTransition" | "MozTransitionDelay" | "MozTransitionDuration" | "MozTransitionProperty" | "MozTransitionTimingFunction" | "MozUserFocus" | "MozUserInput" | "MozUserModify" | "MozUserSelect" | "MozWindowDragging" | "MozWindowShadow" | "OAnimation" | "OAnimationDelay" | "OAnimationDirection" | "OAnimationDuration" | "OAnimationFillMode" | "OAnimationIterationCount" | "OAnimationName" | "OAnimationPlayState" | "OAnimationTimingFunction" | "OBackgroundSize" | "OBorderImage" | "OObjectFit" | "OObjectPosition" | "OTabSize" | "OTextOverflow" | "OTransform" | "OTransformOrigin" | "OTransition" | "OTransitionDelay" | "OTransitionDuration" | "OTransitionProperty" | "OTransitionTimingFunction" | "WebkitAlignContent" | "WebkitAlignItems" | "WebkitAlignSelf" | "WebkitAnimation" | "WebkitAnimationDelay" | "WebkitAnimationDirection" | "WebkitAnimationDuration" | "WebkitAnimationFillMode" | "WebkitAnimationIterationCount" | "WebkitAnimationName" | "WebkitAnimationPlayState" | "WebkitAnimationTimingFunction" | "WebkitAppearance" | "WebkitBackdropFilter" | "WebkitBackfaceVisibility" | "WebkitBackgroundClip" | "WebkitBackgroundOrigin" | "WebkitBackgroundSize" | "WebkitBorderBefore" | "WebkitBorderBeforeColor" | "WebkitBorderBeforeStyle" | "WebkitBorderBeforeWidth" | "WebkitBorderBottomLeftRadius" | "WebkitBorderBottomRightRadius" | "WebkitBorderImage" | "WebkitBorderImageSlice" | "WebkitBorderRadius" | "WebkitBorderTopLeftRadius" | "WebkitBorderTopRightRadius" | "WebkitBoxAlign" | "WebkitBoxDecorationBreak" | "WebkitBoxDirection" | "WebkitBoxFlex" | "WebkitBoxFlexGroup" | "WebkitBoxLines" | "WebkitBoxOrdinalGroup" | "WebkitBoxOrient" | "WebkitBoxPack" | "WebkitBoxReflect" | "WebkitBoxShadow" | "WebkitBoxSizing" | "WebkitClipPath" | "WebkitColumnCount" | "WebkitColumnFill" | "WebkitColumnRule" | "WebkitColumnRuleColor" | "WebkitColumnRuleStyle" | "WebkitColumnRuleWidth" | "WebkitColumnSpan" | "WebkitColumnWidth" | "WebkitColumns" | "WebkitFilter" | "WebkitFlex" | "WebkitFlexBasis" | "WebkitFlexDirection" | "WebkitFlexFlow" | "WebkitFlexGrow" | "WebkitFlexShrink" | "WebkitFlexWrap" | "WebkitFontFeatureSettings" | "WebkitFontKerning" | "WebkitFontSmoothing" | "WebkitFontVariantLigatures" | "WebkitHyphenateCharacter" | "WebkitHyphens" | "WebkitInitialLetter" | "WebkitJustifyContent" | "WebkitLineBreak" | "WebkitLineClamp" | "WebkitLogicalHeight" | "WebkitLogicalWidth" | "WebkitMarginEnd" | "WebkitMarginStart" | "WebkitMask" | "WebkitMaskAttachment" | "WebkitMaskBoxImage" | "WebkitMaskBoxImageOutset" | "WebkitMaskBoxImageRepeat" | "WebkitMaskBoxImageSlice" | "WebkitMaskBoxImageSource" | "WebkitMaskBoxImageWidth" | "WebkitMaskClip" | "WebkitMaskComposite" | "WebkitMaskImage" | "WebkitMaskOrigin" | "WebkitMaskPosition" | "WebkitMaskPositionX" | "WebkitMaskPositionY" | "WebkitMaskRepeat" | "WebkitMaskRepeatX" | "WebkitMaskRepeatY" | "WebkitMaskSize" | "WebkitMaxInlineSize" | "WebkitOrder" | "WebkitOverflowScrolling" | "WebkitPaddingEnd" | "WebkitPaddingStart" | "WebkitPerspective" | "WebkitPerspectiveOrigin" | "WebkitPrintColorAdjust" | "WebkitRubyPosition" | "WebkitScrollSnapType" | "WebkitShapeMargin" | "WebkitTapHighlightColor" | "WebkitTextCombine" | "WebkitTextDecorationColor" | "WebkitTextDecorationLine" | "WebkitTextDecorationSkip" | "WebkitTextDecorationStyle" | "WebkitTextEmphasis" | "WebkitTextEmphasisColor" | "WebkitTextEmphasisPosition" | "WebkitTextEmphasisStyle" | "WebkitTextFillColor" | "WebkitTextOrientation" | "WebkitTextSizeAdjust" | "WebkitTextStroke" | "WebkitTextStrokeColor" | "WebkitTextStrokeWidth" | "WebkitTextUnderlinePosition" | "WebkitTouchCallout" | "WebkitTransform" | "WebkitTransformOrigin" | "WebkitTransformStyle" | "WebkitTransition" | "WebkitTransitionDelay" | "WebkitTransitionDuration" | "WebkitTransitionProperty" | "WebkitTransitionTimingFunction" | "WebkitUserModify" | "WebkitUserSelect" | "WebkitWritingMode" | "accentColor" | "alignContent" | "alignItems" | "alignSelf" | "alignTracks" | "alignmentBaseline" | "all" | "anchorName" | "anchorScope" | "animatePresence" | "animation" | "animationComposition" | "animationDelay" | "animationDirection" | "animationDuration" | "animationFillMode" | "animationIterationCount" | "animationName" | "animationPlayState" | "animationRange" | "animationRangeEnd" | "animationRangeStart" | "animationTimeline" | "animationTimingFunction" | "appearance" | "aspectRatio" | "backdropFilter" | "backfaceVisibility" | "background" | "backgroundAttachment" | "backgroundBlendMode" | "backgroundClip" | "backgroundColor" | "backgroundImage" | "backgroundOrigin" | "backgroundPosition" | "backgroundPositionX" | "backgroundPositionY" | "backgroundRepeat" | "backgroundSize" | "baselineShift" | "blockSize" | "border" | "borderBlock" | "borderBlockColor" | "borderBlockEnd" | "borderBlockEndColor" | "borderBlockEndStyle" | "borderBlockEndWidth" | "borderBlockStart" | "borderBlockStartColor" | "borderBlockStartStyle" | "borderBlockStartWidth" | "borderBlockStyle" | "borderBlockWidth" | "borderBottom" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomStyle" | "borderBottomWidth" | "borderCollapse" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderEndWidth" | "borderImage" | "borderImageOutset" | "borderImageRepeat" | "borderImageSlice" | "borderImageSource" | "borderImageWidth" | "borderInline" | "borderInlineColor" | "borderInlineEnd" | "borderInlineEndColor" | "borderInlineEndStyle" | "borderInlineEndWidth" | "borderInlineStart" | "borderInlineStartColor" | "borderInlineStartStyle" | "borderInlineStartWidth" | "borderInlineStyle" | "borderInlineWidth" | "borderLeft" | "borderLeftColor" | "borderLeftStyle" | "borderLeftWidth" | "borderRadius" | "borderRight" | "borderRightColor" | "borderRightStyle" | "borderRightWidth" | "borderSpacing" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStartWidth" | "borderStyle" | "borderTop" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopStyle" | "borderTopWidth" | "borderWidth" | "bottom" | "boxAlign" | "boxDecorationBreak" | "boxDirection" | "boxFlex" | "boxFlexGroup" | "boxLines" | "boxOrdinalGroup" | "boxOrient" | "boxPack" | "boxShadow" | "boxSizing" | "breakAfter" | "breakBefore" | "breakInside" | "captionSide" | "caret" | "caretColor" | "caretShape" | "clear" | "clip" | "clipPath" | "clipRule" | "color" | "colorAdjust" | "colorInterpolation" | "colorInterpolationFilters" | "colorRendering" | "colorScheme" | "columnCount" | "columnFill" | "columnGap" | "columnRule" | "columnRuleColor" | "columnRuleStyle" | "columnRuleWidth" | "columnSpan" | "columnWidth" | "columns" | "contain" | "containIntrinsicBlockSize" | "containIntrinsicHeight" | "containIntrinsicInlineSize" | "containIntrinsicSize" | "containIntrinsicWidth" | "containerName" | "containerType" | "content" | "contentVisibility" | "counterIncrement" | "counterReset" | "counterSet" | "cursor" | "cx" | "cy" | "d" | "direction" | "display" | "dominantBaseline" | "emptyCells" | "end" | "experimental_backgroundImage" | "experimental_backgroundPosition" | "experimental_backgroundRepeat" | "experimental_backgroundSize" | "fieldSizing" | "fill" | "fillOpacity" | "fillRule" | "filter" | "flex" | "flexBasis" | "flexDirection" | "flexFlow" | "flexGrow" | "flexShrink" | "flexWrap" | "float" | "floodColor" | "floodOpacity" | "font" | "fontFamily" | "fontFeatureSettings" | "fontKerning" | "fontLanguageOverride" | "fontOpticalSizing" | "fontPalette" | "fontSize" | "fontSizeAdjust" | "fontSmooth" | "fontStretch" | "fontStyle" | "fontSynthesis" | "fontSynthesisPosition" | "fontSynthesisSmallCaps" | "fontSynthesisStyle" | "fontSynthesisWeight" | "fontVariant" | "fontVariantAlternates" | "fontVariantCaps" | "fontVariantEastAsian" | "fontVariantEmoji" | "fontVariantLigatures" | "fontVariantNumeric" | "fontVariantPosition" | "fontVariationSettings" | "fontWeight" | "fontWidth" | "forcedColorAdjust" | "gap" | "glyphOrientationVertical" | "grid" | "gridArea" | "gridAutoColumns" | "gridAutoFlow" | "gridAutoRows" | "gridColumn" | "gridColumnEnd" | "gridColumnGap" | "gridColumnStart" | "gridGap" | "gridRow" | "gridRowEnd" | "gridRowGap" | "gridRowStart" | "gridTemplate" | "gridTemplateAreas" | "gridTemplateColumns" | "gridTemplateRows" | "hangingPunctuation" | "height" | "hotkey" | "hyphenateCharacter" | "hyphenateLimitChars" | "hyphens" | "imageOrientation" | "imageRendering" | "imageResolution" | "imeMode" | "initialLetter" | "initialLetterAlign" | "inlineSize" | "inset" | "insetArea" | "insetBlock" | "insetBlockEnd" | "insetBlockStart" | "insetInline" | "insetInlineEnd" | "insetInlineStart" | "interpolateSize" | "isolation" | "justifyContent" | "justifyItems" | "justifySelf" | "justifyTracks" | "label" | "left" | "letterSpacing" | "lightingColor" | "lineBreak" | "lineClamp" | "lineHeight" | "lineHeightStep" | "listStyle" | "listStyleImage" | "listStylePosition" | "listStyleType" | "margin" | "marginBlock" | "marginBlockEnd" | "marginBlockStart" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginInline" | "marginInlineEnd" | "marginInlineStart" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginTrim" | "marginVertical" | "marker" | "markerEnd" | "markerMid" | "markerStart" | "mask" | "maskBorder" | "maskBorderMode" | "maskBorderOutset" | "maskBorderRepeat" | "maskBorderSlice" | "maskBorderSource" | "maskBorderWidth" | "maskClip" | "maskComposite" | "maskImage" | "maskMode" | "maskOrigin" | "maskPosition" | "maskRepeat" | "maskSize" | "maskType" | "masonryAutoFlow" | "mathDepth" | "mathShift" | "mathStyle" | "matrix" | "maxBlockSize" | "maxHeight" | "maxInlineSize" | "maxLines" | "maxWidth" | "minBlockSize" | "minHeight" | "minInlineSize" | "minWidth" | "mixBlendMode" | "motion" | "motionDistance" | "motionPath" | "motionRotation" | "msAccelerator" | "msBlockProgression" | "msContentZoomChaining" | "msContentZoomLimit" | "msContentZoomLimitMax" | "msContentZoomLimitMin" | "msContentZoomSnap" | "msContentZoomSnapPoints" | "msContentZoomSnapType" | "msContentZooming" | "msFilter" | "msFlex" | "msFlexDirection" | "msFlexPositive" | "msFlowFrom" | "msFlowInto" | "msGridColumns" | "msGridRows" | "msHighContrastAdjust" | "msHyphenateLimitChars" | "msHyphenateLimitLines" | "msHyphenateLimitZone" | "msHyphens" | "msImeAlign" | "msImeMode" | "msLineBreak" | "msOrder" | "msOverflowStyle" | "msOverflowX" | "msOverflowY" | "msScrollChaining" | "msScrollLimit" | "msScrollLimitXMax" | "msScrollLimitXMin" | "msScrollLimitYMax" | "msScrollLimitYMin" | "msScrollRails" | "msScrollSnapPointsX" | "msScrollSnapPointsY" | "msScrollSnapType" | "msScrollSnapX" | "msScrollSnapY" | "msScrollTranslation" | "msScrollbar3dlightColor" | "msScrollbarArrowColor" | "msScrollbarBaseColor" | "msScrollbarDarkshadowColor" | "msScrollbarFaceColor" | "msScrollbarHighlightColor" | "msScrollbarShadowColor" | "msScrollbarTrackColor" | "msTextAutospace" | "msTextCombineHorizontal" | "msTextOverflow" | "msTouchAction" | "msTouchSelect" | "msTransform" | "msTransformOrigin" | "msTransition" | "msTransitionDelay" | "msTransitionDuration" | "msTransitionProperty" | "msTransitionTimingFunction" | "msUserSelect" | "msWordBreak" | "msWrapFlow" | "msWrapMargin" | "msWrapThrough" | "msWritingMode" | "objectFit" | "objectPosition" | "objectViewBox" | "offset" | "offsetAnchor" | "offsetBlock" | "offsetBlockEnd" | "offsetBlockStart" | "offsetDistance" | "offsetInline" | "offsetInlineEnd" | "offsetInlineStart" | "offsetPath" | "offsetPosition" | "offsetRotate" | "offsetRotation" | "onTransition" | "opacity" | "order" | "orphans" | "outline" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "overflow" | "overflowAnchor" | "overflowBlock" | "overflowClipBox" | "overflowClipMargin" | "overflowInline" | "overflowWrap" | "overflowX" | "overflowY" | "overlay" | "overscrollBehavior" | "overscrollBehaviorBlock" | "overscrollBehaviorInline" | "overscrollBehaviorX" | "overscrollBehaviorY" | "padding" | "paddingBlock" | "paddingBlockEnd" | "paddingBlockStart" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingInline" | "paddingInlineEnd" | "paddingInlineStart" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "page" | "pageBreakAfter" | "pageBreakBefore" | "pageBreakInside" | "paintOrder" | "passThrough" | "perspective" | "perspectiveOrigin" | "placeContent" | "placeItems" | "placeSelf" | "pointerEvents" | "portalToRoot" | "portalZIndex" | "position" | "positionAnchor" | "positionArea" | "positionTry" | "positionTryFallbacks" | "positionTryOptions" | "positionTryOrder" | "positionVisibility" | "printColorAdjust" | "quotes" | "r" | "resize" | "right" | "rotate" | "rotateX" | "rotateY" | "rotateZ" | "rowGap" | "rubyAlign" | "rubyMerge" | "rubyOverhang" | "rubyPosition" | "rx" | "ry" | "scale" | "scaleX" | "scaleY" | "scrollBehavior" | "scrollInitialTarget" | "scrollMargin" | "scrollMarginBlock" | "scrollMarginBlockEnd" | "scrollMarginBlockStart" | "scrollMarginBottom" | "scrollMarginInline" | "scrollMarginInlineEnd" | "scrollMarginInlineStart" | "scrollMarginLeft" | "scrollMarginRight" | "scrollMarginTop" | "scrollPadding" | "scrollPaddingBlock" | "scrollPaddingBlockEnd" | "scrollPaddingBlockStart" | "scrollPaddingBottom" | "scrollPaddingInline" | "scrollPaddingInlineEnd" | "scrollPaddingInlineStart" | "scrollPaddingLeft" | "scrollPaddingRight" | "scrollPaddingTop" | "scrollSnapAlign" | "scrollSnapCoordinate" | "scrollSnapDestination" | "scrollSnapMargin" | "scrollSnapMarginBottom" | "scrollSnapMarginLeft" | "scrollSnapMarginRight" | "scrollSnapMarginTop" | "scrollSnapPointsX" | "scrollSnapPointsY" | "scrollSnapStop" | "scrollSnapType" | "scrollSnapTypeX" | "scrollSnapTypeY" | "scrollTimeline" | "scrollTimelineAxis" | "scrollTimelineName" | "scrollbarColor" | "scrollbarGutter" | "scrollbarWidth" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "shapeImageThreshold" | "shapeMargin" | "shapeOutside" | "shapeRendering" | "skewX" | "skewY" | "speakAs" | "start" | "stopColor" | "stopOpacity" | "stroke" | "strokeColor" | "strokeDasharray" | "strokeDashoffset" | "strokeLinecap" | "strokeLinejoin" | "strokeMiterlimit" | "strokeOpacity" | "strokeWidth" | "tabSize" | "tableLayout" | "textAlign" | "textAlignLast" | "textAnchor" | "textAutospace" | "textBox" | "textBoxEdge" | "textBoxTrim" | "textCombineUpright" | "textDecoration" | "textDecorationColor" | "textDecorationLine" | "textDecorationSkip" | "textDecorationSkipInk" | "textDecorationStyle" | "textDecorationThickness" | "textEmphasis" | "textEmphasisColor" | "textEmphasisPosition" | "textEmphasisStyle" | "textIndent" | "textJustify" | "textOrientation" | "textOverflow" | "textRendering" | "textShadow" | "textSizeAdjust" | "textSpacingTrim" | "textTransform" | "textUnderlineOffset" | "textUnderlinePosition" | "textWrap" | "textWrapMode" | "textWrapStyle" | "timelineScope" | "top" | "touchAction" | "transform" | "transformBox" | "transformOrigin" | "transformStyle" | "transition" | "transitionBehavior" | "transitionDelay" | "transitionDuration" | "transitionProperty" | "transitionTimingFunction" | "translate" | "unicodeBidi" | "userSelect" | "vectorEffect" | "verticalAlign" | "viewTimeline" | "viewTimelineAxis" | "viewTimelineInset" | "viewTimelineName" | "viewTransitionClass" | "viewTransitionName" | "visibility" | "whiteSpace" | "whiteSpaceCollapse" | "widows" | "width" | "willChange" | "wordBreak" | "wordSpacing" | "wordWrap" | "writingMode" | "x" | "y" | "zIndex" | "zoom" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "offset"> & {
         /**
          * Offset from screen edge, kept as breathing room past the safe area: the
          * viewport edge itself sits at the `safe` style value (setup-safe-area on
@@ -1126,241 +174,63 @@ export declare const Toast: ((
          * the toast.
          * @default 16
          */
-        offset?:
-          | number
-          | {
-              top?: number
-              right?: number
-              bottom?: number
-              left?: number
-            }
+        offset?: number | {
+            top?: number;
+            right?: number;
+            bottom?: number;
+            left?: number;
+        };
         /**
          * Hotkey to focus viewport
          */
-        hotkey?: string[]
+        hotkey?: string[];
         /**
          * Aria label
          * @default 'Notifications'
          */
-        label?: string
+        label?: string;
         /**
          * Portal to root
          * @default true
          */
-        portalToRoot?: boolean
+        portalToRoot?: boolean;
         /**
          * z-index for the portal container when portalToRoot is true
          * @default Number.MAX_SAFE_INTEGER
          */
-        portalZIndex?: number
-      },
-    | import('@tamagui/react-native-types/src').ReactNativeElement
-    | (HTMLElement & import('@tamagui/core').TamaguiElementMethods),
-    import('@tamagui/core').RNTamaguiViewNonStyleProps &
-      Omit<
-        import('@tamagui/core').GetFinalProps<
-          import('@tamagui/core').RNTamaguiViewNonStyleProps,
-          import('@tamagui/core').StackStyleBase,
-          {}
-        >,
-        'offset'
-      > & {
-        /**
-         * Offset from screen edge, kept as breathing room past the safe area: the
-         * viewport edge itself sits at the `safe` style value (setup-safe-area on
-         * native, env(safe-area-inset-*) on web), so pass a plain number here, not
-         * `insets.top + 8`. A number sets all four sides (on native left/right
-         * define the width); use the object form to move one edge without resizing
-         * the toast.
-         * @default 16
-         */
-        offset?:
-          | number
-          | {
-              top?: number
-              right?: number
-              bottom?: number
-              left?: number
-            }
-        /**
-         * Hotkey to focus viewport
-         */
-        hotkey?: string[]
-        /**
-         * Aria label
-         * @default 'Notifications'
-         */
-        label?: string
-        /**
-         * Portal to root
-         * @default true
-         */
-        portalToRoot?: boolean
-        /**
-         * z-index for the portal container when portalToRoot is true
-         * @default Number.MAX_SAFE_INTEGER
-         */
-        portalZIndex?: number
-      },
-    import('@tamagui/core').StackStyleBase,
-    {},
-    import('@tamagui/core').StaticConfigPublic
-  >
-  List: typeof ToastList
-  Item: import('@tamagui/core').TamaguiComponent<
-    Omit<
-      import('@tamagui/core').GetFinalProps<
-        import('@tamagui/core').RNTamaguiViewNonStyleProps,
-        import('@tamagui/core').StackStyleBase,
-        {}
-      >,
-      | 'index'
-      | 'toast'
-      | keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
-      | keyof import('@tamagui/core').StackStyleBase
-    > &
-      Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, never> &
-      Omit<
-        import('@tamagui/core').WithThemeValues<
-          Omit<import('@tamagui/core').StackStyleBase, never>
-        > &
-          import('@tamagui/core').WithFlatVariantValues<{}> &
-          import('@tamagui/core').WithShorthands<
-            import('@tamagui/core').WithThemeValues<
-              import('@tamagui/core').StackStyleBase
-            >
-          >,
-        keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
-      > & {
-        toast: ToastT
-        index: number
-        children: React.ReactNode
-      },
-    | import('@tamagui/react-native-types/src').ReactNativeElement
-    | (HTMLElement & import('@tamagui/core').TamaguiElementMethods),
-    import('@tamagui/core').RNTamaguiViewNonStyleProps &
-      Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, never> &
-      Omit<
-        import('@tamagui/core').WithThemeValues<
-          Omit<import('@tamagui/core').StackStyleBase, never>
-        > &
-          import('@tamagui/core').WithFlatVariantValues<{}> &
-          import('@tamagui/core').WithShorthands<
-            import('@tamagui/core').WithThemeValues<
-              import('@tamagui/core').StackStyleBase
-            >
-          >,
-        keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
-      > & {
-        toast: ToastT
-        index: number
-        children: React.ReactNode
-      },
-    import('@tamagui/core').StackStyleBase,
-    {},
-    import('@tamagui/core').StaticConfigPublic
-  >
-  Title: React.FunctionComponent<
-    Omit<import('@tamagui/core').TextNonStyleProps, 'size'> &
-      Omit<
-        import('@tamagui/core').WithThemeValues<
-          Omit<import('@tamagui/core').TextStylePropsBase, 'size'>
-        > &
-          import('@tamagui/core').WithFlatVariantValues<{
-            size?: import('@tamagui/get-font-sized').GetFontSizedInput | undefined
-          }> &
-          import('@tamagui/core').WithShorthands<
-            import('@tamagui/core').WithThemeValues<
-              import('@tamagui/core').TextStylePropsBase
-            >
-          >,
-        keyof import('@tamagui/core').TextNonStyleProps
-      > & {
-        ref?: React.Ref<import('@tamagui/core').TamaguiTextElement> | undefined
-      }
-  > &
-    import('@tamagui/core').StaticComponentObject<
-      import('@tamagui/core').TamaDefer,
-      import('@tamagui/core').TamaguiTextElement,
-      import('@tamagui/core').TextNonStyleProps,
-      import('@tamagui/core').TextStylePropsBase,
-      {
-        size?: import('@tamagui/get-font-sized').GetFontSizedInput | undefined
-      },
-      import('@tamagui/core').StaticConfigPublic
-    > &
-    Omit<import('@tamagui/core').StaticConfigPublic, 'staticConfig'> & {
-      __tama: [
-        import('@tamagui/core').TamaDefer,
-        import('@tamagui/core').TamaguiTextElement,
-        import('@tamagui/core').TextNonStyleProps,
-        import('@tamagui/core').TextStylePropsBase,
-        {
-          size?: import('@tamagui/get-font-sized').GetFontSizedInput | undefined
-        },
-        import('@tamagui/core').StaticConfigPublic,
-      ]
-    }
-  Description: React.FunctionComponent<
-    Omit<import('@tamagui/core').TextNonStyleProps, 'size'> &
-      Omit<
-        import('@tamagui/core').WithThemeValues<
-          Omit<import('@tamagui/core').TextStylePropsBase, 'size'>
-        > &
-          import('@tamagui/core').WithFlatVariantValues<{
-            size?: import('@tamagui/get-font-sized').GetFontSizedInput | undefined
-          }> &
-          import('@tamagui/core').WithShorthands<
-            import('@tamagui/core').WithThemeValues<
-              import('@tamagui/core').TextStylePropsBase
-            >
-          >,
-        keyof import('@tamagui/core').TextNonStyleProps
-      > & {
-        ref?: React.Ref<import('@tamagui/core').TamaguiTextElement> | undefined
-      }
-  > &
-    import('@tamagui/core').StaticComponentObject<
-      import('@tamagui/core').TamaDefer,
-      import('@tamagui/core').TamaguiTextElement,
-      import('@tamagui/core').TextNonStyleProps,
-      import('@tamagui/core').TextStylePropsBase,
-      {
-        size?: import('@tamagui/get-font-sized').GetFontSizedInput | undefined
-      },
-      import('@tamagui/core').StaticConfigPublic
-    > &
-    Omit<import('@tamagui/core').StaticConfigPublic, 'staticConfig'> & {
-      __tama: [
-        import('@tamagui/core').TamaDefer,
-        import('@tamagui/core').TamaguiTextElement,
-        import('@tamagui/core').TextNonStyleProps,
-        import('@tamagui/core').TextStylePropsBase,
-        {
-          size?: import('@tamagui/get-font-sized').GetFontSizedInput | undefined
-        },
-        import('@tamagui/core').StaticConfigPublic,
-      ]
-    }
-  Close: import('@tamagui/core').TamaguiComponent<
-    import('@tamagui/core').TamaDefer,
-    | import('@tamagui/react-native-types/src').ReactNativeElement
-    | (HTMLElement & import('@tamagui/core').TamaguiElementMethods),
-    import('@tamagui/core').RNTamaguiViewNonStyleProps,
-    import('@tamagui/core').StackStyleBase,
-    {},
-    import('@tamagui/core').StaticConfigPublic
-  >
-  Action: import('@tamagui/core').TamaguiComponent<
-    import('@tamagui/core').TamaDefer,
-    | import('@tamagui/react-native-types/src').ReactNativeElement
-    | (HTMLElement & import('@tamagui/core').TamaguiElementMethods),
-    import('@tamagui/core').RNTamaguiViewNonStyleProps,
-    import('@tamagui/core').StackStyleBase,
-    {},
-    import('@tamagui/core').StaticConfigPublic
-  >
-  Icon: typeof ToastIcon
-}
-export type { ToastT, ExternalToast }
+        portalZIndex?: number;
+    }, import("@tamagui/core").StackStyleBase, Omit<{}, "KhtmlBoxAlign" | "KhtmlBoxDirection" | "KhtmlBoxFlex" | "KhtmlBoxFlexGroup" | "KhtmlBoxLines" | "KhtmlBoxOrdinalGroup" | "KhtmlBoxOrient" | "KhtmlBoxPack" | "KhtmlLineBreak" | "KhtmlOpacity" | "KhtmlUserSelect" | "MozAnimation" | "MozAnimationDelay" | "MozAnimationDirection" | "MozAnimationDuration" | "MozAnimationFillMode" | "MozAnimationIterationCount" | "MozAnimationName" | "MozAnimationPlayState" | "MozAnimationTimingFunction" | "MozAppearance" | "MozBackfaceVisibility" | "MozBackgroundClip" | "MozBackgroundOrigin" | "MozBackgroundSize" | "MozBinding" | "MozBorderBottomColors" | "MozBorderEndColor" | "MozBorderEndStyle" | "MozBorderEndWidth" | "MozBorderImage" | "MozBorderLeftColors" | "MozBorderRadius" | "MozBorderRadiusBottomleft" | "MozBorderRadiusBottomright" | "MozBorderRadiusTopleft" | "MozBorderRadiusTopright" | "MozBorderRightColors" | "MozBorderStartColor" | "MozBorderStartStyle" | "MozBorderTopColors" | "MozBoxAlign" | "MozBoxDirection" | "MozBoxFlex" | "MozBoxOrdinalGroup" | "MozBoxOrient" | "MozBoxPack" | "MozBoxShadow" | "MozBoxSizing" | "MozColumnCount" | "MozColumnFill" | "MozColumnRule" | "MozColumnRuleColor" | "MozColumnRuleStyle" | "MozColumnRuleWidth" | "MozColumnWidth" | "MozColumns" | "MozContextProperties" | "MozFloatEdge" | "MozFontFeatureSettings" | "MozFontLanguageOverride" | "MozForceBrokenImageIcon" | "MozHyphens" | "MozMarginEnd" | "MozMarginStart" | "MozOpacity" | "MozOrient" | "MozOsxFontSmoothing" | "MozOutline" | "MozOutlineColor" | "MozOutlineRadius" | "MozOutlineRadiusBottomleft" | "MozOutlineRadiusBottomright" | "MozOutlineRadiusTopleft" | "MozOutlineRadiusTopright" | "MozOutlineStyle" | "MozOutlineWidth" | "MozPaddingEnd" | "MozPaddingStart" | "MozPerspective" | "MozPerspectiveOrigin" | "MozStackSizing" | "MozTabSize" | "MozTextAlignLast" | "MozTextBlink" | "MozTextDecorationColor" | "MozTextDecorationLine" | "MozTextDecorationStyle" | "MozTextSizeAdjust" | "MozTransform" | "MozTransformOrigin" | "MozTransformStyle" | "MozTransition" | "MozTransitionDelay" | "MozTransitionDuration" | "MozTransitionProperty" | "MozTransitionTimingFunction" | "MozUserFocus" | "MozUserInput" | "MozUserModify" | "MozUserSelect" | "MozWindowDragging" | "MozWindowShadow" | "OAnimation" | "OAnimationDelay" | "OAnimationDirection" | "OAnimationDuration" | "OAnimationFillMode" | "OAnimationIterationCount" | "OAnimationName" | "OAnimationPlayState" | "OAnimationTimingFunction" | "OBackgroundSize" | "OBorderImage" | "OObjectFit" | "OObjectPosition" | "OTabSize" | "OTextOverflow" | "OTransform" | "OTransformOrigin" | "OTransition" | "OTransitionDelay" | "OTransitionDuration" | "OTransitionProperty" | "OTransitionTimingFunction" | "WebkitAlignContent" | "WebkitAlignItems" | "WebkitAlignSelf" | "WebkitAnimation" | "WebkitAnimationDelay" | "WebkitAnimationDirection" | "WebkitAnimationDuration" | "WebkitAnimationFillMode" | "WebkitAnimationIterationCount" | "WebkitAnimationName" | "WebkitAnimationPlayState" | "WebkitAnimationTimingFunction" | "WebkitAppearance" | "WebkitBackdropFilter" | "WebkitBackfaceVisibility" | "WebkitBackgroundClip" | "WebkitBackgroundOrigin" | "WebkitBackgroundSize" | "WebkitBorderBefore" | "WebkitBorderBeforeColor" | "WebkitBorderBeforeStyle" | "WebkitBorderBeforeWidth" | "WebkitBorderBottomLeftRadius" | "WebkitBorderBottomRightRadius" | "WebkitBorderImage" | "WebkitBorderImageSlice" | "WebkitBorderRadius" | "WebkitBorderTopLeftRadius" | "WebkitBorderTopRightRadius" | "WebkitBoxAlign" | "WebkitBoxDecorationBreak" | "WebkitBoxDirection" | "WebkitBoxFlex" | "WebkitBoxFlexGroup" | "WebkitBoxLines" | "WebkitBoxOrdinalGroup" | "WebkitBoxOrient" | "WebkitBoxPack" | "WebkitBoxReflect" | "WebkitBoxShadow" | "WebkitBoxSizing" | "WebkitClipPath" | "WebkitColumnCount" | "WebkitColumnFill" | "WebkitColumnRule" | "WebkitColumnRuleColor" | "WebkitColumnRuleStyle" | "WebkitColumnRuleWidth" | "WebkitColumnSpan" | "WebkitColumnWidth" | "WebkitColumns" | "WebkitFilter" | "WebkitFlex" | "WebkitFlexBasis" | "WebkitFlexDirection" | "WebkitFlexFlow" | "WebkitFlexGrow" | "WebkitFlexShrink" | "WebkitFlexWrap" | "WebkitFontFeatureSettings" | "WebkitFontKerning" | "WebkitFontSmoothing" | "WebkitFontVariantLigatures" | "WebkitHyphenateCharacter" | "WebkitHyphens" | "WebkitInitialLetter" | "WebkitJustifyContent" | "WebkitLineBreak" | "WebkitLineClamp" | "WebkitLogicalHeight" | "WebkitLogicalWidth" | "WebkitMarginEnd" | "WebkitMarginStart" | "WebkitMask" | "WebkitMaskAttachment" | "WebkitMaskBoxImage" | "WebkitMaskBoxImageOutset" | "WebkitMaskBoxImageRepeat" | "WebkitMaskBoxImageSlice" | "WebkitMaskBoxImageSource" | "WebkitMaskBoxImageWidth" | "WebkitMaskClip" | "WebkitMaskComposite" | "WebkitMaskImage" | "WebkitMaskOrigin" | "WebkitMaskPosition" | "WebkitMaskPositionX" | "WebkitMaskPositionY" | "WebkitMaskRepeat" | "WebkitMaskRepeatX" | "WebkitMaskRepeatY" | "WebkitMaskSize" | "WebkitMaxInlineSize" | "WebkitOrder" | "WebkitOverflowScrolling" | "WebkitPaddingEnd" | "WebkitPaddingStart" | "WebkitPerspective" | "WebkitPerspectiveOrigin" | "WebkitPrintColorAdjust" | "WebkitRubyPosition" | "WebkitScrollSnapType" | "WebkitShapeMargin" | "WebkitTapHighlightColor" | "WebkitTextCombine" | "WebkitTextDecorationColor" | "WebkitTextDecorationLine" | "WebkitTextDecorationSkip" | "WebkitTextDecorationStyle" | "WebkitTextEmphasis" | "WebkitTextEmphasisColor" | "WebkitTextEmphasisPosition" | "WebkitTextEmphasisStyle" | "WebkitTextFillColor" | "WebkitTextOrientation" | "WebkitTextSizeAdjust" | "WebkitTextStroke" | "WebkitTextStrokeColor" | "WebkitTextStrokeWidth" | "WebkitTextUnderlinePosition" | "WebkitTouchCallout" | "WebkitTransform" | "WebkitTransformOrigin" | "WebkitTransformStyle" | "WebkitTransition" | "WebkitTransitionDelay" | "WebkitTransitionDuration" | "WebkitTransitionProperty" | "WebkitTransitionTimingFunction" | "WebkitUserModify" | "WebkitUserSelect" | "WebkitWritingMode" | "accentColor" | "alignContent" | "alignItems" | "alignSelf" | "alignTracks" | "alignmentBaseline" | "all" | "anchorName" | "anchorScope" | "animatePresence" | "animation" | "animationComposition" | "animationDelay" | "animationDirection" | "animationDuration" | "animationFillMode" | "animationIterationCount" | "animationName" | "animationPlayState" | "animationRange" | "animationRangeEnd" | "animationRangeStart" | "animationTimeline" | "animationTimingFunction" | "appearance" | "aspectRatio" | "backdropFilter" | "backfaceVisibility" | "background" | "backgroundAttachment" | "backgroundBlendMode" | "backgroundClip" | "backgroundColor" | "backgroundImage" | "backgroundOrigin" | "backgroundPosition" | "backgroundPositionX" | "backgroundPositionY" | "backgroundRepeat" | "backgroundSize" | "baselineShift" | "blockSize" | "border" | "borderBlock" | "borderBlockColor" | "borderBlockEnd" | "borderBlockEndColor" | "borderBlockEndStyle" | "borderBlockEndWidth" | "borderBlockStart" | "borderBlockStartColor" | "borderBlockStartStyle" | "borderBlockStartWidth" | "borderBlockStyle" | "borderBlockWidth" | "borderBottom" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomStyle" | "borderBottomWidth" | "borderCollapse" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderEndWidth" | "borderImage" | "borderImageOutset" | "borderImageRepeat" | "borderImageSlice" | "borderImageSource" | "borderImageWidth" | "borderInline" | "borderInlineColor" | "borderInlineEnd" | "borderInlineEndColor" | "borderInlineEndStyle" | "borderInlineEndWidth" | "borderInlineStart" | "borderInlineStartColor" | "borderInlineStartStyle" | "borderInlineStartWidth" | "borderInlineStyle" | "borderInlineWidth" | "borderLeft" | "borderLeftColor" | "borderLeftStyle" | "borderLeftWidth" | "borderRadius" | "borderRight" | "borderRightColor" | "borderRightStyle" | "borderRightWidth" | "borderSpacing" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStartWidth" | "borderStyle" | "borderTop" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopStyle" | "borderTopWidth" | "borderWidth" | "bottom" | "boxAlign" | "boxDecorationBreak" | "boxDirection" | "boxFlex" | "boxFlexGroup" | "boxLines" | "boxOrdinalGroup" | "boxOrient" | "boxPack" | "boxShadow" | "boxSizing" | "breakAfter" | "breakBefore" | "breakInside" | "captionSide" | "caret" | "caretColor" | "caretShape" | "clear" | "clip" | "clipPath" | "clipRule" | "color" | "colorAdjust" | "colorInterpolation" | "colorInterpolationFilters" | "colorRendering" | "colorScheme" | "columnCount" | "columnFill" | "columnGap" | "columnRule" | "columnRuleColor" | "columnRuleStyle" | "columnRuleWidth" | "columnSpan" | "columnWidth" | "columns" | "contain" | "containIntrinsicBlockSize" | "containIntrinsicHeight" | "containIntrinsicInlineSize" | "containIntrinsicSize" | "containIntrinsicWidth" | "containerName" | "containerType" | "content" | "contentVisibility" | "counterIncrement" | "counterReset" | "counterSet" | "cursor" | "cx" | "cy" | "d" | "direction" | "display" | "dominantBaseline" | "emptyCells" | "end" | "experimental_backgroundImage" | "experimental_backgroundPosition" | "experimental_backgroundRepeat" | "experimental_backgroundSize" | "fieldSizing" | "fill" | "fillOpacity" | "fillRule" | "filter" | "flex" | "flexBasis" | "flexDirection" | "flexFlow" | "flexGrow" | "flexShrink" | "flexWrap" | "float" | "floodColor" | "floodOpacity" | "font" | "fontFamily" | "fontFeatureSettings" | "fontKerning" | "fontLanguageOverride" | "fontOpticalSizing" | "fontPalette" | "fontSize" | "fontSizeAdjust" | "fontSmooth" | "fontStretch" | "fontStyle" | "fontSynthesis" | "fontSynthesisPosition" | "fontSynthesisSmallCaps" | "fontSynthesisStyle" | "fontSynthesisWeight" | "fontVariant" | "fontVariantAlternates" | "fontVariantCaps" | "fontVariantEastAsian" | "fontVariantEmoji" | "fontVariantLigatures" | "fontVariantNumeric" | "fontVariantPosition" | "fontVariationSettings" | "fontWeight" | "fontWidth" | "forcedColorAdjust" | "gap" | "glyphOrientationVertical" | "grid" | "gridArea" | "gridAutoColumns" | "gridAutoFlow" | "gridAutoRows" | "gridColumn" | "gridColumnEnd" | "gridColumnGap" | "gridColumnStart" | "gridGap" | "gridRow" | "gridRowEnd" | "gridRowGap" | "gridRowStart" | "gridTemplate" | "gridTemplateAreas" | "gridTemplateColumns" | "gridTemplateRows" | "hangingPunctuation" | "height" | "hotkey" | "hyphenateCharacter" | "hyphenateLimitChars" | "hyphens" | "imageOrientation" | "imageRendering" | "imageResolution" | "imeMode" | "initialLetter" | "initialLetterAlign" | "inlineSize" | "inset" | "insetArea" | "insetBlock" | "insetBlockEnd" | "insetBlockStart" | "insetInline" | "insetInlineEnd" | "insetInlineStart" | "interpolateSize" | "isolation" | "justifyContent" | "justifyItems" | "justifySelf" | "justifyTracks" | "label" | "left" | "letterSpacing" | "lightingColor" | "lineBreak" | "lineClamp" | "lineHeight" | "lineHeightStep" | "listStyle" | "listStyleImage" | "listStylePosition" | "listStyleType" | "margin" | "marginBlock" | "marginBlockEnd" | "marginBlockStart" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginInline" | "marginInlineEnd" | "marginInlineStart" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginTrim" | "marginVertical" | "marker" | "markerEnd" | "markerMid" | "markerStart" | "mask" | "maskBorder" | "maskBorderMode" | "maskBorderOutset" | "maskBorderRepeat" | "maskBorderSlice" | "maskBorderSource" | "maskBorderWidth" | "maskClip" | "maskComposite" | "maskImage" | "maskMode" | "maskOrigin" | "maskPosition" | "maskRepeat" | "maskSize" | "maskType" | "masonryAutoFlow" | "mathDepth" | "mathShift" | "mathStyle" | "matrix" | "maxBlockSize" | "maxHeight" | "maxInlineSize" | "maxLines" | "maxWidth" | "minBlockSize" | "minHeight" | "minInlineSize" | "minWidth" | "mixBlendMode" | "motion" | "motionDistance" | "motionPath" | "motionRotation" | "msAccelerator" | "msBlockProgression" | "msContentZoomChaining" | "msContentZoomLimit" | "msContentZoomLimitMax" | "msContentZoomLimitMin" | "msContentZoomSnap" | "msContentZoomSnapPoints" | "msContentZoomSnapType" | "msContentZooming" | "msFilter" | "msFlex" | "msFlexDirection" | "msFlexPositive" | "msFlowFrom" | "msFlowInto" | "msGridColumns" | "msGridRows" | "msHighContrastAdjust" | "msHyphenateLimitChars" | "msHyphenateLimitLines" | "msHyphenateLimitZone" | "msHyphens" | "msImeAlign" | "msImeMode" | "msLineBreak" | "msOrder" | "msOverflowStyle" | "msOverflowX" | "msOverflowY" | "msScrollChaining" | "msScrollLimit" | "msScrollLimitXMax" | "msScrollLimitXMin" | "msScrollLimitYMax" | "msScrollLimitYMin" | "msScrollRails" | "msScrollSnapPointsX" | "msScrollSnapPointsY" | "msScrollSnapType" | "msScrollSnapX" | "msScrollSnapY" | "msScrollTranslation" | "msScrollbar3dlightColor" | "msScrollbarArrowColor" | "msScrollbarBaseColor" | "msScrollbarDarkshadowColor" | "msScrollbarFaceColor" | "msScrollbarHighlightColor" | "msScrollbarShadowColor" | "msScrollbarTrackColor" | "msTextAutospace" | "msTextCombineHorizontal" | "msTextOverflow" | "msTouchAction" | "msTouchSelect" | "msTransform" | "msTransformOrigin" | "msTransition" | "msTransitionDelay" | "msTransitionDuration" | "msTransitionProperty" | "msTransitionTimingFunction" | "msUserSelect" | "msWordBreak" | "msWrapFlow" | "msWrapMargin" | "msWrapThrough" | "msWritingMode" | "objectFit" | "objectPosition" | "objectViewBox" | "offset" | "offsetAnchor" | "offsetBlock" | "offsetBlockEnd" | "offsetBlockStart" | "offsetDistance" | "offsetInline" | "offsetInlineEnd" | "offsetInlineStart" | "offsetPath" | "offsetPosition" | "offsetRotate" | "offsetRotation" | "onTransition" | "opacity" | "order" | "orphans" | "outline" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "overflow" | "overflowAnchor" | "overflowBlock" | "overflowClipBox" | "overflowClipMargin" | "overflowInline" | "overflowWrap" | "overflowX" | "overflowY" | "overlay" | "overscrollBehavior" | "overscrollBehaviorBlock" | "overscrollBehaviorInline" | "overscrollBehaviorX" | "overscrollBehaviorY" | "padding" | "paddingBlock" | "paddingBlockEnd" | "paddingBlockStart" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingInline" | "paddingInlineEnd" | "paddingInlineStart" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "page" | "pageBreakAfter" | "pageBreakBefore" | "pageBreakInside" | "paintOrder" | "passThrough" | "perspective" | "perspectiveOrigin" | "placeContent" | "placeItems" | "placeSelf" | "pointerEvents" | "portalToRoot" | "portalZIndex" | "position" | "positionAnchor" | "positionArea" | "positionTry" | "positionTryFallbacks" | "positionTryOptions" | "positionTryOrder" | "positionVisibility" | "printColorAdjust" | "quotes" | "r" | "resize" | "right" | "rotate" | "rotateX" | "rotateY" | "rotateZ" | "rowGap" | "rubyAlign" | "rubyMerge" | "rubyOverhang" | "rubyPosition" | "rx" | "ry" | "scale" | "scaleX" | "scaleY" | "scrollBehavior" | "scrollInitialTarget" | "scrollMargin" | "scrollMarginBlock" | "scrollMarginBlockEnd" | "scrollMarginBlockStart" | "scrollMarginBottom" | "scrollMarginInline" | "scrollMarginInlineEnd" | "scrollMarginInlineStart" | "scrollMarginLeft" | "scrollMarginRight" | "scrollMarginTop" | "scrollPadding" | "scrollPaddingBlock" | "scrollPaddingBlockEnd" | "scrollPaddingBlockStart" | "scrollPaddingBottom" | "scrollPaddingInline" | "scrollPaddingInlineEnd" | "scrollPaddingInlineStart" | "scrollPaddingLeft" | "scrollPaddingRight" | "scrollPaddingTop" | "scrollSnapAlign" | "scrollSnapCoordinate" | "scrollSnapDestination" | "scrollSnapMargin" | "scrollSnapMarginBottom" | "scrollSnapMarginLeft" | "scrollSnapMarginRight" | "scrollSnapMarginTop" | "scrollSnapPointsX" | "scrollSnapPointsY" | "scrollSnapStop" | "scrollSnapType" | "scrollSnapTypeX" | "scrollSnapTypeY" | "scrollTimeline" | "scrollTimelineAxis" | "scrollTimelineName" | "scrollbarColor" | "scrollbarGutter" | "scrollbarWidth" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "shapeImageThreshold" | "shapeMargin" | "shapeOutside" | "shapeRendering" | "skewX" | "skewY" | "speakAs" | "start" | "stopColor" | "stopOpacity" | "stroke" | "strokeColor" | "strokeDasharray" | "strokeDashoffset" | "strokeLinecap" | "strokeLinejoin" | "strokeMiterlimit" | "strokeOpacity" | "strokeWidth" | "tabSize" | "tableLayout" | "textAlign" | "textAlignLast" | "textAnchor" | "textAutospace" | "textBox" | "textBoxEdge" | "textBoxTrim" | "textCombineUpright" | "textDecoration" | "textDecorationColor" | "textDecorationLine" | "textDecorationSkip" | "textDecorationSkipInk" | "textDecorationStyle" | "textDecorationThickness" | "textEmphasis" | "textEmphasisColor" | "textEmphasisPosition" | "textEmphasisStyle" | "textIndent" | "textJustify" | "textOrientation" | "textOverflow" | "textRendering" | "textShadow" | "textSizeAdjust" | "textSpacingTrim" | "textTransform" | "textUnderlineOffset" | "textUnderlinePosition" | "textWrap" | "textWrapMode" | "textWrapStyle" | "timelineScope" | "top" | "touchAction" | "transform" | "transformBox" | "transformOrigin" | "transformStyle" | "transition" | "transitionBehavior" | "transitionDelay" | "transitionDuration" | "transitionProperty" | "transitionTimingFunction" | "translate" | "unicodeBidi" | "userSelect" | "vectorEffect" | "verticalAlign" | "viewTimeline" | "viewTimelineAxis" | "viewTimelineInset" | "viewTimelineName" | "viewTransitionClass" | "viewTransitionName" | "visibility" | "whiteSpace" | "whiteSpaceCollapse" | "widows" | "width" | "willChange" | "wordBreak" | "wordSpacing" | "wordWrap" | "writingMode" | "x" | "y" | "zIndex" | "zoom" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps>, import("@tamagui/core").StaticConfigPublic>;
+    List: typeof ToastList;
+    Item: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "index" | "toast" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
+        toast: ToastT;
+        index: number;
+        children: React.ReactNode;
+    }, import("@tamagui/core").StackStyleBase, Omit<{}, "index" | "toast" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase>, import("@tamagui/core").StaticConfigPublic>;
+    Title: React.FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").TextStylePropsBase, "size">> & import("@tamagui/core").WithFlatVariantValues<{
+        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>, keyof import("@tamagui/core").TextNonStyleProps> & {
+        ref?: React.Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+            size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+        }, import("@tamagui/core").StaticConfigPublic];
+    };
+    Description: React.FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").TextStylePropsBase, "size">> & import("@tamagui/core").WithFlatVariantValues<{
+        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>, keyof import("@tamagui/core").TextNonStyleProps> & {
+        ref?: React.Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+            size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
+        }, import("@tamagui/core").StaticConfigPublic];
+    };
+    Close: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
+    Action: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
+    Icon: typeof ToastIcon;
+};
+export type { ToastT, ExternalToast };
 //# sourceMappingURL=ToastComposable.d.ts.map
