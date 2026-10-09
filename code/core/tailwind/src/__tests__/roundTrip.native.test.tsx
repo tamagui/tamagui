@@ -327,14 +327,19 @@ describe('native — tailwind values through the v6 config', () => {
   })
 
   test('a ring offset stacks a gap layer under the ring', () => {
-    const [offset, ring] = nativeStyle(View, 'ring-2 ring-offset-4 ring-blue-500').boxShadow
+    const [offset, ring] = nativeStyle(
+      View,
+      'ring-2 ring-offset-4 ring-blue-500'
+    ).boxShadow
     expect(offset).toMatchObject({ spreadDistance: 4 })
     expect(ring).toMatchObject({ spreadDistance: 6 })
   })
 
   test('gradient stops keep their authored positions', () => {
-    const image = nativeStyle(View, 'bg-linear-to-r from-red-500 from-10% to-blue-500 to-90%')
-      .experimental_backgroundImage
+    const image = nativeStyle(
+      View,
+      'bg-linear-to-r from-red-500 from-10% to-blue-500 to-90%'
+    ).experimental_backgroundImage
     expect(JSON.stringify(image)).toMatch(/10%/)
     expect(JSON.stringify(image)).toMatch(/90%/)
   })
