@@ -1,4 +1,5 @@
 import { namedCssColors } from '../runtime/namedCssColors'
+import { propTokenGroupFallbacks } from './config'
 import {
   grammarEntries,
   fontWeightNames,
@@ -277,23 +278,14 @@ function normalizeModifiers(
   return normalized
 }
 
-const sizeCategoryFallbacks = new Set<TokenCategory>([
-  'width',
-  'minWidth',
-  'maxWidth',
-  'inlineSize',
-  'minInlineSize',
-  'maxInlineSize',
-  'flexBasis',
-])
-
 function tokenDomain(
   config: GrammarConfigView,
   category: TokenCategory
 ): Names | undefined {
+  const fallback = propTokenGroupFallbacks[category]
   return (
     config.tokenNames?.[category] ||
-    (sizeCategoryFallbacks.has(category) ? config.tokenNames?.size : undefined)
+    (fallback ? config.tokenNames?.[fallback] : undefined)
   )
 }
 

@@ -268,7 +268,7 @@ describe('native — coverage gaps', () => {
     expect(radius.borderBottomLeftRadius).toBeUndefined()
 
     const border = nativeStyle(View, 'border-t-4')
-    expect(border.borderTopWidth).toBe(16)
+    expect(border.borderTopWidth).toBe(4)
     expect(border.borderLeftWidth).toBeUndefined()
 
     const inset = nativeStyle(View, 'inset-x-0')
@@ -286,5 +286,47 @@ describe('native — responsive media (converter-driven, parser-level structure)
     expect(flat(showCls).display).toEqual({ default: 'none', md: 'flex' })
     const hideCls = toClass(`<View display="flex md:none" />`)
     expect(flat(hideCls).display).toEqual({ default: 'flex', md: 'none' })
+  })
+})
+
+describe('native — tailwind values through the v6 config', () => {
+  test('border widths read the borderWidth group, not the space scale', () => {
+    expect(nativeStyle(View, 'border-2').borderTopWidth).toBe(2)
+    expect(nativeStyle(View, 'border-x-8').borderLeftWidth).toBe(8)
+    expect(nativeStyle(View, 'border-b-0').borderBottomWidth).toBe(0)
+  })
+
+  test('a text size carries its line height and any leading overrides it in either order', () => {
+    expect(nativeStyle(Text, 'text-xs')).toMatchObject({ fontSize: 12, lineHeight: 16 })
+    expect(nativeStyle(Text, 'text-2xl')).toMatchObject({ fontSize: 24, lineHeight: 32 })
+    expect(nativeStyle(Text, 'text-xs leading-8').lineHeight).toBe(32)
+    expect(nativeStyle(Text, 'leading-8 text-xs').lineHeight).toBe(32)
+    expect(nativeStyle(Text, 'text-lg leading-none').lineHeight).toBe(18)
+  })
+
+  test('ring and shadow colors resolve color tokens', () => {
+    const ring = nativeStyle(View, 'ring-2 ring-red-500').boxShadow
+    expect(ring).toHaveLength(1)
+    expect(ring[0]).toMatchObject({ spreadDistance: 2 })
+    expect(ring[0].color).toBe(nativeStyle(View, 'bg-red-500').backgroundColor)
+
+    const shadow = nativeStyle(View, 'shadow-md shadow-red-500').boxShadow
+    expect(shadow.length).toBeGreaterThan(0)
+    for (const layer of shadow) {
+      expect(layer.color).toBe(nativeStyle(View, 'bg-red-500').backgroundColor)
+    }
+  })
+
+  test('a ring offset stacks a gap layer under the ring', () => {
+    const [offset, ring] = nativeStyle(View, 'ring-2 ring-offset-4 ring-blue-500').boxShadow
+    expect(offset).toMatchObject({ spreadDistance: 4 })
+    expect(ring).toMatchObject({ spreadDistance: 6 })
+  })
+
+  test('gradient stops keep their authored positions', () => {
+    const image = nativeStyle(View, 'bg-linear-to-r from-red-500 from-10% to-blue-500 to-90%')
+      .experimental_backgroundImage
+    expect(JSON.stringify(image)).toMatch(/10%/)
+    expect(JSON.stringify(image)).toMatch(/90%/)
   })
 })

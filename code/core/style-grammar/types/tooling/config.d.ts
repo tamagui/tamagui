@@ -1,4 +1,5 @@
 import type { GrammarConfigView } from "./candidate";
+import type { TokenCategory } from "./registry";
 type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>;
 type GrammarFontConfig = {
 	size?: Readonly<Record<string, unknown>>;
@@ -34,6 +35,12 @@ export declare const grammarPlatformGroups: ReadonlyMap<string, ReadonlySet<stri
 * authored order. Non-platform modifiers never rank.
 */
 export declare function grammarPlatformRank(modifier: string): number;
+/**
+* Token groups named after one property. A config that defines the group binds
+* the property to it; one that does not resolves the property through the
+* fallback category, so legacy configs keep their classes.
+*/
+export declare const propTokenGroupFallbacks: Readonly<Record<string, TokenCategory>>;
 /**
 * Creates the dependency-free config projection consumed by the shared style grammar.
 * Runtime and compiler integrations must classify candidates through this same view so

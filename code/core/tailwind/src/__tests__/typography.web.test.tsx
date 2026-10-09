@@ -94,3 +94,30 @@ describe('tailwind lineHeight (leading-*)', () => {
     }
   })
 })
+
+describe('tailwind text size line height', () => {
+  test('text-xs carries the font line height for its size', () => {
+    expect(rule('text-xs', 'lineHeight')[StyleObjectValue]).toBe('var(--f-lineHeight-xs)')
+  })
+
+  test('leading wins over the size line height in either order', () => {
+    expect(rule('text-xs leading-8', 'lineHeight')[StyleObjectValue]).toBe('32px')
+    expect(rule('leading-8 text-xs', 'lineHeight')[StyleObjectValue]).toBe('32px')
+  })
+})
+
+describe('tailwind border and ring values', () => {
+  test('border-2 reads the borderWidth group', () => {
+    const styles = splitTailwindStyles(Text, { className: 'border-2' } as any)
+    expect(findRule(styles.rulesToInsert, 'borderTopWidth')[StyleObjectValue]).toBe(
+      'var(--c-borderWidth-2)'
+    )
+  })
+
+  test('ring-red-500 resolves its color token', () => {
+    const styles = splitTailwindStyles(Text, { className: 'ring-2 ring-red-500' } as any)
+    expect(findRule(styles.rulesToInsert, 'boxShadow')[StyleObjectValue]).toContain(
+      'var(--c-color-red-500)'
+    )
+  })
+})

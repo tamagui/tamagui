@@ -75,6 +75,8 @@ export const propToTokenCategoryCode: Readonly<Record<string, number>> = Object.
   textDecorationColor: tokenCategoryColor,
   textShadowColor: tokenCategoryColor,
   outlineColor: tokenCategoryColor,
+  fill: tokenCategoryColor,
+  stroke: tokenCategoryColor,
   ...(process.env.TAMAGUI_TARGET === 'web' && { caretColor: tokenCategoryColor }),
   placeholderTextColor: tokenCategoryColor,
   selectionColor: tokenCategoryColor,

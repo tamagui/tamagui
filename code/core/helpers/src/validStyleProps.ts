@@ -97,6 +97,8 @@ export const stylePropsView = toObj(
   stylePropsUnitless,
   isAndroid ? { elevationAndroid: true } : undefined,
   'boxShadow border borderBlock borderInline filter background backgroundImage experimental_backgroundImage outline outlineOffset outlineWidth',
+  // svg paint: react-native-svg reads these from style, as css does
+  'fill stroke strokeWidth',
   process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsView : undefined,
   process.env.TAMAGUI_TARGET === 'web' ? cssStyleProps : undefined,
   process.env.TAMAGUI_TARGET === 'web'

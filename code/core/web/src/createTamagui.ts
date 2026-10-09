@@ -76,6 +76,7 @@ const UNIT_CATEGORIES: ReadonlySet<string> = new Set([
   'minInlineSize',
   'maxInlineSize',
   'flexBasis',
+  'borderWidth',
   'outlineWidth',
   'outlineOffset',
   'perspective',

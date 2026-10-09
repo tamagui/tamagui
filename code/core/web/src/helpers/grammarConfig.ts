@@ -204,8 +204,15 @@ export function prepareConfigRevision(
     borderRadius: 8,
   }
   const propertyKind = (property: string) => propertyKinds[property] || 0
+  // every border side width reads the one borderWidth group, as css does
   const tokenCategory = (property: string): RuntimeTokenCategory | undefined =>
-    config.tokensParsed[property] ? property : getTokenCategoryForProperty(property)
+    config.tokensParsed[property]
+      ? property
+      : config.tokensParsed.borderWidth &&
+          property.startsWith('border') &&
+          property.endsWith('Width')
+        ? 'borderWidth'
+        : getTokenCategoryForProperty(property)
   // transition strings are re-normalized on every render of every animated
   // element; the result only depends on this revision's shorthands
   const normalizedTransitions = new Map<string, string>()

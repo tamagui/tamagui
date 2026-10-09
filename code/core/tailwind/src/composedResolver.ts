@@ -5,11 +5,12 @@
  * descriptor's `compose` hook calls this once, with only those keys, right after
  * the walk. It is pure: same bag in, same styles out, no props and no env.
  *
- *   - ring + inset-ring + inset-shadow + shadow → boxShadow
+ *   - ring + ring-offset + inset-ring + inset-shadow + shadow + shadow color → boxShadow
  *   - bg-linear-to-* + from/via/to → backgroundImage
  *   - blur + brightness + contrast + … + drop-shadow → filter
  *   - perspective + rotateX/Y/Z + skewX/Y → transform
  *   - text-shadow presets + colors → textShadow*
+ *   - leading + text size line height → lineHeight
  *
  * A part authored with modifiers (`hover:ring-4`) arrives as a condition object,
  * so every composed value is built once per condition the parts mention.
@@ -27,7 +28,7 @@ type At = (key: string) => any
 function compose(
   props: Record<string, any>,
   keys: readonly string[],
-  build: (at: At) => string | null
+  build: (at: At) => string | number | null
 ): any {
   let conditions: Set<string> | null = null
   let present = false
@@ -51,7 +52,7 @@ function compose(
         ? (raw[condition] ?? raw.default)
         : raw
     })
-    if (value) result[condition] = value
+    if (value != null && value !== '') result[condition] = value
   }
   return Object.keys(result).length > 0 ? result : null
 }
@@ -63,7 +64,15 @@ const gradientKeys = [
   '__gradientFrom',
   '__gradientVia',
   '__gradientTo',
+  '__gradientFromPosition',
+  '__gradientViaPosition',
+  '__gradientToPosition',
 ] as const
+
+/** a stop with its `from-10%` style position when one was authored */
+function gradientStop(color: string, position: string | undefined): string {
+  return position ? `${color} ${position}` : color
+}
 
 function buildGradient(at: At): string | null {
   const dir = at('__gradientDirection')
@@ -71,10 +80,10 @@ function buildGradient(at: At): string | null {
   const via = at('__gradientVia')
   const to = at('__gradientTo')
   if (!dir || (!from && !via && !to)) return null
-  const start = from || 'transparent'
-  const end = to || 'transparent'
+  const start = gradientStop(from || 'transparent', at('__gradientFromPosition'))
+  const end = gradientStop(to || 'transparent', at('__gradientToPosition'))
   return via
-    ? `linear-gradient(${dir}, ${start}, ${via}, ${end})`
+    ? `linear-gradient(${dir}, ${start}, ${gradientStop(via, at('__gradientViaPosition'))}, ${end})`
     : `linear-gradient(${dir}, ${start}, ${end})`
 }
 
@@ -84,13 +93,52 @@ const boxShadowKeys = [
   '__ring',
   '__ringColor',
   '__ringInset',
+  '__ringOffsetWidth',
+  '__ringOffsetColor',
   '__insetRingWidth',
   '__insetRingColor',
   '__insetShadowGeometry',
   '__insetShadowDefaultColor',
   '__insetShadowColor',
   '__shadow',
+  '__shadowColor',
 ] as const
+
+/** splits a box-shadow list or layer at top-level separators, ignoring those inside parens */
+function splitTopLevel(value: string, separator: ',' | ' '): string[] {
+  const parts: string[] = []
+  let depth = 0
+  let start = 0
+  for (let index = 0; index < value.length; index++) {
+    const char = value[index]
+    if (char === '(') depth++
+    else if (char === ')') depth--
+    else if (char === separator && depth === 0) {
+      const part = value.slice(start, index).trim()
+      if (part) parts.push(part)
+      start = index + 1
+    }
+  }
+  const last = value.slice(start).trim()
+  if (last) parts.push(last)
+  return parts
+}
+
+const shadowLength = /^(?:inset|-?(?:\d+|\d*\.\d+)(?:px)?)$/
+
+/** `shadow-<color>` replaces each layer's color, as tailwind's --tw-shadow-color does */
+function recolorShadow(shadow: string, color: string): string {
+  return splitTopLevel(shadow, ',')
+    .map((layer) => {
+      const geometry = splitTopLevel(layer, ' ').filter((part) => shadowLength.test(part))
+      return `${geometry.join(' ')} ${color}`
+    })
+    .join(', ')
+}
+
+function px(value: string): number {
+  return Number.parseFloat(value) || 0
+}
 
 function buildBoxShadow(at: At): string | null {
   const shadows: string[] = []
@@ -109,10 +157,18 @@ function buildBoxShadow(at: At): string | null {
   const ring = at('__ring')
   if (ring != null) {
     const inset = at('__ringInset') ? 'inset ' : ''
-    shadows.push(`${inset}0 0 0 ${ring} ${at('__ringColor') || 'currentColor'}`)
+    const offset = at('__ringOffsetWidth')
+    if (offset != null && px(offset) > 0) {
+      shadows.push(`${inset}0 0 0 ${offset} ${at('__ringOffsetColor') || '#fff'}`)
+    }
+    const spread = offset != null ? `${px(ring) + px(offset)}px` : ring
+    shadows.push(`${inset}0 0 0 ${spread} ${at('__ringColor') || 'currentColor'}`)
   }
   const shadow = at('__shadow')
-  if (shadow && shadow !== 'none') shadows.push(shadow)
+  if (shadow && shadow !== 'none') {
+    const color = at('__shadowColor')
+    shadows.push(color ? recolorShadow(shadow, color) : shadow)
+  }
   return shadows.length > 0 ? shadows.join(', ') : null
 }
 
@@ -182,6 +238,14 @@ function buildTransform(at: At): string | null {
   return parts.length > 0 ? parts.join(' ') : null
 }
 
+// ── Line height ───────────────────────────────────────────────────────
+
+const leadingKeys = ['__leading', '__textLeading'] as const
+
+function buildLeading(at: At): string | number | null {
+  return at('__leading') ?? at('__textLeading') ?? null
+}
+
 // ── Master Resolver ───────────────────────────────────────────────────
 
 export function composedResolver(props: Record<string, any>): Record<string, any> | null {
@@ -195,7 +259,8 @@ export function composedResolver(props: Record<string, any>): Record<string, any
   if (
     props.__ring != null ||
     props.__insetRingWidth != null ||
-    props.__insetShadowGeometry != null
+    props.__insetShadowGeometry != null ||
+    props.__shadowColor != null
   ) {
     const boxShadow = compose(props, boxShadowKeys, buildBoxShadow)
     if (boxShadow) (result ??= {}).boxShadow = boxShadow
@@ -206,6 +271,9 @@ export function composedResolver(props: Record<string, any>): Record<string, any
 
   const transform = compose(props, transformKeys, buildTransform)
   if (transform) (result ??= {}).transform = transform
+
+  const lineHeight = compose(props, leadingKeys, buildLeading)
+  if (lineHeight != null) (result ??= {}).lineHeight = lineHeight
 
   const preset = props.__textShadow_preset
   const color = props.__textShadow_color

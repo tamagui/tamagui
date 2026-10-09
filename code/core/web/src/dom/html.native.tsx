@@ -14,6 +14,7 @@ import type {
   StrictDOMVoidProps,
 } from '@tamagui/dom'
 
+import { stylePropsInput } from '@tamagui/helpers'
 import { createComponent } from '../createComponent'
 import type {
   StackNonStyleProps,
@@ -168,6 +169,12 @@ const domTag = createDOMTagFactory({
 const domValidStyles = {
   ...viewStaticConfig.validStyles,
   ...textStaticConfig.validStyles,
+}
+
+/** text-entry tags also lower the input color styles to TextInput props */
+const domInputValidStyles = {
+  ...domValidStyles,
+  ...stylePropsInput,
 }
 
 /**
@@ -890,7 +897,7 @@ const input = domTag(
     TextStylePropsBase
   >({
     ...textStaticConfig,
-    validStyles: domValidStyles,
+    validStyles: domInputValidStyles,
     isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMTextInput),
@@ -1337,7 +1344,7 @@ const textarea = domTag(
     TextStylePropsBase
   >({
     ...textStaticConfig,
-    validStyles: domValidStyles,
+    validStyles: domInputValidStyles,
     isDOM: true,
     neverSkipProps: domEventProps,
     Component: primitive(DOMTextInput),
