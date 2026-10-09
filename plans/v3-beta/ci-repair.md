@@ -44,6 +44,16 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   and workspace dependency checks pass. The full iOS bundle now reaches
   resolution and exposes a separate navigation override conflict.
 
+
+- RAN: global React Navigation 7 overrides replace One's declared version 8
+  dependencies. Its bottom-tabs build then cannot resolve the version 3
+  elements package's `internal` export. Removing those overrides restores
+  the declared graph. Apps supply One's exact core/native peers, and workspace
+  navigation declarations align with those peers. iOS and Android production
+  bundles both build through the heavy-work window with unchanged application
+  code. Frozen installation, workspace consistency, and unused-dependency
+  checks pass. Native interaction tests remain CI gates.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The

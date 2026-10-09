@@ -34,6 +34,8 @@
     "@leeoniya/ufuzzy": "^1.0.14",
     "@ngneat/falso": "^7.3.0",
     "@openrouter/ai-sdk-provider": "^2.9.1",
+    "@react-navigation/core": "8.0.0-alpha.40",
+    "@react-navigation/native": "8.0.0-alpha.50",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "@rehookify/datepicker": "^6.6.8",
