@@ -115,14 +115,14 @@ module.exports = {
       binaryPath: 'android/app/build/outputs/apk/debug/app-debug.apk',
       testBinaryPath:
         'android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk',
-      build: `cd android && ANDROID_SDK_ROOT="${defaultAndroidSdkRoot}" ANDROID_HOME="${defaultAndroidSdkRoot}" ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --init-script ../android-init.gradle`,
+      build: `cd android && ANDROID_SDK_ROOT="${defaultAndroidSdkRoot}" ANDROID_HOME="${defaultAndroidSdkRoot}" ./gradlew :app:assembleDebug :app:assembleAndroidTest -DtestBuildType=debug --init-script ../android-init.gradle`,
       // Dedicated Metro port for Detox plus the Detox server port.
       reversePorts: [Number(detoxMetroPort), 8099],
     },
     'android.release': {
       type: 'android.apk',
       binaryPath: 'android/app/build/outputs/apk/release/app-release.apk',
-      build: `cd android && ANDROID_SDK_ROOT="${defaultAndroidSdkRoot}" ANDROID_HOME="${defaultAndroidSdkRoot}" ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release`,
+      build: `cd android && ANDROID_SDK_ROOT="${defaultAndroidSdkRoot}" ANDROID_HOME="${defaultAndroidSdkRoot}" ./gradlew :app:assembleRelease :app:assembleAndroidTest -DtestBuildType=release`,
     },
   },
   devices: {

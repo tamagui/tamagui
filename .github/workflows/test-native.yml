@@ -532,7 +532,7 @@ jobs:
           # Limit Gradle memory to avoid OOM on free runners
           GRADLE_OPTS: '-Dorg.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError'
         run: |
-          cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --init-script ../android-init.gradle --no-daemon --max-workers=2
+          cd android && ./gradlew :app:assembleDebug :app:assembleAndroidTest -DtestBuildType=debug --init-script ../android-init.gradle --no-daemon --max-workers=2
 
       - name: Cache Android Folder
         if: ${{ !steps.android-cache-check.outputs.cache-hit && !steps.android-cache-check-new.outputs.cache-hit }}
