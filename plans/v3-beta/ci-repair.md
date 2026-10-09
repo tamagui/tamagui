@@ -154,6 +154,16 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   disabling modular-header diagnostics. Full app and CI interaction gates
   remain pending.
 
+- RAN: the Android builder completes the required app and its Detox test APK,
+  then reaches the job deadline while assembling dependency libraries' test
+  APKs. Root Gradle task selectors expand into every matching subproject.
+  CI and both local Detox Android build configurations now select `:app`
+  assembly tasks. Gradle graph probes preserve all 94 application tasks and
+  exclude 984 unconsumed dependency build tasks. APK paths, all four Android
+  architectures, native test selection, and timeouts stay unchanged. The
+  original CI log establishes that both requested app APKs already build.
+  Detox configuration loading, YAML parsing, shell syntax, and diff checks pass.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The
