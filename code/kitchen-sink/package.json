@@ -90,7 +90,7 @@
     "react-native-gesture-handler": "3.3.0",
     "react-native-keyboard-controller": "1.21.11",
     "react-native-launch-arguments": "^4.1.1",
-    "react-native-nitro-modules": "^0.36.5",
+    "react-native-nitro-modules": "0.37.1",
     "react-native-reanimated": "4.6.0",
     "react-native-safe-area-context": "5.10.1",
     "react-native-screens": "~4.26.0",

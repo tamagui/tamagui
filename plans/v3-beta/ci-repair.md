@@ -90,6 +90,19 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   frozen installation, and workspace dependency checks. Full native
   interactions remain CI gates.
 
+- RAN: One's generated Nitro Image bindings include `ReactProp.hpp` from
+  Nitro Modules 0.37.1. The kitchen-sink autolinks its 0.36.5 declaration,
+  which lacks that header, while One resolves its own nested 0.37.1.
+  A focused Android Nitro Image native compile reproduces the missing header.
+  The app and native registry now pin One's exact runtime version. Shipped
+  tarball content and actual workspace resolution confirm 0.37.1; frozen
+  installation and dependency consistency pass. Android arm64 native
+  compilation passes for Nitro Image and the native registry in 31 seconds,
+  retaining existing generated bindings. The Nitro Image iOS pod-scheme
+  build passes in 46.6 seconds. Pod installation includes 0.37.1, the native
+  registry cold typecheck passes, and production bundles build for iOS and
+  Android. Full app interactions remain CI gates.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The
