@@ -3,6 +3,7 @@ import { ScrollView } from 'react-native'
 import { createParam } from 'solito'
 import { H1, YStack } from 'tamagui'
 
+import type { KitchenSinkParamList } from '../../Navigation'
 import { useCases as UseCases } from '../../usecases'
 
 const { useParam } = createParam<{ id: string }>()
@@ -12,7 +13,7 @@ const nameMap = {
 }
 
 export function TestScreen() {
-  const route = useRoute<any>()
+  const route = useRoute<KitchenSinkParamList>('test')
   const [id] = useParam('id')
   const routeId = route?.params?.id
   const resolvedId = id || routeId

@@ -54,6 +54,12 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   code. Frozen installation, workspace consistency, and unused-dependency
   checks pass. Native interaction tests remain CI gates.
 
+- RAN: React Navigation 8 takes a param-list generic for `useRoute`; the old
+  `any` generic yields untyped `object` params. A cold kitchen-sink typecheck
+  reproduces TS2339 for `params.id`. The stack and hook now share the existing
+  route contract and the hook names its `test` route. A cold typecheck then
+  passes, as do focused formatting and lint.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The
