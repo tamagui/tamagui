@@ -125,6 +125,8 @@ it is left alone until the owner answers the install path question below.
   pieces over, clean up what we keep, and cut ugly or low-value demos. Styling
   must follow one system: no input darker than its surface, no light mode
   that reads backwards, nothing styled at random.
+- 2026-10-09: no separate Bento repository; Bento moves into v3 in the repo,
+  simplified.
 
 ## Quality bar (per component)
 
@@ -169,3 +171,14 @@ unstyled parts) over hand-rolled ones.
   had uncentered every showcase frame.
 - 2026-10-04: plan written; worktree `~/.worktrees/tamagui-bento-oss` off
   `origin/v3-beta` `980b3a3803`.
+- 2026-10-09: validation wave on v3-beta `aa5169c6f9` (r72050): bento tsc,
+  root tsc, oxfmt, oxlint and the 171-task build all green. Headless sweep of
+  all 20 registry groups (37 demos) at light/dark by 1280/360: every showcase
+  renders, zero page errors, no horizontal overflow; tab panel switching,
+  loading-button busy to done and rolling-numbers refresh probed clean; the
+  code API serves full source for sampled files. Fixed the site Link spread
+  typing (`f49d7d6b6a`); the site Button ts2590 and the core format file were
+  repaired by the release lane in `e4d1bd1e22`. Only console noise anywhere is
+  the pre-existing `/favicon.ico` 404. Out of scope and left for the release
+  lane: the styled-view bundle size gate and the unit, integration and
+  zero-runtime suite reds on the same tip, none Bento-related.
