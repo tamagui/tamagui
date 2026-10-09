@@ -50,6 +50,9 @@ function proxyWorm() {
 }
 
 const proxy = proxyWorm()
+// browser entry exposes the hook call shape; Node ESM uses the native loader.
+const usePressability = () => ({})
+proxy.usePressability = usePressability
 
 // Named exports that can be tree-shaken
 export const Platform = proxy.Platform
@@ -70,6 +73,7 @@ export const unstable_batchedUpdates = proxy.unstable_batchedUpdates
 export const unstable_TextAncestorContext = proxy.unstable_TextAncestorContext
 export const codegenNativeCommands = () => ({})
 export const codegenNativeComponent = () => emtpyComponent
+export { usePressability }
 
 // Default export
 export default proxy

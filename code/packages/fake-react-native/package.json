@@ -9,7 +9,7 @@
     ".": {
       "browser": "./index.mjs",
       "module": "./index.mjs",
-      "import": "./index.mjs",
+      "import": "./index.node.mjs",
       "require": "./index.js"
     },
     "./pressability": "./pressability.js",
