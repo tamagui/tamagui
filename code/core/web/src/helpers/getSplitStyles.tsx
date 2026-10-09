@@ -471,6 +471,10 @@ const passTextFlag = 32
 const passInputFlag = 64
 const passAsChildStyleFlag = 128
 
+function isRemovedVendorStyleProp(property: string) {
+  return /^(Webkit|Moz|ms)[A-Z]/.test(property) && !(property in stylePropsAll)
+}
+
 // exported so the compiler applies the SAME host-validity decision when it
 // flattens: a style-shaped key that fails this check must be dropped with a
 // diagnostic, never kept as a DOM attribute (one predicate, two hosts)
@@ -1162,7 +1166,7 @@ function contributeProp(
     return
   }
 
-  if (keyInit in stylePropsAll) {
+  if (keyInit in stylePropsAll || isRemovedVendorStyleProp(keyInit)) {
     // shared css authoring intentionally drops unsupported keys on native.
     if (process.env.NODE_ENV === 'development' && process.env.TAMAGUI_TARGET === 'web') {
       console.warn(
@@ -4020,6 +4024,13 @@ function contributeValue(
   condition?: Condition | string
 ) {
   // every style source shares this path, including style objects and resolvers.
+  if (
+    !contextOnly &&
+    isRemovedVendorStyleProp(property) &&
+    !(state.staticConfig.validStyles && property in state.staticConfig.validStyles)
+  ) {
+    return
+  }
   if (
     process.env.TAMAGUI_TARGET === 'native' &&
     !contextOnly &&

@@ -1,5 +1,10 @@
 import type { Properties } from 'csstype'
 
+export type UnprefixedCSSProperties<Length = string | number> = Omit<
+  Properties<Length>,
+  `${'Webkit' | 'Moz' | 'ms'}${string}`
+>
+
 /**
  * The web style contract: the style grammar `style()` accepts and the surface
  * every `html.*` tag is typed against, owned by Tamagui rather than borrowed
@@ -626,4 +631,4 @@ interface TamaguiStylePropsBase
 export interface TamaguiStyleProps
   extends
     TamaguiStylePropsBase,
-    Omit<Properties<string | number>, keyof TamaguiStylePropsBase | 'container'> {}
+    Omit<UnprefixedCSSProperties, keyof TamaguiStylePropsBase | 'container'> {}

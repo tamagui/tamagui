@@ -2,6 +2,22 @@
 
 Authored 2026-09-14 for owner review.
 
+## reduced registry, 2026-10-09
+
+The generated registry removes the 325 Webkit/Moz/ms names and excludes names
+already owned by the hand-authored tables. Existing explicit vendor mappings
+remain owned by those tables. View, Text and native-free DOM CSS types use the
+same unprefixed contract. Removed vendor styles are consumed without CSS or host
+attribute leakage; inline/HOC and custom validStyles declarations retain their
+owners. Deduplication preserves every unprefixed table membership on both targets.
+
+RAN the reduced generator: 331 additional names and 35 additional unitless names.
+RAN pinned Node 24.16.0 styled-view: 86,412 raw / 31,733 gzip-9, versus the
+unchanged 29,919 baseline and 30,069 ceiling. The remaining 1,664-byte ceiling
+overage exceeds a strict 1,500-byte allowance; no budget has been changed.
+RAN 78 browser and 60 native mapping tests, plus public/DOM type parity checks.
+Starter remeasurement and final canary content verification remain pending.
+
 ## current property coverage audit, 2026-10-06
 
 Owner direction: V3 must not require the web prefix; widen prop support to

@@ -3,7 +3,7 @@
 // canonical key and the additional tamagui style keys under vitest --typecheck.
 
 import { stylePropsAll, stylePropsText, stylePropsView } from '@tamagui/helpers'
-import type { Properties } from 'csstype'
+import type { UnprefixedCSSProperties } from './dom/styleTypes'
 import { describe, expect, expectTypeOf, test } from 'vitest'
 import { cssStyleProps } from '../../helpers/src/cssStyleProps'
 import { createStyledHOC } from './createStyledHOC'
@@ -63,13 +63,13 @@ describe('grammar-era style keys: runtime tables and public types agree', () => 
       TextStylePropsBase,
       (typeof sharedAdditions)[number] | (typeof textAdditions)[number]
     >
-    type _allStackCss = Pick<PublicStackProps, keyof Properties>
-    type _allTextCss = Pick<PublicTextProps, keyof Properties>
+    type _allStackCss = Pick<PublicStackProps, keyof UnprefixedCSSProperties>
+    type _allTextCss = Pick<PublicTextProps, keyof UnprefixedCSSProperties>
     expectTypeOf<
-      Exclude<keyof Properties, keyof typeof cssStyleProps>
+      Exclude<keyof UnprefixedCSSProperties, keyof typeof stylePropsAll>
     >().toEqualTypeOf<never>()
     expectTypeOf<
-      Exclude<keyof typeof cssStyleProps, keyof Properties>
+      Exclude<keyof typeof cssStyleProps, keyof UnprefixedCSSProperties>
     >().toEqualTypeOf<never>()
   })
 
@@ -137,8 +137,9 @@ describe('grammar-era style keys: runtime tables and public types agree', () => 
     >()
   })
 
-  test('canonical css properties are recognized instead of forwarded as attributes', () => {
+  test('generated CSS additions are unprefixed and recognized by every browser host', () => {
     for (const key of Object.keys(cssStyleProps)) {
+      expect(key).not.toMatch(/^(Webkit|Moz|ms)/)
       expect(key in stylePropsAll, key).toBe(true)
       expect(key in stylePropsView, key).toBe(true)
       expect(key in stylePropsText, key).toBe(true)

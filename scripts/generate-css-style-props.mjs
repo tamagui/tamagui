@@ -66,14 +66,68 @@ function acceptsUnitlessNumber(type, seen = new Set()) {
   return false
 }
 
-const entries = [...properties('Properties')].sort(([a], [b]) => a.localeCompare(b, 'en'))
-const keys = entries.map(([name]) => name)
+// existing hand-authored tables own their names; the generated registry only
+// adds unprefixed css names that are not represented there already.
+const declarations = new Map()
+for (const relative of [
+  'code/core/helpers/src/validStyleProps.ts',
+  'code/core/helpers/src/webOnlyStyleProps.ts',
+]) {
+  const source = resolve(root, relative)
+  const ast = parseSync(source, await readFile(source, 'utf8'), { lang: 'ts' })
+  if (ast.errors.length) throw new Error(`style table did not parse: ${relative}`)
+  for (const node of ast.program.body) {
+    const declaration = node.declaration ?? node
+    if (declaration.type !== 'VariableDeclaration') continue
+    for (const variable of declaration.declarations) {
+      declarations.set(variable.id.name, variable.init)
+    }
+  }
+}
+function tableKeys(expression, seen = new Set()) {
+  if (!expression) return []
+  if (expression.type === 'Literal' && typeof expression.value === 'string')
+    return expression.value.split(' ')
+  if (expression.type === 'Identifier') {
+    if (seen.has(expression.name)) throw new Error('cyclic style table')
+    if (!declarations.has(expression.name)) {
+      if (
+        ['undefined', 'cssStyleProps', 'cssStylePropsUnitless'].includes(expression.name)
+      )
+        return []
+      throw new Error(`unknown style table: ${expression.name}`)
+    }
+    return tableKeys(
+      declarations.get(expression.name),
+      new Set([...seen, expression.name])
+    )
+  }
+  if (expression.type === 'ConditionalExpression') {
+    return [
+      ...tableKeys(expression.consequent, seen),
+      ...tableKeys(expression.alternate, seen),
+    ]
+  }
+  if (expression.type === 'CallExpression' && expression.callee.name === 'toObj') {
+    return expression.arguments.flatMap((argument) => tableKeys(argument, seen))
+  }
+  if (expression.type === 'ObjectExpression') {
+    return expression.properties.map((property) => property.key.name)
+  }
+  throw new Error(`unsupported style table expression: ${expression.type}`)
+}
+const existing = new Set(tableKeys(declarations.get('stylePropsAll')))
+const existingUnitless = new Set(tableKeys(declarations.get('stylePropsUnitless')))
+const entries = [...properties('Properties')]
+  .filter(([name]) => !/^(Webkit|Moz|ms)/.test(name))
+  .sort(([a], [b]) => a.localeCompare(b, 'en'))
+const keys = entries.map(([name]) => name).filter((name) => !existing.has(name))
 const unitless = entries
-  .filter(([, type]) => acceptsUnitlessNumber(type))
+  .filter(([name, type]) => acceptsUnitlessNumber(type) && !existingUnitless.has(name))
   .map(([name]) => name)
 if (
-  !keys.includes('textWrap') ||
-  !unitless.includes('opacity') ||
+  (!existing.has('textWrap') && !keys.includes('textWrap')) ||
+  (!existingUnitless.has('opacity') && !unitless.includes('opacity')) ||
   unitless.includes('width')
 ) {
   throw new Error('canonical css key or unitless controls failed')

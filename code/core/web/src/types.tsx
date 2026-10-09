@@ -4,6 +4,7 @@ import type {
   TransformAccumulator,
 } from '@tamagui/style-grammar/runtime'
 import type { Properties } from 'csstype'
+import type { UnprefixedCSSProperties } from './dom/styleTypes'
 import type {
   CSSProperties,
   ComponentType,
@@ -2862,7 +2863,7 @@ export interface StackStyleBase
     Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>,
     ExtendedBaseProps,
     Omit<
-      Properties<string | number>,
+      UnprefixedCSSProperties,
       keyof ViewStyle | keyof ExtendedBaseProps | keyof TamaguiComponentPropsBaseBase
     > {}
 
@@ -2874,7 +2875,7 @@ export interface TextStylePropsBase
     >,
     ExtendedBaseProps,
     Omit<
-      Properties<string | number>,
+      UnprefixedCSSProperties,
       | keyof RNTextStyle
       | keyof ExtendedBaseProps
       | keyof TamaguiComponentPropsBaseBase
