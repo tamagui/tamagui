@@ -6,6 +6,7 @@ import {
   type LinkProps as OneLinkProps,
 } from 'one'
 import { getDocsLinkHref } from '~/features/docs/docsVersion'
+import type { ComponentProps } from 'react'
 import type { ViewProps } from 'tamagui'
 import { Paragraph, Text } from 'tamagui'
 import { Button, type ButtonProps } from './Button'
@@ -20,6 +21,10 @@ export const Link = ({ href, replace, asChild, delayNavigate, ...props }: LinkPr
   const pathname = usePathname()
   const resolvedHref = typeof href === 'string' ? getDocsLinkHref(href, pathname) : href
   const linkProps = useLinkTo({ href: resolvedHref as any, replace: !!replace })
+  // the view props accept wider css values than the text declares (raw
+  // font-style keywords, any-number weights); the text renders them all, so
+  // thread the spread through its own prop type instead of narrowing callers
+  const textProps = props as ComponentProps<typeof Text>
 
   return (
     <Text
@@ -28,7 +33,7 @@ export const Link = ({ href, replace, asChild, delayNavigate, ...props }: LinkPr
       asChild={asChild ? 'except-style' : false}
       className="t_Link"
       cursor="pointer"
-      {...props}
+      {...textProps}
       {...linkProps}
       onPress={
         typeof resolvedHref === 'string' && resolvedHref.includes('#')
