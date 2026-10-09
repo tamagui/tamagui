@@ -177,6 +177,17 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   runtime driver changes are added. Live Metro bundle and native interactions
   remain delivery gates.
 
+- RAN: live Metro gets past config evaluation, then fails to prepend polyfills
+  because Expo 57 requests the removed `react-native/rn-get-polyfills` module.
+  The latest Expo 57 Metro config has the same request. The kitchen app's Metro
+  serializer now uses the published `@react-native/js-polyfills` 0.87.1 API,
+  declared directly as a build dependency. Both native platforms resolve the
+  shipped files and null-platform behavior stays empty. Frozen install,
+  workspace dependencies, formatting, and diff checks pass. This changes the
+  build-time provider of the same RN polyfills, with no runtime substitutes.
+  Live iOS and Android manifest bundle URLs return HTTP 200 with nonempty
+  bundles (14,129,630 and 14,166,280 bytes). Native CI interactions remain gates.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The

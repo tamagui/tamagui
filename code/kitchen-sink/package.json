@@ -107,6 +107,7 @@
     "@expo/fingerprint": "~0.20.6",
     "@playwright/test": "1.58.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
+    "@react-native/js-polyfills": "0.87.1",
     "@tamagui/metro-plugin": "workspace:*",
     "@types/jest": "29.5.14",
     "@types/pngjs": "^6.0.5",
