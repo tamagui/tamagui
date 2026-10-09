@@ -1,418 +1,353 @@
-import slugify from '@sindresorhus/slugify'
-import { Input } from '@tamagui/input'
-import { History, Moon, Plus, Sun, X } from '@tamagui/lucide-icons-2'
-import { animations } from '@tamagui/tamagui-dev-config'
-import { useStore } from '@tamagui/use-store'
-import { useUserScheme } from '@vxrn/color-scheme'
-import { router } from 'one'
-import { memo, useEffect, useLayoutEffect, useOptimistic, useRef, useState } from 'react'
-import useSWR, { mutate } from 'swr'
+import { Bot, Check, Copy, ExternalLink, Moon, Sun, X } from '~/components/icons'
+import { memo, useState } from 'react'
 import {
-  Button,
-  Configuration,
+  Button as TButton,
+  Dialog,
+  Input,
   Paragraph,
   ScrollView,
-  Spinner,
-  Switch,
+  SizableText,
   Theme,
-  useThemeName,
   XStack,
   YStack,
 } from 'tamagui'
-import { authFetch } from '../../api/authFetch'
-import { defaultModel } from '../../api/generateModels'
-import { getActivePromo } from '../../site/purchase/promoConfig'
-import { purchaseModal } from '../../site/purchase/purchaseModalStore'
-import { useUser } from '../../user/useUser'
+import { Button } from '~/components/Button'
 import { toastController } from '../ToastProvider'
-import { themeJSONToText } from './helpers/themeJSONToText'
 import { RandomizeButton } from './RandomizeButton'
-import { type UpdateGenerateArgs, useThemeBuilderStore } from './store/ThemeBuilderStore'
-import { ThemePageStore } from './themePageStore'
-import { Link } from '../../../components/Link'
+import { AGENT_THEME_SKILL_TEXT, THEME_PRESETS } from './constants/themePresets'
+import { applyThemeFromUrl, decodeThemePayload } from './helpers/urlTheme'
+import { useThemeBuilderStore } from './store/ThemeBuilderStore'
+import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
 
-type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never
-
-interface StudioAIBarProps {
-  initialTheme?: {
-    themeSuite: UpdateGenerateArgs[0]
-    query?: UpdateGenerateArgs[1]
-    themeId?: UpdateGenerateArgs[2]
-    username?: UpdateGenerateArgs[3]
-  }
+export interface StudioAIBarProps {
+  initialTheme?: any
 }
 
-export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
-  const model = defaultModel
-  const inputRef = useRef<HTMLInputElement>(null)
-  const user = useUser()
-  const themePage = useStore(ThemePageStore)
-  const themeBuilderStore = useThemeBuilderStore()
+export const StudioThemeAgentBar = memo((_props: StudioAIBarProps) => {
+  const store = useThemeBuilderStore()
+  const [copied, setCopied] = useState(false)
+  const [isSkillOpen, setSkillOpen] = useState(false)
+  const [isImportOpen, setImportOpen] = useState(false)
+  const [importInput, setImportInput] = useState('')
+  const [activePreset, setActivePreset] = useState<string>('Violet')
 
-  const [isGenerating, setGenerating] = useState<'reply' | 'new' | 'delete' | null>(null)
-  const themeName = useThemeName()
-  const [lastPrompt, setLastPrompt] = useState('')
-
-  const id = themePage.curProps?.id || initialTheme?.themeId || 0
-  const [active, setActive] = useState(id)
-
-  useEffect(() => {
-    setActive(themePage.curProps?.id)
-  }, [themePage.curProps?.id])
-
-  useEffect(() => {
-    inputRef.current?.focus()
-  }, [id])
-
-  const hasAccess = user.data?.accessInfo.hasPro
-
-  const username = user.data?.userDetails?.full_name
-
-  const { data: historiesData } = useSWR(
-    user.data ? '/api/theme/histories' : null,
-    async (url) => {
-      const res = await authFetch(url)
-      const data = await res.json()
-      return data.histories.map((history) => ({
-        themeSuite: history.theme_data,
-        query: history.search_query,
-        themeId: history.id,
-        username: username,
-      })) as NonNullable<StudioAIBarProps['initialTheme']>[]
-    }
-  )
-
-  useLayoutEffect(() => {
-    if (initialTheme) {
-      inputRef.current!.value = initialTheme.query ?? ''
-      themeBuilderStore.updateGenerate(
-        initialTheme.themeSuite,
-        initialTheme.query,
-        initialTheme.themeId,
-        initialTheme.username
-      )
-    }
-  }, [initialTheme?.themeSuite?.name])
-
-  const themeSuite = themeBuilderStore.themeSuite
-  const lastReply = id && themeSuite ? themeJSONToText(themeSuite) : ''
-
-  const fetchUpdate = async (
-    type: 'reply' | 'new' | 'delete',
-    themeIdToDelete?: string
-  ) => {
-    if (type !== 'delete' && !inputRef.current?.value.trim()) {
-      toastController.show(`Please enter a prompt`)
-      return
-    }
-
-    if (type !== 'delete') {
-      toastController.show(`Generating...`)
-    } else {
-      toastController.show(`Deleting theme...`)
-    }
-
-    setGenerating(type as 'reply' | 'new')
-
-    let seconds = 0
-
-    const int = setInterval(() => {
-      seconds++
-      if (seconds === 4) {
-        toastController.show(
-          `${type === 'delete' ? 'Still deleting...' : 'Thinking about colors...'}`
-        )
-      } else if (seconds === 8) {
-        toastController.show(`...`)
-      } else if (seconds === 12) {
-        toastController.show(
-          `${type === 'delete' ? 'Almost done...' : 'Refining palettes...'}`
-        )
-      } else if (seconds === 16) {
-        toastController.show(`Taking too long...`)
-      } else if (seconds === 24) {
-        toastController.show(`It really does take a bit sometimes...`)
-      }
-    }, 1000)
-
+  const copySkill = async () => {
     try {
-      let prompt = inputRef.current?.value ?? ''
+      await navigator.clipboard.writeText(AGENT_THEME_SKILL_TEXT)
+      setCopied(true)
+      toastController.show('Copied theme generator agent skill!')
+      setTimeout(() => setCopied(false), 2500)
+    } catch (err) {
+      toastController.show('Failed to copy to clipboard')
+    }
+  }
 
-      const lastId = `${type === 'delete' ? themeIdToDelete : id}`
+  const handleApplyPreset = (preset: (typeof THEME_PRESETS)[0]) => {
+    setActivePreset(preset.name)
+    store.updateGenerate(preset, preset.name, `preset-${preset.name}`)
+    toastController.show(`Applied preset: ${preset.name}`)
+  }
 
-      const res = await authFetch(`/api/theme/generate`, {
-        body: JSON.stringify({
-          prompt,
-          model,
-          lastReply,
-          lastId,
-          lastPrompt,
-          scheme: themeName.startsWith('dark') ? 'dark' : 'light',
-          action: type === 'delete' ? 'delete' : 'generate',
-        }),
-        method: 'POST',
-      })
+  const handleApplyImport = () => {
+    if (!importInput.trim()) return
+    const input = importInput.trim()
+    let payload = input
 
-      const data = await res.json()
+    // If input is a URL with #theme= or ?theme=
+    if (input.includes('#') || input.includes('?')) {
+      const match = input.match(/[#?](?:theme|config|data)=([^&]+)/)
+      if (match && match[1]) {
+        payload = match[1]
+      }
+    }
 
-      console.info(`got themes`, data)
-
-      if (data.error) {
-        toastController.show(
-          `Error ${type === 'delete' ? 'deleting' : 'generating'}! ${data.error}`
-        )
+    const decoded = decodeThemePayload(payload)
+    if (decoded) {
+      const ok = applyThemeFromUrl(decoded)
+      if (ok) {
+        setActivePreset('')
+        setImportOpen(false)
+        setImportInput('')
         return
       }
-
-      if (type !== 'delete') {
-        if (!lastId) {
-          // created new one just go there
-          router.navigate(`/theme/${data.themeId}/${data.slug}`)
-        } else {
-          await themeBuilderStore.updateGenerate(
-            data.result,
-            slugify(prompt),
-            data.themeId,
-            username
-          )
-        }
-      } else {
-        toastController.show('Theme deleted')
-      }
-
-      await mutate('/api/theme/histories')
-
-      if (type !== 'delete') {
-        setLastPrompt(prompt)
-      }
-      toastController.hide()
-    } catch (err) {
-      toastController.show(`Error: ${err}`)
-    } finally {
-      setGenerating(null)
-      clearInterval(int)
     }
+
+    toastController.show('Invalid theme config or URL')
   }
 
   return (
-    <XStack
-      z={1000}
-      data-tauri-drag-region
-      className="all ease-in ms300"
-      $lg={{ mr: '$6' }}
-    >
-      <YStack flex={1} flexBasis="auto" width="100%" gap="$4">
-        <XStack flexWrap="wrap" items="center" flex={1} flexBasis="auto" gap="$3">
-          <XStack minW={300} flex={1} flexBasis="auto" position="relative">
-            <Input
-              ref={inputRef as any}
-              flex={1}
-              placeholder={active ? `Refine this theme` : `Generate a theme`}
-              size="$6"
-              shadowColor="$shadow3"
-              bg="$color1"
-              shadowOffset={{ height: 2, width: 0 }}
-              shadowRadius={10}
-              rounded="$8"
-              onSubmit={() => {
-                fetchUpdate(active ? 'reply' : 'new')
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  fetchUpdate('new')
-                }
-              }}
-            />
+    <YStack gap="3" width="100%" z={1000}>
+      {/* Hero Agent Skill Callout */}
+      <YStack
+        p="4"
+        rounded="8"
+        bg="color-2"
+        borderColor="border-color"
+        borderWidth={0.5}
+        boxShadow="0 4px 16px shadow-color"
+        gap="3"
+      >
+        <XStack flexWrap="wrap" justify="space-between" items="center" gap="3">
+          {/* Left: Agent Info */}
+          <XStack items="center" gap="3" flex={1} minW={280}>
+            <YStack
+              width={38}
+              height={38}
+              rounded="6"
+              bg="color-4"
+              items="center"
+              justify="center"
+              borderWidth={0.5}
+              borderColor="border-color"
+            >
+              <Bot size={20} color="var(--color-11)" />
+            </YStack>
+
+            <YStack gap="0-5" flex={1}>
+              <XStack items="center" gap="2">
+                <SizableText size="4" fontWeight="700" color="color-12">
+                  Generate themes with your AI agent
+                </SizableText>
+                <XStack bg="color-4" px="2" py="0-5" rounded="3" items="center">
+                  <Paragraph size="1" color="color-11" fontWeight="600">
+                    v3 Skill
+                  </Paragraph>
+                </XStack>
+              </XStack>
+              <Paragraph size="3" color="color-10">
+                Copy our recommended skill to generate themes with Claude Code, Cursor, or
+                Codex, then preview instantly via URL.
+              </Paragraph>
+            </YStack>
           </XStack>
 
-          <XStack gap="$3" items="center" justify="space-between">
+          {/* Right: Actions */}
+          <XStack items="center" gap="2" flexWrap="wrap">
             <Theme name="accent">
               <Button
-                rounded="$10"
-                disabled={isGenerating === 'new'}
-                opacity={isGenerating === 'new' ? 0.2 : 1}
-                pointerEvents={isGenerating === 'new' ? 'none' : 'auto'}
-                icon={isGenerating === 'new' ? <Spinner size="small" /> : null}
-                onPress={() => {
-                  if (hasAccess) {
-                    fetchUpdate('new')
-                  } else {
-                    const activePromo = getActivePromo()
-                    if (activePromo) {
-                      purchaseModal.activePromo = activePromo
-                      purchaseModal.prefilledCouponCode = activePromo.code
-                    }
-                    purchaseModal.show = true
-                  }
-                }}
-                size="$4"
+                size="md"
+                rounded="6"
+                icon={copied ? Check : Copy}
+                onPress={copySkill}
               >
-                {hasAccess ? (active ? 'Refine' : 'Generate') : 'Access'}
+                {copied ? 'Copied Skill!' : 'Copy Agent Skill'}
               </Button>
-
-              <RandomizeButton />
             </Theme>
+
+            <Button
+              size="md"
+              rounded="6"
+              variant="outlined"
+              onPress={() => setSkillOpen(true)}
+            >
+              View Skill
+            </Button>
+
+            <Button
+              size="md"
+              rounded="6"
+              variant="outlined"
+              onPress={() => setImportOpen(true)}
+            >
+              Preview URL / JSON
+            </Button>
+
+            <RandomizeButton />
 
             <ThemeToggle />
           </XStack>
         </XStack>
 
-        <ScrollView
-          mx="$-6"
-          px="$6"
-          flex={1}
-          flexBasis="auto"
-          horizontal
-          showsHorizontalScrollIndicator={false}
-        >
-          <XStack gap="$2" py="$2">
-            <Link href="/theme">
-              <HistoryButton icon={<Plus size={14} />}>New</HistoryButton>
-            </Link>
-
-            {(historiesData || []).map((history) => {
-              if (!history.themeId) {
-                return null
-              }
+        {/* Quick Preset Selector & Status */}
+        <XStack items="center" justify="space-between" flexWrap="wrap" gap="2" pt="1">
+          <XStack items="center" gap="2" flexWrap="wrap">
+            <Paragraph
+              size="2"
+              color="color-10"
+              fontWeight="600"
+              textTransform="uppercase"
+            >
+              Quick Presets:
+            </Paragraph>
+            {THEME_PRESETS.map((p) => {
+              const isActive = activePreset === p.name
               return (
-                <XStack key={history.query}>
-                  <Link
-                    delayNavigate
-                    href={`/theme/${history.themeId!}/${slugify(history.query!)}`}
+                <XStack
+                  key={p.name}
+                  items="center"
+                  gap="1-5"
+                  px="2-5"
+                  py="1"
+                  rounded="4"
+                  bg={isActive ? 'color-4' : 'color-1 hover:color-3'}
+                  borderColor={isActive ? 'color-9' : 'border-color'}
+                  borderWidth={0.5}
+                  style={{ cursor: 'pointer', transition: 'all 0.15s ease' }}
+                  onPress={() => handleApplyPreset(p)}
+                >
+                  <YStack width={8} height={8} rounded="2" bg={p.dot as any} />
+                  <Paragraph
+                    size="2"
+                    fontWeight={isActive ? '600' : '400'}
+                    color={isActive ? 'color-12' : 'color-11'}
                   >
-                    <HistoryButton
-                      icon={<History size={14} />}
-                      active={active === history.themeId}
-                      onDelete={() => {
-                        if (confirm('Are you sure you want to delete this theme?')) {
-                          fetchUpdate('delete', `${history.themeId || ''}`)
-                          router.navigate('/theme')
-                        }
-                      }}
-                      onPress={() => {
-                        console.warn('set active')
-                        setActive(+history.themeId!)
-                      }}
-                    >
-                      {history.query}
-                    </HistoryButton>
-                  </Link>
+                    {p.name}
+                  </Paragraph>
                 </XStack>
               )
             })}
-
-            {!hasAccess && (
-              <XStack flex={1} flexBasis="auto" overflow="hidden" items="center" px="$4">
-                <Paragraph fontFamily="$mono" size="$3">
-                  Welcome to the Theme Builder! Pro members can build, save and refine
-                  themes using the generate input above.
-                </Paragraph>
-              </XStack>
-            )}
           </XStack>
-        </ScrollView>
+
+          {store.currentQuery ? (
+            <XStack items="center" gap="2" bg="color-3" px="2-5" py="1" rounded="4">
+              <Paragraph size="2" color="color-11">
+                Previewing:{' '}
+                <SizableText size="2" fontWeight="600" color="color-12">
+                  {store.currentQuery}
+                </SizableText>
+              </Paragraph>
+              <Paragraph
+                size="2"
+                color="color-10"
+                style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                onPress={() => {
+                  store.reset()
+                  setActivePreset('Violet')
+                }}
+              >
+                Reset
+              </Paragraph>
+            </XStack>
+          ) : null}
+        </XStack>
       </YStack>
-    </XStack>
+
+      {/* View Skill Modal */}
+      <Dialog open={isSkillOpen} onOpenChange={setSkillOpen}>
+        <Dialog.Portal>
+          <Dialog.Overlay transition="quick" opacity="0.5 enter:0 exit:0" />
+          <Dialog.Content
+            bordered
+            elevate
+            key="content"
+            transition={{
+              preset: 'quickest',
+              opacity: { preset: 'quickest', spring: { overshootClamping: true } },
+            }}
+            x="0 enter:0 exit:0"
+            scale="1 enter:0.9 exit:0.95"
+            opacity="1 enter:0 exit:0"
+            y="0 enter:-20px exit:10px"
+            gap="4"
+            width={720}
+            maxW="92vw"
+            maxH="85vh"
+            p="5"
+          >
+            <Dialog.Title size="6">Tamagui Theme Generator Agent Skill</Dialog.Title>
+            <Dialog.Description size="3" color="color-10">
+              Pass this skill to Claude Code, Cursor, Codex, or Copilot to allow your
+              agent to generate themes and open live previews.
+            </Dialog.Description>
+
+            <ScrollView
+              maxH={420}
+              bg="color-1"
+              p="3"
+              rounded="4"
+              borderWidth={0.5}
+              borderColor="border-color"
+            >
+              <Paragraph fontFamily="mono" size="2" whiteSpace="pre-wrap">
+                {AGENT_THEME_SKILL_TEXT}
+              </Paragraph>
+            </ScrollView>
+
+            <XStack justify="flex-end" gap="2">
+              <Theme name="accent">
+                <Button icon={copied ? Check : Copy} onPress={copySkill}>
+                  {copied ? 'Copied!' : 'Copy Skill'}
+                </Button>
+              </Theme>
+              <Dialog.Close asChild>
+                <Button>Done</Button>
+              </Dialog.Close>
+            </XStack>
+
+            <Dialog.Close asChild>
+              <TButton
+                position="absolute"
+                top="3"
+                right="3"
+                size="sm"
+                circular
+                icon={X}
+              />
+            </Dialog.Close>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog>
+
+      {/* Import / Preview URL Modal */}
+      <Dialog open={isImportOpen} onOpenChange={setImportOpen}>
+        <Dialog.Portal>
+          <Dialog.Overlay transition="quick" opacity="0.5 enter:0 exit:0" />
+          <Dialog.Content
+            bordered
+            elevate
+            key="content"
+            transition="quick"
+            gap="4"
+            width={600}
+            maxW="92vw"
+            p="5"
+          >
+            <Dialog.Title size="6">Preview Theme Config</Dialog.Title>
+            <Dialog.Description size="3" color="color-10">
+              Paste a theme preview URL (with #theme=...), raw base64 string, or theme
+              JSON:
+            </Dialog.Description>
+
+            <Input
+              value={importInput}
+              onChangeText={setImportInput}
+              placeholder="https://tamagui.dev/theme#theme=... or { name: '...' }"
+              size="lg"
+            />
+
+            <XStack justify="space-between" items="center">
+              <Paragraph size="2" color="color-10">
+                Tip: Run{' '}
+                <SizableText size="2" color="color-11" fontFamily="mono">
+                  tamagui preview-theme ./theme.json
+                </SizableText>{' '}
+                in CLI.
+              </Paragraph>
+              <XStack gap="2">
+                <Dialog.Close asChild>
+                  <Button variant="outlined">Cancel</Button>
+                </Dialog.Close>
+                <Theme name="accent">
+                  <Button onPress={handleApplyImport}>Apply Preview</Button>
+                </Theme>
+              </XStack>
+            </XStack>
+
+            <Dialog.Close asChild>
+              <TButton
+                position="absolute"
+                top="3"
+                right="3"
+                size="sm"
+                circular
+                icon={X}
+              />
+            </Dialog.Close>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog>
+    </YStack>
   )
 })
 
-const HistoryButton = ({
-  active,
-  children,
-  icon,
-  onDelete,
-  onPress,
-}: {
-  active?: boolean
-  children?: any
-  icon?: any
-  onDelete?: () => void
-  onPress?: () => void
-}) => {
-  return (
-    <XStack group="item" containerType="normal" position="relative">
-      <Button onPress={onPress} size="$3" rounded="$8" theme={active ? 'accent' : null}>
-        <Button.Icon>{icon}</Button.Icon>
-
-        <Button.Text numberOfLines={1} maxW={200} fontFamily="$mono">
-          {children}
-        </Button.Text>
-      </Button>
-
-      {onDelete && (
-        <YStack
-          position="absolute"
-          opacity={0}
-          $group-item-hover={{
-            opacity: 1,
-          }}
-          t={-5}
-          r={-5}
-          onPress={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            onDelete()
-          }}
-        >
-          <X opacity={0.3} size={10} />
-        </YStack>
-      )}
-    </XStack>
-  )
-}
-
-const ThemeToggle = () => {
-  const userScheme = useUserScheme()
-  const [checked, setChecked] = useState(userScheme.value === 'light')
-
-  useEffect(() => {
-    setChecked(userScheme.value === 'light')
-  }, [userScheme.value === 'light'])
-
-  return (
-    <XStack gap="$3" items="center">
-      <Configuration animationDriver={animations.css}>
-        <Switch
-          checked={checked}
-          outlineWidth={0}
-          outlineStyle="solid"
-          activeStyle={{
-            backgroundColor: '$accent10',
-          }}
-          onCheckedChange={(on) => {
-            setChecked(on)
-            setTimeout(() => {
-              userScheme.set(on ? 'light' : 'dark')
-            })
-          }}
-          size="$3"
-        >
-          <Switch.Thumb transition="quickest" size="$3">
-            <YStack
-              transition="bouncy"
-              fullscreen
-              items="center"
-              justify="center"
-              opacity={1}
-              y={0}
-              $theme-light={{ opacity: 0, y: 3 }}
-            >
-              <Moon size={14} />
-            </YStack>
-            <YStack
-              transition="bouncy"
-              fullscreen
-              items="center"
-              justify="center"
-              opacity={1}
-              y={0}
-              $theme-dark={{ opacity: 0, y: 3 }}
-            >
-              <Sun size={14} />
-            </YStack>
-          </Switch.Thumb>
-        </Switch>
-      </Configuration>
-    </XStack>
-  )
-}
+export const StudioAIBar = StudioThemeAgentBar

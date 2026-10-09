@@ -1,4 +1,4 @@
-import { Toast, useToasts } from '@tamagui/toast/v2'
+import { Toast, useToasts } from '@tamagui/toast'
 import { XStack, YStack } from 'tamagui'
 
 export const NativeToast = () => {
@@ -18,9 +18,9 @@ const ToastList = () => {
     <>
       {toasts.map((t, index) => (
         <Toast.Item key={t.id} toast={t} index={index}>
-          <XStack gap="$3" items="flex-start">
-            <YStack flex={1} gap="$1" py="$1.5" px="$2">
-              <Toast.Title lineHeight="$1">
+          <XStack gap="3" items="flex-start">
+            <YStack flex={1} gap="1" py="1.5" px="2">
+              <Toast.Title lineHeight="1">
                 {typeof t.title === 'function' ? t.title() : t.title}
               </Toast.Title>
               {t.description && (

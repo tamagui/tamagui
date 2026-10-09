@@ -30,7 +30,7 @@ export const useReplaceTokens = (code, mappedTokens) => {
     const colorAttributes = [
       'color',
       'backgroundColor',
-      'borderColor',
+      'border-color',
       'borderBottomColor',
       'borderTopColor',
       'borderLeftColor',

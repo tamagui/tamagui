@@ -11,11 +11,7 @@ import { setupPage } from './test-utils'
  * 3. Then finally animates out
  */
 
-test.beforeEach(async ({ page }, testInfo) => {
-  test.skip(
-    testInfo.project.name === 'animated-native',
-    'Native driver does not support hover animations on web'
-  )
+test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'PopoverHoverableDelayCase', type: 'useCase' })
   await page.waitForLoadState('networkidle')
   await page.waitForTimeout(500)

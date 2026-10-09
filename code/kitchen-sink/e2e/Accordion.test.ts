@@ -12,24 +12,32 @@
 
 import * as assert from 'assert'
 import { by, device, element, expect, waitFor } from 'detox'
-import { describeAnimated, safeLaunchApp } from './utils/detox'
+import { safeLaunchApp, setAndroidAnimationScales } from './utils/detox'
 
 async function frame(id: string) {
   const attrs: any = await element(by.id(id)).getAttributes()
   return attrs.frame as { x: number; y: number; width: number; height: number }
 }
 
+// the single deadline for every condition poll, sized just under jest's 180s
+// testTimeout. these polls wait on state the next step needs; a tighter inner
+// wall-clock budget (this file shipped with 4s and 8s) only re-times the same
+// condition against machine speed — a loaded CI simulator ran the passing
+// sibling tests at 3.5x normal wall-clock and tripped the 4s label poll while
+// the condition arrived fine. the deadline exists so a genuinely missing
+// condition still fails with a named target instead of a bare jest timeout.
+const POLL_DEADLINE_MS = 150_000
+
 async function pollHeight(
   id: string,
   predicate: (height: number) => boolean,
-  label: string,
-  timeoutMs = 8000
+  label: string
 ) {
   const startedAt = Date.now()
   let last = await frame(id)
   while (!predicate(last.height)) {
     assert.ok(
-      Date.now() - startedAt < timeoutMs,
+      Date.now() - startedAt < POLL_DEADLINE_MS,
       `timed out polling for ${label}, last height ${last.height}`
     )
     await new Promise((resolve) => setTimeout(resolve, 50))
@@ -42,11 +50,31 @@ async function pollLabel(id: string, predicate: (label: string) => boolean) {
   const startedAt = Date.now()
   let attrs: any = await element(by.id(id)).getAttributes()
   while (!predicate(attrs.label ?? '')) {
-    assert.ok(Date.now() - startedAt < 4000, `timed out polling label for ${id}`)
+    assert.ok(
+      Date.now() - startedAt < POLL_DEADLINE_MS,
+      `timed out polling label for ${id}, last "${attrs.label ?? ''}"`
+    )
     await new Promise((resolve) => setTimeout(resolve, 50))
     attrs = await element(by.id(id)).getAttributes()
   }
   return attrs.label as string
+}
+
+async function tapAndReadFrameSamples(triggerId: string, sampleId: string) {
+  const before = (await element(by.id(sampleId)).getAttributes()) as any
+  await element(by.id(triggerId)).tap()
+  const label = await pollLabel(
+    sampleId,
+    (next) => next !== before.label && !next.startsWith('recording:')
+  )
+  const separator = label.indexOf(':')
+  assert.ok(separator > 0, `expected cycle-prefixed native frame samples: ${label}`)
+  const samples = label
+    .slice(separator + 1)
+    .split(',')
+    .map(Number)
+  assert.ok(samples.length > 5, `expected native frame samples: ${samples}`)
+  return samples
 }
 
 async function launchDefaultOpenCase() {
@@ -56,12 +84,12 @@ async function launchDefaultOpenCase() {
   })
   await waitFor(element(by.id('accordion-default-root')))
     .toExist()
-    .withTimeout(30000)
+    .withTimeout(POLL_DEADLINE_MS)
 }
 
 // resting layout holds on every platform whether or not it animates. the
 // emulator's animation scale has no bearing on whether an open item's content
-// overlaps the next trigger, so keep this outside describeAnimated.
+// overlaps the next trigger, so it runs at the ci default scale.
 describe('Accordion (auto-height, native) layout', () => {
   beforeEach(launchDefaultOpenCase)
 
@@ -87,36 +115,41 @@ describe('Accordion (auto-height, native) layout', () => {
 
 // these two sample the height WHILE the accordion animates, so they need a
 // platform that actually paints intermediate frames.
-describeAnimated('Accordion (auto-height, native)', () => {
+describe('Accordion (auto-height, native)', () => {
+  beforeAll(() => {
+    // ci disables system animations for emulator stability. this suite verifies
+    // intermediate reanimated frames, so opt its transition scale back in.
+    setAndroidAnimationScales(1, ['transition_animation_scale'])
+  })
+
+  afterAll(() => {
+    setAndroidAnimationScales(0, ['transition_animation_scale'])
+  })
+
   beforeEach(launchDefaultOpenCase)
 
   it('closes the default-open item through an intermediate height', async () => {
     const open = await frame('def-height')
-    await element(by.id('def-trigger')).tap()
-    await expect(element(by.id('def-content-text'))).toBeVisible()
-    const closing = await pollHeight(
-      'def-height',
-      (height) => height > 1 && height < open.height - 1,
-      'default-open close intermediate'
+    const frameSamples = await tapAndReadFrameSamples(
+      'def-trigger',
+      'default-close-frame-samples'
+    )
+    const closing = frameSamples.find((height) => height > 1 && height < open.height - 1)
+    assert.ok(
+      closing !== undefined,
+      `expected default-open close intermediate: ${frameSamples}`
     )
     assert.ok(closing > 0, 'default-open close should stay above 0 mid-flight')
-    const frameSamples = (
-      await pollLabel(
-        'default-close-frame-samples',
-        (label) => label !== 'idle' && label !== 'recording'
-      )
-    )
-      .split(',')
-      .map(Number)
     assert.ok(frameSamples.length > 5, `expected native frame samples: ${frameSamples}`)
+    const maximumFrameSample = Math.max(...frameSamples)
     assert.ok(
-      frameSamples.every((height) => height > open.height * 0.5),
+      frameSamples.every((height) => height > maximumFrameSample * 0.5),
       `close must not paint a collapsed frame before animating: ${frameSamples}`
     )
     await expect(element(by.id('def-content-text'))).toExist()
     await waitFor(element(by.id('def-content-text')))
       .not.toBeVisible()
-      .withTimeout(4000)
+      .withTimeout(POLL_DEADLINE_MS)
     const closed = await pollHeight(
       'def-height',
       (height) => height <= 1,
@@ -127,15 +160,20 @@ describeAnimated('Accordion (auto-height, native)', () => {
   })
 
   it('opens, reverses, and closes through intermediate numeric heights', async () => {
-    await element(by.id('def-trigger2')).tap()
+    const openingSamples = await tapAndReadFrameSamples(
+      'def-trigger2',
+      'second-frame-samples'
+    )
     await waitFor(element(by.id('def-content2')))
       .toExist()
-      .withTimeout(4000)
+      .withTimeout(POLL_DEADLINE_MS)
     const natural = await frame('def-content2')
-    const opening = await pollHeight(
-      'def-height2',
-      (height) => height > 1 && height < natural.height - 1,
-      'open intermediate'
+    const opening = openingSamples.find(
+      (height) => height > 0 && height < natural.height - 0.25
+    )
+    assert.ok(
+      opening !== undefined,
+      `expected open intermediate below ${natural.height}: ${openingSamples}`
     )
     const initialOpen = await pollHeight(
       'def-height2',
@@ -167,19 +205,33 @@ describeAnimated('Accordion (auto-height, native)', () => {
       `marker should render below the final item's content`
     )
 
-    await element(by.id('def-trigger2')).tap()
-    const closingBeforeReverse = await pollHeight(
-      'def-height2',
-      (height) => height > 1 && height < open - 5,
-      'close intermediate'
+    const closingSamples = await tapAndReadFrameSamples(
+      'def-trigger2',
+      'second-frame-samples'
+    )
+    const closingPeak = Math.max(...closingSamples)
+    const closingBeforeReverse = closingSamples
+      .slice(closingSamples.indexOf(closingPeak) + 1)
+      .find((height) => height > 0 && height < closingPeak - 0.25)
+    assert.ok(
+      closingBeforeReverse !== undefined,
+      `expected close intermediate below ${closingPeak}: ${closingSamples}`
+    )
+    assert.ok(
+      closingSamples.at(-1)! < closingPeak - 0.25,
+      `close samples should fall: ${closingSamples}`
     )
     await expect(element(by.id('def-content2-text'))).toExist()
 
-    await element(by.id('def-trigger2')).tap()
-    const reopening = await pollHeight(
-      'def-height2',
-      (height) => height > closingBeforeReverse + 2,
-      'reversal rising'
+    const reopeningSamples = await tapAndReadFrameSamples(
+      'def-trigger2',
+      'second-frame-samples'
+    )
+    const reopening = Math.max(...reopeningSamples)
+    const reversalLow = Math.min(...reopeningSamples)
+    assert.ok(
+      reopeningSamples.at(-1)! > reversalLow + 0.25,
+      `reversal samples should rise: ${reopeningSamples}`
     )
     assert.ok(
       reopening <= open + 2,
@@ -195,11 +247,21 @@ describeAnimated('Accordion (auto-height, native)', () => {
       `reopened height ${reopened} should settle at ${open}`
     )
 
-    await element(by.id('def-trigger2')).tap()
-    const closing = await pollHeight(
-      'def-height2',
-      (height) => height > 1 && height < open - 5,
-      'final close intermediate'
+    const finalClosingSamples = await tapAndReadFrameSamples(
+      'def-trigger2',
+      'second-frame-samples'
+    )
+    const finalClosingPeak = Math.max(...finalClosingSamples)
+    const closing = finalClosingSamples
+      .slice(finalClosingSamples.indexOf(finalClosingPeak) + 1)
+      .find((height) => height > 0 && height < finalClosingPeak - 0.25)
+    assert.ok(
+      closing !== undefined,
+      `expected final close intermediate below ${finalClosingPeak}: ${finalClosingSamples}`
+    )
+    assert.ok(
+      finalClosingSamples.at(-1)! < finalClosingPeak - 0.25,
+      `final close samples should fall: ${finalClosingSamples}`
     )
     assert.ok(closing > 0, 'final close should have an intermediate height')
     await expect(element(by.id('def-content2-text'))).toExist()

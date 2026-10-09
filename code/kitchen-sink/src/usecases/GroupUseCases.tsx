@@ -1,8 +1,9 @@
-import { Button, XGroup, YStack } from 'tamagui'
+import { XGroup, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 export function GroupUseCases() {
   return (
-    <YStack gap="$4">
+    <YStack gap="4">
       <XGroup testID="simple-api-group">
         <Button>this</Button>
         <Button>is</Button>

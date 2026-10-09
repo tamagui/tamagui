@@ -1,9 +1,10 @@
+import { createRefComponent } from '@tamagui/compose-refs'
 // via radix
 
 import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import type { ReactNode } from 'react'
-import { Children, cloneElement, forwardRef, isValidElement, memo } from 'react'
+import { Children, cloneElement, isValidElement, memo } from 'react'
 import { mergeSlotStyleProps } from '../helpers/mergeSlotStyleProps'
 
 /* -------------------------------------------------------------------------------------------------
@@ -15,7 +16,7 @@ interface SlotProps {
 }
 
 export const Slot = memo(
-  forwardRef<any, SlotProps>(function Slot(props, forwardedRef) {
+  createRefComponent<any, SlotProps>(function Slot(props, forwardedRef) {
     const { children, ...slotProps } = props
 
     if (isValidElement(children)) {

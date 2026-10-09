@@ -1,4 +1,4 @@
-import { Check } from '@tamagui/lucide-icons-2'
+import { Check } from '@tamagui/local-icons'
 import { styled, YStack } from 'tamagui'
 
 const RedCheck = styled(Check, {
@@ -10,7 +10,7 @@ const GreenCheck = styled(Check, {
 })
 
 export const StyledIconColor = () => (
-  <YStack gap="$4" padding="$4">
+  <YStack gap="4" padding="4">
     <Check color="blue" testID="direct-blue" />
     <RedCheck testID="styled-red" />
     <GreenCheck testID="styled-green" />

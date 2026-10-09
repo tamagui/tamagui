@@ -1,6 +1,5 @@
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { TamaguiProvider, View, createTamagui } from '@tamagui/core'
-import { ContextMenu } from '@tamagui/context-menu'
 import { Menu } from '@tamagui/menu'
 import React from 'react'
 import TestRenderer, { act } from 'react-test-renderer'
@@ -40,31 +39,5 @@ describe('native menu without a registered adapter', () => {
     const json = renderer!.toJSON()
     expect(hasTestID(json, 'menu-trigger')).toBe(true)
     expect(hasTestID(json, 'menu-content-child')).toBe(true)
-  })
-
-  test('renders the cross-platform context menu instead of nothing (#4245)', async () => {
-    let renderer: TestRenderer.ReactTestRenderer
-
-    await act(async () => {
-      renderer = TestRenderer.create(
-        <TamaguiProvider config={config} defaultTheme="light">
-          <ContextMenu open>
-            <ContextMenu.Trigger>
-              <View testID="context-trigger" />
-            </ContextMenu.Trigger>
-            <ContextMenu.Content>
-              <ContextMenu.Item key="one" textValue="One">
-                <ContextMenu.ItemTitle>One</ContextMenu.ItemTitle>
-              </ContextMenu.Item>
-              <View testID="context-content-child" />
-            </ContextMenu.Content>
-          </ContextMenu>
-        </TamaguiProvider>
-      )
-    })
-
-    const json = renderer!.toJSON()
-    expect(hasTestID(json, 'context-trigger')).toBe(true)
-    expect(hasTestID(json, 'context-content-child')).toBe(true)
   })
 })

@@ -37,7 +37,6 @@
   },
   "dependencies": {
     "@tamagui/core": "workspace:*",
-    "@tamagui/get-button-sized": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {

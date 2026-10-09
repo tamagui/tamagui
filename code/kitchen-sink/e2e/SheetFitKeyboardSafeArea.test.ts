@@ -70,9 +70,9 @@ describe('SheetFitKeyboardSafeArea', () => {
 
     await device.disableSynchronization()
 
-    // dismiss the keyboard: with keyboardShouldPersistTaps="handled", tapping a
-    // non-responder inside the scrollview resigns the first responder.
-    await element(by.id('repro-3pc-native-item-0')).tap()
+    // dismiss the keyboard through the focused input so the interaction remains
+    // stable while the sheet is translated for the keyboard.
+    await element(by.id('repro-3pc-native-input')).tapReturnKey()
     await sleep(2000)
 
     const safeAreaTop = await readFrameTop('repro-3pc-native-safearea-marker')

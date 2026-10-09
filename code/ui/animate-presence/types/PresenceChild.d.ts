@@ -7,10 +7,7 @@ interface PresenceChildProps {
     initial?: false | VariantLabels;
     custom?: any;
     presenceAffectsLayout?: boolean;
-    exitVariant?: string | null;
-    enterVariant?: string | null;
-    enterExitVariant?: string | null;
 }
-export declare const PresenceChild: React.MemoExoticComponent<({ children, initial, isPresent, onExitComplete, exitVariant, enterVariant, enterExitVariant, presenceAffectsLayout, custom, }: PresenceChildProps) => React.JSX.Element>;
+export declare const PresenceChild: React.MemoExoticComponent<({ children, initial, isPresent, onExitComplete, presenceAffectsLayout, custom, }: PresenceChildProps) => React.JSX.Element>;
 export {};
 //# sourceMappingURL=PresenceChild.d.ts.map

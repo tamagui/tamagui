@@ -19,14 +19,11 @@ export function ReanimatedEmitterLatchCase() {
   const [namedColorActive, setNamedColorActive] = useState(false)
 
   return (
-    <YStack gap="$4" padding="$4">
+    <YStack gap="4" padding="4">
       <Square
         testID="latch-square"
         size={120}
-        backgroundColor={active ? 'rgb(0, 0, 255)' : 'rgb(255, 0, 0)'}
-        hoverStyle={{ backgroundColor: active ? 'rgb(0, 0, 255)' : 'rgb(0, 255, 0)' }}
-        // 0ms so the base-style flip is immediate and easy to assert (matches the
-        // sidebar row's transition="0ms")
+        backgroundColor={`${active ? 'rgb(0, 0, 255)' : 'rgb(255, 0, 0)'} hover:${active ? 'rgb(0, 0, 255)' : 'rgb(0, 255, 0)'}`}
         transition="0ms"
       />
 

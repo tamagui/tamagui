@@ -1,0 +1,18 @@
+[package]
+name = "tamagui-grammar"
+description = "Flat value grammar: parsing, vocabulary, completion and diagnostics"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+tamagui-config = { path = "../tamagui-config" }
+
+# levenshtein powers the "did you mean" suggestions in diagnostics
+fst = { version = "0.4", features = ["levenshtein"] }
+rustc-hash.workspace = true
+
+[dev-dependencies]
+# the conformance vectors are JSON the grammar package generates
+serde_json.workspace = true

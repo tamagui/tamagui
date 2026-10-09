@@ -2,8 +2,9 @@ const cache = new Map<string, string>()
 let cacheSize = 0
 
 export const simpleHash = (strIn: string, hashMin: number | 'strict' = 10): string => {
-  if (cache.has(strIn)) {
-    return cache.get(strIn)!
+  const cacheKey = `${hashMin}:${strIn}`
+  if (cache.has(cacheKey)) {
+    return cache.get(cacheKey)!
   }
 
   let str = strIn
@@ -41,7 +42,7 @@ export const simpleHash = (strIn: string, hashMin: number | 'strict' = 10): stri
     cacheSize = 0
   }
 
-  cache.set(strIn, res)
+  cache.set(cacheKey, res)
   cacheSize++
 
   return res

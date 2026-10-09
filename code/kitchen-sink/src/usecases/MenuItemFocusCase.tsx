@@ -1,6 +1,7 @@
 import { Menu } from '@tamagui/menu'
 import React from 'react'
-import { Button, Input, YStack } from 'tamagui'
+import { Input, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Menu item focus preservation test case
@@ -13,29 +14,27 @@ export function MenuItemFocusCase() {
   const [showInput, setShowInput] = React.useState(false)
 
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       <Menu placement="bottom-start">
         <Menu.Trigger asChild>
-          <Button data-testid="menu-trigger" size="$4">
-            Open Menu
-          </Button>
+          <Button data-testid="menu-trigger">Open Menu</Button>
         </Menu.Trigger>
 
         <Menu.Portal zIndex={100}>
           <Menu.Content
             data-testid="menu-content"
-            p="$2"
+            p="2"
             minW={200}
             borderWidth={1}
-            borderColor="$borderColor"
-            elevation="$3"
+            borderColor="border-color"
+            boxShadow="0 4px 12px shadow-color"
           >
             <Menu.Item
               data-testid="focus-input-item"
               key="focus-input"
               textValue="Focus Input"
               style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
-              focusStyle={{ bg: '$backgroundHover' }}
+              bg="focus:background-hover"
               onPress={() => {
                 // show input - the autoFocus should handle focusing
                 setShowInput(true)
@@ -49,7 +48,7 @@ export function MenuItemFocusCase() {
               key="focus-existing"
               textValue="Focus Existing"
               style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
-              focusStyle={{ bg: '$backgroundHover' }}
+              bg="focus:background-hover"
               onPress={() => {
                 // focus the already-visible input
                 const input = document.querySelector(

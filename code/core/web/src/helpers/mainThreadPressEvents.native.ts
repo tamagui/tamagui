@@ -1,31 +1,7 @@
-/**
- * Fallback press handling when RNGH is not available.
- *
- * Implements the responder-based press detection that usePressability provides,
- * without the deep RN internal import. Supports pressIn/pressOut delays,
- * long press, cancellation, and min press duration.
- */
-
 import { unstable_hasExternalPressOwnership } from '@tamagui/native'
 import { useRef } from 'react'
-
-type PressState =
-  | 'idle'
-  | 'pressing' // responder granted, waiting for delay
-  | 'active' // pressIn fired
-  | 'longPressed' // long press detected
-
-interface PressRef {
-  state: PressState
-  pressInTimer: ReturnType<typeof setTimeout> | null
-  pressOutTimer: ReturnType<typeof setTimeout> | null
-  longPressTimer: ReturnType<typeof setTimeout> | null
-  activateTime: number
-  blockedByExternalOwnership: boolean
-}
-
-const DEFAULT_LONG_PRESS_DELAY = 500
-const DEFAULT_MIN_PRESS_DURATION = 130
+import type { GestureResponderEvent } from 'react-native'
+import type usePressabilityType from 'react-native/Libraries/Pressability/usePressability'
 
 export function useMainThreadPressEvents(
   events: any,
@@ -33,150 +9,93 @@ export function useMainThreadPressEvents(
   enabled = true,
   debugName?: string | null
 ) {
-  const ref = useRef<PressRef>(null as any)
-  if (!ref.current) {
-    ref.current = {
-      state: 'idle',
-      pressInTimer: null,
-      pressOutTimer: null,
-      longPressTimer: null,
-      activateTime: 0,
-      blockedByExternalOwnership: false,
-    }
+  // static config evaluation does not render; load native code at render time.
+  const usePressability: typeof usePressabilityType =
+    require('react-native/Libraries/Pressability/usePressability').default
+  const initialized = useRef(false)
+  const ownsResponder = useRef(false)
+  const pressActive = useRef(false)
+  const active = enabled && Boolean(events)
+  if (active) initialized.current = true
+
+  function endPress(e: GestureResponderEvent) {
+    if (!pressActive.current) return
+    pressActive.current = false
+    events?.onPressOut?.(e)
   }
 
-  if (!enabled || !events) return
-
-  const delayPressIn = Math.max(0, events.delayPressIn ?? 0)
-  const delayPressOut = Math.max(0, events.delayPressOut ?? 0)
-  const delayLongPress = Math.max(0, events.delayLongPress ?? DEFAULT_LONG_PRESS_DELAY)
-  const minPressDuration = Math.max(
-    0,
-    events.minPressDuration ?? DEFAULT_MIN_PRESS_DURATION
+  // react native owns press geometry, timing and cancellation; initialize only
+  // for pressable components and remove callbacks when the responder path stops.
+  const handlers = usePressability(
+    initialized.current
+      ? {
+          ...(active ? events : {}),
+          disabled: !active || events?.disabled,
+          android_disableSound: true,
+          onPressIn: active
+            ? (e: GestureResponderEvent) => {
+                endPress(e)
+                pressActive.current = true
+                events.onPressIn?.(e)
+              }
+            : undefined,
+          onPressOut: active ? endPress : undefined,
+          hitSlop: viewProps.hitSlop,
+          pressRectOffset: viewProps.pressRetentionOffset,
+        }
+      : null
   )
+  if (!active || !handlers) return
 
-  function activate(e: any) {
-    ref.current.state = 'active'
-    ref.current.activateTime = Date.now()
-    events.onPressIn?.(e)
-  }
-
-  function deactivate(e: any) {
-    const pressDuration = Date.now() - ref.current.activateTime
-    const remaining = Math.max(minPressDuration - pressDuration, delayPressOut)
-
-    if (remaining > 0) {
-      e.persist?.()
-      ref.current.pressOutTimer = setTimeout(() => {
-        events.onPressOut?.(e)
-      }, remaining)
-    } else {
-      events.onPressOut?.(e)
-    }
-  }
-
-  function cleanup() {
-    if (ref.current.pressInTimer) clearTimeout(ref.current.pressInTimer)
-    if (ref.current.pressOutTimer) clearTimeout(ref.current.pressOutTimer)
-    if (ref.current.longPressTimer) clearTimeout(ref.current.longPressTimer)
-    ref.current.pressInTimer = null
-    ref.current.pressOutTimer = null
-    ref.current.longPressTimer = null
-  }
-
-  // user-supplied responder props (the View's raw RN gesture API) must keep
-  // working: blindly overwriting them here silently killed any press-hold-drag
-  // gesture built on onResponderMove/onResponderRelease whenever the element
-  // also had hover/press events. compose instead — user handler first, then
-  // the press synthesis.
   const userStartShouldSet = viewProps.onStartShouldSetResponder
   const userGrant = viewProps.onResponderGrant
   const userRelease = viewProps.onResponderRelease
   const userTerminate = viewProps.onResponderTerminate
   const userTerminationRequest = viewProps.onResponderTerminationRequest
   const userMove = viewProps.onResponderMove
+  const userClick = viewProps.onClick
 
-  viewProps.onStartShouldSetResponder = (e: any) => {
-    if (userStartShouldSet?.(e)) return true
-    return !events.disabled && !unstable_hasExternalPressOwnership()
-  }
+  viewProps.onStartShouldSetResponder = (e: GestureResponderEvent) =>
+    userStartShouldSet?.(e) ||
+    (!unstable_hasExternalPressOwnership() && handlers.onStartShouldSetResponder())
 
-  viewProps.onResponderGrant = (e: any) => {
-    cleanup()
-
-    if (unstable_hasExternalPressOwnership()) {
-      ref.current.state = 'idle'
-      ref.current.blockedByExternalOwnership = true
-      return
-    }
-
+  viewProps.onResponderGrant = (e: GestureResponderEvent) => {
+    endPress(e)
+    if (unstable_hasExternalPressOwnership()) return
     userGrant?.(e)
-    // the grant event is delivered later from the pressIn and longPress timers;
-    // RN pools responder events and nulls nativeEvent after dispatch unless
-    // persisted (same as Pressability)
-    e.persist?.()
-    ref.current.blockedByExternalOwnership = false
-    ref.current.state = 'pressing'
-
-    if (delayPressIn > 0) {
-      ref.current.pressInTimer = setTimeout(() => activate(e), delayPressIn)
-    } else {
-      activate(e)
-    }
-
-    if (events.onLongPress) {
-      ref.current.longPressTimer = setTimeout(() => {
-        if (ref.current.state === 'active') {
-          ref.current.state = 'longPressed'
-          events.onLongPress?.(e)
-        }
-      }, delayLongPress + delayPressIn)
-    }
+    ownsResponder.current = true
+    return handlers.onResponderGrant(e)
   }
 
-  viewProps.onResponderRelease = (e: any) => {
-    if (ref.current.blockedByExternalOwnership || unstable_hasExternalPressOwnership()) {
-      cleanup()
-      ref.current.blockedByExternalOwnership = false
-      ref.current.state = 'idle'
+  viewProps.onResponderRelease = (e: GestureResponderEvent) => {
+    if (!ownsResponder.current) return
+    ownsResponder.current = false
+    if (unstable_hasExternalPressOwnership()) {
+      handlers.onResponderTerminate(e)
+      endPress(e)
       return
     }
-
     userRelease?.(e)
-    const wasLongPressed = ref.current.state === 'longPressed'
-    cleanup()
-
-    // if pressIn hasn't fired yet (was in delay), fire it now then immediately deactivate
-    if (ref.current.state === 'pressing') {
-      activate(e)
-    }
-
-    if (!wasLongPressed) {
-      events.onPress?.(e)
-    }
-
-    deactivate(e)
-    ref.current.state = 'idle'
-    ref.current.blockedByExternalOwnership = false
+    handlers.onResponderRelease(e)
   }
 
-  viewProps.onResponderTerminate = (e: any) => {
+  viewProps.onResponderTerminate = (e: GestureResponderEvent) => {
     userTerminate?.(e)
-    cleanup()
-    if (ref.current.state === 'active' || ref.current.state === 'longPressed') {
-      deactivate(e)
-    }
-    ref.current.state = 'idle'
-    ref.current.blockedByExternalOwnership = false
+    if (ownsResponder.current) handlers.onResponderTerminate(e)
+    endPress(e)
+    ownsResponder.current = false
   }
 
-  viewProps.onResponderTerminationRequest = (e: any) => {
-    if (userTerminationRequest) return userTerminationRequest(e)
-    return events.cancelable !== false
-  }
+  viewProps.onResponderTerminationRequest = (e: GestureResponderEvent) =>
+    userTerminationRequest?.(e) ?? handlers.onResponderTerminationRequest()
 
-  viewProps.onResponderMove = (e: any) => {
+  viewProps.onResponderMove = (e: GestureResponderEvent) => {
     userMove?.(e)
-    events.onPressMove?.(e)
+    if (ownsResponder.current) handlers.onResponderMove(e)
+  }
+
+  viewProps.onClick = (e: GestureResponderEvent) => {
+    userClick?.(e)
+    if (!unstable_hasExternalPressOwnership()) handlers.onClick(e)
   }
 }

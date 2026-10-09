@@ -35,8 +35,8 @@
       "outputs": []
     },
     "test": {
-      "dependsOn": ["^build:js"],
-      "inputs": ["../../bun.lockb", "src/**", "tests/**", "__tests__/**", "*.config.*"],
+      "dependsOn": ["^build"],
+      "inputs": ["../../bun.lockb", "src/**", "test/**", "tests/**", "__tests__/**", "*.config.*"],
       "outputs": [],
       "env": [
         "TAMAGUI_TARGET",
@@ -60,8 +60,8 @@
       ]
     },
     "test:web": {
-      "dependsOn": ["^build:js"],
-      "inputs": ["../../bun.lockb", "src/**", "tests/**", "__tests__/**", "*.config.*"],
+      "dependsOn": ["^build"],
+      "inputs": ["../../bun.lockb", "src/**", "test/**", "tests/**", "__tests__/**", "*.config.*"],
       "outputs": [],
       "env": [
         "TAMAGUI_TARGET",
@@ -77,7 +77,7 @@
       ]
     },
     "test:native": {
-      "dependsOn": ["^build:js"],
+      "dependsOn": ["^build"],
       "inputs": ["../../bun.lockb", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
       "outputs": [],
       "cache": false

@@ -39,7 +39,6 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/create-context": "workspace:*",
     "@tamagui/floating": "workspace:*",
-    "@tamagui/get-token": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/polyfill-dev": "workspace:*",
     "@tamagui/popover": "workspace:*",

@@ -3,7 +3,7 @@
  * Uses pointer events for smooth drag tracking, animation driver for transforms.
  */
 import * as React from 'react';
-import type { SwipeDirection } from './ToastProvider';
+import type { SwipeDirection } from './types';
 export interface UseAnimatedDragGestureOptions {
     direction: SwipeDirection;
     threshold: number;

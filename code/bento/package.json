@@ -1,0 +1,48 @@
+{
+  "name": "@tamagui/bento",
+  "version": "2.7.7",
+  "private": true,
+  "description": "Copy-paste Tamagui components and screens, shown at tamagui.dev/bento",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./registry": "./src/registry.ts",
+    "./demos": "./src/demos.ts",
+    "./*": "./src/*/index.tsx"
+  },
+  "scripts": {
+    "generate:icons": "tamagui icons add --out src/icons $(node -p \"require('./icons.json').join(' ')\") && tamagui icons add Github=github-logo Facebook=facebook-logo --from phosphor --out src/icons && oxfmt src/icons",
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
+    "@ngneat/falso": "^7.3.0",
+    "@rehookify/datepicker": "^6.6.8",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/get-font-sized": "workspace:*",
+    "@tamagui/get-token": "workspace:*",
+    "@tamagui/helpers-icon": "workspace:*",
+    "@tamagui/linear-gradient": "workspace:*",
+    "@tamagui/roving-focus": "workspace:*",
+    "@tamagui/web": "workspace:*",
+    "@tanstack/react-table": "^8.11.2",
+    "@vxrn/color-scheme": "^1.27.1",
+    "expo-document-picker": "~57.0.1",
+    "expo-image-picker": "~57.0.7",
+    "react-dropzone": "^14.2.3",
+    "react-hook-form": "^7.51.0",
+    "react-native-gesture-handler": "~2.32.0",
+    "react-native-reanimated": "4.5.1",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-svg": "15.15.4",
+    "tamagui": "workspace:*",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@tamagui/cli": "workspace:*",
+    "react": "19.2.3",
+    "react-native": "0.86.2"
+  }
+}

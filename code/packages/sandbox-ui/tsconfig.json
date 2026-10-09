@@ -9,9 +9,6 @@
     },
     {
       "path": "../../ui/toast"
-    },
-    {
-      "path": "../lucide-icons"
     }
   ],
   "exclude": [

@@ -1,8 +1,13 @@
-import type { ThemeBuilder } from '@tamagui/theme-builder'
+import Module from 'node:module'
 import { join } from 'node:path'
 
-type ThemeBuilderInterceptOpts = {
-  onComplete: (result: { themeBuilder: ThemeBuilder<any> }) => void
+// resolver internals used to purge caches between invocations, absent from
+// @types/node and, in _pathCache's case, from bun. imported rather than read
+// off the ambient `module`, which does not exist when this package is loaded
+// as ESM.
+const ModuleInternals = Module as unknown as {
+  _resolveFilename(request: string, ...args: any[]): string
+  _pathCache?: Record<string, string>
 }
 
 let didRegisterOnce = false
@@ -12,17 +17,33 @@ export async function generateThemes(inputFile: string) {
 
   if (!didRegisterOnce) {
     didRegisterOnce = true
+    const nodeResolve = ModuleInternals._resolveFilename
     // the unregsiter does basically nothing and keeps a process running
     require('esbuild-register/dist/node').register({
       hookIgnoreNodeModules: false,
     })
+    // esbuild-register installs a tsconfig-paths hook that rewrites bare workspace
+    // workspace specifiers can resolve to source-tree directories that node cannot load.
+    // prefer real node
+    // resolution (package exports) for bare specifiers, falling back to the
+    // tsconfig-paths chain for packages whose dist isn't built.
+    const chained = ModuleInternals._resolveFilename
+    ModuleInternals._resolveFilename = function (request: string, ...args: any[]) {
+      if (request[0] !== '.' && !request.startsWith('/')) {
+        try {
+          return nodeResolve.call(this, request, ...args)
+        } catch {
+          // fall through to the tsconfig-paths chain
+        }
+      }
+      return chained.call(this, request, ...args)
+    }
   } else {
     purgeCache(inputFilePath)
   }
 
   let og = process.env.TAMAGUI_KEEP_THEMES
   process.env.TAMAGUI_KEEP_THEMES = '1'
-  process.env.TAMAGUI_RUN_THEMEBUILDER = '1'
 
   try {
     const requiredThemes = require(inputFilePath)
@@ -44,12 +65,16 @@ export async function generateThemes(inputFile: string) {
   }
 }
 
-/**
- * value -> name of variable
- */
-const dedupedTokens = new Map<string, string>()
+const themeSchemeKey = Symbol.for('tamagui.theme.scheme')
+
+function themeIdentity(theme: Record<string, any>) {
+  return JSON.stringify([theme, Reflect.get(theme, themeSchemeKey)])
+}
 
 function generatedThemesToTypescript(themes: Record<string, any>) {
+  // value -> name of variable. per invocation: a process-wide map would emit
+  // the previous run's colors into this run's `colors` array.
+  const dedupedTokens = new Map<string, string>()
   const dedupedThemes = new Map<string, object>()
   const dedupedThemeToNames = new Map<string, string[]>()
 
@@ -69,7 +94,7 @@ function generatedThemesToTypescript(themes: Record<string, any>) {
       }
     }
 
-    const key = JSON.stringify(theme)
+    const key = themeIdentity(theme)
     if (dedupedThemes.has(key)) {
       dedupedThemeToNames.set(key, [...dedupedThemeToNames.get(key)!, name])
     } else {
@@ -90,7 +115,7 @@ function generatedThemesToTypescript(themes: Record<string, any>) {
   const baseTypeString = `export type Theme = {
 ${baseKeys
   .map(([k]) => {
-    return `  ${k}: string;\n`
+    return `  ${JSON.stringify(k)}: string;\n`
   })
   .join('')}
 }`
@@ -99,11 +124,12 @@ ${baseKeys
 
   // add in the helper function to generate a theme:
   out += `
-function t(a: [number, number][]) {
+function t(a: [number, number][], scheme?: 'light' | 'dark') {
   let res: Record<string,string> = {}
   for (const [ki, vi] of a) {
     res[ks[ki] as string] = colors[vi] as string
   }
+  if (scheme) Object.defineProperty(res, Symbol.for('tamagui.theme.scheme'), { value: scheme })
   return res as Theme
 }
 `
@@ -122,7 +148,7 @@ function t(a: [number, number][]) {
   // add all keys array
   const keys = baseKeys.map(([k]) => k)
   out += `const ks = [\n`
-  out += keys.map((k) => `'${k}'`).join(',\n')
+  out += keys.map((k) => JSON.stringify(k)).join(',\n')
   out += `]\n\n`
 
   // add all themes
@@ -133,7 +159,7 @@ function t(a: [number, number][]) {
 
   dedupedThemes.forEach((theme) => {
     nameI++
-    const key = JSON.stringify(theme)
+    const key = themeIdentity(theme)
     const names = dedupedThemeToNames.get(key)!
     const name = `n${nameI}`
     const baseTheme = `const ${name} = ${objectToJsString(theme, keys, valueToIndex)}`
@@ -163,7 +189,8 @@ function objectToJsString(
     const vi = valueToIndex[obj[key]]
     arrItems.push(`[${ki}, ${vi}]`)
   }
-  return `t([${arrItems.join(',')}])`
+  const scheme = Reflect.get(obj, themeSchemeKey)
+  return `t([${arrItems.join(',')}]${scheme === 'light' || scheme === 'dark' ? `, ${JSON.stringify(scheme)}` : ''})`
 }
 
 /**
@@ -176,19 +203,16 @@ function purgeCache(moduleName) {
     delete require.cache[mod.id]
   })
 
-  // @ts-ignore
-  if (!module.constructor || !module.constructor._pathCache) {
-    // bun doesn't have this
+  const pathCache = ModuleInternals._pathCache
+  if (!pathCache) {
     return
   }
 
   // Remove cached paths to the module.
   // Thanks to @bentael for pointing this out.
-  // @ts-ignore
-  Object.keys(module.constructor._pathCache).forEach((cacheKey) => {
+  Object.keys(pathCache).forEach((cacheKey) => {
     if (cacheKey.indexOf(moduleName) > 0) {
-      // @ts-ignore
-      delete module.constructor._pathCache[cacheKey]
+      delete pathCache[cacheKey]
     }
   })
 }

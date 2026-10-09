@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { GestureResponderEvent, PressableProps, View, ViewProps } from 'react-native';
+import type { GestureResponderEvent, PressableProps, View, ViewProps } from '@tamagui/react-native-types';
 type SwitchBaseProps = ViewProps & Pick<PressableProps, 'onPress'>;
 export type SwitchExtraProps = {
     labeledBy?: string;
@@ -21,14 +21,14 @@ export declare function useSwitch<R extends View, P extends SwitchProps>(props: 
     bubbleInput: null;
 } | {
     switchProps: {
-        'aria-labelledby': string | undefined;
-        onPress: import("@tamagui/helpers").EventHandler<GestureResponderEvent> | undefined;
+        role: "switch";
+        'aria-checked': boolean;
         tabIndex?: 0 | undefined;
         'data-state'?: string | undefined;
         'data-disabled'?: string | undefined;
         disabled?: boolean | undefined;
-        role: "switch";
-        'aria-checked': boolean;
+        'aria-labelledby': string | undefined;
+        onPress: import("@tamagui/helpers").EventHandler<GestureResponderEvent> | undefined;
     };
     switchRef: (node: View) => void;
     /**

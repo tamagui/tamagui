@@ -1,0 +1,117 @@
+---
+title: Sizing
+description: The shared control size ladder, from named rungs to custom sizes
+---
+
+<IntroParagraph>
+  Every control that takes `size` reads from one shared ladder: five named
+  rungs (`xs` through `xl`) in your config's `sizing` key. A rung is token
+  keys plus geometry derived from them, so retuning your type or space scale
+  moves every control together.
+</IntroParagraph>
+
+## A rung
+
+Each entry of `sizing.sizes` is a `SizeRecipe`: six token keys, never pixels.
+
+<PropsTable
+  data={[
+    {
+      name: 'fontSize',
+      required: true,
+      type: 'string',
+      description: `Font size key for the rung's text. The line height resolves from the same key.`,
+    },
+    {
+      name: 'controlFontSize',
+      required: true,
+      type: 'string',
+      description: `Type-scale key the square controls (checkbox, radio, switch) size from. Usually the rung's own name, but text deliberately steps down at md/lg so buttons are not chunky while the squares stay on-scale.`,
+    },
+    {
+      name: 'paddingInline',
+      required: true,
+      type: 'string',
+      description: `Space key for horizontal padding.`,
+    },
+    {
+      name: 'paddingBlock',
+      required: true,
+      type: 'string',
+      description: `Space key for vertical padding.`,
+    },
+    {
+      name: 'gap',
+      required: true,
+      type: 'string',
+      description: `Space key for the gap between a control's parts.`,
+    },
+    {
+      name: 'radius',
+      required: true,
+      type: 'string',
+      description: `Radius key for the control frame.`,
+    },
+    {
+      name: 'px',
+      required: false,
+      type: '{ height: number; icon: number; square: number }',
+      description: `Explicit rung geometry, skipping derivation. For scales whose keys cannot derive the ladder: v5's numeric scales pin their heights here.`,
+    },
+  ]}
+/>
+
+## Derived values
+
+`resolveSizing` turns a rung into style-ready values: the six keys pass
+through to the style system, and three px numbers derive from the active font
+and the space scale.
+
+- `height`: the text line box plus vertical padding, before any border. A
+  button frame adds its 1px border on each side.
+- `icon`: the icon px for the rung: the font size rounded up to a multiple
+  of 4.
+- `square`: the checkbox box, radio circle, and switch track height: 1.4
+  times the control font size, rounded.
+
+## Custom sizes
+
+Spread `defaultSizing` and add rungs. New names are accepted everywhere a
+size is, typed as `ComponentSize`, with no component changes.
+
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig, defaultSizing } from '@tamagui/config/v6'
+
+export const config = createTamagui({
+  ...defaultConfig,
+  sizing: {
+    ...defaultSizing,
+    sizes: {
+      ...defaultSizing.sizes,
+      xxl: {
+        fontSize: 'xl',
+        controlFontSize: '2xl',
+        paddingInline: '10',
+        paddingBlock: '3',
+        gap: '3',
+        radius: 'xl',
+      },
+    },
+  },
+})
+```
+
+`sizing.default` names the rung `true` (and an absent size) resolves to.
+
+## Missing tokens
+
+A rung that names a token your config does not have throws in development,
+naming the size and the missing reference:
+
+```text
+size "xxl" references a missing token (fontSize "xl", controlFontSize "2xl", paddingBlock "3")
+```
+
+An unknown size name throws with the valid names listed. In production both
+degrade to the default rung. Prefer the error: it means a rung points at a
+scale your config never defined.

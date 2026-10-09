@@ -1,4 +1,5 @@
 import type { DedupedThemes, ThemeParsed } from '../types'
+import { copyAuthoredThemeScheme } from './themes'
 
 const themesRaw: Record<string, ThemeParsed> = {}
 
@@ -58,5 +59,5 @@ export function proxyThemeToParents(themeName: string, theme: ThemeParsed) {
     Object.assign(out, themesRaw[parent])
   }
   Object.assign(out, theme)
-  return out
+  return copyAuthoredThemeScheme(out, theme)
 }

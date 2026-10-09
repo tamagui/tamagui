@@ -34,7 +34,7 @@ describe('View', () => {
   //     <TestViewRenders
   //       renderCount={renderCount}
   //       backgroundColor="blue"
-  //       $sm={{ backgroundColor: 'red' }}
+  //       backgroundColor="sm:red"
   //     />
   //   )
 
@@ -54,7 +54,7 @@ describe('View', () => {
   //       renderCount={renderCount}
   //       backgroundColor="blue"
   //       // @ts-ignore
-  //       $sm={{ gap: '$2' }}
+  //       gap="sm:2"
   //     />
   //   )
 

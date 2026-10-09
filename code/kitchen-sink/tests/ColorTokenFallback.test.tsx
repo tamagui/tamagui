@@ -6,28 +6,26 @@ import { TEST_IDS } from '../src/constants/test-ids'
 /**
  * Tests for GitHub issue #3620: Theme switching broken after v1.132.15
  *
- * Color tokens should act as fallbacks - if a theme defines a value for the same key,
- * the theme value should take precedence over the color token.
- *
- * The bug was that Object.assign(theme, colorTokens) was overwriting theme values
- * with color token values instead of the other way around.
+ * V3 flat values resolve the property's configured token category before the
+ * unified theme namespace. A theme value remains the fallback when the bound
+ * color category has no matching token.
  */
 
 test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'ColorTokenFallback', type: 'useCase' })
 })
 
-test('theme value takes precedence over color token', async ({ page }) => {
+test('bound color token takes precedence over a same-named theme value', async ({
+  page,
+}) => {
   // The light_ColorTokenTest theme defines customRed as #00ff00 (green)
   // The color token customRed is #ff0000 (red)
-  // The theme value should win, so the background should be green
+  // The property-bound color token wins, so the background should be red.
   const square = page.locator(`#${TEST_IDS.colorTokenFallbackThemeValue}`)
   await expect(square).toBeVisible()
 
   const styles = await getStyles(square)
-  // rgb(0, 255, 0) is #00ff00 (green) - the theme value
-  // rgb(255, 0, 0) would be #ff0000 (red) - the color token value (wrong)
-  expect(styles.backgroundColor).toBe('rgb(0, 255, 0)')
+  expect(styles.backgroundColor).toBe('rgb(255, 0, 0)')
 })
 
 test('color token is used as fallback when theme does not define it', async ({

@@ -65,9 +65,6 @@ export function Animate({
           {...(!passThrough && {
             initial: props.initial ? undefined : false,
             onExitComplete: props.onExitComplete,
-            enterVariant: props.enterVariant,
-            exitVariant: props.exitVariant,
-            enterExitVariant: props.enterExitVariant,
             // BUGFIX: this causes continous re-renders if keepChildrenMounted is true, see HeaderMenu
             // but since we always re-render this component on open changes this should be fine to leave off?
             presenceAffectsLayout: false,

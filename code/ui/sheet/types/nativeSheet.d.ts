@@ -1,10 +1,9 @@
-import type { FunctionComponent } from 'react';
-import type { SheetProps } from './types';
-type SheetNativePlatforms = 'ios';
-export declare function getNativeSheet(platform: SheetNativePlatforms): FunctionComponent<SheetProps> | null;
-export declare function setupNativeSheet(platform: SheetNativePlatforms, RNIOSModal: {
-    ModalSheetView: any;
-    ModalSheetViewMainContent: any;
-}): void;
-export {};
+import type { Ref } from 'react';
+import type { View } from '@tamagui/react-native-types';
+import type { ComponentType } from 'react';
+import type { NativeSheetRenderer, SheetNativePlatforms, SheetProps } from './types';
+export declare function getNativeSheet(_platform: SheetNativePlatforms): ComponentType<SheetProps & {
+    ref?: Ref<View>;
+}> | null;
+export declare function setupNativeSheet(_platform: SheetNativePlatforms, _Renderer: NativeSheetRenderer): void;
 //# sourceMappingURL=nativeSheet.d.ts.map

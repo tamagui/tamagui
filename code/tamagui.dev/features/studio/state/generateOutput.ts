@@ -8,7 +8,7 @@ const generateColorConfig = (input: ColorsStore) => {
     for (const scale of Object.values(palette.scales)) {
       let idx = 0
       for (const color of scale.colors) {
-        const colorKey = [`${scale.name}${idx + 1}`]
+        const colorKey = [`${scale.name}-${idx + 1}`]
         const key = `${colorKey}${palette.name}`
         colors[key] = `hsl(${color.hue}, ${color.saturation}%, ${color.lightness}%)`
         idx++
@@ -25,7 +25,7 @@ const generateColorConfig = (input: ColorsStore) => {
 export const generateOutput = (globalStore: ReturnType<typeof useGlobalState>) => {
   const animations = globalStore.animations.draftAnimations
 
-  return `import { config as baseConfig } from '@tamagui/config/v3'
+  return `import { defaultConfig as baseConfig } from '@tamagui/config/v6'
 import { createTamagui } from 'tamagui'
 import { createAnimations } from '@tamagui/animations-react-native'
 

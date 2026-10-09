@@ -1,63 +1,42 @@
-import {
-  Toast,
-  ToastProvider as ToastProviderOG,
-  ToastViewport,
-  useToastController,
-  useToastState,
-  type ToastProps,
-} from '@tamagui/toast'
-import { Theme, YStack } from 'tamagui'
+import type { ReactNode } from 'react'
+import { Theme, Toast, toast, type ExternalToast } from 'tamagui'
 
-export let toastController: ReturnType<typeof useToastController>
-
-// this feels weird but it works... TODO: might want to add some variation of this to @tamagui/toast cause useToastController can be a bit cumbersome to use outside react
-const ToastImportHandler = () => {
-  toastController = useToastController()
-  return null
+// v3 removed the old imperative Toast (ToastProvider/ToastViewport/useToastController).
+// This is a thin site-local adapter over the `toast()` + composable `<Toast>` API so
+// the studio's many `toastController.show(title, { message })` call sites keep
+// working. `message` maps to the new `description`.
+type ShowOptions = Omit<ExternalToast, 'description'> & {
+  message?: ReactNode
+  demo?: boolean
+  // the old API accepted arbitrary custom fields (customData, per-toast theme, …);
+  // the styled Toast.List owns the look, so extra keys are accepted and ignored.
+  customData?: Record<string, unknown>
+  [key: string]: unknown
 }
 
-export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <ToastProviderOG swipeDirection="vertical" swipeThreshold={80}>
-      <ToastHandler />
+export const toastController = {
+  show: (title: string, options?: ShowOptions) => {
+    const { message, demo, customData, ...rest } = options ?? {}
+    // studio previously suppressed demo toasts in its custom handler
+    if (demo) return
+    return toast(title, { description: message, ...(rest as ExternalToast) })
+  },
+  hide: () => {
+    toast.dismiss()
+  },
+}
 
+export const ToastProvider = ({ children }: { children: ReactNode }) => {
+  return (
+    <>
       {children}
-      <ToastImportHandler />
-      <ToastViewport m="$0.5" left="50%" x="-50%" bottom={0} />
-    </ToastProviderOG>
+      <Theme name="accent">
+        <Toast position="bottom-center" swipeDirection="vertical">
+          <Toast.Viewport>
+            <Toast.List />
+          </Toast.Viewport>
+        </Toast>
+      </Theme>
+    </>
   )
-}
-
-const ToastHandler = () => {
-  const toast = useToastState()
-
-  // avoid rendering the toast if it's a demo toast
-  if (!toast || toast?.demo) return null
-
-  return (
-    <Theme name="accent">
-      <Toast
-        key={toast.title + toast.message}
-        duration={toast.duration ?? 3000}
-        transition="200ms"
-        enterStyle={{ opacity: 0, y: 50 }}
-        exitStyle={{ opacity: 0, y: 50 }}
-        y={-20}
-        b={0}
-        opacity={1}
-        gap={0}
-        elevation="$4"
-        {...toast.customData}
-      >
-        <YStack gap={0}>
-          <Toast.Title>{toast.title}</Toast.Title>
-          <Toast.Description>{toast.message}</Toast.Description>
-        </YStack>
-      </Toast>
-    </Theme>
-  )
-}
-
-declare module '@tamagui/toast' {
-  interface CustomData extends ToastProps {}
 }

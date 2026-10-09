@@ -1,105 +1,62 @@
-import type { SizeVariantSpreadFunction } from '@tamagui/core'
-import { Text } from '@tamagui/core'
-import { getVariableValue, isWeb } from '@tamagui/core'
-import { getButtonSized } from '@tamagui/get-button-sized'
-import { getFontSized } from '@tamagui/get-font-sized'
-import { getSpace } from '@tamagui/get-token'
+import { getVariableValue, resolveTextMetrics } from '@tamagui/core'
 
+// Structural-only defaults for the unstyled Input behavior primitive.
+// Sizing (padding, font, radius) lives in the tamagui skin
+// (code/ui/tamagui/src/components/Input.tsx), which owns a size table per
+// size. Theme decoration (palette, border, background, font family, hover/focus
+// color styling) lives there too, NOT here. Kept: the native outline reset,
+// tab focusability, and the flex-overflow fix.
 export const defaultStyles = {
-  size: '$true',
-  fontFamily: '$body',
-  borderWidth: 1,
   outlineWidth: 0,
-  color: '$color',
-
-  ...(isWeb
-    ? {
-        tabIndex: 0 as const,
-      }
-    : {
-        focusable: true,
-      }),
-
-  borderColor: '$borderColor',
-  backgroundColor: '$background',
+  tabIndex: 0,
 
   // this fixes a flex bug where it overflows container
   minWidth: 0,
-
-  hoverStyle: {
-    borderColor: '$borderColorHover',
-  },
-
-  focusStyle: {
-    borderColor: '$borderColorFocus',
-  },
-
-  focusVisibleStyle: {
-    outlineColor: '$outlineColor',
-    outlineWidth: 2,
-    outlineStyle: 'solid',
-  },
 } as const
 
-export const inputSizeVariant: SizeVariantSpreadFunction<any> = (
-  val = '$true',
-  extras
+// Textarea height from `rows`: lines times the font's line height for the
+// explicit fontSize/lineHeight when given, else the font's default size.
+export const resolveTextAreaSize = (
+  props: Record<string, any>,
+  env: {
+    font?: { size: Record<string, any>; lineHeight?: Record<string, any> }
+    fonts: Record<string, { size: Record<string, any>; lineHeight?: Record<string, any> }>
+  }
 ) => {
-  // Check for textarea mode via tag, rows, multiline, or numberOfLines
-  if (
-    extras.props.tag === 'textarea' ||
-    extras.props.rows > 1 ||
-    extras.props.multiline ||
-    extras.props.numberOfLines > 1
-  ) {
-    return textAreaSizeVariant(val, extras)
+  const font = props.fontFamily ? env.fonts[props.fontFamily] : env.font
+  const defaultKey = font && 'sm' in font.size ? 'sm' : '4'
+  const fontSize = props.fontSize ?? defaultKey
+  const lineHeight = props.lineHeight ?? font?.lineHeight?.[defaultKey]
+  const configuredSize = typeof fontSize === 'string' ? font?.size[fontSize] : undefined
+  const configuredLeading =
+    typeof lineHeight === 'string' ? font?.lineHeight?.[lineHeight] : undefined
+  const metrics: Record<string, unknown> = {
+    fontSize: Number.parseFloat(String(getVariableValue(configuredSize ?? fontSize))),
   }
-  const buttonStyles = getButtonSized(val, extras)
-  const paddingHorizontal = getSpace(val, {
-    shift: -1,
-    bounds: [2],
-  })
-  const fontStyle = getFontSized(val as any, extras)
-  // lineHeight messes up input on native
-  if (!isWeb && fontStyle) {
-    delete fontStyle['lineHeight']
-  }
+  const leading = configuredLeading ?? lineHeight
+  resolveTextMetrics(
+    metrics,
+    (props.lineHeight == null || configuredLeading !== undefined) &&
+      typeof leading === 'number'
+      ? `${leading}px`
+      : leading
+  )
+  const lines = props.rows ?? props.numberOfLines
+  const height =
+    typeof lines === 'number' && typeof metrics.lineHeight === 'number'
+      ? lines * metrics.lineHeight
+      : undefined
   return {
-    ...fontStyle,
-    ...buttonStyles,
-    paddingHorizontal,
+    height,
   }
 }
 
-export const textAreaSizeVariant: SizeVariantSpreadFunction<any> = (
-  val = '$true',
-  extras
+export const resolveMultilineInputSize = (
+  props: Record<string, any>,
+  env: Parameters<typeof resolveTextAreaSize>[1]
 ) => {
-  const { props } = extras
-  const buttonStyles = getButtonSized(val, extras)
-  const fontStyle = getFontSized(val as any, extras)!
-  const lines = props.rows ?? props.numberOfLines
-  const height =
-    typeof lines === 'number' ? lines * getVariableValue(fontStyle.lineHeight) : 'auto'
-  // lineHeight messes up input on native
-  if (!isWeb && fontStyle) {
-    delete fontStyle['lineHeight']
-  }
-  const paddingVertical = getSpace(val, {
-    shift: -2,
-    bounds: [2],
-  })
-  const paddingHorizontal = getSpace(val, {
-    shift: -1,
-    bounds: [2],
-  })
-  return {
-    ...buttonStyles,
-    ...fontStyle,
-    paddingVertical,
-    paddingHorizontal,
-    height,
-  }
+  if (!(props.rows > 1 || props.multiline || props.numberOfLines > 1)) return
+  return resolveTextAreaSize(props, env)
 }
 export const INPUT_NAME = 'Input'
 
@@ -107,41 +64,15 @@ export const styledBody = [
   {
     name: INPUT_NAME,
     render: 'input',
+    ...defaultStyles,
     variants: {
-      unstyled: {
-        true: {
-          // reset browser <input>/<textarea> defaults
-          outlineWidth: 0,
-          borderWidth: 0,
-          backgroundColor: 'transparent',
-        },
-        false: defaultStyles,
-      },
-
-      size: {
-        '...size': inputSizeVariant,
-      },
-
       disabled: {
         true: {},
       },
     } as const,
-
-    defaultVariants: {
-      unstyled: process.env.TAMAGUI_HEADLESS === '1',
-    },
   },
 
   {
     isInput: true,
-    accept: {
-      placeholderTextColor: 'color',
-      selectionColor: 'color',
-      cursorColor: 'color',
-      selectionHandleColor: 'color',
-      underlineColorAndroid: 'color',
-    } as const,
-
-    validStyles: Text.staticConfig.validStyles,
   },
 ] as const

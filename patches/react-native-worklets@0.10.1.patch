@@ -1,0 +1,135 @@
+diff --git a/lib/module/mock.js b/lib/module/mock.js
+index b6426e5410ce3c9d396163c542704b37fa70581e..4cd74c1c8dcfe99f4d3873157512a79feb579ac4 100644
+--- a/lib/module/mock.js
++++ b/lib/module/mock.js
+@@ -29,13 +29,18 @@ const WorkletAPI = {
+   isSynchronizable: () => false,
+   getRuntimeKind: () => RuntimeKind.ReactNative,
+   RuntimeKind: RuntimeKind,
++  UIRuntimeId: RuntimeKind.UI,
++  toggleSlowAnimationsOnUIRuntime: () => false,
+   createWorkletRuntime: NOOP_FACTORY,
++  getUIRuntimeHolder: NOOP,
++  getUISchedulerHolder: NOOP,
+   runOnRuntime: ID,
+   runOnRuntimeAsync(_workletRuntime, worklet, ...args) {
+     return WorkletAPI.runOnUIAsync(worklet, ...args);
+   },
+   scheduleOnRuntime: IMMEDIATE_CALLBACK_INVOCATION,
+   createSerializable: ID,
++  createShareable: ID,
+   isSerializableRef: ID,
+   serializableMappingCache: new Map(),
+   createSynchronizable: ID,
+@@ -78,8 +83,39 @@ const WorkletAPI = {
+   isWorkletFunction: isWorkletFunction,
+   WorkletsModule: {}
+ };
+-module.exports = {
+-  __esModule: true,
+-  ...WorkletAPI
+-};
++export const {
++  isShareableRef,
++  makeShareable,
++  makeShareableCloneOnUIRecursive,
++  makeShareableCloneRecursive,
++  shareableMappingCache,
++  getStaticFeatureFlag,
++  setDynamicFeatureFlag,
++  isSynchronizable,
++  getRuntimeKind,
++  UIRuntimeId,
++  toggleSlowAnimationsOnUIRuntime,
++  createWorkletRuntime,
++  getUIRuntimeHolder,
++  getUISchedulerHolder,
++  runOnRuntime,
++  runOnRuntimeAsync,
++  scheduleOnRuntime,
++  createSerializable,
++  createShareable,
++  isSerializableRef,
++  serializableMappingCache,
++  createSynchronizable,
++  callMicrotasks,
++  executeOnUIRuntimeSync,
++  runOnJS,
++  runOnUI,
++  runOnUIAsync,
++  runOnUISync,
++  scheduleOnRN,
++  scheduleOnUI,
++  WorkletsModule
++} = WorkletAPI;
++export { isWorkletFunction, RuntimeKind };
++export default WorkletAPI;
+ //# sourceMappingURL=mock.js.map
+diff --git a/src/mock.ts b/src/mock.ts
+index b82bb310c288221b392282d8660738e525aac9ab..94d2cc7794e63fd2903fd9cdaa840f2d552d1275 100644
+--- a/src/mock.ts
++++ b/src/mock.ts
+@@ -33,7 +33,11 @@ const WorkletAPI = {
+   isSynchronizable: () => false,
+   getRuntimeKind: () => RuntimeKind.ReactNative,
+   RuntimeKind: RuntimeKind,
++  UIRuntimeId: RuntimeKind.UI,
++  toggleSlowAnimationsOnUIRuntime: () => false,
+   createWorkletRuntime: NOOP_FACTORY,
++  getUIRuntimeHolder: NOOP,
++  getUISchedulerHolder: NOOP,
+   runOnRuntime: ID,
+   runOnRuntimeAsync<Args extends unknown[], ReturnValue>(
+     _workletRuntime: unknown,
+@@ -44,6 +48,7 @@ const WorkletAPI = {
+   },
+   scheduleOnRuntime: IMMEDIATE_CALLBACK_INVOCATION,
+   createSerializable: ID,
++  createShareable: ID,
+   isSerializableRef: ID,
+   serializableMappingCache: new Map(),
+   createSynchronizable: ID,
+@@ -105,7 +110,39 @@ const WorkletAPI = {
+   WorkletsModule: {},
+ };
+ 
+-module.exports = {
+-  __esModule: true,
+-  ...WorkletAPI,
+-};
++export const {
++  isShareableRef,
++  makeShareable,
++  makeShareableCloneOnUIRecursive,
++  makeShareableCloneRecursive,
++  shareableMappingCache,
++  getStaticFeatureFlag,
++  setDynamicFeatureFlag,
++  isSynchronizable,
++  getRuntimeKind,
++  UIRuntimeId,
++  toggleSlowAnimationsOnUIRuntime,
++  createWorkletRuntime,
++  getUIRuntimeHolder,
++  getUISchedulerHolder,
++  runOnRuntime,
++  runOnRuntimeAsync,
++  scheduleOnRuntime,
++  createSerializable,
++  createShareable,
++  isSerializableRef,
++  serializableMappingCache,
++  createSynchronizable,
++  callMicrotasks,
++  executeOnUIRuntimeSync,
++  runOnJS,
++  runOnUI,
++  runOnUIAsync,
++  runOnUISync,
++  scheduleOnRN,
++  scheduleOnUI,
++  WorkletsModule,
++} = WorkletAPI;
++
++export { isWorkletFunction, RuntimeKind };
++export default WorkletAPI;

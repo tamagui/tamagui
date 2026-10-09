@@ -1,0 +1,14 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "strict": true
+  },
+  "references": [],
+  "exclude": [
+    "types",
+    "dist",
+    "vitest.config.*",
+    "**/*.test-d.ts"
+  ]
+}

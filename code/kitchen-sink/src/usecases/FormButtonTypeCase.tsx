@@ -6,13 +6,13 @@ export function FormButtonTypeCase() {
   const [buttonClicked, setButtonClicked] = useState(false)
 
   return (
-    <YStack gap="$4" padding="$4">
+    <YStack gap="4" padding="4">
       <Form
         onSubmit={() => {
           setSubmitted(true)
         }}
       >
-        <YStack gap="$2">
+        <YStack gap="2">
           <Input data-testid="form-input" placeholder="Press enter to submit" />
 
           <Button data-testid="regular-button" onPress={() => setButtonClicked(true)}>

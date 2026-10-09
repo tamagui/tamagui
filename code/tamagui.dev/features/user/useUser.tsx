@@ -4,7 +4,6 @@ import useSWR, { useSWRConfig } from 'swr'
 import { Spinner, YStack } from 'tamagui'
 import { useOfflineMode } from '~/hooks/useOfflineMode'
 import type { UserContextType } from '../auth/types'
-import { userSubscriptionStatus } from './userSubscriptionStatus'
 import { getAccessToken } from '../auth/useSupabaseClient'
 
 export let currentUser: UserContextType | null = null
@@ -20,10 +19,12 @@ export const useUser = () => {
 
       // Get access token from localStorage-based auth
       const accessToken = await getAccessToken()
+      if (!accessToken) {
+        return null
+      }
 
-      const headers: HeadersInit = {}
-      if (accessToken) {
-        headers['Authorization'] = `Bearer ${accessToken}`
+      const headers: HeadersInit = {
+        Authorization: `Bearer ${accessToken}`,
       }
 
       const res = await fetch('/api/user', { headers })
@@ -51,7 +52,6 @@ export const useUser = () => {
 
   return {
     ...response,
-    subscriptionStatus: userSubscriptionStatus(response.data ?? undefined),
     refresh() {
       mutate('user')
     },

@@ -1,4 +1,5 @@
 import type { Scope } from '@tamagui/create-context';
+import type { TamaguiChangeEventDetails } from '@tamagui/core';
 import type React from 'react';
 export type ScopedProps<P> = P & {
     __scopeFocusScope?: Scope;
@@ -21,15 +22,24 @@ export interface FocusScopeProps {
      */
     trapped?: boolean;
     /**
-     * Event handler called when auto-focusing on mount.
-     * Can be prevented.
+     * When `true`, enables a "zero focus" mode: while active, focus is
+     * allowed neither inside nor outside the scope. Any element that
+     * receives focus is immediately blurred so `document.activeElement`
+     * settles on `document.body`. Takes precedence over `trapped` and
+     * auto-focus behavior. Web only.
+     * @default false
      */
-    onMountAutoFocus?: (event: Event) => void;
+    noFocus?: boolean;
+    /**
+     * Event handler called when auto-focusing on mount.
+     * Can be canceled.
+     */
+    onMountAutoFocus?: (details: TamaguiChangeEventDetails<'trigger-focus', Event>) => void;
     /**
      * Event handler called when auto-focusing on unmount.
-     * Can be prevented.
+     * Can be canceled.
      */
-    onUnmountAutoFocus?: (event: Event) => void;
+    onUnmountAutoFocus?: (details: TamaguiChangeEventDetails<'focus-out', Event>) => void;
     /**
      * If unmount is animated, you want to force re-focus at start of animation not after
      */
@@ -43,11 +53,7 @@ export interface FocusScopeProps {
         min?: number;
         max?: number;
     };
-    children?: React.ReactNode | ((props: {
-        onKeyDown: (event: React.KeyboardEvent) => void;
-        tabIndex?: number;
-        ref: React.ForwardedRef<any>;
-    }) => React.ReactNode);
+    children?: React.ReactNode;
     asChild?: boolean;
 }
 //# sourceMappingURL=types.d.ts.map

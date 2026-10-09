@@ -1,0 +1,12 @@
+{
+  "name": "@tamagui/evaluation-fixture",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./value": {
+      "import": "./esm/value.mjs",
+      "require": "./cjs/value.cjs",
+      "default": "./esm/value.mjs"
+    }
+  }
+}

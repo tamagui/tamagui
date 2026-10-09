@@ -1,50 +1,26 @@
 import type { Endpoint } from 'one'
 import { getQuery } from '~/features/api/getQuery'
-import { getBentoComponentCategory } from '~/features/auth/supabaseAdmin'
-import { hasProAccess } from '~/features/bento/hasProAccess'
-import { OSS_COMPONENTS } from '../../code+api'
-import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
+import { listBentoGroupFiles } from '~/features/bento/bentoSource'
 
 export const GET: Endpoint = async (req) => {
   const query = getQuery(req)
-  const fileName = Array.isArray(query.fileName) ? query.fileName[0] : query.fileName
-
-  // Check if it's an OSS component first - no auth required for OSS
-  if (OSS_COMPONENTS.includes(fileName)) {
-    return Response.json(
-      await getBentoComponentCategory({
-        categoryPath: Array.isArray(query.section) ? query.section[0] : query.section,
-        categorySectionPath: Array.isArray(query.part) ? query.part[0] : query.part,
-        fileName: fileName,
-      })
-    )
-  }
-
-  // For non-OSS components, require authentication
-  const authHeader = req.headers.get('authorization')
-  const token = authHeader?.split(' ')[1]
-
-  if (!token) {
-    return Response.json({ error: 'no_token_provided' }, { status: 401 })
-  }
-
-  // Validate the token
-  const { data: user, error } = await supabaseAdmin.auth.getUser(token)
-  if (error || !user) {
-    return Response.json({ error: 'invalid_token' }, { status: 401 })
-  }
-
-  // Check Pro access
-  const hasPro = await hasProAccess(user.user.id)
-  if (!hasPro) {
-    return Response.json({ error: 'not_authorized' }, { status: 401 })
-  }
+  const first = (val: string | string[]) => (Array.isArray(val) ? val[0] : val)
+  const groups = listBentoGroupFiles(
+    first(query.section),
+    first(query.part),
+    first(query.fileName)
+  )
+  const origin = new URL(req.url).origin
 
   return Response.json(
-    await getBentoComponentCategory({
-      categoryPath: Array.isArray(query.section) ? query.section[0] : query.section,
-      categorySectionPath: Array.isArray(query.part) ? query.part[0] : query.part,
-      fileName: fileName,
-    })
+    Object.fromEntries(
+      Object.entries(groups).map(([dir, paths]) => [
+        dir,
+        paths.map((path) => ({
+          path,
+          downloadUrl: `${origin}/api/bento/code?${new URLSearchParams({ path })}`,
+        })),
+      ])
+    )
   )
 }

@@ -4,12 +4,13 @@ import { styled } from '@tamagui/web'
 import { SizableText } from './SizableText'
 
 export const Paragraph = styled(SizableText, {
-  name: 'Paragraph',
+  displayName: 'Paragraph',
+  className: 'tm-paragraph',
   render: 'p',
   userSelect: 'auto',
-  color: '$color',
-  size: '$true',
+  color: 'color',
   whiteSpace: 'normal',
+  size: true,
 })
 
 export type ParagraphProps = GetProps<typeof Paragraph>

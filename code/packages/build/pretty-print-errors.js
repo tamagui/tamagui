@@ -1,36 +1,6 @@
 /* eslint-disable no-console */
 
 /**
- * Pretty print TypeScript diagnostics with file location and error codes
- * @param {import('typescript').Diagnostic[]} diagnostics
- * @param {import('typescript')} ts
- */
-function printTypescriptDiagnostics(diagnostics, ts) {
-  console.error('\n❌ TypeScript compilation errors:\n')
-
-  diagnostics.forEach((diagnostic) => {
-    const messageText =
-      typeof diagnostic.messageText === 'string'
-        ? diagnostic.messageText
-        : diagnostic.messageText?.messageText || JSON.stringify(diagnostic.messageText)
-
-    if (diagnostic.file && diagnostic.start !== undefined) {
-      const { line, character } = ts.getLineAndCharacterOfPosition(
-        diagnostic.file,
-        diagnostic.start
-      )
-      console.error(
-        `  ${diagnostic.file.fileName}:${line + 1}:${character + 1} - error TS${diagnostic.code}: ${messageText}`
-      )
-    } else {
-      console.error(`  error TS${diagnostic.code}: ${messageText}`)
-    }
-  })
-
-  console.error('')
-}
-
-/**
  * Pretty print esbuild errors with file location and code snippets
  * @param {Error & { errors?: any[], warnings?: any[] }} err
  */
@@ -158,7 +128,6 @@ function printOxcErrors(errors) {
 }
 
 module.exports = {
-  printTypescriptDiagnostics,
   printEsbuildError,
   printBuildError,
   printTypescriptCompilationError,
