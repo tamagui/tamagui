@@ -119,7 +119,7 @@ export function OwnedSourceBlock({ source }: { source: OwnedSource }) {
             Dependencies
           </Paragraph>
           <XStack items="center" gap="1-5">
-            <Code fontSize="2" flex={1}>
+            <Code fontSize="2" flex={1} minW={0} overflow="auto">
               {install}
             </Code>
             <Button

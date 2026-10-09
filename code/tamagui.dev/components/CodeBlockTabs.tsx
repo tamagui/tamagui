@@ -31,7 +31,7 @@ export function CodeBlockTabs({
         flex={1}
         lineHeight={codeLineHeight}
         {...(showTabs && {
-          whiteSpace: 'nowrap',
+          whiteSpace: 'pre',
         })}
         {...rest}
         className={className}
