@@ -11,7 +11,7 @@ export interface UnitContext {
   isFontSizeProp: boolean
 }
 
-const UNIT_RE = /^([+-]?\s*\d*\.?\d+)(px|rem|em|vw|vh|vmin|vmax|cqi|cqw|cqh|cqb)?$/i
+const UNIT_RE = /^([+-]?\s*\d*\.?\d+)(px|rem|em|[dls]?vw|[dls]?vh|vmin|vmax|cqi|cqw|cqh|cqb)?$/i
 
 export function isDynamicUnitValue(value: unknown): boolean {
   if (typeof value !== 'string') return false
@@ -94,9 +94,17 @@ export function resolveSingleUnit(val: string, ctx: UnitContext): number {
       return num * ctx.remBaseFontSize * (ctx.isFontSizeProp ? 1 : ctx.fontScale)
     case 'em':
       return num * ctx.elementFontSize
+    // a native window has no collapsing browser chrome, so the dynamic, large
+    // and small viewports are all the window
     case 'vw':
+    case 'dvw':
+    case 'lvw':
+    case 'svw':
       return (num / 100) * ctx.windowWidth
     case 'vh':
+    case 'dvh':
+    case 'lvh':
+    case 'svh':
       return (num / 100) * ctx.windowHeight
     case 'vmin':
       return (num / 100) * Math.min(ctx.windowWidth, ctx.windowHeight)

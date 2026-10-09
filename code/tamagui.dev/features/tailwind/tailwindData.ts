@@ -131,7 +131,7 @@ export const classToProp: { cls: string; prop: string }[] = [
 export type Support = 'full' | 'partial' | 'web' | 'none'
 
 export const coverageSummary: { name: string; pct: number; cross: boolean }[] = [
-  { name: 'Tamagui', pct: 54.1, cross: true },
+  { name: 'Tamagui', pct: 54.4, cross: true },
   { name: 'NativeWind', pct: 52.5, cross: true },
   { name: 'Uniwind', pct: 50.8, cross: true },
 ]
@@ -183,7 +183,7 @@ export const coverageRows: CoverageRow[] = [
   },
   {
     utility: 'width / height',
-    tamagui: 'partial',
+    tamagui: 'full',
     tailwind: 'web',
     nativewind: 'partial',
     uniwind: 'full',

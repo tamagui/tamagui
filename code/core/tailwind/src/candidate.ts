@@ -92,6 +92,7 @@ function tailwindSizingValue(prop: string, value: string): string | null {
   if (value === 'full') return '100%'
   if (value === 'auto') return 'auto'
   if (value === 'screen') return /[Hh]eight|[Bb]lock/.test(prop) ? '100vh' : '100vw'
+  if (/^[dls]v[hw]$/.test(value)) return `100${value}`
   if (value === 'min') return 'min-content'
   if (value === 'max') return 'max-content'
   if (value === 'fit') return 'fit-content'
@@ -442,7 +443,7 @@ const nativeUnsupportedProps = new Set([
   'whiteSpace',
   'visibility',
 ])
-const nativeUnsupportedSizingValues = new Set(['screen', 'min', 'max', 'fit'])
+const nativeUnsupportedSizingValues = new Set(['min', 'max', 'fit'])
 // values outside react native's style unions, which native would drop
 const nativeUnsupportedValues: Record<string, Set<string>> = {
   display: new Set(['block', 'inline', 'inline-flex']),

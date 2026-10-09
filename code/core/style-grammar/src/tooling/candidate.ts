@@ -64,7 +64,20 @@ export type CandidateClassification =
   | { kind: 'tamagui'; parsed: ParsedCandidate }
   | { kind: 'passthrough'; reason: string }
 
-const sizingConveniences = new Set(['full', 'auto', 'screen', 'min', 'max', 'fit'])
+const sizingConveniences = new Set([
+  'full',
+  'auto',
+  'screen',
+  'dvh',
+  'lvh',
+  'svh',
+  'dvw',
+  'lvw',
+  'svw',
+  'min',
+  'max',
+  'fit',
+])
 const fontGenerics = new Set(['sans', 'serif', 'mono'])
 const numericPattern = /^\d+(?:\.\d+)?$/
 

@@ -47,7 +47,7 @@ claims the classes it maps and hands the rest to the official engine.
 
 | Library    | Covered on native | Share of registry |
 | ---------- | ----------------: | ----------------: |
-| Tamagui    |            12,603 |            54.12% |
+| Tamagui    |            12,674 |            54.43% |
 | NativeWind |            12,231 |            52.53% |
 | Uniwind    |            11,833 |            50.82% |
 
