@@ -83,9 +83,19 @@ while (true) {
     process.exit(2)
   }
 
-  const runs = allRuns.filter(
+  let runs = allRuns.filter(
     (run) => workflows.size === 0 || workflows.has(run.workflowName)
   )
+  if (workflows.size > 0) {
+    const latestRuns = new Map<string, (typeof runs)[number]>()
+    for (const run of runs) {
+      const previous = latestRuns.get(run.workflowName)
+      if (!previous || run.databaseId > previous.databaseId) {
+        latestRuns.set(run.workflowName, run)
+      }
+    }
+    runs = [...latestRuns.values()]
+  }
   const allWorkflowsPresent = [...workflows].every((name) =>
     runs.some((run) => run.workflowName === name)
   )
@@ -108,7 +118,9 @@ while (true) {
         console.info(`${run.workflowName}: ${run.conclusion} ${run.url}`)
       }
 
-      const accepted = new Set(['success', 'neutral', 'skipped'])
+      const accepted = new Set(
+        workflows.size > 0 ? ['success'] : ['success', 'neutral', 'skipped']
+      )
       process.exit(runs.every((run) => accepted.has(run.conclusion)) ? 0 : 1)
     }
   } else {

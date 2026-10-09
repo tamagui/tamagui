@@ -95,7 +95,11 @@ validate native dependency compatibility before paying for prebuild and builds.
 
 The CI watcher accepts repeated `--workflow <name>` arguments to watch only the
 required workflows. It requires every selected workflow to appear before it
-can report a verdict. Run it detached through Team Machine, for example:
+can report a verdict. Selected workflows use their newest run for the exact
+SHA and require success, so older superseded cancellations do not override
+the current result. Runtime probes reproduce the cancelled-copy failure
+before repair and then cover current success, failure, pending, skipped,
+missing-workflow, and unrelated-red cases. Run it detached through Team Machine, for example:
 
 ```sh
 tm wait --exec "bun scripts/watch-ci.ts --sha <commit> --workflow Checks --workflow 'Native Tests (Detox)' --workflow 'Test iOS Native (Maestro)'" --timeout 50m
