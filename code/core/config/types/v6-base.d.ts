@@ -508,6 +508,13 @@ export declare const tokens: {
         readonly '6xl': 1152;
         readonly '7xl': 1280;
     };
+    readonly borderWidth: {
+        readonly 0: 0;
+        readonly 1: 1;
+        readonly 2: 2;
+        readonly 4: 4;
+        readonly 8: 8;
+    };
     readonly outlineWidth: {
         readonly 0: 0;
         readonly 1: 1;
@@ -534,6 +541,7 @@ export declare const tokens: {
         readonly lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)';
         readonly xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)';
         readonly '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)';
+        readonly inner: 'inset 0 2px 4px 0 rgb(0 0 0 / 0.05)';
     };
     readonly perspective: {
         readonly dramatic: 100;

@@ -43,9 +43,8 @@
     "clean:ts": "tsc -b --clean tsconfig.build.json",
     "clean": "node ./code/packages/build/tamagui-build-workspace.js --script clean:build",
     "create": "./node_modules/.bin/create-tamagui",
-    "dev:build": "cd code/tamagui.dev && bun run build:prod",
+    "dev:build": "cd code/tamagui.dev && bun run build:static",
     "dev:extract": "TAMAGUI_EXTRACT=1 cd code/tamagui.dev && bun run dev:clean",
-    "dev:prod-only-homepage": "bun run dev:build --only index && bun run dev:serve",
     "dev:prod": "bun run dev:build && bun run dev:serve",
     "dev:serve": "cd code/tamagui.dev && bun run serve",
     "dev": "cd code/tamagui.dev && bun run dev:clean",
@@ -151,6 +150,7 @@
     "typescript": "7.0.2"
   },
   "overrides": {
+    "expo-modules-autolinking": "57.0.13",
     "@babel/core": "7.29.7",
     "@discordjs/rest": "2.6.1",
     "@grpc/grpc-js": "1.14.4",
@@ -251,6 +251,8 @@
     "brace-expansion@5.0.6": "patches/brace-expansion@5.0.6.patch",
     "detox@20.47.0": "patches/detox@20.47.0.patch",
     "react-native-ios-utilities@5.2.0": "patches/react-native-ios-utilities@5.2.0.patch",
-    "react-native-worklets@0.12.2": "patches/react-native-worklets@0.12.2.patch"
+    "react-native-worklets@0.12.2": "patches/react-native-worklets@0.12.2.patch",
+    "expo@57.0.24": "patches/expo@57.0.24.patch",
+    "expo-modules-autolinking@57.0.13": "patches/expo-modules-autolinking@57.0.13.patch"
   }
 }

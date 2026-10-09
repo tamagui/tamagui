@@ -19,7 +19,13 @@ export function getTokenCategoryForProperty(
     return 'font'
   }
   if (property === 'zIndex') return 'zIndex'
-  if (property === 'color' || property.endsWith('Color')) return 'color'
+  if (
+    property === 'color' ||
+    property === 'fill' ||
+    property === 'stroke' ||
+    property.endsWith('Color')
+  )
+    return 'color'
   if (property.endsWith('Radius')) {
     return property === 'shadowRadius' ? 'size' : 'radius'
   }

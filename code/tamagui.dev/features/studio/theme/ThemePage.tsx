@@ -32,7 +32,10 @@ import {
 } from '~/features/studio/theme/StudioPreviewComponents'
 import { StudioPreviewComponentsBar } from '~/features/studio/theme/StudioPreviewComponentsBar'
 import { useBaseThemePreview } from '~/features/studio/theme/steps/2-base/useBaseThemePreview'
-import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import {
+  themeBuilderStore,
+  useThemeBuilderStore,
+} from '~/features/studio/theme/store/ThemeBuilderStore'
 import { lastInserted } from '~/features/studio/theme/updatePreviewTheme'
 import { weakKey } from '~/helpers/weakKey'
 import { applyThemeFromUrl, parseThemeFromUrl } from './helpers/urlTheme'
@@ -46,7 +49,13 @@ const stepContentStyle = style({ flex: 1 })
 export function ThemePageUpdater(props: ThemePageProps) {
   useLayoutEffect(() => {
     themePageStore.setProps(props)
-  }, [props])
+    if (props.id) {
+      void themeBuilderStore.updateGenerate(props.theme, props.search, props.id)
+    } else {
+      themeBuilderStore.clearTheme()
+      void themeBuilderStore.updateGenerate(props.theme)
+    }
+  }, [props.id, props.search, props.theme])
 
   return null
 }

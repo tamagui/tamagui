@@ -16,6 +16,7 @@ import {
   type TokenCategory,
   v6RemovedThemeNames,
   v6ThemeNameReplacements,
+  propTokenGroupFallbacks,
 } from '@tamagui/style-grammar/tooling'
 import { componentToTag } from './maps/componentToTag'
 // CANONICAL default shorthands — a STATIC import (declared dep), ESM+CJS-safe, single owner.
@@ -87,6 +88,13 @@ function createTransformGrammarConfig(
       addConfigNames(names, options.tokens[category])
       tokenNames[category] = names
     }
+  }
+  // a prop-named group binds its property; without one it reads the fallback category
+  for (const group in propTokenGroupFallbacks) {
+    const own = options.tokens?.[group]
+    const names = own ? new Set<string>() : tokenNames[propTokenGroupFallbacks[group]]
+    if (own) addConfigNames(names!, own)
+    if (names) tokenNames[group] = names
   }
   if (options.fonts) {
     tokenNames.fontFamily ||= new Set<string>()

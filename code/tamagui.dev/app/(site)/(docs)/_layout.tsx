@@ -1,11 +1,23 @@
-import { Slot } from 'one'
+import { router, Slot, usePathname, type Href } from 'one'
 import type { CSSProperties } from 'react'
+import { useEffect } from 'react'
 import { useBentoStore } from '~/features/bento/BentoStore'
+import { getDocsLinkHref, getDocsSyntaxParam } from '~/features/docs/docsVersion'
 import { DocsSyntaxLayout } from '~/features/docs/DocsSyntaxLayout'
 
 export default function DocsLayout() {
+  const pathname = usePathname()
   const { disableCustomTheme, themeSuiteUID } = useBentoStore()
   const customThemeActive = !!themeSuiteUID && !disableCustomTheme
+
+  useEffect(() => {
+    const search = new URLSearchParams(window.location.search)
+    if (!getDocsSyntaxParam(search.get('syntax'))) return
+
+    const href = `${window.location.pathname}${window.location.search}${window.location.hash}`
+    const canonicalHref = getDocsLinkHref(href, pathname)
+    if (canonicalHref !== href) router.replace(canonicalHref as Href)
+  }, [pathname])
 
   return (
     <div

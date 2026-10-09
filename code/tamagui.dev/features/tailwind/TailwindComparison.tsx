@@ -92,9 +92,9 @@ export function TailwindComparison() {
       <YStack items="center" gap="3">
         <HomeH2>Coverage, measured</HomeH2>
         <HomeH3>
-          Coverage counts how many of 138 CSS utilities a framework supports. It does not
-          measure whether they render the same across platforms. That is what the 94 and
-          97 above are for.
+          Native coverage counts how many of Tailwind's 23,286 classes reach React Native
+          as styles it renders. It does not measure whether they render the same across
+          platforms. That is what the 94 and 97 above are for.
         </HomeH3>
       </YStack>
 

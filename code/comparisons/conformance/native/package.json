@@ -9,7 +9,7 @@
   "dependencies": {
     "@tamagui/config": "workspace:*",
     "@tamagui/tailwind": "workspace:*",
-    "expo": "~57.0.15",
+    "expo": "57.0.24",
     "expo-linking": "~57.0.7",
     "react": "19.2.3",
     "react-native": "0.87.1",

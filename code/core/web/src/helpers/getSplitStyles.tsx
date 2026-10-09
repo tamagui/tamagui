@@ -2780,6 +2780,8 @@ const cssWideColorKeywords = new Set([
   'transparent',
 ])
 
+const shadowRecipeProperties = new Set(['boxShadow', 'textShadow', 'filter'])
+
 // `embedded` also runs the embedded-token pass when the direct lookup leaves the
 // value alone, and memoizes that result. it is a regex replace over most string
 // values, so repeating it every render of every element is the single largest
@@ -3024,9 +3026,23 @@ function configuredValue(
   }
   if (embedded && out === raw) {
     const usedSafeArea = state.flatUsesSafeArea
-    out = grammar.embeddedTokens(raw, (word) =>
-      configuredValue(state, property, word, false, nativeColors)
-    )
+    out = grammar.embeddedTokens(raw, (word) => {
+      const resolved = configuredValue(state, property, word, false, nativeColors)
+      // only a bare name can be a color token; literal colors pass through as authored
+      if (
+        resolved !== word ||
+        !shadowRecipeProperties.has(property) ||
+        !/^[a-z][\w-]*$/i.test(word)
+      )
+        return resolved
+      // a shadow recipe word that is not one of the recipe's own tokens is its
+      // color. react native has no currentColor, so it reads the inherited color
+      if (process.env.TAMAGUI_TARGET === 'native' && word === 'currentColor') {
+        const inherited = configuredValue(state, 'color', 'color', false, nativeColors)
+        return inherited === 'color' ? word : inherited
+      }
+      return configuredValue(state, 'color', word, false, nativeColors)
+    })
     // a safe-area token flips state as it resolves, so a cached hit would lose it
     if (!usedSafeArea && state.flatUsesSafeArea) return out
   }

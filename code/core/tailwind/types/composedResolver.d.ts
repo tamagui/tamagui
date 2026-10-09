@@ -5,11 +5,12 @@
  * descriptor's `compose` hook calls this once, with only those keys, right after
  * the walk. It is pure: same bag in, same styles out, no props and no env.
  *
- *   - ring + inset-ring + inset-shadow + shadow → boxShadow
+ *   - ring + ring-offset + inset-ring + inset-shadow + shadow + shadow color → boxShadow
  *   - bg-linear-to-* + from/via/to → backgroundImage
  *   - blur + brightness + contrast + … + drop-shadow → filter
  *   - perspective + rotateX/Y/Z + skewX/Y → transform
  *   - text-shadow presets + colors → textShadow*
+ *   - leading + text size line height → lineHeight
  *
  * A part authored with modifiers (`hover:ring-4`) arrives as a condition object,
  * so every composed value is built once per condition the parts mention.

@@ -1,14 +1,8 @@
 # Tamagui v3 stable release
 
-Owner direction, 2026-10-08, quoted by the coordinator: "All right, let's release Tamagui V3. I think the only thing is just to merge it cut the actual right version and I guess I should look over the website ... I think honestly at this point it's good enough we have to make sure Takeout is released and all that".
-
-Owner correction, 2026-10-08, directly to this session: "By the way, yeah don't release it until I say so don't merge it to main do not release it until I say so".
-
-Owner direction, 2026-10-09, directly to this session: "the V3 beta we needed it that's the whole point where it's gotta all be one release ... remove the beta from the film it's just V3. Make sure everything on the site reflects that nicely." And: "you have to own everything the domain we would move the domain as well to main".
-
 The release is one line: v3-beta merged with the release draft, validated on one tip. The film and site present it as Tamagui 3, without beta wording. The release session also owns moving the primary domain to the v3 site.
 
-The correction revokes release authorization. Continue preparation and validation on a draft branch. Do not merge main, dispatch releases or publish packages. Do not push v3-beta because that branch automatically publishes canaries and betas. Stable publication and the dependent Takeout upgrade wait for the owner's new explicit word.
+Main merge and stable publication need the owner's direct word to the release session. Continue preparation and validation on a draft branch. Do not merge main, dispatch releases or publish packages. Do not push v3-beta because that branch automatically publishes canaries and betas. Stable publication and the dependent Takeout upgrade wait for the owner's new explicit word.
 
 ## Scope
 
@@ -36,7 +30,7 @@ RAN: the failed canary package is now visible at npm with releaseSourceCommit e1
 
 INFERRED from the release script and current 2.7.7 package manifests: main dispatch with release=major prepares 3.0.0, which publishes to latest. Confirm the merged manifest immediately before dispatch. Stable language-server packages need the separate lsp-build.yml publication path; release.yml only dispatches that path for beta.
 
-RAN source audit: Site builds and deploys v3-beta to the Cloudflare Worker serving v3.tamagui.dev. This source path does not use Railway. It does not deploy on main push, and merging does not move the primary domain. The coordinator owns any primary-domain rollout. The existing launch article is code/tamagui.dev/data/blog/version-three.mdx; preserve its product direction and update stable install examples when publication is real.
+Hosting: tamagui.dev becomes the static v3 build on the tamagui-dev Cloudflare worker with no server routes; the release session moves the primary domain from Railway at publication. The existing launch article is code/tamagui.dev/data/blog/version-three.mdx.
 
 The read-only helper audit is /tmp/tamagui-v3-release-audit.md. Its stale claim that current npm availability is unknown is superseded by the exact-version registry read above.
 

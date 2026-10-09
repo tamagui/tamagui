@@ -94,6 +94,24 @@ function addNames(target: Set<string>, source: Names | undefined): void {
 }
 
 /**
+ * Token groups named after one property. A config that defines the group binds
+ * the property to it; one that does not resolves the property through the
+ * fallback category, so legacy configs keep their classes.
+ */
+export const propTokenGroupFallbacks: Readonly<Record<string, TokenCategory>> = {
+  borderWidth: 'space',
+  outlineWidth: 'space',
+  outlineOffset: 'space',
+  width: 'size',
+  minWidth: 'size',
+  maxWidth: 'size',
+  inlineSize: 'size',
+  minInlineSize: 'size',
+  maxInlineSize: 'size',
+  flexBasis: 'size',
+}
+
+/**
  * Creates the dependency-free config projection consumed by the shared style grammar.
  * Runtime and compiler integrations must classify candidates through this same view so
  * a candidate cannot be claimed by one side and emitted by the other.
@@ -118,18 +136,9 @@ export function createGrammarConfigView(
   for (const category in config.tokensParsed) {
     addNames((tokenNames[category] ||= new Set()), config.tokensParsed[category])
   }
-  // Legacy configs resolve outline dimensions through space. A prop-named
-  // token group takes precedence when present, but absence must preserve the
-  // long-standing fallback instead of making outline classes disappear.
-  tokenNames.outlineWidth ||= tokenNames.space
-  tokenNames.outlineOffset ||= tokenNames.space
-  tokenNames.width ||= tokenNames.size
-  tokenNames.minWidth ||= tokenNames.size
-  tokenNames.maxWidth ||= tokenNames.size
-  tokenNames.inlineSize ||= tokenNames.size
-  tokenNames.minInlineSize ||= tokenNames.size
-  tokenNames.maxInlineSize ||= tokenNames.size
-  tokenNames.flexBasis ||= tokenNames.size
+  for (const group in propTokenGroupFallbacks) {
+    tokenNames[group] ||= tokenNames[propTokenGroupFallbacks[group]]
+  }
 
   for (const themeName in config.themes) {
     const theme = config.themes[themeName]

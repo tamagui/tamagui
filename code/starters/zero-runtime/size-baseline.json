@@ -23,12 +23,12 @@
     },
     "next-webpack": {
       "base": {
-        "jsGzip": 141308,
+        "jsGzip": 141407,
         "cssGzip": 4215,
         "islandJsGzip": null
       },
       "islands": {
-        "jsGzip": 142327,
+        "jsGzip": 142426,
         "cssGzip": 4219,
         "islandJsGzip": 75372
       }

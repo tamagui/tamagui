@@ -25,6 +25,7 @@ import {
 import {
   classifyCandidate,
   decodeArbitrary,
+  hasTokenName,
   type GrammarConfigView,
   type ParsedCandidate,
   resolveTokenName,
@@ -442,8 +443,11 @@ const nativeUnsupportedProps = new Set([
   'visibility',
 ])
 const nativeUnsupportedSizingValues = new Set(['screen', 'min', 'max', 'fit'])
-const nativeUnsupportedDisplayValues = new Set(['block', 'inline', 'inline-flex'])
-const nativeUnsupportedPositionValues = new Set(['fixed', 'sticky'])
+// values outside react native's style unions, which native would drop
+const nativeUnsupportedValues: Record<string, Set<string>> = {
+  display: new Set(['block', 'inline', 'inline-flex']),
+  position: new Set(['fixed', 'sticky']),
+}
 
 function shouldGateNative(parsed: ParsedCandidate): boolean {
   if (!nativeTarget) return false
@@ -468,9 +472,16 @@ function shouldGateNative(parsed: ParsedCandidate): boolean {
   ) {
     return true
   }
+  const entryProp = parsed.entry?.prop
+  if (
+    (entryProp && nativeUnsupportedValues[entryProp]?.has(parsed.rawValue || '')) ||
+    Object.keys(properties).some((prop) =>
+      nativeUnsupportedValues[prop]?.has(String(properties[prop]))
+    )
+  ) {
+    return true
+  }
   return (
-    nativeUnsupportedDisplayValues.has(String(properties.display)) ||
-    nativeUnsupportedPositionValues.has(String(properties.position)) ||
     properties.overflow === 'auto' ||
     (properties.cursor !== undefined &&
       properties.cursor !== 'auto' &&
@@ -714,6 +725,19 @@ export function resolveTailwindCandidate(
         : entry[1]
     if (noteTailwindTransform(sink, [entry[0], transformValue, entry[2], entry[3]])) {
       continue
+    }
+    // a text size carries its paired line height as a default that any leading
+    // utility overrides whatever the class order, as tailwind's --tw-leading does
+    if (entry[0] === 'lineHeight') {
+      sink(['__leading', entry[1], entry[2], entry[3]])
+      continue
+    }
+    if (
+      entry[0] === 'fontSize' &&
+      typeof entry[1] === 'string' &&
+      hasTokenName(getStyleGrammarConfig(config), 'lineHeight', entry[1])
+    ) {
+      sink(['__textLeading', entry[1], entry[2], entry[3]])
     }
     if (entry[0] === 'boxShadow' && typeof entry[1] === 'string') {
       noteBoxShadow(

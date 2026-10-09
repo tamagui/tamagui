@@ -72,7 +72,7 @@
     "@tamagui/toast": "workspace:*",
     "@tamagui/web": "workspace:*",
     "burnt": "^0.13.0",
-    "expo": "~57.0.15",
+    "expo": "57.0.24",
     "expo-asset": "~57.0.8",
     "expo-build-properties": "~57.0.21",
     "expo-constants": "~57.0.9",

@@ -113,7 +113,7 @@ export function CodeWindow({ code, isLoading }: Props) {
       p={0}
     >
       <Tabs.List
-        aria-label="Manage your account"
+        aria-label="Code example views"
         backgroundColor="background"
         borderColor="border-color"
         borderBottomWidth={0.5}

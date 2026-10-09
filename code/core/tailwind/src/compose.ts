@@ -109,6 +109,8 @@ function composerKind(
   | 'to'
   | 'image'
   | 'ring'
+  | 'ring-offset'
+  | 'shadow-color'
   | 'inset-ring'
   | 'inset-shadow'
   | 'filter'
@@ -127,7 +129,10 @@ function composerKind(
     if (core.startsWith('bg-linear-to-')) return 'image'
     return core.startsWith('blur-') || core.startsWith('brightness-') ? 'filter' : null
   }
-  if (first === 114) return core === 'ring' || core.startsWith('ring-') ? 'ring' : null
+  if (first === 114) {
+    if (core.startsWith('ring-offset-')) return 'ring-offset'
+    return core === 'ring' || core.startsWith('ring-') ? 'ring' : null
+  }
   if (first === 99) return core.startsWith('contrast-') ? 'filter' : null
   if (first === 103)
     return core === 'grayscale' || core.startsWith('grayscale-') ? 'filter' : null
@@ -141,6 +146,7 @@ function composerKind(
           ? 'filter'
           : null
   if (first === 115) {
+    if (core.startsWith('shadow-')) return 'shadow-color'
     return core.startsWith('saturate-') || core === 'sepia' || core.startsWith('sepia-')
       ? 'filter'
       : null
@@ -322,6 +328,30 @@ export function tryCompose(
     return false
   }
 
+  if (kind === 'shadow-color') {
+    // presets (`shadow-md`) are boxShadow tokens claimed by the grammar
+    const raw = core.slice('shadow-'.length)
+    const color = resolveColor(raw, config)
+    // an arbitrary value with several top-level parts is a whole shadow, as in tailwind
+    if (color == null || (raw[0] === '[' && /\s/.test(color.replace(/\([^)]*\)/g, ''))))
+      return undefined
+    emit(sink, '__shadowColor', color, modifiers)
+    return false
+  }
+
+  if (kind === 'ring-offset') {
+    const raw = core.slice('ring-offset-'.length)
+    const width = ringWidth(raw)
+    if (width != null) {
+      emit(sink, '__ringOffsetWidth', width, modifiers)
+      return false
+    }
+    const color = resolveColor(raw, config)
+    if (color == null) return undefined
+    emit(sink, '__ringOffsetColor', color, modifiers)
+    return false
+  }
+
   if (kind === 'image') {
     const dir = linearTo[core.slice('bg-linear-to-'.length)]
     if (!dir) return true
@@ -330,14 +360,19 @@ export function tryCompose(
   }
 
   if (kind === 'from' || kind === 'via' || kind === 'to') {
-    const color = resolveColor(core.slice(kind.length + 1), config)
-    if (color == null) return true
+    const raw = core.slice(kind.length + 1)
     const prop =
       kind === 'from'
         ? '__gradientFrom'
         : kind === 'via'
           ? '__gradientVia'
           : '__gradientTo'
+    if (/^\d+(?:\.\d+)?%$/.test(raw)) {
+      emit(sink, `${prop}Position`, raw, modifiers)
+      return false
+    }
+    const color = resolveColor(raw, config)
+    if (color == null) return true
     emit(sink, prop, color, modifiers)
     return false
   }

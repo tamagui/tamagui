@@ -127,14 +127,13 @@ export const classToProp: { cls: string; prop: string }[] = [
   { cls: 'className="flex-row gap-3"', prop: 'flexDirection="row" gap="3"' },
 ]
 
-// honest cross-framework coverage, straight from code/comparisons/output/coverage.md.
+// native coverage, measured by code/comparisons/tailwind-coverage (see its README)
 export type Support = 'full' | 'partial' | 'web' | 'none'
 
 export const coverageSummary: { name: string; pct: number; cross: boolean }[] = [
-  { name: 'Tamagui', pct: 68.5, cross: true },
-  { name: 'NativeWind', pct: 74.3, cross: true },
-  { name: 'Tailwind', pct: 47.8, cross: false },
-  { name: 'Uniwind', pct: 40.9, cross: true },
+  { name: 'Tamagui', pct: 54.1, cross: true },
+  { name: 'NativeWind', pct: 52.5, cross: true },
+  { name: 'Uniwind', pct: 50.8, cross: true },
 ]
 
 export type CoverageRow = {
@@ -145,17 +144,18 @@ export type CoverageRow = {
   uniwind: Support
 }
 
+// a family is full at 95% of its registry classes or more, partial above zero
 export const coverageRows: CoverageRow[] = [
   {
     utility: 'display',
-    tamagui: 'full',
+    tamagui: 'partial',
     tailwind: 'web',
     nativewind: 'partial',
     uniwind: 'partial',
   },
   {
     utility: 'position',
-    tamagui: 'full',
+    tamagui: 'partial',
     tailwind: 'web',
     nativewind: 'partial',
     uniwind: 'partial',
@@ -183,9 +183,9 @@ export const coverageRows: CoverageRow[] = [
   },
   {
     utility: 'width / height',
-    tamagui: 'full',
+    tamagui: 'partial',
     tailwind: 'web',
-    nativewind: 'full',
+    nativewind: 'partial',
     uniwind: 'full',
   },
   {
@@ -204,17 +204,17 @@ export const coverageRows: CoverageRow[] = [
   },
   {
     utility: 'logical props',
-    tamagui: 'full',
+    tamagui: 'partial',
     tailwind: 'web',
     nativewind: 'partial',
-    uniwind: 'none',
+    uniwind: 'partial',
   },
   {
     utility: 'box-shadow',
     tamagui: 'full',
     tailwind: 'web',
-    nativewind: 'partial',
-    uniwind: 'partial',
+    nativewind: 'full',
+    uniwind: 'full',
   },
 ]
 

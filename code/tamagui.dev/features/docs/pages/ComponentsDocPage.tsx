@@ -11,7 +11,6 @@ import { MDXTabs } from '~/features/docs/MDXTabs'
 import { useDocsMenu } from '~/features/docs/useDocsMenu'
 import { useIsDocsTinted } from '~/features/docs/docsTint'
 import { components } from '~/features/mdx/MDXComponents'
-import { getOgUrl } from '~/features/site/getOgUrl'
 import { SubTitle } from '~/components/SubTitle'
 import { DocsTitle } from '~/components/DocsTitle'
 import { OwnedSourceBlock } from '~/features/docs/OwnedSourceBlock'
@@ -99,22 +98,6 @@ export function DocComponentsPage() {
       <HeadInfo
         title={`${frontmatter.title} | Tamagui — React Native UI kit with copy-paste composable components`}
         description={frontmatter.description || 'UI Kit'}
-        openGraph={{
-          images: [
-            {
-              url:
-                frontmatter.image ??
-                getOgUrl({
-                  type: 'component',
-                  title: frontmatter.title,
-                  demoName: frontmatter.demoName ?? undefined,
-                  description: frontmatter.description ?? '',
-                }),
-              width: 1200,
-              height: 630,
-            },
-          ],
-        }}
       />
 
       <DocsTitle>{frontmatter.title}</DocsTitle>

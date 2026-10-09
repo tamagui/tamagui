@@ -7,17 +7,13 @@ import {
   Routes,
   useLocation,
   useNavigate,
-  useParams,
 } from 'react-router-dom'
 
-import { AuthGuard } from '../app/AuthGuard.js'
 import type { ComponentSchema } from '../components.js'
 import type { AppContextType, FetchState, InstallState } from '../data/AppContext.js'
 import { AppContext } from '../data/AppContext.js'
-import { CodeAuthScreen } from '../screens/CodeAuthScreen.js'
 import { InstallConfirmScreen } from '../screens/InstallConfirmScreen.js'
 import { SearchScreen } from '../screens/SearchScreen.js'
-import Conf from 'conf'
 
 import { handleGlobalKeyPress } from '../app/handle-global-keypress.js'
 
@@ -26,18 +22,9 @@ export const debugLog = (...args: any[]) => {
   if (process.env.DEBUG === 'true') console.log(...args)
 }
 
-// redact a secret (access token) for debug output so DEBUG=true logs / CI logs
-// can't leak the full bearer — show only a short prefix + length
-export const redact = (s: unknown): string =>
-  typeof s === 'string' && s.length > 8
-    ? `${s.slice(0, 6)}…(${s.length} chars)`
-    : '<redacted>'
-
 function BentoGet() {
   const navigate = useNavigate()
   const location = useLocation()
-  const tokenStore = new Conf({ projectName: 'bento-cli/v2' })
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false)
   const [searchResults, setSearchResults] = React.useState<
     Array<{ item: ComponentSchema }>
   >([])
@@ -57,13 +44,10 @@ function BentoGet() {
     installingComponent: null,
     installedComponents: [],
     shouldOpenBrowser: false,
-    isTokenInstalled: false,
     componentToInstall: null,
   })
   const [isCopyingToClipboard, setCopyingToClipboard] = React.useState(false)
   const { exit } = useApp()
-
-  const [accessToken, setAccessToken] = React.useState<string | null>(null)
 
   const appContextValues: AppContextType = React.useMemo(
     () => ({
@@ -80,13 +64,8 @@ function BentoGet() {
       installState,
       confirmationPending,
       setConfirmationPending,
-      isLoggedIn,
-      setIsLoggedIn,
-      accessToken,
-      setAccessToken,
       fetchState,
       setFetchState,
-      tokenStore,
     }),
     [
       isCopyingToClipboard,
@@ -95,9 +74,7 @@ function BentoGet() {
       searchInput,
       installState,
       confirmationPending,
-      accessToken,
       fetchState,
-      tokenStore,
     ]
   )
 
@@ -105,39 +82,16 @@ function BentoGet() {
     handleGlobalKeyPress(input, key, appContextValues, navigate, location)
   )
 
-  React.useEffect(() => {
-    // On initial boot set the token if we have one
-    const token = tokenStore.get('accessToken')
-    if (token) {
-      setAccessToken(token as string)
-      setIsLoggedIn(true)
-      debugLog('Token found, setting isLoggedIn to true')
-      debugLog({ token: redact(token) })
-    } else {
-      setIsLoggedIn(false)
-    }
-  }, [])
-
   return (
     <AppContext.Provider value={appContextValues}>
-      <AuthGuard>
-        <Routes>
-          <Route path="/" element={<Navigate to="/search" replace />} />
-          <Route path="/search" element={<SearchScreen />} />
-          <Route path="/auth/:fileName" element={<CodeAuthScreen />} />
-          <Route
-            path="/install-confirm/:fileName"
-            element={<ProtectedRoute component={InstallConfirmScreen} />}
-          />
-        </Routes>
-      </AuthGuard>
+      <Routes>
+        <Route path="/" element={<Navigate to="/search" replace />} />
+        <Route path="/search" element={<SearchScreen />} />
+        <Route path="/install-confirm/:fileName" element={<InstallConfirmScreen />} />
+      </Routes>
       {process.env.DEBUG && (
         <Box borderStyle="round" borderColor="" padding={1}>
           <Text>Current Route: {location.pathname}</Text>
-          <Text color={'magenta'}> | </Text>
-          <Text color={isLoggedIn ? 'green' : 'red'}>
-            {isLoggedIn ? 'Logged In' : 'Logged Out'}
-          </Text>
         </Box>
       )}
     </AppContext.Provider>
@@ -150,12 +104,4 @@ export default function App() {
       <BentoGet />
     </MemoryRouter>
   )
-}
-
-type ProtectedRouteProps = {
-  component: React.ComponentType<any>
-}
-
-const ProtectedRoute = ({ component: Component }: ProtectedRouteProps) => {
-  return <Component />
 }

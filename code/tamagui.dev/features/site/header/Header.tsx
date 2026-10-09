@@ -1,5 +1,5 @@
 import { LogoWords, setTintFamily, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import { Check, ExternalLink, Figma, LogIn, Menu } from '~/components/icons'
+import { ExternalLink, Figma, Menu } from '~/components/icons'
 import { isTouchable, useGet, useMedia } from '@tamagui/web'
 import { useFocusEffect, usePathname, useRouter } from 'one'
 import * as React from 'react'
@@ -34,18 +34,13 @@ import { Link } from '~/components/Link'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { seasons, SeasonTogglePopover } from '~/features/site/seasons/SeasonTogglePopover'
 import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
-import { useLoginLink } from '../../auth/useLoginLink'
-import { useBentoStore } from '../../bento/BentoStore'
-import { useBentoTheme } from '../../bento/useBentoTheme'
 import { DocsMenuContents } from '../../docs/DocsMenuContents'
 import { useDocsMenu } from '../../docs/useDocsMenu'
 import { AddEvenBrandIcon } from '../../icons/AddEvenBrandIcon'
 import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
-import { useUser } from '../../user/useUser'
 import { SearchButton } from './SearchButton'
 import { SiteModePopover } from './SiteModePopover'
-import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
 
 const drawerContentStyle = style({ width: '100%' })
@@ -273,8 +268,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 const HeaderMenuButton = () => {
   const { open, setOpen } = useDocsMenu()
   const context = React.useContext(SlidingPopoverContext)
-  const userSwr = useUser()
-  const haveUser = !!userSwr.data?.user
 
   return (
     <Popover.Trigger justify="center" items="center">
@@ -310,7 +303,7 @@ const HeaderMenuButton = () => {
           aria-label="Open the main menu"
         >
           <Circle size={32} items="center" justify="center">
-            {haveUser ? <UserAvatar /> : <Menu size={18} />}
+            <Menu size={18} />
           </Circle>
         </Button>
       </SlidingPopoverTarget>
@@ -501,7 +494,6 @@ export const SlidingPopoverTarget = createStyledHOC(
 const order = ['', 'core', 'ui', 'theme', 'menu']
 
 const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
-  const { data } = useUser()
   const [active, setActive] = React.useState<ID>(
     props.active === '' ? 'menu' : props.active
   )
@@ -540,7 +532,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
     core: Math.min(maxHeight, 1300),
     compiler: 117,
     ui: Math.min(maxHeight, 1300),
-    theme: data?.user ? 300 : 240,
+    theme: 240,
     menu: Math.min(maxHeight, isOnlyShowingMenu ? 1000 : 520),
   }
 
@@ -612,18 +604,10 @@ const ActivePageDocsMenuContents = () => {
 }
 
 const HeaderMenuContents = (props: { id: ID }) => {
-  const { data } = useUser()
-  const bentoStore = useBentoStore()
-  const themeHistories = data?.themeHistories || []
-  const bentoTheme = useBentoTheme()
   const isOnlyShowingMenu = useMedia()['max-md']
   const isMobile = isTouchable && isOnlyShowingMenu
 
   const contents = (() => {
-    /**
-     * When the theme_histories are fetched,
-     * we can apply one of them to Bento components from dropdown
-     */
     if (props.id === 'menu') {
       return (
         <>
@@ -643,89 +627,21 @@ const HeaderMenuContents = (props: { id: ID }) => {
     if (props.id === 'theme') {
       return (
         <YStack flex={1} gap="1-5" flexBasis="auto">
-          {!themeHistories.length ? (
-            <>
-              <Paragraph
-                pointerEvents="none"
-                borderWidth={0.5}
-                bg="color-6"
-                rounded="5"
-                opacity={0.5}
-                p="4"
-                size="4"
-              >
-                Create themes to preview them across the site.
-                {`\n`}
-                <Link href="/theme" theme="blue" style={{ pointerEvents: 'auto' }}>
-                  Go to Theme Builder →
-                </Link>
-              </Paragraph>
-            </>
-          ) : (
-            <YStack gap="1-5">
-              <XStack>
-                <HeadAnchor
-                  grid
-                  items="center"
-                  onPress={() => {
-                    bentoStore.disableCustomTheme = !bentoStore.disableCustomTheme
-                  }}
-                >
-                  <SizableText size="3" color="color-11" ellipsis>
-                    Enabled
-                  </SizableText>
-
-                  {bentoTheme.enabled ? <Check ml="1-5" size={12} /> : null}
-                </HeadAnchor>
-                <HeadAnchor
-                  grid
-                  onPress={() => {
-                    bentoStore.disableTint = !bentoStore.disableTint
-                  }}
-                >
-                  <SizableText size="3" color="color-11" ellipsis>
-                    Tint
-                  </SizableText>
-
-                  {!bentoStore.disableTint ? <Check ml="1-5" size={12} /> : null}
-                </HeadAnchor>
-              </XStack>
-
-              <Separator mb="3" opacity={0.5} />
-
-              <SizableText size="3" px="4" color="color-9">
-                Recent Themes
-              </SizableText>
-
-              {themeHistories.map((history) => (
-                <HeadAnchor
-                  key={history.id}
-                  grid
-                  onPress={async () => {
-                    // the theme builder store carries the whole editor, so only
-                    // pull it in once someone actually re-applies a saved theme
-                    const { themeBuilderStore } =
-                      await import('~/features/studio/theme/store/ThemeBuilderStore')
-                    themeBuilderStore.updateGenerate(history.theme_data)
-                  }}
-                >
-                  <XStack items="center" justify="space-between">
-                    <SizableText size="3" color="color-11" ellipsis>
-                      {history.search_query}
-                    </SizableText>
-                  </XStack>
-                </HeadAnchor>
-              ))}
-
-              {themeHistories.length === 0 && (
-                <YStack p="4" items="center">
-                  <SizableText size="2" color="color-9">
-                    {data?.user ? 'No theme history yet' : 'Login to save themes'}
-                  </SizableText>
-                </YStack>
-              )}
-            </YStack>
-          )}
+          <Paragraph
+            pointerEvents="none"
+            borderWidth={0.5}
+            bg="color-6"
+            rounded="5"
+            opacity={0.5}
+            p="4"
+            size="4"
+          >
+            Create themes to preview them across the site.
+            {`\n`}
+            <Link href="/theme" theme="blue" style={{ pointerEvents: 'auto' }}>
+              Go to Theme Builder →
+            </Link>
+          </Paragraph>
         </YStack>
       )
     }
@@ -763,10 +679,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
 }
 
 const HeaderMenuMoreContents = () => {
-  const userSwr = useUser()
   const router = useRouter()
-  const { handleLogin } = useLoginLink()
-  const context = React.useContext(SlidingPopoverContext)
 
   const handlePress = (e: any) => {
     e.preventDefault()
@@ -808,31 +721,6 @@ const HeaderMenuMoreContents = () => {
           </HeadAnchor>
         </Link>
       </XStack>
-
-      <Separator bg="color-02" opacity={0.25} my="1-5" />
-
-      {!userSwr.data?.user && (
-        <HeadAnchor grid onPress={handleLogin}>
-          <span>Login</span>
-          <YStack display={'inline-block' as any} y={2} x={10} self="flex-end">
-            <LogIn color="color-10" size={14} />
-          </YStack>
-        </HeadAnchor>
-      )}
-
-      {userSwr.data?.user && (
-        <Link asChild href="/account" onPress={handlePress}>
-          <HeadAnchor grid render="a">
-            <XStack items="center" justify="center">
-              <span>Account</span>
-              <YStack flex={10} />
-              <YStack display={'inline-block' as any} y={-2} my={-3} self="flex-end">
-                <UserAvatar size={22} />
-              </YStack>
-            </XStack>
-          </HeadAnchor>
-        </Link>
-      )}
 
       <Separator bg="color-02" opacity={0.25} my="1-5" />
 
