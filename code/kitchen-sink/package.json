@@ -74,6 +74,7 @@
     "burnt": "^0.13.0",
     "expo": "~57.0.15",
     "expo-asset": "~57.0.8",
+    "expo-build-properties": "~57.0.21",
     "expo-constants": "~57.0.9",
     "expo-document-picker": "~57.0.1",
     "expo-font": "~57.0.1",

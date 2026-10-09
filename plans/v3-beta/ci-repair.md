@@ -60,6 +60,15 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   route contract and the hook names its `test` route. A cold typecheck then
   passes, as do focused formatting and lint.
 
+- RAN: the published One pod requires iOS 17, while Expo's generated app
+  target is lower. Local pod installation reproduces the dependency solver's
+  minimum-target rejection. The kitchen-sink's Expo build-properties plugin
+  declares iOS 17 so prebuild owns both Podfile and Xcode target settings.
+  Generated Podfile properties report `ios.deploymentTarget: 17.0`, and the
+  pod installation completes successfully with One included. Frozen
+  installation and workspace dependency checks pass. Full compilation remains
+  a CI gate.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The
