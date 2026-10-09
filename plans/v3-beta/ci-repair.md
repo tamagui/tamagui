@@ -164,6 +164,19 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   original CI log establishes that both requested app APKs already build.
   Detox configuration loading, YAML parsing, shell syntax, and diff checks pass.
 
+- TESTED: both native builds pass in CI, then CLI fixture generation and
+  Metro config evaluation load the Reanimated native runtime in Node. The
+  existing animation package publishes a `tamagui-compiler` export for exactly
+  this evaluation environment; Vite selects it, but esbuild static evaluation
+  did not. The shared esbuild config/component bundler now includes that
+  condition alongside the native and caller conditions. Component callers no
+  longer duplicate the native condition. The original CLI command fails before
+  repair and meets its unchanged optimization target afterward (40 >= 8).
+  All three Detox compiler fixtures generate successfully. Cold static package
+  types, formatting, lint, and diff checks pass. No ignore-list workaround or
+  runtime driver changes are added. Live Metro bundle and native interactions
+  remain delivery gates.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The
