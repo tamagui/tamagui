@@ -103,7 +103,7 @@ app use; decided per component when reviewed.
 
 ## Curation (applied)
 
-Nate on wave 1: cut hard, keep only what is worth having (the shopping cart
+Wave 1 direction: cut hard, keep only what is worth having (the shopping cart
 was too basic). Cut 48 demos plus whole groups `elements/buttons`,
 `ecommerce/product-list` and `panels/walkthrough`. Rules used: one demo per
 idea (input label, left icon, right icon and addon variants fold into "Label,
@@ -114,17 +114,19 @@ fancy tooltip, slide out); no thin screens (cart, status tracker, users
 table, upload file). What remains is in `code/bento/src/registry.ts`.
 
 `bento-get` (`code/packages/bento-get`) still lists the old component names;
-it is left alone until Nate answers the install path question below.
+it is left alone until the owner answers the install path question below.
 
 ## Owner decisions
 
-- 2026-10-04: Nate: cut hard; the shopping cart was too basic, the paywall can stay.
-- 2026-10-04: Nate: no gray fill behind demos and no fake browser window; each
+- 2026-10-04: cut hard; the shopping cart was too basic, the paywall can stay.
+- 2026-10-04: no gray fill behind demos and no fake browser window; each
   demo sits in a hairline border with a small radius.
-- 2026-10-04: Nate: share less often. Study what HeroUI does best, bring those
+- 2026-10-04: share less often. Study what HeroUI does best, bring those
   pieces over, clean up what we keep, and cut ugly or low-value demos. Styling
   must follow one system: no input darker than its surface, no light mode
   that reads backwards, nothing styled at random.
+- 2026-10-09: no separate Bento repository; Bento moves into v3 in the repo,
+  simplified.
 
 ## Quality bar (per component)
 
@@ -146,15 +148,15 @@ unstyled parts) over hand-rolled ones.
 
 - Purchase pages and gating: already removed on v3-beta.
 - `bento-get` CLI: keeps working free, backed by the in-repo source through
-  the site API (pending Nate's answer on its future, see below).
+  the site API (pending the owner's answer on its future, see below).
 - Licensing: Bento ships under the Tamagui repo MIT license; its separate
   `LICENSE` is dropped. The "free and open source" copy on `/bento` stays.
 - Supabase `bento` storage bucket and `~/bento/scripts/upload-bento.cjs`:
   unused once the site reads repo source. Deleting the bucket is prod infra
-  and waits for Nate.
-- `~/bento` repo: archive after wave 1 lands (Nate's call).
+  and waits for the owner.
+- `~/bento` repo: archive after wave 1 lands (owner's call).
 
-## Open questions for Nate
+## Open questions for the owner
 
 - Install path: keep `bento-get` (free, no login), fold it into a
   `tamagui add` command, or drop the CLI and copy from the site only.
@@ -169,3 +171,14 @@ unstyled parts) over hand-rolled ones.
   had uncentered every showcase frame.
 - 2026-10-04: plan written; worktree `~/.worktrees/tamagui-bento-oss` off
   `origin/v3-beta` `980b3a3803`.
+- 2026-10-09: validation wave on v3-beta `aa5169c6f9` (r72050): bento tsc,
+  root tsc, oxfmt, oxlint and the 171-task build all green. Headless sweep of
+  all 20 registry groups (37 demos) at light/dark by 1280/360: every showcase
+  renders, zero page errors, no horizontal overflow; tab panel switching,
+  loading-button busy to done and rolling-numbers refresh probed clean; the
+  code API serves full source for sampled files. Fixed the site Link spread
+  typing (`f49d7d6b6a`); the site Button ts2590 and the core format file were
+  repaired by the release lane in `e4d1bd1e22`. Only console noise anywhere is
+  the pre-existing `/favicon.ico` 404. Out of scope and left for the release
+  lane: the styled-view bundle size gate and the unit, integration and
+  zero-runtime suite reds on the same tip, none Bento-related.

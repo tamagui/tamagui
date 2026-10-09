@@ -18,7 +18,7 @@ import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { StackZIndexContext } from '@tamagui/z-index-stack'
 import type { FunctionComponent, Ref } from 'react'
 import { useContext, useEffect, useMemo, useRef } from 'react'
-import type { View as RNView } from '@tamagui/react-native-types'
+import type { ViewInstance as RNView } from '@tamagui/react-native-types'
 import {
   SHEET_BACKGROUND_NAME,
   SHEET_CONTAINER_NAME,

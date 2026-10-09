@@ -120,7 +120,7 @@ declare const Accordion: ((props: ScopedProps<AccordionMultipleProps | Accordion
         __scopeAccordion?: string;
     }, import("@tamagui/core").StackStyleBase, Omit<Omit<{}, "__scopeCollapsible" | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase>, "__scopeAccordion" | "__scopeCollapsible" | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase>, import("@tamagui/core").StaticConfigPublic>;
     Header: import("@tamagui/compose-refs").RefComponent<import("@tamagui/core").TamaguiTextElement, Omit<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "unstyled"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").TextStylePropsBase, "size" | "unstyled">> & import("@tamagui/core").WithFlatVariantValues<{
-        size?: import("@tamagui/get-font-sized/types").GetFontSizedInput | undefined;
+        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
         unstyled?: boolean | undefined;
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>, keyof import("@tamagui/core").TextNonStyleProps> & {
         ref?: import("react").Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
@@ -128,7 +128,7 @@ declare const Accordion: ((props: ScopedProps<AccordionMultipleProps | Accordion
     Content: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, Omit<Omit<import("@tamagui/core").StackNonStyleProps, keyof import("@tamagui/collapsible").CollapsibleContentProps> & import("@tamagui/collapsible").CollapsibleContentProps, "__scopeAccordion" | keyof import("@tamagui/collapsible").CollapsibleContentProps> & Omit<Omit<import("@tamagui/core").StackNonStyleProps, keyof import("@tamagui/collapsible").CollapsibleContentProps> & import("@tamagui/collapsible").CollapsibleContentProps, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<Omit<{}, keyof import("@tamagui/collapsible").CollapsibleContentProps>> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/collapsible").CollapsibleContentProps> & {
         __scopeAccordion?: string;
     }, import("@tamagui/core").StackStyleBase, Omit<Omit<{}, keyof import("@tamagui/collapsible").CollapsibleContentProps>, "__scopeAccordion" | keyof import("@tamagui/collapsible").CollapsibleContentProps>, import("@tamagui/core").StaticConfigPublic>;
-    Item: import("@tamagui/compose-refs").RefComponent<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), AccordionItemProps>;
+    Item: import("@tamagui/compose-refs").RefComponent<import("@tamagui/react-native-types/src").ReactNativeElement | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), AccordionItemProps>;
     HeightAnimator: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, {}>;
 };
 export { Accordion };

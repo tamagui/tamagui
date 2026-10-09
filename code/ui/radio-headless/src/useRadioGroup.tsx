@@ -7,7 +7,7 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import type { ViewProps } from '@tamagui/web'
 import type { ReactElement } from 'react'
 import { useContext, useEffect, useRef, useState } from 'react'
-import type { GestureResponderEvent } from '@tamagui/react-native-types'
+import type { GestureResponderEvent, PressableProps } from '@tamagui/react-native-types'
 import { BubbleInput } from './BubbleInput'
 import { getState } from './utils'
 
@@ -87,6 +87,10 @@ export type RadioGroupContextValue = {
 }
 
 const ARROW_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
+
+type RadioEvent<K extends 'onKeyDown' | 'onFocus'> =
+  | Parameters<NonNullable<ViewProps[K]>>[0]
+  | Parameters<NonNullable<PressableProps[K]>>[0]
 
 export const useRadioGroupItem = (params: UseRadioItemParams) => {
   const {
@@ -210,24 +214,35 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
         }
       }),
       ...(isWeb && {
-        onKeyDown: composeEventHandlers(onKeyDown, (event) => {
-          // Allow Enter and Space to select the radio item
-          if (event.key === 'Enter' || event.key === ' ') {
-            if (!checked) {
-              onChange?.(value)
+        onKeyDown: composeEventHandlers(
+          (event: RadioEvent<'onKeyDown'>) => {
+            if ('key' in event) onKeyDown?.(event)
+          },
+          (event) => {
+            // react-native-web and native expose the key on nativeEvent.
+            const { key } = event.nativeEvent
+            if (key === 'Enter' || key === ' ') {
+              if (!checked) {
+                onChange?.(value)
+              }
             }
           }
-        }),
-        onFocus: composeEventHandlers(onFocus, () => {
-          /**
-           * Our `RovingFocusGroup` will focus the radio when navigating with arrow keys
-           * and we need to "check" it in that case. We click it to "check" it (instead
-           * of updating `context.value`) so that the radio change event fires.
-           */
-          if (isArrowKeyPressedRef.current) {
-            ;(ref.current as HTMLButtonElement)?.click()
+        ),
+        onFocus: composeEventHandlers(
+          (event: RadioEvent<'onFocus'>) => {
+            if ('relatedTarget' in event) onFocus?.(event)
+          },
+          () => {
+            /**
+             * Our `RovingFocusGroup` will focus the radio when navigating with arrow keys
+             * and we need to "check" it in that case. We click it to "check" it (instead
+             * of updating `context.value`) so that the radio change event fires.
+             */
+            if (isArrowKeyPressedRef.current) {
+              ;(ref.current as HTMLButtonElement)?.click()
+            }
           }
-        }),
+        ),
       }),
     },
     rovingFocusGroupAttrs: {

@@ -1,6 +1,6 @@
 # V3 blog post: the numbers comparison plan
 
-Owner: Nate. Drafted 2026-08-03 by p14401. The v3 announcement must show a
+Owner lane. Drafted 2026-08-03 by p14401. The v3 announcement must show a
 comprehensive, receipt-backed comparison. Nothing in the post may come from a
 number that was not produced by a committed harness run on a recorded SHA.
 
@@ -18,7 +18,7 @@ bundle size must be measured solid on the cut SHA, not deferred. Concretely:
   Blocked only by a V2-baseline harness smoke failure, not by V3.
 - Gate: compiled web animated near 1x vs V2; native compiled mounts at or
   near V2 parity; bundle delta known and either reduced or explicitly
-  accepted by Nate with a budget.
+  accepted by the owner with a budget.
 
 **Track 2, after a usable test release:** the full blog matrix below.
 

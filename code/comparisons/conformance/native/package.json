@@ -12,7 +12,7 @@
     "expo": "~57.0.15",
     "expo-linking": "~57.0.7",
     "react": "19.2.3",
-    "react-native": "0.86.2",
+    "react-native": "0.87.1",
     "tamagui": "workspace:*"
   }
 }

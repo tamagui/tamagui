@@ -1,6 +1,6 @@
 # Menu.TriggerGroup
 
-Nate, 2026-10-06, relayed by coordinator: "we would have to implement that ... we may just have to have a different name ... group is a container ... we can come up with a name like trigger group."
+Owner direction, 2026-10-06, relayed by coordinator: this needs implementing under a different name because group is already a container; candidate name: trigger group.
 
 Add Menu.TriggerGroup as the container for menubar triggers. Menu.Group remains the menu item container. Support separate Menu roots and multiple triggers sharing one root. Hover switches only while a menu in the same group is open, closes the previous menu, and anchors at the hovered trigger before showing content. Disabled triggers are skipped. Keyboard left/right moves between enabled triggers, wraps, respects direction, and preserves submenu navigation. Escape returns focus to the active trigger; outside interaction ends hover switching. Native platform menus retain their existing behavior.
 

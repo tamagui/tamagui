@@ -4,7 +4,7 @@ Think-through. Not a public API. Do not document.
 
 Regular Tamagui must not pay for Tailwind-only tricks. `@tamagui/tailwind` already plugs in through `StyleFrontend` on the component (`resolveClassName` in the existing className walk). Core View keeps `regularStyleFrontend = {}`. No global registry.
 
-Nate: experimental-but-working RN (gradients, outline) is valid to implement as real engine props. Weird multi-class features stay in Tailwind mode. No second pass over class strings. Core can be extended privately. Outline is the obvious first 1:1 slice.
+Owner direction: experimental-but-working RN (gradients, outline) is valid to implement as real engine props. Weird multi-class features stay in Tailwind mode. No second pass over class strings. Core can be extended privately. Outline is the obvious first 1:1 slice.
 
 ## Why not `styled.dynamic` / `.resolve`
 
@@ -17,7 +17,7 @@ Do not use it here.
 - The className walk already has the candidates. A resolver would re-derive them.
 - Gradient/ring composition is "several class tokens become one CSS value", not "a typed variant becomes styles". Wrong layer.
 
-The cost Nate was worried about (resolve on every render) is real if we go that way. The className walk is already paid. Add nothing that scans the string again, and add nothing on the regular frontend path.
+The resolve-on-every-render cost is real if we go that way. The className walk is already paid. Add nothing that scans the string again, and add nothing on the regular frontend path.
 
 ## What already exists
 

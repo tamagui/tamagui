@@ -31,7 +31,7 @@ all, and closing it surfaced two genuine engine bugs, now fixed with tests.
    registered, so team-machine's composer not presenting on that path is app
    composition rather than an engine defect.
 
-The elements Nate saw not switching on beta.653.1 are explained by findings 1
+The elements seen not switching on beta.653.1 are explained by findings 1
 and 2 on web and desktop.
 
 ## Environment

@@ -1,6 +1,6 @@
 import type { FrontendHTMLTag, FrontendStaticConfig } from '@tamagui/core/internal-runtime';
 import type { AriaAttributes, ComponentPropsWithoutRef, CSSProperties, FunctionComponent, HTMLAttributes, ReactElement, ReactNode, Ref as ReactRef } from 'react';
-import type { PressableProps, StyleProp, Text as ReactNativeText, TextProps as ReactNativeTextProps, TextStyle, View as ReactNativeView, ViewProps as ReactNativeViewProps, ViewStyle } from '@tamagui/react-native-types';
+import type { PressableProps, StyleProp, TextInstance as ReactNativeText, TextProps as ReactNativeTextProps, TextStyle, ViewInstance as ReactNativeView, ViewProps as ReactNativeViewProps, ViewStyle } from '@tamagui/react-native-types';
 type WebEventProps = {
     onMouseEnter?: HTMLAttributes<HTMLDivElement>['onMouseEnter'];
     onMouseLeave?: HTMLAttributes<HTMLDivElement>['onMouseLeave'];

@@ -3,6 +3,7 @@ import { styled, useStyle } from '@tamagui/web'
 import React from 'react'
 import {
   ScrollView as ReactNativeScrollView,
+  type ScrollViewInstance,
   type ScrollViewProps as ReactNativeScrollViewProps,
 } from 'react-native'
 
@@ -10,7 +11,7 @@ type NativeScrollViewProps = Omit<ReactNativeScrollViewProps, 'contentContainerS
   contentContainerStyle?: StylePiece
 }
 
-const ScrollViewNative = React.forwardRef<ReactNativeScrollView, NativeScrollViewProps>(
+const ScrollViewNative = React.forwardRef<ScrollViewInstance, NativeScrollViewProps>(
   ({ contentContainerStyle, ...props }, ref) => (
     <ReactNativeScrollView
       {...props}

@@ -446,7 +446,7 @@ Native interop
       keys stripped and `onClick` adapted.
 - [ ] Document the container + `flex: 1` recipe for native components.
 
-## Decision needed from Nate
+## Decision needed from the owner
 
 Moving the margin / padding reset to zero specificity means page-level element
 CSS (`p { margin: 1em }`) changes html.* spacing on web and not on native.

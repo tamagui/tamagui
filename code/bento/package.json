@@ -28,14 +28,14 @@
     "@tamagui/roving-focus": "workspace:*",
     "@tamagui/web": "workspace:*",
     "@tanstack/react-table": "^8.11.2",
-    "@vxrn/color-scheme": "^1.27.1",
+    "@vxrn/color-scheme": "2.0.0-0.canary.1791569029449",
     "expo-document-picker": "~57.0.1",
     "expo-image-picker": "~57.0.7",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.51.0",
-    "react-native-gesture-handler": "~2.32.0",
-    "react-native-reanimated": "4.5.1",
-    "react-native-safe-area-context": "~5.7.0",
+    "react-native-gesture-handler": "3.3.0",
+    "react-native-reanimated": "4.6.0",
+    "react-native-safe-area-context": "5.10.1",
     "react-native-svg": "15.15.4",
     "tamagui": "workspace:*",
     "zod": "^3.25.67"
@@ -43,6 +43,6 @@
   "devDependencies": {
     "@tamagui/cli": "workspace:*",
     "react": "19.2.3",
-    "react-native": "0.86.2"
+    "react-native": "0.87.1"
   }
 }

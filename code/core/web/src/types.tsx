@@ -4,6 +4,7 @@ import type {
   TransformAccumulator,
 } from '@tamagui/style-grammar/runtime'
 import type { Properties } from 'csstype'
+import type { UnprefixedCSSProperties } from './dom/styleTypes'
 import type {
   CSSProperties,
   ComponentType,
@@ -20,10 +21,10 @@ import type {
 import type {
   FontVariant,
   PressableProps,
-  Text as RNText,
+  TextInstance as RNText,
   TextStyle as RNTextStyle,
   TextProps as ReactTextProps,
-  View,
+  ViewInstance as View,
   ViewProps,
   ViewStyle,
 } from '@tamagui/react-native-types'
@@ -632,8 +633,6 @@ export type ComponentContextI = NativeTextContext & {
   language: LanguageContextType | null
   animationDriver: AnimationDriver | null
   setParentFocusState: ComponentSetStateShallow | null
-  mediaEmit?: (state: UseMediaState) => void
-  mediaEmitListeners?: Set<(state: UseMediaState) => void>
   insets?: { top: number; right: number; bottom: number; left: number } | null
 }
 
@@ -687,8 +686,11 @@ export type TamaguiComponentStateRef = {
   // per-render animatedBy prop; hooks gated on it must keep a stable count)
   avoidReRenders?: boolean
 
-  // cleanup function for media emit listener
-  mediaEmitCleanup?: () => void
+  // avoidReRenders: this instance's useMedia emits media changes here instead
+  // of re-rendering
+  mediaEmit?: (state: UseMediaState) => void
+  // a restyle from mediaEmit is queued for this event turn
+  mediaEmitQueued?: boolean
 
   // previous pseudo state for detecting enter vs exit transitions
   prevPseudoState?: {
@@ -2223,7 +2225,7 @@ export type FlatStyleValue<T> =
   | OpenStyleString
 
 export type WithThemeValues<T extends object> = {
-  [K in keyof T]:
+  -readonly [K in keyof T]:
     | (ThemeValueGet<K> extends never
         ? K extends keyof ExtraBaseProps
           ? T[K]
@@ -2862,7 +2864,7 @@ export interface StackStyleBase
     Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>,
     ExtendedBaseProps,
     Omit<
-      Properties<string | number>,
+      UnprefixedCSSProperties,
       keyof ViewStyle | keyof ExtendedBaseProps | keyof TamaguiComponentPropsBaseBase
     > {}
 
@@ -2874,7 +2876,7 @@ export interface TextStylePropsBase
     >,
     ExtendedBaseProps,
     Omit<
-      Properties<string | number>,
+      UnprefixedCSSProperties,
       | keyof RNTextStyle
       | keyof ExtendedBaseProps
       | keyof TamaguiComponentPropsBaseBase
@@ -2938,7 +2940,7 @@ export interface StackNonStyleProps
       | 'pointerEvents'
       | 'display'
       | 'children'
-      | keyof TamaguiComponentPropsBaseBase
+      | keyof TamaguiComponentPropsBase
       // these are added back in by core
       | RNOnlyProps
       | keyof ExtendBaseStackProps
@@ -2968,7 +2970,7 @@ export interface TextNonStyleProps
     Omit<
       ReactTextProps,
       | 'children'
-      | keyof WebOnlyPressEvents
+      | keyof TamaguiComponentPropsBase
       // these are added back in by core
       | RNOnlyProps
       | keyof ExtendBaseTextProps
@@ -3743,17 +3745,20 @@ export type UseAnimationHook = (props: {
 }
 
 export type GestureReponderEvent =
-  Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void
+  Exclude<ViewProps['onResponderMove'], void> extends (event: infer Event) => void
     ? Event
     : never
 
 export type RulesToInsert = Record<string, StyleObject>
 
 export type GetStyleResult = {
-  style: ViewStyle | null
+  style: { -readonly [K in keyof ViewStyle]: ViewStyle[K] } | null
   classNames: ClassNamesObject
   rulesToInsert: RulesToInsert
-  viewProps: (StackNonStyleProps & StackStyle) & Record<string, any>
+  viewProps: {
+    -readonly [K in keyof (StackNonStyleProps & StackStyle)]: (StackNonStyleProps &
+      StackStyle)[K]
+  } & Record<string, any>
   fontFamily: string | undefined
   nativeTextMetrics?: NativeTextMetrics
   space?: any // SpaceTokens?
@@ -3834,8 +3839,9 @@ export type StyleProp<T> =
   | T
   | StylePiece
   | RegisteredStyle<T>
-  | RecursiveArray<T | StylePiece | RegisteredStyle<T> | Falsy>
+  | ReadonlyArray<StyleProp<T>>
   | Falsy
+  | void
 
 export type FillInFont<A extends GenericFont, DefaultKeys extends string | number> = {
   family: string

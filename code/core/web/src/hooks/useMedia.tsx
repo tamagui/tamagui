@@ -14,7 +14,6 @@ import {
 } from '../helpers/mediaState'
 export { mediaKeyMatch } from '../helpers/mediaState'
 import type {
-  ComponentContextI,
   DebugProp,
   MediaQueryState,
   TamaguiInternalConfig,
@@ -171,6 +170,10 @@ type MediaState = {
 // for any earlier-rendered media-dependent sibling.
 const States = new WeakMap<any, MediaState>()
 
+// the same per-instance rule holds for the emitter: createComponent passes its
+// stateRef.current, so a media change restyles that component alone
+type MediaEmitter = { mediaEmit?: (state: UseMediaState) => void }
+
 // shared "touch tracker" prototype: one object whose enumerable getter
 // properties are pre-defined for every configured media key. Hermes inlines
 // getter calls; the old `new Proxy(state, { get })` path forced an interpreted
@@ -248,7 +251,7 @@ type MediaRef = {
   proxyTarget: MediaQueryState
   proxy: UseMediaState
   getSnapshot: (inRender?: boolean) => MediaQueryState
-  componentContext?: ComponentContextI
+  emitter?: MediaEmitter
   uid?: object
   debug?: DebugProp
   optimizeForFirstRender: boolean
@@ -318,7 +321,7 @@ function sameMediaKeys(a: Set<string> | null, b: Set<string> | null) {
 }
 
 export function useMedia(
-  componentContext?: ComponentContextI,
+  emitter?: MediaEmitter,
   debug?: DebugProp,
   // per-component-instance key for the States map (createComponent passes
   // stateRef.current, matching its setMediaShouldUpdate call)
@@ -345,7 +348,7 @@ export function useMedia(
       proxyTarget: initial,
       proxy: undefined as unknown as UseMediaState,
       getSnapshot: undefined as unknown as () => MediaQueryState,
-      componentContext,
+      emitter,
       uid,
       debug,
       optimizeForFirstRender,
@@ -384,7 +387,7 @@ export function useMedia(
 
       // render-time emits update siblings through setState, so defer those
       // until render finishes; effect and subscription emits stay synchronous.
-      const mediaEmit = r.componentContext?.mediaEmit
+      const mediaEmit = r.emitter?.mediaEmit
       if (mediaEmit) {
         if (inRender) queueMicrotask(() => mediaEmit(ms))
         else mediaEmit(ms)
@@ -397,7 +400,7 @@ export function useMedia(
     internalRef.current = r
   } else {
     // refresh per-render inputs the closures read through the ref
-    internalRef.current.componentContext = componentContext
+    internalRef.current.emitter = emitter
     internalRef.current.uid = uid
     internalRef.current.debug = debug
   }

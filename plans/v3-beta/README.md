@@ -2,8 +2,8 @@
 
 State: inventory, hero fix, and docs/skills pass complete on `v3/site-docs-pass`.
 The production site build and root typecheck pass. Gemini's assembled review passed;
-Nate approved the shared hero comparison. No deploy or publication ran.
-Next: Nate decides site deployment and the automatic beta-publication gate before
+The owner approved the shared hero comparison. No deploy or publication ran.
+Next: the owner decides site deployment and the automatic beta-publication gate before
 v3-beta integration. Then exercise and integrate the existing downstream migrations.
 Worktree: `~/.worktrees/tamagui-v3-beta-site-docs`, branch
 `v3/site-docs-pass`, owner `lane-tamagui-v3 (r51009)`.
@@ -12,13 +12,13 @@ Worktree: `~/.worktrees/tamagui-v3-beta-site-docs`, branch
 
 | Item | State | Evidence | Next |
 | --- | --- | --- | --- |
-| Site published | pending owner approval | `plans/v3-beta-site-readiness.md` records an earlier 784-route build; this run has not deployed anything | present the validated hero comparison and build result to Nate for a deploy decision |
-| Hero fixed | validated and reviewed; Nate approved the comparison | at 320px code grew to 432px in the fixed 430px panel; preserving code lines with horizontal scrolling holds it to 378px; 10 runtime states pass across five widths | deploy on Nate's approval |
+| Site published | pending owner approval | `plans/v3-beta-site-readiness.md` records an earlier 784-route build; this run has not deployed anything | present the validated hero comparison and build result to the owner for a deploy decision |
+| Hero fixed | validated and reviewed; owner approved the comparison | at 320px code grew to 432px in the fixed 430px panel; preserving code lines with horizontal scrolling holds it to 378px; 10 runtime states pass across five widths | deploy on owner approval |
 | Docs and skills pass | complete for active v3 core, intro, guides, 24 versioned component pages, and reusable skills | 94 files audited, 675 code blocks parsed, 255 literal JSX style values checked with the grammar; four stale prose references repaired; production build and typecheck pass | deploy with the site; preserve intentional v2 migration comparisons and historical docs |
 | Chat upgraded | migration exists off main; main still pins `2.7.7` | `plans/v3-beta/chat-migration-receipt.md`; `origin/v3` exists; `finish-line.md` records `531ecfdc0` on beta 917.1 and a later clean native launch after the outline-style fix | preserve existing migration, inspect its current tip, exercise refreshed local packages, then identify integration ownership |
 | Takeout upgraded | migration exists off main; main still pins `2.7.7` | `plans/v3-beta/takeout-migration-receipt.md`; `origin/v3` and additional beta migration branches exist; `finish-line.md` records `649b2a0e` on beta 917.1 | compare existing migration branches before selecting work; validate refreshed local packages with `bun release --into <isolated-consumer>` |
 | 3pc upgraded | root dependencies still pin v2 canary `2.1.0-1780536257458`; shared checkout has unrelated dirty work | inspected `/Users/n8/3pc/package.json` and tracked working changes | use an isolated worktree, inventory frontend dependencies and codemod report, then exercise local built packages; do not modify the shared checkout |
-| Bento about 12 free components, or plain repo | v3 migration already exists; product cut is unverified | `/Users/n8/bento` is on `v3/migrate`, ahead of main by 22 commits; latest `53b8098` converts remaining pseudo-style objects; 173 tracked component paths | inventory public/free components and current migration; Nate chooses any unresolved product scope |
+| Bento about 12 free components, or plain repo | v3 migration already exists; product cut is unverified | `/Users/n8/bento` is on `v3/migrate`, ahead of main by 22 commits; latest `53b8098` converts remaining pseudo-style objects; 173 tracked component paths | inventory public/free components and current migration; the owner chooses any unresolved product scope |
 
 ## Recovered ownership and boundaries
 
@@ -29,7 +29,7 @@ Worktree: `~/.worktrees/tamagui-v3-beta-site-docs`, branch
 - RAN: fetched `origin/v3-beta` and read its recent commits and existing plans.
   `plans/v3-beta/` already contains migration and validation receipts. This README
   adds the launch inventory without restarting their completed work.
-- Tamagui main is Nate-only. No main push, publish, release, release tag, or deploy
+- Tamagui main is owner-only. No main push, publish, release, release tag, or deploy
   is authorized by this assignment.
 - TESTED: both branch copies of `.github/workflows/release.yml` define automatic beta
   publication after a successful push check on `v3-beta`, and
@@ -84,7 +84,7 @@ Worktree: `~/.worktrees/tamagui-v3-beta-site-docs`, branch
   the full code/docs diff, the before/after, and source implementations, plus a
   fresh 320px Playwright probe of both tabs and live corrected docs. Reviewer:
   `v3-site-docs-review (r51027)`, result `scripts/tmp/v3-site-docs-review.md`.
-- RAN: Nate explicitly approved share
+- RAN: the owner explicitly approved share
   `share-file-r51009-41c117b46abaf5b2-1a0f7b9b832-480dfe832808d97d`.
   That approves the hero visual; it does not approve npm publication or deployment.
 

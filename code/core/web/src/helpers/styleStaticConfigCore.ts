@@ -28,6 +28,8 @@ export function resolveStyleStaticConfig(
   const variants = normalized ? normalized.variants : staticConfig.variants
   const authoredBaseStyle = normalized ? normalized.baseStyle : staticConfig.baseStyle
   const authoredDefaultProps = staticConfig.defaultProps
+  const keys = staticConfig.contextProps || staticConfig.context?.propKeys
+  const styledContextKeys = keys ? new Set(keys) : null
   let baseStyle: Record<string, any> | undefined
   let baseVariantProps: Record<string, any> | undefined
   let defaultProps: Record<string, any> | undefined
@@ -47,7 +49,12 @@ export function resolveStyleStaticConfig(
         ;(baseStyle ||= authoredBaseStyle ? { ...authoredBaseStyle } : {})[key] =
           authoredDefaultProps[key]
       }
-      if (isVariant || !isStyle) {
+      if (
+        isVariant ||
+        !isStyle ||
+        staticConfig.inlineProps?.has(key) ||
+        styledContextKeys?.has(key)
+      ) {
         ;(defaultProps ||= {})[key] = authoredDefaultProps[key]
       }
       if (isVariant) {
@@ -91,14 +98,13 @@ export function resolveStyleStaticConfig(
     }
     flushDirectBaseStyle()
   }
-  const keys = staticConfig.contextProps || staticConfig.context?.propKeys
   const value: StyleStaticConfig = {
     baseStyle: resolvedBaseStyle,
     baseVariantProps,
     baseStylePiece,
     baseStylePieces,
     defaultProps,
-    styledContextKeys: keys ? new Set(keys) : null,
+    styledContextKeys,
     variants,
     variantStyleResolver: (staticConfig as any).variantStyleResolver,
     passthroughClassName: normalized

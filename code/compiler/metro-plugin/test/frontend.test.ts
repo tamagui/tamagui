@@ -297,7 +297,7 @@ export const App = ({ dynamic }) => (
 import { View } from '@fixture/ui'
 import { spacing } from '~tokens'
 export const App = ({ dynamic }) => <>
-  <View padding={spacing} marker={USER_PLUGIN_VALUE} data-lowered="yes" />
+  <View padding={spacing} fixtureMarker={USER_PLUGIN_VALUE} data-lowered="yes" />
   <View padding={dynamic} data-runtime="preserved" />
 </>
 export const buildEnvironment = {
@@ -508,7 +508,7 @@ export const buildEnvironment = {
       // four equal sides compile to the one native shorthand
       expect(firstCode).toContain('"padding": 12')
       expect(firstCode).not.toContain('"paddingTop"')
-      expect(firstCode).toContain('marker: 44')
+      expect(firstCode).toContain('fixtureMarker: 44')
       expect(firstCode).toContain('data-lowered')
       expect(firstCode).toContain('padding: dynamic')
       expect(firstCode).toContain('data-runtime')
@@ -525,7 +525,7 @@ export const buildEnvironment = {
           host: 'native',
           props: expect.objectContaining({
             style: expect.objectContaining({ padding: 12 }),
-            marker: 44,
+            fixtureMarker: 44,
           }),
         }),
         expect.objectContaining({
@@ -558,7 +558,7 @@ export const buildEnvironment = {
       })
       const divergentCode = outputCode(divergentOptionsResult)
       expect(divergentCode).toContain('"padding": 12')
-      expect(divergentCode).toContain('marker: 33')
+      expect(divergentCode).toContain('fixtureMarker: 33')
 
       const workerInputPath = join(fixtureRoot, 'worker-input.json')
       await write(workerInputPath, JSON.stringify(args))

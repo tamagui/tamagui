@@ -4,6 +4,10 @@ Owner direction, 2026-10-08, quoted by the coordinator: "All right, let's releas
 
 Owner correction, 2026-10-08, directly to this session: "By the way, yeah don't release it until I say so don't merge it to main do not release it until I say so".
 
+Owner direction, 2026-10-09, directly to this session: "the V3 beta we needed it that's the whole point where it's gotta all be one release ... remove the beta from the film it's just V3. Make sure everything on the site reflects that nicely." And: "you have to own everything the domain we would move the domain as well to main".
+
+The release is one line: v3-beta merged with the release draft, validated on one tip. The film and site present it as Tamagui 3, without beta wording. The release session also owns moving the primary domain to the v3 site.
+
 The correction revokes release authorization. Continue preparation and validation on a draft branch. Do not merge main, dispatch releases or publish packages. Do not push v3-beta because that branch automatically publishes canaries and betas. Stable publication and the dependent Takeout upgrade wait for the owner's new explicit word.
 
 ## Scope

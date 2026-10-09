@@ -1,10 +1,17 @@
 import { describe, expectTypeOf, test } from 'vitest'
+import type { StyleProp as NativeStyleProp, ViewStyle } from 'react-native'
 
 import { style } from './style'
 import type { GetProps, StylePiece } from './types'
 import { View } from './views/View'
 
 describe('style() pieces', () => {
+  test('accepts native readonly style arrays and void values', () => {
+    expectTypeOf<NativeStyleProp<ViewStyle>>().toMatchTypeOf<
+      GetProps<typeof View>['style']
+    >()
+  })
+
   test('returns a StylePiece accepted by the style prop', () => {
     const piece = style({
       backgroundColor: 'red-10',

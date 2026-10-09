@@ -1,6 +1,6 @@
 # V3 token sigil rip: one worker, big bang
 
-Mandate, ruled by Nate 2026-07-31: remove `$` from Tamagui entirely and make
+Mandate, ruled by the owner 2026-07-31: remove `$` from Tamagui entirely and make
 the flat value grammar the only styling input. No runtime legacy paths.
 Migration is the codemod plus the tamagui skill, not compat code. This executes
 the deferred "token representation migration" from

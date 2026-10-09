@@ -161,13 +161,8 @@
     "@opentelemetry/sdk-node": "0.217.0",
     "@playwright/test": "1.58.2",
     "@protobufjs/utf8": "1.1.1",
-    "@react-navigation/core": "7.17.2",
-    "@react-navigation/elements": "2.9.14",
-    "@react-navigation/native": "7.3.16",
-    "@react-navigation/native-stack": "7.14.10",
-    "@react-navigation/routers": "7.5.3",
     "@swc/core": "1.14.0",
-    "@vxrn/mdx-rust": "1.20.4",
+    "@vxrn/mdx-rust": "2.0.0-0.canary.1791569029449",
     "@xmldom/xmldom": "0.8.13",
     "axios": "0.32.0",
     "basic-ftp": "5.3.1",
@@ -201,8 +196,8 @@
     "qs": "6.15.2",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "react-native": "0.86.2",
-    "react-native-worklets": "0.10.1",
+    "react-native": "0.87.1",
+    "react-native-worklets": "0.12.2",
     "rolldown": "1.2.4",
     "shell-quote": "1.12.0",
     "smol-toml": "1.6.1",
@@ -255,9 +250,7 @@
     "gray-matter@4.0.3": "patches/gray-matter@4.0.3.patch",
     "brace-expansion@5.0.6": "patches/brace-expansion@5.0.6.patch",
     "detox@20.47.0": "patches/detox@20.47.0.patch",
-    "vxrn@1.21.13": "patches/vxrn@1.21.13.patch",
-    "react-native-worklets@0.10.1": "patches/react-native-worklets@0.10.1.patch",
-    "react-native-reanimated@4.5.1": "patches/react-native-reanimated@4.5.1.patch",
-    "react-native-ios-utilities@5.2.0": "patches/react-native-ios-utilities@5.2.0.patch"
+    "react-native-ios-utilities@5.2.0": "patches/react-native-ios-utilities@5.2.0.patch",
+    "react-native-worklets@0.12.2": "patches/react-native-worklets@0.12.2.patch"
   }
 }

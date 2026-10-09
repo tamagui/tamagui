@@ -1,7 +1,7 @@
 # v3 beta quality pass, 2026-09-07
 
 Reviewed from `770f204ac0` on the shared `v3-beta` checkout. No size ceilings,
-test budgets, or assertions were relaxed. The release push is authorized by Nate;
+test budgets, or assertions were relaxed. The release push is authorized by the owner;
 publishing and registry verification follow the checks below.
 
 ## Changes

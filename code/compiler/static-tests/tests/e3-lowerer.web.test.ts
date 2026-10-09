@@ -717,6 +717,94 @@ export const Card = () => (
     }
   })
 
+  test('lowers browser View color to inheritable CSS without a host prop', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = () => (
+  <View color="red" data-style-case="direct" />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toMatchObject({ lowered: 1, flattened: 1, bailed: 0 })
+    expect(output.changed).toBe(true)
+    expect(output.code).not.toMatch(/\bcolor\s*=/)
+    expect(compactCss(plan.css)).toMatch(/^\.[^{}]+\{color:red\}$/)
+  })
+
+  test('flattens static spread View color into inheritable CSS', () => {
+    const source = `
+import { View } from '@tamagui/core'
+const inheritedColor = { color: 'blue' }
+export const Card = () => (
+  <View {...inheritedColor} data-style-case="spread" />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toMatchObject({ lowered: 1, flattened: 1, bailed: 0 })
+    expect(output.changed).toBe(true)
+    expect(output.code).not.toMatch(/\bcolor\s*=/)
+    expect(compactCss(plan.css)).toMatch(/^\.[^{}]+\{color:blue\}$/)
+  })
+
+  test('keeps an unsupported text style prop on the runtime path', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = () => (
+  <View backgroundColor="white" textShadowColor="blue" data-invalid-host-style="yes" />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(plan.stats).toEqual({
+      found: 1,
+      lowered: 0,
+      flattened: 0,
+      styled: 0,
+      bailed: 1,
+    })
+    expect(plan.diagnostics).toMatchObject([
+      {
+        code: 'local/unsupported-target',
+        kind: 'local',
+        message:
+          '"textShadowColor" is a text style prop and this component is not text. Use a Text-based component, or html.* for raw web elements.',
+        component: 'View',
+        blocking: true,
+      },
+    ])
+    expect(output.changed).toBe(false)
+    expect(output.code).toBe(source)
+  })
+
+  test('keeps an unsupported text style prop in a static spread on the runtime path', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = () => (
+  <View
+    {...{ backgroundColor: 'white', textShadowColor: 'blue' }}
+    data-invalid-host-style="spread"
+  />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(plan.stats).toMatchObject({ lowered: 0, flattened: 0, bailed: 1 })
+    expect(plan.diagnostics).toMatchObject([
+      {
+        code: 'local/unsupported-target',
+        message:
+          '"textShadowColor" is a text style prop and this component is not text. Use a Text-based component, or html.* for raw web elements.',
+        blocking: true,
+      },
+    ])
+    expect(output.changed).toBe(false)
+    expect(output.code).toBe(source)
+  })
+
   test('keeps an opaque dynamic style object byte-identical', () => {
     const source = `
 import { View } from '@tamagui/core'

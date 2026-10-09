@@ -67,7 +67,7 @@ Function-level attribution and the invariant-cost decomposition live in the
 milestone reports; ~1.5–2K of the delta has identified recovery paths (cursor
 diet, arena trial, is_X residue), the rest prices the plan's invariants.
 
-## Final ruling (Nate via r4674, 2026-08-28)
+## Final ruling (owner via r4674, 2026-08-28)
 
 The revised floor is ACCEPTED. Final gate state: timing at dead parity with
 the old engine (raw mean marginally faster); size 25,348 vs 21,729

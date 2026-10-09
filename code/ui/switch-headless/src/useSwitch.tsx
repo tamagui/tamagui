@@ -7,7 +7,7 @@ import * as React from 'react'
 import type {
   GestureResponderEvent,
   PressableProps,
-  View,
+  ViewInstance as View,
   ViewProps,
 } from '@tamagui/react-native-types'
 

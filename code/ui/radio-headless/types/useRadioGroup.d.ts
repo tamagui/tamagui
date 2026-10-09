@@ -1,6 +1,6 @@
 import type { ViewProps } from '@tamagui/web';
 import type { ReactElement } from 'react';
-import type { GestureResponderEvent } from '@tamagui/react-native-types';
+import type { PressableProps } from '@tamagui/react-native-types';
 interface UseRadioGroupParams {
     value?: string;
     defaultValue?: string;
@@ -53,6 +53,7 @@ export type RadioGroupContextValue = {
     native?: boolean;
     accentColor?: string;
 };
+type RadioEvent<K extends 'onKeyDown' | 'onFocus'> = Parameters<NonNullable<ViewProps[K]>>[0] | Parameters<NonNullable<PressableProps[K]>>[0];
 export declare const useRadioGroupItem: (params: UseRadioItemParams) => {
     providerValue: {
         checked: boolean;
@@ -73,9 +74,57 @@ export declare const useRadioGroupItem: (params: UseRadioItemParams) => {
         type?: string | undefined;
         value?: string | undefined;
         id: string | undefined;
-        onPress: import("@tamagui/helpers").EventHandler<GestureResponderEvent> | undefined;
-        onKeyDown?: import("@tamagui/helpers").EventHandler<import("react").KeyboardEvent<HTMLDivElement>> | undefined;
-        onFocus?: import("@tamagui/helpers").EventHandler<import("react").FocusEvent<HTMLDivElement, Element>> | undefined;
+        onPress: import("@tamagui/helpers").EventHandler<Readonly<Omit<Readonly<{
+            bubbles: boolean | undefined;
+            cancelable: boolean | undefined;
+            currentTarget: number | import("@tamagui/react-native-types").HostInstance;
+            defaultPrevented: boolean | undefined;
+            dispatchConfig: Readonly<{
+                registrationName: string;
+            }>;
+            eventPhase: number | undefined;
+            preventDefault: () => void;
+            isDefaultPrevented: () => boolean;
+            stopPropagation: () => void;
+            isPropagationStopped: () => boolean;
+            isTrusted: boolean | undefined;
+            nativeEvent: Readonly<{
+                changedTouches: ReadonlyArray<import("@tamagui/react-native-types").NativeTouchEvent>;
+                force?: number | undefined;
+                identifier: number;
+                locationX: number;
+                locationY: number;
+                pageX: number;
+                pageY: number;
+                target: number | undefined;
+                timestamp: number;
+                touches: ReadonlyArray<import("@tamagui/react-native-types").NativeTouchEvent>;
+            }>;
+            persist: () => void;
+            target: (number | undefined) | import("@tamagui/react-native-types").HostInstance;
+            timeStamp: number;
+            type: string | undefined;
+        }>, "touchHistory"> & {
+            touchHistory: Readonly<{
+                indexOfSingleActiveTouch: number;
+                mostRecentTimeStamp: number;
+                numberActiveTouches: number;
+                touchBank: ReadonlyArray<Readonly<{
+                    touchActive: boolean;
+                    startPageX: number;
+                    startPageY: number;
+                    startTimeStamp: number;
+                    currentPageX: number;
+                    currentPageY: number;
+                    currentTimeStamp: number;
+                    previousPageX: number;
+                    previousPageY: number;
+                    previousTimeStamp: number;
+                }>>;
+            }>;
+        }>> | undefined;
+        onKeyDown?: import("@tamagui/helpers").EventHandler<RadioEvent<"onKeyDown">> | undefined;
+        onFocus?: import("@tamagui/helpers").EventHandler<RadioEvent<"onFocus">> | undefined;
     };
     rovingFocusGroupAttrs: {
         asChild: 'except-style';

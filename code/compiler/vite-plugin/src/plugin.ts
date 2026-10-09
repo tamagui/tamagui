@@ -482,6 +482,24 @@ function svgWebEntry() {
   )
 }
 
+function resolveSvgWeb(source: string) {
+  if (source === 'react-native-svg' || source === '@tamagui/react-native-svg') {
+    return svgWebEntry()
+  }
+}
+
+// rolldown dependency prebundling uses this resolver rather than basePlugin.resolveId.
+const svgOptimizerPlugin: Plugin = {
+  name: 'tamagui-svg-optimizer',
+  enforce: 'pre',
+  resolveId: {
+    filter: { id: /^(?:react-native-svg|@tamagui\/react-native-svg)$/ },
+    handler(source) {
+      return resolveSvgWeb(source)
+    },
+  },
+}
+
 /**
  * returns vite-compatible aliases for tamagui
  * use this when you need control over alias ordering in your config
@@ -1007,6 +1025,19 @@ export function createTamaguiPlugins({
     name: 'tamagui',
     enforce: 'pre',
 
+    resolveId(source) {
+      if (
+        disableResolveConfig ||
+        tamaguiOptionsIn.platform === 'native' ||
+        isNative(this.environment)
+      ) {
+        return
+      }
+      // a framework can enable native environments alongside client and ssr.
+      // web svg resolution must still use the DOM entry in those environments.
+      return resolveSvgWeb(source)
+    },
+
     configureServer(_server) {
       server = _server
       // a new server owns a new watcher, so what the last one knew about is gone
@@ -1117,8 +1148,6 @@ export function createTamaguiPlugins({
                       resolve('@tamagui/proxy-worm'),
                     'react-native/Libraries/Utilities/codegenNativeComponent':
                       resolve('@tamagui/proxy-worm'),
-                    'react-native-svg': svgWebEntry(),
-                    '@tamagui/react-native-svg': svgWebEntry(),
                     ...(!useReactNativeWebLite && {
                       'react-native': resolve('react-native-web'),
                     }),
@@ -1187,6 +1216,19 @@ export function createTamaguiPlugins({
 
       userConf.optimizeDeps ||= {}
       userConf.optimizeDeps.include ||= []
+
+      if (!disableResolveConfig && tamaguiOptionsIn.platform !== 'native') {
+        userConf.optimizeDeps.rolldownOptions ||= {}
+        const existingPlugins = userConf.optimizeDeps.rolldownOptions.plugins
+        userConf.optimizeDeps.rolldownOptions.plugins = [
+          svgOptimizerPlugin,
+          ...(Array.isArray(existingPlugins)
+            ? existingPlugins
+            : existingPlugins
+              ? [existingPlugins]
+              : []),
+        ]
+      }
 
       // These dependencies are CJS and break when served directly to the browser
       // (`exports`/`module` is not defined). Pre-bundle them before Tamagui's linked

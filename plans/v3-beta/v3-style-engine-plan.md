@@ -13,7 +13,7 @@ Those documents stay in place as provenance:
 - [`opus-feedback.md`](./opus-feedback.md),
   [`grok-feedback.md`](./grok-feedback.md),
   [`gemini-feedback.md`](./gemini-feedback.md), the independent reviews;
-- [`nate-grok-opus-review.md`](./nate-grok-opus-review.md) and
+- [`grok-opus-review.md`](./grok-opus-review.md) and
   [`v3-consolidated-review.md`](./v3-consolidated-review.md), the merges.
 
 Earlier measurement receipts and the behavior inventory remain evidence. Claim
@@ -45,7 +45,7 @@ deletion but underpriced the retained plumbing that replaces it."
 Each is checkable by reading the code and cannot be satisfied by shaving
 something unrelated.
 
-**Owner ruling (Nate via r4674, 2026-08-28): invariant 1's single-scan /
+**Owner ruling (via r4674, 2026-08-28): invariant 1's single-scan /
 no-reparse rule is RELAXED on rare composition paths.** Compounds and HOC
 transport may re-scan condition spans, so the atom-replay and transport
 machinery the strict form forced is deleted. The revised gate: timing >= base

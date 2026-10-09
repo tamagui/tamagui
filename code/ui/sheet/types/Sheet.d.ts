@@ -1,6 +1,6 @@
 import { type TamaguiElement, type ViewProps } from '@tamagui/core';
 import type { FunctionComponent, Ref } from 'react';
-import type { View as RNView } from '@tamagui/react-native-types';
+import type { ViewInstance as RNView } from '@tamagui/react-native-types';
 import { useAnimatedPosition } from './SheetContext';
 import type { SheetProps } from './types';
 export * from './types';
@@ -40,7 +40,7 @@ type ExtraBackgroundProps = {
 export declare const SheetBackground: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disableHideBottomOverflow" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackStyleBase> & Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & SheetStyleShorthandProps & ExtraBackgroundProps, "scope"> & {
     scope?: import("./types").SheetScopes;
 }, import("@tamagui/core").StackStyleBase, Omit<{}, "disableHideBottomOverflow" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackStyleBase>, import("@tamagui/core").StaticConfigPublic>;
-export declare const SheetRoot: import("@tamagui/compose-refs").RefComponent<RNView, SheetProps>;
+export declare const SheetRoot: import("@tamagui/compose-refs").RefComponent<import("@tamagui/react-native-types").ReactNativeElement, SheetProps>;
 export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "onOpenChange" | "open"> & {
     ref?: Ref<RNView>;
 }> & {
@@ -106,7 +106,7 @@ export declare const Sheet: ((props: Omit<{
     onTransition?: (e: import("./types").SheetTransitionEvent) => void;
 }, "scope"> & {
     scope?: import("./types").SheetScopes;
-} & import("@tamagui/compose-refs").RefProp<RNView>) => import("react").ReactNode) & {
+} & import("@tamagui/compose-refs").RefProp<import("@tamagui/react-native-types").ReactNativeElement>) => import("react").ReactNode) & {
     displayName?: string;
     propTypes?: any;
 } & {
@@ -142,7 +142,7 @@ export declare const Sheet: ((props: Omit<{
         acceptsClassName: true;
         neverFlatten: true;
     }>;
-    Root: import("@tamagui/compose-refs").RefComponent<RNView, SheetProps>;
+    Root: import("@tamagui/compose-refs").RefComponent<import("@tamagui/react-native-types").ReactNativeElement, SheetProps>;
     Controlled: FunctionComponent<Omit<SheetProps, "onOpenChange" | "open"> & {
         ref?: Ref<RNView>;
     }> & {

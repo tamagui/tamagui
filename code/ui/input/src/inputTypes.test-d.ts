@@ -13,7 +13,7 @@
 
 import { expectTypeOf, describe, test } from 'vitest'
 import type { GetProps } from '@tamagui/web'
-import type { TextInput } from 'react-native'
+import type { TextInputInstance as TextInput } from 'react-native'
 import {
   Input,
   type InputProps,

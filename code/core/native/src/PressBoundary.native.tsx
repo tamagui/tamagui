@@ -1,6 +1,6 @@
 import { createRefComponent } from '@tamagui/compose-refs'
 import React from 'react'
-import { View } from 'react-native'
+import { View, type ViewInstance } from 'react-native'
 import {
   claimExternalPressOwnership,
   releaseExternalPressOwnership,
@@ -23,8 +23,8 @@ function composeLast<T extends (...args: any[]) => void>(theirs: T | undefined, 
 }
 
 export const PressBoundary: (
-  props: PressBoundaryProps & { ref?: React.Ref<View> }
-) => React.ReactNode = createRefComponent<View, PressBoundaryProps>(
+  props: PressBoundaryProps & { ref?: React.Ref<ViewInstance> }
+) => React.ReactNode = createRefComponent<ViewInstance, PressBoundaryProps>(
   function PressBoundary(
     {
       enabled,
