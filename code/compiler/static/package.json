@@ -80,7 +80,7 @@
     "esbuild-loader": "^4.2.2",
     "null-loader": "^4.0.1",
     "react": "19.2.3",
-    "react-native": "0.86.2",
+    "react-native": "0.87.1",
     "typescript": "7.0.2"
   },
   "peerDependencies": {

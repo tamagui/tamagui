@@ -1,197 +1,1989 @@
-import { type ComponentSize, type GetProps } from '@tamagui/core';
-export type RadioGroupSize = ComponentSize | boolean;
-export declare const RadioGroupFrame: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "orientation"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "orientation">> & import("@tamagui/core").WithFlatVariantValues<{
-    orientation?: "horizontal" | "vertical" | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-    value?: string;
-    defaultValue?: string;
-    onValueChange?: (value: string) => void;
-    required?: boolean;
-    disabled?: boolean;
-    name?: string;
-    native?: boolean;
-    accentColor?: string;
-}, "orientation"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "orientation">> & import("@tamagui/core").WithFlatVariantValues<{
-    orientation?: "horizontal" | "vertical" | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, "defaultValue" | "native" | "onValueChange" | "required" | "value" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & {
-    ref?: import("react").Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "orientation"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "orientation">> & import("@tamagui/core").WithFlatVariantValues<{
-    orientation?: "horizontal" | "vertical" | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-    value?: string;
-    defaultValue?: string;
-    onValueChange?: (value: string) => void;
-    required?: boolean;
-    disabled?: boolean;
-    name?: string;
-    native?: boolean;
-    accentColor?: string;
-}, import("@tamagui/core").StackStyleBase, {
-    orientation?: "horizontal" | "vertical" | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "orientation"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "orientation">> & import("@tamagui/core").WithFlatVariantValues<{
-        orientation?: "horizontal" | "vertical" | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-        value?: string;
-        defaultValue?: string;
-        onValueChange?: (value: string) => void;
-        required?: boolean;
-        disabled?: boolean;
-        name?: string;
-        native?: boolean;
-        accentColor?: string;
-    }, import("@tamagui/core").StackStyleBase, {
-        orientation?: "horizontal" | "vertical" | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
-};
-export declare const RadioGroupItem: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "disabled">> & import("@tamagui/core").WithFlatVariantValues<{
-    disabled?: boolean | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, "accessibilityActions" | "accessibilityElementsHidden" | "accessibilityHint" | "accessibilityIgnoresInvertColors" | "accessibilityLabel" | "accessibilityLabelledBy" | "accessibilityLanguage" | "accessibilityLargeContentTitle" | "accessibilityLiveRegion" | "accessibilityRespondsToUserInteraction" | "accessibilityRole" | "accessibilityShowsLargeContentViewer" | "accessibilityState" | "accessibilityValue" | "accessibilityViewIsModal" | "accessible" | "animatedBy" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-hidden" | "aria-label" | "aria-labelledby" | "aria-live" | "aria-modal" | "aria-selected" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "asChild" | "children" | "className" | "collapsable" | "collapsableChildren" | "container" | "dangerouslySetInnerHTML" | "debug" | "disableClassName" | "disableNativeStyle" | "disableOptimization" | "download" | "forceStyle" | "group" | "hasTVPreferredFocus" | "hitSlop" | "htmlFor" | "id" | "importantForAccessibility" | "isTVSelectable" | "name" | "nativeID" | "needsOffscreenAlphaCompositing" | "onAccessibilityAction" | "onAccessibilityEscape" | "onAccessibilityTap" | "onBeforeInput" | "onBlur" | "onChange" | "onClick" | "onContextMenu" | "onCopy" | "onCut" | "onDoubleClick" | "onDrag" | "onDragEnd" | "onDragEnter" | "onDragLeave" | "onDragOver" | "onDragStart" | "onDrop" | "onFocus" | "onInput" | "onKeyDown" | "onKeyUp" | "onLayout" | "onLongPress" | "onMagicTap" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOut" | "onMouseOver" | "onMouseUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onPaste" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerUp" | "onPointerUpCapture" | "onPress" | "onPressIn" | "onPressOut" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScroll" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "onTouchCancel" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchStart" | "onWheel" | "rel" | "removeClippedSubviews" | "render" | "renderToHardwareTextureAndroid" | "role" | "screenReaderFocusable" | "shouldRasterizeIOS" | "style" | "tabIndex" | "target" | "testID" | "theme" | "themeShallow" | "tvParallaxMagnification" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "untilMeasured"> & {
-    value: string;
-    id?: string;
-    labelledBy?: string;
-    disabled?: boolean;
-    activeStyle?: import("@tamagui/core").StylePiece;
-    activeTheme?: string | null;
-}, "disabled" | "size"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "disabled" | "size">> & import("@tamagui/core").WithFlatVariantValues<{
-    disabled?: boolean | undefined;
-    size?: RadioGroupSize | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, "accessibilityActions" | "accessibilityElementsHidden" | "accessibilityHint" | "accessibilityIgnoresInvertColors" | "accessibilityLabel" | "accessibilityLabelledBy" | "accessibilityLanguage" | "accessibilityLargeContentTitle" | "accessibilityLiveRegion" | "accessibilityRespondsToUserInteraction" | "accessibilityRole" | "accessibilityShowsLargeContentViewer" | "accessibilityState" | "accessibilityValue" | "accessibilityViewIsModal" | "accessible" | "activeStyle" | "activeTheme" | "animatedBy" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-hidden" | "aria-label" | "aria-labelledby" | "aria-live" | "aria-modal" | "aria-selected" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "asChild" | "children" | "className" | "collapsable" | "collapsableChildren" | "container" | "dangerouslySetInnerHTML" | "debug" | "disableClassName" | "disableNativeStyle" | "disableOptimization" | "download" | "forceStyle" | "group" | "hasTVPreferredFocus" | "hitSlop" | "htmlFor" | "id" | "importantForAccessibility" | "isTVSelectable" | "labelledBy" | "name" | "nativeID" | "needsOffscreenAlphaCompositing" | "onAccessibilityAction" | "onAccessibilityEscape" | "onAccessibilityTap" | "onBeforeInput" | "onBlur" | "onChange" | "onClick" | "onContextMenu" | "onCopy" | "onCut" | "onDoubleClick" | "onDrag" | "onDragEnd" | "onDragEnter" | "onDragLeave" | "onDragOver" | "onDragStart" | "onDrop" | "onFocus" | "onInput" | "onKeyDown" | "onKeyUp" | "onLayout" | "onLongPress" | "onMagicTap" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOut" | "onMouseOver" | "onMouseUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onPaste" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerUp" | "onPointerUpCapture" | "onPress" | "onPressIn" | "onPressOut" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScroll" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "onTouchCancel" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchStart" | "onWheel" | "rel" | "removeClippedSubviews" | "render" | "renderToHardwareTextureAndroid" | "role" | "screenReaderFocusable" | "shouldRasterizeIOS" | "style" | "tabIndex" | "target" | "testID" | "theme" | "themeShallow" | "tvParallaxMagnification" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "untilMeasured" | "value" | keyof import("@tamagui/core").StackStyleBase> & {
-    ref?: import("react").Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "disabled">> & import("@tamagui/core").WithFlatVariantValues<{
-    disabled?: boolean | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, "accessibilityActions" | "accessibilityElementsHidden" | "accessibilityHint" | "accessibilityIgnoresInvertColors" | "accessibilityLabel" | "accessibilityLabelledBy" | "accessibilityLanguage" | "accessibilityLargeContentTitle" | "accessibilityLiveRegion" | "accessibilityRespondsToUserInteraction" | "accessibilityRole" | "accessibilityShowsLargeContentViewer" | "accessibilityState" | "accessibilityValue" | "accessibilityViewIsModal" | "accessible" | "animatedBy" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-hidden" | "aria-label" | "aria-labelledby" | "aria-live" | "aria-modal" | "aria-selected" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "asChild" | "children" | "className" | "collapsable" | "collapsableChildren" | "container" | "dangerouslySetInnerHTML" | "debug" | "disableClassName" | "disableNativeStyle" | "disableOptimization" | "download" | "forceStyle" | "group" | "hasTVPreferredFocus" | "hitSlop" | "htmlFor" | "id" | "importantForAccessibility" | "isTVSelectable" | "name" | "nativeID" | "needsOffscreenAlphaCompositing" | "onAccessibilityAction" | "onAccessibilityEscape" | "onAccessibilityTap" | "onBeforeInput" | "onBlur" | "onChange" | "onClick" | "onContextMenu" | "onCopy" | "onCut" | "onDoubleClick" | "onDrag" | "onDragEnd" | "onDragEnter" | "onDragLeave" | "onDragOver" | "onDragStart" | "onDrop" | "onFocus" | "onInput" | "onKeyDown" | "onKeyUp" | "onLayout" | "onLongPress" | "onMagicTap" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOut" | "onMouseOver" | "onMouseUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onPaste" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerUp" | "onPointerUpCapture" | "onPress" | "onPressIn" | "onPressOut" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScroll" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "onTouchCancel" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchStart" | "onWheel" | "rel" | "removeClippedSubviews" | "render" | "renderToHardwareTextureAndroid" | "role" | "screenReaderFocusable" | "shouldRasterizeIOS" | "style" | "tabIndex" | "target" | "testID" | "theme" | "themeShallow" | "tvParallaxMagnification" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "untilMeasured"> & {
-    value: string;
-    id?: string;
-    labelledBy?: string;
-    disabled?: boolean;
-    activeStyle?: import("@tamagui/core").StylePiece;
-    activeTheme?: string | null;
-}, import("@tamagui/core").StackStyleBase, {
-    disabled?: boolean | undefined;
-    size?: RadioGroupSize | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "disabled">> & import("@tamagui/core").WithFlatVariantValues<{
-        disabled?: boolean | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, "accessibilityActions" | "accessibilityElementsHidden" | "accessibilityHint" | "accessibilityIgnoresInvertColors" | "accessibilityLabel" | "accessibilityLabelledBy" | "accessibilityLanguage" | "accessibilityLargeContentTitle" | "accessibilityLiveRegion" | "accessibilityRespondsToUserInteraction" | "accessibilityRole" | "accessibilityShowsLargeContentViewer" | "accessibilityState" | "accessibilityValue" | "accessibilityViewIsModal" | "accessible" | "animatedBy" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-hidden" | "aria-label" | "aria-labelledby" | "aria-live" | "aria-modal" | "aria-selected" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "asChild" | "children" | "className" | "collapsable" | "collapsableChildren" | "container" | "dangerouslySetInnerHTML" | "debug" | "disableClassName" | "disableNativeStyle" | "disableOptimization" | "download" | "forceStyle" | "group" | "hasTVPreferredFocus" | "hitSlop" | "htmlFor" | "id" | "importantForAccessibility" | "isTVSelectable" | "name" | "nativeID" | "needsOffscreenAlphaCompositing" | "onAccessibilityAction" | "onAccessibilityEscape" | "onAccessibilityTap" | "onBeforeInput" | "onBlur" | "onChange" | "onClick" | "onContextMenu" | "onCopy" | "onCut" | "onDoubleClick" | "onDrag" | "onDragEnd" | "onDragEnter" | "onDragLeave" | "onDragOver" | "onDragStart" | "onDrop" | "onFocus" | "onInput" | "onKeyDown" | "onKeyUp" | "onLayout" | "onLongPress" | "onMagicTap" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOut" | "onMouseOver" | "onMouseUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onPaste" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerUp" | "onPointerUpCapture" | "onPress" | "onPressIn" | "onPressOut" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScroll" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "onTouchCancel" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchStart" | "onWheel" | "rel" | "removeClippedSubviews" | "render" | "renderToHardwareTextureAndroid" | "role" | "screenReaderFocusable" | "shouldRasterizeIOS" | "style" | "tabIndex" | "target" | "testID" | "theme" | "themeShallow" | "tvParallaxMagnification" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "untilMeasured"> & {
-        value: string;
-        id?: string;
-        labelledBy?: string;
-        disabled?: boolean;
-        activeStyle?: import("@tamagui/core").StylePiece;
-        activeTheme?: string | null;
-    }, import("@tamagui/core").StackStyleBase, {
-        disabled?: boolean | undefined;
-        size?: RadioGroupSize | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
-};
-export declare const RadioGroupIndicator: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-    forceMount?: boolean;
-}, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, "forceMount" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & {
-    ref?: import("react").Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-    forceMount?: boolean;
-}, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-        forceMount?: boolean;
-    }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
-};
-export declare const RadioGroup: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "orientation"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "orientation">> & import("@tamagui/core").WithFlatVariantValues<{
-    orientation?: "horizontal" | "vertical" | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-    value?: string;
-    defaultValue?: string;
-    onValueChange?: (value: string) => void;
-    required?: boolean;
-    disabled?: boolean;
-    name?: string;
-    native?: boolean;
-    accentColor?: string;
-}, "orientation"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "orientation">> & import("@tamagui/core").WithFlatVariantValues<{
-    orientation?: "horizontal" | "vertical" | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, "defaultValue" | "native" | "onValueChange" | "required" | "value" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & {
-    ref?: import("react").Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "orientation"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "orientation">> & import("@tamagui/core").WithFlatVariantValues<{
-    orientation?: "horizontal" | "vertical" | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-    value?: string;
-    defaultValue?: string;
-    onValueChange?: (value: string) => void;
-    required?: boolean;
-    disabled?: boolean;
-    name?: string;
-    native?: boolean;
-    accentColor?: string;
-}, import("@tamagui/core").StackStyleBase, {
-    orientation?: "horizontal" | "vertical" | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "orientation"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "orientation">> & import("@tamagui/core").WithFlatVariantValues<{
-        orientation?: "horizontal" | "vertical" | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-        value?: string;
-        defaultValue?: string;
-        onValueChange?: (value: string) => void;
-        required?: boolean;
-        disabled?: boolean;
-        name?: string;
-        native?: boolean;
-        accentColor?: string;
-    }, import("@tamagui/core").StackStyleBase, {
-        orientation?: "horizontal" | "vertical" | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
-} & {
-    Item: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "disabled">> & import("@tamagui/core").WithFlatVariantValues<{
-        disabled?: boolean | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, "accessibilityActions" | "accessibilityElementsHidden" | "accessibilityHint" | "accessibilityIgnoresInvertColors" | "accessibilityLabel" | "accessibilityLabelledBy" | "accessibilityLanguage" | "accessibilityLargeContentTitle" | "accessibilityLiveRegion" | "accessibilityRespondsToUserInteraction" | "accessibilityRole" | "accessibilityShowsLargeContentViewer" | "accessibilityState" | "accessibilityValue" | "accessibilityViewIsModal" | "accessible" | "animatedBy" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-hidden" | "aria-label" | "aria-labelledby" | "aria-live" | "aria-modal" | "aria-selected" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "asChild" | "children" | "className" | "collapsable" | "collapsableChildren" | "container" | "dangerouslySetInnerHTML" | "debug" | "disableClassName" | "disableNativeStyle" | "disableOptimization" | "download" | "forceStyle" | "group" | "hasTVPreferredFocus" | "hitSlop" | "htmlFor" | "id" | "importantForAccessibility" | "isTVSelectable" | "name" | "nativeID" | "needsOffscreenAlphaCompositing" | "onAccessibilityAction" | "onAccessibilityEscape" | "onAccessibilityTap" | "onBeforeInput" | "onBlur" | "onChange" | "onClick" | "onContextMenu" | "onCopy" | "onCut" | "onDoubleClick" | "onDrag" | "onDragEnd" | "onDragEnter" | "onDragLeave" | "onDragOver" | "onDragStart" | "onDrop" | "onFocus" | "onInput" | "onKeyDown" | "onKeyUp" | "onLayout" | "onLongPress" | "onMagicTap" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOut" | "onMouseOver" | "onMouseUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onPaste" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerUp" | "onPointerUpCapture" | "onPress" | "onPressIn" | "onPressOut" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScroll" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "onTouchCancel" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchStart" | "onWheel" | "rel" | "removeClippedSubviews" | "render" | "renderToHardwareTextureAndroid" | "role" | "screenReaderFocusable" | "shouldRasterizeIOS" | "style" | "tabIndex" | "target" | "testID" | "theme" | "themeShallow" | "tvParallaxMagnification" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "untilMeasured"> & {
-        value: string;
-        id?: string;
-        labelledBy?: string;
-        disabled?: boolean;
-        activeStyle?: import("@tamagui/core").StylePiece;
-        activeTheme?: string | null;
-    }, "disabled" | "size"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "disabled" | "size">> & import("@tamagui/core").WithFlatVariantValues<{
-        disabled?: boolean | undefined;
-        size?: RadioGroupSize | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, "accessibilityActions" | "accessibilityElementsHidden" | "accessibilityHint" | "accessibilityIgnoresInvertColors" | "accessibilityLabel" | "accessibilityLabelledBy" | "accessibilityLanguage" | "accessibilityLargeContentTitle" | "accessibilityLiveRegion" | "accessibilityRespondsToUserInteraction" | "accessibilityRole" | "accessibilityShowsLargeContentViewer" | "accessibilityState" | "accessibilityValue" | "accessibilityViewIsModal" | "accessible" | "activeStyle" | "activeTheme" | "animatedBy" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-hidden" | "aria-label" | "aria-labelledby" | "aria-live" | "aria-modal" | "aria-selected" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "asChild" | "children" | "className" | "collapsable" | "collapsableChildren" | "container" | "dangerouslySetInnerHTML" | "debug" | "disableClassName" | "disableNativeStyle" | "disableOptimization" | "download" | "forceStyle" | "group" | "hasTVPreferredFocus" | "hitSlop" | "htmlFor" | "id" | "importantForAccessibility" | "isTVSelectable" | "labelledBy" | "name" | "nativeID" | "needsOffscreenAlphaCompositing" | "onAccessibilityAction" | "onAccessibilityEscape" | "onAccessibilityTap" | "onBeforeInput" | "onBlur" | "onChange" | "onClick" | "onContextMenu" | "onCopy" | "onCut" | "onDoubleClick" | "onDrag" | "onDragEnd" | "onDragEnter" | "onDragLeave" | "onDragOver" | "onDragStart" | "onDrop" | "onFocus" | "onInput" | "onKeyDown" | "onKeyUp" | "onLayout" | "onLongPress" | "onMagicTap" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOut" | "onMouseOver" | "onMouseUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onPaste" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerUp" | "onPointerUpCapture" | "onPress" | "onPressIn" | "onPressOut" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScroll" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "onTouchCancel" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchStart" | "onWheel" | "rel" | "removeClippedSubviews" | "render" | "renderToHardwareTextureAndroid" | "role" | "screenReaderFocusable" | "shouldRasterizeIOS" | "style" | "tabIndex" | "target" | "testID" | "theme" | "themeShallow" | "tvParallaxMagnification" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "untilMeasured" | "value" | keyof import("@tamagui/core").StackStyleBase> & {
-        ref?: import("react").Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
-    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "disabled">> & import("@tamagui/core").WithFlatVariantValues<{
-        disabled?: boolean | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, "accessibilityActions" | "accessibilityElementsHidden" | "accessibilityHint" | "accessibilityIgnoresInvertColors" | "accessibilityLabel" | "accessibilityLabelledBy" | "accessibilityLanguage" | "accessibilityLargeContentTitle" | "accessibilityLiveRegion" | "accessibilityRespondsToUserInteraction" | "accessibilityRole" | "accessibilityShowsLargeContentViewer" | "accessibilityState" | "accessibilityValue" | "accessibilityViewIsModal" | "accessible" | "animatedBy" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-hidden" | "aria-label" | "aria-labelledby" | "aria-live" | "aria-modal" | "aria-selected" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "asChild" | "children" | "className" | "collapsable" | "collapsableChildren" | "container" | "dangerouslySetInnerHTML" | "debug" | "disableClassName" | "disableNativeStyle" | "disableOptimization" | "download" | "forceStyle" | "group" | "hasTVPreferredFocus" | "hitSlop" | "htmlFor" | "id" | "importantForAccessibility" | "isTVSelectable" | "name" | "nativeID" | "needsOffscreenAlphaCompositing" | "onAccessibilityAction" | "onAccessibilityEscape" | "onAccessibilityTap" | "onBeforeInput" | "onBlur" | "onChange" | "onClick" | "onContextMenu" | "onCopy" | "onCut" | "onDoubleClick" | "onDrag" | "onDragEnd" | "onDragEnter" | "onDragLeave" | "onDragOver" | "onDragStart" | "onDrop" | "onFocus" | "onInput" | "onKeyDown" | "onKeyUp" | "onLayout" | "onLongPress" | "onMagicTap" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOut" | "onMouseOver" | "onMouseUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onPaste" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerUp" | "onPointerUpCapture" | "onPress" | "onPressIn" | "onPressOut" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScroll" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "onTouchCancel" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchStart" | "onWheel" | "rel" | "removeClippedSubviews" | "render" | "renderToHardwareTextureAndroid" | "role" | "screenReaderFocusable" | "shouldRasterizeIOS" | "style" | "tabIndex" | "target" | "testID" | "theme" | "themeShallow" | "tvParallaxMagnification" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "untilMeasured"> & {
-        value: string;
-        id?: string;
-        labelledBy?: string;
-        disabled?: boolean;
-        activeStyle?: import("@tamagui/core").StylePiece;
-        activeTheme?: string | null;
-    }, import("@tamagui/core").StackStyleBase, {
-        disabled?: boolean | undefined;
-        size?: RadioGroupSize | undefined;
-    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "disabled">> & import("@tamagui/core").WithFlatVariantValues<{
-            disabled?: boolean | undefined;
-        }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, "accessibilityActions" | "accessibilityElementsHidden" | "accessibilityHint" | "accessibilityIgnoresInvertColors" | "accessibilityLabel" | "accessibilityLabelledBy" | "accessibilityLanguage" | "accessibilityLargeContentTitle" | "accessibilityLiveRegion" | "accessibilityRespondsToUserInteraction" | "accessibilityRole" | "accessibilityShowsLargeContentViewer" | "accessibilityState" | "accessibilityValue" | "accessibilityViewIsModal" | "accessible" | "animatedBy" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-hidden" | "aria-label" | "aria-labelledby" | "aria-live" | "aria-modal" | "aria-selected" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "asChild" | "children" | "className" | "collapsable" | "collapsableChildren" | "container" | "dangerouslySetInnerHTML" | "debug" | "disableClassName" | "disableNativeStyle" | "disableOptimization" | "download" | "forceStyle" | "group" | "hasTVPreferredFocus" | "hitSlop" | "htmlFor" | "id" | "importantForAccessibility" | "isTVSelectable" | "name" | "nativeID" | "needsOffscreenAlphaCompositing" | "onAccessibilityAction" | "onAccessibilityEscape" | "onAccessibilityTap" | "onBeforeInput" | "onBlur" | "onChange" | "onClick" | "onContextMenu" | "onCopy" | "onCut" | "onDoubleClick" | "onDrag" | "onDragEnd" | "onDragEnter" | "onDragLeave" | "onDragOver" | "onDragStart" | "onDrop" | "onFocus" | "onInput" | "onKeyDown" | "onKeyUp" | "onLayout" | "onLongPress" | "onMagicTap" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOut" | "onMouseOver" | "onMouseUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onPaste" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerUp" | "onPointerUpCapture" | "onPress" | "onPressIn" | "onPressOut" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScroll" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "onTouchCancel" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchStart" | "onWheel" | "rel" | "removeClippedSubviews" | "render" | "renderToHardwareTextureAndroid" | "role" | "screenReaderFocusable" | "shouldRasterizeIOS" | "style" | "tabIndex" | "target" | "testID" | "theme" | "themeShallow" | "tvParallaxMagnification" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "untilMeasured"> & {
-            value: string;
-            id?: string;
-            labelledBy?: string;
-            disabled?: boolean;
-            activeStyle?: import("@tamagui/core").StylePiece;
-            activeTheme?: string | null;
-        }, import("@tamagui/core").StackStyleBase, {
-            disabled?: boolean | undefined;
-            size?: RadioGroupSize | undefined;
-        }, import("@tamagui/core").StaticConfigPublic];
-    };
-    Indicator: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-        forceMount?: boolean;
-    }, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, "forceMount" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & {
-        ref?: import("react").Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods)> | undefined;
-    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-        forceMount?: boolean;
-    }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-            forceMount?: boolean;
-        }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
-    };
-};
-export type RadioGroupProps = GetProps<typeof RadioGroup>;
+import { type ComponentSize, type GetProps } from '@tamagui/core'
+export type RadioGroupSize = ComponentSize | boolean
+export declare const RadioGroupFrame: import('react').FunctionComponent<
+  Omit<
+    import('@tamagui/core').RNTamaguiViewNonStyleProps &
+      Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, 'orientation'> &
+      Omit<
+        import('@tamagui/core').WithThemeValues<
+          Omit<import('@tamagui/core').StackStyleBase, 'orientation'>
+        > &
+          import('@tamagui/core').WithFlatVariantValues<{
+            orientation?: 'horizontal' | 'vertical' | undefined
+          }> &
+          import('@tamagui/core').WithShorthands<
+            import('@tamagui/core').WithThemeValues<
+              import('@tamagui/core').StackStyleBase
+            >
+          >,
+        keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
+      > & {
+        value?: string
+        defaultValue?: string
+        onValueChange?: (value: string) => void
+        required?: boolean
+        disabled?: boolean
+        name?: string
+        native?: boolean
+        accentColor?: string
+      },
+    'orientation'
+  > &
+    Omit<
+      import('@tamagui/core').WithThemeValues<
+        Omit<import('@tamagui/core').StackStyleBase, 'orientation'>
+      > &
+        import('@tamagui/core').WithFlatVariantValues<{
+          orientation?: 'horizontal' | 'vertical' | undefined
+        }> &
+        import('@tamagui/core').WithShorthands<
+          import('@tamagui/core').WithThemeValues<import('@tamagui/core').StackStyleBase>
+        >,
+      | 'defaultValue'
+      | 'native'
+      | 'onValueChange'
+      | 'required'
+      | 'value'
+      | keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
+      | keyof import('@tamagui/core').StackStyleBase
+    > & {
+      ref?:
+        | import('react').Ref<
+            | import('@tamagui/react-native-types/src').ReactNativeElement
+            | (HTMLElement & import('@tamagui/core').TamaguiElementMethods)
+          >
+        | undefined
+    }
+> &
+  import('@tamagui/core').StaticComponentObject<
+    import('@tamagui/core').TamaDefer,
+    | import('@tamagui/react-native-types/src').ReactNativeElement
+    | (HTMLElement & import('@tamagui/core').TamaguiElementMethods),
+    import('@tamagui/core').RNTamaguiViewNonStyleProps &
+      Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, 'orientation'> &
+      Omit<
+        import('@tamagui/core').WithThemeValues<
+          Omit<import('@tamagui/core').StackStyleBase, 'orientation'>
+        > &
+          import('@tamagui/core').WithFlatVariantValues<{
+            orientation?: 'horizontal' | 'vertical' | undefined
+          }> &
+          import('@tamagui/core').WithShorthands<
+            import('@tamagui/core').WithThemeValues<
+              import('@tamagui/core').StackStyleBase
+            >
+          >,
+        keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
+      > & {
+        value?: string
+        defaultValue?: string
+        onValueChange?: (value: string) => void
+        required?: boolean
+        disabled?: boolean
+        name?: string
+        native?: boolean
+        accentColor?: string
+      },
+    import('@tamagui/core').StackStyleBase,
+    {
+      orientation?: 'horizontal' | 'vertical' | undefined
+    },
+    import('@tamagui/core').StaticConfigPublic
+  > &
+  Omit<import('@tamagui/core').StaticConfigPublic, 'staticConfig'> & {
+    __tama: [
+      import('@tamagui/core').TamaDefer,
+      (
+        | import('@tamagui/react-native-types/src').ReactNativeElement
+        | (HTMLElement & import('@tamagui/core').TamaguiElementMethods)
+      ),
+      import('@tamagui/core').RNTamaguiViewNonStyleProps &
+        Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, 'orientation'> &
+        Omit<
+          import('@tamagui/core').WithThemeValues<
+            Omit<import('@tamagui/core').StackStyleBase, 'orientation'>
+          > &
+            import('@tamagui/core').WithFlatVariantValues<{
+              orientation?: 'horizontal' | 'vertical' | undefined
+            }> &
+            import('@tamagui/core').WithShorthands<
+              import('@tamagui/core').WithThemeValues<
+                import('@tamagui/core').StackStyleBase
+              >
+            >,
+          keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
+        > & {
+          value?: string
+          defaultValue?: string
+          onValueChange?: (value: string) => void
+          required?: boolean
+          disabled?: boolean
+          name?: string
+          native?: boolean
+          accentColor?: string
+        },
+      import('@tamagui/core').StackStyleBase,
+      {
+        orientation?: 'horizontal' | 'vertical' | undefined
+      },
+      import('@tamagui/core').StaticConfigPublic,
+    ]
+  }
+export declare const RadioGroupItem: import('react').FunctionComponent<
+  Omit<
+    import('@tamagui/core').RNTamaguiViewNonStyleProps &
+      Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, 'disabled'> &
+      Omit<
+        import('@tamagui/core').WithThemeValues<
+          Omit<import('@tamagui/core').StackStyleBase, 'disabled'>
+        > &
+          import('@tamagui/core').WithFlatVariantValues<{
+            disabled?: boolean | undefined
+          }> &
+          import('@tamagui/core').WithShorthands<
+            import('@tamagui/core').WithThemeValues<
+              import('@tamagui/core').StackStyleBase
+            >
+          >,
+        | 'accessibilityActions'
+        | 'accessibilityElementsHidden'
+        | 'accessibilityHint'
+        | 'accessibilityIgnoresInvertColors'
+        | 'accessibilityLabel'
+        | 'accessibilityLabelledBy'
+        | 'accessibilityLanguage'
+        | 'accessibilityLargeContentTitle'
+        | 'accessibilityLiveRegion'
+        | 'accessibilityRespondsToUserInteraction'
+        | 'accessibilityRole'
+        | 'accessibilityShowsLargeContentViewer'
+        | 'accessibilityState'
+        | 'accessibilityValue'
+        | 'accessibilityViewIsModal'
+        | 'accessible'
+        | 'animatedBy'
+        | 'aria-busy'
+        | 'aria-checked'
+        | 'aria-disabled'
+        | 'aria-expanded'
+        | 'aria-hidden'
+        | 'aria-label'
+        | 'aria-labelledby'
+        | 'aria-live'
+        | 'aria-modal'
+        | 'aria-selected'
+        | 'aria-valuemax'
+        | 'aria-valuemin'
+        | 'aria-valuenow'
+        | 'aria-valuetext'
+        | 'asChild'
+        | 'children'
+        | 'className'
+        | 'collapsable'
+        | 'collapsableChildren'
+        | 'container'
+        | 'dangerouslySetInnerHTML'
+        | 'debug'
+        | 'disableClassName'
+        | 'disableNativeStyle'
+        | 'disableOptimization'
+        | 'download'
+        | 'experimental_accessibilityOrder'
+        | 'forceStyle'
+        | 'group'
+        | 'hasTVPreferredFocus'
+        | 'hitSlop'
+        | 'htmlFor'
+        | 'id'
+        | 'importantForAccessibility'
+        | 'name'
+        | 'nativeBackgroundAndroid'
+        | 'nativeForegroundAndroid'
+        | 'nativeID'
+        | 'needsOffscreenAlphaCompositing'
+        | 'nextFocusDown'
+        | 'nextFocusForward'
+        | 'nextFocusLeft'
+        | 'nextFocusRight'
+        | 'nextFocusUp'
+        | 'onAccessibilityAction'
+        | 'onAccessibilityEscape'
+        | 'onAccessibilityTap'
+        | 'onBeforeInput'
+        | 'onBlur'
+        | 'onBlurCapture'
+        | 'onChange'
+        | 'onClick'
+        | 'onClickCapture'
+        | 'onContextMenu'
+        | 'onCopy'
+        | 'onCut'
+        | 'onDoubleClick'
+        | 'onDrag'
+        | 'onDragEnd'
+        | 'onDragEnter'
+        | 'onDragLeave'
+        | 'onDragOver'
+        | 'onDragStart'
+        | 'onDrop'
+        | 'onFocus'
+        | 'onFocusCapture'
+        | 'onGotPointerCapture'
+        | 'onGotPointerCaptureCapture'
+        | 'onInput'
+        | 'onKeyDown'
+        | 'onKeyDownCapture'
+        | 'onKeyUp'
+        | 'onKeyUpCapture'
+        | 'onLayout'
+        | 'onLongPress'
+        | 'onLostPointerCapture'
+        | 'onLostPointerCaptureCapture'
+        | 'onMagicTap'
+        | 'onMouseDown'
+        | 'onMouseEnter'
+        | 'onMouseLeave'
+        | 'onMouseMove'
+        | 'onMouseOut'
+        | 'onMouseOver'
+        | 'onMouseUp'
+        | 'onMoveShouldSetResponder'
+        | 'onMoveShouldSetResponderCapture'
+        | 'onPaste'
+        | 'onPointerCancel'
+        | 'onPointerCancelCapture'
+        | 'onPointerDown'
+        | 'onPointerDownCapture'
+        | 'onPointerEnter'
+        | 'onPointerEnterCapture'
+        | 'onPointerLeave'
+        | 'onPointerLeaveCapture'
+        | 'onPointerMove'
+        | 'onPointerMoveCapture'
+        | 'onPointerOut'
+        | 'onPointerOutCapture'
+        | 'onPointerOver'
+        | 'onPointerOverCapture'
+        | 'onPointerUp'
+        | 'onPointerUpCapture'
+        | 'onPress'
+        | 'onPressIn'
+        | 'onPressOut'
+        | 'onResponderEnd'
+        | 'onResponderGrant'
+        | 'onResponderMove'
+        | 'onResponderReject'
+        | 'onResponderRelease'
+        | 'onResponderStart'
+        | 'onResponderTerminate'
+        | 'onResponderTerminationRequest'
+        | 'onScroll'
+        | 'onScrollShouldSetResponder'
+        | 'onScrollShouldSetResponderCapture'
+        | 'onSelectionChangeShouldSetResponder'
+        | 'onSelectionChangeShouldSetResponderCapture'
+        | 'onStartShouldSetResponder'
+        | 'onStartShouldSetResponderCapture'
+        | 'onTouchCancel'
+        | 'onTouchCancelCapture'
+        | 'onTouchEnd'
+        | 'onTouchEndCapture'
+        | 'onTouchMove'
+        | 'onTouchMoveCapture'
+        | 'onTouchStart'
+        | 'onTouchStartCapture'
+        | 'onWheel'
+        | 'rel'
+        | 'removeClippedSubviews'
+        | 'render'
+        | 'renderToHardwareTextureAndroid'
+        | 'role'
+        | 'screenReaderFocusable'
+        | 'shouldRasterizeIOS'
+        | 'style'
+        | 'tabIndex'
+        | 'target'
+        | 'testID'
+        | 'theme'
+        | 'themeShallow'
+        | 'untilMeasured'
+      > & {
+        value: string
+        id?: string
+        labelledBy?: string
+        disabled?: boolean
+        activeStyle?: import('@tamagui/core').StylePiece
+        activeTheme?: string | null
+      },
+    'disabled' | 'size'
+  > &
+    Omit<
+      import('@tamagui/core').WithThemeValues<
+        Omit<import('@tamagui/core').StackStyleBase, 'disabled' | 'size'>
+      > &
+        import('@tamagui/core').WithFlatVariantValues<{
+          disabled?: boolean | undefined
+          size?: RadioGroupSize | undefined
+        }> &
+        import('@tamagui/core').WithShorthands<
+          import('@tamagui/core').WithThemeValues<import('@tamagui/core').StackStyleBase>
+        >,
+      | 'accessibilityActions'
+      | 'accessibilityElementsHidden'
+      | 'accessibilityHint'
+      | 'accessibilityIgnoresInvertColors'
+      | 'accessibilityLabel'
+      | 'accessibilityLabelledBy'
+      | 'accessibilityLanguage'
+      | 'accessibilityLargeContentTitle'
+      | 'accessibilityLiveRegion'
+      | 'accessibilityRespondsToUserInteraction'
+      | 'accessibilityRole'
+      | 'accessibilityShowsLargeContentViewer'
+      | 'accessibilityState'
+      | 'accessibilityValue'
+      | 'accessibilityViewIsModal'
+      | 'accessible'
+      | 'activeStyle'
+      | 'activeTheme'
+      | 'animatedBy'
+      | 'aria-busy'
+      | 'aria-checked'
+      | 'aria-disabled'
+      | 'aria-expanded'
+      | 'aria-hidden'
+      | 'aria-label'
+      | 'aria-labelledby'
+      | 'aria-live'
+      | 'aria-modal'
+      | 'aria-selected'
+      | 'aria-valuemax'
+      | 'aria-valuemin'
+      | 'aria-valuenow'
+      | 'aria-valuetext'
+      | 'asChild'
+      | 'children'
+      | 'className'
+      | 'collapsable'
+      | 'collapsableChildren'
+      | 'container'
+      | 'dangerouslySetInnerHTML'
+      | 'debug'
+      | 'disableClassName'
+      | 'disableNativeStyle'
+      | 'disableOptimization'
+      | 'download'
+      | 'experimental_accessibilityOrder'
+      | 'forceStyle'
+      | 'group'
+      | 'hasTVPreferredFocus'
+      | 'hitSlop'
+      | 'htmlFor'
+      | 'id'
+      | 'importantForAccessibility'
+      | 'labelledBy'
+      | 'name'
+      | 'nativeBackgroundAndroid'
+      | 'nativeForegroundAndroid'
+      | 'nativeID'
+      | 'needsOffscreenAlphaCompositing'
+      | 'nextFocusDown'
+      | 'nextFocusForward'
+      | 'nextFocusLeft'
+      | 'nextFocusRight'
+      | 'nextFocusUp'
+      | 'onAccessibilityAction'
+      | 'onAccessibilityEscape'
+      | 'onAccessibilityTap'
+      | 'onBeforeInput'
+      | 'onBlur'
+      | 'onBlurCapture'
+      | 'onChange'
+      | 'onClick'
+      | 'onClickCapture'
+      | 'onContextMenu'
+      | 'onCopy'
+      | 'onCut'
+      | 'onDoubleClick'
+      | 'onDrag'
+      | 'onDragEnd'
+      | 'onDragEnter'
+      | 'onDragLeave'
+      | 'onDragOver'
+      | 'onDragStart'
+      | 'onDrop'
+      | 'onFocus'
+      | 'onFocusCapture'
+      | 'onGotPointerCapture'
+      | 'onGotPointerCaptureCapture'
+      | 'onInput'
+      | 'onKeyDown'
+      | 'onKeyDownCapture'
+      | 'onKeyUp'
+      | 'onKeyUpCapture'
+      | 'onLayout'
+      | 'onLongPress'
+      | 'onLostPointerCapture'
+      | 'onLostPointerCaptureCapture'
+      | 'onMagicTap'
+      | 'onMouseDown'
+      | 'onMouseEnter'
+      | 'onMouseLeave'
+      | 'onMouseMove'
+      | 'onMouseOut'
+      | 'onMouseOver'
+      | 'onMouseUp'
+      | 'onMoveShouldSetResponder'
+      | 'onMoveShouldSetResponderCapture'
+      | 'onPaste'
+      | 'onPointerCancel'
+      | 'onPointerCancelCapture'
+      | 'onPointerDown'
+      | 'onPointerDownCapture'
+      | 'onPointerEnter'
+      | 'onPointerEnterCapture'
+      | 'onPointerLeave'
+      | 'onPointerLeaveCapture'
+      | 'onPointerMove'
+      | 'onPointerMoveCapture'
+      | 'onPointerOut'
+      | 'onPointerOutCapture'
+      | 'onPointerOver'
+      | 'onPointerOverCapture'
+      | 'onPointerUp'
+      | 'onPointerUpCapture'
+      | 'onPress'
+      | 'onPressIn'
+      | 'onPressOut'
+      | 'onResponderEnd'
+      | 'onResponderGrant'
+      | 'onResponderMove'
+      | 'onResponderReject'
+      | 'onResponderRelease'
+      | 'onResponderStart'
+      | 'onResponderTerminate'
+      | 'onResponderTerminationRequest'
+      | 'onScroll'
+      | 'onScrollShouldSetResponder'
+      | 'onScrollShouldSetResponderCapture'
+      | 'onSelectionChangeShouldSetResponder'
+      | 'onSelectionChangeShouldSetResponderCapture'
+      | 'onStartShouldSetResponder'
+      | 'onStartShouldSetResponderCapture'
+      | 'onTouchCancel'
+      | 'onTouchCancelCapture'
+      | 'onTouchEnd'
+      | 'onTouchEndCapture'
+      | 'onTouchMove'
+      | 'onTouchMoveCapture'
+      | 'onTouchStart'
+      | 'onTouchStartCapture'
+      | 'onWheel'
+      | 'rel'
+      | 'removeClippedSubviews'
+      | 'render'
+      | 'renderToHardwareTextureAndroid'
+      | 'role'
+      | 'screenReaderFocusable'
+      | 'shouldRasterizeIOS'
+      | 'style'
+      | 'tabIndex'
+      | 'target'
+      | 'testID'
+      | 'theme'
+      | 'themeShallow'
+      | 'untilMeasured'
+      | 'value'
+      | keyof import('@tamagui/core').StackStyleBase
+    > & {
+      ref?:
+        | import('react').Ref<
+            | import('@tamagui/react-native-types/src').ReactNativeElement
+            | (HTMLElement & import('@tamagui/core').TamaguiElementMethods)
+          >
+        | undefined
+    }
+> &
+  import('@tamagui/core').StaticComponentObject<
+    import('@tamagui/core').TamaDefer,
+    | import('@tamagui/react-native-types/src').ReactNativeElement
+    | (HTMLElement & import('@tamagui/core').TamaguiElementMethods),
+    import('@tamagui/core').RNTamaguiViewNonStyleProps &
+      Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, 'disabled'> &
+      Omit<
+        import('@tamagui/core').WithThemeValues<
+          Omit<import('@tamagui/core').StackStyleBase, 'disabled'>
+        > &
+          import('@tamagui/core').WithFlatVariantValues<{
+            disabled?: boolean | undefined
+          }> &
+          import('@tamagui/core').WithShorthands<
+            import('@tamagui/core').WithThemeValues<
+              import('@tamagui/core').StackStyleBase
+            >
+          >,
+        | 'accessibilityActions'
+        | 'accessibilityElementsHidden'
+        | 'accessibilityHint'
+        | 'accessibilityIgnoresInvertColors'
+        | 'accessibilityLabel'
+        | 'accessibilityLabelledBy'
+        | 'accessibilityLanguage'
+        | 'accessibilityLargeContentTitle'
+        | 'accessibilityLiveRegion'
+        | 'accessibilityRespondsToUserInteraction'
+        | 'accessibilityRole'
+        | 'accessibilityShowsLargeContentViewer'
+        | 'accessibilityState'
+        | 'accessibilityValue'
+        | 'accessibilityViewIsModal'
+        | 'accessible'
+        | 'animatedBy'
+        | 'aria-busy'
+        | 'aria-checked'
+        | 'aria-disabled'
+        | 'aria-expanded'
+        | 'aria-hidden'
+        | 'aria-label'
+        | 'aria-labelledby'
+        | 'aria-live'
+        | 'aria-modal'
+        | 'aria-selected'
+        | 'aria-valuemax'
+        | 'aria-valuemin'
+        | 'aria-valuenow'
+        | 'aria-valuetext'
+        | 'asChild'
+        | 'children'
+        | 'className'
+        | 'collapsable'
+        | 'collapsableChildren'
+        | 'container'
+        | 'dangerouslySetInnerHTML'
+        | 'debug'
+        | 'disableClassName'
+        | 'disableNativeStyle'
+        | 'disableOptimization'
+        | 'download'
+        | 'experimental_accessibilityOrder'
+        | 'forceStyle'
+        | 'group'
+        | 'hasTVPreferredFocus'
+        | 'hitSlop'
+        | 'htmlFor'
+        | 'id'
+        | 'importantForAccessibility'
+        | 'name'
+        | 'nativeBackgroundAndroid'
+        | 'nativeForegroundAndroid'
+        | 'nativeID'
+        | 'needsOffscreenAlphaCompositing'
+        | 'nextFocusDown'
+        | 'nextFocusForward'
+        | 'nextFocusLeft'
+        | 'nextFocusRight'
+        | 'nextFocusUp'
+        | 'onAccessibilityAction'
+        | 'onAccessibilityEscape'
+        | 'onAccessibilityTap'
+        | 'onBeforeInput'
+        | 'onBlur'
+        | 'onBlurCapture'
+        | 'onChange'
+        | 'onClick'
+        | 'onClickCapture'
+        | 'onContextMenu'
+        | 'onCopy'
+        | 'onCut'
+        | 'onDoubleClick'
+        | 'onDrag'
+        | 'onDragEnd'
+        | 'onDragEnter'
+        | 'onDragLeave'
+        | 'onDragOver'
+        | 'onDragStart'
+        | 'onDrop'
+        | 'onFocus'
+        | 'onFocusCapture'
+        | 'onGotPointerCapture'
+        | 'onGotPointerCaptureCapture'
+        | 'onInput'
+        | 'onKeyDown'
+        | 'onKeyDownCapture'
+        | 'onKeyUp'
+        | 'onKeyUpCapture'
+        | 'onLayout'
+        | 'onLongPress'
+        | 'onLostPointerCapture'
+        | 'onLostPointerCaptureCapture'
+        | 'onMagicTap'
+        | 'onMouseDown'
+        | 'onMouseEnter'
+        | 'onMouseLeave'
+        | 'onMouseMove'
+        | 'onMouseOut'
+        | 'onMouseOver'
+        | 'onMouseUp'
+        | 'onMoveShouldSetResponder'
+        | 'onMoveShouldSetResponderCapture'
+        | 'onPaste'
+        | 'onPointerCancel'
+        | 'onPointerCancelCapture'
+        | 'onPointerDown'
+        | 'onPointerDownCapture'
+        | 'onPointerEnter'
+        | 'onPointerEnterCapture'
+        | 'onPointerLeave'
+        | 'onPointerLeaveCapture'
+        | 'onPointerMove'
+        | 'onPointerMoveCapture'
+        | 'onPointerOut'
+        | 'onPointerOutCapture'
+        | 'onPointerOver'
+        | 'onPointerOverCapture'
+        | 'onPointerUp'
+        | 'onPointerUpCapture'
+        | 'onPress'
+        | 'onPressIn'
+        | 'onPressOut'
+        | 'onResponderEnd'
+        | 'onResponderGrant'
+        | 'onResponderMove'
+        | 'onResponderReject'
+        | 'onResponderRelease'
+        | 'onResponderStart'
+        | 'onResponderTerminate'
+        | 'onResponderTerminationRequest'
+        | 'onScroll'
+        | 'onScrollShouldSetResponder'
+        | 'onScrollShouldSetResponderCapture'
+        | 'onSelectionChangeShouldSetResponder'
+        | 'onSelectionChangeShouldSetResponderCapture'
+        | 'onStartShouldSetResponder'
+        | 'onStartShouldSetResponderCapture'
+        | 'onTouchCancel'
+        | 'onTouchCancelCapture'
+        | 'onTouchEnd'
+        | 'onTouchEndCapture'
+        | 'onTouchMove'
+        | 'onTouchMoveCapture'
+        | 'onTouchStart'
+        | 'onTouchStartCapture'
+        | 'onWheel'
+        | 'rel'
+        | 'removeClippedSubviews'
+        | 'render'
+        | 'renderToHardwareTextureAndroid'
+        | 'role'
+        | 'screenReaderFocusable'
+        | 'shouldRasterizeIOS'
+        | 'style'
+        | 'tabIndex'
+        | 'target'
+        | 'testID'
+        | 'theme'
+        | 'themeShallow'
+        | 'untilMeasured'
+      > & {
+        value: string
+        id?: string
+        labelledBy?: string
+        disabled?: boolean
+        activeStyle?: import('@tamagui/core').StylePiece
+        activeTheme?: string | null
+      },
+    import('@tamagui/core').StackStyleBase,
+    {
+      disabled?: boolean | undefined
+      size?: RadioGroupSize | undefined
+    },
+    import('@tamagui/core').StaticConfigPublic
+  > &
+  Omit<import('@tamagui/core').StaticConfigPublic, 'staticConfig'> & {
+    __tama: [
+      import('@tamagui/core').TamaDefer,
+      (
+        | import('@tamagui/react-native-types/src').ReactNativeElement
+        | (HTMLElement & import('@tamagui/core').TamaguiElementMethods)
+      ),
+      import('@tamagui/core').RNTamaguiViewNonStyleProps &
+        Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, 'disabled'> &
+        Omit<
+          import('@tamagui/core').WithThemeValues<
+            Omit<import('@tamagui/core').StackStyleBase, 'disabled'>
+          > &
+            import('@tamagui/core').WithFlatVariantValues<{
+              disabled?: boolean | undefined
+            }> &
+            import('@tamagui/core').WithShorthands<
+              import('@tamagui/core').WithThemeValues<
+                import('@tamagui/core').StackStyleBase
+              >
+            >,
+          | 'accessibilityActions'
+          | 'accessibilityElementsHidden'
+          | 'accessibilityHint'
+          | 'accessibilityIgnoresInvertColors'
+          | 'accessibilityLabel'
+          | 'accessibilityLabelledBy'
+          | 'accessibilityLanguage'
+          | 'accessibilityLargeContentTitle'
+          | 'accessibilityLiveRegion'
+          | 'accessibilityRespondsToUserInteraction'
+          | 'accessibilityRole'
+          | 'accessibilityShowsLargeContentViewer'
+          | 'accessibilityState'
+          | 'accessibilityValue'
+          | 'accessibilityViewIsModal'
+          | 'accessible'
+          | 'animatedBy'
+          | 'aria-busy'
+          | 'aria-checked'
+          | 'aria-disabled'
+          | 'aria-expanded'
+          | 'aria-hidden'
+          | 'aria-label'
+          | 'aria-labelledby'
+          | 'aria-live'
+          | 'aria-modal'
+          | 'aria-selected'
+          | 'aria-valuemax'
+          | 'aria-valuemin'
+          | 'aria-valuenow'
+          | 'aria-valuetext'
+          | 'asChild'
+          | 'children'
+          | 'className'
+          | 'collapsable'
+          | 'collapsableChildren'
+          | 'container'
+          | 'dangerouslySetInnerHTML'
+          | 'debug'
+          | 'disableClassName'
+          | 'disableNativeStyle'
+          | 'disableOptimization'
+          | 'download'
+          | 'experimental_accessibilityOrder'
+          | 'forceStyle'
+          | 'group'
+          | 'hasTVPreferredFocus'
+          | 'hitSlop'
+          | 'htmlFor'
+          | 'id'
+          | 'importantForAccessibility'
+          | 'name'
+          | 'nativeBackgroundAndroid'
+          | 'nativeForegroundAndroid'
+          | 'nativeID'
+          | 'needsOffscreenAlphaCompositing'
+          | 'nextFocusDown'
+          | 'nextFocusForward'
+          | 'nextFocusLeft'
+          | 'nextFocusRight'
+          | 'nextFocusUp'
+          | 'onAccessibilityAction'
+          | 'onAccessibilityEscape'
+          | 'onAccessibilityTap'
+          | 'onBeforeInput'
+          | 'onBlur'
+          | 'onBlurCapture'
+          | 'onChange'
+          | 'onClick'
+          | 'onClickCapture'
+          | 'onContextMenu'
+          | 'onCopy'
+          | 'onCut'
+          | 'onDoubleClick'
+          | 'onDrag'
+          | 'onDragEnd'
+          | 'onDragEnter'
+          | 'onDragLeave'
+          | 'onDragOver'
+          | 'onDragStart'
+          | 'onDrop'
+          | 'onFocus'
+          | 'onFocusCapture'
+          | 'onGotPointerCapture'
+          | 'onGotPointerCaptureCapture'
+          | 'onInput'
+          | 'onKeyDown'
+          | 'onKeyDownCapture'
+          | 'onKeyUp'
+          | 'onKeyUpCapture'
+          | 'onLayout'
+          | 'onLongPress'
+          | 'onLostPointerCapture'
+          | 'onLostPointerCaptureCapture'
+          | 'onMagicTap'
+          | 'onMouseDown'
+          | 'onMouseEnter'
+          | 'onMouseLeave'
+          | 'onMouseMove'
+          | 'onMouseOut'
+          | 'onMouseOver'
+          | 'onMouseUp'
+          | 'onMoveShouldSetResponder'
+          | 'onMoveShouldSetResponderCapture'
+          | 'onPaste'
+          | 'onPointerCancel'
+          | 'onPointerCancelCapture'
+          | 'onPointerDown'
+          | 'onPointerDownCapture'
+          | 'onPointerEnter'
+          | 'onPointerEnterCapture'
+          | 'onPointerLeave'
+          | 'onPointerLeaveCapture'
+          | 'onPointerMove'
+          | 'onPointerMoveCapture'
+          | 'onPointerOut'
+          | 'onPointerOutCapture'
+          | 'onPointerOver'
+          | 'onPointerOverCapture'
+          | 'onPointerUp'
+          | 'onPointerUpCapture'
+          | 'onPress'
+          | 'onPressIn'
+          | 'onPressOut'
+          | 'onResponderEnd'
+          | 'onResponderGrant'
+          | 'onResponderMove'
+          | 'onResponderReject'
+          | 'onResponderRelease'
+          | 'onResponderStart'
+          | 'onResponderTerminate'
+          | 'onResponderTerminationRequest'
+          | 'onScroll'
+          | 'onScrollShouldSetResponder'
+          | 'onScrollShouldSetResponderCapture'
+          | 'onSelectionChangeShouldSetResponder'
+          | 'onSelectionChangeShouldSetResponderCapture'
+          | 'onStartShouldSetResponder'
+          | 'onStartShouldSetResponderCapture'
+          | 'onTouchCancel'
+          | 'onTouchCancelCapture'
+          | 'onTouchEnd'
+          | 'onTouchEndCapture'
+          | 'onTouchMove'
+          | 'onTouchMoveCapture'
+          | 'onTouchStart'
+          | 'onTouchStartCapture'
+          | 'onWheel'
+          | 'rel'
+          | 'removeClippedSubviews'
+          | 'render'
+          | 'renderToHardwareTextureAndroid'
+          | 'role'
+          | 'screenReaderFocusable'
+          | 'shouldRasterizeIOS'
+          | 'style'
+          | 'tabIndex'
+          | 'target'
+          | 'testID'
+          | 'theme'
+          | 'themeShallow'
+          | 'untilMeasured'
+        > & {
+          value: string
+          id?: string
+          labelledBy?: string
+          disabled?: boolean
+          activeStyle?: import('@tamagui/core').StylePiece
+          activeTheme?: string | null
+        },
+      import('@tamagui/core').StackStyleBase,
+      {
+        disabled?: boolean | undefined
+        size?: RadioGroupSize | undefined
+      },
+      import('@tamagui/core').StaticConfigPublic,
+    ]
+  }
+export declare const RadioGroupIndicator: import('react').FunctionComponent<
+  Omit<
+    import('@tamagui/core').RNTamaguiViewNonStyleProps &
+      Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, never> &
+      Omit<
+        import('@tamagui/core').WithThemeValues<
+          Omit<import('@tamagui/core').StackStyleBase, never>
+        > &
+          import('@tamagui/core').WithFlatVariantValues<{}> &
+          import('@tamagui/core').WithShorthands<
+            import('@tamagui/core').WithThemeValues<
+              import('@tamagui/core').StackStyleBase
+            >
+          >,
+        keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
+      > & {
+        forceMount?: boolean
+      },
+    never
+  > &
+    Omit<
+      import('@tamagui/core').WithThemeValues<
+        Omit<import('@tamagui/core').StackStyleBase, never>
+      > &
+        import('@tamagui/core').WithFlatVariantValues<{}> &
+        import('@tamagui/core').WithShorthands<
+          import('@tamagui/core').WithThemeValues<import('@tamagui/core').StackStyleBase>
+        >,
+      | 'forceMount'
+      | keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
+      | keyof import('@tamagui/core').StackStyleBase
+    > & {
+      ref?:
+        | import('react').Ref<
+            | import('@tamagui/react-native-types/src').ReactNativeElement
+            | (HTMLElement & import('@tamagui/core').TamaguiElementMethods)
+          >
+        | undefined
+    }
+> &
+  import('@tamagui/core').StaticComponentObject<
+    import('@tamagui/core').TamaDefer,
+    | import('@tamagui/react-native-types/src').ReactNativeElement
+    | (HTMLElement & import('@tamagui/core').TamaguiElementMethods),
+    import('@tamagui/core').RNTamaguiViewNonStyleProps &
+      Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, never> &
+      Omit<
+        import('@tamagui/core').WithThemeValues<
+          Omit<import('@tamagui/core').StackStyleBase, never>
+        > &
+          import('@tamagui/core').WithFlatVariantValues<{}> &
+          import('@tamagui/core').WithShorthands<
+            import('@tamagui/core').WithThemeValues<
+              import('@tamagui/core').StackStyleBase
+            >
+          >,
+        keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
+      > & {
+        forceMount?: boolean
+      },
+    import('@tamagui/core').StackStyleBase,
+    {},
+    import('@tamagui/core').StaticConfigPublic
+  > &
+  Omit<import('@tamagui/core').StaticConfigPublic, 'staticConfig'> & {
+    __tama: [
+      import('@tamagui/core').TamaDefer,
+      (
+        | import('@tamagui/react-native-types/src').ReactNativeElement
+        | (HTMLElement & import('@tamagui/core').TamaguiElementMethods)
+      ),
+      import('@tamagui/core').RNTamaguiViewNonStyleProps &
+        Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, never> &
+        Omit<
+          import('@tamagui/core').WithThemeValues<
+            Omit<import('@tamagui/core').StackStyleBase, never>
+          > &
+            import('@tamagui/core').WithFlatVariantValues<{}> &
+            import('@tamagui/core').WithShorthands<
+              import('@tamagui/core').WithThemeValues<
+                import('@tamagui/core').StackStyleBase
+              >
+            >,
+          keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
+        > & {
+          forceMount?: boolean
+        },
+      import('@tamagui/core').StackStyleBase,
+      {},
+      import('@tamagui/core').StaticConfigPublic,
+    ]
+  }
+export declare const RadioGroup: import('react').FunctionComponent<
+  Omit<
+    import('@tamagui/core').RNTamaguiViewNonStyleProps &
+      Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, 'orientation'> &
+      Omit<
+        import('@tamagui/core').WithThemeValues<
+          Omit<import('@tamagui/core').StackStyleBase, 'orientation'>
+        > &
+          import('@tamagui/core').WithFlatVariantValues<{
+            orientation?: 'horizontal' | 'vertical' | undefined
+          }> &
+          import('@tamagui/core').WithShorthands<
+            import('@tamagui/core').WithThemeValues<
+              import('@tamagui/core').StackStyleBase
+            >
+          >,
+        keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
+      > & {
+        value?: string
+        defaultValue?: string
+        onValueChange?: (value: string) => void
+        required?: boolean
+        disabled?: boolean
+        name?: string
+        native?: boolean
+        accentColor?: string
+      },
+    'orientation'
+  > &
+    Omit<
+      import('@tamagui/core').WithThemeValues<
+        Omit<import('@tamagui/core').StackStyleBase, 'orientation'>
+      > &
+        import('@tamagui/core').WithFlatVariantValues<{
+          orientation?: 'horizontal' | 'vertical' | undefined
+        }> &
+        import('@tamagui/core').WithShorthands<
+          import('@tamagui/core').WithThemeValues<import('@tamagui/core').StackStyleBase>
+        >,
+      | 'defaultValue'
+      | 'native'
+      | 'onValueChange'
+      | 'required'
+      | 'value'
+      | keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
+      | keyof import('@tamagui/core').StackStyleBase
+    > & {
+      ref?:
+        | import('react').Ref<
+            | import('@tamagui/react-native-types/src').ReactNativeElement
+            | (HTMLElement & import('@tamagui/core').TamaguiElementMethods)
+          >
+        | undefined
+    }
+> &
+  import('@tamagui/core').StaticComponentObject<
+    import('@tamagui/core').TamaDefer,
+    | import('@tamagui/react-native-types/src').ReactNativeElement
+    | (HTMLElement & import('@tamagui/core').TamaguiElementMethods),
+    import('@tamagui/core').RNTamaguiViewNonStyleProps &
+      Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, 'orientation'> &
+      Omit<
+        import('@tamagui/core').WithThemeValues<
+          Omit<import('@tamagui/core').StackStyleBase, 'orientation'>
+        > &
+          import('@tamagui/core').WithFlatVariantValues<{
+            orientation?: 'horizontal' | 'vertical' | undefined
+          }> &
+          import('@tamagui/core').WithShorthands<
+            import('@tamagui/core').WithThemeValues<
+              import('@tamagui/core').StackStyleBase
+            >
+          >,
+        keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
+      > & {
+        value?: string
+        defaultValue?: string
+        onValueChange?: (value: string) => void
+        required?: boolean
+        disabled?: boolean
+        name?: string
+        native?: boolean
+        accentColor?: string
+      },
+    import('@tamagui/core').StackStyleBase,
+    {
+      orientation?: 'horizontal' | 'vertical' | undefined
+    },
+    import('@tamagui/core').StaticConfigPublic
+  > &
+  Omit<import('@tamagui/core').StaticConfigPublic, 'staticConfig'> & {
+    __tama: [
+      import('@tamagui/core').TamaDefer,
+      (
+        | import('@tamagui/react-native-types/src').ReactNativeElement
+        | (HTMLElement & import('@tamagui/core').TamaguiElementMethods)
+      ),
+      import('@tamagui/core').RNTamaguiViewNonStyleProps &
+        Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, 'orientation'> &
+        Omit<
+          import('@tamagui/core').WithThemeValues<
+            Omit<import('@tamagui/core').StackStyleBase, 'orientation'>
+          > &
+            import('@tamagui/core').WithFlatVariantValues<{
+              orientation?: 'horizontal' | 'vertical' | undefined
+            }> &
+            import('@tamagui/core').WithShorthands<
+              import('@tamagui/core').WithThemeValues<
+                import('@tamagui/core').StackStyleBase
+              >
+            >,
+          keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
+        > & {
+          value?: string
+          defaultValue?: string
+          onValueChange?: (value: string) => void
+          required?: boolean
+          disabled?: boolean
+          name?: string
+          native?: boolean
+          accentColor?: string
+        },
+      import('@tamagui/core').StackStyleBase,
+      {
+        orientation?: 'horizontal' | 'vertical' | undefined
+      },
+      import('@tamagui/core').StaticConfigPublic,
+    ]
+  } & {
+    Item: import('react').FunctionComponent<
+      Omit<
+        import('@tamagui/core').RNTamaguiViewNonStyleProps &
+          Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, 'disabled'> &
+          Omit<
+            import('@tamagui/core').WithThemeValues<
+              Omit<import('@tamagui/core').StackStyleBase, 'disabled'>
+            > &
+              import('@tamagui/core').WithFlatVariantValues<{
+                disabled?: boolean | undefined
+              }> &
+              import('@tamagui/core').WithShorthands<
+                import('@tamagui/core').WithThemeValues<
+                  import('@tamagui/core').StackStyleBase
+                >
+              >,
+            | 'accessibilityActions'
+            | 'accessibilityElementsHidden'
+            | 'accessibilityHint'
+            | 'accessibilityIgnoresInvertColors'
+            | 'accessibilityLabel'
+            | 'accessibilityLabelledBy'
+            | 'accessibilityLanguage'
+            | 'accessibilityLargeContentTitle'
+            | 'accessibilityLiveRegion'
+            | 'accessibilityRespondsToUserInteraction'
+            | 'accessibilityRole'
+            | 'accessibilityShowsLargeContentViewer'
+            | 'accessibilityState'
+            | 'accessibilityValue'
+            | 'accessibilityViewIsModal'
+            | 'accessible'
+            | 'animatedBy'
+            | 'aria-busy'
+            | 'aria-checked'
+            | 'aria-disabled'
+            | 'aria-expanded'
+            | 'aria-hidden'
+            | 'aria-label'
+            | 'aria-labelledby'
+            | 'aria-live'
+            | 'aria-modal'
+            | 'aria-selected'
+            | 'aria-valuemax'
+            | 'aria-valuemin'
+            | 'aria-valuenow'
+            | 'aria-valuetext'
+            | 'asChild'
+            | 'children'
+            | 'className'
+            | 'collapsable'
+            | 'collapsableChildren'
+            | 'container'
+            | 'dangerouslySetInnerHTML'
+            | 'debug'
+            | 'disableClassName'
+            | 'disableNativeStyle'
+            | 'disableOptimization'
+            | 'download'
+            | 'experimental_accessibilityOrder'
+            | 'forceStyle'
+            | 'group'
+            | 'hasTVPreferredFocus'
+            | 'hitSlop'
+            | 'htmlFor'
+            | 'id'
+            | 'importantForAccessibility'
+            | 'name'
+            | 'nativeBackgroundAndroid'
+            | 'nativeForegroundAndroid'
+            | 'nativeID'
+            | 'needsOffscreenAlphaCompositing'
+            | 'nextFocusDown'
+            | 'nextFocusForward'
+            | 'nextFocusLeft'
+            | 'nextFocusRight'
+            | 'nextFocusUp'
+            | 'onAccessibilityAction'
+            | 'onAccessibilityEscape'
+            | 'onAccessibilityTap'
+            | 'onBeforeInput'
+            | 'onBlur'
+            | 'onBlurCapture'
+            | 'onChange'
+            | 'onClick'
+            | 'onClickCapture'
+            | 'onContextMenu'
+            | 'onCopy'
+            | 'onCut'
+            | 'onDoubleClick'
+            | 'onDrag'
+            | 'onDragEnd'
+            | 'onDragEnter'
+            | 'onDragLeave'
+            | 'onDragOver'
+            | 'onDragStart'
+            | 'onDrop'
+            | 'onFocus'
+            | 'onFocusCapture'
+            | 'onGotPointerCapture'
+            | 'onGotPointerCaptureCapture'
+            | 'onInput'
+            | 'onKeyDown'
+            | 'onKeyDownCapture'
+            | 'onKeyUp'
+            | 'onKeyUpCapture'
+            | 'onLayout'
+            | 'onLongPress'
+            | 'onLostPointerCapture'
+            | 'onLostPointerCaptureCapture'
+            | 'onMagicTap'
+            | 'onMouseDown'
+            | 'onMouseEnter'
+            | 'onMouseLeave'
+            | 'onMouseMove'
+            | 'onMouseOut'
+            | 'onMouseOver'
+            | 'onMouseUp'
+            | 'onMoveShouldSetResponder'
+            | 'onMoveShouldSetResponderCapture'
+            | 'onPaste'
+            | 'onPointerCancel'
+            | 'onPointerCancelCapture'
+            | 'onPointerDown'
+            | 'onPointerDownCapture'
+            | 'onPointerEnter'
+            | 'onPointerEnterCapture'
+            | 'onPointerLeave'
+            | 'onPointerLeaveCapture'
+            | 'onPointerMove'
+            | 'onPointerMoveCapture'
+            | 'onPointerOut'
+            | 'onPointerOutCapture'
+            | 'onPointerOver'
+            | 'onPointerOverCapture'
+            | 'onPointerUp'
+            | 'onPointerUpCapture'
+            | 'onPress'
+            | 'onPressIn'
+            | 'onPressOut'
+            | 'onResponderEnd'
+            | 'onResponderGrant'
+            | 'onResponderMove'
+            | 'onResponderReject'
+            | 'onResponderRelease'
+            | 'onResponderStart'
+            | 'onResponderTerminate'
+            | 'onResponderTerminationRequest'
+            | 'onScroll'
+            | 'onScrollShouldSetResponder'
+            | 'onScrollShouldSetResponderCapture'
+            | 'onSelectionChangeShouldSetResponder'
+            | 'onSelectionChangeShouldSetResponderCapture'
+            | 'onStartShouldSetResponder'
+            | 'onStartShouldSetResponderCapture'
+            | 'onTouchCancel'
+            | 'onTouchCancelCapture'
+            | 'onTouchEnd'
+            | 'onTouchEndCapture'
+            | 'onTouchMove'
+            | 'onTouchMoveCapture'
+            | 'onTouchStart'
+            | 'onTouchStartCapture'
+            | 'onWheel'
+            | 'rel'
+            | 'removeClippedSubviews'
+            | 'render'
+            | 'renderToHardwareTextureAndroid'
+            | 'role'
+            | 'screenReaderFocusable'
+            | 'shouldRasterizeIOS'
+            | 'style'
+            | 'tabIndex'
+            | 'target'
+            | 'testID'
+            | 'theme'
+            | 'themeShallow'
+            | 'untilMeasured'
+          > & {
+            value: string
+            id?: string
+            labelledBy?: string
+            disabled?: boolean
+            activeStyle?: import('@tamagui/core').StylePiece
+            activeTheme?: string | null
+          },
+        'disabled' | 'size'
+      > &
+        Omit<
+          import('@tamagui/core').WithThemeValues<
+            Omit<import('@tamagui/core').StackStyleBase, 'disabled' | 'size'>
+          > &
+            import('@tamagui/core').WithFlatVariantValues<{
+              disabled?: boolean | undefined
+              size?: RadioGroupSize | undefined
+            }> &
+            import('@tamagui/core').WithShorthands<
+              import('@tamagui/core').WithThemeValues<
+                import('@tamagui/core').StackStyleBase
+              >
+            >,
+          | 'accessibilityActions'
+          | 'accessibilityElementsHidden'
+          | 'accessibilityHint'
+          | 'accessibilityIgnoresInvertColors'
+          | 'accessibilityLabel'
+          | 'accessibilityLabelledBy'
+          | 'accessibilityLanguage'
+          | 'accessibilityLargeContentTitle'
+          | 'accessibilityLiveRegion'
+          | 'accessibilityRespondsToUserInteraction'
+          | 'accessibilityRole'
+          | 'accessibilityShowsLargeContentViewer'
+          | 'accessibilityState'
+          | 'accessibilityValue'
+          | 'accessibilityViewIsModal'
+          | 'accessible'
+          | 'activeStyle'
+          | 'activeTheme'
+          | 'animatedBy'
+          | 'aria-busy'
+          | 'aria-checked'
+          | 'aria-disabled'
+          | 'aria-expanded'
+          | 'aria-hidden'
+          | 'aria-label'
+          | 'aria-labelledby'
+          | 'aria-live'
+          | 'aria-modal'
+          | 'aria-selected'
+          | 'aria-valuemax'
+          | 'aria-valuemin'
+          | 'aria-valuenow'
+          | 'aria-valuetext'
+          | 'asChild'
+          | 'children'
+          | 'className'
+          | 'collapsable'
+          | 'collapsableChildren'
+          | 'container'
+          | 'dangerouslySetInnerHTML'
+          | 'debug'
+          | 'disableClassName'
+          | 'disableNativeStyle'
+          | 'disableOptimization'
+          | 'download'
+          | 'experimental_accessibilityOrder'
+          | 'forceStyle'
+          | 'group'
+          | 'hasTVPreferredFocus'
+          | 'hitSlop'
+          | 'htmlFor'
+          | 'id'
+          | 'importantForAccessibility'
+          | 'labelledBy'
+          | 'name'
+          | 'nativeBackgroundAndroid'
+          | 'nativeForegroundAndroid'
+          | 'nativeID'
+          | 'needsOffscreenAlphaCompositing'
+          | 'nextFocusDown'
+          | 'nextFocusForward'
+          | 'nextFocusLeft'
+          | 'nextFocusRight'
+          | 'nextFocusUp'
+          | 'onAccessibilityAction'
+          | 'onAccessibilityEscape'
+          | 'onAccessibilityTap'
+          | 'onBeforeInput'
+          | 'onBlur'
+          | 'onBlurCapture'
+          | 'onChange'
+          | 'onClick'
+          | 'onClickCapture'
+          | 'onContextMenu'
+          | 'onCopy'
+          | 'onCut'
+          | 'onDoubleClick'
+          | 'onDrag'
+          | 'onDragEnd'
+          | 'onDragEnter'
+          | 'onDragLeave'
+          | 'onDragOver'
+          | 'onDragStart'
+          | 'onDrop'
+          | 'onFocus'
+          | 'onFocusCapture'
+          | 'onGotPointerCapture'
+          | 'onGotPointerCaptureCapture'
+          | 'onInput'
+          | 'onKeyDown'
+          | 'onKeyDownCapture'
+          | 'onKeyUp'
+          | 'onKeyUpCapture'
+          | 'onLayout'
+          | 'onLongPress'
+          | 'onLostPointerCapture'
+          | 'onLostPointerCaptureCapture'
+          | 'onMagicTap'
+          | 'onMouseDown'
+          | 'onMouseEnter'
+          | 'onMouseLeave'
+          | 'onMouseMove'
+          | 'onMouseOut'
+          | 'onMouseOver'
+          | 'onMouseUp'
+          | 'onMoveShouldSetResponder'
+          | 'onMoveShouldSetResponderCapture'
+          | 'onPaste'
+          | 'onPointerCancel'
+          | 'onPointerCancelCapture'
+          | 'onPointerDown'
+          | 'onPointerDownCapture'
+          | 'onPointerEnter'
+          | 'onPointerEnterCapture'
+          | 'onPointerLeave'
+          | 'onPointerLeaveCapture'
+          | 'onPointerMove'
+          | 'onPointerMoveCapture'
+          | 'onPointerOut'
+          | 'onPointerOutCapture'
+          | 'onPointerOver'
+          | 'onPointerOverCapture'
+          | 'onPointerUp'
+          | 'onPointerUpCapture'
+          | 'onPress'
+          | 'onPressIn'
+          | 'onPressOut'
+          | 'onResponderEnd'
+          | 'onResponderGrant'
+          | 'onResponderMove'
+          | 'onResponderReject'
+          | 'onResponderRelease'
+          | 'onResponderStart'
+          | 'onResponderTerminate'
+          | 'onResponderTerminationRequest'
+          | 'onScroll'
+          | 'onScrollShouldSetResponder'
+          | 'onScrollShouldSetResponderCapture'
+          | 'onSelectionChangeShouldSetResponder'
+          | 'onSelectionChangeShouldSetResponderCapture'
+          | 'onStartShouldSetResponder'
+          | 'onStartShouldSetResponderCapture'
+          | 'onTouchCancel'
+          | 'onTouchCancelCapture'
+          | 'onTouchEnd'
+          | 'onTouchEndCapture'
+          | 'onTouchMove'
+          | 'onTouchMoveCapture'
+          | 'onTouchStart'
+          | 'onTouchStartCapture'
+          | 'onWheel'
+          | 'rel'
+          | 'removeClippedSubviews'
+          | 'render'
+          | 'renderToHardwareTextureAndroid'
+          | 'role'
+          | 'screenReaderFocusable'
+          | 'shouldRasterizeIOS'
+          | 'style'
+          | 'tabIndex'
+          | 'target'
+          | 'testID'
+          | 'theme'
+          | 'themeShallow'
+          | 'untilMeasured'
+          | 'value'
+          | keyof import('@tamagui/core').StackStyleBase
+        > & {
+          ref?:
+            | import('react').Ref<
+                | import('@tamagui/react-native-types/src').ReactNativeElement
+                | (HTMLElement & import('@tamagui/core').TamaguiElementMethods)
+              >
+            | undefined
+        }
+    > &
+      import('@tamagui/core').StaticComponentObject<
+        import('@tamagui/core').TamaDefer,
+        | import('@tamagui/react-native-types/src').ReactNativeElement
+        | (HTMLElement & import('@tamagui/core').TamaguiElementMethods),
+        import('@tamagui/core').RNTamaguiViewNonStyleProps &
+          Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, 'disabled'> &
+          Omit<
+            import('@tamagui/core').WithThemeValues<
+              Omit<import('@tamagui/core').StackStyleBase, 'disabled'>
+            > &
+              import('@tamagui/core').WithFlatVariantValues<{
+                disabled?: boolean | undefined
+              }> &
+              import('@tamagui/core').WithShorthands<
+                import('@tamagui/core').WithThemeValues<
+                  import('@tamagui/core').StackStyleBase
+                >
+              >,
+            | 'accessibilityActions'
+            | 'accessibilityElementsHidden'
+            | 'accessibilityHint'
+            | 'accessibilityIgnoresInvertColors'
+            | 'accessibilityLabel'
+            | 'accessibilityLabelledBy'
+            | 'accessibilityLanguage'
+            | 'accessibilityLargeContentTitle'
+            | 'accessibilityLiveRegion'
+            | 'accessibilityRespondsToUserInteraction'
+            | 'accessibilityRole'
+            | 'accessibilityShowsLargeContentViewer'
+            | 'accessibilityState'
+            | 'accessibilityValue'
+            | 'accessibilityViewIsModal'
+            | 'accessible'
+            | 'animatedBy'
+            | 'aria-busy'
+            | 'aria-checked'
+            | 'aria-disabled'
+            | 'aria-expanded'
+            | 'aria-hidden'
+            | 'aria-label'
+            | 'aria-labelledby'
+            | 'aria-live'
+            | 'aria-modal'
+            | 'aria-selected'
+            | 'aria-valuemax'
+            | 'aria-valuemin'
+            | 'aria-valuenow'
+            | 'aria-valuetext'
+            | 'asChild'
+            | 'children'
+            | 'className'
+            | 'collapsable'
+            | 'collapsableChildren'
+            | 'container'
+            | 'dangerouslySetInnerHTML'
+            | 'debug'
+            | 'disableClassName'
+            | 'disableNativeStyle'
+            | 'disableOptimization'
+            | 'download'
+            | 'experimental_accessibilityOrder'
+            | 'forceStyle'
+            | 'group'
+            | 'hasTVPreferredFocus'
+            | 'hitSlop'
+            | 'htmlFor'
+            | 'id'
+            | 'importantForAccessibility'
+            | 'name'
+            | 'nativeBackgroundAndroid'
+            | 'nativeForegroundAndroid'
+            | 'nativeID'
+            | 'needsOffscreenAlphaCompositing'
+            | 'nextFocusDown'
+            | 'nextFocusForward'
+            | 'nextFocusLeft'
+            | 'nextFocusRight'
+            | 'nextFocusUp'
+            | 'onAccessibilityAction'
+            | 'onAccessibilityEscape'
+            | 'onAccessibilityTap'
+            | 'onBeforeInput'
+            | 'onBlur'
+            | 'onBlurCapture'
+            | 'onChange'
+            | 'onClick'
+            | 'onClickCapture'
+            | 'onContextMenu'
+            | 'onCopy'
+            | 'onCut'
+            | 'onDoubleClick'
+            | 'onDrag'
+            | 'onDragEnd'
+            | 'onDragEnter'
+            | 'onDragLeave'
+            | 'onDragOver'
+            | 'onDragStart'
+            | 'onDrop'
+            | 'onFocus'
+            | 'onFocusCapture'
+            | 'onGotPointerCapture'
+            | 'onGotPointerCaptureCapture'
+            | 'onInput'
+            | 'onKeyDown'
+            | 'onKeyDownCapture'
+            | 'onKeyUp'
+            | 'onKeyUpCapture'
+            | 'onLayout'
+            | 'onLongPress'
+            | 'onLostPointerCapture'
+            | 'onLostPointerCaptureCapture'
+            | 'onMagicTap'
+            | 'onMouseDown'
+            | 'onMouseEnter'
+            | 'onMouseLeave'
+            | 'onMouseMove'
+            | 'onMouseOut'
+            | 'onMouseOver'
+            | 'onMouseUp'
+            | 'onMoveShouldSetResponder'
+            | 'onMoveShouldSetResponderCapture'
+            | 'onPaste'
+            | 'onPointerCancel'
+            | 'onPointerCancelCapture'
+            | 'onPointerDown'
+            | 'onPointerDownCapture'
+            | 'onPointerEnter'
+            | 'onPointerEnterCapture'
+            | 'onPointerLeave'
+            | 'onPointerLeaveCapture'
+            | 'onPointerMove'
+            | 'onPointerMoveCapture'
+            | 'onPointerOut'
+            | 'onPointerOutCapture'
+            | 'onPointerOver'
+            | 'onPointerOverCapture'
+            | 'onPointerUp'
+            | 'onPointerUpCapture'
+            | 'onPress'
+            | 'onPressIn'
+            | 'onPressOut'
+            | 'onResponderEnd'
+            | 'onResponderGrant'
+            | 'onResponderMove'
+            | 'onResponderReject'
+            | 'onResponderRelease'
+            | 'onResponderStart'
+            | 'onResponderTerminate'
+            | 'onResponderTerminationRequest'
+            | 'onScroll'
+            | 'onScrollShouldSetResponder'
+            | 'onScrollShouldSetResponderCapture'
+            | 'onSelectionChangeShouldSetResponder'
+            | 'onSelectionChangeShouldSetResponderCapture'
+            | 'onStartShouldSetResponder'
+            | 'onStartShouldSetResponderCapture'
+            | 'onTouchCancel'
+            | 'onTouchCancelCapture'
+            | 'onTouchEnd'
+            | 'onTouchEndCapture'
+            | 'onTouchMove'
+            | 'onTouchMoveCapture'
+            | 'onTouchStart'
+            | 'onTouchStartCapture'
+            | 'onWheel'
+            | 'rel'
+            | 'removeClippedSubviews'
+            | 'render'
+            | 'renderToHardwareTextureAndroid'
+            | 'role'
+            | 'screenReaderFocusable'
+            | 'shouldRasterizeIOS'
+            | 'style'
+            | 'tabIndex'
+            | 'target'
+            | 'testID'
+            | 'theme'
+            | 'themeShallow'
+            | 'untilMeasured'
+          > & {
+            value: string
+            id?: string
+            labelledBy?: string
+            disabled?: boolean
+            activeStyle?: import('@tamagui/core').StylePiece
+            activeTheme?: string | null
+          },
+        import('@tamagui/core').StackStyleBase,
+        {
+          disabled?: boolean | undefined
+          size?: RadioGroupSize | undefined
+        },
+        import('@tamagui/core').StaticConfigPublic
+      > &
+      Omit<import('@tamagui/core').StaticConfigPublic, 'staticConfig'> & {
+        __tama: [
+          import('@tamagui/core').TamaDefer,
+          (
+            | import('@tamagui/react-native-types/src').ReactNativeElement
+            | (HTMLElement & import('@tamagui/core').TamaguiElementMethods)
+          ),
+          import('@tamagui/core').RNTamaguiViewNonStyleProps &
+            Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, 'disabled'> &
+            Omit<
+              import('@tamagui/core').WithThemeValues<
+                Omit<import('@tamagui/core').StackStyleBase, 'disabled'>
+              > &
+                import('@tamagui/core').WithFlatVariantValues<{
+                  disabled?: boolean | undefined
+                }> &
+                import('@tamagui/core').WithShorthands<
+                  import('@tamagui/core').WithThemeValues<
+                    import('@tamagui/core').StackStyleBase
+                  >
+                >,
+              | 'accessibilityActions'
+              | 'accessibilityElementsHidden'
+              | 'accessibilityHint'
+              | 'accessibilityIgnoresInvertColors'
+              | 'accessibilityLabel'
+              | 'accessibilityLabelledBy'
+              | 'accessibilityLanguage'
+              | 'accessibilityLargeContentTitle'
+              | 'accessibilityLiveRegion'
+              | 'accessibilityRespondsToUserInteraction'
+              | 'accessibilityRole'
+              | 'accessibilityShowsLargeContentViewer'
+              | 'accessibilityState'
+              | 'accessibilityValue'
+              | 'accessibilityViewIsModal'
+              | 'accessible'
+              | 'animatedBy'
+              | 'aria-busy'
+              | 'aria-checked'
+              | 'aria-disabled'
+              | 'aria-expanded'
+              | 'aria-hidden'
+              | 'aria-label'
+              | 'aria-labelledby'
+              | 'aria-live'
+              | 'aria-modal'
+              | 'aria-selected'
+              | 'aria-valuemax'
+              | 'aria-valuemin'
+              | 'aria-valuenow'
+              | 'aria-valuetext'
+              | 'asChild'
+              | 'children'
+              | 'className'
+              | 'collapsable'
+              | 'collapsableChildren'
+              | 'container'
+              | 'dangerouslySetInnerHTML'
+              | 'debug'
+              | 'disableClassName'
+              | 'disableNativeStyle'
+              | 'disableOptimization'
+              | 'download'
+              | 'experimental_accessibilityOrder'
+              | 'forceStyle'
+              | 'group'
+              | 'hasTVPreferredFocus'
+              | 'hitSlop'
+              | 'htmlFor'
+              | 'id'
+              | 'importantForAccessibility'
+              | 'name'
+              | 'nativeBackgroundAndroid'
+              | 'nativeForegroundAndroid'
+              | 'nativeID'
+              | 'needsOffscreenAlphaCompositing'
+              | 'nextFocusDown'
+              | 'nextFocusForward'
+              | 'nextFocusLeft'
+              | 'nextFocusRight'
+              | 'nextFocusUp'
+              | 'onAccessibilityAction'
+              | 'onAccessibilityEscape'
+              | 'onAccessibilityTap'
+              | 'onBeforeInput'
+              | 'onBlur'
+              | 'onBlurCapture'
+              | 'onChange'
+              | 'onClick'
+              | 'onClickCapture'
+              | 'onContextMenu'
+              | 'onCopy'
+              | 'onCut'
+              | 'onDoubleClick'
+              | 'onDrag'
+              | 'onDragEnd'
+              | 'onDragEnter'
+              | 'onDragLeave'
+              | 'onDragOver'
+              | 'onDragStart'
+              | 'onDrop'
+              | 'onFocus'
+              | 'onFocusCapture'
+              | 'onGotPointerCapture'
+              | 'onGotPointerCaptureCapture'
+              | 'onInput'
+              | 'onKeyDown'
+              | 'onKeyDownCapture'
+              | 'onKeyUp'
+              | 'onKeyUpCapture'
+              | 'onLayout'
+              | 'onLongPress'
+              | 'onLostPointerCapture'
+              | 'onLostPointerCaptureCapture'
+              | 'onMagicTap'
+              | 'onMouseDown'
+              | 'onMouseEnter'
+              | 'onMouseLeave'
+              | 'onMouseMove'
+              | 'onMouseOut'
+              | 'onMouseOver'
+              | 'onMouseUp'
+              | 'onMoveShouldSetResponder'
+              | 'onMoveShouldSetResponderCapture'
+              | 'onPaste'
+              | 'onPointerCancel'
+              | 'onPointerCancelCapture'
+              | 'onPointerDown'
+              | 'onPointerDownCapture'
+              | 'onPointerEnter'
+              | 'onPointerEnterCapture'
+              | 'onPointerLeave'
+              | 'onPointerLeaveCapture'
+              | 'onPointerMove'
+              | 'onPointerMoveCapture'
+              | 'onPointerOut'
+              | 'onPointerOutCapture'
+              | 'onPointerOver'
+              | 'onPointerOverCapture'
+              | 'onPointerUp'
+              | 'onPointerUpCapture'
+              | 'onPress'
+              | 'onPressIn'
+              | 'onPressOut'
+              | 'onResponderEnd'
+              | 'onResponderGrant'
+              | 'onResponderMove'
+              | 'onResponderReject'
+              | 'onResponderRelease'
+              | 'onResponderStart'
+              | 'onResponderTerminate'
+              | 'onResponderTerminationRequest'
+              | 'onScroll'
+              | 'onScrollShouldSetResponder'
+              | 'onScrollShouldSetResponderCapture'
+              | 'onSelectionChangeShouldSetResponder'
+              | 'onSelectionChangeShouldSetResponderCapture'
+              | 'onStartShouldSetResponder'
+              | 'onStartShouldSetResponderCapture'
+              | 'onTouchCancel'
+              | 'onTouchCancelCapture'
+              | 'onTouchEnd'
+              | 'onTouchEndCapture'
+              | 'onTouchMove'
+              | 'onTouchMoveCapture'
+              | 'onTouchStart'
+              | 'onTouchStartCapture'
+              | 'onWheel'
+              | 'rel'
+              | 'removeClippedSubviews'
+              | 'render'
+              | 'renderToHardwareTextureAndroid'
+              | 'role'
+              | 'screenReaderFocusable'
+              | 'shouldRasterizeIOS'
+              | 'style'
+              | 'tabIndex'
+              | 'target'
+              | 'testID'
+              | 'theme'
+              | 'themeShallow'
+              | 'untilMeasured'
+            > & {
+              value: string
+              id?: string
+              labelledBy?: string
+              disabled?: boolean
+              activeStyle?: import('@tamagui/core').StylePiece
+              activeTheme?: string | null
+            },
+          import('@tamagui/core').StackStyleBase,
+          {
+            disabled?: boolean | undefined
+            size?: RadioGroupSize | undefined
+          },
+          import('@tamagui/core').StaticConfigPublic,
+        ]
+      }
+    Indicator: import('react').FunctionComponent<
+      Omit<
+        import('@tamagui/core').RNTamaguiViewNonStyleProps &
+          Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, never> &
+          Omit<
+            import('@tamagui/core').WithThemeValues<
+              Omit<import('@tamagui/core').StackStyleBase, never>
+            > &
+              import('@tamagui/core').WithFlatVariantValues<{}> &
+              import('@tamagui/core').WithShorthands<
+                import('@tamagui/core').WithThemeValues<
+                  import('@tamagui/core').StackStyleBase
+                >
+              >,
+            keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
+          > & {
+            forceMount?: boolean
+          },
+        never
+      > &
+        Omit<
+          import('@tamagui/core').WithThemeValues<
+            Omit<import('@tamagui/core').StackStyleBase, never>
+          > &
+            import('@tamagui/core').WithFlatVariantValues<{}> &
+            import('@tamagui/core').WithShorthands<
+              import('@tamagui/core').WithThemeValues<
+                import('@tamagui/core').StackStyleBase
+              >
+            >,
+          | 'forceMount'
+          | keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
+          | keyof import('@tamagui/core').StackStyleBase
+        > & {
+          ref?:
+            | import('react').Ref<
+                | import('@tamagui/react-native-types/src').ReactNativeElement
+                | (HTMLElement & import('@tamagui/core').TamaguiElementMethods)
+              >
+            | undefined
+        }
+    > &
+      import('@tamagui/core').StaticComponentObject<
+        import('@tamagui/core').TamaDefer,
+        | import('@tamagui/react-native-types/src').ReactNativeElement
+        | (HTMLElement & import('@tamagui/core').TamaguiElementMethods),
+        import('@tamagui/core').RNTamaguiViewNonStyleProps &
+          Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, never> &
+          Omit<
+            import('@tamagui/core').WithThemeValues<
+              Omit<import('@tamagui/core').StackStyleBase, never>
+            > &
+              import('@tamagui/core').WithFlatVariantValues<{}> &
+              import('@tamagui/core').WithShorthands<
+                import('@tamagui/core').WithThemeValues<
+                  import('@tamagui/core').StackStyleBase
+                >
+              >,
+            keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
+          > & {
+            forceMount?: boolean
+          },
+        import('@tamagui/core').StackStyleBase,
+        {},
+        import('@tamagui/core').StaticConfigPublic
+      > &
+      Omit<import('@tamagui/core').StaticConfigPublic, 'staticConfig'> & {
+        __tama: [
+          import('@tamagui/core').TamaDefer,
+          (
+            | import('@tamagui/react-native-types/src').ReactNativeElement
+            | (HTMLElement & import('@tamagui/core').TamaguiElementMethods)
+          ),
+          import('@tamagui/core').RNTamaguiViewNonStyleProps &
+            Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, never> &
+            Omit<
+              import('@tamagui/core').WithThemeValues<
+                Omit<import('@tamagui/core').StackStyleBase, never>
+              > &
+                import('@tamagui/core').WithFlatVariantValues<{}> &
+                import('@tamagui/core').WithShorthands<
+                  import('@tamagui/core').WithThemeValues<
+                    import('@tamagui/core').StackStyleBase
+                  >
+                >,
+              keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
+            > & {
+              forceMount?: boolean
+            },
+          import('@tamagui/core').StackStyleBase,
+          {},
+          import('@tamagui/core').StaticConfigPublic,
+        ]
+      }
+  }
+export type RadioGroupProps = GetProps<typeof RadioGroup>
 //# sourceMappingURL=RadioGroup.d.ts.map

@@ -1,152 +1,1860 @@
-import React from 'react';
-export declare function createMenu(): React.FC<import("./createNonNativeMenu").MenuProps & {
-    scope?: string;
-} & Partial<Omit<import("@tamagui/create-menu").NativeMenuProps, keyof import("./createNonNativeMenu").MenuProps>>> & {
-    readonly Trigger: React.FC<Omit<import("@tamagui/web").ViewProps, "scope" | keyof import("./createNonNativeMenu").MenuTriggerProps> & import("./createNonNativeMenu").MenuTriggerProps & {
-        scope?: string;
+import React from 'react'
+export declare function createMenu(): React.FC<
+  import('./createNonNativeMenu').MenuProps & {
+    scope?: string
+  } & Partial<
+      Omit<
+        import('@tamagui/create-menu').NativeMenuProps,
+        keyof import('./createNonNativeMenu').MenuProps
+      >
+    >
+> & {
+  readonly Trigger: React.FC<
+    Omit<
+      import('@tamagui/web').ViewProps,
+      'scope' | keyof import('./createNonNativeMenu').MenuTriggerProps
+    > &
+      import('./createNonNativeMenu').MenuTriggerProps & {
+        scope?: string
+      } & {
+        ref?: React.Ref<import('@tamagui/web').TamaguiElement> | undefined
+      } & Partial<
+        Omit<
+          import('@tamagui/create-menu').MenuTriggerProps,
+          'ref' | 'scope' | keyof import('./createNonNativeMenu').MenuTriggerProps
+        >
+      >
+  >
+  readonly TriggerGroup: import('@tamagui/web').TamaguiComponent<
+    Omit<
+      import('@tamagui/web').ViewProps,
+      | 'dir'
+      | keyof import('@tamagui/web').StackNonStyleProps
+      | keyof import('@tamagui/web').StackStyleBase
+    > &
+      import('@tamagui/web').StackNonStyleProps &
+      import('@tamagui/web').WithThemeValues<
+        Omit<import('@tamagui/web').StackStyleBase, never>
+      > &
+      import('@tamagui/web').WithFlatVariantValues<{}> &
+      import('@tamagui/web').WithShorthands<
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+      > & {
+        dir?: 'ltr' | 'rtl'
+      },
+    import('@tamagui/web').TamaguiElement,
+    import('@tamagui/web').StackNonStyleProps &
+      import('@tamagui/web').WithThemeValues<
+        Omit<import('@tamagui/web').StackStyleBase, never>
+      > &
+      import('@tamagui/web').WithFlatVariantValues<{}> &
+      import('@tamagui/web').WithShorthands<
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+      > & {
+        dir?: 'ltr' | 'rtl'
+      },
+    import('@tamagui/web').StackStyleBase,
+    {},
+    {}
+  >
+  readonly Portal: React.FC<
+    import('@tamagui/create-menu').MenuPortalProps & {
+      scope?: string
+    } & Partial<
+        Omit<
+          React.FragmentProps,
+          'scope' | keyof import('@tamagui/create-menu').MenuPortalProps
+        >
+      >
+  >
+  readonly Content: React.FC<
+    Omit<
+      Omit<
+        import('@tamagui/web').GetFinalProps<
+          import('@tamagui/core').RNTamaguiViewNonStyleProps,
+          import('@tamagui/web').StackStyleBase,
+          {}
+        >,
+        keyof import('@tamagui/create-menu').MenuContentProps
+      > &
+        import('@tamagui/create-menu').MenuContentProps & {
+          scope?: string
+        },
+      keyof import('./createNonNativeMenu').MenuContentProps
+    > &
+      import('./createNonNativeMenu').MenuContentProps & {
+        scope?: string
+      } & {
+        ref?:
+          | React.Ref<
+              | import('@tamagui/react-native-types/src').ReactNativeElement
+              | (HTMLElement & import('@tamagui/web').TamaguiElementMethods)
+            >
+          | undefined
+      } & Partial<
+        Omit<
+          import('@tamagui/create-menu').NativeMenuContentProps,
+          | 'download'
+          | 'onEntryFocus'
+          | 'onLayout'
+          | 'onMoveShouldSetResponder'
+          | 'onMoveShouldSetResponderCapture'
+          | 'onResponderEnd'
+          | 'onResponderGrant'
+          | 'onResponderMove'
+          | 'onResponderReject'
+          | 'onResponderRelease'
+          | 'onResponderStart'
+          | 'onResponderTerminate'
+          | 'onResponderTerminationRequest'
+          | 'onScrollShouldSetResponder'
+          | 'onScrollShouldSetResponderCapture'
+          | 'onSelectionChangeShouldSetResponder'
+          | 'onSelectionChangeShouldSetResponderCapture'
+          | 'onStartShouldSetResponder'
+          | 'onStartShouldSetResponderCapture'
+          | 'ref'
+          | 'rel'
+          | keyof import('./createNonNativeMenu').MenuContentProps
+        >
+      >
+  >
+  readonly Group: React.FC<
+    Omit<
+      import('@tamagui/web').ViewProps,
+      keyof import('@tamagui/create-menu').MenuGroupProps
+    > &
+      import('@tamagui/create-menu').MenuGroupProps & {
+        ref?: React.Ref<import('@tamagui/web').TamaguiElement> | undefined
+      } & Partial<
+        Omit<
+          import('@tamagui/create-menu').NativeMenuGroupProps,
+          'ref' | keyof import('@tamagui/create-menu').MenuGroupProps
+        >
+      >
+  >
+  readonly Label: React.FC<
+    Omit<
+      import('@tamagui/web').TextProps,
+      keyof import('@tamagui/create-menu').MenuLabelProps
+    > &
+      import('@tamagui/create-menu').MenuLabelProps & {
+        ref?: React.Ref<import('@tamagui/web').TamaguiTextElement> | undefined
+      } & Partial<
+        Omit<
+          import('@tamagui/create-menu').NativeMenuLabelProps,
+          'ref' | keyof import('@tamagui/create-menu').MenuLabelProps
+        >
+      >
+  >
+  readonly Item: React.FC<
+    Omit<
+      import('@tamagui/web').ViewProps,
+      'scope' | keyof import('@tamagui/create-menu').MenuItemProps
+    > &
+      import('@tamagui/create-menu').MenuItemProps & {
+        scope?: string
+      } & {
+        ref?: React.Ref<import('@tamagui/web').TamaguiElement> | undefined
+      } & Partial<
+        Omit<
+          {
+            children: React.ReactNode
+            textValue?: string
+            onSelect?: (event?: Event) => void
+          } & {
+            disabled?: boolean
+            hidden?: boolean
+            destructive?: boolean
+            key: string
+          },
+          'ref' | 'scope' | keyof import('@tamagui/create-menu').MenuItemProps
+        >
+      >
+  >
+  readonly CheckboxItem: React.FC<
+    Omit<
+      import('@tamagui/web').ViewProps,
+      'scope' | keyof import('@tamagui/create-menu').MenuCheckboxItemProps
+    > &
+      import('@tamagui/create-menu').MenuCheckboxItemProps & {
+        scope?: string
+      } & {
+        ref?: React.Ref<import('@tamagui/web').TamaguiElement> | undefined
+      } & Partial<
+        Omit<
+          Omit<import('@tamagui/create-menu').NativeMenuItemProps, 'onSelect'> & {
+            checked?: boolean
+            onCheckedChange?: (checked: boolean) => void
+            value?: 'mixed' | 'on' | 'off' | boolean
+            onValueChange?: (
+              state: 'mixed' | 'on' | 'off',
+              prevState: 'mixed' | 'on' | 'off'
+            ) => void
+            key: string
+          },
+          'ref' | 'scope' | keyof import('@tamagui/create-menu').MenuCheckboxItemProps
+        >
+      >
+  >
+  readonly RadioGroup: React.FC<
+    Omit<
+      import('@tamagui/web').ViewProps,
+      'scope' | keyof import('@tamagui/create-menu').MenuRadioGroupProps
+    > &
+      import('@tamagui/create-menu').MenuRadioGroupProps & {
+        scope?: string
+      } & {
+        ref?: React.Ref<import('@tamagui/web').TamaguiElement> | undefined
+      } & Partial<
+        Omit<
+          {
+            children: React.ReactNode
+          },
+          'ref' | 'scope' | keyof import('@tamagui/create-menu').MenuRadioGroupProps
+        >
+      >
+  >
+  readonly RadioItem: React.FC<
+    Omit<
+      import('@tamagui/web').ViewProps,
+      'scope' | keyof import('@tamagui/create-menu').MenuRadioItemProps
+    > &
+      import('@tamagui/create-menu').MenuRadioItemProps & {
+        scope?: string
+      } & {
+        ref?: React.Ref<import('@tamagui/web').TamaguiElement> | undefined
+      } & Partial<
+        Omit<
+          {
+            children: React.ReactNode
+          },
+          'ref' | 'scope' | keyof import('@tamagui/create-menu').MenuRadioItemProps
+        >
+      >
+  >
+  readonly ItemIndicator: React.FC<
+    Omit<
+      import('@tamagui/web').ViewProps,
+      'scope' | keyof import('@tamagui/create-menu').MenuItemIndicatorProps
+    > &
+      import('@tamagui/create-menu').MenuItemIndicatorProps & {
+        scope?: string
+      } & {
+        ref?: React.Ref<import('@tamagui/web').TamaguiElement> | undefined
+      } & Partial<
+        Omit<
+          import('@tamagui/create-menu').NativeMenuItemIndicatorProps,
+          'ref' | 'scope' | keyof import('@tamagui/create-menu').MenuItemIndicatorProps
+        >
+      >
+  >
+  readonly Separator: React.FC<
+    Omit<
+      import('@tamagui/web').ViewProps,
+      keyof import('@tamagui/create-menu').MenuSeparatorProps
+    > &
+      import('@tamagui/create-menu').MenuSeparatorProps & {
+        ref?: React.Ref<import('@tamagui/web').TamaguiElement> | undefined
+      } & Partial<
+        Omit<
+          import('@tamagui/create-menu').NativeMenuSeparatorProps,
+          'ref' | keyof import('@tamagui/create-menu').MenuSeparatorProps
+        >
+      >
+  >
+  readonly Arrow: React.FC<
+    Omit<
+      import('@tamagui/web').StackNonStyleProps &
+        import('@tamagui/web').WithThemeValues<
+          Omit<import('@tamagui/web').StackStyleBase, never>
+        > &
+        import('@tamagui/web').WithFlatVariantValues<{}> &
+        import('@tamagui/web').WithShorthands<
+          import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+        > &
+        import('@tamagui/popper').PopperArrowExtraProps &
+        import('@tamagui/web').RefProp<import('@tamagui/web').TamaguiElement>,
+      'ref'
+    > &
+      import('@tamagui/web').RefProp<import('@tamagui/web').TamaguiElement> &
+      Partial<
+        Omit<
+          import('@tamagui/create-menu').NativeMenuArrowProps,
+          | 'KhtmlBoxAlign'
+          | 'KhtmlBoxDirection'
+          | 'KhtmlBoxFlex'
+          | 'KhtmlBoxFlexGroup'
+          | 'KhtmlBoxLines'
+          | 'KhtmlBoxOrdinalGroup'
+          | 'KhtmlBoxOrient'
+          | 'KhtmlBoxPack'
+          | 'KhtmlLineBreak'
+          | 'KhtmlOpacity'
+          | 'KhtmlUserSelect'
+          | 'MozAnimation'
+          | 'MozAnimationDelay'
+          | 'MozAnimationDirection'
+          | 'MozAnimationDuration'
+          | 'MozAnimationFillMode'
+          | 'MozAnimationIterationCount'
+          | 'MozAnimationName'
+          | 'MozAnimationPlayState'
+          | 'MozAnimationTimingFunction'
+          | 'MozAppearance'
+          | 'MozBackfaceVisibility'
+          | 'MozBackgroundClip'
+          | 'MozBackgroundOrigin'
+          | 'MozBackgroundSize'
+          | 'MozBinding'
+          | 'MozBorderBottomColors'
+          | 'MozBorderEndColor'
+          | 'MozBorderEndStyle'
+          | 'MozBorderEndWidth'
+          | 'MozBorderImage'
+          | 'MozBorderLeftColors'
+          | 'MozBorderRadius'
+          | 'MozBorderRadiusBottomleft'
+          | 'MozBorderRadiusBottomright'
+          | 'MozBorderRadiusTopleft'
+          | 'MozBorderRadiusTopright'
+          | 'MozBorderRightColors'
+          | 'MozBorderStartColor'
+          | 'MozBorderStartStyle'
+          | 'MozBorderTopColors'
+          | 'MozBoxAlign'
+          | 'MozBoxDirection'
+          | 'MozBoxFlex'
+          | 'MozBoxOrdinalGroup'
+          | 'MozBoxOrient'
+          | 'MozBoxPack'
+          | 'MozBoxShadow'
+          | 'MozBoxSizing'
+          | 'MozColumnCount'
+          | 'MozColumnFill'
+          | 'MozColumnRule'
+          | 'MozColumnRuleColor'
+          | 'MozColumnRuleStyle'
+          | 'MozColumnRuleWidth'
+          | 'MozColumnWidth'
+          | 'MozColumns'
+          | 'MozContextProperties'
+          | 'MozFloatEdge'
+          | 'MozFontFeatureSettings'
+          | 'MozFontLanguageOverride'
+          | 'MozForceBrokenImageIcon'
+          | 'MozHyphens'
+          | 'MozMarginEnd'
+          | 'MozMarginStart'
+          | 'MozOpacity'
+          | 'MozOrient'
+          | 'MozOsxFontSmoothing'
+          | 'MozOutline'
+          | 'MozOutlineColor'
+          | 'MozOutlineRadius'
+          | 'MozOutlineRadiusBottomleft'
+          | 'MozOutlineRadiusBottomright'
+          | 'MozOutlineRadiusTopleft'
+          | 'MozOutlineRadiusTopright'
+          | 'MozOutlineStyle'
+          | 'MozOutlineWidth'
+          | 'MozPaddingEnd'
+          | 'MozPaddingStart'
+          | 'MozPerspective'
+          | 'MozPerspectiveOrigin'
+          | 'MozStackSizing'
+          | 'MozTabSize'
+          | 'MozTextAlignLast'
+          | 'MozTextBlink'
+          | 'MozTextDecorationColor'
+          | 'MozTextDecorationLine'
+          | 'MozTextDecorationStyle'
+          | 'MozTextSizeAdjust'
+          | 'MozTransform'
+          | 'MozTransformOrigin'
+          | 'MozTransformStyle'
+          | 'MozTransition'
+          | 'MozTransitionDelay'
+          | 'MozTransitionDuration'
+          | 'MozTransitionProperty'
+          | 'MozTransitionTimingFunction'
+          | 'MozUserFocus'
+          | 'MozUserInput'
+          | 'MozUserModify'
+          | 'MozUserSelect'
+          | 'MozWindowDragging'
+          | 'MozWindowShadow'
+          | 'OAnimation'
+          | 'OAnimationDelay'
+          | 'OAnimationDirection'
+          | 'OAnimationDuration'
+          | 'OAnimationFillMode'
+          | 'OAnimationIterationCount'
+          | 'OAnimationName'
+          | 'OAnimationPlayState'
+          | 'OAnimationTimingFunction'
+          | 'OBackgroundSize'
+          | 'OBorderImage'
+          | 'OObjectFit'
+          | 'OObjectPosition'
+          | 'OTabSize'
+          | 'OTextOverflow'
+          | 'OTransform'
+          | 'OTransformOrigin'
+          | 'OTransition'
+          | 'OTransitionDelay'
+          | 'OTransitionDuration'
+          | 'OTransitionProperty'
+          | 'OTransitionTimingFunction'
+          | 'WebkitAlignContent'
+          | 'WebkitAlignItems'
+          | 'WebkitAlignSelf'
+          | 'WebkitAnimation'
+          | 'WebkitAnimationDelay'
+          | 'WebkitAnimationDirection'
+          | 'WebkitAnimationDuration'
+          | 'WebkitAnimationFillMode'
+          | 'WebkitAnimationIterationCount'
+          | 'WebkitAnimationName'
+          | 'WebkitAnimationPlayState'
+          | 'WebkitAnimationTimingFunction'
+          | 'WebkitAppearance'
+          | 'WebkitBackdropFilter'
+          | 'WebkitBackfaceVisibility'
+          | 'WebkitBackgroundClip'
+          | 'WebkitBackgroundOrigin'
+          | 'WebkitBackgroundSize'
+          | 'WebkitBorderBefore'
+          | 'WebkitBorderBeforeColor'
+          | 'WebkitBorderBeforeStyle'
+          | 'WebkitBorderBeforeWidth'
+          | 'WebkitBorderBottomLeftRadius'
+          | 'WebkitBorderBottomRightRadius'
+          | 'WebkitBorderImage'
+          | 'WebkitBorderImageSlice'
+          | 'WebkitBorderRadius'
+          | 'WebkitBorderTopLeftRadius'
+          | 'WebkitBorderTopRightRadius'
+          | 'WebkitBoxAlign'
+          | 'WebkitBoxDecorationBreak'
+          | 'WebkitBoxDirection'
+          | 'WebkitBoxFlex'
+          | 'WebkitBoxFlexGroup'
+          | 'WebkitBoxLines'
+          | 'WebkitBoxOrdinalGroup'
+          | 'WebkitBoxOrient'
+          | 'WebkitBoxPack'
+          | 'WebkitBoxReflect'
+          | 'WebkitBoxShadow'
+          | 'WebkitBoxSizing'
+          | 'WebkitClipPath'
+          | 'WebkitColumnCount'
+          | 'WebkitColumnFill'
+          | 'WebkitColumnRule'
+          | 'WebkitColumnRuleColor'
+          | 'WebkitColumnRuleStyle'
+          | 'WebkitColumnRuleWidth'
+          | 'WebkitColumnSpan'
+          | 'WebkitColumnWidth'
+          | 'WebkitColumns'
+          | 'WebkitFilter'
+          | 'WebkitFlex'
+          | 'WebkitFlexBasis'
+          | 'WebkitFlexDirection'
+          | 'WebkitFlexFlow'
+          | 'WebkitFlexGrow'
+          | 'WebkitFlexShrink'
+          | 'WebkitFlexWrap'
+          | 'WebkitFontFeatureSettings'
+          | 'WebkitFontKerning'
+          | 'WebkitFontSmoothing'
+          | 'WebkitFontVariantLigatures'
+          | 'WebkitHyphenateCharacter'
+          | 'WebkitHyphens'
+          | 'WebkitInitialLetter'
+          | 'WebkitJustifyContent'
+          | 'WebkitLineBreak'
+          | 'WebkitLineClamp'
+          | 'WebkitLogicalHeight'
+          | 'WebkitLogicalWidth'
+          | 'WebkitMarginEnd'
+          | 'WebkitMarginStart'
+          | 'WebkitMask'
+          | 'WebkitMaskAttachment'
+          | 'WebkitMaskBoxImage'
+          | 'WebkitMaskBoxImageOutset'
+          | 'WebkitMaskBoxImageRepeat'
+          | 'WebkitMaskBoxImageSlice'
+          | 'WebkitMaskBoxImageSource'
+          | 'WebkitMaskBoxImageWidth'
+          | 'WebkitMaskClip'
+          | 'WebkitMaskComposite'
+          | 'WebkitMaskImage'
+          | 'WebkitMaskOrigin'
+          | 'WebkitMaskPosition'
+          | 'WebkitMaskPositionX'
+          | 'WebkitMaskPositionY'
+          | 'WebkitMaskRepeat'
+          | 'WebkitMaskRepeatX'
+          | 'WebkitMaskRepeatY'
+          | 'WebkitMaskSize'
+          | 'WebkitMaxInlineSize'
+          | 'WebkitOrder'
+          | 'WebkitOverflowScrolling'
+          | 'WebkitPaddingEnd'
+          | 'WebkitPaddingStart'
+          | 'WebkitPerspective'
+          | 'WebkitPerspectiveOrigin'
+          | 'WebkitPrintColorAdjust'
+          | 'WebkitRubyPosition'
+          | 'WebkitScrollSnapType'
+          | 'WebkitShapeMargin'
+          | 'WebkitTapHighlightColor'
+          | 'WebkitTextCombine'
+          | 'WebkitTextDecorationColor'
+          | 'WebkitTextDecorationLine'
+          | 'WebkitTextDecorationSkip'
+          | 'WebkitTextDecorationStyle'
+          | 'WebkitTextEmphasis'
+          | 'WebkitTextEmphasisColor'
+          | 'WebkitTextEmphasisPosition'
+          | 'WebkitTextEmphasisStyle'
+          | 'WebkitTextFillColor'
+          | 'WebkitTextOrientation'
+          | 'WebkitTextSizeAdjust'
+          | 'WebkitTextStroke'
+          | 'WebkitTextStrokeColor'
+          | 'WebkitTextStrokeWidth'
+          | 'WebkitTextUnderlinePosition'
+          | 'WebkitTouchCallout'
+          | 'WebkitTransform'
+          | 'WebkitTransformOrigin'
+          | 'WebkitTransformStyle'
+          | 'WebkitTransition'
+          | 'WebkitTransitionDelay'
+          | 'WebkitTransitionDuration'
+          | 'WebkitTransitionProperty'
+          | 'WebkitTransitionTimingFunction'
+          | 'WebkitUserModify'
+          | 'WebkitUserSelect'
+          | 'WebkitWritingMode'
+          | 'accentColor'
+          | 'accessibilityActions'
+          | 'accessibilityElementsHidden'
+          | 'accessibilityHint'
+          | 'accessibilityIgnoresInvertColors'
+          | 'accessibilityLabel'
+          | 'accessibilityLabelledBy'
+          | 'accessibilityLanguage'
+          | 'accessibilityLargeContentTitle'
+          | 'accessibilityLiveRegion'
+          | 'accessibilityRespondsToUserInteraction'
+          | 'accessibilityRole'
+          | 'accessibilityShowsLargeContentViewer'
+          | 'accessibilityState'
+          | 'accessibilityValue'
+          | 'accessibilityViewIsModal'
+          | 'accessible'
+          | 'alignContent'
+          | 'alignItems'
+          | 'alignSelf'
+          | 'alignTracks'
+          | 'alignmentBaseline'
+          | 'all'
+          | 'anchorName'
+          | 'anchorScope'
+          | 'animatePosition'
+          | 'animatePresence'
+          | 'animatedBy'
+          | 'animation'
+          | 'animationComposition'
+          | 'animationDelay'
+          | 'animationDirection'
+          | 'animationDuration'
+          | 'animationFillMode'
+          | 'animationIterationCount'
+          | 'animationName'
+          | 'animationPlayState'
+          | 'animationRange'
+          | 'animationRangeEnd'
+          | 'animationRangeStart'
+          | 'animationTimeline'
+          | 'animationTimingFunction'
+          | 'appearance'
+          | 'aria-busy'
+          | 'aria-checked'
+          | 'aria-disabled'
+          | 'aria-expanded'
+          | 'aria-hidden'
+          | 'aria-label'
+          | 'aria-labelledby'
+          | 'aria-live'
+          | 'aria-modal'
+          | 'aria-selected'
+          | 'aria-valuemax'
+          | 'aria-valuemin'
+          | 'aria-valuenow'
+          | 'aria-valuetext'
+          | 'asChild'
+          | 'aspectRatio'
+          | 'backdropFilter'
+          | 'backfaceVisibility'
+          | 'background'
+          | 'backgroundAttachment'
+          | 'backgroundBlendMode'
+          | 'backgroundClip'
+          | 'backgroundColor'
+          | 'backgroundImage'
+          | 'backgroundOrigin'
+          | 'backgroundPosition'
+          | 'backgroundPositionX'
+          | 'backgroundPositionY'
+          | 'backgroundRepeat'
+          | 'backgroundSize'
+          | 'baselineShift'
+          | 'blockSize'
+          | 'border'
+          | 'borderBlock'
+          | 'borderBlockColor'
+          | 'borderBlockEnd'
+          | 'borderBlockEndColor'
+          | 'borderBlockEndStyle'
+          | 'borderBlockEndWidth'
+          | 'borderBlockStart'
+          | 'borderBlockStartColor'
+          | 'borderBlockStartStyle'
+          | 'borderBlockStartWidth'
+          | 'borderBlockStyle'
+          | 'borderBlockWidth'
+          | 'borderBottom'
+          | 'borderBottomColor'
+          | 'borderBottomEndRadius'
+          | 'borderBottomLeftRadius'
+          | 'borderBottomRightRadius'
+          | 'borderBottomStartRadius'
+          | 'borderBottomStyle'
+          | 'borderBottomWidth'
+          | 'borderCollapse'
+          | 'borderColor'
+          | 'borderCurve'
+          | 'borderEndColor'
+          | 'borderEndEndRadius'
+          | 'borderEndStartRadius'
+          | 'borderEndWidth'
+          | 'borderImage'
+          | 'borderImageOutset'
+          | 'borderImageRepeat'
+          | 'borderImageSlice'
+          | 'borderImageSource'
+          | 'borderImageWidth'
+          | 'borderInline'
+          | 'borderInlineColor'
+          | 'borderInlineEnd'
+          | 'borderInlineEndColor'
+          | 'borderInlineEndStyle'
+          | 'borderInlineEndWidth'
+          | 'borderInlineStart'
+          | 'borderInlineStartColor'
+          | 'borderInlineStartStyle'
+          | 'borderInlineStartWidth'
+          | 'borderInlineStyle'
+          | 'borderInlineWidth'
+          | 'borderLeft'
+          | 'borderLeftColor'
+          | 'borderLeftStyle'
+          | 'borderLeftWidth'
+          | 'borderRadius'
+          | 'borderRight'
+          | 'borderRightColor'
+          | 'borderRightStyle'
+          | 'borderRightWidth'
+          | 'borderSpacing'
+          | 'borderStartColor'
+          | 'borderStartEndRadius'
+          | 'borderStartStartRadius'
+          | 'borderStartWidth'
+          | 'borderStyle'
+          | 'borderTop'
+          | 'borderTopColor'
+          | 'borderTopEndRadius'
+          | 'borderTopLeftRadius'
+          | 'borderTopRightRadius'
+          | 'borderTopStartRadius'
+          | 'borderTopStyle'
+          | 'borderTopWidth'
+          | 'borderWidth'
+          | 'bottom'
+          | 'boxAlign'
+          | 'boxDecorationBreak'
+          | 'boxDirection'
+          | 'boxFlex'
+          | 'boxFlexGroup'
+          | 'boxLines'
+          | 'boxOrdinalGroup'
+          | 'boxOrient'
+          | 'boxPack'
+          | 'boxShadow'
+          | 'boxSizing'
+          | 'breakAfter'
+          | 'breakBefore'
+          | 'breakInside'
+          | 'captionSide'
+          | 'caret'
+          | 'caretColor'
+          | 'caretShape'
+          | 'children'
+          | 'className'
+          | 'clear'
+          | 'clip'
+          | 'clipPath'
+          | 'clipRule'
+          | 'collapsable'
+          | 'collapsableChildren'
+          | 'color'
+          | 'colorAdjust'
+          | 'colorInterpolation'
+          | 'colorInterpolationFilters'
+          | 'colorRendering'
+          | 'colorScheme'
+          | 'columnCount'
+          | 'columnFill'
+          | 'columnGap'
+          | 'columnRule'
+          | 'columnRuleColor'
+          | 'columnRuleStyle'
+          | 'columnRuleWidth'
+          | 'columnSpan'
+          | 'columnWidth'
+          | 'columns'
+          | 'contain'
+          | 'containIntrinsicBlockSize'
+          | 'containIntrinsicHeight'
+          | 'containIntrinsicInlineSize'
+          | 'containIntrinsicSize'
+          | 'containIntrinsicWidth'
+          | 'container'
+          | 'containerName'
+          | 'containerType'
+          | 'content'
+          | 'contentVisibility'
+          | 'counterIncrement'
+          | 'counterReset'
+          | 'counterSet'
+          | 'cursor'
+          | 'cx'
+          | 'cy'
+          | 'd'
+          | 'dangerouslySetInnerHTML'
+          | 'debug'
+          | 'direction'
+          | 'disableClassName'
+          | 'disableNativeStyle'
+          | 'disableOptimization'
+          | 'disabled'
+          | 'display'
+          | 'dominantBaseline'
+          | 'emptyCells'
+          | 'end'
+          | 'experimental_accessibilityOrder'
+          | 'experimental_backgroundImage'
+          | 'experimental_backgroundPosition'
+          | 'experimental_backgroundRepeat'
+          | 'experimental_backgroundSize'
+          | 'fieldSizing'
+          | 'fill'
+          | 'fillOpacity'
+          | 'fillRule'
+          | 'filter'
+          | 'flex'
+          | 'flexBasis'
+          | 'flexDirection'
+          | 'flexFlow'
+          | 'flexGrow'
+          | 'flexShrink'
+          | 'flexWrap'
+          | 'float'
+          | 'floodColor'
+          | 'floodOpacity'
+          | 'font'
+          | 'fontFamily'
+          | 'fontFeatureSettings'
+          | 'fontKerning'
+          | 'fontLanguageOverride'
+          | 'fontOpticalSizing'
+          | 'fontPalette'
+          | 'fontSize'
+          | 'fontSizeAdjust'
+          | 'fontSmooth'
+          | 'fontStretch'
+          | 'fontStyle'
+          | 'fontSynthesis'
+          | 'fontSynthesisPosition'
+          | 'fontSynthesisSmallCaps'
+          | 'fontSynthesisStyle'
+          | 'fontSynthesisWeight'
+          | 'fontVariant'
+          | 'fontVariantAlternates'
+          | 'fontVariantCaps'
+          | 'fontVariantEastAsian'
+          | 'fontVariantEmoji'
+          | 'fontVariantLigatures'
+          | 'fontVariantNumeric'
+          | 'fontVariantPosition'
+          | 'fontVariationSettings'
+          | 'fontWeight'
+          | 'fontWidth'
+          | 'forceStyle'
+          | 'forcedColorAdjust'
+          | 'gap'
+          | 'glyphOrientationVertical'
+          | 'grid'
+          | 'gridArea'
+          | 'gridAutoColumns'
+          | 'gridAutoFlow'
+          | 'gridAutoRows'
+          | 'gridColumn'
+          | 'gridColumnEnd'
+          | 'gridColumnGap'
+          | 'gridColumnStart'
+          | 'gridGap'
+          | 'gridRow'
+          | 'gridRowEnd'
+          | 'gridRowGap'
+          | 'gridRowStart'
+          | 'gridTemplate'
+          | 'gridTemplateAreas'
+          | 'gridTemplateColumns'
+          | 'gridTemplateRows'
+          | 'group'
+          | 'hangingPunctuation'
+          | 'hasTVPreferredFocus'
+          | 'height'
+          | 'hitSlop'
+          | 'htmlFor'
+          | 'hyphenateCharacter'
+          | 'hyphenateLimitChars'
+          | 'hyphens'
+          | 'id'
+          | 'imageOrientation'
+          | 'imageRendering'
+          | 'imageResolution'
+          | 'imeMode'
+          | 'importantForAccessibility'
+          | 'initialLetter'
+          | 'initialLetterAlign'
+          | 'inlineSize'
+          | 'inset'
+          | 'insetArea'
+          | 'insetBlock'
+          | 'insetBlockEnd'
+          | 'insetBlockStart'
+          | 'insetInline'
+          | 'insetInlineEnd'
+          | 'insetInlineStart'
+          | 'interpolateSize'
+          | 'isolation'
+          | 'justifyContent'
+          | 'justifyItems'
+          | 'justifySelf'
+          | 'justifyTracks'
+          | 'left'
+          | 'letterSpacing'
+          | 'lightingColor'
+          | 'lineBreak'
+          | 'lineClamp'
+          | 'lineHeight'
+          | 'lineHeightStep'
+          | 'listStyle'
+          | 'listStyleImage'
+          | 'listStylePosition'
+          | 'listStyleType'
+          | 'margin'
+          | 'marginBlock'
+          | 'marginBlockEnd'
+          | 'marginBlockStart'
+          | 'marginBottom'
+          | 'marginEnd'
+          | 'marginHorizontal'
+          | 'marginInline'
+          | 'marginInlineEnd'
+          | 'marginInlineStart'
+          | 'marginLeft'
+          | 'marginRight'
+          | 'marginStart'
+          | 'marginTop'
+          | 'marginTrim'
+          | 'marginVertical'
+          | 'marker'
+          | 'markerEnd'
+          | 'markerMid'
+          | 'markerStart'
+          | 'mask'
+          | 'maskBorder'
+          | 'maskBorderMode'
+          | 'maskBorderOutset'
+          | 'maskBorderRepeat'
+          | 'maskBorderSlice'
+          | 'maskBorderSource'
+          | 'maskBorderWidth'
+          | 'maskClip'
+          | 'maskComposite'
+          | 'maskImage'
+          | 'maskMode'
+          | 'maskOrigin'
+          | 'maskPosition'
+          | 'maskRepeat'
+          | 'maskSize'
+          | 'maskType'
+          | 'masonryAutoFlow'
+          | 'mathDepth'
+          | 'mathShift'
+          | 'mathStyle'
+          | 'matrix'
+          | 'maxBlockSize'
+          | 'maxHeight'
+          | 'maxInlineSize'
+          | 'maxLines'
+          | 'maxWidth'
+          | 'minBlockSize'
+          | 'minHeight'
+          | 'minInlineSize'
+          | 'minWidth'
+          | 'mixBlendMode'
+          | 'motion'
+          | 'motionDistance'
+          | 'motionPath'
+          | 'motionRotation'
+          | 'msAccelerator'
+          | 'msBlockProgression'
+          | 'msContentZoomChaining'
+          | 'msContentZoomLimit'
+          | 'msContentZoomLimitMax'
+          | 'msContentZoomLimitMin'
+          | 'msContentZoomSnap'
+          | 'msContentZoomSnapPoints'
+          | 'msContentZoomSnapType'
+          | 'msContentZooming'
+          | 'msFilter'
+          | 'msFlex'
+          | 'msFlexDirection'
+          | 'msFlexPositive'
+          | 'msFlowFrom'
+          | 'msFlowInto'
+          | 'msGridColumns'
+          | 'msGridRows'
+          | 'msHighContrastAdjust'
+          | 'msHyphenateLimitChars'
+          | 'msHyphenateLimitLines'
+          | 'msHyphenateLimitZone'
+          | 'msHyphens'
+          | 'msImeAlign'
+          | 'msImeMode'
+          | 'msLineBreak'
+          | 'msOrder'
+          | 'msOverflowStyle'
+          | 'msOverflowX'
+          | 'msOverflowY'
+          | 'msScrollChaining'
+          | 'msScrollLimit'
+          | 'msScrollLimitXMax'
+          | 'msScrollLimitXMin'
+          | 'msScrollLimitYMax'
+          | 'msScrollLimitYMin'
+          | 'msScrollRails'
+          | 'msScrollSnapPointsX'
+          | 'msScrollSnapPointsY'
+          | 'msScrollSnapType'
+          | 'msScrollSnapX'
+          | 'msScrollSnapY'
+          | 'msScrollTranslation'
+          | 'msScrollbar3dlightColor'
+          | 'msScrollbarArrowColor'
+          | 'msScrollbarBaseColor'
+          | 'msScrollbarDarkshadowColor'
+          | 'msScrollbarFaceColor'
+          | 'msScrollbarHighlightColor'
+          | 'msScrollbarShadowColor'
+          | 'msScrollbarTrackColor'
+          | 'msTextAutospace'
+          | 'msTextCombineHorizontal'
+          | 'msTextOverflow'
+          | 'msTouchAction'
+          | 'msTouchSelect'
+          | 'msTransform'
+          | 'msTransformOrigin'
+          | 'msTransition'
+          | 'msTransitionDelay'
+          | 'msTransitionDuration'
+          | 'msTransitionProperty'
+          | 'msTransitionTimingFunction'
+          | 'msUserSelect'
+          | 'msWordBreak'
+          | 'msWrapFlow'
+          | 'msWrapMargin'
+          | 'msWrapThrough'
+          | 'msWritingMode'
+          | 'name'
+          | 'nativeBackgroundAndroid'
+          | 'nativeForegroundAndroid'
+          | 'nativeID'
+          | 'needsOffscreenAlphaCompositing'
+          | 'nextFocusDown'
+          | 'nextFocusForward'
+          | 'nextFocusLeft'
+          | 'nextFocusRight'
+          | 'nextFocusUp'
+          | 'objectFit'
+          | 'objectPosition'
+          | 'objectViewBox'
+          | 'offset'
+          | 'offsetAnchor'
+          | 'offsetBlock'
+          | 'offsetBlockEnd'
+          | 'offsetBlockStart'
+          | 'offsetDistance'
+          | 'offsetInline'
+          | 'offsetInlineEnd'
+          | 'offsetInlineStart'
+          | 'offsetPath'
+          | 'offsetPosition'
+          | 'offsetRotate'
+          | 'offsetRotation'
+          | 'onAccessibilityAction'
+          | 'onAccessibilityEscape'
+          | 'onAccessibilityTap'
+          | 'onBeforeInput'
+          | 'onBlur'
+          | 'onBlurCapture'
+          | 'onChange'
+          | 'onClick'
+          | 'onClickCapture'
+          | 'onContextMenu'
+          | 'onCopy'
+          | 'onCut'
+          | 'onDoubleClick'
+          | 'onDrag'
+          | 'onDragEnd'
+          | 'onDragEnter'
+          | 'onDragLeave'
+          | 'onDragOver'
+          | 'onDragStart'
+          | 'onDrop'
+          | 'onFocus'
+          | 'onFocusCapture'
+          | 'onGotPointerCapture'
+          | 'onGotPointerCaptureCapture'
+          | 'onInput'
+          | 'onKeyDown'
+          | 'onKeyDownCapture'
+          | 'onKeyUp'
+          | 'onKeyUpCapture'
+          | 'onLongPress'
+          | 'onLostPointerCapture'
+          | 'onLostPointerCaptureCapture'
+          | 'onMagicTap'
+          | 'onMouseDown'
+          | 'onMouseEnter'
+          | 'onMouseLeave'
+          | 'onMouseMove'
+          | 'onMouseOut'
+          | 'onMouseOver'
+          | 'onMouseUp'
+          | 'onPaste'
+          | 'onPointerCancel'
+          | 'onPointerCancelCapture'
+          | 'onPointerDown'
+          | 'onPointerDownCapture'
+          | 'onPointerEnter'
+          | 'onPointerEnterCapture'
+          | 'onPointerLeave'
+          | 'onPointerLeaveCapture'
+          | 'onPointerMove'
+          | 'onPointerMoveCapture'
+          | 'onPointerOut'
+          | 'onPointerOutCapture'
+          | 'onPointerOver'
+          | 'onPointerOverCapture'
+          | 'onPointerUp'
+          | 'onPointerUpCapture'
+          | 'onPress'
+          | 'onPressIn'
+          | 'onPressOut'
+          | 'onScroll'
+          | 'onTouchCancel'
+          | 'onTouchCancelCapture'
+          | 'onTouchEnd'
+          | 'onTouchEndCapture'
+          | 'onTouchMove'
+          | 'onTouchMoveCapture'
+          | 'onTouchStart'
+          | 'onTouchStartCapture'
+          | 'onTransition'
+          | 'onWheel'
+          | 'opacity'
+          | 'order'
+          | 'orphans'
+          | 'outline'
+          | 'outlineColor'
+          | 'outlineOffset'
+          | 'outlineStyle'
+          | 'outlineWidth'
+          | 'overflow'
+          | 'overflowAnchor'
+          | 'overflowBlock'
+          | 'overflowClipBox'
+          | 'overflowClipMargin'
+          | 'overflowInline'
+          | 'overflowWrap'
+          | 'overflowX'
+          | 'overflowY'
+          | 'overlay'
+          | 'overscrollBehavior'
+          | 'overscrollBehaviorBlock'
+          | 'overscrollBehaviorInline'
+          | 'overscrollBehaviorX'
+          | 'overscrollBehaviorY'
+          | 'padding'
+          | 'paddingBlock'
+          | 'paddingBlockEnd'
+          | 'paddingBlockStart'
+          | 'paddingBottom'
+          | 'paddingEnd'
+          | 'paddingHorizontal'
+          | 'paddingInline'
+          | 'paddingInlineEnd'
+          | 'paddingInlineStart'
+          | 'paddingLeft'
+          | 'paddingRight'
+          | 'paddingStart'
+          | 'paddingTop'
+          | 'paddingVertical'
+          | 'page'
+          | 'pageBreakAfter'
+          | 'pageBreakBefore'
+          | 'pageBreakInside'
+          | 'paintOrder'
+          | 'passThrough'
+          | 'perspective'
+          | 'perspectiveOrigin'
+          | 'placeContent'
+          | 'placeItems'
+          | 'placeSelf'
+          | 'pointerEvents'
+          | 'position'
+          | 'positionAnchor'
+          | 'positionArea'
+          | 'positionTry'
+          | 'positionTryFallbacks'
+          | 'positionTryOptions'
+          | 'positionTryOrder'
+          | 'positionVisibility'
+          | 'printColorAdjust'
+          | 'quotes'
+          | 'r'
+          | 'ref'
+          | 'removeClippedSubviews'
+          | 'render'
+          | 'renderToHardwareTextureAndroid'
+          | 'resize'
+          | 'right'
+          | 'role'
+          | 'rotate'
+          | 'rotateX'
+          | 'rotateY'
+          | 'rotateZ'
+          | 'rowGap'
+          | 'rubyAlign'
+          | 'rubyMerge'
+          | 'rubyOverhang'
+          | 'rubyPosition'
+          | 'rx'
+          | 'ry'
+          | 'scale'
+          | 'scaleX'
+          | 'scaleY'
+          | 'scope'
+          | 'screenReaderFocusable'
+          | 'scrollBehavior'
+          | 'scrollInitialTarget'
+          | 'scrollMargin'
+          | 'scrollMarginBlock'
+          | 'scrollMarginBlockEnd'
+          | 'scrollMarginBlockStart'
+          | 'scrollMarginBottom'
+          | 'scrollMarginInline'
+          | 'scrollMarginInlineEnd'
+          | 'scrollMarginInlineStart'
+          | 'scrollMarginLeft'
+          | 'scrollMarginRight'
+          | 'scrollMarginTop'
+          | 'scrollPadding'
+          | 'scrollPaddingBlock'
+          | 'scrollPaddingBlockEnd'
+          | 'scrollPaddingBlockStart'
+          | 'scrollPaddingBottom'
+          | 'scrollPaddingInline'
+          | 'scrollPaddingInlineEnd'
+          | 'scrollPaddingInlineStart'
+          | 'scrollPaddingLeft'
+          | 'scrollPaddingRight'
+          | 'scrollPaddingTop'
+          | 'scrollSnapAlign'
+          | 'scrollSnapCoordinate'
+          | 'scrollSnapDestination'
+          | 'scrollSnapMargin'
+          | 'scrollSnapMarginBottom'
+          | 'scrollSnapMarginLeft'
+          | 'scrollSnapMarginRight'
+          | 'scrollSnapMarginTop'
+          | 'scrollSnapPointsX'
+          | 'scrollSnapPointsY'
+          | 'scrollSnapStop'
+          | 'scrollSnapType'
+          | 'scrollSnapTypeX'
+          | 'scrollSnapTypeY'
+          | 'scrollTimeline'
+          | 'scrollTimelineAxis'
+          | 'scrollTimelineName'
+          | 'scrollbarColor'
+          | 'scrollbarGutter'
+          | 'scrollbarWidth'
+          | 'shadowColor'
+          | 'shadowOffset'
+          | 'shadowOpacity'
+          | 'shadowRadius'
+          | 'shapeImageThreshold'
+          | 'shapeMargin'
+          | 'shapeOutside'
+          | 'shapeRendering'
+          | 'shouldRasterizeIOS'
+          | 'size'
+          | 'skewX'
+          | 'skewY'
+          | 'speakAs'
+          | 'start'
+          | 'stopColor'
+          | 'stopOpacity'
+          | 'stroke'
+          | 'strokeColor'
+          | 'strokeDasharray'
+          | 'strokeDashoffset'
+          | 'strokeLinecap'
+          | 'strokeLinejoin'
+          | 'strokeMiterlimit'
+          | 'strokeOpacity'
+          | 'strokeWidth'
+          | 'style'
+          | 'tabIndex'
+          | 'tabSize'
+          | 'tableLayout'
+          | 'target'
+          | 'testID'
+          | 'textAlign'
+          | 'textAlignLast'
+          | 'textAnchor'
+          | 'textAutospace'
+          | 'textBox'
+          | 'textBoxEdge'
+          | 'textBoxTrim'
+          | 'textCombineUpright'
+          | 'textDecoration'
+          | 'textDecorationColor'
+          | 'textDecorationLine'
+          | 'textDecorationSkip'
+          | 'textDecorationSkipInk'
+          | 'textDecorationStyle'
+          | 'textDecorationThickness'
+          | 'textEmphasis'
+          | 'textEmphasisColor'
+          | 'textEmphasisPosition'
+          | 'textEmphasisStyle'
+          | 'textIndent'
+          | 'textJustify'
+          | 'textOrientation'
+          | 'textOverflow'
+          | 'textRendering'
+          | 'textShadow'
+          | 'textSizeAdjust'
+          | 'textSpacingTrim'
+          | 'textTransform'
+          | 'textUnderlineOffset'
+          | 'textUnderlinePosition'
+          | 'textWrap'
+          | 'textWrapMode'
+          | 'textWrapStyle'
+          | 'theme'
+          | 'themeShallow'
+          | 'timelineScope'
+          | 'top'
+          | 'touchAction'
+          | 'transform'
+          | 'transformBox'
+          | 'transformOrigin'
+          | 'transformStyle'
+          | 'transition'
+          | 'transitionBehavior'
+          | 'transitionDelay'
+          | 'transitionDuration'
+          | 'transitionProperty'
+          | 'transitionTimingFunction'
+          | 'translate'
+          | 'unicodeBidi'
+          | 'untilMeasured'
+          | 'userSelect'
+          | 'vectorEffect'
+          | 'verticalAlign'
+          | 'viewTimeline'
+          | 'viewTimelineAxis'
+          | 'viewTimelineInset'
+          | 'viewTimelineName'
+          | 'viewTransitionClass'
+          | 'viewTransitionName'
+          | 'visibility'
+          | 'whiteSpace'
+          | 'whiteSpaceCollapse'
+          | 'widows'
+          | 'width'
+          | 'willChange'
+          | 'wordBreak'
+          | 'wordSpacing'
+          | 'wordWrap'
+          | 'writingMode'
+          | 'x'
+          | 'y'
+          | 'zIndex'
+          | 'zoom'
+        >
+      >
+  >
+  readonly Sub: React.FC<
+    import('@tamagui/create-menu').MenuSubProps & {
+      children?: React.ReactNode
+      open?: boolean
+      defaultOpen?: boolean
+      onOpenChange?(open: boolean): void
     } & {
-        ref?: React.Ref<import("@tamagui/web").TamaguiElement> | undefined;
-    } & Partial<Omit<import("@tamagui/create-menu").MenuTriggerProps, "ref" | "scope" | keyof import("./createNonNativeMenu").MenuTriggerProps>>>;
-    readonly TriggerGroup: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").ViewProps, "dir" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        dir?: "ltr" | "rtl";
-    }, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        dir?: "ltr" | "rtl";
-    }, import("@tamagui/web").StackStyleBase, {}, {}>;
-    readonly Portal: React.FC<import("@tamagui/create-menu").MenuPortalProps & {
-        scope?: string;
-    } & Partial<Omit<React.FragmentProps, "scope" | keyof import("@tamagui/create-menu").MenuPortalProps>>>;
-    readonly Content: React.FC<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof import("@tamagui/create-menu").MenuContentProps> & import("@tamagui/create-menu").MenuContentProps & {
-        scope?: string;
-    }, keyof import("./createNonNativeMenu").MenuContentProps> & import("./createNonNativeMenu").MenuContentProps & {
-        scope?: string;
-    } & {
-        ref?: React.Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
-    } & Partial<Omit<import("@tamagui/create-menu").NativeMenuContentProps, "download" | "onEntryFocus" | "onLayout" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "ref" | "rel" | keyof import("./createNonNativeMenu").MenuContentProps>>>;
-    readonly Group: React.FC<Omit<import("@tamagui/web").ViewProps, keyof import("@tamagui/create-menu").MenuGroupProps> & import("@tamagui/create-menu").MenuGroupProps & {
-        ref?: React.Ref<import("@tamagui/web").TamaguiElement> | undefined;
-    } & Partial<Omit<import("@tamagui/create-menu").NativeMenuGroupProps, "ref" | keyof import("@tamagui/create-menu").MenuGroupProps>>>;
-    readonly Label: React.FC<Omit<import("@tamagui/web").TextProps, keyof import("@tamagui/create-menu").MenuLabelProps> & import("@tamagui/create-menu").MenuLabelProps & {
-        ref?: React.Ref<import("@tamagui/web").TamaguiTextElement> | undefined;
-    } & Partial<Omit<import("@tamagui/create-menu").NativeMenuLabelProps, "ref" | keyof import("@tamagui/create-menu").MenuLabelProps>>>;
-    readonly Item: React.FC<Omit<import("@tamagui/web").ViewProps, "scope" | keyof import("@tamagui/create-menu").MenuItemProps> & import("@tamagui/create-menu").MenuItemProps & {
-        scope?: string;
-    } & {
-        ref?: React.Ref<import("@tamagui/web").TamaguiElement> | undefined;
-    } & Partial<Omit<{
-        children: React.ReactNode;
-        textValue?: string;
-        onSelect?: (event?: Event) => void;
-    } & {
-        disabled?: boolean;
-        hidden?: boolean;
-        destructive?: boolean;
-        key: string;
-    }, "ref" | "scope" | keyof import("@tamagui/create-menu").MenuItemProps>>>;
-    readonly CheckboxItem: React.FC<Omit<import("@tamagui/web").ViewProps, "scope" | keyof import("@tamagui/create-menu").MenuCheckboxItemProps> & import("@tamagui/create-menu").MenuCheckboxItemProps & {
-        scope?: string;
-    } & {
-        ref?: React.Ref<import("@tamagui/web").TamaguiElement> | undefined;
-    } & Partial<Omit<Omit<import("@tamagui/create-menu").NativeMenuItemProps, "onSelect"> & {
-        checked?: boolean;
-        onCheckedChange?: (checked: boolean) => void;
-        value?: 'mixed' | 'on' | 'off' | boolean;
-        onValueChange?: (state: 'mixed' | 'on' | 'off', prevState: 'mixed' | 'on' | 'off') => void;
-        key: string;
-    }, "ref" | "scope" | keyof import("@tamagui/create-menu").MenuCheckboxItemProps>>>;
-    readonly RadioGroup: React.FC<Omit<import("@tamagui/web").ViewProps, "scope" | keyof import("@tamagui/create-menu").MenuRadioGroupProps> & import("@tamagui/create-menu").MenuRadioGroupProps & {
-        scope?: string;
-    } & {
-        ref?: React.Ref<import("@tamagui/web").TamaguiElement> | undefined;
-    } & Partial<Omit<{
-        children: React.ReactNode;
-    }, "ref" | "scope" | keyof import("@tamagui/create-menu").MenuRadioGroupProps>>>;
-    readonly RadioItem: React.FC<Omit<import("@tamagui/web").ViewProps, "scope" | keyof import("@tamagui/create-menu").MenuRadioItemProps> & import("@tamagui/create-menu").MenuRadioItemProps & {
-        scope?: string;
-    } & {
-        ref?: React.Ref<import("@tamagui/web").TamaguiElement> | undefined;
-    } & Partial<Omit<{
-        children: React.ReactNode;
-    }, "ref" | "scope" | keyof import("@tamagui/create-menu").MenuRadioItemProps>>>;
-    readonly ItemIndicator: React.FC<Omit<import("@tamagui/web").ViewProps, "scope" | keyof import("@tamagui/create-menu").MenuItemIndicatorProps> & import("@tamagui/create-menu").MenuItemIndicatorProps & {
-        scope?: string;
-    } & {
-        ref?: React.Ref<import("@tamagui/web").TamaguiElement> | undefined;
-    } & Partial<Omit<import("@tamagui/create-menu").NativeMenuItemIndicatorProps, "ref" | "scope" | keyof import("@tamagui/create-menu").MenuItemIndicatorProps>>>;
-    readonly Separator: React.FC<Omit<import("@tamagui/web").ViewProps, keyof import("@tamagui/create-menu").MenuSeparatorProps> & import("@tamagui/create-menu").MenuSeparatorProps & {
-        ref?: React.Ref<import("@tamagui/web").TamaguiElement> | undefined;
-    } & Partial<Omit<import("@tamagui/create-menu").NativeMenuSeparatorProps, "ref" | keyof import("@tamagui/create-menu").MenuSeparatorProps>>>;
-    readonly Arrow: React.FC<Omit<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/popper").PopperArrowExtraProps & import("@tamagui/web").RefProp<import("@tamagui/web").TamaguiElement>, "ref"> & import("@tamagui/web").RefProp<import("@tamagui/web").TamaguiElement> & Partial<Omit<import("@tamagui/create-menu").NativeMenuArrowProps, "KhtmlBoxAlign" | "KhtmlBoxDirection" | "KhtmlBoxFlex" | "KhtmlBoxFlexGroup" | "KhtmlBoxLines" | "KhtmlBoxOrdinalGroup" | "KhtmlBoxOrient" | "KhtmlBoxPack" | "KhtmlLineBreak" | "KhtmlOpacity" | "KhtmlUserSelect" | "MozAnimation" | "MozAnimationDelay" | "MozAnimationDirection" | "MozAnimationDuration" | "MozAnimationFillMode" | "MozAnimationIterationCount" | "MozAnimationName" | "MozAnimationPlayState" | "MozAnimationTimingFunction" | "MozAppearance" | "MozBackfaceVisibility" | "MozBackgroundClip" | "MozBackgroundOrigin" | "MozBackgroundSize" | "MozBinding" | "MozBorderBottomColors" | "MozBorderEndColor" | "MozBorderEndStyle" | "MozBorderEndWidth" | "MozBorderImage" | "MozBorderLeftColors" | "MozBorderRadius" | "MozBorderRadiusBottomleft" | "MozBorderRadiusBottomright" | "MozBorderRadiusTopleft" | "MozBorderRadiusTopright" | "MozBorderRightColors" | "MozBorderStartColor" | "MozBorderStartStyle" | "MozBorderTopColors" | "MozBoxAlign" | "MozBoxDirection" | "MozBoxFlex" | "MozBoxOrdinalGroup" | "MozBoxOrient" | "MozBoxPack" | "MozBoxShadow" | "MozBoxSizing" | "MozColumnCount" | "MozColumnFill" | "MozColumnRule" | "MozColumnRuleColor" | "MozColumnRuleStyle" | "MozColumnRuleWidth" | "MozColumnWidth" | "MozColumns" | "MozContextProperties" | "MozFloatEdge" | "MozFontFeatureSettings" | "MozFontLanguageOverride" | "MozForceBrokenImageIcon" | "MozHyphens" | "MozMarginEnd" | "MozMarginStart" | "MozOpacity" | "MozOrient" | "MozOsxFontSmoothing" | "MozOutline" | "MozOutlineColor" | "MozOutlineRadius" | "MozOutlineRadiusBottomleft" | "MozOutlineRadiusBottomright" | "MozOutlineRadiusTopleft" | "MozOutlineRadiusTopright" | "MozOutlineStyle" | "MozOutlineWidth" | "MozPaddingEnd" | "MozPaddingStart" | "MozPerspective" | "MozPerspectiveOrigin" | "MozStackSizing" | "MozTabSize" | "MozTextAlignLast" | "MozTextBlink" | "MozTextDecorationColor" | "MozTextDecorationLine" | "MozTextDecorationStyle" | "MozTextSizeAdjust" | "MozTransform" | "MozTransformOrigin" | "MozTransformStyle" | "MozTransition" | "MozTransitionDelay" | "MozTransitionDuration" | "MozTransitionProperty" | "MozTransitionTimingFunction" | "MozUserFocus" | "MozUserInput" | "MozUserModify" | "MozUserSelect" | "MozWindowDragging" | "MozWindowShadow" | "OAnimation" | "OAnimationDelay" | "OAnimationDirection" | "OAnimationDuration" | "OAnimationFillMode" | "OAnimationIterationCount" | "OAnimationName" | "OAnimationPlayState" | "OAnimationTimingFunction" | "OBackgroundSize" | "OBorderImage" | "OObjectFit" | "OObjectPosition" | "OTabSize" | "OTextOverflow" | "OTransform" | "OTransformOrigin" | "OTransition" | "OTransitionDelay" | "OTransitionDuration" | "OTransitionProperty" | "OTransitionTimingFunction" | "WebkitAlignContent" | "WebkitAlignItems" | "WebkitAlignSelf" | "WebkitAnimation" | "WebkitAnimationDelay" | "WebkitAnimationDirection" | "WebkitAnimationDuration" | "WebkitAnimationFillMode" | "WebkitAnimationIterationCount" | "WebkitAnimationName" | "WebkitAnimationPlayState" | "WebkitAnimationTimingFunction" | "WebkitAppearance" | "WebkitBackdropFilter" | "WebkitBackfaceVisibility" | "WebkitBackgroundClip" | "WebkitBackgroundOrigin" | "WebkitBackgroundSize" | "WebkitBorderBefore" | "WebkitBorderBeforeColor" | "WebkitBorderBeforeStyle" | "WebkitBorderBeforeWidth" | "WebkitBorderBottomLeftRadius" | "WebkitBorderBottomRightRadius" | "WebkitBorderImage" | "WebkitBorderImageSlice" | "WebkitBorderRadius" | "WebkitBorderTopLeftRadius" | "WebkitBorderTopRightRadius" | "WebkitBoxAlign" | "WebkitBoxDecorationBreak" | "WebkitBoxDirection" | "WebkitBoxFlex" | "WebkitBoxFlexGroup" | "WebkitBoxLines" | "WebkitBoxOrdinalGroup" | "WebkitBoxOrient" | "WebkitBoxPack" | "WebkitBoxReflect" | "WebkitBoxShadow" | "WebkitBoxSizing" | "WebkitClipPath" | "WebkitColumnCount" | "WebkitColumnFill" | "WebkitColumnRule" | "WebkitColumnRuleColor" | "WebkitColumnRuleStyle" | "WebkitColumnRuleWidth" | "WebkitColumnSpan" | "WebkitColumnWidth" | "WebkitColumns" | "WebkitFilter" | "WebkitFlex" | "WebkitFlexBasis" | "WebkitFlexDirection" | "WebkitFlexFlow" | "WebkitFlexGrow" | "WebkitFlexShrink" | "WebkitFlexWrap" | "WebkitFontFeatureSettings" | "WebkitFontKerning" | "WebkitFontSmoothing" | "WebkitFontVariantLigatures" | "WebkitHyphenateCharacter" | "WebkitHyphens" | "WebkitInitialLetter" | "WebkitJustifyContent" | "WebkitLineBreak" | "WebkitLineClamp" | "WebkitLogicalHeight" | "WebkitLogicalWidth" | "WebkitMarginEnd" | "WebkitMarginStart" | "WebkitMask" | "WebkitMaskAttachment" | "WebkitMaskBoxImage" | "WebkitMaskBoxImageOutset" | "WebkitMaskBoxImageRepeat" | "WebkitMaskBoxImageSlice" | "WebkitMaskBoxImageSource" | "WebkitMaskBoxImageWidth" | "WebkitMaskClip" | "WebkitMaskComposite" | "WebkitMaskImage" | "WebkitMaskOrigin" | "WebkitMaskPosition" | "WebkitMaskPositionX" | "WebkitMaskPositionY" | "WebkitMaskRepeat" | "WebkitMaskRepeatX" | "WebkitMaskRepeatY" | "WebkitMaskSize" | "WebkitMaxInlineSize" | "WebkitOrder" | "WebkitOverflowScrolling" | "WebkitPaddingEnd" | "WebkitPaddingStart" | "WebkitPerspective" | "WebkitPerspectiveOrigin" | "WebkitPrintColorAdjust" | "WebkitRubyPosition" | "WebkitScrollSnapType" | "WebkitShapeMargin" | "WebkitTapHighlightColor" | "WebkitTextCombine" | "WebkitTextDecorationColor" | "WebkitTextDecorationLine" | "WebkitTextDecorationSkip" | "WebkitTextDecorationStyle" | "WebkitTextEmphasis" | "WebkitTextEmphasisColor" | "WebkitTextEmphasisPosition" | "WebkitTextEmphasisStyle" | "WebkitTextFillColor" | "WebkitTextOrientation" | "WebkitTextSizeAdjust" | "WebkitTextStroke" | "WebkitTextStrokeColor" | "WebkitTextStrokeWidth" | "WebkitTextUnderlinePosition" | "WebkitTouchCallout" | "WebkitTransform" | "WebkitTransformOrigin" | "WebkitTransformStyle" | "WebkitTransition" | "WebkitTransitionDelay" | "WebkitTransitionDuration" | "WebkitTransitionProperty" | "WebkitTransitionTimingFunction" | "WebkitUserModify" | "WebkitUserSelect" | "WebkitWritingMode" | "accentColor" | "accessibilityActions" | "accessibilityElementsHidden" | "accessibilityHint" | "accessibilityIgnoresInvertColors" | "accessibilityLabel" | "accessibilityLabelledBy" | "accessibilityLanguage" | "accessibilityLargeContentTitle" | "accessibilityLiveRegion" | "accessibilityRespondsToUserInteraction" | "accessibilityRole" | "accessibilityShowsLargeContentViewer" | "accessibilityState" | "accessibilityValue" | "accessibilityViewIsModal" | "accessible" | "alignContent" | "alignItems" | "alignSelf" | "alignTracks" | "alignmentBaseline" | "all" | "anchorName" | "anchorScope" | "animatePosition" | "animatePresence" | "animatedBy" | "animation" | "animationComposition" | "animationDelay" | "animationDirection" | "animationDuration" | "animationFillMode" | "animationIterationCount" | "animationName" | "animationPlayState" | "animationRange" | "animationRangeEnd" | "animationRangeStart" | "animationTimeline" | "animationTimingFunction" | "appearance" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-hidden" | "aria-label" | "aria-labelledby" | "aria-live" | "aria-modal" | "aria-selected" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "asChild" | "aspectRatio" | "backdropFilter" | "backfaceVisibility" | "background" | "backgroundAttachment" | "backgroundBlendMode" | "backgroundClip" | "backgroundColor" | "backgroundImage" | "backgroundOrigin" | "backgroundPosition" | "backgroundPositionX" | "backgroundPositionY" | "backgroundRepeat" | "backgroundSize" | "baselineShift" | "blockSize" | "border" | "borderBlock" | "borderBlockColor" | "borderBlockEnd" | "borderBlockEndColor" | "borderBlockEndStyle" | "borderBlockEndWidth" | "borderBlockStart" | "borderBlockStartColor" | "borderBlockStartStyle" | "borderBlockStartWidth" | "borderBlockStyle" | "borderBlockWidth" | "borderBottom" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomStyle" | "borderBottomWidth" | "borderCollapse" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderEndWidth" | "borderImage" | "borderImageOutset" | "borderImageRepeat" | "borderImageSlice" | "borderImageSource" | "borderImageWidth" | "borderInline" | "borderInlineColor" | "borderInlineEnd" | "borderInlineEndColor" | "borderInlineEndStyle" | "borderInlineEndWidth" | "borderInlineStart" | "borderInlineStartColor" | "borderInlineStartStyle" | "borderInlineStartWidth" | "borderInlineStyle" | "borderInlineWidth" | "borderLeft" | "borderLeftColor" | "borderLeftStyle" | "borderLeftWidth" | "borderRadius" | "borderRight" | "borderRightColor" | "borderRightStyle" | "borderRightWidth" | "borderSpacing" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStartWidth" | "borderStyle" | "borderTop" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopStyle" | "borderTopWidth" | "borderWidth" | "bottom" | "boxAlign" | "boxDecorationBreak" | "boxDirection" | "boxFlex" | "boxFlexGroup" | "boxLines" | "boxOrdinalGroup" | "boxOrient" | "boxPack" | "boxShadow" | "boxSizing" | "breakAfter" | "breakBefore" | "breakInside" | "captionSide" | "caret" | "caretColor" | "caretShape" | "children" | "className" | "clear" | "clip" | "clipPath" | "clipRule" | "collapsable" | "collapsableChildren" | "color" | "colorAdjust" | "colorInterpolation" | "colorInterpolationFilters" | "colorRendering" | "colorScheme" | "columnCount" | "columnFill" | "columnGap" | "columnRule" | "columnRuleColor" | "columnRuleStyle" | "columnRuleWidth" | "columnSpan" | "columnWidth" | "columns" | "contain" | "containIntrinsicBlockSize" | "containIntrinsicHeight" | "containIntrinsicInlineSize" | "containIntrinsicSize" | "containIntrinsicWidth" | "container" | "containerName" | "containerType" | "content" | "contentVisibility" | "counterIncrement" | "counterReset" | "counterSet" | "cursor" | "cx" | "cy" | "d" | "dangerouslySetInnerHTML" | "debug" | "direction" | "disableClassName" | "disableNativeStyle" | "disableOptimization" | "disabled" | "display" | "dominantBaseline" | "emptyCells" | "end" | "experimental_backgroundImage" | "experimental_backgroundPosition" | "experimental_backgroundRepeat" | "experimental_backgroundSize" | "fieldSizing" | "fill" | "fillOpacity" | "fillRule" | "filter" | "flex" | "flexBasis" | "flexDirection" | "flexFlow" | "flexGrow" | "flexShrink" | "flexWrap" | "float" | "floodColor" | "floodOpacity" | "font" | "fontFamily" | "fontFeatureSettings" | "fontKerning" | "fontLanguageOverride" | "fontOpticalSizing" | "fontPalette" | "fontSize" | "fontSizeAdjust" | "fontSmooth" | "fontStretch" | "fontStyle" | "fontSynthesis" | "fontSynthesisPosition" | "fontSynthesisSmallCaps" | "fontSynthesisStyle" | "fontSynthesisWeight" | "fontVariant" | "fontVariantAlternates" | "fontVariantCaps" | "fontVariantEastAsian" | "fontVariantEmoji" | "fontVariantLigatures" | "fontVariantNumeric" | "fontVariantPosition" | "fontVariationSettings" | "fontWeight" | "fontWidth" | "forceStyle" | "forcedColorAdjust" | "gap" | "glyphOrientationVertical" | "grid" | "gridArea" | "gridAutoColumns" | "gridAutoFlow" | "gridAutoRows" | "gridColumn" | "gridColumnEnd" | "gridColumnGap" | "gridColumnStart" | "gridGap" | "gridRow" | "gridRowEnd" | "gridRowGap" | "gridRowStart" | "gridTemplate" | "gridTemplateAreas" | "gridTemplateColumns" | "gridTemplateRows" | "group" | "hangingPunctuation" | "hasTVPreferredFocus" | "height" | "hitSlop" | "htmlFor" | "hyphenateCharacter" | "hyphenateLimitChars" | "hyphens" | "id" | "imageOrientation" | "imageRendering" | "imageResolution" | "imeMode" | "importantForAccessibility" | "initialLetter" | "initialLetterAlign" | "inlineSize" | "inset" | "insetArea" | "insetBlock" | "insetBlockEnd" | "insetBlockStart" | "insetInline" | "insetInlineEnd" | "insetInlineStart" | "interpolateSize" | "isTVSelectable" | "isolation" | "justifyContent" | "justifyItems" | "justifySelf" | "justifyTracks" | "left" | "letterSpacing" | "lightingColor" | "lineBreak" | "lineClamp" | "lineHeight" | "lineHeightStep" | "listStyle" | "listStyleImage" | "listStylePosition" | "listStyleType" | "margin" | "marginBlock" | "marginBlockEnd" | "marginBlockStart" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginInline" | "marginInlineEnd" | "marginInlineStart" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginTrim" | "marginVertical" | "marker" | "markerEnd" | "markerMid" | "markerStart" | "mask" | "maskBorder" | "maskBorderMode" | "maskBorderOutset" | "maskBorderRepeat" | "maskBorderSlice" | "maskBorderSource" | "maskBorderWidth" | "maskClip" | "maskComposite" | "maskImage" | "maskMode" | "maskOrigin" | "maskPosition" | "maskRepeat" | "maskSize" | "maskType" | "masonryAutoFlow" | "mathDepth" | "mathShift" | "mathStyle" | "matrix" | "maxBlockSize" | "maxHeight" | "maxInlineSize" | "maxLines" | "maxWidth" | "minBlockSize" | "minHeight" | "minInlineSize" | "minWidth" | "mixBlendMode" | "motion" | "motionDistance" | "motionPath" | "motionRotation" | "msAccelerator" | "msBlockProgression" | "msContentZoomChaining" | "msContentZoomLimit" | "msContentZoomLimitMax" | "msContentZoomLimitMin" | "msContentZoomSnap" | "msContentZoomSnapPoints" | "msContentZoomSnapType" | "msContentZooming" | "msFilter" | "msFlex" | "msFlexDirection" | "msFlexPositive" | "msFlowFrom" | "msFlowInto" | "msGridColumns" | "msGridRows" | "msHighContrastAdjust" | "msHyphenateLimitChars" | "msHyphenateLimitLines" | "msHyphenateLimitZone" | "msHyphens" | "msImeAlign" | "msImeMode" | "msLineBreak" | "msOrder" | "msOverflowStyle" | "msOverflowX" | "msOverflowY" | "msScrollChaining" | "msScrollLimit" | "msScrollLimitXMax" | "msScrollLimitXMin" | "msScrollLimitYMax" | "msScrollLimitYMin" | "msScrollRails" | "msScrollSnapPointsX" | "msScrollSnapPointsY" | "msScrollSnapType" | "msScrollSnapX" | "msScrollSnapY" | "msScrollTranslation" | "msScrollbar3dlightColor" | "msScrollbarArrowColor" | "msScrollbarBaseColor" | "msScrollbarDarkshadowColor" | "msScrollbarFaceColor" | "msScrollbarHighlightColor" | "msScrollbarShadowColor" | "msScrollbarTrackColor" | "msTextAutospace" | "msTextCombineHorizontal" | "msTextOverflow" | "msTouchAction" | "msTouchSelect" | "msTransform" | "msTransformOrigin" | "msTransition" | "msTransitionDelay" | "msTransitionDuration" | "msTransitionProperty" | "msTransitionTimingFunction" | "msUserSelect" | "msWordBreak" | "msWrapFlow" | "msWrapMargin" | "msWrapThrough" | "msWritingMode" | "name" | "nativeID" | "needsOffscreenAlphaCompositing" | "objectFit" | "objectPosition" | "objectViewBox" | "offset" | "offsetAnchor" | "offsetBlock" | "offsetBlockEnd" | "offsetBlockStart" | "offsetDistance" | "offsetInline" | "offsetInlineEnd" | "offsetInlineStart" | "offsetPath" | "offsetPosition" | "offsetRotate" | "offsetRotation" | "onAccessibilityAction" | "onAccessibilityEscape" | "onAccessibilityTap" | "onBeforeInput" | "onBlur" | "onChange" | "onClick" | "onContextMenu" | "onCopy" | "onCut" | "onDoubleClick" | "onDrag" | "onDragEnd" | "onDragEnter" | "onDragLeave" | "onDragOver" | "onDragStart" | "onDrop" | "onFocus" | "onInput" | "onKeyDown" | "onKeyUp" | "onLongPress" | "onMagicTap" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOut" | "onMouseOver" | "onMouseUp" | "onPaste" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerUp" | "onPointerUpCapture" | "onPress" | "onPressIn" | "onPressOut" | "onScroll" | "onTouchCancel" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchStart" | "onTransition" | "onWheel" | "opacity" | "order" | "orphans" | "outline" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "overflow" | "overflowAnchor" | "overflowBlock" | "overflowClipBox" | "overflowClipMargin" | "overflowInline" | "overflowWrap" | "overflowX" | "overflowY" | "overlay" | "overscrollBehavior" | "overscrollBehaviorBlock" | "overscrollBehaviorInline" | "overscrollBehaviorX" | "overscrollBehaviorY" | "padding" | "paddingBlock" | "paddingBlockEnd" | "paddingBlockStart" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingInline" | "paddingInlineEnd" | "paddingInlineStart" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "page" | "pageBreakAfter" | "pageBreakBefore" | "pageBreakInside" | "paintOrder" | "passThrough" | "perspective" | "perspectiveOrigin" | "placeContent" | "placeItems" | "placeSelf" | "pointerEvents" | "position" | "positionAnchor" | "positionArea" | "positionTry" | "positionTryFallbacks" | "positionTryOptions" | "positionTryOrder" | "positionVisibility" | "printColorAdjust" | "quotes" | "r" | "ref" | "removeClippedSubviews" | "render" | "renderToHardwareTextureAndroid" | "resize" | "right" | "role" | "rotate" | "rotateX" | "rotateY" | "rotateZ" | "rotation" | "rowGap" | "rubyAlign" | "rubyMerge" | "rubyOverhang" | "rubyPosition" | "rx" | "ry" | "scale" | "scaleX" | "scaleY" | "scope" | "screenReaderFocusable" | "scrollBehavior" | "scrollInitialTarget" | "scrollMargin" | "scrollMarginBlock" | "scrollMarginBlockEnd" | "scrollMarginBlockStart" | "scrollMarginBottom" | "scrollMarginInline" | "scrollMarginInlineEnd" | "scrollMarginInlineStart" | "scrollMarginLeft" | "scrollMarginRight" | "scrollMarginTop" | "scrollPadding" | "scrollPaddingBlock" | "scrollPaddingBlockEnd" | "scrollPaddingBlockStart" | "scrollPaddingBottom" | "scrollPaddingInline" | "scrollPaddingInlineEnd" | "scrollPaddingInlineStart" | "scrollPaddingLeft" | "scrollPaddingRight" | "scrollPaddingTop" | "scrollSnapAlign" | "scrollSnapCoordinate" | "scrollSnapDestination" | "scrollSnapMargin" | "scrollSnapMarginBottom" | "scrollSnapMarginLeft" | "scrollSnapMarginRight" | "scrollSnapMarginTop" | "scrollSnapPointsX" | "scrollSnapPointsY" | "scrollSnapStop" | "scrollSnapType" | "scrollSnapTypeX" | "scrollSnapTypeY" | "scrollTimeline" | "scrollTimelineAxis" | "scrollTimelineName" | "scrollbarColor" | "scrollbarGutter" | "scrollbarWidth" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "shapeImageThreshold" | "shapeMargin" | "shapeOutside" | "shapeRendering" | "shouldRasterizeIOS" | "size" | "skewX" | "skewY" | "speakAs" | "start" | "stopColor" | "stopOpacity" | "stroke" | "strokeColor" | "strokeDasharray" | "strokeDashoffset" | "strokeLinecap" | "strokeLinejoin" | "strokeMiterlimit" | "strokeOpacity" | "strokeWidth" | "style" | "tabIndex" | "tabSize" | "tableLayout" | "target" | "testID" | "textAlign" | "textAlignLast" | "textAnchor" | "textAutospace" | "textBox" | "textBoxEdge" | "textBoxTrim" | "textCombineUpright" | "textDecoration" | "textDecorationColor" | "textDecorationLine" | "textDecorationSkip" | "textDecorationSkipInk" | "textDecorationStyle" | "textDecorationThickness" | "textEmphasis" | "textEmphasisColor" | "textEmphasisPosition" | "textEmphasisStyle" | "textIndent" | "textJustify" | "textOrientation" | "textOverflow" | "textRendering" | "textShadow" | "textSizeAdjust" | "textSpacingTrim" | "textTransform" | "textUnderlineOffset" | "textUnderlinePosition" | "textWrap" | "textWrapMode" | "textWrapStyle" | "theme" | "themeShallow" | "timelineScope" | "top" | "touchAction" | "transform" | "transformBox" | "transformMatrix" | "transformOrigin" | "transformStyle" | "transition" | "transitionBehavior" | "transitionDelay" | "transitionDuration" | "transitionProperty" | "transitionTimingFunction" | "translate" | "translateX" | "translateY" | "tvParallaxMagnification" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "unicodeBidi" | "untilMeasured" | "userSelect" | "vectorEffect" | "verticalAlign" | "viewTimeline" | "viewTimelineAxis" | "viewTimelineInset" | "viewTimelineName" | "viewTransitionClass" | "viewTransitionName" | "visibility" | "whiteSpace" | "whiteSpaceCollapse" | "widows" | "width" | "willChange" | "wordBreak" | "wordSpacing" | "wordWrap" | "writingMode" | "x" | "y" | "zIndex" | "zoom">>>;
-    readonly Sub: React.FC<import("@tamagui/create-menu").MenuSubProps & {
-        children?: React.ReactNode;
-        open?: boolean;
-        defaultOpen?: boolean;
-        onOpenChange?(open: boolean): void;
-    } & {
-        scope?: string;
-    } & Partial<Omit<import("@tamagui/create-menu").NativeMenuSubProps, "defaultOpen" | keyof import("@tamagui/create-menu").MenuSubProps>>>;
-    readonly SubTrigger: React.FC<import("@tamagui/create-menu").MenuSubTriggerProps & {
-        scope?: string;
-    } & import("@tamagui/web").RefProp<import("@tamagui/web").TamaguiElement> & Partial<Omit<{
-        children: React.ReactNode;
-        textValue?: string;
-        onSelect?: (event?: Event) => void;
-    } & {
-        disabled?: boolean;
-        hidden?: boolean;
-        destructive?: boolean;
-        key: string;
-    } & {
-        key: string;
-    }, "ref" | "scope" | keyof import("@tamagui/create-menu").MenuSubTriggerProps>>>;
-    readonly SubContent: React.FC<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof import("@tamagui/create-menu").MenuSubContentProps> & import("@tamagui/create-menu").MenuSubContentProps & {
-        scope?: string;
-    }, keyof import("@tamagui/create-menu").MenuSubContentProps> & import("@tamagui/create-menu").MenuSubContentProps & {
-        scope?: string;
-    } & {
-        ref?: React.Ref<import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
-    } & Partial<Omit<import("@tamagui/create-menu").NativeMenuSubContentProps, "download" | "onLayout" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "ref" | "rel" | keyof import("@tamagui/create-menu").MenuSubContentProps>>>;
-    readonly ItemTitle: React.FC<Omit<import("@tamagui/web").TextProps, keyof import("@tamagui/create-menu").MenuItemTitleProps> & import("@tamagui/create-menu").MenuItemTitleProps & {
-        ref?: React.Ref<import("@tamagui/web").TamaguiTextElement> | undefined;
-    } & Partial<Omit<import("@tamagui/create-menu").NativeMenuItemTitleProps, "ref" | keyof import("@tamagui/create-menu").MenuItemTitleProps>>>;
-    readonly ItemSubtitle: React.FC<Omit<import("@tamagui/web").TextProps, keyof import("@tamagui/create-menu").MenuItemSubTitleProps> & import("@tamagui/create-menu").MenuItemSubTitleProps & {
-        ref?: React.Ref<import("@tamagui/web").TamaguiTextElement> | undefined;
-    } & Partial<Omit<import("@tamagui/create-menu").NativeMenuItemSubtitleProps, "ref" | keyof import("@tamagui/create-menu").MenuItemSubTitleProps>>>;
-    readonly ItemIcon: React.FC<Omit<import("@tamagui/web").ViewProps, keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: React.Ref<import("@tamagui/web").TamaguiElement> | undefined;
-    } & Partial<Omit<import("@tamagui/create-menu").NativeMenuItemCommonProps, "ref" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase>>>;
-    readonly ItemImage: React.FC<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & Omit<import("@tamagui/react-native-types/src").ImageProps, "resizeMode" | "source" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & {
-        src?: string | number;
-        source?: import("@tamagui/react-native-types/src").ImageSourcePropType;
-        resizeMode?: import("@tamagui/react-native-types/src").ImageResizeMode;
-        objectFit?: React.CSSProperties['objectFit'];
-        objectPosition?: React.CSSProperties['objectPosition'];
-    } & Omit<React.ImgHTMLAttributes<HTMLImageElement>, "src" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & Omit<React.ImgHTMLAttributes<HTMLImageElement>, "height" | "src" | "style" | "width"> & import("@tamagui/web").RefProp<import("@tamagui/web").TamaguiElement> & Partial<Omit<import("@tamagui/create-menu").NativeMenuItemCommonProps & {
-        source: import("@tamagui/react-native-types/src").ImageProps['source'];
-        ios?: {
-            style?: {
-                tint?: string;
-            };
-            lazy?: boolean;
-        };
-    }, "about" | "accessKey" | "alt" | "aria-activedescendant" | "aria-atomic" | "aria-autocomplete" | "aria-braillelabel" | "aria-brailleroledescription" | "aria-colcount" | "aria-colindex" | "aria-colindextext" | "aria-colspan" | "aria-controls" | "aria-current" | "aria-describedby" | "aria-description" | "aria-details" | "aria-dropeffect" | "aria-errormessage" | "aria-flowto" | "aria-grabbed" | "aria-haspopup" | "aria-invalid" | "aria-keyshortcuts" | "aria-level" | "aria-multiline" | "aria-multiselectable" | "aria-orientation" | "aria-owns" | "aria-placeholder" | "aria-posinset" | "aria-pressed" | "aria-readonly" | "aria-relevant" | "aria-required" | "aria-roledescription" | "aria-rowcount" | "aria-rowindex" | "aria-rowindextext" | "aria-rowspan" | "aria-setsize" | "aria-sort" | "autoCapitalize" | "autoCorrect" | "autoFocus" | "autoSave" | "blurRadius" | "capInsets" | "contentEditable" | "contextMenu" | "crossOrigin" | "datatype" | "decoding" | "defaultChecked" | "defaultSource" | "defaultValue" | "dir" | "draggable" | "enterKeyHint" | "exportparts" | "fadeDuration" | "fetchPriority" | "hidden" | "inert" | "inlist" | "inputMode" | "is" | "itemID" | "itemProp" | "itemRef" | "itemScope" | "itemType" | "lang" | "loading" | "loadingIndicatorSource" | "nonce" | "onAbort" | "onAbortCapture" | "onAnimationEnd" | "onAnimationEndCapture" | "onAnimationIteration" | "onAnimationIterationCapture" | "onAnimationStart" | "onAnimationStartCapture" | "onAuxClick" | "onAuxClickCapture" | "onBeforeInputCapture" | "onBeforeToggle" | "onBlurCapture" | "onCanPlay" | "onCanPlayCapture" | "onCanPlayThrough" | "onCanPlayThroughCapture" | "onChangeCapture" | "onClickCapture" | "onCompositionEnd" | "onCompositionEndCapture" | "onCompositionStart" | "onCompositionStartCapture" | "onCompositionUpdate" | "onCompositionUpdateCapture" | "onContextMenuCapture" | "onCopyCapture" | "onCutCapture" | "onDoubleClickCapture" | "onDragCapture" | "onDragEndCapture" | "onDragEnterCapture" | "onDragExit" | "onDragExitCapture" | "onDragLeaveCapture" | "onDragOverCapture" | "onDragStartCapture" | "onDropCapture" | "onDurationChange" | "onDurationChangeCapture" | "onEmptied" | "onEmptiedCapture" | "onEncrypted" | "onEncryptedCapture" | "onEnded" | "onEndedCapture" | "onError" | "onErrorCapture" | "onFocusCapture" | "onGotPointerCapture" | "onGotPointerCaptureCapture" | "onInputCapture" | "onInvalid" | "onInvalidCapture" | "onKeyDownCapture" | "onKeyPress" | "onKeyPressCapture" | "onKeyUpCapture" | "onLayout" | "onLoad" | "onLoadCapture" | "onLoadEnd" | "onLoadStart" | "onLoadStartCapture" | "onLoadedData" | "onLoadedDataCapture" | "onLoadedMetadata" | "onLoadedMetadataCapture" | "onLostPointerCapture" | "onLostPointerCaptureCapture" | "onMouseDownCapture" | "onMouseMoveCapture" | "onMouseOutCapture" | "onMouseOverCapture" | "onMouseUpCapture" | "onPartialLoad" | "onPasteCapture" | "onPause" | "onPauseCapture" | "onPlay" | "onPlayCapture" | "onPlaying" | "onPlayingCapture" | "onPointerOut" | "onPointerOutCapture" | "onPointerOver" | "onPointerOverCapture" | "onProgress" | "onProgressCapture" | "onRateChange" | "onRateChangeCapture" | "onReset" | "onResetCapture" | "onScrollCapture" | "onScrollEnd" | "onScrollEndCapture" | "onSeeked" | "onSeekedCapture" | "onSeeking" | "onSeekingCapture" | "onSelect" | "onSelectCapture" | "onStalled" | "onStalledCapture" | "onSubmit" | "onSubmitCapture" | "onSuspend" | "onSuspendCapture" | "onTimeUpdate" | "onTimeUpdateCapture" | "onToggle" | "onTouchCancelCapture" | "onTouchMoveCapture" | "onTouchStartCapture" | "onTransitionCancel" | "onTransitionCancelCapture" | "onTransitionEnd" | "onTransitionEndCapture" | "onTransitionRun" | "onTransitionRunCapture" | "onTransitionStart" | "onTransitionStartCapture" | "onVolumeChange" | "onVolumeChangeCapture" | "onWaiting" | "onWaitingCapture" | "onWheelCapture" | "part" | "popover" | "popoverTarget" | "popoverTargetAction" | "prefix" | "progressiveRenderingEnabled" | "property" | "radioGroup" | "ref" | "referrerPolicy" | "rel" | "resizeMethod" | "resizeMode" | "resource" | "results" | "rev" | "security" | "sizes" | "slot" | "source" | "spellCheck" | "src" | "srcSet" | "suppressContentEditableWarning" | "suppressHydrationWarning" | "tintColor" | "title" | "typeof" | "unselectable" | "useMap" | "vocab" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase>>>;
-    readonly ScrollView: {
-        ({ children }: {
-            children: React.ReactNode;
-        }): React.JSX.Element;
-        displayName: string;
-    } | (React.FunctionComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & React.RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, never> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, string | number> & {
-        ref?: React.Ref<import("@tamagui/scroll-view").ScrollViewRef> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & React.RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/web").StackStyleBase, {}, {
-        acceptsClassName: true;
-        neverFlatten: true;
-    } & import("@tamagui/web").StaticConfigPublic> & Omit<{
-        acceptsClassName: true;
-        neverFlatten: true;
-    } & import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & React.RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/web").StackStyleBase, {}, {
-            acceptsClassName: true;
-            neverFlatten: true;
-        } & import("@tamagui/web").StaticConfigPublic];
-    });
-};
+      scope?: string
+    } & Partial<
+        Omit<
+          import('@tamagui/create-menu').NativeMenuSubProps,
+          'defaultOpen' | keyof import('@tamagui/create-menu').MenuSubProps
+        >
+      >
+  >
+  readonly SubTrigger: React.FC<
+    import('@tamagui/create-menu').MenuSubTriggerProps & {
+      scope?: string
+    } & import('@tamagui/web').RefProp<import('@tamagui/web').TamaguiElement> &
+      Partial<
+        Omit<
+          {
+            children: React.ReactNode
+            textValue?: string
+            onSelect?: (event?: Event) => void
+          } & {
+            disabled?: boolean
+            hidden?: boolean
+            destructive?: boolean
+            key: string
+          } & {
+            key: string
+          },
+          'ref' | 'scope' | keyof import('@tamagui/create-menu').MenuSubTriggerProps
+        >
+      >
+  >
+  readonly SubContent: React.FC<
+    Omit<
+      Omit<
+        import('@tamagui/web').GetFinalProps<
+          import('@tamagui/core').RNTamaguiViewNonStyleProps,
+          import('@tamagui/web').StackStyleBase,
+          {}
+        >,
+        keyof import('@tamagui/create-menu').MenuSubContentProps
+      > &
+        import('@tamagui/create-menu').MenuSubContentProps & {
+          scope?: string
+        },
+      keyof import('@tamagui/create-menu').MenuSubContentProps
+    > &
+      import('@tamagui/create-menu').MenuSubContentProps & {
+        scope?: string
+      } & {
+        ref?:
+          | React.Ref<
+              | import('@tamagui/react-native-types/src').ReactNativeElement
+              | (HTMLElement & import('@tamagui/web').TamaguiElementMethods)
+            >
+          | undefined
+      } & Partial<
+        Omit<
+          import('@tamagui/create-menu').NativeMenuSubContentProps,
+          | 'download'
+          | 'onLayout'
+          | 'onMoveShouldSetResponder'
+          | 'onMoveShouldSetResponderCapture'
+          | 'onResponderEnd'
+          | 'onResponderGrant'
+          | 'onResponderMove'
+          | 'onResponderReject'
+          | 'onResponderRelease'
+          | 'onResponderStart'
+          | 'onResponderTerminate'
+          | 'onResponderTerminationRequest'
+          | 'onScrollShouldSetResponder'
+          | 'onScrollShouldSetResponderCapture'
+          | 'onSelectionChangeShouldSetResponder'
+          | 'onSelectionChangeShouldSetResponderCapture'
+          | 'onStartShouldSetResponder'
+          | 'onStartShouldSetResponderCapture'
+          | 'ref'
+          | 'rel'
+          | keyof import('@tamagui/create-menu').MenuSubContentProps
+        >
+      >
+  >
+  readonly ItemTitle: React.FC<
+    Omit<
+      import('@tamagui/web').TextProps,
+      keyof import('@tamagui/create-menu').MenuItemTitleProps
+    > &
+      import('@tamagui/create-menu').MenuItemTitleProps & {
+        ref?: React.Ref<import('@tamagui/web').TamaguiTextElement> | undefined
+      } & Partial<
+        Omit<
+          import('@tamagui/create-menu').NativeMenuItemTitleProps,
+          'ref' | keyof import('@tamagui/create-menu').MenuItemTitleProps
+        >
+      >
+  >
+  readonly ItemSubtitle: React.FC<
+    Omit<
+      import('@tamagui/web').TextProps,
+      keyof import('@tamagui/create-menu').MenuItemSubTitleProps
+    > &
+      import('@tamagui/create-menu').MenuItemSubTitleProps & {
+        ref?: React.Ref<import('@tamagui/web').TamaguiTextElement> | undefined
+      } & Partial<
+        Omit<
+          import('@tamagui/create-menu').NativeMenuItemSubtitleProps,
+          'ref' | keyof import('@tamagui/create-menu').MenuItemSubTitleProps
+        >
+      >
+  >
+  readonly ItemIcon: React.FC<
+    Omit<
+      import('@tamagui/web').ViewProps,
+      | keyof import('@tamagui/web').StackNonStyleProps
+      | keyof import('@tamagui/web').StackStyleBase
+    > &
+      import('@tamagui/web').StackNonStyleProps &
+      import('@tamagui/web').WithThemeValues<
+        Omit<import('@tamagui/web').StackStyleBase, never>
+      > &
+      import('@tamagui/web').WithFlatVariantValues<{}> &
+      import('@tamagui/web').WithShorthands<
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+      > & {
+        ref?: React.Ref<import('@tamagui/web').TamaguiElement> | undefined
+      } & Partial<
+        Omit<
+          import('@tamagui/create-menu').NativeMenuItemCommonProps,
+          | 'ref'
+          | keyof import('@tamagui/web').StackNonStyleProps
+          | keyof import('@tamagui/web').StackStyleBase
+        >
+      >
+  >
+  readonly ItemImage: React.FC<
+    import('@tamagui/web').StackNonStyleProps &
+      import('@tamagui/web').WithThemeValues<
+        Omit<import('@tamagui/web').StackStyleBase, never>
+      > &
+      import('@tamagui/web').WithFlatVariantValues<{}> &
+      import('@tamagui/web').WithShorthands<
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+      > &
+      Omit<
+        Readonly<
+          Omit<
+            Readonly<{
+              defaultSource?:
+                | import('@tamagui/react-native-types/src').ImageSource
+                | undefined
+              onPartialLoad?: (() => void) | undefined
+              onProgress?:
+                | ((
+                    event: import('@tamagui/react-native-types/src').ImageProgressEventIOS
+                  ) => void)
+                | undefined
+            }>,
+            | 'fadeDuration'
+            | 'loadingIndicatorSource'
+            | 'progressiveRenderingEnabled'
+            | 'resizeMethod'
+            | 'resizeMultiplier'
+            | 'style'
+            | keyof import('@tamagui/react-native-types/src').ImagePropsBase
+          > &
+            Omit<
+              Readonly<{
+                loadingIndicatorSource?:
+                  | (
+                      | number
+                      | Readonly<import('@tamagui/react-native-types/src').ImageURISource>
+                    )
+                  | undefined
+                progressiveRenderingEnabled?: boolean | undefined
+                fadeDuration?: number | undefined
+                resizeMethod?: ('auto' | 'resize' | 'scale' | 'none') | undefined
+                resizeMultiplier?: number | undefined
+              }>,
+              'style' | keyof import('@tamagui/react-native-types/src').ImagePropsBase
+            > &
+            Omit<import('@tamagui/react-native-types/src').ImagePropsBase, 'style'> & {
+              style?: import('@tamagui/react-native-types/src').ImageStyleProp | undefined
+            }
+        >,
+        | 'resizeMode'
+        | 'source'
+        | keyof import('@tamagui/web').StackNonStyleProps
+        | keyof import('@tamagui/web').StackStyleBase
+      > & {
+        src?: string | number
+        source?: import('@tamagui/react-native-types/src').ImageSourcePropType
+        resizeMode?: import('@tamagui/react-native-types/src').ImageResizeMode
+        objectFit?: React.CSSProperties['objectFit']
+        objectPosition?: React.CSSProperties['objectPosition']
+      } & Omit<
+        React.ImgHTMLAttributes<HTMLImageElement>,
+        | 'src'
+        | keyof import('@tamagui/web').StackNonStyleProps
+        | keyof import('@tamagui/web').StackStyleBase
+      > &
+      Omit<
+        React.ImgHTMLAttributes<HTMLImageElement>,
+        'height' | 'src' | 'style' | 'width'
+      > &
+      import('@tamagui/web').RefProp<import('@tamagui/web').TamaguiElement> &
+      Partial<
+        Omit<
+          import('@tamagui/create-menu').NativeMenuItemCommonProps & {
+            source: import('@tamagui/react-native-types/src').ImageProps['source']
+            ios?: {
+              style?: {
+                tint?: string
+              }
+              lazy?: boolean
+            }
+          },
+          | 'about'
+          | 'accessKey'
+          | 'alt'
+          | 'aria-activedescendant'
+          | 'aria-atomic'
+          | 'aria-autocomplete'
+          | 'aria-braillelabel'
+          | 'aria-brailleroledescription'
+          | 'aria-colcount'
+          | 'aria-colindex'
+          | 'aria-colindextext'
+          | 'aria-colspan'
+          | 'aria-controls'
+          | 'aria-current'
+          | 'aria-describedby'
+          | 'aria-description'
+          | 'aria-details'
+          | 'aria-dropeffect'
+          | 'aria-errormessage'
+          | 'aria-flowto'
+          | 'aria-grabbed'
+          | 'aria-haspopup'
+          | 'aria-invalid'
+          | 'aria-keyshortcuts'
+          | 'aria-level'
+          | 'aria-multiline'
+          | 'aria-multiselectable'
+          | 'aria-orientation'
+          | 'aria-owns'
+          | 'aria-placeholder'
+          | 'aria-posinset'
+          | 'aria-pressed'
+          | 'aria-readonly'
+          | 'aria-relevant'
+          | 'aria-required'
+          | 'aria-roledescription'
+          | 'aria-rowcount'
+          | 'aria-rowindex'
+          | 'aria-rowindextext'
+          | 'aria-rowspan'
+          | 'aria-setsize'
+          | 'aria-sort'
+          | 'autoCapitalize'
+          | 'autoCorrect'
+          | 'autoFocus'
+          | 'autoSave'
+          | 'blurRadius'
+          | 'capInsets'
+          | 'contentEditable'
+          | 'contextMenu'
+          | 'crossOrigin'
+          | 'datatype'
+          | 'decoding'
+          | 'defaultChecked'
+          | 'defaultSource'
+          | 'defaultValue'
+          | 'dir'
+          | 'draggable'
+          | 'enterKeyHint'
+          | 'exportparts'
+          | 'fadeDuration'
+          | 'fetchPriority'
+          | 'focusable'
+          | 'hidden'
+          | 'inert'
+          | 'inlist'
+          | 'inputMode'
+          | 'internal_analyticTag'
+          | 'is'
+          | 'itemID'
+          | 'itemProp'
+          | 'itemRef'
+          | 'itemScope'
+          | 'itemType'
+          | 'lang'
+          | 'loading'
+          | 'loadingIndicatorSource'
+          | 'nonce'
+          | 'onAbort'
+          | 'onAbortCapture'
+          | 'onAnimationEnd'
+          | 'onAnimationEndCapture'
+          | 'onAnimationIteration'
+          | 'onAnimationIterationCapture'
+          | 'onAnimationStart'
+          | 'onAnimationStartCapture'
+          | 'onAuxClick'
+          | 'onAuxClickCapture'
+          | 'onBeforeInputCapture'
+          | 'onBeforeToggle'
+          | 'onCanPlay'
+          | 'onCanPlayCapture'
+          | 'onCanPlayThrough'
+          | 'onCanPlayThroughCapture'
+          | 'onChangeCapture'
+          | 'onCompositionEnd'
+          | 'onCompositionEndCapture'
+          | 'onCompositionStart'
+          | 'onCompositionStartCapture'
+          | 'onCompositionUpdate'
+          | 'onCompositionUpdateCapture'
+          | 'onContextMenuCapture'
+          | 'onCopyCapture'
+          | 'onCutCapture'
+          | 'onDoubleClickCapture'
+          | 'onDragCapture'
+          | 'onDragEndCapture'
+          | 'onDragEnterCapture'
+          | 'onDragExit'
+          | 'onDragExitCapture'
+          | 'onDragLeaveCapture'
+          | 'onDragOverCapture'
+          | 'onDragStartCapture'
+          | 'onDropCapture'
+          | 'onDurationChange'
+          | 'onDurationChangeCapture'
+          | 'onEmptied'
+          | 'onEmptiedCapture'
+          | 'onEncrypted'
+          | 'onEncryptedCapture'
+          | 'onEnded'
+          | 'onEndedCapture'
+          | 'onError'
+          | 'onErrorCapture'
+          | 'onInputCapture'
+          | 'onInvalid'
+          | 'onInvalidCapture'
+          | 'onKeyPress'
+          | 'onKeyPressCapture'
+          | 'onLayout'
+          | 'onLoad'
+          | 'onLoadCapture'
+          | 'onLoadEnd'
+          | 'onLoadStart'
+          | 'onLoadStartCapture'
+          | 'onLoadedData'
+          | 'onLoadedDataCapture'
+          | 'onLoadedMetadata'
+          | 'onLoadedMetadataCapture'
+          | 'onMouseDownCapture'
+          | 'onMouseMoveCapture'
+          | 'onMouseOutCapture'
+          | 'onMouseOverCapture'
+          | 'onMouseUpCapture'
+          | 'onMoveShouldSetResponder'
+          | 'onMoveShouldSetResponderCapture'
+          | 'onPartialLoad'
+          | 'onPasteCapture'
+          | 'onPause'
+          | 'onPauseCapture'
+          | 'onPlay'
+          | 'onPlayCapture'
+          | 'onPlaying'
+          | 'onPlayingCapture'
+          | 'onProgress'
+          | 'onProgressCapture'
+          | 'onRateChange'
+          | 'onRateChangeCapture'
+          | 'onReset'
+          | 'onResetCapture'
+          | 'onResponderEnd'
+          | 'onResponderGrant'
+          | 'onResponderMove'
+          | 'onResponderReject'
+          | 'onResponderRelease'
+          | 'onResponderStart'
+          | 'onResponderTerminate'
+          | 'onResponderTerminationRequest'
+          | 'onScrollCapture'
+          | 'onScrollEnd'
+          | 'onScrollEndCapture'
+          | 'onSeeked'
+          | 'onSeekedCapture'
+          | 'onSeeking'
+          | 'onSeekingCapture'
+          | 'onSelect'
+          | 'onSelectCapture'
+          | 'onStalled'
+          | 'onStalledCapture'
+          | 'onStartShouldSetResponder'
+          | 'onStartShouldSetResponderCapture'
+          | 'onSubmit'
+          | 'onSubmitCapture'
+          | 'onSuspend'
+          | 'onSuspendCapture'
+          | 'onTimeUpdate'
+          | 'onTimeUpdateCapture'
+          | 'onToggle'
+          | 'onTransitionCancel'
+          | 'onTransitionCancelCapture'
+          | 'onTransitionEnd'
+          | 'onTransitionEndCapture'
+          | 'onTransitionRun'
+          | 'onTransitionRunCapture'
+          | 'onTransitionStart'
+          | 'onTransitionStartCapture'
+          | 'onVolumeChange'
+          | 'onVolumeChangeCapture'
+          | 'onWaiting'
+          | 'onWaitingCapture'
+          | 'onWheelCapture'
+          | 'part'
+          | 'popover'
+          | 'popoverTarget'
+          | 'popoverTargetAction'
+          | 'prefix'
+          | 'progressiveRenderingEnabled'
+          | 'property'
+          | 'radioGroup'
+          | 'ref'
+          | 'referrerPolicy'
+          | 'rel'
+          | 'resizeMethod'
+          | 'resizeMode'
+          | 'resizeMultiplier'
+          | 'resource'
+          | 'results'
+          | 'rev'
+          | 'security'
+          | 'sizes'
+          | 'slot'
+          | 'source'
+          | 'spellCheck'
+          | 'src'
+          | 'srcSet'
+          | 'suppressContentEditableWarning'
+          | 'suppressHydrationWarning'
+          | 'tintColor'
+          | 'title'
+          | 'typeof'
+          | 'unselectable'
+          | 'useMap'
+          | 'vocab'
+          | keyof import('@tamagui/web').StackNonStyleProps
+          | keyof import('@tamagui/web').StackStyleBase
+        >
+      >
+  >
+  readonly ScrollView:
+    | {
+        ({ children }: { children: React.ReactNode }): React.JSX.Element
+        displayName: string
+      }
+    | (React.FunctionComponent<
+        Omit<
+          import('@tamagui/web').TamaguiComponentPropsBaseBase &
+            Omit<
+              import('@tamagui/scroll-view/types/WebScrollView').WebScrollViewProps,
+              'ref'
+            > &
+            React.RefAttributes<import('@tamagui/scroll-view').ScrollViewRef>,
+          never
+        > &
+          Omit<
+            import('@tamagui/web').WithThemeValues<
+              Omit<import('@tamagui/web').StackStyleBase, never>
+            > &
+              import('@tamagui/web').WithFlatVariantValues<{}> &
+              import('@tamagui/web').WithShorthands<
+                import('@tamagui/web').WithThemeValues<
+                  import('@tamagui/web').StackStyleBase
+                >
+              >,
+            string | number
+          > & {
+            ref?: React.Ref<import('@tamagui/scroll-view').ScrollViewRef> | undefined
+          }
+      > &
+        import('@tamagui/web').StaticComponentObject<
+          import('@tamagui/web').TamaDefer,
+          import('@tamagui/scroll-view').ScrollViewRef,
+          import('@tamagui/web').TamaguiComponentPropsBaseBase &
+            Omit<
+              import('@tamagui/scroll-view/types/WebScrollView').WebScrollViewProps,
+              'ref'
+            > &
+            React.RefAttributes<import('@tamagui/scroll-view').ScrollViewRef>,
+          import('@tamagui/web').StackStyleBase,
+          {},
+          {
+            acceptsClassName: true
+            neverFlatten: true
+          } & import('@tamagui/web').StaticConfigPublic
+        > &
+        Omit<
+          {
+            acceptsClassName: true
+            neverFlatten: true
+          } & import('@tamagui/web').StaticConfigPublic,
+          'staticConfig'
+        > & {
+          __tama: [
+            import('@tamagui/web').TamaDefer,
+            import('@tamagui/scroll-view').ScrollViewRef,
+            import('@tamagui/web').TamaguiComponentPropsBaseBase &
+              Omit<
+                import('@tamagui/scroll-view/types/WebScrollView').WebScrollViewProps,
+                'ref'
+              > &
+              React.RefAttributes<import('@tamagui/scroll-view').ScrollViewRef>,
+            import('@tamagui/web').StackStyleBase,
+            {},
+            {
+              acceptsClassName: true
+              neverFlatten: true
+            } & import('@tamagui/web').StaticConfigPublic,
+          ]
+        })
+}
 //# sourceMappingURL=Menu.d.ts.map

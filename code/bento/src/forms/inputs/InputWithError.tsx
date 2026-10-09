@@ -1,7 +1,7 @@
 import type { ComponentSize } from '@tamagui/core'
 import { AlertCircle } from '../../icons'
 import React, { useId, useRef } from 'react'
-import type { TextInput } from 'react-native'
+import type { TextInputInstance as TextInput } from 'react-native'
 import { View } from 'tamagui'
 import { Input } from './components/inputsParts'
 import { useForwardFocus } from './hooks/useForwardFocus'

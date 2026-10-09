@@ -8,16 +8,16 @@
  * registry, never imported directly. The gesture is created in useMemo and
  * returns null when RNGH is not set up.
  */
-import type { SwipeDirection } from './types';
+import type { SwipeDirection } from './types'
 export interface UseAnimatedDragGestureOptions {
-    direction: SwipeDirection;
-    threshold: number;
-    disabled?: boolean;
-    expanded?: boolean;
-    onDragMove: (x: number, y: number) => void;
-    onDragStart?: () => void;
-    onDismiss: (exitDirection: 'left' | 'right' | 'up' | 'down', velocity: number) => void;
-    onCancel: () => void;
+  direction: SwipeDirection
+  threshold: number
+  disabled?: boolean
+  expanded?: boolean
+  onDragMove: (x: number, y: number) => void
+  onDragStart?: () => void
+  onDismiss: (exitDirection: 'left' | 'right' | 'up' | 'down', velocity: number) => void
+  onCancel: () => void
 }
 /**
  * Single hook — always calls the same hooks in the same order.
@@ -26,8 +26,8 @@ export interface UseAnimatedDragGestureOptions {
  * Consumer checks `gesture` to decide whether to wrap with GestureDetector.
  */
 export declare function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions): {
-    isDragging: boolean;
-    gestureHandlers: import("react-native").GestureResponderHandlers;
-    gesture: any;
-};
+  isDragging: boolean
+  gestureHandlers: {}
+  gesture: any
+}
 //# sourceMappingURL=useAnimatedDragGesture.native.d.ts.map

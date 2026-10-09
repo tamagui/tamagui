@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { TextInput } from 'react-native'
+import type { TextInputInstance as TextInput } from 'react-native'
 import { useWindowDimensions } from 'react-native'
 import { Button, Input, Sheet, Text, TextArea, XStack, YStack } from 'tamagui'
 import { reportSheetLayout, startSheetTracker } from './sheetFrameTracker'

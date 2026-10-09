@@ -3,7 +3,7 @@ import type { CheckboxProps as CheckboxHeadlessProps } from '@tamagui/checkbox-h
 import { useCheckbox } from '@tamagui/checkbox-headless'
 import { Check, Minus } from '@tamagui/local-icons'
 
-import type { View } from 'react-native'
+import type { ViewInstance as View } from 'react-native'
 import { Pressable } from 'react-native'
 import { Label, XStack, YStack } from 'tamagui'
 

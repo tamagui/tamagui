@@ -1565,7 +1565,7 @@ export function createBaseMenu() {
              * between separate submenus.
              */
             if (isWeb) {
-              event.currentTarget.focus()
+              subContext.trigger?.focus()
             }
             if (!context.open) context.onOpenChange(true)
           }}

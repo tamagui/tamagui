@@ -1,114 +1,386 @@
-import type { TextParentStyles } from '@tamagui/text';
-import { textParentProps } from '@tamagui/text';
-import type { ColorTokens, GetProps } from '@tamagui/web';
-import type { FunctionComponent, JSX, ReactNode } from 'react';
-type IconProp = JSX.Element | FunctionComponent<{
-    color?: any;
-    size?: any;
-}> | null;
+import type { TextParentStyles } from '@tamagui/text'
+import { textParentProps } from '@tamagui/text'
+import type { ColorTokens, GetProps } from '@tamagui/web'
+import type { FunctionComponent, JSX, ReactNode } from 'react'
+type IconProp =
+  | JSX.Element
+  | FunctionComponent<{
+      color?: any
+      size?: any
+    }>
+  | null
 /**
  * The three props every part shares. A styled component that declares this
  * context reads these from an ancestor and, for any it was passed directly,
  * republishes them to its own descendants — which is the whole mechanism for
  * getting size and color from a ListItem down to its text and icons.
  */
-export declare const ListItemContext: import("@tamagui/web").StyledContext<{
-    size?: string | boolean;
-    variant?: 'outlined';
-    color?: ColorTokens | string;
-}, "color" | "size" | "variant">;
-export declare const ListItemFrame: FunctionComponent<Omit<import("@tamagui/web").StackNonStyleProps, "disabled" | "size" | "variant"> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, "disabled" | "size" | "variant">> & import("@tamagui/web").WithFlatVariantValues<{
-    disabled?: boolean | undefined;
-    size?: string | boolean | undefined;
-    variant?: "outlined" | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, "accessibilityActions" | "accessibilityElementsHidden" | "accessibilityHint" | "accessibilityIgnoresInvertColors" | "accessibilityLabel" | "accessibilityLabelledBy" | "accessibilityLanguage" | "accessibilityLargeContentTitle" | "accessibilityLiveRegion" | "accessibilityRespondsToUserInteraction" | "accessibilityRole" | "accessibilityShowsLargeContentViewer" | "accessibilityState" | "accessibilityValue" | "accessibilityViewIsModal" | "accessible" | "animatedBy" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-hidden" | "aria-label" | "aria-labelledby" | "aria-live" | "aria-modal" | "aria-selected" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "asChild" | "children" | "className" | "collapsable" | "collapsableChildren" | "container" | "dangerouslySetInnerHTML" | "debug" | "disableClassName" | "disableNativeStyle" | "disableOptimization" | "forceStyle" | "group" | "hasTVPreferredFocus" | "hitSlop" | "htmlFor" | "id" | "importantForAccessibility" | "isTVSelectable" | "name" | "nativeID" | "needsOffscreenAlphaCompositing" | "onAccessibilityAction" | "onAccessibilityEscape" | "onAccessibilityTap" | "onBeforeInput" | "onBlur" | "onChange" | "onClick" | "onContextMenu" | "onCopy" | "onCut" | "onDoubleClick" | "onDrag" | "onDragEnd" | "onDragEnter" | "onDragLeave" | "onDragOver" | "onDragStart" | "onDrop" | "onFocus" | "onInput" | "onKeyDown" | "onKeyUp" | "onLongPress" | "onMagicTap" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOut" | "onMouseOver" | "onMouseUp" | "onPaste" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerUp" | "onPointerUpCapture" | "onPress" | "onPressIn" | "onPressOut" | "onScroll" | "onTouchCancel" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchStart" | "onWheel" | "removeClippedSubviews" | "render" | "renderToHardwareTextureAndroid" | "role" | "screenReaderFocusable" | "shouldRasterizeIOS" | "style" | "tabIndex" | "target" | "testID" | "theme" | "themeShallow" | "tvParallaxMagnification" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "untilMeasured"> & {
-    ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    disabled?: boolean | undefined;
-    size?: string | boolean | undefined;
-    variant?: "outlined" | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        disabled?: boolean | undefined;
-        size?: string | boolean | undefined;
-        variant?: "outlined" | undefined;
-    }, import("@tamagui/web").StaticConfigPublic];
-};
-export declare const ListItemText: FunctionComponent<Omit<import("@tamagui/web").TextNonStyleProps, "size" | "variant"> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").TextStylePropsBase, "size" | "variant">> & import("@tamagui/web").WithFlatVariantValues<{
-    size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
-    variant?: "outlined" | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>>, keyof import("@tamagui/web").TextNonStyleProps> & {
-    ref?: import("react").Ref<import("@tamagui/web").TamaguiTextElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-    size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
-    variant?: "outlined" | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
-        variant?: "outlined" | undefined;
-    }, import("@tamagui/web").StaticConfigPublic];
-};
-export declare const ListItemSubtitle: FunctionComponent<Omit<import("@tamagui/web").TextNonStyleProps, "size" | "variant"> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").TextStylePropsBase, "size" | "variant">> & import("@tamagui/web").WithFlatVariantValues<{
-    size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
-    variant?: "outlined" | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>>, keyof import("@tamagui/web").TextNonStyleProps> & {
-    ref?: import("react").Ref<import("@tamagui/web").TamaguiTextElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-    size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
-    variant?: "outlined" | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
-        variant?: "outlined" | undefined;
-    }, import("@tamagui/web").StaticConfigPublic];
-};
-export declare const ListItemTitle: FunctionComponent<Omit<import("@tamagui/web").TextNonStyleProps, "size" | "variant"> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").TextStylePropsBase, "size" | "variant">> & import("@tamagui/web").WithFlatVariantValues<{
-    size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
-    variant?: "outlined" | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>>, keyof import("@tamagui/web").TextNonStyleProps> & {
-    ref?: import("react").Ref<import("@tamagui/web").TamaguiTextElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-    size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
-    variant?: "outlined" | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
-        variant?: "outlined" | undefined;
-    }, import("@tamagui/web").StaticConfigPublic];
-};
+export declare const ListItemContext: import('@tamagui/web').StyledContext<
+  {
+    size?: string | boolean
+    variant?: 'outlined'
+    color?: ColorTokens | string
+  },
+  'color' | 'size' | 'variant'
+>
+export declare const ListItemFrame: FunctionComponent<
+  Omit<import('@tamagui/web').StackNonStyleProps, 'disabled' | 'size' | 'variant'> &
+    Omit<
+      import('@tamagui/web').WithThemeValues<
+        Omit<import('@tamagui/web').StackStyleBase, 'disabled' | 'size' | 'variant'>
+      > &
+        import('@tamagui/web').WithFlatVariantValues<{
+          disabled?: boolean | undefined
+          size?: string | boolean | undefined
+          variant?: 'outlined' | undefined
+        }> &
+        import('@tamagui/web').WithShorthands<
+          import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+        >,
+      | 'accessibilityActions'
+      | 'accessibilityElementsHidden'
+      | 'accessibilityHint'
+      | 'accessibilityIgnoresInvertColors'
+      | 'accessibilityLabel'
+      | 'accessibilityLabelledBy'
+      | 'accessibilityLanguage'
+      | 'accessibilityLargeContentTitle'
+      | 'accessibilityLiveRegion'
+      | 'accessibilityRespondsToUserInteraction'
+      | 'accessibilityRole'
+      | 'accessibilityShowsLargeContentViewer'
+      | 'accessibilityState'
+      | 'accessibilityValue'
+      | 'accessibilityViewIsModal'
+      | 'accessible'
+      | 'animatedBy'
+      | 'aria-busy'
+      | 'aria-checked'
+      | 'aria-disabled'
+      | 'aria-expanded'
+      | 'aria-hidden'
+      | 'aria-label'
+      | 'aria-labelledby'
+      | 'aria-live'
+      | 'aria-modal'
+      | 'aria-selected'
+      | 'aria-valuemax'
+      | 'aria-valuemin'
+      | 'aria-valuenow'
+      | 'aria-valuetext'
+      | 'asChild'
+      | 'children'
+      | 'className'
+      | 'collapsable'
+      | 'collapsableChildren'
+      | 'container'
+      | 'dangerouslySetInnerHTML'
+      | 'debug'
+      | 'disableClassName'
+      | 'disableNativeStyle'
+      | 'disableOptimization'
+      | 'experimental_accessibilityOrder'
+      | 'forceStyle'
+      | 'group'
+      | 'hasTVPreferredFocus'
+      | 'hitSlop'
+      | 'htmlFor'
+      | 'id'
+      | 'importantForAccessibility'
+      | 'name'
+      | 'nativeBackgroundAndroid'
+      | 'nativeForegroundAndroid'
+      | 'nativeID'
+      | 'needsOffscreenAlphaCompositing'
+      | 'nextFocusDown'
+      | 'nextFocusForward'
+      | 'nextFocusLeft'
+      | 'nextFocusRight'
+      | 'nextFocusUp'
+      | 'onAccessibilityAction'
+      | 'onAccessibilityEscape'
+      | 'onAccessibilityTap'
+      | 'onBeforeInput'
+      | 'onBlur'
+      | 'onBlurCapture'
+      | 'onChange'
+      | 'onClick'
+      | 'onClickCapture'
+      | 'onContextMenu'
+      | 'onCopy'
+      | 'onCut'
+      | 'onDoubleClick'
+      | 'onDrag'
+      | 'onDragEnd'
+      | 'onDragEnter'
+      | 'onDragLeave'
+      | 'onDragOver'
+      | 'onDragStart'
+      | 'onDrop'
+      | 'onFocus'
+      | 'onFocusCapture'
+      | 'onGotPointerCapture'
+      | 'onGotPointerCaptureCapture'
+      | 'onInput'
+      | 'onKeyDown'
+      | 'onKeyDownCapture'
+      | 'onKeyUp'
+      | 'onKeyUpCapture'
+      | 'onLongPress'
+      | 'onLostPointerCapture'
+      | 'onLostPointerCaptureCapture'
+      | 'onMagicTap'
+      | 'onMouseDown'
+      | 'onMouseEnter'
+      | 'onMouseLeave'
+      | 'onMouseMove'
+      | 'onMouseOut'
+      | 'onMouseOver'
+      | 'onMouseUp'
+      | 'onPaste'
+      | 'onPointerCancel'
+      | 'onPointerCancelCapture'
+      | 'onPointerDown'
+      | 'onPointerDownCapture'
+      | 'onPointerEnter'
+      | 'onPointerEnterCapture'
+      | 'onPointerLeave'
+      | 'onPointerLeaveCapture'
+      | 'onPointerMove'
+      | 'onPointerMoveCapture'
+      | 'onPointerOut'
+      | 'onPointerOutCapture'
+      | 'onPointerOver'
+      | 'onPointerOverCapture'
+      | 'onPointerUp'
+      | 'onPointerUpCapture'
+      | 'onPress'
+      | 'onPressIn'
+      | 'onPressOut'
+      | 'onScroll'
+      | 'onTouchCancel'
+      | 'onTouchCancelCapture'
+      | 'onTouchEnd'
+      | 'onTouchEndCapture'
+      | 'onTouchMove'
+      | 'onTouchMoveCapture'
+      | 'onTouchStart'
+      | 'onTouchStartCapture'
+      | 'onWheel'
+      | 'removeClippedSubviews'
+      | 'render'
+      | 'renderToHardwareTextureAndroid'
+      | 'role'
+      | 'screenReaderFocusable'
+      | 'shouldRasterizeIOS'
+      | 'style'
+      | 'tabIndex'
+      | 'target'
+      | 'testID'
+      | 'theme'
+      | 'themeShallow'
+      | 'untilMeasured'
+    > & {
+      ref?: import('react').Ref<import('@tamagui/web').TamaguiElement> | undefined
+    }
+> &
+  import('@tamagui/web').StaticComponentObject<
+    import('@tamagui/web').TamaDefer,
+    import('@tamagui/web').TamaguiElement,
+    import('@tamagui/web').StackNonStyleProps,
+    import('@tamagui/web').StackStyleBase,
+    {
+      disabled?: boolean | undefined
+      size?: string | boolean | undefined
+      variant?: 'outlined' | undefined
+    },
+    import('@tamagui/web').StaticConfigPublic
+  > &
+  Omit<import('@tamagui/web').StaticConfigPublic, 'staticConfig'> & {
+    __tama: [
+      import('@tamagui/web').TamaDefer,
+      import('@tamagui/web').TamaguiElement,
+      import('@tamagui/web').StackNonStyleProps,
+      import('@tamagui/web').StackStyleBase,
+      {
+        disabled?: boolean | undefined
+        size?: string | boolean | undefined
+        variant?: 'outlined' | undefined
+      },
+      import('@tamagui/web').StaticConfigPublic,
+    ]
+  }
+export declare const ListItemText: FunctionComponent<
+  Omit<import('@tamagui/web').TextNonStyleProps, 'size' | 'variant'> &
+    Omit<
+      import('@tamagui/web').WithThemeValues<
+        Omit<import('@tamagui/web').TextStylePropsBase, 'size' | 'variant'>
+      > &
+        import('@tamagui/web').WithFlatVariantValues<{
+          size?: import('@tamagui/get-font-sized').GetFontSizedInput | undefined
+          variant?: 'outlined' | undefined
+        }> &
+        import('@tamagui/web').WithShorthands<
+          import('@tamagui/web').WithThemeValues<
+            import('@tamagui/web').TextStylePropsBase
+          >
+        >,
+      keyof import('@tamagui/web').TextNonStyleProps
+    > & {
+      ref?: import('react').Ref<import('@tamagui/web').TamaguiTextElement> | undefined
+    }
+> &
+  import('@tamagui/web').StaticComponentObject<
+    import('@tamagui/web').TamaDefer,
+    import('@tamagui/web').TamaguiTextElement,
+    import('@tamagui/web').TextNonStyleProps,
+    import('@tamagui/web').TextStylePropsBase,
+    {
+      size?: import('@tamagui/get-font-sized').GetFontSizedInput | undefined
+      variant?: 'outlined' | undefined
+    },
+    import('@tamagui/web').StaticConfigPublic
+  > &
+  Omit<import('@tamagui/web').StaticConfigPublic, 'staticConfig'> & {
+    __tama: [
+      import('@tamagui/web').TamaDefer,
+      import('@tamagui/web').TamaguiTextElement,
+      import('@tamagui/web').TextNonStyleProps,
+      import('@tamagui/web').TextStylePropsBase,
+      {
+        size?: import('@tamagui/get-font-sized').GetFontSizedInput | undefined
+        variant?: 'outlined' | undefined
+      },
+      import('@tamagui/web').StaticConfigPublic,
+    ]
+  }
+export declare const ListItemSubtitle: FunctionComponent<
+  Omit<import('@tamagui/web').TextNonStyleProps, 'size' | 'variant'> &
+    Omit<
+      import('@tamagui/web').WithThemeValues<
+        Omit<import('@tamagui/web').TextStylePropsBase, 'size' | 'variant'>
+      > &
+        import('@tamagui/web').WithFlatVariantValues<{
+          size?: import('@tamagui/get-font-sized').GetFontSizedInput | undefined
+          variant?: 'outlined' | undefined
+        }> &
+        import('@tamagui/web').WithShorthands<
+          import('@tamagui/web').WithThemeValues<
+            import('@tamagui/web').TextStylePropsBase
+          >
+        >,
+      keyof import('@tamagui/web').TextNonStyleProps
+    > & {
+      ref?: import('react').Ref<import('@tamagui/web').TamaguiTextElement> | undefined
+    }
+> &
+  import('@tamagui/web').StaticComponentObject<
+    import('@tamagui/web').TamaDefer,
+    import('@tamagui/web').TamaguiTextElement,
+    import('@tamagui/web').TextNonStyleProps,
+    import('@tamagui/web').TextStylePropsBase,
+    {
+      size?: import('@tamagui/get-font-sized').GetFontSizedInput | undefined
+      variant?: 'outlined' | undefined
+    },
+    import('@tamagui/web').StaticConfigPublic
+  > &
+  Omit<import('@tamagui/web').StaticConfigPublic, 'staticConfig'> & {
+    __tama: [
+      import('@tamagui/web').TamaDefer,
+      import('@tamagui/web').TamaguiTextElement,
+      import('@tamagui/web').TextNonStyleProps,
+      import('@tamagui/web').TextStylePropsBase,
+      {
+        size?: import('@tamagui/get-font-sized').GetFontSizedInput | undefined
+        variant?: 'outlined' | undefined
+      },
+      import('@tamagui/web').StaticConfigPublic,
+    ]
+  }
+export declare const ListItemTitle: FunctionComponent<
+  Omit<import('@tamagui/web').TextNonStyleProps, 'size' | 'variant'> &
+    Omit<
+      import('@tamagui/web').WithThemeValues<
+        Omit<import('@tamagui/web').TextStylePropsBase, 'size' | 'variant'>
+      > &
+        import('@tamagui/web').WithFlatVariantValues<{
+          size?: import('@tamagui/get-font-sized').GetFontSizedInput | undefined
+          variant?: 'outlined' | undefined
+        }> &
+        import('@tamagui/web').WithShorthands<
+          import('@tamagui/web').WithThemeValues<
+            import('@tamagui/web').TextStylePropsBase
+          >
+        >,
+      keyof import('@tamagui/web').TextNonStyleProps
+    > & {
+      ref?: import('react').Ref<import('@tamagui/web').TamaguiTextElement> | undefined
+    }
+> &
+  import('@tamagui/web').StaticComponentObject<
+    import('@tamagui/web').TamaDefer,
+    import('@tamagui/web').TamaguiTextElement,
+    import('@tamagui/web').TextNonStyleProps,
+    import('@tamagui/web').TextStylePropsBase,
+    {
+      size?: import('@tamagui/get-font-sized').GetFontSizedInput | undefined
+      variant?: 'outlined' | undefined
+    },
+    import('@tamagui/web').StaticConfigPublic
+  > &
+  Omit<import('@tamagui/web').StaticConfigPublic, 'staticConfig'> & {
+    __tama: [
+      import('@tamagui/web').TamaDefer,
+      import('@tamagui/web').TamaguiTextElement,
+      import('@tamagui/web').TextNonStyleProps,
+      import('@tamagui/web').TextStylePropsBase,
+      {
+        size?: import('@tamagui/get-font-sized').GetFontSizedInput | undefined
+        variant?: 'outlined' | undefined
+      },
+      import('@tamagui/web').StaticConfigPublic,
+    ]
+  }
 export type ListItemIconProps = {
-    children: ReactNode;
-    size?: string | number | boolean;
-    scaleIcon?: number;
-};
+  children: ReactNode
+  size?: string | number | boolean
+  scaleIcon?: number
+}
 /**
  * The props `useListItem` reads and replaces, so exactly what its result omits.
  */
 type ListItemConsumedProps = {
-    children?: ReactNode;
-    icon?: IconProp;
-    iconAfter?: IconProp;
-    iconSize?: string | number | boolean;
-    scaleIcon?: number;
-    subTitle?: ReactNode;
-    title?: ReactNode;
-};
-export type ListItemBehaviorProps = TextParentStyles & ListItemConsumedProps & {
-    color?: ColorTokens | string;
-    size?: string | boolean;
-};
+  children?: ReactNode
+  icon?: IconProp
+  iconAfter?: IconProp
+  iconSize?: string | number | boolean
+  scaleIcon?: number
+  subTitle?: ReactNode
+  title?: ReactNode
+}
+export type ListItemBehaviorProps = TextParentStyles &
+  ListItemConsumedProps & {
+    color?: ColorTokens | string
+    size?: string | boolean
+  }
 /**
  * What `useListItem` returns: the caller's props minus the ones it consumed.
  * Spelled out rather than cast, so a skin that spreads the result onto a frame
  * is type-checked on exactly what it will receive.
  */
-export type UseListItemProps<Props extends ListItemBehaviorProps> = Omit<Omit<Props, keyof TextParentStyles | keyof typeof textParentProps>, keyof ListItemConsumedProps> & {
-    children: ReactNode;
-    color?: Props['color'];
-};
-export declare function useListItem<Props extends ListItemBehaviorProps>(propsIn: Props): {
-    props: UseListItemProps<Props>;
-};
-export type ListItemFrameProps = GetProps<typeof ListItemFrame>;
-export {};
+export type UseListItemProps<Props extends ListItemBehaviorProps> = Omit<
+  Omit<Props, keyof TextParentStyles | keyof typeof textParentProps>,
+  keyof ListItemConsumedProps
+> & {
+  children: ReactNode
+  color?: Props['color']
+}
+export declare function useListItem<Props extends ListItemBehaviorProps>(
+  propsIn: Props
+): {
+  props: UseListItemProps<Props>
+}
+export type ListItemFrameProps = GetProps<typeof ListItemFrame>
+export {}
 //# sourceMappingURL=ListItem.d.ts.map

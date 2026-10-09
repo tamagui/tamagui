@@ -1,7 +1,7 @@
 import type { SwitchProps as SwitchHeadlessProps } from '@tamagui/switch-headless'
 import { useSwitch } from '@tamagui/switch-headless'
 import React from 'react'
-import type { View as RNView } from 'react-native'
+import type { ViewInstance as RNView } from 'react-native'
 import { Pressable } from 'react-native'
 import { Label, View, XStack, YStack } from 'tamagui'
 

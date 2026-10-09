@@ -1,7 +1,7 @@
 import { unstable_hasExternalPressOwnership } from '@tamagui/native'
 import { useRef } from 'react'
 import type { GestureResponderEvent } from 'react-native'
-import type usePressabilityType from 'react-native/Libraries/Pressability/usePressability'
+import type { usePressability as usePressabilityType } from 'react-native'
 
 export function useMainThreadPressEvents(
   events: any,
@@ -11,7 +11,7 @@ export function useMainThreadPressEvents(
 ) {
   // static config evaluation does not render; load native code at render time.
   const usePressability: typeof usePressabilityType =
-    require('react-native/Libraries/Pressability/usePressability').default
+    require('react-native').usePressability
   const initialized = useRef(false)
   const ownsResponder = useRef(false)
   const pressActive = useRef(false)

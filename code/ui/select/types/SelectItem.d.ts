@@ -1,31 +1,82 @@
-import type { GetProps } from '@tamagui/core';
-import * as React from 'react';
+import type { GetProps } from '@tamagui/core'
+import * as React from 'react'
 type SelectItemContextValue = {
-    value: string;
-    textId: string;
-    textValue?: string;
-    isSelected: boolean;
-};
-export declare const SelectItemContextProvider: React.Provider<SelectItemContextValue> & React.ProviderExoticComponent<Partial<SelectItemContextValue> & {
-    children?: React.ReactNode;
-    scope?: string;
-}>, useSelectItemContext: (scope?: string) => SelectItemContextValue;
+  value: string
+  textId: string
+  textValue?: string
+  isSelected: boolean
+}
+export declare const SelectItemContextProvider: React.Provider<SelectItemContextValue> &
+    React.ProviderExoticComponent<
+      Partial<SelectItemContextValue> & {
+        children?: React.ReactNode
+        scope?: string
+      }
+    >,
+  useSelectItemContext: (scope?: string) => SelectItemContextValue
 export interface SelectItemExtraProps {
-    value: string;
-    disabled?: boolean;
-    textValue?: string;
+  value: string
+  disabled?: boolean
+  textValue?: string
 }
-export interface SelectItemProps extends Omit<GetProps<typeof SelectItemFrame>, keyof SelectItemExtraProps>, SelectItemExtraProps {
-}
-export declare const SelectItemFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-    ref?: React.Ref<import("@tamagui/core").TamaguiElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
-};
-export declare const SelectItem: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "scope" | keyof SelectItemProps> & SelectItemProps & {
-    scope?: import("./types").SelectScopes;
-}, import("@tamagui/react-native-types/src").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & SelectItemProps & {
-    scope?: import("./types").SelectScopes;
-}, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
-export {};
+export interface SelectItemProps
+  extends
+    Omit<GetProps<typeof SelectItemFrame>, keyof SelectItemExtraProps>,
+    SelectItemExtraProps {}
+export declare const SelectItemFrame: React.FunctionComponent<
+  Omit<import('@tamagui/core').RNTamaguiViewNonStyleProps, never> &
+    Omit<
+      import('@tamagui/core').WithThemeValues<
+        Omit<import('@tamagui/core').StackStyleBase, never>
+      > &
+        import('@tamagui/core').WithFlatVariantValues<{}> &
+        import('@tamagui/core').WithShorthands<
+          import('@tamagui/core').WithThemeValues<import('@tamagui/core').StackStyleBase>
+        >,
+      keyof import('@tamagui/core').RNTamaguiViewNonStyleProps
+    > & {
+      ref?: React.Ref<import('@tamagui/core').TamaguiElement> | undefined
+    }
+> &
+  import('@tamagui/core').StaticComponentObject<
+    import('@tamagui/core').TamaDefer,
+    import('@tamagui/core').TamaguiElement,
+    import('@tamagui/core').RNTamaguiViewNonStyleProps,
+    import('@tamagui/core').StackStyleBase,
+    {},
+    import('@tamagui/core').StaticConfigPublic
+  > &
+  Omit<import('@tamagui/core').StaticConfigPublic, 'staticConfig'> & {
+    __tama: [
+      import('@tamagui/core').TamaDefer,
+      import('@tamagui/core').TamaguiElement,
+      import('@tamagui/core').RNTamaguiViewNonStyleProps,
+      import('@tamagui/core').StackStyleBase,
+      {},
+      import('@tamagui/core').StaticConfigPublic,
+    ]
+  }
+export declare const SelectItem: import('@tamagui/core').TamaguiComponent<
+  Omit<
+    import('@tamagui/core').GetFinalProps<
+      import('@tamagui/core').RNTamaguiViewNonStyleProps,
+      import('@tamagui/core').StackStyleBase,
+      {}
+    >,
+    'scope' | keyof SelectItemProps
+  > &
+    SelectItemProps & {
+      scope?: import('./types').SelectScopes
+    },
+  | import('@tamagui/react-native-types/src').ReactNativeElement
+  | (HTMLElement & import('@tamagui/core').TamaguiElementMethods),
+  import('@tamagui/core').RNTamaguiViewNonStyleProps &
+    SelectItemProps & {
+      scope?: import('./types').SelectScopes
+    },
+  import('@tamagui/core').StackStyleBase,
+  {},
+  import('@tamagui/core').StaticConfigPublic
+>
+export {}
 //# sourceMappingURL=SelectItem.d.ts.map
