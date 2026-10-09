@@ -1,7 +1,5 @@
-// review P1: the View-color ruling (text-only style props on a non-text host
-// are a dev diagnostic + drop, never a leaked DOM attribute) landed with only
-// positive rebaselines, so nothing pinned the negative case — and the guard
-// never actually ran for a plain View. these are the negative pins.
+// browser views accept canonical css for inheritance. native-only text fields
+// remain consumed, and authored styles must never leak as dom attributes.
 
 import { afterEach, beforeAll, expect, test, vi } from 'vitest'
 import config from '../config-default'
@@ -27,16 +25,16 @@ const split = (props: Record<string, any>, staticConfig: any) =>
     opts
   )
 
-test('color on a plain View is dropped, never leaked to the DOM', () => {
-  // the diagnostic half is dev-only and NODE_ENV=test compiles it out; the
-  // behavioral pin is the drop itself
+test('color on a plain View emits inheritable CSS without a DOM attribute', () => {
   const result = split({ color: 'red' }, View.staticConfig)
   expect(result.viewProps.color).toBeUndefined()
   expect(result.style?.color).toBeUndefined()
-  expect(result.classNames?.color).toBeUndefined()
+  const className = result.classNames.color
+  expect(className).toBeTruthy()
+  expect(result.rulesToInsert[className]?.[4]).toEqual([`.${className}{color:red}`])
 })
 
-test('textDecorationColor and textShadowColor on a View are dropped too', () => {
+test('text colors never leak as DOM attributes on a View', () => {
   vi.spyOn(console, 'warn').mockImplementation(() => {})
   const result = split(
     { textDecorationColor: 'red', textShadowColor: 'blue' },
