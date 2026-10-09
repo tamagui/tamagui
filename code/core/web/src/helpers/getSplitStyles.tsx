@@ -825,6 +825,31 @@ function contributeProp(
     }
   }
 
+  if (process.env.NODE_ENV === 'development') {
+    if (
+      !isValidStyleKey(keyInit, validStyles) &&
+      (keyInit === 'animation' || !(keyInit in stylePropsAll)) &&
+      (!variants || !(keyInit in variants))
+    ) {
+      let replacement: string | undefined
+      if (keyInit === 'animation') replacement = 'transition='
+      else if (keyInit === 'hoverStyle') replacement = 'hover: clause'
+      else if (keyInit === 'pressStyle') replacement = 'press: clause'
+      else if (keyInit === 'focusStyle') replacement = 'focus: clause'
+      else if (keyInit === 'enterStyle') replacement = 'enter: clause'
+      else if (keyInit === 'exitStyle') replacement = 'exit: clause'
+      else if (keyInit.charCodeAt(0) === 36 && keyInit.length > 1) {
+        replacement = `${keyInit.slice(1)}: clause`
+      }
+      if (replacement) {
+        warnOnce(
+          `v2-prop:${keyInit}`,
+          `prop "${keyInit}" was removed in v3; use ${replacement}`
+        )
+      }
+    }
+  }
+
   const isNativeInputColor =
     process.env.TAMAGUI_TARGET === 'native' &&
     isInput &&
@@ -864,31 +889,6 @@ function contributeProp(
   }
 
   let isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles)
-
-  if (process.env.NODE_ENV === 'development') {
-    if (
-      !isValidStyleKeyInit &&
-      !(keyInit in stylePropsAll) &&
-      (!variants || !(keyInit in variants))
-    ) {
-      let replacement: string | undefined
-      if (keyInit === 'animation') replacement = 'transition='
-      else if (keyInit === 'hoverStyle') replacement = 'hover: clause'
-      else if (keyInit === 'pressStyle') replacement = 'press: clause'
-      else if (keyInit === 'focusStyle') replacement = 'focus: clause'
-      else if (keyInit === 'enterStyle') replacement = 'enter: clause'
-      else if (keyInit === 'exitStyle') replacement = 'exit: clause'
-      else if (keyInit.charCodeAt(0) === 36 && keyInit.length > 1) {
-        replacement = `${keyInit.slice(1)}: clause`
-      }
-      if (replacement) {
-        warnOnce(
-          `v2-prop:${keyInit}`,
-          `prop "${keyInit}" was removed in v3; use ${replacement}`
-        )
-      }
-    }
-  }
 
   // this is all for partially optimized (not flattened)... maybe worth removing?
   if (process.env.TAMAGUI_TARGET === 'web') {

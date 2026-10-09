@@ -102,6 +102,8 @@ export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
   wrapped['staticConfig'] = {
     isHOC: true,
     acceptsClassName: true,
+    // svg colors are resolved by this wrapper and passed to the drawing component.
+    inlineProps: new Set(['color', 'fill', 'stroke']),
   }
 
   return wrapped
