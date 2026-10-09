@@ -1482,10 +1482,14 @@ export function createTamaguiCompilerHost(
       canLowerConditionalStyleProp(entry.name, component)) ||
     frontendClassDomain(entry, component) !== null
 
+  const expandStyleShorthand = (name: string): string =>
+    options.tamaguiConfig.shorthands?.[name] ?? name
+
   const isInvalidHostStyleProp = (
     name: string,
     component: LoweringComponent
   ): boolean => {
+    const expanded = expandStyleShorthand(name)
     const staticConfig = component.staticConfig as StaticConfig
     const validStyles =
       staticConfig.validStyles ||
@@ -1494,7 +1498,7 @@ export function createTamaguiCompilerHost(
         : staticConfig.isText
           ? stylePropsText
           : validStylesView)
-    return name in stylePropsAll && !isValidStyleKey(name, validStyles)
+    return expanded in stylePropsAll && !isValidStyleKey(expanded, validStyles)
   }
 
   const directStyleName = (name: string, component: LoweringComponent): string | null => {
@@ -1503,7 +1507,7 @@ export function createTamaguiCompilerHost(
     }
     const staticConfig = component.staticConfig as StaticConfig
     if (staticConfig.variants?.[name]) return null
-    const expanded = options.tamaguiConfig.shorthands?.[name] ?? name
+    const expanded = expandStyleShorthand(name)
     return staticConfig.validStyles?.[expanded] ? expanded : null
   }
 
