@@ -1191,10 +1191,19 @@ export function createComponent<
 
       // a media change restyles only this instance: its useMedia emits through
       // this state ref. a context-wide emitter made every component in the
-      // provider restyle on every other component's media change (quadratic)
+      // provider restyle on every other component's media change (quadratic).
+      // one dimension change fires one update per changed media key, so like
+      // nativeMediaUpdate this coalesces to a single restyle per event turn,
+      // against the media state every key has settled to by then
       stateRef.current.mediaEmit ||= (next) => {
-        stateRef.current.nextMedia = next
-        stateRef.current.updateStyleListener?.()
+        const sr = stateRef.current
+        sr.nextMedia = next
+        if (sr.mediaEmitQueued) return
+        sr.mediaEmitQueued = true
+        queueMicrotask(() => {
+          sr.mediaEmitQueued = false
+          sr.updateStyleListener?.()
+        })
       }
 
       stateRef.current.setStateShallow = (nextOrGetNext) => {

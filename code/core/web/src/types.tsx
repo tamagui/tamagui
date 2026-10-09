@@ -689,6 +689,8 @@ export type TamaguiComponentStateRef = {
   // avoidReRenders: this instance's useMedia emits media changes here instead
   // of re-rendering
   mediaEmit?: (state: UseMediaState) => void
+  // a restyle from mediaEmit is queued for this event turn
+  mediaEmitQueued?: boolean
 
   // previous pseudo state for detecting enter vs exit transitions
   prevPseudoState?: {

@@ -31,7 +31,7 @@ const conf = createTamagui({
 })
 
 describe('avoidReRenders media emitter lifecycle', () => {
-  test('media styles still apply after the enter transition completes', () => {
+  test('media styles still apply after the enter transition completes', async () => {
     setMediaState({ sm: false, md: false, lg: false, xl: false, xxl: false } as any)
 
     render(
@@ -49,7 +49,8 @@ describe('avoidReRenders media emitter lifecycle', () => {
     // the media change below matter.
     emissions.length = 0
 
-    act(() => {
+    // the emitter restyles on a microtask, so the async act flushes it
+    await act(async () => {
       setMediaState({ sm: true, md: false, lg: false, xl: false, xxl: false } as any)
       updateMediaListeners()
     })
@@ -59,7 +60,7 @@ describe('avoidReRenders media emitter lifecycle', () => {
     expect(last!.style.backgroundColor).toBe('red')
   })
 
-  test('a media change emits once per subscribed sibling, never per sibling pair', () => {
+  test('a media change emits once per subscribed sibling, never per sibling pair', async () => {
     setMediaState({ sm: false, md: false, lg: false, xl: false, xxl: false } as any)
     const count = 6
 
@@ -72,7 +73,8 @@ describe('avoidReRenders media emitter lifecycle', () => {
     )
     emissions.length = 0
 
-    act(() => {
+    // the emitter restyles on a microtask, so the async act flushes it
+    await act(async () => {
       setMediaState({ sm: true, md: false, lg: false, xl: false, xxl: false } as any)
       updateMediaListeners()
     })
@@ -81,5 +83,32 @@ describe('avoidReRenders media emitter lifecycle', () => {
     expect(emissions.every((emission) => emission.style.backgroundColor === 'red')).toBe(
       true
     )
+  })
+
+  test('keys that flip in one turn restyle each component once, at the settled media', async () => {
+    setMediaState({ sm: false, md: false, lg: false, xl: false, xxl: false } as any)
+    const count = 6
+
+    render(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        {Array.from({ length: count }, (_, index) => (
+          <View key={index} transition="100ms" backgroundColor="blue sm:red md:green" />
+        ))}
+      </TamaguiProvider>
+    )
+    emissions.length = 0
+
+    // a rotation fires one matchMedia listener per changed key, each publishing
+    await act(async () => {
+      setMediaState({ sm: true, md: false, lg: false, xl: false, xxl: false } as any)
+      updateMediaListeners()
+      setMediaState({ sm: true, md: true, lg: false, xl: false, xxl: false } as any)
+      updateMediaListeners()
+    })
+
+    expect(emissions).toHaveLength(count)
+    expect(
+      emissions.every((emission) => emission.style.backgroundColor === 'green')
+    ).toBe(true)
   })
 })

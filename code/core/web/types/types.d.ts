@@ -347,6 +347,7 @@ export type TamaguiComponentStateRef = {
     nextMedia?: UseMediaState;
     avoidReRenders?: boolean;
     mediaEmit?: (state: UseMediaState) => void;
+    mediaEmitQueued?: boolean;
     prevPseudoState?: {
         hover?: boolean;
         press?: boolean;

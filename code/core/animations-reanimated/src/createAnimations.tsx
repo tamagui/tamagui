@@ -853,6 +853,24 @@ type TransitionConfigResult = {
 
 const defaultConfig: TransitionConfig = { type: 'spring' }
 
+// one Easing.bezier worklet per easing: a fresh worklet re-serializes to the
+// UI runtime every time configRef is written, and a render or emit rebuilds
+// every key's config (an inline transition object resolves anew each render)
+const bezierEasings = new Map<string, ReturnType<typeof Easing.bezier> | undefined>()
+
+function bezierEasing(easing: string) {
+  if (!bezierEasings.has(easing)) {
+    // a `linear()` or `steps()` easing has no bezier form, so leave it to
+    // reanimated's default rather than applying something that isn't it.
+    const bezier = easingToBezier(easing)
+    bezierEasings.set(
+      easing,
+      bezier ? Easing.bezier(bezier[0], bezier[1], bezier[2], bezier[3]) : undefined
+    )
+  }
+  return bezierEasings.get(easing)
+}
+
 /** one resolved entry as reanimated's own animation config */
 function entryToReanimated(entry: ResolvedEntry): TransitionConfig {
   if (entry.timing.kind === 'spring') {
@@ -864,16 +882,11 @@ function entryToReanimated(entry: ResolvedEntry): TransitionConfig {
       delay: entry.delayMs || undefined,
     }
   }
-  const bezier = easingToBezier(entry.timing.easing)
   return {
     type: 'timing',
     duration: entry.timing.durationMs,
-    // Easing.bezier returns a worklet, which is what withTiming wants. a
-    // `linear()` or `steps()` easing has no bezier form, so leave it to
-    // reanimated's default rather than applying something that isn't it.
-    easing: bezier
-      ? Easing.bezier(bezier[0], bezier[1], bezier[2], bezier[3])
-      : undefined,
+    // Easing.bezier returns a worklet, which is what withTiming wants
+    easing: bezierEasing(entry.timing.easing),
     delay: entry.delayMs || undefined,
   }
 }
@@ -911,6 +924,38 @@ function buildTransitionConfig(
 }
 
 const instantConfig = (): TransitionConfig => ({ type: 'timing', duration: 0 })
+
+type DriverConfig = {
+  baseConfig: TransitionConfig
+  propertyConfigs: Record<string, TransitionConfig>
+  disableAnimation: boolean
+  isHydrating: boolean
+}
+
+// configs are flat (numbers plus a shared easing worklet), so a shallow
+// compare is exact
+function sameTransitionConfig(a: TransitionConfig, b: TransitionConfig) {
+  const aKeys = Object.keys(a)
+  if (aKeys.length !== Object.keys(b).length) return false
+  for (const key of aKeys) {
+    if (a[key as keyof TransitionConfig] !== b[key as keyof TransitionConfig]) return false
+  }
+  return true
+}
+
+function sameDriverConfig(a: DriverConfig, b: DriverConfig) {
+  if (a.disableAnimation !== b.disableAnimation || a.isHydrating !== b.isHydrating) {
+    return false
+  }
+  if (!sameTransitionConfig(a.baseConfig, b.baseConfig)) return false
+  const aKeys = Object.keys(a.propertyConfigs)
+  if (aKeys.length !== Object.keys(b.propertyConfigs).length) return false
+  for (const key of aKeys) {
+    const other = b.propertyConfigs[key]
+    if (!other || !sameTransitionConfig(a.propertyConfigs[key], other)) return false
+  }
+  return true
+}
 
 /**
  * Extracts all style keys including transform sub-properties.
@@ -1621,20 +1666,26 @@ export function createAnimations<A extends AnimationsConfig>(
 
       // Store config in SharedValue for worklet access (concurrent-safe)
       // Using useEffect to avoid writing to shared value during render
-      const configRef = useSharedValue({
+      const renderConfig: DriverConfig = {
         baseConfig,
         propertyConfigs,
         disableAnimation,
         isHydrating,
-      })
+      }
+      const configRef = useSharedValue(renderConfig)
+      // the last config written from JS. every write serializes it to the UI
+      // runtime and wakes the style mapper, and a render rebuilds the config
+      // whenever animatedStyles changes identity, so writes that change
+      // nothing are skipped (the mount write repeats the seed above)
+      const writtenConfigRef = useRef(renderConfig)
+      const writeConfig = (next: DriverConfig) => {
+        if (sameDriverConfig(writtenConfigRef.current, next)) return
+        writtenConfigRef.current = next
+        configRef.value = next
+      }
 
       useIsomorphicLayoutEffect(() => {
-        configRef.value = {
-          baseConfig,
-          propertyConfigs,
-          disableAnimation,
-          isHydrating,
-        }
+        writeConfig(renderConfig)
       }, [baseConfig, propertyConfigs, disableAnimation, isHydrating])
 
       // only the style the mapper is actually reading may move the ratio: while
@@ -1682,19 +1733,19 @@ export function createAnimations<A extends AnimationsConfig>(
           getStyleKeys(nextStyle)
         )
 
-        // update configRef with the new config
-        configRef.value = {
+        const written = writtenConfigRef.current
+        writeConfig({
           baseConfig: newBase,
           propertyConfigs: newPropertyConfigs,
-          disableAnimation: configRef.value.disableAnimation,
-          isHydrating: configRef.value.isHydrating,
-        }
+          disableAnimation: written.disableAnimation,
+          isHydrating: written.isHydrating,
+        })
 
         const previousKeys = emitterKeysRef.current ?? committedRenderKeysRef.current
         const { animated, statics } = splitAnimationStyles(
           nextStyle,
           isDark,
-          configRef.value.disableAnimation
+          written.disableAnimation
         )
         // the emitted style resolves its own leading: a pseudo can replace a
         // ratio with a length, which unbinds the product for as long as it holds
