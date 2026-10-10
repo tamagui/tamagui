@@ -208,6 +208,7 @@ jobs:
             -sdk 'iphonesimulator' \
             -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath build \
+            ARCHS=arm64 ONLY_ACTIVE_ARCH=YES \
             RCT_REMOVE_LEGACY_ARCH=1 \
             | tee xcodebuild.log | xcpretty
 
