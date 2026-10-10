@@ -1,12 +1,10 @@
 import {
-  autoUpdate,
   inner,
   offset,
   size,
   useClick,
   useFloatingRaw as useFloatingDom,
   useInteractions,
-  useInnerOffset,
   useListNavigation,
   useRole,
   useTypeahead,
@@ -37,7 +35,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   const selectItemParentContext = useSelectItemParentContext(scope)
   const { setActiveIndex, selectedIndex, activeIndexRef } = selectContext
 
-  const { requestOpenChange, registry } = selectItemParentContext
+  const { requestOpenChange, registry, lastPointerRef } = selectItemParentContext
 
   const touch = useIsTouchDevice()
 
@@ -56,7 +54,6 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
 
   const [controlledScrolling, setControlledScrolling] = React.useState(false)
   const [fallback, setFallback] = React.useState(false)
-  const [innerOffset, setInnerOffset] = React.useState(0)
   const [blockSelection, setBlockSelection] = React.useState(false)
 
   React.useEffect(() => {
@@ -97,7 +94,6 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   } = useFloatingDom({
     open,
     placement: 'bottom-start',
-    whileElementsMounted: autoUpdate,
     // The removed alternate stack was the logic from floating-ui,
     // but it causes issues (open, drag select, close, then re-open its not positioned "over")
     // https://github.com/floating-ui/floating-ui/blob/master/packages/react/test/visual/components/MacSelect.tsx
@@ -112,7 +108,6 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         listRef: listItemsRef,
         overflowRef,
         index: selectedIndex,
-        offset: innerOffset,
         onFallbackChange: setFallback,
         padding: 10,
         minItemsVisible: touch ? 10 : 4,
@@ -137,11 +132,16 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
 
   const showUpArrow = open && canScrollUp
   const showDownArrow = open && canScrollDown
-  const isScrollable = showDownArrow || showUpArrow
 
-  // autoUpdate handles resize and scroll while mounted; this covers the open
+  // the list is placed once per open, not kept in sync: the inner middleware
+  // scrolls the list to align the selected item, so recomputing on a page
+  // scroll would yank the list out from under the user's own scroll. the list
+  // is absolutely positioned, so it rides along with page scroll on its own.
   useIsomorphicLayoutEffect(() => {
-    if (open) update()
+    if (!open) return
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
   }, [update, open])
 
   const onMatch = useEvent((index: number) => {
@@ -194,12 +194,6 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     useClick(interactionContext, { event: 'mousedown', keyboardHandlers: false }),
     // useDismiss removed - already handled by Dismissable in SelectContent
     useRole(interactionContext, { role: 'listbox' }),
-    useInnerOffset(interactionContext, {
-      enabled: !fallback && isScrollable,
-      onChange: setInnerOffset,
-      overflowRef,
-      scrollRef: refs.floating,
-    }),
     useListNavigation(interactionContext, {
       listRef: listItemsRef,
       // items focus themselves from the active-index emitter, and the hook's
@@ -247,6 +241,15 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       getReferenceProps(props: Record<string, any> = {}) {
         return interactions.getReferenceProps({
           ...props,
+          // the press that opens is the pointer's last real position: WebKit
+          // replays a mousemove there whenever the list scrolls under it (say a
+          // keyboard move scrolling the next item into view), and that replay
+          // must not read as a hover
+          onMouseDown: composeEventHandlers(props.onMouseDown, (event: any) => {
+            const last = lastPointerRef.current
+            last.x = event.clientX
+            last.y = event.clientY
+          }),
           onKeyDown: composeEventHandlers(props.onKeyDown, (event: any) => {
             latestKeyboardEventRef.current = event.nativeEvent || event
             if (
@@ -317,7 +320,6 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }
     allowSelectRef.current = false
     allowMouseUpRef.current = true
-    setInnerOffset(0)
     setFallback(false)
     setBlockSelection(false)
   }, [open])
@@ -377,7 +379,6 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       scope={scope}
       {...(selectContext as Required<typeof selectContext>)}
       updateScrollArrows={updateScrollArrows}
-      setInnerOffset={setInnerOffset}
       fallback={fallback}
       floatingContext={floatingContext as any}
       interactions={interactionsContext}

@@ -2,7 +2,7 @@ import { AdaptPortalContents, useAdaptIsActive } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { createStyledHOC, styled, View } from '@tamagui/core'
+import { createStyledHOC, splitStyleProps, styled, View } from '@tamagui/core'
 import { needsPortalRepropagation } from '@tamagui/portal'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
@@ -25,6 +25,15 @@ export const SelectViewportFrame = styled(View, {
 })
 
 const needsRepropagation = needsPortalRepropagation()
+
+// the viewport's styles dress the floating list (a capped height, a card
+// background, border and shadow). in a sheet the sheet is the surface, so only
+// the element props carry over and the items fill the sheet. a styled() skin
+// hands its styles to this HOC as class names (web) or a style (native)
+const getSheetFrameProps = (props: Record<string, any>) => {
+  const { className, style, 'data-tamagui-hoc-class': _hocClassNames, ...rest } = props
+  return splitStyleProps(rest)[1]
+}
 
 export const SelectViewport = createStyledHOC(
   SelectViewportFrame,
@@ -86,9 +95,10 @@ export const SelectViewport = createStyledHOC(
     }
 
     if (isAdapted || !isWeb) {
+      const frameProps = isAdapted ? getSheetFrameProps(viewportProps) : viewportProps
       let content = (
         <SelectViewportFrame
-          {...viewportProps}
+          {...frameProps}
           {...(isWeb ? (getSelectListboxProps(itemContext.mode) as any) : {})}
           data-select-viewport=""
           ref={composedRefs}
@@ -165,7 +175,7 @@ const selectViewportCSS = `
 [data-select-viewport] {
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
+  overscroll-behavior: none;
 }
 
 [data-select-viewport]::-webkit-scrollbar{

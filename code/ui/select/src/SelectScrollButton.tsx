@@ -4,7 +4,6 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import type { TamaguiElement } from '@tamagui/core'
 import { composeEventHandlers } from '@tamagui/helpers'
 import * as React from 'react'
-import { flushSync } from 'react-dom'
 
 import { useSelectContext } from './context'
 import type {
@@ -68,8 +67,7 @@ const SelectScrollButtonImpl = React.memo(
       const { scope, dir, partClassName, ...scrollIndicatorProps } = props
       const { className, onPointerEnter, onPointerLeave, ...frameProps } =
         scrollIndicatorProps
-      const { open, fallback, updateScrollArrows, setInnerOffset, ...context } =
-        useSelectContext(scope)
+      const { open, ...context } = useSelectContext(scope)
       const floatingRef = context.floatingContext?.refs.floating
 
       const statusRef = React.useRef<'idle' | 'active'>('idle')
@@ -84,7 +82,7 @@ const SelectScrollButtonImpl = React.memo(
         },
         placement: dir === 'up' ? 'top' : 'bottom',
         middleware: [offset(({ rects }) => -rects.floating.height)],
-        whileElementsMounted: (...args) => autoUpdate(...args, { animationFrame: true }),
+        whileElementsMounted: autoUpdate,
       })
 
       const setFloatingRef = React.useCallback(
@@ -101,19 +99,6 @@ const SelectScrollButtonImpl = React.memo(
 
       if (!isVisible) {
         return null
-      }
-
-      const onScroll = (amount: number) => {
-        const floating = floatingRef
-        if (!floating) return
-        if (fallback) {
-          if (floating.current) {
-            floating.current.scrollTop -= amount
-            updateScrollArrows!()
-          }
-        } else {
-          flushSync(() => setInnerOffset!((value) => value - amount))
-        }
       }
 
       return (
@@ -151,11 +136,11 @@ const SelectScrollButtonImpl = React.memo(
                     : element.scrollTop + pixelsToScroll <
                       element.scrollHeight - element.clientHeight
 
-                onScroll(
+                // the viewport's own scroll handler flips the arrows
+                element.scrollTop +=
                   dir === 'up'
-                    ? Math.min(pixelsToScroll, remainingPixels)
-                    : Math.max(-pixelsToScroll, -remainingPixels)
-                )
+                    ? -Math.min(pixelsToScroll, remainingPixels)
+                    : Math.min(pixelsToScroll, remainingPixels)
 
                 if (scrollRemaining) {
                   frameRef.current = requestAnimationFrame(frame)
