@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/native-registry",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Generic native style registry: zero-re-render style updates via Fabric ShadowTree commits",
   "type": "module",
   "sideEffects": false,
