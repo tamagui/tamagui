@@ -7,7 +7,14 @@
   "sideEffects": false,
   "main": "./dist/cjs/index.cjs",
   "module": "./dist/esm/index.mjs",
-  "react-native": "./dist/esm/index.native.js",
+  "react-native": {
+    "./dist/cjs/index.cjs": "./dist/esm/index.native.js",
+    "./builder": "./dist/esm/builder.native.js",
+    "./v5": "./dist/esm/v5.native.js",
+    "./v5-color-scales": "./dist/esm/v5-color-scales.native.js",
+    "./v5-subtle": "./dist/esm/v5-subtle.native.js",
+    "./v5-tokens": "./dist/esm/v5-tokens.native.js"
+  },
   "types": "./types/index.d.ts",
   "files": [
     "src",

@@ -1,0 +1,10 @@
+--- a/package.json
++++ b/package.json
+@@ -27,5 +27,6 @@
+     "!**/__fixtures__/**",
+     "!**/__mocks__/**",
+     "!**/__tests__/**"
+-  ]
++  ],
++  "main": "./src/index.js"
+ }

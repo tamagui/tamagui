@@ -43,7 +43,11 @@ config.resolver.resolveRequest = (context, moduleName, platform) => {
     (platform === 'ios' || platform === 'android') &&
     /^@react-native\/assets-registry\/registry(\.js)?$/.test(moduleName)
   ) {
-    return context.resolveRequest(context, 'react-native/asset-registry', platform)
+    return context.resolveRequest(
+      context,
+      require.resolve('react-native/asset-registry'),
+      platform
+    )
   }
 
   try {
