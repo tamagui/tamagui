@@ -227,6 +227,22 @@ export default {
         skewProtection: 'proactive',
         experimental_scriptLoading: 'after-lcp-aggressive',
         redirects,
+        // one build writes dist/client/sitemap.xml from the same route list
+        // it renders. versioned component urls stay reachable but only the
+        // latest is indexed; /bento/* and /theme/* are client-rendered shell
+        // pseudo-paths, and /demo/* and /draft are not site content.
+        sitemap: {
+          baseUrl: 'https://tamagui.dev',
+          exclude: [
+            '/draft',
+            '/demo/*',
+            '/bento/*',
+            '/theme/*',
+            '/ui/*/*',
+            '/styled-ui/*/*',
+            '/tailwind-ui/*/*',
+          ],
+        },
       },
     }),
 

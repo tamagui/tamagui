@@ -11,6 +11,7 @@ import {
   getComponentVersions,
 } from '../features/docs/docsSourceFiles'
 import { redirects } from '../redirects'
+import { normalizeSitemapXml } from './sitemap'
 
 const out = path.join(process.cwd(), 'dist/client')
 const bentoSourceDir = path.resolve(process.cwd(), '../bento/src')
@@ -180,6 +181,17 @@ write(
 
 const bento = writeBentoFiles()
 
+// one build writes sitemap.xml from the rendered routes (see sitemap in
+// vite.config.ts); normalize to canonical urls. a missing sitemap fails the
+// build loudly instead of shipping without one.
+const sitemapPath = path.join(out, 'sitemap.xml')
+if (!fs.existsSync(sitemapPath)) {
+  throw new Error('static: one build did not write dist/client/sitemap.xml')
+}
+const sitemap = normalizeSitemapXml(fs.readFileSync(sitemapPath, 'utf-8'))
+fs.writeFileSync(sitemapPath, sitemap)
+const sitemapUrls = (sitemap.match(/<loc>/g) || []).length
+
 console.info(
-  `static: ${redirects.length} redirects, ${spaRewrites.length} client-rendered routes, ${bento.showcaseFiles} Bento showcases, ${bento.sourceFiles} source files`
+  `static: ${redirects.length} redirects, ${spaRewrites.length} client-rendered routes, ${bento.showcaseFiles} Bento showcases, ${bento.sourceFiles} source files, ${sitemapUrls} sitemap urls`
 )
