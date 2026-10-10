@@ -112,7 +112,7 @@ describe('styled() tests', () => {
     expect(output.styles).toContain('height:var(--c-size-10)')
     expect(output.styles).toContain('border-top-left-radius:var(--c-radius-xl)')
     expect(output.styles).toContain('border-top-right-radius:var(--c-radius-xl)')
-    expect(output.styles).toContain('border-top-width:var(--c-space-4)')
+    expect(output.styles).toContain('border-top-width:var(--c-borderWidth-4)')
     expect(output.styles).toContain('left:var(--c-space-0)')
     expect(output.styles).toContain('right:var(--c-space-0)')
     expect(output.styles).toContain('font-weight:700')
