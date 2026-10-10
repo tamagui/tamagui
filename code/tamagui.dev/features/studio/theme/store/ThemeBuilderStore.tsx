@@ -15,7 +15,7 @@ import type {
   ThemeSuiteItem,
   ThemeSuiteItemData,
 } from '../types'
-import { updatePreviewTheme } from '../updatePreviewTheme'
+import { clearPreviewTheme, updatePreviewTheme } from '../updatePreviewTheme'
 
 type AccentSetting = 'color' | 'inverse' | 'off'
 
@@ -122,12 +122,7 @@ export class ThemeBuilderStore {
     bentoStore.themeSuiteVersion = 0
     this.currentThemeId = ''
     this.currentQuery = ''
-    if (typeof document !== 'undefined') {
-      const style = document.getElementById('t_theme_style_themes')
-      if (style) {
-        style.textContent = ''
-      }
-    }
+    clearPreviewTheme()
     this.save()
   }
 

@@ -27,6 +27,19 @@ const themeCache = new Map<
   }
 >()
 
+const styleId = 't_theme_style_themes'
+
+// the inserted css and the cache describe the same state, so they reset together
+export function clearPreviewTheme() {
+  themeCache.clear()
+  if (typeof document !== 'undefined') {
+    const style = document.getElementById(styleId)
+    if (style) {
+      style.textContent = ''
+    }
+  }
+}
+
 export async function updatePreviewTheme(
   args: BuildThemeSuiteProps & {
     id: string
@@ -99,18 +112,20 @@ export async function updatePreviewTheme(
       rules.push(`${selectors.join(',\n')} {\n  ${decls.join(';\n  ')};\n}`)
     }
 
-    let style = document.getElementById('t_theme_style_themes') as HTMLStyleElement | null
+    let style = document.getElementById(styleId) as HTMLStyleElement | null
     if (!style) {
       style = document.createElement('style')
-      style.id = 't_theme_style_themes'
+      style.id = styleId
       document.head.appendChild(style)
     }
     style.textContent = rules.join('\n\n')
   }
 
+  // the site ships extracted css, so core emits no theme rules here; the css
+  // above is the only source and core must not replace its style element
   mutateThemes({
     themes: insertThemes,
-    batch: 'themes',
+    insertCSS: false,
   })
 
   return true

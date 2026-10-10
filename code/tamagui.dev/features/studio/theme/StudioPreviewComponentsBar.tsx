@@ -22,27 +22,12 @@ import { optionValues } from './demoOptions'
 
 export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: any }) => {
   return (
-    <XStack
-      z={100}
-      my={1}
-      items="center"
-      justify="space-between"
-      flexWrap="wrap"
-      gap="3"
-      px="3-5"
-      py="2"
-      rounded="6"
-      bg="color-2"
-      borderWidth={0.5}
-      borderColor="border-color"
-    >
-      <XStack items="center" gap="2">
-        <Paragraph size="2" color="color-10" fontWeight="600" textTransform="uppercase">
-          UI Controls:
-        </Paragraph>
-      </XStack>
+    <XStack z={100} items="center" flexWrap="wrap" gap="3">
+      <Paragraph size="1" color="color-10" fontWeight="600" textTransform="uppercase">
+        Display
+      </Paragraph>
 
-      <XStack flexWrap="wrap" items="center" gap="3">
+      <XStack flexWrap="wrap" items="center" gap="2">
         <TooltipGroup delay={{ open: 0, close: 300 }}>
           <BorderRadiusInput />
 
@@ -67,12 +52,20 @@ export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: an
 
 export default StudioPreviewComponentsBar
 
+// the unstyled item has no frame, so the studio supplies one; the selected
+// option moves onto the accent theme so it previews the accent being built
 const ToggleGroupItem = styled(ToggleGroup.Item, {
+  activeTheme: 'accent',
   height: 28,
   width: 30,
   borderRadius: '4',
-  backgroundColor: 'focus:color-10',
-  outlineWidth: 'focus-visible:0px',
+  backgroundColor: 'background hover:background-hover press:background-press',
+  borderColor: 'border-color',
+  borderWidth: 1,
+  outlineColor: 'focus-visible:outline-color',
+  outlineWidth: 'focus-visible:2px',
+  outlineStyle: 'focus-visible:solid',
+  zIndex: 'focus-visible:10',
 })
 
 export function BorderRadiusInput() {
