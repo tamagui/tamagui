@@ -32,7 +32,8 @@ const targets = (prop) => {
   if (prop === 'border-width') return (k) => /^border\w*Width$/.test(k)
   if (prop === 'border-radius') return (k) => /^border\w*Radius$/.test(k)
   if (prop === 'inset') return (k) => ['top', 'right', 'bottom', 'left'].includes(k)
-  if (prop.startsWith('inset-')) return (k) => ['top', 'right', 'bottom', 'left'].includes(k)
+  if (prop.startsWith('inset-'))
+    return (k) => ['top', 'right', 'bottom', 'left'].includes(k)
   if (/^(margin|padding)-(inline|block)/.test(prop)) {
     const b = prop.split('-')[0]
     return (k) => k.startsWith(b)

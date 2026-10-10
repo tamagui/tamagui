@@ -1,18 +1,18 @@
 name: Site
 
 # builds code/tamagui.dev as a static site and serves it from the tamagui-dev
-# cloudflare worker (code/tamagui.dev/wrangler.jsonc). a push to v3-beta
-# deploys it; a pull request into v3-beta uploads a preview version under the
+# cloudflare worker (code/tamagui.dev/wrangler.jsonc). a push to main
+# deploys it; a pull request into main uploads a preview version under the
 # alias pr-<number> and comments its url.
 
 on:
   workflow_dispatch:
   push:
     branches:
-      - v3-beta
+      - main
   pull_request:
     branches:
-      - v3-beta
+      - main
 
 permissions:
   contents: read
@@ -47,7 +47,7 @@ jobs:
       - name: Build
         working-directory: code/tamagui.dev
         env:
-          ONE_SERVER_URL: ${{ github.event_name == 'pull_request' && env.PREVIEW_URL || 'https://v3.tamagui.dev' }}
+          ONE_SERVER_URL: ${{ github.event_name == 'pull_request' && env.PREVIEW_URL || 'https://tamagui.dev' }}
         run: bun run build:static
 
       - name: Deploy

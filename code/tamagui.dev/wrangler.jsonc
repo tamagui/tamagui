@@ -7,7 +7,13 @@
     "html_handling": "drop-trailing-slash",
     "not_found_handling": "404-page"
   },
-  "routes": [{ "pattern": "v3.tamagui.dev", "custom_domain": true }],
+  // the apex and www are proxied zone records, so zone routes take them over
+  // without dns changes; v3.tamagui.dev stays for links shared during the beta
+  "routes": [
+    { "pattern": "tamagui.dev/*", "zone_name": "tamagui.dev" },
+    { "pattern": "www.tamagui.dev/*", "zone_name": "tamagui.dev" },
+    { "pattern": "v3.tamagui.dev", "custom_domain": true }
+  ],
   // pull request previews: pr-<number>-tamagui-dev.natewienert.workers.dev
   "preview_urls": true
 }
