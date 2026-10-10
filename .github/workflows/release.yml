@@ -39,6 +39,7 @@ on:
           - patch
           - minor
           - major
+          - republish
 
 permissions: {}
 
@@ -229,7 +230,7 @@ jobs:
 
   prepare_stable:
     name: Merge stable version commit
-    if: github.event_name == 'workflow_dispatch' && inputs.release != 'canary'
+    if: github.event_name == 'workflow_dispatch' && inputs.release != 'canary' && inputs.release != 'republish'
     runs-on: ubuntu-latest
     timeout-minutes: 180
     outputs:
@@ -314,7 +315,12 @@ jobs:
 
   publish_stable:
     name: Publish merged stable release
-    if: github.event_name == 'workflow_dispatch' && inputs.release != 'canary'
+    # republish retries the version main already carries, after a publish that
+    # merged its version commit but failed before npm accepted every package
+    if: >-
+      always() &&
+      github.event_name == 'workflow_dispatch' &&
+      (needs.prepare_stable.result == 'success' || inputs.release == 'republish')
     needs: prepare_stable
     runs-on: ubuntu-latest
     timeout-minutes: 90
@@ -327,11 +333,12 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-          ref: ${{ needs.prepare_stable.outputs.merged_sha }}
+          ref: ${{ needs.prepare_stable.outputs.merged_sha || github.sha }}
 
       - name: Validate merged release source
+        id: release
         env:
-          MERGED_SHA: ${{ needs.prepare_stable.outputs.merged_sha }}
+          MERGED_SHA: ${{ needs.prepare_stable.outputs.merged_sha || github.sha }}
           RELEASE_VERSION: ${{ needs.prepare_stable.outputs.version }}
         shell: bash
         run: |
@@ -340,7 +347,9 @@ jobs:
           [[ "$(git rev-parse HEAD)" == "$MERGED_SHA" ]]
           git merge-base --is-ancestor "$MERGED_SHA" origin/main
           version=$(node -p "require('./code/ui/tamagui/package.json').version")
-          [[ "$version" == "$RELEASE_VERSION" ]]
+          [[ -z "$RELEASE_VERSION" || "$version" == "$RELEASE_VERSION" ]]
+          echo "sha=$MERGED_SHA" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
       # no registry-url, for the same reason as the beta job above
       - name: Setup Node.js
@@ -363,6 +372,35 @@ jobs:
       - name: Build merged release source
         run: bun run build:force
 
+      # release.ts runs the g0 web canary against the packed tarballs
+      - name: Get Playwright version
+        id: stable-pw-version
+        run: echo "version=$(bunx playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.stable-pw-version.outputs.version }}
+
+      # playwright's archive extraction hangs on linux under node 24.16.
+      # use node 22 only for installation, then restore the release runtime.
+      - name: Setup Node.js for browser installation
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '22.23.2'
+          package-manager-cache: false
+
+      - name: Install Playwright Chromium
+        timeout-minutes: 10
+        run: bunx playwright install --with-deps chromium
+
+      - name: Restore release Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version-file: '.node-version'
+          package-manager-cache: false
+
       - name: Publish prepared version
         env:
           RELEASE_BASE_REF: ${{ needs.prepare_stable.outputs.base_ref }}
@@ -371,8 +409,8 @@ jobs:
       - name: Push stable tag
         env:
           GH_TOKEN: ${{ github.token }}
-          MERGED_SHA: ${{ needs.prepare_stable.outputs.merged_sha }}
-          RELEASE_VERSION: ${{ needs.prepare_stable.outputs.version }}
+          MERGED_SHA: ${{ steps.release.outputs.sha }}
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
         shell: bash
         run: |
           set -euo pipefail
