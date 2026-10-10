@@ -257,6 +257,16 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   acceptance remains open; a quick-links tap has not changed the screen in
   local automation and requires a focused existing Detox check.
 
+- TESTED: the beta pull request deliberately skips Checks because its push
+  event owns those checks. Its skipped workflow run can be newer than the real
+  push run, causing the selected-workflow watcher to report failure or hide
+  pending validation. Selection now prefers runs that can execute before
+  comparing run IDs. A workflow with only skipped runs still fails, and the
+  selected run must succeed. The original duplicate-event probe fails before
+  repair; all nine watcher probes pass afterward, including pending, missing,
+  failed, cancelled-copy and required-only-skipped cases. Formatting and diff
+  checks pass. No CI job selection or test changes.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The
@@ -275,7 +285,8 @@ The CI watcher accepts repeated `--workflow <name>` arguments to watch only the
 required workflows. It requires every selected workflow to appear before it
 can report a verdict. Selected workflows use their newest run for the exact
 SHA and require success, so older superseded cancellations do not override
-the current result. Runtime probes reproduce the cancelled-copy failure
+the current result. Intentionally skipped duplicate event runs do not replace
+runs that execute validation; a required workflow with only skipped runs fails. Runtime probes reproduce the cancelled-copy failure
 before repair and then cover current success, failure, pending, skipped,
 missing-workflow, and unrelated-red cases. Run it detached through Team Machine, for example:
 
