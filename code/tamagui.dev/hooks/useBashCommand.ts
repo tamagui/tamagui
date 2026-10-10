@@ -189,8 +189,10 @@ export function useBashCommand(
     if (!isBash) return inputCommand.trim()
     if (isTerminalCommand) return inputCommand.trim()
 
-    const commands = inputCommand.split('&&').map((cmd) => cmd.trim())
-    const transformedCommands = commands.map((cmd) => {
+    const commands = inputCommand.split(/(&&|(?<!\\)\r\n|(?<![\\\r])\n)/)
+    const transformedCommands = commands.map((part, index) => {
+      if (index % 2 === 1) return part === '&&' ? ' && ' : part
+      const cmd = part.trim()
       const { packageManager, command, args } = parseCommand(cmd)
 
       if (stringIsInstallCommand(cmd)) {
@@ -222,7 +224,7 @@ export function useBashCommand(
       return cmd
     })
 
-    return transformedCommands.join(' && ')
+    return transformedCommands.join('')
   }
 
   const transformedCommand = transformCommand(bashText)

@@ -16,6 +16,24 @@
   "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
+    "./propertyNames": {
+      "types": "./types/propertyNames.d.ts",
+      "react-native": "./dist/esm/propertyNames.native.js",
+      "browser": "./dist/esm/propertyNames.mjs",
+      "module": "./dist/esm/propertyNames.mjs",
+      "import": "./dist/esm/propertyNames.mjs",
+      "require": "./dist/cjs/propertyNames.cjs",
+      "default": "./dist/esm/propertyNames.mjs"
+    },
+    "./transitionResolver": {
+      "types": "./types/transitionResolver.d.ts",
+      "react-native": "./dist/esm/transitionResolver.native.js",
+      "browser": "./dist/esm/transitionResolver.mjs",
+      "module": "./dist/esm/transitionResolver.mjs",
+      "import": "./dist/esm/transitionResolver.mjs",
+      "require": "./dist/cjs/transitionResolver.cjs",
+      "default": "./dist/esm/transitionResolver.mjs"
+    },
     ".": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
@@ -37,5 +55,8 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"
+  },
+  "dependencies": {
+    "@tamagui/style-grammar": "workspace:*"
   }
 }

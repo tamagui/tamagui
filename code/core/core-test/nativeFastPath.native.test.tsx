@@ -1,0 +1,532 @@
+process.env.TAMAGUI_TARGET = 'native'
+
+// runtime fast path integration (plans/native-fast-path.md): a mock engine
+// stands in for @tamagui/native-registry, the rest is the real pipeline —
+// createComponent eligibility + linking, useThemeState interception, warm
+// cache, dropped-key null semantics, disableNativeStyle opt-out. the theme
+// listener path only engages for memoized children (same as real apps): the
+// provider re-renders on toggle but square elements keep identity.
+import { getDefaultTamaguiConfig } from '@tamagui/config-default'
+import {
+  TamaguiProvider,
+  Theme,
+  View,
+  _withNativeStyle,
+  _withStableStyle,
+  createTamagui,
+  forceUpdateThemes,
+  getMedia,
+  setMediaState,
+  setNativeStyleEngine,
+  styled,
+  updateMediaListeners,
+  type NativeStyleEngine,
+  type NativeStyleEngineSlots,
+  type NativeViewStateTableUpdate,
+  type NativeViewStateUpdate,
+} from '@tamagui/core'
+import { act, render } from '@testing-library/react-native'
+import React, { forwardRef, useMemo, useState } from 'react'
+import { View as NativeView } from 'react-native'
+import { afterEach, beforeEach, expect, test } from 'vitest'
+
+const config = createTamagui(getDefaultTamaguiConfig('native'))
+
+const Square = styled(View, {
+  width: 10,
+  height: 10,
+  backgroundColor: 'background',
+  borderColor: 'color',
+})
+
+type Batch = NativeViewStateUpdate[]
+
+function createMockEngine() {
+  const batches: Batch[] = []
+  const tableBatches: NativeViewStateTableUpdate[][] = []
+  const broadcasts: [string, string][] = []
+  const links: {
+    id: number
+    scopeId: string
+    slots: NativeStyleEngineSlots
+    activeState: string
+  }[] = []
+  let nextId = 1
+  const engine: NativeStyleEngine = {
+    link: (_ref, slots, scopeId = '') => {
+      const linked = { id: nextId++, scopeId, slots, activeState: '' }
+      links.push(linked)
+      return {
+        id: linked.id,
+        unlink: () => {
+          const index = links.indexOf(linked)
+          if (index >= 0) links.splice(index, 1)
+        },
+      }
+    },
+    applyViewStates: (entries) => {
+      batches.push(entries)
+      for (const entry of entries) {
+        const linked = links.find(({ id }) => id === entry.id)
+        if (!linked) continue
+        if (entry.props) (linked.slots.state ||= {})[entry.state] = entry.props
+        linked.activeState = entry.state
+      }
+    },
+    updateViewStateTables: (entries) => {
+      tableBatches.push(entries)
+      for (const entry of entries) {
+        const linked = links.find(({ id }) => id === entry.id)
+        if (linked) (linked.slots.state ||= {})[entry.state] = entry.props
+      }
+    },
+    processStyleColors: (props) => props,
+    setStateName: (stateName, scopeId = '') => {
+      broadcasts.push([scopeId, stateName])
+    },
+    removeScope: () => {},
+  }
+  return {
+    engine,
+    batches,
+    broadcasts,
+    links,
+    tableBatches,
+    entries: () => batches.flat(),
+    tableEntries: () => tableBatches.flat(),
+  }
+}
+
+let mock: ReturnType<typeof createMockEngine>
+
+beforeEach(() => {
+  mock = createMockEngine()
+  setNativeStyleEngine(mock.engine)
+})
+
+afterEach(() => {
+  setNativeStyleEngine(null)
+})
+
+let setSub: (sub: string) => void
+let bumpRender: () => void
+
+function Harness({ extraProps }: { extraProps?: Record<string, unknown> }) {
+  const [sub, _setSub] = useState('red')
+  const [bump, setBump] = useState(0)
+  setSub = _setSub
+  bumpRender = () => setBump((b) => b + 1)
+  const squares = useMemo(
+    () => <Square testID="sq" {...extraProps} margin={bump % 2 ? 3 : 2} />,
+    [bump, extraProps]
+  )
+  return (
+    <TamaguiProvider config={config} defaultTheme="dark">
+      <Theme name={sub as any}>{squares}</Theme>
+    </TamaguiProvider>
+  )
+}
+
+const flush = async () => {
+  // queueNativeViewState flushes in a microtask
+  await act(async () => {})
+}
+
+test('theme toggle commits through the engine with zero re-renders', async () => {
+  const tree = render(<Harness />, { createNodeMock: () => ({}) })
+  await flush()
+  expect(mock.entries()).toHaveLength(0)
+
+  const before = JSON.stringify(tree.toJSON())
+
+  await act(async () => setSub('blue'))
+  await flush()
+
+  // one batch, one cold entry carrying the recomputed style
+  const entries = mock.entries()
+  expect(entries).toHaveLength(1)
+  expect(entries[0].state).toBe('dark_blue')
+  expect(entries[0].props?.backgroundColor).toBe(
+    (config.themes.dark_blue.background as any).val
+  )
+  // border colors expand per-side in computed styles
+  expect(entries[0].props?.borderTopColor).toBe(
+    (config.themes.dark_blue.color as any).val
+  )
+
+  // the React tree did NOT re-render: it still holds the old committed style
+  // (the engine, not React, owns the visual update on this path)
+  expect(JSON.stringify(tree.toJSON())).toBe(before)
+})
+
+test('re-toggling a pushed theme is warm: bare entry, no style computation', async () => {
+  render(<Harness />, { createNodeMock: () => ({}) })
+  await act(async () => setSub('blue'))
+  await flush()
+  await act(async () => setSub('red'))
+  await flush()
+  await act(async () => setSub('blue'))
+  await flush()
+
+  const entries = mock.entries()
+  expect(entries).toHaveLength(3)
+  // the initial render's theme (dark_red) was never pushed, so the first
+  // toggle back is cold too; only the SECOND visit to dark_blue is warm
+  expect(entries[1].state).toBe('dark_red')
+  expect(entries[1].props).toBeTruthy()
+  expect(entries[2]).toEqual({ id: entries[0].id, state: 'dark_blue' })
+})
+
+test('a real re-render resets the warm cache', async () => {
+  render(<Harness />, { createNodeMock: () => ({}) })
+  await act(async () => setSub('blue'))
+  await flush()
+  await act(async () => bumpRender())
+  await act(async () => setSub('red'))
+  await flush()
+
+  const entries = mock.entries()
+  // both toggles cold: the re-render invalidated the pushed set
+  expect(entries).toHaveLength(2)
+  expect(entries.every((e) => !!e.props)).toBe(true)
+})
+
+test('keys dropped by a re-render are pushed as null resets', async () => {
+  const tree = render(<Harness extraProps={{ borderWidth: 4 }} />, {
+    createNodeMock: () => ({}),
+  })
+  await act(async () => setSub('blue'))
+  await flush()
+  expect(mock.entries()[0].props?.borderTopWidth).toBe(4)
+
+  // re-render without borderWidth: the render itself must re-push with a
+  // null reset so RN's sticky nativeProps merge cannot resurrect the 4
+  tree.rerender(<Harness />, { createNodeMock: () => ({}) })
+  await flush()
+
+  const entries = mock.entries()
+  const last = entries[entries.length - 1]
+  expect(last.props).toBeTruthy()
+  expect(last.props!.borderTopWidth).toBeNull()
+})
+
+test('disableNativeStyle opts out: no entries, normal re-render', async () => {
+  const tree = render(<Harness extraProps={{ disableNativeStyle: true }} />, {
+    createNodeMock: () => ({}),
+  })
+  await flush()
+  const before = JSON.stringify(tree.toJSON())
+
+  await act(async () => setSub('blue'))
+  await flush()
+
+  expect(mock.entries()).toHaveLength(0)
+  // the tree re-rendered with the new theme color
+  expect(JSON.stringify(tree.toJSON())).not.toBe(before)
+  expect(JSON.stringify(tree.toJSON())).toContain(
+    (config.themes.dark_blue.background as any).val
+  )
+})
+
+test('compiled mappings resolve once on first activation, then use scope broadcasts', async () => {
+  let hostRenders = 0
+  const Host = forwardRef<any, any>((props, ref) => {
+    hostRenders++
+    return <NativeView ref={ref} {...props} />
+  })
+  const CompiledSquare = _withNativeStyle(
+    Host,
+    { width: 10, height: 10 },
+    { backgroundColor: 'background', borderColor: 'color' }
+  )
+  let setCompiledSub: (sub: 'red' | 'blue') => void = () => {}
+
+  function CompiledHarness() {
+    const [sub, setSubState] = useState<'red' | 'blue'>('red')
+    setCompiledSub = setSubState
+    const square = useMemo(() => <CompiledSquare testID="compiled" />, [])
+    return (
+      <TamaguiProvider config={config} defaultTheme="dark">
+        <Theme name={sub}>{square}</Theme>
+      </TamaguiProvider>
+    )
+  }
+
+  render(<CompiledHarness />, { createNodeMock: () => ({}) })
+  expect(hostRenders).toBe(1)
+  expect(mock.links).toHaveLength(1)
+  expect(Object.keys(mock.links[0].slots.state!)).toEqual(['dark_red'])
+
+  await act(async () => setCompiledSub('blue'))
+  expect(hostRenders).toBe(1)
+  expect(mock.tableEntries()).toEqual([
+    {
+      id: mock.links[0].id,
+      state: 'dark_blue',
+      props: {
+        backgroundColor: (config.themes.dark_blue.background as any).val,
+        borderColor: (config.themes.dark_blue.color as any).val,
+      },
+    },
+  ])
+  expect(mock.entries()).toEqual([])
+  expect(mock.broadcasts.at(-1)?.[1]).toBe('dark_blue')
+
+  await act(async () => setCompiledSub('red'))
+  expect(hostRenders).toBe(1)
+  expect(mock.tableEntries()).toHaveLength(1)
+  expect(mock.broadcasts.at(-1)?.[1]).toBe('dark_red')
+})
+
+test('compiled mapping fallback renders the same live styles as the stable helper', async () => {
+  setNativeStyleEngine(null)
+  const base = { width: 10, height: 10 }
+  const mapping = { backgroundColor: 'background', borderColor: 'color' }
+  const CompiledFallback = _withNativeStyle(NativeView, base, mapping)
+  const Stable = _withStableStyle(
+    NativeView,
+    (theme) => [
+      base,
+      {
+        backgroundColor: theme.background?.get(),
+        borderColor: theme.color?.get(),
+      },
+    ],
+    true,
+    false
+  )
+
+  const readStyles = async (Component: React.ComponentType<any>) => {
+    let setFallbackSub: (sub: 'red' | 'blue') => void = () => {}
+    function FallbackHarness() {
+      const [sub, setSubState] = useState<'red' | 'blue'>('red')
+      setFallbackSub = setSubState
+      return (
+        <TamaguiProvider config={config} defaultTheme="dark">
+          <Theme name={sub}>
+            <Component testID="fallback" />
+          </Theme>
+        </TamaguiProvider>
+      )
+    }
+    const tree = render(<FallbackHarness />, { createNodeMock: () => ({}) })
+    const before = tree.UNSAFE_getByType(NativeView).props.style
+    await act(async () => setFallbackSub('blue'))
+    const after = tree.UNSAFE_getByType(NativeView).props.style
+    tree.unmount()
+    return { before, after }
+  }
+
+  expect(await readStyles(CompiledFallback)).toEqual(await readStyles(Stable))
+})
+
+test('compiled mappings refresh the active native table after a theme mutation', async () => {
+  let hostRenders = 0
+  const Host = forwardRef<any, any>((props, ref) => {
+    hostRenders++
+    return <NativeView ref={ref} {...props} />
+  })
+  const CompiledSquare = _withNativeStyle(Host, {}, { backgroundColor: 'background' })
+  const square = <CompiledSquare />
+  const original = config.themes.dark_red
+
+  render(
+    <TamaguiProvider config={config} defaultTheme="dark">
+      <Theme name="red">{square}</Theme>
+    </TamaguiProvider>,
+    { createNodeMock: () => ({}) }
+  )
+
+  try {
+    config.themes.dark_red = {
+      ...original,
+      background: config.themes.dark_blue.background,
+    }
+    await act(async () => forceUpdateThemes())
+
+    expect(hostRenders).toBe(1)
+    expect(mock.tableEntries().at(-1)).toEqual({
+      id: mock.links[0].id,
+      state: 'dark_red',
+      props: {
+        backgroundColor: (config.themes.dark_blue.background as any).val,
+      },
+    })
+  } finally {
+    config.themes.dark_red = original
+    await act(async () => forceUpdateThemes())
+  }
+})
+
+// reproduces the on-device rotation bug: styleProps.mediaState is a
+// mount-time snapshot in first-render mode (the native default), so media
+// recomputes must resolve against the live global media state — and a real
+// dimension change fires one listener pass per configured media key, which
+// must coalesce into a single recompute
+test('a media flip recomputes fresh styles and null-resets sm-only keys', async () => {
+  const smWas = getMedia().sm
+  render(
+    // minHeight exists ONLY under sm; borderWidth has a base, so it changes
+    // value instead of nulling
+    <Harness extraProps={{ minHeight: 'sm:70', borderWidth: '2 sm:6' }} />,
+    { createNodeMock: () => ({}) }
+  )
+  await flush()
+
+  try {
+    await act(async () => {
+      // a dimension change updates each configured key separately, notifying
+      // listeners after every one — the exact storm rotation produces
+      setMediaState({ ...getMedia(), sm: true })
+      updateMediaListeners()
+      setMediaState({ ...getMedia(), md: !getMedia().md })
+      updateMediaListeners()
+      setMediaState({ ...getMedia(), lg: !getMedia().lg })
+      updateMediaListeners()
+    })
+    await flush()
+
+    // coalesced: one cold entry for the whole storm, computed under sm
+    const activated = mock.entries()
+    expect(activated).toHaveLength(1)
+    expect(activated[0].props?.minHeight).toBe(70)
+    // string candidates resolve through the size token scale, so assert the
+    // sm value applied without pinning the token's numeric value
+    const smBorder = activated[0].props?.borderTopWidth
+    expect(smBorder).toBeTypeOf('number')
+
+    await act(async () => {
+      setMediaState({ ...getMedia(), sm: false })
+      updateMediaListeners()
+    })
+    await flush()
+
+    const deactivated = mock.entries().at(-1)!
+    expect(deactivated.props?.minHeight).toBe(null)
+    expect(deactivated.props?.borderTopWidth).toBeTypeOf('number')
+    expect(deactivated.props?.borderTopWidth).not.toBe(smBorder)
+  } finally {
+    setMediaState({ ...getMedia(), sm: smWas })
+  }
+})
+
+// the engine's color transport (srgb maps for Fabric's C++ prop parser) must
+// never reach React: RN's JS style normalizer misreads it. render props stay
+// raw, link slots and table updates carry the processed form
+test('compiled mapping render props keep raw colors while engine tables carry processed colors', async () => {
+  const processed = (value: unknown) => ({ space: 'srgb', from: value })
+  mock.engine.processStyleColors = (props) => {
+    const out: Record<string, unknown> = {}
+    for (const key in props) {
+      out[key] = typeof props[key] === 'string' ? processed(props[key]) : props[key]
+    }
+    return out
+  }
+  const CompiledSquare = _withNativeStyle(
+    NativeView,
+    { width: 10 },
+    { backgroundColor: 'background', borderColor: 'color' }
+  )
+  let setCompiledSub: (sub: 'red' | 'blue') => void = () => {}
+  function CompiledHarness() {
+    const [sub, setSubState] = useState<'red' | 'blue'>('red')
+    setCompiledSub = setSubState
+    const square = useMemo(() => <CompiledSquare testID="compiled" />, [])
+    return (
+      <TamaguiProvider config={config} defaultTheme="dark">
+        <Theme name={sub}>{square}</Theme>
+      </TamaguiProvider>
+    )
+  }
+
+  const tree = render(<CompiledHarness />, { createNodeMock: () => ({}) })
+  const red = config.themes.dark_red as any
+  const blue = config.themes.dark_blue as any
+
+  const [, rendered] = tree.UNSAFE_getByType(NativeView).props.style
+  expect(rendered).toEqual({
+    backgroundColor: red.background.val,
+    borderColor: red.color.val,
+  })
+  expect(mock.links).toHaveLength(1)
+  expect(mock.links[0].slots.state).toEqual({
+    dark_red: {
+      backgroundColor: processed(red.background.val),
+      borderColor: processed(red.color.val),
+    },
+  })
+
+  await act(async () => setCompiledSub('blue'))
+  expect(mock.tableEntries()).toEqual([
+    {
+      id: mock.links[0].id,
+      state: 'dark_blue',
+      props: {
+        backgroundColor: processed(blue.background.val),
+        borderColor: processed(blue.color.val),
+      },
+    },
+  ])
+})
+
+// a scope can advance (its layout effect runs) after a concurrent render
+// captured the theme but before that render's host ref attaches. the engine's
+// link() only stores tables and never commits, so the link must use the live
+// scope state and commit that table once, or React's stale colors survive
+test('a host linking after its scope advanced links to the live theme and commits it once', async () => {
+  let hostRenders = 0
+  let attachRef: () => void = () => {}
+  const DeferredHost = forwardRef<any, any>((props, ref) => {
+    hostRenders++
+    attachRef = () => (ref as (node: unknown) => void)({ deferred: true })
+    return <NativeView {...props} />
+  })
+  const CompiledSquare = _withNativeStyle(
+    DeferredHost,
+    { width: 10 },
+    { backgroundColor: 'background' }
+  )
+  let setCompiledSub: (sub: 'red' | 'blue') => void = () => {}
+  function CompiledHarness() {
+    const [sub, setSubState] = useState<'red' | 'blue'>('red')
+    setCompiledSub = setSubState
+    const square = useMemo(() => <CompiledSquare testID="compiled" />, [])
+    return (
+      <TamaguiProvider config={config} defaultTheme="dark">
+        <Theme name={sub}>{square}</Theme>
+      </TamaguiProvider>
+    )
+  }
+
+  render(<CompiledHarness />, { createNodeMock: () => ({}) })
+  expect(mock.links).toHaveLength(0)
+
+  // the scope moves on while the render that captured dark_red has not linked
+  await act(async () => setCompiledSub('blue'))
+  expect(hostRenders).toBe(1)
+  expect(mock.broadcasts.at(-1)?.[1]).toBe('dark_blue')
+
+  attachRef()
+  const blue = config.themes.dark_blue as any
+  expect(mock.links).toHaveLength(1)
+  // the stale dark_red table stays warm for a later toggle back; the live
+  // dark_blue table is what the link carries and commits
+  expect(Object.keys(mock.links[0].slots.state!)).toEqual(['dark_red', 'dark_blue'])
+  expect(mock.links[0].slots.state!.dark_blue).toEqual({
+    backgroundColor: blue.background.val,
+  })
+  expect(mock.tableEntries()).toEqual([
+    {
+      id: mock.links[0].id,
+      state: 'dark_blue',
+      props: { backgroundColor: blue.background.val },
+    },
+  ])
+
+  // the dark_red table the link carried is already warm: toggling back only
+  // broadcasts the state name, no table is re-sent
+  await act(async () => setCompiledSub('red'))
+  expect(mock.tableEntries()).toHaveLength(1)
+  expect(mock.broadcasts.at(-1)?.[1]).toBe('dark_red')
+  expect(hostRenders).toBe(1)
+})

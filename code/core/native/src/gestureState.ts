@@ -358,7 +358,7 @@ export function getGestureHandler(): GestureHandlerAccessor {
           const dy = touch.absoluteY - flags.moveStartY
           if (dx * dx + dy * dy <= PRESS_MOVE_CANCEL_DISTANCE_SQ) return
           // finger has travelled far enough to be a scroll/drag, not a tap.
-          // release the pressStyle now (mid-scroll, so it doesn't stay stuck)
+          // release the press state now (mid-scroll, so it doesn't stay stuck)
           // and make onEnd skip onPress on finger lift.
           flags.cancelledByMove = true
           if (flags.pressInTimer) {
@@ -385,7 +385,7 @@ export function getGestureHandler(): GestureHandlerAccessor {
             // we already fired onPressIn but lost ownership before finalize
             // (e.g. finger dragged onto a sibling pressable and that one
             // claimed ownership). fire onPressOut so callers can clear their
-            // press state - otherwise pressStyle stays stuck on this view.
+            // press state - otherwise the press clause stays stuck on this view.
             flags.didPressIn = false
             config.onPressOut?.(e)
           }

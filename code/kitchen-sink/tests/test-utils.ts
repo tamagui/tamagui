@@ -1,7 +1,7 @@
 import { test, type Page } from '@playwright/test'
 
 /** Animation drivers available for testing */
-export const ANIMATION_DRIVERS = ['css', 'native', 'reanimated', 'motion'] as const
+export const ANIMATION_DRIVERS = ['css', 'reanimated', 'motion'] as const
 export type AnimationDriver = (typeof ANIMATION_DRIVERS)[number]
 
 type SetupPageArgs = {
@@ -28,13 +28,13 @@ export async function setupPage(
     searchParams = {},
   }: SetupPageArgs
 ) {
-  // Get animation driver from: searchParams > project metadata > env var > default
+  // get animation driver from: searchParams > project metadata > env var > default
   const testInfo = test.info()
   const animationDriver =
     searchParams.animationDriver ??
     (testInfo.project?.metadata as any)?.animationDriver ??
     process.env.TAMAGUI_TEST_ANIMATION_DRIVER ??
-    'native'
+    'css'
 
   const params = new URLSearchParams({
     theme,
@@ -102,5 +102,46 @@ export async function getBoundingRect(
         io.observe(el)
       }
     )
+  }, selector)
+}
+
+export async function getComputedScale(page: Page, selector: string): Promise<number> {
+  return page.evaluate((sel) => {
+    const element = document.querySelector(sel)
+    if (!element) return Number.NaN
+    const style = getComputedStyle(element)
+    if (style.scale !== 'none') return Number.parseFloat(style.scale)
+    if (style.transform === 'none') return 1
+    return new DOMMatrixReadOnly(style.transform).a
+  }, selector)
+}
+
+export async function getComputedTranslateX(
+  page: Page,
+  selector: string
+): Promise<number> {
+  return page.evaluate((sel) => {
+    const element = document.querySelector(sel)
+    if (!element) return Number.NaN
+    const style = getComputedStyle(element)
+    if (style.translate !== 'none') return Number.parseFloat(style.translate)
+    if (style.transform === 'none') return 0
+    return new DOMMatrixReadOnly(style.transform).e
+  }, selector)
+}
+
+export async function getComputedTranslateY(
+  page: Page,
+  selector: string
+): Promise<number> {
+  return page.evaluate((sel) => {
+    const element = document.querySelector(sel)
+    if (!element) return Number.NaN
+    const style = getComputedStyle(element)
+    if (style.translate !== 'none') {
+      return Number.parseFloat(style.translate.split(' ')[1] ?? '0')
+    }
+    if (style.transform === 'none') return 0
+    return new DOMMatrixReadOnly(style.transform).f
   }, selector)
 }

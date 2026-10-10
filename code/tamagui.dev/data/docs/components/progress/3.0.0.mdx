@@ -1,0 +1,105 @@
+---
+title: Progress
+description: Show percent completion with a progress bar
+name: progress
+component: Progress
+package: progress
+demoName: Progress
+---
+
+<IntroParagraph>
+  Progress displays determinate completion with accessible values and
+  independently styled track and indicator parts.
+</IntroParagraph>
+
+<HeroContainer showAnimationDriverControl>
+  <ProgressDemo />
+</HeroContainer>
+
+```tsx hero template=Progress
+
+```
+
+<Highlights
+  features={[
+    'Sizing, theming, and animation support',
+    'Compound component API for full control',
+    <span>
+      <Link href="https://www.w3.org/TR/wai-aria-1.2/#progressbar">
+        ARIA progressbar role compliance
+      </Link>
+    </span>,
+  ]}
+/>
+
+## Installation
+
+Progress is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/progress
+```
+
+## Usage
+
+The `value` property controls the percent, but you can override it by adjusting the `x` property.
+
+```tsx
+import { Button, Progress } from 'tamagui'
+
+export default () => (
+  <Progress value={60}>
+    <Progress.Indicator transition="bouncy" />
+  </Progress>
+)
+```
+
+## API reference
+
+### Progress
+
+Progress extends [YStack](/ui/stacks), getting [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      required: false,
+      type: `'xs' | 'sm' | 'md' | 'lg' | 'xl' | SizeTokens | number`,
+      description: `A named size ("xs" to "xl", default true which matches "md") is a row in the track height table; a size token or number keeps the historical quarter-scale height.`,
+    },
+    {
+      name: 'value',
+      required: false,
+      type: 'number | null',
+      description: `Controls the percent progress.`,
+    },
+    {
+      name: 'max',
+      required: false,
+      type: 'number',
+      description: `Maximum value for calculating the percentage.`,
+    },
+    {
+      name: 'unstyled',
+      required: false,
+      type: 'boolean',
+      description: `When true, removes all default styles.`,
+    },
+  ]}
+/>
+
+### Progress.Indicator
+
+`Progress.Indicator` extends [YStack](/ui/stacks), getting [Tamagui standard props](/docs/intro/props).
+
+<PropsTable
+  data={[
+    {
+      name: 'unstyled',
+      required: false,
+      type: 'boolean',
+      description: `When true, removes all default styles.`,
+    },
+  ]}
+/>

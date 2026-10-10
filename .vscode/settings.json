@@ -20,7 +20,10 @@
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode"
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.quickSuggestions": {
+      "strings": "on"
+    }
   },
   "[css]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"

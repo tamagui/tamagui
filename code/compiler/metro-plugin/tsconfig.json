@@ -1,16 +1,19 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "composite": true
+    "composite": true,
+    "importHelpers": false,
+    "isolatedDeclarations": true,
+    "rootDir": "src"
   },
+  "include": ["src/**/*.ts"],
   "references": [
+    {
+      "path": "../compiler-core"
+    },
     {
       "path": "../static"
     }
   ],
-  "exclude": [
-    "types",
-    "dist",
-    "**/__tests__"
-  ]
+  "exclude": ["types", "dist", "test", "**/*.test.ts", "**/__tests__"]
 }

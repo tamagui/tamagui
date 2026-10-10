@@ -1,0 +1,125 @@
+import { ThemeTint } from '@tamagui/logo'
+import { Theme } from 'tamagui'
+import { getMDXComponent } from '@vxrn/mdx-rust/client'
+import React, { memo } from 'react'
+import type { LoaderProps } from 'one'
+import { useLoader } from 'one'
+import { HeadInfo } from '~/components/HeadInfo'
+import { DocsPageFrame } from '~/features/docs/DocsPageFrame'
+import { MDXProvider } from '~/features/docs/MDXProvider'
+import { MDXTabs } from '~/features/docs/MDXTabs'
+import { useDocsMenu } from '~/features/docs/useDocsMenu'
+import { useIsDocsTinted } from '~/features/docs/docsTint'
+import { components } from '~/features/mdx/MDXComponents'
+import { SubTitle } from '~/components/SubTitle'
+import { DocsTitle } from '~/components/DocsTitle'
+import { OwnedSourceBlock } from '~/features/docs/OwnedSourceBlock'
+import type { OwnedSourcePayload } from '~/features/mdx/sourceMode'
+
+export async function generateStaticParams() {
+  const { getAllFrontmatter } = await import('~/features/mdx/getMDXBySlug')
+  const frontmatters = getAllFrontmatter('data/docs/components')
+  const paths = frontmatters.map((frontmatter) => {
+    return {
+      subpath: frontmatter.slug.replace('data/docs/components/', ''),
+    }
+  })
+
+  const latestVersionPaths = paths.map((path) => {
+    const parts = path.subpath.split('/')
+    const withoutVersion = parts.slice(0, parts.length - 1)
+    return withoutVersion.join('/')
+  })
+
+  const deduped = [...new Set(latestVersionPaths)].map((subpath) => ({ subpath }))
+
+  const allPaths = [...paths, ...deduped]
+
+  return allPaths
+}
+
+export async function loader(props: LoaderProps) {
+  const { getMDXBySlug, getAllVersionsFromPath } =
+    await import('~/features/mdx/getMDXBySlug')
+  const { getDocsMode } = await import('~/features/docs/isTailwindMode')
+
+  const subpath = Array.isArray(props.params.subpath)
+    ? props.params.subpath.join('/')
+    : props.params.subpath
+  const [componentName, componentVersion] = subpath.split('/')
+  const versions = getAllVersionsFromPath(`data/docs/components/${componentName}`)
+
+  // copy-paste shows the exact skin the registry ships, which is the v3 skin:
+  // an archived version page, or a component without a skin, stays styled
+  const { getOwnedSource, loadSourceRegistry } = await import('~/features/mdx/sourceMode')
+  const isV3 = !componentVersion || componentVersion.startsWith('3.')
+  const ownedSource: OwnedSourcePayload | null = isV3
+    ? getOwnedSource(loadSourceRegistry(), componentName)
+    : null
+  const requestedMode = getDocsMode(props)
+  const mode = requestedMode === 'unstyled' && !ownedSource ? 'styled' : requestedMode
+  const source = mode === 'unstyled' ? ownedSource : null
+
+  const { frontmatter, code } = await getMDXBySlug('data/docs/components', subpath, {
+    mode,
+  })
+
+  return {
+    frontmatter: {
+      ...frontmatter,
+      version: componentVersion || versions[0],
+      versions: versions,
+      hasSourceVariant: !!ownedSource,
+    },
+    search: props.search,
+    code,
+    source,
+  }
+}
+
+export function DocComponentsPage() {
+  const { frontmatter, code, search, source } = useLoader(loader)
+  const { next, previous } = useDocsMenu()
+  const Component = React.useMemo(() => getMDXComponent(code), [code])
+
+  const GITHUB_URL = 'https://github.com'
+  const REPO_NAME = 'tamagui/tamagui'
+  const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/main/code/tamagui.dev/${frontmatter.sourcePath}.mdx`
+
+  return (
+    <DocsPageFrame
+      headings={frontmatter.headings}
+      editUrl={editUrl}
+      next={next}
+      previous={previous}
+      frontmatter={frontmatter}
+      initialSearch={search}
+    >
+      <HeadInfo
+        title={`${frontmatter.title} | Tamagui — React Native UI kit with copy-paste composable components`}
+        description={frontmatter.description || 'UI Kit'}
+      />
+
+      <DocsTitle>{frontmatter.title}</DocsTitle>
+
+      <SubTitle>{frontmatter.description || ''}</SubTitle>
+
+      <MDXProvider frontmatter={frontmatter}>
+        <DocsThemeTint>
+          <MDXTabs id="type" defaultValue="styled">
+            <Component components={components as any} />
+          </MDXTabs>
+          {source && <OwnedSourceBlock source={source} />}
+        </DocsThemeTint>
+      </MDXProvider>
+    </DocsPageFrame>
+  )
+}
+
+const DocsThemeTint = memo(({ children }: { children: any }) => {
+  const isTinted = useIsDocsTinted()
+  if (!isTinted) {
+    return <Theme name="gray">{children}</Theme>
+  }
+  return <ThemeTint>{children}</ThemeTint>
+})

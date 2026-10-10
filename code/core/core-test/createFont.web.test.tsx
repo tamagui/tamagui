@@ -31,8 +31,8 @@ const font: GenericFont = {
     3: '700',
   },
   color: {
-    1: '$colorFocus',
-    6: '$color',
+    1: 'colorFocus',
+    6: 'color',
   },
   letterSpacing: {
     5: 2,
@@ -86,12 +86,12 @@ const expectedProcessedFont: GenericFont = {
     6: '700',
   },
   color: {
-    1: '$colorFocus',
-    2: '$colorFocus',
-    3: '$colorFocus',
-    4: '$colorFocus',
-    5: '$colorFocus',
-    6: '$color',
+    1: 'colorFocus',
+    2: 'colorFocus',
+    3: 'colorFocus',
+    4: 'colorFocus',
+    5: 'colorFocus',
+    6: 'color',
   },
   letterSpacing: {
     1: 2,
@@ -130,25 +130,25 @@ describe('createFont', () => {
 })
 
 describe('getFontSized', () => {
-  // tokens are keyed by strings like "$true" / "$9", so a numeric size has no
+  // tokens are keyed by strings like "4" / "9", so a numeric size has no
   // entry in the size/lineHeight maps. Build a font with both so we can compare
   // the token path against a raw-number override.
   const sizedFont = {
     family: 'Inter',
-    size: { $true: 16, $9: 32 },
-    lineHeight: { $true: 24, $9: 38 },
+    size: { 4: 16, 9: 32 },
+    lineHeight: { 4: 24, 9: 38 },
   } as unknown as GenericFont
 
-  const extras = { font: sizedFont, fontFamily: '$body', props: {} } as any
+  const extras = { font: sizedFont, fontFamily: 'body', props: {} } as any
 
   test('a size token still pairs its fontSize with the token lineHeight', () => {
-    const style = getFontSized('$9' as any, extras) as any
+    const style = getFontSized('9' as any, extras) as any
     expect(style.fontSize).toBe(32)
     expect(style.lineHeight).toBe(38)
   })
 
   // regression for #4028: a numeric fontSize used to fall through every token
-  // lookup and return nothing, leaving the default "$true" lineHeight in place
+  // lookup and return nothing, leaving the default token lineHeight in place
   // and clipping glyph tops on iOS. It must now apply the number as a literal
   // fontSize and carry no mismatched token lineHeight.
   test('a numeric size applies as a literal fontSize and drops the token lineHeight', () => {

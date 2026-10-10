@@ -195,7 +195,7 @@
 //                     strokeLinejoin="round"
 //                     fill="none"
 //                     style={{
-//                       stroke: `var(--color9)`,
+//                       stroke: `var(--color-9)`,
 //                     }}
 //                     strokeWidth="1.5"
 //                   />
@@ -273,7 +273,7 @@
 //                       r={7}
 //                       fill="none"
 //                       style={{
-//                         stroke: `var(--color9)`,
+//                         stroke: `var(--color-9)`,
 //                       }}
 //                       strokeWidth="1.5"
 //                     />

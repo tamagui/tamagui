@@ -1,7 +1,9 @@
 import { stylePropsTextOnly, validStyles } from '@tamagui/helpers'
 
 import { createComponent } from '../createComponent'
+import { styledDynamic } from '../helpers/styledDynamic'
 import type {
+  StaticConfig,
   TamaguiTextElement,
   TextNonStyleProps,
   TextProps,
@@ -23,13 +25,10 @@ const ellipsisStyle =
         lineBreakMode: 'clip',
       }
 
-export const Text = createComponent<
-  TextProps,
-  Text,
-  TextNonStyleProps,
-  TextStylePropsBase
->({
-  componentName: 'Text',
+/**
+ * Shared by every frontend's Text — see the note on `viewStaticConfig`.
+ */
+export const textStaticConfig: StaticConfig = {
   acceptsClassName: true,
   isText: true,
 
@@ -40,25 +39,29 @@ export const Text = createComponent<
           suppressHighlighting: true,
         },
 
-  inlineWhenUnflattened: new Set(['fontFamily']),
   inlineProps: new Set(['maxFontSizeMultiplier']),
 
   variants: {
     ...(process.env.TAMAGUI_TARGET === 'web' && {
-      numberOfLines: {
-        1: ellipsisStyle,
-
-        ':number': (numberOfLines) =>
-          numberOfLines >= 1
-            ? {
-                maxWidth: '100%',
-                WebkitLineClamp: numberOfLines,
-                WebkitBoxOrient: 'vertical',
-                display: '-webkit-box',
-                overflow: 'hidden',
-              }
-            : null,
-      },
+      numberOfLines: styledDynamic<number>((numberOfLines) => {
+        if (numberOfLines === 1) {
+          return {
+            maxWidth: '100%',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }
+        }
+        return numberOfLines >= 1
+          ? {
+              maxWidth: '100%',
+              WebkitLineClamp: numberOfLines,
+              WebkitBoxOrient: 'vertical',
+              display: '-webkit-box',
+              overflow: 'hidden',
+            }
+          : null
+      }),
     }),
 
     ellipsis: {
@@ -70,4 +73,11 @@ export const Text = createComponent<
     ...validStyles,
     ...stylePropsTextOnly,
   },
-})
+}
+
+export const Text = createComponent<
+  TextProps,
+  Text,
+  TextNonStyleProps,
+  TextStylePropsBase
+>({ ...textStaticConfig, displayName: 'Text' })

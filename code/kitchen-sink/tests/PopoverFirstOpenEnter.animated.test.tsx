@@ -5,16 +5,22 @@ async function recordOpenFrames(page: Page) {
   await page.evaluate(() => {
     const frames: number[] = []
     ;(window as any).__firstOpenFrames = frames
-    const start = performance.now()
     const track = () => {
       const el = document.querySelector('[data-testid="first-open-content"]')
-      if (el) frames.push(parseFloat(getComputedStyle(el).opacity))
-      if (performance.now() - start < 600) requestAnimationFrame(track)
+      if (el) {
+        const opacity = parseFloat(getComputedStyle(el).opacity)
+        frames.push(opacity)
+        if (opacity >= 0.98) {
+          ;(window as any).__firstOpenComplete = true
+          return
+        }
+      }
+      requestAnimationFrame(track)
     }
     requestAnimationFrame(track)
   })
   await page.getByTestId('first-open-trigger').click()
-  await page.waitForTimeout(700)
+  await page.waitForFunction(() => (window as any).__firstOpenComplete === true)
   return page.evaluate(() => (window as any).__firstOpenFrames as number[])
 }
 

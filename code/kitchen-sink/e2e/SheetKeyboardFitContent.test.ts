@@ -79,7 +79,13 @@ describe('SheetKeyboardFitContent', () => {
       'keyboard reopen viewport height'
     )
 
-    await element(by.id('sheet-kb-fit-image')).swipe('up', 'slow', 0.7)
+    // scroll with the keyboard OPEN (the fit sheet is only scrollable while the
+    // keyboard's occlusion padding makes content taller than the viewport).
+    // the keyboard can overlap the image's bottom edge depending on how far the
+    // sheet translated, and detox checks hittability at the swipe's start point
+    // — so start the swipe at 30% of the image's height, clear of the keyboard.
+    // swiping the input instead doesn't work: the text field eats the gesture.
+    await element(by.id('sheet-kb-fit-image')).swipe('up', 'slow', 0.5, Number.NaN, 0.3)
     await waitFor(element(by.id('sheet-kb-fit-post')))
       .toBeVisible()
       .withTimeout(3000)

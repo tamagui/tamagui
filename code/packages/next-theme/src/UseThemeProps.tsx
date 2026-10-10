@@ -10,8 +10,6 @@ export interface UseThemeProps {
   toggle: () => void
   /** Active theme name - will return "system" if not overriden, see "resolvedTheme" for getting resolved system value */
   current?: string
-  /** @deprecated Use `current` instead (deprecating avoid confusion with useTheme) */
-  theme?: string
   /** If `enableSystem` is true and the active theme is "system", this returns whether the system preference resolved to "dark" or "light". Otherwise, identical to `theme` */
   resolvedTheme?: string
   /** If enableSystem is true, returns the System theme preference ("dark" or "light"), regardless what the active theme is */

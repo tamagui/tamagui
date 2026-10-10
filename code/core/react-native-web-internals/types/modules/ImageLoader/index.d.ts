@@ -21,7 +21,7 @@ export declare const ImageLoader: {
     load(uri: string, onLoad: Function, onError: Function): number;
     prefetch(uri: string): Promise<void>;
     queryCache(uris: Array<string>): Promise<{
-        [uri: string]: "disk/memory";
+        [uri: string]: 'disk/memory';
     }>;
 };
 //# sourceMappingURL=index.d.ts.map

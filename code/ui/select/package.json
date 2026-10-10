@@ -58,14 +58,13 @@
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-debounce": "workspace:*",
     "@tamagui/use-event": "workspace:*",
-    "@tamagui/use-previous": "workspace:*",
     "@tamagui/z-index-stack": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "react-native": "0.86.2"
+    "react-native": "0.87.1"
   },
   "peerDependencies": {
     "react": ">=19",

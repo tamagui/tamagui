@@ -1,5 +1,6 @@
 name: Build iOS Test Container App
 env:
+  ios_xcode_version: '27.0'
   # Relative path from the monorepo root to the app
   test_container_app_path: code/kitchen-sink
   # Package name in the monorepo
@@ -23,6 +24,9 @@ on:
         type: string
         description: "Either 'Debug' or 'Release'."
     outputs:
+      xcode-version:
+        description: 'The Xcode version used to build the app and run its native tests.'
+        value: ${{ jobs.build-ios.outputs.xcode-version }}
       build-hash:
         description: 'A hash to identify the build (expo fingerprint).'
         value: ${{ jobs.build-ios.outputs.build-hash }}
@@ -36,12 +40,13 @@ on:
 jobs:
   build-ios:
     name: Build
-    runs-on: macos-26
+    runs-on: xcode-27
     permissions:
       contents: read
       pull-requests: read
     timeout-minutes: 60
     outputs:
+      xcode-version: ${{ steps.select-xcode.outputs.version }}
       built-app-cache-key: ${{ steps.check-has-build.outputs.cache-primary-key || steps.pre-check-has-build.outputs.cache-primary-key }}
       build-hash: ${{ steps.calculate-fingerprint.outputs.fingerprint || steps.get-fingerprint-from-cache.outputs.fingerprint }}
       built-app-path: ${{ steps.get-built-app-path.outputs.built_app_path }}
@@ -52,11 +57,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 1
 
       - name: Set Xcode version
-        # Expo 57 requires Swift 6.3 for weak let support in expo-modules-jsi.
-        run: sudo xcode-select -s /Applications/Xcode_26.4.1.app
+        id: select-xcode
+        # one's generated swiftui and nitro bindings compile with the sdk 27 toolchain.
+        run: |
+          sudo xcode-select -s "/Applications/Xcode_${{ env.ios_xcode_version }}.app"
+          echo "version=${{ env.ios_xcode_version }}" >> "$GITHUB_OUTPUT"
 
       - name: Get Built App Path
         id: get-built-app-path
@@ -72,7 +81,7 @@ jobs:
           # A hash that represents bun.lock + app.json - if these haven't changed,
           # the fingerprint likely hasn't changed either. This lets us skip bun install
           # and prebuild if we have a cached fingerprint for this pre-fingerprint hash.
-          PRE_FINGERPRINT_HASH: ${{ hashFiles('bun.lock', format('{0}/app.json', env.test_container_app_path), format('{0}/package.json', env.test_container_app_path), 'packages/vxrn/expo-plugin.cjs') }}
+          PRE_FINGERPRINT_HASH: ${{ hashFiles('bun.lock', format('{0}/app.json', env.test_container_app_path), format('{0}/package.json', env.test_container_app_path), 'packages/vxrn/expo-plugin.cjs', '.github/workflows/build-ios-kitchensink-app.yml') }}
         run: |
           if [ -z "$PRE_FINGERPRINT_HASH" ]; then
             echo '[ERROR] Failed to calculate pre-fingerprint hash.'
@@ -102,7 +111,7 @@ jobs:
         id: pre-check-has-build
         if: ${{ steps.get-fingerprint-from-cache.outputs.fingerprint != 'null' }}
         with:
-          key: ${{ env.app_id }}-${{ inputs.configuration }}-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}
+          key: ${{ env.app_id }}-xcode-${{ env.ios_xcode_version }}-${{ inputs.configuration }}-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}
           lookup-only: true
           path: ${{ steps.get-built-app-path.outputs.built_app_path }}
 
@@ -125,9 +134,9 @@ jobs:
           cache-name: ${{ env.app_id }}-pods
         with:
           path: ${{ env.test_container_app_path }}/ios/Pods
-          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles(format('{0}/ios/Podfile', env.test_container_app_path)) }}
+          key: ${{ runner.os }}-${{ env.cache-name }}-xcode-${{ env.ios_xcode_version }}-${{ hashFiles(format('{0}/ios/Podfile', env.test_container_app_path)) }}
           restore-keys: |
-            ${{ runner.os }}-${{ env.cache-name }}-
+            ${{ runner.os }}-${{ env.cache-name }}-xcode-${{ env.ios_xcode_version }}-
 
       - name: Pod Install
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit }}
@@ -174,7 +183,7 @@ jobs:
         uses: actions/cache/restore@v4
         id: check-has-build
         with:
-          key: ${{ env.app_id }}-${{ inputs.configuration }}-${{ steps.calculate-fingerprint.outputs.fingerprint }}
+          key: ${{ env.app_id }}-xcode-${{ env.ios_xcode_version }}-${{ inputs.configuration }}-${{ steps.calculate-fingerprint.outputs.fingerprint }}
           lookup-only: true
           path: ${{ steps.get-built-app-path.outputs.built_app_path }}
 
@@ -185,7 +194,7 @@ jobs:
         env:
           cache-name: ${{ env.app_id }}-build
         with:
-          key: ${{ runner.os }}-${{ env.cache-name }}
+          key: ${{ runner.os }}-${{ env.cache-name }}-xcode-${{ env.ios_xcode_version }}
           path: |
             ${{ env.test_container_app_path }}/build
 

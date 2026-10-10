@@ -7,6 +7,11 @@ package: accordion
 demoName: Accordion
 ---
 
+<IntroParagraph>
+  Accordion organizes related sections into keyboard-navigable items that can
+  expand one at a time or in groups.
+</IntroParagraph>
+
 <HeroContainer>
   <AccordionDemo />
 </HeroContainer>
@@ -17,9 +22,9 @@ demoName: Accordion
 
 <Highlights
   features={[
-    'Full keyboard navigation.',
-    'Can expand one or multiple items.',
-    'Can be controlled or uncontrolled.',
+    'Full keyboard navigation',
+    'Single or multiple expanded items',
+    'Controlled or uncontrolled state',
   ]}
 />
 
@@ -35,7 +40,7 @@ npm install @tamagui/accordion
 
 Import all parts and piece them together.
 
-```jsx
+```tsx
 import { Accordion } from 'tamagui' // or '@tamagui/accordion'
 
 export default () => (
@@ -50,7 +55,7 @@ export default () => (
 )
 ```
 
-## API Reference
+## API reference
 
 ### Accordion
 
@@ -176,6 +181,15 @@ Contains all the parts of an accordion.
       ),
     },
     {
+      name: 'orientation',
+      required: false,
+      type: '"horizontal" | "vertical"',
+      typeSimple: 'enum',
+      default: '"vertical"',
+      description:
+        'The layout of the accordion. Determines which arrow keys move between triggers.',
+    },
+    {
       name: 'dir',
       required: false,
       type: '"ltr" | "rtl"',
@@ -288,7 +302,7 @@ Contains the collapsible content for an item.
 
 Use the `defaultValue` prop to define the open item by default.
 
-```jsx line=1
+```tsx line=1
 <Accordion type="single" __defaultValue__="item-2">
   <Accordion.Item value="item-1">…</Accordion.Item>
   <Accordion.Item value="item-2">…</Accordion.Item>
@@ -299,7 +313,7 @@ Use the `defaultValue` prop to define the open item by default.
 
 Use the `collapsible` prop to allow all items to close.
 
-```jsx line=1
+```tsx line=1
 <Accordion type="single" __collapsible__>
   <Accordion.Item value="item-1">…</Accordion.Item>
   <Accordion.Item value="item-2">…</Accordion.Item>
@@ -310,7 +324,7 @@ Use the `collapsible` prop to allow all items to close.
 
 Set the `type` prop to `multiple` to enable opening multiple items at once.
 
-```jsx line=1
+```tsx line=1
 <Accordion type="__multiple__">
   <Accordion.Item value="item-1">…</Accordion.Item>
   <Accordion.Item value="item-2">…</Accordion.Item>

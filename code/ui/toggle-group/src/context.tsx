@@ -1,7 +1,7 @@
 import { createStyledContext } from '@tamagui/web'
 
-export const context = createStyledContext({
-  color: '',
+export const context = createStyledContext<{ color?: string; active: boolean }>({
+  color: undefined,
   active: false,
 })
 

@@ -1,10 +1,15 @@
 // this allows us to swap between core native and web in the same process:
 
 import type { TamaguiPlatform } from '../types'
+import { createRequire } from 'node:module'
+
+const nodeRequire = createRequire(
+  typeof __filename === 'string' ? __filename : import.meta.url
+)
 
 export function requireTamaguiCore(
   platform: TamaguiPlatform,
-  ogRequire: Function = require
+  ogRequire: Function = nodeRequire
 ): typeof import('@tamagui/core') {
   if (!platform) {
     throw new Error(`No platform given to requireTamaguiCore`)

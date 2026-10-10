@@ -1,0 +1,21 @@
+{
+  "name": "@fixture/runtime-path-mappings",
+  "//": "deliberately broken fixture for check-runtime-path-mappings. named bad-package.json, not package.json, so neither the repo walk nor the workspace tooling picks it up.",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./dist/esm/index.mjs"
+    },
+    "./supported": {
+      "types": "./types/supported.d.ts",
+      "default": "./dist/esm/supported.mjs"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "supported": ["./types/supported.d.ts"],
+      "removed": ["./types/removed.d.ts"]
+    }
+  }
+}

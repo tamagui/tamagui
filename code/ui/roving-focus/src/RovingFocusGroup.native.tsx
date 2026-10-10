@@ -7,12 +7,12 @@ import type { RovingFocusGroupProps, RovingFocusItemProps } from './RovingFocusG
 
 const ITEM_NAME = 'RovingFocusGroupItem'
 const RovingFocusGroupItem = styled(View, {
-  name: ITEM_NAME,
+  displayName: ITEM_NAME,
 })
 
 const GROUP_NAME = 'RovingFocusGroup'
 const RovingFocusGroupFrame = styled(View, {
-  name: GROUP_NAME,
+  displayName: GROUP_NAME,
 })
 
 const RovingFocusGroup = withStaticProperties(

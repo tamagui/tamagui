@@ -7,7 +7,7 @@ import { setupPage } from './test-utils'
 // height inline and cannot tween out of 'auto', so the wrapper froze at
 // height:auto -> collapsed to 0. the content (absolutely positioned) then spilled
 // out of layout and rendered below the last item, and nothing animated.
-for (const animationDriver of ['css', 'reanimated']) {
+for (const animationDriver of ['css', 'reanimated', 'motion']) {
   test(`${animationDriver}: default-open layout never collapses on its first frames`, async ({
     page,
   }) => {
@@ -76,11 +76,15 @@ for (const animationDriver of ['css', 'reanimated']) {
         await new Promise(requestAnimationFrame)
         heights.push(wrapper.getBoundingClientRect().height)
       } while (performance.now() - startedAt < 450)
-      return { openHeight, heights }
+      return {
+        openHeight,
+        heights,
+      }
     })
 
     expect(
-      closing.heights.some((height) => height > 1 && height < closing.openHeight - 1)
+      closing.heights.some((height) => height > 1 && height < closing.openHeight - 1),
+      JSON.stringify(closing)
     ).toBe(true)
     expect(closing.heights.at(-1)).toBeLessThanOrEqual(1)
   })

@@ -6,7 +6,7 @@ test.beforeEach(async ({ page }) => {
 })
 
 test('Image: borderRadius token resolves to same value as View', async ({ page }) => {
-  // case 1: br="$4"
+  // case 1: br="4"
   const imgRadius = await page.locator('#v2-image-1').evaluate((el) => {
     return window.getComputedStyle(el).borderRadius
   })
@@ -29,7 +29,7 @@ test('Image: borderRadius number works', async ({ page }) => {
 })
 
 test('Image: size token resolves to non-zero dimensions', async ({ page }) => {
-  // case 4: w/h="$10" br="$2"
+  // case 4: w/h="10" br="2"
   const styles = await page.locator('#v2-image-4').evaluate((el) => {
     const computed = window.getComputedStyle(el)
     return { width: computed.width, height: computed.height }

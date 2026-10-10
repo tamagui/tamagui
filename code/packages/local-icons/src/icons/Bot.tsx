@@ -1,0 +1,36 @@
+import { memo, type JSX } from 'react'
+import { Svg, Path, Rect, type SvgProps } from 'react-native-svg'
+import { themed, type IconProps } from '@tamagui/helpers-icon'
+
+export const Bot: (props: IconProps) => JSX.Element = themed(
+  memo(function Bot(props: IconProps) {
+    const {
+      color = 'black',
+      size = 24,
+      ...otherProps
+    } = props as SvgProps & {
+      color?: string
+      size?: number
+    }
+    return (
+      <Svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        {...otherProps}
+      >
+        <Path d="M12 8V4H8" stroke={color} />
+        <Rect width="16" height="12" x="4" y="8" rx="2" stroke={color} />
+        <Path d="M2 14h2" stroke={color} />
+        <Path d="M20 14h2" stroke={color} />
+        <Path d="M15 13v2" stroke={color} />
+        <Path d="M9 13v2" stroke={color} />
+      </Svg>
+    )
+  })
+)

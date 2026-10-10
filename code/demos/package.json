@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/demos",
   "version": "2.7.7",
+  "private": true,
   "license": "MIT",
   "source": "demos/src/index.tsx",
   "files": [
@@ -53,16 +54,14 @@
     "@tamagui/checkbox": "workspace:*",
     "@tamagui/checkbox-headless": "workspace:*",
     "@tamagui/colors": "workspace:*",
-    "@tamagui/config": "workspace:*",
     "@tamagui/context-menu": "workspace:*",
     "@tamagui/core": "workspace:*",
-    "@tamagui/get-button-sized": "workspace:*",
     "@tamagui/image": "workspace:*",
     "@tamagui/input": "workspace:*",
     "@tamagui/linear-gradient": "workspace:*",
     "@tamagui/list-item": "workspace:*",
+    "@tamagui/local-icons": "workspace:*",
     "@tamagui/logo": "workspace:*",
-    "@tamagui/lucide-icons-2": "workspace:*",
     "@tamagui/menu": "workspace:*",
     "@tamagui/popover": "workspace:*",
     "@tamagui/progress": "workspace:*",
@@ -84,9 +83,10 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "19.2.3",
-    "react-native": "0.86.2"
+    "react-native": "0.87.1"
   },
   "peerDependencies": {
-    "react": ">=19"
+    "react": ">=19",
+    "react-native-web": "*"
   }
 }

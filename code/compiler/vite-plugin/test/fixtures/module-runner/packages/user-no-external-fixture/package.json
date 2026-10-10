@@ -1,0 +1,6 @@
+{
+  "name": "@tamagui/user-no-external-fixture",
+  "private": true,
+  "type": "module",
+  "exports": "./index.mjs"
+}

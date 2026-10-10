@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'FocusWithinCase', type: 'useCase' })
 })
 
-test('focusWithinStyle applies via direct prop', async ({ page }) => {
+test('focus-within clause applies via direct prop', async ({ page }) => {
   const input = page.locator('[data-testid="direct-input"]')
   const parent = page.locator('[data-testid="direct-parent"]')
 
@@ -17,7 +17,7 @@ test('focusWithinStyle applies via direct prop', async ({ page }) => {
   expect(borderColor).toBe('rgb(255, 0, 0)')
 })
 
-test('focusWithinStyle applies via styled() component', async ({ page }) => {
+test('focus-within clause applies via styled() component', async ({ page }) => {
   const input = page.locator('[data-testid="styled-input"]')
   const parent = page.locator('[data-testid="styled-parent"]')
 
@@ -29,7 +29,7 @@ test('focusWithinStyle applies via styled() component', async ({ page }) => {
   expect(borderColor).toBe('rgb(0, 0, 255)')
 })
 
-test('focusWithinStyle removes on blur', async ({ page }) => {
+test('focus-within clause removes on blur', async ({ page }) => {
   const input = page.locator('[data-testid="direct-input"]')
   const parent = page.locator('[data-testid="direct-parent"]')
 
@@ -43,7 +43,7 @@ test('focusWithinStyle removes on blur', async ({ page }) => {
   expect(borderColor).not.toBe('rgb(255, 0, 0)')
 })
 
-test('plain focusWithinStyle does not re-render parent', async ({ page }) => {
+test('plain focus-within clause does not re-render parent', async ({ page }) => {
   const input = page.locator('[data-testid="direct-input"]')
   const renders = page.locator('[data-testid="direct-renders"]')
 

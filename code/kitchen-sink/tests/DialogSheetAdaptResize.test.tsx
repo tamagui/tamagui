@@ -13,7 +13,7 @@ test.describe('Dialog Sheet Adapt - viewport resize', () => {
   })
 
   test('content is visible in dialog at wide viewport', async ({ page }) => {
-    // set viewport to wide (above maxMd breakpoint of 768px)
+    // set viewport to wide (above max-md breakpoint of 768px)
     await page.setViewportSize({ width: 1024, height: 768 })
     await page.waitForTimeout(300)
 
@@ -21,6 +21,8 @@ test.describe('Dialog Sheet Adapt - viewport resize', () => {
     const trigger = page.getByTestId('open-dialog')
     await trigger.click({ force: true })
     await page.waitForTimeout(500)
+
+    await expect(page.getByTestId('dialog-sheet-frame')).toHaveCount(0)
 
     // dialog content should be visible
     const title = page.getByTestId('dialog-title')
@@ -36,7 +38,7 @@ test.describe('Dialog Sheet Adapt - viewport resize', () => {
   })
 
   test('content is visible in sheet at narrow viewport', async ({ page }) => {
-    // set viewport to narrow (below maxMd breakpoint of 768px)
+    // set viewport to narrow (below max-md breakpoint of 768px)
     await page.setViewportSize({ width: 600, height: 768 })
     await page.waitForTimeout(300)
 

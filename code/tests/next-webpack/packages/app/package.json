@@ -8,17 +8,17 @@
   "main": "index.ts",
   "dependencies": {
     "@my/ui": "workspace:^",
-    "@react-navigation/native": "7.3.16",
+    "@react-navigation/native": "8.0.0-alpha.50",
     "@tamagui/animations-react-native": "workspace:*",
     "@tamagui/colors": "workspace:*",
     "@tamagui/font-inter": "workspace:*",
-    "@tamagui/lucide-icons-2": "workspace:*",
+    "@tamagui/local-icons": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/themes": "workspace:*",
-    "burnt": "^0.12.2",
+    "burnt": "^0.13.0",
     "expo-constants": "~57.0.9",
-    "expo-linking": "~57.0.5",
-    "react-native-safe-area-context": "~5.7.0",
+    "expo-linking": "~57.0.7",
+    "react-native-safe-area-context": "5.10.1",
     "solito": "^4.3.0"
   },
   "devDependencies": {

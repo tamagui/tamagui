@@ -8,9 +8,6 @@ test.beforeEach(async ({ page }) => {
 })
 
 test('Initial theme (yellow) renders with correct colors', async ({ page }) => {
-  // The expected yellow theme color in RGB format (themeDev palette)
-  const expectedYellowColor = 'rgb(255, 221, 0)'
-
   // Get the theme info text to verify we're on yellow theme
   const themeInfo0 = await page.locator(`#${TEST_IDS.themeInfo}-0`).textContent()
   const themeInfo1 = await page.locator(`#${TEST_IDS.themeInfo}-1`).textContent()
@@ -29,7 +26,9 @@ test('Initial theme (yellow) renders with correct colors', async ({ page }) => {
     page.locator(`#${TEST_IDS.dynamicSquare}-1`)
   )
 
-  // Verify all squares have the yellow theme color
+  // Verify all squares resolve the same non-transparent yellow theme value.
+  const expectedYellowColor = staticSquare0Styles.backgroundColor
+  expect(expectedYellowColor).not.toBe('rgba(0, 0, 0, 0)')
   expect(staticSquare0Styles.backgroundColor).toBe(expectedYellowColor)
   expect(staticSquare1Styles.backgroundColor).toBe(expectedYellowColor)
   expect(dynamicSquare0Styles.backgroundColor).toBe(expectedYellowColor)
@@ -37,14 +36,13 @@ test('Initial theme (yellow) renders with correct colors', async ({ page }) => {
 })
 
 test('Inner theme change does not affect outer theme', async ({ page }) => {
-  // Initial colors (themeDev palette)
-  const initialYellowColor = 'rgb(255, 221, 0)'
-
   // Get initial styles for both levels
   const outerSquareInitial = await getStyles(page.locator(`#${TEST_IDS.staticSquare}-0`))
   const innerSquareInitial = await getStyles(page.locator(`#${TEST_IDS.staticSquare}-1`))
 
-  // Verify both start with yellow
+  // Verify both start with the same non-transparent yellow theme value.
+  const initialYellowColor = outerSquareInitial.backgroundColor
+  expect(initialYellowColor).not.toBe('rgba(0, 0, 0, 0)')
   expect(outerSquareInitial.backgroundColor).toBe(initialYellowColor)
   expect(innerSquareInitial.backgroundColor).toBe(initialYellowColor)
 

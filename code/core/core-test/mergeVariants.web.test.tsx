@@ -317,4 +317,81 @@ describe('mergeVariants', () => {
       },
     })
   })
+
+  test('only merges plain objects and replaces arrays strings and functions', () => {
+    const parentVariants = {
+      tone: {
+        active: {
+          nestedOptions: {
+            opacity: 0.2,
+          },
+          transform: [{ scale: 1 }],
+          className: 'parent-class',
+          onPress: () => 'parent',
+        },
+      },
+    } as any
+
+    const childPress = () => 'child'
+    const ourVariants = {
+      tone: {
+        active: {
+          nestedOptions: [{ opacity: 0.5 }],
+          transform: [{ scale: 2 }],
+          className: 'child-class',
+          onPress: childPress,
+        },
+      },
+    } as any
+
+    expect(mergeVariants(parentVariants, ourVariants)).toEqual({
+      tone: {
+        active: {
+          nestedOptions: [{ opacity: 0.5 }],
+          transform: [{ scale: 2 }],
+          className: 'child-class',
+          onPress: childPress,
+        },
+      },
+    })
+  })
+
+  test('merges clause slots by canonical identity without a config', () => {
+    const parentVariants = {
+      tone: {
+        active: {
+          color:
+            'black active:red hover:dark:orange group-active/card:purple disabled:gray',
+          opacity: '1 hover:',
+        },
+      },
+    }
+    const ourVariants = {
+      tone: {
+        active: {
+          color: 'white press:blue dark:hover:yellow group-press/card:pink focus:green',
+          opacity: '0.5 press:0.8',
+        },
+      },
+    }
+
+    expect(mergeVariants(parentVariants, ourVariants)).toEqual({
+      tone: {
+        active: {
+          color:
+            'white disabled:gray press:blue dark:hover:yellow group-press/card:pink focus:green',
+          opacity: '0.5 press:0.8',
+        },
+      },
+    })
+  })
+
+  test('keeps a malformed child value exactly as authored', () => {
+    expect(
+      mergeVariants(
+        { tone: { active: { color: 'black hover:red' } } },
+        { tone: { active: { color: 'white press:' } } }
+      )
+    ).toEqual({ tone: { active: { color: 'white press:' } } })
+  })
 })

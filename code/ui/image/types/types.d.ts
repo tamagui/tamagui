@@ -1,5 +1,5 @@
 import type { ViewProps } from '@tamagui/web';
-import type { ImageResizeMode, ImageSourcePropType, Image as RNImage, ImageProps as RNImageProps } from 'react-native';
+import type { ImageResizeMode, ImageSourcePropType, Image as RNImage, ImageAndroid as RNImageAndroid, ImageProps as RNImageProps } from '@tamagui/react-native-types';
 type RNImageType = typeof RNImage;
 type KeyofViewProps = keyof ViewProps;
 export type ImageProps = ViewProps & Omit<RNImageProps, KeyofViewProps | 'source' | 'resizeMode' | 'style'> & {
@@ -35,7 +35,7 @@ export type ImageType = React.FC<Partial<ImageProps>> & {
     getSizeWithHeaders: RNImageType['getSizeWithHeaders'];
     prefetch: RNImageType['prefetch'];
     prefetchWithMetadata: RNImageType['prefetchWithMetadata'];
-    abortPrefetch: RNImageType['abortPrefetch'];
+    abortPrefetch: RNImageAndroid['abortPrefetch'];
     queryCache: RNImageType['queryCache'];
 };
 export {};

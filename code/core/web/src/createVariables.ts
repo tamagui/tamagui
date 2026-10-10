@@ -27,13 +27,8 @@ export const createVariables = <A extends DeepTokenObject>(
   if (cache.has(tokens)) return tokens
 
   const res: any = {}
-  let i = 0
-  for (let keyIn in tokens) {
-    i++
-    const val = tokens[keyIn]
-    const isPrefixed = keyIn[0] === '$'
-    const keyWithPrefix = isPrefixed ? keyIn : `$${keyIn}`
-    const key = isPrefixed ? keyWithPrefix.slice(1) : keyIn
+  for (const key in tokens) {
+    const val = tokens[key]
 
     if (isVariable(val)) {
       res[key] = val
@@ -48,7 +43,7 @@ export const createVariables = <A extends DeepTokenObject>(
       const finalValue = createVariable({
         val: val.val,
         name,
-        key: keyWithPrefix,
+        key,
       })
       // Only set needsPx flag on web platform, avoid on native
       if (isWeb) {
@@ -60,17 +55,10 @@ export const createVariables = <A extends DeepTokenObject>(
 
     if (val && typeof val === 'object') {
       // recurse
-      res[key] = createVariables(
-        tokens[key] as any,
-        name,
-        false /* note: don't pass isFont down, we want to avoid it past the first level */
-      )
+      res[key] = createVariables(tokens[key] as any, name)
       continue
     }
-    const finalValue = isVariable(val)
-      ? val
-      : createVariable({ val, name, key: keyWithPrefix })
-    res[key] = finalValue
+    res[key] = createVariable({ val, name, key })
   }
 
   cache.set(res, true)

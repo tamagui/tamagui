@@ -1,28 +1,18 @@
 module.exports = (api) => {
   api.cache(true)
 
-  const plugins = []
-
-  // skip tamagui compiler for faster builds (e.g. detox test runs)
-  if (!process.env.DISABLE_COMPILER) {
-    plugins.push([
-      '@tamagui/babel-plugin',
+  const plugins = [
+    'react-native-reanimated/plugin',
+    [
+      'module-resolver',
       {
-        components: ['tamagui', '@tamagui/sandbox-ui'],
-        config: './src/tamagui.config.ts',
+        root: ['./'],
+        alias: {
+          'next/router': './next-router-shim',
+        },
       },
-    ])
-  }
-
-  plugins.push('react-native-reanimated/plugin', [
-    'module-resolver',
-    {
-      root: ['./'],
-      alias: {
-        'next/router': './next-router-shim',
-      },
-    },
-  ])
+    ],
+  ]
 
   return {
     presets: [['babel-preset-expo', { jsxRuntime: 'automatic' }]],

@@ -1,16 +1,16 @@
 import React from 'react'
 import type { CheckboxProps as CheckboxHeadlessProps } from '@tamagui/checkbox-headless'
 import { useCheckbox } from '@tamagui/checkbox-headless'
-import { Check, Minus } from '@tamagui/lucide-icons-2'
+import { Check, Minus } from '@tamagui/local-icons'
 
-import type { View } from 'react-native'
+import type { ViewInstance as View } from 'react-native'
 import { Pressable } from 'react-native'
 import { Label, XStack, YStack } from 'tamagui'
 
 export function CheckboxHeadlessDemo() {
   return (
-    <YStack width={200} items="center" gap="$3">
-      <XStack gap="$3" items="center">
+    <YStack width={200} items="center" gap="3">
+      <XStack gap="3" items="center">
         <HeadlessCheckbox defaultChecked="indeterminate" id="headless" />
         <Label htmlFor="headless">Headless</Label>
       </XStack>

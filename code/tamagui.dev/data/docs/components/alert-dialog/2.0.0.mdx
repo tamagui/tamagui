@@ -7,6 +7,10 @@ package: alert-dialog
 demoName: AlertDialog
 ---
 
+<IntroParagraph>
+  AlertDialog asks users to confirm an action in a focused, accessible modal.
+</IntroParagraph>
+
 <HeroContainer showAnimationDriverControl>
   <AlertDialogDemo />
 </HeroContainer>
@@ -17,13 +21,13 @@ demoName: AlertDialog
 
 <Highlights
   features={[
-    `Comes with styling, completely customizable and themeable.`,
-    `Accepts animations, themes, size props and more.`,
-    `Accessible with dev-time checks to ensure ARIA props.`,
+    `Customizable, themeable default styling`,
+    `Animations, themes, and size props`,
+    `Accessibility checks for ARIA props during development`,
   ]}
 />
 
-AlertDialog is a modal dialog that interrupts the user with important content and expects a response. It's built on Dialog with stricter accessibility requirements, and [automatically stacks](/ui/z-index) above other content.
+AlertDialog is built on Dialog with stricter accessibility requirements, and [automatically stacks](/ui/z-index) above other content.
 
 ## Installation
 
@@ -54,11 +58,11 @@ export default () => (
 )
 ```
 
-## API Reference
+## API reference
 
 ### AlertDialog
 
-Contains every component for the AlertDialog. Shares all [Dialog Props](/docs/components/dialog#api), except modal which is on by default. Adds:
+Contains every component for the AlertDialog. Shares all [Dialog Props](/ui/dialog#api-reference), except modal which is on by default. Adds:
 
 <PropsTable
   data={[
@@ -126,17 +130,17 @@ Displays behind Content. Beyond [Tamagui Props](/docs/intro/props), adds:
 
 Required. Can wrap in VisuallyHidden to hide.
 
-Defaults to H2, see [Headings](/docs/components/headings).
+Defaults to H2, see [Headings](/ui/headings).
 
 ### AlertDialog.Description
 
 Required. Can wrap in VisuallyHidden to hide.
 
-Defaults to Paragraph, see [Paragraph](/docs/components/text).
+Defaults to Paragraph, see [Paragraph](/ui/text#paragraph).
 
 ### AlertDialog.Cancel
 
-Closes the AlertDialog, accepts all YStack props. Recommended to use with your own component and `asChild`.
+Closes the AlertDialog, accepts all View props. Recommended to use with your own component and `asChild`.
 
 <PropsTable
   data={[
@@ -150,7 +154,7 @@ Closes the AlertDialog, accepts all YStack props. Recommended to use with your o
 
 ### AlertDialog.Action
 
-Confirms the AlertDialog action, accepts all YStack props. Recommended to use with your own component and `asChild`.
+Confirms the AlertDialog action, accepts all View props. Recommended to use with your own component and `asChild`.
 
 <PropsTable
   data={[
@@ -164,7 +168,7 @@ Confirms the AlertDialog action, accepts all YStack props. Recommended to use wi
 
 ### AlertDialog.Destructive
 
-A destructive action button for the AlertDialog. When using `native` mode on iOS, this renders with the native red destructive button style. Accepts all YStack props.
+A destructive action button for the AlertDialog. When using `native` mode on iOS, this renders with the native red destructive button style. Accepts all View props.
 
 ```tsx
 <AlertDialog native>

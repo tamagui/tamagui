@@ -62,14 +62,12 @@ export function ThemeDebug({
             {JSON.stringify(
               {
                 name: themeState.name,
-                color1: themeState.theme.color1.val,
+                'color-1': themeState.theme['color-1'].val,
                 parentId: themeState.parentId,
                 // inverses: themeState.inverses,
                 isNew: themeState.isNew,
                 themeProps: {
                   name: themeProps.name,
-                  componentName: themeProps.componentName,
-                  reset: themeProps.reset,
                 },
                 parentState: {
                   name: parentState?.name,

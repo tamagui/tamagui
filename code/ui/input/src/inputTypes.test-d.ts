@@ -13,7 +13,7 @@
 
 import { expectTypeOf, describe, test } from 'vitest'
 import type { GetProps } from '@tamagui/web'
-import type { TextInput } from 'react-native'
+import type { TextInputInstance as TextInput } from 'react-native'
 import {
   Input,
   type InputProps,
@@ -147,12 +147,16 @@ describe('Input style props', () => {
     expectTypeOf<'center'>().toMatchTypeOf<NonNullable<InputProps['textAlign']>>()
   })
 
-  test('accepts size variant', () => {
-    expectTypeOf<InputProps>().toHaveProperty('size')
+  // the unstyled behavior primitive owns no size: with the shared size
+  // concept removed, text sizing flows through the fontSize font key and
+  // multiline height through rows
+  test('has no size prop', () => {
+    expectTypeOf<InputProps>().not.toHaveProperty('size')
   })
 
-  test('accepts unstyled variant', () => {
-    expectTypeOf<InputProps>().toHaveProperty('unstyled')
+  test('sizes through fontSize and rows instead', () => {
+    expectTypeOf<InputProps>().toHaveProperty('fontSize')
+    expectTypeOf<InputProps>().toHaveProperty('rows')
   })
 })
 

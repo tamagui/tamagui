@@ -41,6 +41,8 @@
     "@tamagui/create-context": "workspace:*",
     "@tamagui/get-token": "workspace:*",
     "@tamagui/helpers": "workspace:*",
+    "@tamagui/react-native-types": "workspace:*",
+    "@tamagui/react-native-use-responder-events": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-debounce": "workspace:*",
@@ -49,10 +51,11 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": "19.2.3",
-    "react-native": "0.86.2"
+    "react-native": "0.87.1"
   },
   "peerDependencies": {
-    "react": ">=19"
+    "react": ">=19",
+    "react-native-web": "*"
   },
   "module:jsx": "dist/jsx"
 }

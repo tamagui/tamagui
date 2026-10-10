@@ -9,11 +9,32 @@
     ".": {
       "browser": "./index.mjs",
       "module": "./index.mjs",
-      "import": "./index.mjs",
+      "import": "./index.node.mjs",
       "require": "./index.js"
+    },
+    "./pressability": "./pressability.js",
+    "./pressEvent": {
+      "types": "./pressEvent.d.ts",
+      "default": "./pressEvent.js"
     }
   },
   "publishConfig": {
     "access": "public"
+  },
+  "peerDependencies": {
+    "@babel/core": "*",
+    "@react-native/babel-preset": "*",
+    "react-native": "*"
+  },
+  "peerDependenciesMeta": {
+    "@babel/core": {
+      "optional": true
+    },
+    "@react-native/babel-preset": {
+      "optional": true
+    },
+    "react-native": {
+      "optional": true
+    }
   }
 }

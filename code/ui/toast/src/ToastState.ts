@@ -8,6 +8,7 @@ export type ToastType = 'default' | 'success' | 'error' | 'warning' | 'info' | '
 
 export interface ToastT {
   id: string | number
+  toasterId?: string
   title: React.ReactNode | (() => React.ReactNode)
   description?: React.ReactNode | (() => React.ReactNode)
   type?: ToastType
@@ -148,8 +149,11 @@ class Observer {
   dismiss = (id?: string | number) => {
     if (id !== undefined) {
       this.dismissedToasts.add(id)
-      // use requestAnimationFrame to batch updates
+      // use requestAnimationFrame to batch updates. a create() for the same id
+      // before the frame re-shows the toast and cancels this dismiss, otherwise
+      // the late dismiss would hide the toast that was just shown.
       requestAnimationFrame(() => {
+        if (!this.dismissedToasts.has(id)) return
         this.subscribers.forEach((subscriber) => subscriber({ id, dismiss: true }))
       })
     } else {

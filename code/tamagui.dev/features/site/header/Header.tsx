@@ -1,13 +1,13 @@
 import { LogoWords, setTintFamily, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import { Check, ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons-2'
+import { ExternalLink, Figma, Menu } from '~/components/icons'
 import { isTouchable, useGet, useMedia } from '@tamagui/web'
 import { useFocusEffect, usePathname, useRouter } from 'one'
 import * as React from 'react'
-import { useWindowDimensions, type LayoutRectangle } from 'react-native'
+import type { LayoutRectangle } from '@tamagui/react-native-types'
+import { useWindowDimensions } from '@tamagui/use-window-dimensions'
 import {
   Adapt,
   AnimatePresence,
-  Button,
   Circle,
   debounce,
   isClient,
@@ -16,6 +16,7 @@ import {
   Separator,
   Sheet,
   SizableText,
+  style,
   styled,
   TooltipGroup,
   useComposedRefs,
@@ -24,28 +25,25 @@ import {
   XGroup,
   XStack,
   YStack,
+  createStyledHOC,
   type PopoverProps,
 } from 'tamagui'
+import { Button } from '~/components/Button'
+import { PAGE_MAX_WIDTH } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { seasons, SeasonTogglePopover } from '~/features/site/seasons/SeasonTogglePopover'
 import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
-import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
-import { useLoginLink } from '../../auth/useLoginLink'
-import { useBentoStore } from '../../bento/BentoStore'
-import { useBentoTheme } from '../../bento/useBentoTheme'
 import { DocsMenuContents } from '../../docs/DocsMenuContents'
 import { useDocsMenu } from '../../docs/useDocsMenu'
 import { AddEvenBrandIcon } from '../../icons/AddEvenBrandIcon'
 import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
-import { useUser } from '../../user/useUser'
-import { accountModal } from '../purchase/accountModalStore'
-import { PromoCardTheme } from './PromoCards'
 import { SearchButton } from './SearchButton'
-import { UpgradeToProPopover } from './UpgradeToProPopover'
-import { UserAvatar } from './UserAvatar'
+import { SiteModePopover } from './SiteModePopover'
 import type { HeaderProps } from './types'
+
+const drawerContentStyle = style({ width: '100%' })
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -73,34 +71,26 @@ export function Header(props: HeaderProps) {
         pointerEvents="none"
         justify="center"
         z={10000}
+        px="md:0-5"
         className="all ease-out s1"
-        $gtSm={{
-          px: '$1',
-        }}
       >
-        <XStack pointerEvents="auto" width="100%" maxW={1200} position="relative">
+        <XStack
+          pointerEvents="auto"
+          width="100%"
+          maxW={PAGE_MAX_WIDTH}
+          position="relative"
+        >
           <XStack
-            className={`ease-out all ms300`}
-            py="$1.5"
+            className="ease-out all ms300"
+            py="1 max-md:1-5"
+            y={`0px max-md:-1px${isScrolled ? ' md:6px' : ''}`}
             overflow="hidden"
             contain="paint"
             width="100%"
             bg="transparent"
-            rounded="$10"
-            borderColor={'transparent'}
-            borderWidth={0.5}
-            $sm={{
-              rounded: 0,
-              borderWidth: 0,
-              y: -1,
-              py: '$2',
-            }}
-            {...(isScrolled && {
-              $gtSm: {
-                borderColor: '$color5',
-                y: 6,
-              },
-            })}
+            rounded="10 max-md:0"
+            borderColor={isScrolled ? 'transparent md:color-5' : 'transparent'}
+            borderWidth="0.5px max-md:0px"
           >
             <YStack
               position="absolute"
@@ -115,11 +105,12 @@ export function Header(props: HeaderProps) {
             />
             <YStack
               opacity={isScrolled ? 0.6 : 0}
+              position="absolute"
+              inset={0}
+              bg="color-2"
               className={`ease-out all ms300`}
-              fullscreen
-              bg="$color2"
             />
-            <YStack mx="auto" px="$4" width="100%">
+            <YStack mx="auto" px="4 max-sm:2" width="100%">
               <ThemeTint>
                 <HeaderContents floating {...props} />
               </ThemeTint>
@@ -129,17 +120,13 @@ export function Header(props: HeaderProps) {
           <XStack
             className="ease-in-out all ms200"
             z={-1}
-            rounded="$10"
-            fullscreen
-            boxShadow="0 8px 20px $shadow3"
-            opacity={0}
-            {...(isScrolled && {
-              $gtSm: {
-                opacity: 1,
-                py: '$2',
-                y: 5,
-              },
-            })}
+            rounded="10"
+            position="absolute"
+            inset={0}
+            boxShadow="0 8px 20px shadow-3"
+            opacity={isScrolled ? '0 md:1' : 0}
+            py={isScrolled ? 'md:1-5' : undefined}
+            y={isScrolled ? 'md:5px' : undefined}
           />
         </XStack>
       </XStack>
@@ -160,62 +147,70 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       items="center"
       position="relative"
       render="header"
-      py={props.minimal ? '$4' : props.floating ? 0 : '$2'}
+      py={props.minimal ? '4' : props.floating ? 0 : '1-5'}
       z={50000}
     >
-      <XStack items="center" gap="$4">
-        <TooltipGroup delay={tooltipDelay}>
-          <XGroup maxH={32} bg="transparent" items="center" size="$4">
-            <XGroup.Item>
-              <ThemeToggle borderWidth={0} chromeless />
-            </XGroup.Item>
-          </XGroup>
-        </TooltipGroup>
+      <XStack items="center" gap="3 max-sm:1-5">
+        <ThemeToggle
+          size="sm"
+          borderWidth={0}
+          variant="quiet"
+          rounded="10"
+          width={32}
+          height={32}
+          minH={32}
+          p={0}
+        />
 
-        <SearchButton size="$2" rounded="$10" elevation="$0.5" />
+        <SearchButton
+          size="sm"
+          borderWidth={0}
+          variant="quiet"
+          rounded="10"
+          width={32}
+          height={32}
+          minH={32}
+          p={0}
+        />
 
         <Link target="_blank" href="https://github.com/tamagui/tamagui">
-          <XStack group containerType="normal">
-            <XStack
-              items="center"
-              gap="$2"
-              p="$2"
-              opacity={0.9}
-              hoverStyle={{ opacity: 1 }}
+          <XStack
+            group
+            containerType="normal"
+            items="center"
+            justify="center"
+            width="32px xxl:auto"
+            height={32}
+            px="0 xxl:2"
+            gap="1-5"
+            rounded="10"
+            opacity="0.9 hover:1"
+            transition="all 150ms ease"
+          >
+            <GithubIcon width={16} height={16} />
+            <SizableText
+              display="max-xxl:none"
+              color="color-12"
+              opacity="0.5 group-hover:0.8"
+              size="2"
             >
-              <GithubIcon width={22} />
-              <>
-                <SizableText
-                  $xl={{ display: 'none' }}
-                  size="$3"
-                  color="$color12"
-                  opacity={0.5}
-                  $group-hover={{
-                    opacity: 0.8,
-                  }}
-                >
-                  GitHub
-                </SizableText>
-              </>
-            </XStack>
+              GitHub
+            </SizableText>
           </XStack>
         </Link>
 
-        <UpgradeToProPopover />
+        <SiteModePopover />
       </XStack>
 
       <View flex={1} />
 
       <XStack
         position="absolute"
-        $md={{
-          opacity: 0,
-          pointerEvents: 'none',
-        }}
+        opacity="max-lg:0"
+        pointerEvents="none max-lg:none"
         z={-1}
         justify="center"
-        fullscreen
-        pointerEvents="none"
+        inset={0}
         items="center"
       >
         <Link href="/" aria-label="Homepage">
@@ -223,8 +218,8 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
             cursor={isHome ? 'default' : 'pointer'}
             pointerEvents="auto"
             self="center"
-            gap="$3"
-            ml="$-5"
+            gap="3"
+            ml="-6"
             items="center"
           >
             <SeasonTogglePopover>
@@ -248,14 +243,14 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       </XStack>
 
       <XStack height={40} justify="flex-end" pointerEvents="auto" render="nav">
-        <XStack items="center" gap="$2">
+        <XStack items="center" gap="1-5">
           <HeaderLinksPopover>
             <HeaderLink id="core" href="/docs/intro/introduction">
               Core
             </HeaderLink>
 
             <HeaderLink id="ui" href="/ui/intro">
-              UI
+              Components
             </HeaderLink>
 
             <HeaderLink id="theme" href="/theme">
@@ -273,17 +268,18 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 const HeaderMenuButton = () => {
   const { open, setOpen } = useDocsMenu()
   const context = React.useContext(SlidingPopoverContext)
-  const userSwr = useUser()
-  const haveUser = !!userSwr.data?.user
 
   return (
-    <Popover.Trigger>
+    <Popover.Trigger justify="center" items="center">
       <SlidingPopoverTarget id="menu">
         <Button
-          size="$5"
+          size="sm"
           circular
+          width={32}
+          height={32}
+          p={0}
           my={-1}
-          bg="transparent"
+          bg="transparent hover:shadow-1"
           borderWidth={0}
           onPress={(e) => {
             if (isTouchable) {
@@ -305,12 +301,9 @@ const HeaderMenuButton = () => {
             }
           }}
           aria-label="Open the main menu"
-          hoverStyle={{
-            bg: '$shadow1',
-          }}
         >
-          <Circle size={34} items="center" justify="center">
-            {haveUser ? <UserAvatar /> : <Menu size={20} />}
+          <Circle size={32} items="center" justify="center">
+            <Menu size={18} />
           </Circle>
         </Button>
       </SlidingPopoverTarget>
@@ -386,12 +379,13 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
 
       <Adapt platform="touch" when="sm">
         <Sheet transition="medium" zIndex={100000000} modal dismissOnSnapToBottom>
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView showsVerticalScrollIndicator={false}>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay z={100} bg="$shadow4" />
+          </Sheet.Container>
+          <Sheet.Overlay z={100} bg="shadow-4" />
         </Sheet>
       </Adapt>
     </Popover>
@@ -410,10 +404,11 @@ export const HeaderLink = (props: { id: ID; children: string; href: string }) =>
     <SlidingPopoverTarget id={props.id}>
       <Link asChild href={props.href as any}>
         <HeadAnchor
+          fontFamily="mono"
+          fontSize={15}
+          color="color-9 hover:color-12"
           {...(isActive && { active: true })}
-          $sm={{
-            display: 'none',
-          }}
+          display="max-sm:none"
         >
           {props.children}
         </HeadAnchor>
@@ -427,8 +422,9 @@ const SlidingPopoverContext = React.createContext({
   close() {},
 })
 
-export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
-  ({ id, ...props }, ref) => {
+export const SlidingPopoverTarget = createStyledHOC(
+  YStack,
+  ({ id, ...props }: { id: ID }, ref) => {
     const context = React.useContext(SlidingPopoverContext)
     const [layout, setLayout] = React.useState<LayoutRectangle | undefined>()
     const triggerRef = React.useRef<HTMLElement>(null)
@@ -498,7 +494,6 @@ export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
 const order = ['', 'core', 'ui', 'theme', 'menu']
 
 const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
-  const { data } = useUser()
   const [active, setActive] = React.useState<ID>(
     props.active === '' ? 'menu' : props.active
   )
@@ -514,7 +509,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
 
   const context = React.useContext(SlidingPopoverContext)
   const pointerFine = !isTouchable
-  const isOnlyShowingMenu = useMedia().maxMd
+  const isOnlyShowingMenu = useMedia()['max-md']
 
   useFocusEffect(() => {
     context.close()
@@ -537,7 +532,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
     core: Math.min(maxHeight, 1300),
     compiler: 117,
     ui: Math.min(maxHeight, 1300),
-    theme: data?.user ? 300 : 240,
+    theme: 240,
     menu: Math.min(maxHeight, isOnlyShowingMenu ? 1000 : 520),
   }
 
@@ -551,26 +546,19 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       }}
       animatePosition
       transition="medium"
-      bg="$background06"
+      bg="background-06"
       backdropFilter="blur(40px)"
       maxH="90vh"
       maxW={360}
       minW={360}
-      elevation="$2"
+      boxShadow="0 4px 12px shadow-color"
       p={0}
-      rounded="$6"
-      opacity={1}
-      y={0}
-      enterStyle={{
-        y: 3,
-        opacity: 0,
-      }}
-      exitStyle={{
-        y: 5,
-        opacity: 0,
-      }}
+      rounded="6"
+      opacity="1 enter:0 exit:0"
+      y="0 enter:3px exit:5px"
     >
-      <Popover.Arrow transition="medium" animatePosition bg="$background06" size="$4" />
+      {/* round(v5-site size-token 4 = 44px * 0.52); the old - 11.5 offset gives 11 */}
+      <Popover.Arrow transition="medium" bg="background-06" animatePosition size={23} />
 
       {pointerFine ? (
         <YStack
@@ -579,14 +567,14 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
           height={heights[active]}
           maxHeight="90vh"
           overflow="hidden"
-          rounded="$6"
+          rounded="6"
         >
           <AnimatePresence custom={{ going }} initial={false}>
             <HeaderMenuContents key={active} id={active} />
           </AnimatePresence>
         </YStack>
       ) : (
-        <YStack p="$4">
+        <YStack p="4">
           <HeaderMenuContents key={active} id={active} />
         </YStack>
       )}
@@ -597,12 +585,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
 const getDocsSectionFromPath = (pathName: string): 'core' | 'ui' | null => {
   if (!pathName || pathName === '/' || pathName === '') return null
   if (pathName.startsWith('/ui/')) return 'ui'
-  if (
-    pathName.startsWith('/docs') ||
-    pathName.startsWith('/community') ||
-    pathName.startsWith('/blog')
-  )
-    return 'core'
+  if (pathName.startsWith('/docs') || pathName.startsWith('/blog')) return 'core'
   return null
 }
 
@@ -614,35 +597,26 @@ const ActivePageDocsMenuContents = () => {
 
   return (
     <>
-      <Separator bg="$color02" opacity={0.25} my="$4" />
+      <Separator bg="color-02" opacity={0.25} my="4" />
       <DocsMenuContents inMenu section={section} />
     </>
   )
 }
 
 const HeaderMenuContents = (props: { id: ID }) => {
-  const { data } = useUser()
-  const { updateGenerate } = useThemeBuilderStore()
-  const bentoStore = useBentoStore()
-  const themeHistories = data?.themeHistories || []
-  const bentoTheme = useBentoTheme()
-  const isOnlyShowingMenu = useMedia().maxMd
+  const isOnlyShowingMenu = useMedia()['max-md']
   const isMobile = isTouchable && isOnlyShowingMenu
 
   const contents = (() => {
-    /**
-     * When the theme_histories are fetched,
-     * we can apply one of them to Bento components from dropdown
-     */
     if (props.id === 'menu') {
       return (
         <>
           <HeaderMenuMoreContents />
-          <Separator borderColor="$color02" opacity={0.25} my="$2" />
+          <Separator borderColor="color-02" opacity={0.25} my="1-5" />
           {isOnlyShowingMenu && (
             <>
               <ActivePageDocsMenuContents />
-              <Separator borderColor="$color02" opacity={0.25} my="$2" />
+              <Separator borderColor="color-02" opacity={0.25} my="1-5" />
             </>
           )}
           <SeasonChooser />
@@ -652,86 +626,22 @@ const HeaderMenuContents = (props: { id: ID }) => {
 
     if (props.id === 'theme') {
       return (
-        <YStack flex={1} gap="$2" flexBasis="auto">
-          {!themeHistories.length ? (
-            <>
-              <PromoCardTheme />
-              <Paragraph
-                pointerEvents="none"
-                borderWidth={0.5}
-                bg="$color6"
-                rounded="$5"
-                fontFamily="$mono"
-                size="$4"
-                opacity={0.5}
-                p="$4"
-              >
-                Create themes to preview them across the site.
-                {`\n`}
-                <Link href="/theme" theme="blue" style={{ pointerEvents: 'auto' }}>
-                  Go to Theme Builder →
-                </Link>
-              </Paragraph>
-            </>
-          ) : (
-            <YStack gap="$2">
-              <XStack>
-                <HeadAnchor
-                  grid
-                  items="center"
-                  onPress={() => {
-                    bentoStore.disableCustomTheme = !bentoStore.disableCustomTheme
-                  }}
-                >
-                  <SizableText size="$3" color="$color11" ellipsis>
-                    Enabled
-                  </SizableText>
-
-                  {bentoTheme.enabled ? <Check ml="$2" size={12} /> : null}
-                </HeadAnchor>
-                <HeadAnchor
-                  grid
-                  onPress={() => {
-                    bentoStore.disableTint = !bentoStore.disableTint
-                  }}
-                >
-                  <SizableText size="$3" color="$color11" ellipsis>
-                    Tint
-                  </SizableText>
-
-                  {!bentoStore.disableTint ? <Check ml="$2" size={12} /> : null}
-                </HeadAnchor>
-              </XStack>
-
-              <Separator mb="$3" opacity={0.5} />
-
-              <SizableText size="$3" fontFamily="$mono" px="$4" color="$color9">
-                Recent Themes
-              </SizableText>
-
-              {themeHistories.map((history) => (
-                <HeadAnchor
-                  key={history.id}
-                  grid
-                  onPress={() => updateGenerate(history.theme_data)}
-                >
-                  <XStack items="center" justify="space-between">
-                    <SizableText size="$3" color="$color11" ellipsis>
-                      {history.search_query}
-                    </SizableText>
-                  </XStack>
-                </HeadAnchor>
-              ))}
-
-              {themeHistories.length === 0 && (
-                <YStack p="$4" items="center">
-                  <SizableText size="$2" color="$color9">
-                    {data?.user ? 'No theme history yet' : 'Login to save themes'}
-                  </SizableText>
-                </YStack>
-              )}
-            </YStack>
-          )}
+        <YStack flex={1} gap="1-5" flexBasis="auto">
+          <Paragraph
+            pointerEvents="none"
+            borderWidth={0.5}
+            bg="color-6"
+            rounded="5"
+            opacity={0.5}
+            p="4"
+            size="4"
+          >
+            Create themes to preview them across the site.
+            {`\n`}
+            <Link href="/theme" theme="blue" style={{ pointerEvents: 'auto' }}>
+              Go to Theme Builder →
+            </Link>
+          </Paragraph>
         </YStack>
       )
     }
@@ -742,7 +652,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
   // For mobile, render content directly without Frame wrapper
   if (isMobile) {
     return (
-      <YStack width="100%" p="$3">
+      <YStack width="100%" p="3">
         {contents}
       </YStack>
     )
@@ -758,9 +668,9 @@ const HeaderMenuContents = (props: { id: ID }) => {
           flex: 1,
           width: '100%',
         }}
-        contentContainerStyle={{ width: '100%' }}
+        contentContainerStyle={drawerContentStyle}
       >
-        <YStack width="100%" p="$3">
+        <YStack width="100%" p="3">
           {contents}
         </YStack>
       </Popover.ScrollView>
@@ -769,10 +679,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
 }
 
 const HeaderMenuMoreContents = () => {
-  const userSwr = useUser()
   const router = useRouter()
-  const { handleLogin } = useLoginLink()
-  const context = React.useContext(SlidingPopoverContext)
 
   const handlePress = (e: any) => {
     e.preventDefault()
@@ -781,15 +688,15 @@ const HeaderMenuMoreContents = () => {
   }
 
   return (
-    <YStack gap="$2" aria-label="Home menu contents">
-      <YStack gap="$2" $gtSm={{ display: 'none' }}>
+    <YStack gap="1-5" aria-label="Home menu contents">
+      <YStack gap="1-5" display="md:none">
         <Link asChild href="/">
           <HeadAnchor grid>Home</HeadAnchor>
         </Link>
-        <Separator bg="$color02" opacity={0.25} my="$2" />
+        <Separator bg="color-02" opacity={0.25} my="1-5" />
       </YStack>
 
-      <XStack flex={1} flexBasis="auto" flexWrap="wrap" gap="$2" width="100%">
+      <XStack flex={1} flexBasis="auto" flexWrap="wrap" gap="1-5" width="100%">
         <Link asChild href="/docs/intro/introduction">
           <HeadAnchor grid half>
             Core
@@ -804,7 +711,7 @@ const HeaderMenuMoreContents = () => {
 
         <Link asChild href="/ui/intro" onPress={handlePress}>
           <HeadAnchor grid half>
-            UI
+            Components
           </HeadAnchor>
         </Link>
 
@@ -815,36 +722,7 @@ const HeaderMenuMoreContents = () => {
         </Link>
       </XStack>
 
-      <Separator bg="$color02" opacity={0.25} my="$2" />
-
-      {!userSwr.data?.user && (
-        <HeadAnchor grid onPress={handleLogin}>
-          <span>Login</span>
-          <YStack display={'inline-block' as any} y={2} x={10} self="flex-end">
-            <LogIn color="$color10" size={14} />
-          </YStack>
-        </HeadAnchor>
-      )}
-
-      {userSwr.data?.user && (
-        <HeadAnchor
-          grid
-          onPress={() => {
-            context.close()
-            accountModal.show = true
-          }}
-        >
-          <XStack items="center" justify="center">
-            <span>Account</span>
-            <YStack flex={10} />
-            <YStack display={'inline-block' as any} y={-2} my={-3} self="flex-end">
-              <UserAvatar size={22} />
-            </YStack>
-          </XStack>
-        </HeadAnchor>
-      )}
-
-      <Separator bg="$color02" opacity={0.25} my="$2" />
+      <Separator bg="color-02" opacity={0.25} my="1-5" />
 
       <Link asChild href="/takeout">
         <HeadAnchor grid render="a">
@@ -854,7 +732,7 @@ const HeaderMenuMoreContents = () => {
               <TakeoutIcon scale={0.65} />
             </YStack>
           </XStack>
-          <SizableText size="$2" color="$color9">
+          <SizableText size="2" color="color-9">
             Starter Kit
           </SizableText>
         </HeadAnchor>
@@ -875,7 +753,7 @@ const HeaderMenuMoreContents = () => {
               <BentoIcon scale={0.65} />
             </YStack>
           </XStack>
-          <SizableText size="$2" color="$color9">
+          <SizableText size="2" color="color-9">
             Copy-paste UI
           </SizableText>
         </HeadAnchor>
@@ -896,21 +774,13 @@ const HeaderMenuMoreContents = () => {
               <AddEvenBrandIcon scale={0.65} />
             </YStack>
           </XStack>
-          <SizableText size="$2" color="$color9">
+          <SizableText size="2" color="color-9">
             Expert Consulting
           </SizableText>
         </HeadAnchor>
       </Link>
 
-      <Separator bg="$color02" opacity={0.25} my="$2" />
-
-      <Link asChild href="/community">
-        <HeadAnchor grid render="a">
-          Community
-        </HeadAnchor>
-      </Link>
-
-      <Separator borderColor="$color02" opacity={0.25} my="$2" />
+      <Separator borderColor="color-02" opacity={0.25} my="1-5" />
 
       <Link asChild href="https://github.com/tamagui/tamagui">
         <HeadAnchor target="_blank" grid>
@@ -959,27 +829,20 @@ const SeasonChooser = () => {
         return (
           <Circle
             key={seasonName}
-            size="$4"
+            size="11"
             cursor="pointer"
             items="center"
             justify="center"
-            hoverStyle={{
-              bg: '$backgroundHover',
-            }}
-            pressStyle={{
-              bg: '$backgroundPress',
-            }}
-            {...(isActive && {
-              bg: '$color5',
-              hoverStyle: {
-                bg: '$color5',
-              },
-            })}
+            bg={
+              isActive
+                ? 'color-5 hover:color-5 press:color-5'
+                : 'hover:background-hover press:background-press'
+            }
             onPress={() => {
               setTintFamily(seasonName as any)
             }}
           >
-            <SizableText size="$5">{seasons[seasonName]}</SizableText>
+            <SizableText size="5">{seasons[seasonName]}</SizableText>
           </Circle>
         )
       })}
@@ -989,50 +852,34 @@ const SeasonChooser = () => {
 
 const HeadAnchor = styled(Paragraph, {
   render: 'a',
-  fontFamily: '$mono',
-  px: '$4',
-  py: '$3',
+  px: '4',
+  py: '3',
   cursor: 'pointer',
   fontSize: 18,
-  color: '$color11',
-
-  hoverStyle: {
-    color: '$color',
-    rounded: '$3',
-  },
-
-  focusVisibleStyle: {
-    outlineColor: '$outlineColor',
-    outlineWidth: 2,
-    outlineStyle: 'solid',
-    outlineOffset: -2,
-  },
-
-  pressStyle: {
-    opacity: 0.25,
-  },
-
+  lineHeight: '25px',
+  color: 'color-11 hover:color',
+  rounded: 'hover:3',
+  outlineColor: 'focus-visible:outline-color',
+  outlineWidth: 'focus-visible:2px',
+  outlineStyle: 'focus-visible:solid',
+  outlineOffset: 'focus-visible:-2px',
+  opacity: 'press:0.25',
   variants: {
     active: {
       true: {
-        color: '$color12',
+        color: 'color-12',
       },
     },
 
     grid: {
       true: {
-        fontWeight: '200',
-        letterSpacing: 1,
         width: '100%',
         flex: 1,
         flexBasis: 'auto',
-        p: '$2',
-        px: '$4',
-
-        hoverStyle: {
-          backgroundColor:
-            'color-mix(in srgb, var(--color8) 10%, transparent 50%)' as any,
-        },
+        paddingTop: '1-5',
+        paddingBottom: '1-5',
+        px: '4',
+        backgroundColor: 'hover:color-mix(in srgb, var(--color-8) 10%, transparent 50%)',
       },
     },
 
@@ -1040,6 +887,7 @@ const HeadAnchor = styled(Paragraph, {
       true: {
         maxWidth: '48.5%',
         overflow: 'hidden',
+        whiteSpace: 'nowrap',
       },
     },
   } as const,
@@ -1049,7 +897,7 @@ const Frame = styled(YStack, {
   className: 'header-popover-frame',
   transition: '300ms',
   flex: 1,
-  rounded: '$5',
+  rounded: '5',
   overflow: 'hidden',
   position: 'absolute',
   t: 0,
@@ -1059,21 +907,12 @@ const Frame = styled(YStack, {
   z: 1,
   x: 0,
   opacity: 1,
-
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
-    going: {
-      ':number': (going) => ({
-        enterStyle: {
-          x: going > 0 ? 50 : -50,
-          opacity: 0,
-        },
-        exitStyle: {
-          zIndex: 0,
-          x: going < 0 ? 50 : -50,
-          opacity: 0,
-        },
-      }),
-    },
+    going: styled.dynamic<number>((going) => ({
+      x: `enter:${going > 0 ? 50 : -50}px exit:${going < 0 ? 50 : -50}px`,
+      opacity: 'enter:0 exit:0',
+      zIndex: 'exit:0',
+    })),
   } as const,
 })

@@ -1,4 +1,5 @@
 import '@tamagui/core/reset.css'
+import './tamagui.config'
 
 import * as Demos from '@tamagui/demos'
 import React from 'react'
@@ -71,7 +72,7 @@ const SandboxFrame = (props: { children: any; centered?: boolean }) => {
       />
 
       <Theme name={screenshot ? 'blue' : undefined}>
-        <XStack width="100%" height="100%" fullscreen>
+        <XStack width="100%" height="100%" position="absolute" inset={0}>
           <YStack
             {...(centered && {
               items: 'center',
@@ -94,7 +95,7 @@ const SandboxFrame = (props: { children: any; centered?: boolean }) => {
                     justify: 'center',
                     height: '100%',
                   })}
-                  bg={screenshot ? 'transparent' : '$background'}
+                  bg={`${screenshot ? 'transparent' : 'background'}`}
                 >
                   {props.children}
                 </YStack>

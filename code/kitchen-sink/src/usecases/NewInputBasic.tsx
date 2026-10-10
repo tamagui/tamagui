@@ -3,7 +3,7 @@ import { YStack } from 'tamagui'
 
 export function NewInputBasic() {
   return (
-    <YStack gap="$4" p="$4">
+    <YStack gap="4" p="4">
       <Input data-testid="basic-input" placeholder="Basic input" />
       <Input data-testid="password-input" type="password" placeholder="Password input" />
       <Input data-testid="email-input" type="email" placeholder="Email input" />

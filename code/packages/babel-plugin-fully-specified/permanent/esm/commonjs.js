@@ -1,2 +1,54 @@
-import{existsSync as e,lstatSync as j}from"node:fs";import{dirname as p,extname as y,resolve as a}from"node:path";function b(r,d){return r.assertVersion(7),{name:"babel-plugin-fully-specified-cjs",visitor:{CallExpression(l,m){if(l.get("callee").isIdentifier({name:"require"})&&l.node.arguments.length===1){let o=l.node.arguments[0];if(o.type==="StringLiteral"){let n=o.value;if(n.startsWith(".")||n.startsWith("/")){let f=m.file.opts.filename;if(!f)return;let x=p(f),s=d.esExtensionDefault||".cjs",c=".js";if(!y(n)){let i=a(x,n),t=n;if(s.startsWith(".native")&&(e(`${i}.ios.js`)||e(`${i}.android.js`)))return;if(v(i)){let u=a(i,"index");if(s.startsWith(".native")&&(e(`${u}.ios.js`)||e(`${u}.android.js`)))return;let g=a(i,"index"+c);if(e(g)){t.endsWith("/")||(t+="/"),t+="index"+s,o.value=t;return}}if(e(i+c)||e(i+s)){t+=s,o.value=t;return}}}}}}}}}function v(r){return e(r)&&j(r).isDirectory()}export{b as default};
+import { existsSync, lstatSync } from 'node:fs'
+import { dirname, extname, resolve } from 'node:path'
+function fullySpecifyCommonJS(api, options) {
+  return (
+    api.assertVersion(7),
+    {
+      name: 'babel-plugin-fully-specified-cjs',
+      visitor: {
+        CallExpression(path, state) {
+          if (
+            path.get('callee').isIdentifier({ name: 'require' }) &&
+            path.node.arguments.length === 1
+          ) {
+            const arg = path.node.arguments[0]
+            if (arg.type === 'StringLiteral') {
+              let moduleSpecifier = arg.value
+              if (moduleSpecifier.startsWith('.') || moduleSpecifier.startsWith('/')) {
+                const filePath = state.file.opts.filename
+                if (!filePath) return
+                const fileDir = dirname(filePath),
+                  cjsExtension = options.esExtensionDefault || '.cjs',
+                  jsExtension = '.js'
+                if (!extname(moduleSpecifier)) {
+                  const resolvedPath = resolve(fileDir, moduleSpecifier)
+                  let newModuleSpecifier = moduleSpecifier
+                  if (isLocalDirectory(resolvedPath)) {
+                    const indexPath = resolve(resolvedPath, 'index' + jsExtension)
+                    if (existsSync(indexPath)) {
+                      ;(newModuleSpecifier.endsWith('/') || (newModuleSpecifier += '/'),
+                        (newModuleSpecifier += 'index' + cjsExtension),
+                        (arg.value = newModuleSpecifier))
+                      return
+                    }
+                  }
+                  const filePathWithJs = resolvedPath + jsExtension
+                  if (existsSync(filePathWithJs)) {
+                    ;((newModuleSpecifier += cjsExtension),
+                      (arg.value = newModuleSpecifier))
+                    return
+                  }
+                }
+              }
+            }
+          }
+        },
+      },
+    }
+  )
+}
+function isLocalDirectory(absolutePath) {
+  return existsSync(absolutePath) && lstatSync(absolutePath).isDirectory()
+}
+export { fullySpecifyCommonJS as default }
 //# sourceMappingURL=commonjs.js.map

@@ -5,12 +5,12 @@ export function DelayedEnterStyleCase() {
   const [show, setShow] = useState(false)
 
   return (
-    <YStack gap="$4" padding="$4">
-      <Paragraph fontWeight="bold" fontSize="$5">
+    <YStack gap="4" padding="4">
+      <Paragraph fontWeight="bold" fontSize="5">
         Delayed Enter Style
       </Paragraph>
 
-      <XStack gap="$2">
+      <XStack gap="2">
         <Button testID="delayed-enter-show" onPress={() => setShow(true)}>
           Show
         </Button>
@@ -23,10 +23,10 @@ export function DelayedEnterStyleCase() {
         {show ? (
           <Square
             testID="delayed-enter-target"
-            transition={['quick', { delay: 1000 }]}
+            transition={{ preset: 'quick', delay: 1000 }}
             size={80}
-            bg="$blue10"
-            enterStyle={{ opacity: 0 }}
+            bg="blue-600"
+            opacity="1 enter:0"
           />
         ) : null}
       </XStack>

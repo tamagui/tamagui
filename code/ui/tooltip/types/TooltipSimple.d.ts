@@ -1,11 +1,13 @@
-import type { SizableStackProps } from '@tamagui/stacks';
+import type { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 import type { TooltipProps } from './Tooltip';
 export type TooltipSimpleProps = TooltipProps & {
     disabled?: boolean;
+    /** arrow size in px */
+    size?: number;
     label?: React.ReactNode;
     children?: React.ReactNode;
-    contentProps?: SizableStackProps;
+    contentProps?: YStackProps;
 };
 export declare const TooltipSimple: React.FC<TooltipSimpleProps>;
 //# sourceMappingURL=TooltipSimple.d.ts.map

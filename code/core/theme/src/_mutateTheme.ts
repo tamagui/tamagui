@@ -2,15 +2,17 @@ import { isServer } from '@tamagui/constants'
 import { startTransition } from '@tamagui/start-transition'
 import type { ThemeDefinition, ThemeParsed } from '@tamagui/web'
 import {
-  ensureThemeVariable,
   forceUpdateThemes,
   getConfig,
-  getThemeCSSRules,
-  mutatedAutoVariables,
-  proxyThemeToParents,
+  getMutatedAutoVariableCSS,
   simpleHash,
   updateConfig,
 } from '@tamagui/web'
+import {
+  ensureThemeVariable,
+  getThemeCSSRules,
+  proxyThemeToParents,
+} from '@tamagui/web/internal-runtime'
 
 type MutateThemeOptions = {
   mutationType: 'replace' | 'update' | 'add'
@@ -61,10 +63,7 @@ export function mutateThemes({
   const cssRules = insertCSS ? insertThemeCSS(allThemesRaw, batch) : []
 
   startTransition(() => {
-    for (const themeName in allThemesProxied) {
-      const theme = allThemesProxied[themeName]
-      updateThemeConfig(themeName, theme)
-    }
+    updateConfig('themes', allThemesProxied)
     updateThemeStates()
   })
 
@@ -111,7 +110,11 @@ export function _mutateTheme(props: MutateThemeOptions & MutateOneThemeProps) {
 
   const themeProxied = proxyThemeToParents(themeName, theme)
 
-  const response = {
+  const response: {
+    themeRaw: ThemeParsed
+    theme: ThemeParsed
+    cssRules: string[]
+  } = {
     themeRaw: theme,
     theme: themeProxied,
     cssRules: [] as string[],
@@ -134,9 +137,7 @@ export function _mutateTheme(props: MutateThemeOptions & MutateOneThemeProps) {
 }
 
 function updateThemeConfig(themeName: string, theme: ThemeParsed) {
-  const config = getConfig()
-  config.themes[themeName] = theme
-  updateConfig('themes', config.themes)
+  updateConfig('themes', { [themeName]: theme })
 }
 
 function updateThemeStates() {
@@ -171,9 +172,10 @@ function insertThemeCSS(themes: Record<string, PartialTheme>, batch: Batch = fal
     }
   }
 
-  // Output ALL mutated auto variables (since updateStyle replaces the element)
-  if (mutatedAutoVariables.length > 0) {
-    const autoVarCSS = `:root{${mutatedAutoVariables.map((v) => `--${v.name}:${v.val}`).join(';')}}`
+  // output all mutated auto variables because updateStyle replaces the element
+  const mutatedAutoVariableCSS = getMutatedAutoVariableCSS()
+  if (mutatedAutoVariableCSS) {
+    const autoVarCSS = `:root{${mutatedAutoVariableCSS}}`
     updateStyle(`t_mutate_vars`, [autoVarCSS])
   }
 

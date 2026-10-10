@@ -139,16 +139,16 @@ test.describe('Render Prop', () => {
     })
   })
 
-  test.describe('Stack with render prop', () => {
-    test('Stack renders as section', async ({ page }) => {
-      const element = page.getByTestId('stack-as-section')
+  test.describe('View with render prop', () => {
+    test('View renders as section', async ({ page }) => {
+      const element = page.getByTestId('view-as-section')
       await expect(element).toBeVisible()
       const tagName = await element.evaluate((el) => el.tagName.toLowerCase())
       expect(tagName).toBe('section')
     })
 
-    test('Stack renders as aside', async ({ page }) => {
-      const element = page.getByTestId('stack-as-aside')
+    test('View renders as aside', async ({ page }) => {
+      const element = page.getByTestId('view-as-aside')
       await expect(element).toBeVisible()
       const tagName = await element.evaluate((el) => el.tagName.toLowerCase())
       expect(tagName).toBe('aside')
@@ -233,11 +233,11 @@ test.describe('Render Prop', () => {
       expect(jsxAttr).toBe('true')
     })
 
-    test('JSX element has styles from Stack', async ({ page }) => {
+    test('JSX element has styles from View', async ({ page }) => {
       const element = page.getByTestId('jsx-element-render')
       await expect(element).toBeVisible()
 
-      // Should have padding and background from Stack props
+      // Should have padding and background from View props
       const bg = await element.evaluate(
         (el) => window.getComputedStyle(el).backgroundColor
       )
@@ -279,7 +279,7 @@ test.describe('Render Prop', () => {
       expect(pressAttr).toBe('false')
     })
 
-    test('function render has styles from Stack', async ({ page }) => {
+    test('function render has styles from View', async ({ page }) => {
       const element = page.getByTestId('function-render')
       await expect(element).toBeVisible()
 

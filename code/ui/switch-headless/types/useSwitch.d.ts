@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { GestureResponderEvent, PressableProps, View, ViewProps } from 'react-native';
+import type { PressableProps, ViewInstance as View, ViewProps } from '@tamagui/react-native-types';
 type SwitchBaseProps = ViewProps & Pick<PressableProps, 'onPress'>;
 export type SwitchExtraProps = {
     labeledBy?: string;
@@ -21,16 +21,64 @@ export declare function useSwitch<R extends View, P extends SwitchProps>(props: 
     bubbleInput: null;
 } | {
     switchProps: {
-        'aria-labelledby': string | undefined;
-        onPress: import("@tamagui/helpers").EventHandler<GestureResponderEvent> | undefined;
+        role: "switch";
+        'aria-checked': boolean;
         tabIndex?: 0 | undefined;
         'data-state'?: string | undefined;
         'data-disabled'?: string | undefined;
         disabled?: boolean | undefined;
-        role: "switch";
-        'aria-checked': boolean;
+        'aria-labelledby': string | undefined;
+        onPress: import("@tamagui/helpers").EventHandler<Readonly<Omit<Readonly<{
+            bubbles: boolean | undefined;
+            cancelable: boolean | undefined;
+            currentTarget: number | import("@tamagui/react-native-types").HostInstance;
+            defaultPrevented: boolean | undefined;
+            dispatchConfig: Readonly<{
+                registrationName: string;
+            }>;
+            eventPhase: number | undefined;
+            preventDefault: () => void;
+            isDefaultPrevented: () => boolean;
+            stopPropagation: () => void;
+            isPropagationStopped: () => boolean;
+            isTrusted: boolean | undefined;
+            nativeEvent: Readonly<{
+                changedTouches: ReadonlyArray<import("@tamagui/react-native-types").NativeTouchEvent>;
+                force?: number | undefined;
+                identifier: number;
+                locationX: number;
+                locationY: number;
+                pageX: number;
+                pageY: number;
+                target: number | undefined;
+                timestamp: number;
+                touches: ReadonlyArray<import("@tamagui/react-native-types").NativeTouchEvent>;
+            }>;
+            persist: () => void;
+            target: (number | undefined) | import("@tamagui/react-native-types").HostInstance;
+            timeStamp: number;
+            type: string | undefined;
+        }>, "touchHistory"> & {
+            touchHistory: Readonly<{
+                indexOfSingleActiveTouch: number;
+                mostRecentTimeStamp: number;
+                numberActiveTouches: number;
+                touchBank: ReadonlyArray<Readonly<{
+                    touchActive: boolean;
+                    startPageX: number;
+                    startPageY: number;
+                    startTimeStamp: number;
+                    currentPageX: number;
+                    currentPageY: number;
+                    currentTimeStamp: number;
+                    previousPageX: number;
+                    previousPageY: number;
+                    previousTimeStamp: number;
+                }>>;
+            }>;
+        }>> | undefined;
     };
-    switchRef: (node: View) => void;
+    switchRef: (node: import("@tamagui/react-native-types").ReactNativeElement) => void;
     /**
      * insert as a sibling of your switch (should not be inside the switch)
      */

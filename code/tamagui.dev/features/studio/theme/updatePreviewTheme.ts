@@ -1,7 +1,7 @@
-import { createStudioThemes } from '@tamagui/theme-builder'
-import type { BuildThemeSuiteProps } from '@tamagui/themes'
 import type { ThemeName } from 'tamagui'
 import { debounce, mutateThemes } from 'tamagui'
+import { createStudioThemes } from './palettes'
+import type { BuildThemeSuiteProps } from './types'
 
 const STUDIO_INTERNAL_THEME_NAME = 'studiodemointernal'
 
@@ -23,7 +23,6 @@ const themeCache = new Map<
   {
     palettes: any
     schemes: any
-    templateStrategy: string
     themes: any
   }
 >()
@@ -39,8 +38,7 @@ export async function updatePreviewTheme(
   if (
     cached &&
     JSON.stringify(cached.palettes) === JSON.stringify(args.palettes) &&
-    JSON.stringify(cached.schemes) === JSON.stringify(args.schemes) &&
-    cached.templateStrategy === args.templateStrategy
+    JSON.stringify(cached.schemes) === JSON.stringify(args.schemes)
   ) {
     return false
   }
@@ -50,7 +48,6 @@ export async function updatePreviewTheme(
   themeCache.set(cacheKey, {
     palettes: args.palettes,
     schemes: args.schemes,
-    templateStrategy: args.templateStrategy ?? 'base',
     themes,
   })
 
@@ -71,6 +68,45 @@ export async function updatePreviewTheme(
   }
 
   lastInserted = themes
+
+  if (typeof document !== 'undefined') {
+    const internalId = getStudioInternalThemeName(args.id)
+    const rules: string[] = []
+
+    for (const themeName in themes) {
+      const theme = themes[themeName]
+      const [scheme, ...rest] = themeName.split('_')
+      const subTheme = rest.length ? `_${rest.join('_')}` : ''
+      const targetClass = `t_${internalId}${subTheme}`
+
+      const decls: string[] = []
+      for (const key in theme) {
+        const val = theme[key]
+        if (val !== undefined && val !== null) {
+          decls.push(`--${key}: ${val}`)
+        }
+      }
+
+      const selectors = [
+        `:root.t_${scheme} .${targetClass}`,
+        `:root.t_${scheme} .${targetClass}:not(#t_theme_full_name)`,
+        `:root .t_${scheme}.${targetClass}`,
+        `.t_${scheme}.${targetClass}`,
+        `.t_${scheme} .${targetClass}`,
+        `.t_${targetClass}`,
+      ]
+
+      rules.push(`${selectors.join(',\n')} {\n  ${decls.join(';\n  ')};\n}`)
+    }
+
+    let style = document.getElementById('t_theme_style_themes') as HTMLStyleElement | null
+    if (!style) {
+      style = document.createElement('style')
+      style.id = 't_theme_style_themes'
+      document.head.appendChild(style)
+    }
+    style.textContent = rules.join('\n\n')
+  }
 
   mutateThemes({
     themes: insertThemes,

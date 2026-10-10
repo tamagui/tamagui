@@ -6,16 +6,14 @@
  */
 
 import fetch from 'node-fetch'
-import querystring from 'node:querystring'
 import { existsSync, mkdirSync, promises as fsPromises } from 'node:fs'
 import path from 'node:path'
-import Conf from 'conf'
 
 import { componentsList } from './components.js'
 import type { ComponentSchema } from './components.js'
 import { getMonorepoRoot } from './hooks/useInstallComponent.js'
 
-const apiBase = process.env.API_BASE || 'https://tamagui.dev'
+const apiBase = process.env.API_BASE || 'https://v3.tamagui.dev'
 
 async function main() {
   const componentName = process.argv[2]
@@ -23,10 +21,8 @@ async function main() {
   if (!componentName) {
     console.error('Usage: bento-get <componentName>')
     console.error('Example: bento-get SwitchCustomIcons')
-    console.error('\nAvailable FREE components:')
-    componentsList
-      .filter((c) => c.isOSS)
-      .forEach((c) => console.error(`  - ${c.fileName} (${c.name})`))
+    console.error('\nAvailable components:')
+    componentsList.forEach((c) => console.error(`  - ${c.fileName} (${c.name})`))
     process.exit(1)
   }
 
@@ -46,40 +42,20 @@ async function main() {
   }
 
   console.info(`Found component: ${component.name} (${component.fileName})`)
-  console.info(`Type: ${component.isOSS ? 'FREE' : 'PRO'}`)
-
-  // Check for token if PRO component
-  const tokenStore = new Conf({ projectName: 'bento-cli/v3.0' })
-  let accessToken = tokenStore.get('accessToken') as string | undefined
-
-  if (!component.isOSS && !accessToken) {
-    console.error('\nThis is a PRO component and requires authentication.')
-    console.error('Please run the interactive `npx bento-get` to authenticate,')
-    console.error('or set your token at https://tamagui.dev/account')
-    process.exit(1)
-  }
 
   // Fetch component
   console.info('\nFetching component...')
 
-  const query = querystring.stringify({
-    section: component.category,
-    part: component.categorySection,
-    fileName: component.fileName,
-  })
-
-  const codePath = `${apiBase}/api/bento/cli/v2/code-download?${query}`
+  const codePath = `${apiBase}/bento-manifests/${[
+    component.category,
+    component.categorySection,
+    `${component.fileName}.json`,
+  ]
+    .map((part) => encodeURIComponent(part))
+    .join('/')}`
 
   try {
-    // For OSS components, don't send Authorization header if no token
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    }
-    if (accessToken) {
-      headers['Authorization'] = `Bearer ${accessToken}`
-    }
-
-    const res = await fetch(codePath, { headers })
+    const res = await fetch(codePath)
 
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}))
@@ -104,13 +80,7 @@ async function main() {
     for (const [category, files] of Object.entries(filesData)) {
       downloadedFiles[category] = await Promise.all(
         files.map(async (file: { path: string; downloadUrl: string }) => {
-          const fileHeaders: Record<string, string> = {
-            'Content-Type': 'application/json',
-          }
-          if (accessToken) {
-            fileHeaders['Authorization'] = `Bearer ${accessToken}`
-          }
-          const fileRes = await fetch(file.downloadUrl, { headers: fileHeaders })
+          const fileRes = await fetch(new URL(file.downloadUrl, apiBase).toString())
           const fileContent = await fileRes.text()
           return {
             path: file.path,

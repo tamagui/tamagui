@@ -6,7 +6,7 @@ import { tamaguiPlugin, tamaguiAliases } from '@tamagui/vite-plugin'
 import { one } from 'one/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
 import type { UserConfig } from 'vite'
-import { generateBentoProxy } from './scripts/generate-bento-proxy.mjs'
+import { redirects } from './redirects'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
@@ -20,7 +20,10 @@ const vitePluginDist = pathResolve(
   import.meta.dirname,
   '../compiler/vite-plugin/dist/esm/index.mjs'
 )
-const staticDist = pathResolve(import.meta.dirname, '../compiler/static/dist/index.cjs')
+const staticDist = pathResolve(
+  import.meta.dirname,
+  '../compiler/static/dist/cjs/index.cjs'
+)
 
 if (!existsSync(vitePluginDist) || !existsSync(staticDist)) {
   console.info('')
@@ -37,16 +40,6 @@ if (!existsSync(vitePluginDist) || !existsSync(staticDist)) {
   }
 }
 
-// Generate bento proxy files (creates stubs if bento repo not found)
-const { hasBento, bentoPath } = generateBentoProxy({
-  basePath: pathResolve(import.meta.dirname, 'scripts'),
-  silent: false,
-})
-
-if (hasBento) {
-  console.info(`Using bento at ${bentoPath}`)
-}
-
 // use createRequire instead of import.meta.resolve for bun compatibility in vite config
 const require = createRequire(import.meta.url)
 const resolve = (path: string) => {
@@ -57,9 +50,8 @@ const include = [
   // pre-bundle common web deps to avoid mid-navigation optimization in dev mode
   'react-native',
   'react-dom',
-  'zod',
-  '@stripe/react-stripe-js',
-  '@stripe/stripe-js',
+  'react/jsx-runtime',
+  'react/jsx-dev-runtime',
   'swr/mutation',
   '@vxrn/mdx-rust/client',
   // core tamagui packages must be pre-bundled together to avoid duplicate instances
@@ -68,14 +60,10 @@ const include = [
   '@tamagui/web',
   // existing
   'secure-json-parse',
-  '@supabase/postgres-js',
-  'ai',
   '@docsearch/react',
   '@leeoniya/ufuzzy',
-  'react-hook-form',
   '@github/mini-throttle',
   'swr',
-  '@supabase/ssr',
   'is-buffer',
   'extend',
   'minimatch',
@@ -94,9 +82,7 @@ const include = [
   '@tamagui/get-token',
   '@tamagui/roving-focus',
   'react-native-safe-area-context',
-  '@hookform/resolvers/zod',
   'react-native-reanimated',
-  '@tamagui/react-native-svg',
   'react-native-gesture-handler',
   '@tanstack/react-table',
   '@tamagui/focus-scope',
@@ -104,11 +90,9 @@ const include = [
 ]
 
 export default {
-  envPrefix: 'NEXT_PUBLIC_',
-
   server: {
     fs: {
-      allow: ['..', ...(bentoPath ? [bentoPath] : [])],
+      allow: ['..'],
     },
   },
 
@@ -119,6 +103,12 @@ export default {
         // fix non-deterministic __esm init ordering bug
         // https://github.com/rolldown/rolldown/issues/3143
         strictExecutionOrder: true,
+        // the tamagui packages are shared by every route; left alone, rolldown
+        // parks them in the biggest lazy route (bento) and every page then
+        // downloads that whole route, reanimated and demos included
+        codeSplitting: {
+          groups: [{ name: 'tamagui', test: /[\\/]code[\\/](core|ui)[\\/]/ }],
+        },
       },
     },
   },
@@ -127,66 +117,37 @@ export default {
     preserveSymlinks: false,
 
     alias: [
-      // when bento is unavailable, @tamagui/bento/component/* is stubbed by the
-      // `stub-bento-components` plugin below (virtual module), not an alias
-
+      // One's SSR navigation fork imports these internal contexts directly.
+      // Resolve them to files so Vite does not reject the package's public-only exports map.
+      {
+        find: /^@react-navigation\/core\/lib\/module\/(.+)$/,
+        replacement: `${pathResolve(
+          resolve('@react-navigation/core/package.json'),
+          '../lib/module'
+        )}/$1.js`,
+      },
       // Standard string-based aliases
       {
-        find: 'react-native-svg',
-        replacement: '@tamagui/react-native-svg',
+        find: /^~\//,
+        replacement: `${import.meta.dirname}/`,
       },
+      // resolves to @tamagui/react-native-svg's esm entry. aliasing to the bare
+      // package name instead leaves the cjs entry reachable, and vite serves
+      // that file to the browser as-is, where its named exports do not exist.
+      ...tamaguiAliases({ svg: true }),
 
       {
         find: 'react-native/Libraries/Core/ReactNativeVersion',
         replacement: resolve('@tamagui/proxy-worm'),
       },
-      // Bento paths (conditional based on bento availability)
-      ...(hasBento
-        ? [
-            {
-              find: '@tamagui/bento/raw',
-              replacement: pathResolve(bentoPath, 'src/index'),
-            },
-            {
-              find: '@tamagui/bento/provider',
-              replacement: pathResolve(
-                bentoPath,
-                'src/components/provider/CurrentRouteProvider'
-              ),
-            },
-            {
-              find: '@tamagui/bento/component',
-              replacement: pathResolve(bentoPath, 'src/components'),
-            },
-          ]
-        : []),
-      // Always provide these aliases - they point to proxy files that work with or without bento
-      {
-        find: '@tamagui/bento/data',
-        replacement: pathResolve(import.meta.dirname, './helpers/dist/bento-proxy-data'),
-      },
-      {
-        find: '@tamagui/bento',
-        replacement: pathResolve(import.meta.dirname, './helpers/dist/bento-proxy'),
-      },
-
       ...(process.env.RNW_LITE
         ? tamaguiAliases({
             rnwLite: true,
-            svg: true,
           })
         : []),
     ],
 
-    dedupe: [
-      'react',
-      'react-dom',
-      'react-hook-form',
-      'react-native',
-      'react-native-web',
-      'react-native-svg',
-      ...include,
-    ],
+    dedupe: ['react', 'react-dom', 'react-native', 'react-native-web', ...include],
   },
 
   optimizeDeps: {
@@ -196,55 +157,26 @@ export default {
   },
 
   ssr: {
-    external: [
-      '@vxrn/mdx-rust',
-      'satteri',
-      'satteri-expressive-code',
-      'ws',
-      'postmark',
-      'stripe',
-    ],
+    external: ['@vxrn/mdx-rust', 'satteri', 'satteri-expressive-code', 'ws'],
     noExternal: true,
   },
 
   plugins: [
-    // Plugin to stub bento component imports when bento repo is not available
-    !hasBento && {
-      name: 'stub-bento-components',
-      enforce: 'pre', // Run before other plugins including alias resolution
+    // vxrn aliases `react-native` to require.resolve('react-native-web'), which is
+    // the package `main`: a CJS bundle nothing can tree-shake. one
+    // `useWindowDimensions` import then pulls all 274kb of react-native-web into
+    // every page. vite's alias plugin runs ahead of every user plugin, so catch
+    // the already-resolved cjs entry and send it to the esm build instead.
+    {
+      name: 'react-native-web-esm',
+      enforce: 'pre',
       resolveId(id: string) {
-        // Intercept imports from @tamagui/bento/component/*
-        if (id.startsWith('@tamagui/bento/component/')) {
-          // Return a virtual module ID
-          return '\0bento-component-stub:' + id
-        }
-      },
-      load(id: string) {
-        // Handle the virtual module
-        if (id.startsWith('\0bento-component-stub:')) {
-          // Return stub component code
-          return `
-import { YStack, Paragraph } from 'tamagui'
-
-export default function BentoComponentStub() {
-  if (process.env.NODE_ENV === 'production') {
-    return null
-  }
-  return (
-    <YStack p="$4" bc="$borderColor" br="$4">
-      <Paragraph size="$2" color="$color10">
-        Bento component not available
-      </Paragraph>
-    </YStack>
-  )
-}
-
-// Export as default and named for compatibility
-export const LocationNotification = BentoComponentStub
-`
+        if (id.endsWith('/react-native-web/dist/cjs/index.js')) {
+          return resolve('react-native-web/dist/index.js')
         }
       },
     },
+
     tamaguiPlugin({
       // see tamagui.build.ts
       disable: process.env.NODE_ENV !== 'production',
@@ -253,18 +185,10 @@ export const LocationNotification = BentoComponentStub
     one({
       native: false,
 
-      setupFile: {
-        server: './setup.server.ts',
-      },
-
-      server: {
-        cacheControl: {
-          'fonts/**': 'public, max-age=604800, stale-while-revalidate=86400',
-          '*.svg': 'public, max-age=86400',
-          '*.png': 'public, max-age=86400',
-          '*.jpg': 'public, max-age=86400',
-          '*.woff2': 'public, max-age=604800',
-        },
+      config: {
+        // The repo tsconfig contains declaration-only package mappings that
+        // must not override runtime package exports.
+        tsConfigPaths: false,
       },
 
       react: {
@@ -299,55 +223,10 @@ export const LocationNotification = BentoComponentStub
         },
       },
 
-      build: {
-        api: {
-          config: {
-            build: {
-              rollupOptions: {
-                external: [
-                  '@discordjs/rest',
-                  '@discordjs/ws',
-                  '@vercel/og',
-                  'stripe',
-                  'zlib-sync',
-                ],
-              },
-            },
-          },
-        },
-      },
-
       web: {
         skewProtection: 'proactive',
         experimental_scriptLoading: 'after-lcp-aggressive',
-        redirects: [
-          // llms.txt, llms-full.txt, docs.txt are handled by middleware directly
-          {
-            source: '/account/subscriptions',
-            destination: '/account',
-            permanent: false,
-          },
-          {
-            source: '/docs',
-            destination: '/docs/intro/introduction',
-            permanent: true,
-          },
-          {
-            source: '/vite',
-            destination: 'https://vxrn.dev',
-            permanent: true,
-          },
-          {
-            source: '/docs/components/:slug/:version',
-            destination: '/ui/:slug/:version',
-            permanent: true,
-          },
-          {
-            source: '/docs/components/:slug',
-            destination: '/ui/:slug',
-            permanent: true,
-          },
-        ],
+        redirects,
       },
     }),
 

@@ -7,13 +7,12 @@ const SomeNonTamaguiTextComponent = (props: {}) => {
 export const SomeTextComponent = styled(
   SomeNonTamaguiTextComponent,
   {
-    color: '$background',
-
+    color: 'background',
     variants: {
       foo: {
         true: {
           // making sure this has color
-          color: '$background',
+          color: 'background',
         },
       },
     } as const,

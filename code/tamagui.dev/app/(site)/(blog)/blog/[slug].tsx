@@ -5,7 +5,6 @@ import { useLoader } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
 import { TamaguiExamples } from '~/components/TamaguiExamples'
 import { BlogSlugPage } from '~/features/site/blog/BlogSlugPage'
-import { getOgUrl } from '~/features/site/getOgUrl'
 
 export async function generateStaticParams() {
   const { getAllFrontmatter } = await import('~/features/mdx/getMDXBySlug')
@@ -18,8 +17,12 @@ export async function generateStaticParams() {
 export async function loader(props: LoaderProps) {
   const { getCompilationExamples, getMDXBySlug } =
     await import('~/features/mdx/getMDXBySlug')
+  const { getDocsMode } = await import('~/features/docs/isTailwindMode')
+  const mode = getDocsMode(props)
   const { slug } = props.params
-  const { frontmatter, code } = await getMDXBySlug('data/blog', slug as string)
+  const { frontmatter, code } = await getMDXBySlug('data/blog', slug as string, {
+    mode,
+  })
   const relatedPosts = frontmatter.relatedIds
     ? await Promise.all(
         frontmatter.relatedIds.map(async (id) => {
@@ -56,21 +59,19 @@ export default function BlogSlug() {
           .trim()
           .replace(/^./, (c) => c.toLowerCase())}`}
         description={data.frontmatter.description ?? ''}
-        openGraph={{
-          images: [
-            {
-              url:
-                data.frontmatter.image ||
-                getOgUrl({
-                  title: data.frontmatter.title,
-                  description: data.frontmatter.description ?? '',
-                  category: 'Blog',
-                }),
-              width: 1200,
-              height: 630,
-            },
-          ],
-        }}
+        openGraph={
+          data.frontmatter.image
+            ? {
+                images: [
+                  {
+                    url: data.frontmatter.image,
+                    width: 1200,
+                    height: 630,
+                  },
+                ],
+              }
+            : undefined
+        }
       />
 
       <TamaguiExamples.Provider value={data.examples}>

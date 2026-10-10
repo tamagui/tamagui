@@ -1,0 +1,45 @@
+{
+  "name": "@tamagui/lsp",
+  "version": "2.7.7",
+  "description": "The Tamagui language server: flat value completions, diagnostics, hover and color decorators in any LSP editor",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamagui/tamagui.git",
+    "directory": "code/lsp/npm/tamagui-lsp"
+  },
+  "type": "module",
+  "//skipPublish": "the language server releases through lsp-build.yml, which cross-compiles the eight platform leaves, publishes them, and only then publishes this umbrella. the main release lane cannot build those leaves, so an umbrella cut from it would pin optionalDependencies that do not exist on npm and every editor would silently get no server.",
+  "skipPublish": true,
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "tamagui-lsp": "./bin.js"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "bin.js",
+    "README.md"
+  ],
+  "optionalDependencies": {
+    "@tamagui/lsp-darwin-arm64": "2.7.7",
+    "@tamagui/lsp-darwin-x64": "2.7.7",
+    "@tamagui/lsp-linux-arm64-gnu": "2.7.7",
+    "@tamagui/lsp-linux-arm64-musl": "2.7.7",
+    "@tamagui/lsp-linux-x64-gnu": "2.7.7",
+    "@tamagui/lsp-linux-x64-musl": "2.7.7",
+    "@tamagui/lsp-win32-arm64": "2.7.7",
+    "@tamagui/lsp-win32-x64": "2.7.7"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

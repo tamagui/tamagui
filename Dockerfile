@@ -3,7 +3,7 @@
 FROM node:22
 
 # install bun (pinned to avoid breaking changes from unpinned latest)
-RUN npm install -g bun@1.2.22
+RUN npm install -g bun@1.4.2
 
 ARG CF_API_KEY
 ARG CF_EMAIL
@@ -37,11 +37,9 @@ ARG ONE_SERVER_URL
 ARG APP_NAME
 ARG TAMAGUI_PRO_SECRET
 ARG DEEPSEEK_API_KEY
-ARG BENTO_GITHUB_TOKEN
-ARG BENTO_BRANCH
 
 # install dependencies (sharp needs libvips for image processing)
-RUN apt-get update && apt-get install -y git bsdmainutils vim-common gh libvips-dev
+RUN apt-get update && apt-get install -y git bsdmainutils vim-common libvips-dev
 
 WORKDIR /root/tamagui
 COPY . .
@@ -49,33 +47,7 @@ COPY . .
 # init git (allow empty commit if nothing to commit)
 RUN git config --global user.email "you@example.com" && git config --global user.name "Docker Build" && git init . && git add -A && (git commit -m 'add' > /dev/null || true)
 
-# Clone bento repository as sibling directory (optional)
-# Use BENTO_BRANCH env var if set, otherwise default to main
-WORKDIR /root
-RUN if [ -n "$BENTO_GITHUB_TOKEN" ]; then \
-      BRANCH="${BENTO_BRANCH:-main}"; \
-      echo "Cloning bento repository (branch: $BRANCH)..."; \
-      unset GITHUB_TOKEN && \
-      echo "$BENTO_GITHUB_TOKEN" | gh auth login --with-token && \
-      gh repo clone tamagui/bento -- --branch "$BRANCH" && \
-      gh auth logout --hostname github.com && \
-      echo "✅ Bento repository cloned (branch: $BRANCH)" && \
-      echo "REQUIRE_BENTO=true" > /tmp/bento_status; \
-    else \
-      echo "⚠️ BENTO_GITHUB_TOKEN not provided - bento features will not be available" && \
-      echo "REQUIRE_BENTO=false" > /tmp/bento_status; \
-    fi
-
-WORKDIR /root/tamagui
-
-# Set REQUIRE_BENTO based on whether bento was cloned
-RUN export $(cat /tmp/bento_status)
-
-# First install without bento deps
 RUN bun install
-
-# Merge bento dependencies into root package.json and reinstall (only if bento was cloned)
-RUN if [ -d "../bento" ]; then node scripts/with-bento.mjs && bun install; fi
 RUN bun run build:js
 RUN bun run build:app
 

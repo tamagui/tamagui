@@ -7,6 +7,11 @@ package: stacks
 demoName: Stacks
 ---
 
+<IntroParagraph>
+  XStack, YStack, and ZStack provide styled flex layouts for horizontal,
+  vertical, and overlapping content.
+</IntroParagraph>
+
 <HeroContainer>
   <StacksDemo />
 </HeroContainer>
@@ -17,17 +22,15 @@ demoName: Stacks
 
 <Highlights
   features={[
-    'X, Y, and Z stacks for easy flex layouts.',
-    'Gap property to add space between elements.',
-    'Handle press, focus, and layout events easily.',
+    'X, Y, and Z flex stacks',
+    'Spacing between elements with gap',
+    'Press, focus, and layout events',
   ]}
 />
 
-Tamagui UI includes optional stack views - XStack, YStack and ZStack. They
-extend directly off the [View](/docs/core/view-and-text) from `@tamagui/core`,
-and so accept all [style properties](/docs/intro/props).
-
-In this example you'd show three `YStack` elements spaced out.
+Tamagui components include optional stack views: XStack, YStack and ZStack. They
+extend the [View](/docs/core/view-and-text) from `@tamagui/core`,
+so they accept all [style properties](/docs/intro/props).
 
 ## Installation
 
@@ -43,7 +46,7 @@ npm install @tamagui/stacks
 import { XStack, YStack } from 'tamagui'
 
 export default () => (
-  <XStack gap="$2">
+  <XStack gap="2">
     <YStack />
     <YStack />
     <YStack />
@@ -54,7 +57,7 @@ export default () => (
 To see all the style properties supported, see the [Props](/docs/intro/props)
 documentation.
 
-### Fuller Example
+### Fuller example
 
 An example using a wide variety of style properties:
 
@@ -65,17 +68,11 @@ export default () => (
   <XStack
     flex={1}
     flexWrap="wrap"
-    backgroundColor="#fff"
-    hoverStyle={{
-      backgroundColor: 'red',
-    }}
-    // media query
-    $gtSm={{
-      flexDirection: 'column',
-      flexWrap: 'nowrap',
-    }}
+    backgroundColor="#fff hover:red"
+    flexDirection="gtSm:column"
+    flexWrap="wrap gtSm:nowrap"
   >
-    <YStack gap="$3">
+    <YStack gap="3">
       <Text>Hello</Text>
       <Text>World</Text>
     </YStack>
@@ -83,34 +80,8 @@ export default () => (
 )
 ```
 
-## API Reference
+## API reference
 
 ### XStack, YStack, ZStack
 
-Beyond the [Tamagui Props](/docs/intro/props), the stacks add just two variants:
-
-<PropsTable
-  data={[
-    {
-      name: 'fullscreen',
-      required: false,
-      type: 'boolean',
-      deprecated: true,
-      description: (
-        <span>
-          Deprecated: use <Code>inset: 0, position: 'absolute'</Code> instead.
-        </span>
-      ),
-    },
-    {
-      name: 'elevation',
-      required: false,
-      type: 'number | tokens.size',
-      description: (
-        <span>
-          Sets a natural looking shadow that expands out and away as the size gets bigger.
-        </span>
-      ),
-    },
-  ]}
-/>
+Stacks accept all standard [Tamagui Props](/docs/intro/props).

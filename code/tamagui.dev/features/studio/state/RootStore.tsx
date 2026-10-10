@@ -1,4 +1,3 @@
-import type { ThemeDefinition } from '@tamagui/theme-builder'
 import { createStore } from '@tamagui/use-store'
 import type { TamaguiInternalConfig, ThemeName } from 'tamagui'
 import { isLocal } from '~/features/studio/constants'
@@ -10,7 +9,7 @@ type ThemesConfig = {
   palettes: Record<string, string[]>
   templates: Record<string, number>
   masks: Record<string, { name: string }>
-  themes: Record<string, ThemeDefinition>
+  themes: Record<string, Record<string, string>>
 }
 
 const matchDarkMode = () =>
@@ -59,15 +58,6 @@ export class RootStore {
     if (isLocal) {
       console.warn(`⚠️ disabled RootStore for now`)
       return
-
-      // const domain = process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:8081'
-      // const [configJson, themesJson] = await Promise.all([
-      //   fetch(`${domain}/api/tamagui.config.json`).then((res) => res.json()),
-      //   fetch(`${domain}/api/tamagui.themes.json`).then((res) => res.json()),
-      // ])
-
-      // await this.onReloadedTamaguiConfig(configJson)
-      // this.themes = themesJson
     } else {
       // TODO
       // try {

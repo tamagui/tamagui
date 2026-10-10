@@ -1,14 +1,14 @@
 /**
  * Detox E2E Test for Media Query Regression (Issue starting in v1.132.17)
  *
- * Tests that $md and $gtMd media queries correctly apply based on screen size.
+ * Tests that the max-md and md media queries correctly apply based on screen size.
  *
- * Bug: On small screens (iPhone ~390px), $gtMd styles were incorrectly applying
- * when they should not. Only $md should apply on mobile devices.
+ * Bug: On small screens (iPhone ~390px), the min-width styles were incorrectly
+ * applying when they should not. Only max-md should apply on mobile devices.
  *
- * Breakpoints:
- * - md: maxWidth 1020 (matches when width <= 1020)
- * - gtMd: minWidth 1021 (matches when width > 1020)
+ * Breakpoints (config v5, mobile-first):
+ * - max-md: maxWidth 767 (matches when width < 768)
+ * - md: minWidth 768 (matches when width >= 768)
  *
  * Note: Detox doesn't have built-in style inspection, so this test:
  * 1. Verifies elements render correctly
@@ -39,8 +39,8 @@ describe('MediaQueryGtMd', () => {
   it('should render all media query test elements', async () => {
     // Verify all test elements are visible
     await expect(element(by.id('media-test-both'))).toBeVisible()
-    await expect(element(by.id('media-test-gtmd-only'))).toBeVisible()
     await expect(element(by.id('media-test-md-only'))).toBeVisible()
+    await expect(element(by.id('media-test-max-md-only'))).toBeVisible()
     await expect(element(by.id('media-test-all'))).toBeVisible()
   })
 
@@ -49,30 +49,30 @@ describe('MediaQueryGtMd', () => {
     // This tests BOTH truthy and falsy breakpoints on the same device:
     //
     // TRUE cases (breakpoint matches):
-    // - sm: true (maxWidth 800, 390 <= 800) ✓
-    // - md: true (maxWidth 1020, 390 <= 1020) ✓
+    // - max-sm: true (maxWidth 639, 390 < 640) ✓
+    // - max-md: true (maxWidth 767, 390 < 768) ✓
     //
     // FALSE cases (breakpoint does NOT match):
-    // - gtMd: false (minWidth 1021, 390 >= 1021 is false) ✓
+    // - md: false (minWidth 768, 390 >= 768 is false) ✓
 
-    // Test TRUE case: md should be true on mobile
-    await expect(element(by.id('media-state-md'))).toHaveText('md: true')
+    // Test TRUE case: max-md should be true on mobile
+    await expect(element(by.id('media-state-max-md'))).toHaveText('max-md: true')
 
-    // Test FALSE case: gtMd should be false on mobile
-    // THIS IS THE KEY REGRESSION TEST - bug was gtMd incorrectly returning true
-    await expect(element(by.id('media-state-gtMd'))).toHaveText('gtMd: false')
+    // Test FALSE case: md should be false on mobile
+    // THIS IS THE KEY REGRESSION TEST - the bug was the min-width query returning true
+    await expect(element(by.id('media-state-md'))).toHaveText('md: false')
 
-    // Test another TRUE case: sm should be true
-    await expect(element(by.id('media-state-sm'))).toHaveText('sm: true')
+    // Test another TRUE case: max-sm should be true
+    await expect(element(by.id('media-state-max-sm'))).toHaveText('max-sm: true')
   })
 
   it('should take screenshot for visual verification', async () => {
     // Take a screenshot for visual regression testing
     // On iPhone:
-    // - media-test-both: should be YELLOW (not green) - $md applies, not $gtMd
-    // - media-test-gtmd-only: should be RED - $gtMd doesn't match
-    // - media-test-md-only: should be YELLOW - $md applies
-    // - media-test-all: should be YELLOW - $md has priority over $sm
+    // - media-test-both: should be YELLOW (not green) - max-md applies, not md
+    // - media-test-md-only: should be RED - md doesn't match
+    // - media-test-max-md-only: should be YELLOW - max-md applies
+    // - media-test-all: should be BLUE - max-sm is declared after max-md
     await device.takeScreenshot('media-query-mobile')
   })
 })
