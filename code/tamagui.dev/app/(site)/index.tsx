@@ -151,8 +151,10 @@ export default function TamaguiHomePage() {
 
             <YStack gap="4" mt="-4">
               <Paragraph size="5" color="color-11">
-                The best-performing and most complete style library for web and React Native. Now with Tailwind, a smarter Rust
-                optimizing compiler, a new native runtime, React Strict DOM, zero-runtime mode, and a simplified API surface.
+                The best-performing and most complete style library for web and React
+                Native. Now with Tailwind, a smarter Rust optimizing compiler, a new
+                native runtime, React Strict DOM, zero-runtime mode, and a simplified API
+                surface.
               </Paragraph>
             </YStack>
 
