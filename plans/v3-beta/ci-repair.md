@@ -188,6 +188,18 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   Live iOS and Android manifest bundle URLs return HTTP 200 with nonempty
   bundles (14,129,630 and 14,166,280 bytes). Native CI interactions remain gates.
 
+- TESTED: the iOS 27 runtime terminates the prebuilt app with a UIKit scene
+  lifecycle SIGTRAP, reproduced in the Detox trace and on a claimed local
+  iPhone 17 Pro. Expo 57.0.24 already ships the scene delegate, and the installed
+  build-properties plugin exposes its supported `ios.enableSceneSupport` option.
+  Enabling it makes actual prebuild generate the factory provider conformance
+  and Expo scene manifest. The full arm64 app compiles in 941.9 seconds and
+  launches past the UIKit assertion into React Native bundle loading. It then
+  terminates with a separate `std::bad_alloc`, under investigation; startup UI
+  and complete native interaction acceptance remain open. Shared CocoaPods
+  cache restoration hit a missing lock file; an isolated `CP_CACHE_DIR` restores
+  Pods successfully without modifying other lanes' cache.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The
