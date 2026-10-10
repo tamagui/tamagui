@@ -1,4 +1,5 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
+import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterAll, describe, expect, test } from 'vitest'
@@ -15,6 +16,12 @@ import { registerRequire } from '../../static/src/registerRequire'
 import { tamaguiStaticEvaluationModules } from '../../static/src/staticEvaluationIgnoredModules'
 
 const root = mkdtempSync(join(tmpdir(), 'tamagui-static-evaluation-'))
+const driverRoot = join(root, 'driver')
+mkdirSync(driverRoot)
+symlinkSync(
+  join(process.cwd(), '../../../node_modules'),
+  join(driverRoot, 'node_modules')
+)
 const componentPath = join(root, 'components.cjs')
 const esmComponentPath = join(root, 'components.mjs')
 const topLevelAwaitPath = join(root, 'top-level-await.mjs')
@@ -45,6 +52,36 @@ afterAll(() => {
 })
 
 describe('static evaluation diagnostics', () => {
+  test.each(['native', 'web'] as const)(
+    'bundles the reanimated compiler driver for %s config evaluation',
+    async (platform) => {
+      const entry = join(driverRoot, `reanimated-${platform}.ts`)
+      const outfile = join(driverRoot, `reanimated-${platform}.cjs`)
+      writeFileSync(
+        entry,
+        `import { createAnimations } from '@tamagui/animations-reanimated'
+export const driver = createAnimations({
+  quick: { damping: 20, mass: 1.2, stiffness: 250 },
+  timing: { type: 'timing', duration: 100 },
+})`
+      )
+      await esbundleTamaguiConfig(
+        {
+          entryPoints: [entry],
+          outfile,
+          format: 'cjs',
+        },
+        platform
+      )
+      const { driver } = createRequire(import.meta.url)(outfile)
+      expect(driver.animations).toEqual({
+        quick: { type: 'spring', damping: 20, mass: 1.2, stiffness: 250 },
+        timing: { type: 'timing', duration: 100 },
+      })
+      expect(() => driver.useAnimatedNumber(0)).toThrow('ran during config evaluation')
+    }
+  )
+
   test('keeps the built-in ignore list exact and reviewable', () => {
     expect(Object.isFrozen(tamaguiStaticEvaluationModules)).toBe(true)
     expect(Object.keys(tamaguiStaticEvaluationModules)).toEqual([

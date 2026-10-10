@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@react-native/js-polyfills": "0.87.1",
     "@tamagui/fake-react-native": "workspace:*",
     "@tamagui/metro-plugin": "workspace:*",
     "@types/node": "^22.1.0",
