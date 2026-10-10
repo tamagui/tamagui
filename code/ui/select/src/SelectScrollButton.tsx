@@ -1,5 +1,5 @@
 import { createStyledHOC, styled, View } from '@tamagui/core'
-import { autoUpdate, offset, useFloatingRaw as useFloating } from '@tamagui/floating'
+import { autoUpdate, useFloatingRaw as useFloating } from '@tamagui/floating'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import type { TamaguiElement } from '@tamagui/core'
 import { composeEventHandlers } from '@tamagui/helpers'
@@ -70,9 +70,9 @@ const SelectScrollButtonImpl = React.memo(
       const { open, ...context } = useSelectContext(scope)
       const floatingRef = context.floatingContext?.refs.floating
 
-      const statusRef = React.useRef<'idle' | 'active'>('idle')
       const isVisible = context[dir === 'down' ? 'canScrollDown' : 'canScrollUp']
       const frameRef = React.useRef<any>(null)
+      const arrowRef = dir === 'up' ? context.upArrowRef : context.downArrowRef
 
       const { x, y, refs, strategy } = useFloating({
         open: open && isVisible,
@@ -81,25 +81,21 @@ const SelectScrollButtonImpl = React.memo(
           reference: floatingRef?.current,
         },
         placement: dir === 'up' ? 'top' : 'bottom',
-        middleware: [offset(({ rects }) => -rects.floating.height)],
         whileElementsMounted: autoUpdate,
       })
 
       const setFloatingRef = React.useCallback(
         (node: TamaguiElement | null) => {
           refs.setFloating(node as HTMLElement | null)
+          if (arrowRef) arrowRef.current = node as HTMLDivElement | null
         },
-        [refs.setFloating]
+        [refs.setFloating, arrowRef]
       )
       const composedRef = useComposedRefs(forwardedRef, setFloatingRef)
 
       React.useEffect(() => {
         return () => cancelAnimationFrame(frameRef.current)
-      }, [])
-
-      if (!isVisible) {
-        return null
-      }
+      }, [isVisible])
 
       return (
         <SelectScrollButtonFrame
@@ -107,13 +103,15 @@ const SelectScrollButtonImpl = React.memo(
           className={`${partClassName} ${className || ''}`.trim()}
           aria-hidden
           {...frameProps}
+          // keep hidden buttons measurable so placement reserves their actual height
+          visibility={isVisible ? 'visible' : 'hidden'}
+          pointerEvents={isVisible ? 'auto' : 'none'}
           zIndex={1000}
           position={strategy}
           left={x || 0}
           top={y || 0}
           width={`calc(${(floatingRef?.current?.offsetWidth ?? 0) - 2}px)`}
           onPointerEnter={composeEventHandlers(onPointerEnter as any, () => {
-            statusRef.current = 'active'
             let prevNow = Date.now()
 
             function frame() {
@@ -152,7 +150,6 @@ const SelectScrollButtonImpl = React.memo(
             frameRef.current = requestAnimationFrame(frame)
           })}
           onPointerLeave={composeEventHandlers(onPointerLeave as any, () => {
-            statusRef.current = 'idle'
             cancelAnimationFrame(frameRef.current)
           })}
         />
