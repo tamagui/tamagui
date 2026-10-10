@@ -144,25 +144,15 @@ export default function TamaguiHomePage() {
               letterSpacing={-0.2}
               textWrap="balance"
             >
-              Fast on web. Fast on native.
+              Style and UI that's fast everywhere.
               <br />
-              Now with style props or Tailwind.
+              Typed, or Tailwind.
             </H1>
 
             <YStack gap="4" mt="-4">
               <Paragraph size="5" color="color-11">
-                Feels like web, runs like native, with zero-cost abstractions from
-                compiler to runtime.
-              </Paragraph>
-
-              <Paragraph size="5" color="color-11">
-                Typed inline styles, or Tailwind classes. Runtime, or build time. Add the
-                Rust compiler or native runtime for best-in-class performance everywhere.
-              </Paragraph>
-
-              <Paragraph size="5" color="color-11">
-                v3 trims down, then adds Tailwind, React Strict DOM, and simplified, more
-                web-aligned styling.
+                The best-performing and most complete style library for web and React Native. Now with Tailwind, a smarter Rust
+                optimizing compiler, a new native runtime, React Strict DOM, zero-runtime mode, and a simplified API surface.
               </Paragraph>
             </YStack>
 
