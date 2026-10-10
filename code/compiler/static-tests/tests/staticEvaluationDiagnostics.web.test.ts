@@ -56,7 +56,6 @@ describe('static evaluation diagnostics', () => {
     'bundles the reanimated compiler driver for %s config evaluation',
     async (platform) => {
       const entry = join(driverRoot, `reanimated-${platform}.ts`)
-      const outfile = join(driverRoot, `reanimated-${platform}.cjs`)
       writeFileSync(
         entry,
         `import { createAnimations } from '@tamagui/animations-reanimated'
@@ -65,20 +64,24 @@ export const driver = createAnimations({
   timing: { type: 'timing', duration: 100 },
 })`
       )
-      await esbundleTamaguiConfig(
-        {
-          entryPoints: [entry],
-          outfile,
-          format: 'cjs',
-        },
-        platform
-      )
-      const { driver } = createRequire(import.meta.url)(outfile)
-      expect(driver.animations).toEqual({
-        quick: { type: 'spring', damping: 20, mass: 1.2, stiffness: 250 },
-        timing: { type: 'timing', duration: 100 },
-      })
-      expect(() => driver.useAnimatedNumber(0)).toThrow('ran during config evaluation')
+      for (const conditions of [undefined, ['react-native']]) {
+        const outfile = join(driverRoot, `reanimated-${platform}-${!!conditions}.cjs`)
+        await esbundleTamaguiConfig(
+          {
+            entryPoints: [entry],
+            outfile,
+            format: 'cjs',
+            conditions,
+          },
+          platform
+        )
+        const { driver } = createRequire(import.meta.url)(outfile)
+        expect(driver.animations).toEqual({
+          quick: { type: 'spring', damping: 20, mass: 1.2, stiffness: 250 },
+          timing: { type: 'timing', duration: 100 },
+        })
+        expect(() => driver.useAnimatedNumber(0)).toThrow('ran during config evaluation')
+      }
     }
   )
 
