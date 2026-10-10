@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/normalize-css-color",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [
