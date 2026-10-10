@@ -29,7 +29,7 @@
     "@tamagui/roving-focus": "workspace:*",
     "@tamagui/web": "workspace:*",
     "@tanstack/react-table": "^8.11.2",
-    "@vxrn/color-scheme": "2.0.0-0.canary.1791569029449",
+    "@vxrn/color-scheme": "2.0.0-0.canary.1791616071316",
     "expo-document-picker": "~57.0.1",
     "expo-image-picker": "~57.0.7",
     "react-dropzone": "^14.2.3",

@@ -162,7 +162,7 @@
     "@playwright/test": "1.58.2",
     "@protobufjs/utf8": "1.1.1",
     "@swc/core": "1.14.0",
-    "@vxrn/mdx-rust": "2.0.0-0.canary.1791569029449",
+    "@vxrn/mdx-rust": "2.0.0-0.canary.1791616071316",
     "@xmldom/xmldom": "0.8.13",
     "axios": "0.32.0",
     "basic-ftp": "5.3.1",
