@@ -180,7 +180,7 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
           }
         }
 
-        webpackConfig.plugins.push(new webpack.DefinePlugin(defines))
+        webpackConfig.plugins.push(new options.webpack.DefinePlugin(defines))
 
         if (process.env.IGNORE_TS_CONFIG_PATHS) {
           if (process.env.DEBUG) {
