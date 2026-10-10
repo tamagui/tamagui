@@ -145,7 +145,7 @@
     "oxc-parser": "^0.112.0",
     "p-map": "^7.0.3",
     "prompts": "2.1.0",
-    "react-native-screens": "~4.26.0",
+    "react-native-screens": "4.27.0",
     "turbo": "2.9.14",
     "typescript": "7.0.2"
   },
