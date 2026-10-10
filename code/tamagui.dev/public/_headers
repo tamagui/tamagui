@@ -1,2 +1,6 @@
 /api/json-schema/takeout-app
   Content-Type: application/schema+json
+
+# vite emits content-hashed file names under /assets
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
