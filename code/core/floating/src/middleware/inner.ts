@@ -93,24 +93,35 @@ export const inner = (props: InnerProps): Middleware => ({
     })
 
     const diffY = Math.max(0, overflow.top)
-    const nextY = nextArgs.y + diffY
     const isScrollable = scrollEl.scrollHeight > scrollEl.clientHeight
     const rounder = isScrollable ? (v: number) => v : Math.round
+    const fullHeight =
+      scrollEl.scrollHeight +
+      ((floatingIsBordered && floatingIsScrollEl) || scrollElIsBordered
+        ? clientTop * 2
+        : 0)
+    const minimumHeight =
+      item.offsetHeight * Math.min(minItemsVisible, listRef.current?.length ?? 0)
 
+    // keep the promised rows visible near a screen edge, moving the list when
+    // necessary instead of cropping a list that has room to show them
     const maxHeight = rounder(
       Math.max(
         0,
-        scrollEl.scrollHeight +
-          ((floatingIsBordered && floatingIsScrollEl) || scrollElIsBordered
-            ? clientTop * 2
-            : 0) -
-          diffY -
-          Math.max(0, overflow.bottom)
+        Math.min(
+          fullHeight,
+          fullHeight - overflow.top - overflow.bottom,
+          Math.max(minimumHeight, fullHeight - diffY - Math.max(0, overflow.bottom))
+        )
       )
+    )
+    const nextY = Math.min(
+      nextArgs.y + diffY,
+      nextArgs.y + fullHeight - overflow.bottom - maxHeight
     )
 
     scrollEl.style.maxHeight = `${maxHeight}px`
-    scrollEl.scrollTop = diffY
+    scrollEl.scrollTop = Math.max(0, nextY - nextArgs.y)
 
     // check if we should fall back to standard positioning
     if (onFallbackChange) {

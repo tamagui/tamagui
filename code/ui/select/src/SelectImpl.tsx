@@ -109,7 +109,16 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         overflowRef,
         index: selectedIndex,
         onFallbackChange: setFallback,
-        padding: 10,
+        // arrows sit outside the scrollport, with room reserved at both screen edges
+        get padding() {
+          return (
+            10 +
+            Math.max(
+              upArrowRef.current?.offsetHeight ?? 0,
+              downArrowRef.current?.offsetHeight ?? 0
+            )
+          )
+        },
         minItemsVisible: touch ? 10 : 4,
         referenceOverflowThreshold: 20,
       }),
