@@ -234,6 +234,18 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   previously executed device test, assertion, retry or deadline changes.
   The unchanged CI deadline and complete interactions remain delivery gates.
 
+- TESTED: the native app stays blank because `useFonts` records an error
+  resolving a font ID to a URI. Hermes inspection shows Expo's virtual legacy
+  asset registry contains the font while RN 0.87's registry is empty. RN ships
+  its supported `react-native/asset-registry` build entry point for this
+  migration. The kitchen Metro resolver directs native legacy registry requests
+  there, so generated assets, Expo consumers and RN resolve the same IDs.
+  After restarting Metro, both Inter fonts load and the existing direct
+  ShorthandVariables use case renders. The ordinary navigation route then
+  exposes an independent Screens default-props native assertion. Web keeps its
+  existing Expo registry. Formatting and diff checks pass; CI interactions
+  remain open.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The
