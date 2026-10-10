@@ -14,6 +14,7 @@ interface UseSheetScrollViewGesturesProps {
 export declare function useSheetScrollViewGestures({ scrollBridge, hasScrollableContent, scrollEnabled, setScrollEnabled, }: UseSheetScrollViewGesturesProps): {
     onResponderRelease: () => void;
     onStartShouldSetResponder: () => boolean;
+    onTouchStart: (e: GestureResponderEvent) => void;
     onMoveShouldSetResponder: (e: GestureResponderEvent) => boolean;
     onResponderMove: (e: GestureResponderEvent) => void;
 };
