@@ -86,5 +86,13 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "vitest": "4.1.0"
+  },
+  "react-native": {
+    "./runtime": "./dist/esm/runtime.native.js",
+    "./transitions": "./dist/esm/transitions.native.js",
+    "./token-categories": "./dist/esm/tokenCategories.mjs",
+    "./tooling": "./dist/esm/tooling.native.js",
+    "./tooling/candidate": "./dist/esm/tooling/candidate.native.js",
+    "./v6-themes": "./dist/esm/v6ThemeNames.native.js"
   }
 }

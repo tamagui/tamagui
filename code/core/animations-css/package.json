@@ -68,5 +68,9 @@
   "peerDependencies": {
     "react": ">=19",
     "react-dom": "*"
+  },
+  "react-native": {
+    "./animated-number": "./dist/esm/animated-number.native.js",
+    "./extras": "./dist/esm/extras.native.js"
   }
 }
