@@ -549,6 +549,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       bg="background-06"
       backdropFilter="blur(40px)"
       maxH="90vh"
+      minH={360}
       maxW={360}
       minW={360}
       boxShadow="0 4px 12px shadow-color"
