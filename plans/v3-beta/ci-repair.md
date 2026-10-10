@@ -210,6 +210,17 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   removes Intel compilation that no test job executes. Cold CI elapsed time
   remains to be measured, with the existing deadline unchanged.
 
+- TESTED: scene-enabled startup then throws `std::bad_alloc` while copying
+  RN BaseViewProps from a precompiled Expo view. LLDB captures the throw during
+  native view registration, before JavaScript executes. The installed Expo
+  precompiled modules target its bundled RN 0.86.3 while this app uses 0.87.1.
+  The supported `ios.usePrecompiledModules: false` option builds Expo modules
+  against the installed RN headers, retaining RN's exact-version framework.
+  Actual prebuild and isolated-cache pod installation pass, followed by a full
+  arm64 SDK 27 app build in 1049.5 seconds. The app remains alive and evaluates
+  its Metro bundle without the allocation crash. Its screen is blank, so UI
+  acceptance remains open as a separate runtime investigation.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The
