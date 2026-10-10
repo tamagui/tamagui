@@ -3870,6 +3870,7 @@
     "expo-modules-autolinking@57.0.13": "patches/expo-modules-autolinking@57.0.13.patch",
     "detox@20.47.0": "patches/detox@20.47.0.patch",
     "expo@57.0.24": "patches/expo@57.0.24.patch",
+    "expo-modules-core@57.0.18": "patches/expo-modules-core@57.0.18.patch",
   },
   "overrides": {
     "@babel/core": "7.29.7",
