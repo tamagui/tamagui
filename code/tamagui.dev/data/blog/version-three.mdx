@@ -1,38 +1,58 @@
 ---
 title: Tamagui 3
 publishedAt: '2026-10-09'
-description: React Strict DOM and Tailwind syntax on one compiler, plus simpler APIs, a web-first core, and stronger composition.
+description: A new native runtime, an improved optimizing compiler, React Strict DOM, and Tailwind syntax for one cross-platform UI codebase.
 by: nate
 ---
 
-Tamagui 3 removes legacy aliases and hidden wrappers, moves the public API to
-web-standard names, and runs Tamagui props and Tailwind utility classes through
-one compiler.
+Tamagui 3 introduces a C++ native style runtime and an improved optimizing
+compiler, alongside React Strict DOM and a Tailwind frontend. Together, they
+bring more of your styling out of React's render path while keeping one UI
+codebase for React Native and the web.
 
-Version 3 still targets one UI codebase for React Native and the web. It
-removes the compatibility layers that made the internals hard to follow, so the
-public surface is smaller, tokens are more predictable, and overlays compose
-better. The Tailwind frontend runs utility classes through the same compiler,
-theme system, and native output.
+The leading additions are:
+
+- **A new native runtime.** Theme updates can go directly to native views
+  through Fabric, without re-rendering the React components that use them.
+- **An improved compiler.** More styles resolve at build time, including
+  conditional values, dynamic variants, and component resolvers.
+- **React Strict DOM.** Author semantic elements that render on web and native.
+- **Tamagui Tailwind.** Write utility classes with the same compiler, tokens,
+  and themes as Tamagui props.
+
+Version 3 also removes legacy aliases and hidden wrappers, uses web-standard
+prop names, and makes tokens and overlay composition more predictable.
 
 Give this blog post and the upgrade guide to your coding agent before migrating:
 
 <CopyAgentSetupButton type="upgrade" mb="4" />
 
-Version 3 has three goals:
+## A new native runtime
 
-- **Simplify the core.** Deprecated props and compatibility helpers are gone,
-  so component behavior is easier to type, inspect, and optimize.
-- **Make web the public API language.** Prefer `tabIndex`, ARIA props, CSS-like
-  style names, and explicit layout props, while Tamagui maps what it can to
-  native.
-- **Unify syntax choices.** Tamagui props and Tailwind classes now flow through
-  one compiler and one token system instead of competing styling stacks.
+`@tamagui/native-registry` moves theme updates into a small C++ registry. It
+links eligible native views to that registry and applies changes directly
+through Fabric, without sending those components back through React rendering.
+
+The runtime is an opt-in beta for React Native's New Architecture. Enable the
+compiler's `nativeFastPath` output, register the engine at startup, and rebuild
+your native app. See the [native runtime guide](/docs/core/native#native-runtime)
+for setup.
+
+## An improved optimizing compiler
+
+The compiler resolves styles at build time, extracts atomic CSS on web, and
+flattens eligible styled components into DOM elements or React Native views.
+V3 extends that work to the new conditional style syntax, `styled.dynamic()`
+callbacks, and component `.resolve()` chains when their inputs are statically
+known.
+
+Tamagui props and Tailwind utility classes now use that same compiler and token
+system. On native, the compiler also emits the bindings used by the new native
+runtime. See [compiler installation](/docs/intro/compiler-install) to enable it.
 
 ## React Strict DOM and Tamagui Tailwind
 
-The two headline features of v3 are React Strict DOM and a Tailwind frontend
-selected by package import.
+React Strict DOM and the Tailwind frontend are selected by package import.
 
 React Strict DOM makes `html` the authoring surface. You write real semantic
 elements, and they render as DOM on web and as their React Native equivalents
@@ -210,38 +230,62 @@ outranks media:
 Moving a clause to the end of the string does not make it win. Write a more
 specific clause instead, such as `hover:sm:`.
 
-## Single-function variants and component resolvers
+## Style pieces, dynamic variants, and component resolvers
 
 In v2, variant machinery was the largest source of runtime complexity and TypeScript compilation overhead in `styled()`. Spread keys like `'...size'`, resolver names like `Size`, and type-key matching created heavy type computations. Inline variant functions also ran before the component's complete prop types existed, which forced workarounds for variants that needed to inspect sibling props.
 
-Version 3 replaces that with style fragments in three shapes:
+Start with a reusable style. Define it once with `style()` and pass it to a
+component's `style` prop:
 
 ```tsx
-import { SizeTokens, View, style, styled } from 'tamagui'
+import { View, style } from 'tamagui'
 
-// 1. Zero inputs: a style piece compiled at definition time
 const cardActive = style({ backgroundColor: 'background-press' })
 
-// 2. Value to style piece: branded dynamic variant
+export function ActiveCard() {
+  return <View style={cardActive} />
+}
+```
+
+When a style depends on one prop, use `styled.dynamic()`. Here, `size` sets both
+width and height:
+
+```tsx
+import { styled } from 'tamagui'
+
 const CardBase = styled(View, {
   variants: {
-    // bare declaration: typed and consumed, styled by .resolve
-    tone: styled.dynamic<'neutral' | 'critical'>(),
-
-    // function form: invoked per clause payload so responsive values work
-    size: styled.dynamic<SizeTokens | number>((val, { tokens }) => {
-      const value = tokens.size[val] ?? val
-      return { width: value, height: value }
-    }),
-  } as const,
+    size: styled.dynamic<number>((size) => ({
+      width: size,
+      height: size,
+    })),
+  },
 })
 
-// 3. Props to style piece: component resolver
-export const Card = CardBase.resolve((props, env) => ({
-  backgroundColor: props.tone === 'critical' ? env.theme['red-10'] : undefined,
+export function SizedCard() {
+  return <CardBase size={48} />
+}
+```
+
+Dynamic variants also accept responsive values, such as `size="48 sm:64"`.
+The callback runs for each clause's value.
+
+When a style depends on the component's complete props, add `.resolve()`.
+It creates a component that keeps the existing variants and adds the resolved
+styles:
+
+```tsx
+export const Card = CardBase.resolve((props) => ({
   opacity: props.disabled ? 0.5 : undefined,
 }))
+
+export function DisabledCard() {
+  return <Card size={48} disabled style={cardActive} />
+}
 ```
+
+The [variants documentation](/docs/core/variants) covers token values and
+props declared with `styled.dynamic()` that are styled by a component resolver.
 
 ### Precedence tiers
 
@@ -401,9 +445,11 @@ The v5 config font `size` and `lineHeight` scales are pinned to px strings so v3
 keeps v2 visual output. Future config versions can redefine numeric font scales
 without changing what exact px strings mean.
 
-## Inverse themes are SSR-safe
+## Use a sub-theme for inverse colors
 
-`inverse` is now a built-in sub-theme. The old `themeInverse` path is gone.
+We recommend defining `inverse` as an ordinary sub-theme. Our recommended v6
+config does this for you; custom configs can define their own. The old
+`themeInverse` path is gone.
 
 ```tsx
 // before
@@ -421,8 +467,8 @@ without changing what exact px strings mean.
 </Theme>
 ```
 
-The new path works with SSR and drops the forced nested light/dark inversion
-that made theme output hard to predict.
+This pattern uses the same theme resolution as any other sub-theme, so it
+works with SSR. The inverse colors come from your config's theme definitions.
 
 ## Sheet anatomy is explicit
 
@@ -845,13 +891,14 @@ Then search for removed APIs:
 rg 'focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|getExpandedShorthands|usePropsAndStyle|useProps|useStyle'
 ```
 
-### What a clean typecheck will not tell you
+### Set up validation
 
-The first large app through this migration reached zero type errors while
-several things were broken. A flat value is a string, so the type checker
-cannot verify most of the grammar. Budget time to look at the running app.
+Set up flat-value validation with the [Tamagui CLI](/docs/core/cli#check) or
+your [editor plugin](/docs/guides/flat-values#editor-support). Add
+`tamagui check --strict` to CI to validate conditional values against your
+project config.
 
-Search for these:
+During migration, also search for these old patterns:
 
 **Code that detects tokens by their sigil.** Anything shaped like
 `value[0] !== '$'` was a correct token test in v2 and is wrong now, because a v3
