@@ -3870,6 +3870,9 @@
     "expo-modules-autolinking@57.0.13": "patches/expo-modules-autolinking@57.0.13.patch",
     "detox@20.47.0": "patches/detox@20.47.0.patch",
     "expo@57.0.24": "patches/expo@57.0.24.patch",
+    "@expo/ui@57.0.19": "patches/expo-ui@57.0.19.patch",
+    "@react-native/asset-utils@0.87.1": "patches/react-native-asset-utils@0.87.1.patch",
+    "@react-navigation/elements@3.0.0-alpha.54": "patches/react-navigation-elements@3.0.0-alpha.54.patch",
     "expo-modules-core@57.0.18": "patches/expo-modules-core@57.0.18.patch",
   },
   "overrides": {

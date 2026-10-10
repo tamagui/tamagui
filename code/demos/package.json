@@ -88,5 +88,11 @@
   "peerDependencies": {
     "react": ">=19",
     "react-native-web": "*"
+  },
+  "react-native": {
+    "./dist/cjs": "./dist/esm/index.native.js",
+    "./photo/photo1": "./public/photo1.jpg",
+    "./photo/photo2": "./public/photo2.jpg",
+    "./photo/photo3": "./public/photo3.jpg"
   }
 }
