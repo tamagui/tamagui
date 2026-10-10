@@ -1,21 +1,24 @@
 ---
 title: Tamagui 3
 publishedAt: '2026-10-09'
-description: A new native runtime, an improved optimizing compiler, React Strict DOM, and Tailwind syntax for one cross-platform UI codebase.
+description: A new native runtime, more native compilation, flat style props, React Strict DOM, and Tailwind syntax for one cross-platform UI codebase.
 by: nate
 ---
 
 Tamagui 3 introduces a C++ native style runtime and an improved optimizing
-compiler, alongside React Strict DOM and a Tailwind frontend. Together, they
-bring more of your styling out of React's render path while keeping one UI
-codebase for React Native and the web.
+compiler, with flat style props that make UI quicker to write and easier to
+reason about. Alongside React Strict DOM and a Tailwind frontend, they bring
+more of your styling out of React's render path while keeping one UI codebase
+for React Native and the web.
 
 The leading additions are:
 
 - **A new native runtime.** Theme updates can go directly to native views
   through Fabric, without re-rendering the React components that use them.
-- **An improved compiler.** More styles resolve at build time, including
-  conditional values, dynamic variants, and component resolvers.
+- **More compilation on native.** The compiler handles more conditional
+  expressions, static spreads, and dynamic variants on React Native.
+- **Flat style props.** Write less nesting and combine Tailwind-style modifiers
+  in one value, keeping each property's styles together.
 - **React Strict DOM.** Author semantic elements that render on web and native.
 - **Tamagui Tailwind.** Write utility classes with the same compiler, tokens,
   and themes as Tamagui props.
@@ -40,15 +43,79 @@ for setup.
 
 ## An improved optimizing compiler
 
-The compiler resolves styles at build time, extracts atomic CSS on web, and
-flattens eligible styled components into DOM elements or React Native views.
-V3 extends that work to the new conditional style syntax, `styled.dynamic()`
-callbacks, and component `.resolve()` chains when their inputs are statically
-known.
+V3 compiles more of your React Native UI. Alongside static styles and tokens,
+the native compiler handles logical conditions, nested ternaries, multiple
+independent conditional props, and statically evaluable prop spreads. It also
+resolves `styled.dynamic()` variants and component `.resolve()` chains when
+their inputs are known at build time.
 
-Tamagui props and Tailwind utility classes now use that same compiler and token
-system. On native, the compiler also emits the bindings used by the new native
-runtime. See [compiler installation](/docs/intro/compiler-install) to enable it.
+A dynamic value no longer has to keep an otherwise eligible component on the
+full runtime path. For example, a changing `opacity` can remain dynamic while
+the compiler hoists the component's static layout and colors. Eligible styled
+components flatten to React Native views, with less style resolution left for
+each render. Conditions that need live theme, media, or interaction state keep
+the runtime behavior they need.
+
+On web, the same compiler extracts atomic CSS and flattens eligible components
+to DOM elements. Tamagui props and Tailwind utility classes share its compiler
+and token system. The native compiler can also emit the bindings for the new
+opt-in native runtime; those bindings are separate from ordinary native
+compilation. See [compiler installation](/docs/intro/compiler-install) to enable it.
+
+## Flat style props, with composable modifiers
+
+Flat style props make styles quicker to write and easier to reason about. The
+base value and every condition for a property live together, so you can see
+what changes its padding or color without jumping between nested objects.
+
+The modifier syntax brings Tamagui much closer to Tailwind. Chain conditions
+such as `dark:sm:hover:` to combine a theme, breakpoint, and interaction in one
+clause. Add other clauses for platform, group, or container conditions in the
+same value. You can express combinations directly, with less repetition.
+
+Tokens and conditional styles now live in one property value. A bare string
+resolves against the active config first, and a raw number stays a platform
+value. The conditions come in a string form and an object form. Both compile
+to the same CSS, mix freely per prop, and work in `styled()` definitions, in
+variant values, and on variant props.
+
+```tsx
+// before
+<View bg="$background" hoverStyle={{ bg: '$backgroundHover' }} $sm={{ p: '$6' }} p="$4" />
+
+// after, string form
+<View bg="background hover:background-hover" p="4 sm:6" />
+
+// after, object form
+<View
+  bg={{ default: 'background', hover: 'background-hover', 'sm:hover': 'gray-4' }}
+  scale={{ press: 0.98 }}
+/>
+
+// the same values in styled()
+const Card = styled(View, {
+  bg: 'background hover:background-hover',
+  p: '4 sm:6',
+  scale: { press: 0.98 },
+})
+```
+
+Object keys are the same modifiers strings use, with `default` for the base
+value and colons joining chains (`dark:sm:hover`). Strings are the shortest
+way to write a condition or two. Objects keep numbers as numbers, read better
+once conditions stack up, and can be built in code. An object with no modifier
+keys, like `shadowOffset={{ width: 0, height: 2 }}`, passes through untouched.
+
+Both forms are on by default. Set `settings.styleValueSyntax` to `'string'` or
+`'object'` to keep one. The types narrow to that form, the runtime warns on the
+other in development, and `tamagui generate-prompt` and the agent skills only
+show the form you chose.
+
+Config v6 also renames multi-word theme keys to kebab case, such as
+`border-color` and `background-hover`. Run the flat-values codemod in report
+mode first, then use `--write` for conversions it can prove safe. The
+[v3 upgrade guide](/docs/guides/how-to-upgrade) lists the commands, the full
+rename table, and the cases that still need manual review.
 
 ## React Strict DOM and Tamagui Tailwind
 
@@ -99,52 +166,6 @@ import { ButtonFrame, ButtonText, useButton } from '@tamagui/button'
 behavior layer under one import. `@tamagui/tailwind` is the same primitive
 layer with Tailwind authoring. The Styled, Unstyled, and Tailwind switch on the
 v3 documentation rewrites every example between them.
-
-## Conditional styles are flat values
-
-Tokens and conditional styles now live in one property value. A bare string
-resolves against the active config first, and a raw number stays a platform
-value. The conditions come in a string form and an object form. Both compile
-to the same CSS, mix freely per prop, and work in `styled()` definitions, in
-variant values, and on variant props.
-
-```tsx
-// before
-<View bg="$background" hoverStyle={{ bg: '$backgroundHover' }} $sm={{ p: '$6' }} p="$4" />
-
-// after, string form
-<View bg="background hover:background-hover" p="4 sm:6" />
-
-// after, object form
-<View
-  bg={{ default: 'background', hover: 'background-hover', 'sm:hover': 'gray-4' }}
-  scale={{ press: 0.98 }}
-/>
-
-// the same values in styled()
-const Card = styled(View, {
-  bg: 'background hover:background-hover',
-  p: '4 sm:6',
-  scale: { press: 0.98 },
-})
-```
-
-Object keys are the same modifiers strings use, with `default` for the base
-value and colons joining chains (`dark:sm:hover`). Strings are the shortest
-way to write a condition or two. Objects keep numbers as numbers, read better
-once conditions stack up, and can be built in code. An object with no modifier
-keys, like `shadowOffset={{ width: 0, height: 2 }}`, passes through untouched.
-
-Both forms are on by default. Set `settings.styleValueSyntax` to `'string'` or
-`'object'` to keep one. The types narrow to that form, the runtime warns on the
-other in development, and `tamagui generate-prompt` and the agent skills only
-show the form you chose.
-
-Config v6 also renames multi-word theme keys to kebab case, such as
-`border-color` and `background-hover`. Run the flat-values codemod in report
-mode first, then use `--write` for conversions it can prove safe. The
-[v3 upgrade guide](/docs/guides/how-to-upgrade) lists the commands, the full
-rename table, and the cases that still need manual review.
 
 ## Optional native and zero-runtime paths
 
