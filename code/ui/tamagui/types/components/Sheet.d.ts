@@ -215,8 +215,8 @@ export declare const SheetScrollView: import("react").FunctionComponent<Omit<Omi
         neverFlatten: true;
     } & import("@tamagui/core").StaticConfigPublic];
 };
-export declare const SheetRoot: import("@tamagui/core").RefComponent<import("@tamagui/react-native-types/src").ReactNativeElement, SheetProps>;
-export declare const SheetControlled: ((props: Omit<SheetProps, "onOpenChange" | "open"> & import("@tamagui/core").RefProp<import("@tamagui/react-native-types/src").ReactNativeElement>) => import("react").ReactNode) & {
+export declare const SheetRoot: import("@tamagui/core").RefComponent<import("@tamagui/react-native-types/src").LegacyView, SheetProps>;
+export declare const SheetControlled: ((props: Omit<SheetProps, "onOpenChange" | "open"> & import("@tamagui/core").RefProp<import("@tamagui/react-native-types/src").LegacyView>) => import("react").ReactNode) & {
     displayName?: string;
     propTypes?: any;
 } & {
@@ -466,7 +466,7 @@ export declare const Sheet: ((props: Omit<{
     onTransition?: (e: import("@tamagui/sheet").SheetTransitionEvent) => void;
 }, "scope"> & {
     scope?: import("@tamagui/sheet").SheetScopes;
-} & import("@tamagui/core").RefProp<import("@tamagui/react-native-types/src").ReactNativeElement>) => import("react").ReactNode) & {
+} & import("@tamagui/core").RefProp<import("@tamagui/react-native-types/src").LegacyView>) => import("react").ReactNode) & {
     displayName?: string;
     propTypes?: any;
 } & {
@@ -686,8 +686,8 @@ export declare const Sheet: ((props: Omit<{
             neverFlatten: true;
         } & import("@tamagui/core").StaticConfigPublic];
     };
-    Root: import("@tamagui/core").RefComponent<import("@tamagui/react-native-types/src").ReactNativeElement, SheetProps>;
-    Controlled: ((props: Omit<SheetProps, "onOpenChange" | "open"> & import("@tamagui/core").RefProp<import("@tamagui/react-native-types/src").ReactNativeElement>) => import("react").ReactNode) & {
+    Root: import("@tamagui/core").RefComponent<import("@tamagui/react-native-types/src").LegacyView, SheetProps>;
+    Controlled: ((props: Omit<SheetProps, "onOpenChange" | "open"> & import("@tamagui/core").RefProp<import("@tamagui/react-native-types/src").LegacyView>) => import("react").ReactNode) & {
         displayName?: string;
         propTypes?: any;
     } & {

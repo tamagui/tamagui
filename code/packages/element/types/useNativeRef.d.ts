@@ -10,8 +10,8 @@ import * as React from 'react';
  * ```
  */
 export declare function useNativeRef(forwardedRef?: React.ForwardedRef<any>): {
-    ref: React.RefObject<import("@tamagui/react-native-types").ReactNativeElement | null>;
-    composedRef: (node: import("@tamagui/react-native-types").ReactNativeElement | null) => void;
+    ref: React.RefObject<import("@tamagui/react-native-types").LegacyView | null>;
+    composedRef: (node: import("@tamagui/react-native-types").LegacyView | null) => void;
 };
 /**
  * Creates a ref for native TextInput components.

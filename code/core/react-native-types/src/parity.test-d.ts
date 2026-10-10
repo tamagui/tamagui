@@ -1,4 +1,7 @@
 import type * as RN from 'react-native'
+// bypass exports.types to check RN's legacy entry alongside the strict entry.
+import type * as LegacyRN from '../../../../node_modules/react-native/types'
+import type { Ref } from 'react'
 
 import type * as Ours from './index'
 
@@ -189,15 +192,15 @@ export type _erasureIsNotVacuous = Assert<
 
 // refs must expose the same native instance contracts in both directions.
 export type _viewInstance = Assert<
-  Ours.ViewInstance extends RN.ViewInstance
-    ? RN.ViewInstance extends Ours.ViewInstance
+  Ours.StrictViewInstance extends RN.ViewInstance
+    ? RN.ViewInstance extends Ours.StrictViewInstance
       ? true
       : false
     : false
 >
 export type _textInstance = Assert<
-  Ours.TextInstance extends RN.TextInstance
-    ? RN.TextInstance extends Ours.TextInstance
+  Ours.StrictTextInstance extends RN.TextInstance
+    ? RN.TextInstance extends Ours.StrictTextInstance
       ? true
       : false
     : false
@@ -207,5 +210,58 @@ export type _textInputInstance = Assert<
     ? RN.TextInputInstance extends Ours.TextInputInstance
       ? true
       : false
+    : false
+>
+
+// legacy apps must exchange actual component instances and refs in both directions.
+type Assignable<From, To> = [From] extends [To] ? true : false
+export type _legacyViewInstance = Assert<Assignable<Ours.ViewInstance, LegacyRN.View>>
+export type _legacyViewInstanceReverse = Assert<
+  Assignable<LegacyRN.View, Ours.ViewInstance>
+>
+export type _legacyTextInstance = Assert<Assignable<Ours.TextInstance, LegacyRN.Text>>
+export type _legacyTextInstanceReverse = Assert<
+  Assignable<LegacyRN.Text, Ours.TextInstance>
+>
+export type _legacyReadOnlyNode = Assert<
+  Assignable<Ours.LegacyReadOnlyNode, LegacyRN.ReadOnlyNode>
+>
+export type _legacyReadOnlyNodeReverse = Assert<
+  Assignable<LegacyRN.ReadOnlyNode, Ours.LegacyReadOnlyNode>
+>
+export type _legacyReactNativeElement = Assert<
+  Assignable<Ours.LegacyReactNativeElement, LegacyRN.ReactNativeElement>
+>
+export type _legacyReactNativeElementReverse = Assert<
+  Assignable<LegacyRN.ReactNativeElement, Ours.LegacyReactNativeElement>
+>
+export type _legacyViewRef = Assert<
+  Assignable<Ref<Ours.ViewInstance>, Ref<LegacyRN.View>>
+>
+export type _legacyViewRefReverse = Assert<
+  Assignable<Ref<LegacyRN.View>, Ref<Ours.ViewInstance>>
+>
+export type _legacyTextRef = Assert<
+  Assignable<Ref<Ours.TextInstance>, Ref<LegacyRN.Text>>
+>
+export type _legacyTextRefReverse = Assert<
+  Assignable<Ref<LegacyRN.Text>, Ref<Ours.TextInstance>>
+>
+export type _legacyNodeList = Assert<
+  Assignable<
+    Ours.LegacyNodeList<Ours.LegacyReadOnlyNode>,
+    LegacyRN.NodeList<LegacyRN.ReadOnlyNode>
+  >
+>
+export type _legacyNodeListReverse = Assert<
+  Assignable<
+    LegacyRN.NodeList<LegacyRN.ReadOnlyNode>,
+    Ours.LegacyNodeList<Ours.LegacyReadOnlyNode>
+  >
+>
+
+export type _legacyRefComparisonCanFail = Assert<
+  Assignable<Ref<Pick<Ours.ViewInstance, 'focus'>>, Ref<LegacyRN.View>> extends false
+    ? true
     : false
 >
