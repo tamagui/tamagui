@@ -159,10 +159,113 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   APKs. Root Gradle task selectors expand into every matching subproject.
   CI and both local Detox Android build configurations now select `:app`
   assembly tasks. Gradle graph probes preserve all 94 application tasks and
-  exclude 984 unconsumed dependency build tasks. APK paths, all four Android
-  architectures, native test selection, and timeouts stay unchanged. The
+  exclude 984 unconsumed dependency build tasks. That repair kept APK paths,
+  all four Android architectures, native test selection, and timeouts unchanged. The
   original CI log establishes that both requested app APKs already build.
   Detox configuration loading, YAML parsing, shell syntax, and diff checks pass.
+
+- TESTED: both native builds pass in CI, then CLI fixture generation and
+  Metro config evaluation load the Reanimated native runtime in Node. The
+  existing animation package publishes a `tamagui-compiler` export for exactly
+  this evaluation environment; Vite selects it, but esbuild static evaluation
+  did not. The shared esbuild config/component bundler now includes that
+  condition alongside the native and caller conditions. Component callers no
+  longer duplicate the native condition. The original CLI command fails before
+  repair and meets its unchanged optimization target afterward (40 >= 8).
+  All three Detox compiler fixtures generate successfully. Cold static package
+  types, formatting, lint, and diff checks pass. No ignore-list workaround or
+  runtime driver changes are added. Live Metro bundle and native interactions
+  remain delivery gates.
+
+- RAN: live Metro gets past config evaluation, then fails to prepend polyfills
+  because Expo 57 requests the removed `react-native/rn-get-polyfills` module.
+  The latest Expo 57 Metro config has the same request. The kitchen app's Metro
+  serializer now uses the published `@react-native/js-polyfills` 0.87.1 API,
+  declared directly as a build dependency. Both native platforms resolve the
+  shipped files and null-platform behavior stays empty. Frozen install,
+  workspace dependencies, formatting, and diff checks pass. This changes the
+  build-time provider of the same RN polyfills, with no runtime substitutes.
+  Live iOS and Android manifest bundle URLs return HTTP 200 with nonempty
+  bundles (14,129,630 and 14,166,280 bytes). Native CI interactions remain gates.
+
+- TESTED: the iOS 27 runtime terminates the prebuilt app with a UIKit scene
+  lifecycle SIGTRAP, reproduced in the Detox trace and on a claimed local
+  iPhone 17 Pro. Expo 57.0.24 already ships the scene delegate, and the installed
+  build-properties plugin exposes its supported `ios.enableSceneSupport` option.
+  Enabling it makes actual prebuild generate the factory provider conformance
+  and Expo scene manifest. The full arm64 app compiles in 941.9 seconds and
+  launches past the UIKit assertion into React Native bundle loading. It then
+  terminates with a separate `std::bad_alloc`, under investigation; startup UI
+  and complete native interaction acceptance remain open. Shared CocoaPods
+  cache restoration hit a missing lock file; an isolated `CP_CACHE_DIR` restores
+  Pods successfully without modifying other lanes' cache.
+
+- RAN: the Maestro builder reaches its existing 60-minute deadline while
+  compiling a generic simulator destination for both arm64 and x86_64. The raw
+  Xcode artifact contains both architecture compile commands, including One.
+  All iOS test jobs use the arm64 Xcode 27 runner. The shared builder now
+  compiles that runner architecture and asserts the host matches it; app and
+  intermediate cache keys include the architecture. Every simulator model and
+  test shard stays selected. The local complete arm64 app build passes; this
+  removes Intel compilation that no test job executes. Cold CI elapsed time
+  remains to be measured, with the existing deadline unchanged.
+
+- TESTED: scene-enabled startup then throws `std::bad_alloc` while copying
+  RN BaseViewProps from a precompiled Expo view. LLDB captures the throw during
+  native view registration, before JavaScript executes. The installed Expo
+  precompiled modules target its bundled RN 0.86.3 while this app uses 0.87.1.
+  The supported `ios.usePrecompiledModules: false` option builds Expo modules
+  against the installed RN headers, retaining RN's exact-version framework.
+  Actual prebuild and isolated-cache pod installation pass, followed by a full
+  arm64 SDK 27 app build in 1049.5 seconds. The app remains alive and evaluates
+  its Metro bundle without the allocation crash. Its screen is blank, so UI
+  acceptance remains open as a separate runtime investigation.
+
+- RAN: after application task scoping, the Android build succeeds in CI but
+  consumes 41 minutes 33 seconds compiling four ABIs, then reaches its existing
+  45-minute job deadline while uploading the Gradle cache. The only CI Android
+  emulator runs x86_64. One workflow architecture value now selects that ABI
+  for Gradle and the unchanged emulator, and participates in app cache keys and
+  fingerprint identity. Local Detox builds remain device-flexible. A real
+  x86_64 debug and instrumentation APK build passes in 8 minutes 12 seconds;
+  both APKs contain manifests and DEX, and the app contains the RN, Hermes and
+  app native libraries for exactly x86_64. YAML parsing, all 25 workflow shell
+  blocks, the existing five-shard coverage check, and diff checks pass. No
+  previously executed device test, assertion, retry or deadline changes.
+  The unchanged CI deadline and complete interactions remain delivery gates.
+
+- TESTED: the native app stays blank because `useFonts` records an error
+  resolving a font ID to a URI. Hermes inspection shows Expo's virtual legacy
+  asset registry contains the font while RN 0.87's registry is empty. RN ships
+  its supported `react-native/asset-registry` build entry point for this
+  migration. The kitchen Metro resolver directs native legacy registry requests
+  there, so generated assets, Expo consumers and RN resolve the same IDs.
+  After restarting Metro, both Inter fonts load and the existing direct
+  ShorthandVariables use case renders. The ordinary navigation route then
+  exposes an independent Screens default-props native assertion. Web keeps its
+  existing Expo registry. Formatting and diff checks pass; CI interactions
+  remain open.
+
+- TESTED: with fonts loading, the normal Home route crashes because
+  Screens 4.26.2's `RNSScreenContentWrapper` never initializes its default
+  props. RN 0.87 now asserts that native component contract. Published Screens
+  4.27.0 adds the constructor and upstream RN 0.87 support. All three direct
+  declarations pin that repair. Frozen installation and workspace dependency
+  checks pass. Pod installation and a full arm64 SDK 27 app build-and-run pass
+  in 627.8 seconds; Home renders and the process stays alive. Both x86_64
+  Android APKs build successfully in 8 minutes 31 seconds. Native interaction
+  acceptance remains open; a quick-links tap has not changed the screen in
+  local automation and requires a focused existing Detox check.
+
+- TESTED: the beta pull request deliberately skips Checks because its push
+  event owns those checks. Its skipped workflow run can be newer than the real
+  push run, causing the selected-workflow watcher to report failure or hide
+  pending validation. Selection now prefers runs that can execute before
+  comparing run IDs. A workflow with only skipped runs still fails, and the
+  selected run must succeed. The original duplicate-event probe fails before
+  repair; all nine watcher probes pass afterward, including pending, missing,
+  failed, cancelled-copy and required-only-skipped cases. Formatting and diff
+  checks pass. No CI job selection or test changes.
 
 ## cost and validation
 
@@ -182,7 +285,8 @@ The CI watcher accepts repeated `--workflow <name>` arguments to watch only the
 required workflows. It requires every selected workflow to appear before it
 can report a verdict. Selected workflows use their newest run for the exact
 SHA and require success, so older superseded cancellations do not override
-the current result. Runtime probes reproduce the cancelled-copy failure
+the current result. Intentionally skipped duplicate event runs do not replace
+runs that execute validation; a required workflow with only skipped runs fails. Runtime probes reproduce the cancelled-copy failure
 before repair and then cover current success, failure, pending, skipped,
 missing-workflow, and unrelated-red cases. Run it detached through Team Machine, for example:
 

@@ -90,7 +90,14 @@ while (true) {
     const latestRuns = new Map<string, (typeof runs)[number]>()
     for (const run of runs) {
       const previous = latestRuns.get(run.workflowName)
-      if (!previous || run.databaseId > previous.databaseId) {
+      // duplicate events can intentionally skip every job; they carry no validation.
+      const skipped = run.conclusion === 'skipped'
+      const previousSkipped = previous?.conclusion === 'skipped'
+      if (
+        !previous ||
+        (previousSkipped && !skipped) ||
+        (skipped === previousSkipped && run.databaseId > previous.databaseId)
+      ) {
         latestRuns.set(run.workflowName, run)
       }
     }

@@ -8,6 +8,10 @@ const monorepoRoot = path.resolve(projectRoot, '../..')
 
 const config = getDefaultConfig(projectRoot)
 
+// rn 0.87 publishes polyfills through its package instead of rn-get-polyfills.
+config.serializer.getPolyfills = ({ platform }) =>
+  platform ? require('@react-native/js-polyfills')() : []
+
 config.resolver.unstable_enablePackageExports =
   process.env.TAMAGUI_PACKAGE_EXPORTS !== 'false'
 
@@ -34,6 +38,14 @@ config.resolver.nodeModulesPaths = [
 //    `node_modules/parse5/node_modules/entities/...` but Metro resolves it to
 //    `node_modules/entities/...` instead). This is a workaround to fix it.
 config.resolver.resolveRequest = (context, moduleName, platform) => {
+  // rn 0.87 owns the registry; expo's legacy virtual registry splits asset ids.
+  if (
+    (platform === 'ios' || platform === 'android') &&
+    /^@react-native\/assets-registry\/registry(\.js)?$/.test(moduleName)
+  ) {
+    return context.resolveRequest(context, 'react-native/asset-registry', platform)
+  }
+
   try {
     return context.resolveRequest(context, moduleName, platform)
   } catch (e) {

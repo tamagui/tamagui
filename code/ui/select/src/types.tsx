@@ -196,7 +196,6 @@ export interface SelectContextValue {
   downArrowRef?: MutableRefObject<HTMLDivElement | null>
   /** re-reads the viewport and flips canScrollUp/Down when they change */
   updateScrollArrows?: () => void
-  setInnerOffset?: Function
   controlledScrolling?: boolean
   canScrollUp?: boolean
   canScrollDown?: boolean

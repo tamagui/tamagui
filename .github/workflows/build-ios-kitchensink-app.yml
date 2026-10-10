@@ -1,6 +1,7 @@
 name: Build iOS Test Container App
 env:
   ios_xcode_version: '27.0'
+  ios_architecture: arm64
   # Relative path from the monorepo root to the app
   test_container_app_path: code/kitchen-sink
   # Package name in the monorepo
@@ -111,7 +112,7 @@ jobs:
         id: pre-check-has-build
         if: ${{ steps.get-fingerprint-from-cache.outputs.fingerprint != 'null' }}
         with:
-          key: ${{ env.app_id }}-xcode-${{ env.ios_xcode_version }}-${{ inputs.configuration }}-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}
+          key: ${{ env.app_id }}-xcode-${{ env.ios_xcode_version }}-${{ env.ios_architecture }}-${{ inputs.configuration }}-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}
           lookup-only: true
           path: ${{ steps.get-built-app-path.outputs.built_app_path }}
 
@@ -183,7 +184,7 @@ jobs:
         uses: actions/cache/restore@v4
         id: check-has-build
         with:
-          key: ${{ env.app_id }}-xcode-${{ env.ios_xcode_version }}-${{ inputs.configuration }}-${{ steps.calculate-fingerprint.outputs.fingerprint }}
+          key: ${{ env.app_id }}-xcode-${{ env.ios_xcode_version }}-${{ env.ios_architecture }}-${{ inputs.configuration }}-${{ steps.calculate-fingerprint.outputs.fingerprint }}
           lookup-only: true
           path: ${{ steps.get-built-app-path.outputs.built_app_path }}
 
@@ -194,7 +195,7 @@ jobs:
         env:
           cache-name: ${{ env.app_id }}-build
         with:
-          key: ${{ runner.os }}-${{ env.cache-name }}-xcode-${{ env.ios_xcode_version }}
+          key: ${{ runner.os }}-${{ env.cache-name }}-xcode-${{ env.ios_xcode_version }}-${{ env.ios_architecture }}
           path: |
             ${{ env.test_container_app_path }}/build
 
@@ -202,12 +203,14 @@ jobs:
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit && !steps.check-has-build.outputs.cache-hit }}
         run: |
           set -o pipefail
+          test "$(uname -m)" = '${{ env.ios_architecture }}'
           xcrun xcodebuild -scheme '${{ env.ios_app_name }}' \
             -workspace 'ios/${{ env.ios_app_name }}.xcworkspace' \
             -configuration ${{ inputs.configuration }} \
             -sdk 'iphonesimulator' \
             -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath build \
+            ARCHS='${{ env.ios_architecture }}' \
             RCT_REMOVE_LEGACY_ARCH=1 \
             | tee xcodebuild.log | xcpretty
 

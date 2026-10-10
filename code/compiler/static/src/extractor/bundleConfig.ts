@@ -504,7 +504,6 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
                 props.platform !== 'native' ||
                 componentModule.startsWith('.') ||
                 isAbsolute(componentModule),
-              conditions: props.platform === 'native' ? ['react-native'] : undefined,
               external,
               outfile: componentOutPaths[i],
               target: 'node24',
