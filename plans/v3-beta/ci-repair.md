@@ -246,6 +246,17 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   existing Expo registry. Formatting and diff checks pass; CI interactions
   remain open.
 
+- TESTED: with fonts loading, the normal Home route crashes because
+  Screens 4.26.2's `RNSScreenContentWrapper` never initializes its default
+  props. RN 0.87 now asserts that native component contract. Published Screens
+  4.27.0 adds the constructor and upstream RN 0.87 support. All three direct
+  declarations pin that repair. Frozen installation and workspace dependency
+  checks pass. Pod installation and a full arm64 SDK 27 app build-and-run pass
+  in 627.8 seconds; Home renders and the process stays alive. Both x86_64
+  Android APKs build successfully in 8 minutes 31 seconds. Native interaction
+  acceptance remains open; a quick-links tap has not changed the screen in
+  local automation and requires a focused existing Detox check.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The
