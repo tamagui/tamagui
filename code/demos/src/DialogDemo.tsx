@@ -1,4 +1,4 @@
-import { ChevronDown, X } from '@tamagui/local-icons'
+import { X } from '@tamagui/local-icons'
 import { useState } from 'react'
 import {
   Adapt,
@@ -8,7 +8,6 @@ import {
   Input,
   Label,
   Paragraph,
-  Select,
   Sheet,
   TooltipSimple,
   View,
@@ -138,18 +137,7 @@ function DialogInstance({ mode }: { mode: DialogMode }) {
                   <Paragraph>Food</Paragraph>
                 </TooltipSimple>
               </Label>
-              <XStack flex={1}>
-                <SelectDemoContents
-                  trigger={
-                    <Select.Trigger flex={1} borderRadius="4">
-                      <Select.Value placeholder="Something" />
-                      <Select.Icon>
-                        <ChevronDown />
-                      </Select.Icon>
-                    </Select.Trigger>
-                  }
-                />
-              </XStack>
+              <SelectDemoContents />
             </Fieldset>
 
             <XStack self="flex-end" gap="4">

@@ -3,7 +3,7 @@ import { LinearGradient } from '@tamagui/linear-gradient'
 import React from 'react'
 
 import type { SelectProps, SelectSize } from 'tamagui'
-import { Adapt, Label, Select, Sheet, Theme, XStack, YStack, getFontSize } from 'tamagui'
+import { Adapt, Label, Select, Sheet, Theme, XStack, YStack } from 'tamagui'
 
 export function SelectDemo() {
   return (
@@ -33,18 +33,6 @@ type SelectValue = Lowercase<(typeof items)[number]['name']>
 const getItemLabel = (value: string) =>
   items.find((item) => item.name.toLowerCase() === value)?.name
 
-// the trigger chevron matches the trigger text: control size to font key
-const selectChevronFontSize = {
-  xs: '2',
-  sm: '4',
-  md: '4',
-  lg: '5',
-  xl: '6',
-} as const
-
-const resolveSelectChevronFontSize = (size: unknown) =>
-  selectChevronFontSize[size as keyof typeof selectChevronFontSize] ?? '4'
-
 export function SelectDemoContents(
   props: SelectProps<SelectValue> & { trigger?: React.ReactNode }
 ) {
@@ -72,7 +60,7 @@ export function SelectDemoContents(
         >
           <Select.Value placeholder="Something" />
           <Select.Icon>
-            <ChevronDown />
+            <ChevronDown size={16} />
           </Select.Icon>
         </Select.Trigger>
       )}
@@ -95,10 +83,10 @@ export function SelectDemoContents(
           justify="center"
           position="relative"
           width="100%"
-          height="3"
+          height="6"
         >
           <YStack z={10}>
-            <ChevronUp size={20} />
+            <ChevronUp size={14} />
           </YStack>
           <LinearGradient
             start={[0, 0]}
@@ -116,7 +104,8 @@ export function SelectDemoContents(
           borderWidth={1}
           borderColor="border-color"
         >
-          <Select.Group width={220}>
+          {/* in native mode the group is the <select>, so it takes the trigger's width */}
+          <Select.Group width={props.native ? 220 : undefined}>
             <Select.Label fontWeight="700">Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}
             {React.useMemo(
@@ -134,20 +123,6 @@ export function SelectDemoContents(
               [items]
             )}
           </Select.Group>
-          {/* Native gets an extra icon */}
-          {props.native && (
-            <YStack
-              position="absolute"
-              r={0}
-              t={16}
-              items="center"
-              justify="center"
-              width="4"
-              pointerEvents="none"
-            >
-              <ChevronDown size={getFontSize(resolveSelectChevronFontSize(props.size))} />
-            </YStack>
-          )}
         </Select.Viewport>
 
         <Select.ScrollDownButton
@@ -155,10 +130,10 @@ export function SelectDemoContents(
           justify="center"
           position="relative"
           width="100%"
-          height="3"
+          height="6"
         >
           <YStack z={10}>
-            <ChevronDown size={20} />
+            <ChevronDown size={14} />
           </YStack>
           <LinearGradient
             start={[0, 0]}
