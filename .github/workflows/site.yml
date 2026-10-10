@@ -15,6 +15,7 @@ on:
       - main
 
 permissions:
+  actions: read
   contents: read
   pull-requests: write
 
@@ -23,6 +24,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  ASSET_HISTORY_NAME: site-assets-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || 'main' }}
   PREVIEW_ALIAS: pr-${{ github.event.pull_request.number }}
   # wrangler's preview url shape: <alias>-<worker>.<account subdomain>.workers.dev
   PREVIEW_URL: https://pr-${{ github.event.pull_request.number }}-tamagui-dev.natewienert.workers.dev
@@ -50,6 +52,12 @@ jobs:
           ONE_SERVER_URL: ${{ github.event_name == 'pull_request' && env.PREVIEW_URL || 'https://tamagui.dev' }}
         run: bun run build:static
 
+      - name: Retain previous assets
+        working-directory: code/tamagui.dev
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bun run assets:retain
+
       - name: Deploy
         if: github.event_name != 'pull_request'
         working-directory: code/tamagui.dev
@@ -65,6 +73,16 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 versions upload --preview-alias "$PREVIEW_ALIAS"
+
+      # archive only this build's assets, never the merged upload. otherwise
+      # expired generations would keep getting carried forward indefinitely.
+      - name: Archive deployed assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ASSET_HISTORY_NAME }}
+          path: code/tamagui.dev/dist/asset-snapshot
+          retention-days: 90
+          if-no-files-found: error
 
       - name: Comment preview url
         if: github.event_name == 'pull_request'
