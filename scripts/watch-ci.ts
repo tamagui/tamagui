@@ -99,6 +99,15 @@ while (true) {
   const allWorkflowsPresent = [...workflows].every((name) =>
     runs.some((run) => run.workflowName === name)
   )
+  const accepted = new Set(
+    workflows.size > 0 ? ['success'] : ['success', 'neutral', 'skipped']
+  )
+  if (runs.some((run) => run.status === 'completed' && !accepted.has(run.conclusion))) {
+    for (const run of runs) {
+      console.error(`${run.workflowName}: ${run.conclusion || run.status} ${run.url}`)
+    }
+    process.exit(1)
+  }
 
   if (
     allWorkflowsPresent &&
@@ -118,9 +127,6 @@ while (true) {
         console.info(`${run.workflowName}: ${run.conclusion} ${run.url}`)
       }
 
-      const accepted = new Set(
-        workflows.size > 0 ? ['success'] : ['success', 'neutral', 'skipped']
-      )
       process.exit(runs.every((run) => accepted.has(run.conclusion)) ? 0 : 1)
     }
   } else {
