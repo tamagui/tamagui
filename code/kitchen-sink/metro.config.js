@@ -8,6 +8,10 @@ const monorepoRoot = path.resolve(projectRoot, '../..')
 
 const config = getDefaultConfig(projectRoot)
 
+// rn 0.87 publishes polyfills through its package instead of rn-get-polyfills.
+config.serializer.getPolyfills = ({ platform }) =>
+  platform ? require('@react-native/js-polyfills')() : []
+
 config.resolver.unstable_enablePackageExports =
   process.env.TAMAGUI_PACKAGE_EXPORTS !== 'false'
 

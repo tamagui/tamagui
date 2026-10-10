@@ -109,9 +109,9 @@ function getESBuildConfig(
       ...platformDefines,
       ...callerDefine,
     },
+    conditions: ['tamagui-compiler', ...(platform === 'native' ? ['react-native'] : [])],
     ...(platform === 'native'
       ? {
-          conditions: ['react-native'],
           mainFields: ['react-native', 'module', 'main'],
         }
       : {}),
