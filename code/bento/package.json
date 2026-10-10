@@ -10,6 +10,7 @@
     ".": "./src/index.ts",
     "./registry": "./src/registry.ts",
     "./demos": "./src/demos.ts",
+    "./user/preferences/LocationNotification": "./src/user/preferences/LocationNotification.tsx",
     "./*": "./src/*/index.tsx"
   },
   "scripts": {

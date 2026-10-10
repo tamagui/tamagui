@@ -1,4 +1,4 @@
-import { LocationNotification } from '@tamagui/bento/user/preferences'
+import { LocationNotification } from '@tamagui/bento/user/preferences/LocationNotification'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
 import { BentoLogo } from '../features/bento/BentoLogo'
