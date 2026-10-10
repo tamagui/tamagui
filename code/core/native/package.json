@@ -192,7 +192,7 @@
     "react": "19.2.3",
     "react-native": "0.87.1",
     "react-native-gesture-handler": "3.3.0",
-    "react-native-keyboard-controller": "1.21.11",
+    "react-native-keyboard-controller": "1.22.6",
     "react-native-safe-area-context": "5.10.1",
     "react-native-teleport": "^1.0.0",
     "react-native-web": "~0.21.0",
