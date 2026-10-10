@@ -12,6 +12,9 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "react-native-legacy-deep-imports": {
+        "types": "./src/legacy.d.ts"
+      },
       "types": "./src/index.d.ts"
     }
   },
@@ -20,7 +23,7 @@
   },
   "scripts": {
     "generate": "node --experimental-strip-types scripts/generate.ts",
-    "test:web": "vitest --typecheck --run"
+    "test:web": "vitest --typecheck --run && tsc -p tsconfig.entry-test.json && tsc -p tsconfig.legacy-test.json"
   },
   "dependencies": {},
   "peerDependencies": {

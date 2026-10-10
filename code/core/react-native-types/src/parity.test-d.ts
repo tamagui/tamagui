@@ -4,6 +4,7 @@ import type * as LegacyRN from '../../../../node_modules/react-native/types'
 import type { Ref } from 'react'
 
 import type * as Ours from './index'
+import type * as LegacyOurs from './legacy'
 
 /**
  * The drift alarm for `generated.ts`.
@@ -192,15 +193,15 @@ export type _erasureIsNotVacuous = Assert<
 
 // refs must expose the same native instance contracts in both directions.
 export type _viewInstance = Assert<
-  Ours.StrictViewInstance extends RN.ViewInstance
-    ? RN.ViewInstance extends Ours.StrictViewInstance
+  Ours.ViewInstance extends RN.ViewInstance
+    ? RN.ViewInstance extends Ours.ViewInstance
       ? true
       : false
     : false
 >
 export type _textInstance = Assert<
-  Ours.StrictTextInstance extends RN.TextInstance
-    ? RN.TextInstance extends Ours.StrictTextInstance
+  Ours.TextInstance extends RN.TextInstance
+    ? RN.TextInstance extends Ours.TextInstance
       ? true
       : false
     : false
@@ -215,53 +216,79 @@ export type _textInputInstance = Assert<
 
 // legacy apps must exchange actual component instances and refs in both directions.
 type Assignable<From, To> = [From] extends [To] ? true : false
-export type _legacyViewInstance = Assert<Assignable<Ours.ViewInstance, LegacyRN.View>>
-export type _legacyViewInstanceReverse = Assert<
-  Assignable<LegacyRN.View, Ours.ViewInstance>
+export type _legacyViewInstance = Assert<
+  Assignable<LegacyOurs.ViewInstance, LegacyRN.View>
 >
-export type _legacyTextInstance = Assert<Assignable<Ours.TextInstance, LegacyRN.Text>>
+export type _legacyViewInstanceReverse = Assert<
+  Assignable<LegacyRN.View, LegacyOurs.ViewInstance>
+>
+export type _legacyTextInstance = Assert<
+  Assignable<LegacyOurs.TextInstance, LegacyRN.Text>
+>
 export type _legacyTextInstanceReverse = Assert<
-  Assignable<LegacyRN.Text, Ours.TextInstance>
+  Assignable<LegacyRN.Text, LegacyOurs.TextInstance>
 >
 export type _legacyReadOnlyNode = Assert<
-  Assignable<Ours.LegacyReadOnlyNode, LegacyRN.ReadOnlyNode>
+  Assignable<LegacyOurs.ReadOnlyNode, LegacyRN.ReadOnlyNode>
 >
 export type _legacyReadOnlyNodeReverse = Assert<
-  Assignable<LegacyRN.ReadOnlyNode, Ours.LegacyReadOnlyNode>
+  Assignable<LegacyRN.ReadOnlyNode, LegacyOurs.ReadOnlyNode>
 >
 export type _legacyReactNativeElement = Assert<
-  Assignable<Ours.LegacyReactNativeElement, LegacyRN.ReactNativeElement>
+  Assignable<LegacyOurs.ReactNativeElement, LegacyRN.ReactNativeElement>
 >
 export type _legacyReactNativeElementReverse = Assert<
-  Assignable<LegacyRN.ReactNativeElement, Ours.LegacyReactNativeElement>
+  Assignable<LegacyRN.ReactNativeElement, LegacyOurs.ReactNativeElement>
 >
 export type _legacyViewRef = Assert<
-  Assignable<Ref<Ours.ViewInstance>, Ref<LegacyRN.View>>
+  Assignable<Ref<LegacyOurs.ViewInstance>, Ref<LegacyRN.View>>
 >
 export type _legacyViewRefReverse = Assert<
-  Assignable<Ref<LegacyRN.View>, Ref<Ours.ViewInstance>>
+  Assignable<Ref<LegacyRN.View>, Ref<LegacyOurs.ViewInstance>>
 >
 export type _legacyTextRef = Assert<
-  Assignable<Ref<Ours.TextInstance>, Ref<LegacyRN.Text>>
+  Assignable<Ref<LegacyOurs.TextInstance>, Ref<LegacyRN.Text>>
 >
 export type _legacyTextRefReverse = Assert<
-  Assignable<Ref<LegacyRN.Text>, Ref<Ours.TextInstance>>
+  Assignable<Ref<LegacyRN.Text>, Ref<LegacyOurs.TextInstance>>
 >
 export type _legacyNodeList = Assert<
   Assignable<
-    Ours.LegacyNodeList<Ours.LegacyReadOnlyNode>,
+    LegacyOurs.NodeList<LegacyOurs.ReadOnlyNode>,
     LegacyRN.NodeList<LegacyRN.ReadOnlyNode>
   >
 >
 export type _legacyNodeListReverse = Assert<
   Assignable<
     LegacyRN.NodeList<LegacyRN.ReadOnlyNode>,
-    Ours.LegacyNodeList<Ours.LegacyReadOnlyNode>
+    LegacyOurs.NodeList<LegacyOurs.ReadOnlyNode>
   >
 >
 
 export type _legacyRefComparisonCanFail = Assert<
-  Assignable<Ref<Pick<Ours.ViewInstance, 'focus'>>, Ref<LegacyRN.View>> extends false
+  Assignable<
+    Ref<Pick<LegacyOurs.ViewInstance, 'focus'>>,
+    Ref<LegacyRN.View>
+  > extends false
     ? true
     : false
+>
+
+export type _nativeInputFitsView = Assert<
+  Assignable<Ours.TextInputInstance, Ours.ViewInstance>
+>
+export type _nativeInputRefFitsView = Assert<
+  Assignable<Ref<Ours.TextInputInstance>, Ref<Ours.ViewInstance>>
+>
+export type _legacyInputFitsView = Assert<
+  Assignable<LegacyOurs.TextInputInstance, LegacyOurs.ViewInstance>
+>
+export type _legacyInputRefFitsView = Assert<
+  Assignable<Ref<LegacyOurs.TextInputInstance>, Ref<LegacyOurs.ViewInstance>>
+>
+export type _legacyInputRef = Assert<
+  Assignable<Ref<LegacyOurs.TextInputInstance>, Ref<LegacyRN.TextInput>>
+>
+export type _legacyInputRefReverse = Assert<
+  Assignable<Ref<LegacyRN.TextInput>, Ref<LegacyOurs.TextInputInstance>>
 >
