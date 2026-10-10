@@ -159,8 +159,8 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   APKs. Root Gradle task selectors expand into every matching subproject.
   CI and both local Detox Android build configurations now select `:app`
   assembly tasks. Gradle graph probes preserve all 94 application tasks and
-  exclude 984 unconsumed dependency build tasks. APK paths, all four Android
-  architectures, native test selection, and timeouts stay unchanged. The
+  exclude 984 unconsumed dependency build tasks. That repair kept APK paths,
+  all four Android architectures, native test selection, and timeouts unchanged. The
   original CI log establishes that both requested app APKs already build.
   Detox configuration loading, YAML parsing, shell syntax, and diff checks pass.
 
@@ -220,6 +220,19 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   arm64 SDK 27 app build in 1049.5 seconds. The app remains alive and evaluates
   its Metro bundle without the allocation crash. Its screen is blank, so UI
   acceptance remains open as a separate runtime investigation.
+
+- RAN: after application task scoping, the Android build succeeds in CI but
+  consumes 41 minutes 33 seconds compiling four ABIs, then reaches its existing
+  45-minute job deadline while uploading the Gradle cache. The only CI Android
+  emulator runs x86_64. One workflow architecture value now selects that ABI
+  for Gradle and the unchanged emulator, and participates in app cache keys and
+  fingerprint identity. Local Detox builds remain device-flexible. A real
+  x86_64 debug and instrumentation APK build passes in 8 minutes 12 seconds;
+  both APKs contain manifests and DEX, and the app contains the RN, Hermes and
+  app native libraries for exactly x86_64. YAML parsing, all 25 workflow shell
+  blocks, the existing five-shard coverage check, and diff checks pass. No
+  previously executed device test, assertion, retry or deadline changes.
+  The unchanged CI deadline and complete interactions remain delivery gates.
 
 ## cost and validation
 

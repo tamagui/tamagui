@@ -31,6 +31,7 @@ env:
   test_container_app_path: code/kitchen-sink
   # Increment this to force a fresh Android build (invalidates Redis KV cache)
   android_cache_version: v4
+  android_architecture: x86_64
 
 jobs:
   build-one-native-bundles:
@@ -329,7 +330,7 @@ jobs:
         id: calculate-pre-fingerprint
         env:
           # Include cache version to allow manual cache busting
-          PRE_FINGERPRINT_HASH: ${{ hashFiles('bun.lock', 'code/kitchen-sink/app.json', 'code/kitchen-sink/plugins/**', 'code/kitchen-sink/android-init.gradle', 'code/kitchen-sink/fingerprint.config.js', 'packages/vxrn/expo-plugin.cjs') }}-${{ env.android_cache_version }}
+          PRE_FINGERPRINT_HASH: ${{ hashFiles('bun.lock', 'code/kitchen-sink/app.json', 'code/kitchen-sink/plugins/**', 'code/kitchen-sink/android-init.gradle', 'code/kitchen-sink/fingerprint.config.js', 'packages/vxrn/expo-plugin.cjs') }}-${{ env.android_cache_version }}-${{ env.android_architecture }}
         run: |
           echo "Pre-fingerprint hash: $PRE_FINGERPRINT_HASH"
           echo "pre_fingerprint_hash=$PRE_FINGERPRINT_HASH" >> $GITHUB_OUTPUT
@@ -357,7 +358,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: code/kitchen-sink/android
-          key: android-detox-${{ env.android_cache_version }}-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}
+          key: android-detox-${{ env.android_cache_version }}-${{ env.android_architecture }}-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}
           lookup-only: true
 
       - name: Install Dependencies
@@ -511,7 +512,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: code/kitchen-sink/android
-          key: android-detox-${{ env.android_cache_version }}-${{ steps.calculate-fingerprint.outputs.fingerprint }}
+          key: android-detox-${{ env.android_cache_version }}-${{ env.android_architecture }}-${{ steps.calculate-fingerprint.outputs.fingerprint }}
           lookup-only: true
 
       - name: Cache Gradle
@@ -532,22 +533,22 @@ jobs:
           # Limit Gradle memory to avoid OOM on free runners
           GRADLE_OPTS: '-Dorg.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError'
         run: |
-          cd android && ./gradlew :app:assembleDebug :app:assembleAndroidTest -DtestBuildType=debug --init-script ../android-init.gradle --no-daemon --max-workers=2
+          cd android && ./gradlew :app:assembleDebug :app:assembleAndroidTest -DtestBuildType=debug -PreactNativeArchitectures=${{ env.android_architecture }} --init-script ../android-init.gradle --no-daemon --max-workers=2
 
       - name: Cache Android Folder
         if: ${{ !steps.android-cache-check.outputs.cache-hit && !steps.android-cache-check-new.outputs.cache-hit }}
         uses: actions/cache/save@v4
         with:
           path: code/kitchen-sink/android
-          key: android-detox-${{ env.android_cache_version }}-${{ steps.calculate-fingerprint.outputs.fingerprint }}
+          key: android-detox-${{ env.android_cache_version }}-${{ env.android_architecture }}-${{ steps.calculate-fingerprint.outputs.fingerprint }}
 
       - name: Set Final Cache Key
         id: final-cache-key
         run: |
           if [ "${{ steps.android-cache-check.outputs.cache-hit }}" = "true" ]; then
-            echo "cache_key=android-detox-${{ env.android_cache_version }}-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}" >> $GITHUB_OUTPUT
+            echo "cache_key=android-detox-${{ env.android_cache_version }}-${{ env.android_architecture }}-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}" >> $GITHUB_OUTPUT
           else
-            echo "cache_key=android-detox-${{ env.android_cache_version }}-${{ steps.calculate-fingerprint.outputs.fingerprint }}" >> $GITHUB_OUTPUT
+            echo "cache_key=android-detox-${{ env.android_cache_version }}-${{ env.android_architecture }}-${{ steps.calculate-fingerprint.outputs.fingerprint }}" >> $GITHUB_OUTPUT
           fi
 
   test-android:
@@ -619,7 +620,7 @@ jobs:
         with:
           api-level: 31
           target: google_apis
-          arch: x86_64
+          arch: ${{ env.android_architecture }}
           profile: pixel_4
           avd-name: test
           # 4G ram + 1G heap (was 2G/512M) - the kitchen-sink JS bundle eagerly imports
