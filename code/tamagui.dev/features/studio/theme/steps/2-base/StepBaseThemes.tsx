@@ -54,7 +54,8 @@ export const StepBaseThemes = (_props: StepBaseThemesProps) => {
               <XStack gap="1-5" items="center">
                 {isAccent && (
                   <Select
-                    size="2"
+                    size="sm"
+                    height={28}
                     defaultValue={themeBuilder.accentSetting}
                     onValueChange={(value) => {
                       themeBuilder.setAccentSetting(value as any)

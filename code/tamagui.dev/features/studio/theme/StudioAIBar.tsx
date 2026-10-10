@@ -76,113 +76,96 @@ export const StudioThemeAgentBar = memo((_props: StudioAIBarProps) => {
   }
 
   return (
-    <YStack gap="3" width="100%" z={1000}>
-      {/* Hero Agent Skill Callout */}
+    <YStack width="100%" z={1000}>
+      {/* agent skill callout */}
       <YStack
-        p="4"
-        rounded="8"
+        px="4"
+        py="3"
+        rounded="6"
         bg="color-2"
         borderColor="border-color"
         borderWidth={0.5}
-        boxShadow="0 4px 16px shadow-color"
         gap="3"
       >
         <XStack flexWrap="wrap" justify="space-between" items="center" gap="3">
-          {/* Left: Agent Info */}
-          <XStack items="center" gap="3" flex={1} minW={280}>
+          <XStack items="center" gap="3" flex={1} minW={260}>
             <YStack
-              width={38}
-              height={38}
-              rounded="6"
+              width={32}
+              height={32}
+              shrink={0}
+              rounded="4"
               bg="color-4"
               items="center"
               justify="center"
-              borderWidth={0.5}
-              borderColor="border-color"
             >
-              <Bot size={20} color="var(--color-11)" />
+              <Bot size={18} color="var(--color-11)" />
             </YStack>
 
-            <YStack gap="0-5" flex={1}>
+            <YStack flex={1}>
               <XStack items="center" gap="2">
-                <SizableText size="4" fontWeight="700" color="color-12">
+                <SizableText size="3" fontWeight="700" color="color-12">
                   Generate themes with your AI agent
                 </SizableText>
-                <XStack bg="color-4" px="2" py="0-5" rounded="3" items="center">
+                <XStack bg="color-4" px="1-5" rounded="2" items="center">
                   <Paragraph size="1" color="color-11" fontWeight="600">
                     v3 Skill
                   </Paragraph>
                 </XStack>
               </XStack>
-              <Paragraph size="3" color="color-10">
-                Copy our recommended skill to generate themes with Claude Code, Cursor, or
-                Codex, then preview instantly via URL.
+              <Paragraph size="2" color="color-10">
+                Copy the skill into Claude Code, Cursor, or Codex, then preview its themes
+                here by URL.
               </Paragraph>
             </YStack>
           </XStack>
 
-          {/* Right: Actions */}
-          <XStack items="center" gap="2" flexWrap="wrap">
+          <XStack items="center" gap="1-5">
             <Theme name="accent">
-              <Button
-                size="md"
-                rounded="6"
-                icon={copied ? Check : Copy}
-                onPress={copySkill}
-              >
-                {copied ? 'Copied Skill!' : 'Copy Agent Skill'}
+              <Button size="sm" icon={copied ? Check : Copy} onPress={copySkill}>
+                {copied ? 'Copied' : 'Copy Skill'}
               </Button>
             </Theme>
 
-            <Button
-              size="md"
-              rounded="6"
-              variant="outlined"
-              onPress={() => setSkillOpen(true)}
-            >
-              View Skill
+            <Button size="sm" variant="outlined" onPress={() => setSkillOpen(true)}>
+              View
             </Button>
 
-            <Button
-              size="md"
-              rounded="6"
-              variant="outlined"
-              onPress={() => setImportOpen(true)}
-            >
-              Preview URL / JSON
+            <Button size="sm" variant="outlined" onPress={() => setImportOpen(true)}>
+              Preview URL
             </Button>
 
             <RandomizeButton />
 
-            <ThemeToggle />
+            <ThemeToggle size="sm" circular />
           </XStack>
         </XStack>
 
-        {/* Quick Preset Selector & Status */}
-        <XStack items="center" justify="space-between" flexWrap="wrap" gap="2" pt="1">
-          <XStack items="center" gap="2" flexWrap="wrap">
+        <XStack items="center" justify="space-between" flexWrap="wrap" gap="2">
+          <XStack items="center" gap="1-5" flexWrap="wrap">
             <Paragraph
-              size="2"
+              size="1"
               color="color-10"
               fontWeight="600"
               textTransform="uppercase"
+              mr="1"
             >
-              Quick Presets:
+              Presets
             </Paragraph>
             {THEME_PRESETS.map((p) => {
               const isActive = activePreset === p.name
               return (
                 <XStack
                   key={p.name}
+                  render="button"
                   items="center"
                   gap="1-5"
-                  px="2-5"
-                  py="1"
-                  rounded="4"
+                  px="2"
+                  py="0-5"
+                  rounded="3"
                   bg={isActive ? 'color-4' : 'color-1 hover:color-3'}
-                  borderColor={isActive ? 'color-9' : 'border-color'}
+                  borderColor={isActive ? 'color-8' : 'border-color'}
                   borderWidth={0.5}
-                  style={{ cursor: 'pointer', transition: 'all 0.15s ease' }}
+                  cursor="pointer"
                   onPress={() => handleApplyPreset(p)}
                 >
                   <YStack width={8} height={8} rounded="2" bg={p.dot as any} />
@@ -199,7 +182,7 @@ export const StudioThemeAgentBar = memo((_props: StudioAIBarProps) => {
           </XStack>
 
           {store.currentQuery ? (
-            <XStack items="center" gap="2" bg="color-3" px="2-5" py="1" rounded="4">
+            <XStack items="center" gap="2" bg="color-3" px="2" py="0-5" rounded="3">
               <Paragraph size="2" color="color-11">
                 Previewing:{' '}
                 <SizableText size="2" fontWeight="600" color="color-12">
@@ -209,7 +192,8 @@ export const StudioThemeAgentBar = memo((_props: StudioAIBarProps) => {
               <Paragraph
                 size="2"
                 color="color-10"
-                style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                cursor="pointer"
+                textDecorationLine="underline"
                 onPress={() => {
                   store.reset()
                   setActivePreset('Violet')

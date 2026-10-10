@@ -34,12 +34,7 @@ export const PricingCards = () => {
       {...demoProps.panelPaddingProps}
       bg="background"
     >
-      <YStack
-        borderBottomWidth="0.5px"
-        borderBottomColor="border-color"
-        borderWidth="0"
-        pb="1-5"
-      >
+      <YStack borderBottomWidth="0.5px" borderBottomColor="border-color" pb="1-5">
         <H4 {...demoProps.headingFontFamilyProps} size="4" text="center">
           Subscribe
         </H4>
