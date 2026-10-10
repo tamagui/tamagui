@@ -221,5 +221,12 @@ export function createStudioThemes({ palettes }: BuildThemeSuiteProps) {
     },
   })
 
+  // the site Button scopes itself to a "Button" component theme; without one in
+  // the suite it falls back to the site's own gray Button and drops the preview
+  // palette, so each theme gets a Button one level raised, as the site config does
+  for (const name of Object.keys(themes)) {
+    themes[`${name}_Button`] = themes[`${name}_level2`] ?? themes[name]
+  }
+
   return { themes, tokens }
 }
