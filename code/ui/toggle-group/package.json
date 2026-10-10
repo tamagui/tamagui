@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/toggle-group",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [

@@ -2,7 +2,7 @@
   "name": "tamagui-language-service",
   "displayName": "Tamagui Language Service",
   "description": "Flat value completions, diagnostics, hover, and inline color swatches for Tamagui, powered by the tamagui-lsp binary.",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "private": true,
   "publisher": "tamagui",
   "license": "MIT",
