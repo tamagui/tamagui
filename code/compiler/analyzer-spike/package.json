@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/analyzer-spike",
-  "version": "0.0.0",
+  "version": "3.0.0",
   "private": true,
   "type": "module",
   "scripts": {

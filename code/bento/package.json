@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/bento",
-  "version": "2.7.7",
+  "version": "3.0.0",
   "private": true,
   "description": "Copy-paste Tamagui components and screens, shown at tamagui.dev/bento",
   "license": "MIT",
