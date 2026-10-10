@@ -192,6 +192,19 @@ function parseFile(file: string): Parsed {
       ts.isModuleDeclaration(stmt)
     ) {
       add((stmt as any).name?.text, stmt, stmt.getText(src), true)
+      // extract the legacy animated handle without its runtime namespace.
+      if (
+        ts.isModuleDeclaration(stmt) &&
+        stmt.name.text === 'Animated' &&
+        stmt.body &&
+        ts.isModuleBlock(stmt.body)
+      ) {
+        for (const member of stmt.body.statements) {
+          if (ts.isClassDeclaration(member) && member.name?.text === 'AnimatedNode') {
+            add(member.name.text, member, member.getText(src), true)
+          }
+        }
+      }
     } else if (ts.isFunctionDeclaration(stmt) && stmt.name) {
       add(stmt.name.text, stmt, stmt.getText(src), true)
     } else if (ts.isExportAssignment(stmt) && ts.isIdentifier(stmt.expression)) {
@@ -288,7 +301,8 @@ function referencedNames(node: ts.Node): string[] {
 const rnManifest = JSON.parse(readFileSync(join(RN, 'package.json'), 'utf8'))
 const ENTRY = resolve(RN, rnManifest.exports['.'].types)
 const files = collectDtsFiles(join(RN, 'Libraries')).concat(
-  collectDtsFiles(dirname(ENTRY))
+  collectDtsFiles(dirname(ENTRY)),
+  collectDtsFiles(join(RN, 'types'))
 )
 if (!files.length) {
   console.error(
@@ -365,71 +379,90 @@ function lookup(name: string, file: string, seen = new Set<string>()): Decl | un
 
 /** the roots come in by name alone, so they resolve through the entry point */
 
-const collected = new Map<string, Decl>()
-const exportAliases = new Map<string, string>()
-const missing = new Map<string, string>()
-/** what first pulled each name in, so a failure names the path to it */
-const via = new Map<string, string>()
-const queue: { name: string; from: string }[] = [
-  ...ROOTS.map((name) => ({ name, from: ENTRY })),
-  {
-    name: 'AnimatedNode',
-    from: resolve(dirname(ENTRY), 'Libraries/Animated/nodes/AnimatedNode.d.ts'),
-  },
-]
+// keep the strict prop grammar and legacy component instances in separate
+// graphs: RN's two APIs disagree on events, document values and component props.
+function collect(roots: string[], entry: string, animatedFile: string) {
+  const collected = new Map<string, Decl>()
+  const exportAliases = new Map<string, string>()
+  const missing = new Map<string, string>()
+  /** what first pulled each name in, so a failure names the path to it */
+  const via = new Map<string, string>()
+  const queue: { name: string; from: string }[] = [
+    ...roots.map((name) => ({ name, from: entry })),
+    {
+      name: 'AnimatedNode',
+      from: animatedFile,
+    },
+  ]
 
-while (queue.length) {
-  const { name, from } = queue.shift()!
-  if (missing.has(name)) continue
-  const decl = lookup(name, from)
-  if (!decl) {
-    missing.set(name, via.get(name) ?? '(root)')
-    continue
+  while (queue.length) {
+    const { name, from } = queue.shift()!
+    if (missing.has(name)) continue
+    const decl = lookup(name, from)
+    if (!decl) {
+      missing.set(name, via.get(name) ?? '(root)')
+      continue
+    }
+    // checked before the dedupe, so a name that means two different things in two
+    // different files is caught rather than silently emitted as whichever won
+    const seen = collected.get(name)
+    if (seen) {
+      if (seen.file === decl.file) continue
+      console.error(
+        `\ntwo different declarations both named \`${name}\` are reachable:\n` +
+          `  ${seen.file}\n  ${decl.file}\n\n` +
+          `one output file cannot hold both. Substitute one, or drop the root that` +
+          `\nreaches it.\n`
+      )
+      process.exit(1)
+    }
+    collected.set(name, decl)
+    if (name !== decl.name) exportAliases.set(name, decl.name)
+    const refs = referencedNames(decl.node)
+    if (decl.text.includes('Animated.AnimatedNode')) {
+      refs.splice(refs.indexOf('Animated'), 1, 'AnimatedNode')
+    }
+    for (const ref of refs) {
+      if (collected.has(ref)) continue
+      if (!via.has(ref)) via.set(ref, name)
+      // resolved from the file that referenced it, not from the entry point
+      queue.push({ name: ref, from: decl.file })
+    }
   }
-  // checked before the dedupe, so a name that means two different things in two
-  // different files is caught rather than silently emitted as whichever won
-  const seen = collected.get(name)
-  if (seen) {
-    if (seen.file === decl.file) continue
+
+  if (missing.size) {
+    const chain = (n: string) => {
+      const path = [n]
+      let cur = via.get(n)
+      while (cur && !roots.includes(cur) && path.length < 8) {
+        path.push(cur)
+        cur = via.get(cur)
+      }
+      if (cur) path.push(cur)
+      return path.reverse().join(' -> ')
+    }
     console.error(
-      `\ntwo different declarations both named \`${name}\` are reachable:\n` +
-        `  ${seen.file}\n  ${decl.file}\n\n` +
-        `one output file cannot hold both. Substitute one, or drop the root that` +
-        `\nreaches it.\n`
+      `\ncould not resolve ${missing.size} name(s) in react-native's types:\n` +
+        [...missing.keys()].map((m) => `  ${chain(m)}`).join('\n') +
+        `\n\nEither it lives in a package this does not scan, react-native renamed` +
+        `\nit, or it is ambient. Add it to AMBIENT if TypeScript/React provides it,` +
+        `\notherwise widen SCAN_DIRS or fix ROOTS.\n`
     )
     process.exit(1)
   }
-  collected.set(name, decl)
-  if (name !== decl.name) exportAliases.set(name, decl.name)
-  for (const ref of referencedNames(decl.node)) {
-    if (collected.has(ref)) continue
-    if (!via.has(ref)) via.set(ref, name)
-    // resolved from the file that referenced it, not from the entry point
-    queue.push({ name: ref, from: decl.file })
-  }
-}
 
-if (missing.size) {
-  const chain = (n: string) => {
-    const path = [n]
-    let cur = via.get(n)
-    while (cur && !ROOTS.includes(cur) && path.length < 8) {
-      path.push(cur)
-      cur = via.get(cur)
-    }
-    if (cur) path.push(cur)
-    return path.reverse().join(' -> ')
-  }
-  console.error(
-    `\ncould not resolve ${missing.size} name(s) in react-native's types:\n` +
-      [...missing.keys()].map((m) => `  ${chain(m)}`).join('\n') +
-      `\n\nEither it lives in a package this does not scan, react-native renamed` +
-      `\nit, or it is ambient. Add it to AMBIENT if TypeScript/React provides it,` +
-      `\notherwise widen SCAN_DIRS or fix ROOTS.\n`
-  )
-  process.exit(1)
+  return { collected, exportAliases }
 }
-
+const { collected, exportAliases } = collect(
+  ROOTS,
+  ENTRY,
+  resolve(dirname(ENTRY), 'Libraries/Animated/nodes/AnimatedNode.d.ts')
+)
+const legacy = collect(
+  ['View', 'Text'],
+  join(RN, 'types/index.d.ts'),
+  join(RN, 'Libraries/Animated/Animated.d.ts')
+)
 /** re-export every declaration ourselves, ambient where the kind needs it */
 function emit(d: Decl) {
   // `export default class EventEmitter` becomes a plain named export here
@@ -441,11 +474,54 @@ function emit(d: Decl) {
 }
 
 const version = JSON.parse(readFileSync(join(RN, 'package.json'), 'utf8')).version
+const legacyNames = new Map(
+  [...legacy.collected.values()].map((decl) => [decl.name, `Legacy${decl.name}`])
+)
+// rewrite identifiers in the AST so comments and literal props stay verbatim.
+function emitRenamed(decl: Decl, names: Map<string, string>) {
+  const source = program.getSourceFile(decl.file)!
+  const offset = decl.node.getStart(source)
+  const edits: { start: number; end: number; text: string }[] = []
+  const visit = (node: ts.Node) => {
+    if (ts.isQualifiedName(node) && node.getText(source) === 'Animated.AnimatedNode') {
+      edits.push({
+        start: node.getStart(source) - offset,
+        end: node.end - offset,
+        text: names.get('AnimatedNode') ?? 'AnimatedNode',
+      })
+      return
+    }
+    if (ts.isIdentifier(node) && names.has(node.text)) {
+      edits.push({
+        start: node.getStart(source) - offset,
+        end: node.end - offset,
+        text: names.get(node.text)!,
+      })
+    }
+    node.forEachChild(visit)
+  }
+  visit(decl.node)
+  let text = decl.node.getText(source)
+  for (const edit of edits.sort((a, b) => b.start - a.start)) {
+    text = text.slice(0, edit.start) + edit.text + text.slice(edit.end)
+  }
+  return emit({ ...decl, text })
+}
+const strictInstanceNames = new Map([
+  ['ViewInstance', 'StrictViewInstance'],
+  ['TextInstance', 'StrictTextInstance'],
+])
 const body = [
   ...[...new Map([...collected.values()].map((decl) => [decl.name, decl])).values()]
     .sort((a, b) => a.name.localeCompare(b.name))
-    .map(emit),
-  ...[...exportAliases].map(([alias, name]) => `export { ${name} as ${alias} }`),
+    .map((decl) => emitRenamed(decl, strictInstanceNames)),
+  ...[...exportAliases]
+    .filter(([alias]) => !strictInstanceNames.has(alias))
+    .map(([alias, name]) => `export { ${name} as ${alias} }`),
+  ...[...legacy.collected.values()]
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((decl) => emitRenamed(decl, legacyNames)),
+  'export { LegacyView as ViewInstance, LegacyText as TextInstance }',
 ].join('\n\n')
 
 const header = `/**
@@ -453,6 +529,8 @@ const header = `/**
  *
  * ${collected.size} declarations reached from ${ROOTS.length} roots, plus
  * the AnimatedNode handle from its declaring module.
+ * ${legacy.collected.size} legacy declarations preserve the default native ref contracts
+ * separately from the strict prop grammar.
  * Everything Tamagui uses from react-native's types on web lives here, so no
  * non-\`.native\` file needs react-native installed. To refresh, bump the repo
  * root's react-native override and re-run \`bun run generate\` in this package.

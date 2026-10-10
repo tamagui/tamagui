@@ -78,7 +78,7 @@ export declare function useSwitch<R extends View, P extends SwitchProps>(props: 
             }>;
         }>> | undefined;
     };
-    switchRef: (node: import("@tamagui/react-native-types").ReactNativeElement) => void;
+    switchRef: (node: View) => void;
     /**
      * insert as a sibling of your switch (should not be inside the switch)
      */

@@ -60,7 +60,7 @@ export declare const ContextMenu: import("react").FC<import("./createNonNativeCo
         ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
     }, "ref"> & {
         scope?: string;
-    } & import("@tamagui/compose-refs").RefProp<import("@tamagui/react-native-types/src").ReactNativeElement | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> & Partial<Omit<unknown, "ref" | "scope" | keyof import("@tamagui/create-menu").MenuRadioGroupProps>>>;
+    } & import("@tamagui/compose-refs").RefProp<import("@tamagui/react-native-types/src").LegacyView | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> & Partial<Omit<unknown, "ref" | "scope" | keyof import("@tamagui/create-menu").MenuRadioGroupProps>>>;
     RadioItem: import("react").FC<Omit<Omit<import("@tamagui/web").ViewProps, "scope" | keyof import("@tamagui/create-menu").MenuRadioItemProps> & import("@tamagui/create-menu").MenuRadioItemProps & {
         scope?: string;
     } & {
