@@ -13,6 +13,7 @@ on:
       - '**/*.md'
   pull_request:
     branches:
+      - main
       - 'v3-*'
   workflow_dispatch:
 
@@ -300,8 +301,10 @@ jobs:
 
   build-android:
     name: Build Android App
-    # Only run on main/v* branches (not PRs)
-    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/v') || github.ref == 'refs/heads/rn82'
+    # same-repo pull requests validate android before landing on main.
+    if: >-
+      github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/v') || github.ref == 'refs/heads/rn82' ||
+      (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
     timeout-minutes: 45
     outputs:
@@ -553,8 +556,10 @@ jobs:
   test-android:
     name: Android Detox Tests
     needs: build-android
-    # Only run on main/v* branches (not PRs)
-    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/v') || github.ref == 'refs/heads/rn82'
+    # same-repo pull requests validate android before landing on main.
+    if: >-
+      github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/v') || github.ref == 'refs/heads/rn82' ||
+      (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
     timeout-minutes: 90
     defaults:
