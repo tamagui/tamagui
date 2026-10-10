@@ -62,6 +62,7 @@ describe('Sheet gesture state', () => {
       Gesture: { Pan: () => null },
       GestureDetector: () => null,
       ScrollView: {},
+      LegacyScrollView: {},
       GestureHandlerRootView: {},
     }
 
@@ -83,7 +84,7 @@ describe('Sheet gesture state', () => {
       expect(isGestureHandlerEnabled()).toBe(true)
       expect(getGestureHandlerState().Gesture).toBe(fakeRngh.Gesture)
       expect(getGestureHandlerState().GestureDetector).toBe(fakeRngh.GestureDetector)
-      expect(getGestureHandlerState().ScrollView).toBe(fakeRngh.ScrollView)
+      expect(getGestureHandlerState().ScrollView).toBe(fakeRngh.LegacyScrollView)
       expect(getGestureHandlerState().RootView).toBe(fakeRngh.GestureHandlerRootView)
 
       setupNativeGestureHandler({ pressEvents: false, sheet: false })
