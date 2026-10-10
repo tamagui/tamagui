@@ -6,6 +6,7 @@
   "sideEffects": false,
   "main": "index.jsx",
   "scripts": {
+    "assets:retain": "bun scripts/retain-assets.ts",
     "dev": "one dev",
     "dev:clean": "one dev --clean",
     "clean": "one clean",
