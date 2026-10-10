@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/registry-blank-web",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "private": true,
   "scripts": {
     "install:button": "bun ../../../scripts/registry-install.ts button . --registry ../../json",

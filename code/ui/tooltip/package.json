@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tooltip",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "license": "MIT",
   "source": "src/index.tsx",
   "files": [

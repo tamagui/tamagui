@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/compiler-core",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Shared parser-independent Tamagui compiler graph and element IR",
   "license": "MIT",
   "type": "module",
