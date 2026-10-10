@@ -200,6 +200,16 @@ are tracked in task `t-mv19dz3f-urb0`, label `lane:tamagui-v3-beta-ci`.
   cache restoration hit a missing lock file; an isolated `CP_CACHE_DIR` restores
   Pods successfully without modifying other lanes' cache.
 
+- RAN: the Maestro builder reaches its existing 60-minute deadline while
+  compiling a generic simulator destination for both arm64 and x86_64. The raw
+  Xcode artifact contains both architecture compile commands, including One.
+  All iOS test jobs use the arm64 Xcode 27 runner. The shared builder now
+  compiles that runner architecture and asserts the host matches it; app and
+  intermediate cache keys include the architecture. Every simulator model and
+  test shard stays selected. The local complete arm64 app build passes; this
+  removes Intel compilation that no test job executes. Cold CI elapsed time
+  remains to be measured, with the existing deadline unchanged.
+
 ## cost and validation
 
 Dependency alignment changes build inputs, not application render work. The
