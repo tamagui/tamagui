@@ -74,49 +74,70 @@ const selectItemSize = {
   xl: { gap: '2.5', paddingHorizontal: '8', paddingVertical: '2.5' },
 } as const
 
+// appearance: none drops the platform arrow, so the skin draws its own chevron:
+// two 5px gradient strokes in currentColor (it follows the theme), centered in
+// where the trigger's 16px icon sits, one 16px box in from the inline padding
+const nativeChevronStroke = (angle: number) =>
+  `linear-gradient(${angle}deg, transparent calc(50% - 0.75px), currentColor calc(50% - 0.75px) calc(50% + 0.75px), transparent calc(50% + 0.75px))`
+
+const nativeChevronPosition = (paddingInline: number) => {
+  const center = paddingInline + 8
+  return `calc(100% - ${center - 0.25}px) 50%, calc(100% - ${center - 4.75}px) 50%`
+}
+
 const selectNativeSize = {
   // a native <select> ignores line-height, so it gets the control height
   // (line height plus vertical padding) plus its 1px border on each side,
   // and room for the chevron
   xs: {
+    ...selectTextSize.xs,
     paddingInline: '2',
     paddingBlock: '1',
     borderRadius: 'sm',
     gap: '1',
     height: 26,
     paddingRight: 28,
+    backgroundPosition: nativeChevronPosition(8),
   },
   sm: {
+    ...selectTextSize.sm,
     paddingInline: '3',
     paddingBlock: '1.5',
     borderRadius: 'md',
     gap: '1.5',
     height: 34,
     paddingRight: 32,
+    backgroundPosition: nativeChevronPosition(12),
   },
   md: {
+    ...selectTextSize.md,
     paddingInline: '4',
     paddingBlock: '2',
     borderRadius: 'md',
     gap: '2',
     height: 38,
     paddingRight: 36,
+    backgroundPosition: nativeChevronPosition(16),
   },
   lg: {
+    ...selectTextSize.lg,
     paddingInline: '6',
     paddingBlock: '2',
     borderRadius: 'md',
     gap: '2',
     height: 42,
     paddingRight: 44,
+    backgroundPosition: nativeChevronPosition(24),
   },
   xl: {
+    ...selectTextSize.xl,
     paddingInline: '8',
     paddingBlock: '2.5',
     borderRadius: 'lg',
     gap: '2.5',
     height: 50,
     paddingRight: 52,
+    backgroundPosition: nativeChevronPosition(32),
   },
 } as const
 
@@ -129,6 +150,9 @@ const SelectNative = styled(SizableText, {
   color: 'color',
   outlineWidth: 0,
   userSelect: 'none',
+  backgroundImage: `${nativeChevronStroke(45)}, ${nativeChevronStroke(-45)}`,
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: '5px 5px',
   variants: {
     size: {
       ...selectNativeSize,
