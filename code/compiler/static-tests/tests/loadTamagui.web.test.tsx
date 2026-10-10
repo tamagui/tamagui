@@ -131,7 +131,7 @@ describe('esbundleTamaguiConfig platform defines', () => {
     expect(out).toContain('process.env.EXPO_OS')
   })
 
-  test('platform=native selects react-native package exports', async () => {
+  test('platform=native selects react-native and caller package exports', async () => {
     const packageDir = join(tempDir, 'node_modules', 'conditional-package')
     mkdirSync(packageDir, { recursive: true })
     writeFileSync(
@@ -141,6 +141,7 @@ describe('esbundleTamaguiConfig platform defines', () => {
         type: 'module',
         exports: {
           '.': {
+            'audit-condition': './caller.js',
             'react-native': './native.js',
             import: './web.js',
             default: './web.js',
@@ -149,6 +150,7 @@ describe('esbundleTamaguiConfig platform defines', () => {
       })
     )
     writeFileSync(join(packageDir, 'native.js'), `export const value = 'native'`)
+    writeFileSync(join(packageDir, 'caller.js'), `export const value = 'caller'`)
     writeFileSync(join(packageDir, 'web.js'), `export const value = 'web'`)
     const entry = join(tempDir, 'native-package-entry.js')
     writeFileSync(
@@ -167,6 +169,18 @@ describe('esbundleTamaguiConfig platform defines', () => {
 
     const bundled = createRequire(import.meta.url)(outfile)
     expect(bundled.value).toBe('native')
+
+    const callerOutfile = join(tempDir, 'caller-package-bundle.cjs')
+    await esbundleTamaguiConfig(
+      {
+        entryPoints: [entry],
+        outfile: callerOutfile,
+        format: 'cjs',
+        conditions: ['audit-condition'],
+      },
+      'native'
+    )
+    expect(createRequire(import.meta.url)(callerOutfile).value).toBe('caller')
   })
 })
 

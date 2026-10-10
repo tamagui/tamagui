@@ -65,6 +65,7 @@ function getESBuildConfig(
     resolvePlatformSpecificEntries,
     dangerouslyIgnoreStaticEvaluationModules = [],
     define: callerDefine,
+    conditions: callerConditions = [],
     ...options
   }: Props,
   platform: TamaguiPlatform,
@@ -109,7 +110,11 @@ function getESBuildConfig(
       ...platformDefines,
       ...callerDefine,
     },
-    conditions: ['tamagui-compiler', ...(platform === 'native' ? ['react-native'] : [])],
+    conditions: [
+      'tamagui-compiler',
+      ...(platform === 'native' ? ['react-native'] : []),
+      ...callerConditions,
+    ],
     ...(platform === 'native'
       ? {
           mainFields: ['react-native', 'module', 'main'],
