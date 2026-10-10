@@ -1,13 +1,13 @@
 ---
 title: Surface
-description: A copy-paste panel, well, and toolbar primitive built from facets and theme levels
+description: A panel, well, and toolbar primitive built from facets and theme levels
 name: surface
 component: Surface
 ---
 
 <IntroParagraph>
-  Surface is a copy-paste `YStack` recipe with relative theme levels and
-  composable visual or interaction facets.
+  Surface is the starting point for panels, wells, and toolbars: a `YStack`
+  with a `level` prop and composable visual and interaction facets.
 </IntroParagraph>
 
 Nothing is on by default. A bare `<Surface />` renders no chrome and no
@@ -23,24 +23,20 @@ export default () => <Surface level={2} filled outlined rounded interactive />
   features={[
     `Plain YStack, level prop, and opt-in facets`,
     `Theme-generic facets, automatically restyled across themes and levels`,
-    `Copy-paste fixture for app-specific Surface variants`,
+    `Forkable recipe for app-specific Surface variants`,
   ]}
 />
 
 ## Installation
 
-Surface ships with `tamagui`:
+Surface is already installed in `tamagui`:
 
 ```tsx
 import { Surface } from 'tamagui'
 ```
 
-Or copy it into your own component layer from the registry, which is the intended
-way to own and fork it:
-
-```bash
-npx shadcn add surface
-```
+Surface is also a registry item you can copy into your own component layer and
+own; see [Build your own](#build-your-own).
 
 ## Levels
 
@@ -68,51 +64,26 @@ standard tokens. Chrome facets own one property family each and set static
 styles only; the interaction facet owns pseudos only. Because family ownership
 keeps them from colliding, any combination composes with zero coordination.
 
-<PropsTable
-  data={[
-    {
-      name: 'level',
-      required: false,
-      type: '1 | 2 | 3 | 4',
-      description: `Shift the subtree through a relative level theme.`,
-    },
-    {
-      name: 'filled',
-      required: false,
-      type: 'boolean',
-      description: `Chrome: backgroundColor from background.`,
-    },
-    {
-      name: 'outlined',
-      required: false,
-      type: 'boolean',
-      description: `Chrome: 1px borderWidth with borderColor from border-color.`,
-    },
-    {
-      name: 'elevated',
-      required: false,
-      type: 'boolean',
-      description: `Chrome: a shadow read from shadow-color.`,
-    },
-    {
-      name: 'rounded',
-      required: false,
-      type: 'boolean',
-      description: `Chrome: the default component radius.`,
-    },
-    {
-      name: 'interactive',
-      required: false,
-      type: 'boolean',
-      description: `Interaction: hover, press, and focus-visible feedback read from the generics (background-hover, background-press, border-color*, and outline-color).`,
-    },
-  ]}
-/>
-
 There are no preset combinations. The Material-style border-minus-fill look is just
 `outlined` without `filled`: a documented composition, not a separate facet.
 
-## Copied source
+## Build your own
+
+Most apps just import Surface. Copy it into your own component layer when you
+want variants of your own: a card panel with different defaults than a toolbar
+well, your own radius, or facets tuned to your design system. The copy is a plain
+component: change it freely and nothing in the framework cares.
+
+Copy it from the registry:
+
+```bash
+npx shadcn add surface
+```
+
+That installs `components/tamagui/Surface.tsx` plus its sibling
+`components/tamagui/facets.tsx`, which holds the shared facet definitions.
+`Surface.tsx` imports them through a relative `./facets` import, so keep the two
+files together and adjust the path if your tree puts them elsewhere.
 
 Surface is generated from a single definition. The `level` wrapper and the facet
 set are all it is:
@@ -194,3 +165,51 @@ export const interactive = {
 Component skins like Card and ListItem do not extend Surface. They get their
 family resemblance by styling against the same generics, so restyling a level
 recolors them too. Fork the copy when you want a differently-shaped panel.
+
+## API reference
+
+### Surface
+
+A `YStack` with a `level` prop and composable facets, plus all the
+[Tamagui standard props](/docs/intro/props):
+
+<PropsTable
+  data={[
+    {
+      name: 'level',
+      required: false,
+      type: '1 | 2 | 3 | 4',
+      description: `Shift the subtree through a relative level theme.`,
+    },
+    {
+      name: 'filled',
+      required: false,
+      type: 'boolean',
+      description: `Chrome: backgroundColor from background.`,
+    },
+    {
+      name: 'outlined',
+      required: false,
+      type: 'boolean',
+      description: `Chrome: 1px borderWidth with borderColor from border-color.`,
+    },
+    {
+      name: 'elevated',
+      required: false,
+      type: 'boolean',
+      description: `Chrome: a shadow read from shadow-color.`,
+    },
+    {
+      name: 'rounded',
+      required: false,
+      type: 'boolean',
+      description: `Chrome: the default component radius.`,
+    },
+    {
+      name: 'interactive',
+      required: false,
+      type: 'boolean',
+      description: `Interaction: hover, press, and focus-visible feedback read from the generics (background-hover, background-press, border-color*, and outline-color).`,
+    },
+  ]}
+/>
