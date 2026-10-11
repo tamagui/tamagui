@@ -33,3 +33,30 @@ test('phone header menu opens as a sheet and closes on navigation', async ({ pag
   await menu.click()
   await expect(page.getByRole('link', { name: 'Sponsor', exact: true })).toBeVisible()
 })
+
+test.describe('wide touch header', () => {
+  test.use({ viewport: { width: 844, height: 390 }, deviceScaleFactor: 3 })
+
+  test('Components popover contains visible, reachable links above the sheet breakpoint', async ({
+    page,
+  }) => {
+    await page.goto('/ui/intro')
+    const components = page.getByRole('link', { name: 'Components', exact: true }).first()
+    await page.waitForFunction(() => {
+      const button = document.querySelector('[aria-label="Open the main menu"]')
+      return button && Object.keys(button).some((key) => key.startsWith('__reactProps'))
+    })
+    await components.hover()
+
+    const popover = page.getByRole('dialog')
+    await expect(popover).toBeVisible()
+    await expect
+      .poll(async () => (await popover.boundingBox())?.height ?? 0)
+      .toBeGreaterThan(200)
+    const button = popover.getByRole('link', { name: 'Button', exact: true })
+    await button.click()
+    await expect(page).toHaveURL(/\/ui\/button$/)
+    await expect(page.getByRole('heading', { name: 'Button', exact: true })).toBeVisible()
+    await expect(popover).toBeHidden()
+  })
+})

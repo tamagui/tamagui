@@ -21,6 +21,7 @@ import {
   TooltipGroup,
   useComposedRefs,
   useDebounce,
+  useAdaptIsActive,
   View,
   XGroup,
   XStack,
@@ -508,7 +509,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   const pathname = usePathname()
 
   const context = React.useContext(SlidingPopoverContext)
-  const pointerFine = !isTouchable
+  const isAdapted = useAdaptIsActive()
   const isOnlyShowingMenu = useMedia()['max-md']
 
   useFocusEffect(() => {
@@ -560,7 +561,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       {/* round(v5-site size-token 4 = 44px * 0.52); the old - 11.5 offset gives 11 */}
       <Popover.Arrow transition="medium" bg="background-06" animatePosition size={23} />
 
-      {pointerFine ? (
+      {!isAdapted ? (
         <YStack
           width="100%"
           transition="200ms"
@@ -605,7 +606,7 @@ const ActivePageDocsMenuContents = () => {
 
 const HeaderMenuContents = (props: { id: ID }) => {
   const isOnlyShowingMenu = useMedia()['max-md']
-  const isMobile = isTouchable && isOnlyShowingMenu
+  const isAdapted = useAdaptIsActive()
 
   const contents = (() => {
     if (props.id === 'menu') {
@@ -649,8 +650,8 @@ const HeaderMenuContents = (props: { id: ID }) => {
     return <DocsMenuContents inMenu section={props.id} />
   })()
 
-  // For mobile, render content directly without Frame wrapper
-  if (isMobile) {
+  // the sheet owns layout and scrolling while adapted
+  if (isAdapted) {
     return (
       <YStack width="100%" p="3">
         {contents}
@@ -658,10 +659,8 @@ const HeaderMenuContents = (props: { id: ID }) => {
     )
   }
 
-  // For desktop, use Frame wrapper
   return (
     <Frame>
-      {/* BUG: when adapted to sheet this scrollview will get scroll events not the inner one */}
       <Popover.ScrollView
         showsVerticalScrollIndicator={false}
         style={{
