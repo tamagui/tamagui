@@ -33,6 +33,3 @@ export const VisuallyHidden = styled(View, {
     } as const,
   },
 })
-
-// @tamgui/core checks for this in spacing
-VisuallyHidden['isVisuallyHidden'] = true

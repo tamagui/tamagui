@@ -1,4 +1,6 @@
-import { config } from '@tamagui/config'
+import { defaultConfig } from '@tamagui/config/v6'
+import { animations } from '@tamagui/config/animations-css'
+import { html } from '@tamagui/core'
 import {
   Spacer,
   TamaguiProvider,
@@ -21,7 +23,7 @@ type TestProps = {
   altConditional?: boolean
 }
 
-const tamaguiConfig = createTamagui(config)
+const tamaguiConfig = createTamagui({ ...defaultConfig, animations })
 
 export const Provider = (props) => (
   <TamaguiProvider defaultTheme="dark" config={tamaguiConfig}>
@@ -40,9 +42,7 @@ export function Test1() {
       bg="red"
       shadowRadius={10}
       shadowColor="#000"
-      hoverStyle={{
-        scale: 2,
-      }}
+      scale="hover:2"
     >
       {child}
     </YStack>
@@ -52,25 +52,20 @@ export function Test1() {
 export const Card = (props: any) => (
   <XStack
     className="transition all ease-in ms100"
-    borderRadius="$2"
-    backgroundColor="$background"
-    hoverStyle={{
-      backgroundColor: '$backgroundHover',
-      shadowColor: '$shadowColor',
-      shadowRadius: 20,
-      shadowOffset: { height: 3, width: 0 },
-      y: -4,
-    }}
+    borderRadius="2"
+    backgroundColor="background hover:background-hover"
+    boxShadow="hover:0 3px 20px shadow-color"
+    y="hover:-4px"
     {...props}
   />
 )
 
 export function TestVariantDefaultFalseOn(props: TestProps) {
-  return <Test14Component fullbleed />
+  return <Test14Component data-testid="variant-default-false" fullbleed />
 }
 
 export function TestVariantDefaultFalseOff(props: TestProps) {
-  return <Test14Component />
+  return <Test14Component data-testid="variant-default-false" />
 }
 
 export function TestMediaQuery() {
@@ -89,9 +84,7 @@ export function TestMediaQuery() {
           // nested conditional
           backgroundColor: nonStaticInt ? 'red' : 'blue',
         })}
-        hoverStyle={{
-          bg: 'yellow',
-        }}
+        bg="hover:yellow"
       >
         {child}
       </YStack>
@@ -101,7 +94,7 @@ export function TestMediaQuery() {
       >
         {media3.lg && <div />}
       </YStack>
-      <YStack p="$2" $lg={{ bg: '$background', p: '$2' }} />
+      <YStack p="2 lg:2" bg="lg:background" />
     </>
   )
 }
@@ -109,16 +102,7 @@ export function TestMediaQuery() {
 export function TestMediaQueryInline() {
   return (
     <>
-      <YStack
-        $sm={{
-          bg: '$background',
-          hoverStyle: {
-            bg: 'red',
-          },
-        }}
-      >
-        {child}
-      </YStack>
+      <YStack bg="sm:background sm:hover:red">{child}</YStack>
     </>
   )
 }
@@ -153,15 +137,13 @@ export function Test3(props: any) {
   )
 }
 
-// static + dynamic prop, hoverStyle
+// static + dynamic prop, hover clause
 export function Test4() {
   return (
     <YStack
       height={200}
       width={`calc(100% + ${nonStaticInt * 2}px)`}
-      hoverStyle={{
-        overflow: 'visible',
-      }}
+      overflow="hover:visible"
     />
   )
 }
@@ -226,9 +208,9 @@ export function Test7() {
 // style expasion + imported constants
 export function Test8() {
   return (
-    <YStack fullscreen position="relative">
+    <YStack inset={0} position="relative">
       <YStack {...baseStyle}>
-        <YStack fullscreen position="relative" {...nestedStyle} />
+        <YStack inset={0} position="relative" {...nestedStyle} />
       </YStack>
     </YStack>
   )
@@ -305,18 +287,9 @@ export function Test13(props: TestProps) {
   )
 }
 
-// pressStyle + external constants
+// press clause + external constants
 export function Test14() {
-  return (
-    <YStack
-      hoverStyle={{
-        bg: 'red',
-      }}
-      pressStyle={{
-        bg: testColor,
-      }}
-    />
-  )
+  return <YStack bg={`hover:red press:${testColor}`} />
 }
 
 // spacer
@@ -346,7 +319,7 @@ export function Test16(props: TestProps) {
 // flexWrap and other flex properties
 export function TestFlexWrap() {
   return (
-    <XStack flexWrap="wrap" flexDirection="row" gap="$2">
+    <XStack data-testid="flex-wrap" flexWrap="wrap" flexDirection="row" gap="2">
       {child}
     </XStack>
   )
@@ -356,6 +329,7 @@ export function TestFlexWrap() {
 export function TestFlexWrapConditional(props: TestProps) {
   return (
     <XStack
+      data-testid="flex-wrap-conditional"
       flexWrap={props.conditional ? 'wrap' : 'nowrap'}
       flexDirection="row"
       items="center"
@@ -370,6 +344,7 @@ export function TestFlexWrapConditional(props: TestProps) {
 export function TestFlexProperties() {
   return (
     <YStack
+      data-testid="flex-properties"
       flexDirection="column"
       flexWrap="wrap"
       flexGrow={1}
@@ -389,19 +364,16 @@ export function TestComplexFlexWithConditionals(props: TestProps) {
   const { sm } = useMedia()
   return (
     <YStack
-      rounded={sm ? '$0' : '$8'}
+      rounded={`${sm ? '0' : '8'}`}
       flexDirection={sm ? 'row' : 'column'}
       flexBasis={props.conditional ? '100%' : 'auto'}
       maxW="100%"
       overflow="hidden"
       p={4}
-      $sm={{ px: '$0' }}
+      px="sm:0"
       width={sm ? '100%' : 260}
-      bg={props.altConditional ? '$backgroundHover' : '$background'}
-      hoverStyle={{
-        cursor: 'pointer',
-        bg: '$backgroundHover',
-      }}
+      bg={`${props.altConditional ? 'background-hover' : 'background'} hover:background-hover`}
+      cursor="hover:pointer"
     >
       <XStack
         flexDirection={sm ? 'column' : 'row'}
@@ -420,13 +392,11 @@ export function TestFlexWrapWithMediaQuery() {
   const media = useMedia()
   return (
     <XStack
-      flexWrap="wrap"
+      data-testid="flex-wrap-media"
+      flexWrap="wrap sm:nowrap"
       flexDirection={media.sm ? 'row' : 'column'}
-      gap="$2"
-      $sm={{
-        flexWrap: 'nowrap',
-        padding: '$4',
-      }}
+      gap="2"
+      padding="sm:4"
     >
       {child}
     </XStack>
@@ -440,7 +410,7 @@ export function TestAriaProps() {
       render="nav"
       aria-labelledby="test-heading"
       aria-label="Navigation menu"
-      p="$4"
+      p="4"
     >
       <Text id="test-heading">Navigation</Text>
       {child}
@@ -457,5 +427,28 @@ export function TestAriaPropsConditional(props: TestProps) {
     >
       {child}
     </YStack>
+  )
+}
+
+export function TestAnimatedByWithoutAnimation() {
+  return (
+    <YStack group="animated" animatedBy="css" data-testid="animated-group">
+      <YStack
+        width={100}
+        backgroundColor="group-hover/animated:red"
+        data-testid="animated-group-child"
+      />
+    </YStack>
+  )
+}
+
+export function TestDOMSemanticTags() {
+  return (
+    <html.main data-testid="dom-main">
+      <html.h1>DOM heading</html.h1>
+      <html.nav aria-label="DOM navigation">
+        <html.a href="/dom-link">DOM link</html.a>
+      </html.nav>
+    </html.main>
   )
 }

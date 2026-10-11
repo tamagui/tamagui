@@ -9,10 +9,6 @@ import { setupPage } from './test-utils'
 
 test.beforeEach(async ({ page }, testInfo) => {
   test.skip(
-    testInfo.project.name === 'animated-native',
-    'Native driver does not support hover animations on web'
-  )
-  test.skip(
     testInfo.project.name === 'animated-reanimated',
     'Reanimated driver has larger frame jumps during rapid position changes on web'
   )

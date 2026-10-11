@@ -1,0 +1,100 @@
+/**
+ * P0 NO-DATA-LOSS + precedence tests (converter-driven).
+ *
+ * The converter must convert flat clauses, COMBINE (not overwrite) an existing className,
+ * and RETAIN rather than flip precedence on same-key/spread conflicts.
+ */
+
+import { beforeAll, describe, expect, test } from 'vitest'
+import { defaultConfig as v6 } from '@tamagui/config/v6'
+import { StyleObjectPseudo } from '@tamagui/helpers'
+import { tamaguiToTailwind } from '@tamagui/to-tailwind'
+
+import { createTamagui } from '@tamagui/web'
+import { View } from '../index'
+import { resolvedStyle, splitTailwindStyles } from './utils'
+
+beforeAll(() => {
+  createTamagui(v6 as any)
+})
+
+const convert = (s: string) => tamaguiToTailwind(s, { renameComponents: false })
+
+describe('flat clauses', () => {
+  test('a static chained clause converts to one class candidate', () => {
+    expect(convert(`<View opacity="md:hover:0.5" />`)).toContain('md:hover:opacity-50')
+  })
+
+  test('runtime merge keeps className and prop contributions in the same hover branch', () => {
+    const s = splitTailwindStyles(View, {
+      className: 'hover:opacity-50',
+      backgroundColor: 'hover:blue',
+    } as any)
+    // both convert to programs on their own longhands — BOTH hover branches present
+    const opacityRules = (s.rulesToInsert[s.classNames.opacity]?.[4] ?? []).join('')
+    expect(opacityRules).toContain(':hover')
+    expect(opacityRules).toContain('opacity:0.5')
+    const bgRules = (s.rulesToInsert[s.classNames.background]?.[4] ?? []).join('')
+    expect(bgRules).toContain(':hover')
+    expect(bgRules).toContain('background-color:blue')
+  })
+
+  test('a dynamic property value is retained intact', () => {
+    const out = convert(`<View opacity={dynamicOpacity} />`)
+    expect(out).toContain('opacity={dynamicOpacity}')
+    expect(out).not.toContain('className')
+  })
+})
+
+describe('partition — existing className is COMBINED, never overwritten', () => {
+  test('dynamic className + neighboring style prop stays authored', () => {
+    expect(convert(`<View className={foo} padding={10} />`)).toBe(
+      `<View className={foo} padding={10} />`
+    )
+  })
+
+  test('static className + neighboring style prop stays authored', () => {
+    expect(convert(`<View className="flex-1" padding={10} />`)).toBe(
+      `<View className="flex-1" padding={10} />`
+    )
+  })
+})
+
+describe('precedence — same-key className and props retain authored order', () => {
+  test('{className:"p-[8px]", padding:10} → padding retained, no generated class', () => {
+    const a = convert(`<View className="p-[8px]" padding={10} />`)
+    expect(a).not.toContain('p-[10px]')
+    expect(a).toContain('padding={10}')
+    const b = convert(`<View padding={10} className="p-[8px]" />`)
+    expect(b).not.toContain('p-[10px]')
+    expect(b).toContain('padding={10}')
+  })
+
+  test('the later contribution wins in both attribute orders', () => {
+    const findPad = (s: any) => {
+      return resolvedStyle(s).paddingTop
+    }
+    expect(
+      findPad(splitTailwindStyles(View, { className: 'p-[8px]', padding: 10 }))
+    ).toBe('10px')
+    expect(
+      findPad(splitTailwindStyles(View, { padding: 10, className: 'p-[8px]' }))
+    ).toBe('8px')
+  })
+})
+
+describe('precedence — spreads: element left UNTOUCHED (order-dependent), both orders distinct', () => {
+  test('spread before and after a prop are both retained, never collapsed', () => {
+    const a = convert(`<View {...props} padding={10} />`)
+    const b = convert(`<View padding={10} {...props} />`)
+    for (const out of [a, b]) {
+      expect(out).not.toContain('className')
+      expect(out).toContain('{...props}')
+      expect(out).toContain('padding={10}')
+    }
+    // a spread carrying className must not be dropped/duplicated either
+    const c = convert(`<View {...props} className="x" padding={10} />`)
+    expect(c).toContain('{...props}')
+    expect(c).toContain('padding={10}')
+  })
+})

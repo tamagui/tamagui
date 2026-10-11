@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "types": ["node", "react"],
+    "lib": ["ESNext", "DOM"],
+    "noEmit": true
+  },
+  "include": ["src", "components", "tests", "tamagui.config.ts", "index.js"]
+}

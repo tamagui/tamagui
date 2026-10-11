@@ -16,10 +16,8 @@ test.describe('Menu Arrow with AnimatePresence', () => {
     await page.waitForTimeout(500)
 
     // find the arrow elements
-    const arrowOuter = page.locator('[class*="PopperArrowOuter"]').first()
-    const arrowInner = arrowOuter
-      .locator('[class*="PopoverArrow"], [class*="PopperArrow"]')
-      .first()
+    const arrowInner = page.getByTestId('popover-arrow')
+    const arrowOuter = arrowInner.locator('..')
 
     // verify outer arrow exists and is visible
     await expect(arrowOuter).toBeVisible()
@@ -34,8 +32,6 @@ test.describe('Menu Arrow with AnimatePresence', () => {
 
     // check inline style doesn't have opacity: 0
     const inlineStyle = await arrowInner.getAttribute('style')
-    console.log('Arrow inline style:', inlineStyle)
-
     // the bug causes inline style to contain "opacity: 0"
     if (inlineStyle) {
       expect(inlineStyle).not.toContain('opacity: 0')
@@ -58,7 +54,7 @@ test.describe('Menu Arrow with AnimatePresence', () => {
     await page.waitForTimeout(500)
 
     // find the arrow
-    const arrowOuter = page.locator('[class*="PopperArrowOuter"]').first()
+    const arrowOuter = page.getByTestId('menu-arrow').locator('..')
 
     // verify arrow exists and is visible
     await expect(arrowOuter).toBeVisible()

@@ -1,8 +1,6 @@
 import { type ResolveVariableAs } from '@tamagui/core';
-import { SizableContext } from '@tamagui/sizable-context';
 import type { FC } from 'react';
 import type { IconProps } from './IconProps';
-export { SizableContext };
 type Options = {
     noClass?: boolean;
     defaultThemeColor?: string;
@@ -15,6 +13,8 @@ export declare function themed(Component: FC<IconProps>, optsIn?: Options): {
     staticConfig: {
         isHOC: boolean;
         acceptsClassName: boolean;
+        inlineProps: Set<string>;
     };
 };
+export {};
 //# sourceMappingURL=themed.d.ts.map

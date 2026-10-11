@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input, styled } from 'tamagui'
+import { Input, createStyledHOC, styled } from 'tamagui'
 
 const StyledInput = styled(Input, {
   borderColor: 'red',
@@ -8,10 +8,8 @@ const StyledInput = styled(Input, {
   variants: {
     test: {
       true: {
-        focusStyle: {
-          borderWidth: 10,
-          borderColor: 'blue',
-        },
+        borderWidth: 'focus:10px',
+        borderColor: 'focus:blue',
       },
     },
   } as const,
@@ -19,7 +17,7 @@ const StyledInput = styled(Input, {
 
 const AnotherStyled = styled(StyledInput, {})
 
-const MyComponent = AnotherStyled.styleable((props, ref) => (
+const MyComponent = createStyledHOC(AnotherStyled, (props, ref) => (
   <StyledInput ref={ref as any} {...props} />
 ))
 

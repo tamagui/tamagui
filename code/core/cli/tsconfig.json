@@ -17,6 +17,9 @@
       "path": "../generate-themes"
     },
     {
+      "path": "../language-service"
+    },
+    {
       "path": "../types"
     }
   ],

@@ -67,7 +67,12 @@ describe('press handlers inside an android native menu trigger (#4241)', () => {
       rendered = TestRenderer.create(
         <TamaguiProvider config={conf} defaultTheme="light">
           <NativeMenuContext.Provider value>
-            <View testID="trigger" onPress={onPress} onLongPress={onLongPress} />
+            <View
+              testID="trigger"
+              onPress={onPress}
+              onLongPress={onLongPress}
+              delayLongPress={250}
+            />
           </NativeMenuContext.Provider>
         </TamaguiProvider>
       )
@@ -81,7 +86,9 @@ describe('press handlers inside an android native menu trigger (#4241)', () => {
 
     await act(async () => {
       handlers.onTouchesDown()
-      vi.advanceTimersByTime(600)
+      vi.advanceTimersByTime(249)
+      expect(onLongPress).not.toHaveBeenCalled()
+      vi.advanceTimersByTime(1)
       handlers.onTouchesUp()
     })
     expect(onLongPress).toHaveBeenCalledTimes(1)
@@ -95,5 +102,19 @@ describe('press handlers inside an android native menu trigger (#4241)', () => {
     })
     expect(onPress).toHaveBeenCalledTimes(1)
     expect(onLongPress).toHaveBeenCalledTimes(1)
+
+    await act(async () => {
+      handlers.onTouchesDown()
+      handlers.onTouchesCancelled()
+      vi.advanceTimersByTime(600)
+      handlers.onTouchesDown()
+      handlers.onFinalize()
+      vi.advanceTimersByTime(600)
+      handlers.onTouchesDown()
+      rendered!.unmount()
+    })
+    await act(async () => vi.advanceTimersByTime(600))
+    expect(onLongPress).toHaveBeenCalledTimes(1)
+    expect(onPress).toHaveBeenCalledTimes(1)
   })
 })

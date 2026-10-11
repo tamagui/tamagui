@@ -69,10 +69,7 @@ export const preprocess = <
     let prop = originalProp
     let value = originalValue
 
-    if (
-      !Object.prototype.hasOwnProperty.call(style, originalProp) ||
-      originalValue == null
-    ) {
+    if (originalValue == null) {
       continue
     }
 

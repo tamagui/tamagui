@@ -1,8 +1,8 @@
+export { createRefComponent, type RefProp } from '@tamagui/compose-refs';
 export * from '@tamagui/web';
-import type { StackNonStyleProps, StackStyleBase, TamaDefer, TamaguiComponent, TamaguiElement, TamaguiProviderProps, TamaguiTextElement, TextNonStyleProps, TextProps, TextStylePropsBase } from '@tamagui/web';
-import { createTamagui as createTamaguiWeb } from '@tamagui/web';
+import type { StackNonStyleProps, StackStyleBase, TamaDefer, TamaguiComponent, TamaguiElement, TamaguiTextElement, TextNonStyleProps, TextProps, TextStylePropsBase } from '@tamagui/web';
 import type { RNTextProps, RNViewProps } from './reactNativeTypes';
-export { LayoutMeasurementController, registerLayoutNode, setOnLayoutStrategy, type LayoutEvent, } from '@tamagui/use-element-layout';
+export { LayoutMeasurementController, registerLayoutNode, type LayoutEvent, } from '@tamagui/use-element-layout';
 type RNExclusiveViewProps = Omit<RNViewProps, keyof StackNonStyleProps>;
 export interface RNTamaguiViewNonStyleProps extends StackNonStyleProps, RNExclusiveViewProps {
 }
@@ -12,8 +12,7 @@ export interface RNTamaguiTextNonStyleProps extends TextNonStyleProps, RNExclusi
 }
 type RNTamaguiText = TamaguiComponent<TamaDefer, TamaguiTextElement, RNTamaguiTextNonStyleProps, TextStylePropsBase, {}>;
 export * from './reactNativeTypes';
-export declare const TamaguiProvider: (props: TamaguiProviderProps) => import("react").JSX.Element;
-export declare const createTamagui: typeof createTamaguiWeb;
+export { createTamagui, TamaguiProvider } from './runtime';
 export declare const View: RNTamaguiView;
 export declare const Text: RNTamaguiText;
 //# sourceMappingURL=index.d.ts.map

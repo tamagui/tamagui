@@ -1,0 +1,212 @@
+import { createHash } from 'node:crypto'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import path from 'node:path'
+
+import Static from '@tamagui/static'
+import type {
+  IslandThemeBridge,
+  TamaguiOptions,
+  ZeroCSSArtifact,
+  ZeroRuntimeResolved,
+  ZeroViolationSite,
+} from '@tamagui/static'
+
+/**
+ * Metro's half of the zero-runtime mode.
+ *
+ * Metro fixes a module's dependencies at resolution time and does no
+ * export-level shaking, so nothing after the transform can remove an import.
+ * The frontend already lowers every module up front and publishes plans that
+ * workers apply before Babel runs, which is the one place early enough: zero
+ * reference erasure rides those same plans.
+ *
+ * An island is a second Metro bundle request rather than a child compilation,
+ * because Metro has no sub-compilation concept. The two requests are separate
+ * processes, so the CSS coordinator hands island fragments over on disk.
+ */
+
+export const ZERO_CSS_FILENAME = 'tamagui-zero.css'
+export const ZERO_ISLAND_DIRNAME = 'tamagui-islands'
+
+export interface MetroZeroController {
+  resolved: ZeroRuntimeResolved
+  artifact: ZeroCSSArtifact
+  cssHref: string
+  root: string
+  /** Directory the artifact and island bundle are published from. */
+  publicDir: string
+  /** Island id when this Metro invocation is building an island, else null. */
+  islandBuild: string | null
+  bridges: Map<string, IslandThemeBridge[]>
+  violations: ZeroViolationSite[]
+  /** Modules the zero transform ran on, for the erased-export gate. */
+  transformed: Set<string>
+  /** Erased exported declarator names, by declaring module. */
+  erasedExports: Map<string, string[]>
+  loaderIds: Map<string, string>
+  islandModuleIds: Map<string, string>
+  /** False in `report` mode, where the analysis runs and nothing else changes. */
+  isEnforcing: boolean
+  /** The evaluated config's CSS, set once the frontend has loaded the project. */
+  configCSS: string
+  /**
+   * True when this build restored the artifact from the plan cache's CSS
+   * sidecar instead of rescanning. Recorded in the receipt so a warm rebuild
+   * that silently stopped reusing plans, or one that reused them without
+   * restoring the artifact, is visible rather than inferred from timing.
+   */
+  plansRestoredFromCache: boolean
+}
+
+const normalizePath = (value: string) => value.replace(/\\/g, '/')
+
+export const zeroModuleKey = (value: string): string =>
+  normalizePath(value).replace(/\.(?:js|jsx|ts|tsx|mjs|cjs)$/, '')
+
+/** Where an island build leaves its CSS fragment for the zero build to collect. */
+export function islandFragmentPath(outDir: string, islandId: string): string {
+  return path.join(outDir, ZERO_ISLAND_DIRNAME, `${islandId}.css`)
+}
+
+export function islandBundleHashPath(outDir: string, islandId: string): string {
+  return path.join(outDir, ZERO_ISLAND_DIRNAME, `${islandId}.hash`)
+}
+
+export function createMetroZeroController(
+  options: TamaguiOptions,
+  root: string,
+  islandBuild: string | null,
+  publicDirName: string
+): MetroZeroController | null {
+  const resolved = Static.resolveZeroRuntimeSync(options, root)
+  if (resolved.mode === 'off') return null
+  Static.assertZeroIntegrationSupport('metro-web', resolved)
+
+  const cssHref = `/${ZERO_CSS_FILENAME}`
+  const artifact = new Static.ZeroCSSArtifact(resolved.cssPath)
+  artifact.expectIslands(resolved.islands.map((island) => island.id))
+
+  const configPath = path.isAbsolute(options.config || '')
+    ? options.config!
+    : path.resolve(root, options.config || 'tamagui.config.ts')
+
+  for (const island of resolved.islands) {
+    Static.writeIslandModules({
+      island,
+      integration: 'metro-web',
+      configPath,
+      scriptUrl: `/${ZERO_ISLAND_DIRNAME}/${island.id}.js`,
+      cssHref,
+    })
+  }
+
+  return {
+    resolved,
+    artifact,
+    cssHref,
+    root,
+    publicDir: path.join(root, publicDirName),
+    islandBuild,
+    bridges: new Map(),
+    violations: [],
+    transformed: new Set(),
+    erasedExports: new Map(),
+    isEnforcing: resolved.mode === 'enforce',
+    loaderIds: new Map(
+      resolved.islands.map((island) => [zeroModuleKey(island.loader), island.id])
+    ),
+    islandModuleIds: new Map(
+      resolved.islands.map((island) => [zeroModuleKey(island.module), island.id])
+    ),
+    configCSS: '',
+    plansRestoredFromCache: false,
+  }
+}
+
+/**
+ * Generated shim modules for the island bundle's React handoff.
+ *
+ * Metro has no externals option, so the island build redirects `react`,
+ * `react-dom`, and `react/jsx-runtime` through these, which read the handoff
+ * the generated loader publishes. One React instance serves both graphs.
+ */
+export function writeIslandRuntimeShims(outDir: string): Record<string, string> {
+  const directory = path.join(outDir, 'runtime-shim')
+  mkdirSync(directory, { recursive: true })
+  const shims: Record<string, string> = {}
+  for (const [specifier, segments] of Object.entries(
+    Static.ISLAND_EXTERNAL_GLOBAL_PATHS
+  )) {
+    const file = path.join(directory, `${specifier.replace(/[^a-zA-Z0-9]+/g, '_')}.js`)
+    const source = `// generated by @tamagui/metro-plugin zero-runtime. do not edit.\nmodule.exports = globalThis.${segments.join(
+      '.'
+    )}\n`
+    if (!existsSync(file) || readFileSync(file, 'utf8') !== source) {
+      writeFileSync(file, source)
+    }
+    shims[specifier] = file
+  }
+  return shims
+}
+
+export interface MetroZeroFinalizeInput {
+  controller: MetroZeroController
+  /** The serialized bundle, hashed into the island's output receipt. */
+  bundleCode: string
+}
+
+/**
+ * Writes the one CSS artifact for a zero build, or this island's fragment for
+ * an island build. `TAMAGUI_DID_OUTPUT_CSS` is derived only when every declared
+ * island fragment is present.
+ */
+export function finalizeMetroZero(input: MetroZeroFinalizeInput): {
+  cssPath: string
+  hash: string
+  islandOutputHashes: Record<string, string>
+} {
+  const { controller } = input
+  const outDir = controller.resolved.outDir
+
+  if (controller.islandBuild) {
+    const fragment = [...controller.artifact.islandCSS(controller.islandBuild)].join('')
+    const file = islandFragmentPath(outDir, controller.islandBuild)
+    mkdirSync(path.dirname(file), { recursive: true })
+    writeFileSync(file, fragment)
+    writeFileSync(
+      islandBundleHashPath(outDir, controller.islandBuild),
+      createHash('sha256').update(input.bundleCode).digest('hex').slice(0, 16)
+    )
+    return { cssPath: file, hash: '', islandOutputHashes: {} }
+  }
+
+  controller.artifact.setConfigCSS(controller.configCSS)
+  const islandOutputHashes: Record<string, string> = {}
+  for (const island of controller.resolved.islands) {
+    const fragment = islandFragmentPath(outDir, island.id)
+    if (!existsSync(fragment)) {
+      throw new Error(
+        `[tamagui zero-runtime] island "${island.id}" has not been built. Build every declared island bundle before the zero entry so the one CSS artifact can be finalized.`
+      )
+    }
+    controller.artifact.setIslandModuleCSS(
+      island.id,
+      island.module,
+      readFileSync(fragment, 'utf8')
+    )
+    const hashFile = islandBundleHashPath(outDir, island.id)
+    islandOutputHashes[island.id] = existsSync(hashFile)
+      ? readFileSync(hashFile, 'utf8')
+      : ''
+  }
+
+  const written = controller.artifact.write()
+  if (!written.complete) {
+    throw new Error(
+      `[tamagui zero-runtime] cannot derive TAMAGUI_DID_OUTPUT_CSS: the generated CSS artifact is missing ${written.missing.join(
+        ', '
+      )}`
+    )
+  }
+  return { cssPath: written.path, hash: written.hash, islandOutputHashes }
+}

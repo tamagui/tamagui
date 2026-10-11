@@ -1,5 +1,5 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { TamaguiRoot, useThemeName } from '@tamagui/web'
+import { formatDiagnostic, TamaguiRoot, useThemeName } from '@tamagui/web'
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { allPortalHosts, portalListeners } from './constants'
@@ -10,7 +10,16 @@ export const GorhomPortalItem = (props: PortalItemProps) => {
 
   if (process.env.NODE_ENV === 'development') {
     if (!props.hostName && !props.passThrough) {
-      console.warn(`No hostName`)
+      console.warn(
+        formatDiagnostic(
+          'TAMAGUI_PORTAL_HOST',
+          'GorhomPortalItem',
+          'hostName is required when passThrough is false',
+          'Set hostName or enable passThrough',
+          'hostName,passThrough',
+          { hostName: props.hostName, passThrough: props.passThrough }
+        )
+      )
     }
   }
 

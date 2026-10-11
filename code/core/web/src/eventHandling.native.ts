@@ -11,13 +11,13 @@ import type { StaticConfig, TamaguiComponentStateRef } from './types'
 
 const isFabric = !!(globalThis as any).nativeFabricUIManager
 
-// Android (new arch + RNGH 2.30) freezes the JS thread when many pressStyle
+// Android (new arch + RNGH 2.30) freezes the JS thread when many press clauses
 // components each attach a Gesture.Manual()...onTouchesDown observer (e.g. a
 // sheet with several buttons / inputs). Each handler opts into RNGH's
 // pointer-data pipeline (needsPointerData), and the combined coordination
 // cost recreates the same setJSResponder freeze c345b5fc28 was supposed to
 // have killed. iOS Fabric absorbs the cost; Android Fabric doesn't.
-// Skip the observer + wrap on Android — pressStyle visuals fall through to
+// Skip the observer + wrap on Android — press-clause visuals fall through to
 // the standard responder path via the synthesized event handlers.
 // computed lazily: the native core bundle is also loaded by the compiler for
 // static extraction, where Platform's init runs after this module's. A
@@ -75,9 +75,9 @@ export function useEvents(
     }
   }
 
-  // hasPressEvents includes events.onPress synthesized just for pressStyle
+  // hasPressEvents includes events.onPress synthesized just for press clauses
   // visuals; hasRealPressEvents is true only when the caller passed a real
-  // handler. the distinction matters for arbitration: pressStyle-only gestures
+  // handler. the distinction matters for arbitration: press-clause-only gestures
   // must not steal ownership from a real-handler ancestor (e.g. Link asChild's
   // navigate handler merged onto a child View by Slot).
   const hasPressEvents = events?.onPress
@@ -124,9 +124,9 @@ export function useEvents(
   // component handles gesture detection at its own level.
   //
   // Composite component special case - when styled() wraps a non-Tamagui component
-  // (e.g. React.forwardRef), the elementType becomes that composite component.
+  // (e.g. component wrappers), the elementType becomes that composite component.
   // GestureDetector/responder wrapping around a composite component breaks during
-  // re-renders triggered by pressStyle state changes (the gesture/responder loses
+  // re-renders triggered by press-clause state changes (the gesture/responder loses
   // attachment to the native view through the composite layers). Pass events as props
   // so they flow through to the inner native View.
   const isCompositeComponent =
@@ -152,21 +152,60 @@ export function useEvents(
     // rngh path - hooks
     const callbacksRef = useRef<any>(isUsingRNGH ? {} : null)
     const gestureRef = useRef<any>(null)
+    // pairs pressIn with exactly one pressOut across the Manual observer's
+    // touchesDown/touchesUp/touchesCancelled/finalize channels. RNGH can drop a
+    // trailing touch event (the handler is re-attached to a new view mid-touch,
+    // or cancelled without a touch-cancel), and because the press state lives in
+    // the component's own state a dropped release latches the press look with no
+    // event left to clear it. Guarding here means a stray duplicate release is a
+    // no-op while a missing one is caught by onFinalize / the detach clear below.
+    const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+    const longPressedRef = useRef(false)
+    const clearLongPress = () => {
+      if (longPressTimerRef.current) clearTimeout(longPressTimerRef.current)
+      longPressTimerRef.current = null
+    }
+    React.useEffect(() => clearLongPress, [])
+    const pressActiveRef = useRef(false)
+    const beginPress = (e?: any) => {
+      if (pressActiveRef.current) return
+      pressActiveRef.current = true
+      if (isInsideNativeMenu) {
+        clearLongPress()
+        longPressedRef.current = false
+        if (callbacksRef.current.onLongPress) {
+          longPressTimerRef.current = setTimeout(() => {
+            longPressTimerRef.current = null
+            longPressedRef.current = true
+            callbacksRef.current.onLongPress?.(e ?? {})
+          }, callbacksRef.current.delayLongPress ?? 500)
+        }
+      }
+      callbacksRef.current.onPressIn?.(e ?? {})
+    }
+    const endPress = (e?: any, firePress = false) => {
+      clearLongPress()
+      if (!pressActiveRef.current) return
+      pressActiveRef.current = false
+      if (firePress && !longPressedRef.current) callbacksRef.current.onPress?.(e ?? {})
+      callbacksRef.current.onPressOut?.(e ?? {})
+    }
 
+    // native menu triggers leave responder ownership to the adapter.
     // Real press handlers use the responder system for delivery even when RNGH
     // is configured. RNGH Tap begin/end ordering is not stable enough for
     // nested Tamagui press arbitration, and Fabric can mount a stale Tap that
     // claims responder but never finalizes. The responder path is the source of
     // truth RN already uses for innermost press ownership.
     //
-    // Android pressStyle-only fallback: wire synthesized press handlers to the
+    // Android press-clause-only fallback: wire synthesized press handlers to the
     // responder system on viewProps instead of an RNGH Manual observer (which
     // freezes Android — see top-of-file isAndroid comment). Hook is called
     // unconditionally here for stable hooks order; useMainThreadPressEvents
     // no-ops when enabled is false.
-    const useResponderFallback =
-      !isInsideNativeMenu &&
-      Boolean(hasRealPressEvents || (getIsAndroid() && hasPressEvents))
+    const useResponderFallback = Boolean(
+      !isInsideNativeMenu && (hasRealPressEvents || (getIsAndroid() && hasPressEvents))
+    )
     useMainThreadPressEvents(events, viewProps, useResponderFallback, debugName)
 
     if (everEnabled) {
@@ -183,8 +222,12 @@ export function useEvents(
 
       if (hasRealPressEvents && !isInsideNativeMenu) {
         // Real handlers are delivered by useMainThreadPressEvents above. Clear
-        // any cached pressStyle observer from an earlier render so it cannot
+        // any cached press-clause observer from an earlier render so it cannot
         // double-fire after onPress appears dynamically.
+        // No observer will run for this component after the swap, so an
+        // in-flight press from that observer is definitionally orphaned —
+        // release it before dropping the gesture.
+        endPress()
         gestureRef.current = null
         return null
       }
@@ -196,62 +239,48 @@ export function useEvents(
         if (isInsideNativeMenu) {
           // Inside native menus on Android: use Manual gesture with manualActivation
           // so it never goes ACTIVE (which would send ACTION_CANCEL to MenuView).
-          // Press callbacks fire via onTouchesDown/Up instead, with a timer for
-          // onLongPress that swallows the release's onPress like RN does.
-          let longPressTimer: ReturnType<typeof setTimeout> | null = null
-          let longPressed = false
-          const clearLongPress = () => {
-            if (longPressTimer) clearTimeout(longPressTimer)
-            longPressTimer = null
-          }
+          // Press callbacks fire via onTouchesDown/Up instead.
           const manual = Gesture.Manual()
             .runOnJS(true)
             .manualActivation(true)
             .onTouchesDown(() => {
-              longPressed = false
-              clearLongPress()
-              callbacksRef.current.onPressIn?.({})
-              if (callbacksRef.current.onLongPress) {
-                longPressTimer = setTimeout(() => {
-                  longPressTimer = null
-                  longPressed = true
-                  callbacksRef.current.onLongPress?.({})
-                }, callbacksRef.current.delayLongPress ?? 500)
-              }
+              beginPress()
             })
             .onTouchesUp(() => {
-              clearLongPress()
-              if (!longPressed) {
-                callbacksRef.current.onPress?.({})
-              }
-              callbacksRef.current.onPressOut?.({})
+              endPress(undefined, true)
             })
             .onTouchesCancelled(() => {
-              clearLongPress()
-              callbacksRef.current.onPressOut?.({})
+              endPress()
+            })
+            .onFinalize(() => {
+              endPress()
             })
           gestureRef.current = manual
         } else if (!getIsAndroid()) {
-          // pressStyle-only (events.onPress was synthesized to drive pressStyle
+          // press-clause-only (events.onPress was synthesized to drive press state
           // visuals, no user handler): use Manual + manualActivation. Touch
-          // observation runs on the UI thread for fast pressStyle feedback,
+          // observation runs on the UI thread for fast press-clause feedback,
           // but the gesture never activates → never claims responder/ownership,
           // so a real-handler ancestor still wins arbitration. This is the fix
           // for nested press scenarios like <Link asChild><View><Button/></View></Link>
           // where the View carries the merged navigate onPress and the inner
-          // pressStyled Button must not steal the press.
+          // press-styled Button must not steal the press.
           //
           // Android: skipped — see isAndroid comment at top. Synthesized
-          // pressStyle handlers fall through to viewProps responder events.
+          // press-clause handlers fall through to viewProps responder events.
+          //
+          // onFinalize is the safety net for a release RNGH never delivers as a
+          // touch event (handler cancelled/failed without a touch-cancel): it
+          // fires on the gesture's own end/cancel and clears the latch.
           gestureRef.current = Gesture.Manual()
             .runOnJS(true)
             .manualActivation(true)
-            .onTouchesDown((e: any) => callbacksRef.current.onPressIn?.(e))
+            .onTouchesDown((e: any) => beginPress(e))
             .onTouchesUp((e: any) => {
-              callbacksRef.current.onPress?.(e)
-              callbacksRef.current.onPressOut?.(e)
+              endPress(e, true)
             })
-            .onTouchesCancelled((e: any) => callbacksRef.current.onPressOut?.(e))
+            .onTouchesCancelled((e: any) => endPress(e))
+            .onFinalize(() => endPress())
         }
       }
       // TODO update viewProps.hitSlop / events.delayLongPress!
@@ -291,12 +320,12 @@ export function wrapWithGestureDetector(
     return content
   }
 
-  // pressStyle-only observers (Manual + manualActivation gesture) must never
-  // claim the responder — otherwise a nested pressStyle Tamagui child would
+  // press-clause-only observers (Manual + manualActivation gesture) must never
+  // claim the responder — otherwise a nested press-styled Tamagui child would
   // preempt a real-handler ancestor (e.g. <Link asChild><View><Button/></View></Link>
   // where the View carries the merged navigate handler and the inner Button
-  // has only pressStyle). The Manual gesture observes touches on the UI thread
-  // for fast pressStyle visuals without participating in arbitration.
+  // has only press clauses). The Manual gesture observes touches on the UI thread
+  // for fast press-clause visuals without participating in arbitration.
   if (!hasRealPressEvents) {
     return React.createElement(GestureDetector, { gesture }, content)
   }

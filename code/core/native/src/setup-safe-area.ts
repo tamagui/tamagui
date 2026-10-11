@@ -22,35 +22,40 @@
  * On web, this is a no-op since CSS env(safe-area-inset-*) values work natively.
  */
 
+import { useLayoutEffect } from 'react'
+import {
+  initialWindowMetrics,
+  useSafeAreaFrame,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context'
 import { getSafeArea } from './safeAreaState'
 
 function setup() {
-  // only run on native
-  if (process.env.TAMAGUI_TARGET !== 'native') {
-    return
-  }
+  const safeArea = getSafeArea()
+  safeArea.set({ didSetup: true })
 
-  const g = globalThis as any
-  if (g.__tamagui_native_safe_area_setup_complete) {
-    return
-  }
-  g.__tamagui_native_safe_area_setup_complete = true
+  const useTrackedSafeAreaInsets = () => {
+    const insets = useSafeAreaInsets()
+    const frame = useSafeAreaFrame()
 
-  try {
-    const safeAreaContext = require('react-native-safe-area-context')
-    const { useSafeAreaInsets, useSafeAreaFrame, initialWindowMetrics } = safeAreaContext
-
-    if (useSafeAreaInsets) {
-      getSafeArea().set({
-        enabled: true,
-        useSafeAreaInsets,
-        useSafeAreaFrame: useSafeAreaFrame || null,
-        initialMetrics: initialWindowMetrics || null,
+    useLayoutEffect(() => {
+      safeArea.set({
+        initialMetrics: {
+          insets,
+          frame,
+        },
       })
-    }
-  } catch {
-    // react-native-safe-area-context not available
+    }, [insets, frame])
+
+    return insets
   }
+
+  safeArea.set({
+    enabled: true,
+    useSafeAreaInsets: useTrackedSafeAreaInsets,
+    useSafeAreaFrame,
+    initialMetrics: initialWindowMetrics,
+  })
 }
 
 setup()

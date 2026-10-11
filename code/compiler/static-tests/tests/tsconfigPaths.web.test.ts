@@ -9,7 +9,7 @@ import {
   TsconfigPathsPlugin,
 } from '../../static/src/extractor/esbuildTsconfigPaths'
 
-const fixtureRoot = mkdtempSync(join(tmpdir(), 'tamagui-tsconfig-paths-'))
+const fixtureRoot = mkdtempSync(join(import.meta.dirname, '..', '.tmp-tsconfig-paths-'))
 
 afterAll(() => {
   rmSync(fixtureRoot, { force: true, recursive: true })
@@ -68,7 +68,7 @@ describe('tsconfig path resolution', () => {
       process.chdir(previousDirectory)
     }
 
-    const bundled = await import(`${pathToFileURL(outputPath).href}?test=${Date.now()}`)
+    const bundled = await import(outputPath)
     expect(bundled.default).toBe(42)
   })
 })

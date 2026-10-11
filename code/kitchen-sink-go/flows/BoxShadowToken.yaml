@@ -7,7 +7,7 @@ tags:
     element: 'BoxShadow Token'
     centerElement: true
 - tapOn: 'BoxShadow Token'
-# if web imports leak to native, boxShadow with $token in styled() crashes
+# if web imports leak to native, boxShadow with a token in styled() crashes
 # with: [ReanimatedError: Invalid color "var(--shadowColor)"]
 - extendedWaitUntil:
     visible: 'OK'

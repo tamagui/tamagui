@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { AnimatePresence } from '@tamagui/animate-presence'
-import { Button, Paragraph, Square, XStack, YStack, View } from 'tamagui'
+import { Paragraph, Square, XStack, YStack, View } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * EXIT COMPLETION TEST SUITE
@@ -67,11 +68,11 @@ function useExitTracker(scenarioId: string) {
 
 export function ExitCompletionCase() {
   return (
-    <YStack gap="$2" padding="$2" flex={1} overflow="scroll">
-      <Paragraph fontWeight="bold" fontSize="$5">
+    <YStack gap="2" padding="2" flex={1} overflow="scroll">
+      <Paragraph fontWeight="bold" fontSize="5">
         Exit Completion Test Suite
       </Paragraph>
-      <Paragraph size="$2" color="$color10">
+      <Paragraph size="2" color="color-10">
         Tests sendExitComplete invariants. Check console for [EXIT_COMPLETE] logs.
       </Paragraph>
 
@@ -104,7 +105,7 @@ export function ExitCompletionCase() {
 }
 
 const SectionHeader = ({ children }: { children: string }) => (
-  <Paragraph fontWeight="bold" fontSize="$3" marginTop="$3" color="$blue10">
+  <Paragraph fontWeight="bold" fontSize="3" marginTop="3" color="blue-600">
     {children}
   </Paragraph>
 )
@@ -117,9 +118,9 @@ function Scenario01_BasicExit() {
   const { startExit, onExitComplete } = useExitTracker('01-basic-exit')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="sm"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)
@@ -134,15 +135,16 @@ function Scenario01_BasicExit() {
           <Square
             key="basic-exit"
             transition="300ms"
+            bg="blue-600"
+            opacity="exit:0"
+            scale="exit:0.5"
             size={40}
-            bg="$blue10"
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="exit-01-target"
             data-testid="exit-01-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1" testID="exit-01-status" data-testid="exit-01-status">
+      <Paragraph size="1" testID="exit-01-status" data-testid="exit-01-status">
         {visible ? 'visible' : 'hidden'}
       </Paragraph>
     </XStack>
@@ -158,9 +160,9 @@ function Scenario02_ZeroDuration() {
   const { startExit, onExitComplete } = useExitTracker('02-zero-duration')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="sm"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)
@@ -175,15 +177,15 @@ function Scenario02_ZeroDuration() {
           <Square
             key="zero-duration"
             transition="0ms"
+            bg="green-600"
+            opacity="exit:0"
             size={40}
-            bg="$green10"
-            exitStyle={{ opacity: 0 }}
             testID="exit-02-target"
             data-testid="exit-02-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -196,9 +198,9 @@ function Scenario03_VeryShortDuration() {
   const { startExit, onExitComplete } = useExitTracker('03-short-duration')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="sm"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)
@@ -213,15 +215,16 @@ function Scenario03_VeryShortDuration() {
           <Square
             key="short-duration"
             transition="30ms"
+            bg="yellow-600"
+            opacity="exit:0"
+            scale="exit:0.8"
             size={40}
-            bg="$yellow10"
-            exitStyle={{ opacity: 0, scale: 0.8 }}
             testID="exit-03-target"
             data-testid="exit-03-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -245,9 +248,9 @@ function Scenario04_RapidToggle() {
   }
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="sm"
         onPress={handleRapidToggle}
         testID="exit-04-trigger"
         data-testid="exit-04-trigger"
@@ -259,15 +262,16 @@ function Scenario04_RapidToggle() {
           <Square
             key="rapid-toggle"
             transition="200ms"
+            bg="red-600"
+            opacity="exit:0"
+            scale="exit:0.5"
             size={40}
-            bg="$red10"
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="exit-04-target"
             data-testid="exit-04-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1" testID="exit-04-status" data-testid="exit-04-status">
+      <Paragraph size="1" testID="exit-04-status" data-testid="exit-04-status">
         {visible ? 'visible' : 'hidden'}
       </Paragraph>
     </XStack>
@@ -293,9 +297,9 @@ function Scenario05_ReRenderDuringExit() {
   }
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="sm"
         onPress={handleExitWithRerenders}
         testID="exit-05-trigger"
         data-testid="exit-05-trigger"
@@ -307,15 +311,16 @@ function Scenario05_ReRenderDuringExit() {
           <Square
             key="rerender-exit"
             transition="300ms"
+            bg="blue-600"
+            opacity="exit:0"
+            y="exit:20px"
             size={40}
-            bg="$blue10"
-            exitStyle={{ opacity: 0, y: 20 }}
             testID="exit-05-target"
             data-testid="exit-05-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         counter: {counter} | {visible ? 'visible' : 'hidden'}
       </Paragraph>
     </XStack>
@@ -339,16 +344,16 @@ function Scenario06_MultipleChildren() {
   }
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="sm"
         onPress={handleRemoveAll}
         testID="exit-06-trigger"
         data-testid="exit-06-trigger"
       >
         06: Remove All
       </Button>
-      <Button size="$2" onPress={handleReset}>
+      <Button size="sm" onPress={handleReset}>
         Reset
       </Button>
       <AnimatePresence onExitComplete={onExitComplete}>
@@ -356,15 +361,16 @@ function Scenario06_MultipleChildren() {
           <Square
             key={`multi-${id}`}
             transition="200ms"
+            bg="green-600"
+            opacity="exit:0"
+            scale="exit:0.5"
             size={30}
-            bg="$green10"
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID={`exit-06-target-${id}`}
             data-testid={`exit-06-target-${id}`}
           />
         ))}
       </AnimatePresence>
-      <Paragraph size="$1">count: {items.length}</Paragraph>
+      <Paragraph size="1">count: {items.length}</Paragraph>
     </XStack>
   )
 }
@@ -378,9 +384,9 @@ function Scenario07_LongAnimation() {
   const { startExit, onExitComplete } = useExitTracker('07-long-animation')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="sm"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)
@@ -395,15 +401,17 @@ function Scenario07_LongAnimation() {
           <Square
             key="long-anim"
             transition="500ms"
+            bg="yellow-600"
+            opacity="exit:0"
+            scale="exit:0.5"
+            y="exit:30px"
             size={40}
-            bg="$yellow10"
-            exitStyle={{ opacity: 0, scale: 0.5, y: 30 }}
             testID="exit-07-target"
             data-testid="exit-07-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -428,9 +436,9 @@ function Scenario08_InterruptedExit() {
   }
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="sm"
         onPress={handleInterruptedExit}
         testID="exit-08-trigger"
         data-testid="exit-08-trigger"
@@ -442,15 +450,16 @@ function Scenario08_InterruptedExit() {
           <Square
             key="interrupted"
             transition="300ms"
+            bg="red-600"
+            opacity="exit:0"
+            scale="exit:0.5"
             size={40}
-            bg="$red10"
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="exit-08-target"
             data-testid="exit-08-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1" testID="exit-08-status" data-testid="exit-08-status">
+      <Paragraph size="1" testID="exit-08-status" data-testid="exit-08-status">
         {visible ? 'visible' : 'hidden'}
       </Paragraph>
     </XStack>
@@ -479,9 +488,9 @@ function Scenario09_CanceledAndRestarted() {
   }
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="sm"
         onPress={handleStressTest}
         testID="exit-09-trigger"
         data-testid="exit-09-trigger"
@@ -493,15 +502,16 @@ function Scenario09_CanceledAndRestarted() {
           <Square
             key="stress"
             transition="200ms"
+            bg="blue-600"
+            opacity="exit:0"
+            x="exit:-20px"
             size={40}
-            bg="$blue10"
-            exitStyle={{ opacity: 0, x: -20 }}
             testID="exit-09-target"
             data-testid="exit-09-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1" testID="exit-09-status" data-testid="exit-09-status">
+      <Paragraph size="1" testID="exit-09-status" data-testid="exit-09-status">
         {visible ? 'visible' : 'hidden'}
       </Paragraph>
     </XStack>
@@ -518,9 +528,9 @@ function Scenario10_PerPropertyExit() {
   const { startExit, onExitComplete } = useExitTracker('10-per-property')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="sm"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)
@@ -534,17 +544,17 @@ function Scenario10_PerPropertyExit() {
         {visible && (
           <Square
             key="per-prop"
-            // opacity=100ms (fast), scale=500ms (slow)
-            transition={['100ms', { scale: '500ms' }] as any}
+            transition={{ duration: '100ms', scale: '500ms' }}
+            bg="green-600"
+            opacity="exit:0"
+            scale="exit:0.5"
             size={40}
-            bg="$green10"
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="exit-10-target"
             data-testid="exit-10-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -559,9 +569,9 @@ function Scenario11_MixedDurationExit() {
   const { startExit, onExitComplete } = useExitTracker('11-mixed-duration')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="sm"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)
@@ -575,34 +585,36 @@ function Scenario11_MixedDurationExit() {
         {visible && (
           <Square
             key="mixed"
-            transition={{ opacity: '100ms', scale: '400ms', default: '400ms' } as any}
+            transition={{ duration: '400ms', opacity: '100ms', scale: '400ms' }}
+            bg="yellow-600"
+            opacity="exit:0"
+            scale="exit:0.5"
+            y="exit:20px"
             size={40}
-            bg="$yellow10"
-            exitStyle={{ opacity: 0, scale: 0.5, y: 20 }}
             testID="exit-11-target"
             data-testid="exit-11-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
 
 // ============================================================================
-// SCENARIO 51: AnimateOnly Exclusion
-// animateOnly=['opacity'] should exclude scale from pending set
+// SCENARIO 51: Property List Exclusion
+// properties: 'opacity' should exclude scale from the pending set
 // Even if scale has a long exit config (500ms), should complete based on opacity (100ms)
-// Tests: pending-set only includes keys in animateOnly filter
+// Tests: pending-set only includes keys the transition names
 // ============================================================================
 function Scenario51_AnimateOnlyExclusion() {
   const [visible, setVisible] = useState(true)
   const { startExit, onExitComplete } = useExitTracker('51-animateonly-exclusion')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="sm"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)
@@ -616,17 +628,17 @@ function Scenario51_AnimateOnlyExclusion() {
         {visible && (
           <Square
             key="animateonly-exclusion"
-            transition={{ opacity: '100ms', scale: '500ms', default: '500ms' } as any}
-            animateOnly={['opacity']}
+            transition={{ duration: '500ms', opacity: '100ms', properties: 'opacity' }}
+            bg="purple-600"
+            opacity="exit:0"
+            scale="exit:0.5"
             size={40}
-            bg="$purple10"
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="exit-51-target"
             data-testid="exit-51-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -641,9 +653,9 @@ function Scenario53_TransformSubKeySplitDurations() {
   const { startExit, onExitComplete } = useExitTracker('53-transform-subkeys')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="sm"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)
@@ -657,23 +669,24 @@ function Scenario53_TransformSubKeySplitDurations() {
         {visible && (
           <Square
             key="transform-subkeys"
-            transition={{ scale: '100ms', y: '500ms', default: '100ms' } as any}
+            transition={{ duration: '100ms', scale: '100ms', y: '500ms' }}
+            bg="orange-600"
+            scale="exit:0.5"
+            y="exit:50px"
             size={40}
-            bg="$orange10"
-            exitStyle={{ scale: 0.5, y: 50 }}
             testID="exit-53-target"
             data-testid="exit-53-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
 
 // ============================================================================
 // SCENARIO 55: Zero Animatable Exit Props
-// exitStyle exists but no animatable properties (only static props)
+// exit clause exists but no animatable properties (only static props)
 // Should complete immediately (no animations to wait for)
 // Tests: immediate completion code path
 // ============================================================================
@@ -682,9 +695,9 @@ function Scenario55_ZeroAnimatableExitProps() {
   const { startExit, onExitComplete } = useExitTracker('55-zero-animatable')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="sm"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)
@@ -698,32 +711,32 @@ function Scenario55_ZeroAnimatableExitProps() {
         {visible && (
           <Square
             key="zero-animatable"
-            transition="300ms"
-            animateOnly={[]}
+            transition="none"
+            bg="gray-600"
+            opacity="exit:0"
+            scale="exit:0.5"
             size={40}
-            bg="$gray10"
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="exit-55-target"
             data-testid="exit-55-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
 
 // ============================================================================
-// SCENARIO 56: a keyword width (max-content) has no numeric endpoint, so it
+// scenario 56: a keyword width (max-content) has no numeric endpoint, so it
 // must not hold the exit open
 function Scenario56_KeywordWidthExit() {
   const [visible, setVisible] = useState(true)
   const { startExit, onExitComplete } = useExitTracker('56-keyword-width')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="$2"
+        size="sm"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)
@@ -740,16 +753,17 @@ function Scenario56_KeywordWidthExit() {
             transition="quick"
             width={'max-content' as any}
             height={40}
-            bg="$green10"
-            exitStyle={{ opacity: 0, y: -10 }}
+            bg="green-600"
+            opacity="exit:0"
+            y="exit:-10"
             testID="exit-56-target"
             data-testid="exit-56-target"
           >
-            <Paragraph size="$1">max-content</Paragraph>
+            <Paragraph size="1">max-content</Paragraph>
           </View>
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }

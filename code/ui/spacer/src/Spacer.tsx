@@ -1,26 +1,27 @@
-import { styled, View, type SizeTokens } from '@tamagui/web'
+import { styled, View, type SpaceTokens } from '@tamagui/web'
 
-const getSpacerSize = (size: SizeTokens | number | boolean, { tokens }) => {
-  size = size === true ? '$true' : size
-  const sizePx = tokens.space[size as any] ?? size
+const getSpacerSize = styled.dynamic<SpaceTokens | number | false>((size, env) => {
+  if (size === false) return
+  // a number is px. `true` is the default gap, else a space token key.
+  const sizePx =
+    typeof size === 'number'
+      ? size
+      : env.tokens.space[size === true ? '4' : String(size).replace(/^\$/, '')]
   return {
     width: sizePx,
     height: sizePx,
     minWidth: sizePx,
     minHeight: sizePx,
   }
-}
+})
 
 export const Spacer = styled(View, {
-  name: 'Spacer',
+  displayName: 'Spacer',
   pointerEvents: 'none',
   render: 'span',
 
   variants: {
-    size: {
-      '...size': getSpacerSize,
-      '...': getSpacerSize,
-    },
+    size: getSpacerSize,
 
     direction: {
       horizontal: {

@@ -100,27 +100,27 @@ test('popover placement variations', async ({ page }) => {
   }
 })
 
-// Test popover with keyboard navigation
-test('popover keyboard navigation', async ({ page }) => {
-  // Wait for page to load
-  await page.waitForLoadState('networkidle')
+for (const key of ['Enter', 'Space']) {
+  test(`popover keyboard navigation with ${key}`, async ({ page }) => {
+    const trigger = page.locator('#simple-popover-trigger')
+    const content = page.locator('#simple-popover-content')
 
-  const trigger = page.locator('#simple-popover-trigger')
-  const content = page.locator('#simple-popover-content')
+    await expect(trigger).toBeVisible()
+    await trigger.focus()
+    await expect(trigger).toBeFocused()
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false')
+    await expect(content).not.toBeVisible()
 
-  // Focus trigger and open with Enter key
-  await trigger.focus()
-  await page.keyboard.press('Enter')
+    await page.keyboard.press(key)
+    await expect(content).toBeVisible()
+    await expect(trigger).toHaveAttribute('aria-expanded', 'true')
 
-  // Wait for content to be visible
-  await expect(content).toBeVisible({ timeout: 5000 })
-
-  // Close with Escape key
-  await page.keyboard.press('Escape')
-
-  // Verify popover is closed
-  await expect(content).not.toBeVisible()
-})
+    await page.keyboard.press('Escape')
+    await expect(content).not.toBeVisible()
+    await expect(trigger).toBeFocused()
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false')
+  })
+}
 
 // Test popover accessibility
 test('popover accessibility attributes', async ({ page }) => {

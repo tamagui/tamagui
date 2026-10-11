@@ -32,9 +32,6 @@
       "path": "../../core/use-event"
     },
     {
-      "path": "../../core/use-previous"
-    },
-    {
       "path": "../adapt"
     },
     {
@@ -71,6 +68,7 @@
   "exclude": [
     "types",
     "dist",
+    "test",
     "**/__tests__"
   ]
 }

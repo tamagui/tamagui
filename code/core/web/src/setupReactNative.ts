@@ -1,43 +1,20 @@
 import type { StaticConfig } from './types'
 
-const ReactNativeStaticConfigs = new WeakMap<any, Partial<StaticConfig> | null>()
-
 export function getReactNativeConfig(Component: any) {
-  if (!Component) return
+  if (process.env.TAMAGUI_TARGET !== 'native' || !Component) return
 
-  if (process.env.TAMAGUI_TARGET === 'native') {
-    if (Component.propTypes?.onTextInput || Component.propTypes?.onChangeText) {
-      return RNConfigs.TextInput
-    }
-    if (Component.getSizeWithHeaders) {
-      return RNConfigs.Image
-    }
-    if (Component.propTypes?.textBreakStrategy) {
-      return RNConfigs.Text
-    }
-
-    // can optimize plain View or Text to not be react native specific
-
-    // can assume everything else is react native on native
-    return RNConfigs.default
-  }
-  if (Component.getSize && Component.prefetch) {
-    return RNConfigs.Image
-  }
-  if (Component.displayName === 'Text' && Component.render) {
-    return RNConfigs.Text
-  }
-  if (
-    Component.render &&
-    (Component.displayName === 'ScrollView' || Component.displayName === 'View')
-  ) {
-    return RNConfigs.default
-  }
-  if (Component.State?.blurTextInput) {
+  if (Component.propTypes?.onTextInput || Component.propTypes?.onChangeText) {
     return RNConfigs.TextInput
   }
+  if (Component.getSizeWithHeaders) {
+    return RNConfigs.Image
+  }
+  if (Component.propTypes?.textBreakStrategy) {
+    return RNConfigs.Text
+  }
 
-  return ReactNativeStaticConfigs.get(Component)
+  // can assume every other non-tamagui component is native on native
+  return RNConfigs.default
 }
 
 const RNConfigs = {

@@ -5,34 +5,16 @@
   },
   "references": [
     {
-      "path": "../../core/compose-refs"
-    },
-    {
-      "path": "../../core/constants"
-    },
-    {
       "path": "../../core/core"
     },
     {
-      "path": "../../core/get-token"
-    },
-    {
-      "path": "../../core/helpers"
+      "path": "../../core/react-native-types"
     },
     {
       "path": "../../core/use-controllable-state"
     },
     {
-      "path": "../../core/use-previous"
-    },
-    {
       "path": "../focusable"
-    },
-    {
-      "path": "../label"
-    },
-    {
-      "path": "../stacks"
     },
     {
       "path": "../switch-headless"
@@ -41,6 +23,7 @@
   "exclude": [
     "types",
     "dist",
+    "test",
     "**/__tests__"
   ]
 }

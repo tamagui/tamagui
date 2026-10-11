@@ -99,8 +99,9 @@ test.describe('Dialog Focus Scope', () => {
     const focusedElement = await page.evaluate(() => document.activeElement?.tagName)
     expect(focusedElement).toBeTruthy()
 
-    // Click outside should close non-modal dialog
-    await page.click('body', { position: { x: 10, y: 10 } })
+    // A visible control outside should receive the click and dismiss the non-modal dialog.
+    // Body-relative coordinates are unstable while motion lays out the animated content.
+    await page.getByTestId('modal-dialog-trigger').click()
     await expect(dialogContent).not.toBeVisible()
   })
 

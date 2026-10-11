@@ -134,7 +134,7 @@ test('node swap fires onLayout for new element', async ({ page }) => {
   const bg = await page.getByTestId('box-a').evaluate((el) => {
     return getComputedStyle(el).backgroundColor
   })
-  // blue8 instead of red8 — just check it's not the original red
+  // blue-8 instead of red-8 — just check it's not the original red
   expect(bg).not.toContain('rgb(229, 72, 77)')
 })
 

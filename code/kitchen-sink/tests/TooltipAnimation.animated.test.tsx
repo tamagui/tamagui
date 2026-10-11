@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { setupPage } from './test-utils'
+import { getComputedTranslateY, setupPage } from './test-utils'
 
 /**
  * TOOLTIP CSS ANIMATION TESTS
@@ -24,15 +24,7 @@ async function getOpacity(page: Page, testId: string): Promise<number> {
 }
 
 async function getTranslateY(page: Page, testId: string): Promise<number> {
-  return page.evaluate((id) => {
-    const el = document.querySelector(`[data-testid="${id}"]`)
-    if (!el) return -9999
-    const transform = getComputedStyle(el).transform
-    if (transform === 'none') return 0
-    // matrix(a, b, c, d, tx, ty) - translateY is in the 'ty' position (6th value)
-    const match = transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,[^,]+,\s*([^)]+)\)/)
-    return match ? Number.parseFloat(match[1]) : 0
-  }, testId)
+  return getComputedTranslateY(page, `[data-testid="${testId}"]`)
 }
 
 async function elementExists(page: Page, testId: string): Promise<boolean> {
@@ -105,7 +97,7 @@ test.describe('Tooltip animation', () => {
   // TEST 2: Enter animation translateY intermediate values
   // timing sensitive - on fast machines animation may complete before sample
   test('enter animation has intermediate translateY values', async ({ page }) => {
-    const START_Y = -20 // enterStyle y value
+    const START_Y = -20 // enter clause y value
     const END_Y = 0
 
     // Hover to trigger tooltip
@@ -253,7 +245,7 @@ test.describe('Tooltip animation', () => {
     })
 
     expect(arrowSize.exists, 'Arrow element exists').toBe(true)
-    // Arrow should have reasonable size (size="$2" should be ~16px, not tiny)
+    // Arrow should have reasonable size (size="2" should be ~16px, not tiny)
     expect(arrowSize.width, 'Arrow width should not be tiny').toBeGreaterThan(8)
     expect(arrowSize.height, 'Arrow height should not be tiny').toBeGreaterThan(8)
   })

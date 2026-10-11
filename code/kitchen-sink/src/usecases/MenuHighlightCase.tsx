@@ -1,5 +1,6 @@
-import { Menu } from '@tamagui/menu'
-import { Button, YStack, Text } from 'tamagui'
+import { YStack, Text } from 'tamagui'
+import { Button } from '../components/Button'
+import { Menu } from '../components/Menu'
 
 /**
  * Menu highlight test case
@@ -8,7 +9,7 @@ import { Button, YStack, Text } from 'tamagui'
  */
 export function MenuHighlightCase() {
   return (
-    <YStack padding="$4" gap="$4" alignItems="flex-start">
+    <YStack padding="4" gap="4" alignItems="flex-start">
       <Text>Test: hover and keyboard navigation should show same highlight</Text>
 
       <Menu placement="bottom-start">
@@ -19,11 +20,11 @@ export function MenuHighlightCase() {
         <Menu.Portal zIndex={100}>
           <Menu.Content
             data-testid="menu-content"
-            p="$2"
+            p="2"
             minWidth={200}
             borderWidth={1}
-            borderColor="$borderColor"
-            elevation="$3"
+            borderColor="border-color"
+            boxShadow="0 4px 12px shadow-color"
           >
             <Menu.Item data-testid="menu-item-1" key="item-1" textValue="Item One">
               <Menu.ItemTitle>Item One</Menu.ItemTitle>

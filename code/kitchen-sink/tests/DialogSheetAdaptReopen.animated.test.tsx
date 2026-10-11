@@ -35,8 +35,9 @@ test.describe('Dialog Sheet Adapt - sheet shows again on reopen', () => {
     const sheetState = () =>
       page.evaluate(
         () =>
-          document.querySelector('.is_Sheet[data-state]')?.getAttribute('data-state') ??
-          null
+          document
+            .querySelector('[data-testid="sheet-frame"][data-state]')
+            ?.getAttribute('data-state') ?? null
       )
     const frameTop = () =>
       page.evaluate(() => {

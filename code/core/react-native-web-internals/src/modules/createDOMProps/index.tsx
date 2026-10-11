@@ -11,7 +11,6 @@ import { getCSSStylesAtomic, type StyleObject } from '@tamagui/web'
 import { AccessibilityUtil } from '../AccessibilityUtil/index'
 
 const emptyObject = {}
-const hasOwnProperty = Object.prototype.hasOwnProperty
 const isArray = Array.isArray
 
 // react-native props that should be stripped before reaching the DOM
@@ -20,6 +19,7 @@ const reactNativeOnlyProps: Record<string, boolean> = {
   contentContainerStyle: true,
   contentOffset: true,
   decelerationRate: true,
+  focusable: true,
   maintainVisibleContentPosition: true,
   onLayout: true,
   onMomentumScrollBegin: true,
@@ -83,9 +83,7 @@ function flattenStyle(style: any): any {
     const computedStyle = flattenStyle(style[i])
     if (computedStyle) {
       for (const key in computedStyle) {
-        if (hasOwnProperty.call(computedStyle, key)) {
-          result[key] = computedStyle[key]
-        }
+        result[key] = computedStyle[key]
       }
     }
   }
@@ -151,7 +149,6 @@ export const createDOMProps = (elementType, props, options?) => {
     accessibilityValueNow,
     accessibilityValueText,
     dataSet,
-    focusable,
     nativeID,
     pointerEvents,
     style,
@@ -347,21 +344,15 @@ export const createDOMProps = (elementType, props, options?) => {
   if (dataSet != null) {
     for (const dataProp in dataSet) {
       if (dataProp === 'className' || dataProp === 'id') continue
-      if (hasOwnProperty.call(dataSet, dataProp)) {
-        const dataName = hyphenateString(dataProp)
-        const dataValue = dataSet[dataProp]
-        if (dataValue != null) {
-          domProps[`data-${dataName}`] = dataValue
-        }
+      const dataName = hyphenateString(dataProp)
+      const dataValue = dataSet[dataProp]
+      if (dataValue != null) {
+        domProps[`data-${dataName}`] = dataValue
       }
     }
   }
 
   // FOCUS
-  // "focusable" indicates that an element may be a keyboard tab-stop.
-  if (focusable === false) {
-    domProps.tabIndex = '-1'
-  }
   if (
     // These native elements are keyboard focusable by default
     elementType === 'a' ||
@@ -370,7 +361,7 @@ export const createDOMProps = (elementType, props, options?) => {
     elementType === 'select' ||
     elementType === 'textarea'
   ) {
-    if (focusable === false || accessibilityDisabled === true) {
+    if (accessibilityDisabled === true) {
       domProps.tabIndex = '-1'
     }
   } else if (
@@ -382,12 +373,7 @@ export const createDOMProps = (elementType, props, options?) => {
     role === 'textbox' ||
     role === 'switch'
   ) {
-    if (focusable !== false) {
-      domProps.tabIndex = '0'
-    }
-  } else {
-    // Everything else must explicitly set the prop
-    if (focusable === true) {
+    if (domProps.tabIndex == null) {
       domProps.tabIndex = '0'
     }
   }

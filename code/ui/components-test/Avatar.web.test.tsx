@@ -32,7 +32,7 @@ describe('Avatar.Image sizing', () => {
   })
 
   it('fills the frame for a token size', () => {
-    const { container } = render(<AvatarTest size="$4" />)
+    const { container } = render(<AvatarTest size="4" />)
     const img = container.querySelector('img')
     expect(img).toBeTruthy()
     expect(img).toHaveStyle({ width: '100%', height: '100%' })

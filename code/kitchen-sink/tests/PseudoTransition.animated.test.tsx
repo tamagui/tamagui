@@ -4,13 +4,13 @@ import { setupPage } from './test-utils'
 /**
  * PSEUDO TRANSITION TESTS
  *
- * Tests for the `transition` prop inside pseudo-style props (hoverStyle, pressStyle, etc.)
+ * Tests for the `transition` prop inside pseudo-style props (hover clause, press clause, etc.)
  *
  * CSS semantics:
  * - Enter pseudo state (e.g., hover): use that pseudo's transition (200ms)
  * - Exit pseudo state (e.g., unhover): use base transition (1000ms)
  *
- * These tests run across all animation drivers (css, native, reanimated, motion).
+ * These tests run across all web animation drivers (css, reanimated, motion).
  */
 
 async function getBackgroundColor(page: Page, testId: string): Promise<string> {
@@ -41,9 +41,6 @@ function parseRgb(color: string): { r: number; g: number; b: number } | null {
 
 test.describe('Pseudo Transition Tests', () => {
   test.beforeEach(async ({ page }) => {
-    const driver = (test.info().project?.metadata as any)?.animationDriver
-    test.skip(driver === 'native', 'native driver has issues on web')
-
     await setupPage(page, {
       name: 'PseudoTransitionCase',
       type: 'useCase',
@@ -52,7 +49,7 @@ test.describe('Pseudo Transition Tests', () => {
     await page.waitForTimeout(500)
   })
 
-  test('scenario 1: hoverStyle transition - fast enter (200ms), slow exit (1000ms)', async ({
+  test('scenario 1: hover clause transition - fast enter (200ms), slow exit (1000ms)', async ({
     page,
   }) => {
     const target = page.getByTestId('scenario-1-target')
@@ -90,7 +87,7 @@ test.describe('Pseudo Transition Tests', () => {
     expect(finalColor, 'Color should return to initial').toBe(initialColor)
   })
 
-  test('scenario 2: pressStyle transition - fast press (200ms), slow release (1000ms)', async ({
+  test('scenario 2: press clause transition - fast press (200ms), slow release (1000ms)', async ({
     page,
   }) => {
     const target = page.getByTestId('scenario-2-target')

@@ -1,47 +1,48 @@
+// regenerates public/fonts/inter.woff2, the site's only text webfont.
+//
+// Inter 4.1 ships a variable file with two axes. we pin opsz to its 14 default
+// (keeping it costs ~32kb for a refinement nobody will spot) and keep wght as a
+// 200-900 range, which covers every weight the site asks for from one file.
+// the character set is latin + latin-1 + the punctuation and arrows the docs use.
+//
+//   bun scripts/subset.ts
+//
+// no italic: there is no roman/italic pairing worth 58kb here, the browser
+// obliques the roman for the few <em>s in the docs.
+
+import { execSync } from 'node:child_process'
+import { existsSync } from 'node:fs'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
-import { basename, join } from 'node:path'
+import { join } from 'node:path'
 import subsetFont from 'subset-font'
 
-export async function subset({
-  inputFiles,
-  characters,
-  outputDir,
-  targetFormat,
-}: {
-  outputDir: string
-  targetFormat: 'woff2' | 'sfnt' | 'woff' | 'truetype'
-  inputFiles: string[]
-  characters: string
-}) {
-  try {
-    await mkdir(outputDir)
-  } catch {
-    // ok
-  }
-  await Promise.all(
-    inputFiles.map(async (file) => {
-      const font = await readFile(file)
-      const buffer = await subsetFont(font, characters, {
-        targetFormat,
-      })
-      const fileBaseName = basename(file).replace(/\..*/, '')
-      const outPath = join(outputDir, fileBaseName + `.${targetFormat}`)
-      await writeFile(outPath, buffer)
-    })
+const INTER_VERSION = '4.1'
+const cacheDir = join(import.meta.dirname, '.fonts')
+const source = join(cacheDir, 'InterVariable.ttf')
+
+const characters =
+  `0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ` +
+  `!@#$%^&*()-=_+{}[]|\\/.,<>;:'"\`~? ` +
+  `→↗↑↓←•…–—‘’“”£€¥©®™°±×÷§¶†` +
+  `ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿŒœŠšŸŽž`
+
+if (!existsSync(source)) {
+  const zip = join(cacheDir, `Inter-${INTER_VERSION}.zip`)
+  await mkdir(cacheDir, { recursive: true })
+  console.info(`downloading Inter ${INTER_VERSION}...`)
+  execSync(
+    `curl -sL -o ${zip} https://github.com/rsms/inter/releases/download/v${INTER_VERSION}/Inter-${INTER_VERSION}.zip`
   )
+  execSync(`unzip -o -j -q ${zip} InterVariable.ttf -d ${cacheDir}`)
 }
 
-const characters = {
-  en: {
-    minimal: `0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-=_+{}[]|\\/.,<>;:'"\``,
-  },
-}
-
-const inputFiles = [join('public/fonts', `berkeley.otf`)]
-
-subset({
-  inputFiles,
-  outputDir: 'public/fonts',
+const out = await subsetFont(await readFile(source), characters, {
   targetFormat: 'woff2',
-  characters: characters.en.minimal,
+  variationAxes: {
+    opsz: 14,
+    wght: { min: 200, max: 900 },
+  },
 })
+
+await writeFile('public/fonts/inter.woff2', out)
+console.info(`public/fonts/inter.woff2 ${(out.length / 1024).toFixed(1)}kb`)

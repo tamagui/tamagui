@@ -1,0 +1,79 @@
+name: Targeted Tests
+
+# run one narrow test selection on CI instead of a loaded dev machine.
+# dispatch from any ref that contains this file:
+#   gh workflow run test-targeted.yml --ref <branch> -f filter=SelectTypeahead
+# native (Detox/Maestro) stays with test-native.yml / test-ios-native.yml —
+# push a v3-ci-* branch or dispatch those workflows for native coverage.
+
+on:
+  workflow_dispatch:
+    inputs:
+      filter:
+        description: 'playwright test filter (file name or grep pattern)'
+        required: true
+        type: string
+      project:
+        description: 'playwright project'
+        required: false
+        default: 'default'
+        type: string
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ inputs.filter }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  playwright:
+    name: 'playwright: ${{ inputs.filter }} (${{ inputs.project }})'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: install
+        run: bun install --frozen-lockfile
+
+      - name: Get Playwright version
+        id: pw-version
+        run: echo "version=$(bunx playwright --version | awk '{print $2}')" >> $GITHUB_OUTPUT
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}
+
+      - name: Install playwright
+        run: bunx playwright install --with-deps
+
+      - name: Restore Turbo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo/cache
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}-
+
+      - name: build js
+        run: bun run build:js
+
+      - name: run targeted tests
+        working-directory: code/kitchen-sink
+        env:
+          NODE_ENV: test
+        run: npx playwright test ${{ inputs.filter }} --project=${{ inputs.project }} --workers=1
+        timeout-minutes: 25
+
+      - name: upload artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: targeted-test-results
+          path: code/kitchen-sink/test-results/
+          retention-days: 3

@@ -1,39 +1,38 @@
-import React from 'react';
-import type { TamaguiElement } from '@tamagui/core';
 import type { ScrollBridge, SheetProps } from './types';
 import type { SheetOpenState } from './useSheetOpenState';
-export type SheetContextValue = ReturnType<typeof useSheetProviderProps> & {
+import { useSheetState } from './useSheetState';
+export type SheetContextValue = (ReturnType<typeof useSheetProviderProps> & {
     keyboardOccludedHeight: number;
     isKeyboardVisible: boolean;
     keyboardStableFrameHeight: number;
     setHasScrollView: (val: boolean) => void;
-};
-export declare function useSheetProviderProps(props: SheetProps, state: SheetOpenState, options?: {
-    onOverlayComponent?: (comp: any) => void;
-}): {
-    screenSize: number;
-    maxSnapPoint: string | number;
-    disableRemoveScroll: boolean;
-    scrollBridge: ScrollBridge;
+}) | (Omit<ReturnType<typeof useSheetState>, 'maxContentSize'> & {
+    onlyShowContainer: true;
+    scrollBridge?: undefined;
+});
+export declare function useSheetProviderProps(props: SheetProps, state: SheetOpenState): {
     modal: boolean;
     open: boolean;
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setOpen: import("@tamagui/use-controllable-state").ControllableStateSetter<boolean, import("@tamagui/core").TamaguiChangeEventDetails>;
     hidden: boolean;
-    contentRef: React.RefObject<TamaguiElement | null>;
-    handleRef: React.RefObject<TamaguiElement | null>;
+    contentRef: import("react").RefObject<import("@tamagui/core").TamaguiElement | null>;
+    handleRef: import("react").RefObject<import("@tamagui/core").TamaguiElement | null>;
     frameSize: number;
-    setFrameSize: React.Dispatch<React.SetStateAction<number>>;
+    setFrameSize: import("react").Dispatch<import("react").SetStateAction<number>>;
     dismissOnOverlayPress: boolean;
     dismissOnSnapToBottom: boolean;
-    onOverlayComponent: ((comp: any) => void) | undefined;
-    scope: import("@tamagui/create-context").Scope<any>;
+    scope: string;
     hasFit: boolean;
     position: number;
     snapPoints: (string | number)[];
     snapPointsMode: import("./types").SnapPointsMode;
-    setMaxContentSize: React.Dispatch<React.SetStateAction<number>>;
+    setMaxContentSize: import("react").Dispatch<import("react").SetStateAction<number>>;
     setPosition: (next: number) => void;
-    setPositionImmediate: React.Dispatch<React.SetStateAction<number>>;
-    onlyShowFrame: boolean;
+    setPositionImmediate: import("@tamagui/use-controllable-state").ControllableStateSetter<number, import("@tamagui/core").TamaguiChangeEventDetails>;
+    screenSize: number;
+    maxSnapPoint: string | number;
+    disableRemoveScroll: boolean;
+    scrollBridge: ScrollBridge;
+    onlyShowContainer: false;
 };
 //# sourceMappingURL=useSheetProviderProps.d.ts.map

@@ -5,6 +5,11 @@
 Design plan, July 2026. Revised 2026-07-29: universal value grammar (colon
 clause detection over CSS component values), per-longhand program merging,
 value variables, migration compat setting, and the compiled static fast path.
+Revised 2026-08-14: decision 23 is superseded — `legacyConditionObjects` and
+the old condition-object parsers are deleted in V3 itself per
+`plans/v3-rip-token-sigil.md` ruling 2, and that deletion has been executed
+(no runtime compat code remains). Migration is the write-mode codemod plus
+the tamagui skill.
 This consolidates the current direction for:
 
 - regular Tamagui and its future inline style syntax;
@@ -94,9 +99,12 @@ boundaries.
 22. Configured variables may hold composite values (a full box-shadow list),
     parsed at config time by the same value parser. A variable covers one
     property's value; multi-property presets remain variants and `styled()`.
-23. V3 ships a `legacyConditionObjects` compatibility setting. Old condition
-    objects parse into the same IR with a development warning. The setting
-    gates input parsing only, and v4 removes it together with the old parsers.
+23. Superseded 2026-07-31 by `plans/v3-rip-token-sigil.md` ruling 2: V3 ships
+    flat-only. The `legacyConditionObjects` compatibility setting and the old
+    condition-object parsers are deleted in V3, not v4. It existed briefly as
+    an engine-contraction staging gate (see "The engine contraction") and is
+    gone. Migration is the write-mode codemod plus the tamagui skill, never
+    runtime compat code.
 24. When every contribution is statically known, the compiler emits a plain
     element and skips the runtime component path entirely. Closing the
     rendering-cost gap to plain CSS is a stated deliverable of the flat-value
@@ -330,11 +338,29 @@ CSS semantics, even if a legacy config has a same-named preset. The V3 codemod
 must rename or expand a colliding preset when its configured easing differs
 from the CSS default.
 
-Both forms lower into one transition IR containing property, duration, timing
-function, delay, and behavior. The CSS driver serializes that IR without
-changing supported web semantics. Native timing drivers translate supported
-durations and easing functions. Spring presets remain driver configuration
-rather than pretending to be CSS.
+Both forms — the shorthand and the five longhands — lower into one transition
+IR containing property, duration, timing function, delay, and behavior;
+Phase 6 item 4's alignment path fulfils this at runtime. Clarified 2026-07-31
+after the 39-row legacy audit, because "both forms" was being read as
+CSS-plus-legacy: the legacy array and per-property object forms deliberately
+do NOT route through the IR at runtime in v3. They carry spring and driver
+configuration the IR does not pretend is CSS (consistent with the spring rule
+below), all four drivers consume them through the animation-helpers
+normalizer, and `migrateLegacyTransition` is the migration PROTOTYPE for
+codemod-side reasoning, not a runtime path — it has no caller by design. Any
+future routing of legacy values through the IR must handle the compat edge
+the audit pinned: `{ default: '100ms', duration: 50 }` is accepted by the
+public driver normalizer and rejected by the IR. The CSS driver serializes
+the IR without changing supported web semantics. Native timing drivers
+translate supported durations and easing functions. Spring presets remain
+driver configuration rather than pretending to be CSS.
+
+Named as a pattern after its third instance (this sentence, the Tailwind
+group/container modifiers, the DOM native lowering): **a written commitment
+with no caller is indistinguishable from a plan until someone probes it.**
+When a record sentence describes runtime behavior, it names the code path
+that performs it or it is marked as intended; a reviewer finding neither
+treats the sentence as unfulfilled, not as ambiguous.
 
 Native does not silently approximate unsupported web behavior. Examples that
 need capability diagnostics include unsupported properties, `steps()`, and
@@ -407,6 +433,27 @@ keep resolution deterministic:
   these names is a config-time error.
 - A configured name always wins over a same-spelled CSS literal. Config
   creation warns when a token shadows a property-relevant CSS keyword.
+
+Ruled 2026-07-31 (manager adjudication after the reserved-ident validation
+landed and caught our own configs): the reserved rule holds at EVERY
+resolution layer — flat values, the legacy `$` path, and Tailwind candidates —
+never only where the resolver happens to check. Consequences: the v6 config
+ships no `$transparent` or `$none` tokens (`transparent` resolves value-
+identically through the reserved-literal path; `radius="none"` as a token was
+already emitting invalid `border-radius:none`), and Tailwind spellings whose
+tail is a reserved word (`rounded-none`, `w-auto`, `m-auto`) are CANDIDATE-
+LAYER conveniences mapping to their CSS meaning, never token lookups. A config
+token cannot override what `auto`/`none` mean. The configAware tests that
+pinned the opposite (`size.$auto` beating `w-auto`) predate this ruling.
+
+Also ruled 2026-07-31: **fontWeight binds** — it is a real per-family token
+category like fontSize/lineHeight/letterSpacing (the codemod already emits
+flat weight names and `FontWeightTokens` is public type surface; the unbound
+registry row was an omission). Names aggregate across families for tooling
+and resolve against the active or default family at runtime. Outside the
+reserved set, a configured weight name wins over a same-spelled generated
+utility (`font-semibold` resolves the configured token when one exists,
+the literal 600 utility otherwise).
 
 The resolver's mechanical contract, so one implementation serves both
 platforms:
@@ -545,7 +592,7 @@ Modifiers form one registry assembled from built-ins and Tamagui config:
 - state: `hover:`, `press:`, `focus:`, `focus-visible:`, `focus-within:`,
   `disabled:`, `checked:`, `selected:`, `open:`, `invalid:`, plus `enter:`
   and `exit:` for presence;
-- themes: `dark:`, `light:`, and configured theme conditions;
+- themes: configured root themes such as `dark:` and `light:`;
 - media: configured media names such as `sm:`;
 - platform: `web:`, `native:`, `ios:`, `android:`;
 - group and container modifiers as specified above.
@@ -555,15 +602,16 @@ Modifiers chain as an AND: `dark:hover:blue-500` applies when both hold.
 There is one global condition namespace. Duplicate configured names are
 reported when the config is created; the implementation must not silently
 choose between a theme, media, platform, or state condition sharing a name.
-Theme modifiers reuse Tamagui's established theme inheritance rules for
-matching. The flat syntax does not invent a second definition of whether a
-parent theme condition matches a child theme.
+Only root theme names are modifiers. Nested names such as `dark_blue` and the
+removed V2 component-theme names are not valid modifiers. Root theme modifiers
+reuse Tamagui's established inheritance rules, so a root condition applies
+within its nested themes.
 
 Two theme-matching rulings from the W3 review (2026-07-29):
 
-- A theme modifier matches when it is a name-boundary prefix of the active
-  theme: `dark:` matches active `dark_blue`, `dark_blue:` does not match
-  active `dark`. The legacy `$theme-*` check was exactly inverted (clause
+- A root theme modifier matches when it is a name-boundary prefix of the active
+  theme: `dark:` matches active `dark_blue`. The legacy `$theme-*` check was
+  exactly inverted (clause
   startsWith active theme, no name boundary, so `darkish` matched `dark`);
   that was a bug, the new rule is authoritative on both platforms, and the
   migration guide must note that converted `$theme-*` objects can change
@@ -726,6 +774,14 @@ rule, so validation reaches lint-driven workflows (CI and agent loops) that
 never see editor diagnostics. TypeScript can expose small finite unions where
 they remain cheap, but type performance takes priority over exhaustive string
 validation.
+
+The generated editor vocabulary keeps serialization metadata outside
+`tamaguiConfig`, in the sibling
+`tamaguiConfigMetadata.themeFields: "values-only"` field. Future metadata must
+remain in that sibling namespace and must never become a theme field. Tooling
+accepts that exact format, rejects a present format it does not understand,
+and applies the old `id` field cleanup only to unversioned artifacts produced
+before the sibling marker existed.
 
 ## Programs and merging
 
@@ -932,9 +988,47 @@ stylesheets, any remaining react-native-web output) is ordered by cascade
 layers, one `@layer` statement instead of per-rule specificity tricks —
 extending the layer wrapping that tailwind mode already uses today.
 
+Consumer-visible consequence of the flat encoding (landed with the clause-free
+cutover, 2026-07-31): the base rule's specificity dropped from the legacy
+`:root .cls` `(0,2,0)` to `(0,1,0)`, so a consumer's own single-class rule
+(`.my-override { color: red }`) now ties with a Tamagui base rule and resolves
+by stylesheet order instead of always losing. This is deliberate — less
+specificity aggression is the v3 direction, and the end state above (`@layer`
+interop, not yet implemented in the runtime) goes further: layered Tamagui
+rules will lose to unlayered consumer CSS consistently. Until the layer lands,
+the tie is deterministic per app: client-inserted Tamagui rules append to
+Tamagui's own sheet (typically after app stylesheets, so Tamagui wins runtime
+ties), and SSR output order follows the app's CSS import order. This must be
+called out in the v3 release notes as a behavior change.
+
 Inline `style` and dynamic non-string values keep their existing paths: the
 style attribute outranks any class, and dynamic payloads resolve through the
 runtime parser cache, not through new CSS.
+
+Parse-order rule, named as a class after its third occurrence (2026-07-31):
+**any path that eagerly parses a string value into a structured native form
+must run AFTER program contribution, never before.** A pre-contribution parse
+cannot know where the clauses are, so it mangles clause text into the last
+component of whatever it parses — boxShadow and textShadow in propMapper
+(P0-2), then backgroundImage/boxShadow/textShadow again in
+platformResolveValue's token resolution, plus expandStyle renaming
+`backgroundImage` away before the hook could see the property. The one
+sanctioned order: strings flow WHOLE into the program engine, and the native
+evaluator parses the winning payload after clause evaluation, writing any
+renamed RN keys itself. A new native structured form (an RN object format, a
+renamed key) gets its parse added at the evaluator's post-evaluation step,
+not at whatever call site first needs it.
+
+Companion rule for what those parsers accept (2026-07-31): **match RN exactly
+where we parse, and where we decline, decline into RN's hands rather than
+into garbage.** The authority is React Native's own parsing code at the
+pinned version, never the CSS spec and never intuition — being looser than
+the platform is the same error as being tighter, inverted. Where our parser
+is narrower than RN, the decline path must land somewhere that can still
+handle the value (the raw string passing through to RN's own parser), never
+in a half-parsed shape RN reads wrong. parseNativeStyle carries RN's literal
+regexes with citations so an RN upgrade updates them by diff, not by
+paraphrase.
 
 ## Value variables
 
@@ -1011,11 +1105,47 @@ store only receives rotation updates while some component renders the
 tracked hook — the variables layer must mount one tracker (in the Tamagui
 provider when safe-area setup ran), not assume the store self-updates.
 
-The Tailwind frontend gets `pt-safe-area-top` automatically through token
-naming. Tailwind core has no safe-area utilities (community plugins use
-`pt-safe`); the explicit names are the one spelling here.
+The Tailwind candidate path consumes the same shared safe-area vocabulary module
+as the resolver, so `pt-safe-area-top` reaches the built-in namespace without a
+second spelling table. This is explicit rather than automatic token naming:
+ordinary space-category candidates add a `$` prefix, which would route this name
+into the legacy token path. Tailwind core has no safe-area utilities (community
+plugins use `pt-safe`); the explicit names are the one spelling here.
 
 ## Relationship to Tailwind
+
+Ruled 2026-07-31, the boundary for every candidate-layer decision: **the
+candidate layer may decide WHICH property and WHICH name a class spelling
+means; it may never decide what a name RESOLVES TO or which kind a modifier
+IS.** Spelling (prefixes, arbitrary brackets and their coercion,
+sizing/fraction conveniences, whole utilities, negative spellings,
+ambiguous-prefix refusal) is candidate-owned. Resolution (name lookup order,
+opacity-suffix validation, modifier kind and collision priority) comes from
+the shared style-grammar contracts, and a place where the same input yields a
+different value than the flat path is a defect, never a designed difference.
+
+Parent capability markers such as `group/card` and `@container` carry no
+Tamagui property or value, so they remain eligible for official Tailwind
+passthrough. The frontend also projects their runtime capability:
+`group[/name]` becomes `group={true|name}`, while `@container[-size][/name]`
+becomes the corresponding `container`, `containerName`, and `containerType`
+props. Keeping the raw class preserves official Tailwind CSS on web; projecting
+the props creates the same group and container context on native. Descendant
+modifiers such as `group-hover/card:bg-accent` and `@sm/layout:p-4` do carry a
+Tamagui value and must be claimed and resolved through the shared contracts.
+The rule is not that Tailwind cannot handle groups or containers; anything
+carrying a Tamagui value must resolve through Tamagui.
+
+The conversion-assessment guarantee, stated accurately (2026-07-31): the
+composed contract (`assessFlatConversion`) returns the pinned
+property/clause/host precedence whenever it is given the complete site. Its
+input shape cannot prevent a consumer from omitting dimensions or
+pre-filtering before it calls — `modifiers: []` legitimately means "no
+modifiers", so it cannot be distinguished from "not supplied". Consumers do
+not get the composition wrong; they can fail to ask it completely, and each
+consumer therefore carries a parity regression over its full pipeline. A
+ParsedValue-accepting surface would close even that gap and is deliberately
+deferred while both consumers are in-repo and pinned.
 
 Property-scoped candidates and Tailwind classes lower into the same ordered IR:
 
@@ -1478,18 +1608,14 @@ There is no global switch and no combined mode.
 
 ### Conditional objects to flat values
 
-V3 makes the flat value grammar canonical. There is one resolution engine and
-one IR; during migration there are two accepted input spellings, one of them
-deprecated.
-
-The `legacyConditionObjects` setting keeps the old condition objects
-(`hoverStyle`, `pressStyle`, `$theme-*`, `$platform-*`, media and group
-objects) parsing into the same IR with a development warning. The setting
-gates input parsing only; it never forks resolution, ordering, or output. New
-apps default to off. The migration guide enables it for incremental
-migration, the final codemod step turns it off, and v4 removes it together
-with the old parsers. The compiler understands both spellings for as long as
-the setting exists.
+V3 makes the flat value grammar canonical. There is one resolution engine,
+one IR, and one accepted input spelling: flat values. The old condition
+objects (`hoverStyle`, `pressStyle`, `$theme-*`, `$platform-*`, media and
+group objects) and their parsers are deleted in V3 per
+`plans/v3-rip-token-sigil.md` ruling 2. The `legacyConditionObjects` setting
+that briefly bridged them into the IR during the engine contraction is
+deleted with them. The write-mode codemod (`code/core/codemod-flat-values`)
+plus its report rows are the entire migration story.
 
 First corpus numbers (2026-07-29 dry-run spike over kitchen-sink usecases
 plus the Button skin): 1702 conversion sites, 1411 clean (83%), 291
@@ -1575,8 +1701,8 @@ The codemod can convert statically local cases. It must report cases where:
 - dynamic theme, platform, media, or group objects cannot be resolved;
 - structured React Native values lack a CSS-shaped equivalent.
 
-V3 deprecates the old condition-object path behind `legacyConditionObjects`
-with a codemod and diagnostics; v4 removes it.
+V3 deletes the old condition-object path outright; the codemod's write mode
+and report rows carry the migration (`plans/v3-rip-token-sigil.md` ruling 2).
 
 ### Background shorthand migration
 
@@ -1693,8 +1819,10 @@ with raw values in place of parsed programs.
   repeat names skip lowering entirely; `classNames[longhand] = programClass`.
 - W3: native evaluation with granular subscriptions derived from the union
   of clause modifiers across accumulated programs.
-- W5: the `legacyConditionObjects` gate in the prop loop, feeding converted
-  clauses through the same `contributeProgram` path.
+- W5 (historical staging): the `legacyConditionObjects` gate in the prop
+  loop, feeding converted clauses through the same `contributeProgram` path.
+  It served the A/B comparison below and is deleted along with the legacy
+  parsers.
 
 W1 and W2 are hot-path core surgery and get the closest review; W4 is
 self-contained and precedes them.
@@ -1722,10 +1850,10 @@ claims are measured, never asserted.
 ### The engine contraction
 
 The program model is not a layer beside the engine; at cutover it deletes a
-large slice of it, in V3, not v4. Because `legacyConditionObjects` gates
-input parsing only (decision 23) and old condition objects convert to
-program clauses at the loop entry, the condition machinery inside
-getSplitStyles dies even while the compat setting exists:
+large slice of it, in V3, not v4. Because the `legacyConditionObjects`
+staging gate touched input parsing only and old condition objects converted
+to program clauses at the loop entry, the condition machinery inside
+getSplitStyles died even while the staging gate existed:
 
 - the pseudo-object blocks and `getSubStyle` recursion;
 - the media-object sub-style path and media importance ordering;
@@ -1751,115 +1879,34 @@ W3 landed the same day: native evaluation with the last-matching-clause
 rule, interaction states surfaced through `programStates` so createComponent
 attaches the right events, referenced media keys riding the existing
 `hasMedia` subscription, and the theme chain matched by progressive
-underscore prefixes. Group and container clauses landed on native
-2026-07-29 through the existing GroupContext channel: group clauses read the
-parent's pseudo state (componentState first, context snapshot before the
-first emit), container clauses measure the parent container's layout with
-the same media math the viewport uses, and registration rides the existing
-pseudoGroups/mediaGroups subscription sets, so no new machinery attaches.
-Container context entries are keyed `@` and `@name` — group names cannot
-contain `@`, so both namespaces share one context, and nested providers give
-nearest-container semantics by shadowing. The boolean `container` prop is
-the unnamed inline-size shorthand (decision 17): on web it emits one shared
-`.t_container { container-type: inline-size }` rule, on native it provides
-the measured context; `containerName`/`containerType` stay CSS props on web
-and are stripped from native styles. W5 is in progress as the engine-contraction test bed: with
-`legacyConditionObjects` on, old condition objects convert to clauses and
-run through the program engine instead of the legacy machinery, so the two
-engines can be A/B-compared on the same test suites before the deletion.
-Staging contract while the migration runs: only clause-bearing string values
-divert to programs, and only where the class flush can express them —
-noClass/animated-inline configurations keep the legacy path untouched until
+underscore prefixes. W3 v1 skips group and container clauses on native with
+a development note each (component-tree wiring and measurement are plan
+item 4). W5 served as the engine-contraction test bed: with the staging gate
+on, old condition objects converted to clauses and ran through the program
+engine instead of the legacy machinery, so the two engines were A/B-compared
+on the same test suites before the deletion. The gate and the legacy parsers
+are now deleted; v3 ships flat-only.
+Staging contract while the migration ran: only clause-bearing string values
+diverted to programs, and only where the class flush could express them —
+noClass/animated-inline configurations kept the legacy path untouched until
 W3. Two accepted staging limitations, both resolved by the cutover rather
 than by more machinery: mixing a program with a legacy condition object on
 the SAME longhand (`backgroundColor="red hover:blue"` plus
-`$sm={{ backgroundColor }}`) gives the legacy class the win through its old
-specificity ladder — the codemod never produces that mix, and W5's
-`legacyConditionObjects` gate will warn on it; and the `bg` config shorthand
+`$sm={{ backgroundColor }}`) gave the legacy class the win through its old
+specificity ladder — the codemod never produced that mix, and W5's
+staging gate warned on it; and the `bg` config shorthand
 expands to `backgroundColor` before the program hook, so the background
 family split (url + color in one value) currently requires authoring
 `background` — the v6 config makes `bg` the family prop itself.
-
-A/B evidence (2026-07-29, `TAMAGUI_AB_LEGACY_PROGRAMS=1` forces the gate
-suite-wide; test-only, deleted with the contraction): with every legacy
-condition object routed through the program engine, the full web suite runs
-755/769 and native 408/409. Every web failure is an assertion-shape
-mismatch, none behavioral: legacy per-value atomic class names
-(`_bg-0active-red`) become program-hash classes whose rules were verified
-equivalent (`abProbe.web.test.tsx` pins inline-restates-variant pressStyle
-through conversion), and legacy group container queries lose their
-`@supports (contain: inline-size)` wrapper, `:root:root:root` ladder, and
-group-descendant selector hop — `@container testy (max-width: 800px)
-{ ._c-… {color:red} }` replaces the whole legacy sandwich. Conversion
-hardening from the sweep: legacy `$group-name-media(-state)` keys now split
-into a container query plus group state on one clause (longest registered
-container-size suffix wins, mirroring the legacy two-part-first parse), and
-resetting composite shorthands (`border`, `outline`, `font`,
-`textDecoration`) refuse conversion with `legacy-composite-shorthand` and
-stay on the legacy path until their family split is designed — a program on
-a resetting shorthand would break the order-free cross-program encoding.
-The one native divergence is designed: legacy media-object importance
-ordered by config media-key position; programs are last-match-wins in
-authored order (the web cascade rule), so `$sm` beating a later `$lg` via
-config order does not survive conversion. The codemod orders clauses to
-preserve behavior; flag as a migration note.
-
-Two rulings from the sweep's follow-through. Hover-bearing clauses (subject
-`hover:` and `group-hover`) lower inside an `@media (hover: hover)`
-capability guard, matching both the legacy encoding and Tailwind v4's
-default hover variant, so touch devices never sticky-trigger; the guard is
-a wrapper, so specificity stays (0,1,0), and native evaluation is
-unaffected. And legacy strings that embed `$token` spellings mid-value
-(`0 4px 8px $color5`) rewrite to config-first names during conversion —
-numeric token names (`$4`, `$-2`) included — with quoted/url content and
-dot-path names refusing conversion instead of guessing.
-
-Decision 24 status (2026-07-29): the compiled static fast path holds
-through the shared pipeline with no extractor-specific program code — the
-extractor calls the same getSplitStyles, so `<View width={10}
-backgroundColor="red hover:blue" />` compiles to a literal
-`<div className="is_View _w-10px _bc-…">` with the program block in the
-extracted CSS, and a converted `hoverStyle` object compiles to the
-IDENTICAL program class as its flat spelling (class identity across
-spellings and across the compile/runtime boundary, pinned in
-`static-tests/tests/flatValues.web.test.tsx`: media+token, theme,
-transform-axis-with-composition, legacy-object parity, dynamic bailout).
-Webpack end-to-end render snapshots show program classes in real DOM.
-The standing bailout metric
-(`static-tests/tests/bailoutMetric.web.test.tsx`, run with
-`BAILOUT_METRIC=1`) reads the compiler's own LoweredModuleStats over every
-kitchen-sink usecase. First number, 2026-07-29: 248 usecases, 0 compile
-failures, 2,556 candidate elements, 2,033 lowered, 2,020 flattened to
-plain elements, 523 bailed — a 20.5% bailout rate to drive down.
-
-Landed on the back of that evidence (2026-07-29, v3-beta): the
-noClass/animated-inline web path now evaluates programs at the end of the
-pass exactly like native (platform containment answers `web:`, inline
-values serialize as numbers like native — React and RNW re-suffix px), and
-`legacyConditionObjects` defaults ON, so condition objects convert to
-programs everywhere by default with `false` as the legacy escape hatch.
-Suite assertions that encoded legacy shapes were migrated to program
-shapes with per-case behavioral verification; the media-ordering tests now
-pin the authored-order rule by name. The border family landed the same
-day (`style-grammar/borderFamily.ts`, the background family's model):
-`border`, the four side shorthands, and `outline` split value-dependently
-into width/style/color true-longhand programs — `border` fans out to all
-twelve side longhands so a later `borderColor` restates exactly the color
-clauses — wired into both the authoring parse cache and the conversion
-path (uncached there; conversion is the compat path). Still legacy behind
-fallbacks: exotic transform parts (skews, 3D), `borderBlock`/`borderInline`
-/`font`/`textDecoration`, nested platform chains that refuse conversion,
-and base (unconditional) styles, which never went through this machinery. The physical deletion of the
-legacy condition paths comes once those fallback categories are converted
-or codemod-eliminated; the bundle/branch-count numbers gate stays.
 
 1. Implement the universal value parser: CSS component values, top-level
    clause detection, config-first identifier resolution, reserved words.
 2. Implement per-longhand program expansion and the forward program merge.
 3. Parse and lower literal programs; define and cache runtime parsing for
    permitted dynamic strings.
-4. Land `legacyConditionObjects`, lowering the old condition objects into the
-   same IR with deprecation diagnostics.
+4. Land the `legacyConditionObjects` staging gate, lowering the old condition
+   objects into the same IR for the A/B comparison (done, then deleted with
+   the legacy parsers per `plans/v3-rip-token-sigil.md`).
 5. Make the compiler emit plain elements, skipping the runtime component
    path, when every contribution is static. Track the bailout rate on
    kitchen-sink as a standing metric; the group-workload benchmark gap is the
@@ -1867,7 +1914,8 @@ or codemod-eliminated; the bundle/branch-count numbers gate stays.
 6. Add compiler diagnostics, canonical formatting, the ESLint rule, and
    language-service completions backed by the same engine.
 7. Build the static codemod for `$`, camelCase V6 built-ins, and conditional
-   objects; its final step disables `legacyConditionObjects`.
+   objects; it is the entire migration story now that no compat setting
+   exists.
 8. Migrate representative internal components.
 9. Measure type, runtime, CSS, and bundle effects.
 
@@ -2021,20 +2069,34 @@ locked:
    cascade within an atomically inserted block, order-free cross-program
    dedup by hashed class name. Browser-validated 2026-07-29 in headless
    Chromium: theme+state chains resolve by last-matching-clause, a plain
-   clause after an `@media` block wins at equal specificity, and
+   clause after an `@media` block wins at equal specificity (true of the CSS
+   encoding, which is what that probe inserted; it is NOT reachable from the
+   authored syntax, where a clause payload is space-greedy and a base clause
+   written after a conditional is absorbed into it — see item 8 of the handoff
+   log), and
    runtime-appended blocks behave identically regardless of cross-program
-   insertion order (7/7 probe assertions). WebKit re-check rides the
-   kitchen-sink webkit CI project when this lands as tests. Remaining:
-   prototype streaming SSR and code splitting in a real app.
+   insertion order (7/7 probe assertions). WebKit re-check done
+   (2026-07-30): the `webkit-programs` playwright project runs the cascade and
+   code-split delivery tests under Safari's engine, 6 passing, so the encoding
+   is no longer single-engine evidence. Streaming and code splitting are
+   covered (2026-07-30): `flatValueProgramsStreaming`
+   checks the stream's own chunks rather than the joined document and shows a
+   block is never delivered in pieces, and a kitchen-sink fixture loads a real
+   code-split chunk in a browser and shows that blocks arriving after render
+   leave already-resolved computed styles untouched, that a late program
+   resolves the same as an early one, and that a duplicate arrival stays one
+   class carrying one block. The end-to-end half is covered too: a small
+   streaming server in `code/tests/integration` drives a genuinely chunked
+   response into a browser (shell bytes at ~9ms, suspended content at ~540ms on
+   the same response) and the test asserts the shell is painted and resolved
+   while the late content does not yet exist, then that the late content
+   resolves without moving the shell, then that hydration keeps both. **This
+   item is closed.**
 3. The CSS transition native capability matrix and the migration of the
    existing array and per-property preset object forms (preset resolution
    itself is decided: config-first identifiers).
-4. Native container-query measurement rides the group onLayout channel as of
-   2026-07-29: first render evaluates against the context's layout snapshot
-   (hardcoded width/height parents resolve with zero extra renders, the
-   optimistic path createComponent already had), and measured parents emit
-   one layout update. Remaining: performance gates on the T7 harness and the
-   `untilMeasured` interaction for program children.
+4. Native container-query measurement timing, initial render behavior, and
+   performance gates for explicit query containers.
 5. The complete built-in condition list and collision policy for common
    configs.
 6. How `style()` conditionally composes multiple handles while preserving
@@ -2051,7 +2113,10 @@ locked:
     with the grammar's identifier resolution.
 12. Reactive native safe-area resolution: subscription-based inset updates
     (rotation, foldables) replacing the non-reactive `getInsets()` accessor,
-    plus the not-set-up diagnostic.
+    plus the not-set-up diagnostic. Shipped: `resolveSafeAreaVariable.native.ts`
+    exposes `subscribeToSafeArea`, `createComponent.tsx` and `useProps.tsx`
+    subscribe so rotation re-renders, and the missing-setup case warns once in
+    dev naming the import. **This item is closed.**
 
 Each prototype must end with one chosen path. The implementation must not ship
 multiple equivalent syntaxes or runtime fallback paths.
@@ -2060,6 +2125,11 @@ multiple equivalent syntaxes or runtime fallback paths.
 
 - `plans/react-native-style-capabilities.md` — RN 0.78→0.87 style-prop survey
   (2026-07): what the flat grammar can claim natively, per-platform gaps
+- `plans/v3-web-values-and-fluid-sizing.md` — proposal (2026-08): promoting
+  web-only style props to shared code and dropping them on native, which units
+  native evaluates (viewport family yes, math functions no), fluid values and
+  container units as the replacement for breakpoint-first responsive design,
+  and the 2026 CSS features worth first-class support
 - [React Strict DOM common props](https://facebook.github.io/react-strict-dom/api/html/common/)
 - [React Strict DOM HTML compatibility](https://facebook.github.io/react-strict-dom/api/html/)
 - [React Strict DOM CSS compatibility](https://facebook.github.io/react-strict-dom/api/css/)

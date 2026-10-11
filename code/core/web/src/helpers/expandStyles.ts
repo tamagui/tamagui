@@ -2,16 +2,6 @@ import { isWeb } from '@tamagui/constants'
 import { normalizeShadow } from './normalizeShadow'
 
 export function fixStyles(style: Record<string, any>) {
-  if (process.env.TAMAGUI_TARGET === 'native') {
-    if ('elevationAndroid' in style) {
-      // @ts-ignore
-      style['elevation'] = style.elevationAndroid
-      // @ts-ignore
-      delete style.elevationAndroid
-    }
-  }
-
-  // TODO deprecate for web-style shadows
   if (
     style.shadowRadius != null ||
     style.shadowColor ||
@@ -38,5 +28,10 @@ const borderDefaults = {
   borderTopWidth: nativeStyle || 'borderTopStyle',
   borderLeftWidth: nativeStyle || 'borderLeftStyle',
   borderRightWidth: nativeStyle || 'borderRightStyle',
-  // TODO: need to add borderBlock and borderInline here, but they are alot and might impact performance
+  borderBlockWidth: nativeStyle || 'borderBlockStyle',
+  borderBlockStartWidth: nativeStyle || 'borderBlockStartStyle',
+  borderBlockEndWidth: nativeStyle || 'borderBlockEndStyle',
+  borderInlineWidth: nativeStyle || 'borderInlineStyle',
+  borderInlineStartWidth: nativeStyle || 'borderInlineStartStyle',
+  borderInlineEndWidth: nativeStyle || 'borderInlineEndStyle',
 }

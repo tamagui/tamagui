@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "runtime": "node",
+    "runtimeVersion": "v24.3.0",
+    "bunVersion": "1.3.14",
+    "cpu": "Apple M3 Max",
+    "cpuCount": 16,
+    "command": "bun --expose-gc src/harness/run.ts"
+  },
+  "packageVersions": {
+    "oxcParser": "0.112.0",
+    "yukuAnalyzer": "0.6.1",
+    "magicString": "0.30.21",
+    "traceMapping": "0.3.31"
+  },
+  "thresholds": {
+    "correctnessAndMaps": "absolute",
+    "warmP95Ms": 50,
+    "warmToColdMedianRatio": 0.25,
+    "yukuApi": "public API only; no patch, fork, or internal imports"
+  },
+  "correctness": [
+    {
+      "candidate": "yuku",
+      "fixtureCount": 8,
+      "definitionReferenceChecks": 4,
+      "sourceMapChecks": 1
+    },
+    {
+      "candidate": "oxc-owned",
+      "fixtureCount": 8,
+      "definitionReferenceChecks": 4,
+      "sourceMapChecks": 1
+    }
+  ],
+  "measurements": [
+    {
+      "candidate": "yuku",
+      "moduleCount": 1000,
+      "cold": {
+        "medianMs": 64.707875,
+        "p95Ms": 153.272042,
+        "samples": 10
+      },
+      "warm": {
+        "medianMs": 9.382041999999956,
+        "p95Ms": 20.570249999999987,
+        "samples": 100
+      },
+      "warmToColdRatio": 0.31789407394385905,
+      "unaffectedReparseCount": 0,
+      "affectedModuleCount": 500,
+      "gates": {
+        "warmUnder50Ms": true,
+        "warmUnder25PercentCold": false,
+        "exactInvalidation": true,
+        "noUnaffectedReparse": true
+      },
+      "memory": {
+        "heapDeltaBytes": 0,
+        "rssDeltaBytes": 20037632
+      }
+    },
+    {
+      "candidate": "oxc-owned",
+      "moduleCount": 1000,
+      "cold": {
+        "medianMs": 136.092084,
+        "p95Ms": 288.8000420000001,
+        "samples": 10
+      },
+      "warm": {
+        "medianMs": 1.7433750000000146,
+        "p95Ms": 25.375332999999955,
+        "samples": 100
+      },
+      "warmToColdRatio": 0.18645708298507616,
+      "unaffectedReparseCount": 0,
+      "affectedModuleCount": 500,
+      "gates": {
+        "warmUnder50Ms": true,
+        "warmUnder25PercentCold": true,
+        "exactInvalidation": true,
+        "noUnaffectedReparse": true
+      },
+      "memory": {
+        "heapDeltaBytes": 0,
+        "rssDeltaBytes": 50069504
+      }
+    }
+  ]
+}

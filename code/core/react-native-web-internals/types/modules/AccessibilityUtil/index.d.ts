@@ -6,11 +6,12 @@
  *
  * @flow
  */
+import { isDisabled } from './isDisabled';
+import { propsToAccessibilityComponent } from './propsToAccessibilityComponent';
+import { propsToAriaRole } from './propsToAriaRole';
 export declare const AccessibilityUtil: {
-    isDisabled: (props: Record<string, any>) => boolean;
-    propsToAccessibilityComponent: (props?: object) => void | string;
-    propsToAriaRole: ({ accessibilityRole, }: {
-        accessibilityRole?: string;
-    }) => string | void;
+    isDisabled: typeof isDisabled;
+    propsToAccessibilityComponent: typeof propsToAccessibilityComponent;
+    propsToAriaRole: typeof propsToAriaRole;
 };
 //# sourceMappingURL=index.d.ts.map

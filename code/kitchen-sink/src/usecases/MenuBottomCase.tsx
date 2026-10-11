@@ -1,5 +1,6 @@
 import { Menu } from '@tamagui/menu'
-import { Button, YStack } from 'tamagui'
+import { YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Menu bottom placement test - menu opens below trigger and stays there
@@ -11,18 +12,14 @@ export function MenuBottomCase() {
   return (
     <YStack
       data-testid="container"
-      $platform-web={{
-        height: '100vh',
-      }}
+      height="web:100vh"
       justifyContent="flex-start"
       alignItems="center"
-      paddingTop="$8"
+      paddingTop="8"
     >
       <Menu placement="bottom-start" stayInFrame allowFlip={false}>
         <Menu.Trigger asChild>
-          <Button data-testid="menu-trigger" size="$4">
-            Open Menu Below
-          </Button>
+          <Button data-testid="menu-trigger">Open Menu Below</Button>
         </Menu.Trigger>
 
         <Menu.Portal zIndex={100}>
@@ -30,9 +27,9 @@ export function MenuBottomCase() {
             data-testid="menu-content"
             minWidth={200}
             borderWidth={1}
-            borderColor="$borderColor"
-            elevation="$3"
-            padding="$2"
+            borderColor="border-color"
+            boxShadow="0 4px 12px shadow-color"
+            padding="2"
           >
             <Menu.ScrollView data-testid="menu-scroll-view">
               {Array.from({ length: ITEM_COUNT }).map((_, i) => (
@@ -41,7 +38,7 @@ export function MenuBottomCase() {
                   key={`item-${i}`}
                   textValue={`Item ${i + 1}`}
                   style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
-                  focusStyle={{ backgroundColor: '$backgroundHover' }}
+                  backgroundColor="focus:background-hover"
                 >
                   <Menu.ItemTitle>Item {i + 1}</Menu.ItemTitle>
                 </Menu.Item>

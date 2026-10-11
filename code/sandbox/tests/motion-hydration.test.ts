@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 /**
  * Tests for motion driver hydration behavior.
  *
- * Elements with enterStyle should NOT animate on initial page load.
+ * Elements with enter clause should NOT animate on initial page load.
  * They should render at their final position immediately without any
  * "flying across the page" effect.
  *

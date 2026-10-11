@@ -169,6 +169,17 @@ test('classifies simulator FBSOpenApplicationServiceErrorDomain as flake', () =>
   expect(realFiles).toEqual([])
 })
 
+test('classifies a runner-wide Android root-focus failure as a flake', () => {
+  const output = `
+FAIL e2e/CompilerExtraction.test.ts (22.8 s)
+  ● CompilerExtraction › renders
+    Test Failed: Waited for the root of the view hierarchy to have window focus and not request layout for 10 seconds.
+`
+  const { flakeFiles, realFiles } = classifyDetoxFailures(output)
+  expect(flakeFiles).toEqual(['e2e/CompilerExtraction.test.ts'])
+  expect(realFiles).toEqual([])
+})
+
 test('classifies teardown timeout + cascading worker failure as flake', () => {
   const { failedFiles, flakeFiles, realFiles } = classifyDetoxFailures(
     JUNE17_TEARDOWN_CASCADE

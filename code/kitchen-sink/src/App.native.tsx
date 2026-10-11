@@ -37,7 +37,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { useFonts } from 'expo-font'
 import React from 'react'
-import { Appearance, Linking, LogBox, Text, useColorScheme } from 'react-native'
+import { Appearance, Linking, LogBox, Platform, Text, useColorScheme } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { PortalProvider } from 'react-native-teleport'
 import { H1 } from 'tamagui'
@@ -61,19 +61,18 @@ export default function App() {
 
   const systemColorScheme = useColorScheme()
 
-  // Resolved theme based on mode
-  // useColorScheme can return null (RN 0.83+) or 'unspecified' (after setColorScheme('unspecified'))
   const scheme = mode === 'system' ? systemColorScheme : mode
-  const resolvedTheme = (scheme && scheme !== 'unspecified' ? scheme : null) || 'light'
+  const resolvedTheme = scheme || 'light'
 
   // Update Appearance when mode changes (for native components)
   React.useEffect(() => {
-    if (mode === 'system') {
-      // RN 0.83+ Kotlin conversion makes setColorScheme non-null on Android
-      // pass 'unspecified' to follow system
-      Appearance.setColorScheme('unspecified' as any)
-    } else {
+    if (mode !== 'system') {
       Appearance.setColorScheme(mode)
+      return
+    }
+    // android needs an explicit reset to follow the system appearance.
+    if (Platform.OS === 'android') {
+      Appearance.setColorScheme('auto')
     }
   }, [mode])
 

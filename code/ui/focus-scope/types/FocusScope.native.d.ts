@@ -1,4 +1,3 @@
-import React from 'react';
 import type { FocusScopeProps } from './types';
-export declare const FocusScope: React.ForwardRefExoticComponent<FocusScopeProps & React.RefAttributes<unknown>>;
+export declare const FocusScope: import("@tamagui/compose-refs").RefComponent<unknown, FocusScopeProps>;
 //# sourceMappingURL=FocusScope.native.d.ts.map

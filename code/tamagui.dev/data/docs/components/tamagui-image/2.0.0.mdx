@@ -1,11 +1,16 @@
 ---
 title: Image
-description: Web compatible and super light image component with Tamagui style props
+description: Lightweight web-compatible image with Tamagui style props
 name: tamagui-image
 component: Image
 package: image
 demoName: WebNativeImageDemo
 ---
+
+<IntroParagraph>
+  This lightweight Image component renders on web and native with Tamagui style
+  props and no react-native-web dependency.
+</IntroParagraph>
 
 <HeroContainer noPad>
   <WebNativeImageDemo />
@@ -17,11 +22,9 @@ demoName: WebNativeImageDemo
 
 <Highlights
   features={[
-    'Web compatible.',
-    'Supports SSR.',
-    'Works on native and web.',
-    'No react-native-web dependency.',
-    'Super light.',
+    'Web and native support',
+    'Server rendering support',
+    'No react-native-web dependency',
   ]}
 />
 
@@ -39,7 +42,7 @@ npm install @tamagui/image
 export default () => <Image src="https://..." width={300} height={400} />
 ```
 
-## API Reference
+## API reference
 
 ### Image
 
@@ -48,11 +51,10 @@ export default () => <Image src="https://..." width={300} height={400} />
 [React Native Image props](https://necolas.github.io/react-native-web/docs/image/).
 
 <Notice>
-  All web [img](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img) props are
-  supported on web, and all native
-  [Image](https://necolas.github.io/react-native-web/docs/image/) props are supported on
-  native. On native we are still using web img APIs, but not all web img props are
-  supported, like `decoding`.
+  All web [img](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img)
+  props are supported on web, and all native
+  [Image](https://reactnative.dev/docs/image) props are supported on native. Not
+  every web img prop (like `decoding`) is supported on native.
 </Notice>
 
 #### Some common props
@@ -61,8 +63,8 @@ export default () => <Image src="https://..." width={300} height={400} />
   data={[
     {
       name: 'src',
-      required: true,
-      type: 'string',
+      required: false,
+      type: 'string | number',
       description: `The image URL.`,
     },
     {

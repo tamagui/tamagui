@@ -24,9 +24,6 @@
     },
     {
       "path": "../../core/use-controllable-state"
-    },
-    {
-      "path": "../stacks"
     }
   ],
   "exclude": [

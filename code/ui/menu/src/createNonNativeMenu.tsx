@@ -1,3 +1,4 @@
+import { createStyledHOC, createRefComponent } from '@tamagui/core'
 import type * as BaseMenuTypes from '@tamagui/create-menu'
 import {
   type MenuArrowProps as BaseMenuArrowProps,
@@ -14,7 +15,6 @@ import {
   type MenuSubContentProps as BaseMenuSubContentProps,
   type MenuSubTriggerProps as BaseMenuSubTriggerProps,
   createBaseMenu,
-  type CreateBaseMenuProps,
 } from '@tamagui/create-menu'
 import { usePopperContextSlow } from '@tamagui/popper'
 import { ScrollView, type ScrollViewProps } from '@tamagui/scroll-view'
@@ -49,6 +49,120 @@ type ScopedProps<P> = P & { scope?: string }
 
 type MenuTriggerStateSetter = React.Dispatch<React.SetStateAction<boolean>>
 
+type TriggerGroupEntry = {
+  id: string
+  ref: React.RefObject<TamaguiElement | null>
+  openRef: React.RefObject<boolean>
+  disabled: boolean
+  activate(): void
+  focusContent(): void
+  onOpenChange(open: boolean): void
+}
+
+type TriggerGroupContextValue = {
+  dir: Direction
+  tabStopId: string | null
+  register(entry: TriggerGroupEntry): () => void
+  activate(entry: TriggerGroupEntry): void
+  isOpen(): boolean
+  isActive(openRef: React.RefObject<boolean>): boolean
+  contains(target: EventTarget | null): boolean
+  move(id: string, key: string, open: boolean): void
+  onFocus(id: string): void
+}
+
+type MenuTriggerGroupProps = ViewProps & { dir?: Direction }
+
+const TriggerGroupContext = React.createContext<TriggerGroupContextValue | null>(null)
+
+const MenuTriggerGroup = createStyledHOC(
+  View,
+  ({ children, dir = 'ltr', ...props }: MenuTriggerGroupProps, forwardedRef) => {
+    const entries = React.useRef(new Map<string, TriggerGroupEntry>())
+    const active = React.useRef<TriggerGroupEntry | null>(null)
+    const [tabStopId, setTabStopId] = React.useState<string | null>(null)
+    const register = useEvent((entry: TriggerGroupEntry) => {
+      entries.current.set(entry.id, entry)
+      if (!entry.disabled) setTabStopId((id) => id ?? entry.id)
+      return () => {
+        entries.current.delete(entry.id)
+        if (active.current === entry) active.current = null
+        setTabStopId((id) =>
+          id === entry.id
+            ? ([...entries.current.values()].find((item) => !item.disabled)?.id ?? null)
+            : id
+        )
+      }
+    })
+    const activate = useEvent((entry: TriggerGroupEntry) => {
+      const previous = active.current
+      active.current = entry
+      setTabStopId(entry.id)
+      if (previous && previous.openRef !== entry.openRef && previous.openRef.current) {
+        previous.onOpenChange(false)
+      }
+      entry.activate()
+    })
+    const isOpen = useEvent(() => Boolean(active.current?.openRef.current))
+    const isActive = useEvent(
+      (openRef: React.RefObject<boolean>) => active.current?.openRef === openRef
+    )
+    const contains = useEvent((target: EventTarget | null) =>
+      [...entries.current.values()].some((entry) =>
+        (entry.ref.current as HTMLElement | null)?.contains(target as Node)
+      )
+    )
+    const move = useEvent((id: string, key: string, open: boolean) => {
+      const ordered = [...entries.current.values()]
+        .filter((entry) => !entry.disabled)
+        .sort((a, b) => {
+          const first = a.ref.current as HTMLElement | null
+          const second = b.ref.current as HTMLElement | null
+          return first && second && first.compareDocumentPosition(second) & 2 ? 1 : -1
+        })
+      const index = ordered.findIndex((entry) => entry.id === id)
+      if (index === -1) return
+      const step = (key === 'ArrowRight') === (dir === 'ltr') ? 1 : -1
+      const next = ordered[(index + step + ordered.length) % ordered.length]
+      next.ref.current?.focus?.()
+      if (open) {
+        activate(next)
+        next.onOpenChange(true)
+        requestAnimationFrame(() => next.focusContent())
+      }
+    })
+    const onFocus = useEvent((id: string) => setTabStopId(id))
+    const value = React.useMemo(
+      () => ({
+        dir,
+        tabStopId,
+        register,
+        activate,
+        isOpen,
+        isActive,
+        contains,
+        move,
+        onFocus,
+      }),
+      [dir, tabStopId, register, activate, isOpen, isActive, contains, move, onFocus]
+    )
+    return (
+      <TriggerGroupContext.Provider value={value}>
+        <View
+          flexDirection="row"
+          role="menubar"
+          {...props}
+          {...(isWeb && { dir })}
+          ref={forwardedRef}
+        >
+          {children}
+        </View>
+      </TriggerGroupContext.Provider>
+    )
+  }
+)
+MenuTriggerGroup.displayName = 'MenuTriggerGroup'
+
 type MenuContextValue = {
   triggerId: string
   triggerRef: React.RefObject<TamaguiElement | null>
@@ -58,13 +172,26 @@ type MenuContextValue = {
   onOpenToggle(): void
   modal: boolean
   setActiveTrigger(id: string | null): void
-  registerTrigger(id: string, setOpen: MenuTriggerStateSetter): void
+  registerTrigger(
+    id: string,
+    setOpen: MenuTriggerStateSetter,
+    group: TriggerGroupContextValue | null
+  ): void
   unregisterTrigger(id: string): void
+  activeTriggerIdRef: React.RefObject<string | null>
+  activeGroupRef: React.RefObject<TriggerGroupContextValue | null>
 }
 
 function useMenuTriggerSetup(open: boolean) {
   const triggerStateSettersRef = React.useRef(new Map<string, MenuTriggerStateSetter>())
   const activeTriggerIdRef = React.useRef<string | null>(null)
+  const triggerGroupsRef = React.useRef(
+    new Map<string, TriggerGroupContextValue | null>()
+  )
+  const activeGroupRef = React.useRef<TriggerGroupContextValue | null>(null)
+  const [activeGroup, setActiveGroup] = React.useState<TriggerGroupContextValue | null>(
+    null
+  )
 
   const setActiveTrigger = useEvent((id: string | null) => {
     const prevId = activeTriggerIdRef.current
@@ -73,20 +200,32 @@ function useMenuTriggerSetup(open: boolean) {
       triggerStateSettersRef.current.get(prevId)?.(false)
     }
     activeTriggerIdRef.current = id
+    activeGroupRef.current = id ? (triggerGroupsRef.current.get(id) ?? null) : null
+    setActiveGroup(activeGroupRef.current)
     if (id && open) {
       triggerStateSettersRef.current.get(id)?.(true)
     }
   })
 
-  const registerTrigger = useEvent((id: string, setOpenState: MenuTriggerStateSetter) => {
-    triggerStateSettersRef.current.set(id, setOpenState)
-    setOpenState(activeTriggerIdRef.current === id && open)
-  })
+  const registerTrigger = useEvent(
+    (
+      id: string,
+      setOpenState: MenuTriggerStateSetter,
+      group: TriggerGroupContextValue | null
+    ) => {
+      triggerGroupsRef.current.set(id, group)
+      triggerStateSettersRef.current.set(id, setOpenState)
+      setOpenState(activeTriggerIdRef.current === id && open)
+    }
+  )
 
   const unregisterTrigger = useEvent((id: string) => {
     triggerStateSettersRef.current.delete(id)
+    triggerGroupsRef.current.delete(id)
     if (activeTriggerIdRef.current === id) {
       activeTriggerIdRef.current = null
+      activeGroupRef.current = null
+      setActiveGroup(null)
     }
   })
 
@@ -101,7 +240,14 @@ function useMenuTriggerSetup(open: boolean) {
     }
   }, [open, setActiveTrigger])
 
-  return { setActiveTrigger, registerTrigger, unregisterTrigger }
+  return {
+    setActiveTrigger,
+    registerTrigger,
+    unregisterTrigger,
+    activeTriggerIdRef,
+    activeGroupRef,
+    activeGroup,
+  }
 }
 
 interface MenuProps extends BaseMenuTypes.MenuProps {
@@ -118,6 +264,7 @@ interface MenuProps extends BaseMenuTypes.MenuProps {
  * -----------------------------------------------------------------------------------------------*/
 
 interface MenuTriggerProps extends ViewProps {
+  /** @deprecated misspelled, use `onKeyDown` (this alias is honored when `onKeyDown` is absent) */
   onKeydown?(event: React.KeyboardEvent): void
 }
 
@@ -131,7 +278,6 @@ type MenuPortalProps = BaseMenuPortalProps
  * MenuContent
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuContentElement = TamaguiElement
 interface MenuContentProps extends Omit<BaseMenuContentProps, 'onEntryFocus'> {}
 
 /* -------------------------------------------------------------------------------------------------
@@ -192,7 +338,6 @@ type MenuSubTriggerProps = BaseMenuSubTriggerProps
  * MenuSubContent
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuSubContentElement = TamaguiElement
 type MenuSubContentProps = BaseMenuSubContentProps
 
 /* -------------------------------------------------------------------------------------------------
@@ -203,8 +348,8 @@ type MenuScrollViewProps = ScrollViewProps
 
 /* -----------------------------------------------------------------------------------------------*/
 
-export function createNonNativeMenu(params: CreateBaseMenuProps) {
-  const { Menu } = createBaseMenu(params)
+export function createNonNativeMenu() {
+  const { Menu } = createBaseMenu()
 
   /* -------------------------------------------------------------------------------------------------
    * Menu
@@ -226,6 +371,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
       modal = true,
       ...rest
     } = props
+    const outerGroup = React.useContext(TriggerGroupContext)
     const triggerRef = React.useRef<TamaguiElement>(null)
     const [open = false, setOpen] = useControllableState({
       prop: openProp,
@@ -234,8 +380,15 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
     })
     const openRef = React.useRef(open)
     openRef.current = open
-    const { setActiveTrigger, registerTrigger, unregisterTrigger } =
-      useMenuTriggerSetup(open)
+    const {
+      setActiveTrigger,
+      registerTrigger,
+      unregisterTrigger,
+      activeTriggerIdRef,
+      activeGroupRef,
+      activeGroup,
+    } = useMenuTriggerSetup(open)
+    const effectiveModal = outerGroup || activeGroup ? false : modal
 
     return (
       <MenuProvider
@@ -252,17 +405,19 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
           () => setOpen((prevOpen) => !prevOpen),
           [setOpen]
         )}
-        modal={modal}
+        modal={effectiveModal}
         setActiveTrigger={setActiveTrigger}
         registerTrigger={registerTrigger}
         unregisterTrigger={unregisterTrigger}
+        activeTriggerIdRef={activeTriggerIdRef}
+        activeGroupRef={activeGroupRef}
       >
         <Menu
           scope={scope || DROPDOWN_MENU_CONTEXT}
           open={open}
           onOpenChange={setOpen}
-          dir={dir}
-          modal={modal}
+          dir={dir ?? outerGroup?.dir}
+          modal={effectiveModal}
           {...rest}
         >
           {children}
@@ -281,17 +436,20 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
 
   const MenuTriggerFrame = Menu.Anchor
 
-  const MenuTrigger = View.styleable<ScopedProps<MenuTriggerProps>>(
-    (props, forwardedRef) => {
+  const MenuTrigger = createStyledHOC(
+    View,
+    (props: ScopedProps<MenuTriggerProps>, forwardedRef) => {
       const {
         scope,
         asChild,
         children,
         disabled = false,
         onKeydown,
+        onKeyDown = onKeydown,
         ...triggerProps
       } = props
       const context = useMenuContext(scope)
+      const group = React.useContext(TriggerGroupContext)
       const popperCtx = usePopperContextSlow(scope || DROPDOWN_MENU_CONTEXT)
       const Comp = asChild ? Slot : View
       const isTouchDevice = useIsTouchDevice()
@@ -304,9 +462,9 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
       // extract stable refs so re-registration doesn't happen when context object changes
       const { registerTrigger, unregisterTrigger } = context
       React.useEffect(() => {
-        registerTrigger(triggerId, setTriggerOpen)
+        registerTrigger(triggerId, setTriggerOpen, group)
         return () => unregisterTrigger(triggerId)
-      }, [registerTrigger, unregisterTrigger, triggerId])
+      }, [registerTrigger, unregisterTrigger, triggerId, group?.register])
 
       // activate this trigger: set popper reference and update shared triggerRef for close-auto-focus
       const activateSelf = React.useCallback(() => {
@@ -322,6 +480,40 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
         }
       }, [context, triggerId, popperCtx])
 
+      const activate = useEvent(activateSelf)
+      const focusContent = useEvent(() => {
+        document
+          .getElementById(context.contentId)
+          ?.querySelector<HTMLElement>('[role^="menuitem"]:not([data-disabled])')
+          ?.focus()
+      })
+      const entry = React.useRef<TriggerGroupEntry>(null!)
+      if (!entry.current) {
+        entry.current = {
+          id: triggerId,
+          ref: triggerElRef,
+          openRef: context.openRef,
+          disabled,
+          activate,
+          focusContent,
+          onOpenChange: context.onOpenChange,
+        }
+      }
+      entry.current.disabled = disabled
+      entry.current.onOpenChange = context.onOpenChange
+      const registerGroup = group?.register
+      React.useEffect(() => registerGroup?.(entry.current), [registerGroup])
+      const openSelf = () => {
+        if (group) group.activate(entry.current)
+        else activateSelf()
+      }
+
+      const shouldRejectHover = () =>
+        disabled ||
+        (context.openRef.current &&
+          context.activeTriggerIdRef.current !== triggerId &&
+          !group?.isActive(context.openRef))
+
       // Use onClick for touch devices to avoid race condition with Dismissable
       // Use onPointerDown for mouse for faster feedback
       const pressEvent = isWeb ? (isTouchDevice ? 'onClick' : 'onPointerDown') : 'onPress'
@@ -329,11 +521,12 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
       return (
         <MenuTriggerFrame
           asChild
-          componentName={TRIGGER_NAME}
+          className={`is_${TRIGGER_NAME}`}
           scope={scope || DROPDOWN_MENU_CONTEXT}
         >
           <Comp
-            role="button"
+            role={group ? 'menuitem' : 'button'}
+            tabIndex={group ? (group.tabStopId === triggerId ? 0 : -1) : undefined}
             id={context.triggerId}
             aria-haspopup="menu"
             aria-expanded={triggerOpen}
@@ -341,7 +534,42 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
             data-state={triggerOpen ? 'open' : 'closed'}
             data-disabled={disabled ? '' : undefined}
             aria-disabled={disabled || undefined}
-            ref={composeRefs(forwardedRef, context.triggerRef, triggerElRef)}
+            ref={composeRefs(
+              forwardedRef,
+              group ? undefined : context.triggerRef,
+              triggerElRef
+            )}
+            // caller props come first: the composed handlers below already call
+            // the caller's own handler, so spreading them after would let a
+            // caller's onPointerDown/onClick/onPress or onKeyDown replace the
+            // one that opens the menu. the press prop stays read off `props`
+            // because which of the three opens the menu is decided at runtime.
+            {...triggerProps}
+            onFocus={composeEventHandlers(props.onFocus, () => {
+              if (!disabled) group?.onFocus(triggerId)
+            })}
+            onPointerEnter={(event) => {
+              // popper checks this child handler before changing its reference.
+              if (shouldRejectHover()) {
+                event.preventDefault()
+                return
+              }
+              props.onPointerEnter?.(event)
+            }}
+            onMouseEnter={(event) => {
+              // reject before caller handlers can change the shared descriptor.
+              if (shouldRejectHover()) {
+                event.preventDefault()
+                return
+              }
+              composeEventHandlers(props.onMouseEnter, () => {
+                if (group?.isOpen() && !triggerOpen) {
+                  triggerElRef.current?.focus?.()
+                  openSelf()
+                  context.onOpenChange(true)
+                }
+              })?.(event)
+            }}
             {...{
               [pressEvent]: composeEventHandlers(
                 //@ts-ignore
@@ -360,7 +588,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
                     if (context.openRef.current) {
                       context.setActiveTrigger(null)
                     } else {
-                      activateSelf()
+                      openSelf()
                     }
                     context.onOpenToggle()
                     // prevent trigger focusing when opening
@@ -371,18 +599,23 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
               ),
             }}
             {...(isWeb && {
-              onKeyDown: composeEventHandlers(onKeydown, (event) => {
+              onKeyDown: composeEventHandlers(onKeyDown, (event) => {
                 if (disabled) return
+                if (group && ['ArrowLeft', 'ArrowRight'].includes(event.key)) {
+                  group.move(triggerId, event.key, group.isOpen())
+                  event.preventDefault()
+                  return
+                }
                 if (['Enter', ' '].includes(event.key)) {
                   if (context.openRef.current) {
                     context.setActiveTrigger(null)
                   } else {
-                    activateSelf()
+                    openSelf()
                   }
                   context.onOpenToggle()
                 }
                 if (event.key === 'ArrowDown') {
-                  activateSelf()
+                  openSelf()
                   context.onOpenChange(true)
                 }
                 // prevent keydown from scrolling window / first focused item to execute
@@ -391,7 +624,6 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
                   event.preventDefault()
               }),
             })}
-            {...triggerProps}
           >
             {children}
           </Comp>
@@ -433,8 +665,9 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
 
   const CONTENT_NAME = 'MenuContent'
 
-  const MenuContent = React.forwardRef<MenuContentElement, ScopedProps<MenuContentProps>>(
-    (props, forwardedRef) => {
+  const MenuContent = createStyledHOC(
+    Menu.Content,
+    (props: ScopedProps<MenuContentProps>, forwardedRef) => {
       const { scope, ...contentProps } = props
       const context = useMenuContext(scope)
       const hasInteractedOutsideRef = React.useRef(false)
@@ -446,7 +679,30 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
           scope={scope || DROPDOWN_MENU_CONTEXT}
           {...contentProps}
           ref={forwardedRef}
+          onKeyDown={composeEventHandlers(props.onKeyDown, (event) => {
+            const group = context.activeGroupRef.current
+            if (!group || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return
+            // submenu handlers own their open/close keys, including portal bubbling
+            const target = event.target as HTMLElement
+            if (target.closest('[data-tamagui-menu-content]') !== event.currentTarget)
+              return
+            if (
+              target.closest('[aria-haspopup="menu"]') &&
+              event.key === (group.dir === 'rtl' ? 'ArrowLeft' : 'ArrowRight')
+            )
+              return
+            const id = context.activeTriggerIdRef.current
+            if (id) {
+              group.move(id, event.key, true)
+              event.preventDefault()
+            }
+          })}
           onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
+            const group = context.activeGroupRef.current
+            if (group && !group.isActive(context.openRef)) {
+              event.cancel()
+              return
+            }
             if (!hasInteractedOutsideRef.current) {
               // delay to let React render new components and run their autoFocus effects
               requestAnimationFrame(() => {
@@ -458,10 +714,15 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
             }
             hasInteractedOutsideRef.current = false
             // Always prevent auto focus because we either focus manually or want user agent focus
-            event.preventDefault()
+            event.cancel()
           })}
           onInteractOutside={composeEventHandlers(props.onInteractOutside, (event) => {
-            const originalEvent = event.detail.originalEvent as PointerEvent
+            if (context.activeGroupRef.current?.contains(event.event?.target ?? null)) {
+              event.cancel()
+              return
+            }
+            if (event.interaction !== 'pointer' || !event.event) return
+            const originalEvent = event.event
             const ctrlLeftClick =
               originalEvent.button === 0 && originalEvent.ctrlKey === true
             const isRightClick = originalEvent.button === 2 || ctrlLeftClick
@@ -526,37 +787,38 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
 
   const SUB_CONTENT_NAME = 'MenuSubContent'
 
-  const MenuSubContent = React.forwardRef<
-    MenuSubContentElement,
-    ScopedProps<MenuSubContentProps>
-  >((props, forwardedRef) => {
-    const { scope, ...subContentProps } = props
+  const MenuSubContent = createStyledHOC(
+    Menu.SubContent,
+    (props: ScopedProps<MenuSubContentProps>, forwardedRef) => {
+      const { scope, ...subContentProps } = props
 
-    return (
-      <Menu.SubContent
-        scope={scope || DROPDOWN_MENU_CONTEXT}
-        {...subContentProps}
-        ref={forwardedRef}
-        style={
-          isWeb
-            ? {
-                ...(props.style as object),
-                ...({
-                  '--tamagui-menu-content-transform-origin':
-                    'var(--tamagui-popper-transform-origin)',
-                  '--tamagui-menu-content-available-width':
-                    'var(--tamagui-popper-available-width)',
-                  '--tamagui-menu-content-available-height':
-                    'var(--tamagui-popper-available-height)',
-                  '--tamagui-menu-trigger-width': 'var(--tamagui-popper-anchor-width)',
-                  '--tamagui-menu-trigger-height': 'var(--tamagui-popper-anchor-height)',
-                } as React.CSSProperties),
-              }
-            : null
-        }
-      />
-    )
-  })
+      return (
+        <Menu.SubContent
+          scope={scope || DROPDOWN_MENU_CONTEXT}
+          {...subContentProps}
+          ref={forwardedRef}
+          style={
+            isWeb
+              ? {
+                  ...(props.style as object),
+                  ...({
+                    '--tamagui-menu-content-transform-origin':
+                      'var(--tamagui-popper-transform-origin)',
+                    '--tamagui-menu-content-available-width':
+                      'var(--tamagui-popper-available-width)',
+                    '--tamagui-menu-content-available-height':
+                      'var(--tamagui-popper-available-height)',
+                    '--tamagui-menu-trigger-width': 'var(--tamagui-popper-anchor-width)',
+                    '--tamagui-menu-trigger-height':
+                      'var(--tamagui-popper-anchor-height)',
+                  } as React.CSSProperties),
+                }
+              : null
+          }
+        />
+      )
+    }
+  )
 
   MenuSubContent.displayName = SUB_CONTENT_NAME
 
@@ -567,17 +829,14 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
   const MenuScrollView = styled(ScrollView, {
     flexShrink: 1,
     alignSelf: 'stretch',
+    maxHeight: 'web:var(--tamagui-menu-content-available-height)',
     showsHorizontalScrollIndicator: false,
     showsVerticalScrollIndicator: false,
-
-    '$platform-web': {
-      maxHeight: 'var(--tamagui-menu-content-available-height)',
-    },
   })
 
   /* -----------------------------------------------------------------------------------------------*/
 
-  // direct pass-through from base menu (preserves styleable)
+  // direct pass-through from base menu preserves the wrapped styled components
   const Group = Menu.Group
   const Label = Menu.Label
   const Item = Menu.Item
@@ -597,6 +856,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
   return withStaticProperties(MenuComp, {
     Root: MenuComp,
     Trigger: MenuTrigger,
+    TriggerGroup: MenuTriggerGroup,
     Portal: MenuPortal,
     Content: MenuContent,
     Group,
@@ -636,4 +896,5 @@ export type {
   MenuSubProps,
   MenuSubTriggerProps,
   MenuTriggerProps,
+  MenuTriggerGroupProps,
 }

@@ -1,10 +1,14 @@
 process.env.TAMAGUI_TARGET = 'native'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { View, createTamagui } from '@tamagui/core'
+// TamaguiProvider must come from the same built module as View/createTamagui —
+// importing it from ../core/src/index loads a second copy of the package whose
+// setupHooks overwrites the built one's hooks with closures over a broken
+// (web-resolved, null) baseViews. gesture freeze state is global-keyed so the
+// built provider works with the source gestureState import below.
+import { TamaguiProvider, View, createTamagui } from '@tamagui/core'
 import { render } from '@testing-library/react-native'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
-import { TamaguiProvider } from '../core/src/index'
 import { getGestureHandler } from '../native/src/gestureState'
 
 const config = createTamagui(getDefaultTamaguiConfig('native'))

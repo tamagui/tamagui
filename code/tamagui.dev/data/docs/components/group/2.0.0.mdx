@@ -1,11 +1,16 @@
 ---
 title: Group
-description: Render horizontal or vertical groups easily
+description: Arrange controls in horizontal or vertical groups
 name: group
 component: Group
 package: group
 demoName: Group
 ---
+
+<IntroParagraph>
+  Group arranges related controls horizontally or vertically, squares off the
+  border radius where items meet, and passes disabled state to its children.
+</IntroParagraph>
 
 <HeroContainer>
   <GroupDemo />
@@ -17,10 +22,10 @@ demoName: Group
 
 <Highlights
   features={[
-    'Accepts size prop for border radius.',
-    'Align vertically or horizontally.',
-    'Children control their own sizing.',
-    'Disabled prop passes to children.',
+    'Automatic border radius where items meet',
+    'Vertical or horizontal alignment',
+    'Independent sizing for each child',
+    'Disabled state shared with children',
   ]}
 />
 
@@ -36,7 +41,7 @@ npm install @tamagui/group
 
 Use `Group` with `Group.Item` wrapping each child. The `orientation` property determines the layout direction.
 
-Group zeros out the border radius on connecting sides of children - the first child keeps its start radius, the last keeps its end radius, and middle items have no radius on connecting sides. For `YGroup`, this affects top/bottom radius. For `XGroup`, left/right radius.
+Group zeros out the border radius on connecting sides of children: the first child keeps its start radius, the last keeps its end radius, and middle items have no radius on connecting sides. For `YGroup`, this affects top/bottom radius. For `XGroup`, left/right radius.
 
 ```tsx
 import { Button, XGroup } from 'tamagui'
@@ -58,43 +63,23 @@ export default () => (
 
 ## Sizing
 
-In v2, children control their own sizing. Apply size props directly to the child components. For responsive sizing, use media queries on the children:
+Children control their own sizing. Apply size props directly to the child components. For responsive sizing, use media queries on the children:
 
 ```tsx
-import { Activity, Airplay } from '@tamagui/lucide-icons-2'
+import { Activity, Airplay } from './components/icons' // your generated icons, see Lucide Icons
 import { Button, XGroup } from 'tamagui'
 
 export default () => (
   <XGroup>
     <XGroup.Item>
-      <Button size="$3" $gtSm={{ size: '$5' }} icon={Activity}>
+      <Button size="sm" height="gtSm:5" icon={Activity}>
         First
       </Button>
     </XGroup.Item>
     <XGroup.Item>
-      <Button size="$3" $gtSm={{ size: '$5' }} icon={Airplay}>
+      <Button size="sm" height="gtSm:5" icon={Airplay}>
         Second
       </Button>
-    </XGroup.Item>
-  </XGroup>
-)
-```
-
-The `size` prop on Group itself only affects the border radius of the group container:
-
-```tsx
-import { Button, XGroup } from 'tamagui'
-
-export default () => (
-  <XGroup size="$6">
-    <XGroup.Item>
-      <Button>First</Button>
-    </XGroup.Item>
-    <XGroup.Item>
-      <Button>Second</Button>
-    </XGroup.Item>
-    <XGroup.Item>
-      <Button>Third</Button>
     </XGroup.Item>
   </XGroup>
 )
@@ -132,13 +117,13 @@ The `disabled` property will pass to children.
   <GroupDisabledDemo />
 </HeroContainer>
 
-## Custom Components & Nested Items
+## Custom components & nested items
 
 Automatic index detection only works when `Group.Item` is a **direct child** of `Group`. If you wrap `Group.Item` inside a custom component, the automatic first/last detection won't work.
 
 You have a few options:
 
-### Option 1: Use `forcePlacement`
+### Option 1: use `forcePlacement`
 
 If you know the position ahead of time, use the `forcePlacement` prop:
 
@@ -159,7 +144,7 @@ export default () => (
 )
 ```
 
-### Option 2: Use `useGroupItem` hook
+### Option 2: use `useGroupItem` hook
 
 For full control, use the `useGroupItem` hook directly in your custom component:
 
@@ -173,7 +158,7 @@ function MyItem({ children, forcePlacement }) {
 }
 ```
 
-### Option 3: Pass placement from parent
+### Option 3: pass placement from parent
 
 Calculate positions in the parent and pass them down:
 
@@ -194,11 +179,11 @@ export default () => (
 )
 ```
 
-## API Reference
+## API reference
 
 ### Group
 
-`Group`, `XGroup` and `YGroup` extend [YStack](/docs/components/stacks), getting [Tamagui standard props](/docs/intro/props), plus:
+`Group`, `XGroup` and `YGroup` extend [YStack](/ui/stacks), getting [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[
@@ -207,12 +192,6 @@ export default () => (
       required: false,
       type: '"horizontal" | "vertical"',
       description: `Forces applying the border radius styles to left/right vs top/bottom. Defaults to horizontal for XGroup and vertical for YGroup.`,
-    },
-    {
-      name: 'size',
-      required: false,
-      type: 'string | SizeTokens',
-      description: `Sets the border radius of the Group container using your size tokens.`,
     },
     {
       name: 'disabled',

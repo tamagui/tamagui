@@ -1,7 +1,11 @@
-export const GithubIcon = (props) => (
+// the viewBox is square, so height tracks width. it used to hardcode height="30"
+// while callers overrode only width, so every `<GithubIcon width={n} />` rendered
+// n wide and 30 tall: squashed, and tall enough to push the home GitHub button
+// 3px past the two buttons beside it
+export const GithubIcon = ({ width = 30, ...props }) => (
   <svg
-    width="30"
-    height="30"
+    width={width}
+    height={width}
     viewBox="0 0 15 15"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

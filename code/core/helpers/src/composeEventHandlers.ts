@@ -12,16 +12,12 @@ export function composeEventHandlers<E extends Events>(
   }
   return (event: E) => {
     og?.(event)
-    if (
-      !event ||
-      !(
-        checkDefaultPrevented &&
-        typeof event === 'object' &&
-        'defaultPrevented' in event
-      ) ||
-      // @ts-ignore
-      ('defaultPrevented' in event && !event.defaultPrevented)
-    ) {
+    const isPrevented =
+      !!event &&
+      typeof event === 'object' &&
+      (('defaultPrevented' in event && Boolean(event.defaultPrevented)) ||
+        ('isCanceled' in event && Boolean(event.isCanceled)))
+    if (!event || !checkDefaultPrevented || !isPrevented) {
       return next?.(event)
     }
   }

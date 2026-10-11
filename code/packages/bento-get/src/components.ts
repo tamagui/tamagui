@@ -1113,5 +1113,5 @@ export const componentsList: ComponentSchema[] = [
 
   ...MISSING_COMPONENTS,
 ].map((item) => {
-  return { ...item, isOSS: Boolean(OSS_COMPONENTS.includes(item.fileName)) }
+  return { ...item, isOSS: true }
 })

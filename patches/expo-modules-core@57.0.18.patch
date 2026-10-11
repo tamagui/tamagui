@@ -1,0 +1,15 @@
+diff --git a/android/src/main/cpp/fabric/AndroidExpoViewProps.cpp b/android/src/main/cpp/fabric/AndroidExpoViewProps.cpp
+index 2179826d5dea334ceab151a4b28536031661d96e..13aa696e2ff8ecbc8c06e0e0bce2453c7906b5c5 100644
+--- a/android/src/main/cpp/fabric/AndroidExpoViewProps.cpp
++++ b/android/src/main/cpp/fabric/AndroidExpoViewProps.cpp
+@@ -9,6 +9,10 @@ AndroidExpoViewProps::AndroidExpoViewProps(
+   const std::function<bool(const std::string &)> &filterObjectKeys
+ ) : ExpoViewProps(context, sourceProps, rawProps, filterObjectKeys),
+     statePropsDiff(nullptr) {
++#ifdef RN_SERIALIZABLE_STATE
++  // react native initializes dynamic props outside the props constructor.
++  initializeDynamicProps(sourceProps, rawProps, filterObjectKeys);
++#endif
+ }
+ 
+ AndroidExpoViewProps::~AndroidExpoViewProps() {

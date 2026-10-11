@@ -1,8 +1,23 @@
 export interface TamaguiBuildOptions {
+  /** Project root used to resolve compiler config and component modules. */
+  root?: string
+
   /**
-   * module paths you want to compile with tamagui (for example ['tamagui'])
-   * */
+   * Component packages to evaluate up front (default ['tamagui']). The compiler
+   * discovers any other package a JSX element or styled() base imports from as
+   * it compiles, so this is an optional warm-up, not a requirement.
+   */
   components?: string[]
+
+  /**
+   * Dangerous escape hatch for runtime-only modules that the compiler should
+   * not evaluate while loading the Tamagui config and configured components.
+   *
+   * Ignored modules receive an empty object during static evaluation, which
+   * weakens the compiler's correctness check. Only add a module when its
+   * exports are not used to create the config or components.
+   */
+  dangerouslyIgnoreStaticEvaluationModules?: string[]
 
   /**
    * relative path to your tamagui.config.ts
@@ -67,13 +82,6 @@ export interface TamaguiBuildOptions {
   prefixLogs?: string
 
   /**
-   * (Advanced) Enables Tamagui to try and evaluate components outside the `components` option.
-   * When true, Tamagui will bundle and load components as its running across every file,
-   * if it loads them successfully it will perform all optimiziations inline.
-   */
-  enableDynamicEvaluation?: boolean
-
-  /**
    * Completely disable tamagui for these files
    */
   disable?: boolean | string[]
@@ -82,6 +90,13 @@ export interface TamaguiBuildOptions {
    * Disable just optimization for these files, but enable helpful debug attributes.
    */
   disableExtraction?: boolean | string[]
+
+  /**
+   * Disable partial extraction (extracting static style props into CSS beside
+   * retained runtime props on the same element). Elements with dynamic style
+   * props stay fully on the runtime path instead.
+   */
+  disablePartialExtraction?: boolean
 
   /**
    * Disable just the addition of data- attributes that are added in dev mode to help
@@ -129,10 +144,24 @@ export interface TamaguiBuildOptions {
   useReactNativeWebLite?: boolean | 'without-animated'
   disableWatchTamaguiConfig?: boolean
 
-  /**
-   * (Experimental) Flatten theme access on native for better performance
-   */
-  experimentalFlattenThemesOnNative?: boolean
+  experimental?: {
+    /**
+     * Emit native flattened views with theme-token mappings for the experimental
+     * native style engine. Web output is unaffected.
+     */
+    nativeFastPath?: boolean
+
+    /**
+     * (Experimental, web only) Build a zero-runtime web entry graph.
+     *
+     * - `'report'` runs every zero analysis and writes the report, but keeps the
+     *   full runtime and exits successfully.
+     * - `true` enforces the contract and builds one zero-runtime entry graph.
+     * - `{ islands }` also treats each listed module glob as the root of a
+     *   separately compiled full-runtime entry.
+     */
+    zeroRuntime?: true | 'report' | { islands: string[] }
+  }
 }
 
 export interface TamaguiOptions extends TamaguiBuildOptions {

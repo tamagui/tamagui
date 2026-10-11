@@ -1,0 +1,120 @@
+diff --git a/lib/module/mock.js b/lib/module/mock.js
+index 767ade60d50c890188fbcacadcb7e024991f12cd..5fc716bb6b72207a6deb79121ef75cd33fdeb0c3 100644
+--- a/lib/module/mock.js
++++ b/lib/module/mock.js
+@@ -119,8 +119,51 @@ const WorkletAPI = {
+   UIRuntimeId: RuntimeKind.UI,
+   WorkletsModule: {}
+ };
+-module.exports = {
+-  __esModule: true,
+-  ...WorkletAPI
+-};
++export const {
++  callMicrotasks,
++  createSerializable,
++  createShareable,
++  createSynchronizable,
++  createWorkletRuntime,
++  executeOnUIRuntimeSync,
++  getDynamicFeatureFlag,
++  getRuntimeKind,
++  getStaticFeatureFlag,
++  getUIRuntimeHolder,
++  getUISchedulerHolder,
++  isBundleModeEnabled,
++  isRNRuntime,
++  isSerializableRef,
++  isShareable,
++  isShareableRef,
++  isSynchronizable,
++  isUIRuntime,
++  isWorkerRuntime,
++  isWorkletRuntime,
++  makeShareable,
++  makeShareableCloneOnUIRecursive,
++  makeShareableCloneRecursive,
++  registerCustomSerializable,
++  runOnJS,
++  runOnRuntime,
++  runOnRuntimeAsync,
++  runOnRuntimeAsyncWithId,
++  runOnRuntimeSync,
++  runOnRuntimeSyncWithId,
++  runOnUI,
++  runOnUIAsync,
++  runOnUISync,
++  scheduleOnRN,
++  scheduleOnRuntime,
++  scheduleOnRuntimeWithId,
++  scheduleOnUI,
++  serializableMappingCache,
++  setDynamicFeatureFlag,
++  shareableMappingCache,
++  toggleSlowAnimationsOnUIRuntime,
++  UIRuntimeId,
++  WorkletsModule,
++} = WorkletAPI;
++export { isWorkletFunction, RuntimeKind };
++export default WorkletAPI;
+ //# sourceMappingURL=mock.js.map
+\ No newline at end of file
+diff --git a/src/mock.ts b/src/mock.ts
+index e0c99fde0d12eebf94260c6d6cc79329f1f51ede..6c369c23642ad19e29f753e4cb15a47fb468449a 100644
+--- a/src/mock.ts
++++ b/src/mock.ts
+@@ -167,7 +167,50 @@ const WorkletAPI = {
+   WorkletsModule: {},
+ };
+ 
+-module.exports = {
+-  __esModule: true,
+-  ...WorkletAPI,
+-};
++export const {
++  callMicrotasks,
++  createSerializable,
++  createShareable,
++  createSynchronizable,
++  createWorkletRuntime,
++  executeOnUIRuntimeSync,
++  getDynamicFeatureFlag,
++  getRuntimeKind,
++  getStaticFeatureFlag,
++  getUIRuntimeHolder,
++  getUISchedulerHolder,
++  isBundleModeEnabled,
++  isRNRuntime,
++  isSerializableRef,
++  isShareable,
++  isShareableRef,
++  isSynchronizable,
++  isUIRuntime,
++  isWorkerRuntime,
++  isWorkletRuntime,
++  makeShareable,
++  makeShareableCloneOnUIRecursive,
++  makeShareableCloneRecursive,
++  registerCustomSerializable,
++  runOnJS,
++  runOnRuntime,
++  runOnRuntimeAsync,
++  runOnRuntimeAsyncWithId,
++  runOnRuntimeSync,
++  runOnRuntimeSyncWithId,
++  runOnUI,
++  runOnUIAsync,
++  runOnUISync,
++  scheduleOnRN,
++  scheduleOnRuntime,
++  scheduleOnRuntimeWithId,
++  scheduleOnUI,
++  serializableMappingCache,
++  setDynamicFeatureFlag,
++  shareableMappingCache,
++  toggleSlowAnimationsOnUIRuntime,
++  UIRuntimeId,
++  WorkletsModule,
++} = WorkletAPI;
++export { isWorkletFunction, RuntimeKind };
++export default WorkletAPI;

@@ -16,7 +16,7 @@ test(`nested tamagui Text does NOT inherit color (sets own theme color)`, async 
   // parent should have blue color
   expect(parentStyles.color).toBe('rgb(0, 0, 255)')
 
-  // nested tamagui Text sets color: '$color' so should NOT be blue
+  // nested tamagui Text sets color: 'color' so should NOT be blue
   expect(nestedStyles.color).not.toBe(parentStyles.color)
 })
 
@@ -77,7 +77,7 @@ test(`styled nested text does NOT inherit color (sets own theme color)`, async (
   // parent should have green color
   expect(parentStyles.color).toBe('rgb(0, 128, 0)')
 
-  // styled Text (BoldText) also sets color: '$color', should NOT be green
+  // styled Text (BoldText) also sets color: 'color', should NOT be green
   expect(nestedStyles.color).not.toBe(parentStyles.color)
 })
 

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/menu",
-  "version": "2.7.7",
+  "version": "3.0.2",
   "license": "MIT",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "source": "src/index.tsx",
@@ -39,6 +39,7 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/create-menu": "workspace:*",
     "@tamagui/helpers": "workspace:*",
+    "@tamagui/polyfill-dev": "workspace:*",
     "@tamagui/popover": "workspace:*",
     "@tamagui/popper": "workspace:*",
     "@tamagui/scroll-view": "workspace:*",

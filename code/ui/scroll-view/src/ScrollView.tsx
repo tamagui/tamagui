@@ -1,27 +1,24 @@
-import { fullscreenStyle } from '@tamagui/stacks'
-import type { GetProps, GetRef } from '@tamagui/web'
+import type { GetProps, GetRef, StylePiece } from '@tamagui/web'
 import { styled } from '@tamagui/web'
-import { ScrollView as ScrollViewNative } from 'react-native'
+import { WebScrollView } from './WebScrollView'
 
 export const ScrollView = styled(
-  ScrollViewNative,
+  WebScrollView,
   {
-    name: 'ScrollView',
+    displayName: 'ScrollView',
     scrollEnabled: true,
-
-    variants: {
-      fullscreen: {
-        true: fullscreenStyle,
-      },
-    } as const,
   },
   {
-    accept: {
-      contentContainerStyle: 'style',
-    } as const,
+    acceptsClassName: true,
+    neverFlatten: true,
   }
 )
 
 export type ScrollView = GetRef<typeof ScrollView>
 
-export type ScrollViewProps = GetProps<typeof ScrollView>
+export type ScrollViewProps = Omit<
+  GetProps<typeof ScrollView>,
+  'contentContainerStyle'
+> & {
+  contentContainerStyle?: StylePiece
+}

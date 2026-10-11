@@ -1,0 +1,5 @@
+/dist/
+/dist-ssr/
+/dist-native/
+/.expo/
+/test-results/

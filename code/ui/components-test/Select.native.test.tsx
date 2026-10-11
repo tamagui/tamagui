@@ -64,16 +64,17 @@ describe('Select native content', () => {
 
         <Adapt when="sm">
           <Sheet>
-            <Sheet.Frame>
+            <Sheet.Container>
+              <Sheet.Background />
               <Adapt.Contents />
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay />
           </Sheet>
         </Adapt>
 
         <Select.Content>
           <Select.Viewport>
-            <Select.Item index={0} value="apple">
+            <Select.Item value="apple">
               <Select.ItemText>Apple</Select.ItemText>
             </Select.Item>
           </Select.Viewport>
@@ -93,7 +94,7 @@ describe('Select native content', () => {
 
         <Select.Content>
           <Select.Viewport>
-            <Select.Item index={0} value="apple">
+            <Select.Item value="apple">
               <Select.ItemText>Apple</Select.ItemText>
             </Select.Item>
           </Select.Viewport>

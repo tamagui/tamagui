@@ -36,8 +36,8 @@ export const Stop = svgElement('stop')
 export const Svg = svgElement('svg')
 export const Symbol = svgElement('symbol')
 export const Text = svgElement('text')
-export const TextPath = svgElement('clipPath')
-export const TSpan = svgElement('tSpan')
+export const TextPath = svgElement('textPath')
+export const TSpan = svgElement('tspan')
 export const Use = svgElement('use')
 
 export default Svg

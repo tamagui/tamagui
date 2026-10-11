@@ -1,21 +1,38 @@
-import { getEffectiveAnimation, normalizeTransition } from '@tamagui/animation-helpers'
+import {
+  easingToBezier,
+  forAnimationState,
+  getTransitionForKey,
+  hasTransition,
+  resolveTransition,
+  styleKeysForProperty,
+  type AnimationsConfig,
+  type ResolvedEntry,
+  type ResolvedTransition,
+} from '@tamagui/animation-helpers'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   type AnimatedNumberStrategy,
-  type AnimationDriver,
-  fixStyles,
+  type AnimationDriverWithAnimatedNumbers,
   getConfig,
   getSplitStyles,
   hooks,
-  styleToCSS,
+  nonAnimatableStyleProps,
+  type OnTransition,
   Text,
   TransitionProp,
   type UniversalAnimatedNumber,
   useComposedRefs,
   useIsomorphicLayoutEffect,
-  useThemeWithState,
   View,
+  createRefComponent,
 } from '@tamagui/web'
+import {
+  fixStyles,
+  normalizeValueWithProperty,
+  styleToCSS,
+  transformsToString,
+  useThemeWithState,
+} from '@tamagui/web/internal-runtime'
 import {
   animate as animateMotionValue,
   type AnimationOptions,
@@ -27,14 +44,7 @@ import {
   useMotionValueEvent,
   type ValueTransition,
 } from 'motion/react'
-import React, {
-  forwardRef,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 const isServer = typeof window === 'undefined'
 
@@ -43,18 +53,31 @@ const isServer = typeof window === 'undefined'
 // don't need animations so we return a no-op scope/animate pair.
 function useAnimateSSRSafe() {
   if (isServer) {
-    return [useRef(null), (() => {}) as any] as ReturnType<typeof useAnimate>
+    return [useRef(null), (() => {}) as any] as unknown as ReturnType<typeof useAnimate>
   }
   return useAnimate()
 }
 
 type MotionAnimatedNumber = MotionValue<number>
-type AnimationConfig = ValueTransition
 
 type MotionAnimatedNumberStyle = {
   getStyle: (...args: any[]) => Record<string, unknown>
   motionValue?: MotionValue<number>
   motionValues?: MotionValue<number>[]
+}
+
+const asStyleRecord = (style: unknown): Record<string, unknown> =>
+  style && typeof style === 'object' && !Array.isArray(style)
+    ? (style as Record<string, unknown>)
+    : {}
+
+// raw CSSOM assignment (unlike React's style prop) silently ignores unitless
+// numbers, and the core hands the inline-output driver RN-format numeric
+// values — suffix px the way React would before writing
+function assignInlineStyles(node: HTMLElement, styles: Record<string, unknown>) {
+  for (const key in styles) {
+    node.style[key] = normalizeValueWithProperty(styles[key], key)
+  }
 }
 
 /**
@@ -137,21 +160,27 @@ type MotionRefs = {
   animationState: 'enter' | 'exit' | 'default'
   frozenExitTarget: Record<string, unknown> | null
   exitCompleteScheduled: boolean
+  enterCompleteScheduled: boolean
+  disableAnimation: boolean
   wasEntering: boolean
   wasDisabled: boolean
+  onTransition: OnTransition | null | undefined
+  enterStarted: boolean
+  exitStarted: boolean
+  updateInFlight: boolean
+  updateControls: AnimationPlaybackControlsWithThen | null
   wasNoClass: boolean
 }
 
-export function createAnimations<A extends Record<string, AnimationConfig>>(
+export function createAnimations<A extends AnimationsConfig>(
   animations: A
-): AnimationDriver<A> {
+): AnimationDriverWithAnimatedNumbers<A> {
   let isHydratingGlobal: boolean | undefined
   const hydratingComponents = new Set<Function>()
 
   return {
     View: MotionView,
     Text: MotionText,
-    isReactNative: false,
     inputStyle: 'css',
     outputStyle: 'inline',
     avoidReRenders: true,
@@ -176,12 +205,15 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         stateRef,
         useStyleEmitter,
         presence,
+        onTransition,
         styleProps,
+        styleState,
       } = animationProps
 
-      const animationKey = Array.isArray(props.transition)
-        ? props.transition[0]
-        : props.transition
+      // createComponent merges a colocated `transition` out of the active
+      // pseudo style (`hoverStyle={{ transition: '400ms' }}`), so this is the
+      // one that applies right now. same source the other three drivers read.
+      const effectiveTransition = styleState?.effectiveTransition ?? props.transition
 
       const isComponentHydrating = componentState.unmounted === true
       const isMounting = componentState.unmounted === 'should-enter'
@@ -205,10 +237,27 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           animationState: 'default',
           frozenExitTarget: null,
           exitCompleteScheduled: false,
+          enterCompleteScheduled: false,
+          disableAnimation: true,
           wasEntering: false,
           wasDisabled: false,
+          onTransition: undefined,
+          enterStarted: false,
+          exitStarted: false,
+          updateInFlight: false,
+          updateControls: null,
           wasNoClass: !!styleProps.noClass,
         }
+      }
+
+      const emit = (
+        phase: 'start' | 'end',
+        cause: 'enter' | 'exit' | 'update',
+        finished?: boolean
+      ) => {
+        refs.current.onTransition?.(
+          phase === 'end' ? { phase, cause, finished } : { phase, cause }
+        )
       }
 
       // track entering state transitions
@@ -225,14 +274,16 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           : 'default'
 
       // disable animation during hydration and mounting (prevents "flying across the page")
-      const disableAnimation = isComponentHydrating || isMounting || !animationKey
+      const disableAnimation = isComponentHydrating || isMounting || !effectiveTransition
 
-      const [scope, animate] = useAnimateSSRSafe()
+      const [scope] = useAnimateSSRSafe()
 
       // sync ref values for reliable access from callbacks
       refs.current.isExiting = isExiting
       refs.current.sendExitComplete = sendExitComplete
       refs.current.animationState = animationState
+      refs.current.disableAnimation = disableAnimation
+      refs.current.onTransition = onTransition
 
       // detect transition into exiting state
       const justStartedExiting = isExiting && !refs.current.wasExiting
@@ -242,6 +293,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       if (justStartedExiting || justStoppedExiting) {
         refs.current.frozenExitTarget = null
         refs.current.exitCompleteScheduled = false
+        refs.current.enterCompleteScheduled = false
       }
 
       // track previous exiting state
@@ -249,11 +301,25 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         refs.current.wasExiting = isExiting
       })
 
+      // exit interrupted by a re-enter: emit a finished:false end for it
+      useIsomorphicLayoutEffect(() => {
+        if (justStoppedExiting && refs.current.exitStarted) {
+          refs.current.exitStarted = false
+          emit('end', 'exit', false)
+        }
+      }, [justStoppedExiting])
+
       const {
         dontAnimate = {},
         doAnimate,
         animationOptions,
-      } = getMotionAnimatedProps(props as any, style, disableAnimation, animationState)
+      } = getMotionAnimatedProps(
+        props as any,
+        style,
+        disableAnimation,
+        animationState,
+        effectiveTransition
+      )
 
       const [firstRenderStyle] = useState(style)
 
@@ -285,6 +351,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         // read current state from refs (closure variables can be stale)
         const isCurrentlyExiting = refs.current.isExiting
         const currentSendExitComplete = refs.current.sendExitComplete
+        const currentAnimationState = refs.current.animationState
 
         // freeze exit target: once the first exit animation starts, subsequent
         // renders (e.g. direction change) should not reverse the exit animation.
@@ -296,7 +363,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         // only recompute animation options for exit animations to avoid stale state.
         const animationOptions =
           isCurrentlyExiting && currentSendExitComplete
-            ? getAnimationOptions(props.transition ?? null, 'exit')
+            ? getAnimationOptions(
+                forAnimationState(
+                  resolveTransition(effectiveTransition ?? null, {
+                    animations: animations as Record<string, unknown>,
+                  }),
+                  'exit'
+                )
+              )
             : passedOptions
 
         try {
@@ -338,18 +412,23 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             return
           }
 
-          // handle case where dontAnimate changes
+          // handle case where dontAnimate changes. removal also has to run
+          // when dontAnimate disappears entirely (undefined), or a style whose
+          // last member left (e.g. a hover-conditioned cursor on unhover)
+          // stays stuck on the node forever
           const prevDont = refs.current.lastDontAnimate
           if (dontAnimate) {
             if (prevDont) {
               removeRemovedStyles(prevDont, dontAnimate, node, doAnimate)
               const changed = getDiff(prevDont, dontAnimate)
               if (changed) {
-                Object.assign(node.style, changed as any)
+                assignInlineStyles(node, changed)
               }
             } else {
-              Object.assign(node.style, dontAnimate as any)
+              assignInlineStyles(node, dontAnimate)
             }
+          } else if (prevDont) {
+            removeRemovedStyles(prevDont, {}, node, doAnimate)
           }
 
           if (doAnimate) {
@@ -358,7 +437,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             if (prevDont) {
               for (const key in prevDont) {
                 if (key in doAnimate) {
-                  node.style[key] = prevDont[key]
+                  node.style[key] = normalizeValueWithProperty(prevDont[key], key)
                   if (refs.current.lastDoAnimate) {
                     refs.current.lastDoAnimate[key] = prevDont[key]
                   }
@@ -449,7 +528,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
                   const opts = animationOptions as TransitionAnimationOptions
                   const positionTransition =
-                    opts.transform ?? opts.default ?? animationOptions
+                    opts.x ?? opts.transform ?? opts.default ?? animationOptions
                   const cx = animateMotionValue(
                     entry.x,
                     target.x,
@@ -562,7 +641,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // PopoverClickDuringEnter / AnimatePresenceEnterExit.
               // the motion-value spring owns transform — keep it out of the
               // WAAPI animation so the two don't double-drive the property
-              let waapiDiff = fixedDiff
+              let waapiDiff = Object.fromEntries(
+                Object.entries(fixedDiff).map(([key, value]) => [
+                  key,
+                  Array.isArray(value)
+                    ? value.map((item) => normalizeValueWithProperty(item, key))
+                    : normalizeValueWithProperty(value, key),
+                ])
+              )
               if (popperHandledTransform && 'transform' in waapiDiff) {
                 waapiDiff = { ...waapiDiff }
                 delete waapiDiff.transform
@@ -577,7 +663,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               }
 
               if (Object.keys(waapiDiff).length > 0) {
-                startedControls = animate(scope.current, waapiDiff, animationOptions)
+                startedControls = animateMotionValue(
+                  node,
+                  waapiDiff,
+                  animationOptions
+                ) as AnimationPlaybackControlsWithThen
                 refs.current.controls = startedControls
               }
               refs.current.lastAnimateAt = Date.now()
@@ -589,41 +679,102 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         } finally {
           // exit completion: notify AnimatePresence when exit animation finishes
           if (isCurrentlyExiting && currentSendExitComplete) {
+            // an enter animation that was still in flight is now interrupted
+            if (refs.current.enterStarted) {
+              refs.current.enterStarted = false
+              emit('end', 'enter', false)
+            }
             if (startedControls) {
               // new animation started — attach completion handler
+              if (!refs.current.exitStarted) {
+                refs.current.exitStarted = true
+                emit('start', 'exit')
+              }
               refs.current.exitCompleteScheduled = true
+              const complete = (finished: boolean) => {
+                // guard: only complete if still exiting (prevents stale promise
+                // from calling sendExitComplete after a re-entry cancels the exit)
+                if (!refs.current.isExiting) return
+                if (refs.current.exitStarted) {
+                  refs.current.exitStarted = false
+                  // exit 'end' fires immediately before presence safeToRemove
+                  emit('end', 'exit', finished)
+                }
+                currentSendExitComplete()
+              }
               startedControls.finished
-                .then(() => {
-                  // guard: only complete if still exiting (prevents stale promise
-                  // from calling sendExitComplete after a re-entry cancels the exit)
-                  if (refs.current.isExiting) {
-                    currentSendExitComplete()
-                  }
-                })
-                .catch(() => {
-                  if (refs.current.isExiting) {
-                    currentSendExitComplete()
-                  }
-                })
+                .then(() => complete(true))
+                .catch(() => complete(false))
             } else if (!refs.current.exitCompleteScheduled) {
               // no animation started AND none previously scheduled (e.g. diff=null
               // on re-render mid-exit because frozenExitTarget matches lastDoAnimate)
               // — complete immediately only if we've never started an exit animation
+              emit('start', 'exit')
+              emit('end', 'exit', true)
               currentSendExitComplete()
             }
             // else: exit animation already scheduled via a previous flush,
             // its .finished promise will call sendExitComplete when done
+          } else if (currentAnimationState === 'enter') {
+            if (startedControls) {
+              if (!refs.current.enterStarted) {
+                refs.current.enterStarted = true
+                emit('start', 'enter')
+              }
+              refs.current.enterCompleteScheduled = true
+              const complete = (finished: boolean) => {
+                if (refs.current.disposed || refs.current.animationState !== 'enter')
+                  return
+                if (refs.current.enterStarted) {
+                  refs.current.enterStarted = false
+                  emit('end', 'enter', finished)
+                }
+              }
+              startedControls.finished
+                .then(() => complete(true))
+                .catch(() => complete(false))
+            } else if (
+              !refs.current.enterCompleteScheduled &&
+              !refs.current.disableAnimation
+            ) {
+              // no animation needed for this enter (no style diff) — complete
+              // immediately. skipped while animation is disabled (mount flushes
+              // apply enter styles without animating; completing there would
+              // report enter done before the real transition even starts)
+              emit('start', 'enter')
+              emit('end', 'enter', true)
+            }
+          } else if (startedControls) {
+            // update: a style change while mounted. a new update that supersedes
+            // an in-flight one closes it out as finished:false (motion silently
+            // replaces the conflicting property animation without settling the
+            // old controls, so we can't rely on its promise for the interrupted
+            // one). the latest controls reports true on natural completion.
+            const controls = startedControls
+            if (refs.current.updateInFlight) {
+              emit('end', 'update', false)
+            }
+            refs.current.updateInFlight = true
+            refs.current.updateControls = controls
+            emit('start', 'update')
+            const settle = (finished: boolean) => {
+              if (refs.current.updateControls !== controls) return
+              refs.current.updateInFlight = false
+              refs.current.updateControls = null
+              emit('end', 'update', finished)
+            }
+            controls.finished.then(() => settle(true)).catch(() => settle(false))
           }
         }
       }
 
-      useStyleEmitter?.((nextStyle, effectiveTransition) => {
+      useStyleEmitter?.((nextStyle, emittedTransition) => {
         const animationProps = getMotionAnimatedProps(
           props as any,
           nextStyle,
           disableAnimation,
           refs.current.animationState,
-          effectiveTransition
+          emittedTransition ?? effectiveTransition
         )
 
         flushAnimation(animationProps)
@@ -681,8 +832,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         if ((justEnabled || justStrippedClasses) && animationState !== 'enter') {
           const node = stateRef.current.host
           if (node instanceof HTMLElement) {
-            if (dontAnimate) Object.assign(node.style, dontAnimate)
-            if (doAnimate) Object.assign(node.style, doAnimate)
+            if (dontAnimate) assignInlineStyles(node, dontAnimate)
+            if (doAnimate) assignInlineStyles(node, doAnimate)
             // keep the popper position motion values in sync with the direct
             // inline write so a later retarget doesn't start from a stale spot
             const entry = PopperPositionAnims.get(node)
@@ -831,7 +982,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   }
 
   function getMotionAnimatedProps(
-    props: { transition?: TransitionProp | null; animateOnly?: string[] },
+    props: { transition?: TransitionProp | null },
     style: Record<string, unknown>,
     disable: boolean,
     animationState: 'enter' | 'exit' | 'default' = 'default',
@@ -843,18 +994,22 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }
     }
 
-    const animationOptions = getAnimationOptions(
-      transitionOverride ?? props.transition ?? null,
+    const resolved = forAnimationState(
+      resolveTransition(transitionOverride ?? props.transition ?? null, {
+        animations: animations as Record<string, unknown>,
+      }),
       animationState
     )
+    const animationOptions = getAnimationOptions(resolved)
 
     let dontAnimate: Record<string, unknown> | undefined
     let doAnimate: Record<string, unknown> | undefined
 
-    const animateOnly = props.animateOnly as string[] | undefined
     for (const key in style) {
       const value = style[key]
-      if (disableAnimationProps.has(key) || (animateOnly && !animateOnly.includes(key))) {
+      // a key the transition does not name is set, never animated, which is
+      // what a `transitionProperty` list narrows down to
+      if (disableAnimationProps.has(key) || !getTransitionForKey(resolved, key)) {
         dontAnimate ||= {}
         dontAnimate[key] = value
       } else {
@@ -870,91 +1025,23 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     }
   }
 
-  function getAnimationOptions(
-    transitionProp: TransitionProp | null,
-    animationState: 'enter' | 'exit' | 'default' = 'default'
-  ): TransitionAnimationOptions {
-    const normalized = normalizeTransition(transitionProp)
+  function getAnimationOptions(resolved: ResolvedTransition): TransitionAnimationOptions {
+    if (!hasTransition(resolved)) return {}
 
-    let effectiveKey = getEffectiveAnimation(normalized, animationState)
-
-    // fallback: if we have enter/exit defined but state is 'default' and no default key,
-    // use enter timing as fallback to avoid empty animation options
-    if (!effectiveKey && animationState === 'default') {
-      effectiveKey = normalized.enter || normalized.exit || null
-    }
-
-    const globalConfigOverride: Record<string, unknown> | undefined = normalized.config
-      ? { ...normalized.config }
-      : undefined
-
-    if (
-      !effectiveKey &&
-      Object.keys(normalized.properties).length === 0 &&
-      !globalConfigOverride
-    ) {
-      return {}
-    }
-
-    const defaultConfig = effectiveKey ? withInferredType(animations[effectiveKey]) : null
-
-    const delay = normalized.delay
-
-    // framer motion's animate() expects default config at the TOP LEVEL
     const result: TransitionAnimationOptions = {}
 
-    if (defaultConfig) {
-      Object.assign(result, defaultConfig)
+    // motion reads the default config from the TOP LEVEL as well as `default`
+    if (resolved.all) {
+      const base = entryToMotion(resolved.all)
+      Object.assign(result, base)
+      result.default = { ...base }
     }
 
-    if (globalConfigOverride) {
-      Object.assign(result, globalConfigOverride)
-      if (
-        result.type === undefined &&
-        result.duration !== undefined &&
-        result.damping === undefined &&
-        result.stiffness === undefined &&
-        result.mass === undefined
-      ) {
-        result.type = 'tween'
-      }
-    }
-
-    if (delay) {
-      result.delay = delay
-    }
-
-    if (defaultConfig || globalConfigOverride || delay) {
-      result.default = {
-        ...defaultConfig,
-        ...globalConfigOverride,
-        ...(delay ? { delay } : null),
-      }
-    }
-
-    for (const [propName, animationNameOrConfig] of Object.entries(
-      normalized.properties
-    )) {
-      if (typeof animationNameOrConfig === 'string') {
-        result[propName] = withInferredType(animations[animationNameOrConfig])
-      } else if (animationNameOrConfig && typeof animationNameOrConfig === 'object') {
-        const baseConfig = animationNameOrConfig.type
-          ? withInferredType(animations[animationNameOrConfig.type])
-          : defaultConfig
-
-        result[propName] = {
-          ...baseConfig,
-          ...animationNameOrConfig,
-        } as ValueTransition
-      }
-    }
-
-    // we standardize to ms across drivers, motion expects s
-    convertMsToS(result as ValueTransition)
-    convertMsToS(result.default)
-    for (const key in result) {
-      if (key !== 'default' && typeof result[key] === 'object') {
-        convertMsToS(result[key])
+    for (const entry of resolved.entries) {
+      if (entry.property === 'all') continue
+      const config = entryToMotion(entry)
+      for (const key of styleKeysForProperty(entry.property)) {
+        result[key] = { ...config }
       }
     }
 
@@ -962,32 +1049,34 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   }
 }
 
-function withInferredType(config: AnimationConfig | undefined): AnimationConfig {
-  if (!config) {
-    return { type: 'spring' }
-  }
-  const isTimingBased =
-    config.duration !== undefined &&
-    config.damping === undefined &&
-    config.stiffness === undefined &&
-    config.mass === undefined
-  return { type: isTimingBased ? 'tween' : 'spring', ...config }
-}
+/**
+ * one resolved entry as a motion `ValueTransition`.
+ *
+ * durations are in SECONDS here. motion is the only driver that wants that, so
+ * the conversion lives at this single boundary. it used to be a post-pass that
+ * checked `type === 'tween'` and skipped springs and anything typed `'timing'`,
+ * which meant a `{ type: 'spring', duration: 200 }` ran for 200 seconds.
+ */
+function entryToMotion(entry: ResolvedEntry): ValueTransition {
+  const delay = entry.delayMs ? { delay: entry.delayMs / 1000 } : null
 
-function convertMsToS(config: ValueTransition | undefined) {
-  if (!config) return
-  if (typeof config.delay === 'number') config.delay = config.delay / 1000
-  if (typeof config.duration === 'number') {
-    const isTimingBased =
-      config.type === 'tween' ||
-      (config.type === undefined &&
-        config.damping === undefined &&
-        config.stiffness === undefined &&
-        config.mass === undefined)
-    if (isTimingBased) {
-      config.duration = config.duration / 1000
-    }
+  if (entry.timing.kind === 'spring') {
+    return {
+      type: 'spring',
+      stiffness: entry.timing.stiffness,
+      damping: entry.timing.damping,
+      mass: entry.timing.mass,
+      ...delay,
+    } as ValueTransition
   }
+
+  const bezier = easingToBezier(entry.timing.easing)
+  return {
+    type: 'tween',
+    duration: entry.timing.durationMs / 1000,
+    ...(bezier ? { ease: [bezier[0], bezier[1], bezier[2], bezier[3]] } : null),
+    ...delay,
+  } as ValueTransition
 }
 
 function removeRemovedStyles(
@@ -1006,35 +1095,114 @@ function removeRemovedStyles(
   }
 }
 
-// truly non-animatable CSS properties (discrete, keyword-based, no interpolation)
-// properties like margin, maxHeight, zIndex, etc are animatable and intentionally excluded
+// truly non-animatable CSS properties (discrete, keyword-based, no
+// interpolation), from the same list the style emitter uses to promote base
+// values to atomic classes. handing one of these to motion's animate() leaves
+// its committed value stuck on the node after the style stops including it,
+// because only the dontAnimate path clears removed styles. flexBasis is
+// interpolable but applied discretely by driver choice.
 export const disableAnimationProps: Set<string> = new Set<string>([
-  'alignContent',
-  'alignItems',
-  'boxSizing',
-  'contain',
-  'containerType',
-  'display',
+  ...Object.keys(nonAnimatableStyleProps),
   'flexBasis',
-  'flexDirection',
-  'fontFamily',
-  'justifyContent',
-  'overflow',
-  'overflowX',
-  'overflowY',
-  'pointerEvents',
-  'position',
-  'textWrap',
-  'userSelect',
 ])
+
+// props equality for the getSplitStyles memo: functions and children can't
+// affect style output (they pass through), so they don't participate
+function motionPropsEqual(a: Record<string, any>, b: Record<string, any>) {
+  for (const key in a) {
+    if (!(key in b)) return false
+  }
+  for (const key in b) {
+    if (key === 'children') continue
+    const av = a[key]
+    const bv = b[key]
+    if (typeof bv === 'function' && typeof av === 'function') continue
+    if (!Object.is(av, bv)) return false
+  }
+  return true
+}
+
+// one-level style object comparison: style arrays are recreated per render
+// with usually-identical contents
+function motionStylesEqual(a: any[], b: any[]) {
+  if (a.length !== b.length) return false
+  for (let i = 0; i < a.length; i++) {
+    const sa = a[i]
+    const sb = b[i]
+    if (sa === sb) continue
+    if (!sa || !sb) return false
+    let aCount = 0
+    for (const key in sa) {
+      aCount++
+      if (!Object.is(sa[key], sb[key])) return false
+    }
+    let bCount = 0
+    for (const _key in sb) {
+      bCount++
+    }
+    if (aCount !== bCount) return false
+  }
+  return true
+}
 
 const MotionView = createMotionView('div')
 const MotionText = createMotionView('span')
 
+const transformAliases: Record<string, string> = {
+  x: 'translateX',
+  y: 'translateY',
+  scale: 'scale',
+  scaleX: 'scaleX',
+  scaleY: 'scaleY',
+  rotate: 'rotate',
+  rotateX: 'rotateX',
+  rotateY: 'rotateY',
+  rotateZ: 'rotateZ',
+  skewX: 'skewX',
+  skewY: 'skewY',
+}
+
+function compileAnimatedStyle(
+  initialSource: Record<string, unknown>,
+  initialResolved: Record<string, unknown>
+) {
+  const shorthands = getConfig().shorthands
+  const entries = Object.keys(initialSource).map((source) => ({
+    source,
+    target: shorthands?.[source] ?? source,
+    tokenValue:
+      typeof initialSource[source] === 'string' &&
+      initialResolved[shorthands?.[source] ?? source] !== initialSource[source]
+        ? initialResolved[shorthands?.[source] ?? source]
+        : undefined,
+  }))
+
+  return (sourceStyle: Record<string, unknown>) => {
+    const resolved: Record<string, unknown> = {}
+    const transforms: Record<string, unknown>[] = []
+
+    for (const entry of entries) {
+      const value = sourceStyle[entry.source]
+      if (value === undefined) continue
+      if (entry.source === 'transform' && Array.isArray(value)) {
+        resolved.transform = transformsToString(value)
+      } else if (entry.source in transformAliases) {
+        transforms.push({ [transformAliases[entry.source]]: value })
+      } else {
+        resolved[entry.target] =
+          entry.tokenValue ?? normalizeValueWithProperty(value, entry.target)
+      }
+    }
+
+    if (transforms.length) resolved.transform = transformsToString(transforms)
+    return resolved
+  }
+}
+
 function createMotionView(defaultTag: string) {
   const isText = defaultTag === 'span'
 
-  const Component = forwardRef((propsIn: any, ref) => {
+  const Component = createRefComponent((propsIn: any, ref) => {
     const { forwardedRef, animation, render = defaultTag, style, ...propsRest } = propsIn
     const [scope, animate] = useAnimateSSRSafe()
     const hostRef = useRef<HTMLElement>(null)
@@ -1070,6 +1238,13 @@ function createMotionView(defaultTag: string) {
     })()
 
     function getProps(props: any) {
+      if (
+        process.env.NODE_ENV === 'development' &&
+        propsIn.debug === 'profile' &&
+        typeof performance !== 'undefined'
+      ) {
+        performance.mark('tamagui-motion-style-split')
+      }
       const out = getSplitStyles(
         props,
         isText ? Text.staticConfig : View.staticConfig,
@@ -1097,12 +1272,76 @@ function createMotionView(defaultTag: string) {
       return out.viewProps
     }
 
-    const props = getProps({ ...propsRest, style: nonAnimatedStyles })
+    const resolvedAnimatedStyle = useMemo(() => {
+      if (!animatedStyle) return null
+      const currentValues = animatedStyle.motionValues
+        ? animatedStyle.motionValues.map((value) => value.get())
+        : animatedStyle.motionValue
+          ? [animatedStyle.motionValue.get()]
+          : []
+      const initialSource = animatedStyle.getStyle(...currentValues)
+      const initialResolved = asStyleRecord(getProps({ style: initialSource }).style)
+      return {
+        initial: initialResolved,
+        resolve: compileAnimatedStyle(initialSource, initialResolved),
+      }
+    }, [animatedStyle, state?.theme, state?.name])
+
+    // memoize the full getSplitStyles pass: it costs ~90us per render and its
+    // style-affecting inputs are usually unchanged. functions and children
+    // pass through getSplitStyles untouched, so they refresh on cache hits
+    // without invalidating.
+    const memoRef = useRef<null | {
+      propsRest: any
+      styles: any[]
+      theme: any
+      themeName: string | undefined
+      result: any
+    }>(null)
+
+    let props: any
+    const cached = memoRef.current
+    if (
+      cached &&
+      cached.theme === state?.theme &&
+      cached.themeName === state?.name &&
+      motionStylesEqual(cached.styles, nonAnimatedStyles) &&
+      motionPropsEqual(cached.propsRest, propsRest)
+    ) {
+      props = { ...cached.result }
+      for (const key in propsRest) {
+        const val = propsRest[key]
+        if (key === 'children' || typeof val === 'function') {
+          props[key] = val
+        }
+      }
+    } else {
+      props = getProps({ ...propsRest, style: nonAnimatedStyles })
+      memoRef.current = {
+        propsRest,
+        styles: nonAnimatedStyles,
+        theme: state?.theme,
+        themeName: state?.name,
+        result: props,
+      }
+    }
+
+    if (resolvedAnimatedStyle) {
+      // reassign so the animated initial never leaks into the memo cache
+      props = {
+        ...props,
+        style: {
+          ...asStyleRecord(props.style),
+          ...resolvedAnimatedStyle.initial,
+        },
+      }
+    }
+
     const Element = render || 'div'
     const transformedProps = hooks.usePropsTransform?.(render, props, stateRef, false)
 
-    // consumers set animated numbers from layout effects, so subscribe before
-    // passive effects to avoid missing a value set in the mounting commit.
+    // subscribe before passive effects so a layout effect cannot set a value
+    // between this node mounting and its MotionValue subscription.
     useIsomorphicLayoutEffect(() => {
       if (!animatedStyle) return
 
@@ -1115,15 +1354,13 @@ function createMotionView(defaultTag: string) {
           : animatedStyle.motionValue
             ? animatedStyle.getStyle(animatedStyle.motionValue.get())
             : null
-        const webStyle = currentStyle && getProps({ style: currentStyle }).style
+        const webStyle = currentStyle && resolvedAnimatedStyle?.resolve(currentStyle)
         if (webStyle) {
-          Object.assign(node.style, webStyle)
+          assignInlineStyles(node, webStyle)
           seededNode.current = node
           seededInCurrentFrame.current = true
           requestAnimationFrame(() => {
-            if (seededNode.current === node) {
-              seededInCurrentFrame.current = false
-            }
+            if (seededNode.current === node) seededInCurrentFrame.current = false
           })
         }
       }
@@ -1132,7 +1369,7 @@ function createMotionView(defaultTag: string) {
         animationConfig: AnimatedNumberStrategy | undefined
       ): AnimationOptions =>
         animationConfig?.type === 'timing'
-          ? { type: 'tween', duration: (animationConfig?.duration || 0) / 1000 }
+          ? { type: 'tween', duration: (animationConfig.duration || 0) / 1000 }
           : animationConfig?.type === 'direct'
             ? { type: 'tween', duration: 0 }
             : { type: 'spring', ...(animationConfig as any) }
@@ -1140,44 +1377,47 @@ function createMotionView(defaultTag: string) {
       const animateNodeTo = (
         nextStyle: Record<string, unknown>,
         transition: AnimationOptions,
-        mv: MotionValue
+        motionValue: MotionValue
       ) => {
         if (!(node instanceof HTMLElement) || hostRef.current !== node) return
-        const webStyle = getProps({ style: nextStyle }).style
+        const webStyle = resolvedAnimatedStyle?.resolve(nextStyle)
         if (!webStyle) return
-        settlePendingMotionOnFinish(mv, animate(node, webStyle as any, transition))
+        settlePendingMotionOnFinish(
+          motionValue,
+          animate(node, webStyle as any, transition)
+        )
       }
+
       const animateChangedValue = (
         nextStyle: Record<string, unknown>,
         transition: AnimationOptions,
-        mv: MotionValue
+        motionValue: MotionValue
       ) => {
         if (seededInCurrentFrame.current && seededNode.current === node) {
-          const queuedFrame = queuedAnimationFrames.current.get(mv)
-          if (queuedFrame !== undefined) {
-            cancelAnimationFrame(queuedFrame)
-          }
+          const queuedFrame = queuedAnimationFrames.current.get(motionValue)
+          if (queuedFrame !== undefined) cancelAnimationFrame(queuedFrame)
           const frame = requestAnimationFrame(() => {
-            if (queuedAnimationFrames.current.get(mv) !== frame) return
-            queuedAnimationFrames.current.delete(mv)
+            if (queuedAnimationFrames.current.get(motionValue) !== frame) return
+            queuedAnimationFrames.current.delete(motionValue)
             if (hostRef.current === node) {
-              animateNodeTo(nextStyle, transition, mv)
+              animateNodeTo(nextStyle, transition, motionValue)
             } else {
-              const onFinish = PendingMotionOnFinish.get(mv)
-              PendingMotionOnFinish.delete(mv)
+              const onFinish = PendingMotionOnFinish.get(motionValue)
+              PendingMotionOnFinish.delete(motionValue)
               onFinish?.()
             }
           })
-          queuedAnimationFrames.current.set(mv, frame)
+          queuedAnimationFrames.current.set(motionValue, frame)
           return
         }
-        animateNodeTo(nextStyle, transition, mv)
+        animateNodeTo(nextStyle, transition, motionValue)
       }
 
       // multi-value path: subscribe to all motion values
       if (animatedStyle.motionValues) {
         const mvs = animatedStyle.motionValues
-        const styleForAll = () => animatedStyle.getStyle(...mvs.map((v) => v.get()))
+        const styleForAll = () =>
+          animatedStyle.getStyle(...mvs.map((value) => value.get()))
         const unsubs = mvs.map((mv) =>
           mv.on('change', () =>
             animateChangedValue(
@@ -1201,7 +1441,7 @@ function createMotionView(defaultTag: string) {
           motionValue
         )
       )
-    }, [animatedStyle])
+    }, [animatedStyle, resolvedAnimatedStyle])
 
     return <Element {...transformedProps} ref={composedRefs} />
   })

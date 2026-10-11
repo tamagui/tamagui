@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-node",
-  "version": "2.7.7",
+  "version": "3.0.2",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [
@@ -9,7 +9,7 @@
     "dist"
   ],
   "sideEffects": false,
-  "main": "./dist",
+  "main": "./dist/index.cjs",
   "types": "./types/index.d.ts",
   "publishConfig": {
     "access": "public"

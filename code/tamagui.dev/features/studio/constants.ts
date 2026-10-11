@@ -11,7 +11,3 @@ export const SIDEBAR_WIDTH = 500
 export const topBarHeight = 46
 export const sidebarWidth = 290
 export const isLocal = process.env.NODE_ENV === 'development'
-export const studioRootDir =
-  process.env.NODE_ENV === 'development' ? '' : 'https://studio.tamagui.dev'
-export const siteRootDir =
-  process.env.NODE_ENV === 'development' ? '' : 'https://tamagui.dev'

@@ -9,11 +9,11 @@ test.beforeEach(async ({ page }) => {
 })
 
 test(`styled component media query merge works correctly`, async ({ page }) => {
-  // Test 1: $sm media query merge
+  // Test 1: sm media query merge
   const test1 = page.locator('#test1')
   const styles1 = await getStyles(test1)
 
-  // Test 2: $md media query merge
+  // Test 2: md media query merge
   const test2 = page.locator('#test2')
   const styles2 = await getStyles(test2)
 
@@ -29,7 +29,7 @@ test(`styled component media query merge works correctly`, async ({ page }) => {
   const test5 = page.locator('#test5')
   const styles5 = await getStyles(test5)
 
-  // Test 1: $sm should have styled definition + runtime override
+  // Test 1: sm should have styled definition + runtime override
   expect(styles1.paddingTop).toBe('100px')
   expect(styles1.marginLeft).toBe('100px')
   expect(styles1.marginRight).toBe('100px')
@@ -37,7 +37,7 @@ test(`styled component media query merge works correctly`, async ({ page }) => {
   expect(styles1.width).toBe('100px')
   expect(styles1.backgroundColor).toBe('rgb(0, 0, 255)') // blue (runtime override)
 
-  // Test 2: $sm should have styled definition + runtime override
+  // Test 2: sm should have styled definition + runtime override
   expect(styles2.paddingTop).toBe('100px')
   expect(styles2.marginLeft).toBe('100px')
   expect(styles2.marginRight).toBe('100px')
@@ -45,13 +45,13 @@ test(`styled component media query merge works correctly`, async ({ page }) => {
   expect(styles2.width).toBe('100px')
   expect(styles2.backgroundColor).toBe('rgb(128, 0, 128)') // purple (runtime override)
 
-  // Test 3: $sm media query should be merged with runtime override
-  expect(styles3.paddingTop).toBe('100px') // from $sm
-  expect(styles3.marginLeft).toBe('100px') // from $sm
-  expect(styles3.marginRight).toBe('100px') // from $sm
-  expect(styles3.height).toBe('100px') // from $sm
-  expect(styles3.width).toBe('100px') // from $sm
-  expect(styles3.backgroundColor).toBe('rgb(0, 0, 255)') // blue (from $sm runtime override)
+  // Test 3: sm media query should be merged with runtime override
+  expect(styles3.paddingTop).toBe('100px') // from sm
+  expect(styles3.marginLeft).toBe('100px') // from sm
+  expect(styles3.marginRight).toBe('100px') // from sm
+  expect(styles3.height).toBe('100px') // from sm
+  expect(styles3.width).toBe('100px') // from sm
+  expect(styles3.backgroundColor).toBe('rgb(0, 0, 255)') // blue (from sm runtime override)
 
   // Test 4: Pseudo selectors should be merged (runtime override)
   // Test hover state - runtime override should take precedence

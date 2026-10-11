@@ -7,7 +7,7 @@ import { YStack } from 'tamagui'
 // type even though isInput makes them valid at runtime.
 export function InputTextShorthand() {
   return (
-    <YStack gap="$4" p="$4">
+    <YStack gap="4" p="4">
       <Input data-testid="input-text-shorthand" text="center" defaultValue="centered" />
       <Input
         data-testid="input-textalign-longhand"

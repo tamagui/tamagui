@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/checkbox",
-  "version": "2.7.7",
+  "version": "3.0.2",
   "license": "MIT",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "source": "src/index.ts",
@@ -37,19 +37,9 @@
   },
   "dependencies": {
     "@tamagui/checkbox-headless": "workspace:*",
-    "@tamagui/compose-refs": "workspace:*",
-    "@tamagui/constants": "workspace:*",
     "@tamagui/core": "workspace:*",
-    "@tamagui/create-context": "workspace:*",
     "@tamagui/focusable": "workspace:*",
-    "@tamagui/get-token": "workspace:*",
-    "@tamagui/helpers": "workspace:*",
-    "@tamagui/helpers-tamagui": "workspace:*",
-    "@tamagui/label": "workspace:*",
-    "@tamagui/stacks": "workspace:*",
-    "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/font-size": "workspace:*",
-    "@tamagui/use-previous": "workspace:*"
+    "@tamagui/use-controllable-state": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

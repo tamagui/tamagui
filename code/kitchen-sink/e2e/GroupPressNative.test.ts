@@ -1,5 +1,5 @@
 /**
- * Native tests for $group-press styles
+ * Native tests for group-press styles
  * Tests both unnamed and named groups, with and without transition
  * Verifies actual pixel colors change correctly
  */

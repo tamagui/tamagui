@@ -12,24 +12,20 @@ import { TEST_IDS } from '../constants/test-ids'
  */
 export function ThemeShallowCase() {
   return (
-    <YStack gap="$4" padding="$4">
-      <Text fontWeight="bold" fontSize="$6">
+    <YStack gap="4" padding="4">
+      <Text fontWeight="bold" fontSize="6">
         Theme Shallow DOM Structure Test
       </Text>
 
       {/* Test Case 1: Without themeShallow - normal theme wrapping */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Text fontWeight="bold">Without themeShallow (normal)</Text>
         <Theme name="dark">
-          <View
-            id={TEST_IDS.themeShallowNormal}
-            backgroundColor="$background"
-            padding="$4"
-          >
-            <Text color="$color">Normal theme - children get dark theme</Text>
+          <View id={TEST_IDS.themeShallowNormal} backgroundColor="background" padding="4">
+            <Text color="color">Normal theme - children get dark theme</Text>
             <Theme name="light">
-              <Square backgroundColor="$background" size={50}>
-                <Text color="$color" fontSize="$1">
+              <Square backgroundColor="background" size={50}>
+                <Text color="color" fontSize="1">
                   Light
                 </Text>
               </Square>
@@ -39,21 +35,19 @@ export function ThemeShallowCase() {
       </YStack>
 
       {/* Test Case 2: With themeShallow - theme doesn't propagate to grandchildren */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Text fontWeight="bold">With themeShallow</Text>
         <Theme name="dark">
           <View
             id={TEST_IDS.themeShallowEnabled}
             themeShallow
-            backgroundColor="$background"
-            padding="$4"
+            backgroundColor="background"
+            padding="4"
           >
-            <Text color="$color">
-              Shallow theme - grandchildren reset to parent theme
-            </Text>
+            <Text color="color">Shallow theme - grandchildren reset to parent theme</Text>
             <Theme name="light">
-              <Square backgroundColor="$background" size={50}>
-                <Text color="$color" fontSize="$1">
+              <Square backgroundColor="background" size={50}>
+                <Text color="color" fontSize="1">
                   Light
                 </Text>
               </Square>
@@ -63,17 +57,17 @@ export function ThemeShallowCase() {
       </YStack>
 
       {/* Test Case 3: Component with themeShallow for DOM structure comparison */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Text fontWeight="bold">DOM structure comparison container</Text>
         <View id={TEST_IDS.themeShallowContainer}>
           <Theme name="dark">
             <View
               id={TEST_IDS.themeShallowInner}
               themeShallow
-              backgroundColor="$background"
-              padding="$2"
+              backgroundColor="background"
+              padding="2"
             >
-              <Text color="$color">Inner content</Text>
+              <Text color="color">Inner content</Text>
             </View>
           </Theme>
         </View>

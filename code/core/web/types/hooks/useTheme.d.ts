@@ -3,7 +3,7 @@ import { type ThemeProxied } from './getThemeProxied';
 export declare const useTheme: () => ThemeProxied;
 export type ThemeWithState = [ThemeParsed, ThemeState];
 /**
- * Adds a proxy around themeState that tracks update keys
+ * Adds the public theme value wrapper and tracks update keys in updates mode.
  */
 export declare const useThemeWithState: (props: UseThemeWithStateProps, isRoot?: boolean, forThemeView?: boolean) => ThemeWithState;
 //# sourceMappingURL=useTheme.d.ts.map

@@ -1,0 +1,25 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../../core/core"
+    },
+    {
+      "path": "../focusable"
+    },
+    {
+      "path": "../form"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__",
+    "vitest.config.*",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ]
+}

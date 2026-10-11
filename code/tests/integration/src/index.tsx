@@ -1,5 +1,11 @@
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 
 import { Root } from './Root'
 
-createRoot(document.querySelector('#root')!).render(<Root />)
+const container = document.querySelector('#root')!
+
+if (container.hasChildNodes()) {
+  hydrateRoot(container, <Root />)
+} else {
+  createRoot(container).render(<Root />)
+}

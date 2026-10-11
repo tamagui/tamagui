@@ -1,18 +1,8 @@
 import { ThemeTint } from '@tamagui/logo'
-import { ArrowLeft } from '@tamagui/lucide-icons-2'
+import { ArrowLeft } from '~/components/icons'
 import type { Frontmatter } from '@vxrn/mdx-rust'
-import {
-  Button,
-  H1,
-  H2,
-  H3,
-  H6,
-  Paragraph,
-  Separator,
-  View,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { H1, H3, H6, Paragraph, Separator, View, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { usePathname } from 'one'
 import { Container } from '~/components/Containers'
@@ -31,85 +21,67 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
   const pathname = usePathname()
   const isDraft = pathname.startsWith('/draft')
   return (
-    <YStack mt="$-10" pt="$12" mb="$4" position="relative">
-      <YStack
-        position="absolute"
-        inset={0}
-        maxH={1000}
-        z={0}
-        backgroundImage="linear-gradient($color5, $colorTransparent)"
-      />
-
+    <YStack mt="-11" pt="88px" mb="8" position="relative">
       <Container>
-        <YStack mt="$2" items="flex-start">
+        <YStack mt="1-5" items="flex-start">
           <ThemeTint>
             <Link href={isDraft ? '/draft' : '/blog'}>
-              <Button size="$3" chromeless icon={ArrowLeft} ml="$-2">
+              <Button size="sm" variant="quiet" icon={ArrowLeft} ml="-1-5">
                 <Button.Text>{isDraft ? 'Drafts' : 'Blog'}</Button.Text>
               </Button>
             </Link>
           </ThemeTint>
         </YStack>
 
-        <H1 letterSpacing={-1} mt="$5" mb="$2" color="$color11">
-          {frontmatter.title}
-        </H1>
+        {/* title, then one muted color and one small size for everything
+            under it, on an even rhythm */}
+        <YStack mt="6" gap="3">
+          <H1 color="color-11">{frontmatter.title}</H1>
 
-        <H2
-          opacity={0.5}
-          color="$color11"
-          size="$7"
-          fontWeight="500"
-          fontFamily="$body"
-          mb="$1"
-        >
-          {frontmatter.description}
-        </H2>
-
-        <XStack items="center" my="$3">
-          <Link
-            href={`https://x.com/${authors?.[frontmatter.by || '']?.twitter}`}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <Paragraph size="$3" color="$color10" whiteSpace="nowrap">
-              {authors?.[frontmatter.by || '']?.name}
-            </Paragraph>
-          </Link>
-
-          <Separator vertical mx="$2" />
-
-          <Paragraph
-            opacity={0.4}
-            render="time"
-            size="$3"
-            color="$color10"
-            whiteSpace="nowrap"
-          >
-            {Intl.DateTimeFormat('en-US', {
-              month: 'short',
-              year: 'numeric',
-              day: 'numeric',
-            }).format(new Date(frontmatter.publishedAt || ''))}
+          <Paragraph fontSize={18} lineHeight="28px" color="color-10">
+            {frontmatter.description}
           </Paragraph>
 
-          <Separator vertical mx="$2" />
+          <XStack items="center" gap="1-5">
+            <Link
+              href={`https://x.com/${authors?.[frontmatter.by || '']?.twitter}`}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <Paragraph size="3" color="color-10" whiteSpace="nowrap">
+                {authors?.[frontmatter.by || '']?.name}
+              </Paragraph>
+            </Link>
 
-          <YStack items="center" display="none" $gtSm={{ display: 'flex' }}>
-            <Paragraph opacity={0.4} size="$3" color="$color10">
-              {frontmatter.readingTime?.text}
+            <Paragraph size="3" color="color-10">
+              ·
             </Paragraph>
 
-            {frontmatter.type === 'changelog' && (
-              <>
-                <Separator vertical mx="$2" />
+            <Paragraph color="color-10" whiteSpace="nowrap" render="time" size="3">
+              {Intl.DateTimeFormat('en-US', {
+                month: 'short',
+                timeZone: 'UTC',
+                year: 'numeric',
+                day: 'numeric',
+              }).format(new Date(frontmatter.publishedAt || ''))}
+            </Paragraph>
+
+            <XStack items="center" gap="1-5" display="none md:flex">
+              <Paragraph size="3" color="color-10">
+                ·
+              </Paragraph>
+              <Paragraph color="color-10" size="3">
+                {frontmatter.readingTime?.text}
+              </Paragraph>
+
+              {frontmatter.type === 'changelog' && (
                 <Button>
                   <Button.Text>Changelog</Button.Text>
                 </Button>
-              </>
-            )}
-          </YStack>
-        </XStack>
+              )}
+            </XStack>
+          </XStack>
+        </YStack>
       </Container>
     </YStack>
   )
@@ -131,9 +103,9 @@ export function BlogSlugPage(props: BlogPost) {
 
       <Container>
         {frontmatter.image && (
-          <YStack pb="$6">
+          <YStack pb="8">
             <View
-              rounded="$4"
+              rounded="4"
               overflow="hidden"
               style={{
                 aspectRatio: frontmatter.imageMeta
@@ -160,20 +132,20 @@ export function BlogSlugPage(props: BlogPost) {
           </YStack>
         )}
 
-        <YStack render="article" px="$2">
+        <YStack render="article">
           <Component components={components as any} />
         </YStack>
 
-        <Separator my="$8" mx="auto" />
+        <Separator my="11" mx="auto" />
 
         {relatedPosts && (
           <YStack>
-            <Separator my="$8" mx="auto" />
-            <H3 mb="$3" text="center" textTransform="uppercase">
+            <Separator my="11" mx="auto" />
+            <H3 mb="3" text="center" textTransform="uppercase">
               Related
             </H3>
 
-            <YStack my="$4" gap="$4">
+            <YStack my="4" gap="4">
               {relatedPosts.map((frontmatter) => {
                 return (
                   <Paragraph
@@ -182,7 +154,7 @@ export function BlogSlugPage(props: BlogPost) {
                     // @ts-ignore
                     href={`/blog/${frontmatter.slug}`}
                   >
-                    <YStack gap="$2">
+                    <YStack gap="1-5">
                       <H6>{frontmatter.title}</H6>
                       <Paragraph>{frontmatter.description}</Paragraph>
                     </YStack>

@@ -1,3 +1,3 @@
 import type { SheetContextValue } from './useSheetProviderProps';
-export declare const useSheetOffscreenSize: ({ snapPoints, position, screenSize, frameSize, snapPointsMode, }: SheetContextValue) => number;
+export declare const useSheetOffscreenSize: (context: SheetContextValue) => number;
 //# sourceMappingURL=useSheetOffscreenSize.d.ts.map

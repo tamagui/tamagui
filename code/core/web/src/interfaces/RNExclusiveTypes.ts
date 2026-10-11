@@ -3,7 +3,7 @@ import type {
   LayoutChangeEvent,
   TextLayoutEventData,
   NativeSyntheticEvent,
-} from 'react-native'
+} from '@tamagui/react-native-types'
 
 type OnLayout = ((event: LayoutChangeEvent) => void) | undefined
 type OnTextLayout =
@@ -16,7 +16,6 @@ export interface RNExtraProps {
   onSelectionChangeShouldSetResponder?: unknown
   onSelectionChangeShouldSetResponderCapture?: unknown
   onLayout?: OnLayout
-  elevationAndroid?: number | string
 }
 
 export interface RNViewProps extends GestureResponderHandlers, RNExtraProps {
@@ -40,10 +39,10 @@ export type RNOnlyProps =
   | 'onTextLayout'
   | 'href'
   | 'hrefAttrs'
-  | 'elevationAndroid'
   | 'rel'
   | 'download'
   | 'dir'
+  | 'focusable'
   // GestureResponderHandlers
   | 'onStartShouldSetResponder'
   | 'onMoveShouldSetResponder'

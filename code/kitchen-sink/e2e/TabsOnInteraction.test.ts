@@ -1,6 +1,6 @@
 /**
  * Test that Tabs onInteraction fires with layout measurements on native.
- * Regression test for: createTabs tab layout measurement broken on native
+ * Regression test for: Tabs trigger layout measurement broken on native
  * since commit 525e303 which replaced onLayout with web-only ResizeObserver.
  */
 

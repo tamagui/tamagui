@@ -1,12 +1,8 @@
 import type { SheetContextValue } from './useSheetProviderProps'
 
-export const useSheetOffscreenSize = ({
-  snapPoints,
-  position,
-  screenSize,
-  frameSize,
-  snapPointsMode,
-}: SheetContextValue) => {
+export const useSheetOffscreenSize = (context: SheetContextValue) => {
+  if (context.onlyShowContainer) return 0
+  const { snapPoints, position, screenSize, frameSize, snapPointsMode } = context
   if (snapPointsMode === 'fit') {
     return 0
   }

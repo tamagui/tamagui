@@ -1,0 +1,512 @@
+---
+title: FocusScope
+description: Manage keyboard focus trapping and roving navigation accessibly
+name: focus-scope
+component: FocusScope
+package: focus-scope
+---
+
+<IntroParagraph marginTop={-5} marginBottom={30}>
+  Components for managing keyboard focus: **FocusScope** for trapping and containing focus
+  within modals and dialogs, and **RovingFocusGroup** for arrow-key roving tabindex navigation across composite widgets.
+</IntroParagraph>
+
+These are web-only components. On native they render their children with no
+keyboard navigation management.
+
+<Highlights
+  features={[
+    'Focus trapping for modal dialogs and overlays',
+    'Composite-widget arrow navigation with one tab stop',
+    'Autofocus on mount, focus restoration on unmount',
+    'Focus looping between first and last tabbable elements',
+    'Focus-inert content with noFocus',
+    'Animation reflow prevention with focusOnIdle',
+  ]}
+/>
+
+## Installation
+
+FocusScope and RovingFocusGroup ship in their own packages:
+
+```bash
+npm install @tamagui/focus-scope @tamagui/roving-focus
+```
+
+## Focus trapping (FocusScope)
+
+Wrap any content that needs focus containment or trapping:
+
+```tsx
+import { Button, XStack } from 'tamagui'
+import { FocusScope } from '@tamagui/focus-scope'
+
+export default () => (
+  <FocusScope loop trapped>
+    <XStack gap="4">
+      <Button>First</Button>
+      <Button>Second</Button>
+      <Button>Third</Button>
+    </XStack>
+  </FocusScope>
+)
+```
+
+In v3, FocusScope renders a `display: contents` wrapper so it does not add an extra layout box around its children.
+
+### Trapped focus
+
+Use `trapped` to prevent focus from escaping the scope (ideal for modals, dialogs, and sheets):
+
+```tsx
+import { Button, Dialog, XStack, YStack } from 'tamagui'
+import { FocusScope } from '@tamagui/focus-scope'
+
+export default () => (
+  <Dialog>
+    <Dialog.Trigger asChild>
+      <Button>Open Dialog</Button>
+    </Dialog.Trigger>
+
+    <Dialog.Portal>
+      <Dialog.Overlay />
+      {/* key used by AnimatePresence to animate */}
+      <Dialog.Content key="content">
+        <FocusScope trapped>
+          <YStack gap="4">
+            <Dialog.Title>Focused Content</Dialog.Title>
+            <XStack gap="2">
+              <Button>Cancel</Button>
+              <Button>Confirm</Button>
+            </XStack>
+          </YStack>
+        </FocusScope>
+      </Dialog.Content>
+    </Dialog.Portal>
+  </Dialog>
+)
+```
+
+### Zero focus mode
+
+Use `noFocus` to disallow focus entirely while the scope is active: focus can land neither inside nor outside the scope. Any element that receives focus is immediately blurred, so `document.activeElement` settles on `document.body`. This takes precedence over `trapped` and auto-focus behavior:
+
+```tsx
+import { Button, Input, XStack } from 'tamagui'
+import { FocusScope } from '@tamagui/focus-scope'
+
+export default () => (
+  <FocusScope noFocus>
+    <XStack gap="4">
+      <Input placeholder="Cannot be focused" />
+      <Button>Cannot be focused either</Button>
+    </XStack>
+  </FocusScope>
+)
+```
+
+### Focus looping
+
+Enable `loop` to cycle focus between first and last elements:
+
+```tsx
+import { Button, XStack } from 'tamagui'
+import { FocusScope } from '@tamagui/focus-scope'
+
+export default () => (
+  <FocusScope loop>
+    <XStack gap="4">
+      <Button>First</Button>
+      <Button>Second</Button>
+      <Button>Last</Button>
+      {/* Tab from "Last" goes to "First" */}
+    </XStack>
+  </FocusScope>
+)
+```
+
+### Animation-friendly focusing
+
+Use `focusOnIdle` to prevent reflows during animations:
+
+```tsx
+import { Button, XStack } from 'tamagui'
+import { FocusScope } from '@tamagui/focus-scope'
+
+export default () => (
+  <FocusScope
+    focusOnIdle={true} // Wait for idle callback
+    // or focusOnIdle={200} // Wait 200ms
+  >
+    <XStack gap="4">
+      <Button>Animated</Button>
+      <Button>Content</Button>
+    </XStack>
+  </FocusScope>
+)
+```
+
+### Advanced control with FocusScopeController
+
+Use the controller pattern for managing focus from parent components:
+
+```tsx
+import { Button, XStack, YStack } from 'tamagui'
+import { FocusScope, FocusScopeController } from '@tamagui/focus-scope'
+import { useState } from 'react'
+
+export default () => {
+  const [trapped, setTrapped] = useState(false)
+
+  return (
+    <YStack gap="4">
+      <Button onPress={() => setTrapped(!trapped)}>
+        {trapped ? 'Disable' : 'Enable'} Focus Trap
+      </Button>
+
+      <FocusScopeController trapped={trapped} loop>
+        <FocusScope>
+          <XStack gap="4">
+            <Button>Controlled</Button>
+            <Button>Focus</Button>
+            <Button>Behavior</Button>
+          </XStack>
+        </FocusScope>
+      </FocusScopeController>
+    </YStack>
+  )
+}
+```
+
+### FocusScope props
+
+<PropsTable
+  data={[
+    {
+      name: 'enabled',
+      type: 'boolean',
+      default: 'true',
+      description: 'Whether focus management is enabled',
+    },
+    {
+      name: 'loop',
+      type: 'boolean',
+      default: 'false',
+      description:
+        'When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable',
+    },
+    {
+      name: 'trapped',
+      type: 'boolean',
+      default: 'false',
+      description:
+        'When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus',
+    },
+    {
+      name: 'noFocus',
+      type: 'boolean',
+      default: 'false',
+      description:
+        'Zero focus mode: while active, focus is allowed neither inside nor outside the scope. Anything that receives focus is immediately blurred. Takes precedence over trapped and auto-focus. Web only',
+    },
+    {
+      name: 'focusOnIdle',
+      type: 'boolean | number | { min?: number; max?: number }',
+      default: 'true',
+      description:
+        'When true, waits for idle before focusing using requestIdleCallback. When a number, waits that many ms. Object sets a lower and upper bound. Helps to prevent reflows during animations, as focusing inputs easily blocks main thread.',
+    },
+    {
+      name: 'onMountAutoFocus',
+      type: '(event: Event) => void',
+      description: 'Event handler called when auto-focusing on mount. Can be prevented',
+    },
+    {
+      name: 'onUnmountAutoFocus',
+      type: '(event: Event) => void',
+      description: 'Event handler called when auto-focusing on unmount. Can be prevented',
+    },
+    {
+      name: 'forceUnmount',
+      type: 'boolean',
+      default: 'false',
+      description:
+        'If unmount is animated, you want to force re-focus at start of animation not after',
+    },
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      description: 'Content to apply focus management to',
+    },
+  ]}
+/>
+
+### FocusScopeController props
+
+Provides context-based control over FocusScope behavior:
+
+<PropsTable
+  data={[
+    {
+      name: 'enabled',
+      type: 'boolean',
+      description:
+        'Override enabled state for all child FocusScope components',
+    },
+    {
+      name: 'loop',
+      type: 'boolean',
+      description:
+        'Override loop state for all child FocusScope components',
+    },
+    {
+      name: 'trapped',
+      type: 'boolean',
+      description:
+        'Override trapped state for all child FocusScope components',
+    },
+    {
+      name: 'noFocus',
+      type: 'boolean',
+      description:
+        'Override noFocus (zero focus mode) for all child FocusScope components',
+    },
+    {
+      name: 'focusOnIdle',
+      type: 'boolean | number',
+      description:
+        'Override focusOnIdle behavior for all child FocusScope components',
+    },
+    {
+      name: 'onMountAutoFocus',
+      type: '(event: Event) => void',
+      description:
+        'Override onMountAutoFocus handler for all child FocusScope components',
+    },
+    {
+      name: 'onUnmountAutoFocus',
+      type: '(event: Event) => void',
+      description:
+        'Override onUnmountAutoFocus handler for all child FocusScope components',
+    },
+    {
+      name: 'forceUnmount',
+      type: 'boolean',
+      description:
+        'Override forceUnmount behavior for all child FocusScope components',
+    },
+  ]}
+/>
+
+The FocusScope component automatically inherits props from the nearest FocusScopeController, with controller props taking precedence over direct props.
+
+## Roving focus (RovingFocusGroup)
+
+The roving tabindex pattern manages focus across a group of interactive elements (like toolbars, tab lists, or radio groups) so that the entire group acts as a single tab stop. Arrow keys move focus between items within the group, and pressing Tab moves focus out of the group.
+
+```tsx
+import { Button, XStack } from 'tamagui'
+import { RovingFocusGroup } from '@tamagui/roving-focus'
+
+export default () => (
+  <RovingFocusGroup orientation="horizontal" loop>
+    <XStack gap="2">
+      <RovingFocusGroup.Item asChild>
+        <Button>First</Button>
+      </RovingFocusGroup.Item>
+      <RovingFocusGroup.Item asChild>
+        <Button>Second</Button>
+      </RovingFocusGroup.Item>
+      <RovingFocusGroup.Item asChild>
+        <Button>Third</Button>
+      </RovingFocusGroup.Item>
+    </XStack>
+  </RovingFocusGroup>
+)
+```
+
+### Orientation
+
+Set `orientation` to `"horizontal"` or `"vertical"` to control which arrow keys navigate:
+
+```tsx
+import { Button, YStack } from 'tamagui'
+import { RovingFocusGroup } from '@tamagui/roving-focus'
+
+export default () => (
+  // Up/Down arrows navigate, Left/Right are ignored
+  <RovingFocusGroup orientation="vertical">
+    <YStack gap="2">
+      <RovingFocusGroup.Item asChild>
+        <Button>Option 1</Button>
+      </RovingFocusGroup.Item>
+      <RovingFocusGroup.Item asChild>
+        <Button>Option 2</Button>
+      </RovingFocusGroup.Item>
+      <RovingFocusGroup.Item asChild>
+        <Button>Option 3</Button>
+      </RovingFocusGroup.Item>
+    </YStack>
+  </RovingFocusGroup>
+)
+```
+
+### Looping navigation
+
+Enable `loop` to wrap focus from the last item back to the first:
+
+```tsx
+<RovingFocusGroup loop orientation="horizontal">
+  {/* items */}
+</RovingFocusGroup>
+```
+
+### Controlled tab stop
+
+Control which item is the current tab stop via `currentTabStopId` and `onCurrentTabStopIdChange`:
+
+```tsx
+import { Button, XStack } from 'tamagui'
+import { RovingFocusGroup } from '@tamagui/roving-focus'
+import { useState } from 'react'
+
+export default () => {
+  const [currentId, setCurrentId] = useState<string | null>('item-2')
+
+  return (
+    <RovingFocusGroup
+      currentTabStopId={currentId}
+      onCurrentTabStopIdChange={setCurrentId}
+    >
+      <XStack gap="2">
+        <RovingFocusGroup.Item tabStopId="item-1" asChild>
+          <Button>First</Button>
+        </RovingFocusGroup.Item>
+        <RovingFocusGroup.Item tabStopId="item-2" asChild>
+          <Button>Second (default)</Button>
+        </RovingFocusGroup.Item>
+        <RovingFocusGroup.Item tabStopId="item-3" asChild>
+          <Button>Third</Button>
+        </RovingFocusGroup.Item>
+      </XStack>
+    </RovingFocusGroup>
+  )
+}
+```
+
+### Non-focusable items
+
+Give an item a negative `tabIndex` to make it non-focusable and skip it during keyboard navigation:
+
+```tsx
+<RovingFocusGroup.Item tabIndex={-1} asChild>
+  <Button disabled>Disabled</Button>
+</RovingFocusGroup.Item>
+```
+
+### RovingFocusGroup props
+
+<PropsTable
+  data={[
+    {
+      name: 'orientation',
+      type: '"horizontal" | "vertical"',
+      description:
+        'The orientation of the group. Determines which arrow keys are used for navigation (left/right vs up/down).',
+    },
+    {
+      name: 'dir',
+      type: '"ltr" | "rtl"',
+      description:
+        'The reading direction. When set to rtl, left and right arrow keys are reversed.',
+    },
+    {
+      name: 'loop',
+      type: 'boolean',
+      default: 'false',
+      description:
+        'When true, keyboard navigation will loop from last to first and vice versa.',
+    },
+    {
+      name: 'currentTabStopId',
+      type: 'string | null',
+      description: 'The controlled id of the current tab stop.',
+    },
+    {
+      name: 'defaultCurrentTabStopId',
+      type: 'string',
+      description: 'The default id of the current tab stop for uncontrolled usage.',
+    },
+    {
+      name: 'onCurrentTabStopIdChange',
+      type: '(tabStopId: string | null) => void',
+      description: 'Callback when the current tab stop changes.',
+    },
+    {
+      name: 'onEntryFocus',
+      type: '(details: RovingFocusEntryDetails) => void',
+      description:
+        'Callback when focus enters the group via keyboard. Call details.cancel() to prevent the default focus behavior.',
+    },
+    {
+      name: 'asChild',
+      type: 'boolean',
+      default: 'false',
+      description: 'When true, renders as a Slot, merging props onto the child element.',
+    },
+  ]}
+/>
+
+### RovingFocusGroup.Item props
+
+<PropsTable
+  data={[
+    {
+      name: 'tabStopId',
+      type: 'string',
+      description: 'A unique identifier for this item. Auto-generated if not provided.',
+    },
+    {
+      name: 'tabIndex',
+      type: 'number',
+      default: '0',
+      description:
+        'Items with a negative tabIndex are skipped during keyboard navigation.',
+    },
+    {
+      name: 'active',
+      type: 'boolean',
+      default: 'false',
+      description:
+        'Whether this item is considered active. Active items receive focus priority when the group is entered.',
+    },
+    {
+      name: 'asChild',
+      type: 'boolean',
+      default: 'false',
+      description: 'When true, renders as a Slot, merging props onto the child element.',
+    },
+  ]}
+/>
+
+### Keyboard navigation
+
+| Key | Action |
+| --- | --- |
+| `Tab` | Move focus into/out of the group |
+| `Arrow Left/Right` | Move focus between items (horizontal orientation) |
+| `Arrow Up/Down` | Move focus between items (vertical orientation) |
+| `Home` / `Page Up` | Move focus to first item |
+| `End` / `Page Down` | Move focus to last item |
+
+## Internal usage in Tamagui
+
+FocusScope and RovingFocusGroup power accessibility throughout Tamagui:
+
+- **FocusScope** handles focus trapping in [Dialog](/ui/dialog), [AlertDialog](/ui/alert-dialog), [Sheet](/ui/sheet), and [Popover](/ui/popover).
+- **RovingFocusGroup** manages roving arrow-key navigation in [Tabs](/ui/tabs), [RadioGroup](/ui/radio-group), and [ToggleGroup](/ui/toggle-group).
+
+<Notice>
+  Both components are primarily designed for web platforms. On React Native, they render
+  children directly without web focus management since native platforms manage focus and touch interaction natively.
+</Notice>

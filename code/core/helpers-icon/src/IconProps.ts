@@ -1,5 +1,6 @@
 import type {
   ColorTokens,
+  FontSizeTokens,
   GetFinalProps,
   SizeTokens,
   StackStyleBase,
@@ -7,8 +8,8 @@ import type {
 } from '@tamagui/core'
 import type { SvgProps } from 'react-native-svg'
 
-export interface IconStyleProps extends StackStyleBase {
-  size?: number | SizeTokens
+export interface IconStyleProps extends Omit<StackStyleBase, 'strokeWidth'> {
+  size?: number | FontSizeTokens
   strokeWidth?: number | SizeTokens
   color?: string
 }

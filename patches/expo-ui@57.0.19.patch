@@ -1,0 +1,29 @@
+diff --git a/package.json b/package.json
+index 61a4f65e6e..fff35532c0 100644
+--- a/package.json
++++ b/package.json
+@@ -128,5 +128,22 @@
+     "lint": "expo-module lint",
+     "test": "expo-module test",
+     "expo-module": "expo-module"
++  },
++  "main": "./src/universal/index.ts",
++  "react-native": {
++    ".": "./src/universal/index.ts",
++    "./swift-ui": "./src/swift-ui/index.tsx",
++    "./swift-ui/modifiers": "./src/swift-ui/modifiers/index.ts",
++    "./jetpack-compose": "./src/jetpack-compose/index.ts",
++    "./jetpack-compose/modifiers": "./src/jetpack-compose/modifiers/index.ts",
++    "./community/datetime-picker": "./src/community/datetime-picker/index.tsx",
++    "./community/bottom-sheet": "./src/community/bottom-sheet/index.tsx",
++    "./community/segmented-control": "./src/community/segmented-control/index.tsx",
++    "./community/picker": "./src/community/picker/index.tsx",
++    "./community/slider": "./src/community/slider/index.tsx",
++    "./community/masked-view": "./src/community/masked-view/index.tsx",
++    "./community/menu": "./src/community/menu/index.tsx",
++    "./community/pager-view": "./src/community/pager-view/index.tsx",
++    "./babel-plugin": "./plugin/babel-plugin.js"
+   }
+-}
+\ No newline at end of file
++}

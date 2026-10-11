@@ -1,0 +1,13 @@
+diff --git a/scripts/ios/project_integrator.rb b/scripts/ios/project_integrator.rb
+index 11fe4161eeafdc54c1e35fc0637339d292d71208..dd769acbe35ad3f7f7323f099391b815b82b066c 100644
+--- a/scripts/ios/project_integrator.rb
++++ b/scripts/ios/project_integrator.rb
+@@ -174,7 +174,7 @@ module Expo
+     # Appends the macro plugin flags to the target's `OTHER_SWIFT_FLAGS` and saves the xcconfig,
+     # skipping it when the flags are already present.
+     def self.append_macro_flags(build_settings, xcconfig_path, macro_flags)
+-      xcconfig = build_settings.xcconfig
++      xcconfig = Xcodeproj::Config.new(xcconfig_path)
+       swift_flags = xcconfig.attributes[SWIFT_FLAGS] || '$(inherited)'
+       return if swift_flags.include?(macro_flags)
+ 

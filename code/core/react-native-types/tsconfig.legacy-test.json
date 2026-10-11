@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.entry-test.json",
+  "compilerOptions": {
+    "customConditions": ["react-native-legacy-deep-imports"]
+  }
+}

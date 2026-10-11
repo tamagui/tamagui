@@ -1,0 +1,38 @@
+import { describe, expectTypeOf, test } from 'vitest'
+import type { StyleProp as NativeStyleProp, ViewStyle } from 'react-native'
+
+import { style } from './style'
+import type { GetProps, StylePiece } from './types'
+import { View } from './views/View'
+
+describe('style() pieces', () => {
+  test('accepts native readonly style arrays and void values', () => {
+    expectTypeOf<NativeStyleProp<ViewStyle>>().toMatchTypeOf<
+      GetProps<typeof View>['style']
+    >()
+  })
+
+  test('returns a StylePiece accepted by the style prop', () => {
+    const piece = style({
+      backgroundColor: 'red-10',
+      padding: 4,
+      opacity: '1 sm:0.5',
+    })
+
+    expectTypeOf(piece).toEqualTypeOf<StylePiece>()
+    expectTypeOf(piece).toMatchTypeOf<NonNullable<GetProps<typeof View>['style']>>()
+    const props: GetProps<typeof View> = { style: [piece, false, null] }
+    expectTypeOf(props.style).toEqualTypeOf<GetProps<typeof View>['style']>()
+  })
+
+  test('checks style keys and values at the definition', () => {
+    style({
+      // @ts-expect-error invalid style key
+      notAStyle: true,
+    })
+    style({
+      // @ts-expect-error invalid opacity value
+      opacity: () => 1,
+    })
+  })
+})

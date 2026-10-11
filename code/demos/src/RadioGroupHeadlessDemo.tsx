@@ -64,13 +64,12 @@ function RadioGroupItem(props: { value: string; id: string; label: string }) {
             <Pressable
               style={{
                 ...styles.radioGroupItem,
-                borderColor: theme.borderColor?.get(),
+                borderColor: theme['border-color']?.get(),
                 ...(checked
                   ? { borderWidth: 4 }
                   : { backgroundColor: theme.background?.get() }),
               }}
               {...frameAttrs}
-              onFocus={frameAttrs.onFocus as any}
             >
               <RadioGroupItemIndicator />
             </Pressable>

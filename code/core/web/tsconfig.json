@@ -21,6 +21,12 @@
       "path": "../normalize-css-color"
     },
     {
+      "path": "../react-native-types"
+    },
+    {
+      "path": "../style-grammar"
+    },
+    {
       "path": "../types"
     },
     {
@@ -34,6 +40,7 @@
     }
   ],
   "exclude": [
+    "test",
     "types",
     "dist",
     "**/__tests__",

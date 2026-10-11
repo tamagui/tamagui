@@ -6,9 +6,6 @@
   "exclude": ["e2e"],
   "references": [
     {
-      "path": "../compiler/babel-plugin"
-    },
-    {
       "path": "../core/cli"
     },
     {
@@ -36,7 +33,7 @@
       "path": "../demos"
     },
     {
-      "path": "../packages/lucide-icons"
+      "path": "../packages/local-icons"
     },
     {
       "path": "../ui/toast"

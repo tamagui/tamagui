@@ -1,0 +1,21 @@
+{
+  "name": "tailwind-coverage",
+  "description": "native tailwind coverage of tamagui, nativewind and uniwind",
+  "scripts": {
+    "rivals": "node rivals.cjs",
+    "tamagui": "cd ../../core/tailwind && npx vitest --run --config ../../comparisons/tailwind-coverage/vitest.config.ts",
+    "score": "node score.cjs && node values.cjs",
+    "all": "npm run rivals && npm run tamagui && npm run score"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "@tailwindcss/node": "4.3.3",
+    "lightningcss": "1.30.1",
+    "nativewind": "5.0.0-rc.0",
+    "react-native-css": "3.1.0-rc.0",
+    "tailwindcss": "4.3.3",
+    "tailwindcss-safe-area": "1.3.0",
+    "uniwind": "1.12.2"
+  },
+  "private": true
+}

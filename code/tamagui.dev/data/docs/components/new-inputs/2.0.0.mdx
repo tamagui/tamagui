@@ -7,6 +7,11 @@ package: input
 demoName: Inputs
 ---
 
+<IntroParagraph>
+  Input and TextArea use web-standard form APIs and translate them to React
+  Native behavior on iOS and Android.
+</IntroParagraph>
+
 <HeroContainer demoMultiple>
   <NewInputsDemo />
 </HeroContainer>
@@ -14,8 +19,6 @@ demoName: Inputs
 ```tsx hero template=Inputs
 
 ```
-
-The v2 Input uses web-standard HTML APIs as the primary interface, with automatic conversion to React Native equivalents on native platforms. This means you write web-first code that works everywhere.
 
 ## Installation
 
@@ -32,7 +35,7 @@ A single-line text input:
 ```tsx
 import { Input } from 'tamagui'
 
-export default () => <Input placeholder="Enter text..." size="$4" />
+export default () => <Input placeholder="Enter text..." size="md" />
 ```
 
 For multi-line text input, use `TextArea`:
@@ -43,11 +46,11 @@ import { TextArea } from 'tamagui'
 export default () => <TextArea placeholder="Enter long text..." rows={4} />
 ```
 
-## Web-First API
+## Web-first API
 
-The v2 Input uses standard HTML input attributes. Here are the key props:
+The v2 Input uses standard HTML input attributes.
 
-### Input Types
+### Input types
 
 Use the standard HTML `type` attribute. On native, these automatically map to the appropriate keyboard and behavior:
 
@@ -82,7 +85,7 @@ Use the standard HTML `type` attribute. On native, these automatically map to th
 | `url`      | `keyboardType="url"`           |
 | `search`   | `inputMode="search"`           |
 
-### Enter Key Behavior
+### Enter key behavior
 
 Use `enterKeyHint` to control the enter/return key label on virtual keyboards:
 
@@ -96,9 +99,9 @@ Use `enterKeyHint` to control the enter/return key label on virtual keyboards:
 
 On native, this automatically maps to `returnKeyType`.
 
-### Form Attributes
+### Form attributes
 
-Standard HTML form attributes work as expected:
+Standard HTML form attributes work:
 
 ```tsx
 <Input
@@ -142,9 +145,9 @@ For convenience, `onChangeText` is still supported but deprecated:
 <Input onChange={(e) => setText(e.target.value)} />
 ```
 
-### Submit Handling
+### Submit handling
 
-For handling form submission on enter:
+To handle form submission on enter:
 
 ```tsx
 <Input
@@ -160,24 +163,18 @@ Input accepts all Tamagui style props and supports the `size` prop for consisten
 
 ```tsx
 <Input
-  size="$4"
+  size="md"
   borderWidth={2}
-  borderColor="$borderColor"
-  borderRadius="$4"
-  backgroundColor="$background"
-  color="$color"
-  placeholderTextColor="$placeholderColor"
-  selectionColor="$accentColor"
-  hoverStyle={{
-    borderColor: '$borderColorHover',
-  }}
-  focusStyle={{
-    borderColor: '$borderColorFocus',
-  }}
+  borderColor="border-color hover:border-color-hover focus:border-color-focus"
+  borderRadius="4"
+  backgroundColor="background"
+  color="color"
+  placeholderTextColor="placeholder-color"
+  selectionColor="accent-color"
 />
 ```
 
-## Native-Only Props
+## Native-only props
 
 Some props only apply on native platforms and have no web equivalent:
 
@@ -202,7 +199,7 @@ Some props only apply on native platforms and have no web equivalent:
 
 For web autofill, use the standard `autoComplete` attribute instead.
 
-## Cross-Platform Text Behavior
+## Cross-platform text behavior
 
 These props work on both web and native with automatic value conversion:
 
@@ -255,9 +252,9 @@ If you're migrating from v1 Input, here are the key changes:
 
 The v1 props still work but are deprecated. We recommend updating to the web-standard props for better cross-platform consistency.
 
-## API Reference
+## API reference
 
-### Input Props
+### Input props
 
 Accepts all HTML `<input>` attributes plus Tamagui style props.
 
@@ -266,7 +263,7 @@ Accepts all HTML `<input>` attributes plus Tamagui style props.
     {
       name: 'size',
       required: false,
-      type: 'SizeTokens',
+      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | SizeTokens",
       description: 'Scale the input size consistently.',
     },
     {
@@ -314,7 +311,7 @@ Accepts all HTML `<input>` attributes plus Tamagui style props.
   ]}
 />
 
-### TextArea Props
+### TextArea props
 
 Accepts all Input props plus:
 

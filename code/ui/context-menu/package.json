@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/context-menu",
-  "version": "2.7.7",
+  "version": "3.0.2",
   "license": "MIT",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "source": "src/index.ts",
@@ -35,7 +35,9 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/compose-refs": "workspace:*",
     "@tamagui/create-menu": "workspace:*",
+    "@tamagui/polyfill-dev": "workspace:*",
     "@tamagui/popover": "workspace:*",
     "@tamagui/use-callback-ref": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",

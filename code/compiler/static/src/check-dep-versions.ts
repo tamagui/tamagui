@@ -3,7 +3,7 @@
   "author": "Bryan Mishkin",
  */
 
-import { globSync } from 'fast-glob'
+import FastGlob from 'fast-glob'
 import { load } from 'js-yaml'
 import { existsSync, readFileSync } from 'node:fs'
 import { join, relative } from 'node:path'
@@ -399,7 +399,7 @@ function expandWorkspaces(
     }
     // Use cwd instead of passing join()'d paths to globby for Windows support: https://github.com/micromatch/micromatch/blob/34f44b4f57eacbdbcc74f64252e0845cf44bbdbd/README.md?plain=1#L822
     // Ignore any node_modules that may be present due to the use of nohoist.
-    return globSync(workspace, {
+    return FastGlob.globSync(workspace, {
       onlyDirectories: true,
       cwd: root,
       ignore: ['**/node_modules'],

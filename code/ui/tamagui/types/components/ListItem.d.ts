@@ -1,0 +1,381 @@
+import { type ComponentSize, type GetProps } from '@tamagui/core';
+import { type ListItemIconProps as ListItemBehaviorIconProps } from '@tamagui/list-item';
+export type ListItemSize = ComponentSize | boolean;
+export declare const ListItemFrame: import("react").FunctionComponent<Omit<import("@tamagui/core").StackNonStyleProps, "active" | "disabled" | "size" | "variant"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "active" | "disabled" | "size" | "variant">> & import("@tamagui/core").WithFlatVariantValues<{
+    active?: boolean | undefined;
+    disabled?: boolean | undefined;
+    size?: string | boolean | undefined;
+    variant?: "outlined" | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, "accessibilityActions" | "accessibilityElementsHidden" | "accessibilityHint" | "accessibilityIgnoresInvertColors" | "accessibilityLabel" | "accessibilityLabelledBy" | "accessibilityLanguage" | "accessibilityLargeContentTitle" | "accessibilityLiveRegion" | "accessibilityRespondsToUserInteraction" | "accessibilityRole" | "accessibilityShowsLargeContentViewer" | "accessibilityState" | "accessibilityValue" | "accessibilityViewIsModal" | "accessible" | "animatedBy" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-hidden" | "aria-label" | "aria-labelledby" | "aria-live" | "aria-modal" | "aria-selected" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "asChild" | "children" | "className" | "collapsable" | "collapsableChildren" | "container" | "dangerouslySetInnerHTML" | "debug" | "disableClassName" | "disableNativeStyle" | "disableOptimization" | "experimental_accessibilityOrder" | "forceStyle" | "group" | "hasTVPreferredFocus" | "hitSlop" | "htmlFor" | "id" | "importantForAccessibility" | "name" | "nativeBackgroundAndroid" | "nativeForegroundAndroid" | "nativeID" | "needsOffscreenAlphaCompositing" | "nextFocusDown" | "nextFocusForward" | "nextFocusLeft" | "nextFocusRight" | "nextFocusUp" | "onAccessibilityAction" | "onAccessibilityEscape" | "onAccessibilityTap" | "onBeforeInput" | "onBlur" | "onBlurCapture" | "onChange" | "onClick" | "onClickCapture" | "onContextMenu" | "onCopy" | "onCut" | "onDoubleClick" | "onDrag" | "onDragEnd" | "onDragEnter" | "onDragLeave" | "onDragOver" | "onDragStart" | "onDrop" | "onFocus" | "onFocusCapture" | "onGotPointerCapture" | "onGotPointerCaptureCapture" | "onInput" | "onKeyDown" | "onKeyDownCapture" | "onKeyUp" | "onKeyUpCapture" | "onLongPress" | "onLostPointerCapture" | "onLostPointerCaptureCapture" | "onMagicTap" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOut" | "onMouseOver" | "onMouseUp" | "onPaste" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerOut" | "onPointerOutCapture" | "onPointerOver" | "onPointerOverCapture" | "onPointerUp" | "onPointerUpCapture" | "onPress" | "onPressIn" | "onPressOut" | "onScroll" | "onTouchCancel" | "onTouchCancelCapture" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchMoveCapture" | "onTouchStart" | "onTouchStartCapture" | "onWheel" | "removeClippedSubviews" | "render" | "renderToHardwareTextureAndroid" | "role" | "screenReaderFocusable" | "shouldRasterizeIOS" | "style" | "tabIndex" | "target" | "testID" | "theme" | "themeShallow" | "untilMeasured"> & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    active?: boolean | undefined;
+    disabled?: boolean | undefined;
+    size?: string | boolean | undefined;
+    variant?: "outlined" | undefined;
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        active?: boolean | undefined;
+        disabled?: boolean | undefined;
+        size?: string | boolean | undefined;
+        variant?: "outlined" | undefined;
+    }, import("@tamagui/core").StaticConfigPublic];
+};
+export declare const ListItemText: import("react").FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "variant"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").TextStylePropsBase, "size" | "variant">> & import("@tamagui/core").WithFlatVariantValues<{
+    size?: string | number | boolean | undefined;
+    variant?: "outlined" | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>, keyof import("@tamagui/core").TextNonStyleProps> & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+    size?: string | number | boolean | undefined;
+    variant?: "outlined" | undefined;
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+        size?: string | number | boolean | undefined;
+        variant?: "outlined" | undefined;
+    }, import("@tamagui/core").StaticConfigPublic];
+};
+export declare const ListItemTitle: import("react").FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "variant"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").TextStylePropsBase, "size" | "variant">> & import("@tamagui/core").WithFlatVariantValues<{
+    size?: string | number | boolean | undefined;
+    variant?: "outlined" | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>, keyof import("@tamagui/core").TextNonStyleProps> & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+    size?: string | number | boolean | undefined;
+    variant?: "outlined" | undefined;
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+        size?: string | number | boolean | undefined;
+        variant?: "outlined" | undefined;
+    }, import("@tamagui/core").StaticConfigPublic];
+};
+export declare const ListItemSubtitle: import("react").FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "variant"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").TextStylePropsBase, "size" | "variant">> & import("@tamagui/core").WithFlatVariantValues<{
+    size?: string | number | boolean | undefined;
+    variant?: "outlined" | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>, keyof import("@tamagui/core").TextNonStyleProps> & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+    size?: string | number | boolean | undefined;
+    variant?: "outlined" | undefined;
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+        size?: string | number | boolean | undefined;
+        variant?: "outlined" | undefined;
+    }, import("@tamagui/core").StaticConfigPublic];
+};
+export declare const ListItemIcon: ({ children, size, scaleIcon, }: ListItemBehaviorIconProps) => any;
+declare const ListItemComponent: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, Omit<import("@tamagui/core").StackNonStyleProps, "maxFontSizeMultiplier" | "noTextWrap" | "size" | "textProps" | ("color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection") | keyof {
+    children?: import("react").ReactNode;
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconSize?: string | number | boolean;
+    scaleIcon?: number;
+    subTitle?: import("react").ReactNode;
+    title?: import("react").ReactNode;
+}> & Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/core").WithShorthands<Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
+    maxFontSizeMultiplier?: number;
+    textProps?: Partial<import("@tamagui/text").SizableTextProps>;
+    noTextWrap?: boolean;
+} & {
+    children?: import("react").ReactNode;
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconSize?: string | number | boolean;
+    scaleIcon?: number;
+    subTitle?: import("react").ReactNode;
+    title?: import("react").ReactNode;
+} & {
+    color?: import("@tamagui/core").ColorTokens | string;
+    size?: string | boolean;
+}, import("@tamagui/core").StackStyleBase, Omit<{
+    active?: boolean | undefined;
+    disabled?: boolean | undefined;
+    size?: string | boolean | undefined;
+    variant?: "outlined" | undefined;
+}, "maxFontSizeMultiplier" | "noTextWrap" | "size" | "textProps" | ("color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection") | keyof {
+    children?: import("react").ReactNode;
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconSize?: string | number | boolean;
+    scaleIcon?: number;
+    subTitle?: import("react").ReactNode;
+    title?: import("react").ReactNode;
+}>, import("@tamagui/core").StaticConfigPublic>;
+export declare const ListItem: import("react").FunctionComponent<Omit<Omit<import("@tamagui/core").StackNonStyleProps, "maxFontSizeMultiplier" | "noTextWrap" | "size" | "textProps" | ("color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection") | keyof {
+    children?: import("react").ReactNode;
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconSize?: string | number | boolean;
+    scaleIcon?: number;
+    subTitle?: import("react").ReactNode;
+    title?: import("react").ReactNode;
+}> & Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/core").WithShorthands<Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
+    maxFontSizeMultiplier?: number;
+    textProps?: Partial<import("@tamagui/text").SizableTextProps>;
+    noTextWrap?: boolean;
+} & {
+    children?: import("react").ReactNode;
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconSize?: string | number | boolean;
+    scaleIcon?: number;
+    subTitle?: import("react").ReactNode;
+    title?: import("react").ReactNode;
+} & {
+    color?: import("@tamagui/core").ColorTokens | string;
+    size?: string | boolean;
+}, "active" | "disabled" | "variant"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "active" | "disabled" | "variant">> & import("@tamagui/core").WithFlatVariantValues<Omit<{
+    active?: boolean | undefined;
+    disabled?: boolean | undefined;
+    size?: string | boolean | undefined;
+    variant?: "outlined" | undefined;
+}, "maxFontSizeMultiplier" | "noTextWrap" | "size" | "textProps" | ("color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection") | keyof {
+    children?: import("react").ReactNode;
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconSize?: string | number | boolean;
+    scaleIcon?: number;
+    subTitle?: import("react").ReactNode;
+    title?: import("react").ReactNode;
+}>> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, "accessibilityActions" | "accessibilityElementsHidden" | "accessibilityHint" | "accessibilityIgnoresInvertColors" | "accessibilityLabel" | "accessibilityLabelledBy" | "accessibilityLanguage" | "accessibilityLargeContentTitle" | "accessibilityLiveRegion" | "accessibilityRespondsToUserInteraction" | "accessibilityRole" | "accessibilityShowsLargeContentViewer" | "accessibilityState" | "accessibilityValue" | "accessibilityViewIsModal" | "accessible" | "animatedBy" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-hidden" | "aria-label" | "aria-labelledby" | "aria-live" | "aria-modal" | "aria-selected" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "asChild" | "className" | "collapsable" | "collapsableChildren" | "container" | "dangerouslySetInnerHTML" | "debug" | "disableClassName" | "disableNativeStyle" | "disableOptimization" | "experimental_accessibilityOrder" | "forceStyle" | "group" | "hasTVPreferredFocus" | "hitSlop" | "htmlFor" | "id" | "importantForAccessibility" | "maxFontSizeMultiplier" | "name" | "nativeBackgroundAndroid" | "nativeForegroundAndroid" | "nativeID" | "needsOffscreenAlphaCompositing" | "nextFocusDown" | "nextFocusForward" | "nextFocusLeft" | "nextFocusRight" | "nextFocusUp" | "noTextWrap" | "onAccessibilityAction" | "onAccessibilityEscape" | "onAccessibilityTap" | "onBeforeInput" | "onBlur" | "onBlurCapture" | "onChange" | "onClick" | "onClickCapture" | "onContextMenu" | "onCopy" | "onCut" | "onDoubleClick" | "onDrag" | "onDragEnd" | "onDragEnter" | "onDragLeave" | "onDragOver" | "onDragStart" | "onDrop" | "onFocus" | "onFocusCapture" | "onGotPointerCapture" | "onGotPointerCaptureCapture" | "onInput" | "onKeyDown" | "onKeyDownCapture" | "onKeyUp" | "onKeyUpCapture" | "onLongPress" | "onLostPointerCapture" | "onLostPointerCaptureCapture" | "onMagicTap" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOut" | "onMouseOver" | "onMouseUp" | "onPaste" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerOut" | "onPointerOutCapture" | "onPointerOver" | "onPointerOverCapture" | "onPointerUp" | "onPointerUpCapture" | "onPress" | "onPressIn" | "onPressOut" | "onScroll" | "onTouchCancel" | "onTouchCancelCapture" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchMoveCapture" | "onTouchStart" | "onTouchStartCapture" | "onWheel" | "removeClippedSubviews" | "render" | "renderToHardwareTextureAndroid" | "role" | "screenReaderFocusable" | "shouldRasterizeIOS" | "size" | "style" | "tabIndex" | "target" | "testID" | "textProps" | "theme" | "themeShallow" | "untilMeasured" | ("color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection") | keyof {
+    children?: import("react").ReactNode;
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconSize?: string | number | boolean;
+    scaleIcon?: number;
+    subTitle?: import("react").ReactNode;
+    title?: import("react").ReactNode;
+}> & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, Omit<import("@tamagui/core").StackNonStyleProps, "maxFontSizeMultiplier" | "noTextWrap" | "size" | "textProps" | ("color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection") | keyof {
+    children?: import("react").ReactNode;
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconSize?: string | number | boolean;
+    scaleIcon?: number;
+    subTitle?: import("react").ReactNode;
+    title?: import("react").ReactNode;
+}> & Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/core").WithShorthands<Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
+    maxFontSizeMultiplier?: number;
+    textProps?: Partial<import("@tamagui/text").SizableTextProps>;
+    noTextWrap?: boolean;
+} & {
+    children?: import("react").ReactNode;
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconSize?: string | number | boolean;
+    scaleIcon?: number;
+    subTitle?: import("react").ReactNode;
+    title?: import("react").ReactNode;
+} & {
+    color?: import("@tamagui/core").ColorTokens | string;
+    size?: string | boolean;
+}, import("@tamagui/core").StackStyleBase, Omit<{
+    active?: boolean | undefined;
+    disabled?: boolean | undefined;
+    size?: string | boolean | undefined;
+    variant?: "outlined" | undefined;
+}, "maxFontSizeMultiplier" | "noTextWrap" | "size" | "textProps" | ("color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection") | keyof {
+    children?: import("react").ReactNode;
+    icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+        color?: any;
+        size?: any;
+    }> | null;
+    iconSize?: string | number | boolean;
+    scaleIcon?: number;
+    subTitle?: import("react").ReactNode;
+    title?: import("react").ReactNode;
+}>, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, Omit<import("@tamagui/core").StackNonStyleProps, "maxFontSizeMultiplier" | "noTextWrap" | "size" | "textProps" | ("color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection") | keyof {
+        children?: import("react").ReactNode;
+        icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | null;
+        iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | null;
+        iconSize?: string | number | boolean;
+        scaleIcon?: number;
+        subTitle?: import("react").ReactNode;
+        title?: import("react").ReactNode;
+    }> & Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">> & Pick<import("@tamagui/core").WithShorthands<Partial<Pick<import("@tamagui/core").TextStyle, "color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection">>>, never> & {
+        maxFontSizeMultiplier?: number;
+        textProps?: Partial<import("@tamagui/text").SizableTextProps>;
+        noTextWrap?: boolean;
+    } & {
+        children?: import("react").ReactNode;
+        icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | null;
+        iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | null;
+        iconSize?: string | number | boolean;
+        scaleIcon?: number;
+        subTitle?: import("react").ReactNode;
+        title?: import("react").ReactNode;
+    } & {
+        color?: import("@tamagui/core").ColorTokens | string;
+        size?: string | boolean;
+    }, import("@tamagui/core").StackStyleBase, Omit<{
+        active?: boolean | undefined;
+        disabled?: boolean | undefined;
+        size?: string | boolean | undefined;
+        variant?: "outlined" | undefined;
+    }, "maxFontSizeMultiplier" | "noTextWrap" | "size" | "textProps" | ("color" | "ellipsis" | "font" | "fontFamily" | "fontSize" | "fontStyle" | "fontVariant" | "fontWeight" | "letterSpacing" | "lineHeight" | "numberOfLines" | "textAlign" | "textDecoration" | "textDecorationColor" | "textDecorationDistance" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "userSelect" | "verticalAlign" | "whiteSpace" | "wordWrap" | "writingDirection") | keyof {
+        children?: import("react").ReactNode;
+        icon?: import("react").JSX.Element | import("react").FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | null;
+        iconAfter?: import("react").JSX.Element | import("react").FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | null;
+        iconSize?: string | number | boolean;
+        scaleIcon?: number;
+        subTitle?: import("react").ReactNode;
+        title?: import("react").ReactNode;
+    }>, import("@tamagui/core").StaticConfigPublic];
+} & {
+    Apply: import("react").Provider<{
+        size?: string | boolean;
+        variant?: 'outlined';
+        color?: import("@tamagui/core").ColorTokens | string;
+    }> & import("react").ProviderExoticComponent<Partial<{
+        size?: string | boolean;
+        variant?: 'outlined';
+        color?: import("@tamagui/core").ColorTokens | string;
+    }> & {
+        children?: import("react").ReactNode;
+        scope?: string;
+    }>;
+    Frame: import("react").FunctionComponent<Omit<import("@tamagui/core").StackNonStyleProps, "active" | "disabled" | "size" | "variant"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "active" | "disabled" | "size" | "variant">> & import("@tamagui/core").WithFlatVariantValues<{
+        active?: boolean | undefined;
+        disabled?: boolean | undefined;
+        size?: string | boolean | undefined;
+        variant?: "outlined" | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, "accessibilityActions" | "accessibilityElementsHidden" | "accessibilityHint" | "accessibilityIgnoresInvertColors" | "accessibilityLabel" | "accessibilityLabelledBy" | "accessibilityLanguage" | "accessibilityLargeContentTitle" | "accessibilityLiveRegion" | "accessibilityRespondsToUserInteraction" | "accessibilityRole" | "accessibilityShowsLargeContentViewer" | "accessibilityState" | "accessibilityValue" | "accessibilityViewIsModal" | "accessible" | "animatedBy" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-hidden" | "aria-label" | "aria-labelledby" | "aria-live" | "aria-modal" | "aria-selected" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "asChild" | "children" | "className" | "collapsable" | "collapsableChildren" | "container" | "dangerouslySetInnerHTML" | "debug" | "disableClassName" | "disableNativeStyle" | "disableOptimization" | "experimental_accessibilityOrder" | "forceStyle" | "group" | "hasTVPreferredFocus" | "hitSlop" | "htmlFor" | "id" | "importantForAccessibility" | "name" | "nativeBackgroundAndroid" | "nativeForegroundAndroid" | "nativeID" | "needsOffscreenAlphaCompositing" | "nextFocusDown" | "nextFocusForward" | "nextFocusLeft" | "nextFocusRight" | "nextFocusUp" | "onAccessibilityAction" | "onAccessibilityEscape" | "onAccessibilityTap" | "onBeforeInput" | "onBlur" | "onBlurCapture" | "onChange" | "onClick" | "onClickCapture" | "onContextMenu" | "onCopy" | "onCut" | "onDoubleClick" | "onDrag" | "onDragEnd" | "onDragEnter" | "onDragLeave" | "onDragOver" | "onDragStart" | "onDrop" | "onFocus" | "onFocusCapture" | "onGotPointerCapture" | "onGotPointerCaptureCapture" | "onInput" | "onKeyDown" | "onKeyDownCapture" | "onKeyUp" | "onKeyUpCapture" | "onLongPress" | "onLostPointerCapture" | "onLostPointerCaptureCapture" | "onMagicTap" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOut" | "onMouseOver" | "onMouseUp" | "onPaste" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerOut" | "onPointerOutCapture" | "onPointerOver" | "onPointerOverCapture" | "onPointerUp" | "onPointerUpCapture" | "onPress" | "onPressIn" | "onPressOut" | "onScroll" | "onTouchCancel" | "onTouchCancelCapture" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchMoveCapture" | "onTouchStart" | "onTouchStartCapture" | "onWheel" | "removeClippedSubviews" | "render" | "renderToHardwareTextureAndroid" | "role" | "screenReaderFocusable" | "shouldRasterizeIOS" | "style" | "tabIndex" | "target" | "testID" | "theme" | "themeShallow" | "untilMeasured"> & {
+        ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        active?: boolean | undefined;
+        disabled?: boolean | undefined;
+        size?: string | boolean | undefined;
+        variant?: "outlined" | undefined;
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
+            active?: boolean | undefined;
+            disabled?: boolean | undefined;
+            size?: string | boolean | undefined;
+            variant?: "outlined" | undefined;
+        }, import("@tamagui/core").StaticConfigPublic];
+    };
+    Icon: typeof ListItemIcon;
+    Subtitle: import("react").FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "variant"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").TextStylePropsBase, "size" | "variant">> & import("@tamagui/core").WithFlatVariantValues<{
+        size?: string | number | boolean | undefined;
+        variant?: "outlined" | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>, keyof import("@tamagui/core").TextNonStyleProps> & {
+        ref?: import("react").Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+        size?: string | number | boolean | undefined;
+        variant?: "outlined" | undefined;
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+            size?: string | number | boolean | undefined;
+            variant?: "outlined" | undefined;
+        }, import("@tamagui/core").StaticConfigPublic];
+    };
+    Text: import("react").FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "variant"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").TextStylePropsBase, "size" | "variant">> & import("@tamagui/core").WithFlatVariantValues<{
+        size?: string | number | boolean | undefined;
+        variant?: "outlined" | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>, keyof import("@tamagui/core").TextNonStyleProps> & {
+        ref?: import("react").Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+        size?: string | number | boolean | undefined;
+        variant?: "outlined" | undefined;
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+            size?: string | number | boolean | undefined;
+            variant?: "outlined" | undefined;
+        }, import("@tamagui/core").StaticConfigPublic];
+    };
+    Title: import("react").FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "variant"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").TextStylePropsBase, "size" | "variant">> & import("@tamagui/core").WithFlatVariantValues<{
+        size?: string | number | boolean | undefined;
+        variant?: "outlined" | undefined;
+    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>, keyof import("@tamagui/core").TextNonStyleProps> & {
+        ref?: import("react").Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+        size?: string | number | boolean | undefined;
+        variant?: "outlined" | undefined;
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+            size?: string | number | boolean | undefined;
+            variant?: "outlined" | undefined;
+        }, import("@tamagui/core").StaticConfigPublic];
+    };
+};
+export type ListItemProps = GetProps<typeof ListItemComponent>;
+export {};
+//# sourceMappingURL=ListItem.d.ts.map

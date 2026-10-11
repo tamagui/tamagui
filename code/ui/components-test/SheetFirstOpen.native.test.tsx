@@ -49,9 +49,9 @@ describe('native modal Sheet first open', () => {
           <PortalProvider shouldAddRootHost>
             <Sheet modal open snapPoints={[50]}>
               <Sheet.Overlay />
-              <Sheet.Frame>
+              <Sheet.Container>
                 <Paragraph>content</Paragraph>
-              </Sheet.Frame>
+              </Sheet.Container>
             </Sheet>
           </PortalProvider>
         </TamaguiProvider>

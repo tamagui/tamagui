@@ -3,7 +3,11 @@ import { expect, test } from '@playwright/test'
 import { setupPage } from './test-utils'
 
 test.beforeEach(async ({ page }) => {
-  await setupPage(page, { name: 'MenuSubStyledCase', type: 'useCase' })
+  await setupPage(page, {
+    name: 'MenuSubStyledCase',
+    type: 'useCase',
+    searchParams: { animationDriver: 'motion' },
+  })
 })
 
 test('styled(Menu.SubContent) positions submenu correctly', async ({ page }) => {
@@ -20,6 +24,7 @@ test('styled(Menu.SubContent) positions submenu correctly', async ({ page }) => 
   // check that submenu is visible
   const submenuContent = page.locator('#submenu-content')
   await expect(submenuContent).toBeVisible()
+  await expect(submenuContent).toHaveCSS('opacity', '1')
 
   // get positions
   const triggerBox = await page.locator('#submenu-trigger').boundingBox()

@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Schema for takeout GitHub app",
+  "type": "object",
+  "properties": {
+    "updateBot": {
+      "type": "object",
+      "properties": {
+        "sendPullRequests": {
+          "type": "boolean",
+          "description": "whether or not to send pull requests"
+        },
+        "pullRequestBranch": {
+          "type": "string",
+          "description": "the branch to send PRs to"
+        },
+        "committer": {
+          "type": "object",
+          "description": "customize the committer of update commits",
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
+        },
+        "ignorePatterns": {
+          "type": "array",
+          "description": "the files to ignore when sending updates",
+          "examples": [["README.md"]]
+        },
+        "commitConflicts": {
+          "type": ["array", "boolean"],
+          "description": "the bot will commit any conflicts if this is set to true",
+          "default": ["*/package.json"],
+          "examples": [["*/package.json"], true, false]
+        }
+      }
+    }
+  },
+
+  "required": ["updateBot"]
+}

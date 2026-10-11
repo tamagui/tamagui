@@ -5,6 +5,9 @@
   },
   "references": [
     {
+      "path": "../compiler-core"
+    },
+    {
       "path": "../../core/config-default"
     },
     {

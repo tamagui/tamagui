@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers",
-  "version": "2.7.7",
+  "version": "3.0.2",
   "license": "MIT",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "source": "src/index.ts",
@@ -16,6 +16,15 @@
   "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
+    "./tokenCategories": {
+      "types": "./types/tokenCategories.d.ts",
+      "react-native": "./dist/esm/tokenCategories.mjs",
+      "browser": "./dist/esm/tokenCategories.mjs",
+      "module": "./dist/esm/tokenCategories.mjs",
+      "import": "./dist/esm/tokenCategories.mjs",
+      "require": "./dist/cjs/tokenCategories.cjs",
+      "default": "./dist/esm/tokenCategories.mjs"
+    },
     ".": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
@@ -37,7 +46,8 @@
   },
   "dependencies": {
     "@tamagui/constants": "workspace:*",
-    "@tamagui/simple-hash": "workspace:*"
+    "@tamagui/simple-hash": "workspace:*",
+    "@tamagui/style-grammar": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

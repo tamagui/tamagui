@@ -1,5 +1,4 @@
 import React from 'react'
-import Conf from 'conf'
 import type { ComponentSchema } from '../components.js'
 
 export interface FetchState {
@@ -12,17 +11,11 @@ export interface FetchState {
   statusCode?: number
 }
 
-export interface TokenStorageState {
-  hasToken: boolean
-  token: string | null
-}
-
 // Define the state for the installation process
 export interface InstallState {
   installingComponent: ComponentSchema | null | undefined
   installedComponents: ComponentSchema[]
   shouldOpenBrowser: boolean
-  isTokenInstalled: boolean
   componentToInstall: {
     name: string
     path: string
@@ -31,11 +24,6 @@ export interface InstallState {
 
 // Define the context type for the application
 export interface AppContextType {
-  tokenStore: Conf<any>
-  isLoggedIn: boolean
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
-  accessToken: string | null
-  setAccessToken: React.Dispatch<React.SetStateAction<string | null>>
   isCopyingToClipboard: boolean
   setCopyingToClipboard: React.Dispatch<React.SetStateAction<boolean>>
   searchResults: Array<{ item: ComponentSchema }>
@@ -53,23 +41,8 @@ export interface AppContextType {
   setFetchState: React.Dispatch<React.SetStateAction<FetchState>>
 }
 
-const schema = {
-  accessToken: {
-    type: 'string',
-    minLength: 1024,
-    maxLength: 1536,
-  },
-}
-
-const tokenStore = new Conf({ projectName: 'bento-cli/v3.0', schema })
-
 // Create the AppContext with default values
 export const AppContext = React.createContext<AppContextType>({
-  tokenStore: tokenStore,
-  isLoggedIn: false,
-  setIsLoggedIn: () => {},
-  accessToken: '',
-  setAccessToken: () => {},
   isCopyingToClipboard: false,
   setCopyingToClipboard: () => {},
   searchResults: [],
@@ -83,7 +56,6 @@ export const AppContext = React.createContext<AppContextType>({
     installingComponent: null,
     installedComponents: [],
     shouldOpenBrowser: false,
-    isTokenInstalled: false,
     componentToInstall: null,
   },
   exitApp: () => {},

@@ -3,9 +3,11 @@ title: Reanimated Driver
 description: Advanced off-thread animations with Reanimated
 ---
 
-[Reanimated](https://docs.swmansion.com/react-native-reanimated/) is an
-animation library that targets React Native and React Native Web. It runs
-animations off-thread and provides smooth spring and timing animations.
+<IntroParagraph>
+  [Reanimated](https://docs.swmansion.com/react-native-reanimated/) provides
+  spring and timing animations for React Native and React Native Web, with
+  off-thread execution on native.
+</IntroParagraph>
 
 ## Installation
 
@@ -27,77 +29,68 @@ import { createTamagui } from 'tamagui'
 
 export default createTamagui({
   animations: createAnimations({
-    fast: {
-      type: 'spring',
-      damping: 20,
-      mass: 1.2,
-      stiffness: 250,
-    },
-    medium: {
-      type: 'spring',
-      damping: 10,
-      mass: 0.9,
-      stiffness: 100,
-    },
-    slow: {
-      type: 'spring',
-      damping: 20,
-      stiffness: 60,
-    },
+    fast: { duration: 160, bounce: 0.25 },
+    medium: { duration: 300, bounce: 0.15 },
+    slow: { duration: 450, bounce: 0.1 },
   }),
   // ...
 })
 ```
 
-## How it Works
+The config format is the same for all four drivers, so a name means the same
+motion whichever driver renders it.
+
+## How it works
 
 At runtime, this driver parses animatable style properties and hands them over
 to Reanimated using worklets. Animations run on the UI thread for smooth 60fps
 performance.
 
-## Animation Configuration
+## Animation configuration
 
 Reanimated animations support both spring and timing (tween) animations:
 
-### Spring Animations
+### Spring animations
 
 ```tsx
 {
-  type: 'spring',
-  damping: 10,     // Higher = less bouncy
-  mass: 0.9,       // Higher = more inertia
-  stiffness: 100,  // Higher = faster
+  duration: 400,  // the spring's undamped period, in milliseconds
+  bounce: 0.5,    // 0 is critically damped, toward 1 is loose, negative is sluggish
 }
 ```
 
-### Timing Animations
+`stiffness`, `damping`, and `mass` still work for a config already tuned against
+them, and Reanimated's `velocity`, `overshootClamping`, and rest thresholds pass
+through.
+
+### Timing animations
 
 ```tsx
 {
   type: 'timing',
-  duration: 300,   // Duration in milliseconds
+  duration: 300,      // Duration in milliseconds
+  easing: 'ease-out', // any css timing function
 }
 ```
 
+A plain CSS string means the same thing: `'300ms ease-out'`.
+
 ### Delay
 
-You can add animation delays using the array syntax:
-
 ```tsx
-<Square transition={['bouncy', { delay: 200 }]} />
+<Square transition={{ preset: 'bouncy', delay: 200 }} />
 ```
 
 The delay is specified in milliseconds.
 
-## When to Use
+## When to use
 
 **Advantages:**
 
-- **Off-thread animations** - Runs on UI thread for 60fps performance
-- **Cross-platform** - Works on web and React Native
-- **Advanced features** - Worklets, gesture integration, shared values
-- **React Native optimized** - Best performance on native platforms
-- **Powerful** - Most feature-rich animation driver
+- **Off-thread animations**: runs on UI thread for 60fps performance
+- **Cross-platform**: works on web and React Native
+- **Advanced features**: worklets, gesture integration, shared values
+- **React Native optimized**: highest performance on native platforms
 
 **Considerations:**
 
@@ -106,7 +99,7 @@ The delay is specified in milliseconds.
 - More complex than simpler drivers
 - Web-only apps might prefer Motion or CSS drivers
 
-## Platform-Specific Configuration
+## Platform-specific configuration
 
 You can use Reanimated on native and a lighter driver on web:
 
@@ -115,11 +108,7 @@ You can use Reanimated on native and a lighter driver on web:
 import { createAnimations } from '@tamagui/animations-reanimated'
 
 export const animations = createAnimations({
-  bouncy: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 100,
-  },
+  bouncy: { duration: 400, bounce: 0.5 },
 })
 ```
 
@@ -128,11 +117,7 @@ export const animations = createAnimations({
 import { createAnimations } from '@tamagui/animations-motion'
 
 export const animations = createAnimations({
-  bouncy: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 100,
-  },
+  bouncy: { duration: 400, bounce: 0.5 },
 })
 ```
 
@@ -149,18 +134,8 @@ import { createAnimations } from '@tamagui/animations-reanimated'
 import { YStack, createTamagui } from 'tamagui'
 
 const animations = createAnimations({
-  bouncy: {
-    type: 'spring',
-    damping: 10,
-    mass: 0.9,
-    stiffness: 100,
-  },
-  quick: {
-    type: 'spring',
-    damping: 20,
-    mass: 1.2,
-    stiffness: 250,
-  },
+  bouncy: { duration: 400, bounce: 0.5 },
+  quick: { duration: 220, bounce: 0.3 },
 })
 
 export default createTamagui({
@@ -172,33 +147,31 @@ export default createTamagui({
 export const MyComponent = () => (
   <YStack
     transition="bouncy"
-    enterStyle={{
-      opacity: 0,
-      scale: 0.9,
-    }}
+    opacity="enter:0"
+    scale="enter:0.9"
   />
 )
 ```
 
-## Zero Re-renders
+## Zero re-renders
 
-The Reanimated driver now works with Tamagui to bypasses all internal style
-changes to instead directly hand off to Reanimated worklets.
+The Reanimated driver works with Tamagui to bypass all internal style changes
+and hand off directly to Reanimated worklets.
 
-## Advanced Features
+## Advanced features
 
 Reanimated provides advanced features:
 
-- **Gesture integration** - Animate based on gesture values
-- **Shared values** - Share animated values between components
-- **Worklets** - JavaScript functions that run on the UI thread
-- **Custom animations** - Full control over animation curves
+- **Gesture integration**: animate based on gesture values
+- **Shared values**: share animated values between components
+- **Worklets**: JavaScript functions that run on the UI thread
+- **Custom animations**: full control over animation curves
 
 See the
 [Reanimated documentation](https://docs.swmansion.com/react-native-reanimated/)
 for more details.
 
-## See Also
+## See also
 
 - [Animations Introduction](/docs/core/animations)
 - [CSS Driver](/docs/core/animations-css)

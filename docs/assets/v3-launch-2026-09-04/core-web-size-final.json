@@ -1,0 +1,21 @@
+{
+  "sourceCommit": "e34ac235ad",
+  "baselineCommit": "110ae39aaa740131da19084c8788ae31620755b0",
+  "fixture": "baseline-styled-view",
+  "command": "node code/comparisons/check-styled-view-size.mts",
+  "node": "24.16.0",
+  "zlib": "1.3.1-e00f703",
+  "gzipLevel": 9,
+  "sessionBaseline": {
+    "raw": 76820,
+    "gzip": 28800
+  },
+  "retainedChanges": {
+    "raw": 76614,
+    "gzip": 28732
+  },
+  "gzipChange": -68,
+  "recordedLedgerBaseline": 28671,
+  "unchangedCeiling": 28821,
+  "notes": "Web-only size target. Optional frontend traversal experiment was reverted after increasing the Metro web starter island. Numeric conversion, font-cache cleanup and callback removal are retained. Baseline comparison uses the session starting artifact; the older ledger is a separate baseline."
+}

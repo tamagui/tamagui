@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'GroupPseudoVariantOverride', type: 'useCase' })
 })
 
-test(`base $group-press opacity applies without variant`, async ({ page }) => {
+test(`base group-press opacity applies without variant`, async ({ page }) => {
   const group = page.locator('#base-group')
   const overlay = page.locator('#base-overlay')
 
@@ -19,7 +19,7 @@ test(`base $group-press opacity applies without variant`, async ({ page }) => {
   expect(styles.backgroundColor).toBe('rgb(0, 0, 255)')
 })
 
-test(`base $group-hover opacity applies without variant`, async ({ page }) => {
+test(`base group-hover opacity applies without variant`, async ({ page }) => {
   const group = page.locator('#base-group')
   const overlay = page.locator('#base-overlay')
 
@@ -30,7 +30,7 @@ test(`base $group-hover opacity applies without variant`, async ({ page }) => {
   expect(styles.opacity).toBe('0.4')
 })
 
-test(`action variant $group-press opacity overrides base`, async ({ page }) => {
+test(`action variant group-press opacity overrides base`, async ({ page }) => {
   const group = page.locator('#action-group')
   const overlay = page.locator('#action-overlay')
 
@@ -38,12 +38,12 @@ test(`action variant $group-press opacity overrides base`, async ({ page }) => {
     return await getStyles(overlay)
   })
 
-  // variant's $group-button-press should override base opacity
+  // variant's group-button-press should override base opacity
   expect(styles.opacity).toBe('1')
   expect(styles.backgroundColor).toBe('rgb(255, 0, 0)')
 })
 
-test(`action variant $group-hover opacity overrides base`, async ({ page }) => {
+test(`action variant group-hover opacity overrides base`, async ({ page }) => {
   const group = page.locator('#action-group')
   const overlay = page.locator('#action-overlay')
 
@@ -51,7 +51,7 @@ test(`action variant $group-hover opacity overrides base`, async ({ page }) => {
     return await getStyles(overlay)
   })
 
-  // variant's $group-button-hover should override base opacity
+  // variant's group-button-hover should override base opacity
   expect(styles.opacity).toBe('1')
   expect(styles.backgroundColor).toBe('rgb(255, 255, 0)')
 })

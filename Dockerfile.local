@@ -1,4 +1,4 @@
-# local build dockerfile - uses bento from ../bento
+# local build dockerfile
 # build from PARENT directory: docker build -f tamagui5/Dockerfile.local -t tamagui-site .
 FROM node:22
 
@@ -44,8 +44,6 @@ RUN apt-get update && apt-get install -y git bsdmainutils vim-common libvips-dev
 
 WORKDIR /root
 
-# copy both repos
-COPY bento /root/bento
 COPY tamagui5 /root/tamagui
 
 WORKDIR /root/tamagui
@@ -53,11 +51,7 @@ WORKDIR /root/tamagui
 # init git (allow empty commit if nothing to commit)
 RUN git config --global user.email "you@example.com" && git config --global user.name "Docker Build" && git init . && git add -A && (git commit -m 'add' > /dev/null || true)
 
-# install tamagui deps first
 RUN bun install
-
-# setup bento - merge deps and symlink node_modules
-RUN node scripts/with-bento.mjs && bun install
 
 # build
 RUN bun run build:js

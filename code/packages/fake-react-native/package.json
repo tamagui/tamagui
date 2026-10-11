@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/fake-react-native",
-  "version": "2.7.7",
+  "version": "3.0.2",
   "license": "MIT",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "main": "index.js",
@@ -9,11 +9,32 @@
     ".": {
       "browser": "./index.mjs",
       "module": "./index.mjs",
-      "import": "./index.mjs",
+      "import": "./index.node.mjs",
       "require": "./index.js"
+    },
+    "./pressability": "./pressability.js",
+    "./pressEvent": {
+      "types": "./pressEvent.d.ts",
+      "default": "./pressEvent.js"
     }
   },
   "publishConfig": {
     "access": "public"
+  },
+  "peerDependencies": {
+    "@babel/core": "*",
+    "@react-native/babel-preset": "*",
+    "react-native": "*"
+  },
+  "peerDependenciesMeta": {
+    "@babel/core": {
+      "optional": true
+    },
+    "@react-native/babel-preset": {
+      "optional": true
+    },
+    "react-native": {
+      "optional": true
+    }
   }
 }

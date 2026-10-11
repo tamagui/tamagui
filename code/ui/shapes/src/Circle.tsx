@@ -4,7 +4,7 @@ import { styled } from '@tamagui/web'
 import { Square } from './Square'
 
 export const Circle = styled(Square, {
-  name: 'Circle',
+  displayName: 'Circle',
   borderRadius: 100_000_000,
 })
 

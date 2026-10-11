@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/focus-scope",
-  "version": "2.7.7",
+  "version": "3.0.2",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [
@@ -37,6 +37,7 @@
   "dependencies": {
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
+    "@tamagui/core": "workspace:*",
     "@tamagui/create-context": "workspace:*",
     "@tamagui/start-transition": "workspace:*",
     "@tamagui/use-async": "workspace:*",

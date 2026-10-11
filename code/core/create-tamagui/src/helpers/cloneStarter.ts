@@ -64,7 +64,7 @@ async function setupTamaguiDotDir(template: (typeof templates)[number]) {
     }
   }
 
-  const branch = template.repo.branch
+  const ref = template.repo.ref
 
   await ensureDir(tamaguiDir)
 
@@ -76,7 +76,7 @@ async function setupTamaguiDotDir(template: (typeof templates)[number]) {
     console.info(`Cloning tamagui base directory`)
     console.info()
 
-    const cmd = `git clone --branch ${branch} ${
+    const cmd = `git clone --branch ${ref} ${
       isInSubDir ? '--depth 1 --sparse --filter=blob:none ' : ''
     }${sourceGitRepo} "${targetGitDir}"`
 
@@ -131,24 +131,11 @@ async function setupTamaguiDotDir(template: (typeof templates)[number]) {
   try {
     const remoteName = getDefaultRemoteName()
     if (await pathExists(join(targetGitDir, '.git'))) {
-      const cmd2 = `git pull --rebase --allow-unrelated-histories --depth 1 ${remoteName} ${branch}`
-
-      // this can fail with "could not parse commit" but if you re-run it generally works
-      try {
-        exec(cmd2, {
-          cwd: targetGitDir,
-        })
-      } catch {
-        // so lets just retry on first failure at least
-        exec(cmd2, {
-          cwd: targetGitDir,
-        })
-      }
+      exec(`git fetch --depth 1 ${remoteName} ${ref}`, { cwd: targetGitDir })
+      exec(`git checkout --detach FETCH_HEAD`, { cwd: targetGitDir })
       console.info()
     } else {
-      console.warn(
-        `Warning: ${targetGitDir} is not a git repository. Skipping pull operation.`
-      )
+      console.warn(`Warning: ${targetGitDir} is not a git repository. Skipping update.`)
     }
   } catch (err: any) {
     await remove(targetGitDir)

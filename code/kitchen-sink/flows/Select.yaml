@@ -5,7 +5,6 @@ tags:
 - runFlow: OpenApp.yaml
 - scrollUntilVisible:
     element: 'Select'
-    centerElement: true
 - tapOn: 'Select'
 - assertVisible: 'Apple'
 # Test: select opens when tapped

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-icon",
-  "version": "2.7.7",
+  "version": "3.0.2",
   "description": "Utilities for icon packages",
   "license": "MIT",
   "source": "src/index.ts",
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@tamagui/core": "workspace:*",
-    "@tamagui/sizable-context": "workspace:*"
+    "@tamagui/font-size": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

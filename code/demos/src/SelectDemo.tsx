@@ -1,22 +1,22 @@
-import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
+import { Check, ChevronDown, ChevronUp } from '@tamagui/local-icons'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import React from 'react'
 
-import type { FontSizeTokens, SelectProps } from 'tamagui'
-import { Adapt, Label, Select, Sheet, Theme, XStack, YStack, getFontSize } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+import type { SelectProps, SelectSize } from 'tamagui'
+import { Adapt, Label, Select, Sheet, Theme, XStack, YStack } from 'tamagui'
 
 export function SelectDemo() {
   return (
-    <Theme name="surface1">
-      <YStack gap="$4">
-        <XStack width="100%" items="center" gap="$4">
+    <Theme name="level2">
+      <YStack gap="4" width={320}>
+        <XStack width="100%" items="center" gap="4">
           <Label htmlFor="select-demo-1" flex={1} minW={80}>
             Custom
           </Label>
           <SelectDemoContents id="select-demo-1" />
         </XStack>
 
-        <XStack width="100%" items="center" gap="$4">
+        <XStack width="100%" items="center" gap="4">
           <Label htmlFor="select-demo-2" flex={1} minW={80}>
             Native
           </Label>
@@ -43,34 +43,37 @@ export function SelectDemoContents(
       value={val}
       onValueChange={setVal}
       disablePreventBodyScroll
+      lazyMount
       {...props}
+      size={props.size as SelectSize}
       // renderValue enables SSR support by providing the label synchronously
       renderValue={getItemLabel}
     >
       {props?.trigger || (
         <Select.Trigger
+          width={220}
+          minWidth={220}
           maxWidth={220}
-          iconAfter={ChevronDown}
-          borderRadius="$4"
-          backgroundColor="$background"
+          flexShrink={0}
+          borderRadius="4"
+          backgroundColor="background"
         >
           <Select.Value placeholder="Something" />
+          <Select.Icon>
+            <ChevronDown size={16} />
+          </Select.Icon>
         </Select.Trigger>
       )}
 
-      <Adapt when="maxMd" platform="touch">
+      <Adapt when="max-md" platform="touch">
         <Sheet native={!!props.native} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay
-            bg="$shadowColor"
-            transition="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+          </Sheet.Container>
+          <Sheet.Overlay bg="shadow-color" transition="lazy" opacity="enter:0 exit:0" />
         </Sheet>
       </Adapt>
 
@@ -80,38 +83,36 @@ export function SelectDemoContents(
           justify="center"
           position="relative"
           width="100%"
-          height="$3"
+          height="6"
         >
           <YStack z={10}>
-            <ChevronUp size={20} />
+            <ChevronUp size={14} />
           </YStack>
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
-            colors={['$background', 'transparent']}
-            rounded="$4"
+            position="absolute"
+            inset={0}
+            rounded="4"
+            colors={['background', 'transparent']}
           />
         </Select.ScrollUpButton>
         <Select.Viewport
           minW={200}
-          bg="$background"
-          rounded="$4"
+          bg="background"
+          rounded="4"
           borderWidth={1}
-          borderColor="$borderColor"
+          borderColor="border-color"
         >
-          <Select.Group>
+          {/* in native mode the group is the <select>, so it takes the trigger's width */}
+          <Select.Group width={props.native ? 220 : undefined}>
             <Select.Label fontWeight="700">Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}
             {React.useMemo(
               () =>
-                items.map((item, i) => {
+                items.map((item) => {
                   return (
-                    <Select.Item
-                      index={i}
-                      key={item.name}
-                      value={item.name.toLowerCase()}
-                    >
+                    <Select.Item key={item.name} value={item.name.toLowerCase()}>
                       <Select.ItemText>{item.name}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
                         <Check size={16} />
@@ -122,22 +123,6 @@ export function SelectDemoContents(
               [items]
             )}
           </Select.Group>
-          {/* Native gets an extra icon */}
-          {props.native && (
-            <YStack
-              position="absolute"
-              r={0}
-              t={16}
-              items="center"
-              justify="center"
-              width={'$4'}
-              pointerEvents="none"
-            >
-              <ChevronDown
-                size={getFontSize((props.size as FontSizeTokens) ?? '$true')}
-              />
-            </YStack>
-          )}
         </Select.Viewport>
 
         <Select.ScrollDownButton
@@ -145,17 +130,18 @@ export function SelectDemoContents(
           justify="center"
           position="relative"
           width="100%"
-          height="$3"
+          height="6"
         >
           <YStack z={10}>
-            <ChevronDown size={20} />
+            <ChevronDown size={14} />
           </YStack>
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
-            colors={['transparent', '$background']}
-            rounded="$4"
+            position="absolute"
+            inset={0}
+            rounded="4"
+            colors={['transparent', 'background']}
           />
         </Select.ScrollDownButton>
       </Select.Content>

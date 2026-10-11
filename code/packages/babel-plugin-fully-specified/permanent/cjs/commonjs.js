@@ -1,2 +1,112 @@
-"use strict";var d=Object.defineProperty;var b=Object.getOwnPropertyDescriptor;var v=Object.getOwnPropertyNames;var S=Object.prototype.hasOwnProperty;var h=(e,i)=>{for(var n in i)d(e,n,{get:i[n],enumerable:!0})},D=(e,i,n,c)=>{if(i&&typeof i=="object"||typeof i=="function")for(let o of v(i))!S.call(e,o)&&o!==n&&d(e,o,{get:()=>i[o],enumerable:!(c=b(i,o))||c.enumerable});return e};var E=e=>D(d({},"__esModule",{value:!0}),e);var P={};h(P,{default:()=>j});module.exports=E(P);var t=require("node:fs"),s=require("node:path");function j(e,i){return e.assertVersion(7),{name:"babel-plugin-fully-specified-cjs",visitor:{CallExpression(n,c){if(n.get("callee").isIdentifier({name:"require"})&&n.node.arguments.length===1){let u=n.node.arguments[0];if(u.type==="StringLiteral"){let a=u.value;if(a.startsWith(".")||a.startsWith("/")){let m=c.file.opts.filename;if(!m)return;let p=(0,s.dirname)(m),f=i.esExtensionDefault||".cjs",x=".js";if(!(0,s.extname)(a)){let r=(0,s.resolve)(p,a),l=a;if(f.startsWith(".native")&&((0,t.existsSync)(`${r}.ios.js`)||(0,t.existsSync)(`${r}.android.js`)))return;if(W(r)){let g=(0,s.resolve)(r,"index");if(f.startsWith(".native")&&((0,t.existsSync)(`${g}.ios.js`)||(0,t.existsSync)(`${g}.android.js`)))return;let y=(0,s.resolve)(r,"index"+x);if((0,t.existsSync)(y)){l.endsWith("/")||(l+="/"),l+="index"+f,u.value=l;return}}if((0,t.existsSync)(r+x)||(0,t.existsSync)(r+f)){l+=f,u.value=l;return}}}}}}}}}function W(e){return(0,t.existsSync)(e)&&(0,t.lstatSync)(e).isDirectory()}
+var __defProp = Object.defineProperty
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor
+var __getOwnPropNames = Object.getOwnPropertyNames
+var __hasOwnProp = Object.prototype.hasOwnProperty
+var __export = (target, all) => {
+  for (var name in all) __defProp(target, name, { get: all[name], enumerable: true })
+}
+var __copyProps = (to, from, except, desc) => {
+  if ((from && typeof from === 'object') || typeof from === 'function') {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, {
+          get: () => from[key],
+          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
+        })
+  }
+  return to
+}
+var __toCommonJS = (mod) => __copyProps(__defProp({}, '__esModule', { value: true }), mod)
+var commonjs_exports = {}
+__export(commonjs_exports, {
+  default: () => fullySpecifyCommonJS,
+})
+module.exports = __toCommonJS(commonjs_exports)
+var import_node_fs = require('node:fs')
+var import_node_path = require('node:path')
+function fullySpecifyCommonJS(api, options) {
+  api.assertVersion(7)
+  return {
+    name: 'babel-plugin-fully-specified-cjs',
+    visitor: {
+      CallExpression(path, state) {
+        const callee = path.get('callee')
+        if (
+          callee.isIdentifier({ name: 'require' }) &&
+          path.node.arguments.length === 1
+        ) {
+          const arg = path.node.arguments[0]
+          if (arg.type === 'StringLiteral') {
+            let moduleSpecifier = arg.value
+            if (moduleSpecifier.startsWith('.') || moduleSpecifier.startsWith('/')) {
+              const filePath = state.file.opts.filename
+              if (!filePath) return
+              const fileDir = (0, import_node_path.dirname)(filePath)
+              const cjsExtension = options.esExtensionDefault || '.cjs'
+              const jsExtension = '.js'
+              const specifierExtension = (0, import_node_path.extname)(moduleSpecifier)
+              const hasModuleExtension = [
+                '.js',
+                '.cjs',
+                '.mjs',
+                '.json',
+                '.node',
+              ].includes(specifierExtension)
+              if (!hasModuleExtension) {
+                const resolvedPath = (0, import_node_path.resolve)(
+                  fileDir,
+                  moduleSpecifier
+                )
+                let newModuleSpecifier = moduleSpecifier
+                if (
+                  cjsExtension.startsWith('.native') &&
+                  ((0, import_node_fs.existsSync)(`${resolvedPath}.ios.js`) ||
+                    (0, import_node_fs.existsSync)(`${resolvedPath}.android.js`))
+                ) {
+                  return
+                }
+                if (isLocalDirectory(resolvedPath)) {
+                  const indexBase = (0, import_node_path.resolve)(resolvedPath, 'index')
+                  if (
+                    cjsExtension.startsWith('.native') &&
+                    ((0, import_node_fs.existsSync)(`${indexBase}.ios.js`) ||
+                      (0, import_node_fs.existsSync)(`${indexBase}.android.js`))
+                  ) {
+                    return
+                  }
+                  const indexPath = (0, import_node_path.resolve)(
+                    resolvedPath,
+                    'index' + jsExtension
+                  )
+                  if ((0, import_node_fs.existsSync)(indexPath)) {
+                    if (!newModuleSpecifier.endsWith('/')) {
+                      newModuleSpecifier += '/'
+                    }
+                    newModuleSpecifier += 'index' + cjsExtension
+                    arg.value = newModuleSpecifier
+                    return
+                  }
+                }
+                if (
+                  (0, import_node_fs.existsSync)(resolvedPath + jsExtension) ||
+                  (0, import_node_fs.existsSync)(resolvedPath + cjsExtension)
+                ) {
+                  newModuleSpecifier += cjsExtension
+                  arg.value = newModuleSpecifier
+                  return
+                }
+              }
+            }
+          }
+        }
+      },
+    },
+  }
+}
+function isLocalDirectory(absolutePath) {
+  return (
+    (0, import_node_fs.existsSync)(absolutePath) &&
+    (0, import_node_fs.lstatSync)(absolutePath).isDirectory()
+  )
+}
 //# sourceMappingURL=commonjs.js.map

@@ -10,12 +10,10 @@
  * import '@tamagui/native/setup-gesture-handler'
  * import '@tamagui/native/setup-worklets'
  * import '@tamagui/native/setup-safe-area'
- * import '@tamagui/native/expo-linear-gradient'
  * import '@tamagui/native/setup-keyboard-controller'
  *
  * // Then use Tamagui components normally
  * // Sheet will automatically use native gestures when available
- * // LinearGradient will use expo-linear-gradient when installed
  * ```
  */
 
@@ -28,7 +26,6 @@ export type {
   SafeAreaInsets,
   SafeAreaFrame,
   SafeAreaMetrics,
-  LinearGradientState,
   BurntState,
   NativePortalProps,
   NativePortalHostProps,
@@ -61,12 +58,8 @@ export { getWorklets } from './workletsState'
 export type { WorkletsAccessor } from './workletsState'
 
 // safe area
-export { getSafeArea } from './safeAreaState'
+export { getSafeArea, hasSafeAreaSetup } from './safeAreaState'
 export type { SafeAreaAccessor } from './safeAreaState'
-
-// linear gradient
-export { getLinearGradient } from './linearGradientState'
-export type { LinearGradientAccessor } from './linearGradientState'
 
 // keyboard controller state exports (safe - no side effects)
 export {

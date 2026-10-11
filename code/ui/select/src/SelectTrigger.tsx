@@ -1,87 +1,128 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import type { TamaguiElement } from '@tamagui/core'
-import type { ListItemProps } from '@tamagui/list-item'
-import { ListItem } from '@tamagui/list-item'
+import { isWeb } from '@tamagui/constants'
+import {
+  createChangeEventDetails,
+  createStyledHOC,
+  styled,
+  View,
+  type GetProps,
+} from '@tamagui/core'
+import { composeEventHandlers } from '@tamagui/helpers'
 import * as React from 'react'
 
 import { useSelectContext, useSelectItemParentContext } from './context'
-import type { SelectScopedProps } from './types'
+import type { SelectOpenChangeDetails, SelectScopedProps } from './types'
 
-/* -------------------------------------------------------------------------------------------------
- * SelectTrigger
- * -----------------------------------------------------------------------------------------------*/
 const TRIGGER_NAME = 'SelectTrigger'
 
-export type SelectTriggerProps = SelectScopedProps<ListItemProps>
+export const SelectTriggerFrame = styled(View, {
+  displayName: TRIGGER_NAME,
+  alignItems: 'center',
+  flexDirection: 'row',
+  render: <button type="button" />,
+})
 
-const isPointerCoarse =
-  typeof window !== 'undefined' && process.env.TAMAGUI_TARGET === 'web'
-    ? window.matchMedia('(pointer:coarse)').matches
-    : true
+export type SelectTriggerProps = SelectScopedProps<GetProps<typeof SelectTriggerFrame>>
 
-export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps>(
+export const SelectTrigger = createStyledHOC(
+  SelectTriggerFrame,
   function SelectTrigger(props: SelectTriggerProps, forwardedRef) {
-    const { scope, disabled = false, unstyled = false, ...triggerProps } = props
-
+    const { scope, disabled = false, ...triggerProps } = props
     const context = useSelectContext(scope)
     const itemParentContext = useSelectItemParentContext(scope)
     const composedRefs = useComposedRefs(
       forwardedRef,
       context.floatingContext?.refs.setReference as any
     )
-    // const getItems = useCollection(__scopeSelect)
-    // const labelId = useLabelContext(context.trigger)
-    // const labelledBy = ariaLabelledby || labelId
+    // whether the press in flight began as a touch, so its click opens
+    const pressIsTouch = React.useRef(false)
+
     if (itemParentContext.shouldRenderWebNative) {
       return null
     }
 
+    const toggleOpen = (
+      event?: any,
+      reason: 'trigger-press' | 'keyboard' = 'trigger-press'
+    ) => {
+      if (!disabled) {
+        itemParentContext.requestOpenChange(
+          !context.open,
+          createChangeEventDetails(
+            reason,
+            event?.nativeEvent || event,
+            event?.currentTarget
+          ) as SelectOpenChangeDetails
+        )
+      }
+    }
+    const interactionProps =
+      process.env.TAMAGUI_TARGET === 'web' && context.interactions
+        ? context.interactions.getReferenceProps({
+            ...triggerProps,
+            onMouseDown: composeEventHandlers(triggerProps.onMouseDown as any, () =>
+              context.floatingContext?.update?.()
+            ),
+          } as any)
+        : {
+            ...triggerProps,
+            ...(isWeb
+              ? {
+                  // a mouse opens on press so a press, drag and release picks
+                  // in one gesture. a touch opens on release, as a native
+                  // select does: opening on touchstart mounts the sheet
+                  // overlay under the finger, and the same tap's click then
+                  // lands on it and closes the sheet again.
+                  onMouseDown: composeEventHandlers(
+                    triggerProps.onMouseDown as any,
+                    (event: any) => {
+                      pressIsTouch.current = event.type === 'touchstart'
+                      if (pressIsTouch.current) return
+                      event.preventDefault()
+                      toggleOpen(event)
+                    }
+                  ),
+                  onPress: composeEventHandlers(
+                    triggerProps.onPress as any,
+                    (event: any) => {
+                      if (!pressIsTouch.current) return
+                      pressIsTouch.current = false
+                      toggleOpen(event)
+                    }
+                  ),
+                }
+              : {
+                  onPress: composeEventHandlers(triggerProps.onPress as any, toggleOpen),
+                }),
+            onKeyDown: composeEventHandlers(
+              triggerProps.onKeyDown as any,
+              (event: any) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault()
+                  toggleOpen(event, 'keyboard')
+                }
+              }
+            ),
+          }
+
     return (
-      <ListItem
-        componentName={TRIGGER_NAME}
-        unstyled={unstyled}
-        render="button"
+      <SelectTriggerFrame
         type="button"
         id={itemParentContext.id}
-        {...(!unstyled && {
-          focusVisibleStyle: {
-            outlineStyle: 'solid',
-            outlineWidth: 2,
-            outlineColor: '$outlineColor',
-          },
-          borderWidth: 1,
-          size: itemParentContext.size,
-        })}
         role="combobox"
         aria-haspopup="listbox"
         aria-expanded={context.open}
+        {...(process.env.TAMAGUI_TARGET === 'web' && {
+          'data-state': context.open ? 'open' : 'closed',
+        })}
         aria-autocomplete="none"
+        accessibilityRole={isWeb ? undefined : 'button'}
+        accessibilityState={isWeb ? undefined : { expanded: context.open, disabled }}
         dir={context.dir}
         disabled={disabled}
         data-disabled={disabled ? '' : undefined}
-        {...triggerProps}
+        {...interactionProps}
         ref={composedRefs}
-        {...(process.env.TAMAGUI_TARGET === 'web' && itemParentContext.interactions
-          ? {
-              ...itemParentContext.interactions.getReferenceProps(),
-              ...(isPointerCoarse
-                ? {
-                    onPress() {
-                      itemParentContext.setOpen(!context.open)
-                    },
-                  }
-                : {
-                    onMouseDown() {
-                      context.floatingContext?.update?.()
-                      itemParentContext.setOpen(!context.open)
-                    },
-                  }),
-            }
-          : {
-              onPress() {
-                itemParentContext.setOpen(!context.open)
-              },
-            })}
       />
     )
   }

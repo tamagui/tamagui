@@ -6,12 +6,15 @@ component: VisuallyHidden
 package: visually-hidden
 ---
 
-VisuallyHidden hides an item but ensures it remains visible to accessibility readers.
+<IntroParagraph>
+  VisuallyHidden removes content from the visual layout while keeping it
+  available to assistive technology.
+</IntroParagraph>
 
 <Highlights
   features={[
-    'Keeps content hidden on screen but visible to assistive tech.',
-    'Works with "space" prop to not disturb spacing.',
+    'Visually hidden content available to assistive technology',
+    'Spacing preserved with the space prop',
   ]}
 />
 
@@ -28,11 +31,11 @@ npm install @tamagui/visually-hidden
 Simply wrap the content you want hidden in VisuallyHidden:
 
 ```tsx
-import { Text, VisuallyHidden } from 'tamagui'
+import { VisuallyHidden, html } from 'tamagui'
 
 export default () => (
   <VisuallyHidden>
-    <Text>Add annotations here</Text>
+    <html.span>Add annotations here</html.span>
   </VisuallyHidden>
 )
 ```
@@ -40,14 +43,14 @@ export default () => (
 When using with the `space` property, it will avoid double-spacing:
 
 ```tsx
-import { H1, Text, VisuallyHidden, YStack } from 'tamagui'
+import { H1, VisuallyHidden, YStack, html } from 'tamagui'
 
 export default () => (
   <YStack space>
     <H1>Title</H1>
 
     <VisuallyHidden>
-      <Text>Add annotations here</Text>
+      <html.span>Add annotations here</html.span>
     </VisuallyHidden>
   </YStack>
 )

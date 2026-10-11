@@ -10,7 +10,7 @@ export {
   releaseExternalPressOwnership as unstable_releaseExternalPressOwnership,
 } from './gestureState'
 export { PressBoundary } from './PressBoundary'
-export type { PressBoundaryProps } from './PressBoundary'
+export type { PressBoundaryProps } from './types'
 export {
   getGestureHandlerConfig,
   setupGestureHandler,

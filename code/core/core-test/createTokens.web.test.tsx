@@ -19,11 +19,29 @@ test('color name no dot', () => {
     color: {
       'yellow.10': {
         isVar: true,
-        key: '$yellow.10',
+        key: 'yellow.10',
         name: 'c-yellow--10',
         val: 'yellow',
         variable: 'var(--c-yellow--10)',
       },
     },
   })
+})
+
+test('true token keys error in development', () => {
+  const originalNodeEnv = process.env.NODE_ENV
+  process.env.NODE_ENV = 'development'
+
+  try {
+    expect(() =>
+      createTokens({
+        size: {
+          4: 44,
+          true: 44,
+        },
+      })
+    ).toThrow(/tokens\.size\.true.*explicit token name/)
+  } finally {
+    process.env.NODE_ENV = originalNodeEnv
+  }
 })

@@ -5,16 +5,10 @@
   },
   "references": [
     {
-      "path": "../../packages/element"
-    },
-    {
       "path": "../../core/core"
     },
     {
       "path": "../../core/font-size"
-    },
-    {
-      "path": "../../core/get-button-sized"
     },
     {
       "path": "../../core/helpers"
@@ -23,7 +17,13 @@
       "path": "../../core/helpers-tamagui"
     },
     {
+      "path": "../../core/react-native-types"
+    },
+    {
       "path": "../../core/web"
+    },
+    {
+      "path": "../../packages/element"
     },
     {
       "path": "../focusable"

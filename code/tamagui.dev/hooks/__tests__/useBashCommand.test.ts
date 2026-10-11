@@ -105,6 +105,26 @@ describe('useBashCommand', () => {
     expect(result.current.transformedCommand).toBe('npm run dev && npm run build')
   })
 
+  it('converts each command without merging separate shell lines', () => {
+    const { result } = renderHook(() =>
+      useBashCommand('npx tamagui migrate --from v2\nnpx tamagui migrate --from v1')
+    )
+
+    expect(result.current.transformedCommand).toBe(
+      'yarn dlx tamagui migrate --from v2\nyarn dlx tamagui migrate --from v1'
+    )
+  })
+
+  it.each(['\n', '\r\n'])('preserves %j continuation lines in an install', (newline) => {
+    const { result } = renderHook(() =>
+      useBashCommand(['npm install \\', '  tamagui \\', '  @tamagui/core'].join(newline))
+    )
+
+    expect(result.current.transformedCommand).toBe(
+      ['yarn add \\', '  tamagui \\', '  @tamagui/core'].join(newline)
+    )
+  })
+
   it('converts from sub-command run command to alias run command', () => {
     vi.mocked(useLocalStorageWatcher).mockReturnValue({
       storageItem: 'bun',

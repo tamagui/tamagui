@@ -1,0 +1,54 @@
+{
+  "regular": {
+    "samples": [
+      16.096499999999992,
+      16.004707999999994,
+      15.99875000000003,
+      15.816749999999956,
+      15.686082999999996,
+      16.279833000000053,
+      15.551500000000033
+    ],
+    "medianMs": 15.99875000000003,
+    "checksum": "{\"hasMedia\":false,\"viewProps\":{\"className\":\"is_View _p-416156015 _b-533410013 card selected user\"},\"style\":null,\"classNames\":{\"padding\":\"_p-416156015\",\"background\":\"_b-533410013\"},\"rulesToInsert\":{\"_p-416156015\":[\"padding\",\"var(--t-space-4)\",\"_p-416156015\",null,[\"._p-416156015{padding:var(--t-space-4)}\"]],\"_b-533410013\":[\"backgroundColor\",\"blue\",\"_b-533410013\",null,[\"._b-533410013{background-color:red}\",\"@media (hover: hover) {._b-533410013:where(:hover){background-color:blue}}\"]]},\"programStates\":{},\"platformPseudo\":true}"
+  },
+  "owned": {
+    "samples": [
+      30.14812500000005,
+      36.011833000000024,
+      36.22808299999997,
+      31.086832999999956,
+      29.31179099999997,
+      31.103999999999928,
+      29.581000000000017
+    ],
+    "medianMs": 31.086832999999956,
+    "checksum": "{\"hasMedia\":false,\"viewProps\":{\"className\":\"is_View _d-255188251 _p-416156015 _g-1878760728 _b-533410013 rounded-lg\"},\"style\":null,\"classNames\":{\"display\":\"_d-255188251\",\"padding\":\"_p-416156015\",\"gap\":\"_g-1878760728\",\"background\":\"_b-533410013\"},\"rulesToInsert\":{\"_d-255188251\":[\"display\",\"flex\",\"_d-255188251\",null,[\"._d-255188251{display:flex}\"]],\"_p-416156015\":[\"padding\",\"var(--t-space-4)\",\"_p-416156015\",null,[\"._p-416156015{padding:var(--t-space-4)}\"]],\"_g-1878760728\":[\"gap\",\"var(--t-space-2)\",\"_g-1878760728\",null,[\"._g-1878760728{gap:var(--t-space-2)}\"]],\"_b-533410013\":[\"backgroundColor\",\"blue\",\"_b-533410013\",null,[\"._b-533410013{background-color:red}\",\"@media (hover: hover) {._b-533410013:where(:hover){background-color:blue}}\"]]},\"programStates\":{},\"platformPseudo\":true}"
+  },
+  "composed": {
+    "samples": [
+      29.009667000000036,
+      27.303457999999978,
+      29.44504100000006,
+      28.917582999999922,
+      26.78150000000005,
+      26.833082999999988,
+      28.372500000000173
+    ],
+    "medianMs": 28.372500000000173,
+    "checksum": "{\"hasMedia\":false,\"viewProps\":{\"className\":\"is_View _p-416156015 _b-679090140 _bs-968027644\"},\"style\":null,\"classNames\":{\"padding\":\"_p-416156015\",\"background\":\"_b-679090140\",\"boxShadow\":\"_bs-968027644\"},\"rulesToInsert\":{\"_p-416156015\":[\"padding\",\"var(--t-space-4)\",\"_p-416156015\",null,[\"._p-416156015{padding:var(--t-space-4)}\"]],\"_b-679090140\":[\"backgroundImage\",\"linear-gradient(to right, red, blue)\",\"_b-679090140\",null,[\"._b-679090140{background-image:linear-gradient(to right, red, blue)}\"]],\"_bs-968027644\":[\"boxShadow\",\"0 0 0 4px red\",\"_bs-968027644\",null,[\"._bs-968027644{box-shadow:0 0 0 2px red}\",\"@media (hover: hover) {._bs-968027644:where(:hover){box-shadow:0 0 0 4px red}}\"]]},\"programStates\":{},\"platformPseudo\":true}"
+  },
+  "mixed": {
+    "samples": [
+      23.051917000000003,
+      21.54733299999998,
+      22.47166600000014,
+      21.579165999999987,
+      20.128917,
+      19.635500000000093,
+      19.969749999999976
+    ],
+    "medianMs": 21.54733299999998,
+    "checksum": "{\"hasMedia\":false,\"viewProps\":{\"className\":\"is_View _p-416156015 user-class other-class\",\"style\":{\"backgroundColor\":\"red\",\"boxShadow\":\"0 0 0 2px currentColor\"}},\"style\":{\"backgroundColor\":\"red\",\"boxShadow\":\"0 0 0 2px currentColor\"},\"classNames\":{\"padding\":\"_p-416156015\"},\"rulesToInsert\":{\"_p-416156015\":[\"padding\",\"var(--t-space-4)\",\"_p-416156015\",null,[\"._p-416156015{padding:var(--t-space-4)}\"]]},\"programStates\":{},\"platformPseudo\":true}"
+  }
+}

@@ -10,10 +10,18 @@ export declare function getWebEvents<E extends EventLikeObject>(events: E, webSt
     [x: string]: any;
     onMouseEnter: any;
     onMouseLeave: any;
-    onMouseDown: any;
-    onMouseUp: any;
-    onTouchStart: any;
-    onTouchEnd: any;
+    onMouseDown: ((e: {
+        timeStamp: number;
+    }) => void) | undefined;
+    onMouseUp: ((e: {
+        timeStamp: number;
+    }) => void) | undefined;
+    onTouchStart: ((e: {
+        timeStamp: number;
+    }) => void) | undefined;
+    onTouchEnd: ((e: {
+        timeStamp: number;
+    }) => void) | undefined;
     onFocus: any;
     onBlur: any;
 };

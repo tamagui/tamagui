@@ -1,0 +1,12 @@
+{
+  "name": "@fixture/module-runner-app",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@fixture/components": "workspace:*",
+    "@fixture/conditional": "workspace:*"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}

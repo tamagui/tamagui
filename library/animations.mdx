@@ -108,14 +108,11 @@ const SlidingPane = styled(View, {
 
   variants: {
     towards: (dir: Direction) => ({
-      enterStyle: {
-        x: dir === -1 ? -10 : 10,
-        opacity: 0,
-      },
-      exitStyle: {
-        x: dir === -1 ? 10 : -10
-        opacity: 0,
-      },
+      x:
+        dir === -1
+          ? '0 enter:-10px exit:10px'
+          : '0 enter:10px exit:-10px',
+      opacity: '1 enter:0 exit:0',
     }),
   } as const,
 })

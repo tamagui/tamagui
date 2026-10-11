@@ -1,9 +1,9 @@
 /**
- * Regression: pressStyle gets stuck on a pressable inside a horizontal
+ * Regression: press clause gets stuck on a pressable inside a horizontal
  * ScrollView when the user presses, drags sideways into a scroll, and lifts.
  *
  * Reported against the gesture-handler press path. pressIn fires, scroll takes
- * over, pressOut eventually fires, but the pressStyle backdrop stays applied
+ * over, pressOut eventually fires, but the press clause backdrop stays applied
  * on the view — the animated bg color never returns to its rest value.
  */
 
@@ -51,7 +51,7 @@ describe('PressStyleScrollStuck', () => {
     await expect(element(by.id('pill-count-Bellator'))).toHaveText('Bellator: 1')
   })
 
-  // regression: pressStyle gets stuck when RNGH scroll takes ownership mid-press.
+  // regression: press clause gets stuck when RNGH scroll takes ownership mid-press.
   // the gestureState fix fires an orphan onPressOut in onFinalize when didPressIn
   // is true but ownership has been lost — so pressOut count should equal pressIn
   // count even when the drag was stolen by the ScrollView.

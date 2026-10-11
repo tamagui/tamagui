@@ -1,0 +1,4 @@
+import type { IconProps } from "@tamagui/helpers-icon";
+export declare const allIcons: Record<string, (props: IconProps) => any>;
+
+//# sourceMappingURL=all.d.ts.map

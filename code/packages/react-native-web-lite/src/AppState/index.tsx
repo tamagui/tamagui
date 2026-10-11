@@ -10,12 +10,7 @@
 
 import { canUseDOM, invariant } from '@tamagui/react-native-web-internals'
 
-// Android 4.4 browser
-const isPrefixed =
-  // eslint-disable-next-line no-prototype-builtins
-  canUseDOM &&
-  !document.hasOwnProperty('hidden') &&
-  document.hasOwnProperty('webkitHidden')
+const isPrefixed = canUseDOM && !('hidden' in document) && 'webkitHidden' in document
 
 const EVENT_TYPES = ['change', 'memoryWarning']
 const VISIBILITY_CHANGE_EVENT = isPrefixed ? 'webkitvisibilitychange' : 'visibilitychange'

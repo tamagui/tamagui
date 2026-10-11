@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-css",
-  "version": "2.7.7",
+  "version": "3.0.2",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "license": "MIT",
   "source": "src/index.ts",
@@ -24,6 +24,24 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
+    },
+    "./animated-number": {
+      "types": "./types/animated-number.d.ts",
+      "react-native": "./dist/esm/animated-number.native.js",
+      "browser": "./dist/esm/animated-number.mjs",
+      "module": "./dist/esm/animated-number.mjs",
+      "import": "./dist/esm/animated-number.mjs",
+      "require": "./dist/cjs/animated-number.cjs",
+      "default": "./dist/esm/animated-number.mjs"
+    },
+    "./extras": {
+      "types": "./types/extras.d.ts",
+      "react-native": "./dist/esm/extras.native.js",
+      "browser": "./dist/esm/extras.mjs",
+      "module": "./dist/esm/extras.mjs",
+      "import": "./dist/esm/extras.mjs",
+      "require": "./dist/cjs/extras.cjs",
+      "default": "./dist/esm/extras.mjs"
     }
   },
   "publishConfig": {
@@ -50,5 +68,9 @@
   "peerDependencies": {
     "react": ">=19",
     "react-dom": "*"
+  },
+  "react-native": {
+    "./animated-number": "./dist/esm/animated-number.native.js",
+    "./extras": "./dist/esm/extras.native.js"
   }
 }

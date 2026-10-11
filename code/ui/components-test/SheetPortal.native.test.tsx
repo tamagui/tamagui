@@ -1,6 +1,5 @@
-import { Button } from '@tamagui/button'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, View, createTamagui } from '@tamagui/core'
 import { PortalProvider } from '@tamagui/portal'
 import { Sheet } from '@tamagui/sheet'
 import { Paragraph } from '@tamagui/text'
@@ -36,12 +35,12 @@ async function renderNative(element: React.ReactElement) {
 }
 
 // the full-screen wrapper Portal.native renders around every portal item
-function emptyPortalWrappers(tree: TestRenderer.ReactTestRenderer) {
+function portalWrappers(tree: TestRenderer.ReactTestRenderer) {
   return tree.root.findAll((node) => {
-    if (typeof node.type !== 'string' || node.children.length > 0) return false
+    if (typeof node.type !== 'string') return false
     const style = Object.assign({}, ...[node.props.style].flat(Infinity))
     return (
-      node.props.pointerEvents === 'box-none' &&
+      style.pointerEvents === 'box-none' &&
       style.position === 'absolute' &&
       style.top === 0 &&
       style.bottom === 0 &&
@@ -63,9 +62,9 @@ function ClosedSheet() {
   return (
     <Sheet modal open={false} unmountChildrenWhenHidden>
       <Sheet.Overlay />
-      <Sheet.Frame>
+      <Sheet.Container>
         <Paragraph>never shown</Paragraph>
-      </Sheet.Frame>
+      </Sheet.Container>
     </Sheet>
   )
 }
@@ -74,20 +73,20 @@ function ToggledSheet() {
   const [open, setOpen] = React.useState(false)
   return (
     <>
-      <Button testID="open" onPress={() => setOpen(true)} />
+      <View testID="open" onPress={() => setOpen(true)} />
       <Sheet modal open={open} onOpenChange={setOpen} unmountChildrenWhenHidden>
         <Sheet.Overlay />
-        <Sheet.Frame>
+        <Sheet.Container>
           <Paragraph>sheet content</Paragraph>
-          <Button testID="close" onPress={() => setOpen(false)} />
-        </Sheet.Frame>
+          <View testID="close" onPress={() => setOpen(false)} />
+        </Sheet.Container>
       </Sheet>
     </>
   )
 }
 
 describe('native modal Sheet with unmountChildrenWhenHidden', () => {
-  test('mounts no portal wrapper while it has never been opened', async () => {
+  test('keeps initial measurement content mounted before first opening', async () => {
     const tree = await renderNative(
       <>
         <ClosedSheet />
@@ -96,7 +95,8 @@ describe('native modal Sheet with unmountChildrenWhenHidden', () => {
       </>
     )
 
-    expect(emptyPortalWrappers(tree)).toHaveLength(0)
+    expect(portalWrappers(tree)).toHaveLength(3)
+    expect(portalWrappers(tree).every((node) => node.children.length > 0)).toBe(true)
   })
 
   test('leaves no portal wrapper behind after opening and closing', async () => {
@@ -114,10 +114,11 @@ describe('native modal Sheet with unmountChildrenWhenHidden', () => {
     })
     await act(async () => vi.advanceTimersByTime(2000))
     expect(hasText(tree, 'sheet content')).toBe(true)
+    expect(portalWrappers(tree)).toHaveLength(1)
 
     await act(async () => tree.root.findByProps({ testID: 'close' }).props.onPress())
     await act(async () => vi.advanceTimersByTime(2000))
     expect(hasText(tree, 'sheet content')).toBe(false)
-    expect(emptyPortalWrappers(tree)).toHaveLength(0)
+    expect(portalWrappers(tree)).toHaveLength(0)
   })
 })
