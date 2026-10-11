@@ -53,6 +53,37 @@ describe('Sheet gesture state', () => {
     expect(getGestureHandlerState()).toBe(sheetState)
   })
 
+  test('native setup keeps the sheet scroll view on rngh 2, which has no LegacyScrollView', async () => {
+    vi.resetModules()
+    resetGlobals()
+
+    const fakeRngh = {
+      Gesture: { Pan: () => null },
+      GestureDetector: () => null,
+      ScrollView: {},
+      GestureHandlerRootView: {},
+    }
+
+    const originalRequire = Module.prototype.require
+    Module.prototype.require = function (id: string) {
+      if (id === 'react-native-gesture-handler') {
+        return fakeRngh
+      }
+      return originalRequire.apply(this, arguments as any)
+    }
+
+    try {
+      const { setupGestureHandler: setupNativeGestureHandler } =
+        await import('../../core/native/src/setup-gesture-handler')
+
+      setupNativeGestureHandler({ pressEvents: false, sheet: true })
+
+      expect(getGestureHandlerState().ScrollView).toBe(fakeRngh.ScrollView)
+    } finally {
+      Module.prototype.require = originalRequire
+    }
+  })
+
   test('native setup sheet option works independently from pressEvents', async () => {
     vi.resetModules()
     resetGlobals()
