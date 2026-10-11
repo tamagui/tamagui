@@ -87,7 +87,8 @@ export function setupGestureHandler(config?: GestureHandlerConfig): void {
         Gesture,
         GestureDetector,
         // legacy scroll relationships match the sheet's Gesture.Pan handler.
-        ScrollView: LegacyScrollView || null,
+        // rngh 3 names that component LegacyScrollView; rngh 2's ScrollView is it.
+        ScrollView: LegacyScrollView || ScrollView || null,
         RootView: GestureHandlerRootView || null,
       }
     }
