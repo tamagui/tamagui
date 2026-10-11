@@ -15,10 +15,6 @@ Don't do that. If you were asked to do something, it is not done until:
 - it is **validated at the layer it changes**: typecheck/build for code, a real
   request or Playwright run for site behavior, an applied-and-verified query for
   a DB/RLS change. "Should work" is not validation;
-- any **migration is actually applied and the live state verified** — this repo's
-  prod migration history is NOT auto-applied on deploy (see
-  `code/tamagui.dev/supabase/README.md`); a committed migration that was never
-  run is an open gap, not a fix;
 - for security/payments work especially, the loop is closed end to end — a
   documented finding with no shipped, deployed fix counts as no fix.
 
