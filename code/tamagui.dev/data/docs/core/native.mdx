@@ -22,6 +22,10 @@ use it. `@tamagui/native-registry` moves that work into a small C++ registry. It
 links eligible native views to the registry and applies theme and style updates
 directly through Fabric, so the components don't re-render.
 
+On the iOS uniwind-benchmarks app, this runtime renders faster and switches
+themes faster than every other themed library. See the
+[benchmarks](/docs/intro/benchmarks#native-uniwind-benchmarks).
+
 Install it along with Nitro Modules, then rebuild your iOS and Android binaries:
 
 ```bash

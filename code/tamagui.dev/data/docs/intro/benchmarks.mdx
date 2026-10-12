@@ -4,9 +4,11 @@ description: Reproducible web and native performance comparisons
 ---
 
 <IntroParagraph>
-  Uniwind was fastest in all 15 native cells. Tamagui Tailwind was second in all
-  15. On web, Tailwind CSS was fastest in 10 cells, Tamagui Tailwind in three,
-  and inline React in two.
+  On the iOS uniwind-benchmarks app, Tamagui 3.0.4 rendered 2,003 views in 43.3
+  ms and switched themes in 4.5 ms. Both times beat every other themed library,
+  Uniwind Pro included. In our Tailwind class suite, Uniwind was fastest in all
+  15 native cells and Tamagui Tailwind was second. On web, Tailwind CSS was
+  fastest in 10 cells, Tamagui Tailwind in three, and inline React in two.
 </IntroParagraph>
 
 Green cells mark the lowest mean in each row. All values are mean milliseconds.
@@ -89,7 +91,49 @@ Inline React had the lowest simple and group update means.
 The Tamagui arm uses `@tamagui/tailwind`. This table does not measure Tamagui's
 component APIs.
 
-## Native results
+## Native: uniwind-benchmarks
+
+[uniwind-benchmarks](https://github.com/uni-stack/uniwind-benchmarks) is the
+benchmark app Uniwind publishes. It renders 2,003 views, then switches between
+light and dark themes. Render is the average of 10 re-renders. Theme switch is
+the average of 10 theme changes. Each value is the median of six warm launches
+of a Release build with Hermes and the New Architecture.
+
+The Tamagui app uses `@tamagui/core` style props. It runs the compiler with the
+[native runtime](/docs/core/native) (`experimental.nativeFastPath`), as
+configured in that repository. Every row except Tamagui comes from the
+repository's published results. Those were measured on an iPhone 18 Pro Max
+simulator running iOS `27.0`, hosted on an Apple M3 Pro. We measured Tamagui
+`3.0.4` on the same app beside a StyleSheet control. Then we scaled our times
+to the published device using the ratio between the two StyleSheet runs.
+
+<Wide>
+  <SimpleTable
+    headers={['Library', 'Render (ms)', 'vs StyleSheet', 'Theme switch (ms)']}
+    columnWidths={['34%', '22%', '22%', '22%']}
+    numericColumns={[1, 2, 3]}
+    minWidth={640}
+    highlightCells={[
+      [1, 1],
+      [1, 3],
+    ]}
+    rows={[
+      ['StyleSheet 0.86.3', '37.3', '1.00x', 'no themes'],
+      ['Tamagui 3.0.4', '**43.3**', '1.16x', '**4.5**'],
+      ['Uniwind Pro 1.8.1', '45.8', '1.23x', '7.7'],
+      ['Uniwind Pro 1.0.1', '48.8', '1.31x', '17.1'],
+      ['Unistyles 3.5.3', '53.2', '1.43x', '47.1'],
+      ['Uniwind 1.12.0', '56.7', '1.52x', '93.2'],
+      ['NativeWind 4.2.7', '138.1', '3.70x', '127.6'],
+      ['NativeWind 5.0.0-rc.0', '322.7', '8.66x', '211.7'],
+    ]}
+  />
+</Wide>
+
+Green cells mark the fastest themed library in each column. StyleSheet has no
+themes, so it is the render baseline.
+
+## Native: Tailwind class suite
 
 All three Release apps render the same `native-class-bench.tsx` fixture. They use
 the same class strings, component tree, item counts, state changes, and timing
