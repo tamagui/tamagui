@@ -397,18 +397,26 @@ export function linkNativeStyleMapping(
   // the live scope state and have the engine commit it once to correct the
   // stale React commit.
   const scopeState = scopeStates.get(scopeId)
-  const stale = scopeState && (scopeState.name !== stateName || scopeState.theme !== theme)
+  const stale =
+    scopeState && (scopeState.name !== stateName || scopeState.theme !== theme)
   const kept = releases.get(ref)
   if (kept) {
     releases.delete(ref)
-    if (!stale && kept.compiled === compiled && kept.scopeId === scopeId) return kept.handle
+    if (!stale && kept.compiled === compiled && kept.scopeId === scopeId)
+      return kept.handle
     kept.settle()
   }
   if (stale) {
     syncTableState(compiled, scopeState.name, scopeState.theme as Record<string, unknown>)
     const handle = engine.link(ref, compiled.tableId, scopeId, true)
     if (!handle) return null
-    const link: MappingLink = { ref: null, compiled, scopeId, id: handle.id, owner: engine }
+    const link: MappingLink = {
+      ref: null,
+      compiled,
+      scopeId,
+      id: handle.id,
+      owner: engine,
+    }
     trackScopeMapping(link, 1)
     return releasable(ref, compiled, scopeId, handle.id, () => {
       if (link.id === -1) return
