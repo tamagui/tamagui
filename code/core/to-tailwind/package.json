@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/to-tailwind",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "private": false,
   "type": "module",
   "sideEffects": false,
