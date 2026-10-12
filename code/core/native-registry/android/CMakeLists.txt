@@ -16,6 +16,16 @@ include_directories(
   "../cpp"
 )
 
+# the reactnative prefab ships the android text headers (ParagraphProps,
+# ParagraphState) under platform/android without putting them on its path
+get_target_property(RN_INCLUDE_DIRS ReactAndroid::reactnative INTERFACE_INCLUDE_DIRECTORIES)
+foreach(dir ${RN_INCLUDE_DIRS})
+  include_directories(
+    "${dir}/react/renderer/components/text/platform/android"
+    "${dir}/react/renderer/textlayoutmanager/platform/android"
+  )
+endforeach()
+
 find_library(LOG_LIB log)
 
 target_link_libraries(
