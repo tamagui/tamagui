@@ -20,6 +20,7 @@ vi.mock('react-native', async (importOriginal) => {
     Image: host('Image'),
     Platform: { ...original.Platform, OS: 'macos' },
     Pressable: host('Pressable'),
+    ScrollView: host('ScrollView'),
     Text: host('Text'),
     TextInput: host('TextInput'),
     View: host('View'),
@@ -44,38 +45,53 @@ vi.mock('@tamagui/constants', async (importOriginal) => ({
 import * as ReactNative from 'react-native'
 import { processStyleColors } from '../../../core/native-registry/src/processStyleColors'
 
-const { TamaguiProvider, Theme, View, createTamagui, setNativeStyleEngine, styled } = Core
+const {
+  TamaguiProvider,
+  Theme,
+  View,
+  createTamagui,
+  setNativeStyleEngine,
+  setupHooks,
+  styled,
+} = Core
 const config = createTamagui(configDefault.getDefaultTamaguiConfig('native'))
 
 function createMockEngine() {
   const links: {
     id: number
     scopeId: string
-    slots: Core.NativeStyleEngineSlots
-    processed: Core.NativeStyleEngineSlots
+    table: Core.NativeStyleEngineSlots | number
+    commitNow: boolean
   }[] = []
   const updates: Core.NativeViewStateUpdate[] = []
-  const tableUpdates: Core.NativeViewStateTableUpdate[] = []
+  const tableEntries: {
+    tableId: number
+    state: string
+    props: Record<string, unknown>
+  }[] = []
+  const tables = new Map<number, Record<string, Record<string, unknown>>>()
   const scopeStates: [string, string][] = []
   let nextId = 1
   const engine: Core.NativeStyleEngine = {
-    link: (_ref, slots, scopeId = '') => {
+    link: (_ref, table, scopeId = '', commitNow = false) => {
       const id = nextId++
-      links.push({
-        id,
-        scopeId,
-        slots,
-        processed: slots,
-      })
+      links.push({ id, scopeId, table, commitNow })
       return { id, unlink: () => {} }
     },
+    linkTables: (_refs, tableIds, _scopeIndexes, scopes) => {
+      const firstId = nextId
+      tableIds.forEach((table, i) => {
+        links.push({ id: nextId++, scopeId: scopes[i]!, table, commitNow: false })
+      })
+      return firstId
+    },
+    unlink: () => {},
     applyViewStates: (entries) => updates.push(...entries),
-    updateViewStateTables: (entries) => {
-      tableUpdates.push(...entries)
-      for (const entry of entries) {
-        const linked = links.find(({ id }) => id === entry.id)
-        if (linked) (linked.slots.state ||= {})[entry.state] = entry.props
-      }
+    setTableState: (tableId, state, props) => {
+      tableEntries.push({ tableId, state, props })
+      const table = tables.get(tableId) ?? {}
+      table[state] = props
+      tables.set(tableId, table)
     },
     processStyleColors,
     setStateName: (stateName, scopeId = '') => {
@@ -83,7 +99,24 @@ function createMockEngine() {
     },
     removeScope: () => {},
   }
-  return { engine, links, scopeStates, tableUpdates, updates }
+  // the shared state table a linked view reads from
+  const states = (index: number) => {
+    Core.flushNativeStyleLinks()
+    const { table } = links[index]!
+    return typeof table === 'number' ? tables.get(table)! : table.state!
+  }
+  return {
+    engine,
+    // mounts link lazily, so reading the links flushes them like a scope change would
+    get links() {
+      Core.flushNativeStyleLinks()
+      return links
+    },
+    scopeStates,
+    states,
+    tableEntries,
+    updates,
+  }
 }
 
 afterEach(() => {
@@ -276,11 +309,11 @@ test('flag-on native output links a compact mapping with shared lazy states', as
   })
 
   expect(mock.links).toHaveLength(2)
-  const first = mock.links[0]!.slots
-  const second = mock.links[1]!.slots
-  expect(Object.keys(first.state!)).toEqual(['dark'])
-  expect(first.state!.dark).toBe(second.state!.dark)
-  const keySet = Object.keys(first.state!.dark!).sort()
+  // both views share one native table, filled once for the active state
+  expect(mock.links[0]!.table).toBe(mock.links[1]!.table)
+  const states = mock.states(0)
+  expect(Object.keys(states)).toEqual(['dark'])
+  const keySet = Object.keys(states.dark!).sort()
   expect(keySet).toEqual([
     'backgroundColor',
     'borderBottomColor',
@@ -288,19 +321,12 @@ test('flag-on native output links a compact mapping with shared lazy states', as
     'borderRightColor',
     'borderTopColor',
   ])
-  expect(Object.keys(first.base!).sort()).toEqual([
-    'flexDirection',
-    'paddingBottom',
-    'paddingLeft',
-    'paddingRight',
-    'paddingTop',
-  ])
-  expect(first.state!.dark!.backgroundColor).toBe(
+  expect(states.dark!.backgroundColor).toBe(
     processStyleColors({
       backgroundColor: config.themes.dark.background.val,
     }).backgroundColor
   )
-  expect(mock.tableUpdates).toEqual([])
+  expect(mock.tableEntries.map(({ state }) => state)).toEqual(['dark'])
 
   act(() => renderer.unmount())
 })
@@ -343,13 +369,13 @@ test('missing theme values resolve to null in every lazily filled state', async 
     })
 
     await act(async () => setTheme('light'))
-    const states = mock.links[0]!.slots.state!
+    const states = mock.states(0)
     expect(Object.keys(states.dark!).sort()).toEqual(Object.keys(states.light!).sort())
     expect(states.dark!.backgroundColor).toBe(
       processStyleColors({ backgroundColor: '#123456' }).backgroundColor
     )
     expect(states.light!.backgroundColor).toBeNull()
-    expect(mock.tableUpdates).toHaveLength(1)
+    expect(mock.tableEntries.map(({ state }) => state)).toEqual(['dark', 'light'])
   } finally {
     if (renderer) act(() => renderer!.unmount())
     config.themes.dark = originalDark
@@ -437,7 +463,12 @@ test('compiler table states equal runtime-mode pushes after color processing', a
     compilerRenderer = create(<CompilerHarness />, { createNodeMock: () => ({}) })
   })
   await act(async () => setCompilerSub('blue'))
-  const compilerSlots = compilerMock.links[0]!.processed
+  const compilerStates = compilerMock.states(0)
+  // the base style rides React's style prop; the table carries only theme keys
+  const compilerHost = compilerRenderer!.root.findAll(
+    (node) => typeof node.type === 'string' && Array.isArray(node.props?.style)
+  )[0]!
+  const compilerBase = compilerHost.props.style[0]
   act(() => compilerRenderer.unmount())
   setNativeStyleEngine(null)
 
@@ -470,19 +501,21 @@ test('compiler table states equal runtime-mode pushes after color processing', a
 
   expect(runtimeMock.updates.map((entry) => entry.state)).toContain('dark_blue')
   const runtimeEntry = runtimeMock.updates.find((entry) => entry.state === 'dark_blue')
-  const compilerEntry = {
-    ...compilerSlots.base,
-    ...compilerSlots.state!.dark_blue,
-  }
-  expect(runtimeEntry?.props).toEqual(compilerEntry)
-  expect(Object.keys(runtimeEntry!.props!).sort()).toEqual(
-    Object.keys(compilerEntry).sort()
+  const compilerState = compilerStates.dark_blue!
+  const runtimeThemed = Object.fromEntries(
+    Object.keys(compilerState).map((key) => [key, runtimeEntry!.props![key]])
   )
+  expect(runtimeThemed).toEqual(compilerState)
+  // the compiler keeps the padding shorthand RN expands natively
+  expect(compilerBase).toEqual({ flexDirection: 'column', padding: 8 })
+  for (const key of ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft']) {
+    expect(runtimeEntry!.props![key]).toBe(8)
+  }
 
   act(() => runtimeRenderer.unmount())
 })
 
-test("leaf views render RN's host component, views with children keep the wrapper", async () => {
+test("plain views render RN's host component, remapped props keep the wrapper", async () => {
   const { exports: compiled } = await executeCompiled(
     `
       import { YStack } from 'tamagui'
@@ -519,17 +552,228 @@ test("leaf views render RN's host component, views with children keep the wrappe
     renderer.root.findAll((node) => node.props?.testID === testID).at(-1)!.type
 
   expect(hostType('leaf')).toBe('RCTView')
-  // a child could observe the TextAncestorContext reset <View> performs
-  expect(hostType('parent')).toBe('View')
+  // _withNativeStyle performs the TextAncestorContext reset <View> would
+  expect(hostType('parent')).toBe('RCTView')
+  expect(hostType('nested')).toBe('RCTView')
   // aria props only exist because <View> remaps them
   expect(hostType('labelled')).toBe('View')
   // styles still land through the host component
   expect(
     styleValue(
       renderer.root.findAll((n) => n.props?.testID === 'leaf').at(-1)!,
-      'paddingTop'
+      'padding'
     )
   ).toBe(8)
 
   act(() => renderer.unmount())
+})
+
+test("plain texts render RN's text host with the props <Text> would pass", async () => {
+  const TextAncestor = ReactModule.createContext(false)
+  setupHooks({
+    getBaseViews: () => ({
+      View: 'View',
+      Text: 'Text',
+      TextAncestor,
+      NativeText: 'RCTText',
+    }),
+  })
+  try {
+    const { exports: compiled } = await executeCompiled(
+      `
+        import { Text } from 'tamagui'
+        export function Test() {
+          return <>
+            <Text testID="plain" color="color" fontWeight="700">hi</Text>
+            <Text testID="outer" color="color">
+              a<Text testID="inner" color="color">b</Text>
+            </Text>
+            <Text testID="labelled" aria-label="x" color="color">c</Text>
+          </>
+        }
+      `,
+      { options: { experimental: { nativeFastPath: true } } }
+    )
+    const mock = createMockEngine()
+    setNativeStyleEngine(mock.engine)
+    process.env.TAMAGUI_TARGET = 'native'
+
+    let renderer: ReactTestRenderer
+    act(() => {
+      renderer = create(
+        <TamaguiProvider config={config} defaultTheme="dark">
+          {ReactModule.createElement(compiled.Test!)}
+        </TamaguiProvider>,
+        { createNodeMock: () => ({}) }
+      )
+    })
+    const node = (testID: string) =>
+      renderer.root.findAll((n) => n.props?.testID === testID).at(-1)!
+
+    const plain = node('plain')
+    expect(plain.type).toBe('RCTText')
+    expect(plain.props.allowFontScaling).toBe(true)
+    expect(plain.props.ellipsizeMode).toBe('tail')
+    // <Text> prepends overflow: 'hidden' to the caller's style
+    expect(plain.props.style[0]).toMatchObject({ overflow: 'hidden', fontWeight: '700' })
+    expect(styleValue(plain, 'color')).toBe(config.themes.dark.color.val)
+    // an element child gets the text ancestor, so the nested text stays virtual
+    expect(node('outer').type).toBe('RCTText')
+    expect(node('inner').type).toBe('Text')
+    // aria props only exist because <Text> remaps them
+    expect(node('labelled').type).toBe('Text')
+    expect(mock.links).toHaveLength(4)
+
+    act(() => renderer.unmount())
+  } finally {
+    setupHooks({ getBaseViews: undefined })
+  }
+})
+
+test('elements in a provable theme scope render inline, without the wrapper', async () => {
+  const TextAncestor = ReactModule.createContext(false)
+  setupHooks({
+    getBaseViews: () => ({
+      View: 'View',
+      Text: 'Text',
+      TextAncestor,
+      NativeText: 'RCTText',
+    }),
+  })
+  try {
+    const { exports: compiled, code } = await executeCompiled(
+      `
+      import { ScrollView } from 'react-native'
+      import { Theme } from '@tamagui/core'
+      import { Text, YStack } from 'tamagui'
+
+      function Row({ header, children }) {
+        return <YStack>{header}{children}</YStack>
+      }
+
+      function helper() {
+        return <YStack testID="helper" bg="background" />
+      }
+
+      export function Test({ items }) {
+        const assigned = <YStack testID="variable" bg="background" />
+        return (
+          <ScrollView>
+            {items.map((item) => (
+              <YStack key={item} testID={'row-' + item} bg="background">
+                <Text testID={'label-' + item} color="color">{item}</Text>
+              </YStack>
+            ))}
+            {items.length > 0 && <YStack testID="conditional" bg="background" />}
+            <Theme name="light">
+              <YStack testID="themed" bg="background" />
+            </Theme>
+            <Row header={<YStack testID="prop" bg="background" />}>
+              <YStack testID="custom" bg="background" />
+            </Row>
+            {assigned}
+            {helper()}
+          </ScrollView>
+        )
+      }
+    `,
+      { options: { experimental: { nativeFastPath: true } } }
+    )
+    // the row, its label and the conditional view
+    expect(code.match(/\.inline\(/g)).toHaveLength(3)
+
+    const mock = createMockEngine()
+    setNativeStyleEngine(mock.engine)
+    process.env.TAMAGUI_TARGET = 'native'
+
+    const app = (items: string[]) => (
+      <TamaguiProvider config={config} defaultTheme="dark">
+        {ReactModule.createElement(compiled.Test!, { items } as any)}
+      </TamaguiProvider>
+    )
+    let renderer: ReactTestRenderer
+    act(() => {
+      renderer = create(app(['a', 'b']), { createNodeMock: () => ({}) })
+    })
+    const node = (testID: string) =>
+      renderer.root.findAll((n) => n.props?.testID === testID).at(-1)!
+    const wrapped = () =>
+      renderer.root
+        .findAll((n) => typeof n.type === 'function' && n.type.name === 'NativeStyleView')
+        .map((n) => n.props.testID)
+        .sort()
+
+    expect(node('row-a').type).toBe('RCTView')
+    expect(node('label-a').type).toBe('RCTText')
+    expect(node('conditional').type).toBe('RCTView')
+    expect(styleValue(node('row-b'), 'backgroundColor')).toBe(
+      config.themes.dark.background.val
+    )
+    expect(wrapped()).toEqual(['custom', 'helper', 'prop', 'themed', 'variable'])
+    // inline views still link to the engine
+    expect(mock.links).toHaveLength(10)
+
+    // keys reach the host: a reorder moves the committed views with their
+    // items (test-renderer mints a new public instance per read, so compare
+    // the fiber's host instance)
+    const hostOf = (testID: string) => (node(testID) as any)._fiber.stateNode
+    const rowA = hostOf('row-a')
+    const labelA = hostOf('label-a')
+    act(() => renderer.update(app(['b', 'a'])))
+    // compared as booleans: a failing diff of two host instances never ends
+    expect(hostOf('row-a') === rowA).toBe(true)
+    expect(hostOf('label-a') === labelA).toBe(true)
+
+    act(() => renderer.unmount())
+  } finally {
+    setupHooks({ getBaseViews: undefined })
+  }
+})
+
+test('inline placement follows component boundaries and render callbacks', async () => {
+  const output = await extractForNative(
+    `
+      import { memo, forwardRef } from 'react'
+      import { View } from 'react-native'
+      import { YStack } from 'tamagui'
+
+      const moduleScoped = <YStack testID="module" bg="background" />
+
+      export const Memo = memo(() => <YStack testID="memo" bg="background" />)
+      export const Forwarded = forwardRef(function (props, ref) {
+        return <YStack testID="forwarded" bg="background" />
+      })
+      export const Arrow = ({ count }) => (
+        <View>
+          {Array.from({ length: count }, (_, i) => (
+            <YStack key={i} testID="from" bg="background" />
+          ))}
+        </View>
+      )
+      export function Spread(props) {
+        return <View {...props}><YStack testID="spread" bg="background" /></View>
+      }
+      export function Shallow() {
+        return <YStack themeShallow><YStack testID="shallow" bg="background" /></YStack>
+      }
+      export function Callback({ items }) {
+        return <View>{items.forEach(() => <YStack testID="forEach" bg="background" />)}</View>
+      }
+      export class Klass {
+        render() {
+          return <YStack testID="class" bg="background" />
+        }
+      }
+    `,
+    { options: { experimental: { nativeFastPath: true } } }
+  )
+  const inlined = [...output.code.matchAll(/\.inline\(<\w+[^>]*testID="(\w+)"/g)].map(
+    (match) => match[1]
+  )
+  expect(inlined).toEqual(['memo', 'forwarded', 'from'])
+  for (const kept of ['module', 'spread', 'shallow', 'forEach', 'class']) {
+    expect(output.code).toMatch(
+      new RegExp(`<__TamaguiNativeFastView\\d+ testID="${kept}"`)
+    )
+  }
 })

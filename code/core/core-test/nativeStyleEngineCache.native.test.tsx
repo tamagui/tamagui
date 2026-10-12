@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest'
 import {
+  flushNativeStyleLinks,
   getNativeStyleEngineCacheStats,
   linkNativeStyleMapping,
   removeNativeStyleScope,
@@ -7,15 +8,24 @@ import {
   setNativeStyleEngine,
   updateNativeStyleScope,
   type NativeStyleEngine,
-  type NativeViewStateTableUpdate,
 } from '../web/src/helpers/nativeStyleEngine'
 
 test('native mapping generations retain mounted links and bound memo maps', () => {
-  const tableUpdates: NativeViewStateTableUpdate[] = []
+  const tableUpdates: { tableId: number; state: string; props: object }[] = []
+  let linkedTable: unknown
   const engine: NativeStyleEngine = {
-    link: () => ({ id: 1, unlink: () => {} }),
+    link: (_ref, table) => {
+      linkedTable = table
+      return { id: 1, unlink: () => {} }
+    },
+    linkTables: (_refs, tableIds) => {
+      linkedTable = tableIds[0]
+      return 1
+    },
+    unlink: () => {},
     applyViewStates: () => {},
-    updateViewStateTables: (entries) => tableUpdates.push(...entries),
+    setTableState: (tableId, state, props) =>
+      tableUpdates.push({ tableId, state, props }),
     processStyleColors: (props) => props,
     setStateName: () => {},
     removeScope: () => {},
@@ -28,12 +38,12 @@ test('native mapping generations retain mounted links and bound memo maps', () =
   updateNativeStyleScope('cache-scope', 'initial', initialTheme)
   const link = linkNativeStyleMapping(
     {},
-    {},
     liveMapping,
     'cache-scope',
     'initial',
     initialTheme
   )!
+  flushNativeStyleLinks()
 
   for (let i = 0; i <= 10_000; i++) {
     resolveNativeStyleMapping(liveMapping, `state-${i}`, initialTheme)
@@ -49,7 +59,7 @@ test('native mapping generations retain mounted links and bound memo maps', () =
 
   updateNativeStyleScope('cache-scope', 'next', nextTheme)
   expect(tableUpdates.at(-1)).toEqual({
-    id: link.id,
+    tableId: linkedTable,
     state: 'next',
     props: { backgroundColor: 'blue' },
   })
@@ -60,14 +70,12 @@ test('native mapping generations retain mounted links and bound memo maps', () =
 })
 
 test('native mappings reset unsupported style values', () => {
-  let linkedBase: Record<string, unknown> | undefined
   const engine: NativeStyleEngine = {
-    link: (_ref, slots) => {
-      linkedBase = slots.base
-      return { id: 1, unlink: () => {} }
-    },
+    link: () => ({ id: 1, unlink: () => {} }),
+    linkTables: () => 1,
+    unlink: () => {},
     applyViewStates: () => {},
-    updateViewStateTables: () => {},
+    setTableState: () => {},
     processStyleColors: (props) => props,
     setStateName: () => {},
     removeScope: () => {},
@@ -99,20 +107,5 @@ test('native mappings reset unsupported style values', () => {
     outlineOffset: null,
     minHeight: null,
   })
-  linkNativeStyleMapping(
-    {},
-    {
-      outlineStyle: 'none',
-      outlineWidth: 2,
-      outlineColor: 'red',
-      outlineOffset: 3,
-      minHeight: 'max-content',
-    },
-    {},
-    'outline-scope',
-    'initial',
-    {}
-  )
-  expect(linkedBase).toEqual({})
   setNativeStyleEngine(null)
 })

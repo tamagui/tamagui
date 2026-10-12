@@ -8,7 +8,6 @@ import type {
   RegistryStats,
   ViewSlots,
   ViewStateSnapshot,
-  ViewStateTableUpdate,
   ViewStateUpdate,
 } from './types'
 import {
@@ -24,7 +23,6 @@ export type {
   Unlink,
   ViewSlots,
   ViewStateSnapshot,
-  ViewStateTableUpdate,
   ViewStateUpdate,
 } from './types'
 export { ROOT_SCOPE, getMirroredStateName } from './mirror'
@@ -35,15 +33,31 @@ export function isAvailable(): boolean {
 
 export function link(
   _ref: unknown,
-  _slots: ViewSlots,
-  _scopeId?: string
+  _table: ViewSlots | number,
+  _scopeId?: string,
+  _commitNow?: boolean
 ): LinkHandle | null {
   return null
 }
 
+export function linkTables(
+  _refs: unknown[],
+  _tableIds: number[],
+  _scopeIndexes: number[],
+  _scopes: string[]
+): number {
+  return 0
+}
+
+export function unlink(_id: number): void {}
+
 export function applyViewStates(_entries: ViewStateUpdate[]): void {}
 
-export function updateViewStateTables(_entries: ViewStateTableUpdate[]): void {}
+export function setTableState(
+  _tableId: number,
+  _state: string,
+  _props: Record<string, unknown>
+): void {}
 
 export function getViewState(_id: number): ViewStateSnapshot | null {
   return null

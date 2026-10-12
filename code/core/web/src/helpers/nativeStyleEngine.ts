@@ -86,27 +86,45 @@ export interface NativeViewStateUpdate {
   props?: Record<string, unknown>
 }
 
-export interface NativeViewStateTableUpdate {
-  id: number
-  state: string
-  props: Record<string, unknown>
-}
-
 export interface NativeStyleEngineSlots {
-  base?: Record<string, unknown>
   state?: Record<string, Record<string, unknown>>
 }
 
 export type NativeStyleThemeMapping = Record<string, string>
 
 export interface NativeStyleEngine {
+  /**
+   * links a mounted host. `table` is a shared table id from setTableState
+   * (compiler mappings) or per-view slots (runtime views driven through
+   * applyViewStates). `commitNow` commits the table's active state for the
+   * view once, for a host whose render raced a scope change.
+   */
   link(
     ref: unknown,
-    slots: NativeStyleEngineSlots,
-    scopeId?: string
+    table: NativeStyleEngineSlots | number,
+    scopeId?: string,
+    commitNow?: boolean
   ): NativeStyleEngineLinkHandle | null
+  /**
+   * links many mounted hosts to shared tables in one call: entry i links
+   * refs[i] to tableIds[i] under scopes[scopeIndexes[i]]. returns the id of
+   * entry 0; ids are consecutive, and an entry whose host is gone consumes
+   * its id unlinked
+   */
+  linkTables(
+    refs: unknown[],
+    tableIds: number[],
+    scopeIndexes: number[],
+    scopes: string[]
+  ): number
+  /** unlinks an id from linkTables */
+  unlink(id: number): void
+  /**
+   * fills one state of a shared table, read by every view linked to it;
+   * views already showing that state commit the new props
+   */
+  setTableState(tableId: number, state: string, props: Record<string, unknown>): void
   applyViewStates(entries: NativeViewStateUpdate[]): void
-  updateViewStateTables(entries: NativeViewStateTableUpdate[]): void
   processStyleColors(props: Record<string, unknown>): Record<string, unknown>
   setStateName(stateName: string, scopeId?: string): void
   removeScope(scopeId: string): void
@@ -114,12 +132,6 @@ export interface NativeStyleEngine {
 
 let engine: NativeStyleEngine | null = null
 const scopeStates = new Map<string, { name: string; theme: object }>()
-
-interface CompiledMappingLink {
-  handle: NativeStyleEngineLinkHandle
-  scopeId: string
-  stateThemes: Map<string, object>
-}
 
 interface ResolvedMappingState {
   theme: object
@@ -132,17 +144,19 @@ interface ResolvedMappingState {
 interface CompiledMapping {
   mapping: NativeStyleThemeMapping
   states: Map<string, ResolvedMappingState>
-  links: Set<CompiledMappingLink>
+  /** the engine table every view of this mapping links to */
+  tableId: number
+  /** the resolved state last sent to the engine table, per state name */
+  sent: Map<string, ResolvedMappingState>
 }
 
 const mappingKeys = new WeakMap<object, string>()
 const compiledMappings = new Map<string, CompiledMapping>()
-// linked mappings remain update owners across memo-generation rollovers
-const activeCompiledMappings = new Set<CompiledMapping>()
-const processedBases = new WeakMap<
-  object,
-  { engine: NativeStyleEngine; props: Record<string, unknown> }
->()
+// linked mappings per scope, with their live link counts. they remain update
+// owners across memo-generation rollovers, and a scope change only syncs the
+// mappings linked under that scope
+const scopeMappings = new Map<string, Map<CompiledMapping, number>>()
+let nextTableId = 1
 
 function getCompiledMapping(mapping: NativeStyleThemeMapping): CompiledMapping {
   let key = mappingKeys.get(mapping)
@@ -156,7 +170,12 @@ function getCompiledMapping(mapping: NativeStyleThemeMapping): CompiledMapping {
   }
   let compiled = compiledMappings.get(key)
   if (!compiled) {
-    compiled = { mapping, states: new Map(), links: new Set() }
+    compiled = {
+      mapping,
+      states: new Map(),
+      tableId: nextTableId++,
+      sent: new Map(),
+    }
     if (compiledMappings.size >= 10_000) {
       compiledMappings.clear()
     }
@@ -184,19 +203,31 @@ function resolveCompiledMapping(
   const nativeProps = engine?.processStyleColors(renderProps) ?? renderProps
   if (compiled.states.size >= 10_000) {
     compiled.states.clear()
-    for (const link of compiled.links) {
-      link.stateThemes.clear()
-    }
   }
   const resolved: ResolvedMappingState = { theme, renderProps, nativeProps }
   compiled.states.set(stateName, resolved)
   return resolved
 }
 
+/** resolves one state of a mapping and sends it to the engine table once */
+function syncTableState(
+  compiled: CompiledMapping,
+  stateName: string,
+  theme: Record<string, unknown>
+): void {
+  const resolved = resolveCompiledMapping(compiled, stateName, theme)
+  if (compiled.sent.get(stateName) === resolved) return
+  compiled.sent.set(stateName, resolved)
+  engine!.setTableState(compiled.tableId, stateName, resolved.nativeProps)
+}
+
 export function setNativeStyleEngine(next: NativeStyleEngine | null): void {
   if (engine !== next) {
+    settleReleases()
     compiledMappings.clear()
-    activeCompiledMappings.clear()
+    scopeMappings.clear()
+    pendingLinks = []
+    unlinkedPending = 0
   }
   engine = next
   if (next) {
@@ -217,26 +248,19 @@ export function updateNativeStyleScope(
 ): void {
   const previous = scopeStates.get(scopeId)
   if (previous?.name === stateName && previous.theme === theme) return
+  // pending views rendered the outgoing state: link them before it changes
+  flushNativeStyleLinks()
   scopeStates.set(scopeId, { name: stateName, theme })
 
   if (engine) {
-    const entries: NativeViewStateTableUpdate[] = []
-    for (const compiled of activeCompiledMappings) {
-      let props: Record<string, unknown> | undefined
-      for (const link of compiled.links) {
-        if (link.scopeId !== scopeId) continue
-        const linkedTheme = link.stateThemes.get(stateName)
-        if (linkedTheme === theme) continue
-        props ||= resolveCompiledMapping(
-          compiled,
-          stateName,
-          theme as Record<string, unknown>
-        ).nativeProps
-        entries.push({ id: link.handle.id, state: stateName, props })
-        link.stateThemes.set(stateName, theme)
+    // one table entry per mapping, never per view: a state name resolves to
+    // one theme, so every scope showing it reads the same table entry
+    const linked = scopeMappings.get(scopeId)
+    if (linked) {
+      for (const compiled of linked.keys()) {
+        syncTableState(compiled, stateName, theme as Record<string, unknown>)
       }
     }
-    if (entries.length) engine.updateViewStateTables(entries)
   }
   engine?.setStateName(stateName, scopeId)
 }
@@ -254,9 +278,112 @@ export function resolveNativeStyleMapping(
   return resolveCompiledMapping(getCompiledMapping(mapping), stateName, theme).renderProps
 }
 
+interface MappingLink {
+  ref: unknown
+  compiled: CompiledMapping
+  scopeId: string
+  /** 0 while pending, -1 once unlinked */
+  id: number
+  /** the engine that assigned `id`: a later engine swap must not receive its unlink */
+  owner: NativeStyleEngine | null
+}
+
+// views link lazily: a mount only records its host here, and the engine
+// links every pending view in one call before a scope next changes. linking
+// exists for theme switches, so a mount pays nothing native, and a view that
+// unmounts before any switch never reaches the engine
+let pendingLinks: MappingLink[] = []
+// pending entries unlinked before any flush; compacted once they dominate
+let unlinkedPending = 0
+
+function trackScopeMapping(link: MappingLink, delta: 1 | -1) {
+  let linked = scopeMappings.get(link.scopeId)
+  if (!linked) scopeMappings.set(link.scopeId, (linked = new Map()))
+  const count = (linked.get(link.compiled) ?? 0) + delta
+  if (count) {
+    linked.set(link.compiled, count)
+  } else {
+    linked.delete(link.compiled)
+    if (!linked.size) scopeMappings.delete(link.scopeId)
+  }
+}
+
+/** links every pending view in one engine call */
+export function flushNativeStyleLinks(): void {
+  settleReleases()
+  if (!pendingLinks.length) return
+  const links = pendingLinks
+  pendingLinks = []
+  unlinkedPending = 0
+  if (!engine) return
+  const live = links.filter((link) => link.id === 0)
+  if (!live.length) return
+  const refs: unknown[] = []
+  const tableIds: number[] = []
+  const scopeIndexes: number[] = []
+  const scopes: string[] = []
+  for (const link of live) {
+    let scopeIndex = scopes.indexOf(link.scopeId)
+    if (scopeIndex === -1) scopeIndex = scopes.push(link.scopeId) - 1
+    refs.push(link.ref)
+    tableIds.push(link.compiled.tableId)
+    scopeIndexes.push(scopeIndex)
+  }
+  const firstId = engine.linkTables(refs, tableIds, scopeIndexes, scopes)
+  for (let i = 0; i < live.length; i++) {
+    const link = live[i]!
+    link.id = firstId + i
+    link.owner = engine
+    link.ref = null
+    trackScopeMapping(link, 1)
+  }
+}
+
+// React detaches and re-attaches a callback ref whenever the callback changes,
+// which a parent re-render does to every child. a release settles after the
+// commit, so the same host attaching again keeps its link and the engine keeps
+// its per-view caches instead of unlinking and relinking every view
+interface Release {
+  compiled: CompiledMapping
+  scopeId: string
+  handle: NativeStyleEngineLinkHandle
+  settle: () => void
+}
+const releases = new Map<unknown, Release>()
+let settleQueued = false
+
+function settleReleases() {
+  settleQueued = false
+  if (!releases.size) return
+  const settling = [...releases.values()]
+  releases.clear()
+  for (const release of settling) release.settle()
+}
+
+function releasable(
+  ref: unknown,
+  compiled: CompiledMapping,
+  scopeId: string,
+  id: number,
+  settle: () => void
+): NativeStyleEngineLinkHandle {
+  const handle: NativeStyleEngineLinkHandle = {
+    id,
+    unlink: () => {
+      const prior = releases.get(ref)
+      if (prior && prior.handle !== handle) prior.settle()
+      releases.set(ref, { compiled, scopeId, handle, settle })
+      if (!settleQueued) {
+        settleQueued = true
+        queueMicrotask(settleReleases)
+      }
+    },
+  }
+  return handle
+}
+
 export function linkNativeStyleMapping(
   ref: unknown,
-  baseStyle: Record<string, unknown>,
   mapping: NativeStyleThemeMapping,
   scopeId: string,
   stateName: string,
@@ -266,71 +393,65 @@ export function linkNativeStyleMapping(
 
   const compiled = getCompiledMapping(mapping)
   // a scope can advance (layout effect) after a concurrent render captured its
-  // theme but before that render's host ref links. the engine's link() only
-  // stores tables, it never commits, so link against the live scope state and
-  // commit that table once to correct the stale React commit.
+  // theme but before that render's host ref links. link that host now against
+  // the live scope state and have the engine commit it once to correct the
+  // stale React commit.
   const scopeState = scopeStates.get(scopeId)
-  const currentStateName = scopeState?.name ?? stateName
-  const currentTheme = (scopeState?.theme ?? theme) as Record<string, unknown>
-  const stale = currentStateName !== stateName || currentTheme !== theme
-  const stateProps = resolveCompiledMapping(
-    compiled,
-    currentStateName,
-    currentTheme
-  ).nativeProps
-  let base = processedBases.get(baseStyle)
-  if (!base || base.engine !== engine) {
-    base = {
-      engine,
-      props: engine.processStyleColors(normalizeNativeStyle(baseStyle)),
-    }
-    processedBases.set(baseStyle, base)
+  const stale = scopeState && (scopeState.name !== stateName || scopeState.theme !== theme)
+  const kept = releases.get(ref)
+  if (kept) {
+    releases.delete(ref)
+    if (!stale && kept.compiled === compiled && kept.scopeId === scopeId) return kept.handle
+    kept.settle()
   }
-  const state: Record<string, Record<string, unknown>> = {}
-  const stateThemes = new Map<string, object>()
-  for (const [name, cached] of compiled.states) {
-    state[name] = cached.nativeProps
-    stateThemes.set(name, cached.theme)
-  }
-  state[currentStateName] = stateProps
-  stateThemes.set(currentStateName, currentTheme)
-  const handle = engine.link(ref, { base: base.props, state }, scopeId)
-  if (!handle) return null
-
   if (stale) {
-    engine.updateViewStateTables([
-      { id: handle.id, state: currentStateName, props: stateProps },
-    ])
+    syncTableState(compiled, scopeState.name, scopeState.theme as Record<string, unknown>)
+    const handle = engine.link(ref, compiled.tableId, scopeId, true)
+    if (!handle) return null
+    const link: MappingLink = { ref: null, compiled, scopeId, id: handle.id, owner: engine }
+    trackScopeMapping(link, 1)
+    return releasable(ref, compiled, scopeId, handle.id, () => {
+      if (link.id === -1) return
+      link.id = -1
+      if (link.owner === engine) trackScopeMapping(link, -1)
+      handle.unlink()
+    })
   }
 
-  const link: CompiledMappingLink = {
-    handle,
-    scopeId,
-    stateThemes,
-  }
-  compiled.links.add(link)
-  activeCompiledMappings.add(compiled)
-  return {
-    id: handle.id,
-    unlink: () => {
-      compiled.links.delete(link)
-      if (!compiled.links.size) {
-        activeCompiledMappings.delete(compiled)
-      }
-      handle.unlink()
-    },
-  }
+  // the table must hold the state this view rendered before a switch links it
+  syncTableState(compiled, stateName, theme)
+  const link: MappingLink = { ref, compiled, scopeId, id: 0, owner: null }
+  pendingLinks.push(link)
+  return releasable(ref, compiled, scopeId, 0, () => {
+    const id = link.id
+    if (id === -1) return
+    link.id = -1
+    link.ref = null
+    if (id > 0) {
+      // scope accounting was reset when the engine changed
+      if (link.owner === engine) trackScopeMapping(link, -1)
+      link.owner!.unlink(id)
+    } else if (++unlinkedPending > 512 && unlinkedPending * 2 > pendingLinks.length) {
+      pendingLinks = pendingLinks.filter((pending) => pending.id === 0)
+      unlinkedPending = 0
+    }
+  })
 }
 
 /** memo-generation and live-owner sizes for development diagnostics and probes */
-export const getNativeStyleEngineCacheStats = () => ({
-  mappings: compiledMappings.size,
-  activeMappings: activeCompiledMappings.size,
-  states: [...new Set([...compiledMappings.values(), ...activeCompiledMappings])].reduce(
-    (total, compiled) => total + compiled.states.size,
-    0
-  ),
-})
+export const getNativeStyleEngineCacheStats = () => {
+  const active = new Set(
+    [...scopeMappings.values()].flatMap((linked) => [...linked.keys()])
+  )
+  return {
+    mappings: compiledMappings.size,
+    activeMappings: active.size,
+    states: [...new Set([...compiledMappings.values(), ...active])].reduce(
+      (total, compiled) => total + compiled.states.size,
+      0
+    ),
+  }
+}
 
 let pending: NativeViewStateUpdate[] | null = null
 let flushListener: ((entries: NativeViewStateUpdate[]) => void) | null = null

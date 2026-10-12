@@ -2,6 +2,7 @@ export declare function getBaseViews(): {
     View: any;
     Text: any;
     TextAncestor: any;
+    NativeText: any;
     StyleSheet: any;
     Pressable: any;
 };

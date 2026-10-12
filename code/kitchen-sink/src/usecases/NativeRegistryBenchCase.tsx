@@ -295,10 +295,10 @@ const probedEngine: NativeStyleEngine = {
     engineProbe.applyEntries += entries.length
     timeEngineCall(() => nativeEngine.applyViewStates(entries))
   },
-  updateViewStateTables(entries) {
+  setTableState(tableId, state, props) {
     engineProbe.tableCalls += 1
-    engineProbe.tableEntries += entries.length
-    timeEngineCall(() => nativeEngine.updateViewStateTables(entries))
+    engineProbe.tableEntries += 1
+    timeEngineCall(() => nativeEngine.setTableState(tableId, state, props))
   },
   setStateName(stateName, scopeId) {
     engineProbe.stateNameCalls += 1

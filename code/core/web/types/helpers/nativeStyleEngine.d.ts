@@ -28,20 +28,33 @@ export interface NativeViewStateUpdate {
     state: string;
     props?: Record<string, unknown>;
 }
-export interface NativeViewStateTableUpdate {
-    id: number;
-    state: string;
-    props: Record<string, unknown>;
-}
 export interface NativeStyleEngineSlots {
-    base?: Record<string, unknown>;
     state?: Record<string, Record<string, unknown>>;
 }
 export type NativeStyleThemeMapping = Record<string, string>;
 export interface NativeStyleEngine {
-    link(ref: unknown, slots: NativeStyleEngineSlots, scopeId?: string): NativeStyleEngineLinkHandle | null;
+    /**
+     * links a mounted host. `table` is a shared table id from setTableState
+     * (compiler mappings) or per-view slots (runtime views driven through
+     * applyViewStates). `commitNow` commits the table's active state for the
+     * view once, for a host whose render raced a scope change.
+     */
+    link(ref: unknown, table: NativeStyleEngineSlots | number, scopeId?: string, commitNow?: boolean): NativeStyleEngineLinkHandle | null;
+    /**
+     * links many mounted hosts to shared tables in one call: entry i links
+     * refs[i] to tableIds[i] under scopes[scopeIndexes[i]]. returns the id of
+     * entry 0; ids are consecutive, and an entry whose host is gone consumes
+     * its id unlinked
+     */
+    linkTables(refs: unknown[], tableIds: number[], scopeIndexes: number[], scopes: string[]): number;
+    /** unlinks an id from linkTables */
+    unlink(id: number): void;
+    /**
+     * fills one state of a shared table, read by every view linked to it;
+     * views already showing that state commit the new props
+     */
+    setTableState(tableId: number, state: string, props: Record<string, unknown>): void;
     applyViewStates(entries: NativeViewStateUpdate[]): void;
-    updateViewStateTables(entries: NativeViewStateTableUpdate[]): void;
     processStyleColors(props: Record<string, unknown>): Record<string, unknown>;
     setStateName(stateName: string, scopeId?: string): void;
     removeScope(scopeId: string): void;
@@ -51,7 +64,9 @@ export declare function getNativeStyleEngine(): NativeStyleEngine | null;
 export declare function updateNativeStyleScope(scopeId: string, stateName: string, theme: object): void;
 export declare function removeNativeStyleScope(scopeId: string): void;
 export declare function resolveNativeStyleMapping(mapping: NativeStyleThemeMapping, stateName: string, theme: Record<string, unknown>): Record<string, unknown>;
-export declare function linkNativeStyleMapping(ref: unknown, baseStyle: Record<string, unknown>, mapping: NativeStyleThemeMapping, scopeId: string, stateName: string, theme: Record<string, unknown>): NativeStyleEngineLinkHandle | null;
+/** links every pending view in one engine call */
+export declare function flushNativeStyleLinks(): void;
+export declare function linkNativeStyleMapping(ref: unknown, mapping: NativeStyleThemeMapping, scopeId: string, stateName: string, theme: Record<string, unknown>): NativeStyleEngineLinkHandle | null;
 /** memo-generation and live-owner sizes for development diagnostics and probes */
 export declare const getNativeStyleEngineCacheStats: () => {
     mappings: number;

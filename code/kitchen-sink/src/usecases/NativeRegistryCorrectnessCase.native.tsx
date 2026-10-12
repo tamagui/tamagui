@@ -52,17 +52,13 @@ export function NativeRegistryCorrectnessCase() {
     stateNameCalls: 0,
     startCommitCount: 0,
     startMissCount: 0,
-    linkedBaseKeys: [] as string[],
-    linkedStateNames: [] as string[],
   })
 
   const probedEngine = useMemo<NativeStyleEngine>(
     () => ({
       ...nativeEngine,
-      link(ref, slots, scopeId) {
-        probe.current.linkedBaseKeys = Object.keys(slots.base || {})
-        probe.current.linkedStateNames = Object.keys(slots.state || {})
-        const linked = nativeEngine.link(ref, slots, scopeId)
+      link(ref, table, scopeId, commitNow) {
+        const linked = nativeEngine.link(ref, table, scopeId, commitNow)
         if (!linked) return null
         probe.current.linkCalls += 1
         probe.current.activeLinks.add(linked.id)
@@ -76,15 +72,25 @@ export function NativeRegistryCorrectnessCase() {
           },
         }
       },
+      linkTables(refs, tableIds, scopeIndexes, scopes) {
+        const firstId = nativeEngine.linkTables(refs, tableIds, scopeIndexes, scopes)
+        probe.current.linkCalls += refs.length
+        for (let i = 0; i < refs.length; i++) probe.current.activeLinks.add(firstId + i)
+        return firstId
+      },
+      unlink(id) {
+        if (probe.current.activeLinks.delete(id)) probe.current.unlinkCalls += 1
+        nativeEngine.unlink(id)
+      },
       applyViewStates(entries) {
         probe.current.applyCalls += 1
         probe.current.applyEntries += entries.length
         nativeEngine.applyViewStates(entries)
       },
-      updateViewStateTables(entries) {
+      setTableState(tableId, state, props) {
         probe.current.tableCalls += 1
-        probe.current.tableEntries += entries.length
-        nativeEngine.updateViewStateTables(entries)
+        probe.current.tableEntries += 1
+        nativeEngine.setTableState(tableId, state, props)
       },
       setStateName(stateName, scopeId) {
         probe.current.stateNameCalls += 1
@@ -127,8 +133,6 @@ export function NativeRegistryCorrectnessCase() {
     probe.current.tableCalls = 0
     probe.current.tableEntries = 0
     probe.current.stateNameCalls = 0
-    probe.current.linkedBaseKeys = []
-    probe.current.linkedStateNames = []
     setMetrics('{}')
   }
 
@@ -151,8 +155,6 @@ export function NativeRegistryCorrectnessCase() {
         tableCalls: probe.current.tableCalls,
         tableEntries: probe.current.tableEntries,
         stateNameCalls: probe.current.stateNameCalls,
-        linkedBaseKeys: probe.current.linkedBaseKeys,
-        linkedStateNames: probe.current.linkedStateNames,
         commits: stats.commitCount - probe.current.startCommitCount,
         misses: stats.missCount - probe.current.startMissCount,
         activeState: activeView?.activeState,

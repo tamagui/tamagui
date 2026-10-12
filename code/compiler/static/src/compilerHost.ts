@@ -12,9 +12,15 @@ import type {
   ZeroRule,
 } from '@tamagui/compiler-core'
 import {
+  childNode,
+  childNodes,
   collectLeaves,
+  findAstNode,
+  identifierName,
+  parseModuleAst,
   zeroRuleMessage,
   zeroThemeBoundaryMessage,
+  type AstNode,
 } from '@tamagui/compiler-core'
 import {
   StyleObjectIdentifier,
@@ -828,16 +834,197 @@ const VIEW_WRAPPER_PROPS =
  * Whether an element can render RN's host component directly instead of
  * <View>. A child is disqualifying because <View> resets TextAncestorContext
  * for its descendants when it sits inside a <Text>, and no per-element
- * analysis can rule that out; with no children nothing can observe it. A
- * spread is disqualifying because it can carry the aria props this checks for.
+ * analysis can rule that out; with no children nothing can observe it. The
+ * native style wrapper performs that reset itself, so children are allowed
+ * through it (`resetsTextAncestor`). A spread is disqualifying because it can
+ * carry the aria props this checks for.
  */
-function isBareHostView(element: MaterializedElement): boolean {
+function isBareHostView(
+  element: MaterializedElement,
+  resetsTextAncestor: boolean
+): boolean {
   return !element.entries.some(
     (entry) =>
-      entry.kind === 'child' ||
+      (entry.kind === 'child' && !resetsTextAncestor) ||
       entry.kind === 'spread' ||
       (entry.kind === 'prop' && VIEW_WRAPPER_PROPS.test(entry.name))
   )
+}
+
+/**
+ * props RN's <Text> remaps, or that make it pressable, selectable or virtual;
+ * a <Text> without them hands its host a fixed set the native style wrapper
+ * reproduces
+ */
+const TEXT_WRAPPER_PROPS =
+  /^(aria-|accessib|on[A-Z]|disabled$|id$|nativeID$|numberOfLines$|ellipsizeMode$|selectable$|selectionColor$|suppressHighlighting$|pressRetentionOffset$|role$|allowFontScaling$)/
+
+function isBareHostText(element: MaterializedElement): boolean {
+  return !element.entries.some(
+    (entry) =>
+      entry.kind === 'spread' ||
+      (entry.kind === 'prop' && TEXT_WRAPPER_PROPS.test(entry.name))
+  )
+}
+
+/** ancestors that render their children in the calling component's theme scope */
+const SCOPE_PRESERVING_PARENTS: Record<string, readonly string[]> = {
+  react: ['Fragment'],
+  'react-native': ['View', 'ScrollView', 'SafeAreaView'],
+  '@tamagui/core': ['View', 'Stack', 'XStack', 'YStack', 'ZStack'],
+  tamagui: ['View', 'Stack', 'XStack', 'YStack', 'ZStack'],
+}
+
+const SCOPE_PROPS = new Set(['theme', 'themeInverse', 'themeShallow', 'componentName'])
+
+// every fast-path element of one module asks about the same source
+let inlineModule: {
+  source: string
+  program: AstNode
+  imports: Map<string, string>
+} | null = null
+
+function inlineModuleOf(input: LoweringCandidateInput) {
+  if (inlineModule?.source === input.source) return inlineModule
+  const program = parseModuleAst(input.source, input.id)
+  // local name -> 'source#imported'
+  const imports = new Map<string, string>()
+  for (const statement of childNodes(program, 'body')) {
+    if (statement.type !== 'ImportDeclaration' || statement.importKind === 'type')
+      continue
+    const from = childNode(statement, 'source')?.value
+    for (const specifier of childNodes(statement, 'specifiers')) {
+      if (specifier.type !== 'ImportSpecifier') continue
+      const local = identifierName(childNode(specifier, 'local'))
+      const imported = identifierName(childNode(specifier, 'imported'))
+      if (local && imported) imports.set(local, `${from}#${imported}`)
+    }
+  }
+  inlineModule = { source: input.source, program, imports }
+  return inlineModule
+}
+
+function keepsThemeScope(element: AstNode, imports: Map<string, string>): boolean {
+  if (element.type === 'JSXFragment') return true
+  const opening = childNode(element, 'openingElement')
+  if (!opening) return false
+  for (const attribute of childNodes(opening, 'attributes')) {
+    if (attribute.type !== 'JSXAttribute') return false
+    const name = identifierName(childNode(attribute, 'name'))
+    if (!name || SCOPE_PROPS.has(name)) return false
+  }
+  const [from, imported] = (
+    imports.get(identifierName(childNode(opening, 'name')) ?? '') ?? ''
+  ).split('#')
+  return !!SCOPE_PRESERVING_PARENTS[from!]?.includes(imported!)
+}
+
+function isComponentFunction(fn: AstNode, parent: AstNode | undefined): boolean {
+  const pascal = (name: string | null) => !!name && /^[A-Z]/.test(name)
+  if (fn.type === 'FunctionDeclaration')
+    return pascal(identifierName(childNode(fn, 'id')))
+  if (!parent) return false
+  if (parent.type === 'VariableDeclarator') {
+    return (
+      childNode(parent, 'init') === fn && pascal(identifierName(childNode(parent, 'id')))
+    )
+  }
+  if (parent.type === 'CallExpression' && childNodes(parent, 'arguments')[0] === fn) {
+    const callee = childNode(parent, 'callee')
+    const name =
+      callee?.type === 'MemberExpression'
+        ? identifierName(childNode(callee, 'property'))
+        : identifierName(callee)
+    return name === 'memo' || name === 'forwardRef'
+  }
+  return false
+}
+
+/** `.map(fn)` and `Array.from(x, fn)` call their callback during the caller's render */
+function isRenderCallback(fn: AstNode, parent: AstNode | undefined): boolean {
+  if (parent?.type !== 'CallExpression') return false
+  const callee = childNode(parent, 'callee')
+  if (callee?.type !== 'MemberExpression') return false
+  const args = childNodes(parent, 'arguments')
+  const method = identifierName(childNode(callee, 'property'))
+  if (method === 'map') return args[0] === fn
+  return (
+    method === 'from' &&
+    identifierName(childNode(callee, 'object')) === 'Array' &&
+    args[1] === fn
+  )
+}
+
+const FUNCTION_TYPES = new Set([
+  'FunctionDeclaration',
+  'FunctionExpression',
+  'ArrowFunctionExpression',
+])
+
+/**
+ * Whether a fast-path element can render inline in its component's render
+ * (`Fast.inline(<Fast />)`), and whether that call needs JSX braces. Only when
+ * the component's theme scope is provably the element's own: the element sits
+ * in its returned JSX, possibly through conditionals and `.map` callbacks,
+ * under nothing but fragments and plain views that never open a theme scope.
+ */
+function nativeInlinePlacement(
+  input: LoweringCandidateInput
+): { braces: boolean } | null {
+  if (input.element.form !== 'jsx') return null
+  const { program, imports } = inlineModuleOf(input)
+  const { start, end } = input.element.span
+  const path: { node: AstNode; key: string | null }[] = []
+  const element = findAstNode(
+    program,
+    (node, _parent, key) => {
+      path.push({ node, key })
+      return node.type === 'JSXElement' && node.start === start && node.end === end
+    },
+    { start, end }
+  )
+  if (!element) return null
+  const parentType = path.at(-2)?.node.type
+  const braces = parentType === 'JSXElement' || parentType === 'JSXFragment'
+
+  let index = path.length - 2
+  while (index >= 0) {
+    const { node } = path[index]!
+    const childKey = path[index + 1]!.key
+    switch (node.type) {
+      case 'JSXElement':
+      case 'JSXFragment':
+        if (childKey !== 'children' || !keepsThemeScope(node, imports)) return null
+        break
+      case 'ConditionalExpression':
+        if (childKey === 'test') return null
+        break
+      case 'JSXExpressionContainer':
+      case 'LogicalExpression':
+      case 'ParenthesizedExpression':
+      case 'ChainExpression':
+        break
+      case 'ReturnStatement':
+      case 'ArrowFunctionExpression': {
+        if (node.type === 'ArrowFunctionExpression' && childKey !== 'body') return null
+        // a return belongs to its nearest enclosing function
+        let fnIndex = index
+        while (fnIndex >= 0 && !FUNCTION_TYPES.has(path[fnIndex]!.node.type)) fnIndex--
+        if (fnIndex < 0) return null
+        const fn = path[fnIndex]!.node
+        const fnParent = path[fnIndex - 1]?.node
+        if (isComponentFunction(fn, fnParent)) return { braces }
+        if (!isRenderCallback(fn, fnParent)) return null
+        // continue from the call, which is an expression in the outer render
+        index = fnIndex - 1
+        break
+      }
+      default:
+        return null
+    }
+    index--
+  }
+  return null
 }
 
 function entrySource(input: LoweringCandidateInput, entry: DOMPropEntry): string {
@@ -2833,7 +3020,7 @@ export function createTamaguiCompilerHost(
           !input.element.entries.some((entry) => entry.kind === 'spread')
         const nativeStyleImports = [
           {
-            content: `\nfunction ${nativeStyleLocal}() { return ${nativeStyleLocal}._ ?? (${nativeStyleLocal}._ = ${JSON.stringify((usesNativeFastPath ? nativeStyle : collapseNativeShorthands(nativeStyle)) ?? {})}); } ${nativeStyleLocal}();`,
+            content: `\nfunction ${nativeStyleLocal}() { return ${nativeStyleLocal}._ ?? (${nativeStyleLocal}._ = ${JSON.stringify(collapseNativeShorthands(nativeStyle) ?? {})}); } ${nativeStyleLocal}();`,
             origin: input.element.component.span,
           },
         ]
@@ -3126,12 +3313,18 @@ export function createTamaguiCompilerHost(
         // saves a context read plus a React element per view per render.
         // Only when the call site needs nothing the wrapper adds: the aria
         // remapping (visible in the static props) and the TextAncestorContext
-        // reset, which only a child can observe. <Text>'s wrapper does far
-        // more than <View>'s, so text keeps the wrapper.
+        // reset, which only a child can observe. Text keeps <Text> as the
+        // component, and the native style wrapper renders its host itself
+        // when the call site passes none of the props <Text> remaps.
         const useHostView =
           options.experimentalNativeFastPath &&
           nativeName === 'View' &&
-          isBareHostView(input.element)
+          isBareHostView(input.element, !!nativeFastPath)
+        const useHostText =
+          options.experimentalNativeFastPath &&
+          nativeName === 'Text' &&
+          !!nativeFastPath &&
+          isBareHostText(input.element)
         const nativeExport = useHostView ? 'unstable_NativeView' : nativeName
         // the local is named after the BINDING, not the component: a file can
         // hold both kinds at once, and a shared name would emit two different
@@ -3188,9 +3381,26 @@ export function createTamaguiCompilerHost(
                 `Compiled ${input.element.form} call has no editable props argument`
               )
             }
+            const inline = nativeInlinePlacement(input)
+            const inlineEdits = inline
+              ? [
+                  {
+                    start: input.element.span.start,
+                    end: input.element.span.start,
+                    content: `${inline.braces ? '{' : ''}${fastLocal}.inline(`,
+                    origin: input.element.span,
+                  },
+                  {
+                    start: input.element.span.end,
+                    end: input.element.span.end,
+                    content: `)${inline.braces ? '}' : ''}`,
+                    origin: input.element.span,
+                  },
+                ]
+              : []
             return {
               ok: true,
-              edits: [...tagEdits, ...styleEdits],
+              edits: [...inlineEdits, ...tagEdits, ...styleEdits],
               css: [],
               imports: [
                 ...nativeStyleImports,
@@ -3200,7 +3410,7 @@ export function createTamaguiCompilerHost(
                   origin: input.element.component.span,
                 },
                 {
-                  content: `\nconst ${fastLocal} = require('@tamagui/core')._withNativeStyle(${nativeLocal}, ${nativeStyleSource}, ${nativeFastPath.mappingLocal});`,
+                  content: `\nconst ${fastLocal} = require('@tamagui/core')._withNativeStyle(${nativeLocal}, ${nativeStyleSource}, ${nativeFastPath.mappingLocal}${useHostView ? `, 'view'` : useHostText ? `, 'text'` : ''});`,
                   origin: input.element.component.span,
                 },
               ],

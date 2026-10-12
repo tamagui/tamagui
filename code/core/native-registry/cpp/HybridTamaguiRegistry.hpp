@@ -6,6 +6,9 @@
 #include <jsi/jsi.h>
 #include <react/renderer/core/ShadowNode.h>
 
+#include <cstdint>
+#include <memory>
+#include <mutex>
 #include <string>
 #include <unordered_map>
 
@@ -38,9 +41,30 @@ namespace jsi = facebook::jsi;
  */
 class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
  public:
+  // one view's props for a commit. table views point at their table's
+  // state entry, shared by every view of the table, so the commit can parse
+  // each distinct (props, update) pair once; per-view slots own theirs
+  // the props a table view committed per state. while the node still carries
+  // the props this engine committed last, a switch back to a state reuses
+  // that state's props instead of parsing them again; a React render or a
+  // table refill invalidates them
+  struct WarmProps {
+    facebook::react::Props::Shared last;
+    uint64_t revision = 0;
+    std::unordered_map<std::string, facebook::react::Props::Shared> byState;
+  };
+
+  struct LeafUpdate {
+    const folly::dynamic* shared = nullptr;
+    folly::dynamic owned;
+    // table views only
+    WarmProps* warm = nullptr;
+    const std::string* state = nullptr;
+    uint64_t revision = 0;
+    const folly::dynamic& props() const { return shared ? *shared : owned; }
+  };
   using LeafUpdates =
-      std::unordered_map<const facebook::react::ShadowNodeFamily*,
-                         folly::dynamic>;
+      std::unordered_map<const facebook::react::ShadowNodeFamily*, LeafUpdate>;
 
   HybridTamaguiRegistry() : HybridObject(TAG) {}
 
@@ -56,6 +80,14 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
   double getMissCount() override;
 
  private:
+  // one state table shared by every view a compiler mapping links: state
+  // name -> props. filled once per mapping and state, never per view
+  struct Table {
+    folly::dynamic states = folly::dynamic::object();
+    // bumped on every refill so views drop props parsed from older states
+    uint64_t revision = 0;
+  };
+
   struct LinkedView {
     // retained so the family stays valid for in-transaction ancestor lookup;
     // unmounted views resolve to no ancestors and are skipped
@@ -63,13 +95,19 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
     std::string scopeId;
     folly::dynamic baseProps;   // object, or nullptr when absent
     folly::dynamic stateProps;  // stateName -> props object, or nullptr
+    // shared table (compiler mappings); when set it replaces base/stateProps
+    // and a commit carries only the state's keys, React already rendered the rest
+    std::shared_ptr<Table> table;
     // per-view active state (runtime mode). empty = follow scope state.
     // runtime integrations resolve state names per view (nested themes);
     // scope broadcast stays for compiler-emitted tables.
     std::string activeState;
+    WarmProps warm;
   };
 
-  // raw JSI: link(shadowNode, slots, scopeId) -> id
+  // raw JSI: link(shadowNode, slots | tableId, scopeId, commitNow?) -> id
+  // commitNow commits the view's active state once (its render raced a
+  // scope change)
   jsi::Value link(jsi::Runtime& rt, const jsi::Value& thisValue,
                   const jsi::Value* args, size_t count);
 
@@ -77,15 +115,16 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
   // batched per-view state selection: for each entry, `props` (when given)
   // replaces the view's state table entry under `state`, the view's active
   // state becomes `state`, and all changed views commit in ONE transaction.
+  jsi::Value linkTables(jsi::Runtime& rt, const jsi::Value& thisValue,
+                        const jsi::Value* args, size_t count);
+
   jsi::Value applyViewStates(jsi::Runtime& rt, const jsi::Value& thisValue,
                              const jsi::Value* args, size_t count);
 
-  // raw JSI: updateViewStateTables([{id, state, props}]) -> void
-  // compiler mappings resolve a state once in JS, then fill every matching
-  // linked view without moving it off scope-broadcast control.
-  jsi::Value updateViewStateTables(jsi::Runtime& rt,
-                                   const jsi::Value& thisValue,
-                                   const jsi::Value* args, size_t count);
+  // raw JSI: setTableState(tableId, state, props) -> void
+  // fills one state of a shared table; linked views showing that state commit
+  jsi::Value setTableState(jsi::Runtime& rt, const jsi::Value& thisValue,
+                           const jsi::Value* args, size_t count);
 
   // raw JSI: getViewState(id) -> {scopeId, activeState, base, states} | null
   // debug/test introspection of a linked view's tables; not a hot path
@@ -106,7 +145,11 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
   // commit current props for all views (scopeFilter == nullptr) or one scope
   void applyUpdates(jsi::Runtime& rt, const std::string* scopeFilter);
 
+  // the state a view shows right now: its own runtime state, else its scope's
+  const std::string* viewStateName(const LinkedView& view) const;
+
   std::unordered_map<double, LinkedView> views_;
+  std::unordered_map<double, std::shared_ptr<Table>> tables_;
   std::unordered_map<std::string, std::string> scopeStates_;  // "" = root
   double nextId_ = 1;
   double commitCount_ = 0;

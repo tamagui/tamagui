@@ -121,12 +121,14 @@ themed values, emit its static native style and a compact mapping such as
   props through Java `ColorPropConverter`, which throws `ColorValue: the value
   must be a number or Object` on an array and tears the React surface down.
   Earlier entries in this log that quote a packed int (`-2294553`) predate that.
-- The first activation of a state fills every linked view's table through one
-  `updateViewStateTables` batch, then publishes the scope name. Later toggles
-  between warmed states publish only the scope name. A replaced theme object
-  invalidates the cached entry and sends one new table batch; the native method
-  keeps compiler views under scope control and commits immediately if that
-  state is already active.
+- Every view of one compiled mapping links to one shared native table. The
+  base style rides React's `style` prop, so the table holds only theme keys.
+  The first activation of a state sends one `setTableState` entry per mapping
+  linked under that scope, never per view, then publishes the scope name.
+  Later toggles between warmed states publish only the scope name, and a
+  switch commits only the theme keys. A replaced theme object invalidates the
+  cached entry and sends one new table entry; the native method commits the
+  table's views immediately if that state is already active.
 - C++ receives only fully resolved state entries and does exact state-name
   lookup. It does no theme-token resolution, fallback-chain traversal, or name
   parsing.
@@ -566,21 +568,31 @@ wrapper adds. RN's component registry returns the component NAME for host
 components, so this emit is literally `createElement('RCTView', style)`: no
 context read, no aria remapping, one React element instead of two.
 
-- The gate is `isBareHostView`: no children, no spread, and none of
-  `aria-*`, `accessibilityState`, `accessibilityValue`, `id`, `tabIndex`,
-  `nativeID`. Children disqualify because `<View>` resets
-  `TextAncestorContext` for its descendants when it sits inside a `<Text>`,
-  and no per-element analysis can rule that out; with no children nothing can
-  observe it. `<Text>`'s wrapper does far more than `<View>`'s, so text keeps
-  the wrapper.
+- The gate is `isBareHostView`: no spread, and none of `aria-*`,
+  `accessibilityState`, `accessibilityValue`, `id`, `tabIndex`, `nativeID`.
+  Outside the fast path children also disqualify, because `<View>` resets
+  `TextAncestorContext` for its descendants when it sits inside a `<Text>`.
+  On the fast path `_withNativeStyle(..., 'view')` performs that reset
+  itself, so themed views with children render `RCTView` too.
+- Text on the fast path passes `'text'` when the call site has no spread and
+  none of the props `<Text>` remaps or that make it pressable, selectable or
+  virtual (`isBareHostText`). Outside a text ancestor the wrapper renders
+  `unstable_NativeText` with the props `<Text>` would hand its host:
+  `accessible` (true on iOS, false on Android), `allowFontScaling: true`,
+  `ellipsizeMode: 'tail'`, `overflow: 'hidden'` ahead of the caller's style, a
+  string `fontWeight`, and `TextAncestorContext` only around children `<Text>`
+  would wrap. Inside a text ancestor it renders `<Text>`, which owns the
+  virtual text path; a base style with `userSelect` or `verticalAlign` keeps
+  `<Text>` because it rewrites those.
 - The generated local is named after the binding
   (`__TamaguiNativeHostView` vs `__TamaguiNativeView`) because one file can
   hold both kinds, and a shared name emitted two declarations of one
   identifier. That was a real duplicate-declaration break caught by the test.
 - Covered by a behavioral test in `themedFlatten.native.test.tsx` that renders
   the compiled output and asserts the committed host element type: `RCTView`
-  for a leaf, the `View` wrapper for an element with children and for one
-  carrying `aria-label`, with styles still landing through the host component.
+  for themed views with or without children, the `View` wrapper for one
+  carrying `aria-label`, `RCTText` with `<Text>`'s host props for a plain
+  text, and `<Text>` for a nested or aria-labelled text.
   71 native and 158 web compiler tests pass.
 - On-device measurement of what this buys the `compiled` baseline is still
   owed; the machine was busy with another agent's Xcode build when it landed,
@@ -692,6 +704,28 @@ The old branch never ran Android once. This one now does, in both modes:
 - Static compiler coverage proves `experimental.nativeFastPath: false` emits
   the same native output as omitting the flag. With the flag enabled and no
   engine installed, the normal theme hook still updates light and dark values.
+
+#### Uniwind benchmark pass (2026-10-12, iOS 27 simulator, release builds)
+
+uni-stack/uniwind-benchmarks, 2003 views, interleaved launches against the
+StyleSheet app as the machine control. Render 44.53 ms vs StyleSheet 38.36 ms
+(1.16x; Uniwind Pro 1.8.1 publishes 1.23x). Theme switch 4.79 ms (StyleSheet
+render control 39.89 ms; Pro publishes 7.72 ms against a 37.28 ms control).
+What got it there:
+
+- Lazy batched linking: a mount records its host, one `linkTables` call links
+  every pending view before a scope next changes.
+- Warm props: the engine keeps each view's parsed props per state and reuses
+  them while the node still carries what the engine last committed.
+- Text restyle: a plain-string paragraph whose new text attributes are
+  layout-equivalent keeps its laid-out attributed string and skips the relayout.
+- Re-renders keep links and props: releases settle after the commit so a
+  re-attached host keeps its link, each scope shares one style array whose
+  theme slot tracks the scope (React's diff skips it), table views no longer
+  write sticky `nativeProps_DEPRECATED` (RN re-parsed them on every clone),
+  and engine clones take over React's node handles.
+- Inline placement: where the theme scope is provable the compiler renders the
+  host in the calling component instead of a wrapper component.
 
 ### Phase 3+: additional dependency kinds, in order of leverage
 

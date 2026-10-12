@@ -31,5 +31,6 @@ type InternalHooks = {
     View: any
     Text: any
     TextAncestor: any
+    NativeText?: any
   }
 }

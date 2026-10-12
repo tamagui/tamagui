@@ -14,6 +14,7 @@ import {
   _withNativeStyle,
   _withStableStyle,
   createTamagui,
+  flushNativeStyleLinks,
   forceUpdateThemes,
   getMedia,
   setMediaState,
@@ -22,7 +23,6 @@ import {
   updateMediaListeners,
   type NativeStyleEngine,
   type NativeStyleEngineSlots,
-  type NativeViewStateTableUpdate,
   type NativeViewStateUpdate,
 } from '@tamagui/core'
 import { act, render } from '@testing-library/react-native'
@@ -41,20 +41,32 @@ const Square = styled(View, {
 
 type Batch = NativeViewStateUpdate[]
 
+type TableEntry = { tableId: number; state: string; props: Record<string, unknown> }
+
 function createMockEngine() {
   const batches: Batch[] = []
-  const tableBatches: NativeViewStateTableUpdate[][] = []
+  const tableEntries: TableEntry[] = []
+  const tables = new Map<number, Record<string, Record<string, unknown>>>()
   const broadcasts: [string, string][] = []
   const links: {
     id: number
     scopeId: string
+    table: number | undefined
     slots: NativeStyleEngineSlots
+    commitNow: boolean
     activeState: string
   }[] = []
   let nextId = 1
   const engine: NativeStyleEngine = {
-    link: (_ref, slots, scopeId = '') => {
-      const linked = { id: nextId++, scopeId, slots, activeState: '' }
+    link: (_ref, table, scopeId = '', commitNow = false) => {
+      const linked = {
+        id: nextId++,
+        scopeId,
+        table: typeof table === 'number' ? table : undefined,
+        slots: typeof table === 'number' ? {} : table,
+        commitNow,
+        activeState: '',
+      }
       links.push(linked)
       return {
         id: linked.id,
@@ -63,6 +75,24 @@ function createMockEngine() {
           if (index >= 0) links.splice(index, 1)
         },
       }
+    },
+    linkTables: (_refs, tableIds, _scopeIndexes, scopes) => {
+      const firstId = nextId
+      tableIds.forEach((table, i) => {
+        links.push({
+          id: nextId++,
+          scopeId: scopes[i]!,
+          table,
+          slots: {},
+          commitNow: false,
+          activeState: '',
+        })
+      })
+      return firstId
+    },
+    unlink: (id) => {
+      const index = links.findIndex((linked) => linked.id === id)
+      if (index >= 0) links.splice(index, 1)
     },
     applyViewStates: (entries) => {
       batches.push(entries)
@@ -73,12 +103,11 @@ function createMockEngine() {
         linked.activeState = entry.state
       }
     },
-    updateViewStateTables: (entries) => {
-      tableBatches.push(entries)
-      for (const entry of entries) {
-        const linked = links.find(({ id }) => id === entry.id)
-        if (linked) (linked.slots.state ||= {})[entry.state] = entry.props
-      }
+    setTableState: (tableId, state, props) => {
+      tableEntries.push({ tableId, state, props })
+      const table = tables.get(tableId) ?? {}
+      table[state] = props
+      tables.set(tableId, table)
     },
     processStyleColors: (props) => props,
     setStateName: (stateName, scopeId = '') => {
@@ -90,10 +119,19 @@ function createMockEngine() {
     engine,
     batches,
     broadcasts,
-    links,
-    tableBatches,
+    // mounts link lazily, so reading the links flushes them like a scope change would
+    get links() {
+      flushNativeStyleLinks()
+      return links
+    },
     entries: () => batches.flat(),
-    tableEntries: () => tableBatches.flat(),
+    tableEntries: () => tableEntries,
+    /** the state table a linked view reads: its shared table or its own slots */
+    states: (index: number) => {
+      flushNativeStyleLinks()
+      const linked = links[index]!
+      return linked.table === undefined ? linked.slots.state! : tables.get(linked.table)!
+    },
   }
 }
 
@@ -255,13 +293,13 @@ test('compiled mappings resolve once on first activation, then use scope broadca
   render(<CompiledHarness />, { createNodeMock: () => ({}) })
   expect(hostRenders).toBe(1)
   expect(mock.links).toHaveLength(1)
-  expect(Object.keys(mock.links[0].slots.state!)).toEqual(['dark_red'])
+  expect(Object.keys(mock.states(0))).toEqual(['dark_red'])
 
   await act(async () => setCompiledSub('blue'))
   expect(hostRenders).toBe(1)
-  expect(mock.tableEntries()).toEqual([
+  expect(mock.tableEntries().slice(1)).toEqual([
     {
-      id: mock.links[0].id,
+      tableId: mock.links[0].table,
       state: 'dark_blue',
       props: {
         backgroundColor: (config.themes.dark_blue.background as any).val,
@@ -274,8 +312,65 @@ test('compiled mappings resolve once on first activation, then use scope broadca
 
   await act(async () => setCompiledSub('red'))
   expect(hostRenders).toBe(1)
-  expect(mock.tableEntries()).toHaveLength(1)
+  expect(mock.tableEntries()).toHaveLength(2)
   expect(mock.broadcasts.at(-1)?.[1]).toBe('dark_red')
+})
+
+test('inline compiled views render in their parent and follow scope broadcasts', async () => {
+  let hostRenders = 0
+  const Host = forwardRef<any, any>((props, ref) => {
+    hostRenders++
+    return <NativeView ref={ref} {...props} />
+  })
+  const CompiledSquare = _withNativeStyle(
+    Host,
+    { width: 10, height: 10 },
+    { backgroundColor: 'background' }
+  )
+  // what the compiler emits for a list under a plain view
+  function List({ items }: { items: string[] }) {
+    return (
+      <NativeView>
+        {items.map((item) =>
+          CompiledSquare.inline(<CompiledSquare key={item} testID={item} />)
+        )}
+      </NativeView>
+    )
+  }
+  let setCompiledSub: (sub: 'red' | 'blue') => void = () => {}
+
+  function CompiledHarness() {
+    const [sub, setSubState] = useState<'red' | 'blue'>('red')
+    setCompiledSub = setSubState
+    const list = useMemo(() => <List items={['a', 'b']} />, [])
+    return (
+      <TamaguiProvider config={config} defaultTheme="dark">
+        <Theme name={sub}>{list}</Theme>
+      </TamaguiProvider>
+    )
+  }
+
+  const tree = render(<CompiledHarness />, { createNodeMock: () => ({}) })
+  // the host renders straight from List: no wrapper component between them
+  expect(tree.UNSAFE_queryAllByType(CompiledSquare)).toHaveLength(0)
+  expect(tree.UNSAFE_getAllByType(Host).map((node) => node.props.testID)).toEqual([
+    'a',
+    'b',
+  ])
+  expect(hostRenders).toBe(2)
+  expect(mock.links).toHaveLength(2)
+  expect(Object.keys(mock.states(0))).toEqual(['dark_red'])
+
+  await act(async () => setCompiledSub('blue'))
+  expect(hostRenders).toBe(2)
+  expect(mock.tableEntries().at(-1)).toEqual({
+    tableId: mock.links[0].table,
+    state: 'dark_blue',
+    props: { backgroundColor: (config.themes.dark_blue.background as any).val },
+  })
+  expect(mock.links[1].table).toBe(mock.links[0].table)
+  expect(mock.entries()).toEqual([])
+  expect(mock.broadcasts.at(-1)?.[1]).toBe('dark_blue')
 })
 
 test('compiled mapping fallback renders the same live styles as the stable helper', async () => {
@@ -346,7 +441,7 @@ test('compiled mappings refresh the active native table after a theme mutation',
 
     expect(hostRenders).toBe(1)
     expect(mock.tableEntries().at(-1)).toEqual({
-      id: mock.links[0].id,
+      tableId: mock.links[0].table,
       state: 'dark_red',
       props: {
         backgroundColor: (config.themes.dark_blue.background as any).val,
@@ -449,7 +544,7 @@ test('compiled mapping render props keep raw colors while engine tables carry pr
     borderColor: red.color.val,
   })
   expect(mock.links).toHaveLength(1)
-  expect(mock.links[0].slots.state).toEqual({
+  expect(mock.states(0)).toEqual({
     dark_red: {
       backgroundColor: processed(red.background.val),
       borderColor: processed(red.color.val),
@@ -457,9 +552,9 @@ test('compiled mapping render props keep raw colors while engine tables carry pr
   })
 
   await act(async () => setCompiledSub('blue'))
-  expect(mock.tableEntries()).toEqual([
+  expect(mock.tableEntries().slice(1)).toEqual([
     {
-      id: mock.links[0].id,
+      tableId: mock.links[0].table,
       state: 'dark_blue',
       props: {
         backgroundColor: processed(blue.background.val),
@@ -470,9 +565,9 @@ test('compiled mapping render props keep raw colors while engine tables carry pr
 })
 
 // a scope can advance (its layout effect runs) after a concurrent render
-// captured the theme but before that render's host ref attaches. the engine's
-// link() only stores tables and never commits, so the link must use the live
-// scope state and commit that table once, or React's stale colors survive
+// captured the theme but before that render's host ref attaches. the link must
+// use the live scope state and have the engine commit it once, or React's
+// stale colors survive
 test('a host linking after its scope advanced links to the live theme and commits it once', async () => {
   let hostRenders = 0
   let attachRef: () => void = () => {}
@@ -509,24 +604,14 @@ test('a host linking after its scope advanced links to the live theme and commit
   attachRef()
   const blue = config.themes.dark_blue as any
   expect(mock.links).toHaveLength(1)
-  // the stale dark_red table stays warm for a later toggle back; the live
-  // dark_blue table is what the link carries and commits
-  expect(Object.keys(mock.links[0].slots.state!)).toEqual(['dark_red', 'dark_blue'])
-  expect(mock.links[0].slots.state!.dark_blue).toEqual({
-    backgroundColor: blue.background.val,
-  })
-  expect(mock.tableEntries()).toEqual([
-    {
-      id: mock.links[0].id,
-      state: 'dark_blue',
-      props: { backgroundColor: blue.background.val },
-    },
-  ])
+  // the live dark_blue entry is what the link reads, and it commits once
+  expect(mock.states(0)).toEqual({ dark_blue: { backgroundColor: blue.background.val } })
+  expect(mock.links[0].commitNow).toBe(true)
 
-  // the dark_red table the link carried is already warm: toggling back only
-  // broadcasts the state name, no table is re-sent
+  // toggling back fills dark_red once for the mapping's shared table, never
+  // per view, then broadcasts the state name
   await act(async () => setCompiledSub('red'))
-  expect(mock.tableEntries()).toHaveLength(1)
+  expect(mock.tableEntries().map(({ state }) => state)).toEqual(['dark_blue', 'dark_red'])
   expect(mock.broadcasts.at(-1)?.[1]).toBe('dark_red')
   expect(hostRenders).toBe(1)
 })

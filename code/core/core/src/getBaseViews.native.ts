@@ -12,6 +12,7 @@ export function getBaseViews() {
     View: rn.View || rn.default?.View,
     Text: rn.Text || rn.default?.Text,
     TextAncestor: rn.unstable_TextAncestorContext,
+    NativeText: rn.unstable_NativeText,
     StyleSheet: rn.StyleSheet || rn.default?.StyleSheet,
     Pressable: rn.Pressable || rn.default?.Pressable,
   }

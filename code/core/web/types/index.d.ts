@@ -9,7 +9,7 @@ export { getCSSStylesAtomic } from './helpers/getCSSStylesAtomic';
 export { getExpandedShorthand } from './helpers/getExpandedShorthands';
 export { formatDiagnostic } from './helpers/formatDiagnostic';
 export { getStyleStaticConfig, getSplitStyles, isValidStyleKey, } from './helpers/getSplitStyles';
-export { setNativeStyleEngine, getNativeStyleEngine, setNativeStyleEngineFlushListener, updateNativeStyleScope, removeNativeStyleScope, type NativeStyleEngine, type NativeStyleEngineSlots, type NativeViewStateUpdate, } from './helpers/nativeStyleEngine';
+export { setNativeStyleEngine, getNativeStyleEngine, setNativeStyleEngineFlushListener, flushNativeStyleLinks, updateNativeStyleScope, removeNativeStyleScope, type NativeStyleEngine, type NativeStyleEngineSlots, type NativeViewStateUpdate, } from './helpers/nativeStyleEngine';
 export { autoVariables, getAutoVariableCSS, getMutatedAutoVariableCSS, mutatedAutoVariables, } from './helpers/registerCSSVariable';
 export { insertStyleRules } from './helpers/insertStyleRule';
 export { isTamaguiComponent } from './helpers/isTamaguiComponent';

@@ -23,6 +23,7 @@ export {
   setNativeStyleEngine,
   getNativeStyleEngine,
   setNativeStyleEngineFlushListener,
+  flushNativeStyleLinks,
   updateNativeStyleScope,
   removeNativeStyleScope,
   type NativeStyleEngine,
