@@ -76,11 +76,9 @@ export const _withNativeStyle = (
       }
     : baseStyle
   // one entry per scope. its style arrays (one per host mode) keep their
-  // identity while their theme slot follows the scope's state: the engine owns
-  // a linked view's theme values, so a re-render after a switch hands React
-  // the same array, its diff skips the style, and the host is not re-committed
-  // with values the engine already applied. a new host reads the array's
-  // current state at creation. the entry's ref is stable too, so a parent
+  // identity until the scope's state changes, then are rebuilt: a style handed
+  // to a host is a prop, which react native freezes in development, so a theme
+  // switch never writes into one. the entry's ref is stable, so a parent
   // re-render never detaches and re-attaches its hosts, and attaching records
   // the host against the state record every host of this scope shares
   const entries = new Map<string, ScopeEntry>()
@@ -143,8 +141,8 @@ export const _withNativeStyle = (
     }
     if (entry.stateName !== name || entry.theme !== theme) {
       const themed = resolve(themeStyleKeys, name, theme)
-      entry.style[1] = themed
-      entry.hostTextStyle[1] = themed
+      entry.style = [baseStyle, themed]
+      entry.hostTextStyle = [hostTextBase, themed]
       entry.stateName = name
       entry.theme = theme
       entry.state = linkState(themeStyleKeys, scopeId, name, theme)

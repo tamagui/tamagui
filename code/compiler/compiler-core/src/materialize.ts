@@ -132,6 +132,7 @@ export interface MaterializedModule {
   elements: MaterializedElement[]
   styledDefinitions: MaterializedStyledDefinition[]
   domStyleDefinitions: MaterializedDOMStyleDefinition[]
+  declarationsAt: number
   diagnostics: BailoutReason[]
   dependencies: ResolvedModuleId[]
 }
@@ -377,6 +378,7 @@ export function materializeModule(
       ...definition,
       value: materializeValue(graph, definition.value),
     })),
+    declarationsAt: result.declarationsAt,
     diagnostics: graph.diagnostics().filter(({ span }) => span.id === id),
   }
   return { ...base, dependencies: collectDependencies(base) }

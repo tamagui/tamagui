@@ -363,6 +363,43 @@ test('compiled mappings resolve once on first activation, then use scope broadca
   expect(mock.broadcasts.at(-1)?.[1]).toBe('dark_red')
 })
 
+// react native freezes props in development, so a host's style array must never
+// be written after it was handed over
+test('a theme switch never writes into a style a host already received', async () => {
+  let rendered: any
+  const Host = forwardRef<any, any>((props, ref) => {
+    Object.freeze(props.style)
+    rendered = props.style
+    return <NativeView ref={ref} {...props} />
+  })
+  const CompiledSquare = _withNativeStyle(
+    Host,
+    { width: 10, height: 10 },
+    { backgroundColor: 'background' }
+  )
+  let setSub: (sub: 'red' | 'blue') => void = () => {}
+  function Harness() {
+    const [sub, setSubState] = useState<'red' | 'blue'>('red')
+    setSub = setSubState
+    return (
+      <TamaguiProvider config={config} defaultTheme="dark">
+        <Theme name={sub}>
+          <CompiledSquare testID="frozen" />
+        </Theme>
+      </TamaguiProvider>
+    )
+  }
+
+  render(<Harness />, { createNodeMock: () => ({}) })
+  const first = rendered
+  await act(async () => setSub('blue'))
+  await act(async () => setSub('red'))
+  expect(Object.isFrozen(first)).toBe(true)
+  expect(rendered[1]).toEqual({
+    backgroundColor: (config.themes.dark_red.background as any).val,
+  })
+})
+
 test('inline compiled views render in their parent and follow scope broadcasts', async () => {
   let hostRenders = 0
   const Host = forwardRef<any, any>((props, ref) => {

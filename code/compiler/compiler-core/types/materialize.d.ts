@@ -114,6 +114,7 @@ export interface MaterializedModule {
     elements: MaterializedElement[];
     styledDefinitions: MaterializedStyledDefinition[];
     domStyleDefinitions: MaterializedDOMStyleDefinition[];
+    declarationsAt: number;
     diagnostics: BailoutReason[];
     dependencies: ResolvedModuleId[];
 }

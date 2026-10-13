@@ -11,6 +11,36 @@ import {
   type ListRenderItemInfo,
 } from 'react-native'
 import { Square, Theme } from 'tamagui'
+function __TamaguiNativeStyle764() {
+  return (
+    __TamaguiNativeStyle764._ ??
+    (__TamaguiNativeStyle764._ = {
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: 56,
+      height: 56,
+      borderRadius: 9,
+      borderStyle: 'solid',
+      borderWidth: 2,
+    })
+  )
+}
+__TamaguiNativeStyle764()
+const __TamaguiNativeMapping764 = {
+  backgroundColor: 'background',
+  borderTopColor: 'color',
+  borderRightColor: 'color',
+  borderBottomColor: 'color',
+  borderLeftColor: 'color',
+}
+const __TamaguiNativeHostView = require('react-native').unstable_NativeView
+const __TamaguiNativeFastView764 = require('@tamagui/core')._withNativeStyle(
+  __TamaguiNativeHostView,
+  __TamaguiNativeStyle764._ ?? __TamaguiNativeStyle764(),
+  __TamaguiNativeMapping764,
+  'view'
+)
 
 const listItems = Array.from({ length: 80 }, (_, index) => index)
 const nativeEngine = registry as unknown as NativeStyleEngine
@@ -21,7 +51,7 @@ type Mode = 'fallback' | 'fast'
 const frame = () => new Promise<void>((resolve) => requestAnimationFrame(() => resolve()))
 
 const ThemeSwatch = memo(function ThemeSwatch({ testID }: { testID: string }) {
-  return <__TamaguiNativeFastView764 testID={testID} />
+  return __TamaguiNativeFastView764.inline(<__TamaguiNativeFastView764 testID={testID} />)
 })
 
 const ListRow = memo(function ListRow({ item }: { item: number }) {
@@ -37,6 +67,7 @@ export function NativeRegistryCorrectnessCase() {
   const [mode, setMode] = useState<Mode>('fallback')
   const [scenario, setScenario] = useState<Scenario>('nested')
   const [themeName, setThemeName] = useState<'red' | 'green'>('red')
+  const [subName, setSubName] = useState<'blue' | 'green'>('blue')
   const [ready, setReady] = useState(false)
   const [mounted, setMounted] = useState(true)
   const [churnStatus, setChurnStatus] = useState('idle')
@@ -108,6 +139,7 @@ export function NativeRegistryCorrectnessCase() {
     setMounted(true)
     setChurnStatus('idle')
     setThemeName('red')
+    setSubName('blue')
     setScenario(nextScenario)
     setMode(nextMode)
     probe.current.linkCalls = 0
@@ -209,6 +241,13 @@ export function NativeRegistryCorrectnessCase() {
           <Text>toggle theme</Text>
         </Pressable>
         <Pressable
+          testID="native-fast-toggle-sub"
+          style={styles.button}
+          onPress={() => setSubName((name) => (name === 'blue' ? 'green' : 'blue'))}
+        >
+          <Text>toggle sub</Text>
+        </Pressable>
+        <Pressable
           testID="native-fast-refresh-metrics"
           style={styles.button}
           onPress={refreshMetrics}
@@ -220,6 +259,7 @@ export function NativeRegistryCorrectnessCase() {
       <Text testID="native-fast-state">
         {scenario}:{mode}:{themeName}:{ready ? 'ready' : 'mounting'}
       </Text>
+      <Text testID="native-fast-sub-state">{subName}</Text>
       <Text testID="native-fast-metrics">{metrics}</Text>
 
       {ready && scenario === 'nested' ? (
@@ -231,6 +271,9 @@ export function NativeRegistryCorrectnessCase() {
             </Theme>
             <Theme name="blue">
               <ThemeSwatch testID="native-fast-pinned-blue" />
+            </Theme>
+            <Theme name={subName}>
+              <ThemeSwatch testID="native-fast-sub" />
             </Theme>
           </View>
         </Theme>
@@ -274,6 +317,11 @@ export function NativeRegistryCorrectnessCase() {
 }
 
 const styles = StyleSheet.create({
+  // paddingTop clears the status bar on both platforms. at 12 the control row
+  // sat under it: espresso refused tap injection with "Couldn't click at
+  // (...),81 precision 16,16" because the 16px box spans 65-97px and android's
+  // 24dp status bar ends at 66px. iOS 26's taller bar hid the same row from HID
+  // taps. this must stay above ~54pt for iPhone 17.
   root: { flex: 1, padding: 12, paddingTop: 60, gap: 8 },
   controls: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   button: { backgroundColor: '#ddd', borderRadius: 6, padding: 8 },
@@ -288,39 +336,3 @@ const styles = StyleSheet.create({
   rowLabel: { color: '#777' },
   churn: { gap: 12, alignItems: 'flex-start' },
 })
-
-function __TamaguiNativeStyle764() {
-  return (
-    __TamaguiNativeStyle764._ ??
-    (__TamaguiNativeStyle764._ = {
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: 56,
-      height: 56,
-      borderTopLeftRadius: 9,
-      borderTopRightRadius: 9,
-      borderBottomRightRadius: 9,
-      borderBottomLeftRadius: 9,
-      borderTopWidth: 8,
-      borderRightWidth: 8,
-      borderBottomWidth: 8,
-      borderLeftWidth: 8,
-      borderStyle: 'solid',
-    })
-  )
-}
-__TamaguiNativeStyle764()
-const __TamaguiNativeMapping764 = {
-  backgroundColor: 'background',
-  borderTopColor: 'color',
-  borderRightColor: 'color',
-  borderBottomColor: 'color',
-  borderLeftColor: 'color',
-}
-const __TamaguiNativeHostView = require('react-native').unstable_NativeView
-const __TamaguiNativeFastView764 = require('@tamagui/core')._withNativeStyle(
-  __TamaguiNativeHostView,
-  __TamaguiNativeStyle764._ ?? __TamaguiNativeStyle764(),
-  __TamaguiNativeMapping764
-)

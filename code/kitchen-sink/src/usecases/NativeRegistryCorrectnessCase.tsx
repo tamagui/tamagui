@@ -46,6 +46,7 @@ export function NativeRegistryCorrectnessCase() {
   const [mode, setMode] = useState<Mode>('fallback')
   const [scenario, setScenario] = useState<Scenario>('nested')
   const [themeName, setThemeName] = useState<'red' | 'green'>('red')
+  const [subName, setSubName] = useState<'blue' | 'green'>('blue')
   const [ready, setReady] = useState(false)
   const [mounted, setMounted] = useState(true)
   const [churnStatus, setChurnStatus] = useState('idle')
@@ -117,6 +118,7 @@ export function NativeRegistryCorrectnessCase() {
     setMounted(true)
     setChurnStatus('idle')
     setThemeName('red')
+    setSubName('blue')
     setScenario(nextScenario)
     setMode(nextMode)
     probe.current.linkCalls = 0
@@ -218,6 +220,13 @@ export function NativeRegistryCorrectnessCase() {
           <Text>toggle theme</Text>
         </Pressable>
         <Pressable
+          testID="native-fast-toggle-sub"
+          style={styles.button}
+          onPress={() => setSubName((name) => (name === 'blue' ? 'green' : 'blue'))}
+        >
+          <Text>toggle sub</Text>
+        </Pressable>
+        <Pressable
           testID="native-fast-refresh-metrics"
           style={styles.button}
           onPress={refreshMetrics}
@@ -229,6 +238,7 @@ export function NativeRegistryCorrectnessCase() {
       <Text testID="native-fast-state">
         {scenario}:{mode}:{themeName}:{ready ? 'ready' : 'mounting'}
       </Text>
+      <Text testID="native-fast-sub-state">{subName}</Text>
       <Text testID="native-fast-metrics">{metrics}</Text>
 
       {ready && scenario === 'nested' ? (
@@ -240,6 +250,9 @@ export function NativeRegistryCorrectnessCase() {
             </Theme>
             <Theme name="blue">
               <ThemeSwatch testID="native-fast-pinned-blue" />
+            </Theme>
+            <Theme name={subName}>
+              <ThemeSwatch testID="native-fast-sub" />
             </Theme>
           </View>
         </Theme>

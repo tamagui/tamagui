@@ -432,6 +432,22 @@ export const Card = ({ width }) => jsx(View, {
     expect(plan.css).toContain('padding:12px')
   })
 
+  test('declares generated natives before module-scope elements use them', () => {
+    const source = `
+'use client'
+import { View } from '@tamagui/core'
+const tree = <View padding={12} />
+export const Card = () => tree
+`
+    const { plan, output } = compile(source, 'native')
+
+    expect(plan.stats).toMatchObject({ lowered: 1, bailed: 0 })
+    const declaration = output.code.indexOf('require(')
+    expect(declaration).toBeGreaterThan(output.code.indexOf("from '@tamagui/core'"))
+    expect(declaration).toBeLessThan(output.code.indexOf('const tree'))
+    expect(output.code.startsWith("\n'use client'")).toBe(true)
+  })
+
   test('leaves native dynamic candidates byte-identical', () => {
     const source = `
 import { View } from '@tamagui/core'

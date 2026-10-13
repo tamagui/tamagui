@@ -114,6 +114,8 @@ export interface ElementIRResult {
     elements: ElementIR[];
     styledDefinitions: StyledDefinitionIR[];
     domStyleDefinitions: DOMStyleDefinitionIR[];
+    /** offset after the leading directives and imports, where generated module declarations go */
+    declarationsAt: number;
     bailouts: BailoutReason[];
 }
 export declare function hostImportProvenance(imports: readonly HostResolvedImport[], specifier: string, importedName: string): ComponentImportProvenance | null;

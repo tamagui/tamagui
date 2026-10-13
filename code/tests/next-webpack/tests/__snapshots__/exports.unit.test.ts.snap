@@ -25,6 +25,31 @@ import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/local-icons'
 import React, { useState } from 'react'
 import { Platform } from 'react-native'
 import { useLink } from 'solito/navigation'
+function __TamaguiNativeStyle655() { return __TamaguiNativeStyle655._ ?? (__TamaguiNativeStyle655._ = {"flexDirection":"column","gap":16}); } __TamaguiNativeStyle655();
+const __TamaguiNativeView = require('react-native').View;
+function __TamaguiNativeStyle678() { return __TamaguiNativeStyle678._ ?? (__TamaguiNativeStyle678._ = {"flexDirection":"row","width":"100%","alignItems":"center","gap":16}); } __TamaguiNativeStyle678();
+function __TamaguiNativeStyle887() { return __TamaguiNativeStyle887._ ?? (__TamaguiNativeStyle887._ = {"flexDirection":"row","width":"100%","alignItems":"center","gap":16}); } __TamaguiNativeStyle887();
+function __TamaguiNativeStyle2274() { return __TamaguiNativeStyle2274._ ?? (__TamaguiNativeStyle2274._ = {"flexDirection":"column","zIndex":10}); } __TamaguiNativeStyle2274();
+function __TamaguiNativeStyle3648() { return __TamaguiNativeStyle3648._ ?? (__TamaguiNativeStyle3648._ = {"flexDirection":"column","position":"absolute","right":0,"top":0,"bottom":0,"alignItems":"center","justifyContent":"center","width":16,"pointerEvents":"none"}); } __TamaguiNativeStyle3648();
+function __TamaguiNativeStyle4214() { return __TamaguiNativeStyle4214._ ?? (__TamaguiNativeStyle4214._ = {"flexDirection":"column","zIndex":10}); } __TamaguiNativeStyle4214();
+function __TamaguiNativeStyle5308() { return __TamaguiNativeStyle5308._ ?? (__TamaguiNativeStyle5308._ = {"flexDirection":"column","flex":1,"justifyContent":"center","alignItems":"center","gap":32,"padding":16}); } __TamaguiNativeStyle5308();
+const __TamaguiStableView5308 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle5308._ ?? __TamaguiNativeStyle5308(), { "backgroundColor": _theme["background"]?.get() }], true, false);
+function __TamaguiNativeStyle5767() { return __TamaguiNativeStyle5767._ ?? (__TamaguiNativeStyle5767._ = {"flexDirection":"row","gap":8}); } __TamaguiNativeStyle5767();
+function __TamaguiNativeStyle6028() { return __TamaguiNativeStyle6028._ ?? (__TamaguiNativeStyle6028._ = {"flexDirection":"column","gap":16}); } __TamaguiNativeStyle6028();
+function __TamaguiNativeStyle6053() { return __TamaguiNativeStyle6053._ ?? (__TamaguiNativeStyle6053._ = {"fontFamily":"InterBold","margin":0,"fontSize":46,"letterSpacing":-3,"lineHeight":56,"textTransform":"none","textAlign":"center"}); } __TamaguiNativeStyle6053();
+const __TamaguiNativeText = require('react-native').Text;
+const __TamaguiStableText6053 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6053._ ?? __TamaguiNativeStyle6053(), { "color": _theme["color-11"]?.get() }], true, false);
+function __TamaguiNativeStyle6141() { return __TamaguiNativeStyle6141._ ?? (__TamaguiNativeStyle6141._ = {"fontFamily":"Inter","fontSize":14,"lineHeight":20,"textAlign":"center"}); } __TamaguiNativeStyle6141();
+const __TamaguiStableText6141 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6141._ ?? __TamaguiNativeStyle6141(), { "color": _theme["color-10"]?.get() }], true, false);
+function __TamaguiNativeStyle6293() { return __TamaguiNativeStyle6293._ ?? (__TamaguiNativeStyle6293._ = {"flexShrink":0,"borderStyle":"solid","borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6293();
+const __TamaguiStableView6293 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle6293._ ?? __TamaguiNativeStyle6293(), { "borderTopColor": _theme["background-focus"]?.get(), "borderRightColor": _theme["background-focus"]?.get(), "borderBottomColor": _theme["background-focus"]?.get(), "borderLeftColor": _theme["background-focus"]?.get() }], true, false);
+function __TamaguiNativeStyle6315() { return __TamaguiNativeStyle6315._ ?? (__TamaguiNativeStyle6315._ = {"fontFamily":"Inter","fontSize":14,"lineHeight":20,"textAlign":"center"}); } __TamaguiNativeStyle6315();
+const __TamaguiStableText6315 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6315._ ?? __TamaguiNativeStyle6315(), { "color": _theme["color"]?.get() }], true, false);
+function __TamaguiNativeStyle6440() { return __TamaguiNativeStyle6440._ ?? (__TamaguiNativeStyle6440._ = {"flexShrink":0,"borderStyle":"solid","borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6440();
+const __TamaguiStableView6440 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle6440._ ?? __TamaguiNativeStyle6440(), { "borderTopColor": _theme["background-focus"]?.get(), "borderRightColor": _theme["background-focus"]?.get(), "borderBottomColor": _theme["background-focus"]?.get(), "borderLeftColor": _theme["background-focus"]?.get() }], true, false);
+function __TamaguiNativeStyle7350() { return __TamaguiNativeStyle7350._ ?? (__TamaguiNativeStyle7350._ = {"flexDirection":"row","gap":8}); } __TamaguiNativeStyle7350();
+function __TamaguiNativeStyle7379() { return __TamaguiNativeStyle7379._ ?? (__TamaguiNativeStyle7379._ = {"fontFamily":"Inter","fontSize":14,"lineHeight":20,"textAlign":"center"}); } __TamaguiNativeStyle7379();
+const __TamaguiStableText7379 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle7379._ ?? __TamaguiNativeStyle7379(), { "color": _theme["color"]?.get() }], true, false);
 
 export function SelectDemo() {
   return (
@@ -315,32 +340,7 @@ function SheetDemo() {
     </>
   )
 }
-
-function __TamaguiNativeStyle655() { return __TamaguiNativeStyle655._ ?? (__TamaguiNativeStyle655._ = {"flexDirection":"column","gap":16}); } __TamaguiNativeStyle655();
-const __TamaguiNativeView = require('react-native').View;
-function __TamaguiNativeStyle678() { return __TamaguiNativeStyle678._ ?? (__TamaguiNativeStyle678._ = {"flexDirection":"row","width":"100%","alignItems":"center","gap":16}); } __TamaguiNativeStyle678();
-function __TamaguiNativeStyle887() { return __TamaguiNativeStyle887._ ?? (__TamaguiNativeStyle887._ = {"flexDirection":"row","width":"100%","alignItems":"center","gap":16}); } __TamaguiNativeStyle887();
-function __TamaguiNativeStyle2274() { return __TamaguiNativeStyle2274._ ?? (__TamaguiNativeStyle2274._ = {"flexDirection":"column","zIndex":10}); } __TamaguiNativeStyle2274();
-function __TamaguiNativeStyle3648() { return __TamaguiNativeStyle3648._ ?? (__TamaguiNativeStyle3648._ = {"flexDirection":"column","position":"absolute","right":0,"top":0,"bottom":0,"alignItems":"center","justifyContent":"center","width":16,"pointerEvents":"none"}); } __TamaguiNativeStyle3648();
-function __TamaguiNativeStyle4214() { return __TamaguiNativeStyle4214._ ?? (__TamaguiNativeStyle4214._ = {"flexDirection":"column","zIndex":10}); } __TamaguiNativeStyle4214();
-function __TamaguiNativeStyle5308() { return __TamaguiNativeStyle5308._ ?? (__TamaguiNativeStyle5308._ = {"flexDirection":"column","flex":1,"justifyContent":"center","alignItems":"center","gap":32,"padding":16}); } __TamaguiNativeStyle5308();
-const __TamaguiStableView5308 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle5308._ ?? __TamaguiNativeStyle5308(), { "backgroundColor": _theme["background"]?.get() }], true, false);
-function __TamaguiNativeStyle5767() { return __TamaguiNativeStyle5767._ ?? (__TamaguiNativeStyle5767._ = {"flexDirection":"row","gap":8}); } __TamaguiNativeStyle5767();
-function __TamaguiNativeStyle6028() { return __TamaguiNativeStyle6028._ ?? (__TamaguiNativeStyle6028._ = {"flexDirection":"column","gap":16}); } __TamaguiNativeStyle6028();
-function __TamaguiNativeStyle6053() { return __TamaguiNativeStyle6053._ ?? (__TamaguiNativeStyle6053._ = {"fontFamily":"InterBold","margin":0,"fontSize":46,"letterSpacing":-3,"lineHeight":56,"textTransform":"none","textAlign":"center"}); } __TamaguiNativeStyle6053();
-const __TamaguiNativeText = require('react-native').Text;
-const __TamaguiStableText6053 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6053._ ?? __TamaguiNativeStyle6053(), { "color": _theme["color-11"]?.get() }], true, false);
-function __TamaguiNativeStyle6141() { return __TamaguiNativeStyle6141._ ?? (__TamaguiNativeStyle6141._ = {"fontFamily":"Inter","fontSize":14,"lineHeight":20,"textAlign":"center"}); } __TamaguiNativeStyle6141();
-const __TamaguiStableText6141 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6141._ ?? __TamaguiNativeStyle6141(), { "color": _theme["color-10"]?.get() }], true, false);
-function __TamaguiNativeStyle6293() { return __TamaguiNativeStyle6293._ ?? (__TamaguiNativeStyle6293._ = {"flexShrink":0,"borderStyle":"solid","borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6293();
-const __TamaguiStableView6293 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle6293._ ?? __TamaguiNativeStyle6293(), { "borderTopColor": _theme["background-focus"]?.get(), "borderRightColor": _theme["background-focus"]?.get(), "borderBottomColor": _theme["background-focus"]?.get(), "borderLeftColor": _theme["background-focus"]?.get() }], true, false);
-function __TamaguiNativeStyle6315() { return __TamaguiNativeStyle6315._ ?? (__TamaguiNativeStyle6315._ = {"fontFamily":"Inter","fontSize":14,"lineHeight":20,"textAlign":"center"}); } __TamaguiNativeStyle6315();
-const __TamaguiStableText6315 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6315._ ?? __TamaguiNativeStyle6315(), { "color": _theme["color"]?.get() }], true, false);
-function __TamaguiNativeStyle6440() { return __TamaguiNativeStyle6440._ ?? (__TamaguiNativeStyle6440._ = {"flexShrink":0,"borderStyle":"solid","borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6440();
-const __TamaguiStableView6440 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle6440._ ?? __TamaguiNativeStyle6440(), { "borderTopColor": _theme["background-focus"]?.get(), "borderRightColor": _theme["background-focus"]?.get(), "borderBottomColor": _theme["background-focus"]?.get(), "borderLeftColor": _theme["background-focus"]?.get() }], true, false);
-function __TamaguiNativeStyle7350() { return __TamaguiNativeStyle7350._ ?? (__TamaguiNativeStyle7350._ = {"flexDirection":"row","gap":8}); } __TamaguiNativeStyle7350();
-function __TamaguiNativeStyle7379() { return __TamaguiNativeStyle7379._ ?? (__TamaguiNativeStyle7379._ = {"fontFamily":"Inter","fontSize":14,"lineHeight":20,"textAlign":"center"}); } __TamaguiNativeStyle7379();
-const __TamaguiStableText7379 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle7379._ ?? __TamaguiNativeStyle7379(), { "color": _theme["color"]?.get() }], true, false);"
+"
 `;
 
 exports[`Package.json exports support > should build app package for both web and native targets > web-css 1`] = `"._f-2057920087{flex-direction:column}._g-924523079{gap:var(--c-space-4)}._f-1841970073{flex-direction:row}._w-1646821508{width:100%}._ai-1055227096{align-items:center}._zi-496988513{z-index:10}._p-671726952{position:absolute}._i-1765874804._i-1765874804._i-1765874804._i-1765874804{right:0px}._i-1765874804._i-1765874804._i-1765874804._i-1765874804{top:0px}._i-1765874804._i-1765874804._i-1765874804._i-1765874804{bottom:0px}._jc-166379546{justify-content:center}._w-1490276297{width:var(--c-width-4)}._pe-1461982632{pointer-events:none}:where(._pe-1461982632)>*{pointer-events:none}._f-549969169{flex-direction:column}._f-549969169._f-549969169._f-549969169._f-549969169{flex:1 0px}._g-924523203{gap:var(--c-space-8)}._p-1370393726{padding:var(--c-space-4)}._b-803444677{background-color:var(--background)}._f-27493358{flex-direction:row}._f-27493358._f-27493358._f-27493358._f-27493358{flex-wrap:wrap}._p-965320571{position:absolute}@media (min-width: 640px) {._p-965320571{position:relative}}._i-117282577{top:var(--c-space-6)}@media (min-width: 640px) {._i-117282577{top:0px}}._g-924523141{gap:var(--c-space-6)}._g-924523017{gap:var(--c-space-2)}._us-601593343{user-select:auto;-webkit-user-select:auto;}._ws-974065937{white-space:normal}._ff-163417665{font-family:var(--f-family)}._m-2017216831{margin:0px}._fs-1530099841{font-size:var(--f-size-10)}._fw-1746808431{font-weight:var(--f-weight-10)}._ls-1762537288{letter-spacing:var(--f-letterSpacing-10)}._lh-1535216966{line-height:var(--f-lineHeight-10)}._tt-2146345035{text-transform:var(--f-transform-10)}._ta-972680809{text-align:center}._c-1455506543{color:var(--color-11)}._fs-1530165158{font-size:var(--f-size-sm)}._lh-1535282283{line-height:var(--f-lineHeight-sm)}._c-1455506574{color:var(--color-10)}:where(._t-compose){--t-x:0px;--t-y:0px}._t-compose{translate:var(--t-x, 0px) var(--t-y, 0px)}._f-1691251864{flex-shrink:0}._f-1691251864{flex:1 0px}._b-1161078938{border-style:solid}._b-1161078938{border-width:0px}._b-1161078938{border-bottom-style:solid}._b-1161078938{border-bottom-width:1px}._b-1161078938{border-color:var(--background-focus)}._h-1922296922{height:0px}._mh-519501952{max-height:0px}._ty-79275713{--t-y:-0.5px}._c-1996280471{color:var(--color)}"`;
@@ -689,6 +689,31 @@ import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/local-icons'
 import React, { useState } from 'react'
 import { Platform } from 'react-native'
 import { useLink } from 'solito/navigation'
+function __TamaguiNativeStyle655() { return __TamaguiNativeStyle655._ ?? (__TamaguiNativeStyle655._ = {"flexDirection":"column","gap":16}); } __TamaguiNativeStyle655();
+const __TamaguiNativeView = require('react-native').View;
+function __TamaguiNativeStyle678() { return __TamaguiNativeStyle678._ ?? (__TamaguiNativeStyle678._ = {"flexDirection":"row","width":"100%","alignItems":"center","gap":16}); } __TamaguiNativeStyle678();
+function __TamaguiNativeStyle887() { return __TamaguiNativeStyle887._ ?? (__TamaguiNativeStyle887._ = {"flexDirection":"row","width":"100%","alignItems":"center","gap":16}); } __TamaguiNativeStyle887();
+function __TamaguiNativeStyle2274() { return __TamaguiNativeStyle2274._ ?? (__TamaguiNativeStyle2274._ = {"flexDirection":"column","zIndex":10}); } __TamaguiNativeStyle2274();
+function __TamaguiNativeStyle3648() { return __TamaguiNativeStyle3648._ ?? (__TamaguiNativeStyle3648._ = {"flexDirection":"column","position":"absolute","right":0,"top":0,"bottom":0,"alignItems":"center","justifyContent":"center","width":16,"pointerEvents":"none"}); } __TamaguiNativeStyle3648();
+function __TamaguiNativeStyle4214() { return __TamaguiNativeStyle4214._ ?? (__TamaguiNativeStyle4214._ = {"flexDirection":"column","zIndex":10}); } __TamaguiNativeStyle4214();
+function __TamaguiNativeStyle5308() { return __TamaguiNativeStyle5308._ ?? (__TamaguiNativeStyle5308._ = {"flexDirection":"column","flex":1,"justifyContent":"center","alignItems":"center","gap":32,"padding":16}); } __TamaguiNativeStyle5308();
+const __TamaguiStableView5308 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle5308._ ?? __TamaguiNativeStyle5308(), { "backgroundColor": _theme["background"]?.get() }], true, false);
+function __TamaguiNativeStyle5767() { return __TamaguiNativeStyle5767._ ?? (__TamaguiNativeStyle5767._ = {"flexDirection":"row","gap":8}); } __TamaguiNativeStyle5767();
+function __TamaguiNativeStyle6028() { return __TamaguiNativeStyle6028._ ?? (__TamaguiNativeStyle6028._ = {"flexDirection":"column","gap":16}); } __TamaguiNativeStyle6028();
+function __TamaguiNativeStyle6053() { return __TamaguiNativeStyle6053._ ?? (__TamaguiNativeStyle6053._ = {"fontFamily":"InterBold","margin":0,"fontSize":46,"letterSpacing":-3,"lineHeight":56,"textTransform":"none","textAlign":"center"}); } __TamaguiNativeStyle6053();
+const __TamaguiNativeText = require('react-native').Text;
+const __TamaguiStableText6053 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6053._ ?? __TamaguiNativeStyle6053(), { "color": _theme["color-11"]?.get() }], true, false);
+function __TamaguiNativeStyle6141() { return __TamaguiNativeStyle6141._ ?? (__TamaguiNativeStyle6141._ = {"fontFamily":"Inter","fontSize":14,"lineHeight":20,"textAlign":"center"}); } __TamaguiNativeStyle6141();
+const __TamaguiStableText6141 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6141._ ?? __TamaguiNativeStyle6141(), { "color": _theme["color-10"]?.get() }], true, false);
+function __TamaguiNativeStyle6293() { return __TamaguiNativeStyle6293._ ?? (__TamaguiNativeStyle6293._ = {"flexShrink":0,"borderStyle":"solid","borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6293();
+const __TamaguiStableView6293 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle6293._ ?? __TamaguiNativeStyle6293(), { "borderTopColor": _theme["background-focus"]?.get(), "borderRightColor": _theme["background-focus"]?.get(), "borderBottomColor": _theme["background-focus"]?.get(), "borderLeftColor": _theme["background-focus"]?.get() }], true, false);
+function __TamaguiNativeStyle6315() { return __TamaguiNativeStyle6315._ ?? (__TamaguiNativeStyle6315._ = {"fontFamily":"Inter","fontSize":14,"lineHeight":20,"textAlign":"center"}); } __TamaguiNativeStyle6315();
+const __TamaguiStableText6315 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6315._ ?? __TamaguiNativeStyle6315(), { "color": _theme["color"]?.get() }], true, false);
+function __TamaguiNativeStyle6440() { return __TamaguiNativeStyle6440._ ?? (__TamaguiNativeStyle6440._ = {"flexShrink":0,"borderStyle":"solid","borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6440();
+const __TamaguiStableView6440 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle6440._ ?? __TamaguiNativeStyle6440(), { "borderTopColor": _theme["background-focus"]?.get(), "borderRightColor": _theme["background-focus"]?.get(), "borderBottomColor": _theme["background-focus"]?.get(), "borderLeftColor": _theme["background-focus"]?.get() }], true, false);
+function __TamaguiNativeStyle7350() { return __TamaguiNativeStyle7350._ ?? (__TamaguiNativeStyle7350._ = {"flexDirection":"row","gap":8}); } __TamaguiNativeStyle7350();
+function __TamaguiNativeStyle7379() { return __TamaguiNativeStyle7379._ ?? (__TamaguiNativeStyle7379._ = {"fontFamily":"Inter","fontSize":14,"lineHeight":20,"textAlign":"center"}); } __TamaguiNativeStyle7379();
+const __TamaguiStableText7379 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle7379._ ?? __TamaguiNativeStyle7379(), { "color": _theme["color"]?.get() }], true, false);
 
 export function SelectDemo() {
   return (
@@ -979,32 +1004,7 @@ function SheetDemo() {
     </>
   )
 }
-
-function __TamaguiNativeStyle655() { return __TamaguiNativeStyle655._ ?? (__TamaguiNativeStyle655._ = {"flexDirection":"column","gap":16}); } __TamaguiNativeStyle655();
-const __TamaguiNativeView = require('react-native').View;
-function __TamaguiNativeStyle678() { return __TamaguiNativeStyle678._ ?? (__TamaguiNativeStyle678._ = {"flexDirection":"row","width":"100%","alignItems":"center","gap":16}); } __TamaguiNativeStyle678();
-function __TamaguiNativeStyle887() { return __TamaguiNativeStyle887._ ?? (__TamaguiNativeStyle887._ = {"flexDirection":"row","width":"100%","alignItems":"center","gap":16}); } __TamaguiNativeStyle887();
-function __TamaguiNativeStyle2274() { return __TamaguiNativeStyle2274._ ?? (__TamaguiNativeStyle2274._ = {"flexDirection":"column","zIndex":10}); } __TamaguiNativeStyle2274();
-function __TamaguiNativeStyle3648() { return __TamaguiNativeStyle3648._ ?? (__TamaguiNativeStyle3648._ = {"flexDirection":"column","position":"absolute","right":0,"top":0,"bottom":0,"alignItems":"center","justifyContent":"center","width":16,"pointerEvents":"none"}); } __TamaguiNativeStyle3648();
-function __TamaguiNativeStyle4214() { return __TamaguiNativeStyle4214._ ?? (__TamaguiNativeStyle4214._ = {"flexDirection":"column","zIndex":10}); } __TamaguiNativeStyle4214();
-function __TamaguiNativeStyle5308() { return __TamaguiNativeStyle5308._ ?? (__TamaguiNativeStyle5308._ = {"flexDirection":"column","flex":1,"justifyContent":"center","alignItems":"center","gap":32,"padding":16}); } __TamaguiNativeStyle5308();
-const __TamaguiStableView5308 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle5308._ ?? __TamaguiNativeStyle5308(), { "backgroundColor": _theme["background"]?.get() }], true, false);
-function __TamaguiNativeStyle5767() { return __TamaguiNativeStyle5767._ ?? (__TamaguiNativeStyle5767._ = {"flexDirection":"row","gap":8}); } __TamaguiNativeStyle5767();
-function __TamaguiNativeStyle6028() { return __TamaguiNativeStyle6028._ ?? (__TamaguiNativeStyle6028._ = {"flexDirection":"column","gap":16}); } __TamaguiNativeStyle6028();
-function __TamaguiNativeStyle6053() { return __TamaguiNativeStyle6053._ ?? (__TamaguiNativeStyle6053._ = {"fontFamily":"InterBold","margin":0,"fontSize":46,"letterSpacing":-3,"lineHeight":56,"textTransform":"none","textAlign":"center"}); } __TamaguiNativeStyle6053();
-const __TamaguiNativeText = require('react-native').Text;
-const __TamaguiStableText6053 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6053._ ?? __TamaguiNativeStyle6053(), { "color": _theme["color-11"]?.get() }], true, false);
-function __TamaguiNativeStyle6141() { return __TamaguiNativeStyle6141._ ?? (__TamaguiNativeStyle6141._ = {"fontFamily":"Inter","fontSize":14,"lineHeight":20,"textAlign":"center"}); } __TamaguiNativeStyle6141();
-const __TamaguiStableText6141 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6141._ ?? __TamaguiNativeStyle6141(), { "color": _theme["color-10"]?.get() }], true, false);
-function __TamaguiNativeStyle6293() { return __TamaguiNativeStyle6293._ ?? (__TamaguiNativeStyle6293._ = {"flexShrink":0,"borderStyle":"solid","borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6293();
-const __TamaguiStableView6293 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle6293._ ?? __TamaguiNativeStyle6293(), { "borderTopColor": _theme["background-focus"]?.get(), "borderRightColor": _theme["background-focus"]?.get(), "borderBottomColor": _theme["background-focus"]?.get(), "borderLeftColor": _theme["background-focus"]?.get() }], true, false);
-function __TamaguiNativeStyle6315() { return __TamaguiNativeStyle6315._ ?? (__TamaguiNativeStyle6315._ = {"fontFamily":"Inter","fontSize":14,"lineHeight":20,"textAlign":"center"}); } __TamaguiNativeStyle6315();
-const __TamaguiStableText6315 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6315._ ?? __TamaguiNativeStyle6315(), { "color": _theme["color"]?.get() }], true, false);
-function __TamaguiNativeStyle6440() { return __TamaguiNativeStyle6440._ ?? (__TamaguiNativeStyle6440._ = {"flexShrink":0,"borderStyle":"solid","borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6440();
-const __TamaguiStableView6440 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle6440._ ?? __TamaguiNativeStyle6440(), { "borderTopColor": _theme["background-focus"]?.get(), "borderRightColor": _theme["background-focus"]?.get(), "borderBottomColor": _theme["background-focus"]?.get(), "borderLeftColor": _theme["background-focus"]?.get() }], true, false);
-function __TamaguiNativeStyle7350() { return __TamaguiNativeStyle7350._ ?? (__TamaguiNativeStyle7350._ = {"flexDirection":"row","gap":8}); } __TamaguiNativeStyle7350();
-function __TamaguiNativeStyle7379() { return __TamaguiNativeStyle7379._ ?? (__TamaguiNativeStyle7379._ = {"fontFamily":"Inter","fontSize":14,"lineHeight":20,"textAlign":"center"}); } __TamaguiNativeStyle7379();
-const __TamaguiStableText7379 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle7379._ ?? __TamaguiNativeStyle7379(), { "color": _theme["color"]?.get() }], true, false);"
+"
 `;
 
 exports[`Package.json exports support > should recognize imports from path-specific exports during optimization > web-optimized-single 1`] = `

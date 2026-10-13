@@ -14,7 +14,7 @@ import {
   type SourceEdit,
 } from './output'
 
-export const LOWERED_MODULE_PLAN_VERSION = 5
+export const LOWERED_MODULE_PLAN_VERSION = 6
 
 export type CompilerTarget = 'web' | 'native'
 
@@ -424,8 +424,8 @@ export function lowerModule({
 
   for (const candidateImport of imports.values()) {
     edits.push({
-      start: source.length,
-      end: source.length,
+      start: module.declarationsAt,
+      end: module.declarationsAt,
       content: candidateImport.content,
       origin: candidateImport.origin,
     })
