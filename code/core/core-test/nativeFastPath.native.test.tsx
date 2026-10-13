@@ -57,9 +57,11 @@ function createMockEngine() {
     commitNow: boolean
     activeState: string
   }[] = []
+  const hosts: unknown[] = []
   let nextId = 1
   const engine: NativeStyleEngine = {
-    link: (_ref, table, scopeId = '', commitNow = false) => {
+    link: (ref, table, scopeId = '', commitNow = false) => {
+      hosts.push(ref)
       const linked = {
         id: nextId++,
         scopeId,
@@ -77,8 +79,9 @@ function createMockEngine() {
         },
       }
     },
-    linkTables: (_refs, tableIds, scopeIndexes, scopes) => {
+    linkTables: (refs, tableIds, scopeIndexes, scopes) => {
       tableIds.forEach((table, i) => {
+        hosts.push(refs[i])
         links.push({
           id: nextId++,
           scopeId: scopes[scopeIndexes[i]!]!,
@@ -123,6 +126,7 @@ function createMockEngine() {
       flushNativeStyleLinks()
       return links
     },
+    hosts,
     entries: () => batches.flat(),
     tableEntries: () => tableEntries,
     /** the state table a linked view reads: its shared table or its own slots */
@@ -698,4 +702,90 @@ test('a host linking after its scope advanced links to the live theme and commit
   expect(mock.tableEntries().map(({ state }) => state)).toEqual(['dark_blue', 'dark_red'])
   expect(mock.broadcasts.at(-1)?.[1]).toBe('dark_red')
   expect(hostRenders).toBe(1)
+})
+
+// the first mount attaches refs and captures the react root. a later remount
+// renders with no ref, and the flush walks that root to link the new hosts
+test('a remount after the react root is known links by walking fibers', async () => {
+  const fiberRoot: { current: any } = { current: null }
+  const hostRoot = {
+    child: null as any,
+    sibling: null,
+    return: null,
+    memoizedProps: null,
+    stateNode: fiberRoot,
+    tag: 3,
+  }
+  fiberRoot.current = hostRoot
+
+  let generation = 0
+  let builtFor = -1
+  const pendingFibers: any[] = []
+  const Host = forwardRef<any, any>((props, ref) => {
+    if (builtFor !== generation) {
+      builtFor = generation
+      hostRoot.child = null
+    }
+    const fiber = {
+      child: null,
+      sibling: hostRoot.child,
+      return: hostRoot,
+      memoizedProps: { style: props.style },
+      stateNode: { node: { generation } },
+      tag: 5,
+    }
+    hostRoot.child = fiber
+    pendingFibers.push(fiber)
+    return <NativeView ref={ref} {...props} />
+  })
+  const CompiledSquare = _withNativeStyle(
+    Host,
+    { width: 10, height: 10 },
+    { backgroundColor: 'background' }
+  )
+  function List({ items }: { items: string[] }) {
+    return (
+      <NativeView>
+        {items.map((item) =>
+          CompiledSquare.inline(<CompiledSquare key={item} testID={item} />)
+        )}
+      </NativeView>
+    )
+  }
+  let setGen: (next: number) => void = () => {}
+  function Harness() {
+    const [gen, setGenState] = useState(0)
+    setGen = setGenState
+    generation = gen
+    return (
+      <TamaguiProvider config={config} defaultTheme="dark">
+        <Theme name="red">
+          <List key={gen} items={['a', 'b']} />
+        </Theme>
+      </TamaguiProvider>
+    )
+  }
+
+  render(<Harness />, {
+    createNodeMock: () => ({
+      __internalInstanceHandle: pendingFibers[pendingFibers.length - 1],
+    }),
+  })
+  expect(mock.links).toHaveLength(2)
+  expect(
+    mock.hosts
+      .slice(0, 2)
+      .every((host: any) => host?.__internalInstanceHandle && host.stateNode == null)
+  ).toBe(true)
+
+  pendingFibers.length = 0
+  await act(async () => setGen(1))
+  expect(mock.links).toHaveLength(4)
+  const discovered = mock.hosts.slice(2)
+  expect(discovered).toHaveLength(2)
+  expect(discovered.every((host: any) => host?.stateNode?.node?.generation === 1)).toBe(
+    true
+  )
+  expect(mock.links[2].table).toBe(mock.links[0].table)
+  expect(mock.links[3].table).toBe(mock.links[0].table)
 })

@@ -76,6 +76,11 @@ export interface NativeStyleLinkState {
     theme: Record<string, unknown>;
 }
 export declare function createNativeStyleLinkState(mapping: NativeStyleThemeMapping, scopeId: string, stateName: string, theme: Record<string, unknown>): NativeStyleLinkState;
+export declare function registerNativeStyle(style: object, state: NativeStyleLinkState): void;
+/** true once a host ref has captured a react root that is still mounted */
+export declare function nativeStyleMountMode(): 'discover' | 'ref';
+/** records the react root from a host ref, when the instance carries a fiber */
+export declare function captureNativeStyleRoot(node: unknown): void;
 /** links every pending view in one engine call */
 export declare function flushNativeStyleLinks(): void;
 /** records a mounted host for linking. a host attaching twice links once */

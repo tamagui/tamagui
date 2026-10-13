@@ -227,6 +227,7 @@ export function setNativeStyleEngine(next: NativeStyleEngine | null): void {
     scopeMappings.clear()
     pendingHosts = []
     pendingStates = []
+    resetNativeStyleDiscovery()
   }
   engine = next
   if (next) {
@@ -307,13 +308,91 @@ export function createNativeStyleLinkState(
 // and the engine links every pending view in one call before a scope next
 // changes. linking exists for theme switches, so a mount pays nothing native.
 // nothing unlinks: the engine drops views that left the tree when it links, so
-// an unmount costs nothing either
+// an unmount costs nothing either.
+//
+// a callback ref per themed host is most of the render cost (react calls it
+// on every mount). the first mounts still attach one, and that ref records
+// the react root. once the root is known, compiled hosts omit the ref and a
+// later flush walks the root for hosts whose style array was registered here.
+// theme switches that mounted nothing skip the walk.
 let pendingHosts: unknown[] = []
 let pendingStates: NativeStyleLinkState[] = []
 // past this many pending hosts, link them once the JS thread idles, so hosts
 // that mount and unmount without a scope change never accumulate
 const maxPendingHosts = 4096
 let idleFlushQueued = false
+
+type StyleFiber = {
+  child: StyleFiber | null
+  sibling: StyleFiber | null
+  return: StyleFiber | null
+  memoizedProps: { style?: object } | null
+  stateNode: { node?: unknown; current?: StyleFiber } | null
+}
+
+// style array identity -> the state those hosts rendered. the array is stable
+// until the scope state changes, and it is the style prop on the host fiber
+const stylesToState = new WeakMap<object, NativeStyleLinkState>()
+// host object -> state last queued, so a second attach of the same host does
+// not emit a second link
+let linkedHostState = new WeakMap<object, NativeStyleLinkState>()
+// FiberRoot of the tree a host ref captured. current is the committed HostRoot.
+// current is optional because a host fiber's stateNode is this same shape and
+// has no current, and that object is what capture stores
+let fiberRoot: { current?: StyleFiber | null } | null = null
+let needsDiscover = false
+
+function resetNativeStyleDiscovery(): void {
+  fiberRoot = null
+  needsDiscover = false
+  linkedHostState = new WeakMap()
+}
+
+export function registerNativeStyle(style: object, state: NativeStyleLinkState): void {
+  stylesToState.set(style, state)
+}
+
+/** true once a host ref has captured a react root that is still mounted */
+export function nativeStyleMountMode(): 'discover' | 'ref' {
+  const current = fiberRoot?.current
+  if (current && current.stateNode === fiberRoot) {
+    needsDiscover = true
+    return 'discover'
+  }
+  return 'ref'
+}
+
+/** records the react root from a host ref, when the instance carries a fiber */
+export function captureNativeStyleRoot(node: unknown): void {
+  const fiber = (node as { __internalInstanceHandle?: StyleFiber } | null)
+    ?.__internalInstanceHandle
+  if (!fiber) return
+  let top = fiber
+  for (let guard = 0; top.return && guard < 100000; guard++) top = top.return
+  const root = top.stateNode
+  if (root && root.current === top) fiberRoot = root
+}
+
+function discoverMountedHosts(): number {
+  const root = fiberRoot?.current
+  if (!root || root.stateNode !== fiberRoot) return 0
+  const stack: StyleFiber[] = [root]
+  let found = 0
+  for (let guard = 0; stack.length && guard < 100000; guard++) {
+    const fiber = stack.pop()!
+    if (fiber.sibling) stack.push(fiber.sibling)
+    if (fiber.child) stack.push(fiber.child)
+    const style = fiber.memoizedProps?.style
+    if (!style) continue
+    const state = stylesToState.get(style)
+    // only a fabric host carries the shadow node; composite fibers share the
+    // style prop and must not link
+    if (!state || !fiber.stateNode?.node) continue
+    found++
+    linkNativeStyleHost(fiber, state)
+  }
+  return found
+}
 
 function idleFlush() {
   idleFlushQueued = false
@@ -328,6 +407,13 @@ function addScopeMapping(scopeId: string, compiled: CompiledMapping) {
 
 /** links every pending view in one engine call */
 export function flushNativeStyleLinks(): void {
+  if (needsDiscover) {
+    needsDiscover = false
+    const current = fiberRoot?.current
+    // a replaced react root no longer points at the fiber we captured
+    if (!current || current.stateNode !== fiberRoot) fiberRoot = null
+    else discoverMountedHosts()
+  }
   if (!pendingHosts.length) return
   const hosts = pendingHosts
   const states = pendingStates
@@ -360,7 +446,9 @@ export function flushNativeStyleLinks(): void {
 
 /** records a mounted host for linking. a host attaching twice links once */
 export function linkNativeStyleHost(host: unknown, state: NativeStyleLinkState): void {
-  if (!engine) return
+  if (!engine || host == null) return
+  if (linkedHostState.get(host) === state) return
+  linkedHostState.set(host, state)
   // a scope can advance (layout effect) after a concurrent render captured its
   // theme but before that render's host attaches. link that host now against
   // the live scope state and have the engine commit it once to correct the

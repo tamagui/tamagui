@@ -75,10 +75,15 @@ function getEngine(): Engine {
  * Same internals access as Unistyles; verified against RN 0.86.
  */
 function getShadowNode(ref: unknown): unknown | null {
-  const handle = (ref as Record<string, unknown>)?.__internalInstanceHandle as
-    | { stateNode?: { node?: unknown } }
-    | undefined
-  return handle?.stateNode?.node ?? null
+  if (!ref || typeof ref !== 'object') return null
+  const record = ref as {
+    __internalInstanceHandle?: { stateNode?: { node?: unknown } }
+    stateNode?: { node?: unknown }
+  }
+  // a host ref, or the fiber a discovery walk passes straight through
+  return (
+    record.__internalInstanceHandle?.stateNode?.node ?? record.stateNode?.node ?? null
+  )
 }
 
 /**
