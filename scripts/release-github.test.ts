@@ -39,7 +39,6 @@ function makeOperations(
       throw new Error('unexpected workflow run read')
     },
     squashPullRequest: async () => {},
-    getMergeQueueRef: async () => null,
     getPullRequest: async () => makePullRequest(),
     verifyMergedCommit: async () => {},
     sleep: async () => {},
@@ -48,69 +47,6 @@ function makeOperations(
 }
 
 describe('stable release pull request coordinator', () => {
-  test('validates the merge queue commit when the bot does not trigger Checks', async () => {
-    const queueSha = '6'.repeat(40)
-    const queueRef = 'gh-readonly-queue/main/pr-42-base'
-    const dispatched: string[] = []
-    const operations = makeOperations({
-      findPullRequests: async () => [makePullRequest()],
-      getMergeQueueRef: async () => ({ sha: queueSha, ref: queueRef }),
-      listChecksRuns: async (sha) =>
-        sha === releaseSha || dispatched.includes(queueRef)
-          ? [
-              {
-                id: 7,
-                event: 'workflow_dispatch',
-                head_sha: sha,
-                status: 'completed',
-                conclusion: 'success',
-                created_at: '2026-10-13T00:00:00Z',
-              },
-            ]
-          : [],
-      dispatchChecks: async (ref) => {
-        dispatched.push(ref)
-      },
-      getPullRequest: async () =>
-        dispatched.includes(queueRef)
-          ? makePullRequest({
-              state: 'closed',
-              merged_at: '2026-10-13T00:30:00Z',
-              merge_commit_sha: mergedSha,
-            })
-          : makePullRequest(),
-    })
-
-    await expect(mergeStableRelease('2.7.8', targetSha, operations)).resolves.toBe(
-      mergedSha
-    )
-    expect(dispatched).toEqual([queueRef])
-  })
-
-  test('rejects a failed merge queue check even when the release head passed', async () => {
-    const queueSha = '6'.repeat(40)
-    const operations = makeOperations({
-      findPullRequests: async () => [makePullRequest()],
-      getMergeQueueRef: async () => ({
-        sha: queueSha,
-        ref: 'gh-readonly-queue/main/pr-42-base',
-      }),
-      listChecksRuns: async (sha) => [
-        {
-          id: sha === releaseSha ? 7 : 8,
-          event: 'workflow_dispatch',
-          head_sha: sha,
-          status: 'completed',
-          conclusion: sha === releaseSha ? 'success' : 'failure',
-          created_at: '2026-10-13T00:00:00Z',
-        },
-      ],
-    })
-    await expect(mergeStableRelease('2.7.8', targetSha, operations)).rejects.toThrow(
-      'Checks run 8 concluded failure'
-    )
-  })
-
   test('runs full CI, squash-merges the protected pull request, and returns the merged commit', async () => {
     const events: string[] = []
     let checksDispatched = false
