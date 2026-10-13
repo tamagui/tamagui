@@ -2781,6 +2781,8 @@ const cssWideColorKeywords = new Set([
 ])
 
 const shadowRecipeProperties = new Set(['boxShadow', 'textShadow', 'filter'])
+// recipe keywords that are neither tokens nor colors
+const shadowRecipeKeywords = new Set(['inset', 'none'])
 
 // `embedded` also runs the embedded-token pass when the direct lookup leaves the
 // value alone, and memoizes that result. it is a regex replace over most string
@@ -3032,6 +3034,7 @@ function configuredValue(
       if (
         resolved !== word ||
         !shadowRecipeProperties.has(property) ||
+        shadowRecipeKeywords.has(word) ||
         !/^[a-z][\w-]*$/i.test(word)
       )
         return resolved
