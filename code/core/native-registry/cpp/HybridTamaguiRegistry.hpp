@@ -6,7 +6,6 @@
 #include <jsi/jsi.h>
 #include <react/renderer/core/ShadowNode.h>
 
-#include <cstdint>
 #include <memory>
 #include <mutex>
 #include <string>
@@ -44,13 +43,13 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
   // one view's props for a commit. table views point at their table's
   // state entry, shared by every view of the table, so the commit can parse
   // each distinct (props, update) pair once; per-view slots own theirs
-  // the props a table view committed per state. while the node still carries
-  // the props this engine committed last, a switch back to a state reuses
-  // that state's props instead of parsing them again; a React render or a
-  // table refill invalidates them
+  // the props a table view carries per state: the props React rendered for
+  // the state it linked in, and the props this engine committed since. while
+  // the node still carries the props `last` names, a switch back to a state
+  // reuses that state's props instead of parsing them again; a React render
+  // invalidates them all, a table refill the refilled state's
   struct WarmProps {
     facebook::react::Props::Shared last;
-    uint64_t revision = 0;
     std::unordered_map<std::string, facebook::react::Props::Shared> byState;
   };
 
@@ -60,7 +59,6 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
     // table views only
     WarmProps* warm = nullptr;
     const std::string* state = nullptr;
-    uint64_t revision = 0;
     const folly::dynamic& props() const { return shared ? *shared : owned; }
   };
   using LeafUpdates =
@@ -84,8 +82,6 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
   // name -> props. filled once per mapping and state, never per view
   struct Table {
     folly::dynamic states = folly::dynamic::object();
-    // bumped on every refill so views drop props parsed from older states
-    uint64_t revision = 0;
   };
 
   struct LinkedView {
@@ -147,6 +143,9 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
 
   // the state a view shows right now: its own runtime state, else its scope's
   const std::string* viewStateName(const LinkedView& view) const;
+
+  // records a freshly linked table view's React props as its state's props
+  void seedWarmProps(LinkedView& view) const;
 
   std::unordered_map<double, LinkedView> views_;
   std::unordered_map<double, std::shared_ptr<Table>> tables_;
