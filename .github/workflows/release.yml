@@ -305,10 +305,9 @@ jobs:
 
       - name: Run release PR through full CI and protected main
         id: merge
-        # pushes made with github.token do not start workflows. the coordinator
-        # dispatches Checks on the exact release commit before squash-merging the PR.
+        # the repository token starts merge-group checks when it enqueues the PR.
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.PAT }}
           RELEASE_VERSION: ${{ steps.version.outputs.version }}
           TARGET_SHA: ${{ github.sha }}
         run: bun scripts/release-github.ts
