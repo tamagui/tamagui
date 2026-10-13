@@ -73,7 +73,7 @@ jsi::Value HybridTamaguiRegistry::link(jsi::Runtime& rt, const jsi::Value&,
   } else {
     id = nextId_++;
     linked = &views_[id];
-    linked->node = wrapper->shadowNode;
+    linked->family = wrapper->shadowNode->getFamilyShared();
     linked->scopeId = args[2].asString(rt).utf8(rt);
     auto slots = jsi::dynamicFromValue(rt, args[1]);
     linked->baseProps = slots.getDefault("base", nullptr);
@@ -88,7 +88,7 @@ jsi::Value HybridTamaguiRegistry::link(jsi::Runtime& rt, const jsi::Value&,
       commitUpdates(rt, updates);
     }
   } else if (view.table) {
-    seedWarmProps(view);
+    seedWarmProps(view, *wrapper->shadowNode);
   }
   return jsi::Value(id);
 }
@@ -136,7 +136,8 @@ jsi::Value HybridTamaguiRegistry::linkTables(jsi::Runtime& rt, const jsi::Value&
     seedWarmProps(linkTableView(
         wrapper->shadowNode, table,
         scopes.at(static_cast<size_t>(
-            scopeIndexes.getValueAtIndex(rt, i).asNumber()))));
+            scopeIndexes.getValueAtIndex(rt, i).asNumber()))),
+        *wrapper->shadowNode);
   }
   if (views_.size() > pruneAt_) pruneUnmounted(rt);
   return jsi::Value::undefined();
@@ -152,7 +153,7 @@ HybridTamaguiRegistry::LinkedView& HybridTamaguiRegistry::linkTableView(
     view.table = table;
     view.warm = {};
   }
-  view.node = node;
+  view.family = node->getFamilyShared();
   view.scopeId = std::move(scopeId);
   return view;
 }
@@ -176,7 +177,7 @@ void HybridTamaguiRegistry::pruneUnmounted(jsi::Runtime& rt) {
         }
       });
   for (auto it = views_.begin(); it != views_.end();) {
-    const auto* family = &it->second.node->getFamily();
+    const auto* family = it->second.family.get();
     if (mounted.count(family)) {
       ++it;
       continue;
@@ -190,10 +191,11 @@ void HybridTamaguiRegistry::pruneUnmounted(jsi::Runtime& rt) {
 // a view links right after React rendered it with its scope's current state
 // (a render that raced a scope change links with commitNow instead), so the
 // props it carries are that state's props, and a switch back reuses them
-void HybridTamaguiRegistry::seedWarmProps(LinkedView& view) const {
+void HybridTamaguiRegistry::seedWarmProps(LinkedView& view,
+                                          const ShadowNode& node) const {
   const auto* name = activeStateName(view.scopeId);
   if (!name) return;
-  const auto& props = view.node->getProps();
+  const auto& props = node.getProps();
   view.warm.last = props;
   view.warm.byState[*name] = props;
 }
@@ -207,7 +209,7 @@ const std::string* HybridTamaguiRegistry::viewStateName(
 void HybridTamaguiRegistry::unlink(double id) {
   auto it = views_.find(id);
   if (it == views_.end()) return;
-  if (it->second.table) tableViewIds_.erase(&it->second.node->getFamily());
+  if (it->second.table) tableViewIds_.erase(it->second.family.get());
   views_.erase(it);
 }
 
@@ -495,7 +497,7 @@ bool HybridTamaguiRegistry::buildViewUpdate(LinkedView& view,
   }
   const auto& props = update.props();
 
-  const auto& family = view.node->getFamily();
+  const auto& family = *view.family;
   // the retained node keeps its family alive; unmounted views resolve to
   // no ancestors during the transaction and are skipped safely
   if (view.table) {
@@ -690,7 +692,7 @@ jsi::Value HybridTamaguiRegistry::getViewState(jsi::Runtime& rt,
                              : folly::dynamic(nullptr);
     return jsi::valueFromDynamic(rt, out);
   }
-  const auto& family = view.node->getFamily();
+  const auto& family = *view.family;
   std::lock_guard<std::mutex> lock(family.nativePropsMutex);
   out["nativeProps"] = family.nativeProps_DEPRECATED
                            ? *family.nativeProps_DEPRECATED

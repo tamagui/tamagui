@@ -86,8 +86,10 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
 
   struct LinkedView {
     // retained so the family stays valid for in-transaction ancestor lookup;
-    // unmounted views resolve to no ancestors and are skipped
-    std::shared_ptr<const facebook::react::ShadowNode> node;
+    // unmounted views resolve to no ancestors and are skipped. the family,
+    // never a node: a retained node would keep its whole unmounted subtree
+    // alive until the prune
+    facebook::react::ShadowNodeFamily::Shared family;
     std::string scopeId;
     folly::dynamic baseProps;   // object, or nullptr when absent
     folly::dynamic stateProps;  // stateName -> props object, or nullptr
@@ -156,7 +158,7 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
   const std::string* viewStateName(const LinkedView& view) const;
 
   // records a freshly linked table view's React props as its state's props
-  void seedWarmProps(LinkedView& view) const;
+  void seedWarmProps(LinkedView& view, const facebook::react::ShadowNode& node) const;
 
   std::unordered_map<double, LinkedView> views_;
   // table views by family: a host attaching again keeps one link
