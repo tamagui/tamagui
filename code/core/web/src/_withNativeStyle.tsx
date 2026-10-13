@@ -3,9 +3,12 @@ import { isAndroid, isIos } from '@tamagui/constants'
 import React, { use } from 'react'
 import { _withStableStyle } from './_withStableStyle'
 import {
+  captureNativeStyleRoot,
   createNativeStyleLinkState,
   getNativeStyleEngine,
   linkNativeStyleHost,
+  nativeStyleMountMode,
+  registerNativeStyle,
   resolveNativeStyleMapping,
   type NativeStyleLinkState,
   type NativeStyleThemeMapping,
@@ -24,10 +27,11 @@ const hostTextProps = {
 /**
  * internal: emitted by the native compiler when experimental.nativeFastPath is on.
  *
- * One component over the host: the theme scope is the only context read and
- * the host ref queues the host for the engine's next batched link. Links never
- * detach (the engine prunes unmounted views), so a themed view costs one
- * component and one array push to mount.
+ * One component over the host: the theme scope is the only context read.
+ * Until a host ref has seen the react root, the host ref queues the view for
+ * the engine's next batched link. After that, themed hosts render with no ref
+ * and a flush walks the root. Links never detach (the engine prunes unmounted
+ * views).
  *
  * `host: 'view'`: `Component` is RN's host view (`unstable_NativeView`).
  * <View> resets TextAncestorContext for its children when it sits inside a
@@ -78,9 +82,8 @@ export const _withNativeStyle = (
   // one entry per scope. its style arrays (one per host mode) keep their
   // identity until the scope's state changes, then are rebuilt: a style handed
   // to a host is a prop, which react native freezes in development, so a theme
-  // switch never writes into one. the entry's ref is stable, so a parent
-  // re-render never detaches and re-attaches its hosts, and attaching records
-  // the host against the state record every host of this scope shares
+  // switch never writes into one. the ref stays off once the react root is
+  // known, so a remount does not pay a callback ref per host
   const entries = new Map<string, ScopeEntry>()
   const createEntry = (): ScopeEntry => {
     const entry: ScopeEntry = {
@@ -90,7 +93,9 @@ export const _withNativeStyle = (
       theme: null,
       state: null!,
       ref: (node: unknown) => {
-        if (node) linkHost(node, entry.state)
+        if (!node) return
+        captureRoot(node)
+        linkHost(node, entry.state)
       },
     }
     return entry
@@ -103,6 +108,9 @@ export const _withNativeStyle = (
   const resolve = resolveNativeStyleMapping
   const linkState = createNativeStyleLinkState
   const linkHost = linkNativeStyleHost
+  const registerStyle = registerNativeStyle
+  const mountMode = nativeStyleMountMode
+  const captureRoot = captureNativeStyleRoot
   const assignRef = setRef
 
   // `use` reads context from whichever render calls it, so the compiler can
@@ -146,16 +154,23 @@ export const _withNativeStyle = (
       entry.stateName = name
       entry.theme = theme
       entry.state = linkState(themeStyleKeys, scopeId, name, theme)
+      registerStyle(entry.style, entry.state)
+      registerStyle(entry.hostTextStyle, entry.state)
     }
     const style = asHostText ? entry.hostTextStyle : entry.style
     const wrapped = resetsText || (asHostText && mayRenderText(rest.children))
     const state = entry.state
-    // a user ref composes per render; without one the entry's stable ref links
-    const hostRef =
-      ref == null
+    // once the root is known, omit our ref. a caller ref still passes through,
+    // and the flush walk links the host. `ref={undefined}` is itself a ref, so
+    // the prop has to be absent
+    const discover = mountMode() === 'discover'
+    const passedRef = discover
+      ? (ref ?? null)
+      : ref == null
         ? entry.ref
         : (node: unknown) => {
             if (!node) return assignRef(ref, null)
+            captureRoot(node)
             linkHost(node, state)
             // a callback ref may return its own cleanup (React 19), which
             // then replaces its null call
@@ -166,8 +181,8 @@ export const _withNativeStyle = (
       <Rendered
         key={wrapped ? undefined : key}
         {...(asHostText && hostTextProps)}
-        {...rest}
-        ref={hostRef}
+        {...(passedRef == null ? omitRef(rest) : rest)}
+        {...(passedRef != null ? { ref: passedRef } : null)}
         style={style}
       />
     )
@@ -196,6 +211,12 @@ interface ScopeEntry {
   theme: object | null
   state: NativeStyleLinkState
   ref: (node: unknown) => void
+}
+
+function omitRef(props: any): any {
+  if (!Object.prototype.hasOwnProperty.call(props, 'ref')) return props
+  const { ref: _ref, ...rest } = props
+  return rest
 }
 
 // <Text>'s own check for children that could render a nested <Text>: arrays

@@ -6,23 +6,56 @@ import { getSetting } from '../config'
 import { isOptimizedForFirstRender } from './isOptimizedForFirstRender'
 import { defaultComponentStateMounted } from '../defaultComponentState'
 import { isObj } from '../helpers/isObj'
+import type { RefObject } from 'react'
 import type {
   ComponentContextI,
+  ComponentSetState,
+  ComponentSetStateShallow,
+  PresenceContextProps,
   StaticConfig,
   TamaguiComponentState,
   TamaguiComponentStateRef,
   TamaguiInternalConfig,
   TextProps,
   UseAnimationHook,
+  UsePresenceResult,
 } from '../types'
 import type { ViewProps } from '../views/View'
+
+// declaration emit cannot write the inferred return: finalizeStyleFlags returns
+// the same object. the method's published type is already elided to any
+type UseComponentStateResult = {
+  props: ViewProps | TextProps | Record<string, any>
+  startedUnhydrated: boolean
+  curStateRef: TamaguiComponentStateRef
+  disabled: any
+  groupName: string | undefined
+  hasAnimationProp: boolean
+  hasEnterStyle: boolean
+  isAnimated: boolean
+  isExiting: boolean
+  isHydrated: boolean
+  presence: UsePresenceResult | null
+  presenceState: PresenceContextProps | null | undefined
+  setState: ComponentSetState
+  setStateShallow: ComponentSetStateShallow
+  noClass: boolean
+  state: TamaguiComponentState
+  stateRef: RefObject<TamaguiComponentStateRef>
+  inputStyle: 'css' | 'value'
+  outputStyle: 'css' | 'inline'
+  willBeAnimated: boolean
+  willBeAnimatedClient: boolean
+  platformPseudo: boolean
+  finalizeStyleFlags(hasEnterStyle: boolean, hasPlatformPseudo: boolean): any
+}
 
 export const useComponentState = (
   props: ViewProps | TextProps | Record<string, any>,
   animationDriver: ComponentContextI['animationDriver'],
   staticConfig: StaticConfig,
   config: TamaguiInternalConfig
-) => {
+): UseComponentStateResult => {
   'use no memo'
 
   const isHydrated = useDidFinishSSR()
