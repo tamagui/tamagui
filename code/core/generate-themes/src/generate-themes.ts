@@ -165,11 +165,8 @@ function t(a: [number, number][], scheme?: 'light' | 'dark') {
     const baseTheme = `const ${name} = ${objectToJsString(theme, keys, valueToIndex)}`
     out += `\n${baseTheme}`
     names.forEach((n) => {
-      exported += `\n  ${n}: ${name},`
-
-      if (n.toLowerCase() === n) {
-        themeTypes += `\n | '${n}'`
-      }
+      exported += `\n  ${JSON.stringify(n)}: ${name},`
+      themeTypes += `\n | ${JSON.stringify(n)}`
     })
   })
 

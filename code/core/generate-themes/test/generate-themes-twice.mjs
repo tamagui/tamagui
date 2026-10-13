@@ -2,9 +2,11 @@
 // the purgeCache crash only shows up where `module` is absent, and the token
 // bleed it hides is silent in every runtime.
 import assert from 'node:assert/strict'
+import { execFileSync } from 'node:child_process'
+import { createRequire } from 'node:module'
 import { mkdtempSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
 
 // the entry differs per runtime: bun loads the esm build (and the ts source
 // directly), node's consumer of this package is the cli, which requires the cjs
@@ -75,3 +77,42 @@ assert.deepEqual(Object.keys(generated.light_inverse), ['background'])
 assert.equal(generated.light_inverse, generated.dark)
 assert.notEqual(generated.light, generated.dark)
 console.info('generate-themes authored-scheme probe passed')
+
+// generated names must work both as runtime keys and as types.
+const namedThemes = {
+  light: { background: '#fff' },
+  light_steelBlue: { background: '#00f' },
+  'light_steel-blue': { background: '#00f' },
+}
+const named = await generateThemes(writeThemeFile('named.js', namedThemes))
+assert.ok(named?.generated, 'named themes produced no output')
+const namedFile = join(dir, 'named.generated.ts')
+writeFileSync(namedFile, named.generated)
+writeFileSync(
+  join(dir, 'consumer.ts'),
+  `import { themes, type ThemeNames } from './named.generated'
+const camel: ThemeNames = 'light_steelBlue'
+const hyphen: ThemeNames = 'light_steel-blue'
+themes[camel].background
+themes[hyphen].background
+`
+)
+writeFileSync(
+  join(dir, 'tsconfig.json'),
+  JSON.stringify({
+    compilerOptions: { strict: true, noEmit: true, types: [], target: 'esnext' },
+    files: ['named.generated.ts', 'consumer.ts'],
+  })
+)
+const require = createRequire(import.meta.url)
+const tsc = join(dirname(require.resolve('typescript/package.json')), 'bin', 'tsc')
+execFileSync(process.execPath, [tsc, '-p', dir], {
+  stdio: 'inherit',
+})
+const namedCompiled = transformSync(named.generated, { loader: 'ts', format: 'esm' }).code
+const { themes: namedGenerated } = await import(
+  'data:text/javascript;base64,' + Buffer.from(namedCompiled).toString('base64')
+)
+assert.deepEqual(namedGenerated, namedThemes)
+assert.equal(namedGenerated.light_steelBlue, namedGenerated['light_steel-blue'])
+console.info('generate-themes named-key runtime and type probe passed')
