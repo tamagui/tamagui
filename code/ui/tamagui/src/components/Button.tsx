@@ -26,6 +26,7 @@ import {
   withStaticProperties,
 } from '@tamagui/core'
 import { getThemedIconSize } from '@tamagui/helpers-tamagui'
+import { textParentInlineProps } from '@tamagui/text'
 import React from 'react'
 
 export type ButtonSize = ComponentSize | boolean
@@ -167,7 +168,7 @@ const ButtonComponent = createStyledHOC(
     )
     return theme ? <Theme name={theme}>{content}</Theme> : content
   },
-  { disableTheme: true }
+  { disableTheme: true, staticConfig: { inlineProps: textParentInlineProps } }
 )
 
 const ButtonInner = React.forwardRef<
