@@ -63,7 +63,8 @@
       "dependencies": [
         "@tamagui/button",
         "@tamagui/core",
-        "@tamagui/helpers-tamagui"
+        "@tamagui/helpers-tamagui",
+        "@tamagui/text"
       ],
       "categories": [
         "form",
@@ -211,7 +212,8 @@
       "dependencies": [
         "@tamagui/core",
         "@tamagui/helpers-tamagui",
-        "@tamagui/list-item"
+        "@tamagui/list-item",
+        "@tamagui/text"
       ],
       "categories": [
         "data-display"

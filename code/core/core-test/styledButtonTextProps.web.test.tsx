@@ -28,7 +28,8 @@ test('a restyled Button gives its label the authored text styles', () => {
   const plain = labelColor(<Button color="red">label</Button>)
   document.body.innerHTML = ''
   const restyled = labelColor(<Restyled color="red">label</Restyled>)
-  const colorClass = (className: string) => className.split(' ').find((c) => c.startsWith('_c-'))
+  const colorClass = (className: string) =>
+    className.split(' ').find((c) => c.startsWith('_c-'))
   expect(colorClass(plain)).toBeTruthy()
   expect(colorClass(restyled)).toBe(colorClass(plain))
 })
