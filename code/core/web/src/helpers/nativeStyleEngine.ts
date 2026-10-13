@@ -445,7 +445,9 @@ export function queueNativeViewState(entry: NativeViewStateUpdate): void {
       pending = null
       superseded = null
       if (dropped) {
-        entries = entries.filter((queued, index) => index >= (dropped.get(queued.id) ?? 0))
+        entries = entries.filter(
+          (queued, index) => index >= (dropped.get(queued.id) ?? 0)
+        )
       }
       if (!entries.length) return
       engine?.applyViewStates(entries)
