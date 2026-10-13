@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/select",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "license": "MIT",
   "source": "src/index.tsx",
   "files": [
