@@ -34,6 +34,7 @@ export type StableReleaseOperations = {
   dispatchChecks(branch: string): Promise<void>
   getWorkflowRun(runId: number): Promise<WorkflowRun>
   squashPullRequest(number: number, checkedHeadSha: string): Promise<void>
+  getMergeQueueRef(number: number): Promise<{ ref: string; sha: string } | null>
   getPullRequest(number: number): Promise<ReleasePullRequest>
   verifyMergedCommit(sha: string): Promise<void>
   sleep(ms: number): Promise<void>
@@ -164,6 +165,11 @@ export async function mergeStableRelease(
       throw new Error(
         `Release pull request #${pullRequest.number} closed without merging`
       )
+    }
+    // the workflow token does not trigger checks when it enqueues a release.
+    const queued = await operations.getMergeQueueRef(pullRequest.number)
+    if (queued) {
+      await requireSuccessfulChecks(queued.sha, queued.ref, operations)
     }
     await operations.sleep(120_000)
   }
@@ -319,6 +325,21 @@ export function createStableReleaseOperations(
         '--match-head-commit',
         checkedHeadSha,
       ])
+    },
+
+    async getMergeQueueRef(number) {
+      const refs = parseJSON<{ ref: string; object: { sha: string } }[]>(
+        await execute('gh', [
+          'api',
+          `repos/${repository}/git/matching-refs/heads/gh-readonly-queue/main/pr-${number}-`,
+        ])
+      )
+      if (refs.length > 1) {
+        throw new Error(`Multiple merge queue refs for pull request #${number}`)
+      }
+      return refs[0]
+        ? { ref: refs[0].ref.slice('refs/heads/'.length), sha: refs[0].object.sha }
+        : null
     },
 
     getPullRequest,
