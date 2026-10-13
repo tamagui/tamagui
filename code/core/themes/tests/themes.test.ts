@@ -266,3 +266,19 @@ describe('v6 themes', () => {
     expect(colorTokens['brand-600']).toBe(copper[6])
   })
 })
+
+describe('v5 compat themes', () => {
+  test('carry every kebab-case key v3 skins read, matching the camelCase value', async () => {
+    const { semanticThemeKeys } = await import('../src/builder')
+    const camel = (key: string) => key.replace(/-([a-z])/g, (_, c) => c.toUpperCase())
+    for (const pack of [await import('../src/v5'), await import('../src/v5-subtle')]) {
+      for (const name of ['light', 'dark', 'light_blue', 'dark_red']) {
+        const theme = pack.themes[name] as Record<string, string>
+        for (const key of semanticThemeKeys) {
+          expect([name, key, theme[key]]).toEqual([name, key, theme[camel(key)]])
+          if (name === 'light' || name === 'dark') expect(theme[key]).toBeString()
+        }
+      }
+    }
+  })
+})
