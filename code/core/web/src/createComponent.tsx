@@ -28,6 +28,7 @@ import { getStyleStaticConfig, type StyleStaticConfig } from './helpers/styleSta
 import {
   getNativeStyleEngine,
   queueNativeViewState,
+  supersedeNativeViewStates,
   updateNativeStyleLink,
 } from './helpers/nativeStyleEngine'
 import { getThemeProxied } from './hooks/getThemeProxied'
@@ -904,7 +905,11 @@ export function createComponent<
         !props.disableNativeStyle
       stateRef.current.nativePushedStates = canNativeUpdate ? new Set() : undefined
       // fresh render: the themeState captured below is current again, and the
-      // render itself commits this state's styles
+      // render itself commits this state's styles, so pushes queued from the
+      // previous render's props are dropped
+      if (stateRef.current.nativeLink) {
+        supersedeNativeViewStates(stateRef.current.nativeLink.id)
+      }
       stateRef.current.nativeThemeState = undefined
       stateRef.current.nativeActiveState = canNativeUpdate ? themeState?.name : undefined
 
