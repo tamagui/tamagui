@@ -9,62 +9,72 @@ import { useClipboard } from '~/hooks/useClipboard'
 const installScript = 'npm create tamagui@latest'
 const agentPrompt = AGENT_SETUP_PROMPT
 
-export const InstallInput = memo(() => {
-  const install = useClipboard(installScript)
-  const prompt = useClipboard(agentPrompt)
+export const InstallInput = memo(
+  ({
+    command = installScript,
+    prompt: showPrompt = true,
+  }: {
+    command?: string
+    prompt?: boolean
+  }) => {
+    const install = useClipboard(command)
+    const prompt = useClipboard(agentPrompt)
 
-  return (
-    <XStack gap="1-5" items="center" flexWrap="wrap">
-      <XStack
-        borderWidth={0.5}
-        borderColor="color-3"
-        bg="color-1"
-        overflow="hidden"
-        paddingRight="1-5"
-        pl="4"
-        gap="3"
-        height={48}
-        items="center"
-        rounded={10}
-      >
-        <Paragraph fontSize={14} fontWeight="500" fontFamily="mono" lineHeight="20px">
-          {installScript}
-        </Paragraph>
-        <TooltipSimple
-          placement="bottom"
-          label={install.hasCopied ? 'Copied' : 'Copy to clipboard'}
+    return (
+      <XStack gap="1-5" items="center" flexWrap="wrap">
+        <XStack
+          borderWidth={0.5}
+          borderColor="color-3"
+          bg="color-1"
+          overflow="hidden"
+          paddingRight="1-5"
+          pl="4"
+          gap="3"
+          height={48}
+          items="center"
+          rounded={10}
         >
-          <Button
-            aria-label={
-              install.hasCopied ? 'Install command copied' : 'Copy install command'
-            }
-            size="sm"
-            circular
-            variant="quiet"
-            icon={install.hasCopied ? Check : Copy}
-            onPress={install.onCopy}
-          />
-        </TooltipSimple>
+          <Paragraph fontSize={14} fontWeight="500" fontFamily="mono" lineHeight="20px">
+            {command}
+          </Paragraph>
+          <TooltipSimple
+            placement="bottom"
+            label={install.hasCopied ? 'Copied' : 'Copy to clipboard'}
+          >
+            <Button
+              aria-label={
+                install.hasCopied ? 'Install command copied' : 'Copy install command'
+              }
+              size="sm"
+              circular
+              variant="quiet"
+              icon={install.hasCopied ? Check : Copy}
+              onPress={install.onCopy}
+            />
+          </TooltipSimple>
+        </XStack>
+
+        {showPrompt && (
+          <TooltipSimple
+            placement="right"
+            label="A prompt pointing your agent at the right docs"
+          >
+            <Button
+              size="md"
+              variant="quiet"
+              borderless
+              icon={prompt.hasCopied ? Check : ClipboardCopy}
+              onPress={prompt.onCopy}
+              aria-label="Copy a setup prompt for your coding agent"
+              fontFamily="mono"
+            >
+              <Button.Text color="color-8">
+                {prompt.hasCopied ? 'Copied' : 'Copy prompt'}
+              </Button.Text>
+            </Button>
+          </TooltipSimple>
+        )}
       </XStack>
-
-      <TooltipSimple
-        placement="right"
-        label="A prompt pointing your agent at the right docs"
-      >
-        <Button
-          size="md"
-          variant="quiet"
-          borderless
-          icon={prompt.hasCopied ? Check : ClipboardCopy}
-          onPress={prompt.onCopy}
-          aria-label="Copy a setup prompt for your coding agent"
-          fontFamily="mono"
-        >
-          <Button.Text color="color-8">
-            {prompt.hasCopied ? 'Copied' : 'Copy prompt'}
-          </Button.Text>
-        </Button>
-      </TooltipSimple>
-    </XStack>
-  )
-})
+    )
+  }
+)

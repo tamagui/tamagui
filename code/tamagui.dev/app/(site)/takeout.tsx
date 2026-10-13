@@ -7,6 +7,7 @@ import { HeadInfo } from '~/components/HeadInfo'
 import { Link } from '~/components/Link'
 import { SubTitle } from '~/components/SubTitle'
 import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
+import { InstallInput } from '~/features/site/home/InstallInput'
 import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
 
 const TakeoutBox3D = lazy(() => import('~/features/takeout/TakeoutBox3D'))
@@ -67,19 +68,22 @@ export default function TakeoutPage() {
           Free and open source React Native starter kit.
         </SubTitle>
 
-        <XStack mt="-10" gap="4" items="center" justify="center" flexWrap="wrap">
-          <Link href="https://takeout.tamagui.dev" target="_blank">
-            <Button size="lg" variant="outlined">
-              <Button.Text>Demo</Button.Text>
-            </Button>
-          </Link>
+        <YStack mt="-6" gap="5" items="center">
+          <InstallInput command="npx one" prompt={false} />
+          <XStack gap="4" items="center" justify="center" flexWrap="wrap">
+            <Link href="https://takeout.tamagui.dev" target="_blank">
+              <Button size="lg" variant="outlined">
+                <Button.Text>Demo</Button.Text>
+              </Button>
+            </Link>
 
-          <Link href="https://github.com/tamagui/takeout" target="_blank">
-            <Button size="lg">
-              <Button.Text>Repo</Button.Text>
-            </Button>
-          </Link>
-        </XStack>
+            <Link href="https://github.com/tamagui/takeout2" target="_blank">
+              <Button size="lg">
+                <Button.Text>Repo</Button.Text>
+              </Button>
+            </Link>
+          </XStack>
+        </YStack>
       </YStack>
     </>
   )
