@@ -3,9 +3,11 @@ import { isAndroid, isIos } from '@tamagui/constants'
 import React, { use } from 'react'
 import { _withStableStyle } from './_withStableStyle'
 import {
+  createNativeStyleLinkState,
   getNativeStyleEngine,
-  linkNativeStyleMapping,
+  linkNativeStyleHost,
   resolveNativeStyleMapping,
+  type NativeStyleLinkState,
   type NativeStyleThemeMapping,
 } from './helpers/nativeStyleEngine'
 import { getThemeState, ThemeStateContext } from './hooks/useThemeState'
@@ -22,9 +24,10 @@ const hostTextProps = {
 /**
  * internal: emitted by the native compiler when experimental.nativeFastPath is on.
  *
- * One component over the host: the theme scope is the only context read, the
- * host ref links straight to the engine and unlinks through React's ref
- * cleanup, so a themed view costs one component and one engine call to mount.
+ * One component over the host: the theme scope is the only context read and
+ * the host ref queues the host for the engine's next batched link. Links never
+ * detach (the engine prunes unmounted views), so a themed view costs one
+ * component and one array push to mount.
  *
  * `host: 'view'`: `Component` is RN's host view (`unstable_NativeView`).
  * <View> resets TextAncestorContext for its children when it sits inside a
@@ -72,20 +75,36 @@ export const _withNativeStyle = (
         }),
       }
     : baseStyle
-  // one style array per scope and host mode, its theme slot set to the scope's
-  // current state on every render. the engine owns a linked view's theme
-  // values, so a re-render after a switch hands React the same array, its diff
-  // skips the style, and the host is not re-committed with values the engine
-  // already applied. a new host reads the array's current state at creation
-  const styles = new Map<string, (object | null)[]>()
-  const hostTextStyles = new Map<string, (object | null)[]>()
+  // one entry per scope. its style arrays (one per host mode) keep their
+  // identity while their theme slot follows the scope's state: the engine owns
+  // a linked view's theme values, so a re-render after a switch hands React
+  // the same array, its diff skips the style, and the host is not re-committed
+  // with values the engine already applied. a new host reads the array's
+  // current state at creation. the entry's ref is stable too, so a parent
+  // re-render never detaches and re-attaches its hosts, and attaching records
+  // the host against the state record every host of this scope shares
+  const entries = new Map<string, ScopeEntry>()
+  const createEntry = (): ScopeEntry => {
+    const entry: ScopeEntry = {
+      style: [baseStyle, null],
+      hostTextStyle: [hostTextBase, null],
+      stateName: '',
+      theme: null,
+      state: null!,
+      ref: (node: unknown) => {
+        if (node) linkHost(node, entry.state)
+      },
+    }
+    return entry
+  }
   // bundlers inline imports as a module lookup at every use; bind them once
   // here, outside the per-mount path
   const ScopeContext = ThemeStateContext
   const engineOf = getNativeStyleEngine
   const scopeState = getThemeState
   const resolve = resolveNativeStyleMapping
-  const linkMapping = linkNativeStyleMapping
+  const linkState = createNativeStyleLinkState
+  const linkHost = linkNativeStyleHost
   const assignRef = setRef
 
   // `use` reads context from whichever render calls it, so the compiler can
@@ -117,32 +136,40 @@ export const _withNativeStyle = (
     const { name, theme } = themeState
     const asHostText = HostText && !inText
     const Rendered = asHostText ? HostText : Component
-    const cache = asHostText ? hostTextStyles : styles
-    let style = cache.get(scopeId)
-    if (!style) {
-      style = [asHostText ? hostTextBase : baseStyle, null]
-      cache.set(scopeId, style)
+    let entry = entries.get(scopeId)
+    if (!entry) {
+      entry = createEntry()
+      entries.set(scopeId, entry)
     }
-    style[1] = resolve(themeStyleKeys, name, theme)
+    if (entry.stateName !== name || entry.theme !== theme) {
+      const themed = resolve(themeStyleKeys, name, theme)
+      entry.style[1] = themed
+      entry.hostTextStyle[1] = themed
+      entry.stateName = name
+      entry.theme = theme
+      entry.state = linkState(themeStyleKeys, scopeId, name, theme)
+    }
+    const style = asHostText ? entry.hostTextStyle : entry.style
     const wrapped = resetsText || (asHostText && mayRenderText(rest.children))
+    const state = entry.state
+    // a user ref composes per render; without one the entry's stable ref links
+    const hostRef =
+      ref == null
+        ? entry.ref
+        : (node: unknown) => {
+            if (!node) return assignRef(ref, null)
+            linkHost(node, state)
+            // a callback ref may return its own cleanup (React 19), which
+            // then replaces its null call
+            if (typeof ref === 'function') return ref(node)
+            assignRef(ref, node)
+          }
     const element = (
       <Rendered
         key={wrapped ? undefined : key}
         {...(asHostText && hostTextProps)}
         {...rest}
-        ref={(node: unknown) => {
-          // a callback ref may return its own cleanup (React 19), which then
-          // replaces the null call
-          let refCleanup: unknown
-          if (typeof ref === 'function') refCleanup = ref(node)
-          else assignRef(ref, node)
-          const link = linkMapping(node, themeStyleKeys, scopeId, name, theme)
-          return () => {
-            link?.unlink()
-            if (typeof refCleanup === 'function') refCleanup()
-            else assignRef(ref, null)
-          }
-        }}
+        ref={hostRef}
         style={style}
       />
     )
@@ -162,6 +189,15 @@ export const _withNativeStyle = (
   NativeStyleView.inline = (element: React.ReactElement<any>) =>
     render(element.props, element.key)
   return NativeStyleView
+}
+
+interface ScopeEntry {
+  style: (object | null)[]
+  hostTextStyle: (object | null)[]
+  stateName: string
+  theme: object | null
+  state: NativeStyleLinkState
+  ref: (node: unknown) => void
 }
 
 // <Text>'s own check for children that could render a nested <Text>: arrays

@@ -279,10 +279,13 @@ Media rides the same interception shape as themes, one layer over:
 
 ### Lifetime and threading rules (the old branch's sore spots, fixed by design)
 
-- Link captures the ShadowNode once at mount; unlink uses the token returned
-  by link, never re-derives from the ref. The engine sweeps entries whose
-  family no longer resolves in the tree during commits, so a missed unlink
-  degrades to garbage, not a dangling pointer dereference.
+- Link captures the ShadowNode once at mount. Table links have no unlink: a
+  host ref never detaches, the engine dedupes a re-attached host by its
+  ShadowNodeFamily, and once its view count passes twice the live count
+  (minimum 1024) it prunes every view whose family no shadow tree holds.
+  Commits skip families that no longer resolve, so an unmounted view awaiting
+  the prune costs a lookup, never a dangling pointer dereference. Slot links
+  (`link` with a slots object) still unlink through their token.
 - All registry entry points run on the JS thread; assert it. No speculative
   mutexes. If a real cross-thread caller appears later (native media events),
   add a queue at that boundary, not locks everywhere.
@@ -692,12 +695,13 @@ The old branch never ran Android once. This one now does, in both modes:
   colors across the outer theme, a nested `level2` theme, and a pinned blue
   sub-theme after red and green theme switches.
 - A virtualized 80-row `FlatList` scrolls to row 79 and back while theme
-  switches are interleaved. Link and unlink counters prove recycled views
-  leave and re-enter the registry, and sampled rows show the current theme
-  after each reuse.
+  switches are interleaved. Link and view counters prove recycled views
+  re-enter the registry, and sampled rows show the current theme after each
+  reuse.
 - Fifteen unmount/remount cycles interleave theme changes while the view is
   absent and present. The final view has the current green theme, the engine
-  reports balanced lifetime traffic, and no stale styles or crashes occur.
+  holds one view per mount (below the prune threshold), and no stale styles or
+  crashes occur.
 - The focused Detox suite passes all three scenarios in compiler mode. As a
   negative control, installing no engine makes all three fail on their active
   link assertions, which proves the suite exercises the registry path.

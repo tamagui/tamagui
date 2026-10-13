@@ -6,10 +6,10 @@ import type { HybridObject } from "react-native-nitro-modules";
 * beyond "a named state per scope selects which slot props apply". Tamagui
 * semantics (theme names, scope wiring, compiler output) live in JS.
 *
-* The methods that take values Nitro cannot type (`link`, `setTableState`,
-* `applyViewStates`, `getViewState`) are NOT in this spec. They are
-* registered as raw hybrid methods in C++ and typed on the JS side in
-* index.native.ts.
+* The methods that take values Nitro cannot type (`link`, `linkTables`,
+* `setTableState`, `applyViewStates`, `getViewState`) are NOT in this spec.
+* They are registered as raw hybrid methods in C++ and typed on the JS side
+* in index.native.ts.
 *
 * Threading: every method must be called from the JS thread. The engine is
 * single-threaded by contract and holds no locks.

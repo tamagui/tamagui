@@ -1,8 +1,9 @@
 import { expect, test } from 'vitest'
 import {
+  createNativeStyleLinkState,
   flushNativeStyleLinks,
   getNativeStyleEngineCacheStats,
-  linkNativeStyleMapping,
+  linkNativeStyleHost,
   removeNativeStyleScope,
   resolveNativeStyleMapping,
   setNativeStyleEngine,
@@ -10,7 +11,7 @@ import {
   type NativeStyleEngine,
 } from '../web/src/helpers/nativeStyleEngine'
 
-test('native mapping generations retain mounted links and bound memo maps', () => {
+test('native mapping generations keep linked mappings and bound memo maps', () => {
   const tableUpdates: { tableId: number; state: string; props: object }[] = []
   let linkedTable: unknown
   const engine: NativeStyleEngine = {
@@ -20,7 +21,6 @@ test('native mapping generations retain mounted links and bound memo maps', () =
     },
     linkTables: (_refs, tableIds) => {
       linkedTable = tableIds[0]
-      return 1
     },
     unlink: () => {},
     applyViewStates: () => {},
@@ -36,13 +36,10 @@ test('native mapping generations retain mounted links and bound memo maps', () =
 
   setNativeStyleEngine(engine)
   updateNativeStyleScope('cache-scope', 'initial', initialTheme)
-  const link = linkNativeStyleMapping(
+  linkNativeStyleHost(
     {},
-    liveMapping,
-    'cache-scope',
-    'initial',
-    initialTheme
-  )!
+    createNativeStyleLinkState(liveMapping, 'cache-scope', 'initial', initialTheme)
+  )
   flushNativeStyleLinks()
 
   for (let i = 0; i <= 10_000; i++) {
@@ -64,7 +61,6 @@ test('native mapping generations retain mounted links and bound memo maps', () =
     props: { backgroundColor: 'blue' },
   })
 
-  link.unlink()
   removeNativeStyleScope('cache-scope')
   setNativeStyleEngine(null)
 })
@@ -72,7 +68,7 @@ test('native mapping generations retain mounted links and bound memo maps', () =
 test('native mappings reset unsupported style values', () => {
   const engine: NativeStyleEngine = {
     link: () => ({ id: 1, unlink: () => {} }),
-    linkTables: () => 1,
+    linkTables: () => {},
     unlink: () => {},
     applyViewStates: () => {},
     setTableState: () => {},

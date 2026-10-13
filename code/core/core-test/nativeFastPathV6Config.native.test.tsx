@@ -52,7 +52,7 @@ function createMockEngine() {
   let nextId = 1
   const engine: NativeStyleEngine = {
     link: () => ({ id: nextId++, unlink: () => {} }),
-    linkTables: () => 1,
+    linkTables: () => {},
     unlink: () => {},
     applyViewStates: (entries) => {
       batches.push(entries)

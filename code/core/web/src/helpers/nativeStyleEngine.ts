@@ -107,17 +107,17 @@ export interface NativeStyleEngine {
   ): NativeStyleEngineLinkHandle | null
   /**
    * links many mounted hosts to shared tables in one call: entry i links
-   * refs[i] to tableIds[i] under scopes[scopeIndexes[i]]. returns the id of
-   * entry 0; ids are consecutive, and an entry whose host is gone consumes
-   * its id unlinked
+   * refs[i] to tableIds[i] under scopes[scopeIndexes[i]]. a host already
+   * linked moves to its new entry, and the engine drops linked views that
+   * have left the tree, so table links are never unlinked by id
    */
   linkTables(
     refs: unknown[],
     tableIds: number[],
     scopeIndexes: number[],
     scopes: string[]
-  ): number
-  /** unlinks an id from linkTables */
+  ): void
+  /** unlinks an id from link with per-view slots */
   unlink(id: number): void
   /**
    * fills one state of a shared table, read by every view linked to it;
@@ -155,7 +155,7 @@ const compiledMappings = new Map<string, CompiledMapping>()
 // linked mappings per scope, with their live link counts. they remain update
 // owners across memo-generation rollovers, and a scope change only syncs the
 // mappings linked under that scope
-const scopeMappings = new Map<string, Map<CompiledMapping, number>>()
+const scopeMappings = new Map<string, Set<CompiledMapping>>()
 let nextTableId = 1
 
 function getCompiledMapping(mapping: NativeStyleThemeMapping): CompiledMapping {
@@ -223,11 +223,10 @@ function syncTableState(
 
 export function setNativeStyleEngine(next: NativeStyleEngine | null): void {
   if (engine !== next) {
-    settleReleases()
     compiledMappings.clear()
     scopeMappings.clear()
-    pendingLinks = []
-    unlinkedPending = 0
+    pendingHosts = []
+    pendingStates = []
   }
   engine = next
   if (next) {
@@ -257,7 +256,7 @@ export function updateNativeStyleScope(
     // one theme, so every scope showing it reads the same table entry
     const linked = scopeMappings.get(scopeId)
     if (linked) {
-      for (const compiled of linked.keys()) {
+      for (const compiled of linked) {
         syncTableState(compiled, stateName, theme as Record<string, unknown>)
       }
     }
@@ -267,6 +266,11 @@ export function updateNativeStyleScope(
 
 export function removeNativeStyleScope(scopeId: string): void {
   if (!scopeStates.delete(scopeId)) return
+  // a <Theme> removes and re-adds its scope in one commit whenever its state
+  // changes; only a scope still gone after that commit drops its mappings
+  queueMicrotask(() => {
+    if (!scopeStates.has(scopeId)) scopeMappings.delete(scopeId)
+  })
   engine?.removeScope(scopeId)
 }
 
@@ -278,179 +282,108 @@ export function resolveNativeStyleMapping(
   return resolveCompiledMapping(getCompiledMapping(mapping), stateName, theme).renderProps
 }
 
-interface MappingLink {
-  ref: unknown
-  compiled: CompiledMapping
+/**
+ * what a host rendered: one mapping under one scope state. every host of a
+ * compiled component that rendered that state shares one record, so a mount
+ * allocates nothing to link
+ */
+export interface NativeStyleLinkState {
+  mapping: NativeStyleThemeMapping
   scopeId: string
-  /** 0 while pending, -1 once unlinked */
-  id: number
-  /** the engine that assigned `id`: a later engine swap must not receive its unlink */
-  owner: NativeStyleEngine | null
+  stateName: string
+  theme: Record<string, unknown>
 }
 
-// views link lazily: a mount only records its host here, and the engine
-// links every pending view in one call before a scope next changes. linking
-// exists for theme switches, so a mount pays nothing native, and a view that
-// unmounts before any switch never reaches the engine
-let pendingLinks: MappingLink[] = []
-// pending entries unlinked before any flush; compacted once they dominate
-let unlinkedPending = 0
-
-function trackScopeMapping(link: MappingLink, delta: 1 | -1) {
-  let linked = scopeMappings.get(link.scopeId)
-  if (!linked) scopeMappings.set(link.scopeId, (linked = new Map()))
-  const count = (linked.get(link.compiled) ?? 0) + delta
-  if (count) {
-    linked.set(link.compiled, count)
-  } else {
-    linked.delete(link.compiled)
-    if (!linked.size) scopeMappings.delete(link.scopeId)
-  }
-}
-
-/** links every pending view in one engine call */
-export function flushNativeStyleLinks(): void {
-  settleReleases()
-  if (!pendingLinks.length) return
-  const links = pendingLinks
-  pendingLinks = []
-  unlinkedPending = 0
-  if (!engine) return
-  const live = links.filter((link) => link.id === 0)
-  if (!live.length) return
-  const refs: unknown[] = []
-  const tableIds: number[] = []
-  const scopeIndexes: number[] = []
-  const scopes: string[] = []
-  for (const link of live) {
-    let scopeIndex = scopes.indexOf(link.scopeId)
-    if (scopeIndex === -1) scopeIndex = scopes.push(link.scopeId) - 1
-    refs.push(link.ref)
-    tableIds.push(link.compiled.tableId)
-    scopeIndexes.push(scopeIndex)
-  }
-  const firstId = engine.linkTables(refs, tableIds, scopeIndexes, scopes)
-  for (let i = 0; i < live.length; i++) {
-    const link = live[i]!
-    link.id = firstId + i
-    link.owner = engine
-    link.ref = null
-    trackScopeMapping(link, 1)
-  }
-}
-
-// React detaches and re-attaches a callback ref whenever the callback changes,
-// which a parent re-render does to every child. a release settles after the
-// commit, so the same host attaching again keeps its link and the engine keeps
-// its per-view caches instead of unlinking and relinking every view
-interface Release {
-  compiled: CompiledMapping
-  scopeId: string
-  handle: NativeStyleEngineLinkHandle
-  settle: () => void
-}
-const releases = new Map<unknown, Release>()
-let settleQueued = false
-
-function settleReleases() {
-  settleQueued = false
-  if (!releases.size) return
-  const settling = [...releases.values()]
-  releases.clear()
-  for (const release of settling) release.settle()
-}
-
-function releasable(
-  ref: unknown,
-  compiled: CompiledMapping,
-  scopeId: string,
-  id: number,
-  settle: () => void
-): NativeStyleEngineLinkHandle {
-  const handle: NativeStyleEngineLinkHandle = {
-    id,
-    unlink: () => {
-      const prior = releases.get(ref)
-      if (prior && prior.handle !== handle) prior.settle()
-      releases.set(ref, { compiled, scopeId, handle, settle })
-      if (!settleQueued) {
-        settleQueued = true
-        queueMicrotask(settleReleases)
-      }
-    },
-  }
-  return handle
-}
-
-export function linkNativeStyleMapping(
-  ref: unknown,
+export function createNativeStyleLinkState(
   mapping: NativeStyleThemeMapping,
   scopeId: string,
   stateName: string,
   theme: Record<string, unknown>
-): NativeStyleEngineLinkHandle | null {
-  if (!engine) return null
+): NativeStyleLinkState {
+  return { mapping, scopeId, stateName, theme }
+}
 
-  const compiled = getCompiledMapping(mapping)
+// views link lazily: a mount only records its host and the state it rendered,
+// and the engine links every pending view in one call before a scope next
+// changes. linking exists for theme switches, so a mount pays nothing native.
+// nothing unlinks: the engine drops views that left the tree when it links, so
+// an unmount costs nothing either
+let pendingHosts: unknown[] = []
+let pendingStates: NativeStyleLinkState[] = []
+// past this many pending hosts, link them once the JS thread idles, so hosts
+// that mount and unmount without a scope change never accumulate
+const maxPendingHosts = 4096
+let idleFlushQueued = false
+
+function idleFlush() {
+  idleFlushQueued = false
+  flushNativeStyleLinks()
+}
+
+function addScopeMapping(scopeId: string, compiled: CompiledMapping) {
+  let linked = scopeMappings.get(scopeId)
+  if (!linked) scopeMappings.set(scopeId, (linked = new Set()))
+  linked.add(compiled)
+}
+
+/** links every pending view in one engine call */
+export function flushNativeStyleLinks(): void {
+  if (!pendingHosts.length) return
+  const hosts = pendingHosts
+  const states = pendingStates
+  pendingHosts = []
+  pendingStates = []
+  if (!engine) return
+  const tableIds: number[] = new Array(hosts.length)
+  const scopeIndexes: number[] = new Array(hosts.length)
+  const scopes: string[] = []
+  let last: NativeStyleLinkState | undefined
+  let tableId = 0
+  let scopeIndex = 0
+  for (let i = 0; i < hosts.length; i++) {
+    const state = states[i]!
+    if (state !== last) {
+      last = state
+      const compiled = getCompiledMapping(state.mapping)
+      // the table must hold the state each view rendered before the switch
+      syncTableState(compiled, state.stateName, state.theme)
+      addScopeMapping(state.scopeId, compiled)
+      tableId = compiled.tableId
+      scopeIndex = scopes.indexOf(state.scopeId)
+      if (scopeIndex === -1) scopeIndex = scopes.push(state.scopeId) - 1
+    }
+    tableIds[i] = tableId
+    scopeIndexes[i] = scopeIndex
+  }
+  engine.linkTables(hosts, tableIds, scopeIndexes, scopes)
+}
+
+/** records a mounted host for linking. a host attaching twice links once */
+export function linkNativeStyleHost(host: unknown, state: NativeStyleLinkState): void {
+  if (!engine) return
   // a scope can advance (layout effect) after a concurrent render captured its
-  // theme but before that render's host ref links. link that host now against
+  // theme but before that render's host attaches. link that host now against
   // the live scope state and have the engine commit it once to correct the
   // stale React commit.
-  const scopeState = scopeStates.get(scopeId)
-  const stale =
-    scopeState && (scopeState.name !== stateName || scopeState.theme !== theme)
-  const kept = releases.get(ref)
-  if (kept) {
-    releases.delete(ref)
-    if (!stale && kept.compiled === compiled && kept.scopeId === scopeId)
-      return kept.handle
-    kept.settle()
+  const live = scopeStates.get(state.scopeId)
+  if (live && (live.name !== state.stateName || live.theme !== state.theme)) {
+    const compiled = getCompiledMapping(state.mapping)
+    syncTableState(compiled, live.name, live.theme as Record<string, unknown>)
+    addScopeMapping(state.scopeId, compiled)
+    engine.link(host, compiled.tableId, state.scopeId, true)
+    return
   }
-  if (stale) {
-    syncTableState(compiled, scopeState.name, scopeState.theme as Record<string, unknown>)
-    const handle = engine.link(ref, compiled.tableId, scopeId, true)
-    if (!handle) return null
-    const link: MappingLink = {
-      ref: null,
-      compiled,
-      scopeId,
-      id: handle.id,
-      owner: engine,
-    }
-    trackScopeMapping(link, 1)
-    return releasable(ref, compiled, scopeId, handle.id, () => {
-      if (link.id === -1) return
-      link.id = -1
-      if (link.owner === engine) trackScopeMapping(link, -1)
-      handle.unlink()
-    })
+  pendingHosts.push(host)
+  pendingStates.push(state)
+  if (pendingHosts.length >= maxPendingHosts && !idleFlushQueued) {
+    idleFlushQueued = true
+    requestIdleCallback(idleFlush)
   }
-
-  // the table must hold the state this view rendered before a switch links it
-  syncTableState(compiled, stateName, theme)
-  const link: MappingLink = { ref, compiled, scopeId, id: 0, owner: null }
-  pendingLinks.push(link)
-  return releasable(ref, compiled, scopeId, 0, () => {
-    const id = link.id
-    if (id === -1) return
-    link.id = -1
-    link.ref = null
-    if (id > 0) {
-      // scope accounting was reset when the engine changed
-      if (link.owner === engine) trackScopeMapping(link, -1)
-      link.owner!.unlink(id)
-    } else if (++unlinkedPending > 512 && unlinkedPending * 2 > pendingLinks.length) {
-      pendingLinks = pendingLinks.filter((pending) => pending.id === 0)
-      unlinkedPending = 0
-    }
-  })
 }
 
 /** memo-generation and live-owner sizes for development diagnostics and probes */
 export const getNativeStyleEngineCacheStats = () => {
-  const active = new Set(
-    [...scopeMappings.values()].flatMap((linked) => [...linked.keys()])
-  )
+  const active = new Set([...scopeMappings.values()].flatMap((linked) => [...linked]))
   return {
     mappings: compiledMappings.size,
     activeMappings: active.size,

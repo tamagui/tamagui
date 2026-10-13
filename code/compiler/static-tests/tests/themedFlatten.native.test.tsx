@@ -78,12 +78,15 @@ function createMockEngine() {
       links.push({ id, scopeId, table, commitNow })
       return { id, unlink: () => {} }
     },
-    linkTables: (_refs, tableIds, _scopeIndexes, scopes) => {
-      const firstId = nextId
+    linkTables: (_refs, tableIds, scopeIndexes, scopes) => {
       tableIds.forEach((table, i) => {
-        links.push({ id: nextId++, scopeId: scopes[i]!, table, commitNow: false })
+        links.push({
+          id: nextId++,
+          scopeId: scopes[scopeIndexes[i]!]!,
+          table,
+          commitNow: false,
+        })
       })
-      return firstId
     },
     unlink: () => {},
     applyViewStates: (entries) => updates.push(...entries),
