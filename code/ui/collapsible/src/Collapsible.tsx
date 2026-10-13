@@ -95,7 +95,8 @@ const CollapsibleTrigger = createStyledHOC(
 
     return (
       <CollapsibleTriggerFrame
-        aria-controls={context.contentId}
+        // closed content is unmounted, so only name it while it exists
+        aria-controls={context.open ? context.contentId : undefined}
         aria-expanded={context.open || false}
         data-state={getState(context.open)}
         data-disabled={context.disabled ? '' : undefined}
@@ -147,7 +148,11 @@ const CollapsibleContent = createStyledHOC(
     return (
       <AnimatePresence {...contentProps}>
         {forceMount || context.open ? (
-          <CollapsibleContentFrame ref={forwardedRef} {...contentProps}>
+          <CollapsibleContentFrame
+            id={context.contentId}
+            ref={forwardedRef}
+            {...contentProps}
+          >
             <ResetPresence>{children}</ResetPresence>
           </CollapsibleContentFrame>
         ) : null}
