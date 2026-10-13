@@ -42,12 +42,12 @@ export interface NativeStyleEngine {
     link(ref: unknown, table: NativeStyleEngineSlots | number, scopeId?: string, commitNow?: boolean): NativeStyleEngineLinkHandle | null;
     /**
      * links many mounted hosts to shared tables in one call: entry i links
-     * refs[i] to tableIds[i] under scopes[scopeIndexes[i]]. returns the id of
-     * entry 0; ids are consecutive, and an entry whose host is gone consumes
-     * its id unlinked
+     * refs[i] to tableIds[i] under scopes[scopeIndexes[i]]. a host already
+     * linked moves to its new entry, and the engine drops linked views that
+     * have left the tree, so table links are never unlinked by id
      */
-    linkTables(refs: unknown[], tableIds: number[], scopeIndexes: number[], scopes: string[]): number;
-    /** unlinks an id from linkTables */
+    linkTables(refs: unknown[], tableIds: number[], scopeIndexes: number[], scopes: string[]): void;
+    /** unlinks an id from link with per-view slots */
     unlink(id: number): void;
     /**
      * fills one state of a shared table, read by every view linked to it;
@@ -64,9 +64,22 @@ export declare function getNativeStyleEngine(): NativeStyleEngine | null;
 export declare function updateNativeStyleScope(scopeId: string, stateName: string, theme: object): void;
 export declare function removeNativeStyleScope(scopeId: string): void;
 export declare function resolveNativeStyleMapping(mapping: NativeStyleThemeMapping, stateName: string, theme: Record<string, unknown>): Record<string, unknown>;
+/**
+ * what a host rendered: one mapping under one scope state. every host of a
+ * compiled component that rendered that state shares one record, so a mount
+ * allocates nothing to link
+ */
+export interface NativeStyleLinkState {
+    mapping: NativeStyleThemeMapping;
+    scopeId: string;
+    stateName: string;
+    theme: Record<string, unknown>;
+}
+export declare function createNativeStyleLinkState(mapping: NativeStyleThemeMapping, scopeId: string, stateName: string, theme: Record<string, unknown>): NativeStyleLinkState;
 /** links every pending view in one engine call */
 export declare function flushNativeStyleLinks(): void;
-export declare function linkNativeStyleMapping(ref: unknown, mapping: NativeStyleThemeMapping, scopeId: string, stateName: string, theme: Record<string, unknown>): NativeStyleEngineLinkHandle | null;
+/** records a mounted host for linking. a host attaching twice links once */
+export declare function linkNativeStyleHost(host: unknown, state: NativeStyleLinkState): void;
 /** memo-generation and live-owner sizes for development diagnostics and probes */
 export declare const getNativeStyleEngineCacheStats: () => {
     mappings: number;

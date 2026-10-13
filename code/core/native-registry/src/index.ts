@@ -45,9 +45,7 @@ export function linkTables(
   _tableIds: number[],
   _scopeIndexes: number[],
   _scopes: string[]
-): number {
-  return 0
-}
+): void {}
 
 export function unlink(_id: number): void {}
 

@@ -76,19 +76,17 @@ function createMockEngine() {
         },
       }
     },
-    linkTables: (_refs, tableIds, _scopeIndexes, scopes) => {
-      const firstId = nextId
+    linkTables: (_refs, tableIds, scopeIndexes, scopes) => {
       tableIds.forEach((table, i) => {
         links.push({
           id: nextId++,
-          scopeId: scopes[i]!,
+          scopeId: scopes[scopeIndexes[i]!]!,
           table,
           slots: {},
           commitNow: false,
           activeState: '',
         })
       })
-      return firstId
     },
     unlink: (id) => {
       const index = links.findIndex((linked) => linked.id === id)

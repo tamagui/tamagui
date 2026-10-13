@@ -111,13 +111,17 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
   jsi::Value link(jsi::Runtime& rt, const jsi::Value& thisValue,
                   const jsi::Value* args, size_t count);
 
+  // raw JSI: linkTables(nodes, tableIds, scopeIndexes, scopes) -> void
+  // links many views to shared tables; a view already linked to a table
+  // moves to its new entry. table links are never unlinked by id: views that
+  // left the tree are pruned here once the linked count doubles
+  jsi::Value linkTables(jsi::Runtime& rt, const jsi::Value& thisValue,
+                        const jsi::Value* args, size_t count);
+
   // raw JSI: applyViewStates([{id, state, props?}]) -> void
   // batched per-view state selection: for each entry, `props` (when given)
   // replaces the view's state table entry under `state`, the view's active
   // state becomes `state`, and all changed views commit in ONE transaction.
-  jsi::Value linkTables(jsi::Runtime& rt, const jsi::Value& thisValue,
-                        const jsi::Value* args, size_t count);
-
   jsi::Value applyViewStates(jsi::Runtime& rt, const jsi::Value& thisValue,
                              const jsi::Value* args, size_t count);
 
@@ -130,6 +134,13 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
   // debug/test introspection of a linked view's tables; not a hot path
   jsi::Value getViewState(jsi::Runtime& rt, const jsi::Value& thisValue,
                           const jsi::Value* args, size_t count);
+
+  // links a shadow node to a shared table, reusing its family's link
+  LinkedView& linkTableView(const std::shared_ptr<const facebook::react::ShadowNode>& node,
+                            const std::shared_ptr<Table>& table, std::string scopeId);
+
+  // drops linked views whose family is in no shadow tree
+  void pruneUnmounted(jsi::Runtime& rt);
 
   // resolve the active state name for a scope: scope entry, else root
   const std::string* activeStateName(const std::string& scopeId) const;
@@ -149,6 +160,9 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
   const std::string* viewStateName(const LinkedView& view) const;
 
   std::unordered_map<double, LinkedView> views_;
+  // table views by family: a host attaching again keeps one link
+  std::unordered_map<const facebook::react::ShadowNodeFamily*, double> tableViewIds_;
+  size_t pruneAt_ = 1024;
   std::unordered_map<double, std::shared_ptr<Table>> tables_;
   std::unordered_map<std::string, std::string> scopeStates_;  // "" = root
   double nextId_ = 1;

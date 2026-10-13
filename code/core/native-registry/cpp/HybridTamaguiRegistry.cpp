@@ -14,6 +14,7 @@
 #include <react/renderer/uimanager/UIManagerBinding.h>
 #include <react/renderer/uimanager/primitives.h>
 
+#include <algorithm>
 #include <cstring>
 #include <unordered_set>
 #include <vector>
@@ -51,19 +52,23 @@ jsi::Value HybridTamaguiRegistry::link(jsi::Runtime& rt, const jsi::Value&,
 
   runtime_ = &rt;
 
-  const double id = nextId_++;
-  auto& view = views_[id];
-  view.node = wrapper->shadowNode;
-  view.scopeId = args[2].asString(rt).utf8(rt);
+  double id;
+  LinkedView* linked;
   if (args[1].isNumber()) {
     auto& table = tables_[args[1].asNumber()];
     if (!table) table = std::make_shared<Table>();
-    view.table = table;
+    linked = &linkTableView(wrapper->shadowNode, table, args[2].asString(rt).utf8(rt));
+    id = tableViewIds_.at(&wrapper->shadowNode->getFamily());
   } else {
+    id = nextId_++;
+    linked = &views_[id];
+    linked->node = wrapper->shadowNode;
+    linked->scopeId = args[2].asString(rt).utf8(rt);
     auto slots = jsi::dynamicFromValue(rt, args[1]);
-    view.baseProps = slots.getDefault("base", nullptr);
-    view.stateProps = slots.getDefault("state", nullptr);
+    linked->baseProps = slots.getDefault("base", nullptr);
+    linked->stateProps = slots.getDefault("state", nullptr);
   }
+  auto& view = *linked;
 
   if (count > 3 && args[3].isBool() && args[3].getBool()) {
     if (const auto* name = viewStateName(view)) {
@@ -76,9 +81,8 @@ jsi::Value HybridTamaguiRegistry::link(jsi::Runtime& rt, const jsi::Value&,
 }
 
 // links many views to shared tables in one call: entry i is shadow node
-// nodes[i] on table tableIds[i] under scope scopes[scopeIndexes[i]]. ids are
-// issued in order starting at the returned id; an entry without a live shadow
-// node still consumes its id and stays unlinked
+// nodes[i] on table tableIds[i] under scope scopes[scopeIndexes[i]]. a family
+// already linked to a table keeps its link and moves to the new entry
 jsi::Value HybridTamaguiRegistry::linkTables(jsi::Runtime& rt, const jsi::Value&,
                                              const jsi::Value* args, size_t count) {
   if (count < 4 || !args[0].isObject() || !args[1].isObject() ||
@@ -98,9 +102,6 @@ jsi::Value HybridTamaguiRegistry::linkTables(jsi::Runtime& rt, const jsi::Value&
   }
 
   const size_t size = nodes.size(rt);
-  const double firstId = nextId_;
-  nextId_ += static_cast<double>(size);
-
   std::shared_ptr<Table> table;
   double tableId = -1;
   for (size_t i = 0; i < size; i++) {
@@ -119,14 +120,57 @@ jsi::Value HybridTamaguiRegistry::linkTables(jsi::Runtime& rt, const jsi::Value&
       if (!entry) entry = std::make_shared<Table>();
       table = entry;
     }
-
-    auto& view = views_[firstId + static_cast<double>(i)];
-    view.node = wrapper->shadowNode;
-    view.scopeId = scopes.at(
-        static_cast<size_t>(scopeIndexes.getValueAtIndex(rt, i).asNumber()));
-    view.table = table;
+    linkTableView(wrapper->shadowNode, table,
+                  scopes.at(static_cast<size_t>(
+                      scopeIndexes.getValueAtIndex(rt, i).asNumber())));
   }
-  return jsi::Value(firstId);
+  if (views_.size() > pruneAt_) pruneUnmounted(rt);
+  return jsi::Value::undefined();
+}
+
+HybridTamaguiRegistry::LinkedView& HybridTamaguiRegistry::linkTableView(
+    const std::shared_ptr<const ShadowNode>& node,
+    const std::shared_ptr<Table>& table, std::string scopeId) {
+  auto [it, added] = tableViewIds_.try_emplace(&node->getFamily(), nextId_);
+  if (added) nextId_ += 1;
+  auto& view = views_[it->second];
+  if (view.table != table) {
+    view.table = table;
+    view.warm = {};
+  }
+  view.node = node;
+  view.scopeId = std::move(scopeId);
+  return view;
+}
+
+void HybridTamaguiRegistry::pruneUnmounted(jsi::Runtime& rt) {
+  auto binding = UIManagerBinding::getBinding(rt);
+  if (!binding) return;
+  std::unordered_set<const ShadowNodeFamily*> mounted;
+  mounted.reserve(views_.size() * 2);
+  std::vector<const ShadowNode*> stack;
+  binding->getUIManager().getShadowTreeRegistry().enumerate(
+      [&](const ShadowTree& tree, bool& /*stop*/) {
+        stack.push_back(tree.getCurrentRevision().rootShadowNode.get());
+        while (!stack.empty()) {
+          const ShadowNode* node = stack.back();
+          stack.pop_back();
+          mounted.insert(&node->getFamily());
+          for (const auto& child : node->getChildren()) {
+            stack.push_back(child.get());
+          }
+        }
+      });
+  for (auto it = views_.begin(); it != views_.end();) {
+    const auto* family = &it->second.node->getFamily();
+    if (mounted.count(family)) {
+      ++it;
+      continue;
+    }
+    if (it->second.table) tableViewIds_.erase(family);
+    it = views_.erase(it);
+  }
+  pruneAt_ = std::max<size_t>(1024, views_.size() * 2);
 }
 
 const std::string* HybridTamaguiRegistry::viewStateName(
@@ -136,7 +180,10 @@ const std::string* HybridTamaguiRegistry::viewStateName(
 }
 
 void HybridTamaguiRegistry::unlink(double id) {
-  views_.erase(id);
+  auto it = views_.find(id);
+  if (it == views_.end()) return;
+  if (it->second.table) tableViewIds_.erase(&it->second.node->getFamily());
+  views_.erase(it);
 }
 
 const std::string* HybridTamaguiRegistry::activeStateName(
