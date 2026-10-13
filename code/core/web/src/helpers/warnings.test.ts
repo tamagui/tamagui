@@ -308,6 +308,25 @@ describe('v3 flat-value typo warnings', () => {
       expect(warnSpy).not.toHaveBeenCalled()
     })
 
+    it('does not warn on shadow and filter recipe keywords', () => {
+      process.env.NODE_ENV = 'development'
+      for (const style of [
+        { boxShadow: 'inset 0 1px 1px red' },
+        { boxShadow: 'none' },
+        { filter: 'none' },
+      ]) {
+        getSplitStyles(
+          style,
+          { validStyles: { boxShadow: true, filter: true } } as any,
+          conf.themes.light,
+          'light',
+          {} as any,
+          {} as any
+        )
+      }
+      expect(warnSpy).not.toHaveBeenCalled()
+    })
+
     it('does not warn in production', () => {
       process.env.NODE_ENV = 'production'
       getSplitStyles(
