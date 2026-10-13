@@ -153,11 +153,63 @@ describe('NativeRegistryCorrectness', () => {
     assertSameColor(fastGreen.pinned, fallbackGreen.pinned, 'pinned green')
 
     const metrics = await readMetrics()
-    assert.equal(metrics.views, 3)
+    assert.equal(metrics.views, 4)
     assert.equal(metrics.applyCalls, 0, 'compiler mode must not use runtime updates')
     assert.ok(metrics.tableCalls > 0, 'cold compiler state should fill native tables')
     assert.ok(metrics.stateNameCalls > 0, 'scope changes should publish to the engine')
     assert.ok(metrics.commits > 0, 'the engine must commit the theme change')
+    assert.equal(metrics.misses, 0)
+  })
+
+  it('applies runtime sub-theme changes beneath a changing root', async () => {
+    // root and sub change independently: sub blue -> green, root red -> green,
+    // then sub back to blue, captured on the fallback and then on the fast path
+    const steps = [
+      { tap: null, state: 'red', sub: 'blue' },
+      { tap: 'native-fast-toggle-sub', state: 'red', sub: 'green' },
+      { tap: 'native-fast-toggle-theme', state: 'green', sub: 'green' },
+      { tap: 'native-fast-toggle-sub', state: 'green', sub: 'blue' },
+    ] as const
+    const run = async (mode: 'fallback' | 'fast') => {
+      await element(by.id(`native-fast-nested-${mode}`)).tap()
+      await waitForState(`nested:${mode}:red:ready`)
+      const colors: {
+        outer: ReturnType<typeof getDominantColor>
+        sub: ReturnType<typeof getDominantColor>
+      }[] = []
+      for (const step of steps) {
+        if (step.tap) await element(by.id(step.tap)).tap()
+        await waitForState(`nested:${mode}:${step.state}:ready`)
+        await waitFor(element(by.id('native-fast-sub-state')))
+          .toHaveText(step.sub)
+          .withTimeout(10000)
+        const name = `sub-${mode}-${step.state}-${step.sub}`
+        colors.push({
+          outer: await swatchColor('native-fast-outer', `${name}-outer`),
+          sub: await swatchColor('native-fast-sub', `${name}-sub`),
+        })
+      }
+      return colors
+    }
+
+    const fallback = await run('fallback')
+    steps.forEach((step, index) => {
+      const { outer, sub } = fallback[index]!
+      const outerOk = step.state === 'red' ? isReddish(outer) : isGreenish(outer)
+      const subOk = step.sub === 'blue' ? isBlueish(sub) : isGreenish(sub)
+      assert.ok(outerOk, `fallback step ${index} outer ${formatRGB(outer)}`)
+      assert.ok(subOk, `fallback step ${index} sub ${formatRGB(sub)}`)
+    })
+
+    const fast = await run('fast')
+    steps.forEach((_step, index) => {
+      assertSameColor(fast[index]!.outer, fallback[index]!.outer, `step ${index} outer`)
+      assertSameColor(fast[index]!.sub, fallback[index]!.sub, `step ${index} sub`)
+    })
+
+    const metrics = await readMetrics()
+    assert.equal(metrics.applyCalls, 0, 'compiler mode must not use runtime updates')
+    assert.ok(metrics.commits > 0, 'the engine must commit the sub-theme changes')
     assert.equal(metrics.misses, 0)
   })
 

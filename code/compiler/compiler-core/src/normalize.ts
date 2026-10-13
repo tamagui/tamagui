@@ -817,8 +817,24 @@ export function normalizeElements(
     elements: elements.sort((left, right) => left.span.start - right.span.start),
     styledDefinitions: styledDefinitions(candidate, id, program, imports, bailouts),
     domStyleDefinitions: domStyleDefinitions(id, program, imports),
+    declarationsAt: declarationsOffset(program),
     bailouts: bailouts.sort((left, right) => left.span.start - right.span.start),
   }
+}
+
+// generated declarations must precede any module-scope use, so they go right
+// after the import prologue instead of at the end of the module
+function declarationsOffset(program: AstNode): number {
+  let offset = 0
+  for (const statement of childNodes(program, 'body')) {
+    if (
+      statement.type === 'ImportDeclaration' ||
+      typeof statement.directive === 'string'
+    ) {
+      offset = statement.end
+    } else break
+  }
+  return offset
 }
 
 export function nodeAtSpan(program: AstNode, start: number, end: number): AstNode | null {
