@@ -237,12 +237,38 @@ export type Theme = {
   background002: string
   background001: string
   outlineColor: string
+} & {
+  [K in keyof typeof kebabKeys as (typeof kebabKeys)[K]]: string
 }
+
+// v3 component skins read kebab-case semantic keys, so every v5 theme carries both spellings
+const kebabKeys = {
+  backgroundHover: 'background-hover',
+  backgroundPress: 'background-press',
+  backgroundFocus: 'background-focus',
+  backgroundActive: 'background-active',
+  borderColor: 'border-color',
+  borderColorHover: 'border-color-hover',
+  borderColorPress: 'border-color-press',
+  borderColorFocus: 'border-color-focus',
+  colorHover: 'color-hover',
+  colorPress: 'color-press',
+  colorFocus: 'color-focus',
+  placeholderColor: 'placeholder-color',
+  outlineColor: 'outline-color',
+  shadowColor: 'shadow-color',
+  accentBackground: 'accent-background',
+  accentColor: 'accent-color',
+} as const
 
 function t(a: [number, number][]) {
   let res: Record<string, string> = {}
   for (const [ki, vi] of a) {
-    res[ks[ki] as string] = colors[vi] as string
+    const key = ks[ki] as string
+    const value = colors[vi] as string
+    res[key] = value
+    const kebab = kebabKeys[key as keyof typeof kebabKeys]
+    if (kebab) res[kebab] = value
   }
   return res as Theme
 }
