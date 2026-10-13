@@ -44,7 +44,7 @@ interface Engine extends TamaguiRegistry {
     tableIds: number[],
     scopeIndexes: number[],
     scopes: string[]
-  ): number
+  ): void
   applyViewStates(entries: ViewStateUpdate[]): void
   setTableState(tableId: number, state: string, props: Record<string, unknown>): void
   getViewState(id: number): ViewStateSnapshot | null
@@ -129,25 +129,25 @@ export function link(
 
 /**
  * Link many host views to shared tables in one native call. Entry i links
- * refs[i] to table tableIds[i] under scope scopes[scopeIndexes[i]]. Returns
- * the id of entry 0; ids are consecutive, and an entry whose host has no
- * shadow node consumes its id unlinked. The refs are React Native host
- * components (never Nitro views, see link).
+ * refs[i] to table tableIds[i] under scope scopes[scopeIndexes[i]]. A host
+ * already linked to a table moves to its new entry, and the engine drops
+ * linked views that left the tree, so table links need no unlink. The refs
+ * are React Native host components (never Nitro views, see link).
  */
 export function linkTables(
   refs: unknown[],
   tableIds: number[],
   scopeIndexes: number[],
   scopes: string[]
-): number {
+): void {
   const nodes = new Array(refs.length)
   for (let i = 0; i < refs.length; i++) {
     nodes[i] = getShadowNode(refs[i])
   }
-  return getEngine().linkTables(nodes, tableIds, scopeIndexes, scopes)
+  getEngine().linkTables(nodes, tableIds, scopeIndexes, scopes)
 }
 
-/** Unlink by an id from linkTables. Safe to call twice. */
+/** Unlink by an id from link. Safe to call twice. */
 export function unlink(id: number): void {
   getEngine().unlink(id)
 }

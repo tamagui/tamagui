@@ -16,6 +16,16 @@ export declare function isAvailable(): boolean;
 */
 export declare function link(ref: unknown, table: ViewSlots | number, scopeId?: string, commitNow?: boolean): LinkHandle | null;
 /**
+* Link many host views to shared tables in one native call. Entry i links
+* refs[i] to table tableIds[i] under scope scopes[scopeIndexes[i]]. A host
+* already linked to a table moves to its new entry, and the engine drops
+* linked views that left the tree, so table links need no unlink. The refs
+* are React Native host components (never Nitro views, see link).
+*/
+export declare function linkTables(refs: unknown[], tableIds: number[], scopeIndexes: number[], scopes: string[]): void;
+/** Unlink by an id from link. Safe to call twice. */
+export declare function unlink(id: number): void;
+/**
 * Batched per-view state selection: cold entries carry `props` (computed by
 * the caller, colors already processed via processStyleColors), warm entries
 * just name the state. One native commit for the whole batch.

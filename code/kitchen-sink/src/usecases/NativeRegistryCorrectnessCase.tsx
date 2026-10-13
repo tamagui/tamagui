@@ -51,14 +51,13 @@ export function NativeRegistryCorrectnessCase() {
   const [churnStatus, setChurnStatus] = useState('idle')
   const [metrics, setMetrics] = useState('{}')
   const probe = useRef({
-    activeLinks: new Set<number>(),
     linkCalls: 0,
-    unlinkCalls: 0,
     applyCalls: 0,
     applyEntries: 0,
     tableCalls: 0,
     tableEntries: 0,
     stateNameCalls: 0,
+    startViewCount: 0,
     startCommitCount: 0,
     startMissCount: 0,
   })
@@ -70,26 +69,11 @@ export function NativeRegistryCorrectnessCase() {
         const linked = nativeEngine.link(ref, table, scopeId, commitNow)
         if (!linked) return null
         probe.current.linkCalls += 1
-        probe.current.activeLinks.add(linked.id)
-        return {
-          id: linked.id,
-          unlink() {
-            if (probe.current.activeLinks.delete(linked.id)) {
-              probe.current.unlinkCalls += 1
-            }
-            linked.unlink()
-          },
-        }
+        return linked
       },
       linkTables(refs, tableIds, scopeIndexes, scopes) {
-        const firstId = nativeEngine.linkTables(refs, tableIds, scopeIndexes, scopes)
+        nativeEngine.linkTables(refs, tableIds, scopeIndexes, scopes)
         probe.current.linkCalls += refs.length
-        for (let i = 0; i < refs.length; i++) probe.current.activeLinks.add(firstId + i)
-        return firstId
-      },
-      unlink(id) {
-        if (probe.current.activeLinks.delete(id)) probe.current.unlinkCalls += 1
-        nativeEngine.unlink(id)
       },
       applyViewStates(entries) {
         probe.current.applyCalls += 1
@@ -113,6 +97,7 @@ export function NativeRegistryCorrectnessCase() {
     if (ready) return
 
     const stats = registry.getStats()
+    probe.current.startViewCount = stats.viewCount
     probe.current.startCommitCount = stats.commitCount
     probe.current.startMissCount = stats.missCount
     setNativeStyleEngine(mode === 'fast' ? probedEngine : null)
@@ -134,9 +119,7 @@ export function NativeRegistryCorrectnessCase() {
     setThemeName('red')
     setScenario(nextScenario)
     setMode(nextMode)
-    probe.current.activeLinks.clear()
     probe.current.linkCalls = 0
-    probe.current.unlinkCalls = 0
     probe.current.applyCalls = 0
     probe.current.applyEntries = 0
     probe.current.tableCalls = 0
@@ -149,16 +132,13 @@ export function NativeRegistryCorrectnessCase() {
     await frame()
     await frame()
     const stats = registry.getStats()
-    const activeId = probe.current.activeLinks.values().next().value
-    const activeView = activeId === undefined ? null : registry.getViewState(activeId)
     setMetrics(
       JSON.stringify({
         mode,
         scenario,
         themeName,
-        activeLinks: probe.current.activeLinks.size,
+        views: stats.viewCount - probe.current.startViewCount,
         linkCalls: probe.current.linkCalls,
-        unlinkCalls: probe.current.unlinkCalls,
         applyCalls: probe.current.applyCalls,
         applyEntries: probe.current.applyEntries,
         tableCalls: probe.current.tableCalls,
@@ -166,9 +146,6 @@ export function NativeRegistryCorrectnessCase() {
         stateNameCalls: probe.current.stateNameCalls,
         commits: stats.commitCount - probe.current.startCommitCount,
         misses: stats.missCount - probe.current.startMissCount,
-        activeState: activeView?.activeState,
-        activeBackground: activeView?.nativeProps?.backgroundColor,
-        stateNames: activeView ? Object.keys(activeView.states || {}) : [],
       })
     )
   }

@@ -8,6 +8,8 @@ export type { LinkHandle, RegistryStats, Unlink, ViewSlots, ViewStateSnapshot, V
 export { ROOT_SCOPE, getMirroredStateName } from "./mirror";
 export declare function isAvailable(): boolean;
 export declare function link(_ref: unknown, _table: ViewSlots | number, _scopeId?: string, _commitNow?: boolean): LinkHandle | null;
+export declare function linkTables(_refs: unknown[], _tableIds: number[], _scopeIndexes: number[], _scopes: string[]): void;
+export declare function unlink(_id: number): void;
 export declare function applyViewStates(_entries: ViewStateUpdate[]): void;
 export declare function setTableState(_tableId: number, _state: string, _props: Record<string, unknown>): void;
 export declare function getViewState(_id: number): ViewStateSnapshot | null;
