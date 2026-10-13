@@ -432,16 +432,38 @@ export function updateNativeStyleLink(
   }
 }
 
+// per view id, how many pending entries a render of that view superseded
+let superseded: Map<number, number> | null = null
+
 export function queueNativeViewState(entry: NativeViewStateUpdate): void {
   if (!engine) return
   if (!pending) {
     pending = []
     queueMicrotask(() => {
-      const entries = pending!
+      let entries = pending!
+      const dropped = superseded
       pending = null
+      superseded = null
+      if (dropped) {
+        entries = entries.filter(
+          (queued, index) => index >= (dropped.get(queued.id) ?? 0)
+        )
+      }
+      if (!entries.length) return
       engine?.applyViewStates(entries)
       flushListener?.(entries)
     })
   }
   pending.push(entry)
+}
+
+/**
+ * a render of a linked view commits its current styles, so updates it queued
+ * before rendering carry older props and must not land after that commit: a
+ * parent passing a raw theme value re-renders the view with the new value
+ * while the view's own theme listener queued a push of the old one
+ */
+export function supersedeNativeViewStates(id: number): void {
+  if (!pending) return
+  ;(superseded ||= new Map()).set(id, pending.length)
 }

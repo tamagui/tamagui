@@ -102,4 +102,11 @@ export declare function updateNativeStyleLink(ref: {
     nativePushedKeys?: Set<string>;
 }, host: unknown): void;
 export declare function queueNativeViewState(entry: NativeViewStateUpdate): void;
+/**
+ * a render of a linked view commits its current styles, so updates it queued
+ * before rendering carry older props and must not land after that commit: a
+ * parent passing a raw theme value re-renders the view with the new value
+ * while the view's own theme listener queued a push of the old one
+ */
+export declare function supersedeNativeViewStates(id: number): void;
 //# sourceMappingURL=nativeStyleEngine.d.ts.map

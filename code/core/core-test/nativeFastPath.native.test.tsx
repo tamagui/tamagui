@@ -21,6 +21,7 @@ import {
   setNativeStyleEngine,
   styled,
   updateMediaListeners,
+  useTheme,
   type NativeStyleEngine,
   type NativeStyleEngineSlots,
   type NativeViewStateUpdate,
@@ -193,6 +194,54 @@ test('theme toggle commits through the engine with zero re-renders', async () =>
   // the React tree did NOT re-render: it still holds the old committed style
   // (the engine, not React, owns the visual update on this path)
   expect(JSON.stringify(tree.toJSON())).toBe(before)
+})
+
+// a parent reading useTheme() passes a raw theme value as a prop. on a toggle
+// the child's theme listener queues a push computed from its last props, then
+// the parent re-renders it with the new value and React commits that. the
+// queued push must not land after that commit, or the outgoing value returns
+test('a re-render drops the push its theme listener queued from older props', async () => {
+  let setPageSub: (sub: 'red' | 'blue') => void = () => {}
+  const Page = React.memo(function Page() {
+    const theme = useTheme()
+    return <Square testID="raw" backgroundColor={theme.background.val as any} />
+  })
+  function PageHarness() {
+    const [sub, setSubState] = useState<'red' | 'blue'>('red')
+    setPageSub = setSubState
+    const page = useMemo(() => <Page />, [])
+    return (
+      <TamaguiProvider config={config} defaultTheme="dark">
+        <Theme name={sub}>{page}</Theme>
+      </TamaguiProvider>
+    )
+  }
+
+  const tree = render(<PageHarness />, { createNodeMock: () => ({}) })
+  await flush()
+  const red = (config.themes.dark_red.background as any).val
+  const blue = (config.themes.dark_blue.background as any).val
+  expect(red).not.toBe(blue)
+
+  for (const [sub, expected, outgoing] of [
+    ['blue', blue, red],
+    ['red', red, blue],
+    ['blue', blue, red],
+  ] as const) {
+    const before = mock.entries().length
+    await act(async () => setPageSub(sub))
+    await flush()
+    // React rendered the new value
+    const rendered = JSON.stringify(tree.toJSON())
+    expect(rendered).toContain(expected)
+    expect(rendered).not.toContain(outgoing)
+    // and nothing the engine applied after it carries another value
+    for (const entry of mock.entries().slice(before)) {
+      if (entry.props && 'backgroundColor' in entry.props) {
+        expect(entry.props.backgroundColor).toBe(expected)
+      }
+    }
+  }
 })
 
 test('re-toggling a pushed theme is warm: bare entry, no style computation', async () => {
