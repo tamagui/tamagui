@@ -24,6 +24,7 @@ import {
   ListItemTitle as ListItemBehaviorTitle,
   useListItem,
 } from '@tamagui/list-item'
+import { textParentInlineProps } from '@tamagui/text'
 
 export type ListItemSize = ComponentSize | boolean
 
@@ -173,7 +174,8 @@ const ListItemComponent = createStyledHOC(
       scaleIcon: props.iconSize == null ? 1 : scaleIcon,
     })
     return <ListItemFrame ref={ref} {...listItemProps} />
-  }
+  },
+  { staticConfig: { inlineProps: textParentInlineProps } }
 )
 
 export const ListItem = withStaticProperties(ListItemComponent, {
