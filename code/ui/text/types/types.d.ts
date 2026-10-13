@@ -35,6 +35,7 @@ export declare const textParentProps: {
     readonly numberOfLines: true;
     readonly textProps: true;
 };
+export declare const textParentInlineProps: Set<string>;
 export type TextContextStyles = {
     color?: SizableTextProps['color'];
     fontWeight?: SizableTextProps['fontWeight'];

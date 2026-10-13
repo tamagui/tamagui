@@ -17,6 +17,10 @@ export const textParentProps = {
   textProps: true,
 } as const
 
+// a styled() layer over a skin resolves style props itself, so the skin never
+// sees them; naming these inline passes them on for the skin to give its text.
+export const textParentInlineProps = new Set(Object.keys(textParentProps))
+
 export type TextContextStyles = {
   color?: SizableTextProps['color']
   fontWeight?: SizableTextProps['fontWeight']
