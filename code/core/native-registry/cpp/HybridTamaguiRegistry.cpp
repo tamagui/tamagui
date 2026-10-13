@@ -16,8 +16,19 @@
 
 #include <algorithm>
 #include <cstring>
+#include <optional>
 #include <unordered_set>
 #include <vector>
+
+#ifdef __ANDROID__
+#include <fbjni/fbjni.h>
+
+#include <condition_variable>
+#include <deque>
+#include <mutex>
+#include <thread>
+#include <tuple>
+#endif
 
 namespace margelo::nitro::tamagui::registry {
 
@@ -76,6 +87,8 @@ jsi::Value HybridTamaguiRegistry::link(jsi::Runtime& rt, const jsi::Value&,
       buildViewUpdate(view, *name, updates);
       commitUpdates(rt, updates);
     }
+  } else if (view.table) {
+    seedWarmProps(view);
   }
   return jsi::Value(id);
 }
@@ -120,9 +133,10 @@ jsi::Value HybridTamaguiRegistry::linkTables(jsi::Runtime& rt, const jsi::Value&
       if (!entry) entry = std::make_shared<Table>();
       table = entry;
     }
-    linkTableView(wrapper->shadowNode, table,
-                  scopes.at(static_cast<size_t>(
-                      scopeIndexes.getValueAtIndex(rt, i).asNumber())));
+    seedWarmProps(linkTableView(
+        wrapper->shadowNode, table,
+        scopes.at(static_cast<size_t>(
+            scopeIndexes.getValueAtIndex(rt, i).asNumber()))));
   }
   if (views_.size() > pruneAt_) pruneUnmounted(rt);
   return jsi::Value::undefined();
@@ -171,6 +185,17 @@ void HybridTamaguiRegistry::pruneUnmounted(jsi::Runtime& rt) {
     it = views_.erase(it);
   }
   pruneAt_ = std::max<size_t>(1024, views_.size() * 2);
+}
+
+// a view links right after React rendered it with its scope's current state
+// (a render that raced a scope change links with commitNow instead), so the
+// props it carries are that state's props, and a switch back reuses them
+void HybridTamaguiRegistry::seedWarmProps(LinkedView& view) const {
+  const auto* name = activeStateName(view.scopeId);
+  if (!name) return;
+  const auto& props = view.node->getProps();
+  view.warm.last = props;
+  view.warm.byState[*name] = props;
 }
 
 const std::string* HybridTamaguiRegistry::viewStateName(
@@ -245,34 +270,18 @@ double HybridTamaguiRegistry::getMissCount() {
 namespace {
 
 using LeafUpdates = HybridTamaguiRegistry::LeafUpdates;
+using Children = std::vector<std::shared_ptr<const ShadowNode>>;
 using AffectedNodes =
     std::unordered_map<const ShadowNodeFamily*, std::unordered_set<size_t>>;
 
-// records, for every ancestor of an updated view, which children lead to one.
-// returns whether `node` is or contains an updated view
-bool collectAffected(const ShadowNode& node, const LeafUpdates& updates,
-                     AffectedNodes& affected) {
-  bool hit = updates.contains(&node.getFamily());
-  const auto& children = node.getChildren();
-  for (size_t index = 0; index < children.size(); index++) {
-    if (collectAffected(*children[index], updates, affected)) {
-      affected[&node.getFamily()].insert(index);
-      hit = true;
-    }
-  }
-  return hit;
-}
-
-AffectedNodes findAffectedNodes(const RootShadowNode& root,
-                                const LeafUpdates& updates) {
+// for a few updates, which children of each ancestor lead to an updated view.
+// getAncestors scans each parent's children to find the child, so many
+// updates under one wide parent (a long list) cost updates x siblings: past a
+// few updates the clone walks the tree once instead (nullopt)
+std::optional<AffectedNodes> findAffectedNodes(const RootShadowNode& root,
+                                               const LeafUpdates& updates) {
+  if (updates.size() > 32) return std::nullopt;
   AffectedNodes affected;
-  // getAncestors scans each parent's children to find the child, so many
-  // updates under one wide parent (a long list) cost updates x siblings; past
-  // a few updates one walk of the tree is cheaper
-  if (updates.size() > 32) {
-    collectAffected(root, updates, affected);
-    return affected;
-  }
   for (const auto& [family, update] : updates) {
     // families of unmounted views have no ancestors in this root: skipped
     for (const auto& [parentNode, childIndex] : family->getAncestors(root)) {
@@ -338,23 +347,29 @@ std::shared_ptr<ShadowNode> restyleParagraph(const ShadowNode& node,
   return clone;
 }
 
+// clones `node` with the updated views under it, null when none is under it.
+// with `affected` it descends only into the children recorded there
 std::shared_ptr<ShadowNode> cloneSubtree(const ShadowNode& node,
                                          const LeafUpdates& updates,
-                                         const AffectedNodes& affected) {
+                                         const AffectedNodes* affected) {
   const auto* family = &node.getFamily();
 
   // only an ancestor of an updated view gets new children: RN dirties the
   // layout of any measurable node (text) cloned with a children fragment,
   // so passing them to the updated views themselves would re-measure every
   // text and re-run layout for a color change
-  auto children = ShadowNodeFragment::childrenPlaceholder();
-  if (auto it = affected.find(family); it != affected.end()) {
-    auto cloned = node.getChildren();
-    for (auto index : it->second) {
-      cloned[index] = cloneSubtree(*cloned[index], updates, affected);
+  const auto& current = node.getChildren();
+  std::shared_ptr<Children> children;
+  const auto cloneChild = [&](size_t index) {
+    if (auto child = cloneSubtree(*current[index], updates, affected)) {
+      if (!children) children = std::make_shared<Children>(current);
+      (*children)[index] = std::move(child);
     }
-    children = std::make_shared<std::vector<std::shared_ptr<const ShadowNode>>>(
-        std::move(cloned));
+  };
+  if (!affected) {
+    for (size_t index = 0; index < current.size(); index++) cloneChild(index);
+  } else if (auto it = affected->find(family); it != affected->end()) {
+    for (auto index : it->second) cloneChild(index);
   }
 
   Props::Shared newProps = ShadowNodeFragment::propsPlaceholder();
@@ -366,10 +381,7 @@ std::shared_ptr<ShadowNode> cloneSubtree(const ShadowNode& node,
                                                       RawProps(update.props()));
     };
     if (auto* warm = update.warm) {
-      if (warm->last != node.getProps() || warm->revision != update.revision) {
-        warm->byState.clear();
-        warm->revision = update.revision;
-      }
+      if (warm->last != node.getProps()) warm->byState.clear();
       auto& props = warm->byState[*update.state];
       if (!props) props = parse();
       warm->last = props;
@@ -380,14 +392,68 @@ std::shared_ptr<ShadowNode> cloneSubtree(const ShadowNode& node,
     if (auto restyled = restyleParagraph(node, newProps)) {
       return restyled;
     }
+  } else if (!children) {
+    return nullptr;
   }
 
   return node.clone({
       .props = newProps,
-      .children = children,
+      .children = children ? children : ShadowNodeFragment::childrenPlaceholder(),
       .state = ShadowNodeFragment::statePlaceholder(),
   });
 }
+
+#ifdef __ANDROID__
+// android pulls a commit's mount transaction (the tree diff, then a jni prop
+// map per updated view) on the committing thread, and a theme change updates
+// every view. the engine commits on the js thread with the tree's mounting
+// suspended, which keeps the clones taking over React's handles there, and
+// this thread resumes it: resuming mounts the latest revision, off the js
+// thread. a react commit landing in between mounts with it
+class MountThread {
+ public:
+  static void resume(std::shared_ptr<UIManagerBinding> binding,
+                     SurfaceId surfaceId) {
+    // never destroyed: the thread outlives every registry
+    static auto* thread = new MountThread();
+    {
+      std::lock_guard<std::mutex> lock(thread->mutex_);
+      thread->surfaces_.emplace_back(std::move(binding), surfaceId);
+    }
+    thread->ready_.notify_one();
+  }
+
+ private:
+  MountThread() {
+    std::thread([this] {
+      facebook::jni::ThreadScope::WithClassLoader([this] { run(); });
+    }).detach();
+  }
+
+  void run() {
+    for (;;) {
+      std::shared_ptr<UIManagerBinding> binding;
+      SurfaceId surfaceId;
+      {
+        std::unique_lock<std::mutex> lock(mutex_);
+        ready_.wait(lock, [this] { return !surfaces_.empty(); });
+        std::tie(binding, surfaceId) = std::move(surfaces_.front());
+        surfaces_.pop_front();
+      }
+      // a stopped surface is gone from the registry, and visiting holds the
+      // registry so the tree cannot stop mid-mount
+      binding->getUIManager().getShadowTreeRegistry().visit(
+          surfaceId, [](const ShadowTree& tree) {
+            tree.setCommitMode(ShadowTree::CommitMode::Normal);
+          });
+    }
+  }
+
+  std::mutex mutex_;
+  std::condition_variable ready_;
+  std::deque<std::pair<std::shared_ptr<UIManagerBinding>, SurfaceId>> surfaces_;
+};
+#endif
 
 }  // namespace
 
@@ -409,7 +475,6 @@ bool HybridTamaguiRegistry::buildViewUpdate(LinkedView& view,
     update.shared = &it->second;
     update.warm = &view.warm;
     update.state = &it->first.getString();
-    update.revision = view.table->revision;
   } else {
     auto& props = update.owned;
     props = view.baseProps.isObject() ? view.baseProps : folly::dynamic::object();
@@ -474,19 +539,32 @@ void HybridTamaguiRegistry::commitUpdates(jsi::Runtime& rt,
       ShadowNode::getUseRuntimeShadowNodeReferenceUpdateOnThread();
   ShadowNode::setUseRuntimeShadowNodeReferenceUpdateOnThread(true);
   binding->getUIManager().getShadowTreeRegistry().enumerate(
-      [this, &updates](const ShadowTree& tree, bool& /*stop*/) {
+      [&](const ShadowTree& tree, bool& /*stop*/) {
+#ifdef __ANDROID__
+        // a tree already suspended (a queued resume, or a surface not yet
+        // mountable) mounts when its suspender resumes it
+        const bool mountOffThread =
+            tree.getCommitMode() == ShadowTree::CommitMode::Normal;
+        if (mountOffThread) {
+          tree.setCommitMode(ShadowTree::CommitMode::Suspended);
+        }
+#endif
         auto status = tree.commit(
             [&updates](const RootShadowNode& oldRoot)
                 -> RootShadowNode::Unshared {
               auto affected = findAffectedNodes(oldRoot, updates);
-              if (affected.empty()) return nullptr;
-              return std::static_pointer_cast<RootShadowNode>(
-                  cloneSubtree(oldRoot, updates, affected));
+              return std::static_pointer_cast<RootShadowNode>(cloneSubtree(
+                  oldRoot, updates, affected ? &*affected : nullptr));
             },
             {.enableStateReconciliation = false, .mountSynchronously = true});
         if (status == ShadowTree::CommitStatus::Succeeded) {
           commitCount_ += 1;
         }
+#ifdef __ANDROID__
+        if (mountOffThread) {
+          MountThread::resume(binding, tree.getSurfaceId());
+        }
+#endif
       });
   ShadowNode::setUseRuntimeShadowNodeReferenceUpdateOnThread(updatedReferences);
 }
@@ -575,12 +653,16 @@ jsi::Value HybridTamaguiRegistry::setTableState(jsi::Runtime& rt,
   auto& table = tables_[args[0].asNumber()];
   if (!table) table = std::make_shared<Table>();
   const std::string stateName = args[1].asString(rt).utf8(rt);
-  table->states[stateName] = jsi::dynamicFromValue(rt, args[2]);
-  table->revision += 1;
+  auto props = jsi::dynamicFromValue(rt, args[2]);
+  auto& entry = table->states[stateName];
+  // a resend of the same values changes nothing and keeps the parsed props
+  if (entry == props) return jsi::Value::undefined();
+  entry = std::move(props);
 
   LeafUpdates updates;
   for (auto& [id, view] : views_) {
     if (view.table != table) continue;
+    view.warm.byState.erase(stateName);
     const auto* name = viewStateName(view);
     if (name && *name == stateName) buildViewUpdate(view, stateName, updates);
   }
