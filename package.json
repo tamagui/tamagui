@@ -158,7 +158,7 @@
     "@opentelemetry/sdk-node": "0.217.0",
     "@playwright/test": "1.58.2",
     "@protobufjs/utf8": "1.1.1",
-    "@swc/core": "1.14.0",
+    "@swc/core": "1.16.18",
     "@vxrn/mdx-rust": "2.6.15",
     "@xmldom/xmldom": "0.8.13",
     "axios": "0.32.0",
