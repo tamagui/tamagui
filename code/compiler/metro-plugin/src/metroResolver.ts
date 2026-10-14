@@ -186,7 +186,9 @@ export function createMetroCompilerResolver(config: MetroResolverConfig): {
               ...(resolver.assetResolutions ?? []).map(
                 (resolution: string) => `${basePath}@${resolution}x${extension}`
               ),
-            ].filter((assetPath) => fileSystemLookup(assetPath).exists)
+            ]
+              .map((assetPath) => fileSystemLookup(assetPath).realPath)
+              .filter((assetPath): assetPath is string => !!assetPath)
             return assets.length ? assets : null
           },
           resolveHasteModule: () => null,
