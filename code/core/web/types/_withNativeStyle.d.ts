@@ -3,10 +3,11 @@ import { type NativeStyleThemeMapping } from './helpers/nativeStyleEngine';
 /**
  * internal: emitted by the native compiler when experimental.nativeFastPath is on.
  *
- * One component over the host: the theme scope is the only context read and
- * the host ref queues the host for the engine's next batched link. Links never
- * detach (the engine prunes unmounted views), so a themed view costs one
- * component and one array push to mount.
+ * One component over the host: the theme scope is the only context read.
+ * Until a host ref has seen the react root, the host ref queues the view for
+ * the engine's next batched link. After that, themed hosts render with no ref
+ * and a flush walks the root. Links never detach (the engine prunes unmounted
+ * views).
  *
  * `host: 'view'`: `Component` is RN's host view (`unstable_NativeView`).
  * <View> resets TextAncestorContext for its children when it sits inside a
