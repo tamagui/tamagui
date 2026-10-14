@@ -6,6 +6,7 @@ import { setupGestureHandler } from '@tamagui/native/setup-gesture-handler'
 interface TestLaunchArgs {
   disableGestureHandler?: boolean
   disablePressEventsKeepSheet?: boolean
+  disableSheetGestureHandler?: boolean
   disableKeyboardController?: boolean
   initialTestCase?: string
   directUseCase?: string
@@ -24,11 +25,15 @@ const launchArgs = {
   ...rawLaunchArgs,
   disableGestureHandler: isTrueArg(rawLaunchArgs.disableGestureHandler),
   disablePressEventsKeepSheet: isTrueArg(rawLaunchArgs.disablePressEventsKeepSheet),
+  disableSheetGestureHandler: isTrueArg(rawLaunchArgs.disableSheetGestureHandler),
   disableKeyboardController: isTrueArg(rawLaunchArgs.disableKeyboardController),
 }
 
 if (launchArgs.disablePressEventsKeepSheet) {
   setupGestureHandler({ pressEvents: false, sheet: true })
+} else if (launchArgs.disableSheetGestureHandler) {
+  // the sheet keeps its own gesture state, so disable() alone leaves it on RNGH
+  setupGestureHandler({ pressEvents: true, sheet: false })
 } else if (launchArgs.disableGestureHandler) {
   getGestureHandler().disable()
 }

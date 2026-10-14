@@ -27,4 +27,34 @@ describe('useSheetScrollViewGestures (native)', () => {
     // a real drag from the same touch still claims it
     expect(gestures.onMoveShouldSetResponder(touch(420))).toBe(true)
   })
+
+  // rn ScrollView overrides onStartShouldSetResponder without forwarding it,
+  // so only the handlers it forwards may run here
+  test('releasing a scroll of the content frees the sheet', () => {
+    const scrollBridge = {
+      y: 0,
+      scrollStartY: -1,
+      scrollLock: false,
+      paneY: 0,
+      paneMinY: 0,
+      release: vi.fn(),
+    } as any
+    const gestures = useSheetScrollViewGestures({
+      scrollRef: { current: null },
+      scrollBridge,
+      hasScrollableContent: true,
+      scrollEnabled: true,
+      setScrollEnabled: () => {},
+    })
+
+    gestures.onTouchStart(touch(400))
+    expect(gestures.onMoveShouldSetResponder(touch(380))).toBe(true)
+    gestures.onResponderMove(touch(380))
+    gestures.onResponderMove(touch(360))
+    expect(scrollBridge.scrollLock).toBe(true)
+
+    gestures.onResponderRelease(touch(360))
+    expect(scrollBridge.scrollLock).toBe(false)
+    expect(scrollBridge.release).toHaveBeenCalledTimes(1)
+  })
 })
