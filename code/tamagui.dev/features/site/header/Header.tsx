@@ -353,6 +353,8 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
   return (
     <Popover
       disableRTL
+      // mount the menu during idle so the first tap only runs the sheet animation
+      keepChildrenMounted="lazy"
       hoverable={{
         delay: 0,
         restMs: 0,
