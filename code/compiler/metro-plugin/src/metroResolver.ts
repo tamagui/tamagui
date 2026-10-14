@@ -178,7 +178,17 @@ export function createMetroCompilerResolver(config: MetroResolverConfig): {
           originModulePath: importer,
           preferNativePlatform: true,
           projectRoot: config.projectRoot,
-          resolveAsset: () => null,
+          // as metro's DependencyGraph does, so an existing asset is not a failure
+          resolveAsset: (dirPath: string, assetName: string, extension: string) => {
+            const basePath = join(dirPath, assetName)
+            const assets = [
+              basePath + extension,
+              ...(resolver.assetResolutions ?? []).map(
+                (resolution: string) => `${basePath}@${resolution}x${extension}`
+              ),
+            ].filter((assetPath) => fileSystemLookup(assetPath).exists)
+            return assets.length ? assets : null
+          },
           resolveHasteModule: () => null,
           resolveHastePackage: () => null,
           resolveRequest: resolver.resolveRequest ?? null,
