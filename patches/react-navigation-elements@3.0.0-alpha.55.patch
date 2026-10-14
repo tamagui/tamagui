@@ -1,11 +1,11 @@
 --- a/package.json
 +++ b/package.json
-@@ -97,5 +97,8 @@
+@@ -96,5 +96,8 @@
        ]
      ]
    },
--  "gitHead": "201473e290e52fc2847cd61025cf068f7ec1a54d"
-+  "gitHead": "201473e290e52fc2847cd61025cf068f7ec1a54d",
+-  "gitHead": "7db23d23b7808c2cc6e8fae82982f0b60d5a0003"
++  "gitHead": "7db23d23b7808c2cc6e8fae82982f0b60d5a0003",
 +  "react-native": {
 +    "./internal": "./lib/module/internal.js"
 +  }
