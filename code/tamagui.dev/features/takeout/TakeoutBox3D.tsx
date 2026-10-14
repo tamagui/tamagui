@@ -75,6 +75,8 @@ export default function TakeoutBox3DCanvas(props: any) {
       <Canvas
         style={{ width: '100%', height: '100%' }}
         dpr={[1, 1.5]}
+        // measure layout size, not the transformed rect: the box is scaled with the title
+        resize={{ offsetSize: true }}
         camera={{ position: [0, 0, 4], fov: 45 }}
         frameloop={active ? 'always' : 'never'}
       >
