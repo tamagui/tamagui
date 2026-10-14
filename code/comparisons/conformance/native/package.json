@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/comparison-conformance-native",
-  "version": "3.0.10",
+  "version": "3.0.11",
   "private": true,
   "main": "index.js",
   "scripts": {

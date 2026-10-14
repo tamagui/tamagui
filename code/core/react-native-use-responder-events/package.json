@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-use-responder-events",
-  "version": "3.0.10",
+  "version": "3.0.11",
   "license": "MIT",
   "files": [
     "src",

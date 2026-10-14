@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config-default",
-  "version": "3.0.10",
+  "version": "3.0.11",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [

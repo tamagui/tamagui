@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/cli",
-  "version": "3.0.10",
+  "version": "3.0.11",
   "license": "MIT",
   "bin": {
     "tama": "dist/index.cjs",
