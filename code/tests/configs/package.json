@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/configs-test",
-  "version": "3.0.11",
+  "version": "3.0.12",
   "private": true,
   "scripts": {
     "generate": "tamagui generate",
