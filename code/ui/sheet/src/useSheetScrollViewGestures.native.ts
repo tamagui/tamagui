@@ -72,21 +72,17 @@ export function useSheetScrollViewGestures({
     scrollBridge.release({ dragAt: s.dragAt, vy })
   }
 
-  const onStartShouldSetResponder = () => {
+  // RN ScrollView overrides onStartShouldSetResponder but forwards onTouchStart,
+  // so this is where each touch gets a fresh baseline
+  const onTouchStart = (e: GestureResponderEvent) => {
     const s = state.current
+    s.lastPageY = e.nativeEvent.pageY
     scrollBridge.scrollStartY = -1
     s.isDraggingScrollArea = true
     s.scrollEngaged = scrollBridge.y > 0
     s.prevScrollY = scrollBridge.y
     s.handoffOccurred = false
     s.handoffDragOffset = 0
-    return false
-  }
-
-  // RN ScrollView overrides onStartShouldSetResponder but forwards onTouchStart,
-  // so this is where each touch gets a fresh baseline for the move threshold
-  const onTouchStart = (e: GestureResponderEvent) => {
-    state.current.lastPageY = e.nativeEvent.pageY
   }
 
   const onMoveShouldSetResponder = (e: GestureResponderEvent) => {
@@ -169,7 +165,6 @@ export function useSheetScrollViewGestures({
 
   return {
     onResponderRelease: release,
-    onStartShouldSetResponder,
     onTouchStart,
     onMoveShouldSetResponder,
     onResponderMove,
