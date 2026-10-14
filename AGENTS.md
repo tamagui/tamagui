@@ -11,7 +11,7 @@ Don't do that. If you were asked to do something, it is not done until:
 
 - it is committed, pushed, validated, and **merged back to `main`** (or a PR is
   opened and driven to merge) — "I left it on a branch" / "I prepared the SQL"
-  is not done;
+  is not done; feature release PRs wait for owner review before merging;
 - it is **validated at the layer it changes**: typecheck/build for code, a real
   request or Playwright run for site behavior, an applied-and-verified query for
   a DB/RLS change. "Should work" is not validation;
@@ -192,6 +192,9 @@ It has no server routes.
 
 ## Fast upstream releases
 
+- Keep unreleased features together on one release branch and in one minor release PR. Test branch canaries and downstream consumers, prepare the minor version in that PR, and wait for owner review before merging and explicitly publishing the batch.
+- Main pushes and individual feature changes do not publish stable packages. Use patches only for reviewed bug fixes with no unreleased features.
+- Dependency and documentation maintenance need no library release when published runtime bytes are unchanged.
 - Run `bun release --into ~/<downstream>` in an isolated worktree to build the installed package family and replace downstream `node_modules` immediately. No commit, push, publish, CI, or tests are required. Use `--skip-build` only for outputs already built from your current source.
 - Push `v3-beta` to publish a canary independently of full CI. Canaries build and publish without test gates; normal beta and stable releases keep their existing gates.
 - Use any canary, including your own, without waiting for an official beta. Pin the printed version because the shared `canary` tag moves. Record the source branch.
