@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/visually-hidden",
-  "version": "3.0.9",
+  "version": "3.0.10",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [
