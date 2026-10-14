@@ -789,3 +789,89 @@ test('a remount after the react root is known links by walking fibers', async ()
   expect(mock.links[2].table).toBe(mock.links[0].table)
   expect(mock.links[3].table).toBe(mock.links[0].table)
 })
+
+// a re-render after a theme switch hands hosts a new style array and state.
+// the host keeps its link (same mapping, same scope), so the next switch must
+// not re-link it: react clones a fabric instance on update, so only its
+// canonical record identifies the host across renders
+test('a host re-rendered after a theme switch keeps its link', async () => {
+  const fiberRoot: { current: any } = { current: null }
+  const hostRoot = {
+    child: null as any,
+    sibling: null,
+    return: null,
+    memoizedProps: null,
+    stateNode: fiberRoot,
+    tag: 3,
+  }
+  fiberRoot.current = hostRoot
+
+  const canonicals = new Map<string, object>()
+  let built = 0
+  let builtFor = -1
+  const pendingFibers: any[] = []
+  const Host = forwardRef<any, any>((props, ref) => {
+    if (builtFor !== built) {
+      builtFor = built
+      hostRoot.child = null
+    }
+    let canonical = canonicals.get(props.testID)
+    if (!canonical) canonicals.set(props.testID, (canonical = {}))
+    const fiber = {
+      child: null,
+      sibling: hostRoot.child,
+      return: hostRoot,
+      memoizedProps: { style: props.style },
+      // a fresh instance per render, like fabric's cloneInstance
+      stateNode: { node: { testID: props.testID }, canonical },
+      tag: 5,
+    }
+    hostRoot.child = fiber
+    pendingFibers.push(fiber)
+    return <NativeView ref={ref} {...props} />
+  })
+  const CompiledSquare = _withNativeStyle(
+    Host,
+    { width: 10, height: 10 },
+    { backgroundColor: 'background' }
+  )
+  function List({ bump }: { bump: number }) {
+    return (
+      <NativeView testID={`list-${bump}`}>
+        {['a', 'b'].map((item) =>
+          CompiledSquare.inline(<CompiledSquare key={item} testID={item} />)
+        )}
+      </NativeView>
+    )
+  }
+  let setState: (next: { sub: string; bump: number }) => void = () => {}
+  function Harness() {
+    const [state, set] = useState({ sub: 'red', bump: 0 })
+    setState = set
+    built = state.bump * 10 + (state.sub === 'red' ? 0 : 1)
+    return (
+      <TamaguiProvider config={config} defaultTheme="dark">
+        <Theme name={state.sub as any}>
+          <List bump={state.bump} />
+        </Theme>
+      </TamaguiProvider>
+    )
+  }
+
+  render(<Harness />, {
+    createNodeMock: () => ({
+      __internalInstanceHandle: pendingFibers[pendingFibers.length - 1],
+    }),
+  })
+  expect(mock.links).toHaveLength(2)
+
+  // a plain re-render walks the hosts it already linked
+  await act(async () => setState({ sub: 'red', bump: 1 }))
+  expect(mock.links).toHaveLength(2)
+
+  // a switch re-renders the hosts with the new state; the one after re-links nothing
+  await act(async () => setState({ sub: 'blue', bump: 1 }))
+  await act(async () => setState({ sub: 'red', bump: 2 }))
+  expect(mock.links).toHaveLength(2)
+  expect(mock.broadcasts.at(-1)?.[1]).toBe('dark_red')
+})
