@@ -314,7 +314,8 @@ export function createNativeStyleLinkState(
 // on every mount). the first mounts still attach one, and that ref records
 // the react root. once the root is known, compiled hosts omit the ref and a
 // later flush walks the root for hosts whose style array was registered here.
-// theme switches that mounted nothing skip the walk.
+// that walk runs once the JS thread idles after the render that needs it, so a
+// theme switch only walks when it lands before that idle.
 let pendingHosts: unknown[] = []
 let pendingStates: NativeStyleLinkState[] = []
 // past this many pending hosts, link them once the JS thread idles, so hosts
@@ -327,15 +328,26 @@ type StyleFiber = {
   sibling: StyleFiber | null
   return: StyleFiber | null
   memoizedProps: { style?: object } | null
-  stateNode: { node?: unknown; current?: StyleFiber } | null
+  stateNode: { node?: unknown; canonical?: object; current?: StyleFiber } | null
 }
 
 // style array identity -> the state those hosts rendered. the array is stable
 // until the scope state changes, and it is the style prop on the host fiber
 const stylesToState = new WeakMap<object, NativeStyleLinkState>()
-// host object -> state last queued, so a second attach of the same host does
-// not emit a second link
+// host -> the state it linked with. a host stays linked to its mapping's table
+// under its scope, so a re-render with a newer state of that scope links nothing.
+// fabric clones a host instance on every update and keeps its canonical
+// record, so that record is the key for both a ref and a walked fiber
 let linkedHostState = new WeakMap<object, NativeStyleLinkState>()
+
+function hostKey(host: object): object {
+  const record = host as {
+    __internalInstanceHandle?: StyleFiber
+    stateNode?: StyleFiber['stateNode']
+  }
+  const instance = record.__internalInstanceHandle?.stateNode ?? record.stateNode
+  return instance?.canonical ?? host
+}
 // FiberRoot of the tree a host ref captured. current is the committed HostRoot.
 // current is optional because a host fiber's stateNode is this same shape and
 // has no current, and that object is what capture stores
@@ -356,7 +368,10 @@ export function registerNativeStyle(style: object, state: NativeStyleLinkState):
 export function nativeStyleMountMode(): 'discover' | 'ref' {
   const current = fiberRoot?.current
   if (current && current.stateNode === fiberRoot) {
-    needsDiscover = true
+    if (!needsDiscover) {
+      needsDiscover = true
+      queueIdleFlush()
+    }
     return 'discover'
   }
   return 'ref'
@@ -397,6 +412,12 @@ function discoverMountedHosts(): number {
 function idleFlush() {
   idleFlushQueued = false
   flushNativeStyleLinks()
+}
+
+function queueIdleFlush() {
+  if (idleFlushQueued) return
+  idleFlushQueued = true
+  requestIdleCallback(idleFlush)
 }
 
 function addScopeMapping(scopeId: string, compiled: CompiledMapping) {
@@ -447,8 +468,12 @@ export function flushNativeStyleLinks(): void {
 /** records a mounted host for linking. a host attaching twice links once */
 export function linkNativeStyleHost(host: unknown, state: NativeStyleLinkState): void {
   if (!engine || host == null) return
-  if (linkedHostState.get(host) === state) return
-  linkedHostState.set(host, state)
+  const key = hostKey(host as object)
+  const linked = linkedHostState.get(key)
+  if (linked && linked.mapping === state.mapping && linked.scopeId === state.scopeId) {
+    return
+  }
+  linkedHostState.set(key, state)
   // a scope can advance (layout effect) after a concurrent render captured its
   // theme but before that render's host attaches. link that host now against
   // the live scope state and have the engine commit it once to correct the
@@ -463,10 +488,7 @@ export function linkNativeStyleHost(host: unknown, state: NativeStyleLinkState):
   }
   pendingHosts.push(host)
   pendingStates.push(state)
-  if (pendingHosts.length >= maxPendingHosts && !idleFlushQueued) {
-    idleFlushQueued = true
-    requestIdleCallback(idleFlush)
-  }
+  if (pendingHosts.length >= maxPendingHosts) queueIdleFlush()
 }
 
 /** memo-generation and live-owner sizes for development diagnostics and probes */
