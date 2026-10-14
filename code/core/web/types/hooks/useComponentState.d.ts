@@ -1,7 +1,8 @@
-import type { ComponentContextI, StaticConfig, TamaguiComponentState, TamaguiComponentStateRef, TamaguiInternalConfig, TextProps } from '../types';
+import type { RefObject } from 'react';
+import type { ComponentContextI, ComponentSetState, ComponentSetStateShallow, PresenceContextProps, StaticConfig, TamaguiComponentState, TamaguiComponentStateRef, TamaguiInternalConfig, TextProps, UsePresenceResult } from '../types';
 import type { ViewProps } from '../views/View';
-export declare const useComponentState: (props: ViewProps | TextProps | Record<string, any>, animationDriver: ComponentContextI['animationDriver'], staticConfig: StaticConfig, config: TamaguiInternalConfig) => {
-    props: Record<string, any> | TextProps | ViewProps;
+type UseComponentStateResult = {
+    props: ViewProps | TextProps | Record<string, any>;
     startedUnhydrated: boolean;
     curStateRef: TamaguiComponentStateRef;
     disabled: any;
@@ -11,18 +12,20 @@ export declare const useComponentState: (props: ViewProps | TextProps | Record<s
     isAnimated: boolean;
     isExiting: boolean;
     isHydrated: boolean;
-    presence: import("..").UsePresenceResult | null;
-    presenceState: import("..").PresenceContextProps | null | undefined;
-    setState: import("../types").ComponentSetState;
-    setStateShallow: import("../types").ComponentSetStateShallow;
+    presence: UsePresenceResult | null;
+    presenceState: PresenceContextProps | null | undefined;
+    setState: ComponentSetState;
+    setStateShallow: ComponentSetStateShallow;
     noClass: boolean;
     state: TamaguiComponentState;
-    stateRef: import("react").RefObject<TamaguiComponentStateRef>;
-    inputStyle: "css" | "value";
-    outputStyle: "css" | "inline";
+    stateRef: RefObject<TamaguiComponentStateRef>;
+    inputStyle: 'css' | 'value';
+    outputStyle: 'css' | 'inline';
     willBeAnimated: boolean;
     willBeAnimatedClient: boolean;
     platformPseudo: boolean;
-    finalizeStyleFlags(hasEnterStyle: boolean, hasPlatformPseudo: boolean): /*elided*/ any;
+    finalizeStyleFlags(hasEnterStyle: boolean, hasPlatformPseudo: boolean): any;
 };
+export declare const useComponentState: (props: ViewProps | TextProps | Record<string, any>, animationDriver: ComponentContextI['animationDriver'], staticConfig: StaticConfig, config: TamaguiInternalConfig) => UseComponentStateResult;
+export {};
 //# sourceMappingURL=useComponentState.d.ts.map
