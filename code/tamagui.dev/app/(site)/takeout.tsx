@@ -1,16 +1,12 @@
 import { ThemeTintAlt } from '@tamagui/logo'
-import { Suspense, lazy } from 'react'
 import { XStack, YStack } from 'tamagui'
 import { Button } from '~/components/Button'
-import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { HeadInfo } from '~/components/HeadInfo'
 import { Link } from '~/components/Link'
 import { SubTitle } from '~/components/SubTitle'
 import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
 import { InstallInput } from '~/features/site/home/InstallInput'
 import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
-
-const TakeoutBox3D = lazy(() => import('~/features/takeout/TakeoutBox3D'))
 
 export default function TakeoutPage() {
   return (
@@ -36,26 +32,7 @@ export default function TakeoutPage() {
         minW="850px max-md:90%"
         maxW={850}
         self="center"
-        position="relative"
-        overflow="hidden"
       >
-        <YStack
-          position="absolute"
-          pointerEvents="none"
-          t="30% max-md:25%"
-          r="-20% max-lg:-15% max-md:-35%"
-          width={450}
-          height={450}
-          scale="max-lg:0.7 max-md:0.6"
-          z={100}
-        >
-          <Suspense fallback={null}>
-            <ErrorBoundary noMessage>
-              <TakeoutBox3D />
-            </ErrorBoundary>
-          </Suspense>
-        </YStack>
-
         <TakeoutLogo />
 
         <SubTitle
