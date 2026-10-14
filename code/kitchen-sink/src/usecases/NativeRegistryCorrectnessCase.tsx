@@ -4,6 +4,7 @@ import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from '
 import {
   FlatList,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -12,17 +13,26 @@ import {
 import { Square, Theme } from 'tamagui'
 
 const listItems = Array.from({ length: 80 }, (_, index) => index)
+const largeItems = Array.from({ length: 320 }, (_, index) => index)
 const nativeEngine = registry as unknown as NativeStyleEngine
 
-type Scenario = 'nested' | 'list' | 'churn'
+type Scenario = 'nested' | 'list' | 'churn' | 'large'
 type Mode = 'fallback' | 'fast'
 
 const frame = () => new Promise<void>((resolve) => requestAnimationFrame(() => resolve()))
 
-const ThemeSwatch = memo(function ThemeSwatch({ testID }: { testID: string }) {
+const ThemeSwatch = memo(function ThemeSwatch({
+  testID,
+  label,
+}: {
+  testID: string
+  label?: string
+}) {
   return (
     <Square
       testID={testID}
+      accessible={label !== undefined}
+      accessibilityLabel={label}
       width={56}
       height={56}
       borderRadius="4"
@@ -51,6 +61,7 @@ export function NativeRegistryCorrectnessCase() {
   const [mounted, setMounted] = useState(true)
   const [churnStatus, setChurnStatus] = useState('idle')
   const [metrics, setMetrics] = useState('{}')
+  const [largeLabel, setLargeLabel] = useState('initial')
   const probe = useRef({
     linkCalls: 0,
     applyCalls: 0,
@@ -128,6 +139,7 @@ export function NativeRegistryCorrectnessCase() {
     probe.current.tableEntries = 0
     probe.current.stateNameCalls = 0
     setMetrics('{}')
+    setLargeLabel('initial')
   }
 
   const refreshMetrics = async () => {
@@ -233,6 +245,20 @@ export function NativeRegistryCorrectnessCase() {
         >
           <Text>metrics</Text>
         </Pressable>
+        <Pressable
+          testID="native-fast-large-fallback"
+          style={styles.button}
+          onPress={() => prepare('large', 'fallback')}
+        >
+          <Text>large fallback</Text>
+        </Pressable>
+        <Pressable
+          testID="native-fast-large-fast"
+          style={styles.button}
+          onPress={() => prepare('large', 'fast')}
+        >
+          <Text>large fast</Text>
+        </Pressable>
       </View>
 
       <Text testID="native-fast-state">
@@ -275,6 +301,35 @@ export function NativeRegistryCorrectnessCase() {
         </Theme>
       ) : null}
 
+      {ready && scenario === 'large' ? (
+        <>
+          <Pressable
+            testID="native-fast-large-update-labels"
+            style={styles.button}
+            onPress={() => setLargeLabel('changed')}
+          >
+            <Text>update labels</Text>
+          </Pressable>
+          <Theme name="blue">
+            <ThemeSwatch testID="native-fast-large-pinned" />
+          </Theme>
+          <Theme name={themeName}>
+            <ScrollView
+              testID="native-fast-large-view"
+              contentContainerStyle={styles.largeSwatches}
+            >
+              {largeItems.map((item) => (
+                <ThemeSwatch
+                  key={item}
+                  testID={`native-fast-large-${item}`}
+                  label={`large ${largeLabel} ${item}`}
+                />
+              ))}
+            </ScrollView>
+          </Theme>
+        </>
+      ) : null}
+
       {ready && scenario === 'churn' ? (
         <View style={styles.churn}>
           <Pressable
@@ -313,5 +368,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   rowLabel: { color: '#777' },
+  largeSwatches: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, paddingTop: 12 },
   churn: { gap: 12, alignItems: 'flex-start' },
 })
