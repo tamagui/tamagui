@@ -16,9 +16,14 @@
 
 #include <algorithm>
 #include <cstring>
+#include <exception>
 #include <optional>
 #include <unordered_set>
 #include <vector>
+
+#ifdef __APPLE__
+#include <dispatch/dispatch.h>
+#endif
 
 #ifdef __ANDROID__
 #include <fbjni/fbjni.h>
@@ -293,6 +298,91 @@ std::optional<AffectedNodes> findAffectedNodes(const RootShadowNode& root,
   return affected;
 }
 
+struct PropsJob {
+  const ShadowNode* node;
+  HybridTamaguiRegistry::LeafUpdate* update;
+};
+
+void parsePropsJob(PropsJob& job) {
+  const auto& node = *job.node;
+  PropsParserContext ctx{node.getSurfaceId(), *node.getContextContainer()};
+  job.update->prepared = node.getComponentDescriptor().cloneProps(
+      ctx, node.getProps(), RawProps(job.update->props()));
+}
+
+#ifdef __APPLE__
+struct PropsWorkers {
+  std::vector<PropsJob>& jobs;
+  size_t count;
+  std::vector<std::exception_ptr> errors;
+};
+
+void parsePropsWorker(void* context, size_t worker) {
+  auto& work = *static_cast<PropsWorkers*>(context);
+  try {
+    for (size_t i = worker; i < work.jobs.size(); i += work.count) {
+      parsePropsJob(work.jobs[i]);
+    }
+  } catch (...) {
+    work.errors[worker] = std::current_exception();
+  }
+}
+#endif
+
+// only props parsing runs concurrently: it reads immutable nodes and tables,
+// with a separate RawProps cursor per view. state, warm caches, tree cloning,
+// and React's runtime shadow-node handles remain on the committing thread.
+void prepareProps(const RootShadowNode& root, LeafUpdates& updates,
+                  const AffectedNodes* affected) {
+  std::vector<PropsJob> jobs;
+  jobs.reserve(updates.size());
+  std::vector<const ShadowNode*> stack{&root};
+  while (!stack.empty()) {
+    const auto* node = stack.back();
+    stack.pop_back();
+    const auto& children = node->getChildren();
+    if (!affected) {
+      for (const auto& child : children) stack.push_back(child.get());
+    } else if (auto it = affected->find(&node->getFamily());
+               it != affected->end()) {
+      for (auto index : it->second) stack.push_back(children[index].get());
+    }
+    const auto it = updates.find(&node->getFamily());
+    if (it == updates.end()) continue;
+    auto& update = it->second;
+    update.prepared = nullptr;
+    if (auto* warm = update.warm) {
+      if (warm->last != node->getProps()) warm->byState.clear();
+      const auto cached = warm->byState.find(*update.state);
+      if (cached != warm->byState.end()) update.prepared = cached->second;
+    }
+    if (!update.prepared) jobs.push_back({node, &update});
+  }
+
+#ifdef __APPLE__
+  if (jobs.size() >= 256) {
+    constexpr size_t workers = 4;
+    PropsWorkers work{jobs, workers, std::vector<std::exception_ptr>(workers)};
+    dispatch_apply_f(workers,
+                     dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0),
+                     &work, parsePropsWorker);
+    for (const auto& error : work.errors) {
+      if (error) std::rethrow_exception(error);
+    }
+  } else
+#endif
+  {
+    for (auto& job : jobs) parsePropsJob(job);
+  }
+
+  for (auto& [family, update] : updates) {
+    if (update.warm && update.prepared) {
+      update.warm->byState[*update.state] = update.prepared;
+      update.warm->last = update.prepared;
+    }
+  }
+}
+
 // RN dirties the measurement of every paragraph cloned with props, and the
 // dirty flag relays out each ancestor: one text color in each row of a long
 // list relays out the whole list. for a paragraph of plain strings, whose
@@ -377,20 +467,7 @@ std::shared_ptr<ShadowNode> cloneSubtree(const ShadowNode& node,
   Props::Shared newProps = ShadowNodeFragment::propsPlaceholder();
   if (auto it = updates.find(family); it != updates.end()) {
     const auto& update = it->second;
-    const auto parse = [&] {
-      PropsParserContext ctx{node.getSurfaceId(), *node.getContextContainer()};
-      return node.getComponentDescriptor().cloneProps(ctx, node.getProps(),
-                                                      RawProps(update.props()));
-    };
-    if (auto* warm = update.warm) {
-      if (warm->last != node.getProps()) warm->byState.clear();
-      auto& props = warm->byState[*update.state];
-      if (!props) props = parse();
-      warm->last = props;
-      newProps = props;
-    } else {
-      newProps = parse();
-    }
+    newProps = update.prepared;
     if (auto restyled = restyleParagraph(node, newProps)) {
       return restyled;
     }
@@ -555,6 +632,7 @@ void HybridTamaguiRegistry::commitUpdates(jsi::Runtime& rt,
             [&updates](const RootShadowNode& oldRoot)
                 -> RootShadowNode::Unshared {
               auto affected = findAffectedNodes(oldRoot, updates);
+              prepareProps(oldRoot, updates, affected ? &*affected : nullptr);
               return std::static_pointer_cast<RootShadowNode>(cloneSubtree(
                   oldRoot, updates, affected ? &*affected : nullptr));
             },

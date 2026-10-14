@@ -56,6 +56,7 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
   struct LeafUpdate {
     const folly::dynamic* shared = nullptr;
     folly::dynamic owned;
+    facebook::react::Props::Shared prepared;
     // table views only
     WarmProps* warm = nullptr;
     const std::string* state = nullptr;
