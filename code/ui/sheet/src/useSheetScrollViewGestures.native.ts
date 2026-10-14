@@ -72,6 +72,14 @@ export function useSheetScrollViewGestures({
     scrollBridge.release({ dragAt: s.dragAt, vy })
   }
 
+  // RN ScrollView can keep the touch, so no responder release reaches us;
+  // free scrollLock however the touch ends or the next sheet drag never settles
+  const unlock = () => {
+    scrollBridge.scrollLock = false
+    scrollBridge.scrollStartY = -1
+    setScrollEnabled(true)
+  }
+
   const onStartShouldSetResponder = () => {
     const s = state.current
     scrollBridge.scrollStartY = -1
@@ -169,6 +177,9 @@ export function useSheetScrollViewGestures({
 
   return {
     onResponderRelease: release,
+    onResponderTerminate: unlock,
+    onScrollEndDrag: unlock,
+    onTouchEnd: unlock,
     onStartShouldSetResponder,
     onTouchStart,
     onMoveShouldSetResponder,
