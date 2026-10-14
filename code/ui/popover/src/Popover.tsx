@@ -1102,11 +1102,15 @@ const PopoverInner = createRefComponent<
   const triggerRef = React.useRef<TamaguiElement>(null)
   const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
 
-  const [keepChildrenMounted] = useControllableState({
-    prop: keepChildrenMountedProp,
-    defaultProp: false,
-    transition: keepChildrenMountedProp === 'lazy',
-  })
+  // 'lazy' mounts the content in a transition after hydration. it must read as
+  // not mounted during the server and hydration renders so both match
+  const [lazyMounted, setLazyMounted] = React.useState(false)
+  React.useEffect(() => {
+    if (keepChildrenMountedProp !== 'lazy') return
+    React.startTransition(() => setLazyMounted(true))
+  }, [keepChildrenMountedProp])
+  const keepChildrenMounted =
+    keepChildrenMountedProp === 'lazy' ? lazyMounted : Boolean(keepChildrenMountedProp)
 
   const isAdapted = useAdaptIsActive(adaptScope)
 

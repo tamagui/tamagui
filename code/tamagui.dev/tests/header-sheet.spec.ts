@@ -2,6 +2,30 @@ import { expect, test } from '@playwright/test'
 
 test.use({ viewport: { width: 393, height: 852 }, hasTouch: true, isMobile: true })
 
+test('phone home page hydrates the pre-mounted header menu without errors', async ({
+  page,
+}) => {
+  // dev logs "Hydration failed", production throws minified React errors 418/423/425
+  const hydrationErrors: string[] = []
+  const isHydrationError = (text: string) =>
+    /Hydration failed|hydrat.*mismatch|Minified React error #(418|423|425)/i.test(text)
+  page.on('pageerror', (error) => {
+    if (isHydrationError(error.message)) hydrationErrors.push(error.message)
+  })
+  page.on('console', (message) => {
+    if (message.type() === 'error' && isHydrationError(message.text())) {
+      hydrationErrors.push(message.text())
+    }
+  })
+
+  await page.goto('/', { waitUntil: 'networkidle' })
+  await page.waitForFunction(() => {
+    const button = document.querySelector('[aria-label="Open the main menu"]')
+    return button && Object.keys(button).some((key) => key.startsWith('__reactProps'))
+  })
+  expect(hydrationErrors).toEqual([])
+})
+
 test('phone header menu opens as a sheet and closes on navigation', async ({ page }) => {
   await page.goto('/')
   const menu = page.getByRole('button', { name: 'Open the main menu', exact: true })
