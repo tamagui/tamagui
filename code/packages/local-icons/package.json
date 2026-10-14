@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/local-icons",
-  "version": "3.0.12",
+  "version": "3.0.13",
   "description": "Generated Lucide icon components for Tamagui",
   "license": "MIT",
   "source": "src/index.ts",
