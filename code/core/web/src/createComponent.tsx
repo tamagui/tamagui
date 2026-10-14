@@ -2009,12 +2009,13 @@ export function createComponent<
         propsIn.children
       )
     } else {
-      // here elementType is either the custom animated driver view, or base view
-      if (childrenFromHooks) {
+      const isRenderPropString = typeof renderProp === 'string'
+
+      // here elementType is either the custom animated driver view, or base view.
+      // the optimized base view would replace a custom render host, so skip it then
+      if (childrenFromHooks && (!renderProp || isRenderPropString)) {
         content = childrenFromHooks
       }
-
-      const isRenderPropString = typeof renderProp === 'string'
 
       // this ONLY handles the case where render is NOT a string
       // either direct JSX, or a function that returns JSX, we always clone
