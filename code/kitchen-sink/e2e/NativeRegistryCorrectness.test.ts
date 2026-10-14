@@ -286,4 +286,61 @@ describe('NativeRegistryCorrectness', () => {
     assert.equal(metrics.applyCalls, 0, 'compiler mode must stay on scope broadcasts')
     assert.equal(metrics.misses, 0)
   })
+
+  it('matches large native batches after React changes host props', async () => {
+    const run = async (mode: 'fallback' | 'fast') => {
+      await element(by.id(`native-fast-large-${mode}`)).tap()
+      await waitForState(`large:${mode}:red:ready`)
+      const pinned = await swatchColor('native-fast-large-pinned', `${mode}-large-pinned`)
+      assert.ok(isBlueish(pinned), formatRGB(pinned))
+      const colors: ReturnType<typeof getDominantColor>[] = []
+      const capture = async (rows: number[], state: 'red' | 'green') => {
+        for (const row of rows) {
+          const id = `native-fast-large-${row}`
+          await expect(element(by.id(id))).toBeVisible()
+          const color = await swatchColor(
+            id,
+            `${mode}-large-${state}-${row}-${colors.length}`
+          )
+          assert.ok(
+            state === 'red' ? isReddish(color) : isGreenish(color),
+            formatRGB(color)
+          )
+          colors.push(color)
+        }
+      }
+      await capture([0, 1, 2, 3], 'red')
+      await element(by.id('native-fast-toggle-theme')).tap()
+      await waitForState(`large:${mode}:green:ready`)
+      await capture([0, 1, 2, 3], 'green')
+      await element(by.id('native-fast-large-update-labels')).tap()
+      await expect(element(by.id('native-fast-large-0'))).toHaveLabel('large changed 0')
+      await element(by.id('native-fast-toggle-theme')).tap()
+      await waitForState(`large:${mode}:red:ready`)
+      await capture([0, 1, 2, 3], 'red')
+      await expect(element(by.id('native-fast-large-0'))).toHaveLabel('large changed 0')
+      await element(by.id('native-fast-large-view')).scrollTo('bottom')
+      await capture([316, 317, 318, 319], 'red')
+      await element(by.id('native-fast-toggle-theme')).tap()
+      await waitForState(`large:${mode}:green:ready`)
+      await capture([316, 317, 318, 319], 'green')
+      await expect(element(by.id('native-fast-large-319'))).toHaveLabel(
+        'large changed 319'
+      )
+      assertSameColor(
+        await swatchColor('native-fast-large-pinned', `${mode}-large-pinned-end`),
+        pinned,
+        'pinned large scope'
+      )
+      return colors
+    }
+    const fallback = await run('fallback')
+    const fast = await run('fast')
+    fast.forEach((color, i) => assertSameColor(color, fallback[i]!, `large sample ${i}`))
+    const metrics = await readMetrics()
+    assert.equal(metrics.views, 321)
+    assert.equal(metrics.applyCalls, 0)
+    assert.ok(metrics.commits > 0)
+    assert.equal(metrics.misses, 0)
+  })
 })
