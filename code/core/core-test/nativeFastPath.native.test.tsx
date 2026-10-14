@@ -33,6 +33,10 @@ import { afterEach, beforeEach, expect, test } from 'vitest'
 
 const config = createTamagui(getDefaultTamaguiConfig('native'))
 
+// react native provides requestIdleCallback, which runs the engine's fiber walk
+globalThis.requestIdleCallback ??= ((cb: () => void) =>
+  setTimeout(cb, 0)) as unknown as typeof requestIdleCallback
+
 const Square = styled(View, {
   width: 10,
   height: 10,
@@ -809,7 +813,7 @@ test('a host re-rendered after a theme switch keeps its link', async () => {
   const canonicals = new Map<string, object>()
   let built = 0
   let builtFor = -1
-  const pendingFibers: any[] = []
+  const fibers = new Map<string, any>()
   const Host = forwardRef<any, any>((props, ref) => {
     if (builtFor !== built) {
       builtFor = built
@@ -827,7 +831,7 @@ test('a host re-rendered after a theme switch keeps its link', async () => {
       tag: 5,
     }
     hostRoot.child = fiber
-    pendingFibers.push(fiber)
+    fibers.set(props.testID, fiber)
     return <NativeView ref={ref} {...props} />
   })
   const CompiledSquare = _withNativeStyle(
@@ -859,8 +863,8 @@ test('a host re-rendered after a theme switch keeps its link', async () => {
   }
 
   render(<Harness />, {
-    createNodeMock: () => ({
-      __internalInstanceHandle: pendingFibers[pendingFibers.length - 1],
+    createNodeMock: (element: any) => ({
+      __internalInstanceHandle: fibers.get(element.props.testID),
     }),
   })
   expect(mock.links).toHaveLength(2)
