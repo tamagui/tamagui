@@ -633,6 +633,75 @@ test("plain texts render RN's text host with the props <Text> would pass", async
   }
 })
 
+test.each([true, false])(
+  'non-style styled() defaults reach the flattened host (fast path %s)',
+  async (nativeFastPath) => {
+    const TextAncestor = ReactModule.createContext(false)
+    setupHooks({
+      getBaseViews: () => ({
+        View: 'View',
+        Text: 'Text',
+        TextAncestor,
+        NativeText: 'RCTText',
+      }),
+    })
+    try {
+      const { exports: compiled } = await executeCompiled(
+        `
+          import { SizableText, View, styled } from 'tamagui'
+          const CappedText = styled(SizableText, {
+            color: '$color',
+            numberOfLines: 2,
+            allowFontScaling: false,
+            maxFontSizeMultiplier: 1.2,
+            minimumFontScale: 1,
+          })
+          const Labelled = styled(View, { accessibilityLabel: 'box', backgroundColor: '$background' })
+          export function Test() {
+            return <>
+              <CappedText testID="capped">a</CappedText>
+              <CappedText testID="override" numberOfLines={3}>b</CappedText>
+              <Labelled testID="labelled" />
+            </>
+          }
+        `,
+        { options: { experimental: { nativeFastPath } } }
+      )
+      const mock = createMockEngine()
+      setNativeStyleEngine(mock.engine)
+      process.env.TAMAGUI_TARGET = 'native'
+
+      let renderer: ReactTestRenderer
+      act(() => {
+        renderer = create(
+          <TamaguiProvider config={config} defaultTheme="dark">
+            {ReactModule.createElement(compiled.Test!)}
+          </TamaguiProvider>,
+          { createNodeMock: () => ({}) }
+        )
+      })
+      const node = (testID: string) =>
+        renderer.root.findAll((n) => n.props?.testID === testID).at(-1)!
+
+      expect(node('capped').props).toMatchObject({
+        numberOfLines: 2,
+        allowFontScaling: false,
+        maxFontSizeMultiplier: 1.2,
+        minimumFontScale: 1,
+      })
+      expect(node('override').props).toMatchObject({
+        numberOfLines: 3,
+        allowFontScaling: false,
+      })
+      expect(node('labelled').props.accessibilityLabel).toBe('box')
+
+      act(() => renderer.unmount())
+    } finally {
+      setupHooks({ getBaseViews: undefined })
+    }
+  }
+)
+
 test('elements in a provable theme scope render inline, without the wrapper', async () => {
   const TextAncestor = ReactModule.createContext(false)
   setupHooks({

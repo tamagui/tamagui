@@ -3012,6 +3012,54 @@ export function createTamaguiCompilerHost(
           input.source,
           `__TamaguiNativeStyle${input.element.span.start}`
         )
+        // non-style props the runtime resolves from the component's defaults,
+        // such as a styled() numberOfLines or allowFontScaling, go on the host
+        // ahead of the call site's own props and spreads, which still win.
+        // suppressHighlighting only changes how pressed text looks
+        const pressable = input.element.entries.some(
+          (entry) => entry.kind === 'prop' && /^on[A-Z]/.test(entry.name)
+        )
+        const defaultViewProps = component.domTag
+          ? []
+          : Object.keys(staticDefaultProps).filter(
+              (name) =>
+                name !== 'style' &&
+                split.viewProps &&
+                name in split.viewProps &&
+                (name !== 'suppressHighlighting' || pressable) &&
+                !input.element.entries.some(
+                  (entry) => entry.kind === 'prop' && entry.name === name
+                )
+            )
+        for (const name of defaultViewProps) {
+          const value = (split.viewProps as Record<string, unknown>)[name]
+          if (
+            input.element.form !== 'jsx' ||
+            (value !== null && typeof value === 'object') ||
+            typeof value === 'function'
+          ) {
+            return bailout(
+              input,
+              'local/unsupported-target',
+              `Default prop ${name} cannot be written onto the flattened host`
+            )
+          }
+        }
+        const defaultPropEdits = defaultViewProps.length
+          ? [
+              {
+                start: input.element.component.span.end,
+                end: input.element.component.span.end,
+                content: defaultViewProps
+                  .map(
+                    (name) =>
+                      ` ${name}={${JSON.stringify((split.viewProps as Record<string, unknown>)[name])}}`
+                  )
+                  .join(''),
+                origin: input.element.component.span,
+              },
+            ]
+          : []
         // the native style engine pushes the runtime's exact keys, so its base keeps them
         const usesNativeFastPath =
           !!themedStyleKeys &&
@@ -3319,12 +3367,14 @@ export function createTamaguiCompilerHost(
         const useHostView =
           options.experimentalNativeFastPath &&
           nativeName === 'View' &&
-          isBareHostView(input.element, !!nativeFastPath)
+          isBareHostView(input.element, !!nativeFastPath) &&
+          !defaultViewProps.some((name) => VIEW_WRAPPER_PROPS.test(name))
         const useHostText =
           options.experimentalNativeFastPath &&
           nativeName === 'Text' &&
           !!nativeFastPath &&
-          isBareHostText(input.element)
+          isBareHostText(input.element) &&
+          !defaultViewProps.some((name) => TEXT_WRAPPER_PROPS.test(name))
         const nativeExport = useHostView ? 'unstable_NativeView' : nativeName
         // the local is named after the BINDING, not the component: a file can
         // hold both kinds at once, and a shared name would emit two different
@@ -3400,7 +3450,7 @@ export function createTamaguiCompilerHost(
               : []
             return {
               ok: true,
-              edits: [...inlineEdits, ...tagEdits, ...styleEdits],
+              edits: [...inlineEdits, ...tagEdits, ...defaultPropEdits, ...styleEdits],
               css: [],
               imports: [
                 ...nativeStyleImports,
@@ -3683,7 +3733,7 @@ export function createTamaguiCompilerHost(
           }
           return {
             ok: true,
-            edits: [...tagEdits, ...expressionEdits],
+            edits: [...tagEdits, ...defaultPropEdits, ...expressionEdits],
             css: [],
             imports: [
               ...nativeStyleImports,
@@ -3744,6 +3794,7 @@ export function createTamaguiCompilerHost(
             ok: true,
             edits: [
               ...tagEdits,
+              ...defaultPropEdits,
               {
                 start: input.element.component.span.end,
                 end: input.element.component.span.end,
@@ -3768,6 +3819,7 @@ export function createTamaguiCompilerHost(
           ok: true,
           edits: [
             ...tagEdits,
+            ...defaultPropEdits,
             ...webPropEdits,
             {
               start: first!.span.start,
