@@ -136,6 +136,10 @@ export function getConfig(tamaguiPlugin: any) {
               replacement: requireResolve('@tamagui/fake-react-native/pressability'),
             },
             {
+              find: /^react-native\/Libraries\/Components\/View\/ReactNativeStyleAttributes$/,
+              replacement: requireResolve('@tamagui/fake-react-native/styleAttributes'),
+            },
+            {
               find: /^react-native$/,
               replacement: requireResolve('@tamagui/fake-react-native'),
             },
