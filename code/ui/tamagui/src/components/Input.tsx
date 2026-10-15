@@ -17,34 +17,46 @@ import { Input as UiInput, TextArea as UiTextArea } from '@tamagui/input'
 export type InputSize = ComponentSize | boolean
 
 const inputSize = {
-  xs: { paddingInline: '2', paddingBlock: '1', borderRadius: 'sm', fontSize: 'xs' },
-  sm: { paddingInline: '3', paddingBlock: '1.5', borderRadius: 'md', fontSize: 'sm' },
-  md: { paddingInline: '4', paddingBlock: '2', borderRadius: 'md', fontSize: 'sm' },
-  lg: { paddingInline: '6', paddingBlock: '2', borderRadius: 'md', fontSize: 'base' },
-  xl: { paddingInline: '8', paddingBlock: '2.5', borderRadius: 'lg', fontSize: 'lg' },
+  xs: {
+    paddingInline: '2',
+    paddingBlock: '1',
+    borderRadius: 'sm',
+    fontSize: 'xs',
+    lineHeight: isWeb ? 'xs' : undefined,
+  },
+  sm: {
+    paddingInline: '3',
+    paddingBlock: '1.5',
+    borderRadius: 'md',
+    fontSize: 'sm',
+    lineHeight: isWeb ? 'sm' : undefined,
+  },
+  md: {
+    paddingInline: '4',
+    paddingBlock: '2',
+    borderRadius: 'md',
+    fontSize: 'sm',
+    lineHeight: isWeb ? 'sm' : undefined,
+  },
+  lg: {
+    paddingInline: '6',
+    paddingBlock: '2',
+    borderRadius: 'md',
+    fontSize: 'base',
+    lineHeight: isWeb ? 'base' : undefined,
+  },
+  xl: {
+    paddingInline: '8',
+    paddingBlock: '2.5',
+    borderRadius: 'lg',
+    fontSize: 'lg',
+    lineHeight: isWeb ? 'lg' : undefined,
+  },
 } as const
-
-const inputLineHeight = {
-  xs: 'xs',
-  sm: 'sm',
-  md: 'sm',
-  lg: 'base',
-  xl: 'lg',
-} as const
-
-const resolveInputSize = (size: InputSize | undefined): keyof typeof inputSize =>
-  typeof size === 'string' && size in inputSize ? (size as keyof typeof inputSize) : 'md'
-
-// line height ships only on web: on native the platform default applies, so an
-// input's height stays padding plus line height on both platforms
-const resolveInputLineHeight = (props: { size?: InputSize; lineHeight?: unknown }) => {
-  if (!isWeb || props.lineHeight != null) return
-  const lineHeight = inputLineHeight[resolveInputSize(props.size)]
-  if (lineHeight) return { lineHeight }
-}
 
 const inputSkin = {
   fontFamily: 'body',
+  lineHeight: isWeb ? 'sm' : undefined,
   color: 'color',
   backgroundColor: 'background',
   borderColor: 'border-color hover:border-color-hover focus:border-color-focus',
@@ -67,7 +79,7 @@ const InputFrame = styled(UiInput, {
   defaultVariants: {
     size: 'md',
   },
-}).resolve((props) => resolveInputLineHeight(props as any))
+})
 
 const TextAreaFrame = styled(UiTextArea, {
   displayName: 'TextArea',
@@ -82,7 +94,7 @@ const TextAreaFrame = styled(UiTextArea, {
   defaultVariants: {
     size: 'md',
   },
-}).resolve((props) => resolveInputLineHeight(props as any))
+})
 
 export const Input = createStyledHOC(
   InputFrame,
