@@ -7,7 +7,7 @@ const initialStyle = { height: 100, backgroundColor: '#ff0000' }
 // use a runtime link, with a scroll view below it and React commits beside it.
 // the rendered style stays red while native updates change the ancestor.
 export function NativeRegistryRuntimeClonesCase() {
-  const host = useRef<View>(null)
+  const host = useRef<React.ComponentRef<typeof View>>(null)
   const link = useRef<registry.LinkHandle | null>(null)
   const [revision, setRevision] = useState(0)
   const [nativeProps, setNativeProps] = useState('not read')

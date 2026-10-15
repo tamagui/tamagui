@@ -48,7 +48,7 @@ export interface ViewStateSnapshot {
 	activeState: string;
 	base: Record<string, unknown> | null;
 	states: Record<string, Record<string, unknown>> | null;
-	/** the family's sticky nativeProps_DEPRECATED merge, null when unset */
+	/** the family's nativeProps_DEPRECATED, which only RN's setNativeProps writes; null when unset */
 	nativeProps: Record<string, unknown> | null;
 }
 

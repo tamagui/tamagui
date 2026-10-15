@@ -181,7 +181,7 @@ export function NativeRegistryParityCase() {
               Platform.OS === 'ios'
                 ? DynamicColorIOS({
                     light: raw,
-                    dark: themes[`dark_${sub}`].background.val,
+                    dark: themes[`dark_${sub}`]?.background?.val ?? raw,
                   })
                 : raw,
           }).backgroundColor as unknown)
