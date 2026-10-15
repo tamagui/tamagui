@@ -26,6 +26,7 @@ import { beforeAll, describe, expect, test } from 'vitest'
 
 const configPath = resolve(import.meta.dirname, 'lib/tamagui.config.cjs')
 const coreId = resolvedModuleId('/virtual/@tamagui/core.mjs')
+const extraModuleId = resolvedModuleId('/virtual/e3-extra-components.mjs')
 let projectInfo: TamaguiProjectInfo
 
 type AnimationDriverShape = {
@@ -49,6 +50,7 @@ function compile(
     animationDriver?: AnimationDriverShape
     animationDrivers?: Record<string, AnimationDriverShape>
     disablePartialExtraction?: boolean
+    extraModule?: { moduleName: string; component: TamaguiProjectInfo['components'][number] }
   }
 ) {
   const id = resolvedModuleId(
@@ -61,6 +63,15 @@ function compile(
         source,
         imports: [
           { specifier: '@tamagui/core', resolvedId: coreId, external: true },
+          ...(hostOptions?.extraModule
+            ? [
+                {
+                  specifier: hostOptions.extraModule.moduleName,
+                  resolvedId: extraModuleId,
+                  external: true,
+                },
+              ]
+            : []),
           {
             specifier: 'react/jsx-runtime',
             resolvedId: resolvedModuleId('/virtual/react-jsx-runtime.mjs'),
@@ -83,8 +94,16 @@ function compile(
             animationDrivers: hostOptions.animationDrivers,
           }
         : projectInfo.tamaguiConfig!,
-    components: projectInfo.components!,
-    componentModules: [{ moduleName: '@tamagui/core', resolvedId: coreId }],
+    components: [
+      ...projectInfo.components!,
+      ...(hostOptions?.extraModule ? [hostOptions.extraModule.component] : []),
+    ],
+    componentModules: [
+      { moduleName: '@tamagui/core', resolvedId: coreId },
+      ...(hostOptions?.extraModule
+        ? [{ moduleName: hostOptions.extraModule.moduleName, resolvedId: extraModuleId }]
+        : []),
+    ],
     disablePartialExtraction: hostOptions?.disablePartialExtraction,
   })
   const plan = lowerModule({
@@ -277,6 +296,42 @@ export const Card = ({ width }) => (
     expect(output.code).not.toContain('padding={12}')
     expect(plan.css).toContain('padding:12px')
     expect(plan.css).not.toContain('width:')
+  })
+
+  test('resolves variants of a component evaluated by another core copy through its own core', () => {
+    // a component evaluated through a second core module instance (an esm
+    // import beside the host's cjs require) carries that instance's variant
+    // resolver, which reads the second instance's never-configured settings.
+    const host = projectInfo.components!.find((c) => c.moduleName === '@tamagui/core')!
+    const view = host.nameToInfo.View!.staticConfig
+    const foreignResolver = () => {
+      throw new Error('foreign core instance resolved a variant')
+    }
+    const staticConfig = {
+      ...view,
+      componentName: 'Pad',
+      variants: { pad: { true: { padding: 12 } } },
+      variantStyleResolver: foreignResolver,
+    }
+    const source = `
+import { Pad } from 'e3-extra-components'
+export const Card = () => <Pad pad />
+`
+    const { plan, output } = compile(source, 'web', {
+      extraModule: {
+        moduleName: 'e3-extra-components',
+        component: {
+          moduleName: 'e3-extra-components',
+          nameToInfo: { Pad: { staticConfig } },
+        } as TamaguiProjectInfo['components'][number],
+      },
+    })
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats.lowered).toBe(1)
+    expect(output.code).not.toContain('pad />')
+    expect(plan.css).toContain('padding:12px')
+    expect(staticConfig.variantStyleResolver).toBe(foreignResolver)
   })
 
   test('flattens proven numeric expressions and finite literal lookups to host styles', () => {
