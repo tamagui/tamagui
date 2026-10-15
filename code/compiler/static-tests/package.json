@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static-tests",
-  "version": "3.0.14",
+  "version": "3.0.15",
   "private": true,
   "license": "MIT",
   "module": "dist/esm/index.js",

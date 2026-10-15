@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/card",
-  "version": "3.0.14",
+  "version": "3.0.15",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [
