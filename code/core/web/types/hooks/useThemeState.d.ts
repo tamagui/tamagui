@@ -7,6 +7,7 @@ export declare const forceUpdateThemes: () => void;
 export declare const getThemeState: (id: ID) => ThemeState | undefined;
 export declare const getThemeUpdateLayer: (id: ID) => ThemeUpdateState | undefined;
 export declare const getThemeProviderParent: (id: ID) => string | undefined;
+export declare const getThemeProviderScope: (id: ID) => MutableRefObject<Set<string> | null> | undefined;
 export declare const getThemeProviderChainSizes: () => {
     layers: number;
     parents: number;

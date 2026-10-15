@@ -13,7 +13,11 @@ import {
   type NativeStyleLinkState,
   type NativeStyleThemeMapping,
 } from './helpers/nativeStyleEngine'
-import { getThemeState, ThemeStateContext } from './hooks/useThemeState'
+import {
+  getThemeProviderScope,
+  getThemeState,
+  ThemeStateContext,
+} from './hooks/useThemeState'
 import { hooks } from './setupHooks'
 
 // the host props RN's <Text> passes for a non-pressable text outside a text
@@ -79,12 +83,13 @@ export const _withNativeStyle = (
         }),
       }
     : baseStyle
-  // one entry per scope. its style arrays (one per host mode) keep their
+  // one weak entry per live provider scope, released with its provider chain
+  // record. its style arrays (one per host mode) keep their
   // identity until the scope's state changes, then are rebuilt: a style handed
   // to a host is a prop, which react native freezes in development, so a theme
   // switch never writes into one. the ref stays off once the react root is
   // known, so a remount does not pay a callback ref per host
-  const entries = new Map<string, ScopeEntry>()
+  const entries = new WeakMap<object, ScopeEntry>()
   const createEntry = (): ScopeEntry => {
     const entry: ScopeEntry = {
       style: [baseStyle, null],
@@ -105,6 +110,7 @@ export const _withNativeStyle = (
   const ScopeContext = ThemeStateContext
   const engineOf = getNativeStyleEngine
   const scopeState = getThemeState
+  const scopeOwner = getThemeProviderScope
   const resolve = resolveNativeStyleMapping
   const linkState = createNativeStyleLinkState
   const linkHost = linkNativeStyleHost
@@ -119,9 +125,10 @@ export const _withNativeStyle = (
     const scopeId = use(ScopeContext)
     const inText = TextAncestor ? use(TextAncestor) : false
     const themeState = scopeId && engineOf() ? scopeState(scopeId) : undefined
+    const owner = scopeOwner(scopeId)
     const resetsText = inText && host === 'view'
 
-    if (!themeState) {
+    if (!themeState || !owner) {
       return resetsText ? (
         <TextAncestorProvider key={key} value={false}>
           <Fallback {...props} />
@@ -142,10 +149,10 @@ export const _withNativeStyle = (
     const { name, theme } = themeState
     const asHostText = HostText && !inText
     const Rendered = asHostText ? HostText : Component
-    let entry = entries.get(scopeId)
+    let entry = entries.get(owner)
     if (!entry) {
       entry = createEntry()
-      entries.set(scopeId, entry)
+      entries.set(owner, entry)
     }
     if (entry.stateName !== name || entry.theme !== theme) {
       const themed = resolve(themeStyleKeys, name, theme)
@@ -200,7 +207,7 @@ export const _withNativeStyle = (
   // component's theme scope is provably the element's own: the element is
   // only built, never mounted, and its host renders in the caller's place
   NativeStyleView.inline = (element: React.ReactElement<any>) =>
-    render(element.props, element.key)
+    render(element.props, element.key ?? undefined)
   return NativeStyleView
 }
 

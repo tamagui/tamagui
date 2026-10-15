@@ -17,6 +17,7 @@ import {
   flushNativeStyleLinks,
   forceUpdateThemes,
   getMedia,
+  getThemeProviderChainSizes,
   setMediaState,
   setNativeStyleEngine,
   styled,
@@ -26,7 +27,7 @@ import {
   type NativeStyleEngineSlots,
   type NativeViewStateUpdate,
 } from '@tamagui/core'
-import { act, render } from '@testing-library/react-native'
+import { act, cleanup, render } from '@testing-library/react-native'
 import React, { forwardRef, useMemo, useState } from 'react'
 import { View as NativeView } from 'react-native'
 import { afterEach, beforeEach, expect, test } from 'vitest'
@@ -879,3 +880,107 @@ test('a host re-rendered after a theme switch keeps its link', async () => {
   expect(mock.links).toHaveLength(2)
   expect(mock.broadcasts.at(-1)?.[1]).toBe('dark_red')
 })
+
+test('compiled scopes keep independent arrays and stable live refs', async () => {
+  const styles = new Map<string, any>()
+  const refs = new Map<string, any>()
+  const Host = forwardRef<any, any>((props, ref) => {
+    styles.set(props.testID, Object.freeze(props.style))
+    refs.set(props.testID, ref)
+    return <NativeView {...props} ref={ref} />
+  })
+  const Compiled = _withNativeStyle(Host, {}, { backgroundColor: 'background' })
+  function Harness({ first = 'red', tick = 0 }) {
+    return (
+      <TamaguiProvider config={config} defaultTheme="dark">
+        <Theme name={first}>
+          <Compiled testID="first" tick={tick} />
+        </Theme>
+        <Theme name="red">
+          <Compiled testID="second" tick={tick} />
+        </Theme>
+      </TamaguiProvider>
+    )
+  }
+  const mounted = render(<Harness />, { createNodeMock: () => ({}) })
+  const first = styles.get('first')
+  const second = styles.get('second')
+  const firstRef = refs.get('first')
+  expect(first).not.toBe(second)
+  expect(mock.links[0].scopeId).not.toBe(mock.links[1].scopeId)
+  mounted.rerender(<Harness tick={1} />)
+  expect(styles.get('first')).toBe(first)
+  expect(styles.get('second')).toBe(second)
+  expect(refs.get('first')).toBe(firstRef)
+  await act(async () => mounted.rerender(<Harness first="blue" tick={2} />))
+  expect(styles.get('first')).not.toBe(first)
+  expect(styles.get('second')).toBe(second)
+  expect(first[1].backgroundColor).toBe((config.themes.dark_red.background as any).val)
+  expect(styles.get('first')[1].backgroundColor).toBe(
+    (config.themes.dark_blue.background as any).val
+  )
+  expect(refs.get('first')).toBe(firstRef)
+  mounted.unmount()
+})
+
+// run vitest with --execArgv=--expose-gc: keep the component factory alive while transient
+// provider scopes and their host props become unreachable.
+test.runIf(typeof globalThis.gc === 'function')(
+  'compiled factories release transient scope arrays',
+  async () => {
+    const arrays: WeakRef<object>[] = []
+    const Host = forwardRef<any, any>((props, ref) => {
+      arrays.push(new WeakRef(props.style))
+      return <NativeView {...props} ref={ref} />
+    })
+    const Compiled = _withNativeStyle(Host, {}, { backgroundColor: 'background' })
+    async function transient() {
+      const mounted = render(
+        <TamaguiProvider config={config} defaultTheme="dark">
+          <Theme name="red">
+            <Compiled />
+          </Theme>
+        </TamaguiProvider>,
+        { createNodeMock: () => ({}) }
+      )
+      flushNativeStyleLinks()
+      mounted.unmount()
+    }
+    for (let i = 0; i < 32; i++) await transient()
+    // unmount alone leaves renderers in the testing library cleanup queue.
+    cleanup()
+    // the mock engine records hosts; the native engine prunes unmounted hosts.
+    mock.hosts.length = 0
+    mock.links.length = 0
+    expect(getThemeProviderChainSizes()).toEqual({ layers: 0, parents: 0 })
+    // weak references keep their targets alive until the current job ends.
+    await new Promise((resolve) => setTimeout(resolve, 0))
+    globalThis.gc!()
+    expect(arrays.filter((array) => array.deref())).toHaveLength(0)
+    // the factory remains usable after its previous scopes have been collected.
+    await transient()
+  }
+)
+
+test.each([true, false])(
+  'inline compiled elements preserve React keys (engine: %s)',
+  (themed) => {
+    if (!themed) setNativeStyleEngine(null)
+    const Compiled = _withNativeStyle(NativeView, {}, { backgroundColor: 'background' })
+    function Probe() {
+      for (const props of [{}, { key: 'first' }, { key: 42 }, { key: null }]) {
+        const element = React.createElement(Compiled, props)
+        expect(Compiled.inline(element).key).toBe(element.key)
+      }
+      return null
+    }
+    const mounted = render(
+      <TamaguiProvider config={config} defaultTheme="dark">
+        <Theme name="red">
+          <Probe />
+        </Theme>
+      </TamaguiProvider>
+    )
+    mounted.unmount()
+  }
+)

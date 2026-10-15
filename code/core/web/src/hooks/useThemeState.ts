@@ -43,10 +43,18 @@ export const forceUpdateThemes = () => {
 export const getThemeState = (id: ID) => states.get(id)
 
 const themeUpdateLayers = new Map<ID, ThemeUpdateState>()
-const themeProviderParents = new Map<ID, ID>()
+const themeProviderParents = new Map<
+  ID,
+  { parentId: ID; keys: MutableRefObject<Set<string> | null> }
+>()
 
 export const getThemeUpdateLayer = (id: ID) => themeUpdateLayers.get(id)
-export const getThemeProviderParent = (id: ID) => themeProviderParents.get(id)
+export const getThemeProviderParent = (id: ID) => themeProviderParents.get(id)?.parentId
+
+// the provider chain owns this hook identity from render through cleanup,
+// including effect replays. resolved theme states can be shared with a parent
+// and cannot identify a scope.
+export const getThemeProviderScope = (id: ID) => themeProviderParents.get(id)?.keys
 
 export const getThemeProviderChainSizes = () => ({
   layers: themeUpdateLayers.size,
@@ -56,9 +64,12 @@ export const getThemeProviderChainSizes = () => ({
 const registerThemeProviderChain = (
   id: ID,
   parentId: ID,
-  props: UseThemeWithStateProps
+  props: UseThemeWithStateProps,
+  keys: MutableRefObject<Set<string> | null>
 ) => {
-  themeProviderParents.set(id, parentId)
+  const scope = themeProviderParents.get(id)
+  if (scope) scope.parentId = parentId
+  else themeProviderParents.set(id, { parentId, keys })
   if (props._themeUpdate) {
     themeUpdateLayers.set(id, props._themeUpdate)
   } else {
@@ -114,7 +125,7 @@ export const useThemeState = (
   const propsKey = `${props.name || ''}${props.forceClassName || ''}${props._themeUpdate?.key || ''}`
 
   if (cascadeOnChange) {
-    registerThemeProviderChain(id, parentId, props)
+    registerThemeProviderChain(id, parentId, props, keys)
   }
 
   const ref = useRef<ThemeStateRef>(null as any)
@@ -144,7 +155,7 @@ export const useThemeState = (
     }
 
     if (cascadeOnChange && !themeProviderParents.has(r.id)) {
-      registerThemeProviderChain(r.id, r.parentId, r.props)
+      registerThemeProviderChain(r.id, r.parentId, r.props, r.keys)
     }
 
     if (r.unsubscribe && r.subscribedTo !== r.parentId) {
