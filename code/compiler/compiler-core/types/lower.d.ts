@@ -3,7 +3,7 @@ import type { DynamicEvaluation } from './evaluate';
 import { type BailoutReason } from './diagnostics';
 import type { MaterializedElement, MaterializedModule, MaterializedStyledDefinition } from './materialize';
 import { type ApplicableLoweredModulePlan, type SourceEdit } from './output';
-export declare const LOWERED_MODULE_PLAN_VERSION = 6;
+export declare const LOWERED_MODULE_PLAN_VERSION = 7;
 export type CompilerTarget = 'web' | 'native';
 export interface LoweredModuleStats {
     found: number;

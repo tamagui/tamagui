@@ -14,7 +14,7 @@ import {
   type SourceEdit,
 } from './output'
 
-export const LOWERED_MODULE_PLAN_VERSION = 6
+export const LOWERED_MODULE_PLAN_VERSION = 7
 
 export type CompilerTarget = 'web' | 'native'
 
