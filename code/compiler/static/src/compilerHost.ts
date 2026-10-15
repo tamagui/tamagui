@@ -1406,7 +1406,7 @@ export function createTamaguiCompilerHost(
       variantStyleResolver: compilerVariantStyleResolver,
     } as StaticConfig
     if (staticConfig.styleFrontend) {
-      const normalized = core.getStyleStaticConfig(staticConfig, options.tamaguiConfig)
+      const normalized = core.getStyleStaticConfig(result, options.tamaguiConfig)
       Object.assign(result, {
         baseStyle: normalized.baseStyle,
         defaultProps: normalized.defaultProps,
