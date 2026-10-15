@@ -19,14 +19,15 @@
  *    parser but not this one, and the throw kills the mount-item dispatch and
  *    tears the whole React surface down.
  *
- * A background image goes through React Native's own processBackgroundImage
- * first, as React's style diff does for a rendered view: Fabric's parser reads
- * only its output (a `{ type, value }` direction and a `position` on every
- * stop) and drops the angle and every stop of the unprocessed form. That
- * processor throws on its own output, so a value crosses this boundary once.
+ * Every other style first goes through React Native's own processor for its
+ * key, as React's style diff does for a rendered view: Fabric reads only the
+ * processed form, so a gradient keeps its angle and stops, and Android's view
+ * manager gets the array it casts `transformOrigin` to instead of throwing on
+ * the authored string. Some processors throw on their own output, so a value
+ * crosses this boundary once.
  */
 import { processColor, type ColorValue } from 'react-native'
-import processBackgroundImage from 'react-native/Libraries/StyleSheet/processBackgroundImage'
+import ReactNativeStyleAttributes from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes'
 
 const COLOR_PROPS = new Set([
   'color',
@@ -41,6 +42,7 @@ const COLOR_PROPS = new Set([
   'borderBlockColor',
   'borderBlockStartColor',
   'borderBlockEndColor',
+  'outlineColor',
   'shadowColor',
   'textShadowColor',
   'textDecorationColor',
@@ -54,13 +56,26 @@ export function processStyleColors(
   let out: Record<string, unknown> | null = null
   for (const key in props) {
     let value = props[key]
-    if (key === 'experimental_backgroundImage' && value != null) {
-      value = processBackgroundImage(value)
+    const process = COLOR_PROPS.has(key)
+      ? undefined
+      : ReactNativeStyleAttributes[key]?.process
+    if (process && value != null) {
+      value = process(value)
       out ??= { ...props }
       out[key] = value
     }
+    if (key === 'dropShadow' && value != null && typeof value === 'object') {
+      const processed = processStyleColors(value as Record<string, unknown>)
+      if (processed !== value) {
+        out ??= { ...props }
+        out[key] = processed
+      }
+      continue
+    }
     if (
       (key === 'boxShadow' ||
+        key === 'filter' ||
+        key === 'backgroundImage' ||
         key === 'experimental_backgroundImage' ||
         key === 'colorStops') &&
       Array.isArray(value)
