@@ -527,6 +527,7 @@ export function updateNativeStyleLink(
     nativeLink?: NativeStyleEngineLinkHandle | null
     nativeStyleUpdate?: unknown
     nativePushedKeys?: Set<string>
+    nativeHost?: unknown
     nativeResync?: () => void
   },
   host: unknown
@@ -537,11 +538,15 @@ export function updateNativeStyleLink(
   }
   if (host && engine && ref.nativeStyleUpdate) {
     ref.nativeLink = engine.link(host, {})
-    // the ref keeps one identity, so a host that links again is the same
-    // native view returning from a hidden subtree (freeze, activity). it still
-    // shows its last push, and react's commit only diffs against react's own
-    // props, so a theme change made while hidden would never reach it
-    if (ref.nativePushedKeys?.size) ref.nativeResync?.()
+    if (host !== ref.nativeHost) {
+      ref.nativeHost = host
+      ref.nativePushedKeys = undefined
+    } else if (ref.nativeLink && ref.nativePushedKeys?.size) {
+      // the same native view returning from a hidden subtree (freeze, activity)
+      // still shows its last push, and react's commit only diffs against
+      // react's own props, so a theme change made while hidden never reached it
+      ref.nativeResync?.()
+    }
   }
 }
 

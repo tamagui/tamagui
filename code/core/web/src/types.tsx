@@ -725,6 +725,8 @@ export type TamaguiComponentStateRef = {
   // before but absent from the next push are sent as null (reset-to-default),
   // matching what a real re-render's style diff would do
   nativePushedKeys?: Set<string>
+  // the host nativePushedKeys describes; a different host starts untracked
+  nativeHost?: unknown
   // recommits the last render's style through the engine, for a host that
   // returns from a hidden subtree still painted with an earlier push
   nativeResync?: () => void
