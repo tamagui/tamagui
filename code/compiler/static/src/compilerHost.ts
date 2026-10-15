@@ -1391,18 +1391,31 @@ export function createTamaguiCompilerHost(
   // because their static config is already the renderer's input shape. The compiler
   // must never import a frontend package: `@tamagui/tailwind/vite` already depends on
   // the static compiler, so reaching the other way would be a cycle.
+  //
+  // An evaluated component may come from another core module instance (an esm
+  // import beside this host's cjs require) whose settings were never configured,
+  // so its variant resolver is rebound to this host's core. The copy leaves the
+  // component's own config untouched for the runtime that renders it.
   const normalizedStyleConfigs = new WeakMap<StaticConfig, any>()
+  const hostStaticConfigs = new WeakMap<StaticConfig, StaticConfig>()
   const normalizeStaticConfig = (staticConfig: StaticConfig): StaticConfig => {
-    if (!staticConfig.styleFrontend) return staticConfig
-    const normalized = core.getStyleStaticConfig(staticConfig, options.tamaguiConfig)
+    const cached = hostStaticConfigs.get(staticConfig)
+    if (cached) return cached
     const result = {
       ...staticConfig,
-      baseStyle: normalized.baseStyle,
-      defaultProps: normalized.defaultProps,
-      variants: normalized.variants,
-      passthroughClassName: normalized.passthroughClassName,
+      variantStyleResolver: compilerVariantStyleResolver,
+    } as StaticConfig
+    if (staticConfig.styleFrontend) {
+      const normalized = core.getStyleStaticConfig(staticConfig, options.tamaguiConfig)
+      Object.assign(result, {
+        baseStyle: normalized.baseStyle,
+        defaultProps: normalized.defaultProps,
+        variants: normalized.variants,
+        passthroughClassName: normalized.passthroughClassName,
+      })
+      normalizedStyleConfigs.set(result, normalized)
     }
-    normalizedStyleConfigs.set(result, normalized)
+    hostStaticConfigs.set(staticConfig, result)
     return result
   }
 
@@ -1541,7 +1554,6 @@ export function createTamaguiCompilerHost(
         ? contextProps
         : (contextProps ?? base.staticConfig.contextProps),
     }
-    ;(localStaticConfig as any).variantStyleResolver = compilerVariantStyleResolver
     return {
       key: componentKey(definition.id, definition.name),
       displayName: displayName || base.displayName,
