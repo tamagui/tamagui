@@ -12,16 +12,14 @@ import type {
 } from '../types'
 import { styledDynamicSymbol } from '../types'
 
-const fontLanguageCache = new WeakMap()
-
+// built per call: insertFont adds variants to the same fonts object, and a
+// language without a variant for a font keeps that font
 export function getFontsForLanguage(fonts: GenericFonts, language: LanguageContextType) {
-  if (fontLanguageCache.has(language)) return fontLanguageCache.get(language)
   const next = { ...fonts }
   for (const name in language) {
     const lang = language[name]
-    if (lang !== 'default') next[name] = fonts[`${name}_${lang}`]
+    if (lang !== 'default') next[name] = fonts[`${name}_${lang}`] ?? fonts[name]
   }
-  fontLanguageCache.set(language, next)
   return next
 }
 

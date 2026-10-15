@@ -200,6 +200,31 @@ describe('getSplitStyles', () => {
     })
   })
 
+  test('font language keeps the base font without a variant and sees inserted variants', () => {
+    insertFont('language-late', {
+      family: 'LateBase',
+      size: { 4: 14 },
+      lineHeight: { 4: 20 },
+    })
+    const props = { fontFamily: 'language-late', fontSize: '$4', lineHeight: '$4' }
+    const context = { language: { 'language-late': 'alt' } } as Partial<ComponentContextI>
+    expect(getSplitStylesFor(props, Text, { context }).style).toMatchObject({
+      fontFamily: 'LateBase',
+      fontSize: 14,
+      lineHeight: 20,
+    })
+    insertFont('language-late_alt', {
+      family: 'LateAlt',
+      size: { 4: 18 },
+      lineHeight: { 4: 26 },
+    })
+    expect(getSplitStylesFor(props, Text, { context }).style).toMatchObject({
+      fontFamily: 'LateAlt',
+      fontSize: 18,
+      lineHeight: 26,
+    })
+  })
+
   test('line-height resets clear ratios and inheritance keeps their semantic value', () => {
     const context = { parentFontSize: 20, parentLineHeight: 1.5 }
     for (const lineHeight of ['inherit', 'unset']) {
