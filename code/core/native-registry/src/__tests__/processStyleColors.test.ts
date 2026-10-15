@@ -17,21 +17,39 @@ vi.mock('react-native', () => ({
   },
 }))
 
-// react native's gradient processor, stubbed to the processed shape it returns:
-// a `{ type, value }` direction, a `position` on every stop, packed int colors
-vi.mock('react-native/Libraries/StyleSheet/processBackgroundImage', () => ({
-  default: (value: unknown) => {
-    if (value !== 'linear-gradient(to bottom, half-red 0%, dynamic)') return []
-    return [
-      {
-        type: 'linear-gradient',
-        direction: { type: 'keyword', value: 'to bottom' },
-        colorStops: [
-          { color: 0x80ff0000, position: '0%' },
-          { color: { dynamic: { light: 0xffffffff, dark: 0xff000000 } }, position: null },
-        ],
+// react native's style attribute processors, stubbed to the processed shapes they
+// return: a `{ type, value }` direction and a `position` on every gradient stop,
+// a numeric transform origin, a drop shadow with a packed int color
+vi.mock('react-native/Libraries/Components/View/ReactNativeStyleAttributes', () => ({
+  default: {
+    experimental_backgroundImage: {
+      process: (value: unknown) => {
+        if (value !== 'linear-gradient(to bottom, half-red 0%, dynamic)') return []
+        return [
+          {
+            type: 'linear-gradient',
+            direction: { type: 'keyword', value: 'to bottom' },
+            colorStops: [
+              { color: 0x80ff0000, position: '0%' },
+              {
+                color: { dynamic: { light: 0xffffffff, dark: 0xff000000 } },
+                position: null,
+              },
+            ],
+          },
+        ]
       },
-    ]
+    },
+    transformOrigin: {
+      process: (value: unknown) => (value === 'top left' ? [0, 0, 0] : value),
+    },
+    filter: {
+      process: (value: unknown) =>
+        value === 'drop-shadow(1px 2px blue)'
+          ? [{ dropShadow: { offsetX: 1, offsetY: 2, color: 0xff0000ff } }]
+          : value,
+    },
+    width: true,
   },
 }))
 
@@ -132,5 +150,32 @@ describe('processStyleColors', () => {
       ],
     })
     expect(props.boxShadow[0].color).toBe(dynamic)
+  })
+
+  // android's view manager casts transformOrigin to a ReadableArray and throws on
+  // the authored string, tearing the surface down, so the engine hands fabric the
+  // same processed values react's style diff would
+  it('runs react native style processors before values reach fabric', () => {
+    expect(
+      processStyleColors({
+        transformOrigin: 'top left',
+        filter: 'drop-shadow(1px 2px blue)',
+        outlineColor: 'blue',
+        width: 10,
+      })
+    ).toEqual({
+      transformOrigin: [0, 0, 0],
+      filter: [
+        {
+          dropShadow: {
+            offsetX: 1,
+            offsetY: 2,
+            color: { space: 'srgb', r: 0, g: 0, b: 1, a: 1 },
+          },
+        },
+      ],
+      outlineColor: { space: 'srgb', r: 0, g: 0, b: 1, a: 1 },
+      width: 10,
+    })
   })
 })
