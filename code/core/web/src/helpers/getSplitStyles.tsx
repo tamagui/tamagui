@@ -71,7 +71,7 @@ import { warnOnce, warnRefusedValue } from './warnOnce'
 export { getStyleStaticConfig }
 
 import { extractValueFromDynamic, isColorStyleKey } from './getDynamicVal'
-import { getDynamicEnv, getFontsForLanguage } from './styledDynamic'
+import { getDynamicEnv } from './styledDynamic'
 import {
   getRulesForIdentifier,
   insertStyleRules,
@@ -2856,7 +2856,7 @@ function configuredValue(
   // native FontLanguage swaps fonts through context, web swaps css variables
   const fonts =
     fontProperty && state.context?.language
-      ? getFontsForLanguage(state.conf.fontsParsed, state.context.language)
+      ? getDynamicEnv(state).fonts
       : state.conf.fontsParsed
   if (property === 'fontFamily') {
     value = fonts[lookupName]?.family

@@ -1,5 +1,7 @@
 import type { GenericFonts, GetStyleState, LanguageContextType, StyledDynamic, StyledDynamicEnv, StyledDynamicFn, StyledDynamicProp } from '../types';
-export declare function getFontsForLanguage(fonts: GenericFonts, language: LanguageContextType): any;
+export declare function getFontsForLanguage(fonts: GenericFonts, language: LanguageContextType): {
+    [x: string]: import("..").GenericFont<string | number | symbol>;
+};
 export declare function isStyledDynamic(value: unknown): value is StyledDynamic;
 /**
  * `styled.dynamic<T>()` declares a typed variant prop that is consumed by
