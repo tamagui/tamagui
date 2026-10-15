@@ -1967,7 +1967,16 @@ export function createAnimations<A extends AnimationsConfig>(
           }
           for (const key in snapshot.removedKeys) {
             if (!key.startsWith('transform:') && !(key in staticValues)) {
-              result[key] = snapshot.clearValue
+              // native color processing rejects null. text color must remain
+              // absent rather than making the text transparent.
+              if (
+                snapshot.clearValue === null &&
+                (key === 'color' || key.endsWith('Color'))
+              ) {
+                if (key !== 'color') result[key] = 'transparent'
+              } else {
+                result[key] = snapshot.clearValue
+              }
             }
           }
 
