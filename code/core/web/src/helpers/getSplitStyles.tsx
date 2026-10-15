@@ -71,7 +71,7 @@ import { warnOnce, warnRefusedValue } from './warnOnce'
 export { getStyleStaticConfig }
 
 import { extractValueFromDynamic, isColorStyleKey } from './getDynamicVal'
-import { getDynamicEnv } from './styledDynamic'
+import { getDynamicEnv, getFontsForLanguage } from './styledDynamic'
 import {
   getRulesForIdentifier,
   insertStyleRules,
@@ -2853,8 +2853,13 @@ function configuredValue(
   let lookupName = name.charCodeAt(0) === 36 ? name.slice(1) : name
   let value: any
   let fromTheme = false
+  // native FontLanguage swaps fonts through context, web swaps css variables
+  const fonts =
+    fontProperty && state.context?.language
+      ? getFontsForLanguage(state.conf.fontsParsed, state.context.language)
+      : state.conf.fontsParsed
   if (property === 'fontFamily') {
-    value = state.conf.fontsParsed[lookupName]?.family
+    value = fonts[lookupName]?.family
   } else {
     const fontKey =
       property === 'fontSize'
@@ -2866,8 +2871,8 @@ function configuredValue(
             : ''
     if (fontKey) {
       const font =
-        state.conf.fontsParsed[state.fontFamily || state.conf.defaultFontToken] ||
-        state.conf.fontsParsed[state.conf.defaultFontToken]
+        fonts[state.fontFamily || state.conf.defaultFontToken] ||
+        fonts[state.conf.defaultFontToken]
       value = font?.[fontKey]?.[lookupName]
     } else {
       const category = grammar.tokenCategory(property)
