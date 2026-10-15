@@ -29,6 +29,8 @@ import {
 } from '@tamagui/core'
 import { act, cleanup, render } from '@testing-library/react-native'
 import React, { forwardRef, useMemo, useState } from 'react'
+import { setFlagsFromString } from 'node:v8'
+import { runInNewContext } from 'node:vm'
 import { View as NativeView } from 'react-native'
 import { afterEach, beforeEach, expect, test } from 'vitest'
 
@@ -923,44 +925,82 @@ test('compiled scopes keep independent arrays and stable live refs', async () =>
   mounted.unmount()
 })
 
-// run vitest with --execArgv=--expose-gc: keep the component factory alive while transient
-// provider scopes and their host props become unreachable.
-test.runIf(typeof globalThis.gc === 'function')(
-  'compiled factories release transient scope arrays',
-  async () => {
-    const arrays: WeakRef<object>[] = []
-    const Host = forwardRef<any, any>((props, ref) => {
-      arrays.push(new WeakRef(props.style))
-      return <NativeView {...props} ref={ref} />
-    })
-    const Compiled = _withNativeStyle(Host, {}, { backgroundColor: 'background' })
-    async function transient() {
-      const mounted = render(
-        <TamaguiProvider config={config} defaultTheme="dark">
-          <Theme name="red">
-            <Compiled />
-          </Theme>
-        </TamaguiProvider>,
-        { createNodeMock: () => ({}) }
-      )
-      flushNativeStyleLinks()
-      mounted.unmount()
-    }
-    for (let i = 0; i < 32; i++) await transient()
-    // unmount alone leaves renderers in the testing library cleanup queue.
-    cleanup()
-    // the mock engine records hosts; the native engine prunes unmounted hosts.
-    mock.hosts.length = 0
-    mock.links.length = 0
-    expect(getThemeProviderChainSizes()).toEqual({ layers: 0, parents: 0 })
-    // weak references keep their targets alive until the current job ends.
-    await new Promise((resolve) => setTimeout(resolve, 0))
-    globalThis.gc!()
-    expect(arrays.filter((array) => array.deref())).toHaveLength(0)
-    // the factory remains usable after its previous scopes have been collected.
-    await transient()
+// styled theme= wrappers push a distinct theme state without registering a live provider
+// owner, so compiled hosts beneath them take the reactive fallback instead of the engine.
+// an outer scheme switch must still repaint them with the right color and link nothing
+// into another scope.
+test('compiled host under a styled theme= scope repaints on an outer scheme switch', async () => {
+  const styles: any[] = []
+  const Host = forwardRef<any, any>((props, ref) => {
+    styles.push(props.style)
+    return <NativeView {...props} ref={ref} />
+  })
+  const Compiled = _withNativeStyle(Host, {}, { backgroundColor: 'background' })
+  let setScheme: (scheme: 'dark' | 'light') => void = () => {}
+  function Harness() {
+    const [scheme, set] = useState<'dark' | 'light'>('dark')
+    setScheme = set
+    const child = useMemo(() => <Compiled />, [])
+    return (
+      <TamaguiProvider config={config} defaultTheme="dark">
+        <Theme name={scheme}>
+          <Square theme="red">{child}</Square>
+        </Theme>
+      </TamaguiProvider>
+    )
   }
-)
+  const mounted = render(<Harness />, { createNodeMock: () => ({}) })
+  flushNativeStyleLinks()
+  const bgOf = () => styles.at(-1)[1].backgroundColor
+  expect(bgOf()).toBe((config.themes.dark_red.background as any).val)
+  const linksBefore = mock.links.length
+  await act(async () => setScheme('light'))
+  flushNativeStyleLinks()
+  expect(bgOf()).toBe((config.themes.red.background as any).val)
+  expect(bgOf()).not.toBe((config.themes.dark_red.background as any).val)
+  // the fallback host never links into an engine scope
+  expect(mock.links.length).toBe(linksBefore)
+  mounted.unmount()
+})
+
+// keep the component factory alive while transient provider scopes and their host props
+// become unreachable. the collector comes from the test itself so ordinary runs execute this.
+setFlagsFromString('--expose-gc')
+const collectGarbage = runInNewContext('gc') as () => void
+
+test('compiled factories release transient scope arrays', async () => {
+  const arrays: WeakRef<object>[] = []
+  const Host = forwardRef<any, any>((props, ref) => {
+    arrays.push(new WeakRef(props.style))
+    return <NativeView {...props} ref={ref} />
+  })
+  const Compiled = _withNativeStyle(Host, {}, { backgroundColor: 'background' })
+  async function transient() {
+    const mounted = render(
+      <TamaguiProvider config={config} defaultTheme="dark">
+        <Theme name="red">
+          <Compiled />
+        </Theme>
+      </TamaguiProvider>,
+      { createNodeMock: () => ({}) }
+    )
+    flushNativeStyleLinks()
+    mounted.unmount()
+  }
+  for (let i = 0; i < 32; i++) await transient()
+  // unmount alone leaves renderers in the testing library cleanup queue.
+  cleanup()
+  // the mock engine records hosts; the native engine prunes unmounted hosts.
+  mock.hosts.length = 0
+  mock.links.length = 0
+  expect(getThemeProviderChainSizes()).toEqual({ layers: 0, parents: 0 })
+  // weak references keep their targets alive until the current job ends.
+  await new Promise((resolve) => setTimeout(resolve, 0))
+  collectGarbage()
+  expect(arrays.filter((array) => array.deref())).toHaveLength(0)
+  // the factory remains usable after its previous scopes have been collected.
+  await transient()
+})
 
 test.each([true, false])(
   'inline compiled elements preserve React keys (engine: %s)',
