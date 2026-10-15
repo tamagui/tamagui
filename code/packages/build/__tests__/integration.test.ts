@@ -261,7 +261,7 @@ describe('tamagui-build integration test', () => {
         let fileModified = false
         const replacementGreeting = originalContent.includes('Hi,') ? 'Hey' : 'Hi'
 
-        watchProcess.stdout.on('data', (data) => {
+        const onData = (data: Buffer) => {
           console.log('Watch process output:', data.toString())
           if (data.toString().includes('built tamagui-build-test-watch-package')) {
             if (!initialBuildComplete) {
@@ -279,6 +279,10 @@ describe('tamagui-build integration test', () => {
               const output = readFileSync(watchDistCjsFilePath, 'utf-8')
               expect(output).toContain(`${replacementGreeting},`)
 
+              // the restore below triggers one more rebuild whose output must
+              // not reach this assertion
+              watchProcess.stdout.off('data', onData)
+
               // Change content back to original
               writeFileSync(watchSrcFilePath, originalContent)
 
@@ -286,7 +290,8 @@ describe('tamagui-build integration test', () => {
               resolve()
             }
           }
-        })
+        }
+        watchProcess.stdout.on('data', onData)
       })
     } finally {
       writeFileSync(watchSrcFilePath, originalContent)
