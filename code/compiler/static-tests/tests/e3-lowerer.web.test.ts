@@ -298,7 +298,10 @@ export const Card = ({ width }) => (
     expect(plan.css).not.toContain('width:')
   })
 
-  test('resolves variants of a component evaluated by another core copy through its own core', () => {
+  test.each([
+    ['', {}],
+    [' with a style frontend', { styleFrontend: {} }],
+  ])('resolves variants of a component evaluated by another core copy through its own core%s', (_, frontend) => {
     // a component evaluated through a second core module instance (an esm
     // import beside the host's cjs require) carries that instance's variant
     // resolver, which reads the second instance's never-configured settings.
@@ -312,6 +315,7 @@ export const Card = ({ width }) => (
       componentName: 'Pad',
       variants: { pad: { true: { padding: 12 } } },
       variantStyleResolver: foreignResolver,
+      ...frontend,
     }
     const source = `
 import { Pad } from 'e3-extra-components'
