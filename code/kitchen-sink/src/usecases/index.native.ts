@@ -18,6 +18,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./NativeRegistryShowdownCase').NativeRegistryShowdownCase,
   NativeRegistryParityCase: () =>
     require('./NativeRegistryParityCase').NativeRegistryParityCase,
+  NativeRegistryRuntimeClonesCase: () =>
+    require('./NativeRegistryRuntimeClonesCase').NativeRegistryRuntimeClonesCase,
   NativeRegistryCorrectnessCase: () =>
     require('./NativeRegistryCorrectnessCase').NativeRegistryCorrectnessCase,
   AccordionDefaultOpenCase: () =>

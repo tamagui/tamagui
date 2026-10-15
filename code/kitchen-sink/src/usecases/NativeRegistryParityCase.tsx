@@ -11,7 +11,7 @@
 //     next toggle is cold again (pushed props can never outlive the render
 //     that produced them)
 //   - engine table introspection via getViewState (activeState + both theme
-//     tables present + sticky nativeProps synced)
+//     tables present + no sticky nativeProps)
 //   - media flips (rotate the sim): sm: activates in landscape (minWidth
 //     640), adds paddingBottom; rotating back must push paddingBottom: null
 //     (reset-to-default), never leave it stuck
@@ -19,7 +19,16 @@
 // read [parity] lines or the on-screen PASS/FAIL list. rotation checks are
 // reported live in the media section as you rotate.
 import React, { Profiler, useEffect, useMemo, useRef, useState } from 'react'
-import { Dimensions, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import {
+  Dimensions,
+  DynamicColorIOS,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
 import { Theme, View as TamaguiView, styled } from 'tamagui'
 import {
   getConfig,
@@ -167,8 +176,15 @@ export function NativeRegistryParityCase() {
       const raw = themes[`light_${sub}`]?.background?.val
       return raw == null
         ? undefined
-        : (registry.processStyleColors({ backgroundColor: raw })
-            .backgroundColor as unknown)
+        : (registry.processStyleColors({
+            backgroundColor:
+              Platform.OS === 'ios'
+                ? DynamicColorIOS({
+                    light: raw,
+                    dark: themes[`dark_${sub}`].background.val,
+                  })
+                : raw,
+          }).backgroundColor as unknown)
     }
 
     await settle()
@@ -261,13 +277,13 @@ export function NativeRegistryParityCase() {
     const sampleId = flushed[0]?.id
     const snap = sampleId != null ? getViewState(sampleId) : null
     results.push({
-      name: 'getViewState: active + both tables + sticky synced',
+      name: 'getViewState: active + both tables + no sticky props',
       pass:
         !!snap &&
         snap.activeState === 'light_green' &&
         !!snap.states?.light_red &&
         !!snap.states?.light_green &&
-        snap.nativeProps?.backgroundColor !== undefined,
+        snap.nativeProps === null,
       detail: snap
         ? `active ${snap.activeState}, tables ${Object.keys(snap.states || {}).join(',')}`
         : 'no snapshot',
@@ -366,7 +382,7 @@ export function NativeRegistryParityCase() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, padding: 16 },
+  root: { flex: 1, padding: 16, paddingTop: 70 },
   info: { color: '#888', fontSize: 12, marginVertical: 2 },
   grid: { flexDirection: 'row', flexWrap: 'wrap' },
   button: {

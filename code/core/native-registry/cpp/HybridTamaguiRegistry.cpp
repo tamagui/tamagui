@@ -536,9 +536,7 @@ class MountThread {
 
 }  // namespace
 
-// merge base + the named state's props for one view into `out`. a runtime
-// view also syncs its family's native props so React re-commits of unchanged
-// children merge our values instead of resurrecting a stale absorbed node.
+// merge base + the named state's props for one view into `out`.
 // returns false on a state miss.
 bool HybridTamaguiRegistry::buildViewUpdate(LinkedView& view,
                                             const std::string& stateName,
@@ -572,35 +570,10 @@ bool HybridTamaguiRegistry::buildViewUpdate(LinkedView& view,
       return false;
     }
   }
-  const auto& props = update.props();
-
-  const auto& family = *view.family;
-  // the retained node keeps its family alive; unmounted views resolve to
-  // no ancestors during the transaction and are skipped safely
-  if (view.table) {
-    // React renders a table view with its scope's current state and the
-    // engine's clones take over React's handles, so nothing goes stale. a
-    // sticky copy would make RN re-parse the view's props on every clone
-    out[&family] = std::move(update);
-    return true;
-  }
-  std::lock_guard<std::mutex> lock(family.nativePropsMutex);
-  if (family.nativeProps_DEPRECATED) {
-    family.nativeProps_DEPRECATED->update(props);
-  } else {
-    family.nativeProps_DEPRECATED = std::make_unique<folly::dynamic>(props);
-  }
-
-  // a null value means reset-to-default (a style key dropped by a media
-  // change): it must COMMIT as null so RawProps clears the prop, but must not
-  // stick in nativeProps_DEPRECATED or every future React render would keep
-  // re-clearing a key the render may now legitimately set
-  auto& sticky = *family.nativeProps_DEPRECATED;
-  for (const auto& item : props.items()) {
-    if (item.second.isNull()) sticky.erase(item.first.asString());
-  }
-
-  out[&family] = std::move(update);
+  // commitUpdates transfers the updated nodes to React's handles for both
+  // runtime and table links. sticky native props would make RN re-parse
+  // unchanged props on every state/children-only clone, including scrolls.
+  out[view.family.get()] = std::move(update);
   return true;
 }
 

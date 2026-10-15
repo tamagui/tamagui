@@ -248,20 +248,16 @@ Media rides the same interception shape as themes, one layer over:
   captured `styleProps.mediaState` is the component's media proxy, which
   reads through the mirror updated one step earlier — fresh values with no
   extra plumbing.
-- Dropped-key semantics, decided by reading RN's actual
-  `nativeProps_DEPRECATED` merge in `UIManager::cloneNode` (READ, RN 0.83):
-  render rawProps win for every key the render sets, sticky values persist
-  for keys it omits. So the one hazard is a key pushed earlier that a later
-  computation drops (media flip removing a `sm:` style, a removed prop). The
-  JS side tracks the union of pushed keys per link (`nativePushedKeys`) and
-  pushes `null` for dropped keys — RawProps null resets the prop to default,
-  exactly what a real re-render's style diff does — and the engine erases
-  null-valued keys from the sticky nativeProps so future React renders can
-  set them again. Nulled keys stay in the pushed-key union because engine
-  state tables retain them.
+- A key pushed earlier may disappear from a later computation (a media flip
+  removing a `sm:` style, a removed prop). The JS side tracks the union of
+  pushed keys per link (`nativePushedKeys`) and pushes `null` for dropped
+  keys. RawProps null resets the prop to default, matching a real render's
+  style diff. Nulled keys stay in the pushed-key union because engine state
+  tables retain them. Registry commits update React's node handles and do
+  not write sticky family native props.
 - A real render re-pushes the fresh style (with nulls) only when it detects
-  previously pushed keys its own style dropped, closing the last
-  resurrection window RN's sticky merge would otherwise leave open.
+  previously pushed keys its own style dropped, explicitly resetting them
+  behind React's commit.
 
 #### Test/demo surfaces (2026-08-04, verified on-device — see integrated results below)
 
@@ -748,8 +744,12 @@ Each phase lands only with its own honesty-protocol benchmarks.
 
 - Package and flag naming is settled: `@tamagui/native-registry` and
   `experimental.nativeFastPath`.
-- The JS mirror does not replace `nativeProps_DEPRECATED` syncing. Phase 0
-  proved both are required across later React clones.
+- Runtime and compiler commits transfer updated nodes to React's handles.
+  This supersedes Phase 0's sticky `nativeProps_DEPRECATED` syncing, which
+  made RN re-parse unchanged props on state-only scroll clones (#4325).
+  `NativeRegistryRuntimeClones.test.ts` proves runtime style preservation
+  across scrolls, repeated React commits, null resets, and later React styles
+  on iOS 27 with RN 0.87. Physical Android timing and mount-count A/B is owed.
 - Kitchen-sink native extraction with the flag produced 1,044 fast wrappers
   among 1,986 flattened elements (52.6%). It left 13 `_withStableStyle`
   wrappers, so 1,044 of 1,057 compiler-generated theme helper sites (98.8%)

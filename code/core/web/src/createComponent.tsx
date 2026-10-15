@@ -914,10 +914,9 @@ export function createComponent<
       stateRef.current.nativeActiveState = canNativeUpdate ? themeState?.name : undefined
 
       // push one state's full computed style. keys pushed earlier but absent
-      // from this style commit as null — reset-to-default, exactly what a real
-      // re-render's style diff does when a key disappears (media flip dropping
-      // a $sm style, a removed prop) — and the engine unsticks them from
-      // nativeProps_DEPRECATED so future React renders can set them again.
+      // from this style commit as null, resetting them to defaults just as a
+      // real re-render does when a key disappears (media flip dropping a $sm
+      // style, a removed prop).
       // nulled keys stay in nativePushedKeys: engine state tables retain them,
       // so every later cold push must keep nulling until a value returns.
       const pushViewState = canNativeUpdate
@@ -1021,12 +1020,9 @@ export function createComponent<
           }
         : undefined
 
-      // a real render supersedes everything pushed since: its style is the
-      // truth React commits, and RN's nativeProps_DEPRECATED merge refreshes
-      // shared keys from it. the one hazard is a previously-pushed key this
-      // render dropped — RN's merge would resurrect the stale value — so
-      // re-push the fresh style (with nulls for dropped keys) right behind
-      // React's own commit.
+      // a real render supersedes everything pushed since. explicitly reset
+      // previously-pushed keys absent from this render's style, then commit
+      // the fresh style right behind React's own commit.
       if (canNativeUpdate && stateRef.current.nativeLink) {
         const sr = stateRef.current
         const style = splitStyles.style as Record<string, unknown> | undefined
