@@ -175,6 +175,31 @@ describe('getSplitStyles', () => {
     }
   })
 
+  test('font language context selects the language font family and scale', () => {
+    insertFont('language-test', {
+      family: 'Silkscreen',
+      size: { 4: 14 },
+      lineHeight: { 4: 20 },
+    })
+    insertFont('language-test_alt', {
+      family: 'Ark Pixel',
+      size: { 4: 18 },
+      lineHeight: { 4: 26 },
+    })
+    const props = { fontFamily: 'language-test', fontSize: '$4', lineHeight: '$4' }
+    expect(getSplitStylesFor(props, Text).style).toMatchObject({
+      fontFamily: 'Silkscreen',
+      fontSize: 14,
+      lineHeight: 20,
+    })
+    const context = { language: { 'language-test': 'alt' } } as Partial<ComponentContextI>
+    expect(getSplitStylesFor(props, Text, { context }).style).toMatchObject({
+      fontFamily: 'Ark Pixel',
+      fontSize: 18,
+      lineHeight: 26,
+    })
+  })
+
   test('line-height resets clear ratios and inheritance keeps their semantic value', () => {
     const context = { parentFontSize: 20, parentLineHeight: 1.5 }
     for (const lineHeight of ['inherit', 'unset']) {
