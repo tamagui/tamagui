@@ -136,8 +136,8 @@
         "metro-resolver": "0.84.4",
       },
       "peerDependencies": {
-        "metro": "^0.84.4",
-        "metro-resolver": "^0.84.4",
+        "metro": ">=0.84.4 <0.88.0",
+        "metro-resolver": ">=0.84.4 <0.88.0",
       },
     },
     "code/compiler/next-plugin": {
