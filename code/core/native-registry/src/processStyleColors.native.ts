@@ -75,7 +75,6 @@ export function processStyleColors(
     if (
       (key === 'boxShadow' ||
         key === 'filter' ||
-        key === 'backgroundImage' ||
         key === 'experimental_backgroundImage' ||
         key === 'colorStops') &&
       Array.isArray(value)
