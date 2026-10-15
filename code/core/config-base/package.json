@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config-base",
-  "version": "3.0.15",
+  "version": "3.0.16",
   "license": "MIT",
   "files": [
     "src",

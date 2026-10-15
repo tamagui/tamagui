@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/floating",
-  "version": "3.0.15",
+  "version": "3.0.16",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [
