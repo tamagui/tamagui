@@ -3057,8 +3057,12 @@ export function createTamaguiCompilerHost(
           const value = (split.viewProps as Record<string, unknown>)[name]
           if (
             input.element.form !== 'jsx' ||
-            (value !== null && typeof value === 'object') ||
-            typeof value === 'function'
+            !(
+              value === null ||
+              typeof value === 'string' ||
+              typeof value === 'boolean' ||
+              (typeof value === 'number' && Number.isFinite(value))
+            )
           ) {
             return bailout(
               input,
