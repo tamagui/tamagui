@@ -245,6 +245,30 @@ test('native Text metric parents flatten only evaluator-proven scalar children',
   expect(output.code).toContain('<Text fontSize={20} lineHeight={1.5}>{child}</Text>')
 })
 
+test('native text whose font family has FontLanguage variants stays on the runtime path', async () => {
+  const output = await extractForNative(
+    `
+    import { FontLanguage, SizableText } from 'tamagui'
+    export const App = () => (
+      <FontLanguage body="alt">
+        <SizableText fontFamily="body" size="$4">body</SizableText>
+        <SizableText fontFamily="heading" size="$4">heading</SizableText>
+      </FontLanguage>
+    )
+  `,
+    { options: { config: './tests/fixtures/font-language.config.cjs' } }
+  )
+
+  expect(output.stats.flattened).toBe(1)
+  expect(output.code).toContain(
+    '<SizableText fontFamily="body" size="$4">body</SizableText>'
+  )
+  expect(output.code).toContain('"fontFamily":"Space Grotesk"')
+  expect(output.diagnostics.map(({ code }) => code)).toEqual([
+    'local/dynamic-style-value',
+  ])
+})
+
 test(`normalize ternaries with the conditional dynamic values`, async () => {
   const inputCode = `
   import { View } from 'tamagui'

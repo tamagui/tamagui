@@ -3008,6 +3008,28 @@ export function createTamaguiCompilerHost(
             'Native style output is not a static serializable value'
           )
         }
+        // FontLanguage swaps a family for its `<family>_<language>` font at
+        // runtime, so values resolved from a family that has one stay live
+        if (component.staticConfig.isText && staticObject(nativeStyleResolved)) {
+          const conf = core.getConfig()
+          const family = String(split.fontFamily || conf.defaultFontToken).replace(
+            /^\$/,
+            ''
+          )
+          if (
+            Object.keys(nativeStyleResolved).some(
+              (key) =>
+                key.startsWith('font') || key === 'lineHeight' || key === 'letterSpacing'
+            ) &&
+            Object.keys(conf.fontsParsed).some((name) => name.startsWith(`${family}_`))
+          ) {
+            return bailout(
+              input,
+              'local/dynamic-style-value',
+              `Font ${family} has FontLanguage variants, so its values resolve at runtime`
+            )
+          }
+        }
         const nativeStyleLocal = unusedIdentifier(
           input.source,
           `__TamaguiNativeStyle${input.element.span.start}`
