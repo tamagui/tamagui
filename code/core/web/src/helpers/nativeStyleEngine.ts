@@ -527,6 +527,7 @@ export function updateNativeStyleLink(
     nativeLink?: NativeStyleEngineLinkHandle | null
     nativeStyleUpdate?: unknown
     nativePushedKeys?: Set<string>
+    nativeResync?: () => void
   },
   host: unknown
 ): void {
@@ -534,11 +535,13 @@ export function updateNativeStyleLink(
     ref.nativeLink.unlink()
     ref.nativeLink = null
   }
-  // pushed-key tracking is per-link: a new native view starts from the props
-  // React committed, nothing pushed yet
-  ref.nativePushedKeys = undefined
   if (host && engine && ref.nativeStyleUpdate) {
     ref.nativeLink = engine.link(host, {})
+    // the ref keeps one identity, so a host that links again is the same
+    // native view returning from a hidden subtree (freeze, activity). it still
+    // shows its last push, and react's commit only diffs against react's own
+    // props, so a theme change made while hidden would never reach it
+    if (ref.nativePushedKeys?.size) ref.nativeResync?.()
   }
 }
 

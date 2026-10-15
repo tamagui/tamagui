@@ -28,7 +28,7 @@ import {
   type NativeViewStateUpdate,
 } from '@tamagui/core'
 import { act, cleanup, render } from '@testing-library/react-native'
-import React, { forwardRef, useMemo, useState } from 'react'
+import React, { Suspense, forwardRef, useMemo, useState } from 'react'
 import { setFlagsFromString } from 'node:v8'
 import { runInNewContext } from 'node:vm'
 import { View as NativeView } from 'react-native'
@@ -253,6 +253,64 @@ test('a re-render drops the push its theme listener queued from older props', as
       }
     }
   }
+})
+
+// react-freeze (react-native-screens freezeOnBlur) suspends a mounted subtree:
+// its hosts detach their refs and its renders defer until it is revealed
+const frozenForever = new Promise<never>(() => {})
+function Suspender({ frozen }: { frozen: boolean }) {
+  if (frozen) throw frozenForever
+  return null
+}
+function Freeze({ frozen, children }: { frozen: boolean; children: React.ReactNode }) {
+  return (
+    <Suspense fallback={null}>
+      <Suspender frozen={frozen} />
+      {children}
+    </Suspense>
+  )
+}
+
+test('a host revealed after a theme switch while frozen repaints the live theme (#4333)', async () => {
+  let setFrozen: (frozen: boolean) => void = () => {}
+  function FrozenHarness() {
+    const [sub, _setSub] = useState('red')
+    const [frozen, _setFrozen] = useState(false)
+    setSub = _setSub
+    setFrozen = _setFrozen
+    const square = useMemo(() => <Square testID="sq" />, [])
+    return (
+      <TamaguiProvider config={config} defaultTheme="dark">
+        <Theme name={sub as any}>
+          <Freeze frozen={frozen}>{square}</Freeze>
+        </Theme>
+      </TamaguiProvider>
+    )
+  }
+  render(<FrozenHarness />, { createNodeMock: () => ({}) })
+  await flush()
+
+  // visible: the engine paints blue natively while react's props stay red
+  await act(async () => setSub('blue'))
+  await flush()
+  expect(mock.entries().at(-1)?.state).toBe('dark_blue')
+
+  // frozen: the switch back to red reaches no linked view
+  await act(async () => setFrozen(true))
+  await act(async () => setSub('red'))
+  await flush()
+  const pushedBeforeReveal = mock.entries().length
+
+  // revealed: react's props are red again, so its commit carries no color; the
+  // native view still shows the blue paint unless the engine repaints it
+  await act(async () => setFrozen(false))
+  await flush()
+  const reveal = mock.entries().slice(pushedBeforeReveal)
+  const live = mock.links.at(-1)!
+  const last = reveal.filter((entry) => entry.id === live.id).at(-1)
+  expect(last?.props?.backgroundColor).toBe(
+    (config.themes.dark_red.background as any).val
+  )
 })
 
 test('re-toggling a pushed theme is warm: bare entry, no style computation', async () => {

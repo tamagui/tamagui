@@ -105,6 +105,7 @@ export declare function updateNativeStyleLink(ref: {
     nativeLink?: NativeStyleEngineLinkHandle | null;
     nativeStyleUpdate?: unknown;
     nativePushedKeys?: Set<string>;
+    nativeResync?: () => void;
 }, host: unknown): void;
 export declare function queueNativeViewState(entry: NativeViewStateUpdate): void;
 /**
