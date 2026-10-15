@@ -144,8 +144,8 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
   // resolve the active state name for a scope: scope entry, else root
   const std::string* activeStateName(const std::string& scopeId) const;
 
-  // merge base + named state props for one view into `out` (with native-props
-  // sync); returns false on a state miss
+  // merge base + named state props for one view into `out`;
+  // returns false on a state miss
   bool buildViewUpdate(LinkedView& view, const std::string& stateName,
                        LeafUpdates& out);
 
