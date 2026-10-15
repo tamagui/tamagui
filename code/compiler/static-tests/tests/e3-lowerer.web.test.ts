@@ -50,7 +50,10 @@ function compile(
     animationDriver?: AnimationDriverShape
     animationDrivers?: Record<string, AnimationDriverShape>
     disablePartialExtraction?: boolean
-    extraModule?: { moduleName: string; component: TamaguiProjectInfo['components'][number] }
+    extraModule?: {
+      moduleName: string
+      component: TamaguiProjectInfo['components'][number]
+    }
   }
 ) {
   const id = resolvedModuleId(
@@ -301,42 +304,45 @@ export const Card = ({ width }) => (
   test.each([
     ['', {}],
     [' with a style frontend', { styleFrontend: {} }],
-  ])('resolves variants of a component evaluated by another core copy through its own core%s', (_, frontend) => {
-    // a component evaluated through a second core module instance (an esm
-    // import beside the host's cjs require) carries that instance's variant
-    // resolver, which reads the second instance's never-configured settings.
-    const host = projectInfo.components!.find((c) => c.moduleName === '@tamagui/core')!
-    const view = host.nameToInfo.View!.staticConfig
-    const foreignResolver = () => {
-      throw new Error('foreign core instance resolved a variant')
-    }
-    const staticConfig = {
-      ...view,
-      componentName: 'Pad',
-      variants: { pad: { true: { padding: 12 } } },
-      variantStyleResolver: foreignResolver,
-      ...frontend,
-    }
-    const source = `
+  ])(
+    'resolves variants of a component evaluated by another core copy through its own core%s',
+    (_, frontend) => {
+      // a component evaluated through a second core module instance (an esm
+      // import beside the host's cjs require) carries that instance's variant
+      // resolver, which reads the second instance's never-configured settings.
+      const host = projectInfo.components!.find((c) => c.moduleName === '@tamagui/core')!
+      const view = host.nameToInfo.View!.staticConfig
+      const foreignResolver = () => {
+        throw new Error('foreign core instance resolved a variant')
+      }
+      const staticConfig = {
+        ...view,
+        componentName: 'Pad',
+        variants: { pad: { true: { padding: 12 } } },
+        variantStyleResolver: foreignResolver,
+        ...frontend,
+      }
+      const source = `
 import { Pad } from 'e3-extra-components'
 export const Card = () => <Pad pad />
 `
-    const { plan, output } = compile(source, 'web', {
-      extraModule: {
-        moduleName: 'e3-extra-components',
-        component: {
+      const { plan, output } = compile(source, 'web', {
+        extraModule: {
           moduleName: 'e3-extra-components',
-          nameToInfo: { Pad: { staticConfig } },
-        } as TamaguiProjectInfo['components'][number],
-      },
-    })
+          component: {
+            moduleName: 'e3-extra-components',
+            nameToInfo: { Pad: { staticConfig } },
+          } as TamaguiProjectInfo['components'][number],
+        },
+      })
 
-    expect(codes(plan)).toEqual([])
-    expect(plan.stats.lowered).toBe(1)
-    expect(output.code).not.toContain('pad />')
-    expect(plan.css).toContain('padding:12px')
-    expect(staticConfig.variantStyleResolver).toBe(foreignResolver)
-  })
+      expect(codes(plan)).toEqual([])
+      expect(plan.stats.lowered).toBe(1)
+      expect(output.code).not.toContain('pad />')
+      expect(plan.css).toContain('padding:12px')
+      expect(staticConfig.variantStyleResolver).toBe(foreignResolver)
+    }
+  )
 
   test('flattens proven numeric expressions and finite literal lookups to host styles', () => {
     const source = `
