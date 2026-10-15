@@ -721,10 +721,13 @@ export type TamaguiComponentStateRef = {
   nativeMediaUpdate?: (onMiss?: () => void) => boolean
   nativeMediaQueued?: boolean
   nativeThemeState?: ThemeState
-  // union of style keys pushed to the engine since link: keys present before
-  // but absent from the next push are sent as null (reset-to-default),
+  // union of style keys pushed to the engine for this host: keys present
+  // before but absent from the next push are sent as null (reset-to-default),
   // matching what a real re-render's style diff would do
   nativePushedKeys?: Set<string>
+  // recommits the last render's style through the engine, for a host that
+  // returns from a hidden subtree still painted with an earlier push
+  nativeResync?: () => void
 
   // native style stability: the most recently resolved style object, reused
   // when the next render's resolved values are identical (see getSplitStyles)

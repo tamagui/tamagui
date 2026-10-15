@@ -1020,6 +1020,13 @@ export function createComponent<
           }
         : undefined
 
+      stateRef.current.nativeResync = canNativeUpdate
+        ? () => {
+            const style = splitStyles.style as Record<string, unknown> | undefined
+            if (style) pushViewState!(themeState?.name || '', style)
+          }
+        : undefined
+
       // a real render supersedes everything pushed since. explicitly reset
       // previously-pushed keys absent from this render's style, then commit
       // the fresh style right behind React's own commit.
