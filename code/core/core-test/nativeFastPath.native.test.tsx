@@ -287,7 +287,10 @@ test('a host revealed after a theme switch while frozen repaints the live theme 
       </TamaguiProvider>
     )
   }
-  render(<FrozenHarness />, { createNodeMock: () => ({}) })
+  // react native keeps one public instance per host across a hide; the test
+  // renderer would hand the ref a fresh mock each attach
+  const node = {}
+  render(<FrozenHarness />, { createNodeMock: () => node })
   await flush()
 
   // visible: the engine paints blue natively while react's props stay red
@@ -311,6 +314,71 @@ test('a host revealed after a theme switch while frozen repaints the live theme 
   expect(last?.props?.backgroundColor).toBe(
     (config.themes.dark_red.background as any).val
   )
+})
+
+// a render prop swap replaces the native host under the same component ref
+const HostA = forwardRef<any, any>((props, ref) => <NativeView {...props} ref={ref} />)
+const HostB = forwardRef<any, any>((props, ref) => <NativeView {...props} ref={ref} />)
+let replaceHost = () => {}
+function ReplacedHostHarness() {
+  const [sub, _setSub] = useState('red')
+  const [replaced, setReplaced] = useState(false)
+  setSub = _setSub
+  replaceHost = () => setReplaced(true)
+  const square = useMemo(
+    () => (
+      <Square
+        testID="sq"
+        render={replaced ? <HostB /> : <HostA />}
+        padding={replaced ? undefined : 4}
+      />
+    ),
+    [replaced]
+  )
+  return (
+    <TamaguiProvider config={config} defaultTheme="dark">
+      <Theme name={sub as any}>{square}</Theme>
+    </TamaguiProvider>
+  )
+}
+
+test("a replaced host neither resyncs nor inherits the old host's pushed keys", async () => {
+  render(<ReplacedHostHarness />, { createNodeMock: () => ({}) })
+  await act(async () => setSub('blue'))
+  await flush()
+  expect(mock.entries().at(-1)?.props?.paddingTop).toBe(4)
+  const oldHost = mock.hosts.at(-1)
+  const pushed = mock.entries().length
+
+  await act(async () => replaceHost())
+  await flush()
+  expect(mock.hosts.at(-1)).not.toBe(oldHost)
+  const live = mock.links.at(-1)!
+  expect(
+    mock
+      .entries()
+      .slice(pushed)
+      .filter((entry) => entry.id === live.id)
+  ).toEqual([])
+})
+
+test('a declined link on a replaced host does not resync', async () => {
+  render(<ReplacedHostHarness />, { createNodeMock: () => ({}) })
+  await act(async () => setSub('blue'))
+  await flush()
+  const oldLink = mock.links.at(-1)!.id
+  const pushed = mock.entries().length
+  // nitro hybrid views and refs without a shadow node link to null
+  mock.engine.link = () => null
+  await act(async () => replaceHost())
+  await flush()
+  // only the replacing render's own push to the old view, before the swap
+  expect(
+    mock
+      .entries()
+      .slice(pushed)
+      .map((entry) => entry.id)
+  ).toEqual([oldLink])
 })
 
 test('re-toggling a pushed theme is warm: bare entry, no style computation', async () => {

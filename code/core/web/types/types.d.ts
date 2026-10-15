@@ -367,6 +367,7 @@ export type TamaguiComponentStateRef = {
     nativeMediaQueued?: boolean;
     nativeThemeState?: ThemeState;
     nativePushedKeys?: Set<string>;
+    nativeHost?: unknown;
     nativeResync?: () => void;
     prevStyle?: Record<string, any> | null;
 };
