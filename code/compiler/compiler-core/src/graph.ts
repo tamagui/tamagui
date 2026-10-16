@@ -88,6 +88,8 @@ export class ProjectGraph implements SymbolResolver {
   readonly #dependents = new Map<ResolvedModuleId, Set<ResolvedModuleId>>()
   readonly #elementCache = new Map<ResolvedModuleId, CachedElements>()
   readonly #candidate: AnalyzerCandidate
+  // linking is whole-project, so edits mark the analyzer stale and the next query links once
+  #linked = false
 
   constructor(factory: CandidateFactory, project: HostResolvedProject) {
     for (const input of project.modules) this.#installHostRecord(input)
@@ -96,7 +98,14 @@ export class ProjectGraph implements SymbolResolver {
       resolutions: this.#resolutions,
     }
     this.#candidate = factory.create(candidateProject)
-    this.#candidate.link()
+  }
+
+  #linkedCandidate(): AnalyzerCandidate {
+    if (!this.#linked) {
+      this.#candidate.link()
+      this.#linked = true
+    }
+    return this.#candidate
   }
 
   moduleIds(): ResolvedModuleId[] {
@@ -151,7 +160,7 @@ export class ProjectGraph implements SymbolResolver {
   }
 
   resolveBinding(id: ResolvedModuleId, localName: string): SymbolDefinition | null {
-    const definition = this.#candidate.definitionOf(id, localName)
+    const definition = this.#linkedCandidate().definitionOf(id, localName)
     if (!definition) return null
     return {
       id: definition.id,
@@ -169,7 +178,7 @@ export class ProjectGraph implements SymbolResolver {
   }
 
   resolveReference(reference: ExpressionReference): SymbolDefinition | null {
-    const definition = this.#candidate.definitionAt(
+    const definition = this.#linkedCandidate().definitionAt(
       reference.id,
       reference.start,
       reference.end
@@ -193,7 +202,7 @@ export class ProjectGraph implements SymbolResolver {
   expressionNode(reference: ExpressionReference) {
     if (!this.#modules.has(reference.id)) return null
     return nodeAtSpan(
-      this.#candidate.programOf(reference.id),
+      this.#linkedCandidate().programOf(reference.id),
       reference.start,
       reference.end
     )
@@ -257,13 +266,13 @@ export class ProjectGraph implements SymbolResolver {
     if (!record) throw new Error(`Unknown host module ${id}`)
     const cached = this.#elementCache.get(id)
     if (cached?.hash === record.hash) return cached.result
-    const result = normalizeElements(this.#candidate, id, record.input.imports)
+    const result = normalizeElements(this.#linkedCandidate(), id, record.input.imports)
     this.#elementCache.set(id, { hash: record.hash, result })
     return result
   }
 
   diagnostics(): BailoutReason[] {
-    const diagnostics = this.#candidate
+    const diagnostics = this.#linkedCandidate()
       .diagnostics()
       .map((diagnostic) =>
         diagnostic.kind === 'parse'
@@ -320,7 +329,7 @@ export class ProjectGraph implements SymbolResolver {
     if (previous) this.#candidate.removeFile(input.id)
     this.#installHostRecord(input)
     this.#candidate.addFile(input.id, input.source)
-    this.#candidate.link()
+    this.#linked = false
     for (const id of invalidatedIds) this.#elementCache.delete(id)
 
     return {
@@ -349,7 +358,7 @@ export class ProjectGraph implements SymbolResolver {
     this.#removeResolutions(id)
     this.#modules.delete(id)
     this.#files.delete(id)
-    this.#candidate.link()
+    this.#linked = false
     for (const invalidated of invalidatedIds) this.#elementCache.delete(invalidated)
     return {
       changed: true,
