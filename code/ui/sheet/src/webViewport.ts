@@ -61,7 +61,7 @@ let _maxViewportHeight = 0
 let _visibleViewportHeight = 0
 function updateMaxViewportHeight(): void {
   const ch = typeof document !== 'undefined' ? document.documentElement?.clientHeight : 0
-  _visibleViewportHeight = ch || window.innerHeight || 0
+  _visibleViewportHeight = Math.max(ch || 0, window.innerHeight || 0)
   _maxViewportHeight = Math.max(
     _maxViewportHeight,
     ch || 0,
