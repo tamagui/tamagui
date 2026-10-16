@@ -38,39 +38,77 @@ async function openAndSampleTops(page: any) {
   )
 }
 
-test.describe('Sheet opening origin', () => {
-  test.beforeEach(async ({ page }) => {
-    await setupPage(page, {
-      name: 'SheetAnimationCase',
-      type: 'useCase',
-      searchParams: { animationDriver: 'motion' },
-    })
-    // the viewport shrinks from its high-water mark, as when Safari chrome expands
-    await page.setViewportSize({ width: 390, height: 600 })
-    await page.waitForFunction(() => innerHeight === 600)
+async function load(page: any, height: number) {
+  await setupPage(page, {
+    name: 'SheetAnimationCase',
+    type: 'useCase',
+    searchParams: { animationDriver: 'motion' },
   })
+  await resize(page, height)
+}
 
+async function resize(page: any, height: number) {
+  await page.setViewportSize({ width: 390, height })
+  await page.waitForFunction((h: number) => innerHeight === h, height)
+  // the browser delivers the resize event on the next rendered frame
+  await page.evaluate(
+    () =>
+      new Promise((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(resolve))
+      )
+  )
+}
+
+async function closeFully(page: any) {
+  await page.getByTestId(close).click()
+  await expect
+    .poll(() => page.getByTestId(frame).isVisible(), { timeout: 5000 })
+    .toBe(false)
+}
+
+test.describe('Sheet opening origin', () => {
+  // the viewport shrinks from its high-water mark, as when Safari chrome expands
   test('reopening from fully closed starts at the visible viewport edge', async ({
     page,
   }) => {
-    const viewport = page.viewportSize()!.height
-
-    // first open, then close fully (frame is display:none once parked)
+    await load(page, 600)
     await openAndSampleTops(page)
-    await page.getByTestId(close).click()
-    await expect
-      .poll(() => page.getByTestId(frame).isVisible(), { timeout: 5000 })
-      .toBe(false)
+    await closeFully(page)
 
     const tops = await openAndSampleTops(page)
-    expect(Math.max(...tops)).toBeLessThanOrEqual(viewport + 1)
+    expect(Math.max(...tops)).toBeLessThanOrEqual(601)
     // and still lands at its resting snap point
-    expect(tops[tops.length - 1]).toBeLessThan(viewport * 0.7)
+    expect(tops[tops.length - 1]).toBeLessThan(600 * 0.7)
+  })
+
+  // a closed sheet is display:none and never re-measures, so the edge it seeds
+  // must come from the live viewport, not the sheet's own stale measurement
+  test('grown while closed, opens from the grown viewport edge', async ({ page }) => {
+    await load(page, 600)
+    await openAndSampleTops(page)
+    await closeFully(page)
+    await resize(page, 750)
+
+    const tops = await openAndSampleTops(page)
+    expect(Math.max(...tops)).toBeLessThanOrEqual(751)
+    // never pops in above the grown edge
+    expect(tops[0]).toBeGreaterThanOrEqual(740)
+  })
+
+  test('shrunk while closed, opens from the shrunk viewport edge', async ({ page }) => {
+    await load(page, 900)
+    await openAndSampleTops(page)
+    await closeFully(page)
+    await resize(page, 600)
+
+    const tops = await openAndSampleTops(page)
+    expect(Math.max(...tops)).toBeLessThanOrEqual(601)
   })
 
   test('reopening mid-close continues from where the close left off', async ({
     page,
   }) => {
+    await load(page, 600)
     await openAndSampleTops(page)
     await page.getByTestId(close).click()
     // reverse in the page, in the first frame after the sheet has dropped well
