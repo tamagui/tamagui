@@ -58,8 +58,7 @@ export function getStableLayoutViewportHeight(): number {
  * fully past the maximum the viewport could ever expose.
  */
 let _maxViewportHeight = 0
-export function getMaxViewportHeight(): number {
-  if (typeof window === 'undefined') return 0
+function updateMaxViewportHeight(): void {
   const ch = typeof document !== 'undefined' ? document.documentElement?.clientHeight : 0
   _maxViewportHeight = Math.max(
     _maxViewportHeight,
@@ -68,6 +67,17 @@ export function getMaxViewportHeight(): number {
     window.visualViewport?.height || 0,
     window.screen?.height || 0
   )
+}
+
+export function getMaxViewportHeight(): number {
+  if (typeof window === 'undefined') return 0
+  if (!_maxViewportHeight) {
+    updateMaxViewportHeight()
+    // sample viewport changes outside render and animation setup. reading
+    // clientHeight on every open forces pending style and layout work on Safari.
+    window.addEventListener('resize', updateMaxViewportHeight)
+    window.visualViewport?.addEventListener('resize', updateMaxViewportHeight)
+  }
   return _maxViewportHeight
 }
 
