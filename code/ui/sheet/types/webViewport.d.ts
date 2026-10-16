@@ -25,6 +25,12 @@ export declare function isEditableElement(el: Element | null): boolean;
  */
 export declare function getStableLayoutViewportHeight(): number;
 export declare function getMaxViewportHeight(): number;
+/**
+ * the visible layout viewport height as of the last resize, cached with the
+ * high-water mark so reading it never forces layout. a closed sheet is
+ * display:none and never re-measures, so its own screen size goes stale.
+ */
+export declare function getVisibleViewportHeight(): number;
 export declare function getWebKeyboardResizeHeight(): number;
 export declare function getWebVisualViewportOffsetTop(): number;
 /**

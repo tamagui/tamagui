@@ -58,8 +58,10 @@ export function getStableLayoutViewportHeight(): number {
  * fully past the maximum the viewport could ever expose.
  */
 let _maxViewportHeight = 0
+let _visibleViewportHeight = 0
 function updateMaxViewportHeight(): void {
   const ch = typeof document !== 'undefined' ? document.documentElement?.clientHeight : 0
+  _visibleViewportHeight = ch || window.innerHeight || 0
   _maxViewportHeight = Math.max(
     _maxViewportHeight,
     ch || 0,
@@ -79,6 +81,16 @@ export function getMaxViewportHeight(): number {
     window.visualViewport?.addEventListener('resize', updateMaxViewportHeight)
   }
   return _maxViewportHeight
+}
+
+/**
+ * the visible layout viewport height as of the last resize, cached with the
+ * high-water mark so reading it never forces layout. a closed sheet is
+ * display:none and never re-measures, so its own screen size goes stale.
+ */
+export function getVisibleViewportHeight(): number {
+  getMaxViewportHeight()
+  return _visibleViewportHeight
 }
 
 export function getWebKeyboardResizeHeight(): number {

@@ -1380,7 +1380,7 @@ function createMotionView(defaultTag: string) {
 
       const animateNodeTo = (
         nextStyle: Record<string, unknown>,
-        transition: AnimationOptions,
+        strategy: AnimatedNumberStrategy | undefined,
         motionValue: MotionValue
       ) => {
         if (!(node instanceof HTMLElement) || hostRef.current !== node) return
@@ -1390,7 +1390,7 @@ function createMotionView(defaultTag: string) {
         // animation started before then would read the stale origin. hand it
         // the pending direct value as its start keyframe instead.
         const directStyle = pendingDirectStyles.get(node)
-        const isDirect = (transition as { duration?: number }).duration === 0
+        const isDirect = strategy?.type === 'direct'
         let target: Record<string, unknown> = webStyle
         if (directStyle && !isDirect) {
           target = { ...webStyle }
@@ -1407,12 +1407,15 @@ function createMotionView(defaultTag: string) {
             }
           })
         }
-        settlePendingMotionOnFinish(motionValue, animate(node, target as any, transition))
+        settlePendingMotionOnFinish(
+          motionValue,
+          animate(node, target as any, toTransition(strategy))
+        )
       }
 
       const animateChangedValue = (
         nextStyle: Record<string, unknown>,
-        transition: AnimationOptions,
+        strategy: AnimatedNumberStrategy | undefined,
         motionValue: MotionValue
       ) => {
         if (seededInCurrentFrame.current && seededNode.current === node) {
@@ -1422,7 +1425,7 @@ function createMotionView(defaultTag: string) {
             if (queuedAnimationFrames.current.get(motionValue) !== frame) return
             queuedAnimationFrames.current.delete(motionValue)
             if (hostRef.current === node) {
-              animateNodeTo(nextStyle, transition, motionValue)
+              animateNodeTo(nextStyle, strategy, motionValue)
             } else {
               const onFinish = PendingMotionOnFinish.get(motionValue)
               PendingMotionOnFinish.delete(motionValue)
@@ -1432,7 +1435,7 @@ function createMotionView(defaultTag: string) {
           queuedAnimationFrames.current.set(motionValue, frame)
           return
         }
-        animateNodeTo(nextStyle, transition, motionValue)
+        animateNodeTo(nextStyle, strategy, motionValue)
       }
 
       // multi-value path: subscribe to all motion values
@@ -1442,11 +1445,7 @@ function createMotionView(defaultTag: string) {
           animatedStyle.getStyle(...mvs.map((value) => value.get()))
         const unsubs = mvs.map((mv) =>
           mv.on('change', () =>
-            animateChangedValue(
-              styleForAll(),
-              toTransition(MotionValueStrategy.get(mv)),
-              mv
-            )
+            animateChangedValue(styleForAll(), MotionValueStrategy.get(mv), mv)
           )
         )
         return () => unsubs.forEach((fn) => fn())
@@ -1459,7 +1458,7 @@ function createMotionView(defaultTag: string) {
       return motionValue.on('change', (value) =>
         animateChangedValue(
           animatedStyle.getStyle(value),
-          toTransition(MotionValueStrategy.get(motionValue)),
+          MotionValueStrategy.get(motionValue),
           motionValue
         )
       )

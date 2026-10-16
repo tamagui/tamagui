@@ -40,6 +40,7 @@ import {
 import {
   getWebKeyboardResizeHeight,
   getMaxViewportHeight,
+  getVisibleViewportHeight,
   getWebVisualViewportOffsetTop,
   MIN_KEYBOARD_HEIGHT,
 } from './webViewport'
@@ -530,8 +531,9 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
       // travelling out of sight, so start at the visible edge instead.
       const wasParkedClosed = isParkedClosedRef.current
       isParkedClosedRef.current = false
-      if (isWeb && isOpenAnimation && wasParkedClosed && from > effScreenSize) {
-        animatedNumber.setValue(effScreenSize, { type: 'direct' })
+      if (isWeb && isOpenAnimation && wasParkedClosed) {
+        const visibleEdge = getVisibleViewportHeight()
+        if (from > visibleEdge) animatedNumber.setValue(visibleEdge, { type: 'direct' })
       }
 
       const animationCompleteCallback = () => {
