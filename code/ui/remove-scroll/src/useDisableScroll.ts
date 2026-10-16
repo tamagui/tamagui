@@ -40,6 +40,7 @@ export const useDisableBodyScroll = (enabled: boolean): void => {
       if (++refCount === 1) {
         const html = document.documentElement
         const body = document.body
+        const isIOS = isIOSSafari()
 
         // save current scroll position before locking
         savedScrollY = window.scrollY
@@ -57,7 +58,9 @@ export const useDisableBodyScroll = (enabled: boolean): void => {
 
         // keep the gutter only where a scrollbar was: reserving one on a page
         // that had none shifts the content by the scrollbar width on every open
-        if (window.innerWidth > html.clientWidth) {
+        // iOS uses overlay scrollbars, so locking never removes a gutter.
+        // measuring clientWidth here would flush the opening modal's layout.
+        if (!isIOS && window.innerWidth > html.clientWidth) {
           html.style.scrollbarGutter = 'stable'
         }
         html.style.overflow = 'hidden'
@@ -67,7 +70,7 @@ export const useDisableBodyScroll = (enabled: boolean): void => {
 
         // for iOS Safari, use position:fixed workaround
         // this also helps with any edge cases on other mobile browsers
-        if (isIOSSafari()) {
+        if (isIOS) {
           body.style.position = 'fixed'
           body.style.top = `-${savedScrollY}px`
           body.style.width = '100%'

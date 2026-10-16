@@ -63,8 +63,9 @@ const SheetScrollViewCustom = createRefComponent<ScrollViewRef, SheetScrollViewP
     // the keyboard height straight from visualViewport closes that race so the
     // height freeze engages on the same render that would otherwise collapse it.
     const isKeyboardVisible =
-      context.isKeyboardVisible === true ||
-      (isWeb && getWebKeyboardResizeHeight() >= MIN_KEYBOARD_HEIGHT)
+      hasFit &&
+      (context.isKeyboardVisible === true ||
+        (isWeb && getWebKeyboardResizeHeight() >= MIN_KEYBOARD_HEIGHT))
     const [scrollEnabled] = useControllableState({
       prop: scrollEnabledProp,
       defaultProp: true,
