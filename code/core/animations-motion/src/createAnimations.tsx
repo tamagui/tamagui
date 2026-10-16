@@ -97,6 +97,10 @@ const MotionValueStrategy = new WeakMap<MotionValue, AnimatedNumberStrategy>()
 // fires when the *visible* animation actually completes.
 const PendingMotionOnFinish = new WeakMap<MotionValue, () => void>()
 
+// the last zero-duration (setValue 'direct') style written to a node, until the
+// frame where motion applies it
+const pendingDirectStyles = new WeakMap<HTMLElement, Record<string, unknown>>()
+
 function settlePendingMotionOnFinish(
   mv: MotionValue,
   controls: AnimationPlaybackControlsWithThen
@@ -1382,10 +1386,28 @@ function createMotionView(defaultTag: string) {
         if (!(node instanceof HTMLElement) || hostRef.current !== node) return
         const webStyle = resolvedAnimatedStyle?.resolve(nextStyle)
         if (!webStyle) return
-        settlePendingMotionOnFinish(
-          motionValue,
-          animate(node, webStyle as any, transition)
-        )
+        // motion applies a zero-duration write on the next frame, so an
+        // animation started before then would read the stale origin. hand it
+        // the pending direct value as its start keyframe instead.
+        const directStyle = pendingDirectStyles.get(node)
+        const isDirect = (transition as { duration?: number }).duration === 0
+        let target: Record<string, unknown> = webStyle
+        if (directStyle && !isDirect) {
+          target = { ...webStyle }
+          for (const key in directStyle) {
+            if (key in webStyle) target[key] = [directStyle[key], webStyle[key]]
+          }
+        }
+        if (isDirect) {
+          assignInlineStyles(node, webStyle)
+          pendingDirectStyles.set(node, webStyle)
+          requestAnimationFrame(() => {
+            if (pendingDirectStyles.get(node) === webStyle) {
+              pendingDirectStyles.delete(node)
+            }
+          })
+        }
+        settlePendingMotionOnFinish(motionValue, animate(node, target as any, transition))
       }
 
       const animateChangedValue = (

@@ -400,6 +400,11 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
       }
     )
 
+    // true once a close animation has fully completed, until the next move
+    // starts. a sheet parked past the viewport (the web high-water close target)
+    // can then open from the visible edge; a reversal mid-close never can.
+    const isParkedClosedRef = React.useRef(false)
+
     const syncAnimatedPosition = useEvent((value: number) => {
       at.current = value
       scrollBridge.paneY = value
@@ -494,12 +499,14 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
           lastPositionIndexRef.current = -1
           emitTransition('start', event)
           syncAnimatedPosition(toValue)
+          isParkedClosedRef.current = true
           setIsFullyClosed(true)
           emitTransition('end', event, true)
         }
         return
       }
 
+      const from = at.current
       at.current = toValue
 
       const cause: SheetTransitionCause = !isOpenAnimation
@@ -518,6 +525,15 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
 
       stopSpring()
 
+      // web: a fully closed sheet is parked at the high-water close target, past
+      // the visible viewport. opening from there spends its first frames
+      // travelling out of sight, so start at the visible edge instead.
+      const wasParkedClosed = isParkedClosedRef.current
+      isParkedClosedRef.current = false
+      if (isWeb && isOpenAnimation && wasParkedClosed && from > effScreenSize) {
+        animatedNumber.setValue(effScreenSize, { type: 'direct' })
+      }
+
       const animationCompleteCallback = () => {
         // a newer animateTo supersedes this one: drivers still fire the owed
         // completion callback when a new setValue replaces an in-flight one.
@@ -534,6 +550,7 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
         // reopened before this callback fires (e.g. cancelled close animation),
         // we must not hide it
         if (!isOpenAnimation && !openRef.current) {
+          isParkedClosedRef.current = true
           setIsFullyClosed(true)
         }
         emitTransition('end', event, true)
