@@ -141,28 +141,12 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.beta-pw-version.outputs.version }}
 
-      # playwright's archive extraction hangs on linux under node 24.16.
-      # use node 22 only for installation, then restore the release runtime.
-      - name: Setup Node.js for browser installation
-        if: steps.candidate.outputs.release == 'true'
-        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
-        with:
-          node-version: '22.23.2'
-          package-manager-cache: false
-
       - name: Install Playwright Chromium
         if: steps.candidate.outputs.release == 'true'
         timeout-minutes: 10
         env:
           DEBUG: pw:install
         run: bunx playwright install --with-deps chromium
-
-      - name: Restore release Node.js
-        if: steps.candidate.outputs.release == 'true'
-        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
-        with:
-          node-version-file: '.node-version'
-          package-manager-cache: false
 
       - name: Install npm with trusted publishing support
         if: steps.candidate.outputs.release == 'true'
@@ -382,23 +366,9 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.stable-pw-version.outputs.version }}
 
-      # playwright's archive extraction hangs on linux under node 24.16.
-      # use node 22 only for installation, then restore the release runtime.
-      - name: Setup Node.js for browser installation
-        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
-        with:
-          node-version: '22.23.2'
-          package-manager-cache: false
-
       - name: Install Playwright Chromium
         timeout-minutes: 10
         run: bunx playwright install --with-deps chromium
-
-      - name: Restore release Node.js
-        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
-        with:
-          node-version-file: '.node-version'
-          package-manager-cache: false
 
       - name: Publish prepared version
         env:
