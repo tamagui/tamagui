@@ -300,10 +300,8 @@ function referencedNames(node: ts.Node): string[] {
 
 const rnManifest = JSON.parse(readFileSync(join(RN, 'package.json'), 'utf8'))
 const ENTRY = resolve(RN, rnManifest.exports['.'].types)
-const files = collectDtsFiles(join(RN, 'Libraries')).concat(
-  collectDtsFiles(dirname(ENTRY)),
-  collectDtsFiles(join(RN, 'types'))
-)
+const LEGACY_ENTRY = resolve(RN, rnManifest.exports['.']['react-native-legacy-deep-imports'])
+const files = collectDtsFiles(dirname(ENTRY)).concat(collectDtsFiles(dirname(LEGACY_ENTRY)))
 if (!files.length) {
   console.error(
     `no react-native .d.ts found at ${RN}\n` +
@@ -465,8 +463,8 @@ const legacyInstances = new Map([
 ])
 const legacy = collect(
   ROOTS.map((name) => legacyInstances.get(name) ?? name),
-  join(RN, 'types/index.d.ts'),
-  join(RN, 'Libraries/Animated/Animated.d.ts')
+  LEGACY_ENTRY,
+  resolve(dirname(LEGACY_ENTRY), 'Libraries/Animated/Animated.d.ts')
 )
 /** re-export every declaration ourselves, ambient where the kind needs it */
 function emit(d: Decl) {

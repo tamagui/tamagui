@@ -42,6 +42,7 @@ export type {
   FlexStyle,
   FocusEvent,
   FontVariant,
+  FontVariationSettings,
   GestureResponderEvent,
   GestureResponderHandlers,
   HTMLCollection,
