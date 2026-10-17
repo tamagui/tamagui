@@ -39,6 +39,7 @@ import {
   isWeb,
   ScrollView,
   styled,
+  style,
   Text,
   Theme,
   useThemeName,
@@ -56,6 +57,8 @@ import { ThemePicker } from './components/Chat/ThemePicker'
 import { AnimatedView } from './components/AnimatedPrimitives'
 
 const { height: mobileHeight } = Dimensions.get('window')
+
+const menuContentStyle = style({ py: '6' })
 
 const height = isWeb ? 700 : mobileHeight
 
@@ -318,7 +321,7 @@ const MenuView = ({ offset }: { offset: SharedValue<number> }) => {
     <AnimatedView style={style}>
       <ScrollView
         keyboardDismissMode="on-drag"
-        contentContainerStyle={{ py: '6' }}
+        contentContainerStyle={menuContentStyle}
         showsVerticalScrollIndicator={false}
       >
         <View gap="6">

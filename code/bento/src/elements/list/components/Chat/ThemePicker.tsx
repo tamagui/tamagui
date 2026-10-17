@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { Pressable } from 'react-native'
 import { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
-import { ScrollView, Text, View, type ThemeName } from 'tamagui'
+import { ScrollView, Text, View, style, type ThemeName } from 'tamagui'
 import { AnimatedView } from '../AnimatedPrimitives'
 import { useTheme } from './ChatContext'
 
 const WIDTH = 100
 const gap = 24
+const themePickerContentStyle = style({ gap, px: 18 })
 
 type Theme = {
   emoji: string
@@ -78,7 +79,7 @@ export const ThemePicker = () => {
       ref={ref}
       showsHorizontalScrollIndicator={false}
       horizontal
-      contentContainerStyle={{ gap, px: 18 }}
+      contentContainerStyle={themePickerContentStyle}
       py={space * 2}
       position="relative"
     >
