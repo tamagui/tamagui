@@ -41,9 +41,9 @@ export declare const SheetBackground: import("@tamagui/core").TamaguiComponent<i
     scope?: import("./types").SheetScopes;
 }, import("@tamagui/core").StackStyleBase, Omit<{}, "disableHideBottomOverflow" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackStyleBase>, import("@tamagui/core").StaticConfigPublic>;
 export declare const SheetRoot: import("@tamagui/compose-refs").RefComponent<RNView, SheetProps>;
-export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "onOpenChange" | "open"> & {
+export declare const SheetControlled: import("@tamagui/helpers").Combined<FunctionComponent<Omit<SheetProps, "onOpenChange" | "open"> & {
     ref?: Ref<RNView>;
-}> & {
+}>, {
     Container: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "adjustPaddingForOffscreenContent" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackStyleBase> & Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & SheetStyleShorthandProps & ExtraContainerProps, "scope"> & {
         scope?: import("./types").SheetScopes;
     }, import("@tamagui/core").StackStyleBase, Omit<{}, "adjustPaddingForOffscreenContent" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackStyleBase>, import("@tamagui/core").StaticConfigPublic>;
@@ -76,40 +76,8 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "onOpen
         acceptsClassName: true;
         neverFlatten: true;
     }>;
-};
-export declare const Sheet: ((props: Omit<{
-    open?: boolean;
-    defaultOpen?: boolean;
-    onOpenChange?: import("react").Dispatch<import("react").SetStateAction<boolean>> | ((open: boolean) => void);
-    position?: number;
-    defaultPosition?: number;
-    snapPoints?: (string | number)[];
-    snapPointsMode?: import("./types").SnapPointsMode;
-    onPositionChange?: import("./types").PositionChangeHandler;
-    children?: import("react").ReactNode;
-    dismissOnOverlayPress?: boolean;
-    dismissOnSnapToBottom?: boolean;
-    disableRemoveScroll?: boolean;
-    transitionConfig?: import("@tamagui/core").AnimatedNumberStrategy;
-    preferAdaptParentOpenState?: boolean;
-    unmountChildrenWhenHidden?: boolean;
-    disableHideWhenClosed?: boolean;
-    native?: 'ios'[] | boolean;
-    transition?: import("@tamagui/core").TransitionProp;
-    handleDisableScroll?: boolean;
-    disableDrag?: boolean;
-    modal?: boolean;
-    zIndex?: number;
-    portalProps?: import("@tamagui/portal").PortalProps;
-    moveOnKeyboardChange?: boolean;
-    containerComponent?: React.ComponentType<any>;
-    onTransition?: (e: import("./types").SheetTransitionEvent) => void;
-}, "scope"> & {
-    scope?: import("./types").SheetScopes;
-} & import("@tamagui/compose-refs").RefProp<RNView>) => import("react").ReactNode) & {
-    displayName?: string;
-    propTypes?: any;
-} & {
+}>;
+export declare const Sheet: import("@tamagui/helpers").Combined<import("@tamagui/compose-refs").RefComponent<RNView, SheetProps>, {
     Container: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "adjustPaddingForOffscreenContent" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackStyleBase> & Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & SheetStyleShorthandProps & ExtraContainerProps, "scope"> & {
         scope?: import("./types").SheetScopes;
     }, import("@tamagui/core").StackStyleBase, Omit<{}, "adjustPaddingForOffscreenContent" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackStyleBase>, import("@tamagui/core").StaticConfigPublic>;
@@ -143,9 +111,9 @@ export declare const Sheet: ((props: Omit<{
         neverFlatten: true;
     }>;
     Root: import("@tamagui/compose-refs").RefComponent<RNView, SheetProps>;
-    Controlled: FunctionComponent<Omit<SheetProps, "onOpenChange" | "open"> & {
+    Controlled: import("@tamagui/helpers").Combined<FunctionComponent<Omit<SheetProps, "onOpenChange" | "open"> & {
         ref?: Ref<RNView>;
-    }> & {
+    }>, {
         Container: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "adjustPaddingForOffscreenContent" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackStyleBase> & Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & SheetStyleShorthandProps & ExtraContainerProps, "scope"> & {
             scope?: import("./types").SheetScopes;
         }, import("@tamagui/core").StackStyleBase, Omit<{}, "adjustPaddingForOffscreenContent" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof SheetStyleShorthandProps | keyof import("@tamagui/core").StackStyleBase>, import("@tamagui/core").StaticConfigPublic>;
@@ -178,7 +146,7 @@ export declare const Sheet: ((props: Omit<{
             acceptsClassName: true;
             neverFlatten: true;
         }>;
-    };
+    }>;
     useAnimatedPosition: typeof useAnimatedPosition;
-};
+}>;
 //# sourceMappingURL=Sheet.d.ts.map

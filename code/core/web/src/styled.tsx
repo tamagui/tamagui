@@ -174,25 +174,6 @@ type StyledVariantsWithContext<Variants, ContextProps> = keyof ContextProps exte
         | (Key extends keyof ContextProps ? ContextProps[Key] : never)
     }
 
-type StyledComponentResult<
-  ParentComponent extends StylableComponent,
-  StyledConfig extends StaticConfigPublic,
-  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
-  Context extends StyledContext<any> | undefined = undefined,
-  ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>,
-  ParentStylesBase extends object = GetBaseStyles<ParentComponent, StyledConfig>,
-> = TamaguiComponent<
-  TamaDefer,
-  GetRef<ParentComponent>,
-  GetNonStyledProps<ParentComponent>,
-  ParentStylesBase,
-  StyledVariantsWithContext<
-    StyledMergedVariants<ParentComponent, StyledConfig, Variants>,
-    GetStyledContextVariantProps<ParentComponent, Context, ContextPropKeys>
-  >,
-  GetStaticConfig<ParentComponent, StyledConfig>
->
-
 /**
  * styled() for creating Tamagui components from other components.
  *
@@ -216,12 +197,16 @@ function styledFn<
     ContextPropKeys
   >,
   config?: StyledConfig
-): StyledComponentResult<
-  ParentComponent,
-  StyledConfig,
-  Variants,
-  Context,
-  ContextPropKeys
+): TamaguiComponent<
+  TamaDefer,
+  GetRef<ParentComponent>,
+  GetNonStyledProps<ParentComponent>,
+  GetBaseStyles<ParentComponent, StyledConfig>,
+  StyledVariantsWithContext<
+    StyledMergedVariants<ParentComponent, StyledConfig, Variants>,
+    GetStyledContextVariantProps<ParentComponent, Context, ContextPropKeys>
+  >,
+  GetStaticConfig<ParentComponent, StyledConfig>
 >
 function styledFn(...args: any[]) {
   return (styledImpl as any)(undefined, ...args)
