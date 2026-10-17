@@ -104,6 +104,11 @@ function trackInsertedStyle(id: string) {
 const bailAfterEnv = process.env.TAMAGUI_BAIL_AFTER_SCANNING_X_CSS_RULES
 const bailAfter = bailAfterEnv ? +bailAfterEnv : 8000
 
+type ThemeCSSSnapshot = {
+  values: Record<string, string>
+  style?: CSSStyleDeclaration
+}
+
 function updateSheetStyles(
   sheet: CSSStyleSheet,
   remove = false,
@@ -142,7 +147,8 @@ function updateSheetStyles(
   // because end-users can add their own css like .t_dark { --something: #000 }
   // and this actually entirely breaks scanning, we need to ensure we can handle multiple
   // themes, so track that here. also, css processing utils could cause this too
-  const nameToTheme: Record<string, ThemeParsed> = {}
+  const nameToTheme: Record<string, DedupedTheme> = {}
+  const rootSnapshot: ThemeCSSSnapshot = { values: Object.create(null) }
 
   for (let i = 0; i < len; i++) {
     const rule = rules[i]
@@ -165,14 +171,14 @@ function updateSheetStyles(
     const [identifier, cssRule, isTheme] = response
 
     if (isTheme) {
-      const deduped = addThemesFromCSS(cssRule, tokens)
+      const deduped = addThemesFromCSS(cssRule, tokens, rootSnapshot)
       if (deduped) {
         for (const name of deduped.names) {
           if (nameToTheme[name]) {
-            Object.apply(nameToTheme[name], deduped.theme as any)
+            Object.apply(nameToTheme[name].theme, deduped.theme as any)
             deduped.names = deduped.names.filter((x) => x !== name)
           } else {
-            nameToTheme[name] = deduped.theme
+            nameToTheme[name] = deduped
           }
         }
         dedupedThemes ||= []
@@ -203,41 +209,76 @@ function flattenCSSRules(rules: CSSRuleList, output: CSSRule[] = []): CSSRule[] 
 }
 
 let colorVarToVal: Record<string, string>
-let rootComputedStyle: CSSStyleDeclaration | null = null
 
-function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
+function addThemesFromCSS(
+  cssStyleRule: CSSStyleRule,
+  tokens: TokensParsed | undefined,
+  rootSnapshot: ThemeCSSSnapshot
+) {
   const selectors = cssStyleRule.selectorText.split(',')
   if (!selectors.length) return
 
+  const names = new Set<string>()
+  let scheme: 'light' | 'dark' | undefined
+  for (const selector of selectors) {
+    const marker = selector.trim()
+    if (marker.startsWith(themeSchemeSelectorPrefix)) {
+      const authored = marker.slice(themeSchemeSelectorPrefix.length)
+      if (authored === 'light' || authored === 'dark') scheme = authored
+      continue
+    }
+    const themeName = getThemeNameFromSelector(selector)
+    if (themeName) names.add(themeName)
+  }
+
+  // snapshot declarations so later stylesheet edits cannot change the theme.
+  // selectors can be much larger than the declarations for deduped themes.
+  const declarations = cssStyleRule.style.cssText
   if (tokens?.color && !colorVarToVal) {
     colorVarToVal = {}
     for (const key in tokens.color) {
       const token = tokens.color[key]
-      if (token) {
-        colorVarToVal[token.name] = token.val
-      }
+      if (token) colorVarToVal[token.name] = token.val
     }
   }
+  // computed styles are live. capture each referenced root value once while
+  // scanning, so a later scheme change cannot affect an unread theme.
+  const rootValues = rootSnapshot.values
+  for (const match of declarations.matchAll(/var\(--([^)]*)\)/g)) {
+    const name = match[1]
+    if (colorVarToVal?.[name] || name in rootValues) continue
+    rootSnapshot.style ||= getComputedStyle(document.body)
+    rootValues[name] = rootSnapshot.style.getPropertyValue('--' + name)
+  }
+  let values: ThemeParsed | undefined
+  return {
+    names: [...names],
+    get theme() {
+      if (!values) {
+        values = parseThemeFromCSS(declarations, rootValues)
+        if (scheme) setAuthoredThemeScheme(values, scheme)
+      }
+      return values
+    },
+  } satisfies DedupedTheme
+}
 
-  const rulesWithBraces = (cssStyleRule.cssText || '').slice(
-    cssStyleRule.selectorText.length + 2,
-    -1
-  )
-
-  const rules = rulesWithBraces.split(';')
-
-  // get theme object parsed
+function parseThemeFromCSS(
+  declarations: string,
+  rootValues: Record<string, string>
+): ThemeParsed {
+  // only themes that are read need variables. let the css parser preserve
+  // quoted semicolons, escapes and nested values in their declarations.
+  const style = document.createElement('span').style
+  style.cssText = declarations
   const values: ThemeParsed = {}
-  // build values first
-  for (const rule of rules) {
-    const sepI = rule.indexOf(':')
-    if (sepI === -1) continue
-    const varIndex = rule.indexOf('--')
-    let key = rule.slice(varIndex === -1 ? 0 : varIndex + 2, sepI)
+  for (let index = 0; index < style.length; index++) {
+    const property = style.item(index)
+    let key = property.startsWith('--') ? property.slice(2) : property
     if (process.env.TAMAGUI_CSS_VARIABLE_PREFIX) {
       key = key.replace(process.env.TAMAGUI_CSS_VARIABLE_PREFIX, '')
     }
-    const val = rule.slice(sepI + 2)
+    const val = style.getPropertyValue(property)
     let value: string
     if (val[0] === 'v' && val.startsWith('var(')) {
       // var()
@@ -247,8 +288,7 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
       if (tokenVal) {
         value = tokenVal
       } else {
-        rootComputedStyle ||= getComputedStyle(document.body)
-        value = rootComputedStyle.getPropertyValue('--' + varName)
+        value = rootValues[varName] || ''
       }
     } else {
       value = val
@@ -263,24 +303,7 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     ) as any
   }
 
-  const names = new Set<string>()
-
-  // loop selectors and build deduped
-  for (const selector of selectors) {
-    const marker = selector.trim()
-    if (marker.startsWith(themeSchemeSelectorPrefix)) {
-      const scheme = marker.slice(themeSchemeSelectorPrefix.length)
-      if (scheme === 'light' || scheme === 'dark') setAuthoredThemeScheme(values, scheme)
-      continue
-    }
-    const themeName = getThemeNameFromSelector(selector)
-    if (themeName) names.add(themeName)
-  }
-
-  return {
-    names: [...names],
-    theme: values,
-  } satisfies DedupedTheme
+  return values
 }
 
 export function getThemeNameFromSelector(selector: string): string | undefined {

@@ -1,18 +1,30 @@
 import type { DedupedThemes, ThemeParsed } from '../types'
 import { copyAuthoredThemeScheme } from './themes'
 
-const themesRaw: Record<string, ThemeParsed> = {}
+let themesRaw: Record<string, ThemeParsed> = {}
 
 // this seems expensive but its necessary to do two loops unless we want to refactor a variety of things again
 // not *too* much work but not a big cost doing the two loops
 export function proxyThemesToParents(
   dedupedThemes: DedupedThemes,
-  declarationOrder?: string[]
+  declarationOrder?: string[],
+  lazy = false
 ): Record<string, ThemeParsed> {
+  // each config keeps its own parent values even if another config is created
+  // before one of its lazy themes is read.
+  const raw: Record<string, ThemeParsed> = Object.defineProperties(
+    {},
+    Object.getOwnPropertyDescriptors(themesRaw)
+  )
+  themesRaw = raw
   // fill it in so we can look it up next
-  for (const { names, theme } of dedupedThemes) {
-    for (const name of names) {
-      themesRaw[name] = theme
+  for (const deduped of dedupedThemes) {
+    for (const name of deduped.names) {
+      Object.defineProperty(raw, name, {
+        configurable: true,
+        enumerable: true,
+        get: () => deduped.theme,
+      })
     }
   }
 
@@ -22,10 +34,34 @@ export function proxyThemesToParents(
   // because they could have different parent chains
   // despite being the same theme
 
-  for (const { names, theme } of dedupedThemes) {
-    for (const themeName of names) {
-      const proxiedTheme = proxyThemeToParents(themeName, theme)
-      themes[themeName] = proxiedTheme
+  for (const deduped of dedupedThemes) {
+    for (const themeName of deduped.names) {
+      if (lazy) {
+        Object.defineProperty(themes, themeName, {
+          configurable: true,
+          enumerable: true,
+          get() {
+            const value = proxyThemeToParents(themeName, deduped.theme, raw)
+            Object.defineProperty(this, themeName, {
+              configurable: true,
+              enumerable: true,
+              writable: true,
+              value,
+            })
+            return value
+          },
+          set(value: ThemeParsed) {
+            Object.defineProperty(this, themeName, {
+              configurable: true,
+              enumerable: true,
+              writable: true,
+              value,
+            })
+          },
+        })
+      } else {
+        themes[themeName] = proxyThemeToParents(themeName, deduped.theme, raw)
+      }
     }
   }
 
@@ -33,15 +69,25 @@ export function proxyThemesToParents(
   // falls back to Object.keys(themes)[0] — reorder to match config (#3764)
   if (declarationOrder) {
     const ordered: Record<string, ThemeParsed> = {}
-    for (const k of declarationOrder) if (k in themes) ordered[k] = themes[k]
-    for (const k in themes) if (!(k in ordered)) ordered[k] = themes[k]
+    for (const k of declarationOrder) {
+      if (k in themes)
+        Object.defineProperty(ordered, k, Object.getOwnPropertyDescriptor(themes, k)!)
+    }
+    for (const k in themes) {
+      if (!(k in ordered))
+        Object.defineProperty(ordered, k, Object.getOwnPropertyDescriptor(themes, k)!)
+    }
     return ordered
   }
 
   return themes
 }
 
-export function proxyThemeToParents(themeName: string, theme: ThemeParsed) {
+export function proxyThemeToParents(
+  themeName: string,
+  theme: ThemeParsed,
+  raw = themesRaw
+) {
   const out = {}
   const cur: string[] = []
 
@@ -56,7 +102,7 @@ export function proxyThemeToParents(themeName: string, theme: ThemeParsed) {
     })
 
   for (const parent of parents) {
-    Object.assign(out, themesRaw[parent])
+    Object.assign(out, raw[parent])
   }
   Object.assign(out, theme)
   return copyAuthoredThemeScheme(out, theme)
