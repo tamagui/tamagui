@@ -19,6 +19,9 @@ import {
 import type { ThemeProps, ThemeState, UseThemeWithStateProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 
+// process.env is a slow native lookup in Node, so production reads it once here
+const isProd = process.env.NODE_ENV === 'production'
+
 type ThemeComponentPropsOnly = UseThemeWithStateProps & { contain?: boolean }
 
 export const Theme = createRefComponent(function Theme(
@@ -31,7 +34,7 @@ export const Theme = createRefComponent(function Theme(
     return props.children
   }
 
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     for (const key in props) {
       // bundler dev tooling stamps source locations onto every element
       // (`data-one-source` on web, `srcloc` on native); those are not values
@@ -106,7 +109,7 @@ export function getThemedChildren(
   let shouldRenderChildrenWithTheme =
     hasEverThemed || themeState.isNew || isRoot || hasThemeUpdatingProps(props)
 
-  if (process.env.NODE_ENV === 'development' && props.debug === 'visualize') {
+  if (!isProd && process.env.NODE_ENV === 'development' && props.debug === 'visualize') {
     children = (
       <ThemeDebug themeState={themeState} themeProps={props}>
         {children}
@@ -155,7 +158,7 @@ export function getThemedChildren(
       )
       if (!parentState) {
         throw new Error(
-          process.env.NODE_ENV !== 'production'
+          !isProd && process.env.NODE_ENV !== 'production'
             ? formatDiagnostic(
                 '‼️010',
                 'Theme',
@@ -181,7 +184,7 @@ export function getThemedChildren(
     }
   }
 
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     if (!passThrough && props.debug) {
       console.warn(` getThemedChildren`, {
         requiresExtraWrapper,

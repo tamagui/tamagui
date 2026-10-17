@@ -3,6 +3,9 @@ import React from 'react'
 import { getSplitStyles, type StyleSplitter } from '../helpers/getSplitStyles'
 import { insertStyleRules } from '../helpers/insertStyleRule'
 
+// process.env is a slow native lookup in Node, so production reads it once here
+const isIsland = process.env.TAMAGUI_RUNTIME === 'island'
+
 // on native no need to insert any css
 const useInsertEffectCompat = isWeb
   ? React.useInsertionEffect || useIsomorphicLayoutEffect
@@ -29,10 +32,7 @@ export const useSplitStyles: StyleSplitter = (
 
   const res = getSplitStyles(a, b, c, d, e, f, g, h, i, j, k, l, m, n)
 
-  if (
-    process.env.TAMAGUI_RUNTIME !== 'island' &&
-    process.env.TAMAGUI_TARGET !== 'native'
-  ) {
+  if (!isIsland && process.env.TAMAGUI_TARGET !== 'native') {
     useInsertEffectCompat(() => {
       if (res) {
         insertStyleRules(res.rulesToInsert)

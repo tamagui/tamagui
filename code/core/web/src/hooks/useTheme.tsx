@@ -4,6 +4,9 @@ import type { ThemeParsed, ThemeState, UseThemeWithStateProps } from '../types'
 import { getThemeProxied, type ThemeProxied } from './getThemeProxied'
 import { useThemeState } from './useThemeState'
 
+// process.env is a slow native lookup in Node, so production reads it once here
+const isProd = process.env.NODE_ENV === 'production'
+
 const EMPTY = {}
 
 type KeysBag = {
@@ -60,7 +63,7 @@ export const useThemeWithState = (
     optimizeForFirstRender
   )
 
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     if (!props.passThrough && !themeState?.theme) {
       if (process.env.TAMAGUI_DISABLE_NO_THEME_WARNING !== '1') {
         // stringify only the theme name, not all props - props can carry

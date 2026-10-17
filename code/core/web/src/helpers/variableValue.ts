@@ -1,6 +1,9 @@
 import type { TokensParsed, Variable } from '../types'
 import { warnOnce } from './warnOnce'
 
+// process.env is a slow native lookup in Node, so production reads it once here
+const isProd = process.env.NODE_ENV === 'production'
+
 const unitlessSuffixes = [
   'opacity',
   'scale',
@@ -24,7 +27,7 @@ export const findVariableToken = (
   tokensParsed: TokensParsed,
   name: string
 ): Variable | undefined => {
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     let found: Variable | undefined
     let foundCategory: string | undefined
     for (const category of tokenCategoryOrder) {

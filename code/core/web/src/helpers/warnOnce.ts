@@ -1,3 +1,5 @@
+// process.env is a slow native lookup in Node, so production reads it once here
+const isProd = process.env.NODE_ENV === 'production'
 // One development warning per key, for the whole runtime.
 //
 // The set is BOUNDED rather than trusted to stay small, and that bound is what
@@ -12,10 +14,10 @@
 // signal back at a fixed cost. Past it the console already holds hundreds of
 // distinct warnings and one more is not what is missing.
 const warnLimit = 500
-const warned = process.env.NODE_ENV !== 'production' ? new Set<string>() : null
+const warned = !isProd && process.env.NODE_ENV !== 'production' ? new Set<string>() : null
 
 export function warnOnce(key: string, message = key) {
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     if (warned?.has(key) || (warned?.size ?? 0) >= warnLimit) return
     warned?.add(key)
     console.warn(`[tamagui] ${message}`)
@@ -23,7 +25,7 @@ export function warnOnce(key: string, message = key) {
 }
 
 export function resetWarned() {
-  if (process.env.NODE_ENV !== 'production') {
+  if (!isProd && process.env.NODE_ENV !== 'production') {
     warned?.clear()
   }
 }

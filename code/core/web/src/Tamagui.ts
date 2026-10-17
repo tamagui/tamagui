@@ -4,11 +4,14 @@ import { getConfig } from './config'
 import { getAllRules, getAllSelectors } from './helpers/insertStyleRule'
 import { mediaState } from './helpers/mediaState'
 
+// process.env is a slow native lookup in Node, so production reads it once here
+const isProd = process.env.NODE_ENV === 'production'
+
 // easy introspection
 // only included in dev mode
 
 export const Tamagui = (() => {
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     class TamaguiManager {
       Helpers = Helpers
 
