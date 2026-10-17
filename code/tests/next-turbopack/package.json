@@ -23,7 +23,7 @@
     "react-native-web": "~0.21.4"
   },
   "devDependencies": {
-    "@playwright/test": "1.58.2",
+    "@playwright/test": "1.60.0",
     "@tamagui/cli": "workspace:*",
     "@types/node": "^22.1.0",
     "@types/react": "~19.3.0",
