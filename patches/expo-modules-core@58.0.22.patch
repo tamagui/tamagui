@@ -1,6 +1,3 @@
-diff --git a/node_modules/expo-modules-core/.bun-tag-4391fdc26e64bf5f b/.bun-tag-4391fdc26e64bf5f
-new file mode 100644
-index 0000000000000000000000000000000000000000..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
 diff --git a/android/src/main/cpp/fabric/AndroidExpoViewProps.cpp b/android/src/main/cpp/fabric/AndroidExpoViewProps.cpp
 index 2179826d5dea334ceab151a4b28536031661d96e..13aa696e2ff8ecbc8c06e0e0bce2453c7906b5c5 100644
 --- a/android/src/main/cpp/fabric/AndroidExpoViewProps.cpp
