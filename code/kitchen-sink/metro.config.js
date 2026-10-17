@@ -38,10 +38,10 @@ config.resolver.nodeModulesPaths = [
 //    `node_modules/parse5/node_modules/entities/...` but Metro resolves it to
 //    `node_modules/entities/...` instead). This is a workaround to fix it.
 config.resolver.resolveRequest = (context, moduleName, platform) => {
-  // rn's public subpaths exist only in its exports map.
+  // these rn public entry points exist only in its exports map.
   if (
     (platform === 'ios' || platform === 'android') &&
-    moduleName.startsWith('react-native/')
+    /^react-native\/(asset-registry|unstable-internals-do-not-use)$/.test(moduleName)
   ) {
     context = { ...context, unstable_enablePackageExports: true }
   }
