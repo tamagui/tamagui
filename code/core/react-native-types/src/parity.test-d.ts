@@ -1,6 +1,6 @@
 import type * as RN from 'react-native'
 // bypass exports.types to check RN's legacy entry alongside the strict entry.
-import type * as LegacyRN from '../../../../node_modules/react-native/types'
+import type * as LegacyRN from '../../../../node_modules/react-native/types_DEPRECATED'
 import type { Ref } from 'react'
 
 import type * as Ours from './index'
