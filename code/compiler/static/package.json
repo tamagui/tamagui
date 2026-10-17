@@ -79,8 +79,8 @@
     "@types/webpack": "^4.41.26",
     "esbuild-loader": "^4.2.2",
     "null-loader": "^4.0.1",
-    "react": "19.2.3",
-    "react-native": "0.87.1",
+    "react": "19.3.0",
+    "react-native": "0.88.0",
     "typescript": "7.0.2"
   },
   "peerDependencies": {

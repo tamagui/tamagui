@@ -16,8 +16,8 @@
     "@tamagui/vite-plugin": "workspace:*",
     "@tamagui/web": "workspace:*",
     "tamagui": "workspace:*",
-    "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.0",

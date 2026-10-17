@@ -29,21 +29,21 @@
     "@tamagui/roving-focus": "workspace:*",
     "@tamagui/web": "workspace:*",
     "@tanstack/react-table": "^8.11.2",
-    "@vxrn/color-scheme": "2.7.7",
-    "expo-document-picker": "~57.0.1",
-    "expo-image-picker": "~57.0.7",
+    "@vxrn/color-scheme": "2.8.0",
+    "expo-document-picker": "~58.0.4",
+    "expo-image-picker": "~58.0.10",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.51.0",
     "react-native-gesture-handler": "3.3.0",
-    "react-native-reanimated": "4.6.0",
+    "react-native-reanimated": "4.7.1",
     "react-native-safe-area-context": "5.10.1",
-    "react-native-svg": "15.15.4",
+    "react-native-svg": "15.16.0",
     "tamagui": "workspace:*",
     "zod": "^3.25.67"
   },
   "devDependencies": {
     "@tamagui/cli": "workspace:*",
-    "react": "19.2.3",
-    "react-native": "0.87.1"
+    "react": "19.3.0",
+    "react-native": "0.88.0"
   }
 }
