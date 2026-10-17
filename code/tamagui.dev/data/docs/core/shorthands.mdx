@@ -59,3 +59,22 @@ export const config = createTamagui({
 ```
 
 This is type-level only. The runtime still accepts the long form.
+
+### Upgrading to 3.1
+
+Version 3.1 repairs declarations that could allow long-form props through styled
+components, compound components, and wrappers even when `onlyAllowShorthands` was
+enabled. Code that relied on that regression can now report a type error. Use the
+configured shorthand instead:
+
+```tsx
+// before, with an items shorthand configured for alignItems
+<YStack alignItems="center" />
+
+// after
+<YStack items="center" />
+```
+
+Setting `onlyAllowShorthands: false` continues to allow both forms. Plain style
+objects such as `contentContainerStyle` use React Native style property names,
+for example `paddingBottom`, rather than Tamagui shorthands.
