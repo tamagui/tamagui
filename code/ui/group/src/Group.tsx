@@ -31,7 +31,8 @@ export type GroupProps = GetProps<typeof GroupFrame> & GroupExtraProps
 
 function createGroup(verticalDefault: boolean) {
   return withStaticProperties(
-    createStyledHOC(GroupFrame, (props: ScopedProps<GroupProps>, ref) => {
+    createStyledHOC(GroupFrame, (propsIn: ScopedProps<GroupExtraProps>, ref) => {
+      const props: ScopedProps<GroupProps> = propsIn
       const {
         __scopeGroup,
         children: childrenProp,

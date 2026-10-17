@@ -2,7 +2,7 @@ import { Circle, ScrollView, Square, XStack } from 'tamagui'
 
 export function ScrollViewDemo() {
   return (
-    <ScrollView maxH={250} width="75%" bg="background" p="4" rounded="4">
+    <ScrollView maxH={250} w="75%" bg="background" p="4" rounded="4">
       <XStack flexWrap="wrap" items="center" justify="center">
         <Square m="4" bg="color-5" size={120} />
         <Circle m="4" bg="color-6" size={120} />

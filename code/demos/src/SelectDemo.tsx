@@ -8,15 +8,15 @@ import { Adapt, Label, Select, Sheet, Theme, XStack, YStack } from 'tamagui'
 export function SelectDemo() {
   return (
     <Theme name="level2">
-      <YStack gap="4" width={320}>
-        <XStack width="100%" items="center" gap="4">
+      <YStack gap="4" w={320}>
+        <XStack w="100%" items="center" gap="4">
           <Label htmlFor="select-demo-1" flex={1} minW={80}>
             Custom
           </Label>
           <SelectDemoContents id="select-demo-1" />
         </XStack>
 
-        <XStack width="100%" items="center" gap="4">
+        <XStack w="100%" items="center" gap="4">
           <Label htmlFor="select-demo-2" flex={1} minW={80}>
             Native
           </Label>
@@ -51,11 +51,11 @@ export function SelectDemoContents(
     >
       {props?.trigger || (
         <Select.Trigger
-          width={220}
-          minWidth={220}
-          maxWidth={220}
-          flexShrink={0}
-          borderRadius="4"
+          w={220}
+          minW={220}
+          maxW={220}
+          shrink={0}
+          rounded="4"
           backgroundColor="background"
         >
           <Select.Value placeholder="Something" />
@@ -82,8 +82,8 @@ export function SelectDemoContents(
           items="center"
           justify="center"
           position="relative"
-          width="100%"
-          height="6"
+          w="100%"
+          h="6"
         >
           <YStack z={10}>
             <ChevronUp size={14} />
@@ -105,7 +105,7 @@ export function SelectDemoContents(
           borderColor="border-color"
         >
           {/* in native mode the group is the <select>, so it takes the trigger's width */}
-          <Select.Group width={props.native ? 220 : undefined}>
+          <Select.Group w={props.native ? 220 : undefined}>
             <Select.Label fontWeight="700">Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}
             {React.useMemo(
@@ -114,7 +114,7 @@ export function SelectDemoContents(
                   return (
                     <Select.Item key={item.name} value={item.name.toLowerCase()}>
                       <Select.ItemText>{item.name}</Select.ItemText>
-                      <Select.ItemIndicator marginLeft="auto">
+                      <Select.ItemIndicator ml="auto">
                         <Check size={16} />
                       </Select.ItemIndicator>
                     </Select.Item>
@@ -129,8 +129,8 @@ export function SelectDemoContents(
           items="center"
           justify="center"
           position="relative"
-          width="100%"
-          height="6"
+          w="100%"
+          h="6"
         >
           <YStack z={10}>
             <ChevronDown size={14} />

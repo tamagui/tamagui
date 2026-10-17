@@ -6,15 +6,7 @@ import { demos } from './demos'
 export function HomeScreen({ onSelect }: { onSelect: (demoName: string) => void }) {
   return (
     <ScrollView>
-      <YStack
-        bg="color-2"
-        paddingRight="3"
-        paddingLeft="3"
-        pt="6"
-        pb="8"
-        flex={1}
-        gap="4"
-      >
+      <YStack bg="color-2" pr="3" pl="3" pt="6" pb="8" flex={1} gap="4">
         <H1 fontFamily="heading" size="9">
           Kitchen Sink
         </H1>

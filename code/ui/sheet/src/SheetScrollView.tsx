@@ -392,7 +392,8 @@ const SheetScrollViewCustom = createRefComponent<ScrollViewRef, SheetScrollViewP
 
 export const SheetScrollView = createStyledHOC(
   ScrollView,
-  ({ scope, ...props }: SheetScrollViewProps, ref) => {
+  (propsIn: SheetScopedProps<{}>, ref) => {
+    const { scope, ...props }: SheetScrollViewProps = propsIn
     const context = useSheetContext(scope)
     return context.onlyShowContainer ? (
       <ScrollView {...props} ref={ref} />

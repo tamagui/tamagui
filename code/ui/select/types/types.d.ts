@@ -179,11 +179,12 @@ export type SelectViewportProps = ViewProps & SelectViewportExtraProps;
 export type SelectContentProps = SelectScopedProps<{
     children?: React.ReactNode;
 } & Pick<DismissableProps, 'onEscapeKeyDown' | 'onPointerDownOutside' | 'onFocusOutside' | 'onInteractOutside'>>;
-export type SelectScrollButtonImplProps = ViewProps & SelectScopedProps<{
+export type SelectScrollButtonExtraProps = SelectScopedProps<{}>;
+export type SelectScrollButtonImplExtraProps = SelectScopedProps<{
     dir: 'up' | 'down';
     partClassName: string;
 }>;
-export interface SelectScrollButtonProps extends Omit<SelectScrollButtonImplProps, 'dir' | 'partClassName'> {
-}
+export type SelectScrollButtonImplProps = ViewProps & SelectScrollButtonImplExtraProps;
+export type SelectScrollButtonProps = ViewProps & SelectScrollButtonExtraProps;
 export {};
 //# sourceMappingURL=types.d.ts.map

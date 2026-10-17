@@ -1,23 +1,68 @@
-import { type GetProps } from '@tamagui/core';
 import type { ScrollViewRef } from '@tamagui/scroll-view';
-import { ScrollView } from '@tamagui/scroll-view';
 import React from 'react';
-type SheetScrollViewBaseProps = GetProps<typeof ScrollView>;
-export declare const SheetScrollView: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & React.RefAttributes<ScrollViewRef>, import("@tamagui/core").StackStyleBase, {}>, string | number> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & React.RefAttributes<ScrollViewRef>, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, string | number> & {
-    h?: SheetScrollViewBaseProps['height'];
-    o?: SheetScrollViewBaseProps['opacity'];
-    pos?: SheetScrollViewBaseProps['position'];
-}, "scope"> & {
+export declare const SheetScrollView: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, ScrollViewRef, Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/core").StackNonStyleProps, "onScroll" | "style"> & import("@tamagui/core").RNViewProps & {
+    style?: import("@tamagui/core").StackNonStyleProps['style'];
+    contentContainerStyle?: import("@tamagui/core").StylePiece | import("@tamagui/core").StackNonStyleProps['style'];
+    horizontal?: boolean;
+    onContentSizeChange?: (width: number, height: number) => void;
+    onScroll?: (event: import("@tamagui/scroll-view").WebScrollEvent) => void;
+    refreshControl?: React.ReactElement<{
+        style?: import("@tamagui/core").StackNonStyleProps['style'];
+    }>;
+    stickyHeaderIndices?: number[];
+    pagingEnabled?: boolean;
+    centerContent?: boolean;
+    scrollEnabled?: boolean;
+    scrollEventThrottle?: number;
+    showsHorizontalScrollIndicator?: boolean;
+    showsVerticalScrollIndicator?: boolean;
+    keyboardShouldPersistTaps?: boolean | 'always' | 'never' | 'handled';
+    keyboardDismissMode?: 'none' | 'on-drag' | 'interactive';
+    contentOffset?: {
+        x: number;
+        y: number;
+    };
+    contentInset?: import("@tamagui/core").Insets;
+    contentInsetAdjustmentBehavior?: 'automatic' | 'scrollableAxes' | 'never' | 'always';
+    decelerationRate?: number | 'normal' | 'fast';
+    directionalLockEnabled?: boolean;
+    disableIntervalMomentum?: boolean;
+    disableScrollViewPanResponder?: boolean;
+    endFillColor?: string;
+    fadingEdgeLength?: number | {
+        start: number;
+        end: number;
+    };
+    indicatorStyle?: 'default' | 'black' | 'white';
+    invertStickyHeaders?: boolean;
+    maintainVisibleContentPosition?: {
+        minIndexForVisible: number;
+        autoscrollToTopThreshold?: number;
+    };
+    maximumZoomScale?: number;
+    minimumZoomScale?: number;
+    nestedScrollEnabled?: boolean;
+    onScrollToTop?: (event: import("@tamagui/scroll-view").WebScrollEvent) => void;
+    overScrollMode?: 'auto' | 'always' | 'never';
+    pinchGestureEnabled?: boolean;
+    removeClippedSubviews?: boolean;
+    scrollIndicatorInsets?: import("@tamagui/core").Insets;
+    scrollPerfTag?: string;
+    scrollToOverflowEnabled?: boolean;
+    snapToAlignment?: 'start' | 'center' | 'end';
+    snapToEnd?: boolean;
+    snapToInterval?: number;
+    snapToOffsets?: number[];
+    snapToStart?: boolean;
+    bounces?: boolean;
+    onScrollBeginDrag?: (event: import("@tamagui/scroll-view").WebScrollEvent) => void;
+    onScrollEndDrag?: (event: import("@tamagui/scroll-view").WebScrollEvent) => void;
+    onMomentumScrollBegin?: (event: import("@tamagui/scroll-view").WebScrollEvent) => void;
+    onMomentumScrollEnd?: (event: import("@tamagui/scroll-view").WebScrollEvent) => void;
+} & React.RefAttributes<ScrollViewRef>, "scope"> & Omit<{}, "scope"> & {
     scope?: import("./types").SheetScopes;
-}, ScrollViewRef, Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & React.RefAttributes<ScrollViewRef>, string | number> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & React.RefAttributes<ScrollViewRef>, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, string | number> & {
-    h?: SheetScrollViewBaseProps['height'];
-    o?: SheetScrollViewBaseProps['opacity'];
-    pos?: SheetScrollViewBaseProps['position'];
-}, "scope"> & {
-    scope?: import("./types").SheetScopes;
-}, import("@tamagui/core").StackStyleBase, Omit<{}, string | number>, {
+}, import("@tamagui/core").StackStyleBase, Omit<{}, "scope">, {
     acceptsClassName: true;
     neverFlatten: true;
 }>;
-export {};
 //# sourceMappingURL=SheetScrollView.d.ts.map

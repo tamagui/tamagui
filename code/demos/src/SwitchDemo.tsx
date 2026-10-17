@@ -3,7 +3,7 @@ import { Label, Separator, Switch, XStack, YStack } from 'tamagui'
 
 export function SwitchDemo() {
   return (
-    <YStack width={200} items="center" gap="3">
+    <YStack w={200} items="center" gap="3">
       <XStack gap="3" flexDirection="xs:column">
         <SwitchWithLabel size="sm" />
         <SwitchWithLabel size="sm" defaultChecked />
@@ -32,7 +32,7 @@ const switchLabelSize = {
 export function SwitchWithLabel(props: { size: SwitchSize; defaultChecked?: boolean }) {
   const id = `switch-${props.size}-${props.defaultChecked ?? ''}}`
   return (
-    <XStack width={200} items="center" gap="4">
+    <XStack w={200} items="center" gap="4">
       <Label
         pr="0"
         minW={90}

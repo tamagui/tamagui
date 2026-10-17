@@ -9,8 +9,8 @@ export function ProgressDemo() {
 
   return (
     <>
-      <YStack height={60} items="center" gap="4">
-        <Paragraph height={30} opacity={0.5}>
+      <YStack h={60} items="center" gap="4">
+        <Paragraph h={30} opacity={0.5}>
           Progress: {progress}
         </Paragraph>
 

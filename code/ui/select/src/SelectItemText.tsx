@@ -24,7 +24,8 @@ export type SelectItemTextProps = GetProps<typeof SelectItemTextFrame> &
 
 export const SelectItemText = createStyledHOC(
   SelectItemTextFrame,
-  function SelectItemText(props: SelectItemTextProps, forwardedRef) {
+  function SelectItemText(propsIn: SelectItemTextExtraProps, forwardedRef) {
+    const props: SelectItemTextProps = propsIn
     const { scope, className, ...itemTextProps } = props
     // note: only uses itemParentContext (not selectContext) to avoid re-renders
     // when activeIndex changes on hover

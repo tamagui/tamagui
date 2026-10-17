@@ -138,7 +138,7 @@ export function FieldDemo() {
       <Form.Trigger asChild>
         <Button
           self="flex-end"
-          height={40}
+          h={40}
           px="5"
           rounded="5"
           bg="color-11 hover:color-10"

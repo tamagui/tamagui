@@ -40,7 +40,7 @@ export function FormsDemo() {
       <Form.Trigger asChild disabled={status !== 'idle'}>
         <Button
           self="flex-end"
-          height={40}
+          h={40}
           px="5"
           rounded="5"
           bg="color-11 hover:color-10"
@@ -52,7 +52,7 @@ export function FormsDemo() {
         </Button>
       </Form.Trigger>
 
-      <YStack height={24} items="center" justify="center">
+      <YStack h={24} items="center" justify="center">
         {status === 'submitting' ? (
           <Spinner size="small" />
         ) : (

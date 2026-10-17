@@ -17,13 +17,7 @@ export function CanaryTree() {
 
   return (
     <TamaguiProvider config={config} defaultTheme="light">
-      <YStack
-        testID="canary-root"
-        background="background"
-        gap="4"
-        minHeight="100%"
-        padding="4"
-      >
+      <YStack testID="canary-root" bg="background" gap="4" minH="100%" p="4">
         <Text testID="canary-heading" color="canaryTheme" fontSize="6">
           Tamagui v3 integrated canary
         </Text>

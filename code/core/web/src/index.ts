@@ -362,6 +362,7 @@ export {
   webOnlyStylePropsText,
   webOnlyStylePropsView,
   withStaticProperties,
+  type Combined,
   type EventHandler,
   type ExplicitNativePlatform,
   type NativePlatform,

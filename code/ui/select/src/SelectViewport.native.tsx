@@ -21,7 +21,8 @@ export const SelectViewportFrame = styled(View, {
 
 export const SelectViewport = createStyledHOC(
   SelectViewportFrame,
-  function SelectViewport(props: SelectViewportProps, forwardedRef) {
+  function SelectViewport(propsIn: SelectViewportExtraProps, forwardedRef) {
+    const props: SelectViewportProps = propsIn
     const { scope, children, disableScroll: _disableScroll, ...viewportProps } = props
     const context = useSelectContext(scope)
     const itemParentContext = useSelectItemParentContext(scope)

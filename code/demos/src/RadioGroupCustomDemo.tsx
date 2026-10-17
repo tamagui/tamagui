@@ -36,8 +36,8 @@ const RADIO_GROUP_INDICATOR_NAME = 'RadioGroupIndicator'
 
 const RadioGroupIndicatorFrame = styled(RadioGroupBehavior.Indicator, {
   displayName: RADIO_GROUP_INDICATOR_NAME,
-  width: '53%',
-  height: '53%',
+  w: '53%',
+  h: '53%',
   rounded: 1000,
   bg: 'color',
 })
@@ -66,7 +66,7 @@ const RadioGroup = withStaticProperties(RadioGroupFrame, {
 export function RadioGroupCustomDemo() {
   return (
     <RadioGroup aria-labelledby="Select one item" defaultValue="3" name="form">
-      <YStack width={200} items="center" gap="2">
+      <YStack w={200} items="center" gap="2">
         <RadioGroupItemWithLabel value="2" label="Option One" />
         <RadioGroupItemWithLabel value="3" label="Option Two" />
       </YStack>
@@ -77,7 +77,7 @@ export function RadioGroupCustomDemo() {
 function RadioGroupItemWithLabel(props: { value: string; label: string }) {
   const id = `radiogroup-${props.value}`
   return (
-    <XStack width={300} items="center" gap="4">
+    <XStack w={300} items="center" gap="4">
       <RadioGroup.Item value={props.value} id={id}>
         <RadioGroup.Indicator />
       </RadioGroup.Item>

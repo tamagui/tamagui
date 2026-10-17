@@ -53,9 +53,12 @@ export const RadioGroupFrame = styled(View, {
   } as const,
 })
 
-export type RadioGroupIndicatorProps = GetProps<typeof RadioGroupIndicatorFrame> & {
+type RadioGroupIndicatorExtraProps = {
   forceMount?: boolean
 }
+
+export type RadioGroupIndicatorProps = GetProps<typeof RadioGroupIndicatorFrame> &
+  RadioGroupIndicatorExtraProps
 
 export const RadioGroupContext = React.createContext<RadioGroupContextValue>({})
 export const RadioGroupItemContext = React.createContext<RadioGroupItemContextValue>({
@@ -63,7 +66,7 @@ export const RadioGroupItemContext = React.createContext<RadioGroupItemContextVa
   disabled: false,
 })
 
-export type RadioGroupItemProps = GetProps<typeof RadioGroupItemFrame> & {
+type RadioGroupItemExtraProps = {
   value: string
   id?: string
   labelledBy?: string
@@ -72,7 +75,10 @@ export type RadioGroupItemProps = GetProps<typeof RadioGroupItemFrame> & {
   activeTheme?: string | null
 }
 
-export type RadioGroupProps = GetProps<typeof RadioGroupFrame> & {
+export type RadioGroupItemProps = GetProps<typeof RadioGroupItemFrame> &
+  RadioGroupItemExtraProps
+
+type RadioGroupExtraProps = {
   value?: string
   defaultValue?: string
   onValueChange?: (value: string) => void
@@ -83,9 +89,12 @@ export type RadioGroupProps = GetProps<typeof RadioGroupFrame> & {
   accentColor?: string
 }
 
+export type RadioGroupProps = GetProps<typeof RadioGroupFrame> & RadioGroupExtraProps
+
 const RadioGroupComponent = createStyledHOC(
   RadioGroupFrame,
-  (props: RadioGroupProps, ref) => {
+  (propsIn: RadioGroupExtraProps, ref) => {
+    const props: RadioGroupProps = propsIn
     const {
       value,
       defaultValue,
@@ -125,7 +134,8 @@ const RadioGroupComponent = createStyledHOC(
 
 const RadioGroupItem = createStyledHOC(
   RadioGroupItemFrame,
-  (props: RadioGroupItemProps, ref) => {
+  (propsIn: RadioGroupItemExtraProps, ref) => {
+    const props: RadioGroupItemProps = propsIn
     const {
       value,
       labelledBy,
@@ -183,7 +193,8 @@ RadioGroupItem.displayName = 'RadioGroupItem'
 
 const RadioGroupIndicator = createStyledHOC(
   RadioGroupIndicatorFrame,
-  (props: RadioGroupIndicatorProps, forwardedRef) => {
+  (propsIn: RadioGroupIndicatorExtraProps, forwardedRef) => {
+    const props: RadioGroupIndicatorProps = propsIn
     const { forceMount, disabled, ...indicatorProps } = props
     const { checked, ...useIndicatorRest } = useRadioGroupItemIndicator({
       radioGroupItemContext: RadioGroupItemContext,

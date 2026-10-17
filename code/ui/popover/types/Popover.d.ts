@@ -127,9 +127,8 @@ export type PopoverContextProviderProps = {
  */
 export declare const PopoverContextProvider: React.MemoExoticComponent<({ scope, children, open, onOpenChange, onOpenToggle, triggerRef, id, contentId, hasCustomAnchor, onCustomAnchorAdd, onCustomAnchorRemove, anchorTo, adaptScope, breakpointActive, keepChildrenMounted, disableDismissable, hoverable, closeReasonRef, }: PopoverContextProviderProps) => React.JSX.Element>;
 export type PopoverAnchorProps = ScopedPopoverProps<YStackProps>;
-export declare const PopoverAnchor: React.NamedExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "scope"> & {
-    scope?: PopoverScopes;
-} & import("@tamagui/compose-refs").RefProp<TamaguiElement>>;
+declare const PopoverAnchorComponent: import("@tamagui/compose-refs").RefComponent<TamaguiElement, PopoverAnchorProps>;
+export declare const PopoverAnchor: typeof PopoverAnchorComponent;
 export type PopoverTriggerProps = ScopedPopoverProps<ViewProps & {
     /**
      * When true, disables the built-in click-to-toggle behavior on the trigger.
@@ -138,16 +137,8 @@ export type PopoverTriggerProps = ScopedPopoverProps<ViewProps & {
      */
     disablePressTrigger?: boolean;
 }>;
-export declare const PopoverTrigger: React.NamedExoticComponent<Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
-    /**
-     * When true, disables the built-in click-to-toggle behavior on the trigger.
-     * Useful for hoverable popovers where you want to control open/close
-     * entirely through hover or your own handlers.
-     */
-    disablePressTrigger?: boolean;
-}, "scope"> & {
-    scope?: PopoverScopes;
-} & import("@tamagui/compose-refs").RefProp<TamaguiElement>>;
+declare const PopoverTriggerComponent: import("@tamagui/compose-refs").RefComponent<TamaguiElement, PopoverTriggerProps>;
+export declare const PopoverTrigger: typeof PopoverTriggerComponent;
 export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
     /**
      * Enable smooth animation when the content position changes (e.g., when flipping sides)
@@ -217,69 +208,17 @@ export type Popover = {
 export type PopoverScrollViewProps = ScrollViewProps & {
     scope?: string;
 };
-export declare const Popover: ((props: Omit<PopperProps, "scope"> & {
-    scope?: PopoverScopes;
-} & {
-    open?: boolean;
-    defaultOpen?: boolean;
-    onOpenChange?: (open: boolean, via?: PopoverVia) => void;
-    /**
-     * When true, children never un-mount, otherwise they mount on open.
-     * When "lazy", they mount inside a startTransition after first render.
-     *
-     * @default false
-     */
-    keepChildrenMounted?: boolean | 'lazy';
-    /**
-     * Enable staying open while mouseover
-     */
-    hoverable?: boolean | UseHoverProps;
-    /**
-     * disable opening when the trigger receives keyboard focus.
-     * defaults to true unless hoverable is enabled.
-     */
-    disableFocus?: boolean;
-    /**
-     * Disable the dismissable layer (escape key, outside click handling).
-     * Useful for popovers that stay mounted but are visually hidden.
-     */
-    disableDismissable?: boolean;
-    /**
-     * z-index for the popover portal. Use this when popovers need to appear
-     * above other portaled content like dialogs or fixed headers.
-     *
-     * By default, Tamagui automatically stacks overlays - later-opened content
-     * appears above earlier content, and nested content appears above its parent.
-     * Only set this if you need to override the automatic stacking behavior.
-     *
-     * @see https://tamagui.dev/ui/z-index
-     */
-    zIndex?: number;
-} & import("@tamagui/compose-refs").RefProp<Popover>) => React.ReactNode) & {
-    displayName?: string;
-    propTypes?: any;
-} & {
-    Anchor: React.NamedExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "scope"> & {
-        scope?: PopoverScopes;
-    } & import("@tamagui/compose-refs").RefProp<TamaguiElement>>;
+export declare const Popover: import("@tamagui/helpers").Combined<import("@tamagui/compose-refs").RefComponent<Popover, PopoverProps>, {
+    Anchor: import("@tamagui/compose-refs").RefComponent<TamaguiElement, PopoverAnchorProps>;
     Arrow: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof PopperArrowExtraProps> & PopperArrowExtraProps, import("@tamagui/core").StackStyleBase, Omit<{}, keyof PopperArrowExtraProps>, import("@tamagui/core").StaticConfigPublic>;
-    Trigger: React.NamedExoticComponent<Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
-        /**
-         * When true, disables the built-in click-to-toggle behavior on the trigger.
-         * Useful for hoverable popovers where you want to control open/close
-         * entirely through hover or your own handlers.
-         */
-        disablePressTrigger?: boolean;
-    }, "scope"> & {
-        scope?: PopoverScopes;
-    } & import("@tamagui/compose-refs").RefProp<TamaguiElement>>;
+    Trigger: import("@tamagui/compose-refs").RefComponent<TamaguiElement, PopoverTriggerProps>;
     Content: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof PopoverContentTypeProps> & PopoverContentTypeProps, import("@tamagui/core").StackStyleBase, Omit<{}, keyof PopoverContentTypeProps>, import("@tamagui/core").StaticConfigPublic>;
     Close: import("@tamagui/compose-refs").RefComponent<TamaguiElement, PopoverCloseProps>;
-    Adapt: ((props: import("@tamagui/adapt").AdaptProps) => React.JSX.Element) & {
+    Adapt: import("@tamagui/helpers").Combined<(props: import("@tamagui/adapt").AdaptProps) => React.JSX.Element, {
         Contents: typeof import("@tamagui/adapt").AdaptContents;
-    };
+    }>;
     ScrollView: import("@tamagui/compose-refs").RefComponent<import("@tamagui/scroll-view").ScrollViewRef, PopoverScrollViewProps>;
     FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => React.JSX.Element;
-};
+}>;
 export {};
 //# sourceMappingURL=Popover.d.ts.map

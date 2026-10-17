@@ -23,7 +23,7 @@ function ListItemDemo1() {
       borderColor="border-color"
       rounded="4"
       overflow="hidden"
-      width={240}
+      w={240}
     >
       <YGroup.Item>
         <ListItem
@@ -63,7 +63,7 @@ function ListItemDemo2() {
       borderColor="border-color"
       rounded="5"
       overflow="hidden"
-      width={240}
+      w={240}
     >
       <YGroup.Item>
         <ListItem
