@@ -76,7 +76,15 @@ export function DocsPageFrame({
       </View>
 
       {/* main content */}
-      <YStack render="main" flex={1} minW={0} flexBasis="auto" py="11" px="4 md:8">
+      <YStack
+        render="main"
+        flex={1}
+        minW={0}
+        flexBasis="auto"
+        py="11"
+        pl="4 md:8"
+        pr="4 md:12"
+      >
         <YStack
           render="article"
           role="tabpanel"

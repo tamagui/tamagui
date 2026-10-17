@@ -61,7 +61,6 @@ export function HeroContainer({
       {...(noPad && {
         py: 0,
       })}
-      mx={smaller ? 'lg:0' : 'lg:-4'}
       id="tamagui-demos-container"
     >
       <AnimationDriverTogglerContextProvider>
