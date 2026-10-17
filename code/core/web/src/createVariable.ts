@@ -4,6 +4,9 @@ import { simpleHash } from '@tamagui/helpers'
 import { getConfig } from './config'
 import type { PxValue, TokenCategories, Variable } from './types'
 
+// process.env is a slow native lookup in Node, so production reads it once here
+const isProd = process.env.NODE_ENV === 'production'
+
 /**
  * Should rename this to Token
  * Moving to objects for React Server Components support
@@ -102,7 +105,7 @@ export function getVariableValue(v: Variable | any, group?: TokenCategories) {
 
 // bugfix { space: { 0.5: 10 } } was generating var(--space-0.5) (invalid CSS):
 export const createCSSVariable = (nameProp: string, includeVar = true) => {
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     if (!nameProp || typeof nameProp !== 'string') {
       throw new Error(`createCSSVariable expected string, got: ${nameProp}`)
     }

@@ -3,12 +3,15 @@ import { formatDiagnostic } from './formatDiagnostic'
 import { mediaObjectToString } from './mediaObjectToString'
 import { mediaQueryConfig } from './mediaState'
 
+// process.env is a slow native lookup in Node, so production reads it once here
+const isProd = process.env.NODE_ENV === 'production'
+
 let matchMediaImpl: MatchMedia = matchMediaFallback
 
 export const matchMedia: MatchMedia = (...args) => matchMediaImpl(...args)
 
 function matchMediaFallback(query: string): MediaQueryList {
-  if (!process.env.IS_STATIC && process.env.NODE_ENV === 'development') {
+  if (!process.env.IS_STATIC && !isProd && process.env.NODE_ENV === 'development') {
     const keys = Object.keys(mediaQueryConfig).filter(
       (key) => mediaObjectToString(mediaQueryConfig[key]) === query
     )
@@ -32,7 +35,7 @@ function matchMediaFallback(query: string): MediaQueryList {
 }
 
 export function setupMatchMedia(_: MatchMedia) {
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     if (typeof _ !== 'function') {
       if (!process.env.IS_STATIC) {
         console.trace(

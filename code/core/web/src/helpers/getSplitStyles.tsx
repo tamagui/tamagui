@@ -111,11 +111,16 @@ export type {
   StyleTokenBinding,
   StyleTokenProvenance,
 } from './styleProvenance'
+
+// process.env is a slow native lookup in Node, so production reads it once here
+const isProd = process.env.NODE_ENV === 'production'
+const isIsland = process.env.TAMAGUI_RUNTIME === 'island'
 export { styleOriginalValues }
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 
 const shouldTrackStyleTokenProvenance =
+  !isProd &&
   process.env.NODE_ENV === 'development' &&
   process.env.TAMAGUI_ENABLE_STYLE_TOKEN_PROVENANCE === '1'
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
@@ -185,7 +190,7 @@ function createCondition(parent?: Condition | null): Condition {
 
 function setConditionUnresolved(condition: Condition, name = '') {
   condition[conditionValue] &= ~conditionResolvedFlag
-  if (process.env.NODE_ENV !== 'production') condition.problem ||= name
+  if (!isProd && process.env.NODE_ENV !== 'production') condition.problem ||= name
 }
 
 function appendConditionWrapper(condition: Condition, wrapper: string) {
@@ -273,6 +278,7 @@ function resolveConditionModifier(
     const component = state.componentState.group?.[groupName]
     const context = state.flatGroupContext?.[groupName]
     if (
+      !isProd &&
       process.env.NODE_ENV === 'development' &&
       containerName &&
       !component &&
@@ -368,7 +374,7 @@ function commitCondition(condition: Condition): number {
   const ranks = condition[conditionRanks]
   const depth = ranks.length
   if (depth > 5) {
-    if (process.env.NODE_ENV !== 'production') {
+    if (!isProd && process.env.NODE_ENV !== 'production') {
       throw new Error(
         `a flat value clause supports at most 5 non-platform conditions; received ${depth} in "${condition[conditionKey]}:"`
       )
@@ -565,6 +571,7 @@ function contributeProp(
   }
 
   if (
+    !isProd &&
     process.env.NODE_ENV === 'development' &&
     (debug === 'profile' || (globalThis as any).time)
   ) {
@@ -572,7 +579,7 @@ function contributeProp(
     time`before-prop-${keyInit}`
   }
 
-  if (process.env.NODE_ENV === 'test' && keyInit === 'jestAnimatedStyle') {
+  if (!isProd && process.env.NODE_ENV === 'test' && keyInit === 'jestAnimatedStyle') {
     return
   }
 
@@ -619,7 +626,7 @@ function contributeProp(
         if (condition !== undefined) {
           if (isValidStyleKey(property, validStyles)) {
             contributeValue(styleState, property, entry[1], undefined, false, condition)
-          } else if (process.env.NODE_ENV === 'development') {
+          } else if (!isProd && process.env.NODE_ENV === 'development') {
             console.warn(
               `[tamagui] "${property}" is not a valid style on this component; the frontend value is dropped.`
             )
@@ -645,7 +652,7 @@ function contributeProp(
           ? resolveClassName(candidate, conf, sink)
           : true
         if (preserveRaw === null) {
-          if (process.env.NODE_ENV === 'development') {
+          if (!isProd && process.env.NODE_ENV === 'development') {
             warnOnce(
               `[tamagui] frontend candidate "${candidate}" is unavailable on this platform and was dropped.`
             )
@@ -829,7 +836,7 @@ function contributeProp(
     }
   }
 
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     if (
       !isValidStyleKey(keyInit, validStyles) &&
       (keyInit === 'animation' || !(keyInit in stylePropsAll)) &&
@@ -942,7 +949,7 @@ function contributeProp(
     !styledContextKeys?.has(keyInit) &&
     !(styledContext && keyInit in styledContext)
   ) {
-    if (process.env.NODE_ENV === 'development') {
+    if (!isProd && process.env.NODE_ENV === 'development') {
       warnOnce(
         `variant-non-style:${keyInit}`,
         `a variant set "${keyInit}", which is not a style. Variants hold styles and aria/data attributes only: set "${keyInit}" on the component one level up.`
@@ -1020,7 +1027,7 @@ function contributeProp(
 
   const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
-  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+  if (!isProd && process.env.NODE_ENV === 'development' && debug === 'verbose') {
     // console.groupEnd() // react native was not nesting right
     console.groupCollapsed(
       `  🔑 ${keyOg}${
@@ -1044,7 +1051,7 @@ function contributeProp(
     if (keyInit in viewProps) delete viewProps[keyInit]
     viewProps[keyInit] = valInit
 
-    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+    if (!isProd && process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.groupEnd()
     }
 
@@ -1067,7 +1074,7 @@ function contributeProp(
         !getTransitionResolver()?.resolve(valInit, { animations: driverAnimations }).fused
       )
     ) {
-      if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      if (!isProd && process.env.NODE_ENV === 'development' && debug === 'verbose') {
         console.groupEnd()
       }
       return
@@ -1158,7 +1165,7 @@ function contributeProp(
           : { default: previous }
       transport[condition[conditionKey]] = valInit
       viewProps[keyInit] = transport
-    } else if (process.env.NODE_ENV === 'development') {
+    } else if (!isProd && process.env.NODE_ENV === 'development') {
       console.warn(
         `[tamagui] "${keyInit}" is not a valid style on this component; the conditional variant value is dropped.`
       )
@@ -1168,7 +1175,11 @@ function contributeProp(
 
   if (keyInit in stylePropsAll || isRemovedVendorStyleProp(keyInit)) {
     // shared css authoring intentionally drops unsupported keys on native.
-    if (process.env.NODE_ENV === 'development' && process.env.TAMAGUI_TARGET === 'web') {
+    if (
+      !isProd &&
+      process.env.NODE_ENV === 'development' &&
+      process.env.TAMAGUI_TARGET === 'web'
+    ) {
       console.warn(
         `[tamagui] "${keyInit}" is a text style prop and this component is not text — it would render on neither platform. Use a Text-based component, or html.* for raw web elements.`
       )
@@ -1177,7 +1188,7 @@ function contributeProp(
   }
   viewProps[keyInit] = valInit
 
-  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+  if (!isProd && process.env.NODE_ENV === 'development' && debug === 'verbose') {
     try {
       log(` ✔️ expand complete`, keyInit)
       log('style', { ...styleState.style })
@@ -1231,7 +1242,7 @@ export const getSplitStyles: StyleSplitter = (
   const mediaState = styleProps.mediaState || globalMediaState
 
   let shouldDoClasses =
-    process.env.TAMAGUI_RUNTIME !== 'island' &&
+    !isIsland &&
     acceptsClassName &&
     process.env.TAMAGUI_TARGET === 'web' &&
     !styleProps.noClass
@@ -1266,6 +1277,7 @@ export const getSplitStyles: StyleSplitter = (
         : validStylesView)
 
   if (
+    !isProd &&
     process.env.NODE_ENV === 'development' &&
     (debug === 'profile' || (globalThis as any).time)
   ) {
@@ -1311,6 +1323,7 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   if (
+    !isProd &&
     process.env.NODE_ENV === 'development' &&
     (debug === 'profile' || (globalThis as any).time)
   ) {
@@ -1318,7 +1331,12 @@ export const getSplitStyles: StyleSplitter = (
     time`style-state`
   }
 
-  if (process.env.NODE_ENV === 'development' && debug === 'verbose' && isClient) {
+  if (
+    !isProd &&
+    process.env.NODE_ENV === 'development' &&
+    debug === 'verbose' &&
+    isClient
+  ) {
     if (isDevTools) {
       console.groupCollapsed('🔹 getSplitStyles 👇')
       log({
@@ -1395,7 +1413,7 @@ export const getSplitStyles: StyleSplitter = (
     styledContextKeys,
     stylePassFlags,
     debug,
-    process.env.NODE_ENV === 'development' ? parentStaticConfig : undefined,
+    !isProd && process.env.NODE_ENV === 'development' ? parentStaticConfig : undefined,
     defaultProps,
     driverAnimations,
     driverOutputStyle,
@@ -1523,6 +1541,7 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   if (
+    !isProd &&
     process.env.NODE_ENV === 'development' &&
     (debug === 'profile' || (globalThis as any).time)
   ) {
@@ -1714,7 +1733,12 @@ export const getSplitStyles: StyleSplitter = (
           delete style.fontStyle
         }
       }
-      if (process.env.NODE_ENV === 'development' && debug && debug !== 'profile') {
+      if (
+        !isProd &&
+        process.env.NODE_ENV === 'development' &&
+        debug &&
+        debug !== 'profile'
+      ) {
         log(`Found fontFamily native: ${style.fontFamily}`, faceInfo)
       }
     }
@@ -1724,6 +1748,7 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   if (
+    !isProd &&
     process.env.NODE_ENV === 'development' &&
     (debug === 'profile' || (globalThis as any).time)
   ) {
@@ -1897,7 +1922,7 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+  if (!isProd && process.env.NODE_ENV === 'development' && debug === 'verbose') {
     if (isClient && isDevTools) {
       // end collapsed log above
       console.groupEnd()
@@ -1927,6 +1952,7 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   if (
+    !isProd &&
     process.env.NODE_ENV === 'development' &&
     (debug === 'profile' || (globalThis as any).time)
   ) {
@@ -2698,7 +2724,7 @@ function emitUnderCondition(
 ): number {
   const condition = cursor[conditionValue]
   if (!(condition & conditionResolvedFlag)) {
-    if (warnMode && process.env.NODE_ENV !== 'production') {
+    if (warnMode && !isProd && process.env.NODE_ENV !== 'production') {
       warnRefusedValue(property!, warnSource, `unknown modifier "${cursor.problem}"`)
     }
     return 0
@@ -2744,7 +2770,7 @@ const warnScanFailure = (
   failure: string | undefined | null,
   failureIndex: number
 ) => {
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     warnRefusedValue(property, source, formatScanFailure(failure, source, failureIndex))
   }
 }
@@ -2904,7 +2930,7 @@ function configuredValue(
     }
   }
 
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     const category =
       grammar.tokenCategory(property) ||
       grammar.tokenCategory(state.conf.shorthands[property] || property)
@@ -3172,7 +3198,7 @@ function emitProperty(
     !condition &&
     property === 'transform'
   ) {
-    if (process.env.NODE_ENV === 'development' && state.transformAccumulator) {
+    if (!isProd && process.env.NODE_ENV === 'development' && state.transformAccumulator) {
       for (const part of getTransformPartKeys(state.transformAccumulator)) {
         warnOnce(
           `legacy transform part "${part}" is dropped because "transform" owns the property`
@@ -3243,7 +3269,7 @@ function emitBorder(
     process.env.TAMAGUI_TARGET === 'native' &&
     (property === 'borderBlock' || property === 'borderInline')
   ) {
-    if (process.env.NODE_ENV === 'development') {
+    if (!isProd && process.env.NODE_ENV === 'development') {
       warnOnce(`RN has no logical border shorthand "${property}"; dropping it`)
     }
     return
@@ -3524,7 +3550,7 @@ function emitValue(
       return
     }
     if (process.env.TAMAGUI_TARGET === 'native') {
-      if (process.env.NODE_ENV === 'development') {
+      if (!isProd && process.env.NODE_ENV === 'development') {
         warnOnce(`native background cannot represent "${raw}"; dropping it`)
       }
       return
@@ -3550,7 +3576,7 @@ function emitValue(
         !isFinite(numericUnitValue(value, 'deg', 'rad')) &&
         (process.env.TAMAGUI_TARGET === 'native' || !startsValueFunction(value))
       ) {
-        if (process.env.NODE_ENV === 'development') {
+        if (!isProd && process.env.NODE_ENV === 'development') {
           warnOnce(
             `native transform "${property}" cannot represent "${value}"; dropping it`
           )
@@ -3810,7 +3836,7 @@ export function walkConditionalValue(
   if (typeof value === 'string') {
     const parsed = getConfigRevisionState(state.conf).parseFlatValue(value)
     const [segments, failure, failureIndex] = parsed
-    if (process.env.NODE_ENV === 'development') {
+    if (!isProd && process.env.NODE_ENV === 'development') {
       const syntax = getSetting('styleValueSyntax')
       if (syntax === 'object') {
         const hasClause =
@@ -3861,6 +3887,7 @@ export function walkConditionalValue(
         )
         hasBase = true
       } else if (
+        !isProd &&
         process.env.NODE_ENV !== 'production' &&
         warnMode &&
         !chainCount &&
@@ -3893,7 +3920,7 @@ export function walkConditionalValue(
       }
       lastPayloadStart = start
       if (start === end) {
-        if (warnMode && process.env.NODE_ENV === 'development') {
+        if (warnMode && !isProd && process.env.NODE_ENV === 'development') {
           warnRefusedValue(property, value, 'a conditional clause has no value')
         }
         continue
@@ -3917,7 +3944,8 @@ export function walkConditionalValue(
         )
       }
     }
-    if (process.env.NODE_ENV !== 'production') lastPayload = value.slice(lastPayloadStart)
+    if (!isProd && process.env.NODE_ENV !== 'production')
+      lastPayload = value.slice(lastPayloadStart)
   } else {
     if (
       !value ||
@@ -3928,7 +3956,7 @@ export function walkConditionalValue(
     ) {
       return false
     }
-    if (process.env.NODE_ENV === 'development') {
+    if (!isProd && process.env.NODE_ENV === 'development') {
       const syntax = getSetting('styleValueSyntax')
       if (syntax === 'string') {
         warnOnce(
@@ -3971,6 +3999,7 @@ export function walkConditionalValue(
 
   if (
     warnMode &&
+    !isProd &&
     process.env.NODE_ENV === 'development' &&
     typeof value === 'string' &&
     !hasBase &&
@@ -4120,7 +4149,7 @@ function contributeValue(
         !isVariable(value) &&
         classifyConditionalObject(value, state)))
   ) {
-    if (process.env.NODE_ENV === 'development') {
+    if (!isProd && process.env.NODE_ENV === 'development') {
       warnOnce(`conditional "${property}" needs its composite property; dropping it`)
     }
     return true

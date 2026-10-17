@@ -5,6 +5,9 @@ import { useMedia } from './hooks/useMedia'
 import { useTheme } from './hooks/useTheme'
 import { ThemeStateContext } from './hooks/useThemeState'
 
+// process.env is a slow native lookup in Node, so production reads it once here
+const isProd = process.env.NODE_ENV === 'production'
+
 /** internal: this is for tamagui babel plugin usage only */
 
 const EMPTY_EXPRESSIONS: any[] = []
@@ -67,7 +70,7 @@ export const _withStableStyle = (
           break
         }
       }
-      if (process.env.NODE_ENV === 'development') {
+      if (!isProd && process.env.NODE_ENV === 'development') {
         console.warn(
           '[@tamagui] _withStableStyle: no ThemeStateContext found. ' +
             'This usually means duplicate tamagui instances in a monorepo. ' +

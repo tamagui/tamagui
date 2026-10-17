@@ -23,6 +23,10 @@ import type {
   VariableValIn,
 } from '../types'
 
+// process.env is a slow native lookup in Node, so production reads it once here
+const isProd = process.env.NODE_ENV === 'production'
+const isIsland = process.env.TAMAGUI_RUNTIME === 'island'
+
 export type InlineValues = {
   values?: { [Key in ThemeKeys]?: VariableValIn }
   themes?: {
@@ -42,7 +46,7 @@ export const getThemeKeySet = (conf: TamaguiInternalConfig): Set<string> => {
       set.add(key)
     }
   }
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     // <ThemeUpdate> reads every non-reserved prop as a theme key, so a theme key or
     // config variable sharing a name with one of Theme's own props could never
     // be set inline. Caught once per config, at the source.
@@ -251,7 +255,7 @@ const getCycleDroppedKeys = (props: InlineValues): Set<string> | null => {
     checkWithSchemes(merged)
   }
 
-  if (dropped && process.env.NODE_ENV === 'development') {
+  if (dropped && !isProd && process.env.NODE_ENV === 'development') {
     const names = [...dropped]
     warnOnce(
       `cycle:${names.join(',')}`,
@@ -278,7 +282,7 @@ export function getVariablesCSSRules(
   props: InlineValues,
   conf: TamaguiInternalConfig
 ): VariablesCSS | null {
-  if (process.env.TAMAGUI_RUNTIME === 'island') return null
+  if (isIsland) return null
   const cycleDropped = getCycleDroppedKeys(props)
   const themes = props.themes as
     | Record<string, InlineValues['values'] | undefined>
@@ -292,7 +296,7 @@ export function getVariablesCSSRules(
   // within a prefix chain (blue, blue_surface1) the more specific name wins
   const themed: [string, ResolvedDeclarations][] = []
   for (const name of getThemedBucketNames(props.themes)) {
-    if (process.env.NODE_ENV === 'development') {
+    if (!isProd && process.env.NODE_ENV === 'development') {
       warnOnUnknownThemeBucket(name, conf)
     }
     const declarations = resolveDeclarations(themes![name], conf, cycleDropped)
@@ -708,7 +712,7 @@ export function getMergedInlineTheme(
   if (bucketNames.length) {
     const baseName = name.replace(schemePrefix, '')
     for (const bucketName of bucketNames) {
-      if (process.env.NODE_ENV === 'development') {
+      if (!isProd && process.env.NODE_ENV === 'development') {
         warnOnUnknownThemeBucket(bucketName, conf)
       }
       if (baseName === bucketName || baseName.startsWith(`${bucketName}_`)) {

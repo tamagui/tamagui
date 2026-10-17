@@ -9,6 +9,9 @@ import type {
   TokensParsed,
 } from '../types'
 
+// process.env is a slow native lookup in Node, so production reads it once here
+const isProd = process.env.NODE_ENV === 'production'
+
 /** the env slice resolveSizing reads: a styled.dynamic env or hand-built */
 export type SizingEnv = {
   sizing: GenericSizing
@@ -149,7 +152,7 @@ export function resolveSizing(
     paddingBlock: toPx(getVariableValue(tokens?.space?.[rung.paddingBlock])),
   }
   if (!Object.values(px).every(Number.isFinite)) {
-    if (process.env.NODE_ENV === 'development') {
+    if (!isProd && process.env.NODE_ENV === 'development') {
       console.warn(
         `[tamagui] size "${name}" references a missing token (fontSize "${rung.fontSize}", controlFontSize "${rung.controlFontSize}", paddingBlock "${rung.paddingBlock}"); resolving to no styles`
       )

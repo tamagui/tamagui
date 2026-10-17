@@ -8,6 +8,9 @@ import type {
   UseAnimatedNumbersStyle,
 } from '../types'
 
+// process.env is a slow native lookup in Node, so production reads it once here
+const isProd = process.env.NODE_ENV === 'production'
+
 // resolves the configured animation driver from context/config. the wrappers below
 // delegate to it directly so first-party code and user code exercise the same surface.
 // the resolved driver must not change identity mid-lifecycle (only relevant with
@@ -16,7 +19,7 @@ export function useAnimationDriver(): AnimationDriver {
   const { animationDriver } = useConfiguration()
   if (!animationDriver || animationDriver.isStub) {
     throw new Error(
-      process.env.NODE_ENV !== 'production'
+      !isProd && process.env.NODE_ENV !== 'production'
         ? `No animation driver configured. Pass \`animations\` to createTamagui. See: https://tamagui.dev/docs/core/animations`
         : '❌ Error 011'
     )
@@ -34,7 +37,7 @@ function useAnimatedNumberDriver(): AnimationDriverWithAnimatedNumbers {
     typeof animatedDriver.useAnimatedNumberReaction !== 'function'
   ) {
     throw new Error(
-      process.env.NODE_ENV !== 'production'
+      !isProd && process.env.NODE_ENV !== 'production'
         ? `The configured animation driver does not include animated-number hooks. When using the CSS driver, import \`createAnimations\` from \`@tamagui/animations-css/extras\` instead of \`@tamagui/animations-css\`. See: https://tamagui.dev/docs/core/animations-css`
         : '❌ Error 012'
     )

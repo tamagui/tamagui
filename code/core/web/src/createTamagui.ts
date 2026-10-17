@@ -38,6 +38,9 @@ import type {
   Variable,
 } from './types'
 
+// process.env is a slow native lookup in Node, so production reads it once here
+const isProd = process.env.NODE_ENV === 'production'
+
 /**
  * Determines if a token category should have px units added.
  * Following the principle: only add px to predefined categories that need them.
@@ -315,7 +318,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   initializeTamaguiConfig(config)
 
-  if (process.env.NODE_ENV !== 'development') {
+  if (isProd || process.env.NODE_ENV !== 'development') {
     return config as any
   }
 

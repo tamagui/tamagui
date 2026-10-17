@@ -4,6 +4,9 @@ import { createPortal } from 'react-dom'
 import { getThemeState } from '../hooks/useThemeState'
 import type { ThemeProps, ThemeState } from '../types'
 
+// process.env is a slow native lookup in Node, so production reads it once here
+const isProd = process.env.NODE_ENV === 'production'
+
 let node
 
 export function ThemeDebug({
@@ -15,10 +18,14 @@ export function ThemeDebug({
   themeProps: ThemeProps
   children: any
 }) {
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     const isHydrated = useDidFinishSSR()
 
-    if (process.env.NODE_ENV === 'development' && typeof document !== 'undefined') {
+    if (
+      !isProd &&
+      process.env.NODE_ENV === 'development' &&
+      typeof document !== 'undefined'
+    ) {
       if (!node) {
         node = document.createElement('div')
         node.style.height = '200px'

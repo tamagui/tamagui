@@ -1,5 +1,8 @@
 import { getSafeArea } from '@tamagui/native'
 
+// process.env is a slow native lookup in Node, so production reads it once here
+const isProd = process.env.NODE_ENV === 'production'
+
 let didWarnMissingSetup = false
 
 export function resolveSafeAreaVariable(name: string): number | undefined {
@@ -11,7 +14,7 @@ export function resolveSafeAreaVariable(name: string): number | undefined {
   const safeArea = getSafeArea()
   const state = safeArea.state
   if (!state.didSetup) {
-    if (process.env.NODE_ENV !== 'production' && !didWarnMissingSetup) {
+    if (!isProd && process.env.NODE_ENV !== 'production' && !didWarnMissingSetup) {
       didWarnMissingSetup = true
       console.warn(
         '[tamagui] safe-area variables on native require importing @tamagui/native/setup-safe-area and wrapping the app in the SafeAreaProvider from react-native-safe-area-context.'

@@ -7,6 +7,9 @@ import { getOrCreateVariable, getOrCreateMutatedVariable } from './registerCSSVa
 import { sortString } from './sortString'
 import { getAuthoredThemeScheme, themeSchemeSelectorPrefix } from './themes'
 
+// process.env is a slow native lookup in Node, so production reads it once here
+const isProd = process.env.NODE_ENV === 'production'
+
 const darkLight = ['dark', 'light']
 const lightDark = ['light', 'dark']
 
@@ -30,9 +33,9 @@ export function getThemeCSSRules(props: {
   ) {
     const cssRuleSets: string[] = []
     const { config, themeName, theme, names } = props
-    const whitespace = process.env.NODE_ENV === 'development' ? ' ' : ''
-    const mediaIndent = process.env.NODE_ENV === 'development' ? '\n    ' : ''
-    const mediaClose = process.env.NODE_ENV === 'development' ? '\n  ' : ''
+    const whitespace = !isProd && process.env.NODE_ENV === 'development' ? ' ' : ''
+    const mediaIndent = !isProd && process.env.NODE_ENV === 'development' ? '\n    ' : ''
+    const mediaClose = !isProd && process.env.NODE_ENV === 'development' ? '\n  ' : ''
 
     // special case for SSR
     const hasDarkLight =
