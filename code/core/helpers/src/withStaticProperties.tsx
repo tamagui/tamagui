@@ -1,6 +1,6 @@
 const Decorated = Symbol()
 
-type Combined<A, B> = A & B
+export type Combined<A, B> = A & B
 
 export const withStaticProperties = <A extends Function, B extends Record<string, any>>(
   component: A,

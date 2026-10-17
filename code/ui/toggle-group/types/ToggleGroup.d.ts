@@ -27,10 +27,7 @@ interface ToggleGroupGeneralProps extends ToggleGroupImplProps {
     disableDeactivation?: boolean;
 }
 type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps | ToggleGroupGeneralProps;
-declare const ToggleGroup: ((props: ScopedProps<ToggleGroupProps> & import("@tamagui/compose-refs").RefProp<TamaguiElement>) => React.ReactNode) & {
-    displayName?: string;
-    propTypes?: any;
-} & {
+declare const ToggleGroup: import("@tamagui/helpers").Combined<import("@tamagui/compose-refs").RefComponent<TamaguiElement, ScopedProps<ToggleGroupProps>>, {
     Item: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, Omit<import("@tamagui/web").StackNonStyleProps, "__scopeToggleGroup" | "active" | "activeStyle" | "activeTheme" | "defaultActiveStyle" | "value" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & Omit<import("@tamagui/web").StackNonStyleProps, "active" | "defaultActiveStyle"> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, "active" | "defaultActiveStyle">> & import("@tamagui/web").WithFlatVariantValues<{
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
@@ -46,7 +43,7 @@ declare const ToggleGroup: ((props: ScopedProps<ToggleGroupProps> & import("@tam
         active?: boolean | undefined;
         defaultActiveStyle?: boolean | undefined;
     }, "__scopeToggleGroup" | "active" | "activeStyle" | "activeTheme" | "defaultActiveStyle" | "value" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase>, import("@tamagui/web").StaticConfigPublic>;
-};
+}>;
 interface ToggleGroupImplSingleProps extends ToggleGroupImplProps {
     /** The controlled stateful value of the item that is pressed. */
     value?: string;
@@ -67,11 +64,7 @@ interface ToggleGroupImplMultipleProps extends ToggleGroupImplProps {
     disableDeactivation?: boolean;
 }
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>;
-declare const ToggleGroupFrame: React.FunctionComponent<Omit<import("@tamagui/web").StackNonStyleProps, never> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, keyof import("@tamagui/web").StackNonStyleProps> & {
-    ref?: React.Ref<TamaguiElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic];
-};
+declare const ToggleGroupFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
 type ToggleGroupImplProps = GetProps<typeof ToggleGroupFrame> & {
     orientation?: 'horizontal' | 'vertical';
     rovingFocus?: boolean;

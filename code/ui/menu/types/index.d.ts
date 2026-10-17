@@ -1,7 +1,7 @@
 import '@tamagui/polyfill-dev';
-export declare const Menu: import("react").FC<import("./createNonNativeMenu").MenuProps & {
+export declare const Menu: import("@tamagui/helpers").Combined<import("react").FC<import("./createNonNativeMenu").MenuProps & {
     scope?: string;
-} & Partial<Omit<import("@tamagui/create-menu").NativeMenuProps, keyof import("./createNonNativeMenu").MenuProps>>> & {
+} & Partial<Omit<import("@tamagui/create-menu").NativeMenuProps, keyof import("./createNonNativeMenu").MenuProps>>>, {
     readonly Trigger: import("react").FC<Omit<import("@tamagui/web").ViewProps, "scope" | keyof import("./createNonNativeMenu").MenuTriggerProps> & import("./createNonNativeMenu").MenuTriggerProps & {
         scope?: string;
     } & {
@@ -114,19 +114,7 @@ export declare const Menu: import("react").FC<import("./createNonNativeMenu").Me
     readonly ItemIcon: import("react").FC<Omit<import("@tamagui/web").ViewProps, keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
         ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
     } & Partial<Omit<import("@tamagui/create-menu").NativeMenuItemCommonProps, "ref" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase>>>;
-    readonly ItemImage: import("react").FC<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & Omit<Readonly<Omit<Readonly<{
-        defaultSource?: import("@tamagui/react-native-types/src").ImageSource | undefined;
-        onPartialLoad?: (() => void) | undefined;
-        onProgress?: ((event: import("@tamagui/react-native-types/src").ImageProgressEventIOS) => void) | undefined;
-    }>, "fadeDuration" | "loadingIndicatorSource" | "progressiveRenderingEnabled" | "resizeMethod" | "resizeMultiplier" | "style" | keyof import("@tamagui/react-native-types/src").ImagePropsBase> & Omit<Readonly<{
-        loadingIndicatorSource?: (number | Readonly<import("@tamagui/react-native-types/src").ImageURISource>) | undefined;
-        progressiveRenderingEnabled?: boolean | undefined;
-        fadeDuration?: number | undefined;
-        resizeMethod?: ('auto' | 'resize' | 'scale' | 'none') | undefined;
-        resizeMultiplier?: number | undefined;
-    }>, "style" | keyof import("@tamagui/react-native-types/src").ImagePropsBase> & Omit<import("@tamagui/react-native-types/src").ImagePropsBase, "style"> & {
-        style?: import("@tamagui/react-native-types/src").ImageStyleProp | undefined;
-    }>, "resizeMode" | "source" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & {
+    readonly ItemImage: import("react").FC<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & Omit<import("@tamagui/react-native-types/src").ImageProps, "resizeMode" | "source" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & {
         src?: string | number;
         source?: import("@tamagui/react-native-types/src").ImageSourcePropType;
         resizeMode?: import("@tamagui/react-native-types/src").ImageResizeMode;
@@ -146,20 +134,10 @@ export declare const Menu: import("react").FC<import("./createNonNativeMenu").Me
             children: React.ReactNode;
         }): import("react").JSX.Element;
         displayName: string;
-    } | (import("react").FunctionComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, never> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, string | number> & {
-        ref?: import("react").Ref<import("@tamagui/scroll-view").ScrollViewRef> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/web").StackStyleBase, {}, {
+    } | import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/web").StackStyleBase, {}, {
         acceptsClassName: true;
         neverFlatten: true;
-    } & import("@tamagui/web").StaticConfigPublic> & Omit<{
-        acceptsClassName: true;
-        neverFlatten: true;
-    } & import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/web").StackStyleBase, {}, {
-            acceptsClassName: true;
-            neverFlatten: true;
-        } & import("@tamagui/web").StaticConfigPublic];
-    });
-};
+    } & import("@tamagui/web").StaticConfigPublic>;
+}>;
 export type { MenuTriggerGroupProps } from './createNonNativeMenu';
 //# sourceMappingURL=index.d.ts.map

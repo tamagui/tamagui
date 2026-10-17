@@ -65,23 +65,11 @@ type DialogPortalProps = ScopedProps<YStackProps & {
      */
     forceMount?: boolean;
 }>;
-export declare const DialogPortalFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-    ref?: React.Ref<TamaguiElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
-};
+export declare const DialogPortalFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
 declare const DialogPortal: import("@tamagui/compose-refs").RefComponent<TamaguiElement, DialogPortalProps>;
-export declare const DialogOverlayFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "open"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "open">> & import("@tamagui/core").WithFlatVariantValues<{
+export declare const DialogOverlayFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     open?: boolean | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-    ref?: React.Ref<TamaguiElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    open?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        open?: boolean | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
-};
+}, import("@tamagui/core").StaticConfigPublic>;
 export type DialogOverlayExtraProps = ScopedProps<{
     /**
      * Used to force mounting when more control is needed. Useful when
@@ -101,20 +89,10 @@ declare const DialogOverlay: import("@tamagui/core").TamaguiComponent<import("@t
 }, import("@tamagui/core").StackStyleBase, Omit<{
     open?: boolean | undefined;
 }, "forceMount" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase>, import("@tamagui/core").StaticConfigPublic>;
-export declare const DialogContentFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "bordered" | "elevate"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, "bordered" | "elevate">> & import("@tamagui/core").WithFlatVariantValues<{
+export declare const DialogContentFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     bordered?: boolean | undefined;
     elevate?: boolean | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-    ref?: React.Ref<TamaguiElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    bordered?: boolean | undefined;
-    elevate?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        bordered?: boolean | undefined;
-        elevate?: boolean | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
-};
+}, import("@tamagui/core").StaticConfigPublic>;
 type DialogContentFrameProps = GetProps<typeof DialogContentFrame>;
 type DialogContentExtraProps = ScopedProps<Omit<DialogContentTypeProps, 'context' | 'onPointerDownCapture'>>;
 type DialogContentProps = DialogContentFrameProps & DialogContentExtraProps;
@@ -148,20 +126,10 @@ type DialogContentImplExtraProps = Omit<DismissableProps, 'onDismiss'> & {
     onTransition?: OnTransition;
 };
 type DialogContentImplProps = DialogContentFrameProps & DialogContentImplExtraProps;
-declare const DialogTitleFrame: React.FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "unstyled"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").TextStylePropsBase, "size" | "unstyled">> & import("@tamagui/core").WithFlatVariantValues<{
+declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
     size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
     unstyled?: boolean | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>, keyof import("@tamagui/core").TextNonStyleProps> & {
-    ref?: React.Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-    size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
-    unstyled?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
-        unstyled?: boolean | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
-};
+}, import("@tamagui/core").StaticConfigPublic>;
 type DialogTitleExtraProps = ScopedProps<{}>;
 type DialogTitleProps = DialogTitleExtraProps & GetProps<typeof DialogTitleFrame>;
 declare const DialogTitle: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, Omit<import("@tamagui/core").TextNonStyleProps, "scope"> & {
@@ -170,17 +138,9 @@ declare const DialogTitle: import("@tamagui/core").TamaguiComponent<import("@tam
     size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
     unstyled?: boolean | undefined;
 }, "scope">, import("@tamagui/core").StaticConfigPublic>;
-declare const DialogDescriptionFrame: React.FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size"> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").TextStylePropsBase, "size">> & import("@tamagui/core").WithFlatVariantValues<{
+declare const DialogDescriptionFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
     size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
-}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>, keyof import("@tamagui/core").TextNonStyleProps> & {
-    ref?: React.Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-    size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
-};
+}, import("@tamagui/core").StaticConfigPublic>;
 type DialogDescriptionExtraProps = ScopedProps<{}>;
 type DialogDescriptionProps = DialogDescriptionExtraProps & GetProps<typeof DialogDescriptionFrame>;
 declare const DialogDescription: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, Omit<import("@tamagui/core").TextNonStyleProps, "scope"> & {
@@ -188,11 +148,7 @@ declare const DialogDescription: import("@tamagui/core").TamaguiComponent<import
 }, import("@tamagui/core").TextStylePropsBase, Omit<{
     size?: import("@tamagui/get-font-sized").GetFontSizedInput | undefined;
 }, "scope">, import("@tamagui/core").StaticConfigPublic>;
-declare const DialogCloseFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-    ref?: React.Ref<TamaguiElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
-};
+declare const DialogCloseFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
 export type DialogCloseExtraProps = ScopedProps<{
     displayWhenAdapted?: boolean;
 }>;
@@ -209,34 +165,7 @@ declare const DialogWarningProvider: (props: {
 } & {
     children: React.ReactNode;
 }) => React.JSX.Element;
-declare const Dialog: ((props: {
-    children?: React.ReactNode;
-    open?: boolean;
-    defaultOpen?: boolean;
-    /**
-     * When true, children never un-mount, otherwise they mount on open.
-     *
-     * @default false
-     */
-    keepChildrenMounted?: boolean;
-    onOpenChange?(open: boolean): void;
-    modal?: boolean;
-    /**
-     * Used to disable the remove scroll functionality when open
-     */
-    disableRemoveScroll?: boolean;
-    /**
-     * Called when the dialog open/close animation completes.
-     */
-    onAnimationComplete?: (info: {
-        open: boolean;
-    }) => void;
-} & {
-    scope?: DialogScopes;
-} & import("@tamagui/compose-refs").RefProp<TamaguiElement>) => React.ReactNode) & {
-    displayName?: string;
-    propTypes?: any;
-} & {
+declare const Dialog: import("@tamagui/helpers").Combined<import("@tamagui/compose-refs").RefComponent<TamaguiElement, DialogProps>, {
     Trigger: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "scope" | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         scope?: DialogScopes;
     }, import("@tamagui/core").StackStyleBase, Omit<{}, "scope" | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase>, import("@tamagui/core").StaticConfigPublic>;
@@ -275,10 +204,10 @@ declare const Dialog: ((props: {
         scope?: DialogScopes;
     }, import("@tamagui/core").StackStyleBase, Omit<{}, "displayWhenAdapted" | "scope" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase>, import("@tamagui/core").StaticConfigPublic>;
     FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => React.JSX.Element;
-    Adapt: ((props: import("@tamagui/adapt").AdaptProps) => React.JSX.Element) & {
+    Adapt: import("@tamagui/helpers").Combined<(props: import("@tamagui/adapt").AdaptProps) => React.JSX.Element, {
         Contents: typeof import("@tamagui/adapt").AdaptContents;
-    };
-};
+    }>;
+}>;
 export { Dialog, DialogClose, DialogContent, DialogDescription, DialogOverlay, DialogPortal, DialogTitle, DialogTrigger, DialogWarningProvider, };
 export type { DialogCloseProps, DialogContentProps, DialogDescriptionProps, DialogOverlayProps, DialogPortalProps, DialogProps, DialogTitleProps, DialogTriggerProps, };
 //# sourceMappingURL=Dialog.d.ts.map

@@ -1,26 +1,10 @@
 import type { GetProps } from '@tamagui/web';
-export declare const Square: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "circular" | "size" | "transparent"> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, "circular" | "size" | "transparent">> & import("@tamagui/web").WithFlatVariantValues<{
-    circular?: boolean | undefined;
-    size?: number | import("@tamagui/web").Size | undefined;
-    transparent?: boolean | undefined;
-}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-    ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+export declare const Square: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     circular?: boolean | undefined;
     size?: number | import("@tamagui/web").Size | undefined;
     transparent?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic & {
     memo: true;
-}> & Omit<import("@tamagui/web").StaticConfigPublic & {
-    memo: true;
-}, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        circular?: boolean | undefined;
-        size?: number | import("@tamagui/web").Size | undefined;
-        transparent?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic & {
-        memo: true;
-    }];
-};
+}>;
 export type SquareProps = GetProps<typeof Square>;
 //# sourceMappingURL=Square.d.ts.map

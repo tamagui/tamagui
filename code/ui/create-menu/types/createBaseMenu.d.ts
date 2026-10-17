@@ -147,10 +147,10 @@ export interface MenuSubContentProps extends Omit<MenuContentImplProps, keyof Me
     forceMount?: boolean;
 }
 export declare function createBaseMenu(): {
-    Menu: {
+    Menu: import("@tamagui/web").Combined<{
         (props: ScopedProps<MenuBaseProps>): React.JSX.Element;
         displayName: string;
-    } & {
+    }, {
         Anchor: {
             (props: MenuAnchorProps): React.JSX.Element;
             displayName: string;
@@ -200,7 +200,7 @@ export declare function createBaseMenu(): {
         ItemSubtitle: import("@tamagui/web").TamaguiComponent<Omit<TextProps, keyof MenuItemSubTitleProps> & MenuItemSubTitleProps, import("@tamagui/web").TamaguiTextElement, Omit<import("@tamagui/web").TextNonStyleProps, keyof MenuItemSubTitleProps> & MenuItemSubTitleProps, import("@tamagui/web").TextStylePropsBase, Omit<{}, keyof MenuItemSubTitleProps>, {}>;
         ItemImage: import("@tamagui/web").RefComponent<TamaguiElement, ImageProps>;
         ItemIcon: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, TamaguiElement, Omit<import("@tamagui/web").StackNonStyleProps, keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, import("@tamagui/web").StackStyleBase, Omit<{}, keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase>, {}>;
-    };
+    }>;
 };
 export type { MenuAnchorProps, MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemIconProps, MenuItemIndicatorProps, MenuItemProps, MenuItemSubTitleProps, MenuItemTitleProps, MenuLabelProps, MenuPortalProps, MenuBaseProps as MenuProps, MenuRadioGroupProps, MenuRadioItemProps, MenuSeparatorProps, MenuSubTriggerProps, };
 //# sourceMappingURL=createBaseMenu.d.ts.map

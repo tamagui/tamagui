@@ -34,11 +34,7 @@ export declare const useFormContext: (scope?: string) => FormTriggerContextValue
     children?: React.ReactNode;
     scope?: string;
 }>;
-export declare const FormFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
-    ref?: React.Ref<import("@tamagui/core").TamaguiElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
-};
+export declare const FormFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
 export interface FormTriggerProps extends ViewProps {
     scope?: string;
 }
@@ -58,9 +54,9 @@ export type FormProps<FormValue extends FormValues = FormValues> = Omit<ViewProp
 type FormComponentType = <FormValue extends FormValues = FormValues>(props: FormProps<FormValue> & {
     ref?: React.Ref<any>;
 }) => React.ReactElement;
-export declare const Form: FormComponentType & {
+export declare const Form: import("@tamagui/helpers").Combined<FormComponentType, {
     Trigger: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof FormTriggerProps> & FormTriggerProps, import("@tamagui/core").StackStyleBase, Omit<{}, keyof FormTriggerProps>, import("@tamagui/core").StaticConfigPublic>;
-};
+}>;
 export declare namespace Form {
     type Actions = FormActions;
     type Errors = FormErrors;
