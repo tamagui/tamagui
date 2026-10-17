@@ -19,12 +19,16 @@ import {
   XStack,
   debounce,
   styled,
+  style,
   useMedia,
   Avatar,
   XGroup,
   SizableText,
 } from 'tamagui'
 import { useGroupMedia } from '../../hooks/useGroupMedia'
+
+const picturesContentStyle = style({ gap: '3', py: '4', px: '2' })
+const reviewsContentStyle = style({ gap: 8 })
 
 const product = {
   title: 'Winter Jacket',
@@ -124,11 +128,7 @@ export function ProductWithReview() {
                     width="100%"
                     self="center"
                     showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={{
-                      gap: '3',
-                      py: '4',
-                      px: '2',
-                    }}
+                    contentContainerStyle={picturesContentStyle}
                   >
                     {product.pictures.map(({ picture, meta: { colorName } }) => (
                       <RovingFocusGroup.Item
@@ -454,9 +454,7 @@ function Reviews() {
       <ScrollView
         width="100%"
         horizontal={!compact}
-        contentContainerStyle={{
-          gap: 8,
-        }}
+        contentContainerStyle={reviewsContentStyle}
         showsHorizontalScrollIndicator={false}
       >
         {reviews.map((review, index) => (

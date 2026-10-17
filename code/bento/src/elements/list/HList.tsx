@@ -1,5 +1,7 @@
-import { Image, ScrollView, Text, View } from 'tamagui'
+import { Image, ScrollView, Text, View, style } from 'tamagui'
 import { tone } from '../../tone'
+
+const contentStyle = style({ padding: 24, gap: 16 })
 
 const cities = [
   { image: 'HLIST_1.jpg', title: 'Jakarta', places: 128 },
@@ -17,7 +19,7 @@ export function HList() {
       horizontal
       width="100%"
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ padding: 24, gap: 16 }}
+      contentContainerStyle={contentStyle}
     >
       {cities.map((city) => (
         <CityCard key={city.title} {...city} />

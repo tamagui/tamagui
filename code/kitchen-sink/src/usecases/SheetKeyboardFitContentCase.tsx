@@ -1,5 +1,5 @@
 import { useState, useSyncExternalStore } from 'react'
-import { Keyboard, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native'
+import { Keyboard } from 'react-native'
 import { Image, Input, Sheet, Text, XStack, YStack } from 'tamagui'
 import { Button } from '../components/Button'
 import { TEST_IMAGE_WIDE } from './testImage'
@@ -68,7 +68,7 @@ function updateScrollMetrics(y: number) {
   emitScrollMetrics()
 }
 
-function handleScrollMetrics(event: NativeSyntheticEvent<NativeScrollEvent>) {
+function handleScrollMetrics(event: { nativeEvent: { contentOffset: { y: number } } }) {
   updateScrollMetrics(event.nativeEvent.contentOffset.y)
 }
 
