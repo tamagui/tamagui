@@ -1,5 +1,5 @@
 import { createStyledHOC, styled, View } from '@tamagui/core'
-import type { SelectScopedProps, SelectScrollButtonProps } from './types'
+import type { SelectScrollButtonExtraProps } from './types'
 
 export const SelectScrollButtonFrame = styled(View, {
   displayName: 'SelectScrollButton',
@@ -7,10 +7,10 @@ export const SelectScrollButtonFrame = styled(View, {
 
 export const SelectScrollUpButton = createStyledHOC(
   SelectScrollButtonFrame,
-  (_props: SelectScopedProps<SelectScrollButtonProps>) => null
+  (_props: SelectScrollButtonExtraProps) => null
 )
 
 export const SelectScrollDownButton = createStyledHOC(
   SelectScrollButtonFrame,
-  (_props: SelectScopedProps<SelectScrollButtonProps>) => null
+  (_props: SelectScrollButtonExtraProps) => null
 )

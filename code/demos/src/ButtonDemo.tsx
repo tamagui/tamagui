@@ -32,13 +32,13 @@ export function ButtonDemo() {
 
       <XGroup>
         <XGroup.Item>
-          <Button width="50%" size="xs" disabled opacity={0.5}>
+          <Button w="50%" size="xs" disabled opacity={0.5}>
             disabled
           </Button>
         </XGroup.Item>
 
         <XGroup.Item>
-          <Button width="50%" size="xs">
+          <Button w="50%" size="xs">
             plain
           </Button>
         </XGroup.Item>

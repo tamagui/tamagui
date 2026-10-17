@@ -343,22 +343,23 @@ const voidFn = () => {}
 
 export type PopoverAnchorProps = ScopedPopoverProps<YStackProps>
 
-export const PopoverAnchor = React.memo(
-  createRefComponent<TamaguiElement, PopoverAnchorProps>(
-    function PopoverAnchor(props, forwardedRef) {
-      const { scope, ...rest } = props
-      const context = usePopoverContext(scope)
-      const { onCustomAnchorAdd, onCustomAnchorRemove } = context || {}
+const PopoverAnchorComponent = createRefComponent<TamaguiElement, PopoverAnchorProps>(
+  function PopoverAnchor(props, forwardedRef) {
+    const { scope, ...rest } = props
+    const context = usePopoverContext(scope)
+    const { onCustomAnchorAdd, onCustomAnchorRemove } = context || {}
 
-      React.useEffect(() => {
-        onCustomAnchorAdd()
-        return () => onCustomAnchorRemove()
-      }, [onCustomAnchorAdd, onCustomAnchorRemove])
+    React.useEffect(() => {
+      onCustomAnchorAdd()
+      return () => onCustomAnchorRemove()
+    }, [onCustomAnchorAdd, onCustomAnchorRemove])
 
-      return <PopperAnchor scope={scope} {...rest} ref={forwardedRef} />
-    }
-  )
+    return <PopperAnchor scope={scope} {...rest} ref={forwardedRef} />
+  }
 )
+
+export const PopoverAnchor: typeof PopoverAnchorComponent =
+  React.memo(PopoverAnchorComponent)
 
 /* -------------------------------------------------------------------------------------------------
  * PopoverTrigger
@@ -375,108 +376,108 @@ export type PopoverTriggerProps = ScopedPopoverProps<
   }
 >
 
-export const PopoverTrigger = React.memo(
-  createRefComponent<TamaguiElement, PopoverTriggerProps>(
-    function PopoverTrigger(props, forwardedRef) {
-      const { scope, disablePressTrigger, ...rest } = props
-      const triggerContext = usePopoverTriggerContext(scope)
-      const popperContext = usePopperContextSlow(scope)
-      const triggerId = React.useId()
-      const [open, setOpen] = React.useState(false)
-      const anchorTo = triggerContext.anchorTo
-      const triggerElRef = React.useRef<TamaguiElement>(null)
-      const composedTriggerRef = useComposedRefs(forwardedRef, triggerElRef)
+const PopoverTriggerComponent = createRefComponent<TamaguiElement, PopoverTriggerProps>(
+  function PopoverTrigger(props, forwardedRef) {
+    const { scope, disablePressTrigger, ...rest } = props
+    const triggerContext = usePopoverTriggerContext(scope)
+    const popperContext = usePopperContextSlow(scope)
+    const triggerId = React.useId()
+    const [open, setOpen] = React.useState(false)
+    const anchorTo = triggerContext.anchorTo
+    const triggerElRef = React.useRef<TamaguiElement>(null)
+    const composedTriggerRef = useComposedRefs(forwardedRef, triggerElRef)
 
-      const { registerTrigger, unregisterTrigger } = triggerContext
-      React.useEffect(() => {
-        registerTrigger(triggerId, setOpen)
-        return () => {
-          unregisterTrigger(triggerId)
-        }
-      }, [registerTrigger, unregisterTrigger, triggerId])
+    const { registerTrigger, unregisterTrigger } = triggerContext
+    React.useEffect(() => {
+      registerTrigger(triggerId, setOpen)
+      return () => {
+        unregisterTrigger(triggerId)
+      }
+    }, [registerTrigger, unregisterTrigger, triggerId])
 
-      if (!rest.children) {
+    if (!rest.children) {
+      return null
+    }
+
+    const activateSelf = () => {
+      triggerContext.setActiveTrigger(triggerId)
+      const el = triggerElRef.current
+      if (el) {
+        triggerContext.triggerRef.current = el
+      }
+    }
+
+    const trigger = (
+      <View
+        aria-expanded={open}
+        // aria-controls is supplied at runtime by floating-ui's useRole
+        // (see useFloatingContext), pointing at the role="dialog" content
+        // element while open - no manual wiring is needed or wanted here
+        // (a manual id would point at the inner frame, not the dialog element)
+        data-state={getState(open)}
+        {...rest}
+        // @ts-ignore
+        ref={composedTriggerRef}
+        onPress={composeEventHandlers(rest.onPress as any, () => {
+          if (disablePressTrigger) return
+          triggerContext.setActiveTrigger(open ? null : triggerId)
+          triggerContext.onOpenToggle()
+        })}
+        onMouseEnter={composeEventHandlers(rest.onMouseEnter as any, activateSelf)}
+        onPressIn={composeEventHandlers(rest.onPressIn as any, activateSelf)}
+        onFocus={composeEventHandlers(rest.onFocus as any, (event) => {
+          activateSelf()
+          popperContext.getReferenceProps?.({ ref: triggerElRef }).onFocus?.(event)
+        })}
+        onBlur={composeEventHandlers(rest.onBlur as any, (event) => {
+          popperContext.getReferenceProps?.({ ref: triggerElRef }).onBlur?.(event)
+        })}
+      />
+    )
+
+    const virtualRef = React.useMemo(() => {
+      if (!anchorTo) {
         return null
       }
-
-      const activateSelf = () => {
-        triggerContext.setActiveTrigger(triggerId)
-        const el = triggerElRef.current
-        if (el) {
-          triggerContext.triggerRef.current = el
-        }
+      return {
+        current: {
+          getBoundingClientRect: () => (isWeb ? DOMRect.fromRect(anchorTo) : anchorTo),
+          ...(!isWeb && {
+            measure: (c) =>
+              c(anchorTo?.x, anchorTo?.y, anchorTo?.width, anchorTo?.height),
+            measureInWindow: (c) =>
+              c(anchorTo?.x, anchorTo?.y, anchorTo?.width, anchorTo?.height),
+          }),
+        },
       }
+    }, [
+      triggerContext.anchorTo,
+      anchorTo?.x,
+      anchorTo?.y,
+      anchorTo?.height,
+      anchorTo?.width,
+    ])
 
-      const trigger = (
-        <View
-          aria-expanded={open}
-          // aria-controls is supplied at runtime by floating-ui's useRole
-          // (see useFloatingContext), pointing at the role="dialog" content
-          // element while open - no manual wiring is needed or wanted here
-          // (a manual id would point at the inner frame, not the dialog element)
-          data-state={getState(open)}
-          {...rest}
-          // @ts-ignore
-          ref={composedTriggerRef}
-          onPress={composeEventHandlers(rest.onPress as any, () => {
-            if (disablePressTrigger) return
-            triggerContext.setActiveTrigger(open ? null : triggerId)
-            triggerContext.onOpenToggle()
-          })}
-          onMouseEnter={composeEventHandlers(rest.onMouseEnter as any, activateSelf)}
-          onPressIn={composeEventHandlers(rest.onPressIn as any, activateSelf)}
-          onFocus={composeEventHandlers(rest.onFocus as any, (event) => {
-            activateSelf()
-            popperContext.getReferenceProps?.({ ref: triggerElRef }).onFocus?.(event)
-          })}
-          onBlur={composeEventHandlers(rest.onBlur as any, (event) => {
-            popperContext.getReferenceProps?.({ ref: triggerElRef }).onBlur?.(event)
-          })}
-        />
-      )
+    // wrap trigger in DismissableBranch so clicking it doesn't fire pointerDownOutside
+    // which would close the popover before onPress can toggle it
+    const wrappedTrigger = isWeb ? (
+      <DismissableBranch branches={triggerContext.branches}>{trigger}</DismissableBranch>
+    ) : (
+      trigger
+    )
 
-      const virtualRef = React.useMemo(() => {
-        if (!anchorTo) {
-          return null
-        }
-        return {
-          current: {
-            getBoundingClientRect: () => (isWeb ? DOMRect.fromRect(anchorTo) : anchorTo),
-            ...(!isWeb && {
-              measure: (c) =>
-                c(anchorTo?.x, anchorTo?.y, anchorTo?.width, anchorTo?.height),
-              measureInWindow: (c) =>
-                c(anchorTo?.x, anchorTo?.y, anchorTo?.width, anchorTo?.height),
-            }),
-          },
-        }
-      }, [
-        triggerContext.anchorTo,
-        anchorTo?.x,
-        anchorTo?.y,
-        anchorTo?.height,
-        anchorTo?.width,
-      ])
+    return triggerContext.hasCustomAnchor ? (
+      wrappedTrigger
+    ) : (
+      <PopperAnchor {...(virtualRef && { virtualRef })} scope={scope} asChild>
+        {wrappedTrigger}
+      </PopperAnchor>
+    )
+  }
+)
 
-      // wrap trigger in DismissableBranch so clicking it doesn't fire pointerDownOutside
-      // which would close the popover before onPress can toggle it
-      const wrappedTrigger = isWeb ? (
-        <DismissableBranch branches={triggerContext.branches}>
-          {trigger}
-        </DismissableBranch>
-      ) : (
-        trigger
-      )
-
-      return triggerContext.hasCustomAnchor ? (
-        wrappedTrigger
-      ) : (
-        <PopperAnchor {...(virtualRef && { virtualRef })} scope={scope} asChild>
-          {wrappedTrigger}
-        </PopperAnchor>
-      )
-    }
-  )
+export const PopoverTrigger: typeof PopoverTriggerComponent = React.memo(
+  PopoverTriggerComponent
 )
 
 /* -------------------------------------------------------------------------------------------------

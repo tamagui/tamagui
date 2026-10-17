@@ -115,7 +115,7 @@ const MenuArrow = styled(MenuBehavior.Arrow, {
 })
 const MenuScrollView = styled(MenuBehavior.ScrollView, {
   displayName: 'DemoMenuScrollView',
-  padding: '1',
+  p: '1',
 })
 
 const MenuRoot = (props: React.ComponentProps<typeof MenuBehavior>) => (

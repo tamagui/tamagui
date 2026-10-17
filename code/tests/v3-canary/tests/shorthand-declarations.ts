@@ -1,0 +1,183 @@
+import { spawnSync } from 'node:child_process'
+import { mkdtempSync, symlinkSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { dirname, join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+// emit without an app config, then consume the declarations with each setting.
+// a source-only test cannot catch conditionals evaluated during library emit.
+const root = resolve(dirname(fileURLToPath(import.meta.url)), '../../../..')
+const fixture = mkdtempSync(join(tmpdir(), 'tamagui-shorthand-declarations-'))
+symlinkSync(join(root, 'node_modules'), join(fixture, 'node_modules'), 'dir')
+const compiler = join(dirname(require.resolve('typescript/package.json')), 'bin/tsc')
+const options = {
+  strict: true,
+  skipLibCheck: true,
+  target: 'ESNext',
+  module: 'Preserve',
+  moduleResolution: 'Bundler',
+  jsx: 'react-jsx',
+  types: ['react', 'node'],
+}
+
+function write(path: string, value: string | object) {
+  writeFileSync(
+    join(fixture, path),
+    typeof value === 'string' ? value : JSON.stringify(value)
+  )
+}
+
+function compile(project: string) {
+  const result = spawnSync(process.execPath, [compiler, '-p', join(fixture, project)], {
+    encoding: 'utf8',
+  })
+  if (result.status !== 0) {
+    throw new Error(`${project} failed (${fixture})\n${result.stdout}\n${result.stderr}`)
+  }
+}
+
+write(
+  'library.tsx',
+  `
+import { createRefComponent, createStyledHOC, styled, View, withStaticProperties } from 'tamagui'
+import { memo } from 'react'
+export const Stack = styled(View, {
+  variants: { tone: { quiet: { opacity: 0.5 }, loud: { opacity: 1 } } } as const,
+})
+export const Compound = withStaticProperties(Stack, { Child: Stack })
+export const Hoc = createStyledHOC(Stack, (_props: { intent?: 'safe' | 'danger' }) => null)
+export const Restyled = styled(Hoc, {})
+export const Override = createStyledHOC(Stack, (_props: { alignItems?: 'custom' }) => null)
+const RefComponent = createRefComponent<HTMLElement, import('tamagui').GetProps<typeof Hoc>>(() => null)
+export const Memo: typeof RefComponent = memo(RefComponent)
+`
+)
+write('library.json', {
+  compilerOptions: {
+    ...options,
+    declaration: true,
+    emitDeclarationOnly: true,
+    outDir: 'emitted',
+  },
+  files: ['library.tsx'],
+})
+compile('library.json')
+
+const components: [string, string?][] = [
+  ['View'],
+  ['Text'],
+  ['YStack'],
+  ['XStack'],
+  ['ZStack'],
+  ['Button'],
+  ['Card'],
+  ['Card.Header'],
+  ['Card.Footer'],
+  ['Card.Background'],
+  ['Dialog.Trigger'],
+  ['Dialog.Overlay'],
+  ['Dialog.Content'],
+  ['Dialog.Title'],
+  ['Dialog.Description'],
+  ['Dialog.Close'],
+  ['Select.Trigger'],
+  ['Select.Value'],
+  ['Select.Item', 'value="a"'],
+  ['Select.ItemText'],
+  ['Select.Label'],
+  ['Select.Group'],
+  ['Select.Viewport'],
+  ['Select.ScrollUpButton'],
+  ['Select.ScrollDownButton'],
+  ['Tabs'],
+  ['Tabs.List'],
+  ['Tabs.Tab', 'value="a"'],
+  ['Tabs.Content', 'value="a"'],
+  ['Switch'],
+  ['Switch.Thumb'],
+  ['Checkbox'],
+  ['Checkbox.Indicator'],
+  ['RadioGroup'],
+  ['RadioGroup.Item', 'value="a"'],
+  ['RadioGroup.Indicator'],
+  ['Group'],
+  ['Progress'],
+  ['Progress.Indicator'],
+  ['ToggleGroup.Item', 'value="a"'],
+  ['Sheet.Handle'],
+  ['Sheet.Overlay'],
+  ['Sheet.Container'],
+  ['Sheet.Background'],
+  ['Sheet.ScrollView'],
+  ['ScrollView'],
+  ['Popover.Trigger'],
+  ['Popover.Anchor'],
+  ['Stack'],
+  ['Compound'],
+  ['Compound.Child'],
+  ['Hoc'],
+  ['Restyled'],
+  ['Memo'],
+]
+const imports = [
+  ...new Set(components.map(([component]) => component.split('.')[0])),
+].filter(
+  (component) => !['Stack', 'Compound', 'Hoc', 'Restyled', 'Memo'].includes(component)
+)
+const header = `
+import type { Combined } from 'tamagui'
+import type { Combined as WebCombined } from '@tamagui/web'
+import { ${imports.join(', ')}, createTamagui } from 'tamagui'
+import { defaultConfig } from '@tamagui/config/v6'
+import { Stack, Compound, Hoc, Restyled, Override, Memo } from './emitted/library'
+`
+
+for (const mode of ['strict', 'permissive', 'style-shorthands'] as const) {
+  const config = `
+const config = createTamagui({ ...defaultConfig, settings: { ...defaultConfig.settings,
+  onlyAllowShorthands: ${mode === 'strict'}, onlyShorthandStyleProps: ${mode === 'style-shorthands'} } })
+type Config = typeof config
+declare module 'tamagui' { interface TamaguiCustomConfig extends Config {} }
+`
+  const cases = components
+    .map(
+      ([component, props = ''], index) => `
+export const short${index} = <${component} ${props} p="2" />
+${mode === 'strict' ? '// @ts-expect-error padding must use p in a strict consumer' : ''}
+export const long${index} = <${component} ${props} padding="2" />
+${mode === 'style-shorthands' ? '// @ts-expect-error borderWidth must use border in a style-shorthand consumer' : ''}
+export const border${index} = <${component} ${props} borderWidth={1} />
+`
+    )
+    .join('\n')
+  write(
+    `${mode}.tsx`,
+    `${header}\n${config}\n${cases}
+export const combined: Combined<{ left: number }, { right: number }> = { left: 1, right: 2 }
+export const webCombined: WebCombined<{ left: number }, { right: number }> = combined
+// @ts-expect-error both owners of a compound type are required
+export const missingStatic: Combined<{ left: number }, { right: number }> = { left: 1 }
+export const custom = <Restyled intent="safe" />
+export const variant = <Compound tone="quiet" />
+// @ts-expect-error declared variant values survive the library declaration boundary
+export const invalidVariant = <Compound tone="other" />
+// @ts-expect-error custom values are still checked
+export const invalidCustom = <Restyled intent="other" />
+export const override = <Override alignItems="custom" />
+// @ts-expect-error an explicit own prop overrides the inherited css value
+export const invalidOverride = <Override alignItems="center" />
+export const supportedScroll = <ScrollView horizontal keyboardDismissMode="on-drag" onScroll={(event) => event.nativeEvent.contentOffset.y} />
+// @ts-expect-error scroll views do not accept arbitrary props
+export const invalidScroll = <ScrollView madeUpProp />
+`
+  )
+  write(`${mode}.json`, {
+    compilerOptions: { ...options, noEmit: true },
+    files: [`${mode}.tsx`],
+  })
+  compile(`${mode}.json`)
+}
+
+console.info(
+  `passed ${components.length} declaration consumers in three settings (${fixture})`
+)

@@ -28,19 +28,19 @@ function ToggleGroupComponent(props: {
   const items = (
     <Group>
       <Group.Item>
-        <ToggleGroup.Item value="left" aria-label="Left aligned" borderRadius="4">
+        <ToggleGroup.Item value="left" aria-label="Left aligned" rounded="4">
           <AlignLeft size={16} />
         </ToggleGroup.Item>
       </Group.Item>
 
       <Group.Item>
-        <ToggleGroup.Item value="center" aria-label="Center aligned" borderRadius="4">
+        <ToggleGroup.Item value="center" aria-label="Center aligned" rounded="4">
           <AlignCenter size={16} />
         </ToggleGroup.Item>
       </Group.Item>
 
       <Group.Item>
-        <ToggleGroup.Item value="right" aria-label="Right aligned" borderRadius="4">
+        <ToggleGroup.Item value="right" aria-label="Right aligned" rounded="4">
           <AlignRight size={16} />
         </ToggleGroup.Item>
       </Group.Item>

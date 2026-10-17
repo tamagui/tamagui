@@ -87,7 +87,11 @@ export const CheckboxContext = React.createContext<{
 
 const CheckboxComponent = createStyledHOC(
   CheckboxFrame,
-  function Checkbox(propsIn: CheckboxProps, forwardedRef) {
+  function Checkbox(
+    extraProps: CheckboxExtraProps & CheckboxFrameActiveStyleProps,
+    forwardedRef
+  ) {
+    const propsIn: CheckboxProps = extraProps
     const {
       checked: checkedProp,
       defaultChecked,
@@ -172,7 +176,11 @@ const CheckboxComponent = createStyledHOC(
 
 const CheckboxIndicator = createStyledHOC(
   CheckboxIndicatorFrame,
-  (props: CheckboxIndicatorProps, forwardedRef) => {
+  (
+    propsIn: CheckboxIndicatorExtraProps & CheckboxIndicatorActiveStyleProps,
+    forwardedRef
+  ) => {
+    const props: CheckboxIndicatorProps = propsIn
     const { children, forceMount, activeStyle, ...indicatorProps } = props
     const { active } = CheckboxStyledContext.useStyledContext()
     const context = React.useContext(CheckboxContext)

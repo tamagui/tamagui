@@ -67,15 +67,15 @@ function SizeSection({ section }: { section: Section }) {
   return (
     <YStack flex={1} gap="4">
       <H2>Sizes</H2>
-      <YStack width="100%" gap="2">
+      <YStack w="100%" gap="2">
         {(section === 'spaceNegative' ? spaceTokensNegative : spaceTokens).map(
           (token) => {
             return (
-              <XStack width="100%" items="center" key={token}>
-                <YStack width="25%">
+              <XStack w="100%" items="center" key={token}>
+                <YStack w="25%">
                   <H3 size="6">${token}</H3>
                 </YStack>
-                <YStack width="20%">
+                <YStack w="20%">
                   <H4 size="5">{tokens[token]?.val}px</H4>
                 </YStack>
                 <Square

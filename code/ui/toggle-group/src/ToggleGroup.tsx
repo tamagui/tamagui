@@ -29,7 +29,7 @@ const { Provider: ToggleGroupItemProvider } =
 const { Provider: ToggleGroupContext, useStyledContext: useToggleGroupContext } =
   createStyledContext<ToggleGroupContextValue>({})
 
-type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
+type ToggleGroupItemExtraProps = {
   activeStyle?: ToggleProps['activeStyle']
   activeTheme?: ToggleProps['activeTheme']
   value: string
@@ -37,9 +37,12 @@ type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
   disabled?: boolean
 }
 
+type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & ToggleGroupItemExtraProps
+
 const ToggleGroupItem = createStyledHOC(
   ToggleFrame,
-  (props: ScopedProps<ToggleGroupItemProps>, forwardedRef) => {
+  (propsIn: ScopedProps<ToggleGroupItemExtraProps>, forwardedRef) => {
+    const props: ScopedProps<ToggleGroupItemProps> = propsIn
     const valueContext = useToggleGroupValueContext(props.__scopeToggleGroup)
     const context = useToggleGroupContext(props.__scopeToggleGroup)
     const toggleContext = ToggleContext.useStyledContext(props.__scopeToggleGroup)
@@ -308,7 +311,7 @@ const ToggleGroupFrame = styled(View, {
   displayName: TOGGLE_GROUP_NAME,
 })
 
-type ToggleGroupImplProps = GetProps<typeof ToggleGroupFrame> & {
+type ToggleGroupImplExtraProps = {
   orientation?: 'horizontal' | 'vertical'
   rovingFocus?: boolean
   dir?: RovingFocusGroupProps['dir']
@@ -316,9 +319,12 @@ type ToggleGroupImplProps = GetProps<typeof ToggleGroupFrame> & {
   color?: string
 }
 
+type ToggleGroupImplProps = GetProps<typeof ToggleGroupFrame> & ToggleGroupImplExtraProps
+
 const ToggleGroupImpl = createStyledHOC(
   ToggleGroupFrame,
-  (props: ScopedProps<ToggleGroupImplProps>, forwardedRef) => {
+  (propsIn: ScopedProps<ToggleGroupImplExtraProps>, forwardedRef) => {
+    const props: ScopedProps<ToggleGroupImplProps> = propsIn
     const {
       __scopeToggleGroup,
       disabled = false,

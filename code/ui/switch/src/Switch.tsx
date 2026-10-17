@@ -17,6 +17,9 @@ import { SwitchStyledContext } from './StyledContext'
 import type {
   SwitchComponent as SwitchFrameComponent,
   SwitchProps,
+  SwitchExtraProps,
+  SwitchSharedProps,
+  SwitchThumbActiveStyleProps,
   SwitchThumbComponent as SwitchThumbFrameComponent,
   SwitchThumbProps,
 } from './types'
@@ -52,9 +55,11 @@ export function createSwitch(createProps: {
   const SwitchThumbComponent = createStyledHOC(
     Thumb,
     function SwitchThumb(
-      props: Omit<GetProps<typeof Thumb>, keyof SwitchThumbProps> & SwitchThumbProps,
+      propsIn: SwitchSharedProps & SwitchThumbActiveStyleProps,
       forwardedRef
     ) {
+      const props: Omit<GetProps<typeof Thumb>, keyof SwitchThumbProps> &
+        SwitchThumbProps = propsIn
       const { size: sizeProp, activeStyle, ...thumbProps } = props
       const styledContext = SwitchStyledContext.useStyledContext()
       const { size: sizeContext, active, disabled, frameWidth = 0 } = styledContext
@@ -86,7 +91,8 @@ export function createSwitch(createProps: {
 
   const SwitchComponent = createStyledHOC(
     Frame,
-    function Switch(_props: SwitchProps, forwardedRef) {
+    function Switch(propsIn: SwitchExtraProps & SwitchSharedProps, forwardedRef) {
+      const _props: SwitchProps = propsIn
       const {
         native,
         nativeProps,

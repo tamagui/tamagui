@@ -43,10 +43,10 @@ interface ContextMenuSubProps extends BaseMenuTypes.MenuSubProps {
 }
 type ContextMenuSubTriggerProps = React.ComponentPropsWithoutRef<BaseMenu['SubTrigger']>;
 type ContextMenuSubContentProps = React.ComponentPropsWithoutRef<BaseMenu['SubContent']>;
-export declare function createNonNativeContextMenu(): {
+export declare function createNonNativeContextMenu(): import("@tamagui/web").Combined<{
     (props: ScopedProps<ContextMenuProps>): React.JSX.Element;
     displayName: string;
-} & {
+}, {
     Root: {
         (props: ScopedProps<ContextMenuProps>): React.JSX.Element;
         displayName: string;
@@ -133,6 +133,6 @@ export declare function createNonNativeContextMenu(): {
     ItemIcon: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, TamaguiElement, Omit<import("@tamagui/web").StackNonStyleProps, keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, import("@tamagui/web").StackStyleBase, Omit<{}, keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase>, {}>;
     ItemImage: import("@tamagui/compose-refs").RefComponent<TamaguiElement, import("@tamagui/image").ImageProps>;
     Preview: () => null;
-};
+}>;
 export type { ContextMenuArrowProps, ContextMenuCheckboxItemProps, ContextMenuOpenChangeEvent, ContextMenuContentProps, ContextMenuGroupProps, ContextMenuItemIconProps, ContextMenuItemImageProps, ContextMenuItemIndicatorProps, ContextMenuItemProps, ContextMenuPortalProps, ContextMenuProps, ContextMenuRadioGroupProps, ContextMenuRadioItemProps, ContextMenuSeparatorProps, ContextMenuSubContentProps, ContextMenuSubProps, ContextMenuSubTriggerProps, ContextMenuTriggerProps, };
 //# sourceMappingURL=createNonNativeContextMenu.d.ts.map

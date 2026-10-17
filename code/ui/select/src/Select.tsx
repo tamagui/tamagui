@@ -71,10 +71,13 @@ export type SelectValueProps = GetProps<typeof SelectValueFrame> & SelectValueEx
 
 export const SelectValue = createStyledHOC(
   SelectValueFrame,
-  function SelectValue(
-    { scope, children: childrenProp, placeholder, ...props }: SelectValueProps,
-    forwardedRef
-  ) {
+  function SelectValue(propsIn: SelectValueExtraProps, forwardedRef) {
+    const {
+      scope,
+      children: childrenProp,
+      placeholder,
+      ...props
+    }: SelectValueProps = propsIn
     // We ignore `className` and `style` as this part shouldn't be styled.
     const context = useSelectContext(scope)
     const itemParentContext = useSelectItemParentContext(scope)
@@ -182,10 +185,8 @@ export type SelectIndicatorProps = GetProps<typeof SelectIndicatorFrame>
 
 export const SelectIndicator = createStyledHOC(
   SelectIndicatorFrame,
-  function SelectIndicator(
-    { scope, ...props }: SelectScopedProps<SelectIndicatorProps>,
-    forwardedRef
-  ) {
+  function SelectIndicator(propsIn: SelectScopedProps<{}>, forwardedRef) {
+    const { scope, ...props }: SelectScopedProps<SelectIndicatorProps> = propsIn
     const itemContext = useSelectItemParentContext(scope)
     const context = useSelectContext(scope)
     const [layout, setLayout] = React.useState<any>(null)
@@ -257,7 +258,8 @@ type SelectGroupProps = SelectScopedProps<GetProps<typeof SelectGroupFrame>>
 
 export const SelectGroup = createStyledHOC(
   SelectGroupFrame,
-  (props: SelectGroupProps, forwardedRef) => {
+  (propsIn: SelectScopedProps<{}>, forwardedRef) => {
+    const props: SelectGroupProps = propsIn
     const { scope, ...groupProps } = props
     const groupId = React.useId()
 
@@ -335,7 +337,8 @@ export type SelectLabelProps = SelectScopedProps<GetProps<typeof SelectLabelFram
 
 export const SelectLabel = createStyledHOC(
   SelectLabelFrame,
-  (props: SelectLabelProps, forwardedRef) => {
+  (propsIn: SelectScopedProps<{}>, forwardedRef) => {
+    const props: SelectLabelProps = propsIn
     const { scope, ...labelProps } = props
     const context = useSelectItemParentContext(scope)
     const groupContext = useSelectGroupContext(scope)

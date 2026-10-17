@@ -109,7 +109,8 @@ const SheetBackgroundFrame = styled(YStack, {
 
 export const SheetHandle = createStyledHOC(
   SheetHandleFrame,
-  ({ scope, ...props }: SheetViewProps, forwardedRef) => {
+  (propsIn: SheetScopedProps<{}>, forwardedRef) => {
+    const { scope, ...props }: SheetViewProps = propsIn
     const context = useSheetContext(scope)
     const composedRef = useComposedRefs<TamaguiElement>(context.handleRef, forwardedRef)
     const wasDraggingRef = useRef(false)
@@ -151,8 +152,8 @@ export const SheetHandle = createStyledHOC(
 
 export const SheetOverlay = createStyledHOC(
   SheetOverlayFrame,
-  (propsIn: SheetViewProps, ref) => {
-    const { scope, ...props } = propsIn
+  (propsIn: SheetScopedProps<{}>, ref) => {
+    const { scope, ...props }: SheetViewProps = propsIn
     const context = useSheetContext(scope)
     const isInOverlayLayer = useContext(SheetOverlayLayerContext)
     const didWarn = useRef(false)
@@ -200,15 +201,13 @@ type ExtraContainerProps = {
 
 export const SheetContainer = createStyledHOC(
   SheetContainerFrame,
-  (
-    {
+  (propsIn: SheetScopedProps<ExtraContainerProps>, forwardedRef) => {
+    const {
       scope,
       adjustPaddingForOffscreenContent,
       children,
       ...props
-    }: SheetViewProps<ExtraContainerProps>,
-    forwardedRef
-  ) => {
+    }: SheetViewProps<ExtraContainerProps> = propsIn
     const context = useSheetContext(scope)
     const { hasFit, frameSize, contentRef, open } = context
     const composedContentRef = useComposedRefs(forwardedRef, contentRef)
@@ -301,10 +300,12 @@ type ExtraBackgroundProps = {
 
 export const SheetBackground = createStyledHOC(
   SheetBackgroundFrame,
-  (
-    { scope, disableHideBottomOverflow, ...props }: SheetViewProps<ExtraBackgroundProps>,
-    forwardedRef
-  ) => {
+  (propsIn: SheetScopedProps<ExtraBackgroundProps>, forwardedRef) => {
+    const {
+      scope,
+      disableHideBottomOverflow,
+      ...props
+    }: SheetViewProps<ExtraBackgroundProps> = propsIn
     const context = useSheetContext(scope)
     if (context.onlyShowContainer) return null
     const bottomOverflow = isWeb

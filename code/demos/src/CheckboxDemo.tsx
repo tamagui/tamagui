@@ -13,7 +13,7 @@ const checkboxLabelSize = {
 
 export function CheckboxDemo() {
   return (
-    <YStack width={300} items="center" gap="2">
+    <YStack w={300} items="center" gap="2">
       <CheckboxWithLabel size="sm" />
       <CheckboxWithLabel size="md" defaultChecked />
       <CheckboxWithLabel size="lg" disabled label="Accept terms (disabled)" />
@@ -35,7 +35,7 @@ export function CheckboxWithLabel({
   const id = `checkbox-${size || ''}`
   return (
     <Theme name={disabled ? 'gray' : null}>
-      <XStack width={300} items="center" gap="4">
+      <XStack w={300} items="center" gap="4">
         <Checkbox id={id} size={size} disabled={disabled} defaultChecked={defaultChecked}>
           <Checkbox.Indicator>
             <CheckIcon />

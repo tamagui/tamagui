@@ -113,7 +113,8 @@ const TabsListDisabledContext = React.createContext(false)
 
 export const TabsList = createStyledHOC(
   TabsListFrame,
-  function TabsList(props: TabsListProps, forwardedRef) {
+  function TabsList(propsIn: TabsListExtraProps, forwardedRef) {
+    const props: TabsListProps = propsIn
     const { __scopeTabs, loop = true, disabled = false, children, ...listProps } = props
     const context = useTabsContext(__scopeTabs)
     const { listProps: headlessListProps } = useTabsList({
@@ -146,7 +147,8 @@ export const TabsList = createStyledHOC(
 
 export const TabsTab = createStyledHOC(
   TabsTabFrame,
-  function TabsTab(props: TabsTabProps, forwardedRef) {
+  function TabsTab(propsIn: TabsTabExtraProps, forwardedRef) {
+    const props: TabsTabProps = propsIn
     const {
       __scopeTabs,
       value,
@@ -298,7 +300,8 @@ export const TabsTab = createStyledHOC(
 
 export const TabsContent = createStyledHOC(
   TabsContentFrame,
-  function TabsContent(props: TabsContentProps, forwardedRef) {
+  function TabsContent(propsIn: TabsContentExtraProps, forwardedRef) {
+    const props: TabsContentProps = propsIn
     const { __scopeTabs, value, forceMount, children, ...contentProps } = props
     const context = useTabsContext(__scopeTabs)
     const { shouldMount, contentProps: headlessContentProps } = useTabContent({
@@ -329,7 +332,8 @@ export const TabsContent = createStyledHOC(
 
 const TabsComponent = createStyledHOC(
   TabsFrame,
-  function Tabs(props: TabsProps, forwardedRef) {
+  function Tabs(propsIn: TabsExtraProps, forwardedRef) {
+    const props: TabsProps = propsIn
     const {
       __scopeTabs,
       value: valueProp,

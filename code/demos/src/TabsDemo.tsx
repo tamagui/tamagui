@@ -59,8 +59,8 @@ const HorizontalTabs = () => {
       defaultValue="tab1"
       orientation="horizontal"
       flexDirection="column"
-      width="400px max-md:calc(100vw - 32px)"
-      height={150}
+      w="400px max-md:calc(100vw - 32px)"
+      h={150}
       rounded="4"
       borderWidth="px"
       borderColor="border-color"
@@ -103,7 +103,7 @@ const VerticalTabs = () => {
     <Tabs
       defaultValue="tab1"
       flexDirection="row"
-      width={400}
+      w={400}
       rounded="4"
       borderWidth="px"
       overflow="hidden"
