@@ -195,7 +195,7 @@
     "react-native-keyboard-controller": "1.22.7",
     "react-native-safe-area-context": "5.10.1",
     "react-native-teleport": "^1.0.0",
-    "react-native-web": "~0.21.0",
+    "react-native-web": "~0.21.4",
     "react-native-worklets-core": "^1.0.0",
     "zeego": "^3.0.0"
   },
