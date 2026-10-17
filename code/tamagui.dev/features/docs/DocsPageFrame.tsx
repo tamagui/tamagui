@@ -85,13 +85,7 @@ export function DocsPageFrame({
         >
           {/* block, not flex, so prose margins collapse: the gap above a
               heading is its own margin, not that plus the paragraph's */}
-          <Container
-            className="docs-flow"
-            px={0}
-            maxW={860}
-            position="relative"
-            display="block"
-          >
+          <Container className="docs-flow" px={0} position="relative" display="block">
             {syntaxes.length > 1 && (
               <XStack
                 justify="flex-end"
@@ -113,7 +107,7 @@ export function DocsPageFrame({
             </MDXTabsSearchProvider>
           </Container>
 
-          <Container px={0} maxW={860}>
+          <Container px={0}>
             {(previous || next) && (
               <XStack
                 aria-label="Pagination navigation"
@@ -199,7 +193,7 @@ export function DocsPageFrame({
           </Container>
 
           {editUrl && (
-            <Container px={0} maxW={860} my="3">
+            <Container px={0} my="3">
               <Link
                 href={editUrl as Href}
                 rel="noopener noreferrer"
