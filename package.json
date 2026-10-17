@@ -37,7 +37,7 @@
     "check:exports:web": "node ./scripts/check-package-exports-web-alignment.mjs",
     "check:unused": "knip --dependencies --workspace .",
     "check:tamagui": "./node_modules/.bin/tamagui check",
-    "check:shorthand-declarations": "./scripts/bun-run.sh @tamagui/v3-canary test:types:declarations",
+    "check:shorthand-declarations": "bun ./code/tests/v3-canary/tests/shorthand-declarations.ts",
     "check": "bun run check:deps && bun run check:unused && bun run check:tamagui && bun run check:references && bun run check:paths && bun run check:web-types && bun run check:lsp-pins && bun run check:shorthand-declarations",
     "ci": "bun install && bun run check && bun run lint && bun run typecheck && bun run build && bun run test",
     "clean:build": "node ./code/packages/build/tamagui-build-workspace.js --script clean:build",
