@@ -2,6 +2,7 @@ import { type Href, useRouter } from 'one'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Paragraph } from 'tamagui'
+import { Link } from '~/components/Link'
 import DocSearchModal from './DocSearch'
 
 import { SearchContext } from './SearchContext'
@@ -98,11 +99,14 @@ export const SearchProvider = memo(({ children }: any) => {
   )
 })
 
+// docsearch only navigates on enter, a click follows the hit's own link
 const ResultItem = ({ hit, children }) => {
   return (
-    <Paragraph render="span" color="color">
-      {children}
-    </Paragraph>
+    <Link asChild href={hit.url}>
+      <Paragraph render="a" color="color">
+        {children}
+      </Paragraph>
+    </Link>
   )
 }
 
