@@ -22,14 +22,14 @@
     "@tamagui/animations-react-native": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/toast": "workspace:*",
-    "expo-constants": "~57.0.9",
-    "expo-image": "~57.0.2",
+    "expo-constants": "~58.0.12",
+    "expo-image": "~58.0.15",
     "solito": "^4.3.0",
     "tamagui": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "19.2.3"
+    "react": "19.3.0"
   },
   "peerDependencies": {
     "react": ">=19"

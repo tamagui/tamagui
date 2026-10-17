@@ -1,11 +1,9 @@
-diff --git a/package.json b/package.json
-index 61a4f65e6e..fff35532c0 100644
 --- a/package.json
 +++ b/package.json
-@@ -128,5 +128,22 @@
-     "lint": "expo-module lint",
-     "test": "expo-module test",
-     "expo-module": "expo-module"
+@@ -184,5 +184,22 @@
+     "expo-module": "expo-module",
+     "depscheck": "expo-module depscheck",
+     "typecheck": "tsc -b tsconfig.all.json"
 +  },
 +  "main": "./src/universal/index.ts",
 +  "react-native": {

@@ -16,13 +16,13 @@
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/themes": "workspace:*",
     "burnt": "^0.13.0",
-    "expo-constants": "~57.0.9",
-    "expo-linking": "~57.0.7",
+    "expo-constants": "~58.0.12",
+    "expo-linking": "~58.0.13",
     "react-native-safe-area-context": "5.10.1",
     "solito": "^4.3.0"
   },
   "devDependencies": {
-    "@types/react": "~19.2.0",
+    "@types/react": "~19.3.0",
     "@types/react-native": "^0.73.0"
   }
 }
