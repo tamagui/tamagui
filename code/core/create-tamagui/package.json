@@ -42,7 +42,7 @@
     "validate-npm-package-name": "3.0.0"
   },
   "devDependencies": {
-    "@playwright/test": "1.58.2",
+    "@playwright/test": "1.60.0",
     "@tamagui/build": "workspace:*",
     "@types/node": "^22.1.0",
     "@types/opener": "^1.4.3",

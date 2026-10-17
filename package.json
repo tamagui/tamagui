@@ -125,7 +125,7 @@
   "devDependencies": {
     "@jridgewell/trace-mapping": "0.3.31",
     "@manypkg/cli": "^0.23.0",
-    "@playwright/test": "1.58.2",
+    "@playwright/test": "1.60.0",
     "@take-out/cli": "0.0.65",
     "@tamagui/cli": "workspace:*",
     "@testing-library/dom": "^10.4.0",
@@ -155,7 +155,7 @@
     "@opentelemetry/core": "2.8.0",
     "@opentelemetry/exporter-prometheus": "0.217.0",
     "@opentelemetry/sdk-node": "0.217.0",
-    "@playwright/test": "1.58.2",
+    "@playwright/test": "1.60.0",
     "@protobufjs/utf8": "1.1.1",
     "@swc/core": "1.16.18",
     "@vxrn/mdx-rust": "2.8.1",
