@@ -1,3 +1,6 @@
+diff --git a/node_modules/expo-modules-core/.bun-tag-4391fdc26e64bf5f b/.bun-tag-4391fdc26e64bf5f
+new file mode 100644
+index 0000000000000000000000000000000000000000..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
 diff --git a/android/src/main/cpp/fabric/AndroidExpoViewProps.cpp b/android/src/main/cpp/fabric/AndroidExpoViewProps.cpp
 index 2179826d5dea334ceab151a4b28536031661d96e..13aa696e2ff8ecbc8c06e0e0bce2453c7906b5c5 100644
 --- a/android/src/main/cpp/fabric/AndroidExpoViewProps.cpp
@@ -13,3 +16,16 @@ index 2179826d5dea334ceab151a4b28536031661d96e..13aa696e2ff8ecbc8c06e0e0bce2453c
  }
  
  AndroidExpoViewProps::~AndroidExpoViewProps() {
+diff --git a/build/ts-declarations/global.js b/build/ts-declarations/global.js
+index edc7b5e5d7fe344c83750f79dfbf6080043b2ef4..5be0a73eff93e4a33cfa7f479049a62cfb61e9ce 100644
+--- a/build/ts-declarations/global.js
++++ b/build/ts-declarations/global.js
+@@ -1,6 +1,4 @@
+-import { EventEmitter } from './EventEmitter';
+-import { NativeModule } from './NativeModule';
+-import { SharedObject } from './SharedObject';
+-import { SharedRef } from './SharedRef';
++// type-only imports removed: esbuild rejects value imports of type-only exports
++export {};
+ 
+ //# sourceMappingURL=global.js.map
