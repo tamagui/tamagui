@@ -5,4 +5,9 @@
 // leaves ScrollView undefined)
 export { ScrollView } from './ScrollView'
 export type { ScrollViewProps } from './ScrollView'
-export type { ScrollViewMethods, ScrollViewRef } from './WebScrollView'
+export type {
+  ScrollViewMethods,
+  ScrollViewRef,
+  WebScrollEvent,
+  WebScrollViewProps,
+} from './WebScrollView'

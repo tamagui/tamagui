@@ -1,4 +1,4 @@
-import type { GetProps, GetRef, StylePiece } from '@tamagui/web'
+import type { GetProps, GetRef } from '@tamagui/web'
 import { styled } from '@tamagui/web'
 import { WebScrollView } from './WebScrollView'
 
@@ -16,9 +16,4 @@ export const ScrollView = styled(
 
 export type ScrollView = GetRef<typeof ScrollView>
 
-export type ScrollViewProps = Omit<
-  GetProps<typeof ScrollView>,
-  'contentContainerStyle'
-> & {
-  contentContainerStyle?: StylePiece
-}
+export type ScrollViewProps = GetProps<typeof ScrollView>

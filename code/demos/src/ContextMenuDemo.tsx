@@ -45,13 +45,7 @@ export function ContextMenuDemo() {
           <ContextMenu.Preview>
             {() => {
               return (
-                <YStack
-                  items="center"
-                  justify="center"
-                  height={100}
-                  width={250}
-                  bg="pink"
-                >
+                <YStack items="center" justify="center" h={100} w={250} bg="pink">
                   <Text>Your Preview here</Text>
                 </YStack>
               )

@@ -32,7 +32,7 @@ export function StacksDemo() {
         <YStack bg="color" rounded="3" p="2" />
       </XStack>
 
-      <ZStack flex={1} flexBasis="auto" maxW={50} maxH={85} width={100}>
+      <ZStack flex={1} flexBasis="auto" maxW={50} maxH={85} w={100}>
         <YStack
           position="absolute"
           inset={0}

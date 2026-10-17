@@ -111,7 +111,8 @@ type DialogTriggerProps = ScopedProps<ViewProps>
 
 const DialogTrigger = createStyledHOC(
   DialogTriggerFrame,
-  function DialogTrigger(props: DialogTriggerProps, forwardedRef) {
+  function DialogTrigger(propsIn: ScopedProps<{}>, forwardedRef) {
+    const props: DialogTriggerProps = propsIn
     const { scope, ...triggerProps } = props
     const isInsideButton = React.useContext(ButtonNestingContext)
     const context = useDialogContext(scope)
@@ -413,7 +414,8 @@ type DialogOverlayProps = YStackProps & DialogOverlayExtraProps
 
 const DialogOverlay = createStyledHOC(
   DialogOverlayFrame,
-  function DialogOverlay({ scope, ...props }: DialogOverlayProps, forwardedRef) {
+  function DialogOverlay(propsIn: DialogOverlayExtraProps, forwardedRef) {
+    const { scope, ...props }: DialogOverlayProps = propsIn
     const context = useDialogContext(scope)
     const { forceMount = context.forceMount, ...overlayProps } = props
     const isAdapted = useAdaptIsActive(context.adaptScope)
@@ -494,14 +496,15 @@ export const DialogContentFrame = styled(YStack, {
 type DialogContentFrameProps = GetProps<typeof DialogContentFrame>
 
 type DialogContentExtraProps = ScopedProps<
-  Omit<DialogContentTypeProps, 'context' | 'onPointerDownCapture'>
+  Omit<DialogContentImplExtraProps, 'context' | 'onPointerDownCapture'>
 >
 
 type DialogContentProps = DialogContentFrameProps & DialogContentExtraProps
 
 const DialogContent = createStyledHOC(
   DialogContentFrame,
-  function DialogContent({ scope, ...props }: DialogContentExtraProps, forwardedRef) {
+  function DialogContent(propsIn: DialogContentExtraProps, forwardedRef) {
+    const { scope, ...props }: DialogContentProps = propsIn
     const context = useDialogContext(scope)
     const isAdapted = useAdaptIsActive(context.adaptScope)
     const reporter = useDialogAnimationReporter(context)
@@ -881,7 +884,8 @@ type DialogCloseProps = GetProps<typeof DialogCloseFrame> & DialogCloseExtraProp
 
 const DialogClose = createStyledHOC(
   DialogCloseFrame,
-  (props: DialogCloseProps, forwardedRef) => {
+  (propsIn: DialogCloseExtraProps, forwardedRef) => {
+    const props: DialogCloseProps = propsIn
     const { scope, displayWhenAdapted, ...closeProps } = props
     const context = useDialogContext(scope)
     const isAdapted = useAdaptIsActive(context.adaptScope)

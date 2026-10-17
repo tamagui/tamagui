@@ -3,12 +3,12 @@ import { createRefComponent, styled, type GetRef, withStaticProperties } from 't
 
 export const SheetHandle = styled(SheetBehavior.Handle, {
   displayName: 'CanarySheetHandle',
-  background: 'canary-token',
-  borderRadius: 1000,
-  height: 10,
-  marginBottom: '2',
-  marginHorizontal: '35%',
-  zIndex: 10,
+  bg: 'canary-token',
+  rounded: 1000,
+  h: 10,
+  mb: '2',
+  mx: '35%',
+  z: 10,
   // Handle opacity aesthetics live in the skin, not the behavior package.
   opacity: '0.5 hover:0.7',
   variants: {
@@ -25,18 +25,18 @@ export const SheetHandle = styled(SheetBehavior.Handle, {
 
 export const SheetOverlay = styled(SheetBehavior.Overlay, {
   displayName: 'CanarySheetOverlay',
-  background: 'black',
+  bg: 'black',
   opacity: 0.45,
 })
 
 export const SheetContainer = styled(SheetBehavior.Container, {
   displayName: 'CanarySheetContainer',
-  padding: '5',
+  p: '5',
 })
 
 export const SheetBackground = styled(SheetBehavior.Background, {
   displayName: 'CanarySheetBackground',
-  background: 'background',
+  bg: 'background',
   borderTopLeftRadius: '6',
   borderTopRightRadius: '6',
 })
@@ -44,7 +44,7 @@ export const SheetBackground = styled(SheetBehavior.Background, {
 export const SheetScrollView = styled(SheetBehavior.ScrollView, {
   displayName: 'CanarySheetScrollView',
   flex: 1,
-  paddingHorizontal: '2',
+  px: '2',
 })
 
 const sheetParts = {

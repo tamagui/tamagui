@@ -11,12 +11,12 @@ export function AnimationsDelayDemo() {
   const [show, setShow] = React.useState(true)
 
   if (isWeb && !hasIntersected) {
-    return <YStack ref={ref as any} height={150} />
+    return <YStack ref={ref as any} h={150} />
   }
 
   return (
     <YStack gap="4" items="center">
-      <XStack gap="3" height={100} items="center" justify="center">
+      <XStack gap="3" h={100} items="center" justify="center">
         <AnimatePresence>
           {show &&
             colors.map((color, i) => (

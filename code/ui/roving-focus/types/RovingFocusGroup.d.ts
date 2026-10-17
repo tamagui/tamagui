@@ -38,14 +38,9 @@ interface RovingFocusGroupOptions {
 }
 interface RovingFocusGroupProps extends RovingFocusGroupImplProps {
 }
-declare const RovingFocusGroup: ((props: RovingFocusGroupProps & {
-    __scopeRovingFocusGroup?: string;
-} & import("@tamagui/compose-refs").RefProp<import("@tamagui/core").TamaguiElement>) => React.ReactNode) & {
-    displayName?: string;
-    propTypes?: any;
-} & {
+declare const RovingFocusGroup: import("@tamagui/helpers").Combined<import("@tamagui/compose-refs").RefComponent<import("@tamagui/core").TamaguiElement, ScopedProps<RovingFocusGroupProps>>, {
     Item: import("@tamagui/compose-refs").RefComponent<import("@tamagui/core").TamaguiElement, ScopedProps<RovingFocusItemProps>>;
-};
+}>;
 export { RovingFocusGroup, RovingFocusGroupItem };
 export type { RovingFocusGroupProps, RovingFocusItemProps };
 //# sourceMappingURL=RovingFocusGroup.d.ts.map

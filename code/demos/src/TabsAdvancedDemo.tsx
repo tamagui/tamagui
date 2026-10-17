@@ -99,7 +99,7 @@ const TabsAdvancedBackground = () => {
       onValueChange={setCurrentTab}
       orientation="horizontal"
       p="2"
-      height={150}
+      h={150}
       flexDirection="column"
       bg="background"
       rounded="4"
@@ -137,28 +137,13 @@ const TabsAdvancedBackground = () => {
           gap="2"
           backgroundColor="transparent"
         >
-          <Tabs.Tab
-            unstyled
-            paddingHorizontal="3"
-            value="tab1"
-            onInteraction={handleOnInteraction}
-          >
+          <Tabs.Tab unstyled px="3" value="tab1" onInteraction={handleOnInteraction}>
             <SizableText>Profile</SizableText>
           </Tabs.Tab>
-          <Tabs.Tab
-            unstyled
-            paddingHorizontal="3"
-            value="tab2"
-            onInteraction={handleOnInteraction}
-          >
+          <Tabs.Tab unstyled px="3" value="tab2" onInteraction={handleOnInteraction}>
             <SizableText>Connections</SizableText>
           </Tabs.Tab>
-          <Tabs.Tab
-            unstyled
-            paddingHorizontal="3"
-            value="tab3"
-            onInteraction={handleOnInteraction}
-          >
+          <Tabs.Tab unstyled px="3" value="tab3" onInteraction={handleOnInteraction}>
             <SizableText>Notifications</SizableText>
           </Tabs.Tab>
         </Tabs.List>
@@ -224,7 +209,7 @@ const TabsAdvancedUnderline = () => {
       value={currentTab}
       onValueChange={setCurrentTab}
       orientation="horizontal"
-      height={150}
+      h={150}
       flexDirection="column"
       bg="background"
       rounded="4"
@@ -258,37 +243,22 @@ const TabsAdvancedUnderline = () => {
           aria-label="Manage your account"
           borderBottomLeftRadius={0}
           borderBottomRightRadius={0}
-          paddingBottom="1-5"
+          pb="1-5"
           borderColor="color-3"
           borderBottomWidth="0-5"
           backgroundColor="transparent"
         >
-          <Tabs.Tab
-            unstyled
-            paddingHorizontal="3"
-            value="tab1"
-            onInteraction={handleOnInteraction}
-          >
+          <Tabs.Tab unstyled px="3" value="tab1" onInteraction={handleOnInteraction}>
             <SizableText select="none" cursor="default">
               Profile
             </SizableText>
           </Tabs.Tab>
-          <Tabs.Tab
-            unstyled
-            paddingHorizontal="3"
-            value="tab2"
-            onInteraction={handleOnInteraction}
-          >
+          <Tabs.Tab unstyled px="3" value="tab2" onInteraction={handleOnInteraction}>
             <SizableText select="none" cursor="default">
               Connections
             </SizableText>
           </Tabs.Tab>
-          <Tabs.Tab
-            unstyled
-            paddingHorizontal="3"
-            value="tab3"
-            onInteraction={handleOnInteraction}
-          >
+          <Tabs.Tab unstyled px="3" value="tab3" onInteraction={handleOnInteraction}>
             <SizableText select="none" cursor="default">
               Notifications
             </SizableText>

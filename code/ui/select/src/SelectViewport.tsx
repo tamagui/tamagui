@@ -12,7 +12,7 @@ import {
   useSelectContext,
   useSelectItemParentContext,
 } from './context'
-import type { SelectViewportProps } from './types'
+import type { SelectViewportExtraProps, SelectViewportProps } from './types'
 import { getSelectListboxProps } from './selectionController'
 
 /* -------------------------------------------------------------------------------------------------
@@ -37,7 +37,8 @@ const getSheetFrameProps = (props: Record<string, any>) => {
 
 export const SelectViewport = createStyledHOC(
   SelectViewportFrame,
-  function SelectViewport(props: SelectViewportProps, forwardedRef) {
+  function SelectViewport(propsIn: SelectViewportExtraProps, forwardedRef) {
+    const props: SelectViewportProps = propsIn
     const { scope, children, disableScroll, ...viewportProps } = props
     const context = useSelectContext(scope)
     const itemContext = useSelectItemParentContext(scope)

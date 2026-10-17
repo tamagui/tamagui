@@ -51,7 +51,7 @@ export const ToastDemo = () => {
         />
       </Toast.Viewport>
 
-      <YStack gap="3" self="center" width={280}>
+      <YStack gap="3" self="center" w={280}>
         {/* Position buttons */}
         <YStack gap="2" self="center">
           <XStack gap="2">
@@ -99,7 +99,7 @@ export const ToastDemo = () => {
         </YStack>
 
         {/* Controls */}
-        <YStack gap="1" paddingTop="1">
+        <YStack gap="1" pt="1">
           <DemoSlider
             label="Gap"
             value={gap}
@@ -140,7 +140,7 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
 
   return (
     <>
-      <XStack gap="3" alignItems="flex-start">
+      <XStack gap="3" items="flex-start">
         <Toast.Icon />
         <YStack flex={1} gap="0-5">
           {title && (
@@ -160,11 +160,11 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
         <Toast.Close
           testID="toast-close-button"
           position="absolute"
-          top={8}
-          right={8}
-          zIndex={1}
-          width="auto"
-          height="auto"
+          t={8}
+          r={8}
+          z={1}
+          w="auto"
+          h="auto"
           p="1"
           cursor="pointer"
           opacity="0.6 hover:1"
@@ -194,8 +194,8 @@ function DemoSlider({
   format?: (v: number) => string
 }) {
   return (
-    <XStack gap="2" alignItems="center">
-      <Label size="2" width={55}>
+    <XStack gap="2" items="center">
+      <Label size="2" w={55}>
         {label}
       </Label>
       <Slider

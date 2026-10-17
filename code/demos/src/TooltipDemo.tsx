@@ -26,9 +26,9 @@ export function TooltipDemo() {
 
   return (
     <Theme name="level3">
-      <YStack gap="4" alignItems="center">
-        <XStack gap="2" alignItems="center">
-          <Label size="2" htmlFor="tooltip-animate-pos" userSelect="none">
+      <YStack gap="4" items="center">
+        <XStack gap="2" items="center">
+          <Label size="2" htmlFor="tooltip-animate-pos" select="none">
             Animate position
           </Label>
           <Switch
@@ -43,7 +43,7 @@ export function TooltipDemo() {
 
         <TooltipGroup delay={{ open: 300, close: 100 }}>
           <Tooltip scope="tooltip-demo" placement={placement} offset={12}>
-            <YStack gap="2" alignSelf="center">
+            <YStack gap="2" self="center">
               <XStack gap="2">
                 <DemoTrigger
                   placement="top-end"

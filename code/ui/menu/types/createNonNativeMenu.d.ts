@@ -43,10 +43,10 @@ type MenuSubProps = BaseMenuTypes.MenuSubProps & {
 type MenuSubTriggerProps = BaseMenuSubTriggerProps;
 type MenuSubContentProps = BaseMenuSubContentProps;
 type MenuScrollViewProps = ScrollViewProps;
-export declare function createNonNativeMenu(): {
+export declare function createNonNativeMenu(): import("@tamagui/web").Combined<{
     (props: ScopedProps<MenuProps>): React.JSX.Element;
     displayName: string;
-} & {
+}, {
     Root: {
         (props: ScopedProps<MenuProps>): React.JSX.Element;
         displayName: string;
@@ -115,20 +115,69 @@ export declare function createNonNativeMenu(): {
     ItemSubtitle: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").TextProps, keyof BaseMenuTypes.MenuItemSubTitleProps> & BaseMenuTypes.MenuItemSubTitleProps, import("@tamagui/web").TamaguiTextElement, Omit<import("@tamagui/web").TextNonStyleProps, keyof BaseMenuTypes.MenuItemSubTitleProps> & BaseMenuTypes.MenuItemSubTitleProps, import("@tamagui/web").TextStylePropsBase, Omit<{}, keyof BaseMenuTypes.MenuItemSubTitleProps>, {}>;
     ItemImage: import("@tamagui/web").RefComponent<TamaguiElement, import("@tamagui/image").ImageProps>;
     ItemIcon: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, TamaguiElement, Omit<import("@tamagui/web").StackNonStyleProps, keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, import("@tamagui/web").StackStyleBase, Omit<{}, keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase>, {}>;
-    ScrollView: React.FunctionComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & React.RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, never> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, string | number> & {
-        ref?: React.Ref<import("@tamagui/scroll-view").ScrollViewRef> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & React.RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/web").StackStyleBase, {}, {
+    ScrollView: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/web").StackNonStyleProps, "onScroll" | "style"> & import("@tamagui/web").RNViewProps & {
+        style?: import("@tamagui/web").StackNonStyleProps['style'];
+        contentContainerStyle?: import("@tamagui/web").StylePiece | import("@tamagui/web").StackNonStyleProps['style'];
+        horizontal?: boolean;
+        onContentSizeChange?: (width: number, height: number) => void;
+        onScroll?: (event: import("@tamagui/scroll-view").WebScrollEvent) => void;
+        refreshControl?: React.ReactElement<{
+            style?: import("@tamagui/web").StackNonStyleProps['style'];
+        }>;
+        stickyHeaderIndices?: number[];
+        pagingEnabled?: boolean;
+        centerContent?: boolean;
+        scrollEnabled?: boolean;
+        scrollEventThrottle?: number;
+        showsHorizontalScrollIndicator?: boolean;
+        showsVerticalScrollIndicator?: boolean;
+        keyboardShouldPersistTaps?: boolean | 'always' | 'never' | 'handled';
+        keyboardDismissMode?: 'none' | 'on-drag' | 'interactive';
+        contentOffset?: {
+            x: number;
+            y: number;
+        };
+        contentInset?: import("@tamagui/web").Insets;
+        contentInsetAdjustmentBehavior?: 'automatic' | 'scrollableAxes' | 'never' | 'always';
+        decelerationRate?: number | 'normal' | 'fast';
+        directionalLockEnabled?: boolean;
+        disableIntervalMomentum?: boolean;
+        disableScrollViewPanResponder?: boolean;
+        endFillColor?: string;
+        fadingEdgeLength?: number | {
+            start: number;
+            end: number;
+        };
+        indicatorStyle?: 'default' | 'black' | 'white';
+        invertStickyHeaders?: boolean;
+        maintainVisibleContentPosition?: {
+            minIndexForVisible: number;
+            autoscrollToTopThreshold?: number;
+        };
+        maximumZoomScale?: number;
+        minimumZoomScale?: number;
+        nestedScrollEnabled?: boolean;
+        onScrollToTop?: (event: import("@tamagui/scroll-view").WebScrollEvent) => void;
+        overScrollMode?: 'auto' | 'always' | 'never';
+        pinchGestureEnabled?: boolean;
+        removeClippedSubviews?: boolean;
+        scrollIndicatorInsets?: import("@tamagui/web").Insets;
+        scrollPerfTag?: string;
+        scrollToOverflowEnabled?: boolean;
+        snapToAlignment?: 'start' | 'center' | 'end';
+        snapToEnd?: boolean;
+        snapToInterval?: number;
+        snapToOffsets?: number[];
+        snapToStart?: boolean;
+        bounces?: boolean;
+        onScrollBeginDrag?: (event: import("@tamagui/scroll-view").WebScrollEvent) => void;
+        onScrollEndDrag?: (event: import("@tamagui/scroll-view").WebScrollEvent) => void;
+        onMomentumScrollBegin?: (event: import("@tamagui/scroll-view").WebScrollEvent) => void;
+        onMomentumScrollEnd?: (event: import("@tamagui/scroll-view").WebScrollEvent) => void;
+    } & React.RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/web").StackStyleBase, {}, {
         acceptsClassName: true;
         neverFlatten: true;
-    } & import("@tamagui/web").StaticConfigPublic> & Omit<{
-        acceptsClassName: true;
-        neverFlatten: true;
-    } & import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/scroll-view/types/WebScrollView").WebScrollViewProps, "ref"> & React.RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/web").StackStyleBase, {}, {
-            acceptsClassName: true;
-            neverFlatten: true;
-        } & import("@tamagui/web").StaticConfigPublic];
-    };
-};
+    } & import("@tamagui/web").StaticConfigPublic>;
+}>;
 export type { MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemIndicatorProps, MenuItemProps, MenuLabelProps, MenuPortalProps, MenuProps, MenuRadioGroupProps, MenuRadioItemProps, MenuScrollViewProps, MenuSubContentProps, MenuSubProps, MenuSubTriggerProps, MenuTriggerProps, MenuTriggerGroupProps, };
 //# sourceMappingURL=createNonNativeMenu.d.ts.map

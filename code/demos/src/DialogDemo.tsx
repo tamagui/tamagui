@@ -125,14 +125,14 @@ function DialogInstance({ mode }: { mode: DialogMode }) {
             </Dialog.Description>
 
             <Fieldset gap="4" horizontal>
-              <Label width={64} htmlFor="name">
+              <Label w={64} htmlFor="name">
                 Name
               </Label>
               <Input flex={1} id="name" defaultValue="Nate Wienert" />
             </Fieldset>
 
             <Fieldset gap="4" horizontal>
-              <Label width={64} htmlFor="username">
+              <Label w={64} htmlFor="username">
                 <TooltipSimple label="Pick your favorite" placement="bottom-start">
                   <Paragraph>Food</Paragraph>
                 </TooltipSimple>

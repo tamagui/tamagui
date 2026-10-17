@@ -96,9 +96,9 @@ export declare const AdaptParent: ({ children, adaptChildren, Contents, scope, o
 export declare const AdaptContents: ({ scope, ...rest }: {
     scope?: string;
 }) => React.JSX.Element;
-export declare const Adapt: ((props: AdaptProps) => React.JSX.Element) & {
+export declare const Adapt: import("@tamagui/helpers").Combined<(props: AdaptProps) => React.JSX.Element, {
     Contents: typeof AdaptContents;
-};
+}>;
 export declare const AdaptPortalContents: (props: {
     children: React.ReactNode;
     scope?: string;

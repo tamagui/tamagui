@@ -47,7 +47,7 @@ export function MenuDemo() {
           >
             <Menu.Arrow size={13} borderWidth={1} borderColor="border-color" />
 
-            <Menu.ScrollView padding={5}>
+            <Menu.ScrollView p={5}>
               <Menu.Item onSelect={onSelect} key="about-notes">
                 <Menu.ItemTitle>About Notes</Menu.ItemTitle>
               </Menu.Item>

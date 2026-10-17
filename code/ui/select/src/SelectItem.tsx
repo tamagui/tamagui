@@ -56,7 +56,8 @@ export const SelectItemFrame = styled(View, {
 
 export const SelectItem = createStyledHOC(
   SelectItemFrame,
-  function SelectItem(props: SelectScopedProps<SelectItemProps>, forwardedRef) {
+  function SelectItem(propsIn: SelectScopedProps<SelectItemExtraProps>, forwardedRef) {
+    const props: SelectScopedProps<SelectItemProps> = propsIn
     const {
       scope,
       value,

@@ -5,7 +5,7 @@ export function RadioGroupDemo() {
   return (
     <Theme name="level3">
       <RadioGroup aria-labelledby="Select one item" defaultValue="3" name="form">
-        <YStack width={300} items="center" gap="2">
+        <YStack w={300} items="center" gap="2">
           <RadioGroupItemWithLabel size="sm" value="2" label="Second value" />
           <RadioGroupItemWithLabel size="md" value="3" label="Third value" />
           <RadioGroupItemWithLabel size="lg" value="4" label="Fourth value" />
@@ -31,7 +31,7 @@ export function RadioGroupItemWithLabel(props: {
 }) {
   const id = `radiogroup-${props.value}`
   return (
-    <XStack width={300} items="center" gap="4">
+    <XStack w={300} items="center" gap="4">
       <RadioGroup.Item value={props.value} id={id} size={props.size}>
         <RadioGroup.Indicator />
       </RadioGroup.Item>

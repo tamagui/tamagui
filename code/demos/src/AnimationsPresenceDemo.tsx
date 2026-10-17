@@ -48,8 +48,8 @@ export function AnimationsPresenceDemo() {
       overflow="hidden"
       bg="#000"
       position="relative"
-      height={300}
-      width="100%"
+      h={300}
+      w="100%"
       items="center"
     >
       <AnimatePresence initial={false} custom={{ going }}>

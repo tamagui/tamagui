@@ -10,6 +10,8 @@ import type {
   SelectScopedProps,
   SelectScrollButtonImplProps,
   SelectScrollButtonProps,
+  SelectScrollButtonExtraProps,
+  SelectScrollButtonImplExtraProps,
 } from './types'
 
 /* -------------------------------------------------------------------------------------------------
@@ -24,7 +26,8 @@ export const SelectScrollButtonFrame = styled(View, {
 
 export const SelectScrollUpButton = createStyledHOC(
   SelectScrollButtonFrame,
-  (props: SelectScopedProps<SelectScrollButtonProps>, forwardedRef) => {
+  (propsIn: SelectScrollButtonExtraProps, forwardedRef) => {
+    const props: SelectScopedProps<SelectScrollButtonProps> = propsIn
     return (
       <SelectScrollButtonImpl
         partClassName={`is_${SCROLL_UP_BUTTON_NAME}`}
@@ -46,7 +49,8 @@ const SCROLL_DOWN_BUTTON_NAME = 'SelectScrollDownButton'
 
 export const SelectScrollDownButton = createStyledHOC(
   SelectScrollButtonFrame,
-  (props: SelectScopedProps<SelectScrollButtonProps>, forwardedRef) => {
+  (propsIn: SelectScrollButtonExtraProps, forwardedRef) => {
+    const props: SelectScopedProps<SelectScrollButtonProps> = propsIn
     return (
       <SelectScrollButtonImpl
         partClassName={`is_${SCROLL_DOWN_BUTTON_NAME}`}
@@ -63,7 +67,8 @@ SelectScrollDownButton.displayName = SCROLL_DOWN_BUTTON_NAME
 const SelectScrollButtonImpl = React.memo(
   createStyledHOC(
     SelectScrollButtonFrame,
-    (props: SelectScrollButtonImplProps, forwardedRef) => {
+    (propsIn: SelectScrollButtonImplExtraProps, forwardedRef) => {
+      const props: SelectScrollButtonImplProps = propsIn
       const { scope, dir, partClassName, ...scrollIndicatorProps } = props
       const { className, onPointerEnter, onPointerLeave, ...frameProps } =
         scrollIndicatorProps

@@ -65,8 +65,8 @@ function ColorsRow({
                     <Square
                       key={`${groupName}${index}`}
                       rounded="2"
-                      width="4 sm:2 xs:1"
-                      height="4 sm:2 xs:1"
+                      w="4 sm:2 xs:1"
+                      h="4 sm:2 xs:1"
                       borderWidth={1}
                       bg={color as any}
                       borderColor="color-7"
@@ -83,12 +83,7 @@ function ColorsRow({
               .slice(1)
               .map((_, index) => {
                 return (
-                  <Paragraph
-                    color="color-10"
-                    text="center"
-                    width="4 sm:2 xs:1"
-                    key={index}
-                  >
+                  <Paragraph color="color-10" text="center" w="4 sm:2 xs:1" key={index}>
                     {index}
                   </Paragraph>
                 )
@@ -101,7 +96,7 @@ function ColorsRow({
             <Paragraph
               theme={name as any}
               color="color-10"
-              height="4 sm:2 xs:1"
+              h="4 sm:2 xs:1"
               rotate="-10deg"
               key={name}
             >
