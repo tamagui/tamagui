@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, realpath, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, realpath, rm, symlink, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
@@ -69,4 +69,41 @@ test('accepts the metro 0.87 resolver that expo sdk 58 ships', async () => {
       'ios'
     )
   ).toMatchObject({ resolvedId: await realpath(join(dir, 'other.tsx')), external: false })
+})
+
+test('resolves exported subpaths of symlinked packages without accepting broken paths', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'tamagui-metro-resolver-'))
+  directories.push(dir)
+  const target = join(dir, 'packages/linked')
+  await mkdir(target, { recursive: true })
+  await mkdir(join(dir, 'node_modules'))
+  await writeFile(join(dir, 'app.tsx'), '')
+  await writeFile(
+    join(target, 'package.json'),
+    JSON.stringify({
+      name: 'linked',
+      exports: { '.': './index.js', './sub': './sub.js' },
+    })
+  )
+  await writeFile(join(target, 'index.js'), '')
+  await writeFile(join(target, 'sub.js'), '')
+  await symlink(target, join(dir, 'node_modules/linked'), 'dir')
+  await symlink(join(target, 'sub.js'), join(dir, 'linked-file.js'), 'file')
+  await symlink(join(target, 'missing.js'), join(dir, 'broken-file.js'), 'file')
+  const resolver = createMetroCompilerResolver({ projectRoot: packageRoot })
+  const resolveFromApp = (specifier: string) =>
+    resolver.resolve(join(dir, 'app.tsx'), { specifier, isESMImport: true }, 'ios')
+  const realTarget = await realpath(target)
+
+  expect(resolveFromApp('linked')).toMatchObject({
+    resolvedId: join(realTarget, 'index.js'),
+    external: false,
+  })
+  expect(resolveFromApp('./linked-file.js')?.resolvedId).toBe(join(realTarget, 'sub.js'))
+  expect(() => resolveFromApp('./broken-file.js')).toThrow()
+  expect(() => resolveFromApp('linked/missing')).toThrow()
+  expect(resolveFromApp('linked/sub')).toMatchObject({
+    resolvedId: join(realTarget, 'sub.js'),
+    external: false,
+  })
 })
