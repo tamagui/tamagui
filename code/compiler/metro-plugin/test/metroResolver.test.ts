@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, realpath, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, realpath, rm, symlink, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
@@ -69,4 +69,49 @@ test('accepts the metro 0.87 resolver that expo sdk 58 ships', async () => {
       'ios'
     )
   ).toMatchObject({ resolvedId: await realpath(join(dir, 'other.tsx')), external: false })
+})
+
+async function linkedPackageProject() {
+  const dir = await mkdtemp(join(tmpdir(), 'tamagui-metro-resolver-'))
+  directories.push(dir)
+  // pnpm and workspaces link each package folder into node_modules
+  const target = join(dir, 'packages/linked')
+  await mkdir(target, { recursive: true })
+  await mkdir(join(dir, 'node_modules'))
+  await writeFile(join(dir, 'app.tsx'), '')
+  await writeFile(
+    join(target, 'package.json'),
+    JSON.stringify({
+      name: 'linked',
+      exports: { '.': './index.js', './sub': './sub.js' },
+    })
+  )
+  await writeFile(join(target, 'index.js'), '')
+  await writeFile(join(target, 'sub.js'), '')
+  await symlink(target, join(dir, 'node_modules/linked'), 'dir')
+
+  const resolver = createMetroCompilerResolver({ projectRoot: packageRoot })
+  return {
+    target: await realpath(target),
+    resolveFromApp: (specifier: string) =>
+      resolver.resolve(join(dir, 'app.tsx'), { specifier, isESMImport: true }, 'ios'),
+  }
+}
+
+test('resolves a symlinked package by name', async () => {
+  const { target, resolveFromApp } = await linkedPackageProject()
+
+  expect(resolveFromApp('linked')).toMatchObject({
+    resolvedId: join(target, 'index.js'),
+    external: false,
+  })
+})
+
+test('resolves an exported subpath of a symlinked package', async () => {
+  const { target, resolveFromApp } = await linkedPackageProject()
+
+  expect(resolveFromApp('linked/sub')).toMatchObject({
+    resolvedId: join(target, 'sub.js'),
+    external: false,
+  })
 })
