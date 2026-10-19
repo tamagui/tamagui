@@ -1,4 +1,4 @@
-import { existsSync, lstatSync, readFileSync, realpathSync, statSync } from 'node:fs'
+import { existsSync, readFileSync, realpathSync, statSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, extname, isAbsolute, join, parse, relative, resolve } from 'node:path'
 
@@ -58,7 +58,7 @@ function findClosestPackage(path: string): {
 function lookup(projectRoot: string, path: string) {
   const absolutePath = isAbsolute(path) ? path : resolve(projectRoot, path)
   try {
-    const stat = lstatSync(absolutePath)
+    const stat = statSync(absolutePath)
     const realPath = realpathSync(absolutePath)
     return {
       exists: true as const,
