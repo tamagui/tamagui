@@ -33,7 +33,7 @@ const RN = dirname(createRequire(import.meta.url).resolve('react-native/package.
 /**
  * Every react-native type reached from a non-`.native` file in the workspace.
  * Derived by grepping `import type ... from 'react-native'` and dropping the
- * ones only `.native` files and type tests use (`ScrollView`), which keep
+ * ones only `.native` files and type tests use, which keep
  * importing react-native directly.
  *
  * Adding a root here is cheap; the closure walk pulls whatever it needs.
@@ -53,6 +53,7 @@ const ROOTS = [
   'PanResponderGestureState',
   'PressableProps',
   'ScaledSize',
+  'ScrollViewProps',
   'StyleProp',
   'SwitchProps',
   'TextInstance',
@@ -425,6 +426,13 @@ function collect(roots: string[], entry: string, animatedFile: string) {
     if (decl.text.includes('Animated.AnimatedNode')) {
       refs.splice(refs.indexOf('Animated'), 1, 'AnimatedNode')
     }
+    if (refs.includes('Animated') && decl.text.includes('Animated.Value')) {
+      refs.splice(refs.indexOf('Animated'), 1)
+      queue.push({
+        name: 'AnimatedValue',
+        from: resolve(dirname(ENTRY), 'Libraries/Animated/nodes/AnimatedValue.d.ts'),
+      })
+    }
     for (const ref of refs) {
       if (collected.has(ref)) continue
       if (!via.has(ref)) via.set(ref, name)
@@ -500,7 +508,9 @@ function emitGraph(graph: ReturnType<typeof collect>) {
       .map((decl) =>
         emitInstance({
           ...decl,
-          text: decl.text.replaceAll('Animated.AnimatedNode', 'AnimatedNode'),
+          text: decl.text
+            .replaceAll('Animated.AnimatedNode', 'AnimatedNode')
+            .replaceAll('Animated.Value', 'AnimatedValue'),
         })
       ),
     ...[...graph.exportAliases].map(([alias, name]) => `export { ${name} as ${alias} }`),

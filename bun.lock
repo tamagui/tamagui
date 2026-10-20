@@ -3252,6 +3252,7 @@
       "name": "@tamagui/scroll-view",
       "version": "3.1.0",
       "dependencies": {
+        "@tamagui/react-native-types": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
       "devDependencies": {

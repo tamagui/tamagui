@@ -125,6 +125,7 @@ const imports = [
   (component) => !['Stack', 'Compound', 'Hoc', 'Restyled', 'Memo'].includes(component)
 )
 const header = `
+import type { NativeScrollEvent, NativeSyntheticEvent, ScrollViewProps as NativeScrollViewProps } from 'react-native'
 import type { Combined } from 'tamagui'
 import type { Combined as WebCombined } from '@tamagui/web'
 import { ${imports.join(', ')}, createTamagui } from 'tamagui'
@@ -167,8 +168,38 @@ export const override = <Override alignItems="custom" />
 // @ts-expect-error an explicit own prop overrides the inherited css value
 export const invalidOverride = <Override alignItems="center" />
 export const supportedScroll = <ScrollView horizontal keyboardDismissMode="on-drag" onScroll={(event) => event.nativeEvent.contentOffset.y} />
+declare const nativeScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void
+declare const nativeScrollProps: Pick<NativeScrollViewProps,
+  | 'StickyHeaderComponent'
+  | 'alwaysBounceHorizontal'
+  | 'alwaysBounceVertical'
+  | 'automaticallyAdjustContentInsets'
+  | 'automaticallyAdjustKeyboardInsets'
+  | 'automaticallyAdjustsScrollIndicatorInsets'
+  | 'bouncesZoom'
+  | 'canCancelContentTouches'
+  | 'experimental_endDraggingSensitivityMultiplier'
+  | 'focusable'
+  | 'innerViewRef'
+  | 'onKeyboardDidHide'
+  | 'onKeyboardDidShow'
+  | 'onKeyboardWillHide'
+  | 'onKeyboardWillShow'
+  | 'persistentScrollbar'
+  | 'scrollViewRef'
+  | 'scrollsChildToFocus'
+  | 'scrollsToTop'
+  | 'stickyHeaderHiddenOnScroll'
+  | 'zoomScale'
+>
+export const nativeScrollView = <ScrollView {...nativeScrollProps} onScroll={nativeScroll} onMomentumScrollEnd={nativeScroll} />
+export const nativeSheetScroll = <Sheet.ScrollView {...nativeScrollProps} onScroll={nativeScroll} onMomentumScrollEnd={nativeScroll} />
 // @ts-expect-error scroll views do not accept arbitrary props
 export const invalidScroll = <ScrollView madeUpProp />
+// @ts-expect-error sheet scroll views also reject arbitrary props
+export const invalidSheetScroll = <Sheet.ScrollView madeUpProp />
+// @ts-expect-error platform callback variance does not admit unrelated events
+export const invalidScrollEvent = <ScrollView onScroll={(event: { unrelated: string }) => event.unrelated} />
 `
   )
   write(`${mode}.json`, {

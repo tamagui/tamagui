@@ -292,3 +292,15 @@ export type _legacyInputRef = Assert<
 export type _legacyInputRefReverse = Assert<
   Assignable<Ref<LegacyRN.TextInput>, Ref<LegacyOurs.TextInputInstance>>
 >
+
+// scroll props keep the native surface in both declaration entry points.
+export type _scrollViewKeys = Assert<SameKeys<Ours.ScrollViewProps, RN.ScrollViewProps>>
+export type _legacyScrollViewKeys = Assert<
+  SameKeys<LegacyOurs.ScrollViewProps, LegacyRN.ScrollViewProps>
+>
+export type _nativeScrollEvent = Assert<
+  Assignable<Ours.NativeScrollEvent, RN.NativeScrollEvent>
+>
+export type _legacyNativeScrollEvent = Assert<
+  Assignable<LegacyOurs.NativeScrollEvent, LegacyRN.NativeScrollEvent>
+>

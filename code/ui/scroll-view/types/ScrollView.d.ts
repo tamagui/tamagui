@@ -1,63 +1,17 @@
 import type { GetProps, GetRef } from '@tamagui/web';
-export declare const ScrollView: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("./WebScrollView").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/web").StackNonStyleProps, "onScroll" | "style"> & import("@tamagui/web").RNViewProps & {
+export declare const ScrollView: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("./WebScrollView").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/web").StackNonStyleProps, keyof import("@tamagui/react-native-types").ScrollViewProps> & import("@tamagui/web").RNViewProps & Omit<import("@tamagui/react-native-types").ScrollViewProps, "contentContainerStyle" | "keyboardShouldPersistTaps" | "onMomentumScrollBegin" | "onMomentumScrollEnd" | "onScroll" | "onScrollBeginDrag" | "onScrollEndDrag" | "onScrollToTop" | "refreshControl" | "style"> & {
     style?: import("@tamagui/web").StackNonStyleProps['style'];
     contentContainerStyle?: import("@tamagui/web").StylePiece | import("@tamagui/web").StackNonStyleProps['style'];
-    horizontal?: boolean;
-    onContentSizeChange?: (width: number, height: number) => void;
-    onScroll?: (event: import("./WebScrollView").WebScrollEvent) => void;
     refreshControl?: React.ReactElement<{
         style?: import("@tamagui/web").StackNonStyleProps['style'];
     }>;
-    stickyHeaderIndices?: number[];
-    pagingEnabled?: boolean;
-    centerContent?: boolean;
-    scrollEnabled?: boolean;
-    scrollEventThrottle?: number;
-    showsHorizontalScrollIndicator?: boolean;
-    showsVerticalScrollIndicator?: boolean;
     keyboardShouldPersistTaps?: boolean | 'always' | 'never' | 'handled';
-    keyboardDismissMode?: 'none' | 'on-drag' | 'interactive';
-    contentOffset?: {
-        x: number;
-        y: number;
-    };
-    contentInset?: import("@tamagui/web").Insets;
-    contentInsetAdjustmentBehavior?: 'automatic' | 'scrollableAxes' | 'never' | 'always';
-    decelerationRate?: number | 'normal' | 'fast';
-    directionalLockEnabled?: boolean;
-    disableIntervalMomentum?: boolean;
-    disableScrollViewPanResponder?: boolean;
-    endFillColor?: string;
-    fadingEdgeLength?: number | {
-        start: number;
-        end: number;
-    };
-    indicatorStyle?: 'default' | 'black' | 'white';
-    invertStickyHeaders?: boolean;
-    maintainVisibleContentPosition?: {
-        minIndexForVisible: number;
-        autoscrollToTopThreshold?: number;
-    };
-    maximumZoomScale?: number;
-    minimumZoomScale?: number;
-    nestedScrollEnabled?: boolean;
-    onScrollToTop?: (event: import("./WebScrollView").WebScrollEvent) => void;
-    overScrollMode?: 'auto' | 'always' | 'never';
-    pinchGestureEnabled?: boolean;
-    removeClippedSubviews?: boolean;
-    scrollIndicatorInsets?: import("@tamagui/web").Insets;
-    scrollPerfTag?: string;
-    scrollToOverflowEnabled?: boolean;
-    snapToAlignment?: 'start' | 'center' | 'end';
-    snapToEnd?: boolean;
-    snapToInterval?: number;
-    snapToOffsets?: number[];
-    snapToStart?: boolean;
-    bounces?: boolean;
-    onScrollBeginDrag?: (event: import("./WebScrollView").WebScrollEvent) => void;
-    onScrollEndDrag?: (event: import("./WebScrollView").WebScrollEvent) => void;
-    onMomentumScrollBegin?: (event: import("./WebScrollView").WebScrollEvent) => void;
-    onMomentumScrollEnd?: (event: import("./WebScrollView").WebScrollEvent) => void;
+    onScroll?: import("./WebScrollView").WebScrollEventHandler;
+    onScrollToTop?: import("./WebScrollView").WebScrollEventHandler;
+    onScrollBeginDrag?: import("./WebScrollView").WebScrollEventHandler;
+    onScrollEndDrag?: import("./WebScrollView").WebScrollEventHandler;
+    onMomentumScrollBegin?: import("./WebScrollView").WebScrollEventHandler;
+    onMomentumScrollEnd?: import("./WebScrollView").WebScrollEventHandler;
 } & import("react").RefAttributes<import("./WebScrollView").ScrollViewRef>, import("@tamagui/web").StackStyleBase, {}, {
     acceptsClassName: true;
     neverFlatten: true;
