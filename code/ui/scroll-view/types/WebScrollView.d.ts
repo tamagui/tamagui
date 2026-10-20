@@ -38,7 +38,7 @@ export type WebScrollEvent = {
 export type WebScrollEventHandler = {
     onScroll(event: WebScrollEvent): void;
 }['onScroll'];
-export type WebScrollViewProps = Omit<StackNonStyleProps, keyof NativeScrollViewProps | 'style'> & RNViewProps & Omit<NativeScrollViewProps, 'style' | 'contentContainerStyle' | 'refreshControl' | 'keyboardShouldPersistTaps' | 'onScroll' | 'onScrollToTop' | 'onScrollBeginDrag' | 'onScrollEndDrag' | 'onMomentumScrollBegin' | 'onMomentumScrollEnd'> & {
+export type WebScrollViewProps = Omit<StackNonStyleProps, 'onScroll' | 'style'> & RNViewProps & Omit<NativeScrollViewProps, keyof StackNonStyleProps | keyof RNViewProps | 'style' | 'contentContainerStyle' | 'refreshControl' | 'keyboardShouldPersistTaps' | 'onScroll' | 'onScrollToTop' | 'onScrollBeginDrag' | 'onScrollEndDrag' | 'onMomentumScrollBegin' | 'onMomentumScrollEnd'> & {
     style?: StackNonStyleProps['style'];
     contentContainerStyle?: StylePiece | StackNonStyleProps['style'];
     refreshControl?: React.ReactElement<{
@@ -52,7 +52,7 @@ export type WebScrollViewProps = Omit<StackNonStyleProps, keyof NativeScrollView
     onMomentumScrollBegin?: WebScrollEventHandler;
     onMomentumScrollEnd?: WebScrollEventHandler;
 };
-export declare const WebScrollView: React.ForwardRefExoticComponent<Omit<StackNonStyleProps, keyof NativeScrollViewProps> & RNViewProps & Omit<NativeScrollViewProps, "contentContainerStyle" | "keyboardShouldPersistTaps" | "onMomentumScrollBegin" | "onMomentumScrollEnd" | "onScroll" | "onScrollBeginDrag" | "onScrollEndDrag" | "onScrollToTop" | "refreshControl" | "style"> & {
+export declare const WebScrollView: React.ForwardRefExoticComponent<Omit<StackNonStyleProps, "onScroll" | "style"> & RNViewProps & Omit<NativeScrollViewProps, "contentContainerStyle" | "keyboardShouldPersistTaps" | "onMomentumScrollBegin" | "onMomentumScrollEnd" | "onScrollBeginDrag" | "onScrollEndDrag" | "onScrollToTop" | "refreshControl" | keyof RNViewProps | keyof StackNonStyleProps> & {
     style?: StackNonStyleProps['style'];
     contentContainerStyle?: StylePiece | StackNonStyleProps['style'];
     refreshControl?: React.ReactElement<{
