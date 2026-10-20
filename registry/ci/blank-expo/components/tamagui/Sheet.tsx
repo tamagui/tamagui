@@ -2,6 +2,7 @@
 // default v2-look skin, layered here in `tamagui`. Single skin definition; the
 // shadcn registry item is generated from this file.
 import {
+  type Combined,
   createRefComponent,
   type GetProps,
   type GetRef,
@@ -99,7 +100,14 @@ const SheetControlledRoot = createRefComponent<
 
 export const SheetControlled = withStaticProperties(SheetControlledRoot, sheetParts)
 
-export const Sheet = withStaticProperties(SheetRoot, {
+export const Sheet: Combined<
+  typeof SheetRoot,
+  typeof sheetParts & {
+    Root: typeof SheetRoot
+    Controlled: typeof SheetControlled
+    useAnimatedPosition: typeof SheetBehavior.useAnimatedPosition
+  }
+> = withStaticProperties(SheetRoot, {
   Root: SheetRoot,
   Controlled: SheetControlled,
   useAnimatedPosition: SheetBehavior.useAnimatedPosition,
