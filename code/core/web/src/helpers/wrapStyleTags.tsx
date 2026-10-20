@@ -3,6 +3,8 @@ import { StyleObjectIdentifier, StyleObjectRules } from '@tamagui/helpers'
 import type { StyleObject } from '../types'
 import { wrapStyleRules } from './insertStyleRule'
 
+const isIsland = process.env.TAMAGUI_RUNTIME === 'island'
+
 // turns out this is pretty slow, creating a bunch of extra tags...
 
 const styleTagCache = new Map<
@@ -67,10 +69,7 @@ function getCachedStyleTag(styleObject: StyleObject) {
 }
 
 export function getStyleTags(styles: StyleObject[]) {
-  if (
-    process.env.TAMAGUI_RUNTIME !== 'island' &&
-    process.env.TAMAGUI_TARGET !== 'native'
-  ) {
+  if (!isIsland && process.env.TAMAGUI_TARGET !== 'native') {
     if (styles.length) {
       queueStyleTagCacheClear()
       return <>{styles.map(getCachedStyleTag)}</>

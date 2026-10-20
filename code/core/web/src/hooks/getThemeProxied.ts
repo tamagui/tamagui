@@ -18,6 +18,8 @@ import type {
 } from '../types'
 import { doesRootSchemeMatchSystem } from './doesRootSchemeMatchSystem'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 export type ThemeProxied = {
   [Key in keyof ThemeParsed | keyof Tokens['color']]: ThemeGettable<
     Key extends keyof ThemeParsed ? ThemeParsed[Key] : Variable<any>
@@ -81,7 +83,7 @@ function track(key: string, schemeOptimized = false) {
     curSchemeKeys.current.add(key)
   }
 
-  if (process.env.NODE_ENV === 'development' && curProps.debug) {
+  if (!isProd && process.env.NODE_ENV === 'development' && curProps.debug) {
     console.info(` 🎨 useTheme() tracking key: ${key} schemeOptimized=${schemeOptimized}`)
   }
 }
@@ -144,7 +146,11 @@ export function getThemeProxied(
             fastSchemeChange &&
             rootMatchesSystem
 
-          if (process.env.NODE_ENV === 'development' && curProps.debug === 'verbose') {
+          if (
+            !isProd &&
+            process.env.NODE_ENV === 'development' &&
+            curProps.debug === 'verbose'
+          ) {
             console.info(
               ` 🎨 useTheme().get(${key}) theme=${name} scheme=${scheme}`,
               `\n   shouldOptimize=${shouldOptimize} (dynamicColorIOS=${supportsDynamicColorIOS} deopt=${curProps.deopt} inverses=${curState.inverses} fastScheme=${fastSchemeChange} rootMatch=${rootMatchesSystem})`
@@ -181,7 +187,11 @@ export function getThemeProxied(
             const color = getVariable(config.themes[name]?.[key])
             const oppositeColor = getVariable(config.themes[oppositeName]?.[key])
 
-            if (process.env.NODE_ENV === 'development' && curProps.debug === 'verbose') {
+            if (
+              !isProd &&
+              process.env.NODE_ENV === 'development' &&
+              curProps.debug === 'verbose'
+            ) {
               console.info(
                 ` 🎨 useTheme().get(${key}) using DynamicColorIOS`,
                 `\n   color=${color} oppositeColor=${oppositeColor}`
@@ -202,7 +212,7 @@ export function getThemeProxied(
             return dynamicVal
           }
 
-          if (process.env.NODE_ENV === 'development' && curProps.debug) {
+          if (!isProd && process.env.NODE_ENV === 'development' && curProps.debug) {
             console.info(
               ` 🎨 useTheme().get(${key}) tracking key (not optimizing)`,
               `\n   platform=${platform} dynamicColorIOS=${supportsDynamicColorIOS} deopt=${curProps.deopt} fastScheme=${fastSchemeChange}`

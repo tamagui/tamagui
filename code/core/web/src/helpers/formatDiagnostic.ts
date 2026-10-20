@@ -1,3 +1,4 @@
+const isProd = process.env.NODE_ENV === 'production'
 const maxDiagnosticValueLength = 160
 
 function formatDiagnosticValue(
@@ -56,7 +57,7 @@ export function formatDiagnostic(
   prop?: string,
   received?: unknown
 ) {
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     const formattedValue = prop ? formatDiagnosticValue(received) : ''
     const boundedValue =
       formattedValue.length > maxDiagnosticValueLength

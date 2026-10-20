@@ -1,6 +1,8 @@
 import { nativeOnlyProps } from './nativeOnlyProps'
 import { webPropsToSkip } from './webPropsToSkip'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 export const HOC_CLASSNAME_MARKER = 'data-tamagui-hoc-class'
 
 /**
@@ -24,11 +26,11 @@ export const skipProps = {
   animatePresence: 1,
 }
 
-if (process.env.NODE_ENV === 'test') {
+if (!isProd && process.env.NODE_ENV === 'test') {
   skipProps['data-test-renders'] = 1
 }
 
-if (process.env.NODE_ENV === 'development') {
+if (!isProd && process.env.NODE_ENV === 'development') {
   skipProps['__tamaguiStyleDebugReceipt'] = 1
 }
 

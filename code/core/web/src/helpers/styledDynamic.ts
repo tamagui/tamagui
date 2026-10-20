@@ -12,6 +12,8 @@ import type {
 } from '../types'
 import { styledDynamicSymbol } from '../types'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 // built per call: insertFont adds variants to the same fonts object, and a
 // language without a variant for a font keeps that font
 export function getFontsForLanguage(fonts: GenericFonts, language: LanguageContextType) {
@@ -143,7 +145,7 @@ export function styledDynamic<Val>(
 ): StyledDynamicFn<Val>
 export function styledDynamic(fn?: any) {
   if (!fn) return bareStyledDynamic
-  if (process.env.NODE_ENV === 'development') validateDynamicShape(fn)
+  if (!isProd && process.env.NODE_ENV === 'development') validateDynamicShape(fn)
   fn[styledDynamicSymbol] = true
   return fn
 }

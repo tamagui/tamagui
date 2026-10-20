@@ -1,6 +1,8 @@
 import type { TokensParsed, Variable } from '../types'
 import { warnOnce } from './warnOnce'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 const unitlessSuffixes = [
   'opacity',
   'scale',
@@ -24,7 +26,7 @@ export const findVariableToken = (
   tokensParsed: TokensParsed,
   name: string
 ): Variable | undefined => {
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     let found: Variable | undefined
     let foundCategory: string | undefined
     for (const category of tokenCategoryOrder) {

@@ -12,13 +12,15 @@ import type {
 import { formatDiagnostic } from './helpers/formatDiagnostic'
 import { prepareConfigRevision } from './helpers/grammarConfig'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 export type StyleCompat = 'legacy' | 'react-native' | 'web'
 
 let conf: TamaguiInternalConfig | null
 let setConfigCalledByThisInstance = false
 
 const haventCalledErrorMessage =
-  process.env.NODE_ENV === 'development'
+  !isProd && process.env.NODE_ENV === 'development'
     ? `
 Haven't called createTamagui yet. ${MISSING_THEME_MESSAGE}
 `
@@ -36,6 +38,7 @@ const getConfigFromGlobalOrLocal = (): TamaguiInternalConfig | null => {
     // defer warning - if createTamagui runs in THIS instance, it's HMR (safe)
     // if it never runs, it's a true duplicate (warn)
     if (
+      !isProd &&
       process.env.NODE_ENV === 'development' &&
       globalThis.__tamaguiEvaluationConfig !== globalThis.__tamaguiConfig &&
       !globalThis.__tamaguiHasWarnedGlobalFallback &&
@@ -69,7 +72,7 @@ export const getSetting = <Key extends keyof GenericTamaguiSettings>(
   key: Key
 ): GenericTamaguiSettings[Key] => {
   const config = getConfigFromGlobalOrLocal()
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     if (!config) throw new Error(haventCalledErrorMessage)
   }
   return config!.settings[key]
@@ -95,7 +98,7 @@ export const setConfig = (next: TamaguiInternalConfig) => {
 
 export const setConfigFont = (name: string, font: any, fontParsed: any) => {
   const config = getConfigFromGlobalOrLocal()
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     if (!config) throw new Error(haventCalledErrorMessage)
   }
   config!.fonts[name] = font
@@ -136,7 +139,7 @@ const getTokensParsed = (): TokensParsed =>
   getConfigFromGlobalOrLocal()?.tokensParsed ?? tokens
 
 export const getTokens = (): TokensParsed => {
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     if (!getConfigFromGlobalOrLocal()) throw new Error(haventCalledErrorMessage)
   }
   return getTokensParsed()
@@ -199,7 +202,7 @@ type DevConfig = {
 export let devConfig: DevConfig | undefined
 
 export function setupDev(conf: DevConfig) {
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     devConfig = conf
   }
 }
@@ -220,7 +223,7 @@ export function setupDev(conf: DevConfig) {
 export function loadAnimationDriver(name: string, driver: AnimationDriver) {
   const config = getConfigFromGlobalOrLocal()
   if (!config) {
-    if (process.env.NODE_ENV === 'development') {
+    if (!isProd && process.env.NODE_ENV === 'development') {
       console.warn('loadAnimationDriver called before createTamagui')
     }
     return

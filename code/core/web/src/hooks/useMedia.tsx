@@ -21,6 +21,8 @@ import type {
   WidthHeight,
 } from '../types'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 // for SSR capture it at time of startup
 let initState: MediaQueryState
 
@@ -74,7 +76,7 @@ export function setupMediaListeners() {
     const match = getMatch()
     if (!match) {
       throw new Error(
-        process.env.NODE_ENV !== 'production'
+        !isProd && process.env.NODE_ENV !== 'production'
           ? formatDiagnostic(
               'TAMAGUI_MEDIA_MATCH',
               'useMedia',
@@ -373,7 +375,7 @@ export function useMedia(
         let changed = false
         for (const key of curKeys) {
           if (ms[key] !== (r.pendingState || lastState)[key]) {
-            if (process.env.NODE_ENV === 'development' && r.debug) {
+            if (!isProd && process.env.NODE_ENV === 'development' && r.debug) {
               console.warn(`useMedia() ✍️`, key, lastState[key], '=>', ms[key])
             }
             changed = true

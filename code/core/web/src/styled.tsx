@@ -30,6 +30,8 @@ import type {
   VariantStyleProps,
 } from './types'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 type AreVariantsUndefined<Variants> =
   // because we pass in the Generic variants which for some reason has this :)
   Required<Variants> extends { _isEmpty: 1 } ? true : false
@@ -316,7 +318,7 @@ function styledImpl<
 
   if (!ComponentIn) {
     throw new Error(
-      process.env.NODE_ENV === 'development'
+      !isProd && process.env.NODE_ENV === 'development'
         ? 'No component given to styled()'
         : '❌ Error 006'
     )
@@ -330,6 +332,7 @@ function styledImpl<
 
   if (
     process.env.TAMAGUI_TARGET !== 'native' &&
+    !isProd &&
     process.env.NODE_ENV === 'development' &&
     requestedReactNativeInterop
   ) {

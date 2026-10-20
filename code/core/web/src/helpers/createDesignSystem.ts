@@ -11,6 +11,8 @@ import { htmlResetCSS } from '../dom/htmlReset'
 import { getThemeCSSRules } from './getThemeCSSRules'
 import { getAllRules, wrapStyleRules } from './insertStyleRule'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 type ThemeConfig = {
   cssRuleSets: string[]
   getThemeRulesSets: () => string[]
@@ -96,7 +98,7 @@ export function buildCSSRuleSets(
 ): string[] {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
     const cssRuleSets: string[] = []
-    const developmentWhitespace = process.env.NODE_ENV === 'development'
+    const developmentWhitespace = !isProd && process.env.NODE_ENV === 'development'
     const sep = developmentWhitespace ? ' ' : ''
 
     function declarationsToRuleSet(decs: string[], selector = '') {
@@ -251,7 +253,7 @@ ${htmlResetCSS}
 ${pointerEventsCSS}
 ${hideScrollBarsCSS}`
   const designSystem = `${
-    process.env.NODE_ENV === 'production'
+    isProd || process.env.NODE_ENV === 'production'
       ? baseDesignSystem
           .replaceAll(' {', '{')
           .replaceAll('{ ', '{')

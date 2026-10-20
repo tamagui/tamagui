@@ -10,6 +10,9 @@ import type {
   TokensParsed,
 } from '../types'
 
+const isProd = process.env.NODE_ENV === 'production'
+const isIsland = process.env.TAMAGUI_RUNTIME === 'island'
+
 // only cache tamagui styles
 // kept separate: allSelectors stores rule text for inspection, totalSelectorsInserted counts stylesheet insertions
 const scannedCache = new WeakMap<CSSStyleSheet, string>()
@@ -26,7 +29,7 @@ let sortedRules: string[] = []
 let sortedRulesStale = true
 
 export const getAllRules = () => {
-  if (process.env.TAMAGUI_RUNTIME !== 'island') {
+  if (!isIsland) {
     if (sortedRulesStale) {
       // Sort by identifier to ensure deterministic CSS output order
       const sortedKeys = Object.keys(allRules).sort()
@@ -61,8 +64,8 @@ export function scanAllSheets(
 ): DedupedThemes | undefined {
   // runtime components still emit styles alongside the config CSS artifact.
   // an island only scans when rebuilding empty client themes from that artifact
-  if (process.env.TAMAGUI_RUNTIME !== 'island' || collectThemes) {
-    if (process.env.NODE_ENV === 'test') return
+  if (!isIsland || collectThemes) {
+    if (!isProd && process.env.NODE_ENV === 'test') return
     if (process.env.TAMAGUI_TARGET !== 'web') return
     if (typeof document === 'undefined') return
 
@@ -347,7 +350,7 @@ export function stopAccumulatingRules() {
 }
 
 export function updateRules(identifier: string, rules: string[]) {
-  if (process.env.TAMAGUI_RUNTIME !== 'island' && trackAllRules) {
+  if (!isIsland && trackAllRules) {
     allRules[identifier] = rules.join(' ')
     allRuleSets[identifier] = rules
     sortedRulesStale = true
@@ -361,7 +364,7 @@ export function setNonce(_: string) {
 }
 
 export function insertStyleRules(rulesToInsert: RulesToInsert) {
-  if (process.env.TAMAGUI_RUNTIME === 'island' || process.env.TAMAGUI_TARGET !== 'web') {
+  if (isIsland || process.env.TAMAGUI_TARGET !== 'web') {
     return
   }
 
@@ -405,7 +408,7 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
         sheet.insertRule(rule, sheet.cssRules.length)
       }
     } catch (err) {
-      if (process.env.NODE_ENV === 'development') {
+      if (!isProd && process.env.NODE_ENV === 'development') {
         const rule = rules[0] || ''
         const selectorEnd = rule.indexOf('{')
         const owner =
@@ -444,7 +447,7 @@ export function shouldInsertStyleRules(identifier: string) {
     return true
   }
   const total = totalSelectorsInserted.get(identifier) || 0
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     if (total > +(process.env.TAMAGUI_STYLE_INSERTION_WARNING_LIMIT || 10)) {
       console.warn(
         `Warning: inserting many CSS rules, you may be animating something and generating many CSS insertions, which can degrade performance. Instead, try using the "disableClassName" property on elements that change styles often. To disable this warning set TAMAGUI_STYLE_INSERTION_WARNING_LIMIT from 50000 to something higher`
