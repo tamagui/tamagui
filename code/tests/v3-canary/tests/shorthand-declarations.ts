@@ -126,7 +126,7 @@ const imports = [
 )
 const header = `
 import type { NativeScrollEvent, NativeSyntheticEvent, ScrollViewProps as NativeScrollViewProps } from 'react-native'
-import type { Combined } from 'tamagui'
+import type { Combined, GetProps } from 'tamagui'
 import type { Combined as WebCombined } from '@tamagui/web'
 import { ${imports.join(', ')}, createTamagui } from 'tamagui'
 import { defaultConfig } from '@tamagui/config/v6'
@@ -192,6 +192,12 @@ declare const nativeScrollProps: Pick<NativeScrollViewProps,
   | 'stickyHeaderHiddenOnScroll'
   | 'zoomScale'
 >
+export const nativeScrollContract: Pick<GetProps<typeof ScrollView>, keyof typeof nativeScrollProps> = nativeScrollProps
+export const nativeSheetScrollContract: Pick<GetProps<typeof Sheet.ScrollView>, keyof typeof nativeScrollProps> = nativeScrollProps
+// @ts-expect-error native prop values remain checked on direct JSX
+export const invalidNativeScroll = <ScrollView alwaysBounceHorizontal="yes" />
+// @ts-expect-error native prop values remain checked through the sheet wrapper
+export const invalidNativeSheetScroll = <Sheet.ScrollView zoomScale="yes" />
 export const nativeScrollView = <ScrollView {...nativeScrollProps} onScroll={nativeScroll} onMomentumScrollEnd={nativeScroll} />
 export const nativeSheetScroll = <Sheet.ScrollView {...nativeScrollProps} onScroll={nativeScroll} onMomentumScrollEnd={nativeScroll} />
 // @ts-expect-error scroll views do not accept arbitrary props
