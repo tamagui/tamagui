@@ -196,9 +196,11 @@ jobs:
         with:
           key: ${{ runner.os }}-${{ env.cache-name }}-xcode-${{ env.ios_xcode_version }}
           # the compilation cache store is a sparse file; tar restores its full
-          # apparent size and filled the runner disk. path must match the save.
+          # apparent size and filled the runner disk. listing build's children
+          # lets the exclusion apply (a bare directory is archived whole).
+          # path must match the save.
           path: |
-            ${{ env.test_container_app_path }}/build
+            ${{ env.test_container_app_path }}/build/*
             !${{ env.test_container_app_path }}/build/CompilationCache.noindex
 
       - name: Build
@@ -236,5 +238,5 @@ jobs:
         with:
           key: ${{ steps.restore-build-cache.outputs.cache-primary-key }}
           path: |
-            ${{ env.test_container_app_path }}/build
+            ${{ env.test_container_app_path }}/build/*
             !${{ env.test_container_app_path }}/build/CompilationCache.noindex
