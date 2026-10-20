@@ -13,12 +13,12 @@
  * updateTheme runtime mutations can confuse Metro's module cache on reload).
  */
 
-import { by, element, expect, waitFor } from 'detox'
+import { by, device, element, expect, waitFor } from 'detox'
 import { remountDirectUseCase } from './utils/navigation'
-import { openAppURL, safeLaunchApp } from './utils/detox'
+import { safeLaunchApp } from './utils/detox'
 
 const cycleThemeColor = () => {
-  return openAppURL('tamagui-kitchen-sink://theme-mutation-next')
+  return device.openURL({ url: 'tamagui-kitchen-sink://theme-mutation-next' })
 }
 
 describe('ThemeMutation', () => {
