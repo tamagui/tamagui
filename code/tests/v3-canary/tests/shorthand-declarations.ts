@@ -125,6 +125,7 @@ const imports = [
   (component) => !['Stack', 'Compound', 'Hoc', 'Restyled', 'Memo'].includes(component)
 )
 const header = `
+import type * as React from 'react'
 import type { NativeScrollEvent, NativeSyntheticEvent, ScrollViewProps as NativeScrollViewProps } from 'react-native'
 import type { Combined, GetProps } from 'tamagui'
 import type { Combined as WebCombined } from '@tamagui/web'
@@ -198,6 +199,12 @@ export const nativeSheetScrollContract: Pick<GetProps<typeof Sheet.ScrollView>, 
 export const invalidNativeScroll = <ScrollView alwaysBounceHorizontal="yes" />
 // @ts-expect-error native prop values remain checked through the sheet wrapper
 export const invalidNativeSheetScroll = <Sheet.ScrollView zoomScale="yes" />
+declare const pointer: (event: React.PointerEvent<HTMLDivElement>) => void
+declare const focus: (event: React.FocusEvent<HTMLDivElement>) => void
+declare const keyboard: (event: React.KeyboardEvent<HTMLDivElement>) => void
+declare const click: (event: React.MouseEvent<HTMLDivElement>) => void
+export const webScrollHandlers = <ScrollView onPointerDown={pointer} onFocus={focus} onBlur={focus} onKeyDown={keyboard} onClick={click} />
+export const webSheetScrollHandlers = <Sheet.ScrollView onPointerDown={pointer} onFocus={focus} onBlur={focus} onKeyDown={keyboard} onClick={click} />
 export const nativeScrollView = <ScrollView {...nativeScrollProps} onScroll={nativeScroll} onMomentumScrollEnd={nativeScroll} />
 export const nativeSheetScroll = <Sheet.ScrollView {...nativeScrollProps} onScroll={nativeScroll} onMomentumScrollEnd={nativeScroll} />
 // @ts-expect-error scroll views do not accept arbitrary props

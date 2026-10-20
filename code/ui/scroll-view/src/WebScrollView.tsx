@@ -43,13 +43,12 @@ export type WebScrollEvent = {
 // like React's event handlers, allow callbacks typed for their own platform.
 export type WebScrollEventHandler = { onScroll(event: WebScrollEvent): void }['onScroll']
 
-export type WebScrollViewProps = Omit<
-  StackNonStyleProps,
-  keyof NativeScrollViewProps | 'style'
-> &
+export type WebScrollViewProps = Omit<StackNonStyleProps, 'onScroll' | 'style'> &
   RNViewProps &
   Omit<
     NativeScrollViewProps,
+    | keyof StackNonStyleProps
+    | keyof RNViewProps
     | 'style'
     | 'contentContainerStyle'
     | 'refreshControl'
