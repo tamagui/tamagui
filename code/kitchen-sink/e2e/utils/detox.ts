@@ -87,6 +87,17 @@ export function runAdb(...args: string[]): string {
   })
 }
 
+// open a deep link in the running app. detox delivers ios urls through the app
+// delegate's openURL, which react native 0.88 ignores under the scene life
+// cycle, so ios opens them through the system and they arrive as scene urls.
+export async function openAppURL(url: string): Promise<void> {
+  if (device.getPlatform() === 'ios') {
+    execFileSync('xcrun', ['simctl', 'openurl', device.id, url])
+    return
+  }
+  await device.openURL({ url })
+}
+
 const androidAnimationScaleSettings = [
   'window_animation_scale',
   'transition_animation_scale',
