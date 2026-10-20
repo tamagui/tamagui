@@ -54,6 +54,7 @@ export function NativeRegistryRuntimeClonesCase() {
         <Text>React blue</Text>
       </Pressable>
       <Text testID="runtime-native-props">{nativeProps}</Text>
+      <Text testID="runtime-style-value">{style.backgroundColor}</Text>
       <View ref={host} testID="runtime-ancestor" style={style} collapsable={false}>
         <ScrollView horizontal testID="runtime-scroll">
           {Array.from({ length: 80 }, (_, n) => (

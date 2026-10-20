@@ -48,6 +48,11 @@ describe('NativeRegistryRuntimeClones', () => {
       (Math.floor(reset.height / 2) * reset.width + Math.floor(reset.width / 2)) * 4
     assert.equal(reset.data[center + 3], 0, 'a null background must be transparent')
     await element(by.id('runtime-style')).tap()
+    // the style tap is the only React-driven paint here; native commits land
+    // synchronously but this one must reach its commit before the screenshot.
+    await waitFor(element(by.id('runtime-style-value')))
+      .toHaveText('#0000ff')
+      .withTimeout(10000)
     assert.ok(isBlueish(await color('runtime-react-style')))
 
     // family props cause RN to parse fresh props on every state/children clone,
