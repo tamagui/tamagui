@@ -113,7 +113,6 @@ export type {
 } from './styleProvenance'
 
 const isProd = process.env.NODE_ENV === 'production'
-const isIsland = process.env.TAMAGUI_RUNTIME === 'island'
 export { styleOriginalValues }
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
@@ -1241,7 +1240,7 @@ export const getSplitStyles: StyleSplitter = (
   const mediaState = styleProps.mediaState || globalMediaState
 
   let shouldDoClasses =
-    !isIsland &&
+    process.env.TAMAGUI_RUNTIME !== 'island' &&
     acceptsClassName &&
     process.env.TAMAGUI_TARGET === 'web' &&
     !styleProps.noClass

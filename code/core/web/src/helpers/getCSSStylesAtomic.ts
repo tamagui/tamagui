@@ -18,14 +18,13 @@ import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { styleToCSS } from './styleToCSS'
 import { transformsToString } from './transformsToString'
 
-const isIsland = process.env.TAMAGUI_RUNTIME === 'island'
-
 export { styleToCSS } from './styleToCSS'
 
 // outputCSS owns only config rules, so a compiled build keeps runtime CSS. a
 // zero-runtime island is the one component runtime whose artifact holds every
 // provable rule: unproven values render inline and nothing is generated here
-export const canGenerateCSS = process.env.TAMAGUI_TARGET === 'web' && !isIsland
+export const canGenerateCSS =
+  process.env.TAMAGUI_TARGET === 'web' && process.env.TAMAGUI_RUNTIME !== 'island'
 
 type DirectAtomicState = GetStyleState & {
   flatAtomics?: Map<string, StyleObject>
@@ -154,7 +153,7 @@ export function addComposition(state: GetStyleState, property: 'translate' | 'sc
 }
 
 export function getCSSStylesAtomic(style: ViewStyleObject) {
-  if (isIsland) return []
+  if (process.env.TAMAGUI_RUNTIME === 'island') return []
   styleToCSS(style)
   const out: StyleObject[] = []
   for (const key in style) {
@@ -178,7 +177,7 @@ export function getCSSStyleAtomic(
   identityKey = key,
   classRepetitions = 1
 ): StyleObject | undefined {
-  if (isIsland) return
+  if (process.env.TAMAGUI_RUNTIME === 'island') return
   return getStyleObject(
     val,
     key,
@@ -253,7 +252,7 @@ export function buildAtomicSlotCSS(
   entries: readonly AtomicSlotEntry[],
   signature: string
 ): SlotIdentity | undefined {
-  if (isIsland) return
+  if (process.env.TAMAGUI_RUNTIME === 'island') return
   syncAtomicConfig()
   let bySignature = slotIdentities.get(atomicKey)
   if (!bySignature) slotIdentities.set(atomicKey, (bySignature = new Map()))

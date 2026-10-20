@@ -24,7 +24,6 @@ import type {
 } from '../types'
 
 const isProd = process.env.NODE_ENV === 'production'
-const isIsland = process.env.TAMAGUI_RUNTIME === 'island'
 
 export type InlineValues = {
   values?: { [Key in ThemeKeys]?: VariableValIn }
@@ -281,7 +280,7 @@ export function getVariablesCSSRules(
   props: InlineValues,
   conf: TamaguiInternalConfig
 ): VariablesCSS | null {
-  if (isIsland) return null
+  if (process.env.TAMAGUI_RUNTIME === 'island') return null
   const cycleDropped = getCycleDroppedKeys(props)
   const themes = props.themes as
     | Record<string, InlineValues['values'] | undefined>
