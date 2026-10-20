@@ -69,6 +69,7 @@
     "@tamagui/tailwind": "workspace:*",
     "@tamagui/theme": "workspace:*",
     "@tamagui/themes": "workspace:*",
+    "@tamagui/timer": "workspace:*",
     "@tamagui/toast": "workspace:*",
     "@tamagui/web": "workspace:*",
     "burnt": "^0.13.0",
