@@ -44,6 +44,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/react-native-types": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {

@@ -1,10 +1,10 @@
 import {
   View as TamaguiView,
-  type Insets,
   type RNViewProps,
   type StackNonStyleProps,
   type StylePiece,
 } from '@tamagui/web'
+import type { ScrollViewProps as NativeScrollViewProps } from '@tamagui/react-native-types'
 import * as React from 'react'
 
 // loosely typed to map the react-native ScrollView prop surface onto a
@@ -39,58 +39,38 @@ export type WebScrollEvent = {
   timeStamp: number
 }
 
-export type WebScrollViewProps = Omit<StackNonStyleProps, 'onScroll' | 'style'> &
-  RNViewProps & {
+// native consumers receive native events; web exposes their common scroll payload.
+// like React's event handlers, allow callbacks typed for their own platform.
+export type WebScrollEventHandler = { onScroll(event: WebScrollEvent): void }['onScroll']
+
+export type WebScrollViewProps = Omit<
+  StackNonStyleProps,
+  keyof NativeScrollViewProps | 'style'
+> &
+  RNViewProps &
+  Omit<
+    NativeScrollViewProps,
+    | 'style'
+    | 'contentContainerStyle'
+    | 'refreshControl'
+    | 'keyboardShouldPersistTaps'
+    | 'onScroll'
+    | 'onScrollToTop'
+    | 'onScrollBeginDrag'
+    | 'onScrollEndDrag'
+    | 'onMomentumScrollBegin'
+    | 'onMomentumScrollEnd'
+  > & {
     style?: StackNonStyleProps['style']
     contentContainerStyle?: StylePiece | StackNonStyleProps['style']
-    horizontal?: boolean
-    onContentSizeChange?: (width: number, height: number) => void
-    onScroll?: (event: WebScrollEvent) => void
     refreshControl?: React.ReactElement<{ style?: StackNonStyleProps['style'] }>
-    stickyHeaderIndices?: number[]
-    pagingEnabled?: boolean
-    centerContent?: boolean
-    scrollEnabled?: boolean
-    scrollEventThrottle?: number
-    showsHorizontalScrollIndicator?: boolean
-    showsVerticalScrollIndicator?: boolean
     keyboardShouldPersistTaps?: boolean | 'always' | 'never' | 'handled'
-    keyboardDismissMode?: 'none' | 'on-drag' | 'interactive'
-    contentOffset?: { x: number; y: number }
-    contentInset?: Insets
-    contentInsetAdjustmentBehavior?: 'automatic' | 'scrollableAxes' | 'never' | 'always'
-    decelerationRate?: number | 'normal' | 'fast'
-    directionalLockEnabled?: boolean
-    disableIntervalMomentum?: boolean
-    disableScrollViewPanResponder?: boolean
-    endFillColor?: string
-    fadingEdgeLength?: number | { start: number; end: number }
-    indicatorStyle?: 'default' | 'black' | 'white'
-    invertStickyHeaders?: boolean
-    maintainVisibleContentPosition?: {
-      minIndexForVisible: number
-      autoscrollToTopThreshold?: number
-    }
-    maximumZoomScale?: number
-    minimumZoomScale?: number
-    nestedScrollEnabled?: boolean
-    onScrollToTop?: (event: WebScrollEvent) => void
-    overScrollMode?: 'auto' | 'always' | 'never'
-    pinchGestureEnabled?: boolean
-    removeClippedSubviews?: boolean
-    scrollIndicatorInsets?: Insets
-    scrollPerfTag?: string
-    scrollToOverflowEnabled?: boolean
-    snapToAlignment?: 'start' | 'center' | 'end'
-    snapToEnd?: boolean
-    snapToInterval?: number
-    snapToOffsets?: number[]
-    snapToStart?: boolean
-    bounces?: boolean
-    onScrollBeginDrag?: (event: WebScrollEvent) => void
-    onScrollEndDrag?: (event: WebScrollEvent) => void
-    onMomentumScrollBegin?: (event: WebScrollEvent) => void
-    onMomentumScrollEnd?: (event: WebScrollEvent) => void
+    onScroll?: WebScrollEventHandler
+    onScrollToTop?: WebScrollEventHandler
+    onScrollBeginDrag?: WebScrollEventHandler
+    onScrollEndDrag?: WebScrollEventHandler
+    onMomentumScrollBegin?: WebScrollEventHandler
+    onMomentumScrollEnd?: WebScrollEventHandler
   }
 
 function mergeRefs(...refs: any[]) {
@@ -214,6 +194,26 @@ export const WebScrollView = React.forwardRef<ScrollViewRef, WebScrollViewProps>
       showsVerticalScrollIndicator,
       style,
       // strip react-native-only props that shouldn't reach the DOM
+      StickyHeaderComponent,
+      alwaysBounceHorizontal,
+      alwaysBounceVertical,
+      automaticallyAdjustContentInsets,
+      automaticallyAdjustKeyboardInsets,
+      automaticallyAdjustsScrollIndicatorInsets,
+      bouncesZoom,
+      canCancelContentTouches,
+      experimental_endDraggingSensitivityMultiplier,
+      innerViewRef: nativeInnerViewRef,
+      onKeyboardDidHide,
+      onKeyboardDidShow,
+      onKeyboardWillHide,
+      onKeyboardWillShow,
+      persistentScrollbar,
+      scrollViewRef,
+      scrollsChildToFocus,
+      scrollsToTop,
+      stickyHeaderHiddenOnScroll,
+      zoomScale,
       keyboardShouldPersistTaps,
       keyboardDismissMode,
       contentOffset,
