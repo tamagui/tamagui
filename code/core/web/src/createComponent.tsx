@@ -77,7 +77,6 @@ import type { ViewProps } from './views/View'
 
 // cache production mode for node; retain inline checks for client dead-code removal.
 const isProd = process.env.NODE_ENV === 'production'
-const isIsland = process.env.TAMAGUI_RUNTIME === 'island'
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -2238,7 +2237,7 @@ export function createComponent<
     // SSR style support - for non compiled styles we render them inline until client takes over
     // on client we then switch over to our global sheet insert, because rendering inline is expensive
     if (
-      !isIsland &&
+      process.env.TAMAGUI_RUNTIME !== 'island' &&
       process.env.TAMAGUI_TARGET === 'web' &&
       startedUnhydrated &&
       splitStyles

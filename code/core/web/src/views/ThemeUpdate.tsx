@@ -23,8 +23,6 @@ import type {
 } from '../types'
 import { Theme } from './Theme'
 
-const isIsland = process.env.TAMAGUI_RUNTIME === 'island'
-
 type ThemeUpdateValues = string extends ThemeKeys
   ? {}
   : {
@@ -64,7 +62,9 @@ export const ThemeUpdate: RefComponent<unknown, ThemeUpdateProps> = createRefCom
     const config = getConfig()
     const values = getInlineValuesFromProps(props, config)
     const css =
-      isIsland || process.env.TAMAGUI_TARGET === 'native' || !values
+      process.env.TAMAGUI_RUNTIME === 'island' ||
+      process.env.TAMAGUI_TARGET === 'native' ||
+      !values
         ? null
         : getVariablesCSSRules(values, config)
     let rulesToInsert: RulesToInsert | null = null
