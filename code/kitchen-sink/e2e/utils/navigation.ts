@@ -4,7 +4,7 @@
  */
 
 import { by, device, element, waitFor } from 'detox'
-import { openAppURL, withSync } from './detox'
+import { withSync } from './detox'
 
 /**
  * Fast navigation to any test case using the quick-nav grid
@@ -80,7 +80,7 @@ export async function remountDirectUseCase(
   await device.disableSynchronization()
 
   const before = await readRemountCount()
-  await openAppURL('tamagui-kitchen-sink://remount')
+  await device.openURL({ url: 'tamagui-kitchen-sink://remount' })
 
   await waitFor(element(by.id('e2e-remount-count')))
     .toHaveText(String(before + 1))
