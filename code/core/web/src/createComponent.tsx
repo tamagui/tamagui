@@ -75,6 +75,10 @@ import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
 import type { ViewProps } from './views/View'
 
+// cache production mode for node; retain inline checks for client dead-code removal.
+const isProd = process.env.NODE_ENV === 'production'
+const isIsland = process.env.TAMAGUI_RUNTIME === 'island'
+
 /**
  * All things that need one-time setup after createTamagui is called
  */
@@ -146,7 +150,7 @@ if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
   addEventListener('touchcancel', cancelTouches)
 
   // hold option to see debug visualization
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     startVisualizer = () => {
       const devVisualizerConfig = devConfig?.visualizer
 
@@ -266,7 +270,7 @@ export function createComponent<
   // a const, a config read) makes it unfoldable.
   if (process.env.TAMAGUI_RUNTIME === 'zero') {
     throw new Error(
-      process.env.NODE_ENV !== 'production'
+      !isProd && process.env.NODE_ENV !== 'production'
         ? `[tamagui zero-runtime] createComponent ran in a zero-runtime graph. No Tamagui component renderer ships in this mode, so a component reference survived compilation. Fix the site or move the owning module to a declared full-runtime island.`
         : '❌ Error 010'
     )
@@ -332,9 +336,10 @@ export function createComponent<
     const styleStaticConfig = resolvedStyleStaticConfig!
     const styledContextKeys = styleStaticConfig.styledContextKeys
 
-    const internalID = process.env.NODE_ENV === 'development' ? React.useId() : ''
+    const internalID =
+      !isProd && process.env.NODE_ENV === 'development' ? React.useId() : ''
 
-    if (process.env.NODE_ENV === 'development') {
+    if (!isProd && process.env.NODE_ENV === 'development') {
       if (startVisualizer) {
         startVisualizer()
         startVisualizer = undefined
@@ -354,7 +359,7 @@ export function createComponent<
     }
 
     // test only
-    if (process.env.NODE_ENV === 'test') {
+    if (!isProd && process.env.NODE_ENV === 'test') {
       const testRenderCount = propsIn['data-test-renders']
       if (
         testRenderCount &&
@@ -393,10 +398,16 @@ export function createComponent<
         : false
 
     // pick up globalThis.time if set externally (e.g. by a profiling harness)
-    if (process.env.NODE_ENV === 'development' && !time && (globalThis as any).time) {
+    if (
+      !isProd &&
+      process.env.NODE_ENV === 'development' &&
+      !time &&
+      (globalThis as any).time
+    ) {
       time = (globalThis as any).time
     }
-    if (process.env.NODE_ENV === 'development' && time) time`non-tamagui time (ignore)`
+    if (!isProd && process.env.NODE_ENV === 'development' && time)
+      time`non-tamagui time (ignore)`
 
     // React inserts default props after your props for some reason...
     // order important so we do loops, you can't just spread because JS does weird things
@@ -413,7 +424,7 @@ export function createComponent<
     props = nextProps as ViewProps | TextProps
     overriddenContextProps = overrides
 
-    if (process.env.NODE_ENV === 'development' && isClient) {
+    if (!isProd && process.env.NODE_ENV === 'development' && isClient) {
       React.useEffect(() => {
         let node: HTMLElement | undefined
         let overlay: HTMLSpanElement | null = null
@@ -606,7 +617,7 @@ export function createComponent<
     // but still stores the current state and applies if it it needs to during render
     let setStateShallow = componentState.setStateShallow
 
-    if (process.env.NODE_ENV === 'development' && time) time`use-state`
+    if (!isProd && process.env.NODE_ENV === 'development' && time) time`use-state`
 
     // web-only - string-style not valid for native
     const renderProp = props.render
@@ -654,7 +665,7 @@ export function createComponent<
       process.env.TAMAGUI_TARGET === 'native' && isHOC && 'theme' in props
     const disableTheme = disableThemeProp || (isHOC && !hocThemesSelf)
 
-    if (process.env.NODE_ENV === 'development' && time) time`theme-props`
+    if (!isProd && process.env.NODE_ENV === 'development' && time) time`theme-props`
 
     const themeStateProps: UseThemeWithStateProps = {
       disable: disableTheme,
@@ -684,7 +695,7 @@ export function createComponent<
         stateRef.current.nativeStyleUpdate?.(next) ?? false
     }
 
-    if (process.env.NODE_ENV === 'development') {
+    if (!isProd && process.env.NODE_ENV === 'development') {
       if (debugProp && debugProp !== 'profile') {
         const name = `${
           displayName ||
@@ -744,11 +755,11 @@ export function createComponent<
       }
     }
 
-    if (process.env.NODE_ENV === 'development' && time) time`pre-theme-media`
+    if (!isProd && process.env.NODE_ENV === 'development' && time) time`pre-theme-media`
 
     const [theme, themeState] = useThemeWithState(themeStateProps)
 
-    if (process.env.NODE_ENV === 'development' && time) time`theme`
+    if (!isProd && process.env.NODE_ENV === 'development' && time) time`theme`
 
     // don't replace the animated driver component (set above) with the base element,
     // the render string is forwarded to it via viewProps.render instead
@@ -763,7 +774,7 @@ export function createComponent<
 
     setDidGetVariableValue(false)
 
-    if (process.env.NODE_ENV === 'development' && time) time`media`
+    if (!isProd && process.env.NODE_ENV === 'development' && time) time`media`
 
     const resolveValues =
       // if HOC + mounted + has animation prop, resolve as value so it passes non-variable to child
@@ -787,7 +798,8 @@ export function createComponent<
 
     const themeName = themeState?.name || ''
 
-    if (process.env.NODE_ENV === 'development' && time) time`split-styles-prepare`
+    if (!isProd && process.env.NODE_ENV === 'development' && time)
+      time`split-styles-prepare`
 
     const splitStyles = useSplitStyles(
       props,
@@ -1240,6 +1252,7 @@ export function createComponent<
 
         if (canAvoidReRender) {
           if (
+            !isProd &&
             process.env.NODE_ENV === 'development' &&
             debugProp &&
             debugProp !== 'profile'
@@ -1256,6 +1269,7 @@ export function createComponent<
           stateRef.current.updateStyleListener?.()
         } else {
           if (
+            !isProd &&
             process.env.NODE_ENV === 'development' &&
             debugProp &&
             debugProp !== 'profile'
@@ -1272,7 +1286,7 @@ export function createComponent<
       }
     }
 
-    if (process.env.NODE_ENV === 'development' && time) time`split-styles`
+    if (!isProd && process.env.NODE_ENV === 'development' && time) time`split-styles`
 
     // hide strategy will set this opacity = 0 until measured
     if (splitStyles) {
@@ -1297,7 +1311,7 @@ export function createComponent<
     const mediaListeningKeys = hasRuntimeMediaKeys
       ? (splitStyles.hasMedia as Set<string>)
       : null
-    if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+    if (!isProd && process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
       console.info(`useMedia() createComponent`, shouldListenForMedia, mediaListeningKeys)
     }
 
@@ -1463,20 +1477,25 @@ export function createComponent<
         }
       }
 
-      if (process.env.NODE_ENV === 'development' && time) time`animations`
+      if (!isProd && process.env.NODE_ENV === 'development' && time) time`animations`
     }
 
     if (isWeb && isExiting) {
       viewProps.className = `t_exiting ${viewProps.className || ''}`
     }
 
-    if (process.env.NODE_ENV === 'development' && props.untilMeasured && !isContainer) {
+    if (
+      !isProd &&
+      process.env.NODE_ENV === 'development' &&
+      props.untilMeasured &&
+      !isContainer
+    ) {
       console.warn(
         `You set untilMeasured without establishing a container. Set it on the parent with container or container="name", not on the child using a container clause.`
       )
     }
 
-    if (process.env.NODE_ENV === 'development' && time) time`destructure`
+    if (!isProd && process.env.NODE_ENV === 'development' && time) time`destructure`
 
     if (
       !isPassthrough &&
@@ -1565,7 +1584,7 @@ export function createComponent<
     // handle pointer events (native: maps to touch events, web: no-op)
     usePointerEvents(props, viewProps)
 
-    if (process.env.NODE_ENV === 'development') {
+    if (!isProd && process.env.NODE_ENV === 'development') {
       if (!isText && isWeb && !isHOC) {
         React.Children.toArray(props.children).forEach((item) => {
           // allow newlines because why not its annoying with mdx
@@ -1579,13 +1598,13 @@ export function createComponent<
       }
     }
 
-    if (process.env.NODE_ENV === 'development' && time) time`events-hooks`
+    if (!isProd && process.env.NODE_ENV === 'development' && time) time`events-hooks`
 
     const unPress = () => {
       setStateShallow({ press: false, pressIn: false })
     }
 
-    if (process.env.NODE_ENV === 'development' && isWeb) {
+    if (!isProd && process.env.NODE_ENV === 'development' && isWeb) {
       useIsomorphicLayoutEffect(() => {
         if (debugProp === 'verbose') {
           function cssStyleDeclarationToObject(style: CSSStyleDeclaration) {
@@ -1754,9 +1773,9 @@ export function createComponent<
 
     const needsPressState = Boolean(hasDynamicGroupChildren || runtimePressStyle)
 
-    if (process.env.NODE_ENV === 'development' && time) time`events-setup`
+    if (!isProd && process.env.NODE_ENV === 'development' && time) time`events-setup`
 
-    if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+    if (!isProd && process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
       log(`🪩 events()`, {
         runtimeFocusStyle,
         runtimePressStyle,
@@ -1920,9 +1939,9 @@ export function createComponent<
       Object.assign(viewProps, getWebEvents(events))
     }
 
-    if (process.env.NODE_ENV === 'development' && time) time`events`
+    if (!isProd && process.env.NODE_ENV === 'development' && time) time`events`
 
-    if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+    if (!isProd && process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
       log(`events`, { events, attachHover, attachPress })
     }
 
@@ -1960,7 +1979,7 @@ export function createComponent<
       )
     }
 
-    if (process.env.NODE_ENV === 'development' && time) time`hooks`
+    if (!isProd && process.env.NODE_ENV === 'development' && time) time`hooks`
 
     if (asChild && !isHOC) {
       elementType = Slot
@@ -1988,7 +2007,7 @@ export function createComponent<
       }
     }
 
-    if (process.env.NODE_ENV === 'development' && time) time`spaced-as-child`
+    if (!isProd && process.env.NODE_ENV === 'development' && time) time`spaced-as-child`
 
     let content: ReactNode | undefined
 
@@ -2078,7 +2097,7 @@ export function createComponent<
         }
       }
 
-      if (process.env.NODE_ENV === 'development' && time) time`use-children`
+      if (!isProd && process.env.NODE_ENV === 'development' && time) time`use-children`
     }
 
     // wrap with GestureDetector for RNGH press handling (native only, no-op on web)
@@ -2121,7 +2140,7 @@ export function createComponent<
       content = <ResetPresence disabled={!needsReset}>{content}</ResetPresence>
     }
 
-    if (process.env.NODE_ENV === 'development' && time) time`create-element`
+    if (!isProd && process.env.NODE_ENV === 'development' && time) time`create-element`
 
     if (process.env.TAMAGUI_TARGET === 'web' && conditionalStates?.has('focus-within')) {
       content = (
@@ -2188,14 +2207,14 @@ export function createComponent<
       )
     }
 
-    if (process.env.NODE_ENV === 'development' && time) time`group-context`
+    if (!isProd && process.env.NODE_ENV === 'development' && time) time`group-context`
 
     content =
       disableTheme || !splitStyles
         ? content
         : getThemedChildren(themeState, content, themeStateProps, false, stateRef)
 
-    if (process.env.NODE_ENV === 'development' && time) time`themed-children`
+    if (!isProd && process.env.NODE_ENV === 'development' && time) time`themed-children`
 
     if (overriddenContextProps && contextForOverride) {
       const Provider = contextForOverride.Provider!
@@ -2214,12 +2233,12 @@ export function createComponent<
       )
     }
 
-    if (process.env.NODE_ENV === 'development' && time) time`context-override`
+    if (!isProd && process.env.NODE_ENV === 'development' && time) time`context-override`
 
     // SSR style support - for non compiled styles we render them inline until client takes over
     // on client we then switch over to our global sheet insert, because rendering inline is expensive
     if (
-      process.env.TAMAGUI_RUNTIME !== 'island' &&
+      !isIsland &&
       process.env.TAMAGUI_TARGET === 'web' &&
       startedUnhydrated &&
       splitStyles
@@ -2233,9 +2252,9 @@ export function createComponent<
       )
     }
 
-    if (process.env.NODE_ENV === 'development' && time) time`style-tags`
+    if (!isProd && process.env.NODE_ENV === 'development' && time) time`style-tags`
 
-    if (process.env.NODE_ENV === 'development') {
+    if (!isProd && process.env.NODE_ENV === 'development') {
       if (debugProp && debugProp !== 'profile') {
         const element = typeof elementType === 'string' ? elementType : 'Component'
         const title = `render <${element} /> (${internalID}) with props`
@@ -2292,7 +2311,7 @@ export function createComponent<
       }
     }
 
-    if (process.env.NODE_ENV === 'development' && time) {
+    if (!isProd && process.env.NODE_ENV === 'development' && time) {
       time`rest`
       if (!globalThis['willPrint']) {
         globalThis['willPrint'] = true

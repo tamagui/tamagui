@@ -3,6 +3,8 @@ import { useRef } from 'react'
 import { getMediaState } from '../hooks/useMedia'
 import type { ComponentSetStateShallow, DisposeFn, AllGroupContexts } from '../types'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 type SubscribeToContextGroupProps = {
   setStateShallow: ComponentSetStateShallow
   pseudoGroups?: Set<string>
@@ -42,7 +44,7 @@ const setsEqual = (a: Set<string> | undefined, b: Set<string> | undefined) => {
 export const subscribeToContextGroup = (props: SubscribeToContextGroupProps) => {
   const { pseudoGroups, mediaGroups, groupContext } = props
   if (pseudoGroups || mediaGroups) {
-    if (process.env.NODE_ENV === 'development' && !groupContext) {
+    if (!isProd && process.env.NODE_ENV === 'development' && !groupContext) {
       console.debug(`No context group found`)
     }
 

@@ -11,6 +11,8 @@ import { hasSafeAreaTracker, SafeAreaTracker } from './SafeAreaTracker'
 import { TamaguiRoot } from './TamaguiRoot'
 import { ThemeProvider } from './ThemeProvider'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 // cache first theme key per config to avoid Object.keys allocation on every render
 let _cachedFirstKey: string | undefined
 let _cachedConfig: any
@@ -97,7 +99,8 @@ export function TamaguiProvider({
           </style>
         )}
 
-      {process.env.NODE_ENV !== 'production' &&
+      {!isProd &&
+        process.env.NODE_ENV !== 'production' &&
         process.env.TAMAGUI_TARGET !== 'native' &&
         config && <ConfigRevisionCheck config={config} />}
       {hasSafeAreaTracker() && <SafeAreaTracker />}

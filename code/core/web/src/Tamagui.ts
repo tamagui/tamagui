@@ -4,11 +4,13 @@ import { getConfig } from './config'
 import { getAllRules, getAllSelectors } from './helpers/insertStyleRule'
 import { mediaState } from './helpers/mediaState'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 // easy introspection
 // only included in dev mode
 
 export const Tamagui = (() => {
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     class TamaguiManager {
       Helpers = Helpers
 

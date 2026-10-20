@@ -4,6 +4,8 @@ import type { StaticShapeStyle, StylePiece, TextStyle, ThemeParsed } from './typ
 import { stylePieceSymbol } from './types'
 import { warnOnce } from './helpers/warnOnce'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 type StylePieceLayer = 'base' | 'style'
 type StylePieceCompiler = (piece: StylePiece, layer: StylePieceLayer) => void
 type StylePieceResolver = (
@@ -74,7 +76,7 @@ export function createStylePiece(
  * precedence.
  */
 export function style(definition: StaticShapeStyle): StylePiece {
-  if (process.env.NODE_ENV === 'development') {
+  if (!isProd && process.env.NODE_ENV === 'development') {
     // the owner is the component rendering right now. the hooks dispatcher
     // (`H`) stays set between renders, so it flags module-scope pieces in any
     // module loaded after the first render

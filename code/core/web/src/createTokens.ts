@@ -1,8 +1,10 @@
 import { createVariables } from './createVariables'
 import type { CreateTokens, Variable } from './types'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 export function createTokens<T extends CreateTokens>(tokens: T): MakeTokens<T> {
-  if (process.env.NODE_ENV !== 'production') {
+  if (!isProd && process.env.NODE_ENV !== 'production') {
     validateNoTrueTokenKeys(tokens)
   }
   return createVariables(tokens, process.env.TAMAGUI_TOKEN_PREFIX ?? 't') as any

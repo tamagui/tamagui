@@ -20,6 +20,8 @@ import type {
 import type { ThemeUpdateState } from '../helpers/themeUpdateState'
 import { getAuthoredThemeScheme } from '../helpers/themes'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 type ID = string
 
 export const ThemeStateContext = createContext<ID>('')
@@ -105,7 +107,7 @@ export const useThemeState = (
 
   if (!parentId && !isRoot) {
     throw new Error(
-      process.env.NODE_ENV === 'development'
+      !isProd && process.env.NODE_ENV === 'development'
         ? `${MISSING_THEME_MESSAGE}\n\nLooked for theme${props.name ? ` "${props.name}"` : ''}, but no parent theme context was found (parentId: ${parentId}).`
         : MISSING_THEME_MESSAGE
     )
