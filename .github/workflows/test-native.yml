@@ -31,7 +31,7 @@ concurrency:
 env:
   test_container_app_path: code/kitchen-sink
   # Increment this to force a fresh Android build (invalidates Redis KV cache)
-  android_cache_version: v4
+  android_cache_version: v5
 
 jobs:
   build-one-native-bundles:
@@ -534,8 +534,9 @@ jobs:
         env:
           # Limit Gradle memory to avoid OOM on free runners
           GRADLE_OPTS: '-Dorg.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError'
+        # the detox emulator is x86_64; building every abi quadruples the cmake work
         run: |
-          cd android && ./gradlew :app:assembleDebug :app:assembleAndroidTest -DtestBuildType=debug --init-script ../android-init.gradle --no-daemon --max-workers=2
+          cd android && ./gradlew :app:assembleDebug :app:assembleAndroidTest -DtestBuildType=debug -PreactNativeArchitectures=x86_64 --init-script ../android-init.gradle --no-daemon --max-workers=2
 
       - name: Cache Android Folder
         if: ${{ !steps.android-cache-check.outputs.cache-hit && !steps.android-cache-check-new.outputs.cache-hit }}
