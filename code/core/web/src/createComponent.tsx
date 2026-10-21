@@ -659,8 +659,7 @@ export function createComponent<
     // theme prop. on native the HOC's own styles resolve to values here, so it
     // keeps a theme state that follows theme changes, and an HOC given a theme
     // themes itself and the wrapped component inherits it instead of applying
-    // it a second time. keyed on presence, like disableThemeProp, so hook order
-    // never changes across renders
+    // it a second time
     const hocThemesSelf =
       process.env.TAMAGUI_TARGET === 'native' && isHOC && 'theme' in props
     const disableTheme =
