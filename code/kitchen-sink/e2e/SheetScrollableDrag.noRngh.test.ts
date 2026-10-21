@@ -17,7 +17,8 @@ const awaitText = async (id: string, expected: string) => {
   for (;;) {
     const { text } = (await element(by.id(id)).getAttributes()) as { text?: string }
     if (text === expected) return
-    if (Date.now() > deadline) throw new Error(`${id} stayed "${text}", expected "${expected}"`)
+    if (Date.now() > deadline)
+      throw new Error(`${id} stayed "${text}", expected "${expected}"`)
     await new Promise((resolve) => setTimeout(resolve, 500))
   }
 }
@@ -82,7 +83,10 @@ describe('SheetScrollableDrag - no RNGH', () => {
       .withTimeout(3000)
     // the open spring overshoots above its rest, so a drag aimed at the handle
     // before the open ends can land on the overlay and dismiss the sheet
-    await awaitText('sheet-scrollable-drag-transition-end', 'Transition end: open finished')
+    await awaitText(
+      'sheet-scrollable-drag-transition-end',
+      'Transition end: open finished'
+    )
 
     await withSync(() =>
       element(by.id('sheet-scrollable-drag-handle')).swipe('down', 'slow', 0.5)
