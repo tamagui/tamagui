@@ -145,14 +145,19 @@ if (ENABLE) {
   let skipFrames = BASE_SKIP_FRAMES
   let frameScheduled = false
   let waitTimer: ReturnType<typeof setTimeout> | undefined
+  // the next measurement skips the wait: the first one, and one asked for by
+  // measureOnNextFrame, even while another is in flight
+  let measureSoon = true
 
   // wait out the skipped frames on a timer, then measure in one animation frame. a frame
   // callback on every frame keeps the browser producing main frames (style, paint, and a
   // restyle of every running css animation) even when nothing on the page changes
-  function scheduleLayoutFrame(delay = skipFrames * FRAME_MS) {
+  function scheduleLayoutFrame() {
     if (frameScheduled || strategy === 'off' || Nodes.size === 0 || document.hidden)
       return
     frameScheduled = true
+    const delay = measureSoon ? 0 : skipFrames * FRAME_MS
+    measureSoon = false
     waitTimer = setTimeout(() => {
       waitTimer = undefined
       rAF ? rAF(layoutOnAnimationFrame) : layoutOnAnimationFrame()
@@ -203,17 +208,18 @@ if (ENABLE) {
     scheduleLayoutFrame()
   }
 
-  resumeLayoutLoop = () => scheduleLayoutFrame()
+  resumeLayoutLoop = scheduleLayoutFrame
   measureOnNextFrame = () => {
+    measureSoon = true
     if (waitTimer) {
       clearTimeout(waitTimer)
       waitTimer = undefined
       frameScheduled = false
     }
-    scheduleLayoutFrame(0)
+    scheduleLayoutFrame()
   }
-  document.addEventListener('visibilitychange', () => scheduleLayoutFrame())
-  scheduleLayoutFrame(0)
+  document.addEventListener('visibilitychange', scheduleLayoutFrame)
+  scheduleLayoutFrame()
 }
 
 export const getElementLayoutEvent = (
