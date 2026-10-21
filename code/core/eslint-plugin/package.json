@@ -40,6 +40,6 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "eslint": "10.8.0",
-    "vitest": "4.1.0"
+    "vitest": "4.1.11"
   }
 }

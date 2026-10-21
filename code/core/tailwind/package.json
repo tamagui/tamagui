@@ -83,7 +83,7 @@
     "react": "19.3.0",
     "typescript": "7.0.2",
     "vite": "^8.2.2",
-    "vitest": "4.1.0"
+    "vitest": "4.1.11"
   },
   "peerDependencies": {
     "react": ">=19",
