@@ -141,25 +141,25 @@ if (ENABLE) {
   const userSkipVal = process.env.TAMAGUI_LAYOUT_FRAME_SKIP
   const BASE_SKIP_FRAMES = userSkipVal ? +userSkipVal : 10
   const MAX_SKIP_FRAMES = 20
+  const FRAME_MS = 1000 / 60
   let skipFrames = BASE_SKIP_FRAMES
-  let frameCount = 0
   let frameScheduled = false
+  let waitTimer: ReturnType<typeof setTimeout> | undefined
 
-  function scheduleLayoutFrame() {
+  // wait out the skipped frames on a timer, then measure in one animation frame. a frame
+  // callback on every frame keeps the browser producing main frames (style, paint, and a
+  // restyle of every running css animation) even when nothing on the page changes
+  function scheduleLayoutFrame(delay = skipFrames * FRAME_MS) {
     if (frameScheduled || strategy === 'off' || Nodes.size === 0 || document.hidden)
       return
     frameScheduled = true
-    rAF ? rAF(layoutOnAnimationFrame) : setTimeout(layoutOnAnimationFrame, 16)
+    waitTimer = setTimeout(() => {
+      waitTimer = undefined
+      rAF ? rAF(layoutOnAnimationFrame) : layoutOnAnimationFrame()
+    }, delay)
   }
 
   async function layoutOnAnimationFrame() {
-    if (frameCount++ % skipFrames !== 0) {
-      frameScheduled = false
-      scheduleLayoutFrame()
-      return
-    }
-    if (frameCount >= Number.MAX_SAFE_INTEGER) frameCount = 0
-
     if (strategy !== 'off') {
       const activeNodes: HTMLElement[] = []
       const parentsToObserve = new Set<HTMLElement>()
@@ -203,13 +203,17 @@ if (ENABLE) {
     scheduleLayoutFrame()
   }
 
-  resumeLayoutLoop = scheduleLayoutFrame
+  resumeLayoutLoop = () => scheduleLayoutFrame()
   measureOnNextFrame = () => {
-    frameCount = 0
-    scheduleLayoutFrame()
+    if (waitTimer) {
+      clearTimeout(waitTimer)
+      waitTimer = undefined
+      frameScheduled = false
+    }
+    scheduleLayoutFrame(0)
   }
-  document.addEventListener('visibilitychange', scheduleLayoutFrame)
-  scheduleLayoutFrame()
+  document.addEventListener('visibilitychange', () => scheduleLayoutFrame())
+  scheduleLayoutFrame(0)
 }
 
 export const getElementLayoutEvent = (
