@@ -656,13 +656,15 @@ export function createComponent<
         : props['data-disable-theme'] && !('theme' in props)
 
     // a styled HOC leaves theming to the component it wraps and hands it the
-    // theme prop. on native the HOC's own styles resolve to values here, before
-    // that, so an HOC given a theme themes itself and the wrapped component
-    // inherits it instead of applying it a second time. keyed on presence, like
-    // disableThemeProp, so hook order never changes across renders
+    // theme prop. on native the HOC's own styles resolve to values here, so it
+    // keeps a theme state that follows theme changes, and an HOC given a theme
+    // themes itself and the wrapped component inherits it instead of applying
+    // it a second time. keyed on presence, like disableThemeProp, so hook order
+    // never changes across renders
     const hocThemesSelf =
       process.env.TAMAGUI_TARGET === 'native' && isHOC && 'theme' in props
-    const disableTheme = disableThemeProp || (isHOC && !hocThemesSelf)
+    const disableTheme =
+      disableThemeProp || (isHOC && process.env.TAMAGUI_TARGET !== 'native')
 
     if (!isProd && process.env.NODE_ENV === 'development' && time) time`theme-props`
 
