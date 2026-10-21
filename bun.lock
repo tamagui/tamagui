@@ -3870,6 +3870,7 @@
     "gray-matter@4.0.3": "patches/gray-matter@4.0.3.patch",
     "expo-modules-core@58.0.22": "patches/expo-modules-core@58.0.22.patch",
     "@react-navigation/elements@3.0.0-alpha.55": "patches/react-navigation-elements@3.0.0-alpha.55.patch",
+    "brace-expansion@5.0.12": "patches/brace-expansion@5.0.12.patch",
     "detox@20.47.0": "patches/detox@20.47.0.patch",
     "@react-native/asset-utils@0.88.0": "patches/react-native-asset-utils@0.88.0.patch",
     "@expo/ui@58.0.20": "patches/expo-ui@58.0.20.patch",
