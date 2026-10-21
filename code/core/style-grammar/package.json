@@ -85,7 +85,7 @@
   "dependencies": {},
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "vitest": "4.1.0"
+    "vitest": "4.1.11"
   },
   "react-native": {
     "./runtime": "./dist/esm/runtime.native.js",

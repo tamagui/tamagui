@@ -83,6 +83,6 @@
     "rollup-plugin-visualizer": "^6.0.5",
     "subset-font": "^2.1.0",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "4.1.0"
+    "vitest": "4.1.11"
   }
 }

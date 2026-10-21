@@ -20,7 +20,7 @@
     "jsdom": "^28.1.0",
     "react": "19.3.0",
     "typescript": "7.0.2",
-    "vitest": "4.1.0",
+    "vitest": "4.1.11",
     "vitest-axe": "^0.1.0"
   },
   "peerDependencies": {

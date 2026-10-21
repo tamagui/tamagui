@@ -51,7 +51,7 @@
     "react-native": "0.88.0",
     "react-native-nitro-modules": "0.37.1",
     "typescript": "7.0.2",
-    "vitest": "4.1.0",
+    "vitest": "4.1.11",
     "nitrogen": "^0.36.5"
   },
   "peerDependencies": {
