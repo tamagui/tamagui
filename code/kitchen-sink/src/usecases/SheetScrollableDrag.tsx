@@ -24,6 +24,7 @@ export function SheetScrollableDrag() {
   const [itemCount, setItemCount] = useState(20)
   const [maxPosition, setMaxPosition] = useState(0)
   const [unexpectedClose, setUnexpectedClose] = useState(false)
+  const [transitionEnd, setTransitionEnd] = useState('(none)')
   const lastScrollY = useRef(0)
 
   const rnghEnabled = getGestureHandler().isEnabled
@@ -115,6 +116,9 @@ export function SheetScrollableDrag() {
         <Text testID="sheet-scrollable-drag-unexpected-close">
           Unexpected close: {unexpectedClose ? 'yes' : 'no'}
         </Text>
+        <Text testID="sheet-scrollable-drag-transition-end">
+          Transition end: {transitionEnd}
+        </Text>
         <Text testID="sheet-scrollable-drag-events">
           Events: {dragEvents.join(', ') || '(none)'}
         </Text>
@@ -147,6 +151,11 @@ export function SheetScrollableDrag() {
           setPosition(pos)
           setMaxPosition((prev) => Math.max(prev, pos))
           addEvent(`snap:${pos}`)
+        }}
+        onTransition={(e) => {
+          if (e.phase === 'end') {
+            setTransitionEnd(`${e.cause} ${e.finished ? 'finished' : 'interrupted'}`)
+          }
         }}
         dismissOnSnapToBottom
         zIndex={100000}
