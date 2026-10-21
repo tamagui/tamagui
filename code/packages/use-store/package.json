@@ -40,7 +40,7 @@
     "@tamagui/build": "workspace:*",
     "@testing-library/react": "^16.1.0",
     "react": "19.3.0",
-    "vitest": "4.1.0"
+    "vitest": "4.1.11"
   },
   "peerDependencies": {
     "react": ">=19"

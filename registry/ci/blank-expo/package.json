@@ -28,6 +28,6 @@
     "babel-preset-expo": "~58.0.17",
     "react-test-renderer": "19.3.0",
     "typescript": "7.0.2",
-    "vitest-native": "npm:vitest@4.1.0"
+    "vitest-native": "npm:vitest@4.1.11"
   }
 }

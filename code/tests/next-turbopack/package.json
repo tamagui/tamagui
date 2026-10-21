@@ -27,6 +27,6 @@
     "@tamagui/cli": "workspace:*",
     "@types/node": "^22.1.0",
     "@types/react": "~19.3.0",
-    "vitest": "4.1.0"
+    "vitest": "4.1.11"
   }
 }

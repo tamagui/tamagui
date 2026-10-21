@@ -82,6 +82,6 @@
     "@tamagui/build": "workspace:*",
     "@types/chokidar": "^2.1.3",
     "@types/marked": "^5.0.0",
-    "vitest": "4.1.0"
+    "vitest": "4.1.11"
   }
 }
