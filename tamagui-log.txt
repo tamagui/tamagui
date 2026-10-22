@@ -1,0 +1,15 @@
+fbdb8553a6 v3.0.3
+e0b1d3fba1 fix(sheet): reset the scroll move threshold on every touch in Sheet.ScrollView
+b6a46f9ad1 fix(native): keep sheet scroll integration on gesture handler 2
+8d875db3d6 v3.0.2
+9a6abb723d site: restore mobile header menu sheet adaptation
+08ec9f63db ci: report terminal workflow failures while other jobs remain queued
+560e0d9cff fix(native): preserve public subpaths with package exports disabled
+ed739cb26c fix(native): initialize Expo Android serialized props
+6070cad20e fix(native): match sheet scroll and pan gesture relationships
+daef834226 ci: build iOS test apps for the arm64 runner
+d813f1bbba fix(native): align Screens with React Native 0.87
+46f97421dd fix(native): share React Native asset registry with Expo
+e3e143355c fix(native): compile Expo modules against the installed React Native
+3ebe7782ad fix(native): enable Expo scene lifecycle for iOS 27
+4856b678e3 fix(native): align keyboard controller with RN 0.87 and validate main PRs
