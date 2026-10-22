@@ -317,6 +317,15 @@ jobs:
             --project=animated-motion
         timeout-minutes: 20
 
+      - name: Retain InputRef failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: input-ref-failure-${{ strategy.job-index }}
+          path: code/kitchen-sink/test-results/InputRef-*
+          if-no-files-found: ignore
+          retention-days: 3
+
   # The four webkit projects are 30 tests across 6 files, and they are the only
   # reason anything in this workflow runs `playwright install-deps`. Splitting
   # them out keeps that apt call, which intermittently hangs on a slow Azure
