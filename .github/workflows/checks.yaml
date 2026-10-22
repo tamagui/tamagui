@@ -245,7 +245,7 @@ jobs:
 
           # build a single regex from all dependency directories + root config files
           PATTERN=$(echo "$DEP_DIRS" | paste -sd'|' -)
-          FULL_PATTERN="^($PATTERN)/|^(package\.json|bun\.lock|turbo\.json)$"
+          FULL_PATTERN="^($PATTERN)/|^(package\.json|bun\.lock|turbo\.json)$|^\.github/(workflows/checks\.yaml$|actions/install/)"
 
           CHANGED=$(git diff --name-only "$BASE" HEAD)
 
