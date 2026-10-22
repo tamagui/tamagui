@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test'
 import { setupPage } from './test-utils'
 
+test.use({ trace: 'retain-on-failure', screenshot: 'only-on-failure' })
+
 const cases = [
   { prefix: 'input-ref-plain', tagName: 'INPUT' },
   { prefix: 'input-ref-styled', tagName: 'INPUT' },
