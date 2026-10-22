@@ -4,7 +4,7 @@
 # syntax=docker/dockerfile:1.2
 
 # Use an official Bun image
-FROM oven/bun:1.2.22
+FROM oven/bun:1.4.4
 ENV CI=true
 
 # Install required dependencies

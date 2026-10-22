@@ -210,7 +210,7 @@
     "ws": "8.21.0",
     "yaml": "2.8.3"
   },
-  "packageManager": "bun@1.4.2",
+  "packageManager": "bun@1.4.4",
   "manypkg": {
     "workspaceProtocol": "require",
     "ignoredRules": [
