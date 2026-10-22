@@ -364,6 +364,10 @@ jobs:
 
       - name: Install Playwright system dependencies
         run: |
+          # a slow but responsive azure mirror never reaches apt's fallback.
+          # keep the runner's existing ubuntu archive and security mirrors.
+          sudo sed -i '\|^http://azure\.archive\.ubuntu\.com/ubuntu/|d' /etc/apt/apt-mirrors.txt
+
           sudo tee /etc/apt/apt.conf.d/80-ci-retries > /dev/null <<'APT'
           Acquire::Retries "3";
           Acquire::http::Timeout "30";
