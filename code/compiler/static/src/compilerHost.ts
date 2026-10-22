@@ -1455,9 +1455,11 @@ export function createTamaguiCompilerHost(
     }
     const row = TAGS[tag]
     const textLike = row.backing === 'text' || row.backing === 'textinput'
-    const frontend = componentsByModule.get(identity.specifier)?.nameToInfo[
-      textLike ? 'Text' : 'View'
-    ]?.staticConfig.styleFrontend
+    const moduleName = modulesById.get(identity.resolvedId)
+    const frontend = moduleName
+      ? componentsByModule.get(moduleName)?.nameToInfo[textLike ? 'Text' : 'View']
+          ?.staticConfig.styleFrontend
+      : undefined
     const base = (textLike ? core.Text : core.View)?.staticConfig as
       | StaticConfig
       | undefined
