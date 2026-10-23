@@ -46,6 +46,20 @@ export function setRequireResult(name: string, result: any) {
   compiled[name] = result
 }
 
+// evaluate the whole native dependency graph under the compiler's require hook.
+// both export discovery and generated vite facades use this boundary.
+export function requireNativeEvaluationModule(
+  modulePath: string,
+  nativePlatform?: 'ios' | 'android' | 'macos'
+) {
+  const registration = registerRequire('native', { nativePlatform })
+  try {
+    return nodeRequire(modulePath)
+  } finally {
+    registration.unregister()
+  }
+}
+
 function getStaticExtractionStub(path: string) {
   switch (path) {
     case 'expo-constants':

@@ -485,7 +485,7 @@ test.each(['ios', 'android'] as const)(
     await mkdir(watchOutputRoot, { recursive: true })
     await writeFile(
       configPath,
-      `import { createTamagui } from '@tamagui/core'
+      `import { createTamagui } from 'tamagui'
 import { defaultConfig } from '@tamagui/config/v6'
 import { PlatformColor, DynamicColorIOS } from 'react-native'
 export const color = PlatformColor('labelColor')
