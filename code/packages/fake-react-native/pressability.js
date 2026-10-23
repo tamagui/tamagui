@@ -25,6 +25,6 @@ const bindings = new Map([
     },
   ],
 ])
-const load = createNativeModuleLoader(bindings)
+const load = createNativeModuleLoader(require, bindings)
 
 module.exports = load(join(root, 'Libraries/Pressability/usePressability.js')).default

@@ -33,6 +33,12 @@
       "import": "./dist/esm/extractor/loadTamagui.mjs",
       "require": "./dist/cjs/extractor/loadTamagui.cjs",
       "default": "./dist/esm/extractor/loadTamagui.mjs"
+    },
+    "./nativeColors": {
+      "types": "./types/nativeColors.d.ts",
+      "import": "./dist/esm/nativeColors.mjs",
+      "require": "./dist/cjs/nativeColors.cjs",
+      "default": "./dist/esm/nativeColors.mjs"
     }
   },
   "publishConfig": {
@@ -45,6 +51,8 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@babel/core": "^7.25.2",
+    "@react-native/babel-preset": "0.88.0",
     "@tamagui/animation-helpers": "workspace:*",
     "@tamagui/cli-color": "workspace:*",
     "@tamagui/compiler-core": "workspace:*",

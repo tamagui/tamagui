@@ -13,7 +13,7 @@
       "require": "./index.js"
     },
     "./pressability": "./pressability.js",
-    "./nativeColors": "./nativeColors.js",
+    "./loadNativeModule": "./loadNativeModule.js",
     "./styleAttributes": "./styleAttributes.js",
     "./pressEvent": {
       "types": "./pressEvent.d.ts",
@@ -23,14 +23,18 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@babel/core": "^7.25.2",
-    "@react-native/babel-preset": "0.88.0"
-  },
   "peerDependencies": {
+    "@babel/core": "*",
+    "@react-native/babel-preset": "*",
     "react-native": "*"
   },
   "peerDependenciesMeta": {
+    "@babel/core": {
+      "optional": true
+    },
+    "@react-native/babel-preset": {
+      "optional": true
+    },
     "react-native": {
       "optional": true
     }
