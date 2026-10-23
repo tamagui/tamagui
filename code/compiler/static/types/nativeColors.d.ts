@@ -1,8 +1,8 @@
-type NativeColorFactories = {
-    PlatformColor: (...names: string[]) => unknown;
-    DynamicColorIOS: (colors: Record<string, unknown>) => unknown;
+export declare function getNativeColorFactories(_projectRoot: string, platform?: string): {
+    PlatformColor(...args: Array<string | {
+        fallback: string;
+    }>): unknown;
+    DynamicColorIOS(colors: Record<string, unknown>): unknown;
 };
-export declare function getNativeColorFactories(projectRoot: string, platform?: string): NativeColorFactories;
 export declare const nativeColorsModulePath: string;
-export {};
 //# sourceMappingURL=nativeColors.d.ts.map
