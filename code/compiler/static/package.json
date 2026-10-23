@@ -51,8 +51,6 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@babel/core": "^7.25.2",
-    "@react-native/babel-preset": "0.88.0",
     "@tamagui/animation-helpers": "workspace:*",
     "@tamagui/cli-color": "workspace:*",
     "@tamagui/compiler-core": "workspace:*",

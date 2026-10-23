@@ -478,7 +478,7 @@ test('clears loader state when closing an owned environment fails', async () => 
   expect(loader.getTamaguiOptions()).toBeNull()
 })
 
-test.each(['ios', 'android'] as const)(
+test.each(['ios', 'android', 'macos'] as const)(
   'evaluates %s theme factories before web aliases with extraction enabled',
   async (nativePlatform) => {
     const configPath = path.join(watchOutputRoot, 'native-colors.config.ts')

@@ -93,6 +93,12 @@
       "module": "./dist/esm/*/index.mjs",
       "import": "./dist/esm/*/index.mjs",
       "require": "./dist/cjs/*/index.cjs"
+    },
+    "./nativeColors": {
+      "types": "./types/nativeColors.d.ts",
+      "import": "./dist/esm/nativeColors.mjs",
+      "require": "./dist/cjs/nativeColors.cjs",
+      "default": "./dist/esm/nativeColors.mjs"
     }
   },
   "scripts": {

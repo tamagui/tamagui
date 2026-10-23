@@ -13,7 +13,6 @@
       "require": "./index.js"
     },
     "./pressability": "./pressability.js",
-    "./loadNativeModule": "./loadNativeModule.js",
     "./styleAttributes": "./styleAttributes.js",
     "./pressEvent": {
       "types": "./pressEvent.d.ts",
