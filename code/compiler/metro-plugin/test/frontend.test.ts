@@ -1,5 +1,5 @@
 import { execFile } from 'node:child_process'
-import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { promisify } from 'node:util'
 import { runInNewContext } from 'node:vm'
@@ -1167,6 +1167,82 @@ export const App = () => <View width={20} height={10} />
       expect((await cache.validate()).optionsHash).toBe(firstHash)
     } finally {
       await warm.close()
+    }
+  })
+
+  test('compiles a component imported through a subpath of a linked workspace package', async () => {
+    const fixtureRoot = await mkdtemp(join(packageRoot, 'test/.e4-linked-subpath-'))
+    temporaryRoots.push(fixtureRoot)
+    const projectRoot = join(fixtureRoot, 'app')
+    const appPath = join(projectRoot, 'src/App.tsx')
+    const uiRoot = join(fixtureRoot, 'packages/ui')
+    const appSource = `
+import { View } from 'fixture-ui/view'
+export const App = () => <View width={20} height={10} />
+`
+    await write(join(projectRoot, 'package.json'), '{"name":"e4-linked-subpath"}\n')
+    await write(appPath, appSource)
+    await write(
+      join(uiRoot, 'package.json'),
+      JSON.stringify({ name: 'fixture-ui', exports: { './view': './view.ts' } })
+    )
+    await write(join(uiRoot, 'view.ts'), 'export const View = (_props) => null\n')
+    // pnpm and workspaces link each package folder into node_modules
+    await mkdir(join(projectRoot, 'node_modules'), { recursive: true })
+    await symlink(uiRoot, join(projectRoot, 'node_modules/fixture-ui'), 'dir')
+
+    const loadedProject = loadTamaguiSync({
+      platform: 'native',
+      config: tamaguiConfigPath,
+      components: ['@tamagui/core'],
+    })
+    const viewInfo = loadedProject.components?.find(
+      ({ moduleName }) => moduleName === '@tamagui/core'
+    )?.nameToInfo.View
+    expect(viewInfo).toBeTruthy()
+    const reported: string[] = []
+    const frontend = new MetroCompilerFrontend({
+      projectRoot,
+      cacheRoot: join(fixtureRoot, 'cache'),
+      watch: false,
+      originalBabelTransformerPath: transformerPath,
+      loadCompilerProject: async () => ({
+        projectInfo: {
+          ...loadedProject,
+          components: [
+            { moduleName: 'fixture-ui/view', nameToInfo: { View: viewInfo! } },
+          ],
+        },
+        componentModules: [
+          { moduleName: 'fixture-ui/view', id: join(uiRoot, 'view.ts') },
+        ],
+        generation: 'e4-linked-subpath-v1',
+      }),
+      reportDiagnostic(diagnostic) {
+        reported.push(diagnostic.code)
+      },
+      resolver: {
+        sourceExts: ['js', 'jsx', 'ts', 'tsx'],
+        unstable_enablePackageExports: true,
+      },
+    })
+
+    try {
+      await frontend.ensureValidCache({
+        dev: false,
+        entryFiles: [appPath],
+        hot: false,
+        platform: 'ios',
+        transform: { experimentalImportSupport: true },
+      })
+      const entry = await new MetroCompilerCache(frontend.cacheRootFor('ios')).read(
+        appPath,
+        appSource
+      )
+      expect(reported).not.toContain('metro/resolve-failed')
+      expect(entry?.plan.stats.lowered).toBe(1)
+    } finally {
+      await frontend.close()
     }
   })
 })
