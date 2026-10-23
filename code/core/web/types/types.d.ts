@@ -3,7 +3,8 @@ import type { CoreStateModifierName, TransformAccumulator } from '@tamagui/style
 import type { Properties } from 'csstype';
 import type { UnprefixedCSSProperties } from './dom/styleTypes';
 import type { CSSProperties, ComponentType, Context, Dispatch, FunctionComponent, HTMLAttributes, ProviderExoticComponent, Ref as ReactRef, ReactNode, RefObject, SetStateAction } from 'react';
-import type { FontVariant, PressableProps, TextInstance as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, ViewInstance as View, ViewProps, ViewStyle } from '@tamagui/react-native-types';
+import type { FontVariant, NativeColorValue, PressableProps, TextInstance as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, ViewInstance as View, ViewProps, ViewStyle } from '@tamagui/react-native-types';
+import type { OpaqueColorValue } from '@tamagui/react-native-types/legacy';
 import type { NativeStyleEngineLinkHandle } from './helpers/nativeStyleEngine';
 import type { AnimatedTextChannel, NativeTextContext, NativeTextMetrics } from './helpers/nativeTextMetrics';
 export type { AnimatedTextChannel, NativeTextMetrics } from './helpers/nativeTextMetrics';
@@ -416,7 +417,7 @@ type LayoutValue = {
 export type DisposeFn = () => void;
 export type ConfigListener = (conf: TamaguiInternalConfig) => void;
 export type VariableVal = number | string | Variable | VariableValGeneric | PxValue;
-export type VariableColorVal = string | Variable;
+export type VariableColorVal = string | NativeColorValue | OpaqueColorValue | Variable;
 export type VariableValIn = string | number | PxValue;
 export type GenericVariables = {
     [key: string]: VariableValIn | {
@@ -492,7 +493,7 @@ export type VariableValGeneric = {
 type GenericTokens = CreateTokens;
 type GenericThemes = {
     [key: string]: Partial<TamaguiBaseTheme> & {
-        [key: string]: VariableVal;
+        [key: string]: VariableVal | NativeColorValue | OpaqueColorValue;
     };
 };
 export type CreateShorthands = {
@@ -907,7 +908,7 @@ export type CreateTamaguiProps = {
     tokens?: GenericTamaguiConfig['tokens'];
     themes?: {
         [key: string]: {
-            [key: string]: string | number | Variable;
+            [key: string]: string | number | NativeColorValue | OpaqueColorValue | Variable;
         };
     };
     /**

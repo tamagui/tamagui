@@ -1,7 +1,5 @@
-const { readFileSync } = require('node:fs')
-const { dirname, join, resolve } = require('node:path')
-const Module = require('node:module')
-const { transformSync } = require('@babel/core')
+const { dirname, join } = require('node:path')
+const createNativeModuleLoader = require('./loadNativeModule')
 
 // run react native's actual press state machine in native tests. only the
 // platform bindings are mocked; geometry, timers and cancellation stay real.
@@ -27,36 +25,6 @@ const bindings = new Map([
     },
   ],
 ])
-const cache = new Map()
-
-function load(filename) {
-  if (bindings.has(filename)) return bindings.get(filename)
-  if (cache.has(filename)) return cache.get(filename).exports
-  const compiled = new Module(filename, module)
-  compiled.paths = Module._nodeModulePaths(dirname(filename))
-  compiled.require = (request) => {
-    if (request.startsWith('.')) {
-      const path = resolve(dirname(filename), request)
-      return load(path.endsWith('.js') ? path : path + '.js')
-    }
-    return Module.prototype.require.call(compiled, request)
-  }
-  cache.set(filename, compiled)
-  const output = transformSync(readFileSync(filename, 'utf8'), {
-    filename,
-    babelrc: false,
-    configFile: false,
-    presets: [
-      [require.resolve('@react-native/babel-preset'), { enableBabelRuntime: false }],
-    ],
-  })
-  Function(
-    'require',
-    'module',
-    'exports',
-    output.code
-  )(compiled.require, compiled, compiled.exports)
-  return compiled.exports
-}
+const load = createNativeModuleLoader(bindings)
 
 module.exports = load(join(root, 'Libraries/Pressability/usePressability.js')).default

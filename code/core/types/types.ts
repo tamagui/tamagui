@@ -166,6 +166,8 @@ export interface TamaguiBuildOptions {
 
 export interface TamaguiOptions extends TamaguiBuildOptions {
   platform?: 'native' | 'web'
+  /** native config OS; defaults to EXPO_OS or ios. One supplies it for native builds. */
+  nativePlatform?: 'ios' | 'android' | 'macos'
 }
 
 // for cli

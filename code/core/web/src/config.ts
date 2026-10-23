@@ -167,7 +167,8 @@ export const getTokenValue = (value: Token | 'unset' | 'auto', group?: keyof Tok
  */
 export const useTokens = getTokens
 
-export const getThemes = () => getConfigFromGlobalOrLocal()!.themes
+export const getThemes = (): TamaguiInternalConfig['themes'] =>
+  getConfigFromGlobalOrLocal()!.themes
 
 export const updateConfig = (key: string, value: any) => {
   // for usage internally only

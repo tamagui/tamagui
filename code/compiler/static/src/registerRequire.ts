@@ -106,7 +106,13 @@ function getStaticExtractionStub(path: string) {
 
 export function registerRequire(
   platform: TamaguiPlatform,
-  { ignoredModules = [] }: { ignoredModules?: string[] } = {
+  {
+    ignoredModules = [],
+    nativePlatform,
+  }: {
+    ignoredModules?: string[]
+    nativePlatform?: 'ios' | 'android' | 'macos'
+  } = {
     ignoredModules: [],
   }
 ) {
@@ -214,6 +220,16 @@ export function registerRequire(
 
     if (path === 'react-native/package.json') {
       return og.apply(this, ['react-native-web/package.json'])
+    }
+
+    if (platform === 'native' && path === 'react-native') {
+      const { getNativeColorFactories } = og.apply(this, [
+        '@tamagui/fake-react-native/nativeColors',
+      ])
+      return {
+        ...og.apply(this, ['@tamagui/react-native-web-lite']),
+        ...getNativeColorFactories(dirname(this.filename), nativePlatform),
+      }
     }
 
     if (
