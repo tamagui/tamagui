@@ -13,6 +13,7 @@
       "require": "./index.js"
     },
     "./pressability": "./pressability.js",
+    "./nativeColors": "./nativeColors.js",
     "./styleAttributes": "./styleAttributes.js",
     "./pressEvent": {
       "types": "./pressEvent.d.ts",

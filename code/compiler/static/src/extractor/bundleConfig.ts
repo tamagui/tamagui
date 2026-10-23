@@ -249,6 +249,7 @@ function getBundleKey(props: TamaguiOptions) {
     components: props.components,
     config: props.config,
     platform: props.platform,
+    nativePlatform: props.nativePlatform,
     dangerouslyIgnoreStaticEvaluationModules:
       props.dangerouslyIgnoreStaticEvaluationModules,
   })
@@ -402,7 +403,10 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
     // so their contents are platform-specific. keep web and native on separate paths:
     // sharing one path let a native bundle be picked up as the web config (and vice
     // versa) by the mtime reuse check below, emitting web classes with no CSS variables.
-    const platformSuffix = (props.platform || 'web') === 'native' ? '.native' : '.web'
+    const platformSuffix =
+      props.platform === 'native'
+        ? `.native${props.nativePlatform ? `.${props.nativePlatform}` : ''}`
+        : '.web'
     // detect module format from config entry point
     const configFormat = configEntry ? detectModuleFormat(configEntry) : 'cjs'
     const configExt = configFormat === 'esm' ? '.mjs' : '.cjs'
@@ -489,6 +493,7 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
                 metafile: true,
                 dangerouslyIgnoreStaticEvaluationModules:
                   props.dangerouslyIgnoreStaticEvaluationModules,
+                nativePlatform: props.nativePlatform,
                 ...esbuildExtraOptions,
               },
               props.platform || 'web'
@@ -512,6 +517,7 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
               metafile: true,
               dangerouslyIgnoreStaticEvaluationModules:
                 props.dangerouslyIgnoreStaticEvaluationModules,
+              nativePlatform: props.nativePlatform,
               ...esbuildExtraOptions,
             },
             props.platform || 'web'
@@ -763,6 +769,7 @@ export async function evaluateComponentModule(
   process.env.TAMAGUI_IS_SERVER = 'true'
   const { unregister } = registerRequire(props.platform || 'web', {
     ignoredModules: props.dangerouslyIgnoreStaticEvaluationModules,
+    nativePlatform: props.nativePlatform,
   })
   try {
     try {
@@ -814,6 +821,7 @@ export async function loadComponentsInner(
 
   const key = JSON.stringify([
     props.platform,
+    props.nativePlatform,
     componentsModules,
     props.dangerouslyIgnoreStaticEvaluationModules,
   ])
@@ -824,6 +832,7 @@ export async function loadComponentsInner(
 
   const { unregister } = registerRequire(props.platform || 'web', {
     ignoredModules: props.dangerouslyIgnoreStaticEvaluationModules,
+    nativePlatform: props.nativePlatform,
   })
 
   try {
@@ -974,6 +983,7 @@ export function loadComponentsInnerSync(
 
   const key = JSON.stringify([
     props.platform,
+    props.nativePlatform,
     componentsModules,
     props.dangerouslyIgnoreStaticEvaluationModules,
   ])
@@ -984,6 +994,7 @@ export function loadComponentsInnerSync(
 
   const { unregister } = registerRequire(props.platform || 'web', {
     ignoredModules: props.dangerouslyIgnoreStaticEvaluationModules,
+    nativePlatform: props.nativePlatform,
   })
 
   try {

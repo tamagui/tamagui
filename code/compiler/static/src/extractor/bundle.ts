@@ -57,6 +57,7 @@ type Props = Omit<Partial<esbuild.BuildOptions>, 'entryPoints'> & {
   entryPoints: string[]
   resolvePlatformSpecificEntries?: boolean
   dangerouslyIgnoreStaticEvaluationModules?: string[]
+  nativePlatform?: 'ios' | 'android' | 'macos'
 }
 
 function getESBuildConfig(
@@ -64,6 +65,7 @@ function getESBuildConfig(
     entryPoints,
     resolvePlatformSpecificEntries,
     dangerouslyIgnoreStaticEvaluationModules = [],
+    nativePlatform,
     define: callerDefine,
     conditions: callerConditions = [],
     ...options
@@ -216,6 +218,30 @@ function getESBuildConfig(
       {
         name: 'external',
         setup(build) {
+          if (platform === 'native') {
+            build.onResolve({ filter: /^react-native$/ }, () => ({
+              path: 'react-native',
+              namespace: 'tamagui-native-evaluation',
+            }))
+            build.onLoad(
+              { filter: /.*/, namespace: 'tamagui-native-evaluation' },
+              () => ({
+                contents: `export * from '@tamagui/react-native-web-lite'
+import { getNativeColorFactories } from '@tamagui/fake-react-native/nativeColors'
+const colors = getNativeColorFactories(${JSON.stringify(build.initialOptions.absWorkingDir || process.cwd())}, ${JSON.stringify(nativePlatform)})
+export const { PlatformColor, DynamicColorIOS } = colors`,
+                loader: 'js',
+                resolveDir: build.initialOptions.absWorkingDir || process.cwd(),
+              })
+            )
+            build.onResolve(
+              { filter: /^@tamagui\/fake-react-native\/nativeColors$/ },
+              (args) => ({
+                path: args.path,
+                external: true,
+              })
+            )
+          }
           // only externalize @tamagui/core and @tamagui/web - these are provided at runtime
           // other @tamagui/* packages (like @tamagui/config/v6) must be bundled in to avoid
           // ESM race conditions when multiple threads require() them concurrently

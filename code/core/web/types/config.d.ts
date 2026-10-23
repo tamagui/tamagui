@@ -15,27 +15,7 @@ export declare const getTokenValue: (value: Token | 'unset' | 'auto', group?: ke
  * Note: this is the same as `getTokens`
  */
 export declare const useTokens: typeof getTokens;
-export declare const getThemes: () => {
-    [x: string]: {
-        [x: string]: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<number> | import("./types").Variable<import("./types").PxValue> | import("./types").Variable<import("./types").VariableValGeneric>;
-        background?: import("./types").Variable<any> | import("./types").Variable<undefined> | import("./types").Variable<string> | undefined;
-        backgroundHover?: import("./types").Variable<any> | import("./types").Variable<undefined> | import("./types").Variable<string> | undefined;
-        backgroundPress?: import("./types").Variable<any> | import("./types").Variable<undefined> | import("./types").Variable<string> | undefined;
-        backgroundFocus?: import("./types").Variable<any> | import("./types").Variable<undefined> | import("./types").Variable<string> | undefined;
-        color?: import("./types").Variable<any> | import("./types").Variable<undefined> | import("./types").Variable<string> | undefined;
-        colorHover?: import("./types").Variable<any> | import("./types").Variable<undefined> | import("./types").Variable<string> | undefined;
-        colorPress?: import("./types").Variable<any> | import("./types").Variable<undefined> | import("./types").Variable<string> | undefined;
-        colorFocus?: import("./types").Variable<any> | import("./types").Variable<undefined> | import("./types").Variable<string> | undefined;
-        borderColor?: import("./types").Variable<any> | import("./types").Variable<undefined> | import("./types").Variable<string> | undefined;
-        borderColorHover?: import("./types").Variable<any> | import("./types").Variable<undefined> | import("./types").Variable<string> | undefined;
-        borderColorPress?: import("./types").Variable<any> | import("./types").Variable<undefined> | import("./types").Variable<string> | undefined;
-        borderColorFocus?: import("./types").Variable<any> | import("./types").Variable<undefined> | import("./types").Variable<string> | undefined;
-        shadowColor?: import("./types").Variable<any> | import("./types").Variable<undefined> | import("./types").Variable<string> | undefined;
-        shadowColorHover?: import("./types").Variable<any> | import("./types").Variable<undefined> | import("./types").Variable<string> | undefined;
-        shadowColorPress?: import("./types").Variable<any> | import("./types").Variable<undefined> | import("./types").Variable<string> | undefined;
-        shadowColorFocus?: import("./types").Variable<any> | import("./types").Variable<undefined> | import("./types").Variable<string> | undefined;
-    };
-};
+export declare const getThemes: () => TamaguiInternalConfig['themes'];
 export declare const updateConfig: (key: string, value: any) => void;
 export declare const getFont: (name: string) => import("./types").GenericFont<string | number | symbol>;
 type DevConfig = {

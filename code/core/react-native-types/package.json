@@ -11,6 +11,9 @@
   ],
   "exports": {
     "./package.json": "./package.json",
+    "./legacy": {
+      "types": "./src/generated-legacy.d.ts"
+    },
     ".": {
       "react-native-legacy-deep-imports": {
         "types": "./src/legacy.d.ts"

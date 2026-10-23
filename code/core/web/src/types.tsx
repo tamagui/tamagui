@@ -20,6 +20,7 @@ import type {
 } from 'react'
 import type {
   FontVariant,
+  NativeColorValue,
   PressableProps,
   TextInstance as RNText,
   TextStyle as RNTextStyle,
@@ -28,6 +29,7 @@ import type {
   ViewProps,
   ViewStyle,
 } from '@tamagui/react-native-types'
+import type { OpaqueColorValue } from '@tamagui/react-native-types/legacy'
 
 import type { NativeStyleEngineLinkHandle } from './helpers/nativeStyleEngine'
 import type {
@@ -799,7 +801,7 @@ export type ConfigListener = (conf: TamaguiInternalConfig) => void
 // to generally order them as building up towards TamaguiConfig
 
 export type VariableVal = number | string | Variable | VariableValGeneric | PxValue
-export type VariableColorVal = string | Variable
+export type VariableColorVal = string | NativeColorValue | OpaqueColorValue | Variable
 
 // values accepted by createTamagui({ variables }) and inline <Theme> props
 export type VariableValIn = string | number | PxValue
@@ -869,7 +871,7 @@ export type VariableValGeneric = { __generic: 1 }
 type GenericTokens = CreateTokens
 type GenericThemes = {
   [key: string]: Partial<TamaguiBaseTheme> & {
-    [key: string]: VariableVal
+    [key: string]: VariableVal | NativeColorValue | OpaqueColorValue
   }
 }
 
@@ -1522,7 +1524,7 @@ export type CreateTamaguiProps = {
   tokens?: GenericTamaguiConfig['tokens']
   themes?: {
     [key: string]: {
-      [key: string]: string | number | Variable
+      [key: string]: string | number | NativeColorValue | OpaqueColorValue | Variable
     }
   }
 
