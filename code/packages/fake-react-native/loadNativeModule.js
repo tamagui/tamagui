@@ -1,10 +1,12 @@
 const { readFileSync } = require('node:fs')
 const { dirname, resolve } = require('node:path')
 const Module = require('node:module')
-const { transformSync } = require('@babel/core')
 
 // evaluate installed react native modules without loading their native bindings.
-module.exports = function createNativeModuleLoader(bindings = new Map()) {
+// babel resolves through ownerRequire, the package that declares it as a dependency.
+module.exports = function createNativeModuleLoader(ownerRequire, bindings = new Map()) {
+  const { transformSync } = ownerRequire('@babel/core')
+  const preset = ownerRequire.resolve('@react-native/babel-preset')
   const cache = new Map()
   function load(filename) {
     if (bindings.has(filename)) return bindings.get(filename)
@@ -23,9 +25,7 @@ module.exports = function createNativeModuleLoader(bindings = new Map()) {
       filename,
       babelrc: false,
       configFile: false,
-      presets: [
-        [require.resolve('@react-native/babel-preset'), { enableBabelRuntime: false }],
-      ],
+      presets: [[preset, { enableBabelRuntime: false }]],
     })
     Function(
       'require',

@@ -5,6 +5,7 @@ import { createRequire } from 'node:module'
 
 import { esbuildIgnoreFilesRegex } from './extractor/bundle'
 import { requireTamaguiCore } from './helpers/requireTamaguiCore'
+import { getNativeColorFactories } from './nativeColors'
 import {
   getStaticEvaluationModuleReplacement,
   isIgnoredStaticEvaluationModule,
@@ -223,9 +224,6 @@ export function registerRequire(
     }
 
     if (platform === 'native' && path === 'react-native') {
-      const { getNativeColorFactories } = og.apply(this, [
-        '@tamagui/fake-react-native/nativeColors',
-      ])
       return {
         ...og.apply(this, ['@tamagui/react-native-web-lite']),
         ...getNativeColorFactories(dirname(this.filename), nativePlatform),

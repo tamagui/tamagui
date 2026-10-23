@@ -448,7 +448,7 @@ function createNativeEvaluationPlugin(root: string, nativePlatform?: string): Pl
       const moduleName = modules.get(id)
       if (!moduleName) return
       const modulePath = resolve(moduleName)
-      const colorPath = resolve('@tamagui/fake-react-native/nativeColors')
+      const colorPath = resolve('@tamagui/static/nativeColors')
       const names = Object.keys(_pluginRequire(modulePath)).filter(
         (name) => name !== 'default' && name !== '__esModule'
       )
