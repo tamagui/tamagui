@@ -422,7 +422,10 @@ const _pluginRequire = createRequire(
 const resolve = (name: string) => _pluginRequire.resolve(name)
 const normalizePath = (value: string) => value.replace(/\\/g, '/')
 
-function createNativeEvaluationPlugin(root: string, nativePlatform?: string): Plugin {
+function createNativeEvaluationPlugin(
+  root: string,
+  nativePlatformLiteral?: string
+): Plugin {
   const facadeId = '\0tamagui-native-evaluation'
   const modules = new Map([
     [facadeId, '@tamagui/react-native-web-lite'],
@@ -449,17 +452,21 @@ function createNativeEvaluationPlugin(root: string, nativePlatform?: string): Pl
       if (!moduleName) return
       const modulePath = resolve(moduleName)
       const colorPath = resolve('@tamagui/static/nativeColors')
-      const names = Object.keys(_pluginRequire(modulePath)).filter(
-        (name) => name !== 'default' && name !== '__esModule'
-      )
+      const nativePlatform = nativePlatformLiteral
+        ? JSON.parse(nativePlatformLiteral)
+        : undefined
+      const names = Object.keys(
+        Static.requireNativeEvaluationModule(modulePath, nativePlatform)
+      ).filter((name) => name !== 'default' && name !== '__esModule')
       const colors =
         id === facadeId
-          ? `, ...require(${JSON.stringify(colorPath)}).getNativeColorFactories(${JSON.stringify(root)}, ${nativePlatform || 'undefined'})`
+          ? `, ...require(${JSON.stringify(colorPath)}).getNativeColorFactories(${JSON.stringify(root)}, ${nativePlatformLiteral || 'undefined'})`
           : ''
       if (id === facadeId) names.push('PlatformColor', 'DynamicColorIOS')
       return `import { createRequire } from 'node:module'
 const require = createRequire(${JSON.stringify(path.join(root, 'package.json'))})
-const rn = { ...require(${JSON.stringify(modulePath)})${colors} }
+const { requireNativeEvaluationModule } = require(${JSON.stringify(resolve('@tamagui/static'))})
+const rn = { ...requireNativeEvaluationModule(${JSON.stringify(modulePath)}, ${nativePlatformLiteral || 'undefined'})${colors} }
 export const { ${[...new Set(names)].join(', ')} } = rn
 export default rn`
     },
