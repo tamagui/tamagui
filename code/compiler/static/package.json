@@ -33,12 +33,6 @@
       "import": "./dist/esm/extractor/loadTamagui.mjs",
       "require": "./dist/cjs/extractor/loadTamagui.cjs",
       "default": "./dist/esm/extractor/loadTamagui.mjs"
-    },
-    "./nativeColors": {
-      "types": "./types/nativeColors.d.ts",
-      "import": "./dist/esm/nativeColors.mjs",
-      "require": "./dist/cjs/nativeColors.cjs",
-      "default": "./dist/esm/nativeColors.mjs"
     }
   },
   "publishConfig": {
