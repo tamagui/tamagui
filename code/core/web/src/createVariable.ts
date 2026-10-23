@@ -57,7 +57,12 @@ export function variableToString(vrble?: any, getValue = false) {
     if (!getValue && isWeb && vrble.variable) {
       return vrble.variable
     }
-    return `${vrble.val}`
+    // native colors are opaque objects that must reach the renderer unchanged.
+    const value = vrble.val
+    return !isWeb && value && typeof value === 'object' ? value : `${value}`
+  }
+  if (!isWeb && vrble && typeof vrble === 'object') {
+    return vrble
   }
   return `${vrble || ''}`
 }
@@ -70,8 +75,14 @@ export function getVariable(
   nameOrVariable: Variable | string | any,
   group: TokenCategories = 'size'
 ) {
-  // dynamic color-like
-  if (nameOrVariable?.dynamic) {
+  // native opaque colors are values, not token names.
+  if (
+    nameOrVariable?.dynamic ||
+    (!isWeb &&
+      nameOrVariable &&
+      typeof nameOrVariable === 'object' &&
+      !isVariable(nameOrVariable))
+  ) {
     return nameOrVariable
   }
   setDidGetVariableValue(true)
