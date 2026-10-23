@@ -5,7 +5,7 @@ import { createRequire } from 'node:module'
 
 import { esbuildIgnoreFilesRegex } from './extractor/bundle'
 import { requireTamaguiCore } from './helpers/requireTamaguiCore'
-import { getNativeColorFactories } from './nativeColors'
+import { getNativeColorFactories } from '@tamagui/react-native-web-lite/nativeColors'
 import {
   getStaticEvaluationModuleReplacement,
   isIgnoredStaticEvaluationModule,
@@ -178,6 +178,8 @@ export function registerRequire(
 
   Module.prototype.require = tamaguiRequire
 
+  let nativeModule: Record<string, unknown> | undefined
+
   function tamaguiRequire(this: any, path: string) {
     const staticExtractionStub = getStaticExtractionStub(path)
     if (staticExtractionStub) {
@@ -238,10 +240,10 @@ export function registerRequire(
     }
 
     if (platform === 'native' && path === 'react-native') {
-      return {
+      return (nativeModule ||= {
         ...og.apply(this, ['@tamagui/react-native-web-lite']),
-        ...getNativeColorFactories(dirname(this.filename), nativePlatform),
-      }
+        ...getNativeColorFactories(nativePlatform || process.env.EXPO_OS || 'ios'),
+      })
     }
 
     if (

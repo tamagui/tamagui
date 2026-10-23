@@ -9,7 +9,6 @@ import { detectModuleFormat } from './detectModuleFormat'
 import { esbuildAliasPlugin } from './esbuildAliasPlugin'
 import { resolveWebOrNativeSpecificEntry } from './loadTamagui'
 import { TsconfigPathsPlugin } from './esbuildTsconfigPaths'
-import { nativeColorsModulePath } from '../nativeColors'
 
 const nodeRequire = createRequire(
   typeof __filename === 'string' ? __filename : import.meta.url
@@ -227,20 +226,14 @@ function getESBuildConfig(
             build.onLoad(
               { filter: /.*/, namespace: 'tamagui-native-evaluation' },
               () => ({
-                // static owns these modules, so they never resolve from the consumer.
-                // node exposes the compiled cjs module to esm as its default export.
+                // resolve from the compiler and bundle only the pure native color helper.
                 contents: `export * from ${JSON.stringify(nodeRequire.resolve('@tamagui/react-native-web-lite'))}
-${detectedFormat === 'esm' ? `import nativeColors from 'tamagui-native-colors'` : `const nativeColors = require('tamagui-native-colors')`}
-const colors = nativeColors.getNativeColorFactories(${JSON.stringify(build.initialOptions.absWorkingDir || process.cwd())}, ${JSON.stringify(nativePlatform)})
-export const { PlatformColor, DynamicColorIOS } = colors`,
+import { getNativeColorFactories } from ${JSON.stringify(nodeRequire.resolve('@tamagui/react-native-web-lite/nativeColors'))}
+export const { PlatformColor, DynamicColorIOS } = getNativeColorFactories(${JSON.stringify(nativePlatform || process.env.EXPO_OS || 'ios')})`,
                 loader: 'js',
                 resolveDir: build.initialOptions.absWorkingDir || process.cwd(),
               })
             )
-            build.onResolve({ filter: /^tamagui-native-colors$/ }, () => ({
-              path: nativeColorsModulePath,
-              external: true,
-            }))
           }
           // only externalize @tamagui/core and @tamagui/web - these are provided at runtime
           // other @tamagui/* packages (like @tamagui/config/v6) must be bundled in to avoid

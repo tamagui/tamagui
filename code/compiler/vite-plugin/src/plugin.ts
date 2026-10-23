@@ -451,7 +451,7 @@ function createNativeEvaluationPlugin(
       const moduleName = modules.get(id)
       if (!moduleName) return
       const modulePath = resolve(moduleName)
-      const colorPath = resolve('@tamagui/static/nativeColors')
+      const colorPath = resolve('@tamagui/react-native-web-lite/nativeColors')
       const nativePlatform = nativePlatformLiteral
         ? JSON.parse(nativePlatformLiteral)
         : undefined
@@ -460,7 +460,7 @@ function createNativeEvaluationPlugin(
       ).filter((name) => name !== 'default' && name !== '__esModule')
       const colors =
         id === facadeId
-          ? `, ...require(${JSON.stringify(colorPath)}).getNativeColorFactories(${JSON.stringify(root)}, ${nativePlatformLiteral || 'undefined'})`
+          ? `, ...require(${JSON.stringify(colorPath)}).getNativeColorFactories(${nativePlatformLiteral || 'process.env.EXPO_OS || "ios"'})`
           : ''
       if (id === facadeId) names.push('PlatformColor', 'DynamicColorIOS')
       return `import { createRequire } from 'node:module'
