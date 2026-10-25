@@ -1,10 +1,10 @@
 import type { ScrollViewRef } from '@tamagui/scroll-view';
 import React from 'react';
-export declare const SheetScrollView: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, ScrollViewRef, Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/core").StackNonStyleProps, "onScroll" | "style"> & import("@tamagui/core").RNViewProps & Omit<import("@tamagui/react-native-types/src").ScrollViewProps, "contentContainerStyle" | "keyboardShouldPersistTaps" | "onMomentumScrollBegin" | "onMomentumScrollEnd" | "onScrollBeginDrag" | "onScrollEndDrag" | "onScrollToTop" | "refreshControl" | keyof import("@tamagui/core").RNViewProps | keyof import("@tamagui/core").StackNonStyleProps> & {
-    style?: import("@tamagui/core").StackNonStyleProps['style'];
-    contentContainerStyle?: import("@tamagui/core").StylePiece | import("@tamagui/core").StackNonStyleProps['style'];
+export declare const SheetScrollView: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, ScrollViewRef, Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/web").StackNonStyleProps, "onScroll" | "style"> & import("@tamagui/web").RNViewProps & Omit<import("@tamagui/react-native-types").ScrollViewProps, "contentContainerStyle" | "keyboardShouldPersistTaps" | "onMomentumScrollBegin" | "onMomentumScrollEnd" | "onScrollBeginDrag" | "onScrollEndDrag" | "onScrollToTop" | "refreshControl" | keyof import("@tamagui/web").RNViewProps | keyof import("@tamagui/web").StackNonStyleProps> & {
+    style?: import("@tamagui/web").StackNonStyleProps['style'];
+    contentContainerStyle?: import("@tamagui/web").StylePiece | import("@tamagui/web").StackNonStyleProps['style'];
     refreshControl?: React.ReactElement<{
-        style?: import("@tamagui/core").StackNonStyleProps['style'];
+        style?: import("@tamagui/web").StackNonStyleProps['style'];
     }>;
     keyboardShouldPersistTaps?: boolean | 'always' | 'never' | 'handled';
     onScroll?: import("@tamagui/scroll-view").WebScrollEventHandler;
@@ -15,7 +15,7 @@ export declare const SheetScrollView: import("@tamagui/core").TamaguiComponent<i
     onMomentumScrollEnd?: import("@tamagui/scroll-view").WebScrollEventHandler;
 } & React.RefAttributes<ScrollViewRef>, "scope"> & Omit<{}, "scope"> & {
     scope?: import("./types").SheetScopes;
-}, import("@tamagui/core").StackStyleBase, Omit<{}, "scope">, {
+}, import("@tamagui/web").StackStyleBase, Omit<{}, "scope">, {
     acceptsClassName: true;
     neverFlatten: true;
 }>;
