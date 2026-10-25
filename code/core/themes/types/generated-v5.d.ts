@@ -236,9 +236,30 @@ export type Theme = {
     background002: string;
     background001: string;
     outlineColor: string;
+} & {
+    [K in keyof typeof kebabKeys as (typeof kebabKeys)[K]]: string;
+};
+declare const kebabKeys: {
+    readonly backgroundHover: 'background-hover';
+    readonly backgroundPress: 'background-press';
+    readonly backgroundFocus: 'background-focus';
+    readonly backgroundActive: 'background-active';
+    readonly borderColor: 'border-color';
+    readonly borderColorHover: 'border-color-hover';
+    readonly borderColorPress: 'border-color-press';
+    readonly borderColorFocus: 'border-color-focus';
+    readonly colorHover: 'color-hover';
+    readonly colorPress: 'color-press';
+    readonly colorFocus: 'color-focus';
+    readonly placeholderColor: 'placeholder-color';
+    readonly outlineColor: 'outline-color';
+    readonly shadowColor: 'shadow-color';
+    readonly accentBackground: 'accent-background';
+    readonly accentColor: 'accent-color';
 };
 export declare const colors: string[];
 export type ThemeNames = 'light' | 'dark' | 'light_accent' | 'dark_accent' | 'light_black' | 'light_white' | 'light_gray' | 'light_blue' | 'light_red' | 'light_yellow' | 'light_green' | 'light_orange' | 'light_pink' | 'light_purple' | 'light_teal' | 'light_neutral' | 'dark_black' | 'dark_white' | 'dark_gray' | 'dark_blue' | 'dark_red' | 'dark_yellow' | 'dark_green' | 'dark_orange' | 'dark_pink' | 'dark_purple' | 'dark_teal' | 'dark_neutral' | 'light_surface1' | 'light_white_surface1' | 'light_surface2' | 'light_white_surface2' | 'dark_surface1' | 'dark_black_surface1' | 'dark_surface2' | 'dark_black_surface2' | 'light_black_accent' | 'light_black_surface1' | 'light_black_surface2' | 'light_white_accent' | 'light_gray_accent' | 'light_gray_surface1' | 'light_gray_surface2' | 'light_blue_accent' | 'light_blue_surface1' | 'light_blue_surface2' | 'light_red_accent' | 'light_red_surface1' | 'light_red_surface2' | 'light_yellow_accent' | 'light_yellow_surface1' | 'light_yellow_surface2' | 'light_green_accent' | 'light_green_surface1' | 'light_green_surface2' | 'light_orange_accent' | 'light_orange_surface1' | 'light_orange_surface2' | 'light_pink_accent' | 'light_pink_surface1' | 'light_pink_surface2' | 'light_purple_accent' | 'light_purple_surface1' | 'light_purple_surface2' | 'light_teal_accent' | 'light_teal_surface1' | 'light_teal_surface2' | 'light_neutral_accent' | 'light_neutral_surface1' | 'light_neutral_surface2' | 'dark_black_accent' | 'dark_white_accent' | 'dark_white_surface1' | 'dark_white_surface2' | 'dark_gray_accent' | 'dark_gray_surface1' | 'dark_gray_surface2' | 'dark_blue_accent' | 'dark_blue_surface1' | 'dark_blue_surface2' | 'dark_red_accent' | 'dark_red_surface1' | 'dark_red_surface2' | 'dark_yellow_accent' | 'dark_yellow_surface1' | 'dark_yellow_surface2' | 'dark_green_accent' | 'dark_green_surface1' | 'dark_green_surface2' | 'dark_orange_accent' | 'dark_orange_surface1' | 'dark_orange_surface2' | 'dark_pink_accent' | 'dark_pink_surface1' | 'dark_pink_surface2' | 'dark_purple_accent' | 'dark_purple_surface1' | 'dark_purple_surface2' | 'dark_teal_accent' | 'dark_teal_surface1' | 'dark_teal_surface2' | 'dark_neutral_accent' | 'dark_neutral_surface1' | 'dark_neutral_surface2';
 export type Themes = Record<ThemeNames, Theme>;
 export declare const themes: Themes;
+export {};
 //# sourceMappingURL=generated-v5.d.ts.map
