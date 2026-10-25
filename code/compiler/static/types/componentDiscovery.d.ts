@@ -8,6 +8,7 @@ import type { CompilerComponentRegistry } from './compilerHost';
 export type ComponentModuleEvaluator = (module: {
     id: string;
     specifier: string;
+    importer: string;
 }) => Promise<Record<string, unknown> | null>;
 /**
  * Finds the component modules a file uses that the configured `components`

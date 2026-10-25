@@ -72,7 +72,11 @@ export type ViteTamaguiLoader = {
    * compiler's component discovery. Null when the environment is not ready or
    * the module cannot run in node; the compiler then leaves its elements alone.
    */
-  evaluateModule(specifier: string): Promise<Record<string, unknown> | null>
+  evaluateModule(module: {
+    id: string
+    specifier: string
+    importer: string
+  }): Promise<Record<string, unknown> | null>
   loadTamaguiBuildConfig(): Promise<TamaguiOptions>
   setEnvironment(next: RunnableDevEnvironment, options?: { owned?: boolean }): void
   invalidate(file?: string): void
@@ -307,13 +311,20 @@ export function createViteTamaguiLoader(
     isEvaluationDependency: (id: string) =>
       evaluationDependencies.has(normalizeDependency(id)),
     evaluateProjectModules,
-    async evaluateModule(specifier) {
+    async evaluateModule({ id, specifier, importer }) {
       if (!environment) return null
       try {
-        return (await environment.runner.import(specifier)) as Record<string, unknown>
+        // the host resolved this id for the importer. a package Vite externalizes
+        // must load through node like any external import, because the runner
+        // would evaluate its absolute path as an ES module and fail on CJS.
+        const fetched = await environment.fetchModule(specifier, importer)
+        if ('externalize' in fetched) {
+          return (await import(fetched.externalize)) as Record<string, unknown>
+        }
+        return (await environment.runner.import(id)) as Record<string, unknown>
       } catch (error) {
         if (process.env.DEBUG === 'tamagui') {
-          console.info(`[tamagui] component discovery skipped ${specifier}:`, error)
+          console.info(`[tamagui] component discovery skipped ${id}:`, error)
         }
         return null
       }

@@ -43,7 +43,11 @@ export type ViteTamaguiLoader = {
      * compiler's component discovery. Null when the environment is not ready or
      * the module cannot run in node; the compiler then leaves its elements alone.
      */
-    evaluateModule(id: string): Promise<Record<string, unknown> | null>;
+    evaluateModule(module: {
+        id: string;
+        specifier: string;
+        importer: string;
+    }): Promise<Record<string, unknown> | null>;
     loadTamaguiBuildConfig(): Promise<TamaguiOptions>;
     setEnvironment(next: RunnableDevEnvironment, options?: {
         owned?: boolean;
