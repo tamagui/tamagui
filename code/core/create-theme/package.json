@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/create-theme",
-  "version": "3.1.1",
+  "version": "3.1.3",
   "license": "MIT",
   "files": [
     "src",
@@ -37,6 +37,6 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "vitest": "4.1.0"
+    "vitest": "4.1.11"
   }
 }

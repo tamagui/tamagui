@@ -126,7 +126,7 @@ export function createViteTamaguiLoader(
     if (loadPromise) return loadPromise
 
     const pending = Static.loadTamaguiBuildConfigAsync(
-      { ...optionsIn, platform: 'web' },
+      { platform: 'web', ...optionsIn },
       viteBuildConfigLoader
     ).then(
       (options) => {
@@ -246,7 +246,7 @@ export function createViteTamaguiLoader(
       let evaluated: EvaluatedProjectModules | null = null
       return Static.loadCompilerProject({
         root: environment.config.root,
-        target: 'web',
+        target: options.platform || 'web',
         options,
         generation: `vite:${projectGeneration}`,
         hostVersions: vitePluginVersions,

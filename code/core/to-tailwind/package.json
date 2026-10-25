@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/to-tailwind",
-  "version": "3.1.1",
+  "version": "3.1.3",
   "private": false,
   "type": "module",
   "sideEffects": false,
@@ -40,6 +40,6 @@
     "@tamagui/style-grammar": "workspace:*"
   },
   "devDependencies": {
-    "vitest": "4.1.0"
+    "vitest": "4.1.11"
   }
 }

@@ -1,7 +1,12 @@
-import * as assert from 'assert'
 import { by, element, waitFor } from 'detox'
 import { safeLaunchApp } from './utils/detox'
-import { getDominantColor, isGreenish, isReddish } from './utils/colors'
+import {
+  formatRGB,
+  getDominantColor,
+  isGreenish,
+  isReddish,
+  type RGB,
+} from './utils/colors'
 
 jest.retryTimes(0)
 
@@ -17,13 +22,26 @@ describe('NativeRegistryFreezeReveal', () => {
   }, 360000)
 
   it('repaints a view revealed after a theme switch made while it was frozen', async () => {
-    const color = async (name: string) =>
-      getDominantColor(await element(by.id('freeze-swatch')).takeScreenshot(name))
+    // the engine commits theme changes to the native tree outside react, and
+    // detox's idle sync can return before ios mounts that commit, so a read
+    // right after a tap awaits the paint
+    const paints = async (name: string, matches: (color: RGB) => boolean) => {
+      const deadline = Date.now() + 5000
+      for (;;) {
+        const color = getDominantColor(
+          await element(by.id('freeze-swatch')).takeScreenshot(name)
+        )
+        if (matches(color)) return
+        if (Date.now() > deadline) {
+          throw new Error(`${name}: swatch stayed ${formatRGB(color)}`)
+        }
+      }
+    }
 
-    assert.ok(isReddish(await color('freeze-mounted')))
+    await paints('freeze-mounted', isReddish)
     // visible: the engine paints green natively while react's props stay red
     await element(by.id('freeze-theme')).tap()
-    assert.ok(isGreenish(await color('freeze-native-green')))
+    await paints('freeze-native-green', isGreenish)
 
     // frozen: switching back to red reaches no linked view
     await element(by.id('freeze-toggle')).tap()
@@ -34,6 +52,6 @@ describe('NativeRegistryFreezeReveal', () => {
     await waitFor(element(by.id('freeze-swatch')))
       .toBeVisible()
       .withTimeout(10000)
-    assert.ok(isReddish(await color('freeze-revealed')))
+    await paints('freeze-revealed', isReddish)
   })
 })

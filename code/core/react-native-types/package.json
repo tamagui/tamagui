@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-types",
-  "version": "3.1.1",
+  "version": "3.1.3",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -11,6 +11,9 @@
   ],
   "exports": {
     "./package.json": "./package.json",
+    "./legacy": {
+      "types": "./src/generated-legacy.d.ts"
+    },
     ".": {
       "react-native-legacy-deep-imports": {
         "types": "./src/legacy.d.ts"

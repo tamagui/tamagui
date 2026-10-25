@@ -1455,6 +1455,11 @@ export function createTamaguiCompilerHost(
     }
     const row = TAGS[tag]
     const textLike = row.backing === 'text' || row.backing === 'textinput'
+    const moduleName = modulesById.get(identity.resolvedId)
+    const frontend = moduleName
+      ? componentsByModule.get(moduleName)?.nameToInfo[textLike ? 'Text' : 'View']
+          ?.staticConfig.styleFrontend
+      : undefined
     const base = (textLike ? core.Text : core.View)?.staticConfig as
       | StaticConfig
       | undefined
@@ -1481,6 +1486,7 @@ export function createTamaguiCompilerHost(
       displayName: tag,
       staticConfig: normalizeStaticConfig({
         ...base,
+        styleFrontend: frontend,
         isDOM: true,
         isInput: row.backing === 'textinput',
         // CSS text properties may be authored on any element and inherited by

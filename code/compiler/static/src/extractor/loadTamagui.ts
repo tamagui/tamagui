@@ -374,6 +374,7 @@ export function loadTamaguiSync({
 
   const { unregister } = registerRequire(props.platform || 'web', {
     ignoredModules: props.dangerouslyIgnoreStaticEvaluationModules,
+    nativePlatform: props.nativePlatform,
   })
 
   try {

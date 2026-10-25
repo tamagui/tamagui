@@ -692,3 +692,15 @@ values. No behavior assertion, compiler violation gate or forbidden-module
 gate changes. Source attribution and preserved membership checks are recorded
 in style-props-architecture-report.md. Required CI validates these recorded
 values on the next beta push.
+
+## Security toolchain baseline (2026-10-21)
+
+The security maintenance PR pins Node 24.22.1 and updates compatible build
+packages, including Vite. Rebuilding the whole workspace with `bun run build:js
+--concurrency 1` and recording the existing styled-view fixture measures 86,455
+raw bytes and 31,820 gzip-9 bytes on zlib 1.3.2.1-motley-285e94b. The previous
+record was 86,412 raw and 31,733 gzip bytes on Node 24.16.0 / zlib 1.3.1-e00f703.
+The raw artifact therefore differs by 43 bytes; the 87-byte gzip difference
+cannot be attributed solely to compression. It remains below the previous
+31,883-byte ceiling. The new record keeps the existing 150-byte slack and
+changes no fixture, runtime source or size-check logic.

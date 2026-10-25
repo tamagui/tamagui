@@ -245,7 +245,7 @@ jobs:
 
           # build a single regex from all dependency directories + root config files
           PATTERN=$(echo "$DEP_DIRS" | paste -sd'|' -)
-          FULL_PATTERN="^($PATTERN)/|^(package\.json|bun\.lock|turbo\.json)$"
+          FULL_PATTERN="^($PATTERN)/|^(package\.json|bun\.lock|turbo\.json)$|^\.github/(workflows/checks\.yaml$|actions/install/)"
 
           CHANGED=$(git diff --name-only "$BASE" HEAD)
 
@@ -317,6 +317,15 @@ jobs:
             --project=animated-motion
         timeout-minutes: 20
 
+      - name: Retain InputRef failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: input-ref-failure-${{ strategy.job-index }}
+          path: code/kitchen-sink/test-results/InputRef-*
+          if-no-files-found: ignore
+          retention-days: 3
+
   # The four webkit projects are 30 tests across 6 files, and they are the only
   # reason anything in this workflow runs `playwright install-deps`. Splitting
   # them out keeps that apt call, which intermittently hangs on a slow Azure
@@ -355,6 +364,10 @@ jobs:
 
       - name: Install Playwright system dependencies
         run: |
+          # a slow but responsive azure mirror never reaches apt's fallback.
+          # keep the runner's existing ubuntu archive and security mirrors.
+          sudo sed -i '\|^http://azure\.archive\.ubuntu\.com/ubuntu/|d' /etc/apt/apt-mirrors.txt
+
           sudo tee /etc/apt/apt.conf.d/80-ci-retries > /dev/null <<'APT'
           Acquire::Retries "3";
           Acquire::http::Timeout "30";

@@ -478,6 +478,92 @@ test('clears loader state when closing an owned environment fails', async () => 
   expect(loader.getTamaguiOptions()).toBeNull()
 })
 
+test.each(['ios', 'android', 'macos'] as const)(
+  'evaluates %s theme factories before web aliases with extraction enabled',
+  async (nativePlatform) => {
+    const configPath = path.join(watchOutputRoot, 'native-colors.config.ts')
+    await mkdir(watchOutputRoot, { recursive: true })
+    await writeFile(
+      configPath,
+      `import { createTamagui } from 'tamagui'
+import { defaultConfig } from '@tamagui/config/v6'
+import { PlatformColor, DynamicColorIOS } from 'react-native'
+export const color = PlatformColor('labelColor')
+export const dynamicFactory = DynamicColorIOS
+export const background = ${nativePlatform === 'android' ? "'#fff'" : "DynamicColorIOS({ light: '#fff', dark: '#000' })"}
+export default createTamagui({ ...defaultConfig, themes: {
+  light: { ...defaultConfig.themes.light, color, background },
+  dark: { ...defaultConfig.themes.dark, color, background },
+} })`
+    )
+    const options = {
+      root: fixtureRoot,
+      config: configPath,
+      components: ['@tamagui/core'],
+      platform: 'native' as const,
+      nativePlatform,
+    }
+    const server = await createServer({
+      configFile: false,
+      root: fixtureRoot,
+      logLevel: 'silent',
+      server: { middlewareMode: true },
+      resolve: { alias: { 'react-native': fixtureRequire.resolve('react-native-web') } },
+      plugins: [tamaguiPlugin(options)],
+    })
+    servers.push(server)
+    const environment = server.environments[TAMAGUI_EVALUATION_ENVIRONMENT]
+    expect(isRunnableDevEnvironment(environment)).toBe(true)
+    if (!isRunnableDevEnvironment(environment)) throw new Error('Expected module runner')
+    const loader = createViteTamaguiLoader(options)
+    loader.setEnvironment(environment)
+    expect((await loader.loadTamaguiBuildConfig()).platform).toBe('native')
+    const project = await loader.getCompilerProject()
+    const evaluated = await environment.runner.import(configPath)
+    expect(project.projectInfo.tamaguiConfig?.themes.light.color.val).toBe(
+      evaluated.color
+    )
+    expect(project.projectInfo.tamaguiConfig?.themes.light.background.val).toBe(
+      evaluated.background
+    )
+    expect(evaluated.color).toEqual(
+      nativePlatform === 'android'
+        ? { resource_paths: ['labelColor'] }
+        : { semantic: ['labelColor'] }
+    )
+    if (nativePlatform === 'android') {
+      expect(() => evaluated.dynamicFactory({ light: '#fff', dark: '#000' })).toThrow(
+        'DynamicColorIOS is not available'
+      )
+    } else {
+      expect(evaluated.background).toMatchObject({
+        dynamic: { light: '#fff', dark: '#000' },
+      })
+    }
+    expect(environment.config.define['process.env.TAMAGUI_TARGET']).toBe('"native"')
+
+    // the native provider uses the static evaluator rather than Vite's runner.
+    const nativeProject = await Static.loadCompilerProject({
+      root: fixtureRoot,
+      target: 'native',
+      options,
+      rebuild: true,
+      async resolveComponents(moduleNames) {
+        return moduleNames.map((moduleName) => ({
+          moduleName,
+          id: fixtureRequire.resolve(moduleName),
+        }))
+      },
+    })
+    expect(nativeProject.projectInfo.tamaguiConfig?.themes.light.color.val).toEqual(
+      evaluated.color
+    )
+    expect(nativeProject.projectInfo.tamaguiConfig?.themes.light.background.val).toEqual(
+      evaluated.background
+    )
+  }
+)
+
 test('native provider lowers source in One Rolldown for iOS and Android', async () => {
   const outputCSS = path.join(watchOutputRoot, 'native-output.css')
   const nativeRoot = path.join(watchOutputRoot, 'native-project')
@@ -489,8 +575,13 @@ test('native provider lowers source in One Rolldown for iOS and Android', async 
       rootConfigPath,
       `const { createTamagui } = require('@tamagui/core')
 const { defaultConfig } = require('@tamagui/config/v6')
+const { PlatformColor } = require('react-native')
 module.exports = createTamagui({
   ...defaultConfig,
+  themes: {
+    light: { ...defaultConfig.themes.light, color: PlatformColor('labelColor') },
+    dark: { ...defaultConfig.themes.dark, color: PlatformColor('labelColor') },
+  },
   tokens: {
     ...defaultConfig.tokens,
     space: { ...defaultConfig.tokens.space, fixtureNative: ${space} },

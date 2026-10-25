@@ -5,6 +5,7 @@ import { createRequire } from 'node:module'
 
 import { esbuildIgnoreFilesRegex } from './extractor/bundle'
 import { requireTamaguiCore } from './helpers/requireTamaguiCore'
+import { getNativeColorFactories } from '@tamagui/react-native-web-lite/nativeColors'
 import {
   getStaticEvaluationModuleReplacement,
   isIgnoredStaticEvaluationModule,
@@ -43,6 +44,20 @@ class StaticEvaluationError extends Error {
 const compiled = {}
 export function setRequireResult(name: string, result: any) {
   compiled[name] = result
+}
+
+// evaluate the whole native dependency graph under the compiler's require hook.
+// both export discovery and generated vite facades use this boundary.
+export function requireNativeEvaluationModule(
+  modulePath: string,
+  nativePlatform?: 'ios' | 'android' | 'macos'
+) {
+  const registration = registerRequire('native', { nativePlatform })
+  try {
+    return nodeRequire(modulePath)
+  } finally {
+    registration.unregister()
+  }
 }
 
 function getStaticExtractionStub(path: string) {
@@ -106,7 +121,13 @@ function getStaticExtractionStub(path: string) {
 
 export function registerRequire(
   platform: TamaguiPlatform,
-  { ignoredModules = [] }: { ignoredModules?: string[] } = {
+  {
+    ignoredModules = [],
+    nativePlatform,
+  }: {
+    ignoredModules?: string[]
+    nativePlatform?: 'ios' | 'android' | 'macos'
+  } = {
     ignoredModules: [],
   }
 ) {
@@ -156,6 +177,8 @@ export function registerRequire(
   isRegistered = true
 
   Module.prototype.require = tamaguiRequire
+
+  let nativeModule: Record<string, unknown> | undefined
 
   function tamaguiRequire(this: any, path: string) {
     const staticExtractionStub = getStaticExtractionStub(path)
@@ -214,6 +237,13 @@ export function registerRequire(
 
     if (path === 'react-native/package.json') {
       return og.apply(this, ['react-native-web/package.json'])
+    }
+
+    if (platform === 'native' && path === 'react-native') {
+      return (nativeModule ||= {
+        ...og.apply(this, ['@tamagui/react-native-web-lite']),
+        ...getNativeColorFactories(nativePlatform || process.env.EXPO_OS || 'ios'),
+      })
     }
 
     if (

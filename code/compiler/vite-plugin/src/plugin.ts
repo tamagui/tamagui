@@ -329,6 +329,11 @@ function createServeEvaluationConfig(
     }
     return []
   })
+  if (environment.define?.['process.env.TAMAGUI_TARGET'] === '"native"') {
+    plugins.unshift(
+      createNativeEvaluationPlugin(config.root, environment.define['process.env.EXPO_OS'])
+    )
+  }
   const resolve = getEvaluationResolve(
     environment.resolve,
     config.root,
@@ -359,6 +364,11 @@ async function createOwnedEvaluationConfig(
   const plugins = environment.plugins
     .filter(isEvaluationUserPlugin)
     .map((plugin) => createEvaluationPluginFacade(plugin))
+  if (environment.define?.['process.env.TAMAGUI_TARGET'] === '"native"') {
+    plugins.unshift(
+      createNativeEvaluationPlugin(config.root, environment.define['process.env.EXPO_OS'])
+    )
+  }
   const resolve = getEvaluationResolve(
     environment.resolve,
     config.root,
@@ -411,6 +421,57 @@ const _pluginRequire = createRequire(
 )
 const resolve = (name: string) => _pluginRequire.resolve(name)
 const normalizePath = (value: string) => value.replace(/\\/g, '/')
+
+function createNativeEvaluationPlugin(
+  root: string,
+  nativePlatformLiteral?: string
+): Plugin {
+  const facadeId = '\0tamagui-native-evaluation'
+  const modules = new Map([
+    [facadeId, '@tamagui/react-native-web-lite'],
+    [`${facadeId}:core`, '@tamagui/core/native'],
+    [`${facadeId}:tamagui`, 'tamagui/native'],
+  ])
+  return {
+    name: 'tamagui-native-evaluation',
+    resolveId: {
+      order: 'pre',
+      handler(source) {
+        // run before the app's web aliases, only in the compiler environment.
+        if (source === 'react-native') return facadeId
+        if (source === '@tamagui/core' || source === '@tamagui/web') {
+          return `${facadeId}:core`
+        }
+        if (source === 'tamagui') {
+          return `${facadeId}:tamagui`
+        }
+      },
+    },
+    load(id) {
+      const moduleName = modules.get(id)
+      if (!moduleName) return
+      const modulePath = resolve(moduleName)
+      const colorPath = resolve('@tamagui/react-native-web-lite/nativeColors')
+      const nativePlatform = nativePlatformLiteral
+        ? JSON.parse(nativePlatformLiteral)
+        : undefined
+      const names = Object.keys(
+        Static.requireNativeEvaluationModule(modulePath, nativePlatform)
+      ).filter((name) => name !== 'default' && name !== '__esModule')
+      const colors =
+        id === facadeId
+          ? `, ...require(${JSON.stringify(colorPath)}).getNativeColorFactories(${nativePlatformLiteral || 'process.env.EXPO_OS || "ios"'})`
+          : ''
+      if (id === facadeId) names.push('PlatformColor', 'DynamicColorIOS')
+      return `import { createRequire } from 'node:module'
+const require = createRequire(${JSON.stringify(path.join(root, 'package.json'))})
+const { requireNativeEvaluationModule } = require(${JSON.stringify(resolve('@tamagui/static'))})
+const rn = { ...requireNativeEvaluationModule(${JSON.stringify(modulePath)}, ${nativePlatformLiteral || 'undefined'})${colors} }
+export const { ${[...new Set(names)].join(', ')} } = rn
+export default rn`
+    },
+  }
+}
 
 const PLUGIN_INSTANCE_KEY = '__tamagui_vite_plugin_instance__'
 
@@ -594,7 +655,12 @@ function createTamaguiNativePlugin(
         { ...tamaguiOptionsIn, root, platform: 'native', outputCSS: undefined },
         viteBuildConfigLoader
       )
-      const options = { ...loadedOptions, root, outputCSS: undefined }
+      const options = {
+        ...loadedOptions,
+        root,
+        nativePlatform: nativeContext?.platform || loadedOptions.nativePlatform,
+        outputCSS: undefined,
+      }
       nativeOptions = options
       for (const dependency of Static.getTamaguiBuildConfigDependencies(loadedOptions)) {
         projectDependencies.add(normalizePath(dependency))
@@ -859,7 +925,9 @@ export function createTamaguiPlugins({
 
   const getEvaluationEnvironmentOptions = (
     resolvedRoot: string,
-    userNoExternal: EvaluationNoExternal
+    userNoExternal: EvaluationNoExternal,
+    platform: TamaguiOptions['platform'],
+    nativePlatform: TamaguiOptions['nativePlatform']
   ): EnvironmentOptions => ({
     consumer: 'server',
     keepProcessEnv: true,
@@ -867,7 +935,8 @@ export function createTamaguiPlugins({
       'process.env.IS_STATIC': JSON.stringify('is_static'),
       'process.env.TAMAGUI_IS_CLIENT': JSON.stringify(false),
       'process.env.TAMAGUI_IS_SERVER': JSON.stringify(true),
-      'process.env.TAMAGUI_TARGET': JSON.stringify('web'),
+      'process.env.TAMAGUI_TARGET': JSON.stringify(platform || 'web'),
+      ...(nativePlatform && { 'process.env.EXPO_OS': JSON.stringify(nativePlatform) }),
       'process.env.TAMAGUI_ENVIRONMENT': JSON.stringify(TAMAGUI_EVALUATION_ENVIRONMENT),
       // Config evaluation must retain createTamagui and CSS generation even when
       // the client graph is zero or the client claims the artifact. Inheriting
@@ -888,7 +957,11 @@ export function createTamaguiPlugins({
       // to fail outright. A condition is the portable way to express this, since
       // every bundler integration can add the same one and an app configures
       // nothing.
-      conditions: [TAMAGUI_COMPILER_CONDITION, ...defaultClientConditions],
+      conditions: [
+        TAMAGUI_COMPILER_CONDITION,
+        ...(platform === 'native' ? ['react-native'] : []),
+        ...defaultClientConditions,
+      ],
       mainFields: [...defaultClientMainFields],
       noExternal: mergeEvaluationNoExternal(
         [
@@ -900,7 +973,10 @@ export function createTamaguiPlugins({
         ],
         userNoExternal
       ),
-      extensions,
+      extensions:
+        platform === 'native'
+          ? ['.native.ts', '.native.tsx', '.native.js', ...extensions]
+          : extensions,
     },
     dev: {
       createEnvironment(name, resolved) {
@@ -1112,7 +1188,10 @@ export function createTamaguiPlugins({
           },
           [TAMAGUI_EVALUATION_ENVIRONMENT]: getEvaluationEnvironmentOptions(
             resolvedRoot,
-            userConfig.environments?.[TAMAGUI_EVALUATION_ENVIRONMENT]?.resolve?.noExternal
+            userConfig.environments?.[TAMAGUI_EVALUATION_ENVIRONMENT]?.resolve
+              ?.noExternal,
+            options.platform,
+            options.nativePlatform
           ),
         },
 

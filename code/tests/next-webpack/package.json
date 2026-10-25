@@ -1,6 +1,6 @@
 {
   "name": "next15-plus-cli-optimize",
-  "version": "3.1.1",
+  "version": "3.1.3",
   "private": true,
   "workspaces": [
     "./packages/*"
@@ -16,6 +16,6 @@
     "tamagui": "workspace:*"
   },
   "devDependencies": {
-    "vitest": "4.1.0"
+    "vitest": "4.1.11"
   }
 }

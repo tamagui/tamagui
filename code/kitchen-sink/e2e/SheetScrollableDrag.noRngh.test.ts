@@ -9,6 +9,20 @@ import { remountDirectUseCase } from './utils/navigation'
 
 const isAndroid = () => device.getPlatform() === 'android'
 
+// waitFor re-reads the hierarchy back to back on the main thread, which drops
+// the ui to a few frames a second and stretches the open spring past the wait;
+// reading between pauses leaves the animation its frames
+const awaitText = async (id: string, expected: string) => {
+  const deadline = Date.now() + 3000
+  for (;;) {
+    const { text } = (await element(by.id(id)).getAttributes()) as { text?: string }
+    if (text === expected) return
+    if (Date.now() > deadline)
+      throw new Error(`${id} stayed "${text}", expected "${expected}"`)
+    await new Promise((resolve) => setTimeout(resolve, 500))
+  }
+}
+
 describe('SheetScrollableDrag - no RNGH', () => {
   beforeAll(async () => {
     if (isAndroid()) return
@@ -67,6 +81,12 @@ describe('SheetScrollableDrag - no RNGH', () => {
     await waitFor(element(by.id('sheet-scrollable-drag-handle')))
       .toBeVisible()
       .withTimeout(3000)
+    // the open spring overshoots above its rest, so a drag aimed at the handle
+    // before the open ends can land on the overlay and dismiss the sheet
+    await awaitText(
+      'sheet-scrollable-drag-transition-end',
+      'Transition end: open finished'
+    )
 
     await withSync(() =>
       element(by.id('sheet-scrollable-drag-handle')).swipe('down', 'slow', 0.5)
