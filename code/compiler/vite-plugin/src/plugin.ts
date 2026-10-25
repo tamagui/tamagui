@@ -420,6 +420,13 @@ const _pluginRequire = createRequire(
   typeof __filename === 'string' ? __filename : fileURLToPath(import.meta.url)
 )
 const resolve = (name: string) => _pluginRequire.resolve(name)
+// require.resolve follows the CJS main; aliasing react-native to that bundles a
+// second, untree-shakeable react-native-web next to the ESM one tamagui imports.
+const resolveReactNativeWebEsm = () => {
+  const packageJsonPath = resolve('react-native-web/package.json')
+  const { module: esmEntry } = _pluginRequire(packageJsonPath) as { module: string }
+  return path.join(path.dirname(packageJsonPath), esmEntry)
+}
 const normalizePath = (value: string) => value.replace(/\\/g, '/')
 
 function createNativeEvaluationPlugin(
@@ -1228,7 +1235,7 @@ export function createTamaguiPlugins({
                     'react-native/Libraries/Utilities/codegenNativeComponent':
                       resolve('@tamagui/proxy-worm'),
                     ...(!useReactNativeWebLite && {
-                      'react-native': resolve('react-native-web'),
+                      'react-native': resolveReactNativeWebEsm(),
                     }),
                   }),
                 },
