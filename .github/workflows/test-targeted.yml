@@ -1,81 +1,118 @@
-name: Targeted Tests
+name: Recover Original Detox App Cache
 
-# run one narrow test selection on CI instead of a loaded dev machine.
-# dispatch from any ref that contains this file:
-#   gh workflow run test-targeted.yml --ref <branch> -f filter=SelectTypeahead
-# native (Detox/Maestro) stays with test-native.yml / test-ios-native.yml —
-# push a v3-ci-* branch or dispatch those workflows for native coverage.
-
+# temporary diagnostic branch only; never merge this replacement to main.
+# review: r129872. dispatch and artifact custody: r110356.
+# spec: contrast/plans/contrast/oss-patch-consumers.md, failed ios diagnosis.
 on:
   workflow_dispatch:
-    inputs:
-      filter:
-        description: 'playwright test filter (file name or grep pattern)'
-        required: true
-        type: string
-      project:
-        description: 'playwright project'
-        required: false
-        default: 'default'
-        type: string
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ inputs.filter }}
-  cancel-in-progress: true
 
 permissions:
   contents: read
+  actions: read
+
+concurrency:
+  group: detox-cache-recovery-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  APP_PATH: code/kitchen-sink/build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app
+  CACHE_KEY: ios-tamaguikitchensink-xcode-27.0-Debug-fe47eb97e8abfbe30d1e211085ee9b643e347f6c
+  CACHE_ID: '9489372644'
+  CACHE_VERSION: 88e1cfd9335ea256126b3661028c6f01963e5a7062244b24e363c86f3265621c
+  CACHE_SIZE: '37246329'
+  RECOVERY_DIR: detox-cache-recovery
 
 jobs:
-  playwright:
-    name: 'playwright: ${{ inputs.filter }} (${{ inputs.project }})'
-    runs-on: ubuntu-latest
-    timeout-minutes: 40
+  recover:
+    if: github.ref == 'refs/heads/tm/oss-detox-cache-recovery'
+    runs-on: xcode-27
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: 'package.json'
-
-      - name: install
-        run: bun install --frozen-lockfile
-
-      - name: Get Playwright version
-        id: pw-version
-        run: echo "version=$(bunx playwright --version | awk '{print $2}')" >> $GITHUB_OUTPUT
-
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}
-
-      - name: Install playwright
-        run: bunx playwright install --with-deps
-
-      - name: Restore Turbo cache
-        uses: actions/cache@v4
-        with:
-          path: .turbo/cache
-          key: turbo-${{ runner.os }}-${{ github.sha }}
-          restore-keys: |
-            turbo-${{ runner.os }}-
-
-      - name: build js
-        run: bun run build:js
-
-      - name: run targeted tests
-        working-directory: code/kitchen-sink
+      # no checkout, dependency install, native producer or cache save.
+      - name: Verify original cache metadata and empty destination
         env:
-          NODE_ENV: test
-        run: npx playwright test ${{ inputs.filter }} --project=${{ inputs.project }} --workers=1
-        timeout-minutes: 25
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e "$APP_PATH"
+          test ! -L "$APP_PATH"
+          mkdir "$RECOVERY_DIR"
+          gh api "repos/$GITHUB_REPOSITORY/actions/caches/$CACHE_ID" > "$RECOVERY_DIR/cache-metadata.json"
+          jq -e --arg key "$CACHE_KEY" --arg version "$CACHE_VERSION" \
+            --arg id "$CACHE_ID" --arg size "$CACHE_SIZE" '
+              (.id | tostring) == $id and .key == $key and
+              .version == $version and .ref == "refs/heads/main" and
+              (.size_in_bytes | tostring) == $size
+            ' "$RECOVERY_DIR/cache-metadata.json" > /dev/null
 
-      - name: upload artifacts on failure
-        if: failure()
+      - name: Restore only the original app cache
+        id: restore
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.APP_PATH }}
+          key: ${{ env.CACHE_KEY }}
+          fail-on-cache-miss: true
+
+      - name: Archive app and write identity receipt
+        env:
+          CACHE_HIT: ${{ steps.restore.outputs.cache-hit }}
+          MATCHED_KEY: ${{ steps.restore.outputs.cache-matched-key }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$CACHE_HIT" = true
+          test "$MATCHED_KEY" = "$CACHE_KEY"
+          test -d "$APP_PATH"
+          test ! -L "$APP_PATH"
+          plist="$APP_PATH/Info.plist"
+          executable=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$plist")
+          case "$executable" in
+            ''|.|..|*/*) echo 'Invalid bundle executable name' >&2; exit 1 ;;
+          esac
+          binary="$APP_PATH/$executable"
+          test -f "$binary"
+          test -x "$binary"
+          plist_sha=$(shasum -a 256 "$plist" | cut -d ' ' -f 1)
+          executable_sha=$(shasum -a 256 "$binary" | cut -d ' ' -f 1)
+          executable_mode=$(stat -f '%Lp' "$binary")
+          bundle_id=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$plist")
+          bundle_version=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$plist")
+          short_version=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$plist")
+          binary_type=$(file -b "$binary")
+          archive="$RECOVERY_DIR/tamaguikitchensink.app.tar"
+          # tar records modes and symlinks; do not dereference links or zip the app.
+          tar -cpf "$archive" -C "$(dirname "$APP_PATH")" "$(basename "$APP_PATH")"
+          archive_sha=$(shasum -a 256 "$archive" | cut -d ' ' -f 1)
+          jq -n --slurpfile cache "$RECOVERY_DIR/cache-metadata.json" \
+            --arg app_path "$APP_PATH" --arg matched_key "$MATCHED_KEY" \
+            --arg repository "$GITHUB_REPOSITORY" --arg ref "$GITHUB_REF" \
+            --arg sha "$GITHUB_SHA" --arg run_id "$GITHUB_RUN_ID" \
+            --arg run_attempt "$GITHUB_RUN_ATTEMPT" --arg runner_os "$RUNNER_OS" \
+            --arg runner_arch "$RUNNER_ARCH" --arg executable "$executable" \
+            --arg bundle_id "$bundle_id" --arg bundle_version "$bundle_version" \
+            --arg short_version "$short_version" --arg binary_type "$binary_type" \
+            --arg executable_mode "$executable_mode" --arg executable_sha "$executable_sha" \
+            --arg plist_sha "$plist_sha" --arg archive_sha "$archive_sha" '
+              {cache: $cache[0], restore: {exact_hit: true, matched_key: $matched_key},
+               recovery: {repository: $repository, ref: $ref, workflow_sha: $sha,
+                 run_id: $run_id, run_attempt: $run_attempt,
+                 runner_os: $runner_os, runner_arch: $runner_arch},
+               app: {original_path: $app_path, bundle_id: $bundle_id,
+                 bundle_version: $bundle_version, short_version: $short_version,
+                 executable: $executable, executable_mode: $executable_mode,
+                 executable_type: $binary_type, executable_sha256: $executable_sha,
+                 info_plist_sha256: $plist_sha},
+               archive: {name: "tamaguikitchensink.app.tar", sha256: $archive_sha}}
+            ' > "$RECOVERY_DIR/receipt.json"
+
+      - name: Upload recovery archive and receipt only
         uses: actions/upload-artifact@v4
         with:
-          name: targeted-test-results
-          path: code/kitchen-sink/test-results/
-          retention-days: 3
+          name: original-detox-app-cache-9489372644-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ env.RECOVERY_DIR }}/tamaguikitchensink.app.tar
+            ${{ env.RECOVERY_DIR }}/receipt.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
