@@ -1674,7 +1674,7 @@ export function createTamaguiPlugins({
               ? { id: resolution.id, external: resolution.external === true }
               : null
           },
-          evaluate: (module) => tamaguiLoader.evaluateModule(module),
+          evaluate: ({ id: moduleId }) => tamaguiLoader.evaluateModule(moduleId),
           load: async (dependencyId) => {
             const cleanDependencyId = dependencyId.split(/[?#]/, 1)[0]
             if (!path.isAbsolute(cleanDependencyId)) return null
