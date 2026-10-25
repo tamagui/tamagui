@@ -72,7 +72,7 @@ export type ViteTamaguiLoader = {
    * compiler's component discovery. Null when the environment is not ready or
    * the module cannot run in node; the compiler then leaves its elements alone.
    */
-  evaluateModule(id: string): Promise<Record<string, unknown> | null>
+  evaluateModule(specifier: string): Promise<Record<string, unknown> | null>
   loadTamaguiBuildConfig(): Promise<TamaguiOptions>
   setEnvironment(next: RunnableDevEnvironment, options?: { owned?: boolean }): void
   invalidate(file?: string): void
@@ -307,18 +307,13 @@ export function createViteTamaguiLoader(
     isEvaluationDependency: (id: string) =>
       evaluationDependencies.has(normalizeDependency(id)),
     evaluateProjectModules,
-    async evaluateModule(id) {
+    async evaluateModule(specifier) {
       if (!environment) return null
       try {
-        return (await environment.runner.import(id)) as Record<string, unknown>
+        return (await environment.runner.import(specifier)) as Record<string, unknown>
       } catch (error) {
-        // a failed import leaves its rejected promise on the runner's module
-        // node, which rethrows on the next generation even once the cause is gone.
-        const evaluated = environment.runner.evaluatedModules
-        const failed = evaluated.getModulesByFile(normalizeDependency(id))
-        for (const module of failed ?? []) evaluated.invalidateModule(module)
         if (process.env.DEBUG === 'tamagui') {
-          console.info(`[tamagui] component discovery skipped ${id}:`, error)
+          console.info(`[tamagui] component discovery skipped ${specifier}:`, error)
         }
         return null
       }
