@@ -15,7 +15,6 @@ import {
 export type ComponentModuleEvaluator = (module: {
   id: string
   specifier: string
-  importer: string
 }) => Promise<Record<string, unknown> | null>
 
 // `pkg`, `@scope/pkg`, and their subpaths. `@/x` and `~/x` are path aliases
@@ -83,11 +82,7 @@ export class ComponentDiscovery {
       }
       let loaded: LoadedComponents | null = null
       try {
-        const exports = await evaluate({
-          id,
-          specifier: provenance.specifier,
-          importer: module.id,
-        })
+        const exports = await evaluate({ id, specifier: provenance.specifier })
         if (exports) {
           const nameToInfo = getComponentStaticConfigByName(
             id,
