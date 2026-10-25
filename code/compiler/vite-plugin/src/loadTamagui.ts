@@ -312,6 +312,11 @@ export function createViteTamaguiLoader(
       try {
         return (await environment.runner.import(id)) as Record<string, unknown>
       } catch (error) {
+        // a failed import leaves its rejected promise on the runner's module
+        // node, which rethrows on the next generation even once the cause is gone.
+        const evaluated = environment.runner.evaluatedModules
+        const failed = evaluated.getModulesByFile(normalizeDependency(id))
+        for (const module of failed ?? []) evaluated.invalidateModule(module)
         if (process.env.DEBUG === 'tamagui') {
           console.info(`[tamagui] component discovery skipped ${id}:`, error)
         }
