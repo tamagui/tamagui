@@ -38,13 +38,18 @@ jobs:
           test ! -e "$APP_PATH"
           test ! -L "$APP_PATH"
           mkdir "$RECOVERY_DIR"
-          gh api "repos/$GITHUB_REPOSITORY/actions/caches/$CACHE_ID" > "$RECOVERY_DIR/cache-metadata.json"
+          gh api "repos/$GITHUB_REPOSITORY/actions/caches?key=$CACHE_KEY&per_page=100" > "$RECOVERY_DIR/cache-list.json"
           jq -e --arg key "$CACHE_KEY" --arg version "$CACHE_VERSION" \
             --arg id "$CACHE_ID" --arg size "$CACHE_SIZE" '
-              (.id | tostring) == $id and .key == $key and
-              .version == $version and .ref == "refs/heads/main" and
-              (.size_in_bytes | tostring) == $size
-            ' "$RECOVERY_DIR/cache-metadata.json" > /dev/null
+              if .total_count != (.actions_caches | length) then
+                error("Cache list is incomplete")
+              else .actions_caches end |
+              map(select(.key == $key)) |
+              if length != 1 then error("Expected exactly one exact-key cache")
+              else .[0] end |
+              select((.id | tostring) == $id and .version == $version and
+                .ref == "refs/heads/main" and (.size_in_bytes | tostring) == $size)
+            ' "$RECOVERY_DIR/cache-list.json" > "$RECOVERY_DIR/cache-metadata.json"
 
       - name: Restore only the original app cache
         id: restore
