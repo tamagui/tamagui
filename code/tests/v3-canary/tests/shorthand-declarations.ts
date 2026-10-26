@@ -171,6 +171,8 @@ export const invalidOverride = <Override alignItems="center" />
 declare const stackScrollProps: Omit<GetProps<typeof YStack>, 'onScroll'>
 export const stackScroll = <ScrollView {...stackScrollProps} />
 export const inheritedPointerEvents = <ScrollView pointerEvents="unset" />
+export const sheetStackScroll = <Sheet.ScrollView {...stackScrollProps} />
+export const sheetInheritedPointerEvents = <Sheet.ScrollView pointerEvents="unset" />
 // @ts-expect-error pointer event values remain checked
 export const invalidPointerEvents = <ScrollView pointerEvents="invalid" />
 export const supportedScroll = <ScrollView horizontal keyboardDismissMode="on-drag" onScroll={(event) => event.nativeEvent.contentOffset.y} />

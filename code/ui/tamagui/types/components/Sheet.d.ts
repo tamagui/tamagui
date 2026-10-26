@@ -1,30 +1,31 @@
 import { type Combined } from '@tamagui/core';
 import { Sheet as SheetBehavior, type SheetProps } from '@tamagui/sheet';
-export declare const SheetHandle: import("@tamagui/compose-refs").RefComponent<import("@tamagui/web").TamaguiElement, import("@tamagui/web").GetFinalProps<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "scope"> & Omit<{}, "scope"> & {
+export declare const SheetHandle: import("@tamagui/core").RefComponent<import("@tamagui/core").TamaguiElement, import("@tamagui/core").GetFinalProps<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "scope"> & Omit<{}, "scope"> & {
     scope?: import("@tamagui/sheet").SheetScopes;
-}, import("@tamagui/web").StackStyleBase, {
+}, import("@tamagui/core").StackStyleBase, {
     open?: boolean | undefined;
 }>>;
-export declare const SheetOverlay: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "scope"> & Omit<{}, "scope"> & {
+export declare const SheetOverlay: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "scope"> & Omit<{}, "scope"> & {
     scope?: import("@tamagui/sheet").SheetScopes;
-}, import("@tamagui/web").StackStyleBase, Omit<{
+}, import("@tamagui/core").StackStyleBase, Omit<{
     open?: boolean | undefined;
-}, "scope">, import("@tamagui/web").StaticConfigPublic>;
-export declare const SheetContainer: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "adjustPaddingForOffscreenContent" | "scope"> & Omit<{
+}, "scope">, import("@tamagui/core").StaticConfigPublic>;
+export declare const SheetContainer: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "adjustPaddingForOffscreenContent" | "scope"> & Omit<{
     adjustPaddingForOffscreenContent?: boolean;
 }, "scope"> & {
     scope?: import("@tamagui/sheet").SheetScopes;
-}, import("@tamagui/web").StackStyleBase, Omit<{}, "adjustPaddingForOffscreenContent" | "scope">, import("@tamagui/web").StaticConfigPublic>;
-export declare const SheetBackground: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disableHideBottomOverflow" | "scope"> & Omit<{
+}, import("@tamagui/core").StackStyleBase, Omit<{}, "adjustPaddingForOffscreenContent" | "scope">, import("@tamagui/core").StaticConfigPublic>;
+export declare const SheetBackground: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disableHideBottomOverflow" | "scope"> & Omit<{
     disableHideBottomOverflow?: boolean;
 }, "scope"> & {
     scope?: import("@tamagui/sheet").SheetScopes;
-}, import("@tamagui/web").StackStyleBase, Omit<{}, "disableHideBottomOverflow" | "scope">, import("@tamagui/web").StaticConfigPublic>;
-export declare const SheetScrollView: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/web").StackNonStyleProps, "onScroll" | "style"> & import("@tamagui/web").RNViewProps & Omit<import("@tamagui/react-native-types").ScrollViewProps, "contentContainerStyle" | "keyboardShouldPersistTaps" | "onMomentumScrollBegin" | "onMomentumScrollEnd" | "onScrollBeginDrag" | "onScrollEndDrag" | "onScrollToTop" | "refreshControl" | keyof import("@tamagui/web").RNViewProps | keyof import("@tamagui/web").StackNonStyleProps> & {
-    style?: import("@tamagui/web").StackNonStyleProps['style'];
-    contentContainerStyle?: import("@tamagui/web").StylePiece | import("@tamagui/web").StackNonStyleProps['style'];
+}, import("@tamagui/core").StackStyleBase, Omit<{}, "disableHideBottomOverflow" | "scope">, import("@tamagui/core").StaticConfigPublic>;
+export declare const SheetScrollView: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/core").StackNonStyleProps, "onScroll" | "style"> & import("@tamagui/core").RNViewProps & Omit<import("@tamagui/react-native-types").ScrollViewProps, "contentContainerStyle" | "keyboardShouldPersistTaps" | "onMomentumScrollBegin" | "onMomentumScrollEnd" | "onScrollBeginDrag" | "onScrollEndDrag" | "onScrollToTop" | "pointerEvents" | "refreshControl" | keyof import("@tamagui/core").RNViewProps | keyof import("@tamagui/core").StackNonStyleProps> & {
+    pointerEvents?: import("@tamagui/core").ViewProps['pointerEvents'];
+    style?: import("@tamagui/core").StackNonStyleProps['style'];
+    contentContainerStyle?: import("@tamagui/core").StylePiece | import("@tamagui/core").StackNonStyleProps['style'];
     refreshControl?: React.ReactElement<{
-        style?: import("@tamagui/web").StackNonStyleProps['style'];
+        style?: import("@tamagui/core").StackNonStyleProps['style'];
     }>;
     keyboardShouldPersistTaps?: boolean | 'always' | 'never' | 'handled';
     onScroll?: import("@tamagui/scroll-view").WebScrollEventHandler;
@@ -35,36 +36,37 @@ export declare const SheetScrollView: import("@tamagui/web").TamaguiComponent<im
     onMomentumScrollEnd?: import("@tamagui/scroll-view").WebScrollEventHandler;
 } & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, "scope"> & Omit<{}, "scope"> & {
     scope?: import("@tamagui/sheet").SheetScopes;
-}, import("@tamagui/web").StackStyleBase, Omit<{}, "scope">, {
+}, import("@tamagui/core").StackStyleBase, Omit<{}, "scope">, {
     acceptsClassName: true;
     neverFlatten: true;
-} & import("@tamagui/web").StaticConfigPublic>;
+} & import("@tamagui/core").StaticConfigPublic>;
 declare const sheetParts: {
-    Container: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "adjustPaddingForOffscreenContent" | "scope"> & Omit<{
+    Container: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "adjustPaddingForOffscreenContent" | "scope"> & Omit<{
         adjustPaddingForOffscreenContent?: boolean;
     }, "scope"> & {
         scope?: import("@tamagui/sheet").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, Omit<{}, "adjustPaddingForOffscreenContent" | "scope">, import("@tamagui/web").StaticConfigPublic>;
-    Background: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disableHideBottomOverflow" | "scope"> & Omit<{
+    }, import("@tamagui/core").StackStyleBase, Omit<{}, "adjustPaddingForOffscreenContent" | "scope">, import("@tamagui/core").StaticConfigPublic>;
+    Background: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disableHideBottomOverflow" | "scope"> & Omit<{
         disableHideBottomOverflow?: boolean;
     }, "scope"> & {
         scope?: import("@tamagui/sheet").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, Omit<{}, "disableHideBottomOverflow" | "scope">, import("@tamagui/web").StaticConfigPublic>;
-    Overlay: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "scope"> & Omit<{}, "scope"> & {
+    }, import("@tamagui/core").StackStyleBase, Omit<{}, "disableHideBottomOverflow" | "scope">, import("@tamagui/core").StaticConfigPublic>;
+    Overlay: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "scope"> & Omit<{}, "scope"> & {
         scope?: import("@tamagui/sheet").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, Omit<{
+    }, import("@tamagui/core").StackStyleBase, Omit<{
         open?: boolean | undefined;
-    }, "scope">, import("@tamagui/web").StaticConfigPublic>;
-    Handle: import("@tamagui/compose-refs").RefComponent<import("@tamagui/web").TamaguiElement, import("@tamagui/web").GetFinalProps<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "scope"> & Omit<{}, "scope"> & {
+    }, "scope">, import("@tamagui/core").StaticConfigPublic>;
+    Handle: import("@tamagui/core").RefComponent<import("@tamagui/core").TamaguiElement, import("@tamagui/core").GetFinalProps<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "scope"> & Omit<{}, "scope"> & {
         scope?: import("@tamagui/sheet").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, {
+    }, import("@tamagui/core").StackStyleBase, {
         open?: boolean | undefined;
     }>>;
-    ScrollView: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/web").StackNonStyleProps, "onScroll" | "style"> & import("@tamagui/web").RNViewProps & Omit<import("@tamagui/react-native-types").ScrollViewProps, "contentContainerStyle" | "keyboardShouldPersistTaps" | "onMomentumScrollBegin" | "onMomentumScrollEnd" | "onScrollBeginDrag" | "onScrollEndDrag" | "onScrollToTop" | "refreshControl" | keyof import("@tamagui/web").RNViewProps | keyof import("@tamagui/web").StackNonStyleProps> & {
-        style?: import("@tamagui/web").StackNonStyleProps['style'];
-        contentContainerStyle?: import("@tamagui/web").StylePiece | import("@tamagui/web").StackNonStyleProps['style'];
+    ScrollView: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/core").StackNonStyleProps, "onScroll" | "style"> & import("@tamagui/core").RNViewProps & Omit<import("@tamagui/react-native-types").ScrollViewProps, "contentContainerStyle" | "keyboardShouldPersistTaps" | "onMomentumScrollBegin" | "onMomentumScrollEnd" | "onScrollBeginDrag" | "onScrollEndDrag" | "onScrollToTop" | "pointerEvents" | "refreshControl" | keyof import("@tamagui/core").RNViewProps | keyof import("@tamagui/core").StackNonStyleProps> & {
+        pointerEvents?: import("@tamagui/core").ViewProps['pointerEvents'];
+        style?: import("@tamagui/core").StackNonStyleProps['style'];
+        contentContainerStyle?: import("@tamagui/core").StylePiece | import("@tamagui/core").StackNonStyleProps['style'];
         refreshControl?: React.ReactElement<{
-            style?: import("@tamagui/web").StackNonStyleProps['style'];
+            style?: import("@tamagui/core").StackNonStyleProps['style'];
         }>;
         keyboardShouldPersistTaps?: boolean | 'always' | 'never' | 'handled';
         onScroll?: import("@tamagui/scroll-view").WebScrollEventHandler;
@@ -75,38 +77,39 @@ declare const sheetParts: {
         onMomentumScrollEnd?: import("@tamagui/scroll-view").WebScrollEventHandler;
     } & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, "scope"> & Omit<{}, "scope"> & {
         scope?: import("@tamagui/sheet").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, Omit<{}, "scope">, {
+    }, import("@tamagui/core").StackStyleBase, Omit<{}, "scope">, {
         acceptsClassName: true;
         neverFlatten: true;
-    } & import("@tamagui/web").StaticConfigPublic>;
+    } & import("@tamagui/core").StaticConfigPublic>;
 };
-export declare const SheetRoot: import("@tamagui/compose-refs").RefComponent<import("@tamagui/react-native-types").ViewInstance, SheetProps>;
-export declare const SheetControlled: Combined<import("@tamagui/compose-refs").RefComponent<import("@tamagui/react-native-types").ViewInstance, Omit<SheetProps, "onOpenChange" | "open">>, {
-    Container: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "adjustPaddingForOffscreenContent" | "scope"> & Omit<{
+export declare const SheetRoot: import("@tamagui/core").RefComponent<import("@tamagui/react-native-types").ViewInstance, SheetProps>;
+export declare const SheetControlled: Combined<import("@tamagui/core").RefComponent<import("@tamagui/react-native-types").ViewInstance, Omit<SheetProps, "onOpenChange" | "open">>, {
+    Container: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "adjustPaddingForOffscreenContent" | "scope"> & Omit<{
         adjustPaddingForOffscreenContent?: boolean;
     }, "scope"> & {
         scope?: import("@tamagui/sheet").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, Omit<{}, "adjustPaddingForOffscreenContent" | "scope">, import("@tamagui/web").StaticConfigPublic>;
-    Background: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disableHideBottomOverflow" | "scope"> & Omit<{
+    }, import("@tamagui/core").StackStyleBase, Omit<{}, "adjustPaddingForOffscreenContent" | "scope">, import("@tamagui/core").StaticConfigPublic>;
+    Background: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disableHideBottomOverflow" | "scope"> & Omit<{
         disableHideBottomOverflow?: boolean;
     }, "scope"> & {
         scope?: import("@tamagui/sheet").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, Omit<{}, "disableHideBottomOverflow" | "scope">, import("@tamagui/web").StaticConfigPublic>;
-    Overlay: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "scope"> & Omit<{}, "scope"> & {
+    }, import("@tamagui/core").StackStyleBase, Omit<{}, "disableHideBottomOverflow" | "scope">, import("@tamagui/core").StaticConfigPublic>;
+    Overlay: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "scope"> & Omit<{}, "scope"> & {
         scope?: import("@tamagui/sheet").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, Omit<{
+    }, import("@tamagui/core").StackStyleBase, Omit<{
         open?: boolean | undefined;
-    }, "scope">, import("@tamagui/web").StaticConfigPublic>;
-    Handle: import("@tamagui/compose-refs").RefComponent<import("@tamagui/web").TamaguiElement, import("@tamagui/web").GetFinalProps<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "scope"> & Omit<{}, "scope"> & {
+    }, "scope">, import("@tamagui/core").StaticConfigPublic>;
+    Handle: import("@tamagui/core").RefComponent<import("@tamagui/core").TamaguiElement, import("@tamagui/core").GetFinalProps<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "scope"> & Omit<{}, "scope"> & {
         scope?: import("@tamagui/sheet").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, {
+    }, import("@tamagui/core").StackStyleBase, {
         open?: boolean | undefined;
     }>>;
-    ScrollView: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/web").StackNonStyleProps, "onScroll" | "style"> & import("@tamagui/web").RNViewProps & Omit<import("@tamagui/react-native-types").ScrollViewProps, "contentContainerStyle" | "keyboardShouldPersistTaps" | "onMomentumScrollBegin" | "onMomentumScrollEnd" | "onScrollBeginDrag" | "onScrollEndDrag" | "onScrollToTop" | "refreshControl" | keyof import("@tamagui/web").RNViewProps | keyof import("@tamagui/web").StackNonStyleProps> & {
-        style?: import("@tamagui/web").StackNonStyleProps['style'];
-        contentContainerStyle?: import("@tamagui/web").StylePiece | import("@tamagui/web").StackNonStyleProps['style'];
+    ScrollView: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/core").StackNonStyleProps, "onScroll" | "style"> & import("@tamagui/core").RNViewProps & Omit<import("@tamagui/react-native-types").ScrollViewProps, "contentContainerStyle" | "keyboardShouldPersistTaps" | "onMomentumScrollBegin" | "onMomentumScrollEnd" | "onScrollBeginDrag" | "onScrollEndDrag" | "onScrollToTop" | "pointerEvents" | "refreshControl" | keyof import("@tamagui/core").RNViewProps | keyof import("@tamagui/core").StackNonStyleProps> & {
+        pointerEvents?: import("@tamagui/core").ViewProps['pointerEvents'];
+        style?: import("@tamagui/core").StackNonStyleProps['style'];
+        contentContainerStyle?: import("@tamagui/core").StylePiece | import("@tamagui/core").StackNonStyleProps['style'];
         refreshControl?: React.ReactElement<{
-            style?: import("@tamagui/web").StackNonStyleProps['style'];
+            style?: import("@tamagui/core").StackNonStyleProps['style'];
         }>;
         keyboardShouldPersistTaps?: boolean | 'always' | 'never' | 'handled';
         onScroll?: import("@tamagui/scroll-view").WebScrollEventHandler;
@@ -117,10 +120,10 @@ export declare const SheetControlled: Combined<import("@tamagui/compose-refs").R
         onMomentumScrollEnd?: import("@tamagui/scroll-view").WebScrollEventHandler;
     } & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, "scope"> & Omit<{}, "scope"> & {
         scope?: import("@tamagui/sheet").SheetScopes;
-    }, import("@tamagui/web").StackStyleBase, Omit<{}, "scope">, {
+    }, import("@tamagui/core").StackStyleBase, Omit<{}, "scope">, {
         acceptsClassName: true;
         neverFlatten: true;
-    } & import("@tamagui/web").StaticConfigPublic>;
+    } & import("@tamagui/core").StaticConfigPublic>;
 }>;
 export declare const Sheet: Combined<typeof SheetRoot, typeof sheetParts & {
     Root: typeof SheetRoot;
