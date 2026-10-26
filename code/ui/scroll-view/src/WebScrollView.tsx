@@ -2,6 +2,7 @@ import {
   View as TamaguiView,
   type RNViewProps,
   type StackNonStyleProps,
+  type ViewProps,
   type StylePiece,
 } from '@tamagui/web'
 import type { ScrollViewProps as NativeScrollViewProps } from '@tamagui/react-native-types'
@@ -48,6 +49,7 @@ export type WebScrollViewProps = Omit<StackNonStyleProps, 'onScroll' | 'style'> 
   Omit<
     NativeScrollViewProps,
     | keyof StackNonStyleProps
+    | 'pointerEvents'
     | keyof RNViewProps
     | 'style'
     | 'contentContainerStyle'
@@ -60,6 +62,7 @@ export type WebScrollViewProps = Omit<StackNonStyleProps, 'onScroll' | 'style'> 
     | 'onMomentumScrollBegin'
     | 'onMomentumScrollEnd'
   > & {
+    pointerEvents?: ViewProps['pointerEvents']
     style?: StackNonStyleProps['style']
     contentContainerStyle?: StylePiece | StackNonStyleProps['style']
     refreshControl?: React.ReactElement<{ style?: StackNonStyleProps['style'] }>

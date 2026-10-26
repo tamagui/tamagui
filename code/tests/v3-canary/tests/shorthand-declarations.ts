@@ -168,6 +168,11 @@ export const invalidCustom = <Restyled intent="other" />
 export const override = <Override alignItems="custom" />
 // @ts-expect-error an explicit own prop overrides the inherited css value
 export const invalidOverride = <Override alignItems="center" />
+declare const stackScrollProps: Omit<GetProps<typeof YStack>, 'onScroll'>
+export const stackScroll = <ScrollView {...stackScrollProps} />
+export const inheritedPointerEvents = <ScrollView pointerEvents="unset" />
+// @ts-expect-error pointer event values remain checked
+export const invalidPointerEvents = <ScrollView pointerEvents="invalid" />
 export const supportedScroll = <ScrollView horizontal keyboardDismissMode="on-drag" onScroll={(event) => event.nativeEvent.contentOffset.y} />
 declare const nativeScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void
 declare const nativeScrollProps: Pick<NativeScrollViewProps,
