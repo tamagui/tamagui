@@ -39,6 +39,7 @@ const subpathOnlyDistPath = join(subpathOnlyPackagePath, 'dist')
 const repositoryRoot = join(__dirname, '../../../..')
 const platformPackagePath = join(__dirname, 'fixtures', 'platform-package')
 const platformDistPath = join(platformPackagePath, 'dist')
+const inferredNativePropsPath = join(__dirname, 'fixtures', 'inferred-native-props')
 // console.log({
 //   distCjsFilePath,
 //   distEsmFilePath,
@@ -178,6 +179,17 @@ describe('tamagui-build integration test', () => {
 
     expect(existsSync(distTypesFilePath)).toBe(true)
     expect(existsSync(join(simplePackagePath, 'tsconfig.tsbuildinfo'))).toBe(false)
+  })
+
+  it('keeps inferred native props strict in emitted consumers', () => {
+    execSync('bun run build', {
+      cwd: inferredNativePropsPath,
+      env: { ...process.env, SKIP_JS: '1' },
+    })
+    execSync(
+      'node ../../../tamagui-tsgo.js --ignoreConfig --noEmit --strict --skipLibCheck --module Preserve --moduleResolution Bundler --target es2020 --types node,react consumer.ts',
+      { cwd: inferredNativePropsPath }
+    )
   })
 
   it('should bundle the package correctly', () => {
