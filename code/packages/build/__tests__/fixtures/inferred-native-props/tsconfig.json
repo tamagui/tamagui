@@ -1,0 +1,15 @@
+{
+  "extends": "../../../../../../tsconfig.json",
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "composite": true,
+    "types": [
+      "node",
+      "react"
+    ]
+  }
+}

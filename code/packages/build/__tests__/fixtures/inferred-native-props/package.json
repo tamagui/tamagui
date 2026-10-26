@@ -1,0 +1,9 @@
+{
+  "name": "tamagui-build-test-inferred-native-props",
+  "private": true,
+  "version": "1.0.0",
+  "types": "types/index.d.ts",
+  "scripts": {
+    "build": "node ../../../tamagui-build.js"
+  }
+}

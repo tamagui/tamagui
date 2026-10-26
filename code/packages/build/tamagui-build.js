@@ -1145,10 +1145,12 @@ async function emitDeclarationsWithTsgo(targetDir, allFiles) {
         .join(declarationRoot, relativeFile)
         .replace(/\.tsx?$/, '.d.ts')
       const output = await FSE.readFile(declarationPath, 'utf8')
-      const normalized = output.replace(
-        /(["'])@tamagui\/([^/"']+)\/types\1/g,
-        '$1@tamagui/$2$1'
-      )
+      const normalized = output
+        .replace(/(["'])@tamagui\/([^/"']+)\/types\1/g, '$1@tamagui/$2$1')
+        .replace(
+          /(["'])@tamagui\/react-native-types\/src\1/g,
+          '$1@tamagui/react-native-types$1'
+        )
       if (normalized !== output) {
         await writeIfUnchanged(declarationPath, normalized)
       }
