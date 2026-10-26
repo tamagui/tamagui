@@ -1760,6 +1760,10 @@
         "babel-plugin-react-compiler",
       ],
     },
+    "code/packages/build/__tests__/fixtures/inferred-native-props": {
+      "name": "tamagui-build-test-inferred-native-props",
+      "version": "1.0.0",
+    },
     "code/packages/build/__tests__/fixtures/js-main-package": {
       "name": "tamagui-build-test-js-main-package",
       "version": "2.0.0-rc.0-1769885482630",
@@ -8643,6 +8647,8 @@
     "tailwindcss": ["tailwindcss@4.3.0", "", {}, "sha512-y6nxMGB1nMW9R6k96e5gdIFzcfL/gTJRNaqGes1YvkLnPVXzWgbqFF2yLC0T8G774n24cx3Pe8XrKoniCOAH+Q=="],
 
     "tamagui": ["tamagui@workspace:code/ui/tamagui"],
+
+    "tamagui-build-test-inferred-native-props": ["tamagui-build-test-inferred-native-props@workspace:code/packages/build/__tests__/fixtures/inferred-native-props"],
 
     "tamagui-build-test-js-main-package": ["tamagui-build-test-js-main-package@workspace:code/packages/build/__tests__/fixtures/js-main-package"],
 
