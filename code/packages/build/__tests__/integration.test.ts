@@ -697,6 +697,7 @@ describe('tamagui-build integration test', () => {
   })
 
   afterAll(() => {
+    rmSync(join(inferredNativePropsPath, 'types'), { recursive: true, force: true })
     // Clean up dist directory after tests
     execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
     execSync('rm -rf dist', { cwd: jsMainPackagePath })
