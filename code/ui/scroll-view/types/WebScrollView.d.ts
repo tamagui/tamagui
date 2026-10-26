@@ -1,4 +1,4 @@
-import { type RNViewProps, type StackNonStyleProps, type StylePiece } from '@tamagui/web';
+import { type RNViewProps, type StackNonStyleProps, type ViewProps, type StylePiece } from '@tamagui/web';
 import type { ScrollViewProps as NativeScrollViewProps } from '@tamagui/react-native-types';
 import * as React from 'react';
 export interface ScrollViewMethods {
@@ -38,7 +38,8 @@ export type WebScrollEvent = {
 export type WebScrollEventHandler = {
     onScroll(event: WebScrollEvent): void;
 }['onScroll'];
-export type WebScrollViewProps = Omit<StackNonStyleProps, 'onScroll' | 'style'> & RNViewProps & Omit<NativeScrollViewProps, keyof StackNonStyleProps | keyof RNViewProps | 'style' | 'contentContainerStyle' | 'refreshControl' | 'keyboardShouldPersistTaps' | 'onScroll' | 'onScrollToTop' | 'onScrollBeginDrag' | 'onScrollEndDrag' | 'onMomentumScrollBegin' | 'onMomentumScrollEnd'> & {
+export type WebScrollViewProps = Omit<StackNonStyleProps, 'onScroll' | 'style'> & RNViewProps & Omit<NativeScrollViewProps, keyof StackNonStyleProps | 'pointerEvents' | keyof RNViewProps | 'style' | 'contentContainerStyle' | 'refreshControl' | 'keyboardShouldPersistTaps' | 'onScroll' | 'onScrollToTop' | 'onScrollBeginDrag' | 'onScrollEndDrag' | 'onMomentumScrollBegin' | 'onMomentumScrollEnd'> & {
+    pointerEvents?: ViewProps['pointerEvents'];
     style?: StackNonStyleProps['style'];
     contentContainerStyle?: StylePiece | StackNonStyleProps['style'];
     refreshControl?: React.ReactElement<{
@@ -52,7 +53,8 @@ export type WebScrollViewProps = Omit<StackNonStyleProps, 'onScroll' | 'style'> 
     onMomentumScrollBegin?: WebScrollEventHandler;
     onMomentumScrollEnd?: WebScrollEventHandler;
 };
-export declare const WebScrollView: React.ForwardRefExoticComponent<Omit<StackNonStyleProps, "onScroll" | "style"> & RNViewProps & Omit<NativeScrollViewProps, "contentContainerStyle" | "keyboardShouldPersistTaps" | "onMomentumScrollBegin" | "onMomentumScrollEnd" | "onScrollBeginDrag" | "onScrollEndDrag" | "onScrollToTop" | "refreshControl" | keyof RNViewProps | keyof StackNonStyleProps> & {
+export declare const WebScrollView: React.ForwardRefExoticComponent<Omit<StackNonStyleProps, "onScroll" | "style"> & RNViewProps & Omit<NativeScrollViewProps, "contentContainerStyle" | "keyboardShouldPersistTaps" | "onMomentumScrollBegin" | "onMomentumScrollEnd" | "onScrollBeginDrag" | "onScrollEndDrag" | "onScrollToTop" | "pointerEvents" | "refreshControl" | keyof RNViewProps | keyof StackNonStyleProps> & {
+    pointerEvents?: ViewProps['pointerEvents'];
     style?: StackNonStyleProps['style'];
     contentContainerStyle?: StylePiece | StackNonStyleProps['style'];
     refreshControl?: React.ReactElement<{
