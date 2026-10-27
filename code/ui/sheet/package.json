@@ -50,6 +50,7 @@
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
     "@tamagui/core": "workspace:*",
+    "@tamagui/focus-scope": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/native": "workspace:*",
     "@tamagui/portal": "workspace:*",

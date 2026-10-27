@@ -225,12 +225,12 @@ const DialogPortal = createRefComponent<TamaguiElement, DialogPortalProps>(
         const node = dialogRef.current
         if (!(node instanceof HTMLDialogElement)) return
         // optional chaining for JSDOM compatibility (doesn't implement show/close)
-        if (isVisible) {
+        if (isVisible && !isAdapted) {
           node.show?.()
         } else {
           node.close?.()
         }
-      }, [isVisible])
+      }, [isVisible, isAdapted])
     }
 
     const zIndex = getExpandedShorthand('zIndex', props)
