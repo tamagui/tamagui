@@ -594,7 +594,7 @@ export const PopperAnchor = createStyledHOC(
             // keyboard activation must position against the focused trigger too.
             const el = (e.currentTarget ?? ref.current) as HTMLElement | null
             if (el instanceof HTMLElement) {
-              flushSync(() => refs.setReference(el))
+              refs.setReference(el)
               update()
             }
           },
