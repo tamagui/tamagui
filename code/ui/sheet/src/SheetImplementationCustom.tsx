@@ -1200,6 +1200,13 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
       // rnghRootStyleOpen/Closed above for why pointerEvents can't be used.
       const RNGHRoot = getGestureHandlerState().RootView
       const mountedContents = <ContainerComponent>{contents}</ContainerComponent>
+      const gestureContents = RNGHRoot ? (
+        <RNGHRoot style={open ? rnghRootStyleOpen : rnghRootStyleClosed}>
+          {mountedContents}
+        </RNGHRoot>
+      ) : (
+        mountedContents
+      )
       const modalContents = (
         <Portal stackZIndex={zIndex} hidden={!isVisuallyActive} {...portalProps}>
           {isWeb ? (
@@ -1209,14 +1216,10 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
               trapped={open && !shouldHideParentSheet}
               forceUnmount={!open}
             >
-              {mountedContents}
+              {gestureContents}
             </FocusScope>
-          ) : RNGHRoot ? (
-            <RNGHRoot style={open ? rnghRootStyleOpen : rnghRootStyleClosed}>
-              {mountedContents}
-            </RNGHRoot>
           ) : (
-            mountedContents
+            gestureContents
           )}
         </Portal>
       )
