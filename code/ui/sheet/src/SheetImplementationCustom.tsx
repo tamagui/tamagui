@@ -4,6 +4,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { getTransitionResolver } from '@tamagui/animation-helpers/transitionResolver'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { FocusScope } from '@tamagui/focus-scope'
 import {
   LayoutMeasurementController,
   View as TamaguiView,
@@ -1126,6 +1127,8 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
 
                 <AnimatedView
                   ref={ref}
+                  role={isWeb && modal ? 'dialog' : undefined}
+                  aria-modal={isWeb && modal ? true : undefined}
                   onLayout={handleAnimationViewLayout}
                   // @ts-ignore for CSS driver this is necessary to attach the transition
                   // also motion driver at least though i suspect all drivers?
@@ -1199,7 +1202,16 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
       const mountedContents = <ContainerComponent>{contents}</ContainerComponent>
       const modalContents = (
         <Portal stackZIndex={zIndex} hidden={!isVisuallyActive} {...portalProps}>
-          {RNGHRoot ? (
+          {isWeb ? (
+            <FocusScope
+              loop
+              enabled={open && !shouldHideParentSheet}
+              trapped={open && !shouldHideParentSheet}
+              forceUnmount={!open}
+            >
+              {mountedContents}
+            </FocusScope>
+          ) : RNGHRoot ? (
             <RNGHRoot style={open ? rnghRootStyleOpen : rnghRootStyleClosed}>
               {mountedContents}
             </RNGHRoot>
