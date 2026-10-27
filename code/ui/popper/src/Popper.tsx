@@ -571,12 +571,12 @@ export const PopperAnchor = createStyledHOC(
       [refs]
     )
 
-    const shouldHandleInHover = isWeb && scope
+    const isScopedWeb = isWeb && scope
     const composedRefs = useComposedRefs(
       forwardedRef,
       ref,
-      // web handles this onMouseEnter below so it can support multiple targets + hovering
-      shouldHandleInHover ? undefined : safeSetReference
+      // scoped web anchors select their reference on hover or focus.
+      isScopedWeb ? undefined : safeSetReference
     )
 
     return (
@@ -584,7 +584,20 @@ export const PopperAnchor = createStyledHOC(
         {...rest}
         {...refProps}
         ref={composedRefs}
-        {...(shouldHandleInHover && {
+        {...(isScopedWeb && {
+          onFocus: (e) => {
+            const focusProps = refProps ?? rest
+            focusProps.onFocus?.(e)
+            if (e.defaultPrevented || ('isCanceled' in e && e.isCanceled)) return
+            if (virtualRef) return
+
+            // keyboard activation must position against the focused trigger too.
+            const el = (e.currentTarget ?? ref.current) as HTMLElement | null
+            if (el instanceof HTMLElement) {
+              flushSync(() => refs.setReference(el))
+              update()
+            }
+          },
           // scoped poppers with multiple triggers: set the reference on
           // mouseEnter so floating-ui positions relative to the hovered
           // trigger, not the last one rendered.
