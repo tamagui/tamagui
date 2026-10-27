@@ -454,12 +454,17 @@ export function useFocusScope(
 
 /**
  * Attempts focusing the first element in a list of candidates.
- * stops when a candidate holds focus.
+ * stops when a candidate holds focus or focusing it moves focus elsewhere.
  */
 function focusFirst(candidates: HTMLElement[], { select = false } = {}) {
+  const previouslyFocusedElement = document.activeElement
   for (const candidate of candidates) {
     focus(candidate, { select })
-    if (document.activeElement === candidate) return
+    if (
+      document.activeElement === candidate ||
+      document.activeElement !== previouslyFocusedElement
+    )
+      return
   }
 }
 
