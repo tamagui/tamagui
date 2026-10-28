@@ -7,7 +7,7 @@ import {
   useAdaptIsActive,
 } from '@tamagui/adapt'
 import { Animate } from '@tamagui/animate'
-import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
+import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { GetProps, OnTransition, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
@@ -214,8 +214,6 @@ const DialogPortalItem = ({
 const DialogPortal = createRefComponent<TamaguiElement, DialogPortalProps>(
   (props, forwardedRef) => {
     const { scope, forceMount, children, ...frameProps } = props
-    const frameRef = React.useRef<TamaguiElement>(null)
-    const ref = composeRefs(frameRef, forwardedRef)
 
     const context = useDialogContext(scope)
     const portalContext = forceMount ? { ...context, forceMount: true } : context
@@ -237,7 +235,7 @@ const DialogPortal = createRefComponent<TamaguiElement, DialogPortalProps>(
       !isVisible && !keepMounted && !isAdapted ? null : (
         <LayoutMeasurementController disable={!context.open}>
           <DialogPortalFrame
-            ref={ref}
+            ref={forwardedRef}
             // plain positioning wrapper: show() never used the top layer, so
             // a div paints and hit-tests identically without exposing a
             // second dialog. the inner Content carries role and aria-modal.
