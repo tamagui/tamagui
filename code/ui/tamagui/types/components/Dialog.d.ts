@@ -33,6 +33,10 @@ export declare const DialogContent: import("@tamagui/core").TamaguiComponent<imp
         contentId: string;
         titleId: string;
         descriptionId: string;
+        titlePresent: boolean;
+        descriptionPresent: boolean;
+        setTitlePresent(present: boolean): void;
+        setDescriptionPresent(present: boolean): void;
         onOpenToggle(): void;
         open: Exclude<import("@tamagui/dialog").DialogProps['open'], void | null>;
         onOpenChange: Exclude<import("@tamagui/dialog").DialogProps['onOpenChange'], void | null>;
@@ -108,6 +112,10 @@ export declare const Dialog: import("@tamagui/core").Combined<import("@tamagui/c
             contentId: string;
             titleId: string;
             descriptionId: string;
+            titlePresent: boolean;
+            descriptionPresent: boolean;
+            setTitlePresent(present: boolean): void;
+            setDescriptionPresent(present: boolean): void;
             onOpenToggle(): void;
             open: Exclude<import("@tamagui/dialog").DialogProps['open'], void | null>;
             onOpenChange: Exclude<import("@tamagui/dialog").DialogProps['onOpenChange'], void | null>;
