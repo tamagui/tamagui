@@ -4,8 +4,9 @@ import { setupPage } from './test-utils'
 /**
  * Accessible naming for the route-sheet composition: a modal Dialog that
  * adapts to a modal Sheet below the max-md breakpoint, with no Title or
- * Description rendered. The visible dialog must carry its aria-label, and
- * must not reference a title or description that is not rendered.
+ * Description rendered. The visible dialog must carry its aria-label, must
+ * not reference a title or description that is not rendered, and must be
+ * the only non-ignored dialog in the accessibility tree.
  */
 test.describe('Sheet dialog naming', () => {
   test('narrow viewport names the sheet dialog', async ({ page }) => {
@@ -18,6 +19,7 @@ test.describe('Sheet dialog naming', () => {
     const dialog = page.getByRole('dialog', { name: 'Trip settings sheet' })
     await expect(dialog.getByTestId('close-dialog')).toBeVisible({ timeout: 10_000 })
     await expectNoDanglingReferences(page)
+    await expectSingleNamedDialog(page, 'Trip settings sheet')
   })
 
   test('wide viewport names the dialog card', async ({ page }) => {
@@ -30,6 +32,7 @@ test.describe('Sheet dialog naming', () => {
     const dialog = page.getByRole('dialog', { name: 'Trip settings dialog' })
     await expect(dialog.getByTestId('close-dialog')).toBeVisible({ timeout: 10_000 })
     await expectNoDanglingReferences(page)
+    await expectSingleNamedDialog(page, 'Trip settings dialog')
   })
 })
 
@@ -48,4 +51,16 @@ async function expectNoDanglingReferences(page: Page) {
     return missing
   })
   expect(dangling).toEqual([])
+}
+
+async function expectSingleNamedDialog(page: Page, name: string) {
+  const cdp = await page.context().newCDPSession(page)
+  await cdp.send('Accessibility.enable')
+  const { nodes } = await cdp.send('Accessibility.getFullAXTree')
+  const dialogs = nodes.filter(
+    (node) =>
+      (node.role?.value === 'dialog' || node.role?.value === 'alertdialog') &&
+      !node.ignored
+  )
+  expect(dialogs.map((node) => node.name?.value ?? '')).toEqual([name])
 }
