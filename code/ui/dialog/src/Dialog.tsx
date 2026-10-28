@@ -81,6 +81,10 @@ type DialogContextValue = {
   contentId: string
   titleId: string
   descriptionId: string
+  titlePresent: boolean
+  descriptionPresent: boolean
+  setTitlePresent(present: boolean): void
+  setDescriptionPresent(present: boolean): void
   onOpenToggle(): void
   open: Exclude<DialogProps['open'], void | null>
   onOpenChange: Exclude<DialogProps['onOpenChange'], void | null>
@@ -767,8 +771,8 @@ const DialogContentImpl = createRefComponent<TamaguiElement, DialogContentImplPr
         id={context.contentId}
         role="dialog"
         aria-modal={context.modal}
-        aria-describedby={context.descriptionId}
-        aria-labelledby={context.titleId}
+        aria-describedby={context.descriptionPresent ? context.descriptionId : undefined}
+        aria-labelledby={context.titlePresent ? context.titleId : undefined}
         data-state={getState(context.open)}
         // allow clicking through content during exit animation
         pointerEvents={context.open ? 'auto' : 'none'}
@@ -806,7 +810,7 @@ const DialogContentImpl = createRefComponent<TamaguiElement, DialogContentImplPr
 
         {process.env.NODE_ENV === 'development' && (
           <>
-            <TitleWarning titleId={context.titleId} />
+            <TitleWarning titleId={context.titleId} contentRef={contentRef as any} />
             <DescriptionWarning
               contentRef={contentRef as any}
               descriptionId={context.descriptionId}
@@ -834,6 +838,14 @@ const DialogTitle = createStyledHOC(
   function DialogTitle(props: DialogTitleExtraProps, forwardedRef) {
     const { scope, ...titleProps } = props
     const context = useDialogContext(scope)
+    const setTitlePresent = context.setTitlePresent
+    // register before paint so Content can reference this title on first paint
+    useIsomorphicLayoutEffect(() => {
+      setTitlePresent(true)
+      return () => {
+        setTitlePresent(false)
+      }
+    }, [setTitlePresent])
     return <DialogTitleFrame id={context.titleId} {...titleProps} ref={forwardedRef} />
   }
 )
@@ -855,6 +867,14 @@ const DialogDescription = createStyledHOC(
   function DialogDescription(props: DialogDescriptionExtraProps, forwardedRef) {
     const { scope, ...descriptionProps } = props
     const context = useDialogContext(scope)
+    const setDescriptionPresent = context.setDescriptionPresent
+    // register before paint so Content can reference this description on first paint
+    useIsomorphicLayoutEffect(() => {
+      setDescriptionPresent(true)
+      return () => {
+        setDescriptionPresent(false)
+      }
+    }, [setDescriptionPresent])
     return (
       <DialogDescriptionFrame
         id={context.descriptionId}
@@ -923,9 +943,12 @@ const [DialogWarningProvider, useWarningContext] = createContext(TITLE_WARNING_N
   docsSlug: 'dialog',
 })
 
-type TitleWarningProps = { titleId?: string }
+type TitleWarningProps = {
+  titleId?: string
+  contentRef: React.RefObject<TamaguiElement>
+}
 
-const TitleWarning: React.FC<TitleWarningProps> = ({ titleId }) => {
+const TitleWarning: React.FC<TitleWarningProps> = ({ titleId, contentRef }) => {
   if (process.env.NODE_ENV === 'development') {
     const titleWarningContext = useWarningContext(TITLE_WARNING_NAME)
 
@@ -933,13 +956,18 @@ const TitleWarning: React.FC<TitleWarningProps> = ({ titleId }) => {
 
     React.useEffect(() => {
       if (!isWeb) return
-      if (titleId) {
-        const hasTitle = document.getElementById(titleId)
-        if (!hasTitle) {
+      if (titleId && !document.getElementById(titleId)) {
+        // an explicit accessible name on Content names the dialog without a Title
+        const contentNode = contentRef.current
+        const hasName =
+          contentNode instanceof HTMLElement &&
+          (contentNode.getAttribute('aria-label') ||
+            contentNode.getAttribute('aria-labelledby'))
+        if (!hasName) {
           console.warn(MESSAGE)
         }
       }
-    }, [MESSAGE, titleId])
+    }, [MESSAGE, contentRef, titleId])
   }
 
   return null
@@ -1008,6 +1036,9 @@ const Dialog = withStaticProperties(
     const contentRef = React.useRef<TamaguiElement>(null)
     const presentPartIdsRef = React.useRef(new Set<string>())
     const [presentPartCount, setPresentPartCount] = React.useState(0)
+    // mounted Title/Description counts so Content only references parts that exist
+    const [titleCount, setTitleCount] = React.useState(0)
+    const [descriptionCount, setDescriptionCount] = React.useState(0)
 
     const [open, setOpen] = useControllableState({
       prop: openProp,
@@ -1034,6 +1065,14 @@ const Dialog = withStaticProperties(
       }
     }, [])
 
+    const setTitlePresent = React.useCallback((present: boolean) => {
+      setTitleCount((count) => Math.max(0, count + (present ? 1 : -1)))
+    }, [])
+
+    const setDescriptionPresent = React.useCallback((present: boolean) => {
+      setDescriptionCount((count) => Math.max(0, count + (present ? 1 : -1)))
+    }, [])
+
     const context = {
       dialogScope: scope,
       adaptScope,
@@ -1042,6 +1081,10 @@ const Dialog = withStaticProperties(
       contentId,
       titleId,
       descriptionId,
+      titlePresent: titleCount > 0,
+      descriptionPresent: descriptionCount > 0,
+      setTitlePresent,
+      setDescriptionPresent,
       open,
       onOpenChange: setOpen,
       onOpenToggle,

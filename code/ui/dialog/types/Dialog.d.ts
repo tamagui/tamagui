@@ -41,6 +41,10 @@ type DialogContextValue = {
     contentId: string;
     titleId: string;
     descriptionId: string;
+    titlePresent: boolean;
+    descriptionPresent: boolean;
+    setTitlePresent(present: boolean): void;
+    setDescriptionPresent(present: boolean): void;
     onOpenToggle(): void;
     open: Exclude<DialogProps['open'], void | null>;
     onOpenChange: Exclude<DialogProps['onOpenChange'], void | null>;
