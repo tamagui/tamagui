@@ -99,6 +99,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   PopupConformanceCase: () => require('./PopupConformanceCase').PopupConformanceCase,
   DialogScopedCase: () => require('./DialogScopedCase').DialogScopedCase,
   DialogSheetAdaptCase: () => require('./DialogSheetAdaptCase').DialogSheetAdaptCase,
+  SheetDialogNamingCase: () => require('./SheetDialogNamingCase').SheetDialogNamingCase,
   DialogSheetAdaptHandoffCase: () =>
     require('./DialogSheetAdaptHandoffCase').DialogSheetAdaptHandoffCase,
   DialogSheetAdaptReopenCase: () =>
