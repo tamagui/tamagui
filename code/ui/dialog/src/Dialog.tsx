@@ -173,7 +173,6 @@ export const DialogPortalFrame = styled(YStack, {
   height: 'web:auto',
   maxHeight: 'web:100vh',
   zIndex: 'web:1',
-  render: 'dialog',
 })
 
 const needsRepropagation = needsPortalRepropagation()
@@ -215,27 +214,14 @@ const DialogPortalItem = ({
 const DialogPortal = createRefComponent<TamaguiElement, DialogPortalProps>(
   (props, forwardedRef) => {
     const { scope, forceMount, children, ...frameProps } = props
-    const dialogRef = React.useRef<TamaguiElement>(null)
-    const ref = composeRefs(dialogRef, forwardedRef)
+    const frameRef = React.useRef<TamaguiElement>(null)
+    const ref = composeRefs(frameRef, forwardedRef)
 
     const context = useDialogContext(scope)
     const portalContext = forceMount ? { ...context, forceMount: true } : context
     const keepMounted = forceMount || context.keepChildrenMounted
     const isAdapted = useAdaptIsActive(context.adaptScope)
     const isVisible = context.open || context.hasPresentParts
-
-    if (isWeb) {
-      useIsomorphicLayoutEffect(() => {
-        const node = dialogRef.current
-        if (!(node instanceof HTMLDialogElement)) return
-        // optional chaining for JSDOM compatibility (doesn't implement show/close)
-        if (isVisible && !isAdapted) {
-          node.show?.()
-        } else {
-          node.close?.()
-        }
-      }, [isVisible, isAdapted])
-    }
 
     const zIndex = getExpandedShorthand('zIndex', props)
 
@@ -252,11 +238,9 @@ const DialogPortal = createRefComponent<TamaguiElement, DialogPortalProps>(
         <LayoutMeasurementController disable={!context.open}>
           <DialogPortalFrame
             ref={ref}
-            {...(isWeb &&
-              context.open &&
-              context.modal && {
-                'aria-modal': true,
-              })}
+            // plain positioning wrapper: show() never used the top layer, so
+            // a div paints and hit-tests identically without exposing a
+            // second dialog. the inner Content carries role and aria-modal.
             pointerEvents={context.open && context.modal ? 'auto' : 'none'}
             {...frameProps}
             className={`_no_backdrop ` + (frameProps.className || '')}
