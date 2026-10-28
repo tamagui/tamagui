@@ -104,6 +104,8 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
       portalProps,
       containerComponent: ContainerComponent = React.Fragment,
       onTransition,
+      'aria-label': ariaLabel,
+      'aria-labelledby': ariaLabelledby,
     } = props
 
     const state = useSheetOpenState(props)
@@ -1129,6 +1131,8 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
                   ref={ref}
                   role={isWeb && modal ? 'dialog' : undefined}
                   aria-modal={isWeb && modal ? true : undefined}
+                  aria-label={isWeb && modal ? ariaLabel : undefined}
+                  aria-labelledby={isWeb && modal ? ariaLabelledby : undefined}
                   onLayout={handleAnimationViewLayout}
                   // @ts-ignore for CSS driver this is necessary to attach the transition
                   // also motion driver at least though i suspect all drivers?

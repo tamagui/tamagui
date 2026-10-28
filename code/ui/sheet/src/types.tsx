@@ -82,6 +82,16 @@ export type SheetProps = SheetScopedProps<{
   handleDisableScroll?: boolean
   disableDrag?: boolean
   modal?: boolean
+  /**
+   * Accessible name for the sheet's dialog on web. Applied to the element
+   * carrying `role="dialog"` when `modal` is true.
+   */
+  'aria-label'?: string
+  /**
+   * Id of the element labelling the sheet's dialog on web. Applied to the
+   * element carrying `role="dialog"` when `modal` is true.
+   */
+  'aria-labelledby'?: string
   zIndex?: number
   portalProps?: PortalProps
   /**
