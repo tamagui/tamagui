@@ -18,6 +18,7 @@
         "glob": "^13.0.3",
         "knip": "^6.35.1",
         "lllink": "^1.1.430",
+        "metro-resolver": "0.84.4",
         "npm-run-all": "^4.1.5",
         "oxc-parser": "^0.112.0",
         "oxfmt": "^0.16.0",
