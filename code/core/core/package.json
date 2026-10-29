@@ -159,9 +159,5 @@
   },
   "peerDependencies": {
     "react": ">=19"
-  },
-  "react-native": {
-    "./dist/cjs": "./dist/esm/index.native.js",
-    "./theme-update": "./dist/esm/theme-update.native.js"
   }
 }
