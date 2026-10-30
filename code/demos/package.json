@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/demos",
-  "version": "3.1.7",
+  "version": "3.1.8",
   "private": true,
   "license": "MIT",
   "source": "demos/src/index.tsx",
