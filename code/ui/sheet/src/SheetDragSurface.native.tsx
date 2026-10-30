@@ -17,16 +17,20 @@ export function SheetDragSurface({
   panConfig,
   children,
 }: SheetDragSurfaceProps) {
-  const { GestureDetector } = getGestureHandlerState()
+  const { GestureDetector, Gesture } = getGestureHandlerState()
 
   const panHandlers = React.useMemo(
     () => (panConfig ? PanResponder.create(panConfig).panHandlers : undefined),
     [panConfig]
   )
 
-  if (gestureHandlerEnabled && panGesture && GestureDetector) {
+  // a disabled placeholder keeps the same parent while dragging is off, so the
+  // sheet content is not remounted when the real gesture comes and goes
+  const idleGesture = React.useMemo(() => Gesture?.Pan().enabled(false), [Gesture])
+
+  if (gestureHandlerEnabled && GestureDetector && (panGesture || idleGesture)) {
     return (
-      <GestureDetector gesture={panGesture}>
+      <GestureDetector gesture={panGesture ?? idleGesture}>
         <View style={{ flex: 1 }} collapsable={false}>
           {children}
         </View>
