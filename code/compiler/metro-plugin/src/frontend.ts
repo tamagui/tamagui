@@ -357,7 +357,12 @@ export class MetroCompilerFrontend {
     while (queue.length) {
       const path = queue.shift()!
       try {
-        const record = await this.#compileRecord(path, options, diagnostics)
+        const record = await this.#compileRecord(
+          path,
+          options,
+          diagnostics,
+          speculativeRoots.has(path)
+        )
         this.#records.set(record.input.id, record)
         for (const dependency of record.input.imports) {
           if (
@@ -727,7 +732,9 @@ export class MetroCompilerFrontend {
   async #compileRecord(
     rawPath: string,
     options: MetroCompilerScanOptions,
-    diagnostics: MetroCompilerDiagnostic[]
+    diagnostics: MetroCompilerDiagnostic[],
+    // walk seeds the bundle may never import: their diagnostics are not the build's
+    speculative = false
   ): Promise<CompiledRecord> {
     const path = await realpath(resolve(rawPath))
     const source = await readFile(path, 'utf8')
@@ -748,7 +755,7 @@ export class MetroCompilerFrontend {
           : null
       })
       if (cached) {
-        for (const diagnostic of cached.diagnostics) {
+        for (const diagnostic of speculative ? [] : cached.diagnostics) {
           diagnostics.push(diagnostic)
           this.#report(diagnostic)
         }
@@ -788,7 +795,7 @@ export class MetroCompilerFrontend {
         )
       }
     }
-    for (const diagnostic of recordDiagnostics) {
+    for (const diagnostic of speculative ? [] : recordDiagnostics) {
       diagnostics.push(diagnostic)
       this.#report(diagnostic)
     }

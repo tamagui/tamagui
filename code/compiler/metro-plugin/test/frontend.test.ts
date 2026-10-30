@@ -985,6 +985,7 @@ export const App = () => <View padding={12} />
     const appPath = join(projectRoot, 'src/App.tsx')
     const distPath = join(projectRoot, 'dist/Generated.tsx')
     const brokenPath = join(projectRoot, 'scripts/broken.tsx')
+    const serverPath = join(projectRoot, 'server/worker.ts')
     const testPath = join(projectRoot, 'e2e/excluded.test.ts')
     const testRunnerPath = join(projectRoot, 'run-tests.ts')
     const configPath = join(projectRoot, 'metro.config.js')
@@ -1002,6 +1003,7 @@ export const App = () => <View width={20} height={10} />
     await write(appPath, appSource)
     await write(distPath, appSource)
     await write(brokenPath, 'export const broken = <View\n')
+    await write(serverPath, "import './generated/server-modules'\n")
     await write(testPath, "import 'excluded-test-dependency'\n")
     await write(testRunnerPath, "import 'excluded-test-runner-dependency'\n")
     await write(configPath, "require('excluded-config-dependency')\n")
@@ -1069,6 +1071,8 @@ export const App = () => <View width={20} height={10} />
       expect(await cache.read(distPath, appSource)).toBeNull()
       // a walk-seeded file that fails to compile is speculative, not a build error
       expect(reported).not.toContain('metro/transform-failed')
+      // so is an unresolvable import in a file the entry never reaches
+      expect(reported).not.toContain('metro/resolve-failed')
       expect(excludedResolutionAttempts).toBe(0)
     } finally {
       await frontend.close()
