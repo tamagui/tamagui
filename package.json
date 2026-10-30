@@ -159,7 +159,7 @@
     "@playwright/test": "1.60.0",
     "@protobufjs/utf8": "1.1.1",
     "@swc/core": "1.16.18",
-    "@vxrn/mdx-rust": "2.11.5",
+    "@vxrn/mdx-rust": "2.12.1",
     "@xmldom/xmldom": "0.8.15",
     "axios": "0.32.0",
     "basic-ftp": "5.3.1",
