@@ -1079,6 +1079,63 @@ export const App = () => <View width={20} height={10} />
     }
   })
 
+  test('reports an unresolvable import in a file the entry reaches', async () => {
+    const projectRoot = await mkdtemp(join(packageRoot, 'test/.e4-reached-resolve-'))
+    temporaryRoots.push(projectRoot)
+    const entryPath = join(projectRoot, 'src/index.tsx')
+    const uiPath = join(projectRoot, 'ui/index.ts')
+    await write(join(projectRoot, 'package.json'), '{"name":"e4-reached-resolve"}\n')
+    await write(entryPath, "import './worker'\n")
+    await write(join(projectRoot, 'src/worker.ts'), "import './generated/missing'\n")
+    await write(uiPath, 'export const View = (_props) => null\n')
+
+    const loadedProject = loadTamaguiSync({
+      platform: 'native',
+      config: tamaguiConfigPath,
+      components: ['@tamagui/core'],
+    })
+    const viewInfo = loadedProject.components?.find(
+      ({ moduleName }) => moduleName === '@tamagui/core'
+    )?.nameToInfo.View
+    const reported: string[] = []
+    const frontend = new MetroCompilerFrontend({
+      projectRoot,
+      cacheRoot: join(projectRoot, 'cache'),
+      watch: false,
+      originalBabelTransformerPath: transformerPath,
+      loadCompilerProject: async () => ({
+        projectInfo: {
+          ...loadedProject,
+          components: [{ moduleName: '@fixture/ui', nameToInfo: { View: viewInfo! } }],
+        },
+        componentModules: [{ moduleName: '@fixture/ui', id: uiPath }],
+        generation: 'e4-reached-resolve-v1',
+      }),
+      reportDiagnostic(diagnostic) {
+        reported.push(diagnostic.code)
+      },
+      resolver: {
+        resolveRequest: (context: any, specifier: string, platform: string) =>
+          context.resolveRequest(context, specifier, platform),
+        sourceExts: ['js', 'jsx', 'ts', 'tsx'],
+        unstable_enablePackageExports: true,
+      },
+    })
+
+    try {
+      await frontend.ensureValidCache({
+        dev: false,
+        entryFiles: [entryPath],
+        hot: false,
+        platform: 'ios',
+        transform: { experimentalImportSupport: true },
+      })
+      expect(reported).toContain('metro/resolve-failed')
+    } finally {
+      await frontend.close()
+    }
+  })
+
   test('keeps the plan-cache options hash stable when a sibling bundler re-emits content-hashed output', async () => {
     const projectRoot = await mkdtemp(join(packageRoot, 'test/.e4-emitted-output-'))
     temporaryRoots.push(projectRoot)

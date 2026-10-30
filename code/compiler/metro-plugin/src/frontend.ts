@@ -345,48 +345,52 @@ export class MetroCompilerFrontend {
         if (!entryRoots.includes(id)) speculativeRoots.add(id)
       } catch {}
     }
-    const roots = [...new Set([...entryRoots, ...speculativeRoots])].sort(
-      compareCodeUnits
-    )
-    const queue = [...roots]
-    const queued = new Set(queue)
     for (const watcher of this.#watchers.values()) watcher.close()
     this.#watchers.clear()
     this.#records.clear()
 
-    while (queue.length) {
-      const path = queue.shift()!
-      try {
-        const record = await this.#compileRecord(
-          path,
-          options,
-          diagnostics,
-          speculativeRoots.has(path)
-        )
-        this.#records.set(record.input.id, record)
-        for (const dependency of record.input.imports) {
-          if (
-            dependency.external ||
-            !isCompilerSourceFile(dependency.resolvedId) ||
-            queued.has(dependency.resolvedId)
-          ) {
-            continue
+    // the entry closure drains first, so a file the bundle reaches is always
+    // compiled as real, whether or not the walk also seeded it
+    const queued = new Set(entryRoots)
+    for (const speculative of [false, true]) {
+      const queue = speculative
+        ? [...speculativeRoots].filter((root) => !queued.has(root)).sort(compareCodeUnits)
+        : [...entryRoots]
+      for (const root of queue) queued.add(root)
+      while (queue.length) {
+        const path = queue.shift()!
+        try {
+          const record = await this.#compileRecord(
+            path,
+            options,
+            diagnostics,
+            speculative
+          )
+          this.#records.set(record.input.id, record)
+          for (const dependency of record.input.imports) {
+            if (
+              dependency.external ||
+              !isCompilerSourceFile(dependency.resolvedId) ||
+              queued.has(dependency.resolvedId)
+            ) {
+              continue
+            }
+            queued.add(dependency.resolvedId)
+            queue.push(dependency.resolvedId)
           }
-          queued.add(dependency.resolvedId)
-          queue.push(dependency.resolvedId)
+        } catch (error) {
+          // walk-seeded files are speculative: nothing proved the bundle needs
+          // them, so a failure there is not a build diagnostic. If the bundle
+          // does include one, the transformer's plan-miss warning still fires.
+          if (speculative) continue
+          const diagnostic = metroDiagnostic(
+            'metro/transform-failed',
+            `Failed to compile ${path}: ${error instanceof Error ? error.message : String(error)}`,
+            { moduleId: path }
+          )
+          diagnostics.push(diagnostic)
+          this.#report(diagnostic)
         }
-      } catch (error) {
-        // walk-seeded files are speculative: nothing proved the bundle needs
-        // them, so a compile failure is not a build diagnostic. If the bundle
-        // does include one, the transformer's plan-miss warning still fires.
-        if (speculativeRoots.has(path)) continue
-        const diagnostic = metroDiagnostic(
-          'metro/transform-failed',
-          `Failed to compile ${path}: ${error instanceof Error ? error.message : String(error)}`,
-          { moduleId: path }
-        )
-        diagnostics.push(diagnostic)
-        this.#report(diagnostic)
       }
     }
 
