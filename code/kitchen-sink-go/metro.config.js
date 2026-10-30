@@ -6,9 +6,6 @@ const monorepoRoot = path.resolve(projectRoot, '../..')
 
 const config = getDefaultConfig(projectRoot)
 
-config.resolver.unstable_enablePackageExports =
-  process.env.TAMAGUI_PACKAGE_EXPORTS !== 'false'
-
 // block unnecessary directories from metro file crawling
 config.resolver.blockList = [
   /code\/tamagui\.dev\//,

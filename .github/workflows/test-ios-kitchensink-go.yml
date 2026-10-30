@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package-exports: [true, false]
+        package-exports: [true]
         ios_device:
           - name: iPhone 16
             slug: iphone-16
@@ -90,7 +90,7 @@ jobs:
 
       - name: Start Metro Bundler
         run: |
-          EXPO_NO_TELEMETRY=true TAMAGUI_PACKAGE_EXPORTS=${{ matrix.package-exports }} bunx expo start --offline &
+          EXPO_NO_TELEMETRY=true bunx expo start --offline &
           echo "Waiting for Metro to start..."
           for i in {1..30}; do
             if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios" > /dev/null 2>&1; then

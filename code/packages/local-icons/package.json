@@ -53,9 +53,5 @@
   },
   "peerDependencies": {
     "react": ">=19"
-  },
-  "react-native": {
-    "./dist/cjs": "./dist/esm/index.native.js",
-    "./all": "./dist/esm/all.native.js"
   }
 }
