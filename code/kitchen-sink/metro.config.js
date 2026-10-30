@@ -12,9 +12,6 @@ const config = getDefaultConfig(projectRoot)
 config.serializer.getPolyfills = ({ platform }) =>
   platform ? require('@react-native/js-polyfills')() : []
 
-config.resolver.unstable_enablePackageExports =
-  process.env.TAMAGUI_PACKAGE_EXPORTS !== 'false'
-
 // watchman is flaky locally and adds nothing for ci - disable
 config.resolver.useWatchman = false
 

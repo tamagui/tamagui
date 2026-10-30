@@ -45,9 +45,9 @@ jobs:
     timeout-minutes: 45
     strategy:
       fail-fast: false
-      # cover both resolver modes before merge; main also runs the larger device.
+      # main also runs the larger device.
       matrix:
-        package-exports: [true, false]
+        package-exports: [true]
         ios_device: ${{ github.ref == 'refs/heads/main' && fromJSON('[{"name":"iPhone 17","slug":"iphone-17"},{"name":"iPhone 17 Pro Max","slug":"iphone-17-pro-max"}]') || fromJSON('[{"name":"iPhone 17","slug":"iphone-17"}]') }}
     defaults:
       run:
@@ -114,7 +114,7 @@ jobs:
         run: |
           # start Metro in background, capture output for debugging
           cd "${{ env.test_container_app_path }}"
-          EXPO_NO_TELEMETRY=true TAMAGUI_PACKAGE_EXPORTS=${{ matrix.package-exports }} bunx expo start --dev-client --offline --reset-cache > /tmp/metro.log 2>&1 &
+          EXPO_NO_TELEMETRY=true bunx expo start --dev-client --offline --reset-cache > /tmp/metro.log 2>&1 &
           METRO_PID=$!
           echo "$METRO_PID" > /tmp/metro-pid
           cd "${{ github.workspace }}"
