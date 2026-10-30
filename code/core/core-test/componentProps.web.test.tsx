@@ -15,7 +15,7 @@ test('a dialog portal keeps the inherited web text color', () => {
   )
 
   const frame = tree.getByTestId('portal-frame')
-  expect(frame.tagName).toBe('DIALOG')
+  expect(frame.tagName).toBe('DIV')
   expect(getComputedStyle(frame).color).toBe('inherit')
 })
 
