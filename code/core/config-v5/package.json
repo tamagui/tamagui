@@ -12,7 +12,6 @@
   "sideEffects": false,
   "main": "./dist/cjs/index.cjs",
   "module": "./dist/esm/index.mjs",
-  "react-native": "./dist/esm/index.native.js",
   "types": "./types/index.d.ts",
   "tamagui-build": {
     "outputs": [
