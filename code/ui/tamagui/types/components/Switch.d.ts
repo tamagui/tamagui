@@ -13,7 +13,7 @@ export declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const Switch: import("@tamagui/core").Combined<import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "native" | "nativeProps" | "size" | keyof import("@tamagui/switch-headless").SwitchExtraProps | keyof import("@tamagui/switch").SwitchFrameActiveStyleProps> & import("@tamagui/switch-headless").SwitchExtraProps & {
     native?: import("@tamagui/core").NativeValue<'mobile' | 'ios' | 'android'>;
-    nativeProps?: import("@tamagui/react-native-types/src").SwitchProps;
+    nativeProps?: import("@tamagui/react-native-types").SwitchProps;
 } & import("@tamagui/switch").SwitchFrameActiveStyleProps & import("@tamagui/switch").SwitchSharedProps, import("@tamagui/core").StackStyleBase, Omit<{
     active?: boolean | undefined;
     frameWidth?: number | undefined;

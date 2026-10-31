@@ -60,7 +60,7 @@ export declare const ContextMenu: import("@tamagui/helpers").Combined<import("re
         ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
     }, "ref"> & {
         scope?: string;
-    } & import("@tamagui/compose-refs").RefProp<import("@tamagui/react-native-types/src").ViewInstance | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> & Partial<Omit<unknown, "ref" | "scope" | keyof import("@tamagui/create-menu").MenuRadioGroupProps>>>;
+    } & import("@tamagui/compose-refs").RefProp<import("@tamagui/react-native-types").ViewInstance | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> & Partial<Omit<unknown, "ref" | "scope" | keyof import("@tamagui/create-menu").MenuRadioGroupProps>>>;
     RadioItem: import("react").FC<Omit<Omit<import("@tamagui/web").ViewProps, "scope" | keyof import("@tamagui/create-menu").MenuRadioItemProps> & import("@tamagui/create-menu").MenuRadioItemProps & {
         scope?: string;
     } & {
@@ -122,26 +122,14 @@ export declare const ContextMenu: import("@tamagui/helpers").Combined<import("re
     ItemIcon: React.FC<Omit<Omit<import("@tamagui/web").ViewProps, keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
         ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
     }, "ref"> & import("@tamagui/create-menu").NativeMenuItemCommonProps>;
-    ItemImage: import("react").FC<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & Omit<Readonly<Omit<Readonly<{
-        defaultSource?: import("@tamagui/react-native-types/src").ImageSource | undefined;
-        onPartialLoad?: (() => void) | undefined;
-        onProgress?: ((event: import("@tamagui/react-native-types/src").ImageProgressEventIOS) => void) | undefined;
-    }>, "fadeDuration" | "loadingIndicatorSource" | "progressiveRenderingEnabled" | "resizeMethod" | "resizeMultiplier" | "style" | keyof import("@tamagui/react-native-types/src").ImagePropsBase> & Omit<Readonly<{
-        loadingIndicatorSource?: (number | Readonly<import("@tamagui/react-native-types/src").ImageURISource>) | undefined;
-        progressiveRenderingEnabled?: boolean | undefined;
-        fadeDuration?: number | undefined;
-        resizeMethod?: ('auto' | 'resize' | 'scale' | 'none') | undefined;
-        resizeMultiplier?: number | undefined;
-    }>, "style" | keyof import("@tamagui/react-native-types/src").ImagePropsBase> & Omit<import("@tamagui/react-native-types/src").ImagePropsBase, "style"> & {
-        style?: import("@tamagui/react-native-types/src").ImageStyleProp | undefined;
-    }>, "resizeMode" | "source" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & {
+    ItemImage: import("react").FC<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & Omit<import("@tamagui/react-native-types").ImageProps, "resizeMode" | "source" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & {
         src?: string | number;
-        source?: import("@tamagui/react-native-types/src").ImageSourcePropType;
-        resizeMode?: import("@tamagui/react-native-types/src").ImageResizeMode;
+        source?: import("@tamagui/react-native-types").ImageSourcePropType;
+        resizeMode?: import("@tamagui/react-native-types").ImageResizeMode;
         objectFit?: React.CSSProperties['objectFit'];
         objectPosition?: React.CSSProperties['objectPosition'];
     } & Omit<import("react").ImgHTMLAttributes<HTMLImageElement>, "src" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & Omit<import("react").ImgHTMLAttributes<HTMLImageElement>, "height" | "src" | "style" | "width"> & import("@tamagui/compose-refs").RefProp<import("@tamagui/web").TamaguiElement> & Partial<Omit<import("@tamagui/create-menu").NativeMenuItemCommonProps & {
-        source: import("@tamagui/react-native-types/src").ImageProps['source'];
+        source: import("@tamagui/react-native-types").ImageProps['source'];
         ios?: {
             style?: {
                 tint?: string;
