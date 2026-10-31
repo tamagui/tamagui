@@ -100,6 +100,22 @@ Tamagui Tailwind components render through the same core engine as standard Tama
 
 Both platforms share the same config, design tokens, themes, media queries, accessibility props, and animation drivers.
 
+## Class order and conflicts
+
+Tamagui resolves conflicting utilities by their position in the `className` string: the class written last wins. This is the same rule Tamagui applies to props, and it works like `tailwind-merge` applied for you, so there is no need to wrap class strings in a merge helper.
+
+```tsx
+// both classes set the radius, the later one wins: all four corners are rounded
+<View className="rounded-r-none rounded" />
+
+// reversed, the square right corners win
+<View className="rounded rounded-r-none" />
+```
+
+Real Tailwind on the web does not work this way. There, the order of classes in the string is ignored and conflicts are settled by the order of rules in the generated stylesheet, so `rounded-r-none rounded` leaves the right corners square. If you port markup from Tailwind and a pair of conflicting classes behaves differently, write the class you want to win last.
+
+We should have documented this up front. Tamagui already inverted merge behavior in its style engine as of version two, so last-wins was the natural default for the Tailwind frontend too, but it differs from what Tailwind users expect. We may add an option to choose between merge order and Tailwind's stylesheet order later.
+
 ## Modifiers
 
 Tamagui Tailwind supports standard modifiers:
