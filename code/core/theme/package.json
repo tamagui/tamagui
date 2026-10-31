@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/theme",
-  "version": "3.1.9",
+  "version": "3.1.10",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [
