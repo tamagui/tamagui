@@ -26,6 +26,7 @@ export type Convenience =
   | 'integer'
   | 'percentage'
   | 'sizing-keyword'
+  | 'spacing-scale'
   | 'zero'
 
 export interface GrammarEntry {

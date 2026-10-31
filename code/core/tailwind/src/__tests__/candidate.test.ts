@@ -24,6 +24,18 @@ describe('claimed candidates become flat props', () => {
     })
   })
 
+  test('off-scale numeric spacing is N * 4px, as in tailwind', () => {
+    expect(tokenize('h-10.5')).toEqual({ height: 42 })
+    expect(tokenize('p-10.5')).toEqual({ padding: 42 })
+    expect(tokenize('-mt-10.5')).toEqual({ marginTop: -42 })
+    expect(tokenize('gap-x-10.5')).toEqual({ columnGap: 42 })
+    expect(tokenize('w-200')).toEqual({ width: 800 })
+    // a configured token keeps its own spelling
+    expect(tokenize('p-4')).toEqual({ padding: '4' })
+    // the borderWidth scale is pixels, not the spacing scale
+    expect(tokenize('border-3')).toEqual({ borderWidth: '3' })
+  })
+
   test('rotate, flex-n, and inset fractions become native-capable values', () => {
     expect(tokenize('rotate-45')).toEqual({ rotate: '45deg' })
     expect(tokenize('-rotate-90')).toEqual({ rotate: '-90deg' })

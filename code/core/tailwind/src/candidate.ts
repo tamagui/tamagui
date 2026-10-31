@@ -178,6 +178,10 @@ function tailwindClassToFlatProp(
     }
   }
 
+  if (parsed.convenience === 'spacing-scale') {
+    return { key: prop, value: Number(value) * 4 * (parsed.negative ? -1 : 1) }
+  }
+
   // named leading (leading-tight) is a unitless ratio, which v3 line height reads as such
   if (parsed.convenience === 'leading-keyword') {
     return { key: prop, value: tailwindLeadingRatios[value] }

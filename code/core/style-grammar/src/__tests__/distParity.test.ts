@@ -39,7 +39,7 @@ describe('built export parity', () => {
         valueKind: 'token',
         entry: { prop: 'padding', tokenCategory: 'space' },
       })
-      expect(built.classifyCandidate('p-999', config).kind).toBe('passthrough')
+      expect(built.classifyCandidate('p-huge', config).kind).toBe('passthrough')
       expect(built.grammarTable).toBe(toolingEsm.grammarTable)
       expect(built.migrateLegacyTransition('quick', new Set(['quick']))).toEqual({
         ok: true,
