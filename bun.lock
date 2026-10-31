@@ -2208,7 +2208,7 @@
         "@tamagui/use-window-dimensions": "workspace:*",
         "@tanstack/react-table": "^8.11.2",
         "@vxrn/color-scheme": "2.13.1",
-        "@vxrn/mdx-rust": "2.13.0",
+        "@vxrn/mdx-rust": "2.13.1",
         "color2k": "^2.0.2",
         "expo-document-picker": "~58.0.4",
         "foxact": "^0.2.33",
