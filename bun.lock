@@ -2100,7 +2100,7 @@
         "@tamagui/local-icons": "workspace:*",
         "@tamagui/react-native-media-driver": "workspace:*",
         "@tamagui/toast": "workspace:*",
-        "@vxrn/color-scheme": "2.13.0",
+        "@vxrn/color-scheme": "2.13.1",
         "expo": "58.0.14",
         "expo-asset": "~58.0.16",
         "expo-modules-core": "~58.0.22",
@@ -2207,7 +2207,7 @@
         "@tamagui/use-store": "workspace:*",
         "@tamagui/use-window-dimensions": "workspace:*",
         "@tanstack/react-table": "^8.11.2",
-        "@vxrn/color-scheme": "2.13.0",
+        "@vxrn/color-scheme": "2.13.1",
         "@vxrn/mdx-rust": "2.13.0",
         "color2k": "^2.0.2",
         "expo-document-picker": "~58.0.4",
@@ -9435,8 +9435,6 @@
 
     "@take-out/helpers/@tamagui/constants": ["@tamagui/constants@2.0.0-rc.0-1769885482630", "", { "peerDependencies": { "react": ">=19", "react-native": "*" } }, "sha512-Wl63ae/weTmydNmbnK+aBuQvAd43L3n3+2vfirqyWkCWPhKJZD75XJnnHEt8tLAy0bZ1hboxnTQAXgpEHSwwxA=="],
 
-    "@tamagui/dot-dev/@vxrn/color-scheme": ["@vxrn/color-scheme@2.13.0", "", { "dependencies": { "@vxrn/use-isomorphic-layout-effect": "2.13.0" }, "peerDependencies": { "react": "19.3.0", "react-native": "^0.88.0" } }, "sha512-osLWT05oWwD9PH+ddmTgvUFeVXD4RTq1lZW1jW+CoHRg6vv4yyb1rSBWh7RXJI7nvqn63VBG4xpYr3MTlmtrhQ=="],
-
     "@testing-library/jest-dom/aria-query": ["aria-query@5.3.2", "", {}, "sha512-COROpnaoap1E2F000S62r6A60uHZnmlvomhfyT2DlTcrY1OrBKn2UhH7qn5wTC9zMvD0AY7csdPSNwKP+7WiQw=="],
 
     "@testing-library/jest-dom/dom-accessibility-api": ["dom-accessibility-api@0.6.3", "", {}, "sha512-7ZgogeTnjuHbo+ct10G9Ffp0mif17idi0IyWNVA/wcwcm7NPOD/WEHVP3n7n3MhXqxoIYm8d6MuZohYWIZ4T3w=="],
@@ -9957,8 +9955,6 @@
 
     "router/path-to-regexp": ["path-to-regexp@8.4.2", "", {}, "sha512-qRcuIdP69NPm4qbACK+aDogI5CBDMi1jKe0ry5rSQJz8JVLsC7jV8XpiJjGRLLol3N+R5ihGYcrPLTno6pAdBA=="],
 
-    "sandbox/@vxrn/color-scheme": ["@vxrn/color-scheme@2.13.0", "", { "dependencies": { "@vxrn/use-isomorphic-layout-effect": "2.13.0" }, "peerDependencies": { "react": "19.3.0", "react-native": "^0.88.0" } }, "sha512-osLWT05oWwD9PH+ddmTgvUFeVXD4RTq1lZW1jW+CoHRg6vv4yyb1rSBWh7RXJI7nvqn63VBG4xpYr3MTlmtrhQ=="],
-
     "satteri/@types/hast": ["@types/hast@3.0.5", "", { "dependencies": { "@types/unist": "*" } }, "sha512-rp/ezSWaD1m44dPKICGhiskI13nVr7qTloFwDa/IYkhhf5nzwP+zIQcIJh3WIFSBOy/H1PzB40jPjMDksN4F+g=="],
 
     "satteri/@types/unist": ["@types/unist@3.0.3", "", {}, "sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q=="],
@@ -10386,8 +10382,6 @@
     "@tailwindcss/node/lightningcss/lightningcss-win32-arm64-msvc": ["lightningcss-win32-arm64-msvc@1.32.0", "", { "os": "win32", "cpu": "arm64" }, "sha512-8SbC8BR40pS6baCM8sbtYDSwEVQd4JlFTOlaD3gWGHfThTcABnNDBda6eTZeqbofalIJhFx0qKzgHJmcPTnGdw=="],
 
     "@tailwindcss/node/lightningcss/lightningcss-win32-x64-msvc": ["lightningcss-win32-x64-msvc@1.32.0", "", { "os": "win32", "cpu": "x64" }, "sha512-Amq9B/SoZYdDi1kFrojnoqPLxYhQ4Wo5XiL8EVJrVsB8ARoC1PWW6VGtT0WKCemjy8aC+louJnjS7U18x3b06Q=="],
-
-    "@tamagui/dot-dev/@vxrn/color-scheme/@vxrn/use-isomorphic-layout-effect": ["@vxrn/use-isomorphic-layout-effect@2.13.0", "", { "peerDependencies": { "react": "^19.3.0" } }, "sha512-z59ApvKbBEbRw7VBp+QgrLJGsI0djHZgeng43JpCH/eL8TBBuUF+bk0Odga5eVSGy9AOxuPPcfv8KH4+jGt2QQ=="],
 
     "@testing-library/react-native/pretty-format/ansi-styles": ["ansi-styles@5.2.0", "", {}, "sha512-Cxwpt2SfTzTtXcfOlzGEee8O+c+MmUgGrNiBcXnuWxuFJHe6a5Hz7qwhwe5OgaSYI0IJvkLqWX1ASG+cJOkEiA=="],
 
@@ -10870,8 +10864,6 @@
     "rimraf/glob/minimatch": ["minimatch@9.0.9", "", { "dependencies": { "brace-expansion": "^2.0.2" } }, "sha512-OBwBN9AL4dqmETlpS2zasx+vTeWclWzkblfZk7KTA5j3jeOONz/tRCnZomUyvNg83wL5Zv9Ss6HMJXAgL8R2Yg=="],
 
     "rimraf/glob/path-scurry": ["path-scurry@1.11.1", "", { "dependencies": { "lru-cache": "^10.2.0", "minipass": "^5.0.0 || ^6.0.2 || ^7.0.0" } }, "sha512-Xa4Nw17FS9ApQFJ9umLiJS4orGjm7ZzwUrwamcGQuHSzDyth9boKDaycYdDcZDuqYATXw4HFXgaqWTctW/v1HA=="],
-
-    "sandbox/@vxrn/color-scheme/@vxrn/use-isomorphic-layout-effect": ["@vxrn/use-isomorphic-layout-effect@2.13.0", "", { "peerDependencies": { "react": "^19.3.0" } }, "sha512-z59ApvKbBEbRw7VBp+QgrLJGsI0djHZgeng43JpCH/eL8TBBuUF+bk0Odga5eVSGy9AOxuPPcfv8KH4+jGt2QQ=="],
 
     "schema-utils/ajv/json-schema-traverse": ["json-schema-traverse@1.0.0", "", {}, "sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug=="],
 
