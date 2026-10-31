@@ -2,7 +2,7 @@ import { modifierAliases } from "../runtime/stateModifiers";
 export { modifierAliases };
 export type StandardTokenCategory = "space" | "size" | "radius" | "zIndex" | "color" | "fontFamily" | "fontSize" | "fontWeight" | "lineHeight" | "letterSpacing";
 export type TokenCategory = StandardTokenCategory | (string & {});
-export type Convenience = "alignment-alias" | "angle" | "bare-border" | "flex-bundle" | "font-generic" | "integer" | "percentage" | "sizing-keyword" | "zero";
+export type Convenience = "alignment-alias" | "angle" | "bare-border" | "flex-bundle" | "font-generic" | "integer" | "percentage" | "sizing-keyword" | "spacing-scale" | "zero";
 export interface GrammarEntry {
 	prop: string;
 	prefix: string;
