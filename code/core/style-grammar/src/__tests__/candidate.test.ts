@@ -116,7 +116,9 @@ describe('candidate grammar', () => {
   })
 
   test('missing category tokens and unknown modifiers pass through', () => {
-    expect(classifyCandidate('p-999', config).kind).toBe('passthrough')
+    expect(classifyCandidate('p-huge', config).kind).toBe('passthrough')
+    // a numeric spacing value needs no token: tailwind spacing is N * 4px
+    expect(classifyCandidate('p-999', config).kind).toBe('tamagui')
     expect(classifyCandidate('rounded-color-5', config).kind).toBe('passthrough')
     expect(classifyCandidate('unknown:p-4', config).kind).toBe('passthrough')
     expect(classifyCandidate('md:p-4', config).kind).toBe('passthrough')

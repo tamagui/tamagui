@@ -718,6 +718,15 @@ function chooseEntry(
       if (entry.tokenCategory === 'zIndex' && numericPattern.test(rawValue)) {
         return { entry, valueKind: 'convenience', convenience: 'integer' }
       }
+      // tailwind spacing is any number times 4px, so h-10.5 needs no token
+      if (
+        numericPattern.test(rawValue) &&
+        (entry.tokenCategory === 'space' ||
+          entry.tokenCategory === 'size' ||
+          propTokenGroupFallbacks[entry.tokenCategory] === 'size')
+      ) {
+        return { entry, valueKind: 'convenience', convenience: 'spacing-scale' }
+      }
       continue
     }
     if (
@@ -775,6 +784,7 @@ export function parseCandidate(
               selected.convenience === 'angle' ||
               selected.convenience === 'percentage' ||
               selected.convenience === 'sizing-keyword' ||
+              selected.convenience === 'spacing-scale' ||
               selected.convenience === 'integer')))
       ) {
         dynamic = { prefix, rawValue, selected }
