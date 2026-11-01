@@ -972,10 +972,11 @@ export function formatCandidate(
     }
   }
   if (valueKind === 'token') {
-    if (
-      !hasTokenDomain(config || {}, entry.tokenCategory!) &&
-      parseCandidate(candidate, config || {})
-    ) {
+    // a numeric spacing-scale parse is the same class a token would spell, so only other parses are ambiguous
+    const untokened = !hasTokenDomain(config || {}, entry.tokenCategory!)
+      ? parseCandidate(candidate, config || {})
+      : null
+    if (untokened && untokened.convenience !== 'spacing-scale') {
       return null
     }
     const parsed = parseCandidate(candidate, tokenValidationConfig(entry, value, config))
