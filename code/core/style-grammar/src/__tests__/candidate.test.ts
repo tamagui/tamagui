@@ -417,6 +417,12 @@ describe('candidate grammar', () => {
     expect(
       formatCandidate({ prop: 'color', value: 'color-5/50', valueKind: 'token' })
     ).toBe('color-color-5/50')
+    expect(formatCandidate({ prop: 'padding', value: '4', valueKind: 'token' })).toBe(
+      'p-4'
+    )
+    expect(formatCandidate({ prop: 'width', value: '10', valueKind: 'token' })).toBe(
+      'w-10'
+    )
     expect(parseCandidate('color-color-5/50', config)).toMatchObject({
       valueKind: 'token',
       rawValue: 'color-5/50',
