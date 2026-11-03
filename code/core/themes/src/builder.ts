@@ -94,7 +94,7 @@ const light = {
   'color-hover': 950,
   'color-press': 950,
   'color-focus': 950,
-  'placeholder-color': 500,
+  'placeholder-color': 600,
   'outline-color': 400,
   'shadow-color': 'shadow-3',
   'accent-background': 'brand-600',
@@ -116,6 +116,7 @@ const dark = {
   'color-hover': 50,
   'color-press': 50,
   'color-focus': 50,
+  'placeholder-color': 500,
   'shadow-color': 'shadow-3',
 } as const satisfies ThemeScale
 
