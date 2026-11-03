@@ -49,12 +49,13 @@ export type BuildResult = {
 export function insertCssImport(jsContent: string, cssImport: string): string {
   // Match 'use client' or 'use server' directives at the start of the file
   // Only consume one optional semicolon and one optional newline to preserve formatting
-  const directiveMatch = jsContent.match(/^(['"])use (client|server)\1;?\n?/)
+  const directiveMatch = jsContent.match(/^(['"])use (client|server)\1;?(?:\r\n|[\r\n])?/)
   if (directiveMatch) {
     // Directive found at start - insert CSS import after it
     const directive = directiveMatch[0]
     const rest = jsContent.slice(directive.length)
-    return `${directive}${cssImport}\n${rest}`
+    const separator = /[\r\n]$/.test(directive) ? '' : '\n'
+    return `${directive}${separator}${cssImport}\n${rest}`
   }
   return `${cssImport}\n${jsContent}`
 }
