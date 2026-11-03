@@ -55,7 +55,7 @@ export declare const scales: {
                 readonly 'color-hover': 950;
                 readonly 'color-press': 950;
                 readonly 'color-focus': 950;
-                readonly 'placeholder-color': 500;
+                readonly 'placeholder-color': 600;
                 readonly 'outline-color': 400;
                 readonly 'shadow-color': 'shadow-3';
                 readonly 'accent-background': 'brand-600';
@@ -67,7 +67,6 @@ export declare const scales: {
         };
         readonly dark: {
             readonly 1: {
-                readonly 'placeholder-color': 500;
                 readonly 'outline-color': 400;
                 readonly 'accent-background': 'brand-600';
                 readonly 'accent-color': 'brand-50';
@@ -84,6 +83,7 @@ export declare const scales: {
                 readonly 'color-hover': 50;
                 readonly 'color-press': 50;
                 readonly 'color-focus': 50;
+                readonly 'placeholder-color': 500;
                 readonly 'shadow-color': 'shadow-3';
             };
             readonly 2: ThemeScale<"black" | "brand-50" | "brand-600">;
