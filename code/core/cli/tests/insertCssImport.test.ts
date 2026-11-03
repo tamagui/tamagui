@@ -48,7 +48,14 @@ describe('insertCssImport', () => {
     const js = `"use client"import { useState } from 'react'`
     const result = insertCssImport(js, cssImport)
     expect(result).toBe(
-      `"use client"import "./styles.css"\nimport { useState } from 'react'`
+      `"use client"\nimport "./styles.css"\nimport { useState } from 'react'`
+    )
+  })
+
+  it('should preserve CRLF after a directive', () => {
+    const js = `'use client'\r\nexport const value = 1\r\n`
+    expect(insertCssImport(js, cssImport)).toBe(
+      `'use client'\r\nimport "./styles.css"\nexport const value = 1\r\n`
     )
   })
 
@@ -69,7 +76,7 @@ describe('insertCssImport', () => {
   it('should handle file with only directive', () => {
     const js = `"use client"`
     const result = insertCssImport(js, cssImport)
-    expect(result).toBe(`"use client"import "./styles.css"\n`)
+    expect(result).toBe(`"use client"\nimport "./styles.css"\n`)
   })
 
   it('should preserve multiple newlines after directive', () => {
