@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/v3-canary",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "private": true,
   "main": "index.js",
   "scripts": {
