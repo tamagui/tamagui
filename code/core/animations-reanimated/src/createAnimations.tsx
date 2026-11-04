@@ -271,6 +271,19 @@ const getImplicitDefault = (
   return suffixIndex > 0 ? `${value}${targetValue.slice(suffixIndex)}` : value
 }
 
+// reanimated 4.7's android synchronous prop path throws on null: opacity is read
+// with asDouble(), and border radius must be a number or a percentage. these are
+// the animatable keys that path accepts. other removed keys still use null, which
+// is the unset signal for props that path does not read.
+const nativeNumericClear = (key: string): number | undefined => {
+  'worklet'
+  if (key === 'opacity' || key.endsWith('Radius')) {
+    const value = getImplicitDefault(key, 0)
+    return typeof value === 'number' ? value : undefined
+  }
+  return undefined
+}
+
 // A numeric authored lineHeight is a RATIO of the resolved font size, not a
 // length. Core finalizes the destination to fontSize * ratio and reports the
 // ratio back on `nativeTextMetrics`, so the painted leading has to be
@@ -1968,12 +1981,15 @@ export function createAnimations<A extends AnimationsConfig>(
           for (const key in snapshot.removedKeys) {
             if (!key.startsWith('transform:') && !(key in staticValues)) {
               // native color processing rejects null. text color must remain
-              // absent rather than making the text transparent.
-              if (
-                snapshot.clearValue === null &&
-                (key === 'color' || key.endsWith('Color'))
-              ) {
-                if (key !== 'color') result[key] = 'transparent'
+              // absent rather than making the text transparent. numeric keys
+              // the synchronous android serializer reads cannot be null either.
+              if (snapshot.clearValue === null) {
+                if (key === 'color' || key.endsWith('Color')) {
+                  if (key !== 'color') result[key] = 'transparent'
+                } else {
+                  const cleared = nativeNumericClear(key)
+                  result[key] = cleared === undefined ? snapshot.clearValue : cleared
+                }
               } else {
                 result[key] = snapshot.clearValue
               }

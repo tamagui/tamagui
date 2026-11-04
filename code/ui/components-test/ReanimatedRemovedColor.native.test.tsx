@@ -83,10 +83,58 @@ test.each([
   // "Invalid color value: null" for the driver's former clear value.
   const cleared = stylePropsBuilder.build(removed)
   expect(cleared[key]).toBe(0)
-  expect(removed.opacity).toBeNull()
+  expect(removed.opacity).toBe(1)
 
   const readded = stylePropsBuilder.build(await paint({ [key]: 'blue' }))
   expect(readded[key]).toBe(0xff0000ff)
+})
+
+test('removing a press-only opacity resets it to 1 instead of null', async () => {
+  const pressed = await paint({ opacity: 0.8 })
+  expect(pressed.opacity).not.toBeNull()
+
+  const removed = await paint({})
+  expect(removed.opacity).toBe(1)
+  stylePropsBuilder.build(removed)
+
+  const restored = await paint({ opacity: 0.4 })
+  expect(restored.opacity).not.toBeNull()
+  expect(restored.opacity).not.toBe(1)
+})
+
+// native expands borderRadius onto the four physical corners before the driver
+// sees the style, and those are the keys the android serializer reads.
+const RADIUS_KEYS = [
+  'borderTopLeftRadius',
+  'borderTopRightRadius',
+  'borderBottomRightRadius',
+  'borderBottomLeftRadius',
+] as const
+
+test('removing border radius resets the corners to 0 instead of null', async () => {
+  const mounted = await paint({ borderRadius: 8 })
+  for (const key of RADIUS_KEYS) {
+    expect(mounted[key]).toBe(8)
+  }
+
+  const removed = await paint({})
+  for (const key of RADIUS_KEYS) {
+    expect(removed[key]).toBe(0)
+  }
+  const built = stylePropsBuilder.build(removed)
+  for (const key of RADIUS_KEYS) {
+    expect(built[key]).toBe(0)
+  }
+})
+
+test('removing scale clears the transform list', async () => {
+  const mounted = await paint({ scale: 0.98 })
+  expect(JSON.stringify(mounted)).toContain('scale')
+
+  const removed = await paint({})
+  // an empty list is the clear. a null scale inside an entry is what the
+  // android serializer reads with asDouble().
+  expect(removed.transform).toEqual([])
 })
 
 test('removing text color omits the key instead of making text transparent', async () => {
