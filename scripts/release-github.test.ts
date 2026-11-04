@@ -179,6 +179,49 @@ describe('stable release pull request coordinator', () => {
     expect(squashMerged).toBe(false)
   })
 
+  test.each(['success', 'failure'])(
+    'uses the higher run id when full CI timestamps tie (%s)',
+    async (conclusion) => {
+      let squashMerged = false
+      const olderRun = {
+        id: 41707195291,
+        event: 'workflow_dispatch',
+        head_sha: releaseSha,
+        status: 'completed',
+        conclusion: conclusion === 'success' ? 'cancelled' : 'success',
+        created_at: '2026-11-03T19:51:42Z',
+      }
+      const operations = makeOperations({
+        findPullRequests: async () => [makePullRequest()],
+        listChecksRuns: async () => [
+          olderRun,
+          { ...olderRun, id: 41707196228, event: 'pull_request', conclusion },
+        ],
+        squashPullRequest: async () => {
+          squashMerged = true
+        },
+        getPullRequest: async () =>
+          makePullRequest(
+            squashMerged
+              ? {
+                  state: 'closed',
+                  merged_at: '2026-11-03T21:53:01Z',
+                  merge_commit_sha: mergedSha,
+                }
+              : {}
+          ),
+      })
+
+      const release = mergeStableRelease('2.7.8', targetSha, operations)
+      if (conclusion === 'success') {
+        await expect(release).resolves.toBe(mergedSha)
+      } else {
+        await expect(release).rejects.toThrow('Checks run 41707196228 concluded failure')
+      }
+      expect(squashMerged).toBe(conclusion === 'success')
+    }
+  )
+
   test('rechecks main after full CI and leaves the attempt branch intact if it advanced', async () => {
     let mainReads = 0
     let squashMerged = false
