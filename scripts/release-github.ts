@@ -42,7 +42,7 @@ export type StableReleaseOperations = {
 function latestRun(runs: WorkflowRun[], headSha: string) {
   return runs
     .filter((run) => run.head_sha === headSha)
-    .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))[0]
+    .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at) || b.id - a.id)[0]
 }
 
 async function requireSuccessfulChecks(
