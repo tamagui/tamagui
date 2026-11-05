@@ -532,7 +532,35 @@ const applyAnimation = <T extends number | string>(
       reanimatedConfig as WithSpringConfig,
       callback
     )
+  }
 
+  // reanimated starts a descriptor from its per-view history for the key — the
+  // key's last output value, or the descriptor's own toValue when there is
+  // none (an instant snap). both are wrong for a key that turns animated with
+  // a painted predecessor: history may hold a stale clear-value ('') from when
+  // the key was last removed, which poisons the start value (NaN frames). the
+  // wrapper substitutes the seed for whatever start value reanimated passes.
+  // color history gets the same treatment only when reanimated's own parser
+  // rejects it, preserving valid in-flight values during interruption.
+  //
+  // guard: when reanimated's IN_STYLE_UPDATER flag is stuck true (e.g. after
+  // a throw during initialUpdaterRun), withSpring/withTiming return the raw
+  // target value (number or string) instead of an animation descriptor.
+  // bail out instead of crashing on the .onFrame / .onStart assignments.
+  // (#4193)
+  //
+  // note: we avoid `typeof x === 'object'` here because SWC's ES5 transform
+  // replaces it with a `_type_of()` helper that isn't a worklet — calling it
+  // on the UI Runtime crashes Reanimated 4. checking for known primitive types
+  // instead is safe because SWC leaves those comparisons as plain `typeof`.
+  const isAnimationDescriptor =
+    animatedValue !== null &&
+    typeof animatedValue !== 'number' &&
+    typeof animatedValue !== 'string' &&
+    typeof animatedValue !== 'boolean' &&
+    typeof animatedValue !== 'undefined'
+
+  if (isAnimationDescriptor && config.type !== 'timing') {
     // reanimated stamps lastTimestamp from performance.now() when an animation
     // starts outside a frame (an event handler), then steps it on the frame
     // timestamp, which is the frame's start and lags performance.now() badly
@@ -550,31 +578,6 @@ const applyAnimation = <T extends number | string>(
       )
     }
   }
-
-  // reanimated starts a descriptor from its per-view history for the key — the
-  // key's last output value, or the descriptor's own toValue when there is
-  // none (an instant snap). both are wrong for a key that turns animated with
-  // a painted predecessor: history may hold a stale clear-value ('') from when
-  // the key was last removed, which poisons the start value (NaN frames). the
-  // wrapper substitutes the seed for whatever start value reanimated passes.
-  // color history gets the same treatment only when reanimated's own parser
-  // rejects it, preserving valid in-flight values during interruption.
-  //
-  // guard: when reanimated's IN_STYLE_UPDATER flag is stuck true (e.g. after
-  // a throw during initialUpdaterRun), withSpring/withTiming return the raw
-  // target value (number or string) instead of an animation descriptor.
-  // bail out instead of crashing on .onStart assignment. (#4193)
-  //
-  // note: we avoid `typeof x === 'object'` here because SWC's ES5 transform
-  // replaces it with a `_type_of()` helper that isn't a worklet — calling it
-  // on the UI Runtime crashes Reanimated 4. checking for known primitive types
-  // instead is safe because SWC leaves those comparisons as plain `typeof`.
-  const isAnimationDescriptor =
-    animatedValue !== null &&
-    typeof animatedValue !== 'number' &&
-    typeof animatedValue !== 'string' &&
-    typeof animatedValue !== 'boolean' &&
-    typeof animatedValue !== 'undefined'
 
   if (isAnimationDescriptor && delay && delay > 0) {
     animatedValue = withDelay(delay, animatedValue)
