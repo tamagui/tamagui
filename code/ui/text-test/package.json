@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/text-test",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "private": true,
   "type": "module",
   "sideEffects": false,
