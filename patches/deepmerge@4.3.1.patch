@@ -1,0 +1,114 @@
+diff --git a/index.js b/index.js
+--- a/index.js
++++ b/index.js
+@@ -51,11 +51,21 @@
+ 			&& Object.propertyIsEnumerable.call(target, key)) // and also unsafe if they're nonenumerable.
+ }
+ 
++// define data properties so __proto__ cannot invoke the inherited setter.
++function setProperty(target, key, value) {
++	Object.defineProperty(target, key, {
++		value: value,
++		writable: true,
++		enumerable: true,
++		configurable: true
++	})
++}
++
+ function mergeObject(target, source, options) {
+ 	var destination = {}
+ 	if (options.isMergeableObject(target)) {
+ 		getKeys(target).forEach(function(key) {
+-			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
++			setProperty(destination, key, cloneUnlessOtherwiseSpecified(target[key], options))
+ 		})
+ 	}
+ 	getKeys(source).forEach(function(key) {
+@@ -64,9 +74,9 @@
+ 		}
+ 
+ 		if (propertyIsOnObject(target, key) && options.isMergeableObject(source[key])) {
+-			destination[key] = getMergeFunction(key, options)(target[key], source[key], options)
++			setProperty(destination, key, getMergeFunction(key, options)(target[key], source[key], options))
+ 		} else {
+-			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options)
++			setProperty(destination, key, cloneUnlessOtherwiseSpecified(source[key], options))
+ 		}
+ 	})
+ 	return destination
+diff --git a/dist/cjs.js b/dist/cjs.js
+--- a/dist/cjs.js
++++ b/dist/cjs.js
+@@ -76,11 +76,21 @@
+ 			&& Object.propertyIsEnumerable.call(target, key)) // and also unsafe if they're nonenumerable.
+ }
+ 
++// define data properties so __proto__ cannot invoke the inherited setter.
++function setProperty(target, key, value) {
++	Object.defineProperty(target, key, {
++		value: value,
++		writable: true,
++		enumerable: true,
++		configurable: true
++	})
++}
++
+ function mergeObject(target, source, options) {
+ 	var destination = {};
+ 	if (options.isMergeableObject(target)) {
+ 		getKeys(target).forEach(function(key) {
+-			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options);
++			setProperty(destination, key, cloneUnlessOtherwiseSpecified(target[key], options));
+ 		});
+ 	}
+ 	getKeys(source).forEach(function(key) {
+@@ -89,9 +99,9 @@
+ 		}
+ 
+ 		if (propertyIsOnObject(target, key) && options.isMergeableObject(source[key])) {
+-			destination[key] = getMergeFunction(key, options)(target[key], source[key], options);
++			setProperty(destination, key, getMergeFunction(key, options)(target[key], source[key], options));
+ 		} else {
+-			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options);
++			setProperty(destination, key, cloneUnlessOtherwiseSpecified(source[key], options));
+ 		}
+ 	});
+ 	return destination
+diff --git a/dist/umd.js b/dist/umd.js
+--- a/dist/umd.js
++++ b/dist/umd.js
+@@ -80,11 +80,21 @@
+ 				&& Object.propertyIsEnumerable.call(target, key)) // and also unsafe if they're nonenumerable.
+ 	}
+ 
++	// define data properties so __proto__ cannot invoke the inherited setter.
++	function setProperty(target, key, value) {
++		Object.defineProperty(target, key, {
++			value: value,
++			writable: true,
++			enumerable: true,
++			configurable: true
++		})
++	}
++
+ 	function mergeObject(target, source, options) {
+ 		var destination = {};
+ 		if (options.isMergeableObject(target)) {
+ 			getKeys(target).forEach(function(key) {
+-				destination[key] = cloneUnlessOtherwiseSpecified(target[key], options);
++				setProperty(destination, key, cloneUnlessOtherwiseSpecified(target[key], options));
+ 			});
+ 		}
+ 		getKeys(source).forEach(function(key) {
+@@ -93,9 +103,9 @@
+ 			}
+ 
+ 			if (propertyIsOnObject(target, key) && options.isMergeableObject(source[key])) {
+-				destination[key] = getMergeFunction(key, options)(target[key], source[key], options);
++				setProperty(destination, key, getMergeFunction(key, options)(target[key], source[key], options));
+ 			} else {
+-				destination[key] = cloneUnlessOtherwiseSpecified(source[key], options);
++				setProperty(destination, key, cloneUnlessOtherwiseSpecified(source[key], options));
+ 			}
+ 		});
+ 		return destination
