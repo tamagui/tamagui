@@ -161,63 +161,63 @@ declare module 'one' {
         | `/unstyled/intro/[slug]`
       IsTyped: true
       RouteTypes: {
-        '/(blog)/blog/[slug]': RouteInfo<{ slug: string }>
-        '/(docs)/docs/core/[slug]': RouteInfo<{ slug: string }>
-        '/(docs)/docs/guides/[slug]': RouteInfo<{ slug: string }>
-        '/(docs)/docs/intro/[slug]': RouteInfo<{ slug: string }>
-        '/(docs)/styled-ui/[...subpath]': RouteInfo<{ subpath: string[] }>
-        '/(docs)/ui/[...subpath]': RouteInfo<{ subpath: string[] }>
-        '/(site)/(blog)/blog/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/(docs)/docs/core/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/(docs)/docs/guides/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/(docs)/docs/intro/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/(docs)/styled-ui/[...subpath]': RouteInfo<{ subpath: string[] }>
-        '/(site)/(docs)/ui/[...subpath]': RouteInfo<{ subpath: string[] }>
-        '/(site)/(tailwind)/tailwind-ui/[...subpath]': RouteInfo<{ subpath: string[] }>
-        '/(site)/(tailwind)/tailwind/core/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/(tailwind)/tailwind/guides/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/(tailwind)/tailwind/intro/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/(unstyled)/unstyled/core/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/(unstyled)/unstyled/guides/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/(unstyled)/unstyled/intro/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/bento/[...parts]': RouteInfo<{ parts: string[] }>
-        '/(site)/blog/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/docs/core/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/docs/guides/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/docs/intro/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/styled-ui/[...subpath]': RouteInfo<{ subpath: string[] }>
-        '/(site)/tailwind-ui/[...subpath]': RouteInfo<{ subpath: string[] }>
-        '/(site)/tailwind/core/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/tailwind/guides/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/tailwind/intro/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/theme/[...subpath]': RouteInfo<{ subpath: string[] }>
-        '/(site)/ui/[...subpath]': RouteInfo<{ subpath: string[] }>
-        '/(site)/unstyled/core/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/unstyled/guides/[slug]': RouteInfo<{ slug: string }>
-        '/(site)/unstyled/intro/[slug]': RouteInfo<{ slug: string }>
-        '/(tailwind)/tailwind-ui/[...subpath]': RouteInfo<{ subpath: string[] }>
-        '/(tailwind)/tailwind/core/[slug]': RouteInfo<{ slug: string }>
-        '/(tailwind)/tailwind/guides/[slug]': RouteInfo<{ slug: string }>
-        '/(tailwind)/tailwind/intro/[slug]': RouteInfo<{ slug: string }>
-        '/(unstyled)/unstyled/core/[slug]': RouteInfo<{ slug: string }>
-        '/(unstyled)/unstyled/guides/[slug]': RouteInfo<{ slug: string }>
-        '/(unstyled)/unstyled/intro/[slug]': RouteInfo<{ slug: string }>
-        '/bento/[...parts]': RouteInfo<{ parts: string[] }>
-        '/blog/[slug]': RouteInfo<{ slug: string }>
-        '/demo/[name]': RouteInfo<{ name: string }>
-        '/docs/core/[slug]': RouteInfo<{ slug: string }>
-        '/docs/guides/[slug]': RouteInfo<{ slug: string }>
-        '/docs/intro/[slug]': RouteInfo<{ slug: string }>
-        '/styled-ui/[...subpath]': RouteInfo<{ subpath: string[] }>
-        '/tailwind-ui/[...subpath]': RouteInfo<{ subpath: string[] }>
-        '/tailwind/core/[slug]': RouteInfo<{ slug: string }>
-        '/tailwind/guides/[slug]': RouteInfo<{ slug: string }>
-        '/tailwind/intro/[slug]': RouteInfo<{ slug: string }>
-        '/theme/[...subpath]': RouteInfo<{ subpath: string[] }>
-        '/ui/[...subpath]': RouteInfo<{ subpath: string[] }>
-        '/unstyled/core/[slug]': RouteInfo<{ slug: string }>
-        '/unstyled/guides/[slug]': RouteInfo<{ slug: string }>
-        '/unstyled/intro/[slug]': RouteInfo<{ slug: string }>
+        '/(blog)/blog/[slug]': RouteInfo<{ slug: string }, '/(blog)/blog/[slug]'>
+        '/(docs)/docs/core/[slug]': RouteInfo<{ slug: string }, '/(docs)/docs/core/[slug]'>
+        '/(docs)/docs/guides/[slug]': RouteInfo<{ slug: string }, '/(docs)/docs/guides/[slug]'>
+        '/(docs)/docs/intro/[slug]': RouteInfo<{ slug: string }, '/(docs)/docs/intro/[slug]'>
+        '/(docs)/styled-ui/[...subpath]': RouteInfo<{ subpath: string[] }, '/(docs)/styled-ui/[...subpath]'>
+        '/(docs)/ui/[...subpath]': RouteInfo<{ subpath: string[] }, '/(docs)/ui/[...subpath]'>
+        '/(site)/(blog)/blog/[slug]': RouteInfo<{ slug: string }, '/(site)/(blog)/blog/[slug]'>
+        '/(site)/(docs)/docs/core/[slug]': RouteInfo<{ slug: string }, '/(site)/(docs)/docs/core/[slug]'>
+        '/(site)/(docs)/docs/guides/[slug]': RouteInfo<{ slug: string }, '/(site)/(docs)/docs/guides/[slug]'>
+        '/(site)/(docs)/docs/intro/[slug]': RouteInfo<{ slug: string }, '/(site)/(docs)/docs/intro/[slug]'>
+        '/(site)/(docs)/styled-ui/[...subpath]': RouteInfo<{ subpath: string[] }, '/(site)/(docs)/styled-ui/[...subpath]'>
+        '/(site)/(docs)/ui/[...subpath]': RouteInfo<{ subpath: string[] }, '/(site)/(docs)/ui/[...subpath]'>
+        '/(site)/(tailwind)/tailwind-ui/[...subpath]': RouteInfo<{ subpath: string[] }, '/(site)/(tailwind)/tailwind-ui/[...subpath]'>
+        '/(site)/(tailwind)/tailwind/core/[slug]': RouteInfo<{ slug: string }, '/(site)/(tailwind)/tailwind/core/[slug]'>
+        '/(site)/(tailwind)/tailwind/guides/[slug]': RouteInfo<{ slug: string }, '/(site)/(tailwind)/tailwind/guides/[slug]'>
+        '/(site)/(tailwind)/tailwind/intro/[slug]': RouteInfo<{ slug: string }, '/(site)/(tailwind)/tailwind/intro/[slug]'>
+        '/(site)/(unstyled)/unstyled/core/[slug]': RouteInfo<{ slug: string }, '/(site)/(unstyled)/unstyled/core/[slug]'>
+        '/(site)/(unstyled)/unstyled/guides/[slug]': RouteInfo<{ slug: string }, '/(site)/(unstyled)/unstyled/guides/[slug]'>
+        '/(site)/(unstyled)/unstyled/intro/[slug]': RouteInfo<{ slug: string }, '/(site)/(unstyled)/unstyled/intro/[slug]'>
+        '/(site)/bento/[...parts]': RouteInfo<{ parts: string[] }, '/(site)/bento/[...parts]'>
+        '/(site)/blog/[slug]': RouteInfo<{ slug: string }, '/(site)/blog/[slug]'>
+        '/(site)/docs/core/[slug]': RouteInfo<{ slug: string }, '/(site)/docs/core/[slug]'>
+        '/(site)/docs/guides/[slug]': RouteInfo<{ slug: string }, '/(site)/docs/guides/[slug]'>
+        '/(site)/docs/intro/[slug]': RouteInfo<{ slug: string }, '/(site)/docs/intro/[slug]'>
+        '/(site)/styled-ui/[...subpath]': RouteInfo<{ subpath: string[] }, '/(site)/styled-ui/[...subpath]'>
+        '/(site)/tailwind-ui/[...subpath]': RouteInfo<{ subpath: string[] }, '/(site)/tailwind-ui/[...subpath]'>
+        '/(site)/tailwind/core/[slug]': RouteInfo<{ slug: string }, '/(site)/tailwind/core/[slug]'>
+        '/(site)/tailwind/guides/[slug]': RouteInfo<{ slug: string }, '/(site)/tailwind/guides/[slug]'>
+        '/(site)/tailwind/intro/[slug]': RouteInfo<{ slug: string }, '/(site)/tailwind/intro/[slug]'>
+        '/(site)/theme/[...subpath]': RouteInfo<{ subpath: string[] }, '/(site)/theme/[...subpath]'>
+        '/(site)/ui/[...subpath]': RouteInfo<{ subpath: string[] }, '/(site)/ui/[...subpath]'>
+        '/(site)/unstyled/core/[slug]': RouteInfo<{ slug: string }, '/(site)/unstyled/core/[slug]'>
+        '/(site)/unstyled/guides/[slug]': RouteInfo<{ slug: string }, '/(site)/unstyled/guides/[slug]'>
+        '/(site)/unstyled/intro/[slug]': RouteInfo<{ slug: string }, '/(site)/unstyled/intro/[slug]'>
+        '/(tailwind)/tailwind-ui/[...subpath]': RouteInfo<{ subpath: string[] }, '/(tailwind)/tailwind-ui/[...subpath]'>
+        '/(tailwind)/tailwind/core/[slug]': RouteInfo<{ slug: string }, '/(tailwind)/tailwind/core/[slug]'>
+        '/(tailwind)/tailwind/guides/[slug]': RouteInfo<{ slug: string }, '/(tailwind)/tailwind/guides/[slug]'>
+        '/(tailwind)/tailwind/intro/[slug]': RouteInfo<{ slug: string }, '/(tailwind)/tailwind/intro/[slug]'>
+        '/(unstyled)/unstyled/core/[slug]': RouteInfo<{ slug: string }, '/(unstyled)/unstyled/core/[slug]'>
+        '/(unstyled)/unstyled/guides/[slug]': RouteInfo<{ slug: string }, '/(unstyled)/unstyled/guides/[slug]'>
+        '/(unstyled)/unstyled/intro/[slug]': RouteInfo<{ slug: string }, '/(unstyled)/unstyled/intro/[slug]'>
+        '/bento/[...parts]': RouteInfo<{ parts: string[] }, '/bento/[...parts]'>
+        '/blog/[slug]': RouteInfo<{ slug: string }, '/blog/[slug]'>
+        '/demo/[name]': RouteInfo<{ name: string }, '/demo/[name]'>
+        '/docs/core/[slug]': RouteInfo<{ slug: string }, '/docs/core/[slug]'>
+        '/docs/guides/[slug]': RouteInfo<{ slug: string }, '/docs/guides/[slug]'>
+        '/docs/intro/[slug]': RouteInfo<{ slug: string }, '/docs/intro/[slug]'>
+        '/styled-ui/[...subpath]': RouteInfo<{ subpath: string[] }, '/styled-ui/[...subpath]'>
+        '/tailwind-ui/[...subpath]': RouteInfo<{ subpath: string[] }, '/tailwind-ui/[...subpath]'>
+        '/tailwind/core/[slug]': RouteInfo<{ slug: string }, '/tailwind/core/[slug]'>
+        '/tailwind/guides/[slug]': RouteInfo<{ slug: string }, '/tailwind/guides/[slug]'>
+        '/tailwind/intro/[slug]': RouteInfo<{ slug: string }, '/tailwind/intro/[slug]'>
+        '/theme/[...subpath]': RouteInfo<{ subpath: string[] }, '/theme/[...subpath]'>
+        '/ui/[...subpath]': RouteInfo<{ subpath: string[] }, '/ui/[...subpath]'>
+        '/unstyled/core/[slug]': RouteInfo<{ slug: string }, '/unstyled/core/[slug]'>
+        '/unstyled/guides/[slug]': RouteInfo<{ slug: string }, '/unstyled/guides/[slug]'>
+        '/unstyled/intro/[slug]': RouteInfo<{ slug: string }, '/unstyled/intro/[slug]'>
       }
     }
   }
@@ -226,13 +226,7 @@ declare module 'one' {
 /**
  * Helper type for route information
  */
-type RouteInfo<Params = Record<string, never>> = {
+type RouteInfo<Params = Record<string, never>, Path extends string = string> = {
   Params: Params
-  LoaderProps: {
-    path: string
-    search?: string
-    subdomain?: string
-    params: Params
-    request?: Request
-  }
+  LoaderProps: import('one').LoaderProps<Params, OneRouter.LoaderSearchParams<Path>>
 }
