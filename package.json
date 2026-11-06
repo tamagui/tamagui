@@ -134,7 +134,7 @@
     "esbuild": "0.28.1",
     "esbuild-register": "^3.6.0",
     "fs-extra": "^11.2.0",
-    "glob": "^13.0.3",
+    "glob": "13.0.6",
     "knip": "^6.35.1",
     "lllink": "^1.1.430",
     "npm-run-all": "^4.1.5",
@@ -219,7 +219,6 @@
     "happy-dom": "21.0.4",
     "zod@>=4 <4.6.6": "4.6.6",
     "postcss-selector-parser@<6.1.5": "6.1.5",
-    "glob@>=9 <14": "13.0.6",
     "minimatch@>=7 <11": "10.2.6",
     "@opentelemetry/instrumentation-pg@<0.73.0": "0.73.0",
     "@opentelemetry/instrumentation-mongoose@<0.67.0": "0.67.0",
@@ -228,7 +227,8 @@
     "@opentelemetry/instrumentation-mysql@<0.67.0": "0.67.0",
     "@opentelemetry/instrumentation-cassandra-driver@<0.66.0": "0.66.0",
     "@opentelemetry/instrumentation-oracledb@<0.46.0": "0.46.0",
-    "@opentelemetry/instrumentation-tedious@<0.40.0": "0.40.0"
+    "@opentelemetry/instrumentation-tedious@<0.40.0": "0.40.0",
+    "glob@>=10 <14": "13.0.6"
   },
   "packageManager": "bun@1.4.4",
   "manypkg": {
