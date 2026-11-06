@@ -96,9 +96,9 @@ bundle.
   packages; OIDC removes the long-lived token and adds SLSA provenance. The
   release path is currently isolated to a `test-release` branch with
   `--skip-publish`, so this is hardening, not an active hole.
-- **Triage the `bun audit` backlog** (≈187 advisories, almost all transitive/dev
-  in the site + zero stack). `bun update` for compatible fixes, then resolve the
-  residual high/critical.
+- **Maintain the dependency audit**. The [dependency security notes](dependency-security.md)
+  record the root graph's current repairs and remaining compatibility boundaries.
+  Locally patched registry versions remain visible in `bun audit`.
 - **Optionally scrub the A1 blob from history** (BFG / `git filter-repo`). The
   leaked credentials are already dead, so this is cosmetic.
 - **SHA-pin first-party `actions/*`** too (left on `@v4` for now; Dependabot will
