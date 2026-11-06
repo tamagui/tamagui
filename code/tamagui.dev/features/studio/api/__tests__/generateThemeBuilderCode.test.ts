@@ -1,3 +1,6 @@
+// @vitest-environment node
+import { createRequire } from 'node:module'
+import { transform } from 'esbuild'
 import { describe, expect, it } from 'vitest'
 
 import { defaultPalettes } from '../../theme/defaultPalettes'
@@ -46,5 +49,21 @@ describe('studio v6 themes', () => {
     expect(code).toContain('export const scales =')
     expect(code).toContain('export const tree =')
     expect(code).toContain('createThemes(tokens, tree, { getTheme })')
+    const compiled = await transform(code, { loader: 'ts', format: 'cjs' })
+    const module = { exports: {} as { themes: Record<string, Record<string, string>> } }
+    new Function('require', 'module', 'exports', compiled.code)(
+      createRequire(import.meta.url),
+      module,
+      module.exports
+    )
+    const preview = createStudioThemes(themeSuite).themes
+    for (const [name, theme] of Object.entries(module.exports.themes)) {
+      for (const key of [
+        'shadow-color',
+        ...Array.from({ length: 7 }, (_, i) => `shadow-${i + 1}`),
+      ]) {
+        expect(theme[key]).toBe(preview[name][key])
+      }
+    }
   })
 })
