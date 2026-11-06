@@ -10,13 +10,17 @@ const config = createTamagui(getDefaultTamaguiConfig('web'))
 test('a dialog portal keeps the inherited web text color', () => {
   const tree = render(
     <TamaguiProvider config={config} defaultTheme="light">
-      <DialogPortalFrame data-testid="portal-frame" />
+      <div style={{ color: 'rgb(12, 34, 56)' }}>
+        <DialogPortalFrame data-testid="portal-frame" />
+      </div>
     </TamaguiProvider>
   )
 
   const frame = tree.getByTestId('portal-frame')
   expect(frame.tagName).toBe('DIV')
-  expect(getComputedStyle(frame).color).toBe('inherit')
+  expect(getComputedStyle(frame).color).toBe('rgb(12, 34, 56)')
+  frame.parentElement!.style.color = 'rgb(65, 43, 21)'
+  expect(getComputedStyle(frame).color).toBe('rgb(65, 43, 21)')
 })
 
 test('nested box-none views remain pointer-transparent', () => {

@@ -88,13 +88,14 @@ below that definition.
 
 ## Resolve recipes with getTheme
 
-The default resolver combines two small helpers:
+The default resolver combines the palette helpers with the scheme's shadow colors:
 
 ```tsx
 import {
   fromShades,
   ramp,
   scales,
+  shadows,
   type GetThemeContext,
   type DefaultRecipe,
 } from '@tamagui/themes/builder'
@@ -102,10 +103,13 @@ import {
 export function getTheme({ recipe }: GetThemeContext<typeof tokens, DefaultRecipe>) {
   const scale =
     scales[recipe.treatment ?? 'normal'][recipe.scheme][recipe.level ?? 1]
+  const schemeShadows = shadows[recipe.scheme]
 
   return {
     ...ramp(recipe.palette, recipe.scheme, scale),
     ...fromShades(recipe.palette, scale),
+    ...schemeShadows,
+    'shadow-color': schemeShadows[scale['shadow-color']],
   }
 }
 ```
@@ -116,6 +120,8 @@ scale so a bold light theme, whose background is deeper than its type, runs its
 ramp deep to pale; without it the direction follows the scheme alone.
 `fromShades()` maps numeric shades in a semantic scale to the active palette and
 passes exact token names or color literals through.
+`shadows[recipe.scheme]` supplies `shadow-1` through `shadow-7` and resolves the
+scale's `shadow-color` step to its color value.
 
 These numbers describe steps relative to the theme's own scheme. They are not
 Tailwind's absolute `50` through `950` scale. Only the hyphenated spelling
