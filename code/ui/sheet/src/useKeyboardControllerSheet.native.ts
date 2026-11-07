@@ -34,12 +34,10 @@ export function useKeyboardControllerSheet(
   const { enabled } = options
 
   // a keyboard that is already up when the sheet mounts never fires a show event
-  const [keyboardHeight, setKeyboardHeight] = useState(
-    () => Keyboard.metrics()?.height ?? 0
+  const [keyboardHeight, setKeyboardHeight] = useState(() =>
+    enabled ? (Keyboard.metrics()?.height ?? 0) : 0
   )
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(
-    () => (Keyboard.metrics()?.height ?? 0) > 0
-  )
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(keyboardHeight > 0)
   const keyboardControllerEnabled = isKeyboardControllerEnabled()
 
   // action-sheet pattern: pause keyboard hide events during drag
