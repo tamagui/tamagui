@@ -43,6 +43,37 @@ export type BuildResult = {
 }
 
 /**
+ * Merges per-file extracted CSS into one deduplicated sheet. Rules are grouped
+ * by atomic identifier and groups are ordered by identifier, the same order
+ * Tamagui's runtime uses when it serializes rules (getAllRules). A group keeps
+ * its rules in compiled order, so a `:where(:hover)` rule stays after the base
+ * rule it overrides.
+ */
+export function mergeCssRules(cssParts: string[]): string {
+  const groups = new Map<string, Set<string>>()
+  for (const css of cssParts) {
+    let depth = 0
+    let start = 0
+    for (let i = 0; i < css.length; i++) {
+      const char = css[i]
+      if (char === '{') depth++
+      else if (char === '}' && --depth === 0) {
+        const rule = css.slice(start, i + 1)
+        start = i + 1
+        const id = rule.match(/\._[a-zA-Z]+-[\w-]+/)?.[0] ?? ''
+        let group = groups.get(id)
+        if (!group) groups.set(id, (group = new Set()))
+        group.add(rule)
+      }
+    }
+  }
+  return [...groups.keys()]
+    .sort()
+    .map((id) => [...groups.get(id)!].join('\n'))
+    .join('\n')
+}
+
+/**
  * Inserts a CSS import statement into JS code, placing it after any
  * 'use client' or 'use server' directives at the top of the file.
  */
@@ -68,6 +99,7 @@ export const build = async (
     exclude?: string
     output?: string
     outputAround?: boolean
+    cssOut?: string
     expectOptimizations?: number
     runCommand?: string[]
     dryRun?: boolean
@@ -76,6 +108,8 @@ export const build = async (
   const sourceDir = options.dir ?? '.'
   const outputDir = options.output
   const outputAround = options.outputAround || false
+  const cssOut = options.cssOut ? resolve(options.cssOut) : undefined
+  const cssByFile = new Map<string, string>()
   const promises: Promise<void>[] = []
   const isDryRun = options.dryRun || false
   const trackedFiles: TrackedFile[] = []
@@ -416,9 +450,10 @@ export const build = async (
 
           const stylePath = join(outputBase, cssName + '.css')
           const cssImport = `import "./${cssName}.css"`
-          const code = out.plan.css
-            ? insertCssImport(out.output.code, cssImport)
-            : out.output.code
+          const code =
+            out.plan.css && !cssOut
+              ? insertCssImport(out.output.code, cssImport)
+              : out.output.code
 
           // Determine output path for JS (preserve directory structure)
           const webOutputPath = outputDir ? join(outputDir, relPath) : sourcePath
@@ -435,10 +470,12 @@ export const build = async (
           }
 
           // CSS file is new, track for cleanup (skip if using output dir)
-          if (out.plan.css) {
+          if (out.plan.css && cssOut) {
+            cssByFile.set(sourcePath, out.plan.css)
+          } else if (out.plan.css) {
             await writeFile(stylePath, out.plan.css, 'utf-8')
           }
-          if (!outputDir && out.plan.css) {
+          if (!outputDir && out.plan.css && !cssOut) {
             // Note: CSS files are new (generated), we'll delete them on restore
             trackedFiles.push({
               path: stylePath,
@@ -571,6 +608,23 @@ export const build = async (
       )
       promises.push(...targetPromises)
       await Promise.all(targetPromises)
+    }
+
+    if (cssOut && !isDryRun && cssByFile.size) {
+      const sourcePaths = [...cssByFile.keys()].sort()
+      await mkdir(dirname(cssOut), { recursive: true })
+      await writeFile(
+        cssOut,
+        mergeCssRules(sourcePaths.map((path) => cssByFile.get(path)!)),
+        'utf-8'
+      )
+      if (!outputDir) {
+        trackedFiles.push({
+          path: cssOut,
+          hardlinkPath: '',
+          mtimeAfterWrite: (await stat(cssOut)).mtimeMs,
+        })
+      }
     }
 
     if (isDryRun) {
