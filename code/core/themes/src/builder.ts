@@ -429,6 +429,7 @@ function contrast(a: number, b: number): number {
 }
 
 const MIN_TEXT_CONTRAST = 4.5
+const MIN_PLACEHOLDER_CONTRAST = 3
 
 const mirroredShade: Record<Shade, Shade> = {
   50: 950,
@@ -449,8 +450,7 @@ const mirroredShade: Record<Shade, Shade> = {
 // where the fill is lighter than its type. so where a palette fill carries
 // type, the bold surface and the accent pair, a named type that cannot reach
 // 4.5:1 on its fill gives way to its mirror across the ramp (50 to 950, 200
-// to 800) when that reads better. neutral surfaces and the placeholder keep
-// the scale's word, and the ramp stays absolute.
+// to 800) when that reads better. neutral surfaces keep the scale's word, and the ramp stays absolute.
 function readable(
   theme: PaletteTheme,
   colors: Record<string, string>,
@@ -478,6 +478,27 @@ function readable(
       if (namedContrast >= MIN_TEXT_CONTRAST) continue
       if (contrast(fillLuminance, mirroredLuminance) > namedContrast)
         theme[key] = mirrored
+    }
+  }
+  // the placeholder follows its own surface: from the named shade, step toward
+  // the type until it reaches 3:1 on the background
+  const background = valueOf(theme.background)
+  const named = /^(.*)-(\d+)$/.exec(theme['placeholder-color'])
+  const type = /^(.*)-(\d+)$/.exec(theme.color)
+  if (background !== null && named && type && named[1] === type[1]) {
+    const from = shades.indexOf(Number(named[2]) as Shade)
+    const to = shades.indexOf(Number(type[2]) as Shade)
+    const direction = Math.sign(to - from)
+    for (let i = from; from !== -1 && to !== -1 && i !== to + direction; i += direction) {
+      const candidate = `${named[1]}-${shades[i]}`
+      const candidateLuminance = valueOf(candidate)
+      if (
+        candidateLuminance !== null &&
+        contrast(background, candidateLuminance) >= MIN_PLACEHOLDER_CONTRAST
+      ) {
+        theme['placeholder-color'] = candidate
+        break
+      }
     }
   }
   return theme
