@@ -26,3 +26,25 @@ test.each(['configured', 'discovered'] as const)(
     expect(output.code).toContain('"fontSize":14')
   }
 )
+
+test('styled(html.div, baseClassName) lowers native classes with base layout overriding block defaults', async () => {
+  const output = await extractForNative(
+    `import { html, styled } from '@tamagui/tailwind'
+const StyledHtmlRow = styled(html.div, 'flex flex-row items-center gap-2 p-3 rounded-xl', {
+  variants: {
+    active: {
+      true: 'bg-[#3b82f6]',
+      false: 'bg-[#f3f4f6]',
+    },
+  },
+  defaultVariants: { active: false },
+})
+export function Test() {
+  return <StyledHtmlRow />
+}`
+  )
+
+  expect(output.diagnostics).toEqual([])
+  expect(output.code).toContain('"flexDirection":"row"')
+  expect(output.code).toContain('"alignItems":"center"')
+})

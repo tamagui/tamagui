@@ -1505,7 +1505,12 @@ export function createTamaguiCompilerHost(
 
   const styledStaticConfig = (
     definition: MaterializedStyledDefinition | null
-  ): { key: string; staticConfig: StaticConfig; displayName?: string } | null => {
+  ): {
+    key: string
+    staticConfig: StaticConfig
+    displayName?: string
+    tag?: TagName
+  } | null => {
     if (!definition || definition.options.kind !== 'static') return null
     const staticConfig = definition.staticConfig
     if (
@@ -1514,7 +1519,7 @@ export function createTamaguiCompilerHost(
     ) {
       return null
     }
-    const base = directStaticConfig({
+    const baseElement: MaterializedElement = {
       kind: 'element',
       form: 'jsx',
       id: definition.id,
@@ -1524,7 +1529,9 @@ export function createTamaguiCompilerHost(
       complete: true,
       entries: [],
       bailouts: [],
-    })
+    }
+    const domBase = domStaticConfig(baseElement)
+    const base = domBase ?? directStaticConfig(baseElement)
     if (!base || !staticObject(definition.options.value)) return null
     const {
       variants,
@@ -1564,6 +1571,7 @@ export function createTamaguiCompilerHost(
       key: componentKey(definition.id, definition.name),
       displayName: displayName || base.displayName,
       staticConfig: normalizeStaticConfig(localStaticConfig),
+      tag: domBase?.tag,
     }
   }
 
@@ -1578,6 +1586,7 @@ export function createTamaguiCompilerHost(
     const resolved =
       dom ?? directStaticConfig(element) ?? styledStaticConfig(styledDefinition)
     if (!resolved) return null
+    const domTag = dom?.tag ?? (resolved as { tag?: TagName }).tag
     const defaultProps = resolved.staticConfig.defaultProps ?? {}
     return {
       key: resolved.key,
@@ -1590,7 +1599,7 @@ export function createTamaguiCompilerHost(
         !resolved.staticConfig.context,
       staticConfig: resolved.staticConfig,
       displayName: resolved.displayName,
-      ...(dom && { domTag: dom.tag }),
+      ...(domTag && { domTag }),
       // retaining the component also retains these runtime style sources.
       // splitting their output into equal-specificity atomic classes would
       // make stylesheet insertion order decide the winner.

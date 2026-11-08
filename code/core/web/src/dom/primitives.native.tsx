@@ -528,13 +528,22 @@ function DOMViewWithViewportRef(props: DOMViewProps) {
   return withViewportRef(resolvedDOMView, props)
 }
 
+function hasPressHandler(props: Record<string, any>) {
+  return (
+    props.onPress !== undefined ||
+    props.onPressIn !== undefined ||
+    props.onPressOut !== undefined ||
+    props.onLongPress !== undefined
+  )
+}
+
 function renderDOMView(resolved: DOMViewProps) {
   if (
     resolved.onClick === undefined &&
     !('__inheritedStyles' in resolved) &&
     !('__textMetrics' in resolved)
   ) {
-    return jsx(View, resolved)
+    return jsx(hasPressHandler(resolved) ? Pressable : View, resolved)
   }
   const {
     __inheritedStyles: _,
@@ -542,10 +551,20 @@ function renderDOMView(resolved: DOMViewProps) {
     onClick,
     ...hostProps
   } = resolved
-  if (onClick === undefined)
-    return jsx(View, hostProps)
-    // react native's View has no press handling, so a clickable one is a Pressable
-  ;(hostProps as Record<string, unknown>).onPress = clickFromPress(onClick)
+  if (onClick === undefined) {
+    return jsx(hasPressHandler(hostProps) ? Pressable : View, hostProps)
+  }
+  // react native's View has no press handling, so a clickable one is a Pressable
+  const clickHandler = clickFromPress(onClick)
+  const existingOnPress = (hostProps as Record<string, unknown>).onPress as
+    | ((event: any) => void)
+    | undefined
+  ;(hostProps as Record<string, unknown>).onPress = existingOnPress
+    ? (event: any) => {
+        existingOnPress(event)
+        clickHandler(event)
+      }
+    : clickHandler
   return jsx(Pressable, hostProps)
 }
 

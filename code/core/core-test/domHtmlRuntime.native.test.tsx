@@ -316,6 +316,23 @@ describe('the dom prop mapping', () => {
     expect(onClick.mock.calls[0]![0].type).toBe('click')
   })
 
+  test('renders a Pressable when onPress is passed to html.div or html.button', () => {
+    const onDivPress = vi.fn()
+    const onButtonPress = vi.fn()
+    const renderer = show(
+      <>
+        <html.div data-testid="div" onPress={onDivPress} />
+        <html.button data-testid="btn" onPress={onButtonPress} />
+      </>
+    )
+    const div = find(renderer, 'Pressable', 'div')
+    const btn = find(renderer, 'Pressable', 'btn')
+    act(() => div.props.onPress({ nativeEvent: { pageX: 1, pageY: 2 } }))
+    act(() => btn.props.onPress({ nativeEvent: { pageX: 1, pageY: 2 } }))
+    expect(onDivPress).toHaveBeenCalledOnce()
+    expect(onButtonPress).toHaveBeenCalledOnce()
+  })
+
   test('exposes a dom-shaped ref facade', () => {
     const ref = { current: null as null | Record<string, any> }
     show(<html.div data-testid="root" ref={ref as any} />)

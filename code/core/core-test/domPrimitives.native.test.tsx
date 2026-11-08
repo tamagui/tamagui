@@ -102,6 +102,13 @@ describe('a view with a click handler', () => {
       event.stopPropagation()
     }).not.toThrow()
   })
+
+  test('becomes a Pressable when given a Tamagui/RN press handler directly', () => {
+    const onPress = vi.fn()
+    const element = DOMView({ onPress, style: { flexDirection: 'row' } } as any)
+    expect(element.type).toBe(Pressable)
+    expect(element.props.onPress).toBe(onPress)
+  })
 })
 
 describe('a text with a click handler', () => {

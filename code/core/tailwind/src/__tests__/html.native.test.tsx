@@ -3,7 +3,7 @@ import { beforeAll, describe, expect, test } from 'vitest'
 import { getDefaultTamaguiConfig } from '../../../config-default/src'
 import { createTamagui, getConfig } from '@tamagui/web'
 import { html as regularHtml } from '@tamagui/core'
-import { html } from '../index'
+import { html, styled } from '../index'
 import { splitTailwindStyles, styleOf } from './utils'
 
 /**
@@ -36,5 +36,26 @@ describe('html on the tailwind frontend, native', () => {
   test('keeps the dom prop mapping wrapper', () => {
     expect(typeof (html.div as any).rebindDOMTag).toBe('function')
     expect((html.div as any).displayName).toBe('div')
+  })
+
+  test('styled(html.div, baseClassName, { variants }) preserves base layout classes over block defaults and keeps the dom wrapper', () => {
+    const StyledHtmlRow = styled(
+      html.div,
+      'flex flex-row items-center gap-2 p-3 rounded-xl',
+      {
+        variants: {
+          active: {
+            true: 'bg-blue-5',
+            false: 'bg-color-2',
+          },
+        },
+        defaultVariants: { active: false },
+      }
+    )
+    expect(typeof (StyledHtmlRow as any).rebindDOMTag).toBe('function')
+    const style = styleOf(splitTailwindStyles(StyledHtmlRow as any, {}))
+    expect(style.flexDirection).toBe('row')
+    expect(style.alignItems).toBe('center')
+    expect(style.gap).toBe(getConfig().tokensParsed.space['2'].val)
   })
 })

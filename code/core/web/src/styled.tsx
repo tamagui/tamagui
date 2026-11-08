@@ -479,7 +479,10 @@ function styledImpl<
     return conf
   })()
 
-  const component = createComponent(staticConfigProps || {})
+  const created = createComponent(staticConfigProps || {})
+  const component: typeof created = (ComponentIn as any).rebindDOMTag
+    ? (ComponentIn as any).rebindDOMTag(created)
+    : created
 
   for (const key in ComponentIn) {
     // dont inherit propTypes

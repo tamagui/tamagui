@@ -203,8 +203,9 @@ export function createDOMTagFactory(tables: DOMPropTables) {
   ): Frame {
     const Tag: FunctionComponent<Record<string, any>> = (props) =>
       jsx(Component, resolveDOMProps(props, tag, spec, tables))
-    Tag.displayName = tag
-    ;(Tag as any)[componentDisplayName] = tag
+    const name = (Component as any).displayName || tag
+    Tag.displayName = name
+    ;(Tag as any)[componentDisplayName] = name
     // the styling component sits inside this wrapper on native, so another style
     // frontend reads its config here and re-wraps its rebuild with the same dom
     // prop mapping. see `createFrontendHTML`.
