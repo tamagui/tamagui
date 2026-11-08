@@ -45,9 +45,10 @@ export function resolveStyleStaticConfig(
       const isVariant = Boolean(variants?.[key])
       const isStyle =
         key !== 'transition' && (key in validStyles || key in conf.shorthands)
-      if (isVariant || isStyle) {
-        ;(baseStyle ||= authoredBaseStyle ? { ...authoredBaseStyle } : {})[key] =
-          authoredDefaultProps[key]
+      if (isStyle && !isVariant) {
+        ;(baseStyle ||= {})[key] = authoredDefaultProps[key]
+      } else if (isVariant && !authoredBaseStyle) {
+        ;(baseStyle ||= {})[key] = authoredDefaultProps[key]
       }
       if (
         isVariant ||
@@ -59,6 +60,15 @@ export function resolveStyleStaticConfig(
       }
       if (isVariant) {
         ;(baseVariantProps ||= {})[key] = authoredDefaultProps[key]
+      }
+    }
+    if (authoredBaseStyle) {
+      Object.assign((baseStyle ||= {}), authoredBaseStyle)
+      if (baseVariantProps) {
+        for (const key in baseVariantProps) {
+          delete baseStyle[key]
+          baseStyle[key] = baseVariantProps[key]
+        }
       }
     }
   }
