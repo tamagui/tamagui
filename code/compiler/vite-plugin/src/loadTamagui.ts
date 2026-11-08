@@ -309,9 +309,16 @@ export function createViteTamaguiLoader(
     evaluateProjectModules,
     async evaluateModule(id) {
       if (!environment) return null
+      const evaluated = environment.runner.evaluatedModules
+      const existing = evaluated.getModuleById(id)
+      if (existing?.evaluated && existing.exports) {
+        return existing.exports as Record<string, unknown>
+      }
       try {
         return (await environment.runner.import(id)) as Record<string, unknown>
       } catch (error) {
+        const failed = evaluated.getModuleById(id)
+        if (failed) evaluated.invalidateModule(failed)
         if (process.env.DEBUG === 'tamagui') {
           console.info(`[tamagui] component discovery skipped ${id}:`, error)
         }
