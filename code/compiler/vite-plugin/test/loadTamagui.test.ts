@@ -1814,3 +1814,98 @@ test('published ESM loader reads the CommonJS static runtime', async () => {
 
   expect(JSON.parse(stdout)).toEqual({ disable: true, platform: 'web' })
 })
+
+test('does not poison external CJS modules in the evaluation runner across multiple evaluated-graph file edits (#4380)', async () => {
+  const originalApp = await readFile(appPath, 'utf8')
+  const originalResolution = await readFile(resolutionPath, 'utf8')
+  const cjsOnlyPkgDir = path.join(fixtureRoot, 'node_modules/cjs-only-fixture')
+  await mkdir(cjsOnlyPkgDir, { recursive: true })
+  await writeFile(
+    path.join(cjsOnlyPkgDir, 'package.json'),
+    JSON.stringify({ name: 'cjs-only-fixture', version: '1.0.0', main: 'index.js' })
+  )
+  await writeFile(
+    path.join(cjsOnlyPkgDir, 'index.js'),
+    `module.exports = { CjsBox: function CjsBox() { return null }, cjsTag: 'ok' }\n`
+  )
+  const server = await createServer({
+    configFile: false,
+    root: fixtureRoot,
+    logLevel: 'silent',
+    server: {
+      middlewareMode: true,
+    },
+    resolve: {
+      alias: fixtureAliases,
+    },
+    plugins: [
+      ...fixturePlugins(),
+      tamaguiPlugin({
+        config: 'tamagui.config.ts',
+        components: fixtureComponents,
+        disableWatchTamaguiConfig: false,
+      }),
+    ],
+  })
+  servers.push(server)
+  const clientEnvironment = server.environments.client
+  const ssrEnvironment = server.environments.ssr!
+
+  try {
+    await writeFile(
+      appPath,
+      `import { Suspense } from 'react'
+import { CjsBox } from 'cjs-only-fixture'
+import { FixtureFrame, compilerResolution } from '@fixture/components'
+import { LocalFrame } from './LocalFrame'
+
+export function App() {
+  return (
+    <Suspense fallback={null}>
+      <CjsBox />
+      <FixtureFrame padding="sm:9px" data-resolution={compilerResolution}>
+        <LocalFrame />
+      </FixtureFrame>
+    </Suspense>
+  )
+}
+`
+    )
+    const resolutionWithCjs = `import React from 'react'\nimport cjsOnly from 'cjs-only-fixture'\n${originalResolution}\nexport const reactVersion = React.version + cjsOnly.cjsTag\n`
+
+    // Initial compile before resolution.ts imports cjs-only-fixture, so ComponentDiscovery
+    // hits evaluateModule on cjs-only-fixture before the evaluated graph ever loads it.
+    const initialSsr = await ssrEnvironment.transformRequest('/src/App.tsx')
+    const initialClient = await clientEnvironment.transformRequest('/src/App.tsx')
+    expect(initialSsr?.code).toContain('className')
+    expect(initialClient?.code).toContain('className')
+
+    const edit1Finished = waitForFileChange(server, resolutionPath, 'first edit')
+    await writeFile(
+      resolutionPath,
+      resolutionWithCjs.replace('workspace-v1', 'workspace-v2').replace('13', '17')
+    )
+    await edit1Finished
+    const afterFirstSsr = await ssrEnvironment.transformRequest('/src/App.tsx')
+    const afterFirstClient = await clientEnvironment.transformRequest('/src/App.tsx')
+    expect(afterFirstSsr?.code).toContain('className')
+    expect(afterFirstClient?.code).toContain('className')
+
+    const edit2Finished = waitForFileChange(server, resolutionPath, 'second edit')
+    await writeFile(
+      resolutionPath,
+      resolutionWithCjs.replace('workspace-v1', 'workspace-v3').replace('13', '19')
+    )
+    await edit2Finished
+    const afterSecondSsr = await ssrEnvironment.transformRequest('/src/App.tsx')
+    const afterSecondClient = await clientEnvironment.transformRequest('/src/App.tsx')
+    expect(afterSecondSsr?.code).toContain('className')
+    expect(afterSecondClient?.code).toContain('className')
+  } finally {
+    await server.close()
+    servers.splice(servers.indexOf(server), 1)
+    await writeFile(appPath, originalApp)
+    await writeFile(resolutionPath, originalResolution)
+    await rm(path.join(fixtureRoot, '.tamagui'), { recursive: true, force: true })
+  }
+}, 20_000)
