@@ -78,19 +78,7 @@ export declare function createImage<C extends ComponentType<any>>(options: Creat
     queryCache: (urls: Array<string>) => Promise<{
         [url: string]: 'memory' | 'disk' | 'disk/memory';
     }>;
-} & import("react").FC<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & Omit<Readonly<Omit<Readonly<{
-    defaultSource?: import("@tamagui/react-native-types").ImageSource | undefined;
-    onPartialLoad?: (() => void) | undefined;
-    onProgress?: ((event: import("@tamagui/react-native-types").ImageProgressEventIOS) => void) | undefined;
-}>, "fadeDuration" | "loadingIndicatorSource" | "progressiveRenderingEnabled" | "resizeMethod" | "resizeMultiplier" | "style" | keyof import("@tamagui/react-native-types").ImagePropsBase> & Omit<Readonly<{
-    loadingIndicatorSource?: (number | Readonly<import("@tamagui/react-native-types").ImageURISource>) | undefined;
-    progressiveRenderingEnabled?: boolean | undefined;
-    fadeDuration?: number | undefined;
-    resizeMethod?: ('auto' | 'resize' | 'scale' | 'none') | undefined;
-    resizeMultiplier?: number | undefined;
-}>, "style" | keyof import("@tamagui/react-native-types").ImagePropsBase> & Omit<import("@tamagui/react-native-types").ImagePropsBase, "style"> & {
-    style?: import("@tamagui/react-native-types").ImageStyleProp | undefined;
-}>, "resizeMode" | "source" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & {
+} & import("react").FC<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & Omit<import("@tamagui/react-native-types").ImageProps, "resizeMode" | "source" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & {
     src?: string | number;
     source?: import("@tamagui/react-native-types").ImageSourcePropType;
     resizeMode?: ImageResizeMode;
