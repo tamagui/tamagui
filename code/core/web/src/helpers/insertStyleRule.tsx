@@ -232,7 +232,10 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
   // shared root rule, so every theme starts from the token defaults
   const values: ThemeParsed = {}
   for (const key in tokens?.color) {
-    values[key] = createVariable({ key, name: key, val: tokens.color[key].val }, true) as any
+    values[key] = createVariable(
+      { key, name: key, val: tokens.color[key].val },
+      true
+    ) as any
   }
   // build values first
   for (const rule of rules) {
