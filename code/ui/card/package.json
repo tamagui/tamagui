@@ -35,6 +35,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/core": "workspace:*",
     "@tamagui/create-context": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/stacks": "workspace:*",

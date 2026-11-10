@@ -44,6 +44,7 @@
     "@tamagui/create-context": "workspace:*",
     "@tamagui/dismissable": "workspace:*",
     "@tamagui/focus-scope": "workspace:*",
+    "@tamagui/get-font-sized": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/polyfill-dev": "workspace:*",
     "@tamagui/portal": "workspace:*",

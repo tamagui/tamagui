@@ -37,7 +37,8 @@
   "dependencies": {
     "@tamagui/constants": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/use-direction": "workspace:*"
+    "@tamagui/use-direction": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
