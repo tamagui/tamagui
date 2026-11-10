@@ -1,4 +1,5 @@
-import type { CreateTamaguiProps, ThemeParsed } from '../types';
+import type { CreateTamaguiProps, ThemeParsed, Variable } from '../types';
+export declare function getSharedThemeCSSRule(colorTokens: Record<string, Variable>, keys: Iterable<string>): string | undefined;
 export declare function getThemeCSSRules(props: {
     config: CreateTamaguiProps;
     themeName: string;
@@ -6,5 +7,6 @@ export declare function getThemeCSSRules(props: {
     names: string[];
     hasDarkLight?: boolean;
     useMutatedVariables?: boolean;
+    sharedKeys?: Set<string>;
 }): string[];
 //# sourceMappingURL=getThemeCSSRules.d.ts.map

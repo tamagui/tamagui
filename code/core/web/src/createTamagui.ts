@@ -246,7 +246,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       themes,
       cssRuleSets,
       getThemeRulesSets() {
-        return createThemeCSS(dedupedThemes, configIn)
+        return createThemeCSS(dedupedThemes, configIn, tokensParsed.color)
       },
     }
   })()

@@ -31,7 +31,7 @@ export declare function buildCSSRuleSets(declarations: string[], fontDeclaration
 export declare function createThemeCSS(dedupedThemes: Array<{
     names: string[];
     theme: any;
-}>, configIn: CreateTamaguiProps): string[];
+}>, configIn: CreateTamaguiProps, colorTokens?: Record<string, Variable>): string[];
 /**
  * Everything `getCSS` emits ahead of the runtime rules. It is a pure function of
  * the config, so a per-config slot holds it across calls and SSR stops
