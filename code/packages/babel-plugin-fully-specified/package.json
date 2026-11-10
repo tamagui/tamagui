@@ -38,10 +38,10 @@
     "test": "vitest --run"
   },
   "dependencies": {
-    "@babel/core": "^7.25.2"
+    "@babel/core": "^7.25.2",
+    "@babel/types": "^7.25.4"
   },
   "devDependencies": {
-    "@babel/types": "^7.25.4",
     "vitest": "4.1.11"
   }
 }
