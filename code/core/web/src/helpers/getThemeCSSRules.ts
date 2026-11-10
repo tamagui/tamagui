@@ -12,6 +12,35 @@ const isProd = process.env.NODE_ENV === 'production'
 const darkLight = ['dark', 'light']
 const lightDark = ['light', 'dark']
 
+// empty when CSS was already extracted at build time, and on native
+const shouldBuildThemeCSS = () =>
+  !process.env.TAMAGUI_DID_OUTPUT_CSS &&
+  process.env.TAMAGUI_TARGET !== 'native' &&
+  (!process.env.TAMAGUI_DOES_SSR_CSS ||
+    process.env.TAMAGUI_DOES_SSR_CSS === 'mutates-themes' ||
+    process.env.TAMAGUI_DOES_SSR_CSS === 'false')
+
+const themeVarName = (themeKey: string) =>
+  `--${process.env.TAMAGUI_CSS_VARIABLE_PREFIX || ''}${simpleHash(themeKey, 40)}`
+
+// color token aliases that every theme leaves at the token's own value are
+// declared once on the root instead of in every theme rule. the selector keeps
+// the .tm_xxt marker so a client rebuilding themes from css recognizes the rule.
+export function getSharedThemeCSSRule(
+  colorTokens: Record<string, Variable>,
+  keys: Iterable<string>
+): string | undefined {
+  if (!shouldBuildThemeCSS()) return
+  let vars = ''
+  for (const key of keys) {
+    const token = colorTokens[key]
+    vars += `${themeVarName(key)}:${getOrCreateVariable(token.val).variable};`
+  }
+  if (!vars) return
+  const whitespace = !isProd && process.env.NODE_ENV === 'development' ? ' ' : ''
+  return `:root, .tm_xxt${whitespace}{${vars}}`
+}
+
 export function getThemeCSSRules(props: {
   config: CreateTamaguiProps
   themeName: string
@@ -20,16 +49,10 @@ export function getThemeCSSRules(props: {
   hasDarkLight?: boolean
   // Use mutated variable prefix (mt) instead of regular (t) - for dynamic theme mutation
   useMutatedVariables?: boolean
+  // theme keys declared by the shared root rule instead of this theme's rule
+  sharedKeys?: Set<string>
 }): string[] {
-  if (process.env.TAMAGUI_DID_OUTPUT_CSS) {
-    // empty - CSS already extracted at build time
-  } else if (process.env.TAMAGUI_TARGET === 'native') {
-    // no CSS on native
-  } else if (
-    !process.env.TAMAGUI_DOES_SSR_CSS ||
-    process.env.TAMAGUI_DOES_SSR_CSS === 'mutates-themes' ||
-    process.env.TAMAGUI_DOES_SSR_CSS === 'false'
-  ) {
+  if (shouldBuildThemeCSS()) {
     const cssRuleSets: string[] = []
     const { config, themeName, theme, names } = props
     const whitespace = !isProd && process.env.NODE_ENV === 'development' ? ' ' : ''
@@ -49,6 +72,7 @@ export function getThemeCSSRules(props: {
       : getOrCreateVariable
 
     for (const themeKey in theme) {
+      if (props.sharedKeys?.has(themeKey)) continue
       const variable = theme[themeKey] as Variable
       // needsPx values (px() config variables, "Npx" theme strings) must keep
       // their unit in CSS while staying numeric for native
@@ -56,10 +80,7 @@ export function getThemeCSSRules(props: {
         variable.needsPx ? `${variable.val}px` : variable.val
       ).variable
       // Hash themeKey in case it has invalid chars too
-      vars += `--${process.env.TAMAGUI_CSS_VARIABLE_PREFIX || ''}${simpleHash(
-        themeKey,
-        40
-      )}:${value};`
+      vars += `${themeVarName(themeKey)}:${value};`
     }
 
     const isDarkBase = themeName === 'dark'

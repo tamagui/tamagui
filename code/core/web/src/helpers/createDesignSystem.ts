@@ -8,7 +8,7 @@ import {
 } from './registerCSSVariable'
 import { getConfigMaybe } from '../config'
 import { htmlResetCSS } from '../dom/htmlReset'
-import { getThemeCSSRules } from './getThemeCSSRules'
+import { getSharedThemeCSSRule, getThemeCSSRules } from './getThemeCSSRules'
 import { getAllRules, wrapStyleRules } from './insertStyleRule'
 
 const isProd = process.env.NODE_ENV === 'production'
@@ -149,18 +149,32 @@ export function buildCSSRuleSets(
  */
 export function createThemeCSS(
   dedupedThemes: Array<{ names: string[]; theme: any }>,
-  configIn: CreateTamaguiProps
+  configIn: CreateTamaguiProps,
+  colorTokens: Record<string, Variable> = {}
 ): string[] {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
     let themeRuleSets: string[] = []
 
     if (isWeb) {
+      // a color token alias is shared only when no theme overrides it, so a
+      // nested theme that re-declares the token default can never be shadowed
+      // by a parent theme's override
+      const sharedKeys = new Set(dedupedThemes.length ? Object.keys(colorTokens) : [])
+      for (const { theme } of dedupedThemes) {
+        for (const key of sharedKeys) {
+          if (theme[key]?.val !== colorTokens[key].val) sharedKeys.delete(key)
+        }
+      }
+      const sharedRule = getSharedThemeCSSRule(colorTokens, sharedKeys)
+      if (sharedRule) themeRuleSets.push(sharedRule)
+
       for (const { names, theme } of dedupedThemes) {
         const nextRules = getThemeCSSRules({
           config: configIn,
           themeName: names[0],
           names,
           theme,
+          sharedKeys,
         })
         themeRuleSets = [...themeRuleSets, ...nextRules]
       }

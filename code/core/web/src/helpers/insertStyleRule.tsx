@@ -228,8 +228,12 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
 
   const rules = rulesWithBraces.split(';')
 
-  // get theme object parsed
+  // get theme object parsed. color token aliases no theme overrides live in a
+  // shared root rule, so every theme starts from the token defaults
   const values: ThemeParsed = {}
+  for (const key in tokens?.color) {
+    values[key] = createVariable({ key, name: key, val: tokens.color[key].val }, true) as any
+  }
   // build values first
   for (const rule of rules) {
     const sepI = rule.indexOf(':')
@@ -278,6 +282,9 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     const themeName = getThemeNameFromSelector(selector)
     if (themeName) names.add(themeName)
   }
+
+  // the shared root rule names no theme
+  if (!names.size) return
 
   return {
     names: [...names],
