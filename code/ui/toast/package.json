@@ -42,6 +42,7 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/create-context": "workspace:*",
     "@tamagui/dismissable": "workspace:*",
+    "@tamagui/get-font-sized": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/native": "workspace:*",
     "@tamagui/polyfill-dev": "workspace:*",
