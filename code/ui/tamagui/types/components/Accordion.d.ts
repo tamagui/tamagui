@@ -19,7 +19,7 @@ export declare const Accordion: import("@tamagui/core").Combined<import("@tamagu
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>, keyof import("@tamagui/core").TextNonStyleProps> & {
         ref?: React.Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
     }, "ref">>;
-    Item: import("@tamagui/core").RefComponent<import("@tamagui/react-native-types/src").ViewInstance | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/accordion").AccordionItemProps>;
+    Item: import("@tamagui/core").RefComponent<import("@tamagui/react-native-types").ViewInstance | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/accordion").AccordionItemProps>;
     HeightAnimator: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, {}>;
     Trigger: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, Omit<Omit<import("@tamagui/core").StackNonStyleProps, "__scopeCollapsible" | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
         __scopeCollapsible?: string;

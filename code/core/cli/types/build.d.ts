@@ -17,6 +17,14 @@ export type BuildResult = {
     trackedFiles: TrackedFile[];
 };
 /**
+ * Merges per-file extracted CSS into one deduplicated sheet. Rules are grouped
+ * by atomic identifier and groups are ordered by identifier, the same order
+ * Tamagui's runtime uses when it serializes rules (getAllRules). A group keeps
+ * its rules in compiled order, so a `:where(:hover)` rule stays after the base
+ * rule it overrides.
+ */
+export declare function mergeCssRules(cssParts: string[]): string;
+/**
  * Inserts a CSS import statement into JS code, placing it after any
  * 'use client' or 'use server' directives at the top of the file.
  */
@@ -28,6 +36,7 @@ export declare const build: (options: CLIResolvedOptions & {
     exclude?: string;
     output?: string;
     outputAround?: boolean;
+    cssOut?: string;
     expectOptimizations?: number;
     runCommand?: string[];
     dryRun?: boolean;
