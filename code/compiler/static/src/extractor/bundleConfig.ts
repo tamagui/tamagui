@@ -23,7 +23,7 @@ import type { TamaguiOptions } from '../types'
 import { addLocalExports } from './addLocalExports'
 import { esbuildLoaderConfig, esbundleTamaguiConfig } from './bundle'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
-import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
+import { importTamaguiCoreFrom, requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import { detectModuleFormat } from './detectModuleFormat'
 import { staticEvaluationIgnorePlugin } from '../staticEvaluationIgnoredModules'
 
@@ -624,6 +624,16 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
       // already-parsed config so host module-local state matches, same as
       // loadTamaguiFromModules, without re-parsing or browser css discovery.
       const { installTamaguiConfig } = requireTamaguiCore(props.platform || 'web')
+      installTamaguiConfig(config)
+    }
+
+    if (configFormat === 'cjs' && componentFormats.includes('esm')) {
+      // mirror case: esm component bundles import the ESM build of core, a
+      // separate instance from the CJS one the cjs config was created on
+      const { installTamaguiConfig } = await importTamaguiCoreFrom(
+        tmpDir,
+        props.platform || 'web'
+      )
       installTamaguiConfig(config)
     }
 
