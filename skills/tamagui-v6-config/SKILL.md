@@ -1,6 +1,6 @@
 ---
 name: tamagui-v6-config
-description: Tamagui v6 theme system: the light/dark/accent/brand/inverse/level/active theme family, the background-active one-off key, and recipe-tree authoring with createV6Config. Use when choosing a theme for a surface, building a selected/emphasis state, or authoring a custom v6 colors pack.
+description: "Tamagui v6 theme system: the light/dark/accent/brand/inverse/level/active theme family, the background-active one-off key, and recipe-tree authoring with createV6Config. Use when choosing a theme for a surface, building a selected/emphasis state, or authoring a custom v6 colors pack."
 metadata:
   version: 3.0.0
 ---
