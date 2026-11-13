@@ -31,7 +31,7 @@ concurrency:
 jobs:
   checks:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Checkout
@@ -81,7 +81,7 @@ jobs:
     # triggers on `code/lsp/**`, so a change to the grammar would have moved the
     # source of truth without ever running the check that the copy still agrees,
     # which is exactly how the two forked the first time.
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - name: Checkout
@@ -103,9 +103,11 @@ jobs:
         working-directory: code/lsp
         run: cargo test --workspace
 
+  # pinned: playwright 1.60 has no chromium build for the ubuntu-26.04 image
+  # that ubuntu-latest moved to, and the browser cache is shared across jobs
   playwright-browsers:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     concurrency:
       group: playwright-browser-cache-checks-${{ github.head_ref || github.ref_name }}
@@ -143,7 +145,7 @@ jobs:
   unit-tests:
     needs: playwright-browsers
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       NODE_OPTIONS: '--max-old-space-size=6144'
@@ -192,7 +194,7 @@ jobs:
 
   changes:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     outputs:
       integration-relevant: ${{ steps.turbo-check.outputs.relevant }}
@@ -264,7 +266,7 @@ jobs:
       (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta') &&
       needs.changes.outputs.integration-relevant == 'true'
     # gate is turbo's actual workspace dependency graph — no manual path list to maintain
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     strategy:
       fail-fast: false
@@ -336,7 +338,7 @@ jobs:
     if: >-
       (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta') &&
       needs.changes.outputs.integration-relevant == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       NODE_OPTIONS: '--max-old-space-size=6144'
@@ -407,7 +409,7 @@ jobs:
       (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta') &&
       ((github.event_name == 'push' && github.ref_name == 'v3-beta') ||
       (github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-'))))
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
       NODE_OPTIONS: '--max-old-space-size=6144'
@@ -471,7 +473,7 @@ jobs:
       (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta') &&
       ((github.event_name == 'push' && startsWith(github.ref_name, 'v3')) ||
       (github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-'))))
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # ~8 minutes of bundling on a fast machine, and a CI runner has two cores
     timeout-minutes: 60
     strategy:

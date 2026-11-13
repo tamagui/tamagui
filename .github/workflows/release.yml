@@ -61,7 +61,7 @@ jobs:
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'push' &&
       github.event.workflow_run.head_branch == 'v3-beta'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     # this job publishes a beta automatically every time Checks goes green on a
     # v3-beta push.
@@ -192,7 +192,7 @@ jobs:
     name: Dispatch the language server beta
     needs: beta
     if: needs.beta.outputs.release == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
       actions: write
@@ -215,7 +215,7 @@ jobs:
   prepare_stable:
     name: Merge stable version commit
     if: github.event_name == 'workflow_dispatch' && inputs.release != 'canary' && inputs.release != 'republish'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 180
     outputs:
       base_ref: ${{ steps.source.outputs.base-ref }}
@@ -305,7 +305,7 @@ jobs:
       github.event_name == 'workflow_dispatch' &&
       (needs.prepare_stable.result == 'success' || inputs.release == 'republish')
     needs: prepare_stable
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 90
     permissions:
       contents: write
@@ -400,7 +400,7 @@ jobs:
   publish_canary:
     name: Publish canary
     if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.release == 'canary')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     permissions:
       contents: read
