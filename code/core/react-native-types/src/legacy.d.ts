@@ -1,5 +1,5 @@
 /** generated legacy entry, selected with RN's react-native-legacy-deep-imports condition. */
-export type * from './generated'
+export type * from './generated.js'
 export type {
   AccessibilityActionEvent,
   AccessibilityActionInfo,
@@ -195,7 +195,7 @@ export type {
   ViewPropsAndroid,
   ViewPropsIOS,
   ViewStyle,
-} from './generated-legacy'
+} from './generated-legacy.js'
 // preserve strict-era names used by previously emitted declarations.
-export type { TextInputInstance as _TextInputInstance } from './generated-legacy'
-export type ImageAndroid = typeof import('./generated-legacy').Image
+export type { TextInputInstance as _TextInputInstance } from './generated-legacy.js'
+export type ImageAndroid = typeof import('./generated-legacy.js').Image

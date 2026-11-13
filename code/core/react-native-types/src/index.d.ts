@@ -15,4 +15,4 @@
  * Tamagui-owned types here instead.
  */
 
-export type * from './generated'
+export type * from './generated.js'

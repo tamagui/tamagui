@@ -556,11 +556,11 @@ const legacyExports = [
 writeFileSync(
   legacyEntry,
   `/** generated legacy entry, selected with RN's react-native-legacy-deep-imports condition. */
-export type * from './generated'
-export type { ${legacyExports.join(', ')} } from './generated-legacy'
+export type * from './generated.js'
+export type { ${legacyExports.join(', ')} } from './generated-legacy.js'
 // preserve strict-era names used by previously emitted declarations.
-export type { TextInputInstance as _TextInputInstance } from './generated-legacy'
-export type ImageAndroid = typeof import('./generated-legacy').Image
+export type { TextInputInstance as _TextInputInstance } from './generated-legacy.js'
+export type ImageAndroid = typeof import('./generated-legacy.js').Image
 `
 )
 
