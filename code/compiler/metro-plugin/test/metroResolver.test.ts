@@ -120,7 +120,9 @@ test('resolves tsconfig paths aliases as the expo dev server does', async () => 
   await writeFile(join(dir, 'src/app.tsx'), '')
   await writeFile(join(dir, 'src/components/Foo.tsx'), '')
   await symlink(
-    dirname(dirname(createRequire(import.meta.url).resolve('metro-resolver/package.json'))),
+    dirname(
+      dirname(createRequire(import.meta.url).resolve('metro-resolver/package.json'))
+    ),
     join(dir, 'node_modules')
   )
 
