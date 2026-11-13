@@ -2,7 +2,7 @@ import { existsSync, readFileSync, realpathSync, statSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, extname, isAbsolute, join, parse, relative, resolve } from 'node:path'
 
-import { createTsconfigPathsMatcher } from '@tamagui/static'
+import { createPathsMatcher, parseTsconfig } from 'get-tsconfig'
 
 export interface MetroResolverConfig {
   projectRoot: string
@@ -142,8 +142,24 @@ export function createMetroCompilerResolver(config: MetroResolverConfig): {
     createDefaultContextModule.default ?? createDefaultContextModule
   const resolver = config.resolver ?? {}
   // expo's dev server adds tsconfig paths to the resolver after metro.config.js
-  // runs, so the config this plugin receives never carries them
-  const matchTsconfigPaths = createTsconfigPathsMatcher(undefined, config.projectRoot)
+  // runs, so the config this plugin receives never carries them. like expo, read
+  // only the project's own config and keep going when it cannot be parsed
+  const tsconfigPath = ['tsconfig.json', 'jsconfig.json']
+    .map((name) => join(config.projectRoot, name))
+    .find((path) => existsSync(path))
+  let matchTsconfigPaths: ((specifier: string) => string[]) | null = null
+  if (tsconfigPath) {
+    try {
+      matchTsconfigPaths = createPathsMatcher({
+        path: tsconfigPath,
+        config: parseTsconfig(tsconfigPath),
+      })
+    } catch (error) {
+      console.warn(
+        `[tamagui] ignoring paths in ${tsconfigPath}: ${error instanceof Error ? error.message : error}`
+      )
+    }
+  }
   const fileSystemLookup = (path: string) => lookup(config.projectRoot, path)
   const getPackage = (packagePath: string) => {
     try {
