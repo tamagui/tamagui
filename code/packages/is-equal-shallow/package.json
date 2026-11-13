@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/is-equal-shallow",
-  "version": "3.3.2",
+  "version": "3.3.3",
   "license": "MIT",
   "files": [
     "src",
