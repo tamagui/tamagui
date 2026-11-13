@@ -1,4 +1,4 @@
-import type { WindowSize, WindowSizeListener } from "./types";
+import type { WindowSize, WindowSizeListener } from "./types.js";
 export declare function getWindowSize(): WindowSize;
 export declare function subscribe(cb: WindowSizeListener): () => void;
 

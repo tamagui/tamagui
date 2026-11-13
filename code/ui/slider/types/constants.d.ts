@@ -1,4 +1,4 @@
-import type { Direction, SliderContextValue } from './types';
+import type { Direction, SliderContextValue } from './types.js';
 export declare const SLIDER_NAME = "Slider";
 export declare const SliderContext: import("@tamagui/core").StyledContext<SliderContextValue, "max" | "min" | "orientation" | "size">;
 export declare const SliderProvider: import("react").Provider<SliderContextValue> & import("react").ProviderExoticComponent<Partial<SliderContextValue> & {

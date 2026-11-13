@@ -1,3 +1,3 @@
-export * from './FocusScope';
-export * from './FocusScopeController';
+export * from './FocusScope.js';
+export * from './FocusScopeController.js';
 //# sourceMappingURL=index.d.ts.map

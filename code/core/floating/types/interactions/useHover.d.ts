@@ -1,4 +1,4 @@
-import type { Delay, ElementProps, FloatingInteractionContext, UseHoverProps } from './types';
+import type { Delay, ElementProps, FloatingInteractionContext, UseHoverProps } from './types.js';
 export declare function getDelay(value: Delay | undefined, prop: 'open' | 'close', pointerType?: string): number | undefined;
 export interface UseHoverReturn extends ElementProps {
 }

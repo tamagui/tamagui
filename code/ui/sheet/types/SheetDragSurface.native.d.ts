@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { SheetDragSurfaceProps } from './types';
+import type { SheetDragSurfaceProps } from './types.js';
 /**
  * The surface the sheet is dragged by.
  *

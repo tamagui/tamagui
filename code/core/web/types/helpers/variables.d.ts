@@ -1,4 +1,4 @@
-import type { TamaguiInternalConfig, ThemeKeys, ThemeName, Variable, VariableValIn } from '../types';
+import type { TamaguiInternalConfig, ThemeKeys, ThemeName, Variable, VariableValIn } from '../types.js';
 export type InlineValues = {
     values?: {
         [Key in ThemeKeys]?: VariableValIn;

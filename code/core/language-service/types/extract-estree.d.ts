@@ -1,4 +1,4 @@
-import type { StyleSite } from "./document";
+import type { StyleSite } from "./document.js";
 export interface EstreeStyleSite extends StyleSite {
 	/** the Literal or TemplateLiteral node holding the value, for reporters */
 	node: unknown;

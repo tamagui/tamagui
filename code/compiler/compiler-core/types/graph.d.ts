@@ -1,7 +1,7 @@
-import type { CandidateFactory, ExpressionReference, HostModuleInput, HostResolvedProject, ResolvedModuleId, SourceSpan, SymbolDefinition, SymbolResolver } from './contracts';
-import { type BailoutReason } from './diagnostics';
-import { type BranchDecisionNode, type DynamicEvaluation, type EvaluationResult } from './evaluate';
-import type { ElementIRResult } from './ir';
+import type { CandidateFactory, ExpressionReference, HostModuleInput, HostResolvedProject, ResolvedModuleId, SourceSpan, SymbolDefinition, SymbolResolver } from './contracts.js';
+import { type BailoutReason } from './diagnostics.js';
+import { type BranchDecisionNode, type DynamicEvaluation, type EvaluationResult } from './evaluate.js';
+import type { ElementIRResult } from './ir.js';
 export interface GraphInvalidation {
     changed: boolean;
     id: ResolvedModuleId;
@@ -28,7 +28,7 @@ export declare class ProjectGraph implements SymbolResolver {
     parseCount(id: ResolvedModuleId): number;
     resolveBinding(id: ResolvedModuleId, localName: string): SymbolDefinition | null;
     resolveReference(reference: ExpressionReference): SymbolDefinition | null;
-    expressionNode(reference: ExpressionReference): import("./contracts").AstNode | null;
+    expressionNode(reference: ExpressionReference): import("./contracts.js").AstNode | null;
     /**
      * The members of a plain object literal, each as its own expression:
      * `{ width: expr, height: 10 }`. Null for anything else, and for an object

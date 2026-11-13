@@ -15,7 +15,7 @@ export declare const SheetScrollView: import("@tamagui/core").TamaguiComponent<i
     onMomentumScrollBegin?: import("@tamagui/scroll-view").WebScrollEventHandler;
     onMomentumScrollEnd?: import("@tamagui/scroll-view").WebScrollEventHandler;
 } & React.RefAttributes<ScrollViewRef>, "scope"> & Omit<{}, "scope"> & {
-    scope?: import("./types").SheetScopes;
+    scope?: import("./types.js").SheetScopes;
 }, import("@tamagui/core").StackStyleBase, Omit<{}, "scope">, {
     acceptsClassName: true;
     neverFlatten: true;

@@ -1,9 +1,9 @@
 import { parseFlatValue, type CompiledModifierVocabulary } from '@tamagui/style-grammar/runtime';
-import type { StaticConfig, TamaguiInternalConfig } from '../types';
-import { type RuntimeTokenCategory } from './tokenCategories';
-import { expandSafeAreaValue } from './resolveSafeArea';
-import { resolveSafeAreaVariable } from './resolveSafeAreaVariable';
-import type { StyleStaticConfig } from './styleStaticConfig';
+import type { StaticConfig, TamaguiInternalConfig } from '../types.js';
+import { type RuntimeTokenCategory } from './tokenCategories.js';
+import { expandSafeAreaValue } from './resolveSafeArea.js';
+import { resolveSafeAreaVariable } from './resolveSafeAreaVariable.js';
+import type { StyleStaticConfig } from './styleStaticConfig.js';
 export type ConfigRevisionPart = 'media' | 'themeNames' | 'themeVariables' | 'tokens' | 'fonts' | 'shorthands';
 export type ConfigRevisionParts = Readonly<Record<ConfigRevisionPart, string>>;
 export interface ConfigRevisionSnapshot {

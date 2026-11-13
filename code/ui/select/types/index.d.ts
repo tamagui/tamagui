@@ -1,9 +1,9 @@
-export * from './Select';
-export * from './SelectItem';
-export * from './SelectItemText';
-export * from './SelectScrollButton';
-export * from './SelectTrigger';
-export * from './SelectViewport';
-export type * from './types';
-export * from './context';
+export * from './Select.js';
+export * from './SelectItem.js';
+export * from './SelectItemText.js';
+export * from './SelectScrollButton.js';
+export * from './SelectTrigger.js';
+export * from './SelectViewport.js';
+export type * from './types.js';
+export * from './context.js';
 //# sourceMappingURL=index.d.ts.map

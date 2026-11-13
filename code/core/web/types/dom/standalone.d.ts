@@ -1,4 +1,4 @@
-import type { TamaguiStyleProps } from './styleTypes';
+import type { TamaguiStyleProps } from './styleTypes.js';
 /**
  * Standalone Tamagui DOM: the surface behind `tamagui/dom` and
  * `@tamagui/core/dom`.

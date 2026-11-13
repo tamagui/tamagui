@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { SliderResponderProps } from './types';
+import type { SliderResponderProps } from './types.js';
 /**
  * The slider is dragged through the responder system, and tamagui views stopped
  * carrying responder props on web. This is the same responder system

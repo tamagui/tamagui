@@ -1,5 +1,5 @@
 import type { MutableRefObject } from 'react';
-import type { ThemeState, UseThemeWithStateProps } from '../types';
+import type { ThemeState, UseThemeWithStateProps } from '../types.js';
 type ThemeComponentPropsOnly = UseThemeWithStateProps & {
     contain?: boolean;
 };

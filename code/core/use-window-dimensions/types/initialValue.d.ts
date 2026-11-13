@@ -1,4 +1,4 @@
-import type { WindowSize } from "./types";
+import type { WindowSize } from "./types.js";
 /**
 * SSR safe useWindowDimensions
 */

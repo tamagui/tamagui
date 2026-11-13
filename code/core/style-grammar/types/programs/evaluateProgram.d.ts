@@ -1,5 +1,5 @@
-import { type ClausePrecedenceOrder } from "../runtime/clausePrecedence";
-import type { ModifierRegistryView, ParsedValue } from "../ast/valueTypes";
+import { type ClausePrecedenceOrder } from "../runtime/clausePrecedence.js";
+import type { ModifierRegistryView, ParsedValue } from "../ast/valueTypes.js";
 export interface ActiveConditions {
 	states: ReadonlySet<string>;
 	themes: ReadonlySet<string>;

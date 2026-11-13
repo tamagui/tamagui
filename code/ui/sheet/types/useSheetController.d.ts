@@ -1,6 +1,6 @@
 import type React from 'react';
 import { type StyledContext } from '@tamagui/core';
-import type { SheetTransitionEvent } from './types';
+import type { SheetTransitionEvent } from './types.js';
 export declare const useSheetController: (scope?: string) => {
     controller: SheetControllerContextValue | null;
     isHidden: boolean | undefined;

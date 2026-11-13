@@ -1,4 +1,4 @@
-import type { ModifierRegistryView, ValueParseResult } from "./valueTypes";
+import type { ModifierRegistryView, ValueParseResult } from "./valueTypes.js";
 export interface ValueSourceSpan {
 	kind: "base" | "payload" | "modifier" | "word";
 	start: number;

@@ -1,5 +1,5 @@
-import type { TamaguiInternalConfig, ThemeParsed, Variable } from '../types';
-import type { ConfigRevisionState } from './grammarConfig';
+import type { TamaguiInternalConfig, ThemeParsed, Variable } from '../types.js';
+import type { ConfigRevisionState } from './grammarConfig.js';
 export declare const themeUpdateStateKey = "_tmgInlineLayer";
 export type ThemeUpdateValues = {
     values?: Record<string, any>;

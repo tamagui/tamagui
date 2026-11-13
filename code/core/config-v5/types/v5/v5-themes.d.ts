@@ -1,7 +1,7 @@
-import { createThemes, type CreateThemesProps } from '../theme-builder';
-import { v5Templates } from './v5-templates';
+import { createThemes, type CreateThemesProps } from '../theme-builder/index.js';
+import { v5Templates } from './v5-templates.js';
 export declare const V5_BG_OFFSET: number;
-export { interpolateColor, opacify } from './opacify';
+export { interpolateColor, opacify } from './opacify.js';
 export declare const v5ComponentThemes: {
     readonly Button: {
         readonly template: 'surface2';

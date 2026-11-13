@@ -1,6 +1,6 @@
 import React from 'react';
-import * as Floating from './Floating';
-import type { PopupTriggerMap } from './interactions/PopupTriggerMap';
+import * as Floating from './Floating.js';
+import type { PopupTriggerMap } from './interactions/PopupTriggerMap.js';
 export type UseFloatingFn = typeof Floating.useFloating;
 type InferFloatingProps = UseFloatingFn extends (props: infer Props) => any ? Props : never;
 export type UseFloatingProps = InferFloatingProps & {

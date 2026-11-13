@@ -1,11 +1,11 @@
 import type { GetProps, TamaguiTextElement } from '@tamagui/core';
-import type { SelectScopedProps } from './types';
+import type { SelectScopedProps } from './types.js';
 export declare const ITEM_TEXT_NAME = "SelectItemText";
 export declare const SelectItemTextFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {}, import("@tamagui/core").StaticConfigPublic>;
 type SelectItemTextExtraProps = SelectScopedProps<{}>;
 export type SelectItemTextProps = GetProps<typeof SelectItemTextFrame> & SelectItemTextExtraProps;
 export declare const SelectItemText: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiTextElement, Omit<import("@tamagui/core").RNTamaguiTextNonStyleProps, "scope"> & {
-    scope?: import("./types").SelectScopes;
+    scope?: import("./types.js").SelectScopes;
 }, import("@tamagui/core").TextStylePropsBase, Omit<{}, "scope">, import("@tamagui/core").StaticConfigPublic>;
 export {};
 //# sourceMappingURL=SelectItemText.d.ts.map

@@ -1,5 +1,5 @@
 import { type ReactNode, type Ref as ReactRef } from 'react';
-import type { GetFinalProps, StaticConfig, StyledHOCMergedProps, StyledHOCOptions, TamaguiComponent, TamaDefer } from './types';
+import type { GetFinalProps, StaticConfig, StyledHOCMergedProps, StyledHOCOptions, TamaguiComponent, TamaDefer } from './types.js';
 export declare function createStyledHOC<Props, Ref, NonStyledProps, BaseStyles extends object, VariantProps, ParentStaticProperties, CustomProps extends object = {}>(component: {
     __tama: [Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties];
     staticConfig: StaticConfig;

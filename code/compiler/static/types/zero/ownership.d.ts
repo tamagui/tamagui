@@ -1,4 +1,4 @@
-import type { TamaguiOptions } from '../types';
+import type { TamaguiOptions } from '../types.js';
 /**
  * Artifact ownership, shared by every integration and by both CSS tiers.
  *

@@ -1,4 +1,4 @@
-import type { MediaQueries, MediaQueryState } from '../types';
+import type { MediaQueries, MediaQueryState } from '../types.js';
 export declare let mediaState: MediaQueryState;
 export declare const setMediaState: (next: MediaQueryState) => void;
 export declare const mediaQueryConfig: MediaQueries;

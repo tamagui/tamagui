@@ -1,4 +1,4 @@
-import type { TamaguiPlatform } from '../types';
+import type { TamaguiPlatform } from '../types.js';
 export declare function requireTamaguiCore(platform: TamaguiPlatform, ogRequire?: Function): typeof import('@tamagui/core');
 /**
  * ESM build of @tamagui/core, resolved as an ESM bundle in `dir` resolves it.

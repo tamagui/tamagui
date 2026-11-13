@@ -5,7 +5,7 @@ export declare const Tamagui: {
         [x: string]: boolean;
         [x: number]: boolean;
     };
-    get config(): import("./types").TamaguiInternalConfig;
+    get config(): import("./types.js").TamaguiInternalConfig;
     get insertedRules(): string[];
     get allSelectors(): Record<string, string>;
     get identifierToValue(): Map<string, any>;

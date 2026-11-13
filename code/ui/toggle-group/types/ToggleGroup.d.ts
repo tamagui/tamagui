@@ -1,8 +1,8 @@
 import { RovingFocusGroup } from '@tamagui/roving-focus';
 import type { GetProps, TamaguiElement } from '@tamagui/web';
 import React from 'react';
-import type { ToggleProps } from './Toggle';
-import { ToggleFrame } from './Toggle';
+import type { ToggleProps } from './Toggle.js';
+import { ToggleFrame } from './Toggle.js';
 type ToggleGroupItemExtraProps = {
     activeStyle?: ToggleProps['activeStyle'];
     activeTheme?: ToggleProps['activeTheme'];

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import type { FocusScopeProps } from './types';
-import type { ScopedProps } from './types';
+import type { FocusScopeProps } from './types.js';
+import type { ScopedProps } from './types.js';
 declare const createFocusScopeControllerScope: import("@tamagui/create-context").CreateScope;
 type FocusScopeControllerContextValue = Omit<FocusScopeProps, 'children'>;
 declare const FocusScopeControllerProvider: (props: FocusScopeControllerContextValue & {

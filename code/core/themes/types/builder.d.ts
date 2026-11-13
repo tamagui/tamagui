@@ -1,9 +1,9 @@
 import { type GetThemeContext, type ThemeDefinitionContext, type ThemeInputValue } from '@tamagui/create-theme';
-import type { Theme, ThemeNames } from './generated';
-import { colorTokens as baseColorTokens, tokens, type ColorTokenName } from './tokens';
+import type { Theme, ThemeNames } from './generated.js';
+import { colorTokens as baseColorTokens, tokens, type ColorTokenName } from './tokens.js';
 export { createThemes } from '@tamagui/create-theme';
 export type { GetThemeContext, ThemeDefinitionContext } from '@tamagui/create-theme';
-export { colorTokens, tailwindColors, tokens } from './tokens';
+export { colorTokens, tailwindColors, tokens } from './tokens.js';
 export declare const shades: readonly [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 export declare const shadows: {
     readonly light: {

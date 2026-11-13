@@ -1,18 +1,18 @@
 export declare const masks: {
-    identity: import(".").CreateMask;
-    soften: import(".").CreateMask;
-    soften2: import(".").CreateMask;
-    soften3: import(".").CreateMask;
-    strengthen: import(".").CreateMask;
-    inverse: import(".").CreateMask;
-    inverseSoften: import(".").CreateMask;
-    inverseSoften2: import(".").CreateMask;
-    inverseSoften3: import(".").CreateMask;
-    inverseStrengthen2: import(".").CreateMask;
-    strengthenButSoftenBorder: import(".").CreateMask;
-    soften2Border1: import(".").CreateMask;
-    soften3FlatBorder: import(".").CreateMask;
-    softenBorder: import(".").CreateMask;
-    softenBorder2: import(".").CreateMask;
+    identity: import("./index.js").CreateMask;
+    soften: import("./index.js").CreateMask;
+    soften2: import("./index.js").CreateMask;
+    soften3: import("./index.js").CreateMask;
+    strengthen: import("./index.js").CreateMask;
+    inverse: import("./index.js").CreateMask;
+    inverseSoften: import("./index.js").CreateMask;
+    inverseSoften2: import("./index.js").CreateMask;
+    inverseSoften3: import("./index.js").CreateMask;
+    inverseStrengthen2: import("./index.js").CreateMask;
+    strengthenButSoftenBorder: import("./index.js").CreateMask;
+    soften2Border1: import("./index.js").CreateMask;
+    soften3FlatBorder: import("./index.js").CreateMask;
+    softenBorder: import("./index.js").CreateMask;
+    softenBorder2: import("./index.js").CreateMask;
 };
 //# sourceMappingURL=masks.d.ts.map

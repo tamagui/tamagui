@@ -1,5 +1,5 @@
-import type { SheetProps } from './types';
-import type { SheetControllerContextValue } from './useSheetController';
+import type { SheetProps } from './types.js';
+import type { SheetControllerContextValue } from './useSheetController.js';
 export declare const useSheetOpenState: (props: SheetProps, strategy?: 'prop-wins' | 'most-recent-wins') => {
     open: boolean;
     setOpen: import("@tamagui/use-controllable-state").ControllableStateSetter<boolean, import("@tamagui/web").TamaguiChangeEventDetails>;

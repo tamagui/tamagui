@@ -1,7 +1,7 @@
 import { type AnimationsConfig } from "@tamagui/animation-helpers";
 import type { AnimationDriverWithAnimatedNumbers, UniversalAnimatedNumber, UseAnimatedNumberReaction, UseAnimatedNumberStyle } from "@tamagui/web";
 import { Animated } from "react-native";
-import type { CreateAnimationsOptions } from "./types";
+import type { CreateAnimationsOptions } from "./types.js";
 export declare const AnimatedView: typeof Animated.View;
 export declare const AnimatedText: typeof Animated.Text;
 export declare function useAnimatedNumber(initial: number): UniversalAnimatedNumber<Animated.Value>;

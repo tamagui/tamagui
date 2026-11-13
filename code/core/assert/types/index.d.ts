@@ -1,3 +1,3 @@
-export * from "./assertions";
+export * from "./assertions.js";
 
 //# sourceMappingURL=index.d.ts.map

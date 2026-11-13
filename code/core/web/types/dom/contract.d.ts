@@ -1,6 +1,6 @@
 import type { DOMChangeEvent, DOMClickEvent, DOMImageErrorEvent, DOMImageLoadEvent, DOMInputEvent, DOMKeyEvent } from '@tamagui/dom';
 import type { ReactNode, Ref } from 'react';
-import type { NativeTextMetrics } from '../helpers/nativeTextMetrics';
+import type { NativeTextMetrics } from '../helpers/nativeTextMetrics.js';
 /**
  * What the compiler emits for a DOM element on native.
  *

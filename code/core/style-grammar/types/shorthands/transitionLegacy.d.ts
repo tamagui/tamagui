@@ -1,4 +1,4 @@
-import { type TransitionDiagnostic } from "./transition";
+import { type TransitionDiagnostic } from "./transition.js";
 export type LegacyTransitionValue = string | Readonly<Record<string, unknown>> | readonly [string, Readonly<Record<string, unknown>>];
 /** a v3 `transition` value: a css/preset string, or a config object */
 export type MigratedTransition = string | Record<string, unknown>;

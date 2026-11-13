@@ -1,5 +1,5 @@
 import type { ScrollViewRef } from '@tamagui/scroll-view';
-import type { ScrollBridge } from './types';
+import type { ScrollBridge } from './types.js';
 interface UseSheetScrollViewGesturesProps {
     scrollRef: React.RefObject<ScrollViewRef | null>;
     scrollBridge: ScrollBridge;

@@ -1,5 +1,5 @@
-export { mediaKeyMatch } from '../helpers/mediaState';
-import type { DebugProp, TamaguiInternalConfig, UseMediaState, WidthHeight } from '../types';
+export { mediaKeyMatch } from '../helpers/mediaState.js';
+import type { DebugProp, TamaguiInternalConfig, UseMediaState, WidthHeight } from '../types.js';
 export declare const configureMedia: (config: TamaguiInternalConfig) => void;
 export declare function setupMediaListeners(): void;
 /**

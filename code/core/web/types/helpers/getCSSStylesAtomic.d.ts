@@ -3,8 +3,8 @@
  * Copyright (c) Nicolas Gallagher licensed under the MIT license.
  */
 import { type StyleObject } from '@tamagui/helpers';
-import type { GetStyleState, ViewStyleObject } from '../types';
-export { styleToCSS } from './styleToCSS';
+import type { GetStyleState, ViewStyleObject } from '../types.js';
+export { styleToCSS } from './styleToCSS.js';
 export declare const canGenerateCSS: boolean;
 type DirectAtomicState = GetStyleState & {
     flatAtomics?: Map<string, StyleObject>;

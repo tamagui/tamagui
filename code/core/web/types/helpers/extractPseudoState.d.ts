@@ -1,4 +1,4 @@
-import type { TamaguiComponentState } from '../types';
+import type { TamaguiComponentState } from '../types.js';
 type PseudoState = {
     hover?: boolean;
     press?: boolean;

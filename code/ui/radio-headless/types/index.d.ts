@@ -1,3 +1,3 @@
-export * from './useRadioGroup';
-export * from './utils';
+export * from './useRadioGroup.js';
+export * from './utils.js';
 //# sourceMappingURL=index.d.ts.map

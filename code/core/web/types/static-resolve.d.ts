@@ -5,10 +5,10 @@
  * to evaluate config and resolve extracted static props with zero React/DOM/React Native
  * runtime dependencies.
  */
-import { getConfig, getConfigMaybe, getThemes, getToken, getTokens, getTokenValue, setConfig, updateConfig } from './config';
-import { createTamagui, installTamaguiConfig } from './createTamagui';
-import { getSplitStyles } from './helpers/getSplitStyles';
-import type { StaticConfig, TamaguiComponentState, TamaguiInternalConfig, ThemeParsed } from './types';
+import { getConfig, getConfigMaybe, getThemes, getToken, getTokens, getTokenValue, setConfig, updateConfig } from './config.js';
+import { createTamagui, installTamaguiConfig } from './createTamagui.js';
+import { getSplitStyles } from './helpers/getSplitStyles.js';
+import type { StaticConfig, TamaguiComponentState, TamaguiInternalConfig, ThemeParsed } from './types.js';
 export { createTamagui, getConfig, getConfigMaybe, getSplitStyles, getThemes, getToken, getTokens, getTokenValue, installTamaguiConfig, setConfig, updateConfig, };
 export type { StaticConfig, TamaguiComponentState, TamaguiInternalConfig, ThemeParsed };
 export interface StaticResolveOptions {

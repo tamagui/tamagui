@@ -1,4 +1,4 @@
-import type { ZeroIsland } from './options';
+import type { ZeroIsland } from './options.js';
 /**
  * Island generation.
  *

@@ -1,5 +1,5 @@
-import type { WindowSize } from "./types";
-export { configureInitialWindowDimensions } from "./initialValue";
+import type { WindowSize } from "./types.js";
+export { configureInitialWindowDimensions } from "./initialValue.js";
 export declare function useWindowDimensions({ serverValue }?: {
 	serverValue?: WindowSize;
 }): WindowSize;

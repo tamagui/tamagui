@@ -6,7 +6,7 @@
  *
  * @flow
  */
-import type { GenericStyleProp } from '../../types';
+import type { GenericStyleProp } from '../../types.js';
 /**
  * Adds non-standard methods to the hode element. This is temporarily until an
  * API like `ReactNative.measure(hostRef, callback)` is added to React Native.

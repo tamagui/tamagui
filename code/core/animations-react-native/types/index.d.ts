@@ -1,6 +1,6 @@
 import type { AnimationsConfig } from "@tamagui/animation-helpers";
 import type { AnimationDriverWithAnimatedNumbers } from "@tamagui/web";
-import type { CreateAnimationsOptions } from "./types";
+import type { CreateAnimationsOptions } from "./types.js";
 export type { CreateAnimationsOptions };
 /**
 * The web half of the native driver. It keeps the same signature so a shared

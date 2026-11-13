@@ -1,5 +1,5 @@
 import type { TamaguiElement } from '@tamagui/core';
-import type { SliderImplProps } from './types';
+import type { SliderImplProps } from './types.js';
 export declare const SliderFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     orientation?: "horizontal" | "vertical" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;

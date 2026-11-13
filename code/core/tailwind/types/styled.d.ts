@@ -1,4 +1,4 @@
-import type { GetTailwindNonStyleProps, GetTailwindRef, GetTailwindVariantProps, TailwindComponent, TailwindStyledOptions, TailwindVariantDefinitions, TailwindVariantProps } from './types';
+import type { GetTailwindNonStyleProps, GetTailwindRef, GetTailwindVariantProps, TailwindComponent, TailwindStyledOptions, TailwindVariantDefinitions, TailwindVariantProps } from './types.js';
 /**
  * Class-first `styled()`. The base is a class string, variant values are class
  * strings, and the resulting component accepts `className` plus its variants —

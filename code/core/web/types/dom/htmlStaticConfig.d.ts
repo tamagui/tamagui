@@ -1,4 +1,4 @@
-import type { StaticConfig } from '../types';
+import type { StaticConfig } from '../types.js';
 /**
  * The static configs for the regular-Tamagui `html` namespace (see the
  * generated `html.tsx`, which spreads these instead of `viewStaticConfig` /

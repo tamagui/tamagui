@@ -1,5 +1,5 @@
-import type { ToastT } from './ToastState';
-import type { BurntToastOptions } from './types';
+import type { ToastT } from './ToastState.js';
+import type { BurntToastOptions } from './types.js';
 /**
  * Attempts to dispatch a toast via native platform API (Burnt on mobile, Notification on web).
  * Returns true if the toast was handled natively, false if it should fall through to in-app.

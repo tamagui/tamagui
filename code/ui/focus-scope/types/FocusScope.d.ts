@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { FocusScopeProps } from './types';
+import type { FocusScopeProps } from './types.js';
 type FocusScopeElement = HTMLDivElement;
 declare const FocusScope: import("@tamagui/compose-refs").RefComponent<HTMLDivElement, FocusScopeProps>;
 export declare function useFocusScope(props: FocusScopeProps, forwardedRef?: React.Ref<FocusScopeElement>): {

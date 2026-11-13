@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react';
 import type { ImageResizeMode } from '@tamagui/react-native-types';
-import type { ImageProps } from './types';
+import type { ImageProps } from './types.js';
 type GetProps<T> = T extends ComponentType<infer P> ? P : never;
 export type CreateImageOptions<C extends ComponentType<any>> = {
     /**

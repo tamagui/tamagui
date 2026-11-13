@@ -1,4 +1,4 @@
-import type { Template } from '../create-theme';
+import type { Template } from '../create-theme/index.js';
 export type GetThemeFn<ThemeType extends Record<string, string | number>> = (props: {
     name: string;
     theme: Record<string, string>;

@@ -1,5 +1,5 @@
 import type { GetProps, TamaguiElement } from '@tamagui/core';
-import type { ScopedProps, SliderProps, SliderTrackProps } from './types';
+import type { ScopedProps, SliderProps, SliderTrackProps } from './types.js';
 export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     orientation?: "horizontal" | "vertical" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;

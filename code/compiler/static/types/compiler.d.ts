@@ -1,7 +1,7 @@
 import { type AppliedLoweredModule, type CompilerTarget, type LoweredModulePlan, type ResolvedModuleId } from '@tamagui/compiler-core';
 import type { TamaguiOptions } from '@tamagui/types';
-import { type ComponentModuleEvaluator } from './componentDiscovery';
-import type { TamaguiProjectInfo } from './extractor/bundleConfig';
+import { type ComponentModuleEvaluator } from './componentDiscovery.js';
+import type { TamaguiProjectInfo } from './extractor/bundleConfig.js';
 export interface CompilerProjectComponentModule {
     moduleName: string;
     id: string;

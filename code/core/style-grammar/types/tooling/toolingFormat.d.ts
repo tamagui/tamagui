@@ -1,4 +1,4 @@
-import type { ParsedValue } from "../ast/valueTypes";
+import type { ParsedValue } from "../ast/valueTypes.js";
 /** Prints one parsed value without changing payloads, modifier order, or clause order. */
 export declare function formatParsedValue(value: ParsedValue): string;
 

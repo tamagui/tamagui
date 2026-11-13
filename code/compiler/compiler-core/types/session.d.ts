@@ -1,9 +1,9 @@
-import type { HostModuleInput, ResolvedModuleId } from './contracts';
-import type { GraphInvalidation } from './graph';
-import type { CompilerLoweringHost, CompilerTarget, LoweredModulePlan, StructuralModulePass } from './lower';
-import { type MaterializedModule } from './materialize';
-import type { AppliedLoweredModule } from './output';
-import type { ModulePlanCache } from './planCache';
+import type { HostModuleInput, ResolvedModuleId } from './contracts.js';
+import type { GraphInvalidation } from './graph.js';
+import type { CompilerLoweringHost, CompilerTarget, LoweredModulePlan, StructuralModulePass } from './lower.js';
+import { type MaterializedModule } from './materialize.js';
+import type { AppliedLoweredModule } from './output.js';
+import type { ModulePlanCache } from './planCache.js';
 export interface CompilerAdapter {
     target: CompilerTarget;
     projectGeneration: string;

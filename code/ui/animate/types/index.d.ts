@@ -1,3 +1,3 @@
-export * from "./Animate";
+export * from "./Animate.js";
 
 //# sourceMappingURL=index.d.ts.map

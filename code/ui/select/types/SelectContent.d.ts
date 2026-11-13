@@ -1,4 +1,4 @@
 import type { FocusScopeProps } from '@tamagui/focus-scope';
-import type { SelectContentProps } from './types';
+import type { SelectContentProps } from './types.js';
 export declare const SelectContent: ({ children, scope, onEscapeKeyDown, onPointerDownOutside, onFocusOutside, onInteractOutside, ...focusScopeProps }: SelectContentProps & FocusScopeProps) => import("react").JSX.Element | null;
 //# sourceMappingURL=SelectContent.d.ts.map

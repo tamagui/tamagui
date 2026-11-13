@@ -1,5 +1,5 @@
 import { type Shorthands, type TextStyle, type TextStylePropsBase, type WithShorthands } from '@tamagui/web';
-import type { SizableTextProps } from './SizableText';
+import type { SizableTextProps } from './SizableText.js';
 export declare const textParentProps: {
     readonly WebkitBoxOrient: true;
     readonly WebkitLineClamp: true;

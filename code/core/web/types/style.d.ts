@@ -1,4 +1,4 @@
-import type { StaticShapeStyle, StylePiece, TextStyle, ThemeParsed } from './types';
+import type { StaticShapeStyle, StylePiece, TextStyle, ThemeParsed } from './types.js';
 type StylePieceLayer = 'base' | 'style';
 type StylePieceCompiler = (piece: StylePiece, layer: StylePieceLayer) => void;
 type StylePieceResolver = (piece: StylePiece, theme: ThemeParsed, themeName: string) => TextStyle;

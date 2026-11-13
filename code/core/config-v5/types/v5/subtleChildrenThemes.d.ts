@@ -1,4 +1,4 @@
-import { type PaletteAdjustments, defaultChildrenThemes } from './v5-themes';
+import { type PaletteAdjustments, defaultChildrenThemes } from './v5-themes.js';
 export declare const v5SubtlePaletteAdjustments: PaletteAdjustments<typeof defaultChildrenThemes>;
 export declare const subtleChildrenThemes: {
     gray: {

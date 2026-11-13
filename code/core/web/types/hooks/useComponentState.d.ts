@@ -1,6 +1,6 @@
 import type { RefObject } from 'react';
-import type { ComponentContextI, ComponentSetState, ComponentSetStateShallow, PresenceContextProps, StaticConfig, TamaguiComponentState, TamaguiComponentStateRef, TamaguiInternalConfig, TextProps, UsePresenceResult } from '../types';
-import type { ViewProps } from '../views/View';
+import type { ComponentContextI, ComponentSetState, ComponentSetStateShallow, PresenceContextProps, StaticConfig, TamaguiComponentState, TamaguiComponentStateRef, TamaguiInternalConfig, TextProps, UsePresenceResult } from '../types.js';
+import type { ViewProps } from '../views/View.js';
 type UseComponentStateResult = {
     props: ViewProps | TextProps | Record<string, any>;
     startedUnhydrated: boolean;

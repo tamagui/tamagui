@@ -1,9 +1,9 @@
 import type { GetProps, TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
-import type { SwipeDirection } from './types';
-import type { ExternalToast, ToastT } from './ToastState';
-import type { BurntToastOptions } from './types';
-import { ToastItemFrame } from './ToastItemFrame';
+import type { SwipeDirection } from './types.js';
+import type { ExternalToast, ToastT } from './ToastState.js';
+import type { BurntToastOptions } from './types.js';
+import { ToastItemFrame } from './ToastItemFrame.js';
 export type ToastPosition = 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
 interface ToastItemContextValue {
     toast: ToastT;

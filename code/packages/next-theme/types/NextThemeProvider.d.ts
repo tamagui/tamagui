@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { ThemeProviderProps } from "./UseThemeProps";
+import type { ThemeProviderProps } from "./UseThemeProps.js";
 export declare const NextThemeProvider: React.FunctionComponent<ThemeProviderProps>;
 
 //# sourceMappingURL=NextThemeProvider.d.ts.map

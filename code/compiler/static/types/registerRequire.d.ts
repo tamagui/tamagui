@@ -1,4 +1,4 @@
-import type { TamaguiPlatform } from './types';
+import type { TamaguiPlatform } from './types.js';
 export declare const getNameToPaths: () => {};
 export declare function setRequireResult(name: string, result: any): void;
 export declare function requireNativeEvaluationModule(modulePath: string, nativePlatform?: 'ios' | 'android' | 'macos'): any;

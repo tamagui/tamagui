@@ -1,6 +1,6 @@
-import type { BuildThemeSuiteProps } from './types';
+import type { BuildThemeSuiteProps } from './types.js';
 export declare function createStudioThemes(props: BuildThemeSuiteProps): {
-    themeBuilder: import("./ThemeBuilder").ThemeBuilder<any>;
+    themeBuilder: import("./ThemeBuilder.js").ThemeBuilder<any>;
     themes: Record<"dark" | "light" | `dark_${string}` | `light_${string}`, {
         [x: string]: string;
     } & Record<string, string>>;

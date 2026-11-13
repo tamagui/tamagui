@@ -1,4 +1,4 @@
-import type { ComponentSize, Font, GenericSizing, TamaguiConfig, TokensParsed } from '../types';
+import type { ComponentSize, Font, GenericSizing, TamaguiConfig, TokensParsed } from '../types.js';
 /** the env slice resolveSizing reads: a styled.dynamic env or hand-built */
 export type SizingEnv = {
     sizing: GenericSizing;

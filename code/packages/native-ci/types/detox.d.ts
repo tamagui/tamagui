@@ -3,7 +3,7 @@
  *
  * Shared functionality for running Detox E2E tests on iOS and Android.
  */
-import type { Platform } from './constants';
+import type { Platform } from './constants.js';
 export interface DetoxRunnerOptions {
     /** Detox configuration name */
     config: string;

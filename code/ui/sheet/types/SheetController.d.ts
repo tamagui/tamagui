@@ -1,6 +1,6 @@
 import React from 'react';
 import type { ReactNode } from 'react';
-import type { SheetControllerContextValue } from './useSheetController';
+import type { SheetControllerContextValue } from './useSheetController.js';
 export declare const SheetController: ({ children, onOpenChange: onOpenChangeProp, onTransition: onTransitionProp, open, hidden, disableDrag, scope, }: Partial<SheetControllerContextValue> & {
     children?: ReactNode;
     scope?: string;

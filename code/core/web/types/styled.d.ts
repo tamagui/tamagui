@@ -1,7 +1,7 @@
-import { styledDynamic } from './helpers/styledDynamic';
-import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend';
-import type { GetRef } from './interfaces/GetRef';
-import type { GetBaseStyles, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, InferStyledProps, StaticConfigPublic, StylableComponent, StyleOnlyVariants, StyledContext, StyledDynamicFn, StyledDynamicProp, TamaDefer, TamaguiComponent, VariantDefinitions, VariantStyleProps } from './types';
+import { styledDynamic } from './helpers/styledDynamic.js';
+import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend.js';
+import type { GetRef } from './interfaces/GetRef.js';
+import type { GetBaseStyles, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, InferStyledProps, StaticConfigPublic, StylableComponent, StyleOnlyVariants, StyledContext, StyledDynamicFn, StyledDynamicProp, TamaDefer, TamaguiComponent, VariantDefinitions, VariantStyleProps } from './types.js';
 type AreVariantsUndefined<Variants> = Required<Variants> extends {
     _isEmpty: 1;
 } ? true : false;

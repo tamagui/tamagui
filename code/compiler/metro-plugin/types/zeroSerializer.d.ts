@@ -1,4 +1,4 @@
-import { type MetroZeroController } from "./zeroRuntime";
+import { type MetroZeroController } from "./zeroRuntime.js";
 type MetroConfigInput = Record<string, any>;
 export declare function applyMetroZeroRuntime(metroConfig: MetroConfigInput, zero: MetroZeroController): void;
 export {};

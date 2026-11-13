@@ -1,5 +1,5 @@
 import type { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types';
-import { type TamaguiProjectInfo } from './bundleConfig';
+import { type TamaguiProjectInfo } from './bundleConfig.js';
 export declare function loadTamagui(propsIn: Partial<TamaguiOptions>, rebuild?: boolean): Promise<TamaguiProjectInfo | null>;
 export type EvaluatedTamaguiModule = {
     moduleName: string;

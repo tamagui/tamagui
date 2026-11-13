@@ -1,4 +1,4 @@
-import type { ParsedValue } from "../ast/valueTypes";
+import type { ParsedValue } from "../ast/valueTypes.js";
 export interface GeometricShorthandError {
 	code: "unsupported-geometric-payload";
 	payload: string;

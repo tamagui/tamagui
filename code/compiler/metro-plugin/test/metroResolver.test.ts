@@ -107,3 +107,29 @@ test('resolves exported subpaths of symlinked packages without accepting broken 
     external: false,
   })
 })
+
+test('resolves tsconfig paths aliases as the expo dev server does', async () => {
+  const dir = await realpath(await mkdtemp(join(tmpdir(), 'tamagui-metro-resolver-')))
+  directories.push(dir)
+  await mkdir(join(dir, 'src/components'), { recursive: true })
+  await writeFile(join(dir, 'package.json'), '{}')
+  await writeFile(
+    join(dir, 'tsconfig.json'),
+    JSON.stringify({ compilerOptions: { paths: { '@/*': ['./src/*'] } } })
+  )
+  await writeFile(join(dir, 'src/app.tsx'), '')
+  await writeFile(join(dir, 'src/components/Foo.tsx'), '')
+  await symlink(
+    dirname(dirname(createRequire(import.meta.url).resolve('metro-resolver/package.json'))),
+    join(dir, 'node_modules')
+  )
+
+  const resolver = createMetroCompilerResolver({ projectRoot: dir })
+  expect(
+    resolver.resolve(
+      join(dir, 'src/app.tsx'),
+      { specifier: '@/components/Foo', isESMImport: true },
+      'ios'
+    )
+  ).toMatchObject({ resolvedId: join(dir, 'src/components/Foo.tsx'), external: false })
+})

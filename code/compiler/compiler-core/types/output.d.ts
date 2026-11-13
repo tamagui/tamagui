@@ -1,4 +1,4 @@
-import type { ResolvedModuleId, SourceSpan } from './contracts';
+import type { ResolvedModuleId, SourceSpan } from './contracts.js';
 export interface SourceEdit {
     /** UTF-16 source-string index, inclusive. */
     start: number;

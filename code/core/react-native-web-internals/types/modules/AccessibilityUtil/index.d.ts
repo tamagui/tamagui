@@ -6,9 +6,9 @@
  *
  * @flow
  */
-import { isDisabled } from './isDisabled';
-import { propsToAccessibilityComponent } from './propsToAccessibilityComponent';
-import { propsToAriaRole } from './propsToAriaRole';
+import { isDisabled } from './isDisabled.js';
+import { propsToAccessibilityComponent } from './propsToAccessibilityComponent.js';
+import { propsToAriaRole } from './propsToAriaRole.js';
 export declare const AccessibilityUtil: {
     isDisabled: typeof isDisabled;
     propsToAccessibilityComponent: typeof propsToAccessibilityComponent;

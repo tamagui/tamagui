@@ -1,6 +1,6 @@
 import type { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
-import type { TooltipProps } from './Tooltip';
+import type { TooltipProps } from './Tooltip.js';
 export type TooltipSimpleProps = TooltipProps & {
     disabled?: boolean;
     /** arrow size in px */

@@ -1,5 +1,5 @@
 import React from 'react';
-import type { TextParentStyles } from './types';
+import type { TextParentStyles } from './types.js';
 type Props = TextParentStyles & {
     children?: React.ReactNode;
     size?: unknown;

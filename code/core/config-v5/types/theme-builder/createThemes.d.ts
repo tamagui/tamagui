@@ -1,7 +1,7 @@
-import type { Template } from '../create-theme';
-import { defaultTemplates } from './defaultTemplates';
-import { type ThemeBuilder } from './ThemeBuilder';
-import type { BuildPalettes, BuildTemplates } from './types';
+import type { Template } from '../create-theme/index.js';
+import { defaultTemplates } from './defaultTemplates.js';
+import { type ThemeBuilder } from './ThemeBuilder.js';
+import type { BuildPalettes, BuildTemplates } from './types.js';
 /**
  * GrandChildren theme nesting logic implementation:
  *  - IF palette is set: treat as palette theme (don't nest into accent family)
@@ -69,7 +69,7 @@ export declare function createThemes<Extra extends ExtraThemeValuesByScheme = Ex
         palette?: string;
     };
 }, GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>, Accent extends undefined ? false : true, ComponentThemes, Record<string, string>>>['themes'];
-export declare const getLastBuilder: () => ThemeBuilder<import("./ThemeBuilder").ThemeBuilderInternalState, Record<string, string>> | null;
+export declare const getLastBuilder: () => ThemeBuilder<import("./ThemeBuilder.js").ThemeBuilderInternalState, Record<string, string>> | null;
 /**
  * V4 version of createThemes - uses v4 theme ordering for backwards compatibility.
  * Use this for v4 themes (like v4-tamagui.ts).

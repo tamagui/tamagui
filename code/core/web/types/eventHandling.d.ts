@@ -1,7 +1,7 @@
 /**
  * Web event handling - maps RN-style events to DOM events
  */
-import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents';
+import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents.js';
 type EventKeys = keyof TamaguiComponentEvents;
 type EventLikeObject = {
     [key in EventKeys]?: any;

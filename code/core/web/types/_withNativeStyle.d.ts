@@ -1,5 +1,5 @@
 import React from 'react';
-import { type NativeStyleThemeMapping } from './helpers/nativeStyleEngine';
+import { type NativeStyleThemeMapping } from './helpers/nativeStyleEngine.js';
 /**
  * internal: emitted by the native compiler when experimental.nativeFastPath is on.
  *

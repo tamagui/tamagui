@@ -1,4 +1,4 @@
-import type { DefaultStyle, TagName, TagRow } from "./types";
+import type { DefaultStyle, TagName, TagRow } from "./types.js";
 export declare const TAGS: Readonly<Record<TagName, TagRow>>;
 /**
 * Web-only defaults: undoing a browser default, or a property with no

@@ -1,4 +1,4 @@
-import type { SafeAreaState, SafeAreaInsets, SafeAreaFrame } from "./types";
+import type { SafeAreaState, SafeAreaInsets, SafeAreaFrame } from "./types.js";
 export interface SafeAreaAccessor {
 	readonly didSetup: boolean;
 	readonly isEnabled: boolean;

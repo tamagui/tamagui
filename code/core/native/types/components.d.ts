@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { NativePortalProps, NativePortalHostProps, NativePortalProviderProps } from "./types";
+import type { NativePortalProps, NativePortalHostProps, NativePortalProviderProps } from "./types.js";
 export type { NativePortalProps, NativePortalHostProps, NativePortalProviderProps };
 /**
 * Renders children into a teleport Portal when available.

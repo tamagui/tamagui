@@ -4,11 +4,11 @@ import type { CreateTamaguiProps } from '@tamagui/web';
 import { v6RemovedThemeNames, v6ThemeNameReplacements } from '@tamagui/style-grammar/v6-themes';
 export { shorthands };
 export { defaultSizing };
-export { createSystemFont } from './fonts';
-export { breakpoints, media, mediaQueryDefaultActive } from './media';
-export { tailwindSource } from './v6-tailwind-scales.generated';
+export { createSystemFont } from './fonts.js';
+export { breakpoints, media, mediaQueryDefaultActive } from './media.js';
+export { tailwindSource } from './v6-tailwind-scales.generated.js';
 export { v6RemovedThemeNames, v6ThemeNameReplacements };
-export { toV6Themes, type V6Theme, type V6Themes } from './v6-themes';
+export { toV6Themes, type V6Theme, type V6Themes } from './v6-themes.js';
 export declare const tokens: {
     readonly space: {
         readonly '0': 0;

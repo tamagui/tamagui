@@ -1,5 +1,5 @@
 import type { MaterializedModule } from '@tamagui/compiler-core';
-import type { CompilerComponentRegistry } from './compilerHost';
+import type { CompilerComponentRegistry } from './compilerHost.js';
 /**
  * Evaluate a host-resolved module and return its exports, or null when the
  * host cannot run it. Frontends supply this from their bundler's module runner

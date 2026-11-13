@@ -1,3 +1,3 @@
-import type { GenericVariables, TokensParsed, Variable } from '../types';
+import type { GenericVariables, TokensParsed, Variable } from '../types.js';
 export declare function mergeConfigVariablesIntoTheme(theme: Record<string, Variable>, themeName: string, variables: GenericVariables, tokensParsed: TokensParsed): void;
 //# sourceMappingURL=configVariables.d.ts.map

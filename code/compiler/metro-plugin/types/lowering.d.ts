@@ -1,5 +1,5 @@
 import { type LoweredModulePlan, type LoweredModuleStats } from "@tamagui/compiler-core";
-import { type CompiledMetroModule, type MetroBabelTransformArgs } from "./babel";
+import { type CompiledMetroModule, type MetroBabelTransformArgs } from "./babel.js";
 export interface MetroCompilerLoweringResult {
 	applied: boolean;
 	diagnostics: LoweredModulePlan["diagnostics"];

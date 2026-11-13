@@ -1,5 +1,5 @@
 import { type ReactNode, type Ref } from 'react';
-import type { DOMImageProps, DOMTextInputProps, DOMTextProps, DOMViewProps } from './contract';
+import type { DOMImageProps, DOMTextInputProps, DOMTextProps, DOMViewProps } from './contract.js';
 export declare function DOMViewportProvider({ children, viewportWidth, }: {
     children?: ReactNode;
     viewportWidth: number;

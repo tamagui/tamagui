@@ -1,4 +1,4 @@
-import type { NativePortalState } from "./types";
+import type { NativePortalState } from "./types.js";
 export interface PortalAccessor {
 	readonly isEnabled: boolean;
 	readonly state: NativePortalState;

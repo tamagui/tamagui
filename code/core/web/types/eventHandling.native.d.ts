@@ -1,7 +1,7 @@
 /**
  * Native event handling - uses RNGH when available, falls back to responder system
  */
-import type { StaticConfig, TamaguiComponentStateRef } from './types';
+import type { StaticConfig, TamaguiComponentStateRef } from './types.js';
 export declare function getWebEvents(): {};
 export declare function useEvents(events: any, viewProps: any, stateRef: {
     current: TamaguiComponentStateRef;

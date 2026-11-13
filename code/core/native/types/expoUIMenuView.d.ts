@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import type { ExpoMenuViewProps } from "./expoUIMenuAdapter";
+import type { ExpoMenuViewProps } from "./expoUIMenuAdapter.js";
 type SwiftUIModule = {
 	Button: ComponentType<any>;
 	ContextMenu: ComponentType<any> & {

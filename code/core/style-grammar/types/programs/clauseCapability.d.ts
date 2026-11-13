@@ -1,4 +1,4 @@
-import type { ModifierKind, ModifierRegistryView } from "../ast/valueTypes";
+import type { ModifierKind, ModifierRegistryView } from "../ast/valueTypes.js";
 export interface ClauseCapability {
 	/** the clause can lower to web CSS */
 	web: boolean;

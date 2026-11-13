@@ -1,5 +1,5 @@
 import type { TamaguiInternalConfig } from '@tamagui/web';
-import type { TamaguiOptions } from '../types';
+import type { TamaguiOptions } from '../types.js';
 /**
  * `TAMAGUI_RUNTIME` has exactly three integration-owned literal values. The
  * public `experimental.zeroRuntime` option is the author input; this literal is

@@ -1,4 +1,4 @@
-import type { UseSwitchNativeProps } from './types';
+import type { UseSwitchNativeProps } from './types.js';
 /**
  * web version - no-op, native switch logic handled in .native.ts
  */

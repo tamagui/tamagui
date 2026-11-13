@@ -1,4 +1,4 @@
-import type { GetStyleState, ViewStyleObject } from '../types';
+import type { GetStyleState, ViewStyleObject } from '../types.js';
 export declare const canGenerateCSS = false;
 export declare function flushDirectStyles(_state: GetStyleState, _clear?: boolean): void;
 export declare function addComposition(_state: GetStyleState, _property: 'translate' | 'scale'): void;

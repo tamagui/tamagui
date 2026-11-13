@@ -1,4 +1,4 @@
-import { type TransitionParseResult } from "./transition";
+import { type TransitionParseResult } from "./transition.js";
 export type TransitionLonghandName = "transitionProperty" | "transitionDuration" | "transitionTimingFunction" | "transitionDelay" | "transitionBehavior";
 export interface TransitionContribution {
 	/** the authored prop, in authored order */

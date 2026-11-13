@@ -1,4 +1,4 @@
-import type { KeyboardControllerState } from "./types";
+import type { KeyboardControllerState } from "./types.js";
 export type { KeyboardControllerState };
 export declare function isKeyboardControllerEnabled(): boolean;
 export declare function getKeyboardControllerState(): KeyboardControllerState;

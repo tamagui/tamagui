@@ -1,6 +1,6 @@
-import type { ScrollBridge, SheetProps } from './types';
-import type { SheetOpenState } from './useSheetOpenState';
-import { useSheetState } from './useSheetState';
+import type { ScrollBridge, SheetProps } from './types.js';
+import type { SheetOpenState } from './useSheetOpenState.js';
+import { useSheetState } from './useSheetState.js';
 export type SheetContextValue = (ReturnType<typeof useSheetProviderProps> & {
     keyboardOccludedHeight: number;
     isKeyboardVisible: boolean;
@@ -25,7 +25,7 @@ export declare function useSheetProviderProps(props: SheetProps, state: SheetOpe
     hasFit: boolean;
     position: number;
     snapPoints: (string | number)[];
-    snapPointsMode: import("./types").SnapPointsMode;
+    snapPointsMode: import("./types.js").SnapPointsMode;
     setMaxContentSize: import("react").Dispatch<import("react").SetStateAction<number>>;
     setPosition: (next: number) => void;
     setPositionImmediate: import("@tamagui/use-controllable-state").ControllableStateSetter<number, import("@tamagui/core").TamaguiChangeEventDetails>;

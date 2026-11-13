@@ -3,6 +3,6 @@ export declare const SelectViewport: import("@tamagui/core").TamaguiComponent<im
     size?: string | boolean;
     disableScroll?: boolean;
 } & {
-    scope?: import("./types").SelectScopes;
+    scope?: import("./types.js").SelectScopes;
 }, import("@tamagui/core").StackStyleBase, Omit<{}, "disableScroll" | "scope" | "size">, import("@tamagui/core").StaticConfigPublic>;
 //# sourceMappingURL=SelectViewport.d.ts.map

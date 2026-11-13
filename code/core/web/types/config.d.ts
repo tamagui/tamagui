@@ -1,4 +1,4 @@
-import type { AnimationDriver, GenericTamaguiSettings, TamaguiInternalConfig, Token, Tokens, TokensParsed } from './types';
+import type { AnimationDriver, GenericTamaguiSettings, TamaguiInternalConfig, Token, Tokens, TokensParsed } from './types.js';
 export type StyleCompat = 'legacy' | 'react-native' | 'web';
 export declare const getSetting: <Key extends keyof GenericTamaguiSettings>(key: Key) => GenericTamaguiSettings[Key];
 export declare function getStyleCompat(): StyleCompat;
@@ -8,7 +8,7 @@ export declare const getConfig: () => TamaguiInternalConfig;
 export declare const getConfigMaybe: () => TamaguiInternalConfig | null;
 export declare function setTokens(next: TokensParsed): void;
 export declare const getTokens: () => TokensParsed;
-export declare const getTokenObject: (value: Token, group?: keyof Tokens) => import("./types").Variable<any>;
+export declare const getTokenObject: (value: Token, group?: keyof Tokens) => import("./types.js").Variable<any>;
 export declare const getToken: (value: Token, group?: keyof Tokens, useVariable?: boolean) => any;
 export declare const getTokenValue: (value: Token | 'unset' | 'auto', group?: keyof Tokens) => any;
 /**
@@ -17,7 +17,7 @@ export declare const getTokenValue: (value: Token | 'unset' | 'auto', group?: ke
 export declare const useTokens: typeof getTokens;
 export declare const getThemes: () => TamaguiInternalConfig['themes'];
 export declare const updateConfig: (key: string, value: any) => void;
-export declare const getFont: (name: string) => import("./types").GenericFont<string | number | symbol>;
+export declare const getFont: (name: string) => import("./types.js").GenericFont<string | number | symbol>;
 type DevConfig = {
     visualizer?: boolean | {
         key?: string;

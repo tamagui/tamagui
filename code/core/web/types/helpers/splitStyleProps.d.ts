@@ -1,5 +1,5 @@
 import { stylePropsAll } from '@tamagui/helpers';
-import type { Shorthands } from '../types';
+import type { Shorthands } from '../types.js';
 type StringKey<Props> = Extract<keyof Props, string>;
 type Simplify<Value> = {
     [Key in keyof Value]: Value[Key];

@@ -1,6 +1,6 @@
-import { type MetroBabelTransformArgs, type MetroBabelTransformResult } from "./babel";
-import { type MetroCompilerDiagnostic } from "./diagnostics";
-import { type MetroCompilerLoweringResult } from "./lowering";
+import { type MetroBabelTransformArgs, type MetroBabelTransformResult } from "./babel.js";
+import { type MetroCompilerDiagnostic } from "./diagnostics.js";
+import { type MetroCompilerLoweringResult } from "./lowering.js";
 export interface MetroCompilerTransformerOptions {
 	cacheBaseRoot: string;
 	originalBabelTransformerPath: string;

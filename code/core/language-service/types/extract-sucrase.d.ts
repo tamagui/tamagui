@@ -1,4 +1,4 @@
-import type { ExtractStyleSites } from "./document";
+import type { ExtractStyleSites } from "./document.js";
 export interface SucraseToken {
 	type: number;
 	start: number;

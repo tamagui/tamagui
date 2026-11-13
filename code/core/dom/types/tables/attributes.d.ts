@@ -1,4 +1,4 @@
-import type { AttributeRow } from "./types";
+import type { AttributeRow } from "./types.js";
 /** roles authors may set, excluding the abstract roles */
 export declare const ARIA_ROLES: readonly string[];
 /** autofill hints shared by web and react native */

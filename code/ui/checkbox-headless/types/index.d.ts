@@ -1,3 +1,3 @@
-export * from './useCheckbox';
-export * from './utils';
+export * from './useCheckbox.js';
+export * from './utils.js';
 //# sourceMappingURL=index.d.ts.map

@@ -1,5 +1,5 @@
-export * from './AnimatePresence';
+export * from './AnimatePresence.js';
 export * from '@tamagui/use-presence';
-export * from './types';
-export * from './PresenceChild';
+export * from './types.js';
+export * from './PresenceChild.js';
 //# sourceMappingURL=index.d.ts.map

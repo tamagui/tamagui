@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeName } from '../types';
+import { ThemeName } from '../types.js';
 /**
  * Applies default font class and CSS variable inheritance via display:contents.
  * Used by TamaguiProvider at the root and by portals to re-establish font scope.

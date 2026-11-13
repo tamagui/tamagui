@@ -1,7 +1,7 @@
 import type { TamaguiOptions } from '@tamagui/static';
 import type { Plugin, PluginOption } from 'vite';
-import type { ViteTamaguiLoader } from './loadTamagui';
-import { type ZeroIslandBuildContext } from './zeroRuntime';
+import type { ViteTamaguiLoader } from './loadTamagui.js';
+import { type ZeroIslandBuildContext } from './zeroRuntime.js';
 type AliasOptions = {
     /** use @tamagui/react-native-web-lite, 'without-animated' for smaller bundle */
     rnwLite?: boolean | 'without-animated';

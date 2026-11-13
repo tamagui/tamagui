@@ -1,4 +1,4 @@
-import type { ParsedValue } from "../ast/valueTypes";
+import type { ParsedValue } from "../ast/valueTypes.js";
 interface TextDecorationFamilyTargets {
 	line: readonly string[];
 	style: readonly string[];

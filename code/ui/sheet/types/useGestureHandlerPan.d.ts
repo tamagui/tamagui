@@ -1,5 +1,5 @@
 import { type RefObject } from 'react';
-import type { ScrollBridge, SnapPointsMode } from './types';
+import type { ScrollBridge, SnapPointsMode } from './types.js';
 interface GesturePanConfig {
     positions: number[];
     frameSize: number;

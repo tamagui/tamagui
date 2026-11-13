@@ -1,4 +1,4 @@
-import type { ThemeProps, ThemeState } from '../types';
+import type { ThemeProps, ThemeState } from '../types.js';
 export declare function ThemeDebug({ themeState, themeProps, children, }: {
     themeState: ThemeState;
     themeProps: ThemeProps;

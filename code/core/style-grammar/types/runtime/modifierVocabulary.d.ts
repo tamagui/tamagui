@@ -1,4 +1,4 @@
-import type { GrammarConfigView } from "../tooling/candidate";
+import type { GrammarConfigView } from "../tooling/candidate.js";
 export declare const configRevisionSymbol: unique symbol;
 export declare const modifierKindState = 1;
 export declare const modifierKindMedia = 2;

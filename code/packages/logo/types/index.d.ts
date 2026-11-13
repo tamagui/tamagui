@@ -1,10 +1,10 @@
-export * from "./TamaguiLogo";
-export * from "./TamaguiLogoSvg";
-export * from "./LogoWords";
-export * from "./LogoIcon";
-export * from "./tints";
-export * from "./useTint";
-export * from "./ThemeTint";
-export * from "./SeasonProvider";
+export * from "./TamaguiLogo.js";
+export * from "./TamaguiLogoSvg.js";
+export * from "./LogoWords.js";
+export * from "./LogoIcon.js";
+export * from "./tints.js";
+export * from "./useTint.js";
+export * from "./ThemeTint.js";
+export * from "./SeasonProvider.js";
 
 //# sourceMappingURL=index.d.ts.map

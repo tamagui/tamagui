@@ -15,6 +15,6 @@
  */
 import { type TamaguiVitePluginOptions } from '@tamagui/vite-plugin/internal';
 import type { PluginOption } from 'vite';
-export { TAILWIND_RESOLVED_ID, TAILWIND_VERSION, TAILWIND_VIRTUAL_ID } from './vite/state';
+export { TAILWIND_RESOLVED_ID, TAILWIND_VERSION, TAILWIND_VIRTUAL_ID } from './vite/state.js';
 export declare function tamaguiPlugin(options?: TamaguiVitePluginOptions): PluginOption;
 //# sourceMappingURL=vite.d.ts.map

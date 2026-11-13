@@ -1,16 +1,16 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { CoreStateModifierName, TransformAccumulator } from '@tamagui/style-grammar/runtime';
 import type { Properties } from 'csstype';
-import type { UnprefixedCSSProperties } from './dom/styleTypes';
+import type { UnprefixedCSSProperties } from './dom/styleTypes.js';
 import type { CSSProperties, ComponentType, Context, Dispatch, FunctionComponent, HTMLAttributes, ProviderExoticComponent, Ref as ReactRef, ReactNode, RefObject, SetStateAction } from 'react';
 import type { FontVariant, NativeColorValue, PressableProps, TextInstance as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, ViewInstance as View, ViewProps, ViewStyle } from '@tamagui/react-native-types';
 import type { OpaqueColorValue } from '@tamagui/react-native-types/legacy';
-import type { NativeStyleEngineLinkHandle } from './helpers/nativeStyleEngine';
-import type { AnimatedTextChannel, NativeTextContext, NativeTextMetrics } from './helpers/nativeTextMetrics';
-export type { AnimatedTextChannel, NativeTextMetrics } from './helpers/nativeTextMetrics';
-import type { StyleFrontend } from './helpers/styleFrontend';
-import type { CSSColorNames } from './interfaces/CSSColorNames';
-import type { RNOnlyProps } from './interfaces/RNExclusiveTypes';
+import type { NativeStyleEngineLinkHandle } from './helpers/nativeStyleEngine.js';
+import type { AnimatedTextChannel, NativeTextContext, NativeTextMetrics } from './helpers/nativeTextMetrics.js';
+export type { AnimatedTextChannel, NativeTextMetrics } from './helpers/nativeTextMetrics.js';
+import type { StyleFrontend } from './helpers/styleFrontend.js';
+import type { CSSColorNames } from './interfaces/CSSColorNames.js';
+import type { RNOnlyProps } from './interfaces/RNExclusiveTypes.js';
 export type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight' | 'shadowRadius';
 export type ColorKeys = 'color' | 'backgroundColor' | 'borderColor' | 'borderBottomColor' | 'borderTopColor' | 'borderLeftColor' | 'borderRightColor' | 'shadowColor' | 'outlineColor' | 'textShadowColor' | 'borderBlockColor' | 'borderBlockEndColor' | 'borderBlockStartColor' | 'borderInlineColor' | 'borderInlineStartColor' | 'borderInlineEndColor' | 'borderEndColor' | 'borderStartColor' | 'textDecorationColor' | 'caretColor';
 export type SpaceKeys = 'space' | 'padding' | 'paddingHorizontal' | 'paddingVertical' | 'paddingLeft' | 'paddingTop' | 'paddingBottom' | 'paddingLeft' | 'paddingRight' | 'paddingEnd' | 'paddingStart' | 'margin' | 'marginHorizontal' | 'marginVertical' | 'marginLeft' | 'marginTop' | 'marginBottom' | 'marginLeft' | 'marginRight' | 'marginEnd' | 'marginStart' | 'marginBlock' | 'marginBlockStart' | 'marginBlockEnd' | 'marginInline' | 'marginInlineStart' | 'marginInlineEnd' | 'paddingBlock' | 'paddingBlockStart' | 'paddingBlockEnd' | 'paddingInline' | 'paddingInlineStart' | 'paddingInlineEnd' | 'x' | 'y' | 'gap' | 'rowGap' | 'columnGap' | 'scale' | 'scaleX' | 'scaleY' | 'borderTopEndRadius' | 'borderTopLeftRadius' | 'borderTopRightRadius' | 'borderTopStartRadius' | 'borderBottomEndRadius' | 'borderBottomLeftRadius' | 'borderBottomRightRadius' | 'borderBottomStartRadius' | 'borderBottomWidth' | 'borderLeftWidth' | 'borderRadius' | 'borderRightWidth' | 'borderTopEndRadius' | 'borderTopLeftRadius' | 'borderTopRightRadius' | 'borderEndWidth' | 'borderStartWidth' | 'borderTopStartRadius' | 'borderTopWidth' | 'borderWidth' | 'left' | 'top' | 'right' | 'bottom' | 'shadowOffset' | 'borderBlockWidth' | 'borderBlockStartWidth' | 'borderBlockEndWidth' | 'borderInlineWidth' | 'borderInlineStartWidth' | 'borderInlineEndWidth';
@@ -634,7 +634,7 @@ export type UseThemeWithStateProps = ThemeProps & {
     disable?: boolean;
     needsUpdate?: () => boolean;
     /** opaque internal value patch created by `<ThemeUpdate>` */
-    _themeUpdate?: import('./helpers/themeUpdateState').ThemeUpdateState;
+    _themeUpdate?: import('./helpers/themeUpdateState.js').ThemeUpdateState;
     /**
      * native fast path (experimental): called on a theme update instead of
      * re-rendering; return true when the update was committed natively so the

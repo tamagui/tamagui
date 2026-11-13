@@ -1,7 +1,7 @@
 export * from '@tamagui/react-native-use-responder-events';
 export * from '@tamagui/react-native-use-pressable';
 export { View, Text } from '@tamagui/web';
-export * from './Dimensions';
+export * from './Dimensions.js';
 export declare const Platform: {
     OS: string;
     select(obj: any): any;

@@ -1,9 +1,9 @@
 import { type CompilerTarget } from "@tamagui/compiler-core";
 import Static from "@tamagui/static";
 import type { TamaguiOptions } from "@tamagui/static";
-import { type MetroZeroController } from "./zeroRuntime";
-import { type MetroCompilerDiagnostic } from "./diagnostics";
-import { type MetroResolverConfig } from "./metroResolver";
+import { type MetroZeroController } from "./zeroRuntime.js";
+import { type MetroCompilerDiagnostic } from "./diagnostics.js";
+import { type MetroResolverConfig } from "./metroResolver.js";
 /**
 * Metro runs the user's whole Babel transformer over every project source just
 * to read its import specifiers, which is the single most expensive step of the

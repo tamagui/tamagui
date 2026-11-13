@@ -1,4 +1,4 @@
-import type { RovingFocusGroupProps, RovingFocusItemProps } from './RovingFocusGroup';
+import type { RovingFocusGroupProps, RovingFocusItemProps } from './RovingFocusGroup.js';
 declare const RovingFocusGroupItem: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
 declare const RovingFocusGroup: import("@tamagui/helpers").Combined<import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, never> & Omit<import("@tamagui/core").WithThemeValues<Omit<import("@tamagui/core").StackStyleBase, never>> & import("@tamagui/core").WithFlatVariantValues<{}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>, keyof import("@tamagui/core").RNTamaguiViewNonStyleProps> & {
     ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;

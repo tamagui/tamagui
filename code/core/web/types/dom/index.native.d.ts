@@ -5,8 +5,8 @@
  * user code: the compiler injects imports of them when it lowers a tag, which
  * is why `NATIVE_PRIMITIVE_MODULE` in `@tamagui/dom` names this entry.
  */
-export { DOMImage, DOMRuntimeImage, DOMRuntimeText, DOMRuntimeTextInput, DOMRuntimeView, DOMText, DOMTextInput, DOMView, DOMViewportProvider, useViewportScale_DO_NOT_USE, } from './primitives.native';
-export type { CompiledStyle, ConditionalCompiledStyle, DOMStyleProps, StyleDefinition, } from './standalone';
-export { style } from './standalone';
-export { html } from './standaloneHtml';
+export { DOMImage, DOMRuntimeImage, DOMRuntimeText, DOMRuntimeTextInput, DOMRuntimeView, DOMText, DOMTextInput, DOMView, DOMViewportProvider, useViewportScale_DO_NOT_USE, } from './primitives.native.js';
+export type { CompiledStyle, ConditionalCompiledStyle, DOMStyleProps, StyleDefinition, } from './standalone.js';
+export { style } from './standalone.js';
+export { html } from './standaloneHtml.js';
 //# sourceMappingURL=index.native.d.ts.map
