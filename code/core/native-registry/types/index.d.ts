@@ -3,9 +3,9 @@
 * (or when the native module is absent) the mirror still tracks scope state
 * so shared code can resolve slots, but nothing links and nothing commits.
 */
-import type { LinkHandle, RegistryStats, ViewSlots, ViewStateSnapshot, ViewStateUpdate } from "./types";
-export type { LinkHandle, RegistryStats, Unlink, ViewSlots, ViewStateSnapshot, ViewStateUpdate } from "./types";
-export { ROOT_SCOPE, getMirroredStateName } from "./mirror";
+import type { LinkHandle, RegistryStats, ViewSlots, ViewStateSnapshot, ViewStateUpdate } from "./types.js";
+export type { LinkHandle, RegistryStats, Unlink, ViewSlots, ViewStateSnapshot, ViewStateUpdate } from "./types.js";
+export { ROOT_SCOPE, getMirroredStateName } from "./mirror.js";
 export declare function isAvailable(): boolean;
 export declare function link(_ref: unknown, _table: ViewSlots | number, _scopeId?: string, _commitNow?: boolean): LinkHandle | null;
 export declare function linkTables(_refs: unknown[], _tableIds: number[], _scopeIndexes: number[], _scopes: string[]): void;

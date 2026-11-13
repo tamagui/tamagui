@@ -1,6 +1,6 @@
-import type { GenericFonts, GetStyleState, LanguageContextType, StyledDynamic, StyledDynamicEnv, StyledDynamicFn, StyledDynamicProp } from '../types';
+import type { GenericFonts, GetStyleState, LanguageContextType, StyledDynamic, StyledDynamicEnv, StyledDynamicFn, StyledDynamicProp } from '../types.js';
 export declare function getFontsForLanguage(fonts: GenericFonts, language: LanguageContextType): {
-    [x: string]: import("..").GenericFont<string | number | symbol>;
+    [x: string]: import("../index.js").GenericFont<string | number | symbol>;
 };
 export declare function isStyledDynamic(value: unknown): value is StyledDynamic;
 /**

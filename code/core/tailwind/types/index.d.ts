@@ -1,4 +1,4 @@
-import type { TailwindHTML, TailwindText, TailwindView } from './types';
+import type { TailwindHTML, TailwindText, TailwindView } from './types.js';
 /**
  * The tailwind View and Text. Composed utilities (ring, gradient, filter,
  * shadow, transform, text-shadow) are folded by the descriptor's `compose` hook
@@ -11,7 +11,7 @@ export declare const Text: TailwindText;
  * defaults, differing only in that a class string is the styling input.
  */
 export declare const html: TailwindHTML;
-export { styled } from './styled';
-export { parseStaticStyle, tailwindStyleFrontend } from './frontend';
-export type * from './types';
+export { styled } from './styled.js';
+export { parseStaticStyle, tailwindStyleFrontend } from './frontend.js';
+export type * from './types.js';
 //# sourceMappingURL=index.d.ts.map

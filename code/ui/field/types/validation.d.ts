@@ -1,5 +1,5 @@
 import type { FormValues } from '@tamagui/form';
-import type { FieldValidationMode, FieldValidator, FieldValidityState } from './types';
+import type { FieldValidationMode, FieldValidator, FieldValidityState } from './types.js';
 export declare function createDefaultValidityState(valid?: boolean | null): FieldValidityState;
 export declare function normalizeNativeValidity(state: FieldValidityState, showValueMissing: boolean): {
     badInput: boolean;

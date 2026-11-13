@@ -1,5 +1,5 @@
-import type { HostModuleInput, ResolvedModuleId } from './contracts';
-import { type LoweredModulePlan } from './lower';
+import type { HostModuleInput, ResolvedModuleId } from './contracts.js';
+import { type LoweredModulePlan } from './lower.js';
 export declare const PLAN_CACHE_SCHEMA_VERSION = 1;
 /**
  * Entries are content addressed, so every edit of a shared module writes new

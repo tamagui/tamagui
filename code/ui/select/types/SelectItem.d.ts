@@ -19,7 +19,7 @@ export interface SelectItemProps extends Omit<GetProps<typeof SelectItemFrame>, 
 }
 export declare const SelectItemFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
 export declare const SelectItem: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "scope" | keyof SelectItemExtraProps> & SelectItemExtraProps & {
-    scope?: import("./types").SelectScopes;
+    scope?: import("./types.js").SelectScopes;
 }, import("@tamagui/core").StackStyleBase, Omit<{}, "scope" | keyof SelectItemExtraProps>, import("@tamagui/core").StaticConfigPublic>;
 export {};
 //# sourceMappingURL=SelectItem.d.ts.map

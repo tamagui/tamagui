@@ -1,5 +1,5 @@
 import React from 'react';
-import type { AnimationDriver } from '../types';
+import type { AnimationDriver } from '../types.js';
 interface ConfigurationProps {
     animationDriver?: AnimationDriver | null;
     disableSSR?: boolean;

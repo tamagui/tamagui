@@ -1,10 +1,10 @@
-import type { GrammarConfigView } from "./candidate";
-import { type CandidateContribution, type CandidatePropertyMismatch } from "./candidateTarget";
-import { type GrammarSourceConfig } from "./config";
-import { type PayloadShapeDiagnostic } from "../ast/payloadShape";
-import { type PayloadResolveErrorCode, type ReferenceKind } from "../ast/resolvePayload";
-import { type ValueSourceSpan } from "../ast/valueParser";
-import type { ModifierRegistryView, ParsedValue, ValueParseError, ValueParseErrorCode } from "../ast/valueTypes";
+import type { GrammarConfigView } from "./candidate.js";
+import { type CandidateContribution, type CandidatePropertyMismatch } from "./candidateTarget.js";
+import { type GrammarSourceConfig } from "./config.js";
+import { type PayloadShapeDiagnostic } from "../ast/payloadShape.js";
+import { type PayloadResolveErrorCode, type ReferenceKind } from "../ast/resolvePayload.js";
+import { type ValueSourceSpan } from "../ast/valueParser.js";
+import type { ModifierRegistryView, ParsedValue, ValueParseError, ValueParseErrorCode } from "../ast/valueTypes.js";
 export type CandidatePropertyVocabulary = ReadonlyMap<string, readonly CandidateContribution[]>;
 export type StyleValueDiagnosticCode = ValueParseErrorCode | PayloadResolveErrorCode | CandidatePropertyMismatch["code"] | PayloadShapeDiagnostic["code"] | "legacy-part-conditional" | "v6-theme-name-replaced" | "v6-theme-name-removed" | "v2-dollar-prefix" | "v2-removed-prop" | "unknown-payload-value" | "invalid-line-height";
 export interface StyleValueDiagnostic {

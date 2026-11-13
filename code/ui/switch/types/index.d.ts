@@ -1,5 +1,5 @@
-export * from './StyledContext';
-export * from './Switch';
-export * from './types';
-export { useSwitchNative } from './useSwitchNative';
+export * from './StyledContext.js';
+export * from './Switch.js';
+export * from './types.js';
+export { useSwitchNative } from './useSwitchNative.js';
 //# sourceMappingURL=index.d.ts.map

@@ -1,6 +1,6 @@
 import type { CompilerLoweringHost, CompilerTarget } from '@tamagui/compiler-core';
 import type { TamaguiInternalConfig } from '@tamagui/web';
-import type { LoadedComponents } from './extractor/bundleConfig';
+import type { LoadedComponents } from './extractor/bundleConfig.js';
 export interface CompilerComponentModule {
     moduleName: string;
     resolvedId: string;

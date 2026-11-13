@@ -1,6 +1,6 @@
 import { type AstNode, type SourceEdit, type ZeroViolation } from '@tamagui/compiler-core';
 import { type TamaguiInternalConfig } from '@tamagui/web';
-import type { IslandThemeBridgeLayer } from './islands';
+import type { IslandThemeBridgeLayer } from './islands.js';
 /**
  * Static `<Theme>` lowering.
  *

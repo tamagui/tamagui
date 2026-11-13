@@ -52,6 +52,6 @@ export interface ResolvePayloadOptions {
 	onCandidate?(start: number, end: number, name: string, resolved: PayloadReference | undefined, functionDepth?: number): void;
 }
 export declare function resolvePayload(payload: string, options: ResolvePayloadOptions): ResolvedPayload;
-export { splitColorOpacitySuffix, type ColorOpacitySuffix } from "../runtime/colorOpacity";
+export { splitColorOpacitySuffix, type ColorOpacitySuffix } from "../runtime/colorOpacity.js";
 
 //# sourceMappingURL=resolvePayload.d.ts.map

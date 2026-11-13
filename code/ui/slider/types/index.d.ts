@@ -1,5 +1,5 @@
-export * from './Slider';
-export { SliderContext } from './constants';
-export { SliderFrame } from './SliderImpl';
-export type { SliderProps, SliderHorizontalProps, SliderVerticalProps, SliderTrackProps, } from './types';
+export * from './Slider.js';
+export { SliderContext } from './constants.js';
+export { SliderFrame } from './SliderImpl.js';
+export type { SliderProps, SliderHorizontalProps, SliderVerticalProps, SliderTrackProps, } from './types.js';
 //# sourceMappingURL=index.d.ts.map

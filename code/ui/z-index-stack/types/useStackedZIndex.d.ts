@@ -1,4 +1,4 @@
-import type { StackZIndexProp } from './types';
+import type { StackZIndexProp } from './types.js';
 export declare const useStackedZIndex: (props: {
     zIndex?: number;
     stackZIndex?: StackZIndexProp;

@@ -1,4 +1,4 @@
-import type { ComponentSetStateShallow, AllGroupContexts } from '../types';
+import type { ComponentSetStateShallow, AllGroupContexts } from '../types.js';
 type SubscribeToContextGroupProps = {
     setStateShallow: ComponentSetStateShallow;
     pseudoGroups?: Set<string>;

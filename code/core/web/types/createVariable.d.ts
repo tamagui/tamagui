@@ -1,4 +1,4 @@
-import type { PxValue, TokenCategories, Variable } from './types';
+import type { PxValue, TokenCategories, Variable } from './types.js';
 type VariableIn<A = any> = Pick<Variable<A>, 'key' | 'name' | 'val'>;
 export declare const createVariable: <A extends string | number | Variable = any>(props: VariableIn<A>, skipHash?: boolean) => Variable<A>;
 export declare function variableToString(vrble?: any, getValue?: boolean): any;

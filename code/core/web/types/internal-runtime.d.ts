@@ -9,9 +9,9 @@
  */
 import type { FunctionComponent } from 'react';
 import type { TagName } from '@tamagui/dom';
-import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend';
-export { mergeFrontendCondition, regularStyleFrontend } from './helpers/styleFrontend';
-export type * from './internalRuntimeTypes';
+import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend.js';
+export { mergeFrontendCondition, regularStyleFrontend } from './helpers/styleFrontend.js';
+export type * from './internalRuntimeTypes.js';
 export declare const createVariables: (tokens: Record<string, any>, parentPath?: string, isFont?: boolean) => any;
 export declare const parseFont: (definition: Record<string, any>) => any;
 export declare const registerFontVariables: (parsedFont: any) => string[];

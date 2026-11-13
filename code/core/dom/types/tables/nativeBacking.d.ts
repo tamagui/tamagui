@@ -1,4 +1,4 @@
-import type { DefaultStyle, NativeBacking, NativeBackingRow } from "./types";
+import type { DefaultStyle, NativeBacking, NativeBackingRow } from "./types.js";
 /**
 * The native backing table: what each tag becomes after the DOM compiler runs.
 *

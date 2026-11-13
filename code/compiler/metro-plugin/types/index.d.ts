@@ -1,5 +1,5 @@
 import type { TamaguiOptions } from "@tamagui/static";
-import { MetroCompilerFrontend } from "./frontend";
+import { MetroCompilerFrontend } from "./frontend.js";
 export type MetroTamaguiOptions = TamaguiOptions & {
 	/** Override the ignored on-disk handoff used by Metro transform workers. */
 	compilerCacheRoot?: string;
@@ -49,8 +49,8 @@ export declare function getMetroCompilerFrontend(metroConfig: MetroConfigInput):
 * ```
 */
 export declare function withTamagui(metroConfig: MetroConfigInput, optionsIn?: MetroTamaguiOptions): MetroConfigInput;
-export { METRO_COMPILER_CACHE_VERSION, MetroCompilerCache, MetroCompilerCacheError, defaultMetroCompilerCacheRoot } from "./compilerCache";
-export type { MetroCompilerDiagnostic } from "./diagnostics";
-export type { MetroCompilerGeneration, MetroCompilerScanOptions, MetroCompilerUpdate } from "./frontend";
+export { METRO_COMPILER_CACHE_VERSION, MetroCompilerCache, MetroCompilerCacheError, defaultMetroCompilerCacheRoot } from "./compilerCache.js";
+export type { MetroCompilerDiagnostic } from "./diagnostics.js";
+export type { MetroCompilerGeneration, MetroCompilerScanOptions, MetroCompilerUpdate } from "./frontend.js";
 
 //# sourceMappingURL=index.d.ts.map

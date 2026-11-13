@@ -1,4 +1,4 @@
-import type { TabsProps } from './Tabs';
+import type { TabsProps } from './Tabs.js';
 export type TabsContextValue = {
     baseId: string;
     value?: string;

@@ -1,4 +1,4 @@
-import type { StaticConfig, StylePiece, TamaguiInternalConfig } from '../types';
+import type { StaticConfig, StylePiece, TamaguiInternalConfig } from '../types.js';
 export type StyleStaticConfig = {
     baseStyle: Record<string, any> | undefined;
     baseVariantProps: Record<string, any> | undefined;

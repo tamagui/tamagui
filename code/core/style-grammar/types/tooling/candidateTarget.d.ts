@@ -1,4 +1,4 @@
-import type { TokenCategory } from "./registry";
+import type { TokenCategory } from "./registry.js";
 export interface CandidateContribution {
 	property: string;
 	/** the token category this contribution binds through, when config-derived */

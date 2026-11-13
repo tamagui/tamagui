@@ -6,7 +6,7 @@
  *
  * @flow strict-local
  */
-import type { OrderedCSSStyleSheet } from './createOrderedCSSStyleSheet';
+import type { OrderedCSSStyleSheet } from './createOrderedCSSStyleSheet.js';
 type Sheet = {
     id: string;
 } & OrderedCSSStyleSheet;

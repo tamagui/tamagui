@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
-import type { AnimationDriverLike } from '../types';
-import type { AnimatedTextChannel, NativeTextMetrics } from './nativeTextMetrics';
+import type { AnimationDriverLike } from '../types.js';
+import type { AnimatedTextChannel, NativeTextMetrics } from './nativeTextMetrics.js';
 export declare function NativeTextBinding({ element, useTextMetrics, inheritedText, lineHeight, isInput, }: {
     element: ReactElement<any>;
     useTextMetrics: NonNullable<AnimationDriverLike['useTextMetrics']>;

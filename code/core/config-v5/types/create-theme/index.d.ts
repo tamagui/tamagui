@@ -1,7 +1,7 @@
-export * from './createTheme';
-export * from './masks';
-export * from './combineMasks';
-export * from './applyMask';
-export * from './createThemeTypes';
-export * from './helpers';
+export * from './createTheme.js';
+export * from './masks.js';
+export * from './combineMasks.js';
+export * from './applyMask.js';
+export * from './createThemeTypes.js';
+export * from './helpers.js';
 //# sourceMappingURL=index.d.ts.map

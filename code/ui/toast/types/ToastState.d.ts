@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { CreateNativeToastOptions, NativeToastRef } from './types';
+import type { CreateNativeToastOptions, NativeToastRef } from './types.js';
 export type ToastType = 'default' | 'success' | 'error' | 'warning' | 'info' | 'loading';
 export interface ToastT {
     id: string | number;

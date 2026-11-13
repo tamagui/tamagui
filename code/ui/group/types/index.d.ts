@@ -1,2 +1,2 @@
-export * from './Group';
+export * from './Group.js';
 //# sourceMappingURL=index.d.ts.map

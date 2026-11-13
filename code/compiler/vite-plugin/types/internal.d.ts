@@ -4,7 +4,7 @@
  * `@tamagui/tailwind/vite`, which needs the base plugins and the one config loader
  * they evaluate through so the Tamagui config is never evaluated twice.
  */
-export { createTamaguiPlugins } from './plugin';
-export type { TamaguiInternalPluginOptions, TamaguiVitePluginOptions } from './plugin';
-export type { ViteTamaguiLoader } from './loadTamagui';
+export { createTamaguiPlugins } from './plugin.js';
+export type { TamaguiInternalPluginOptions, TamaguiVitePluginOptions } from './plugin.js';
+export type { ViteTamaguiLoader } from './loadTamagui.js';
 //# sourceMappingURL=internal.d.ts.map

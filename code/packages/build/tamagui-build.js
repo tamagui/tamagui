@@ -1014,6 +1014,7 @@ async function buildTsc(allFiles) {
         throw new Error('isolated declaration emit failed')
       }
 
+      await normalizeDeclarations(targetDir, allFiles)
       await pruneStaleDeclarations(targetDir, allFiles)
       return
     }
@@ -1137,7 +1138,21 @@ async function emitDeclarationsWithTsgo(targetDir, allFiles) {
     await FSE.remove(declarationProject)
   }
 
-  const declarationRoot = declarationToRoot ? '.' : targetDir
+  await normalizeDeclarations(declarationToRoot ? '.' : targetDir, allFiles)
+}
+
+// nodenext reads a relative import in a declaration only by its full file name
+function addDeclarationExtension(declarationPath, specifier) {
+  if (/\.(?:[cm]?js|json)$/.test(specifier)) return specifier
+  const target = path.resolve(path.dirname(declarationPath), specifier)
+  if (FSE.existsSync(`${target}.d.ts`)) return `${specifier}.js`
+  if (FSE.existsSync(path.join(target, 'index.d.ts'))) {
+    return `${specifier.replace(/\/$/, '')}/index.js`
+  }
+  return specifier
+}
+
+async function normalizeDeclarations(declarationRoot, allFiles) {
   await Promise.all(
     allFiles.map(async (file) => {
       const relativeFile = path.relative(path.resolve('src'), path.resolve(file))
@@ -1150,6 +1165,11 @@ async function emitDeclarationsWithTsgo(targetDir, allFiles) {
         .replace(
           /(["'])@tamagui\/react-native-types\/src\1/g,
           '$1@tamagui/react-native-types$1'
+        )
+        .replace(
+          /(\bfrom\s*|\bimport\s*\(\s*|^import\s+)(["'])(\.\.?(?:\/[^"'\n]*)?)\2/gm,
+          (_, prefix, quote, specifier) =>
+            `${prefix}${quote}${addDeclarationExtension(declarationPath, specifier)}${quote}`
         )
       if (normalized !== output) {
         await writeIfUnchanged(declarationPath, normalized)

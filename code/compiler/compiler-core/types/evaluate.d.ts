@@ -1,5 +1,5 @@
-import type { ExpressionReference, ResolvedModuleId, SourceSpan, SymbolResolver } from './contracts';
-import { type BailoutReason } from './diagnostics';
+import type { ExpressionReference, ResolvedModuleId, SourceSpan, SymbolResolver } from './contracts.js';
+import { type BailoutReason } from './diagnostics.js';
 export type StaticEvaluationValue = string | number | boolean | null | StaticEvaluationValue[] | {
     [key: string]: StaticEvaluationValue;
 };

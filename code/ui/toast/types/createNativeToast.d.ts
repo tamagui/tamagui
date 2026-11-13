@@ -1,4 +1,4 @@
-import type { CreateNativeToastsFn, HideNativeToastsFn } from './types';
+import type { CreateNativeToastsFn, HideNativeToastsFn } from './types.js';
 export declare const createNativeToast: CreateNativeToastsFn;
 export declare const hideNativeToast: HideNativeToastsFn;
 /**

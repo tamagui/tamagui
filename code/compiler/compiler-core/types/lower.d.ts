@@ -1,8 +1,8 @@
-import type { ResolvedModuleId, SourceSpan } from './contracts';
-import type { DynamicEvaluation } from './evaluate';
-import { type BailoutReason } from './diagnostics';
-import type { MaterializedElement, MaterializedModule, MaterializedStyledDefinition } from './materialize';
-import { type ApplicableLoweredModulePlan, type SourceEdit } from './output';
+import type { ResolvedModuleId, SourceSpan } from './contracts.js';
+import type { DynamicEvaluation } from './evaluate.js';
+import { type BailoutReason } from './diagnostics.js';
+import type { MaterializedElement, MaterializedModule, MaterializedStyledDefinition } from './materialize.js';
+import { type ApplicableLoweredModulePlan, type SourceEdit } from './output.js';
 export declare const LOWERED_MODULE_PLAN_VERSION = 7;
 export type CompilerTarget = 'web' | 'native';
 export interface LoweredModuleStats {

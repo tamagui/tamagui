@@ -1,4 +1,4 @@
-import type { Variable, VariableVal } from '../types';
+import type { Variable, VariableVal } from '../types.js';
 export declare const getVariableGeneration: () => number;
 export declare const registerCSSVariable: (v: Variable | VariableVal) => void;
 export declare const variableToCSS: (v: Variable, unitless?: boolean) => string;

@@ -1,4 +1,4 @@
-export { rgba } from './rgba';
+export { rgba } from './rgba.js';
 export declare const normalizeCSSColor: (color: string) => number | null;
 export declare function isKnownColorName(color: string): boolean;
 export default normalizeCSSColor;

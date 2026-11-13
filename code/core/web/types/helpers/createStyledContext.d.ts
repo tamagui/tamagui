@@ -1,4 +1,4 @@
-import type { StyledContext, StyledContextOptions } from '../types';
+import type { StyledContext, StyledContextOptions } from '../types.js';
 type EmptyDefault = Record<PropertyKey, never>;
 type EmptyDefaultOptions = string | {
     namespace?: string;

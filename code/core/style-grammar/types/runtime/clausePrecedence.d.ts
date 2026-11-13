@@ -1,6 +1,6 @@
-export { canonicalClauseModifier, clauseConditionSetKey } from "./clauseIdentity";
-import { type ModifierKind, type ModifierRegistryView } from "../ast/valueTypes";
-export { grammarMaxNonPlatformDepth } from "../ast/valueTypes";
+export { canonicalClauseModifier, clauseConditionSetKey } from "./clauseIdentity.js";
+import { type ModifierKind, type ModifierRegistryView } from "../ast/valueTypes.js";
+export { grammarMaxNonPlatformDepth } from "../ast/valueTypes.js";
 /** one packed key compared as platform, depth, then every canonical atom rank */
 export type ClausePrecedenceKey = number;
 export declare function packClausePrecedence(platformRank: number, atomRanks: readonly number[]): ClausePrecedenceKey;

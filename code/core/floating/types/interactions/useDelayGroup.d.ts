@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { Delay, FloatingInteractionContext } from './types';
+import type { Delay, FloatingInteractionContext } from './types.js';
 type DelayGroupContextValue = {
     currentId: string | null | undefined;
     setCurrentId: (id: string | null | undefined) => void;

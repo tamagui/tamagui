@@ -1,2 +1,2 @@
-export * from './withTamagui';
+export * from './withTamagui.js';
 //# sourceMappingURL=index.d.ts.map

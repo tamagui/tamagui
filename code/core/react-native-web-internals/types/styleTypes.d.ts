@@ -6,7 +6,7 @@
  *
  * @flow
  */
-import type { ColorValue, DimensionValue } from './types';
+import type { ColorValue, DimensionValue } from './types.js';
 type NumberOrString = number | string;
 /**
  * Animations and transitions

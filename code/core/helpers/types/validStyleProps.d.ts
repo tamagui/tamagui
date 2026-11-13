@@ -1,4 +1,4 @@
-export { tokenCategories } from './tokenCategories';
+export { tokenCategories } from './tokenCategories.js';
 export declare const cssShorthandLonghands: {
     borderBottomColor: true;
     borderBottomStyle: true;

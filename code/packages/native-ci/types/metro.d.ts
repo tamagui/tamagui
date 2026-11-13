@@ -5,7 +5,7 @@
  * and managing the Metro bundler process across iOS and Android tests.
  */
 import type { Subprocess } from 'bun';
-import { type Platform } from './constants';
+import { type Platform } from './constants.js';
 export interface MetroOptions {
     /** Platform for Expo-Platform header */
     platform: Platform;

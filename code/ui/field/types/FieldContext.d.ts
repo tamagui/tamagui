@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { FieldControlContextValue, FieldState, FieldStyleState } from './types';
+import type { FieldControlContextValue, FieldState, FieldStyleState } from './types.js';
 export declare const defaultFieldState: FieldState;
 export declare const defaultFieldControl: FieldControlContextValue;
 export declare const FieldControlContext: React.Context<FieldControlContextValue>;

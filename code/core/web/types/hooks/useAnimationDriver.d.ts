@@ -1,4 +1,4 @@
-import type { AnimationDriver, UniversalAnimatedNumber, UseAnimatedNumberReaction, UseAnimatedNumberStyle, UseAnimatedNumbersStyle } from '../types';
+import type { AnimationDriver, UniversalAnimatedNumber, UseAnimatedNumberReaction, UseAnimatedNumberStyle, UseAnimatedNumbersStyle } from '../types.js';
 export declare function useAnimationDriver(): AnimationDriver;
 export declare function useAnimatedNumber(initial: number): UniversalAnimatedNumber<any>;
 export declare const useAnimatedNumberStyle: UseAnimatedNumberStyle;

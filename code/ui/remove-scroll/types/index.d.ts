@@ -1,3 +1,3 @@
-export * from "./RemoveScroll";
+export * from "./RemoveScroll.js";
 
 //# sourceMappingURL=index.d.ts.map

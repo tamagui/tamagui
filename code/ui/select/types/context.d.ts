@@ -1,5 +1,5 @@
 import { type ComponentType } from 'react';
-import type { SelectContextValue, SelectItemParentContextValue } from './types';
+import type { SelectContextValue, SelectItemParentContextValue } from './types.js';
 export declare const SelectZIndexContext: import("react").Context<number | undefined>;
 export declare const SelectNativeComponentContext: import("react").Context<ComponentType<any> | null>;
 export declare const SelectProvider: import("react").Provider<SelectContextValue> & import("react").ProviderExoticComponent<Partial<SelectContextValue> & {

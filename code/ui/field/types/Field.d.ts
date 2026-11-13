@@ -1,6 +1,6 @@
 import type { GetProps } from '@tamagui/core';
-import { useFieldControl, useFieldState } from './FieldContext';
-import type { FieldState, FieldValidationMode, FieldValidator, FieldValidityState } from './types';
+import { useFieldControl, useFieldState } from './FieldContext.js';
+import type { FieldState, FieldValidationMode, FieldValidator, FieldValidityState } from './types.js';
 export declare const FieldFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     dirty?: boolean | undefined;
     disabled?: boolean | undefined;

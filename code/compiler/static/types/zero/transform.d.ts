@@ -1,6 +1,6 @@
 import { type AppliedLoweredModule, type LoweredModulePlan, type SourceEdit, type ZeroViolation } from '@tamagui/compiler-core';
 import { type TamaguiInternalConfig } from '@tamagui/web';
-import type { IslandThemeBridge } from './islands';
+import type { IslandThemeBridge } from './islands.js';
 /**
  * The zero-mode source transform.
  *

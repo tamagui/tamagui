@@ -1,17 +1,17 @@
 import type { Shorthands } from '@tamagui/shorthands/v4';
 import type { V5Themes, V5Tokens } from '@tamagui/themes/v5';
 import type { GenericSizing } from '@tamagui/web';
-import type { V5Fonts } from './v5-fonts';
-import type { Media as V5Media } from './media';
-import type { Settings as V5Settings } from './settings';
+import type { V5Fonts } from './v5-fonts.js';
+import type { Media as V5Media } from './media.js';
+import type { Settings as V5Settings } from './settings.js';
 export { shorthands } from '@tamagui/shorthands/v4';
 export { tokens, type V5Theme, type V5ThemeNames, type V5Themes, type V5Tokens, } from '@tamagui/themes/v5';
-export { createSystemFont, fonts } from './v5-fonts';
-export type { V5Fonts } from './v5-fonts';
-export { breakpoints, media, mediaQueryDefaultActive } from './media';
-export type { Media as V5Media } from './media';
-export { selectionStyles, settings } from './settings';
-export type { Settings as V5Settings } from './settings';
+export { createSystemFont, fonts } from './v5-fonts.js';
+export type { V5Fonts } from './v5-fonts.js';
+export { breakpoints, media, mediaQueryDefaultActive } from './media.js';
+export type { Media as V5Media } from './media.js';
+export { selectionStyles, settings } from './settings.js';
+export type { Settings as V5Settings } from './settings.js';
 export type V5DefaultConfig = {
     media: V5Media;
     shorthands: Shorthands;

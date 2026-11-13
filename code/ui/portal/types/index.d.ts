@@ -1,7 +1,7 @@
-export * from './Portal';
-export * from './PortalProps';
-export * from './GorhomPortal';
-export { GorhomPortalItem as PortalItem } from './GorhomPortalItem';
-export * from './constants';
-export { resolveViewZIndex } from './helpers';
+export * from './Portal.js';
+export * from './PortalProps.js';
+export * from './GorhomPortal.js';
+export { GorhomPortalItem as PortalItem } from './GorhomPortalItem.js';
+export * from './constants.js';
+export { resolveViewZIndex } from './helpers.js';
 //# sourceMappingURL=index.d.ts.map

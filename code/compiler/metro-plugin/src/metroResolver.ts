@@ -2,6 +2,8 @@ import { existsSync, readFileSync, realpathSync, statSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, extname, isAbsolute, join, parse, relative, resolve } from 'node:path'
 
+import { createTsconfigPathsMatcher } from '@tamagui/static'
+
 export interface MetroResolverConfig {
   projectRoot: string
   resolver?: Record<string, any>
@@ -139,6 +141,9 @@ export function createMetroCompilerResolver(config: MetroResolverConfig): {
   const createDefaultContext =
     createDefaultContextModule.default ?? createDefaultContextModule
   const resolver = config.resolver ?? {}
+  // expo's dev server adds tsconfig paths to the resolver after metro.config.js
+  // runs, so the config this plugin receives never carries them
+  const matchTsconfigPaths = createTsconfigPathsMatcher(undefined, config.projectRoot)
   const fileSystemLookup = (path: string) => lookup(config.projectRoot, path)
   const getPackage = (packagePath: string) => {
     try {
@@ -203,7 +208,19 @@ export function createMetroCompilerResolver(config: MetroResolverConfig): {
         },
         dependencyDescriptor
       )
-      const result = metroResolve(context, dependency.specifier, platform)
+      const resolveSpecifier = () => {
+        if (matchTsconfigPaths && !importer.includes(`${join('node_modules')}`)) {
+          for (const candidate of matchTsconfigPaths(dependency.specifier)) {
+            try {
+              return metroResolve(context, candidate, platform)
+            } catch {
+              // as expo does, an alias candidate that does not resolve falls through
+            }
+          }
+        }
+        return metroResolve(context, dependency.specifier, platform)
+      }
+      const result = resolveSpecifier()
       if (result.type === 'empty') return null
       if (result.type !== 'sourceFile' || !result.filePath) return null
       const resolvedId = realpathSync(result.filePath)

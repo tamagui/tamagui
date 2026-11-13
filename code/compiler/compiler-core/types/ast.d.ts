@@ -1,4 +1,4 @@
-import type { AstNode } from './contracts';
+import type { AstNode } from './contracts.js';
 export declare function isAstNode(value: unknown): value is AstNode;
 export declare function walkAst(node: AstNode, visitor: (node: AstNode, parent: AstNode | null, key: string | null) => void, parent?: AstNode | null, key?: string | null): void;
 /** With a source range, only descend into nodes that contain that range. */

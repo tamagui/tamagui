@@ -1,2 +1,2 @@
-export * from './Separator';
+export * from './Separator.js';
 //# sourceMappingURL=index.d.ts.map

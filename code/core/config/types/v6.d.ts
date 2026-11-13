@@ -1,5 +1,5 @@
 import { tailwindColors, themes, type Theme, type ThemeNames, type Themes } from '@tamagui/themes';
-export * from './v6-base';
+export * from './v6-base.js';
 export { tailwindColors, themes };
 export type { Theme as V6Theme, ThemeNames as V6ThemeNames, Themes as V6Themes };
 /** the Tailwind colors pack: color tokens + themes generated from the same palette */
@@ -1407,7 +1407,7 @@ export declare const defaultConfig: {
         addThemeClassName: "html";
         onlyAllowShorthands: true;
         styleCompat: "web";
-        selectionStyles: typeof import("./v6-base").selectionStyles;
+        selectionStyles: typeof import("./v6-base.js").selectionStyles;
     };
     sizing: {
         readonly default: 'md';

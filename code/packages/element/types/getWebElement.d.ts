@@ -1,4 +1,4 @@
-import type { TamaguiElement } from './types';
+import type { TamaguiElement } from './types.js';
 /**
  * Narrows a TamaguiElement to an HTMLElement, with optional generic for further casting.
  * Throws if the element is not an instanceof HTMLElement.

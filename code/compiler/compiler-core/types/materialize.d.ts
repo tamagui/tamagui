@@ -1,8 +1,8 @@
-import type { ResolvedModuleId, SourceSpan } from './contracts';
-import type { BailoutReason } from './diagnostics';
-import type { BranchDecisionNode, StaticEvaluationValue } from './evaluate';
-import type { ProjectGraph } from './graph';
-import type { ComponentImportProvenance, ElementComponentIR, ElementIR, DOMStyleDefinitionIR } from './ir';
+import type { ResolvedModuleId, SourceSpan } from './contracts.js';
+import type { BailoutReason } from './diagnostics.js';
+import type { BranchDecisionNode, StaticEvaluationValue } from './evaluate.js';
+import type { ProjectGraph } from './graph.js';
+import type { ComponentImportProvenance, ElementComponentIR, ElementIR, DOMStyleDefinitionIR } from './ir.js';
 export type MaterializedValue = {
     kind: 'static';
     value: StaticEvaluationValue;

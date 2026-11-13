@@ -1,4 +1,4 @@
-import type { MatchMedia, MediaQueryList } from '../types';
+import type { MatchMedia, MediaQueryList } from '../types.js';
 export declare const matchMedia: typeof matchMediaFallback | (((query: string) => globalThis.MediaQueryList) & typeof globalThis.matchMedia);
 declare function matchMediaFallback(_: string): MediaQueryList;
 export declare function setupMatchMedia(_: MatchMedia): void;

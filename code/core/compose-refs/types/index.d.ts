@@ -1,2 +1,2 @@
-export * from './compose-refs';
+export * from './compose-refs.js';
 //# sourceMappingURL=index.d.ts.map

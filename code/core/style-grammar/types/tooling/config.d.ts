@@ -1,5 +1,5 @@
-import type { GrammarConfigView } from "./candidate";
-import type { TokenCategory } from "./registry";
+import type { GrammarConfigView } from "./candidate.js";
+import type { TokenCategory } from "./registry.js";
 type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>;
 type GrammarFontConfig = {
 	size?: Readonly<Record<string, unknown>>;

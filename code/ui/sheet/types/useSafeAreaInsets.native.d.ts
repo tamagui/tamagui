@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { SafeAreaInsets } from './useSafeAreaInsets';
+import type { SafeAreaInsets } from './useSafeAreaInsets.js';
 export declare const SafeAreaInsetsContext: React.Context<SafeAreaInsets | null>;
 /**
  * live safe-area insets (notch / status bar / home indicator).

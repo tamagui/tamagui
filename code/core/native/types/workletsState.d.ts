@@ -1,4 +1,4 @@
-import type { WorkletsState } from "./types";
+import type { WorkletsState } from "./types.js";
 export interface WorkletsAccessor {
 	readonly isEnabled: boolean;
 	readonly state: WorkletsState;

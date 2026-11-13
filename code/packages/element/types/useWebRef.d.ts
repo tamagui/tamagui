@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { TamaguiElement } from './types';
+import type { TamaguiElement } from './types.js';
 /**
  * Creates a ref for web-only code that properly types to HTMLElement.
  * Useful when you need to access HTMLElement-specific properties (like selectionStart)

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { UseSwitchNativeProps } from './types';
+import type { UseSwitchNativeProps } from './types.js';
 /**
  * native version - handles registerFocusable and renders NativeSwitch when appropriate
  */

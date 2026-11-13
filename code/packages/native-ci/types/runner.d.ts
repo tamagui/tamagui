@@ -1,4 +1,4 @@
-import type { Platform } from './constants';
+import type { Platform } from './constants.js';
 export interface RunWithCacheOptions {
     platform: Platform;
     buildCommand: string;

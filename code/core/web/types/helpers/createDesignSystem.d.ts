@@ -1,4 +1,4 @@
-import type { CreateTamaguiProps, Variable } from '../types';
+import type { CreateTamaguiProps, Variable } from '../types.js';
 type ThemeConfig = {
     cssRuleSets: string[];
     getThemeRulesSets: () => string[];

@@ -1,12 +1,12 @@
 import '@tamagui/polyfill-dev';
-export declare const Menu: import("@tamagui/helpers").Combined<import("react").FC<import("./createNonNativeMenu").MenuProps & {
+export declare const Menu: import("@tamagui/helpers").Combined<import("react").FC<import("./createNonNativeMenu.js").MenuProps & {
     scope?: string;
-} & Partial<Omit<import("@tamagui/create-menu").NativeMenuProps, keyof import("./createNonNativeMenu").MenuProps>>>, {
-    readonly Trigger: import("react").FC<Omit<import("@tamagui/web").ViewProps, "scope" | keyof import("./createNonNativeMenu").MenuTriggerProps> & import("./createNonNativeMenu").MenuTriggerProps & {
+} & Partial<Omit<import("@tamagui/create-menu").NativeMenuProps, keyof import("./createNonNativeMenu.js").MenuProps>>>, {
+    readonly Trigger: import("react").FC<Omit<import("@tamagui/web").ViewProps, "scope" | keyof import("./createNonNativeMenu.js").MenuTriggerProps> & import("./createNonNativeMenu.js").MenuTriggerProps & {
         scope?: string;
     } & {
         ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
-    } & Partial<Omit<import("@tamagui/create-menu").MenuTriggerProps, "ref" | "scope" | keyof import("./createNonNativeMenu").MenuTriggerProps>>>;
+    } & Partial<Omit<import("@tamagui/create-menu").MenuTriggerProps, "ref" | "scope" | keyof import("./createNonNativeMenu.js").MenuTriggerProps>>>;
     readonly TriggerGroup: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").ViewProps, "dir" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
         dir?: "ltr" | "rtl";
     }, import("@tamagui/web").TamaguiElement, Omit<import("@tamagui/web").StackNonStyleProps, "dir" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<{}> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
@@ -17,11 +17,11 @@ export declare const Menu: import("@tamagui/helpers").Combined<import("react").F
     } & Partial<Omit<import("react").FragmentProps, "scope" | keyof import("@tamagui/create-menu").MenuPortalProps>>>;
     readonly Content: import("react").FC<Omit<Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/create-menu").MenuContentProps> & import("@tamagui/create-menu").MenuContentProps & {
         scope?: string;
-    }, keyof import("./createNonNativeMenu").MenuContentProps> & import("./createNonNativeMenu").MenuContentProps & {
+    }, keyof import("./createNonNativeMenu.js").MenuContentProps> & import("./createNonNativeMenu.js").MenuContentProps & {
         scope?: string;
-    }, never> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<Omit<Omit<{}, keyof import("@tamagui/create-menu").MenuContentProps>, keyof import("./createNonNativeMenu").MenuContentProps>> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, "download" | "onEntryFocus" | "onLayout" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "rel" | keyof import("./createNonNativeMenu").MenuContentProps> & {
+    }, never> & Omit<import("@tamagui/web").WithThemeValues<Omit<import("@tamagui/web").StackStyleBase, never>> & import("@tamagui/web").WithFlatVariantValues<Omit<Omit<{}, keyof import("@tamagui/create-menu").MenuContentProps>, keyof import("./createNonNativeMenu.js").MenuContentProps>> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>, "download" | "onEntryFocus" | "onLayout" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "rel" | keyof import("./createNonNativeMenu.js").MenuContentProps> & {
         ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
-    } & Partial<Omit<import("@tamagui/create-menu").NativeMenuContentProps, "download" | "onEntryFocus" | "onLayout" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "ref" | "rel" | keyof import("./createNonNativeMenu").MenuContentProps>>>;
+    } & Partial<Omit<import("@tamagui/create-menu").NativeMenuContentProps, "download" | "onEntryFocus" | "onLayout" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "ref" | "rel" | keyof import("./createNonNativeMenu.js").MenuContentProps>>>;
     readonly Group: import("react").FC<Omit<import("@tamagui/web").ViewProps, keyof import("@tamagui/create-menu").MenuGroupProps> & import("@tamagui/create-menu").MenuGroupProps & {
         ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
     } & Partial<Omit<import("@tamagui/create-menu").NativeMenuGroupProps, "ref" | keyof import("@tamagui/create-menu").MenuGroupProps>>>;
@@ -210,5 +210,5 @@ export declare const Menu: import("@tamagui/helpers").Combined<import("react").F
         neverFlatten: true;
     } & import("@tamagui/web").StaticConfigPublic>;
 }>;
-export type { MenuTriggerGroupProps } from './createNonNativeMenu';
+export type { MenuTriggerGroupProps } from './createNonNativeMenu.js';
 //# sourceMappingURL=index.d.ts.map

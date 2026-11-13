@@ -1,3 +1,3 @@
-export * from './IconProps';
-export * from './themed';
+export * from './IconProps.js';
+export * from './themed.js';
 //# sourceMappingURL=index.d.ts.map

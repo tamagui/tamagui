@@ -1,5 +1,5 @@
-export { parseTransition, serializeTransition, type CSSTransitionTiming, type ParsedTransition, type PresetTransitionTiming, type SpringTransitionTiming, type TransitionBehavior, type TransitionDiagnostic, type TransitionEntry, type TransitionGlobalIR, type TransitionIR, type TransitionParseResult, type TransitionTiming } from "./shorthands/transition";
-export { parseTransitionObject, TRANSITION_RESERVED_KEYS, type SpringEscapeHatch, type TransitionObjectBase, type TransitionObjectValue } from "./shorthands/transitionObject";
-export { bounceToDampingRatio, dampingRatioToBounce, springFromDurationBounce, springPosition, springSettleTime, springToDurationBounce, springToLinearEasing, type SpringCanonical, type SpringPhysics } from "./runtime/spring";
+export { parseTransition, serializeTransition, type CSSTransitionTiming, type ParsedTransition, type PresetTransitionTiming, type SpringTransitionTiming, type TransitionBehavior, type TransitionDiagnostic, type TransitionEntry, type TransitionGlobalIR, type TransitionIR, type TransitionParseResult, type TransitionTiming } from "./shorthands/transition.js";
+export { parseTransitionObject, TRANSITION_RESERVED_KEYS, type SpringEscapeHatch, type TransitionObjectBase, type TransitionObjectValue } from "./shorthands/transitionObject.js";
+export { bounceToDampingRatio, dampingRatioToBounce, springFromDurationBounce, springPosition, springSettleTime, springToDurationBounce, springToLinearEasing, type SpringCanonical, type SpringPhysics } from "./runtime/spring.js";
 
 //# sourceMappingURL=transitions.d.ts.map

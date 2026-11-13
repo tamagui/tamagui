@@ -1,6 +1,6 @@
-import './polyfills';
-import { loader } from './loader';
+import './polyfills.js';
+import { loader } from './loader.js';
 export default loader;
-export * from './TamaguiPlugin';
-export * from './shouldExclude';
+export * from './TamaguiPlugin.js';
+export * from './shouldExclude.js';
 //# sourceMappingURL=index.d.ts.map

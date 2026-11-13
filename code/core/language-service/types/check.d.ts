@@ -1,4 +1,4 @@
-import { type DocumentDiagnostic, type ExtractStyleSites } from "./document";
+import { type DocumentDiagnostic, type ExtractStyleSites } from "./document.js";
 export interface CheckStyleFilesOptions {
 	/** project root; file discovery and relative display paths anchor here */
 	root: string;

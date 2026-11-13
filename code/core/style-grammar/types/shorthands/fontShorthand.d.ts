@@ -1,4 +1,4 @@
-import type { ParsedValue } from "../ast/valueTypes";
+import type { ParsedValue } from "../ast/valueTypes.js";
 interface FontShorthandTargets {
 	style: readonly string[];
 	weight: readonly string[];

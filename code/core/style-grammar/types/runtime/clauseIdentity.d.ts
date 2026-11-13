@@ -1,5 +1,5 @@
-import { type FlatScanErrorCode } from "./scanFlatValue";
-export { canonicalClauseModifier, isModifierName } from "./stateModifiers";
+import { type FlatScanErrorCode } from "./scanFlatValue.js";
+export { canonicalClauseModifier, isModifierName } from "./stateModifiers.js";
 export type ClauseIdentityErrorCode = FlatScanErrorCode | "empty-modifier" | "empty-payload";
 export interface ClauseIdentityHandler<Context> {
 	segment(ctx: Context, start: number, end: number, isBase: boolean, valid: boolean): void;

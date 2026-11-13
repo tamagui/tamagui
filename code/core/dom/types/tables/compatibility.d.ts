@@ -1,4 +1,4 @@
-import type { CompatibilityRow } from "./types";
+import type { CompatibilityRow } from "./types.js";
 /**
 * Every deliberate difference between the Tamagui DOM contract and the pinned
 * React Strict DOM release.

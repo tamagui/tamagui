@@ -1,4 +1,4 @@
-import { type Platform } from './constants';
+import { type Platform } from './constants.js';
 export interface CacheOptions {
     platform: Platform;
     fingerprint: string;

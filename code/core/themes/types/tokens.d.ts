@@ -1,4 +1,4 @@
-import { tailwindColors } from './tailwind-colors';
+import { tailwindColors } from './tailwind-colors.js';
 export { tailwindColors };
 export declare const colorTokens: {
     readonly white: string;

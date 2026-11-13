@@ -1,6 +1,6 @@
 import type { ColorTokens, TextStyle, TamaguiElementMethods } from '@tamagui/web';
 import type { TextInputInstance as TextInput } from '@tamagui/react-native-types';
-import type { InputNativeProps } from './InputNativeProps';
+import type { InputNativeProps } from './InputNativeProps.js';
 /**
  * Extra props that Input adds on top of the base styled component.
  * Annotated on the createStyledHOC render fn - the StyledHOCMergedProps merge

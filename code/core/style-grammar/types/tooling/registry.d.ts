@@ -1,4 +1,4 @@
-import { modifierAliases } from "../runtime/stateModifiers";
+import { modifierAliases } from "../runtime/stateModifiers.js";
 export { modifierAliases };
 export type StandardTokenCategory = "space" | "size" | "radius" | "zIndex" | "color" | "fontFamily" | "fontSize" | "fontWeight" | "lineHeight" | "letterSpacing";
 export type TokenCategory = StandardTokenCategory | (string & {});

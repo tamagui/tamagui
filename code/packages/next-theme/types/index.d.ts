@@ -1,4 +1,4 @@
-export * from "./NextTheme";
-export * from "./types";
+export * from "./NextTheme.js";
+export * from "./types.js";
 
 //# sourceMappingURL=index.d.ts.map

@@ -1,4 +1,4 @@
-import type { StackNonStyleProps, StackStyle, StackStyleBase, StaticConfig, TamaguiElement } from '../types';
+import type { StackNonStyleProps, StackStyle, StackStyleBase, StaticConfig, TamaguiElement } from '../types.js';
 export type View = TamaguiElement;
 export type ViewNonStyleProps = StackNonStyleProps;
 export type ViewStylePropsBase = StackStyleBase;
@@ -10,5 +10,5 @@ export type ViewProps = ViewNonStyleProps & ViewStyle;
  * than touching the regular View singleton.
  */
 export declare const viewStaticConfig: StaticConfig;
-export declare const View: import("..").TamaguiComponent<ViewProps, TamaguiElement, StackNonStyleProps, StackStyleBase, {}>;
+export declare const View: import("../index.js").TamaguiComponent<ViewProps, TamaguiElement, StackNonStyleProps, StackStyleBase, {}>;
 //# sourceMappingURL=View.d.ts.map

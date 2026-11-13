@@ -1,4 +1,4 @@
-import { type TransitionBehavior, type TransitionParseResult } from "./transition";
+import { type TransitionBehavior, type TransitionParseResult } from "./transition.js";
 /** low-level spring physics: a projection of duration+bounce, not a second API */
 export interface SpringEscapeHatch {
 	stiffness?: number;

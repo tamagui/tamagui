@@ -1,5 +1,5 @@
 import { type ViewProps } from '@tamagui/web';
-import type { PortalProps } from './PortalProps';
+import type { PortalProps } from './PortalProps.js';
 export declare const getStackedZIndexProps: (propsIn: PortalProps) => {
     stackZIndex: import("@tamagui/z-index-stack").StackZIndexProp | undefined;
     zIndex: any;

@@ -1,4 +1,4 @@
-import type { ThemeUpdateState } from '../helpers/themeUpdateState';
+import type { ThemeUpdateState } from '../helpers/themeUpdateState.js';
 export type PortalThemeState = {
     name: string;
     /** Root-most first, so a consumer can replay them in authored order. */

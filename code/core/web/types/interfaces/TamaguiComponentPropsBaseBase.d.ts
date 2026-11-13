@@ -1,4 +1,4 @@
-import type { DebugProp, ThemeName, GroupNames, Role, TamaguiComponentState } from '../types';
+import type { DebugProp, ThemeName, GroupNames, Role, TamaguiComponentState } from '../types.js';
 export type TamaguiComponentPropsBaseBase = {
     target?: string;
     htmlFor?: string;

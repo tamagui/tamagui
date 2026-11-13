@@ -1,5 +1,5 @@
 import type { TamaguiOptions } from '@tamagui/types';
-import type { BundledConfig } from './bundleConfig';
+import type { BundledConfig } from './bundleConfig.js';
 /**
  * Sort of a super-set of bundleConfig(), this code needs some refactoring ideally
  */

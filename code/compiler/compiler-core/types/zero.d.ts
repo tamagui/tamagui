@@ -1,7 +1,7 @@
-import type { ResolvedModuleId, SourceSpan } from './contracts';
-import type { BailoutReason, ZeroRule } from './diagnostics';
-import type { LoweredModulePlan } from './lower';
-import type { SourceEdit } from './output';
+import type { ResolvedModuleId, SourceSpan } from './contracts.js';
+import type { BailoutReason, ZeroRule } from './diagnostics.js';
+import type { LoweredModulePlan } from './lower.js';
+import type { SourceEdit } from './output.js';
 /**
  * Zero-runtime reference erasure and the rule-mapped diagnostics that gate it.
  *

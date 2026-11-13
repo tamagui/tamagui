@@ -13,6 +13,6 @@
  * content sized off window dimensions collapses while the sheet's bottom stays
  * occluded. See SheetImplementationCustom's activePositions / keyboardOccludedHeight.
  */
-import type { KeyboardControllerSheetOptions, KeyboardControllerSheetResult } from './types';
+import type { KeyboardControllerSheetOptions, KeyboardControllerSheetResult } from './types.js';
 export declare function useKeyboardControllerSheet(options: KeyboardControllerSheetOptions): KeyboardControllerSheetResult;
 //# sourceMappingURL=useKeyboardControllerSheet.d.ts.map

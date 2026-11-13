@@ -1,4 +1,4 @@
-import type { EventRow } from "./types";
+import type { EventRow } from "./types.js";
 export declare const EVENTS: Readonly<Record<string, EventRow>>;
 export declare const EVENT_NAMES: readonly string[];
 

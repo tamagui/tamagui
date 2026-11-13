@@ -1,5 +1,5 @@
 import type { GestureResponderEvent, ScrollViewInstance as RNScrollView } from 'react-native';
-import type { ScrollBridge } from './types';
+import type { ScrollBridge } from './types.js';
 interface UseSheetScrollViewGesturesProps {
     scrollRef: React.RefObject<RNScrollView | null>;
     scrollBridge: ScrollBridge;

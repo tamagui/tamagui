@@ -1,3 +1,3 @@
-export * from './Stacks';
-export * from './NestingContext';
+export * from './Stacks.js';
+export * from './NestingContext.js';
 //# sourceMappingURL=index.d.ts.map

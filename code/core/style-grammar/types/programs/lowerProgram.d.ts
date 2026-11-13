@@ -1,5 +1,5 @@
-import { type ClausePrecedenceOrder } from "../runtime/clausePrecedence";
-import type { LonghandProgram, ModifierRegistryView } from "../ast/valueTypes";
+import { type ClausePrecedenceOrder } from "../runtime/clausePrecedence.js";
+import type { LonghandProgram, ModifierRegistryView } from "../ast/valueTypes.js";
 /**
 * Where a condition's selector fragment is matched, relative to the subject: on
 * the subject itself, strictly above it, or either.

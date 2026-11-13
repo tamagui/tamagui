@@ -1,3 +1,3 @@
-import type { FocusScopeProps } from './types';
+import type { FocusScopeProps } from './types.js';
 export declare const FocusScope: import("@tamagui/compose-refs").RefComponent<unknown, FocusScopeProps>;
 //# sourceMappingURL=FocusScope.native.d.ts.map

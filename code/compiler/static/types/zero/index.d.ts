@@ -1,10 +1,10 @@
 export { isTamaguiSpecifier } from '@tamagui/compiler-core';
-export * from './artifact';
-export * from './graph';
-export * from './identity';
-export * from './islands';
-export * from './options';
-export * from './ownership';
-export * from './theme';
-export * from './transform';
+export * from './artifact.js';
+export * from './graph.js';
+export * from './identity.js';
+export * from './islands.js';
+export * from './options.js';
+export * from './ownership.js';
+export * from './theme.js';
+export * from './transform.js';
 //# sourceMappingURL=index.d.ts.map

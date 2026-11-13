@@ -1,4 +1,4 @@
-import type { ResolvedTransition } from "./resolveTransition";
+import type { ResolvedTransition } from "./resolveTransition.js";
 /**
 * `getSplitStyles` needs to know whether a `transition` string is plain css or
 * needs a driver, and that answer has to come from the same grammar the

@@ -1,4 +1,4 @@
-import type { ParsedValue } from "../ast/valueTypes";
+import type { ParsedValue } from "../ast/valueTypes.js";
 /**
 * The exact string that identifies a program. Every variable-length part is
 * length-prefixed, so no payload can forge a boundary and two different

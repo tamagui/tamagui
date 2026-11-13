@@ -1,4 +1,4 @@
-export { ClientOnly, ClientOnlyContext } from "./ClientOnly";
+export { ClientOnly, ClientOnlyContext } from "./ClientOnly.js";
 export declare const useIsClientOnly: () => boolean;
 export declare function useDidFinishSSR(): boolean;
 type FunctionOrValue<Value> = Value extends () => infer X ? X : Value;

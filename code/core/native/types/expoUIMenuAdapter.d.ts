@@ -1,5 +1,5 @@
 import type { ComponentType, ReactNode } from "react";
-import type { NativeMenuAdapter } from "./nativeMenuState";
+import type { NativeMenuAdapter } from "./nativeMenuState.js";
 export type ExpoMenuAction = {
 	id: string;
 	title: string;

@@ -1,4 +1,4 @@
-import type { DedupedThemes, RulesToInsert, TokensParsed } from '../types';
+import type { DedupedThemes, RulesToInsert, TokensParsed } from '../types.js';
 export declare const getAllSelectors: () => Record<string, string>;
 export declare const getRulesForIdentifier: (identifier: string) => string[];
 export declare const getAllRules: () => string[];

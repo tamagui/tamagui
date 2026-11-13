@@ -1,4 +1,4 @@
-import type { ResolvedModuleId, SourceSpan } from './contracts';
+import type { ResolvedModuleId, SourceSpan } from './contracts.js';
 export type BailoutCode = 'local/invalid-element-call' | 'local/unsupported-element-name' | 'local/unsupported-prop-key' | 'local/unsupported-child' | 'local/unsupported-expression' | 'local/unsupported-styled-definition' | 'local/dynamic-style-value' | 'local/unsafe-style-spread' | 'local/unsupported-target' | 'local/style-resolution-failed' | 'local/overlapping-edit' | 'local/non-object-spread' | 'local/static-evaluation-cycle' | 'local/parse-error' | 'linked/unresolved-component-binding' | 'linked/unresolved-binding' | 'linked/missing-initializer' | 'linked/unresolved-import' | 'linked/unresolved-component-config';
 /**
  * The zero-runtime rule a diagnostic belongs to. Set by whichever site knows the

@@ -16,26 +16,26 @@
 * // Sheet will automatically use native gestures when available
 * ```
 */
-export type { NativePortalState, GestureState, WorkletsState, SafeAreaState, SafeAreaInsets, SafeAreaFrame, SafeAreaMetrics, BurntState, NativePortalProps, NativePortalHostProps, NativePortalProviderProps } from "./types";
-export type { NativeMenuAdapter, NativeMenuModule } from "./nativeMenuState";
-export { getPortal } from "./portalState";
-export type { PortalAccessor } from "./portalState";
-export { getGestureHandler } from "./gestureState";
-export { claimExternalPressOwnership as unstable_claimExternalPressOwnership, hasExternalPressOwnership as unstable_hasExternalPressOwnership, releaseExternalPressOwnership as unstable_releaseExternalPressOwnership } from "./gestureState";
-export type { ExternalPressOwnershipToken, GestureHandlerAccessor, PressGestureConfig } from "./gestureState";
-export type { GestureHandlerConfig } from "./setup-gesture-handler";
-export { getWorklets } from "./workletsState";
-export type { WorkletsAccessor } from "./workletsState";
-export { getSafeArea, hasSafeAreaSetup } from "./safeAreaState";
-export type { SafeAreaAccessor } from "./safeAreaState";
-export { isKeyboardControllerEnabled, getKeyboardControllerState, setKeyboardControllerState } from "./keyboardControllerState";
-export type { KeyboardControllerState } from "./keyboardControllerState";
-export { getNativeMenuAdapter, registerNativeMenuAdapter } from "./nativeMenuState";
-export { createExpoUIMenuAdapter } from "./expoUIMenuAdapter";
-export type { ExpoUIMenuAdapterOptions } from "./expoUIMenuAdapter";
-export { NativeMenuContext } from "./nativeMenuContext";
-export { getBurnt } from "./burntState";
-export type { BurntAccessor } from "./burntState";
-export { NativePortal, NativePortalHost, NativePortalProvider } from "./components";
+export type { NativePortalState, GestureState, WorkletsState, SafeAreaState, SafeAreaInsets, SafeAreaFrame, SafeAreaMetrics, BurntState, NativePortalProps, NativePortalHostProps, NativePortalProviderProps } from "./types.js";
+export type { NativeMenuAdapter, NativeMenuModule } from "./nativeMenuState.js";
+export { getPortal } from "./portalState.js";
+export type { PortalAccessor } from "./portalState.js";
+export { getGestureHandler } from "./gestureState.js";
+export { claimExternalPressOwnership as unstable_claimExternalPressOwnership, hasExternalPressOwnership as unstable_hasExternalPressOwnership, releaseExternalPressOwnership as unstable_releaseExternalPressOwnership } from "./gestureState.js";
+export type { ExternalPressOwnershipToken, GestureHandlerAccessor, PressGestureConfig } from "./gestureState.js";
+export type { GestureHandlerConfig } from "./setup-gesture-handler.js";
+export { getWorklets } from "./workletsState.js";
+export type { WorkletsAccessor } from "./workletsState.js";
+export { getSafeArea, hasSafeAreaSetup } from "./safeAreaState.js";
+export type { SafeAreaAccessor } from "./safeAreaState.js";
+export { isKeyboardControllerEnabled, getKeyboardControllerState, setKeyboardControllerState } from "./keyboardControllerState.js";
+export type { KeyboardControllerState } from "./keyboardControllerState.js";
+export { getNativeMenuAdapter, registerNativeMenuAdapter } from "./nativeMenuState.js";
+export { createExpoUIMenuAdapter } from "./expoUIMenuAdapter.js";
+export type { ExpoUIMenuAdapterOptions } from "./expoUIMenuAdapter.js";
+export { NativeMenuContext } from "./nativeMenuContext.js";
+export { getBurnt } from "./burntState.js";
+export type { BurntAccessor } from "./burntState.js";
+export { NativePortal, NativePortalHost, NativePortalProvider } from "./components.js";
 
 //# sourceMappingURL=index.d.ts.map

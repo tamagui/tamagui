@@ -1,4 +1,4 @@
-import type { TamaguiComponentStateRef } from './types';
+import type { TamaguiComponentStateRef } from './types.js';
 export declare const hooks: InternalHooks;
 export declare function setupHooks(next: InternalHooks): void;
 type InternalHooks = {

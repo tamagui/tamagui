@@ -1,5 +1,5 @@
 import esbuild from 'esbuild';
-import type { TamaguiPlatform } from '../types';
+import type { TamaguiPlatform } from '../types.js';
 export declare const esbuildLoaderConfig: {
     readonly '.js': 'jsx';
     readonly '.png': 'dataurl';

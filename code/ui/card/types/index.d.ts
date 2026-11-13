@@ -1,2 +1,2 @@
-export * from './Card';
+export * from './Card.js';
 //# sourceMappingURL=index.d.ts.map

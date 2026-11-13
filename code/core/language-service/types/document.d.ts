@@ -1,5 +1,5 @@
-import type { StyleTooling, StyleValueColor, StyleValueDiagnostic, StyleValueHover } from "./core";
-import type { StyleValueCursorCompletions } from "./core";
+import type { StyleTooling, StyleValueColor, StyleValueDiagnostic, StyleValueHover } from "./core.js";
+import type { StyleValueCursorCompletions } from "./core.js";
 /** one static string style value in a source file */
 export interface StyleSite {
 	/** the authored prop name (`bg`, `padding`) */

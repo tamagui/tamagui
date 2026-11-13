@@ -1,9 +1,9 @@
-import type { AllGroupContexts, AnimationDriverLike, ComponentContextI, DebugProp, GetStyleResult, GetStyleState, SplitStyleProps, StaticConfig, TamaguiComponentState, TamaguiInternalConfig, ThemeParsed } from '../types';
-import { getStyleStaticConfig, type StyleStaticConfig } from './styleStaticConfig';
+import type { AllGroupContexts, AnimationDriverLike, ComponentContextI, DebugProp, GetStyleResult, GetStyleState, SplitStyleProps, StaticConfig, TamaguiComponentState, TamaguiInternalConfig, ThemeParsed } from '../types.js';
+import { getStyleStaticConfig, type StyleStaticConfig } from './styleStaticConfig.js';
 export { getStyleStaticConfig };
-import { styleOriginalValues } from './styleOriginalValues';
-export { STYLE_TOKEN_PROVENANCE_KEY, getStyleTokenProvenance } from './styleProvenance';
-export type { StyleDebugReceipt, StyleDebugTier, StyleTokenBinding, StyleTokenProvenance, } from './styleProvenance';
+import { styleOriginalValues } from './styleOriginalValues.js';
+export { STYLE_TOKEN_PROVENANCE_KEY, getStyleTokenProvenance } from './styleProvenance.js';
+export type { StyleDebugReceipt, StyleDebugTier, StyleTokenBinding, StyleTokenProvenance, } from './styleProvenance.js';
 export { styleOriginalValues };
 export type SplitStyles = ReturnType<typeof getSplitStyles>;
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>;
@@ -17,5 +17,5 @@ type ConditionalValueSink = (payload: any, condition: unknown, source: any) => v
 export declare function walkConditionalValue(state: GetStyleState, property: string, value: any, parent: unknown, sink: ConditionalValueSink | null, warnMode?: number, contextOnly?: boolean): boolean;
 export declare function emitVariantStyle(state: GetStyleState, key: string, value: any, original: any, condition: unknown, disabled: boolean): void;
 export declare function getFontFamilyFromNameOrVariable(input: any, conf: TamaguiInternalConfig): string | undefined;
-export * from './tokenCategories';
+export * from './tokenCategories.js';
 //# sourceMappingURL=getSplitStyles.d.ts.map

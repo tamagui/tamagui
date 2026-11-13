@@ -1,7 +1,7 @@
-export * from './Emphasis';
-export * from './SizableText';
-export * from './Paragraph';
-export * from './Headings';
-export * from './wrapChildrenInText';
-export * from './types';
+export * from './Emphasis.js';
+export * from './SizableText.js';
+export * from './Paragraph.js';
+export * from './Headings.js';
+export * from './wrapChildrenInText.js';
+export * from './types.js';
 //# sourceMappingURL=index.d.ts.map

@@ -1,5 +1,5 @@
 import type { ReactNode, Ref } from "react";
-import type { PressBoundaryProps } from "./types";
+import type { PressBoundaryProps } from "./types.js";
 /**
 * Renders children as-is.
 *

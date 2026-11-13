@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import type { PanResponderConfig, PanResponderInstance } from './types';
+import type { PanResponderConfig, PanResponderInstance } from './types.js';
 /**
  * The same PanResponder react-native ships, over the responder system in
  * `@tamagui/react-native-use-responder-events`, so a drag can be written once

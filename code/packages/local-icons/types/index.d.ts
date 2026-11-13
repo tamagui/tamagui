@@ -1,3 +1,3 @@
-export * from "./icons";
+export * from "./icons/index.js";
 
 //# sourceMappingURL=index.d.ts.map

@@ -1,5 +1,5 @@
-import type { ExpressionReference, HostResolvedImport, ResolvedModuleId, SourceSpan, SymbolDefinition } from './contracts';
-import type { BailoutReason } from './diagnostics';
+import type { ExpressionReference, HostResolvedImport, ResolvedModuleId, SourceSpan, SymbolDefinition } from './contracts.js';
+import type { BailoutReason } from './diagnostics.js';
 export type ElementForm = 'jsx' | 'jsx-runtime' | 'create-element';
 export type StaticValue = string | number | boolean | null;
 export type ElementValue = {

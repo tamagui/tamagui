@@ -1,4 +1,4 @@
-import type { AnimationDriverLike } from '../types';
+import type { AnimationDriverLike } from '../types.js';
 /**
  * Resolves a value that might be an animation driver or a multi-driver config
  * object like { default: motionDriver, css: cssDriver } into a driver.

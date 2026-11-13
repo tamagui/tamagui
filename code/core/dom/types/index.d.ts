@@ -8,13 +8,13 @@
 * types. React Strict DOM is the semantic reference and conformance oracle
 * (see `compatibility.ts`), never a dependency.
 */
-export * from "./events";
-export * from "./props";
-export * from "./tables/attributes";
-export * from "./tables/compatibility";
-export * from "./tables/events";
-export * from "./tables/nativeBacking";
-export * from "./tables/tags";
-export * from "./tables/types";
+export * from "./events.js";
+export * from "./props.js";
+export * from "./tables/attributes.js";
+export * from "./tables/compatibility.js";
+export * from "./tables/events.js";
+export * from "./tables/nativeBacking.js";
+export * from "./tables/tags.js";
+export * from "./tables/types.js";
 
 //# sourceMappingURL=index.d.ts.map

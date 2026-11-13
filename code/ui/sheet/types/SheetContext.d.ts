@@ -1,6 +1,6 @@
 import { type UniversalAnimatedNumber } from '@tamagui/core';
 import React from 'react';
-import type { SheetContextValue } from './useSheetProviderProps';
+import type { SheetContextValue } from './useSheetProviderProps.js';
 export declare const SheetContext: import("@tamagui/core").StyledContext<SheetContextValue, never>;
 export declare const SheetProvider: React.Provider<SheetContextValue> & React.ProviderExoticComponent<Partial<SheetContextValue> & {
     children?: React.ReactNode;

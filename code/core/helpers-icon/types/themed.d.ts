@@ -1,6 +1,6 @@
 import { type ResolveVariableAs } from '@tamagui/core';
 import type { FC } from 'react';
-import type { IconProps } from './IconProps';
+import type { IconProps } from './IconProps.js';
 type Options = {
     noClass?: boolean;
     defaultThemeColor?: string;

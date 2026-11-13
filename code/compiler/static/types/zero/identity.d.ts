@@ -1,4 +1,4 @@
-import type { TamaguiRuntimeLiteral } from './options';
+import type { TamaguiRuntimeLiteral } from './options.js';
 /**
  * Bumped whenever the zero transform's emitted output changes shape. It rides
  * the lowering plan version so a compiler change also invalidates zero caches.

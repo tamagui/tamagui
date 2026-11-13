@@ -1,5 +1,5 @@
 import React from 'react';
-import type { DismissableBranchProps, DismissableProps } from './DismissableProps';
+import type { DismissableBranchProps, DismissableProps } from './DismissableProps.js';
 export declare function dispatchDiscreteCustomEvent<E extends CustomEvent>(_target: E['target'], _event: E): void;
 export declare function getDismissableLayerCount(): number;
 export declare function useHasDismissableLayers(): boolean;

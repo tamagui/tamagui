@@ -1,5 +1,5 @@
 import type { ColorTokens, GetProps, ThemeTokens } from '@tamagui/core';
-import type { LinearGradientPoint } from './linear-gradient';
+import type { LinearGradientPoint } from './linear-gradient.js';
 export type LinearGradientExtraProps = {
     colors?: (ColorTokens | ThemeTokens | (string & {}))[];
     locations?: number[] | null;

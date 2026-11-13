@@ -1,4 +1,4 @@
-import type { StaticConfig } from '../types';
+import type { StaticConfig } from '../types.js';
 export declare function isTamaguiComponent<A>(comp: A): comp is A & {
     staticConfig: StaticConfig;
 };

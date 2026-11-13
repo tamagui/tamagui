@@ -1,5 +1,5 @@
 import React from 'react';
-import type { StaticConfig } from '../types';
+import type { StaticConfig } from '../types.js';
 export declare const isTamaguiElement: (child: any) => child is React.ReactElement<any> & {
     type: {
         staticConfig: StaticConfig;

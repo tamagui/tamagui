@@ -1,4 +1,4 @@
-export * from './Image';
-export * from './createImage';
-export type { ImageProps, ImageType } from './types';
+export * from './Image.js';
+export * from './createImage.js';
+export type { ImageProps, ImageType } from './types.js';
 //# sourceMappingURL=index.d.ts.map

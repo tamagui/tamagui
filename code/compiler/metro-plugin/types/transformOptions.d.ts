@@ -1,4 +1,4 @@
-import type { MetroCompilerFrontend } from "./frontend";
+import type { MetroCompilerFrontend } from "./frontend.js";
 export interface MetroGetTransformOptionsContext {
 	dev: boolean;
 	hot: boolean;

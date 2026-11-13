@@ -1,5 +1,5 @@
 import type { HTMLProps } from 'react';
-import type { ElementProps } from './types';
+import type { ElementProps } from './types.js';
 export declare function useInteractions(propsList: Array<ElementProps | void>): {
     getReferenceProps: (userProps?: HTMLProps<Element>) => Record<string, any>;
     getFloatingProps: (userProps?: HTMLProps<HTMLElement>) => Record<string, any>;

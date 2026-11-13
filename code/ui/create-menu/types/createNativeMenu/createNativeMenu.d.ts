@@ -6,7 +6,7 @@
  */
 import type { FC } from 'react';
 import React from 'react';
-import type { ContextMenuPreviewProps, NativeContextMenuAuxiliaryProps, NativeMenuArrowProps, NativeMenuCheckboxItemProps, NativeMenuContentProps, NativeMenuGroupProps, NativeMenuItemIconProps, NativeMenuItemImageProps, NativeMenuItemIndicatorProps, NativeMenuItemProps, NativeMenuItemSubtitleProps, NativeMenuItemTitleProps, NativeMenuLabelProps, NativeMenuProps, NativeMenuSeparatorProps, NativeMenuSubContentProps, NativeMenuSubProps, NativeMenuSubTriggerProps, MenuTriggerProps } from './createNativeMenuTypes';
+import type { ContextMenuPreviewProps, NativeContextMenuAuxiliaryProps, NativeMenuArrowProps, NativeMenuCheckboxItemProps, NativeMenuContentProps, NativeMenuGroupProps, NativeMenuItemIconProps, NativeMenuItemImageProps, NativeMenuItemIndicatorProps, NativeMenuItemProps, NativeMenuItemSubtitleProps, NativeMenuItemTitleProps, NativeMenuLabelProps, NativeMenuProps, NativeMenuSeparatorProps, NativeMenuSubContentProps, NativeMenuSubProps, NativeMenuSubTriggerProps, MenuTriggerProps } from './createNativeMenuTypes.js';
 export type NativeMenuComponents = {
     Menu: FC<NativeMenuProps> & {
         Trigger: FC<MenuTriggerProps>;

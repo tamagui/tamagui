@@ -1,6 +1,6 @@
 import { TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
-import type { DismissableBranchProps, DismissableProps } from './DismissableProps';
+import type { DismissableBranchProps, DismissableProps } from './DismissableProps.js';
 export declare function dispatchDiscreteCustomEvent<E extends CustomEvent>(target: E['target'], event: E): void;
 /**
  * returns the number of active dismissable layers
@@ -32,5 +32,5 @@ declare const Dismissable: import("@tamagui/compose-refs").RefComponent<HTMLElem
 }>;
 declare const DismissableBranch: import("@tamagui/compose-refs").RefComponent<TamaguiElement, DismissableBranchProps>;
 export { Dismissable, DismissableBranch };
-export type { DismissableDismissDetails, DismissableProps, FocusOutsideDetails, InteractOutsideDetails, PointerDownOutsideDetails, } from './DismissableProps';
+export type { DismissableDismissDetails, DismissableProps, FocusOutsideDetails, InteractOutsideDetails, PointerDownOutsideDetails, } from './DismissableProps.js';
 //# sourceMappingURL=Dismissable.d.ts.map

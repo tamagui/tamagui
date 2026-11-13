@@ -1,4 +1,4 @@
-import type { ResolvedPayload } from "./resolvePayload";
+import type { ResolvedPayload } from "./resolvePayload.js";
 export declare function serializePayloadWeb(resolved: ResolvedPayload, toVar: (name: string) => string): string;
 export interface SerializeNativeOptions {
 	/**

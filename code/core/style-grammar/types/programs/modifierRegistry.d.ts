@@ -1,5 +1,5 @@
-import type { GrammarConfigView } from "../tooling/candidate";
-import { type ModifierRegistryView } from "../ast/valueTypes";
+import type { GrammarConfigView } from "../tooling/candidate.js";
+import { type ModifierRegistryView } from "../ast/valueTypes.js";
 type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>;
 export interface ModifierRegistryResult {
 	registry: ModifierRegistryView;
@@ -25,7 +25,7 @@ export interface CreateModifierRegistryOptions {
 * root, so `dark:` applies within `dark_blue`, but `dark_blue:` is not a
 * condition of its own.
 */
-export { isRootThemeName } from "../runtime/modifierVocabulary";
+export { isRootThemeName } from "../runtime/modifierVocabulary.js";
 export interface ContainerModifier {
 	/** the size condition; the registry only accepts a registered media name here */
 	size: string;

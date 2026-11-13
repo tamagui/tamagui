@@ -1,6 +1,6 @@
 import { type MutableRefObject } from 'react';
-import type { ThemeState, UseThemeWithStateProps } from '../types';
-import type { ThemeUpdateState } from '../helpers/themeUpdateState';
+import type { ThemeState, UseThemeWithStateProps } from '../types.js';
+import type { ThemeUpdateState } from '../helpers/themeUpdateState.js';
 type ID = string;
 export declare const ThemeStateContext: import("react").Context<string>;
 export declare const forceUpdateThemes: () => void;

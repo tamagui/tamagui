@@ -1,6 +1,6 @@
-import { type TokenCategory } from "./registry";
-import { type DiagnoseStyleValueOptions } from "./toolingDiagnostics";
-import { type ModifierKind } from "../ast/valueTypes";
+import { type TokenCategory } from "./registry.js";
+import { type DiagnoseStyleValueOptions } from "./toolingDiagnostics.js";
+import { type ModifierKind } from "../ast/valueTypes.js";
 export type StyleValueAnnotationKind = "modifier" | "token" | "keyword" | "identifier";
 export interface StyleValueAnnotation {
 	kind: StyleValueAnnotationKind;

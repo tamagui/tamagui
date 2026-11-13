@@ -1,11 +1,11 @@
-export * from './Sheet';
-export { useSheetContext } from './SheetContext';
-export * from './SheetController';
-export * from './useSheetController';
-export * from './useSheetOpenState';
-export * from './useSheetOffscreenSize';
-export * from './SheetScrollView';
-export * from './nativeSheet';
-export * from './types';
-export * from './contexts';
+export * from './Sheet.js';
+export { useSheetContext } from './SheetContext.js';
+export * from './SheetController.js';
+export * from './useSheetController.js';
+export * from './useSheetOpenState.js';
+export * from './useSheetOffscreenSize.js';
+export * from './SheetScrollView.js';
+export * from './nativeSheet.js';
+export * from './types.js';
+export * from './contexts.js';
 //# sourceMappingURL=index.d.ts.map

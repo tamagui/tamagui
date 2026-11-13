@@ -1,4 +1,4 @@
-import type { ParsedTransition } from "./transition";
+import type { ParsedTransition } from "./transition.js";
 export type NativeTransitionPlatform = "android" | "ios";
 export interface NativeTransitionTarget {
 	platform: NativeTransitionPlatform;

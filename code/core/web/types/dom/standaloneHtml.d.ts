@@ -1,5 +1,5 @@
 import type { StrictDOMAnchorProps, StrictDOMButtonProps, StrictDOMImageProps, StrictDOMInputProps, StrictDOMLabelProps, StrictDOMListItemProps, StrictDOMOptionGroupProps, StrictDOMOptionProps, StrictDOMProps, StrictDOMSelectProps, StrictDOMTextAreaProps, StrictDOMVoidProps } from '@tamagui/dom';
-import type { DOMStyleProps } from './standalone';
+import type { DOMStyleProps } from './standalone.js';
 /**
  * The semantic elements of the standalone Tamagui DOM entry.
  *

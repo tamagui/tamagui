@@ -1,7 +1,7 @@
 import type { NativeValue, TamaguiChangeEventDetails, TamaguiEventDetails, ViewProps } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { HTMLProps, MutableRefObject, ReactNode, RefObject } from 'react';
-import type { SelectItemRegistry, SelectMode, SelectSelection } from './selectionController';
+import type { SelectItemRegistry, SelectMode, SelectSelection } from './selectionController.js';
 type ContextData = Record<string, any>;
 type ReferenceType = Element;
 type FloatingContext<RT = ReferenceType> = {

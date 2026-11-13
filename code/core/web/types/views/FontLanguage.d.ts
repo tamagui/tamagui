@@ -1,4 +1,4 @@
-import type { FontLanguageProps } from '../types';
+import type { FontLanguageProps } from '../types.js';
 export declare function FontLanguage({ children, ...props }: FontLanguageProps): import("react").JSX.Element;
 export declare namespace FontLanguage {
     var displayName: string;
