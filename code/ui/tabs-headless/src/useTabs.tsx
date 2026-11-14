@@ -216,7 +216,10 @@ export function useTabContent(props: UseTabContentProps) {
       'data-state': isSelected ? ('active' as const) : ('inactive' as const),
       'data-orientation': orientation,
       hidden: !shouldMount,
-      tabIndex: 0,
+      // on native a tabIndex of 0 makes the view accessible, which folds the
+      // whole panel into one element and hides its rows from voiceover and
+      // from test ids
+      ...(isWeb && { tabIndex: 0 as const }),
     },
   }
 }
