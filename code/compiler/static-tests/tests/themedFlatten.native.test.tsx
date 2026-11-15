@@ -900,7 +900,9 @@ test('a text with an expression child flattens and gives element children its me
       inner: ['fontSize', 'lineHeight', 'fontWeight'].map((key) =>
         styleValue(node('inner'), key)
       ),
-      outer: ['fontSize', 'lineHeight', 'color'].map((key) => styleValue(node('outer'), key)),
+      outer: ['fontSize', 'lineHeight', 'color'].map((key) =>
+        styleValue(node('outer'), key)
+      ),
     }
     await act(async () => renderer!.unmount())
     return result
