@@ -1,6 +1,8 @@
 import React, { useContext } from 'react'
 import { getConfigMaybe } from './config'
+import { ComponentContext } from './contexts/ComponentContext'
 import { getVariable } from './createVariable'
+import type { NativeTextMetrics } from './helpers/nativeTextMetrics'
 import { useMedia } from './hooks/useMedia'
 import { useTheme } from './hooks/useTheme'
 import { ThemeStateContext } from './hooks/useThemeState'
@@ -17,7 +19,10 @@ export const _withStableStyle = (
   Component: any,
   createStyle: (theme: any, expressions: any[]) => object,
   hasThemeKeys?: boolean,
-  hasMediaKeys?: boolean
+  hasMediaKeys?: boolean,
+  // a flattened native text with its own font size and line height: element
+  // children read them from the text context, as under the runtime Text
+  textMetrics?: Required<Pick<NativeTextMetrics, 'fontSize' | 'lineHeight'>>
 ) =>
   React.memo(function WithStableStyle(props: any) {
     const { ref, ...propsWithoutRef } = props
@@ -30,6 +35,8 @@ export const _withStableStyle = (
     const theme = hasThemeKeys && parentId ? useTheme() : null
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const media = hasMediaKeys ? useMedia() : null
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const componentContext = textMetrics ? useContext(ComponentContext) : null
 
     const resolvedExpressions = media
       ? _expressions.map((expr: any) =>
@@ -78,11 +85,34 @@ export const _withStableStyle = (
       }
     }
 
-    return (
+    const content = (
       <Component
         ref={ref}
         style={createStyle(resolvedTheme, resolvedExpressions)}
         {...rest}
       />
+    )
+    const children = rest.children
+    if (
+      !componentContext ||
+      children === null ||
+      typeof children !== 'object' ||
+      (componentContext.inText &&
+        componentContext.parentFontSize === textMetrics!.fontSize &&
+        componentContext.parentLineHeight === textMetrics!.lineHeight &&
+        componentContext.animatedText === null)
+    ) {
+      return content
+    }
+    return (
+      <ComponentContext.Provider
+        {...componentContext}
+        inText
+        parentFontSize={textMetrics!.fontSize}
+        parentLineHeight={textMetrics!.lineHeight}
+        animatedText={null}
+      >
+        {content}
+      </ComponentContext.Provider>
     )
   })
