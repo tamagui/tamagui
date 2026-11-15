@@ -239,7 +239,9 @@ test('native Text metric parents flatten with scalar and unknown children', asyn
 
   expect(output.stats.flattened).toBe(5)
   expect(output.diagnostics).toEqual([])
-  expect(output.code).toMatch(/<__TamaguiStableText\d+\s*>\{child\}<\/__TamaguiStableText\d+>/)
+  expect(output.code).toMatch(
+    /<__TamaguiStableText\d+\s*>\{child\}<\/__TamaguiStableText\d+>/
+  )
 })
 
 test('native text whose font family has FontLanguage variants stays on the runtime path', async () => {

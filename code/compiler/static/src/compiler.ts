@@ -155,7 +155,9 @@ const compilerPackageVersions = ['@tamagui/compiler-core', '@tamagui/static'].ma
       .filter((file) => /\.(c|m)?js$/.test(file))
       .sort()
     return `${name}@${version}#${contentHash(
-      files.map((file) => `${file}:${contentHash(readFileSync(path.join(dist, file)))}`).join('\n')
+      files
+        .map((file) => `${file}:${contentHash(readFileSync(path.join(dist, file)))}`)
+        .join('\n')
     )}`
   }
 )
