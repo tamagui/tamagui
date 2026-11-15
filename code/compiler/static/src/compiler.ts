@@ -15,7 +15,7 @@ import {
   type ResolvedModuleId,
 } from '@tamagui/compiler-core'
 import type { TamaguiOptions } from '@tamagui/types'
-import { readFileSync } from 'node:fs'
+import { readdirSync, readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import path from 'node:path'
 
@@ -143,11 +143,21 @@ const requireFromCompiler = createRequire(
   typeof __filename === 'string' ? __filename : import.meta.url
 )
 
-// upgrading the compiler must invalidate cached plans even when nothing about
-// the project changed
+// changing the compiler must invalidate cached plans even when nothing about
+// the project changed. a local build keeps its version, so this hashes the
+// built code rather than trusting the version alone
 const compilerPackageVersions = ['@tamagui/compiler-core', '@tamagui/static'].map(
-  (name) =>
-    `${name}@${(requireFromCompiler(`${name}/package.json`) as { version: string }).version}`
+  (name) => {
+    const manifest = requireFromCompiler.resolve(`${name}/package.json`)
+    const { version } = requireFromCompiler(manifest) as { version: string }
+    const dist = path.join(path.dirname(manifest), 'dist')
+    const files = (readdirSync(dist, { recursive: true }) as string[])
+      .filter((file) => /\.(c|m)?js$/.test(file))
+      .sort()
+    return `${name}@${version}#${contentHash(
+      files.map((file) => `${file}:${contentHash(readFileSync(path.join(dist, file)))}`).join('\n')
+    )}`
+  }
 )
 
 /**
