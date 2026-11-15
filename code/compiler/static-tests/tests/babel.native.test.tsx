@@ -209,7 +209,7 @@ test('native text with an unresolved ratio stays on the runtime path', async () 
   expect(output.diagnostics).toMatchObject([{ code: 'local/unsupported-target' }])
 })
 
-test('native Text metric parents with element children stay on the runtime path', async () => {
+test('native Text metric parents with element children hand their metrics to runtime children', async () => {
   const output = await extractForNative(`
     import { Text } from 'tamagui'
     export const App = () => (
@@ -219,16 +219,13 @@ test('native Text metric parents with element children stay on the runtime path'
     )
   `)
 
-  expect(output.stats.flattened).toBe(0)
-  expect(output.code).toContain('<Text fontSize={20} lineHeight={1.5}>')
+  expect(output.stats.flattened).toBe(1)
+  expect(output.code).toContain('false, {"fontSize":20,"lineHeight":1.5});')
   expect(output.code).toContain('<Text fontSize={10}>child</Text>')
-  expect(output.diagnostics).toHaveLength(2)
-  expect(
-    output.diagnostics.every(({ code }) => code === 'local/unsupported-target')
-  ).toBe(true)
+  expect(output.diagnostics.map(({ code }) => code)).toEqual(['local/unsupported-target'])
 })
 
-test('native Text metric parents flatten only evaluator-proven scalar children', async () => {
+test('native Text metric parents flatten with scalar and unknown children', async () => {
   const output = await extractForNative(`
     import { Text } from 'tamagui'
     export const App = ({ child, count, index }) => <>
@@ -240,9 +237,9 @@ test('native Text metric parents flatten only evaluator-proven scalar children',
     </>
   `)
 
-  expect(output.stats.flattened).toBe(4)
-  expect(output.diagnostics.map(({ code }) => code)).toEqual(['local/unsupported-target'])
-  expect(output.code).toContain('<Text fontSize={20} lineHeight={1.5}>{child}</Text>')
+  expect(output.stats.flattened).toBe(5)
+  expect(output.diagnostics).toEqual([])
+  expect(output.code).toMatch(/<__TamaguiStableText\d+\s*>\{child\}<\/__TamaguiStableText\d+>/)
 })
 
 test('native text whose font family has FontLanguage variants stays on the runtime path', async () => {

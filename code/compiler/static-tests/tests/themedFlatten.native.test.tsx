@@ -849,3 +849,64 @@ test('inline placement follows component boundaries and render callbacks', async
     )
   }
 })
+
+test('a text with an expression child flattens and gives element children its metrics', async () => {
+  const source = `
+    import { Text } from 'tamagui'
+    export function Test({ name, count }) {
+      return (
+        <Text testID="outer" fontSize={15} lineHeight="21px" color="$color">
+          {count} <Text testID="inner" fontWeight="700">{name}</Text>
+        </Text>
+      )
+    }
+  `
+  const output = await extractForNative(source, {
+    options: { experimental: { nativeFastPath: true } },
+  })
+  expect(output.code).toContain(`false, {"fontSize":15,"lineHeight":"21px"});`)
+  process.env.TAMAGUI_TARGET = 'native'
+
+  const run = async (code: string) => {
+    const { code: cjs } = await transform(code, {
+      format: 'cjs',
+      jsx: 'automatic',
+      loader: 'tsx',
+      platform: 'node',
+      target: 'es2021',
+    })
+    const mod = { exports: {} as Record<string, ReactModule.ComponentType<any>> }
+    const localRequire = (specifier: string) =>
+      ({
+        react: ReactModule,
+        'react/jsx-runtime': JSXRuntime,
+        'react-native': ReactNative,
+        '@tamagui/core': Core,
+        tamagui: Core,
+      })[specifier]
+    Function('require', 'module', 'exports', cjs)(localRequire, mod, mod.exports)
+    const Test = mod.exports.Test!
+    let renderer: ReactTestRenderer
+    await act(async () => {
+      renderer = create(
+        <TamaguiProvider config={config} defaultTheme="light">
+          <Test name="ada" count={3} />
+        </TamaguiProvider>
+      )
+    })
+    const node = (testID: string) =>
+      renderer!.root.find((n) => typeof n.type === 'string' && n.props.testID === testID)
+    const result = {
+      inner: ['fontSize', 'lineHeight', 'fontWeight'].map((key) =>
+        styleValue(node('inner'), key)
+      ),
+      outer: ['fontSize', 'lineHeight', 'color'].map((key) => styleValue(node('outer'), key)),
+    }
+    await act(async () => renderer!.unmount())
+    return result
+  }
+
+  const runtime = await run(source)
+  expect(runtime.inner[0]).toBe(15)
+  expect(await run(output.code)).toEqual(runtime)
+})

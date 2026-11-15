@@ -2828,16 +2828,29 @@ export function createTamaguiCompilerHost(
       })
       const changesInheritedNativeFontSize =
         nativeMetrics?.fontSize !== undefined && nativeMetrics.lineHeight === undefined
-      // flattened core Text goes straight to react-native Text, which cannot
-      // carry this semantic record to a runtime child. the component path
-      // completes it once through the shared metric context.
+      const childMayBeElement = hasChildThatMayRenderReactNode(input.element)
+      // a text whose own metrics are complete and static hands them to element
+      // children through its _withStableStyle wrapper, as the runtime Text does
+      const nativeTextScope =
+        platform === 'native' &&
+        component.staticConfig.isText &&
+        !component.domTag &&
+        childMayBeElement &&
+        !hasDynamicTextMetric &&
+        typeof nativeMetrics?.fontSize === 'number' &&
+        nativeMetrics.lineHeight !== undefined
+          ? { fontSize: nativeMetrics.fontSize, lineHeight: nativeMetrics.lineHeight }
+          : null
+      // a flattened text without complete static metrics cannot hand the
+      // shared metric context to a runtime child; the component path does.
       if (
         platform === 'native' &&
         component.staticConfig.isText &&
         !component.domTag &&
         (hasUnresolvedNativeLineHeight ||
           changesInheritedNativeFontSize ||
-          (hasChildThatMayRenderReactNode(input.element) &&
+          (childMayBeElement &&
+            !nativeTextScope &&
             (nativeMetrics !== null || hasDynamicTextMetric)) ||
           input.module.elements.some(
             (ancestor) =>
@@ -3443,8 +3456,8 @@ export function createTamaguiCompilerHost(
             'Theme values require partial extraction, which is disabled'
           )
         }
-        if (dynamicStyleEntries.length > 0 || themedStyleKeys) {
-          if (nativeFastPath) {
+        if (dynamicStyleEntries.length > 0 || themedStyleKeys || nativeTextScope) {
+          if (nativeFastPath && !nativeTextScope) {
             const fastLocal = `__TamaguiNativeFast${nativeName}${input.element.span.start}`
             const tagEdits = [
               input.element.component.span,
@@ -3795,7 +3808,7 @@ export function createTamaguiCompilerHost(
                 origin: input.element.component.span,
               },
               {
-                content: `\nconst ${stableLocal} = require('@tamagui/core')._withStableStyle(${nativeLocal}, (_theme, expressions) => [${styleParts.join(', ')}], ${themedStyleKeys ? 'true' : 'false'}, false);`,
+                content: `\nconst ${stableLocal} = require('@tamagui/core')._withStableStyle(${nativeLocal}, (_theme, expressions) => [${styleParts.join(', ')}], ${themedStyleKeys ? 'true' : 'false'}, false${nativeTextScope ? `, ${JSON.stringify(nativeTextScope)}` : ''});`,
                 origin: input.element.component.span,
               },
             ],
