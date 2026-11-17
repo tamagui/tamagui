@@ -182,6 +182,7 @@ export const useThemeState = (
           r.unsubscribe = undefined
           r.subscribedTo = undefined
         }
+        cb()
       }
     } else if (r.unsubscribe) {
       r.unsubscribe?.()
