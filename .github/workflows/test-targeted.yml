@@ -29,7 +29,7 @@ permissions:
 jobs:
   playwright:
     name: 'playwright: ${{ inputs.filter }} (${{ inputs.project }})'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
@@ -47,7 +47,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}
+          key: playwright-${{ runner.os }}-ubuntu-24.04-${{ steps.pw-version.outputs.version }}
 
       - name: Install playwright
         run: bunx playwright install --with-deps

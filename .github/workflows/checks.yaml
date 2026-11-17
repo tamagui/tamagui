@@ -105,7 +105,7 @@ jobs:
 
   playwright-browsers:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     concurrency:
       group: playwright-browser-cache-checks-${{ github.head_ref || github.ref_name }}
@@ -127,7 +127,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
+          key: playwright-${{ runner.os }}-ubuntu-24.04-${{ steps.pw-version.outputs.version }}-chromium-webkit
 
       - name: Setup Bun
         if: steps.playwright-cache.outputs.cache-hit != 'true'
@@ -143,7 +143,7 @@ jobs:
   unit-tests:
     needs: playwright-browsers
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       NODE_OPTIONS: '--max-old-space-size=6144'
@@ -166,7 +166,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
+          key: playwright-${{ runner.os }}-ubuntu-24.04-${{ steps.pw-version.outputs.version }}-chromium-webkit
 
       - name: Check config defaults
         working-directory: code/core/config
@@ -264,7 +264,7 @@ jobs:
       (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta') &&
       needs.changes.outputs.integration-relevant == 'true'
     # gate is turbo's actual workspace dependency graph — no manual path list to maintain
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     strategy:
       fail-fast: false
@@ -292,10 +292,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
+          key: playwright-${{ runner.os }}-ubuntu-24.04-${{ steps.pw-version.outputs.version }}-chromium-webkit
 
       # no `playwright install-deps` here: these shards are chromium-only and
-      # chromium's libraries are already on the ubuntu-latest image. webkit is
+      # chromium's libraries are already on the ubuntu-24.04 image. webkit is
       # what needs the 181-package apt install, and it lives in its own job
       # below so 1708 of the 1738 tests never touch apt.
 
@@ -327,7 +327,7 @@ jobs:
     if: >-
       (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta') &&
       needs.changes.outputs.integration-relevant == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       NODE_OPTIONS: '--max-old-space-size=6144'
@@ -351,7 +351,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
+          key: playwright-${{ runner.os }}-ubuntu-24.04-${{ steps.pw-version.outputs.version }}-chromium-webkit
 
       - name: Install Playwright system dependencies
         run: |
@@ -394,7 +394,7 @@ jobs:
       (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta') &&
       ((github.event_name == 'push' && github.ref_name == 'v3-beta') ||
       (github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-'))))
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
       NODE_OPTIONS: '--max-old-space-size=6144'
@@ -416,10 +416,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
+          key: playwright-${{ runner.os }}-ubuntu-24.04-${{ steps.pw-version.outputs.version }}-chromium-webkit
 
       # no `playwright install-deps` here: chromium's libraries are already on
-      # the ubuntu-latest image, and the only thing the command adds is CJK,
+      # the ubuntu-24.04 image, and the only thing the command adds is CJK,
       # Thai and Cyrillic fallback fonts nothing in this job renders. It also
       # runs a full apt-get update, which is the step that intermittently hangs
       # the runner. integration-tests still needs it for webkit.
@@ -458,7 +458,7 @@ jobs:
       (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'v3-beta') &&
       ((github.event_name == 'push' && startsWith(github.ref_name, 'v3')) ||
       (github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-'))))
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # ~8 minutes of bundling on a fast machine, and a CI runner has two cores
     timeout-minutes: 60
     strategy:
@@ -495,10 +495,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
+          key: playwright-${{ runner.os }}-ubuntu-24.04-${{ steps.pw-version.outputs.version }}-chromium-webkit
 
       # no `playwright install-deps` here: chromium's libraries are already on
-      # the ubuntu-latest image, and the only thing the command adds is CJK,
+      # the ubuntu-24.04 image, and the only thing the command adds is CJK,
       # Thai and Cyrillic fallback fonts nothing in this job renders. It also
       # runs a full apt-get update, which is the step that intermittently hangs
       # the runner. integration-tests still needs it for webkit.

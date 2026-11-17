@@ -60,7 +60,7 @@ jobs:
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'push' &&
       github.event.workflow_run.head_branch == 'v3-beta'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     # this job publishes a beta automatically every time Checks goes green on a
     # v3-beta push.
@@ -138,7 +138,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.beta-pw-version.outputs.version }}
+          key: playwright-${{ runner.os }}-ubuntu-24.04-${{ steps.beta-pw-version.outputs.version }}
 
       # playwright's archive extraction hangs on linux under node 24.16.
       # use node 22 only for installation, then restore the release runtime.
